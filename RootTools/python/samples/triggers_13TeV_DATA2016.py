@@ -19,13 +19,15 @@ triggers_mue   = [ "HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v*", # warni
                    "HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_v*",
                    "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v*", 
                    "HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_v*",
-                   "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v*" ]
+                   "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v*",
+                   "HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ_v*",
+                   "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v*" ]
 
 triggers_mumu_ht =  [ "HLT_DoubleMu8_Mass8_PFHT300_v*" ]
 triggers_ee_ht =  [ "HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_PFHT300_v*" ]
 triggers_mue_ht = [ "HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT300_v*" ]
 
-triggers_leptau = ["HLT_IsoMu19_eta2p1_LooseIsoPFTau20_v*", "HLT_Ele22_eta2p1_WPLoose_GSF_LooseIsoPFtau20_SingleL1_v*", "HLT_DoubleMediumIsoPFTau32_Trk1_eta2p1_Reg_v"]
+triggers_leptau = ["HLT_IsoMu19_eta2p1_LooseIsoPFTau20_v*", "HLT_Ele22_eta2p1_WPLoose_GSF_LooseIsoPFtau20_SingleL1_v*", "HLT_DoubleMediumIsoPFTau32_Trk1_eta2p1_Reg_v", "HLT_Ele24_eta2p1_WPLoose_Gsf_LooseIsoPFTau30_v*", "HLT_Ele36_eta2p1_WPLoose_Gsf_LooseIsoPFTau20_SingleL1_v*"]
 
 triggers_3e = [ "HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL_v*" ]
 triggers_3mu = [ "HLT_TripleMu_12_10_5_v*", "HLT_TripleMu_5_3_3_v*" ] # 533 only in part of the dataset
@@ -33,13 +35,13 @@ triggers_3mu_alt = [ "HLT_TrkMu15_DoubleTrkMu5NoFiltersNoVtx_v*" ]
 triggers_2mu1e = [ "HLT_DiMu9_Ele9_CaloIdL_TrackIdL_v*" ]
 triggers_2e1mu = [ "HLT_Mu8_DiEle12_CaloIdL_TrackIdL_v*" ]
 
-triggers_1mu_iso = [ 'HLT_IsoMu20_v*', 'HLT_IsoTkMu20_v*', 'HLT_IsoMu22_v*', 'HLT_IsoTkMu22_v*'  ]  # Mu20's prescaled in column 0
+triggers_1mu_iso = [ 'HLT_IsoMu20_v*', 'HLT_IsoTkMu20_v*', 'HLT_IsoMu22_v*', 'HLT_IsoTkMu22_v*', 'HLT_IsoMu24_v*', 'HLT_IsoTkMu24_v*'  ]  # Mu20's prescaled in column 0
 triggers_1mu_noniso = [ 'HLT_Mu45_eta2p1_v*', 'HLT_Mu50_v*', 'HLT_TkMu50_v*' ]
 
 # note: here the WP75 is th name in MC, WPLoose and WPTight should be in data
 triggers_1e      = [ 
         #"HLT_Ele23_WPLoose_Gsf_v*", # only up to 5E33
-        #"HLT_Ele27_WPLoose_Gsf_v*", # only up to 5E33
+        "HLT_Ele27_WPLoose_Gsf_v*", # only up to 5E33, used in ICHEP EWKino
         "HLT_Ele25_WPTight_Gsf_v*",        # not in column 0
         "HLT_Ele25_eta2p1_WPLoose_Gsf_v*", # not in column 0 
         "HLT_Ele25_eta2p1_WPTight_Gsf_v*", 

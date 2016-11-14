@@ -212,9 +212,9 @@ if analysis=="susy":
             }) 
 
 # Spring16 electron MVA - follow instructions on pull request for correct area setup
-leptonTypeSusy.addVariables([
-        NTupleVariable("mvaIdSpring16",   lambda lepton : lepton.mvaRun2("Spring16") if abs(lepton.pdgId()) == 11 else 1, help="EGamma POG MVA ID, Spring16; 1 for muons"),
-        ])
+#leptonTypeSusy.addVariables([
+#        NTupleVariable("mvaIdSpring16",   lambda lepton : lepton.mvaRun2("Spring16") if abs(lepton.pdgId()) == 11 else 1, help="EGamma POG MVA ID, Spring16; 1 for muons"),
+#        ])
 
 if lepAna.doIsolationScan:
     leptonTypeSusyExtraLight.addVariables([
@@ -291,7 +291,7 @@ else:
     susyScanAna.useLumiInfo=True
     susyScanAna.doLHE=True
     susyCounter.bypass_trackMass_check = False
-    susyCounter.SMS_varying_masses=['genSusyMGluino','genSusyMNeutralino','genSusyMChargino','genSusyMNeutralino2', 'genSusyMStau', 'genSusyMSnuTau', 'genSusyMStop']
+    susyCounter.SMS_varying_masses=['genSusyMGluino','genSusyMNeutralino','genSusyMChargino','genSusyMNeutralino2', 'genSusyMNeutralino3','genSusyMStau', 'genSusyMSnuTau', 'genSusyMStop']
     susyCoreSequence.insert(susyCoreSequence.index(susyScanAna)+1,susyCounter)
 
 # HBHE new filter
@@ -472,9 +472,9 @@ if runData and not isTest: # For running on data
             DatasetsAndTriggers.append( ("DoubleEG",   ["HLT_Ele%d_CaloIdM_TrackIdM_PFJet30_v*" % pt for pt in (8,12)]) )
             DatasetsAndTriggers.append( ("JetHT",   triggers_FR_jet) )
     else:
-        DatasetsAndTriggers.append( ("DoubleMuon", triggers_mumu_iso + triggers_mumu_ss + triggers_mumu_ht + triggers_3mu + triggers_3mu_alt) )
-        DatasetsAndTriggers.append( ("DoubleEG",   triggers_ee + triggers_ee_ht + triggers_3e) )
-        DatasetsAndTriggers.append( ("MuonEG",     triggers_mue + triggers_mue_ht + triggers_2mu1e + triggers_2e1mu) )
+        DatasetsAndTriggers.append( ("DoubleMuon", triggers_mumu_iso + triggers_mumu_ss + triggers_mumu_ht + triggers_3mu + triggers_3mu_alt + triggers_1mu_iso) )
+        DatasetsAndTriggers.append( ("DoubleEG",   triggers_ee + triggers_ee_ht + triggers_3e + triggers_1e) )
+        DatasetsAndTriggers.append( ("MuonEG",     triggers_mue + triggers_mue_ht + triggers_2mu1e + triggers_2e1mu + triggers_1e + triggers_1mu_iso) )
         if analysis=='susy':
             DatasetsAndTriggers.append( ("SingleMuon", triggers_leptau + triggers_1mu_iso + triggers_1mu_iso_50ns + triggers_1mu_noniso) )
             DatasetsAndTriggers.append( ("SingleElectron", triggers_leptau + triggers_1e + triggers_1e_50ns) )
