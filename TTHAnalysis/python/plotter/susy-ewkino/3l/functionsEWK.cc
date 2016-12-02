@@ -291,6 +291,14 @@ int SR4lK(float mT2L, float mT2T, float mll, float mT, float met, int offset = 0
     return 0;
 }
 
+int CRTAUH(int nTau, float mT2L, float mT2T, float mll, float mT, float met, int offset = 0) {
+
+  if(nTau==0) return offset + 1;
+  if(nTau==1) return offset + 2;
+  
+  return 0;
+}
+
 int SR3l(int nTau, int nOSSF, int nOSLF, float mT2L, float mT2T, float mll, float mT, float met){
 
     // 3 light
@@ -302,6 +310,9 @@ int SR3l(int nTau, int nOSSF, int nOSLF, float mT2L, float mT2T, float mll, floa
     if(nTau == 1 && nOSLF <  1              ) return SR3lE(mT2L, mT2T, mll, mT, met, 84);
     // 1 light + 2 tau
     if(nTau == 2                            ) return SR3lF(mT2L, mT2T, mll, mT, met, 96);
+
+    
+
     return 0;
 }
 
@@ -318,13 +329,22 @@ int SR4l(int nTau, int nOSSF, int nOSLF, float mT2L, float mT2T, float mll, floa
     return 0;
 }
 
+
 int SR(int nLep, int nTau, int nOSSF, int nOSLF, float mT2L, float mT2T, float mll, float mT, float met) {
 
-    if(nLep == 3)
-        return SR3l(nTau, nOSSF, nOSLF, mT2L, mT2T, mll, mT, met);
-    if(nLep == 4)
-        return SR4l(nTau, nOSSF, nOSLF, mT2L, mT2T, mll, mT, met);
-    return 0;
+  if(nLep==2)
+    return CRTAUH(nTau, mT2L, mT2T, mll, mT, met, 140);
+  if(nLep==1)
+    return CRTAUH(nTau, mT2L, mT2T, mll, mT, met, 143);
+  if(nLep==0)
+    return CRTAUH(nTau, mT2L, mT2T, mll, mT, met, 146);
+  if(nLep>0 && nLep <3)
+    return CRTAUH(nTau, mT2L, mT2T, mll, mT, met, 149);
+  if(nLep == 3)
+    return SR3l(nTau, nOSSF, nOSLF, mT2L, mT2T, mll, mT, met);
+  if(nLep == 4)
+    return SR4l(nTau, nOSSF, nOSLF, mT2L, mT2T, mll, mT, met);
+  return 0;
 }
 
 int SuperSig(int nLep, int nTau, int nOSSF, int nOSLF, float mT2L, float mT2T, float mll, float mT, float met) {
