@@ -1,6 +1,6 @@
 
 INPUTDIR="/pool/ciencias/HeppyTrees/RA7/estructura/trees_8011_July5_allscans/"
-INPUTDIR="/pool/ciencias/HeppyTrees/RA7/estructura/prueba/"
+#INPUTDIR="/pool/ciencias/HeppyTrees/RA7/estructura/prueba/"
 OUTPUTDIR="/pool/ciencias/HeppyTrees/RA7/estructura/testbtag/"
 WEBDIR="/nfs/fanae/user/vischia/www/taus/"
 

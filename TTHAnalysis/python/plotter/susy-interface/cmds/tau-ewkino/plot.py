@@ -1,4 +1,5 @@
 from tauUtils import command as command
+from tauUtils import clean
 from tauUtils import os
 import string
 
@@ -96,12 +97,17 @@ elif(action=='crtauNotWorkingBecauseOfPeopleSBadCommitPolicies'):
 elif(action=='crtau'):
         print 'Now plotting CRs for estimating tau fakes'
         mca='susy-ewkino/3l/taus/mca_taus.txt'
-        #mca='susy-ewkino/3l/mca_ewkino.txt'
+        mca='susy-ewkino/crwz/mca_crwz_forScan_12p9.txt'
         plots='susy-ewkino/3l/taus/plots_taus.txt'
         mcc='susy-ewkino/3l/mcc_ewkino.txt'
+        mcc='susy-ewkino/crwz/lepchoice-crwz-FO.txt'
         trigdef='susy-ewkino/mcc_triggerdefs.txt'
         functions='susy-ewkino/3l/functionsEWK.cc'
-        toplot='mTW3l,met'
+        toplot='--sP \'mTW3l,met\''
+        if(subaction!=''):
+                toplot='--sP \'{toplot}\''.format(toplot=subaction)
+        if(subaction=='all'):
+                toplot=''
         config='taustudies'
         config='taus'
         region='CRTAUH'
@@ -111,25 +117,31 @@ elif(action=='crtau'):
         direct=' '
 
         cuts='susy-ewkino/3l/taus/cuts_qcd.txt'
+        cuts='susy-ewkino/crwz/cuts_crwz.txt'
         out=outputDir+'qcd/'
+        clean(out)
         # When I will plot signal region, reimplement the {blind} part
-        cmd = "python mcPlots.py {mca} {cuts} {plots} -P {inputDir} --Fs {inputDir}/leptonJetReCleanerSusyEWK2L --Fs {inputDir}/leptonBuilderEWK --pdir {outputDir} -j 6 -l 12.9 --s2v --tree treeProducerSusyMultilepton --mcc {mcc} --mcc {trigdef} -f  --plotgroup fakes_appldata+=promptsub  --legendWidth 0.20 --legendFontSize 0.035 --showMCError -f --sP \'{toplot}\' --showRatio --perBin --legendHeader \'EWK #tau_{{h}} CR\' --maxRatioRange 0.5 1.5 --fixRatioRange --ratioOffset 0.03  --load-macro {functions}".format(mca=mca,cuts=cuts,plots=plots,inputDir=inputDir,outputDir=out,mcc=mcc,trigdef=trigdef,toplot=toplot,functions=functions)
+        cmd = "python mcPlots.py {mca} {cuts} {plots} -P {inputDir} --Fs {inputDir}/leptonJetReCleanerSusyEWK2L --Fs {inputDir}/leptonBuilderEWK --pdir {outputDir} -j 6 -l 12.9 --s2v --tree treeProducerSusyMultilepton --mcc {mcc} --mcc {trigdef} -f  --plotgroup fakes_appldata+=promptsub  --legendWidth 0.20 --legendFontSize 0.035 --showMCError -f {toplot} --showRatio --perBin --legendHeader \'EWK #tau_{{h}} CR\' --maxRatioRange 0.5 1.5 --fixRatioRange --ratioOffset 0.03  --load-macro {functions}".format(mca=mca,cuts=cuts,plots=plots,inputDir=inputDir,outputDir=out,mcc=mcc,trigdef=trigdef,toplot=toplot,functions=functions)
         #print cmd
+
+
         command(cmd, pretend)
         os.system('cp {index} {outputDir}'.format(index=index,outputDir=out))
 
         cuts='susy-ewkino/3l/taus/cuts_ttbar.txt'
         out=outputDir+'ttbar/'
+        clean(out)
         # When I will plot signal region, reimplement the {blind} part
-        cmd = "python mcPlots.py {mca} {cuts} {plots} -P {inputDir} --Fs {inputDir}/leptonJetReCleanerSusyEWK2L --Fs {inputDir}/leptonBuilderEWK --pdir {outputDir} -j 6 -l 12.9 --s2v --tree treeProducerSusyMultilepton --mcc {mcc} --mcc {trigdef} -f  --plotgroup fakes_appldata+=promptsub  --legendWidth 0.20 --legendFontSize 0.035 --showMCError -f --sP \'{toplot}\' --showRatio --perBin --legendHeader \'EWK #tau_{{h}} CR\' --maxRatioRange 0.5 1.5 --fixRatioRange --ratioOffset 0.03  --load-macro {functions}".format(mca=mca,cuts=cuts,plots=plots,inputDir=inputDir,outputDir=out,mcc=mcc,trigdef=trigdef,toplot=toplot,functions=functions)
+        cmd = "python mcPlots.py {mca} {cuts} {plots} -P {inputDir} --Fs {inputDir}/leptonJetReCleanerSusyEWK2L --Fs {inputDir}/leptonBuilderEWK --pdir {outputDir} -j 6 -l 12.9 --s2v --tree treeProducerSusyMultilepton --mcc {mcc} --mcc {trigdef} -f  --plotgroup fakes_appldata+=promptsub  --legendWidth 0.20 --legendFontSize 0.035 --showMCError -f {toplot} --showRatio --perBin --legendHeader \'EWK #tau_{{h}} CR\' --maxRatioRange 0.5 1.5 --fixRatioRange --ratioOffset 0.03  --load-macro {functions}".format(mca=mca,cuts=cuts,plots=plots,inputDir=inputDir,outputDir=out,mcc=mcc,trigdef=trigdef,toplot=toplot,functions=functions)
         #print cmd
         command(cmd, pretend)
         os.system('cp {index} {outputDir}'.format(index=index,outputDir=out))
 
         cuts='susy-ewkino/3l/taus/cuts_wjet.txt'
         out=outputDir+'wjet/'
+        clean(out)
         # When I will plot signal region, reimplement the {blind} part
-        cmd = "python mcPlots.py {mca} {cuts} {plots} -P {inputDir} --Fs {inputDir}/leptonJetReCleanerSusyEWK2L --Fs {inputDir}/leptonBuilderEWK --pdir {outputDir} -j 6 -l 12.9 --s2v --tree treeProducerSusyMultilepton --mcc {mcc} --mcc {trigdef} -f  --plotgroup fakes_appldata+=promptsub  --legendWidth 0.20 --legendFontSize 0.035 --showMCError -f --sP \'{toplot}\' --showRatio --perBin --legendHeader \'EWK #tau_{{h}} CR\' --maxRatioRange 0.5 1.5 --fixRatioRange --ratioOffset 0.03  --load-macro {functions}".format(mca=mca,cuts=cuts,plots=plots,inputDir=inputDir,outputDir=out,mcc=mcc,trigdef=trigdef,toplot=toplot,functions=functions)
+        cmd = "python mcPlots.py {mca} {cuts} {plots} -P {inputDir} --Fs {inputDir}/leptonJetReCleanerSusyEWK2L --Fs {inputDir}/leptonBuilderEWK --pdir {outputDir} -j 6 -l 12.9 --s2v --tree treeProducerSusyMultilepton --mcc {mcc} --mcc {trigdef} -f  --plotgroup fakes_appldata+=promptsub  --legendWidth 0.20 --legendFontSize 0.035 --showMCError -f {toplot} --showRatio --perBin --legendHeader \'EWK #tau_{{h}} CR\' --maxRatioRange 0.5 1.5 --fixRatioRange --ratioOffset 0.03  --load-macro {functions}".format(mca=mca,cuts=cuts,plots=plots,inputDir=inputDir,outputDir=out,mcc=mcc,trigdef=trigdef,toplot=toplot,functions=functions)
         #print cmd
         command(cmd, pretend)
         os.system('cp {index} {outputDir}'.format(index=index,outputDir=out))
