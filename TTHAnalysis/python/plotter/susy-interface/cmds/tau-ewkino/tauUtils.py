@@ -24,3 +24,9 @@ def command(cmd, pretend):
         print "Done."
 """
 """
+
+def clean(outDir):
+        os.system('rm {outDir}/*png'.format(outDir=outDir))
+        os.system('rm {outDir}/*pdf'.format(outDir=outDir))
+        os.system('rm {outDir}/*txt'.format(outDir=outDir))
+        print 'Old plots in {outDir} cleaned.'.format(outDir=outDir)
