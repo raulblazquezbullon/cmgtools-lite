@@ -6,18 +6,18 @@ blinding: !isData || run <= 274240
 1loose:  nLepFO == 1 
 1light:  abs(LepGood1_pdgId)<14 
 tight: LepGood1_isTight
-jets: nJet40>=1
+jets: nJet40 == 1
 vetobjets: nBJetMedium25 == 0
-final: nTau==1
+final: nTauGood == 1 
 
 
                                                                                                 
  
-zzalwaystrue: 1                           Disable=True
-zzblinding  : !isData || run <= 274240    Disable=True
-zzfilters   : !isData || METfilters       Disable=True
-zztrigger   : !isData || Triggers_leplep  Disable=True
-zz1l        : SR == 144 || SR == 145      Disable=True
-zzbJetVeto  : nBJetMedium25 == 0          Disable=True
-zzmet       : met_pt > 50                 Disable=True
-zzfinal     : 1                           Disable=True  
+zzalwaystrue: 1                         ;  Disable=True
+zzblinding  : !isData || run <= 274240  ;  Disable=True
+zzfilters   : !isData || METfilters     ;  Disable=True
+zztrigger   : !isData || Triggers_leplep;  Disable=True
+zz1l        : SR == 144 || SR == 145    ;  Disable=True
+zzbJetVeto  : nBJetMedium25 == 0        ;  Disable=True
+zzmet       : met_pt > 50               ;  Disable=True
+zzfinal     : 1                         ;  Disable=True  
