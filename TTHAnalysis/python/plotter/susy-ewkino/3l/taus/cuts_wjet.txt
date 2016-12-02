@@ -1,0 +1,8 @@
+alwaystrue: 1
+blinding  : !isData || run <= 274240
+filters   : !isData || METfilters
+trigger   : !isData || Triggers_leplep
+1l        : SR == 144 || SR == 145
+bJetVeto  : nBJetMedium25 == 0
+met       : met_pt > 50
+final     : 1

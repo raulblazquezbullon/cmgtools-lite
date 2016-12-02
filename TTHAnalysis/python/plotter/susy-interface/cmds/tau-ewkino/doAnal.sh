@@ -1,6 +1,8 @@
 
 INPUTDIR="/pool/ciencias/HeppyTrees/RA7/estructura/trees_8011_July5_allscans/"
+INPUTDIR="/pool/ciencias/HeppyTrees/RA7/estructura/prueba/"
 OUTPUTDIR="/pool/ciencias/HeppyTrees/RA7/estructura/testbtag/"
+WEBDIR="/nfs/fanae/user/vischia/www/taus/"
 
 if [ "$1" == "ft" ]; then
     MODULE=""    
@@ -20,25 +22,31 @@ if [ "$1" == "ft" ]; then
             MODULE="tauFakesBuilderEWKMini"
         elif [ "$2" == "tauRecl" ]; then
             MODULE="tauFakesBuilderEWKRecl"
+        elif [ "$2" == "leptonBuilder" ]; then
+            MODULE="leptonBuilderEWK"
         fi
         if [ "$MODULE" == "" ]; then
             print "No module specified"
             exit -1
         fi
-        python susy-interface/friendmaker.py taustudies 3lA ${INPUTDIR} ${OUTPUTDIR} --modules ${MODULE} ${ONLY} ${PRETEND}
+        #3lA
+        python susy-interface/friendmaker.py taustudies CRTAUH ${INPUTDIR} ${OUTPUTDIR} --modules ${MODULE} ${ONLY} ${PRETEND}
     fi
 elif [ "$1" == "plot" ]; then
     
-    ACTION=${2}
-    # ACTION can be generalplots or tauopt
+    ACTION=""
     SUBACTION=""
-    if [ "$3" != "" ]; then
-        SUBACTION=" -s ${3} "
+    # ACTION can be generalplots or tauopt or crtau
+    if [ "$2" != "" ]; then
+        ACTION=" -a ${2}"
+        if [ "$3" != "" ]; then
+            SUBACTION=" -s ${3} "
+        fi
     fi
-    PRETEND=" --pretend "
-    
-  python susy-interface/cmds/tau-ewkino/plot.py -i ${INPUTDIR} -o ${OUTPUTDIR} ${SUBACTION} ${PRETEND}
-    
+    PRETEND=" --pretend  "
+    PRETEND=""
+    python susy-interface/cmds/tau-ewkino/plot.py -i ${INPUTDIR} -o ${WEBDIR} ${ACTION} ${SUBACTION} ${PRETEND}
+
 fi
 
 exit 0
