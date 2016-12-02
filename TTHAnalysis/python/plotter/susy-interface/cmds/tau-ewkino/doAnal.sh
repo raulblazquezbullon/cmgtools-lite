@@ -7,9 +7,9 @@ WEBDIR="/nfs/fanae/user/vischia/www/taus/"
 if [ "$1" == "ft" ]; then
     MODULE=""    
     PRETEND=" -q local --direct --pretend"
-    PRETEND=" -q batch --direct "
+    #PRETEND=" -q batch --direct "
     ONLY=" --accept WZZ "
-    ONLY="" 
+    ONLY=" --accept WJetsToLNu " 
     if [ "$2" == "btag" ]; then
         MODULE="eventBTagWeight"
         #python susy-interface/friendmaker.py 3l 3lA ${INPUTDIR} ${INPUTDIR} --modules eventBTagWeight -q batch 
@@ -22,6 +22,8 @@ if [ "$1" == "ft" ]; then
             MODULE="tauFakesBuilderEWKMini"
         elif [ "$2" == "tauRecl" ]; then
             MODULE="tauFakesBuilderEWKRecl"
+        elif [ "$2" == "stdReCleaner" ]; then
+            MODULE="leptonJetReCleanerSusyEWK3L"
         elif [ "$2" == "leptonBuilder" ]; then
             MODULE="leptonBuilderEWK"
         fi
