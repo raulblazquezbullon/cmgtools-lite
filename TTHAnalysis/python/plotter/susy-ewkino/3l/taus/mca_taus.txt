@@ -40,7 +40,7 @@ data   :   SingleMuon_Run2016DPromptReco_v2_runs_276283_276384; Label="Data"
 data   :   SingleMuon_Run2016D_PromptReco_v2_runs_276284_276811; Label="Data"
 
 
-WJets     : WJetsToLNu_LO               : xsec : ((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==0) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==0)) ; FillColor=ROOT.kCyan+2, Label="W+jets (fakes)"
+prompt_WJets     : WJetsToLNu_LO               : xsec : LepGood1_isMatchRightCharge ; FillColor=ROOT.kCyan+2, Label="W+jets"
 
 ## WZ
 ## -----------------------------------------------------------

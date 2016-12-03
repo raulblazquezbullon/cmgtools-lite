@@ -116,8 +116,7 @@ elif(action=='crtau'):
         direct=' --pretend '
         direct=' '
         jei='6'
-        jei='30'
-        lumi='12.9'
+        jei='60'
         lumi='1.0'
 
         cuts='susy-ewkino/3l/taus/cuts_qcd.txt'
@@ -137,7 +136,7 @@ elif(action=='crtau'):
         # When I will plot signal region, reimplement the {blind} part
         cmd = "python mcPlots.py {mca} {cuts} {plots} -P {inputDir} --Fs {inputDir}/leptonJetReCleanerSusyEWK2L --Fs {inputDir}/leptonBuilderEWK --pdir {outputDir} -j {jei} -l {lumi} --s2v --tree treeProducerSusyMultilepton --mcc {mcc} --mcc {trigdef} -f  --plotgroup fakes_appldata+=promptsub  --legendWidth 0.20 --legendFontSize 0.035 --showMCError -f {toplot} --showRatio --perBin --legendHeader \'EWK #tau_{{h}} CR\' --maxRatioRange 0.5 1.5 --fixRatioRange --ratioOffset 0.03  --load-macro {functions}".format(mca=mca,cuts=cuts,plots=plots,inputDir=inputDir,outputDir=out,jei=jei,lumi=lumi,mcc=mcc,trigdef=trigdef,toplot=toplot,functions=functions)
         #print cmd
-        command(cmd, pretend)
+        #command(cmd, pretend)
         #os.system('cp {index} {outputDir}'.format(index=index,outputDir=out))
 
         cuts='susy-ewkino/3l/taus/cuts_wjet.txt'
