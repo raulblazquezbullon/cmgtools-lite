@@ -1,13 +1,20 @@
 tot_weight: 1 : 1,0.5,1.5; XTitle = "Selected events", Legend='TR', MoreY=2.0
 
 ##### SEARCH STRATEGY
-SR :   SR_ewk_ss2l(nJet40,LepGood1_conePt,LepGood1_phi, LepGood2_conePt,LepGood2_phi, met_pt,met_phi):  18,0.5,18.5; XTitle="SR"
+SR :   SR_ewk_ss2l(nJet40,LepGood1_conePt,LepGood1_phi, LepGood2_conePt,LepGood2_phi, met_pt,met_phi):  18,0.5,18.5; XTitle="SR", LegendCutoff=1e-3
+SR_HH25 :   SR_ewk_ss2l_HH25(nJet40,LepGood1_conePt,LepGood1_phi, LepGood2_conePt,LepGood2_phi, met_pt,met_phi):  18,0.5,18.5; XTitle="SR", LegendCutoff=1e-3
+SR_HH30 :   SR_ewk_ss2l_HH30(nJet40,LepGood1_conePt,LepGood1_phi, LepGood2_conePt,LepGood2_phi, met_pt,met_phi):  18,0.5,18.5; XTitle="SR", LegendCutoff=1e-3
+SR24_HH25_log :   SR24_ewk_ss2l_HH25(nJet40,LepGood1_conePt,LepGood1_phi, LepGood2_conePt,LepGood2_phi, met_pt,met_phi):  24,0.5,24.5; XTitle="SR", LegendCutoff=1e-3, Logy, YMin=0.1, YMax=5e4
+SR24_HH30_log :   SR24_ewk_ss2l_HH30(nJet40,LepGood1_conePt,LepGood1_phi, LepGood2_conePt,LepGood2_phi, met_pt,met_phi):  24,0.5,24.5; XTitle="SR", LegendCutoff=1e-3, Logy, YMin=0.1, YMax=5e4
+SR_metSplit_log :   SR_ewk_ss2l_metSplit(nJet40,LepGood1_conePt,LepGood1_phi, LepGood2_conePt,LepGood2_phi, met_pt,met_phi):  24,0.5,24.5; XTitle="SR", LegendCutoff=1e-3, Logy, YMin=0.1, YMax=5e4
+SR_log :   SR_ewk_ss2l(nJet40,LepGood1_conePt,LepGood1_phi, LepGood2_conePt,LepGood2_phi, met_pt,met_phi):  18,0.5,18.5; XTitle="SR", LegendCutoff=1e-3, Logy, YMin=0.1, YMax=5e4
+SR_HH25_log :   SR_ewk_ss2l_HH25(nJet40,LepGood1_conePt,LepGood1_phi, LepGood2_conePt,LepGood2_phi, met_pt,met_phi):  18,0.5,18.5; XTitle="SR", LegendCutoff=1e-3, Logy, YMin=0.1, YMax=5e4
+SR_HH30_log :   SR_ewk_ss2l_HH30(nJet40,LepGood1_conePt,LepGood1_phi, LepGood2_conePt,LepGood2_phi, met_pt,met_phi):  18,0.5,18.5; XTitle="SR", LegendCutoff=1e-3, Logy, YMin=0.1, YMax=5e4
 #SR_nice :   SR_ewk_ss2l(nJet40,LepGood1_conePt,LepGood1_phi, LepGood2_conePt,LepGood2_phi, met_pt,met_phi):  18,0.5,18.5; XTitle="", xBinLabels="N_{j}=0 M_{T}<100 GeV p_{T}(ll) < 50 E_{T}^{miss} < 100 GeV\, N_{j}=0 M_{T}<100 GeV p_{T}(ll) < 50 100 < E_{T}^{miss} < 150 GeV\,N_{j}=0 M_{T}<100 GeV p_{T}(ll) < 50 E_{T}^{miss} > 150 GeV"
 
-SR_log :   SR_ewk_ss2l(nJet40,LepGood1_conePt,LepGood1_phi, LepGood2_conePt,LepGood2_phi, met_pt,met_phi):  18,0.5,18.5; XTitle="SR",Logy
 
-ptdil   : pt_2(LepGood1_conePt, LepGood1_phi, LepGood2_conePt, LepGood2_phi): 20, 0., 300. ;  XTitle="p_{T}(dilepton) [GeV]"
-ptll    : LepGood1_pt+LepGood2_pt : 20, 0., 300. ;  XTitle="p_{T}(dilepton) [GeV]"
+ptdil_log   : pt_2(LepGood1_conePt, LepGood1_phi, LepGood2_conePt, LepGood2_phi): 20, 0., 300. ;  XTitle="p_{T}(dilepton) [GeV]", LegendCutoff=1e-3, Logy, YMin=0.1, YMax=5e4
+ptll    : LepGood1_pt+LepGood2_pt : 20, 0., 300. ;  XTitle="p_{T}(dilepton) [GeV]", LegendCutoff=1e-3, Logy, YMin=0.1, YMax=5e4
 dphi    : abs(deltaPhi(LepGood1_phi,LepGood2_phi)):  30, -1.5, 3.5;  XTitle="#Delta #phi(ll) [GeV]", Legend='TL'
 flav    : if3(nLepFO>1,if3(abs(LepGood1_pdgId)!=abs(LepGood2_pdgId),1,abs(LepGood1_pdgId)-11),-99)  : [-0.5,0.5,1.5,2.5]; XTitle="ee/e#mu/#mu#mu", XNDdiv=505, MoreY=2.0
 nTight  : if3(nLepFO>1,LepGood1_isTight+LepGood2_isTight,-99)                                       : [-0.5,0.5,1.5,2.5]; XTitle="Tight leptons among the first two", XNDdiv=505, Legend='TL', IncludeOverflows=False
@@ -48,6 +55,9 @@ dphijet2: if3(nJet40>0, abs(deltaPhi(Jet1_phi,LepGood2_phi)),-99.):  30, -1.5, 3
 
 #### MET-RELATED VARIABLES
 MET        : met_pt               : 35,0,500     ; XTitle="E_{T}^{miss} [GeV]"
+MET_log    : met_pt               : 35,0,500     ; XTitle="E_{T}^{miss} [GeV]", Logy
+MET_SSR1_log    : met_pt               : [0,50,100,140,500]     ; XTitle="E_{T}^{miss} [GeV]", LegendCutoff=1e-3, Logy, YMin=0.1, YMax=5e4
+MET_SSR2_log    : met_pt               : [0,50,100,150,200,500] ; XTitle="E_{T}^{miss} [GeV]", LegendCutoff=1e-3, Logy, YMin=0.1, YMax=5e4 
 MET_SR     : met_pt               : [60.,100.,150.,500]; XTitle="E_{T}^{miss} [GeV]"
 MET_SR_log : met_pt               : [60.,100.,150.,500]; XTitle="E_{T}^{miss} [GeV]", Logy
 
