@@ -18,8 +18,6 @@ leptonTypeSusy = NTupleObjectType("leptonSusy", baseObjectTypes = [ leptonType ]
     # Lepton MVA-id related variables
     NTupleVariable("mvaTTH",    lambda lepton : getattr(lepton, 'mvaValueTTH', -1), help="Lepton MVA (TTH version)"),
     NTupleVariable("mvaSUSY",    lambda lepton : getattr(lepton, 'mvaValueSUSY', -1), help="Lepton MVA (SUSY version)"),
-    NTupleVariable("mvaSoftT2tt",    lambda lepton : getattr(lepton, 'mvaValueSoftT2tt', -1), help="Lepton MVA (Soft T2tt version)"),
-    NTupleVariable("mvaSoftEWK",    lambda lepton : getattr(lepton, 'mvaValueSoftEWK', -1), help="Lepton MVA (Soft EWK version)"),
     NTupleVariable("jetPtRatiov1", lambda lepton : lepton.pt()/lepton.jet.pt() if hasattr(lepton,'jet') else -1, help="pt(lepton)/pt(nearest jet)"),
     NTupleVariable("jetPtRelv1", lambda lepton : ptRelv1(lepton.p4(),lepton.jet.p4()) if hasattr(lepton,'jet') else -1, help="pt of the lepton transverse to the jet axis (subtracting the lepton)"),
     NTupleVariable("jetPtRatiov2", lambda lepton: lepton.pt()/jetLepAwareJEC(lepton).Pt() if hasattr(lepton,'jet') else -1, help="pt(lepton)/[rawpt(jet-PU-lep)*L2L3Res+pt(lepton)]"),
@@ -132,8 +130,7 @@ leptonTypeSusyExtra = NTupleObjectType("leptonSusyExtra", baseObjectTypes = [ le
 ##------------------------------------------  
 
 tauTypeSusy = NTupleObjectType("tauSusy",  baseObjectTypes = [ tauType ], variables = [
-        NTupleVariable("idMVAOldDMRun2", lambda x : x.idMVAOldDMRun2, int, help="1,2,3,4,5 if the tau passes the very loose to very tight WP of the IsolationMVArun2v1DBoldDMwLT discriminator"),
-        NTupleVariable("idMVAOldDMRun2dR03", lambda x : x.idMVAOldDMRun2dR03, int, help="1,2,3,4 if the tau passes the loose to very tight WP of the IsolationMVArun2v1DBdR03oldDMwLT discriminator"),
+        NTupleVariable("idMVAdR03", lambda x : x.idMVAdR03, int, help="1,2,3,4,5,6 if the tau passes the very loose to very very tight WP of the IsolationMVArun2v1DBdR03oldDMwLT discriminator"),
 ])
 
 ##------------------------------------------  
@@ -174,6 +171,14 @@ jetTypeSusyExtraLight = NTupleObjectType("jetSusyExtraLight",  baseObjectTypes =
     NTupleVariable("CorrFactor_L1L2L3Res", lambda x: x.CorrFactor_L1L2L3Res if hasattr(x,'CorrFactor_L1L2L3Res') else 0, help="L1L2L3Res correction factor"),
     NTupleVariable("chHEF", lambda x : x.chargedHadronEnergyFraction(), float, mcOnly = False, help="chargedHadronEnergyFraction (relative to uncorrected jet energy)"),
     NTupleVariable("neHEF", lambda x : x.neutralHadronEnergyFraction(), float, mcOnly = False,help="neutralHadronEnergyFraction (relative to uncorrected jet energy)"),
+])
+
+jetTypeSusySuperLight = NTupleObjectType("jet",  baseObjectTypes = [ fourVectorType ], variables = [
+        NTupleVariable("etaetaMoment", lambda x : x.etaetaMoment() if hasattr(x,'etaetaMoment') else -1, mcOnly=True, help="eta eta moment"),
+        NTupleVariable("phiphiMoment", lambda x : x.phiphiMoment() if hasattr(x,'phiphiMoment') else -1, mcOnly=True, help="phi phi moment"),
+        NTupleVariable("btagCSV",   lambda x : x.btag('pfCombinedInclusiveSecondaryVertexV2BJetTags'), help="CSV-IVF v2 discriminator"),
+        NTupleVariable("mcFlavour", lambda x : x.partonFlavour(), int,     mcOnly=True, help="parton flavour (physics definition, i.e. including b's from shower)"),
+        NTupleVariable("partonFlavour", lambda x : x.partonFlavour(), int,     mcOnly=True, help="purely parton-based flavour"),
 ])
 
 jetTypeSusyExtra = NTupleObjectType("jetSusyExtra",  baseObjectTypes = [ jetTypeSusyExtraLight ], variables = [
