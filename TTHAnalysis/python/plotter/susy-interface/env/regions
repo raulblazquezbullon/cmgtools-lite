@@ -120,7 +120,7 @@ BEGIN::3lF
   bkgs        +:= fakes_appldata;promptsub;prompt_.*;rares_.*;convs
   sigs        +:= sig_TChiNeuWH_.*;sig_TChiNeuSlepSneu_TD_.*
   flags       +:= -A 3l BRcut 'BR == 6' 
-  flags       +:= -R trigger trigger2T '!isData || Triggers_leplep || Triggers_tautau'
+#  flags       +:= -R trigger trigger2T '!isData || Triggers_leplep || Triggers_tautau'
   flags       +:= -A sanity tigherpteta 'abs(LepSel1_eta)<2.1 && abs(LepSel2_eta)<2.1 && abs(LepSel3_eta)<2.1' 
   flags       +:= -A sanity tighterpt '(abs(LepSel1_pdgId)==11 && LepSel1_pt>30) || (abs(LepSel1_pdgId)==13 && LepSel1_pt>25) || (abs(LepSel2_pdgId)==11 && LepSel2_pt>30) || (abs(LepSel2_pdgId)==13 && LepSel2_pt>25) || (abs(LepSel3_pdgId)==11 && LepSel3_pt>30) || (abs(LepSel3_pdgId)==13 && LepSel3_pt>25)'
   flagsPlots  +:= --legendHeader 'F: e/\#mu + \#tau\#tau'
