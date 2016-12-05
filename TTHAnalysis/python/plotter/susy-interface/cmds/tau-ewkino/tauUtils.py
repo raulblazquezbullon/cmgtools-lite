@@ -26,6 +26,7 @@ def command(cmd, pretend):
 """
 
 def clean(outDir):
+        os.system('mkdir -p {outDir}'.format(outDir=outDir))
         os.system('rm {outDir}/*png'.format(outDir=outDir))
         os.system('rm {outDir}/*pdf'.format(outDir=outDir))
         os.system('rm {outDir}/*txt'.format(outDir=outDir))
