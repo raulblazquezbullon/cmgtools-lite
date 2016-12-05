@@ -43,7 +43,7 @@ if [ "$1" == "ft" ]; then
         for EXCL in `ls ${INPUTDIR}`;
         do
             ONLY=" --accept ${EXCL} "
-            echo "python susy-interface/friendmaker.py taustudies CRTAUH ${INPUTDIR} ${OUTPUTDIR} --modules ${MODULE} ${ONLY} ${PRETEND}"
+            python susy-interface/friendmaker.py taustudies CRTAUH ${INPUTDIR} ${OUTPUTDIR} --modules ${MODULE} ${ONLY} ${PRETEND}
         done
     fi
 elif [ "$1" == "plot" ]; then
