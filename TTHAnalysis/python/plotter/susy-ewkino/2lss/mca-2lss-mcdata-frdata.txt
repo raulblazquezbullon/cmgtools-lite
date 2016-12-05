@@ -112,29 +112,29 @@ fakes_data : SingleMuon_Run2016C_PromptReco_v2_runs_271350_275783      ; FakeRat
 fakes_data : SingleMuon_Run2016D_PromptReco_v2_runs_276284_276811      ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata.txt", Label="Fakes",  FillColor=ROOT.kBlack, FillStyle=3005, NormSystematic=0.30
 
 ### PROMPTSUB
-promptsub : WZTo3LNu			  : -1*xsec	: LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata.txt"
-promptsub : ZZTo4L		          : -1*xsec 	: LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata.txt"
-promptsub : TTWToLNu                      : -1*xsec 	: LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata.txt"
-promptsub : TTHnobb_mWCutfix_ch1          : -1*xsec 	: LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata.txt"
-promptsub : TTZToLLNuNu                   : -1*xsec 	: LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata.txt"
-promptsub : TTLLJets_m1to10               : -1*xsec 	: LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata.txt"
-promptsub : TTJets_DiLepton               : -1*xsec 	: LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata.txt"
-promptsub : TTJets_SingleLeptonFromT      : -1*xsec 	: LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata.txt"
-promptsub : TTJets_SingleLeptonFromTbar   : -1*xsec 	: LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata.txt"
-promptsub : TTTT     			  : -1*xsec 	: LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata.txt"
-promptsub : tZq_ll   			  : -1*xsec 	: LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata.txt"
-promptsub : WpWpJJ 			  : -1*xsec 	: LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata.txt"
-promptsub : WWDouble 			  : -1*xsec 	: LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata.txt"
-promptsub : WWW      			  : -1*xsec 	: LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata.txt"
-promptsub : WWZ      			  : -1*xsec 	: LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata.txt"
-promptsub : WZZ      			  : -1*xsec 	: LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata.txt"
-promptsub : ZZZ      			  : -1*xsec 	: LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata.txt"
-promptsub : TTGJets  : -1*xsec 	: ((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata.txt"
-promptsub : WGToLNuG : -1*xsec 	: ((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata.txt"
-promptsub : ZGTo2LG  : -1*xsec 	: ((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata.txt"
-promptsub : TGJets   : -1*xsec 	: ((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata.txt"
-promptsub : WGToLNuG : -1*xsec 	: LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata.txt"
-promptsub : ZGTo2LG  : -1*xsec 	: LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata.txt"
+promptsub : WZTo3LNu			  : -1*xsec	: LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata_prompt.txt"
+promptsub : ZZTo4L		          : -1*xsec 	: LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata_prompt.txt"
+promptsub : TTWToLNu                      : -1*xsec 	: LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata_prompt.txt"
+promptsub : TTHnobb_mWCutfix_ch1          : -1*xsec 	: LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata_prompt.txt"
+promptsub : TTZToLLNuNu                   : -1*xsec 	: LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata_prompt.txt"
+promptsub : TTLLJets_m1to10               : -1*xsec 	: LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata_prompt.txt"
+promptsub : TTJets_DiLepton               : -1*xsec 	: LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata_prompt.txt"
+promptsub : TTJets_SingleLeptonFromT      : -1*xsec 	: LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata_prompt.txt"
+promptsub : TTJets_SingleLeptonFromTbar   : -1*xsec 	: LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata_prompt.txt"
+promptsub : TTTT     			  : -1*xsec 	: LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata_prompt.txt"
+promptsub : tZq_ll   			  : -1*xsec 	: LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata_prompt.txt"
+promptsub : WpWpJJ 			  : -1*xsec 	: LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata_prompt.txt"
+promptsub : WWDouble 			  : -1*xsec 	: LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata_prompt.txt"
+promptsub : WWW      			  : -1*xsec 	: LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata_prompt.txt"
+promptsub : WWZ      			  : -1*xsec 	: LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata_prompt.txt"
+promptsub : WZZ      			  : -1*xsec 	: LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata_prompt.txt"
+promptsub : ZZZ      			  : -1*xsec 	: LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata_prompt.txt"
+promptsub : TTGJets  : -1*xsec 	: ((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata_prompt.txt"
+promptsub : WGToLNuG : -1*xsec 	: ((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata_prompt.txt"
+promptsub : ZGTo2LG  : -1*xsec 	: ((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata_prompt.txt"
+promptsub : TGJets   : -1*xsec 	: ((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata_prompt.txt"
+promptsub : WGToLNuG : -1*xsec 	: LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata_prompt.txt"
+promptsub : ZGTo2LG  : -1*xsec 	: LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata_prompt.txt"
 
 ###################################################################################################################################################################################################
 ###################################################################################################################################################################################################
@@ -261,154 +261,154 @@ promptsub_ewk_Dn : ZGTo2LG  : -1*xsec 	: LepGood1_isMatchRightCharge && LepGood2
 
 ## SYSTEMATIC VARIATION: JEC UP
 ## ===========================================================
-prompt_WZ_jec_Up   : WZTo3LNu                    : xsec : eventBTagSF_up_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  FakeRate="susy-ewkino/2lss/fr-jecUp.txt", SkipMe=True
-prompt_ZZH_jec_Up  : ZZTo4L		         : xsec : eventBTagSF_up_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  FakeRate="susy-ewkino/2lss/fr-jecUp.txt", SkipMe=True
-rares_ttX_jec_Up   : TTWToLNu                    : xsec : eventBTagSF_up_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  FakeRate="susy-ewkino/2lss/fr-jecUp.txt", SkipMe=True
-rares_ttX_jec_Up   : TTHnobb_mWCutfix_ch1        : xsec : eventBTagSF_up_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  FakeRate="susy-ewkino/2lss/fr-jecUp.txt", SkipMe=True
-rares_ttX_jec_Up   : TTZToLLNuNu                 : xsec : eventBTagSF_up_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  FakeRate="susy-ewkino/2lss/fr-jecUp.txt", SkipMe=True
-rares_ttX_jec_Up   : TTLLJets_m1to10             : xsec : eventBTagSF_up_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  FakeRate="susy-ewkino/2lss/fr-jecUp.txt", SkipMe=True
-rares_ttX_jec_Up   : TTJets_DiLepton             : xsec : eventBTagSF_up_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  FakeRate="susy-ewkino/2lss/fr-jecUp.txt", SkipMe=True
-rares_ttX_jec_Up   : TTJets_SingleLeptonFromT    : xsec : eventBTagSF_up_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  FakeRate="susy-ewkino/2lss/fr-jecUp.txt", SkipMe=True
-rares_ttX_jec_Up   : TTJets_SingleLeptonFromTbar : xsec : eventBTagSF_up_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  FakeRate="susy-ewkino/2lss/fr-jecUp.txt", SkipMe=True
-rares_ttX_jec_Up   : TTTT     			 : xsec : eventBTagSF_up_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; FakeRate="susy-ewkino/2lss/fr-jecUp.txt", SkipMe=True
-rares_ttX_jec_Up   : tZq_ll   			 : xsec : eventBTagSF_up_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; FakeRate="susy-ewkino/2lss/fr-jecUp.txt", SkipMe=True
-rares_VVV_jec_Up  : WpWpJJ 			 : xsec : eventBTagSF_up_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; FakeRate="susy-ewkino/2lss/fr-jecUp.txt", SkipMe=True
-rares_VVV_jec_Up   : WWDouble 			 : xsec : eventBTagSF_up_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; FakeRate="susy-ewkino/2lss/fr-jecUp.txt", SkipMe=True
-rares_VVV_jec_Up   : WWW      			 : xsec : eventBTagSF_up_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; FakeRate="susy-ewkino/2lss/fr-jecUp.txt", SkipMe=True
-rares_VVV_jec_Up   : WWZ      			 : xsec : eventBTagSF_up_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; FakeRate="susy-ewkino/2lss/fr-jecUp.txt", SkipMe=True
-rares_VVV_jec_Up   : WZZ      			 : xsec : eventBTagSF_up_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; FakeRate="susy-ewkino/2lss/fr-jecUp.txt", SkipMe=True
-rares_VVV_jec_Up   : ZZZ      			 : xsec : eventBTagSF_up_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; FakeRate="susy-ewkino/2lss/fr-jecUp.txt", SkipMe=True
-convs_jec_Up  	   : TTGJets  : xsec : eventBTagSF_up_jes/eventBTagSF*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ; FakeRate="susy-ewkino/2lss/fr-jecUp.txt", SkipMe=True
-convs_jec_Up  	   : WGToLNuG : xsec : eventBTagSF_up_jes/eventBTagSF*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ; FakeRate="susy-ewkino/2lss/fr-jecUp.txt", SkipMe=True
-convs_jec_Up  	   : ZGTo2LG  : xsec : eventBTagSF_up_jes/eventBTagSF*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ; FakeRate="susy-ewkino/2lss/fr-jecUp.txt", SkipMe=True
-convs_jec_Up  	   : TGJets   : xsec : eventBTagSF_up_jes/eventBTagSF*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ; FakeRate="susy-ewkino/2lss/fr-jecUp.txt", SkipMe=True
-convs_jec_Up  	   : WGToLNuG : xsec : eventBTagSF_up_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; FakeRate="susy-ewkino/2lss/fr-jecUp.txt", SkipMe=True
+#prompt_WZ_jec_Up   : WZTo3LNu                    : xsec : eventBTagSF_up_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  FakeRate="susy-ewkino/2lss/fr-jecUp.txt", SkipMe=True
+#prompt_ZZH_jec_Up  : ZZTo4L		         : xsec : eventBTagSF_up_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  FakeRate="susy-ewkino/2lss/fr-jecUp.txt", SkipMe=True
+#rares_ttX_jec_Up   : TTWToLNu                    : xsec : eventBTagSF_up_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  FakeRate="susy-ewkino/2lss/fr-jecUp.txt", SkipMe=True
+#rares_ttX_jec_Up   : TTHnobb_mWCutfix_ch1        : xsec : eventBTagSF_up_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  FakeRate="susy-ewkino/2lss/fr-jecUp.txt", SkipMe=True
+#rares_ttX_jec_Up   : TTZToLLNuNu                 : xsec : eventBTagSF_up_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  FakeRate="susy-ewkino/2lss/fr-jecUp.txt", SkipMe=True
+#rares_ttX_jec_Up   : TTLLJets_m1to10             : xsec : eventBTagSF_up_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  FakeRate="susy-ewkino/2lss/fr-jecUp.txt", SkipMe=True
+#rares_ttX_jec_Up   : TTJets_DiLepton             : xsec : eventBTagSF_up_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  FakeRate="susy-ewkino/2lss/fr-jecUp.txt", SkipMe=True
+#rares_ttX_jec_Up   : TTJets_SingleLeptonFromT    : xsec : eventBTagSF_up_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  FakeRate="susy-ewkino/2lss/fr-jecUp.txt", SkipMe=True
+#rares_ttX_jec_Up   : TTJets_SingleLeptonFromTbar : xsec : eventBTagSF_up_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  FakeRate="susy-ewkino/2lss/fr-jecUp.txt", SkipMe=True
+#rares_ttX_jec_Up   : TTTT     			 : xsec : eventBTagSF_up_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; FakeRate="susy-ewkino/2lss/fr-jecUp.txt", SkipMe=True
+#rares_ttX_jec_Up   : tZq_ll   			 : xsec : eventBTagSF_up_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; FakeRate="susy-ewkino/2lss/fr-jecUp.txt", SkipMe=True
+#rares_VVV_jec_Up  : WpWpJJ 			 : xsec : eventBTagSF_up_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; FakeRate="susy-ewkino/2lss/fr-jecUp.txt", SkipMe=True
+#rares_VVV_jec_Up   : WWDouble 			 : xsec : eventBTagSF_up_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; FakeRate="susy-ewkino/2lss/fr-jecUp.txt", SkipMe=True
+#rares_VVV_jec_Up   : WWW      			 : xsec : eventBTagSF_up_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; FakeRate="susy-ewkino/2lss/fr-jecUp.txt", SkipMe=True
+#rares_VVV_jec_Up   : WWZ      			 : xsec : eventBTagSF_up_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; FakeRate="susy-ewkino/2lss/fr-jecUp.txt", SkipMe=True
+#rares_VVV_jec_Up   : WZZ      			 : xsec : eventBTagSF_up_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; FakeRate="susy-ewkino/2lss/fr-jecUp.txt", SkipMe=True
+#rares_VVV_jec_Up   : ZZZ      			 : xsec : eventBTagSF_up_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; FakeRate="susy-ewkino/2lss/fr-jecUp.txt", SkipMe=True
+#convs_jec_Up  	   : TTGJets  : xsec : eventBTagSF_up_jes/eventBTagSF*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ; FakeRate="susy-ewkino/2lss/fr-jecUp.txt", SkipMe=True
+#convs_jec_Up  	   : WGToLNuG : xsec : eventBTagSF_up_jes/eventBTagSF*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ; FakeRate="susy-ewkino/2lss/fr-jecUp.txt", SkipMe=True
+#convs_jec_Up  	   : ZGTo2LG  : xsec : eventBTagSF_up_jes/eventBTagSF*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ; FakeRate="susy-ewkino/2lss/fr-jecUp.txt", SkipMe=True
+#convs_jec_Up  	   : TGJets   : xsec : eventBTagSF_up_jes/eventBTagSF*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ; FakeRate="susy-ewkino/2lss/fr-jecUp.txt", SkipMe=True
+#convs_jec_Up  	   : WGToLNuG : xsec : eventBTagSF_up_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; FakeRate="susy-ewkino/2lss/fr-jecUp.txt", SkipMe=True
 
 
 ## SYSTEMATIC VARIATION: JEC DOWN
 ## ===========================================================
-prompt_WZ_jec_Dn   : WZTo3LNu                    : xsec : eventBTagSF_down_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  FakeRate="susy-ewkino/2lss/fr-jecDn.txt", SkipMe=True
-prompt_ZZH_jec_Dn  : ZZTo4L		         : xsec : eventBTagSF_down_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  FakeRate="susy-ewkino/2lss/fr-jecDn.txt", SkipMe=True
-rares_ttX_jec_Dn   : TTWToLNu                    : xsec : eventBTagSF_down_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  FakeRate="susy-ewkino/2lss/fr-jecDn.txt", SkipMe=True
-rares_ttX_jec_Dn   : TTHnobb_mWCutfix_ch1        : xsec : eventBTagSF_down_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  FakeRate="susy-ewkino/2lss/fr-jecDn.txt", SkipMe=True
-rares_ttX_jec_Dn   : TTZToLLNuNu                 : xsec : eventBTagSF_down_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  FakeRate="susy-ewkino/2lss/fr-jecDn.txt", SkipMe=True
-rares_ttX_jec_Dn   : TTLLJets_m1to10             : xsec : eventBTagSF_down_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  FakeRate="susy-ewkino/2lss/fr-jecDn.txt", SkipMe=True
-rares_ttX_jec_Dn   : TTJets_DiLepton             : xsec : eventBTagSF_down_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  FakeRate="susy-ewkino/2lss/fr-jecDn.txt", SkipMe=True
-rares_ttX_jec_Dn   : TTJets_SingleLeptonFromT    : xsec : eventBTagSF_down_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  FakeRate="susy-ewkino/2lss/fr-jecDn.txt", SkipMe=True
-rares_ttX_jec_Dn   : TTJets_SingleLeptonFromTbar : xsec : eventBTagSF_down_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  FakeRate="susy-ewkino/2lss/fr-jecDn.txt", SkipMe=True
-rares_ttX_jec_Dn   : TTTT     			 : xsec : eventBTagSF_down_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; FakeRate="susy-ewkino/2lss/fr-jecDn.txt", SkipMe=True
-rares_ttX_jec_Dn   : tZq_ll   			 : xsec : eventBTagSF_down_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; FakeRate="susy-ewkino/2lss/fr-jecDn.txt", SkipMe=True
-rares_VVV_jec_Dn  : WpWpJJ 			 : xsec : eventBTagSF_down_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; FakeRate="susy-ewkino/2lss/fr-jecDn.txt", SkipMe=True
-rares_VVV_jec_Dn   : WWDouble 			 : xsec : eventBTagSF_down_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; FakeRate="susy-ewkino/2lss/fr-jecDn.txt", SkipMe=True
-rares_VVV_jec_Dn   : WWW      			 : xsec : eventBTagSF_down_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; FakeRate="susy-ewkino/2lss/fr-jecDn.txt", SkipMe=True
-rares_VVV_jec_Dn   : WWZ      			 : xsec : eventBTagSF_down_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; FakeRate="susy-ewkino/2lss/fr-jecDn.txt", SkipMe=True
-rares_VVV_jec_Dn   : WZZ      			 : xsec : eventBTagSF_down_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; FakeRate="susy-ewkino/2lss/fr-jecDn.txt", SkipMe=True
-rares_VVV_jec_Dn   : ZZZ      			 : xsec : eventBTagSF_down_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; FakeRate="susy-ewkino/2lss/fr-jecDn.txt", SkipMe=True
-convs_jec_Dn  	   : TTGJets  : xsec : eventBTagSF_down_jes/eventBTagSF*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ; FakeRate="susy-ewkino/2lss/fr-jecDn.txt", SkipMe=True
-convs_jec_Dn  	   : WGToLNuG : xsec : eventBTagSF_down_jes/eventBTagSF*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ; FakeRate="susy-ewkino/2lss/fr-jecDn.txt", SkipMe=True
-convs_jec_Dn  	   : ZGTo2LG  : xsec : eventBTagSF_down_jes/eventBTagSF*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ; FakeRate="susy-ewkino/2lss/fr-jecDn.txt", SkipMe=True
-convs_jec_Dn  	   : TGJets   : xsec : eventBTagSF_down_jes/eventBTagSF*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ; FakeRate="susy-ewkino/2lss/fr-jecDn.txt", SkipMe=True
-convs_jec_Dn  	   : WGToLNuG : xsec : eventBTagSF_down_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; FakeRate="susy-ewkino/2lss/fr-jecDn.txt", SkipMe=True
+#prompt_WZ_jec_Dn   : WZTo3LNu                    : xsec : eventBTagSF_down_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  FakeRate="susy-ewkino/2lss/fr-jecDn.txt", SkipMe=True
+#prompt_ZZH_jec_Dn  : ZZTo4L		         : xsec : eventBTagSF_down_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  FakeRate="susy-ewkino/2lss/fr-jecDn.txt", SkipMe=True
+#rares_ttX_jec_Dn   : TTWToLNu                    : xsec : eventBTagSF_down_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  FakeRate="susy-ewkino/2lss/fr-jecDn.txt", SkipMe=True
+#rares_ttX_jec_Dn   : TTHnobb_mWCutfix_ch1        : xsec : eventBTagSF_down_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  FakeRate="susy-ewkino/2lss/fr-jecDn.txt", SkipMe=True
+#rares_ttX_jec_Dn   : TTZToLLNuNu                 : xsec : eventBTagSF_down_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  FakeRate="susy-ewkino/2lss/fr-jecDn.txt", SkipMe=True
+#rares_ttX_jec_Dn   : TTLLJets_m1to10             : xsec : eventBTagSF_down_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  FakeRate="susy-ewkino/2lss/fr-jecDn.txt", SkipMe=True
+#rares_ttX_jec_Dn   : TTJets_DiLepton             : xsec : eventBTagSF_down_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  FakeRate="susy-ewkino/2lss/fr-jecDn.txt", SkipMe=True
+#rares_ttX_jec_Dn   : TTJets_SingleLeptonFromT    : xsec : eventBTagSF_down_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  FakeRate="susy-ewkino/2lss/fr-jecDn.txt", SkipMe=True
+#rares_ttX_jec_Dn   : TTJets_SingleLeptonFromTbar : xsec : eventBTagSF_down_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  FakeRate="susy-ewkino/2lss/fr-jecDn.txt", SkipMe=True
+#rares_ttX_jec_Dn   : TTTT     			 : xsec : eventBTagSF_down_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; FakeRate="susy-ewkino/2lss/fr-jecDn.txt", SkipMe=True
+#rares_ttX_jec_Dn   : tZq_ll   			 : xsec : eventBTagSF_down_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; FakeRate="susy-ewkino/2lss/fr-jecDn.txt", SkipMe=True
+#rares_VVV_jec_Dn  : WpWpJJ 			 : xsec : eventBTagSF_down_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; FakeRate="susy-ewkino/2lss/fr-jecDn.txt", SkipMe=True
+#rares_VVV_jec_Dn   : WWDouble 			 : xsec : eventBTagSF_down_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; FakeRate="susy-ewkino/2lss/fr-jecDn.txt", SkipMe=True
+#rares_VVV_jec_Dn   : WWW      			 : xsec : eventBTagSF_down_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; FakeRate="susy-ewkino/2lss/fr-jecDn.txt", SkipMe=True
+#rares_VVV_jec_Dn   : WWZ      			 : xsec : eventBTagSF_down_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; FakeRate="susy-ewkino/2lss/fr-jecDn.txt", SkipMe=True
+#rares_VVV_jec_Dn   : WZZ      			 : xsec : eventBTagSF_down_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; FakeRate="susy-ewkino/2lss/fr-jecDn.txt", SkipMe=True
+#rares_VVV_jec_Dn   : ZZZ      			 : xsec : eventBTagSF_down_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; FakeRate="susy-ewkino/2lss/fr-jecDn.txt", SkipMe=True
+#convs_jec_Dn  	   : TTGJets  : xsec : eventBTagSF_down_jes/eventBTagSF*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ; FakeRate="susy-ewkino/2lss/fr-jecDn.txt", SkipMe=True
+#convs_jec_Dn  	   : WGToLNuG : xsec : eventBTagSF_down_jes/eventBTagSF*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ; FakeRate="susy-ewkino/2lss/fr-jecDn.txt", SkipMe=True
+#convs_jec_Dn  	   : ZGTo2LG  : xsec : eventBTagSF_down_jes/eventBTagSF*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ; FakeRate="susy-ewkino/2lss/fr-jecDn.txt", SkipMe=True
+#convs_jec_Dn  	   : TGJets   : xsec : eventBTagSF_down_jes/eventBTagSF*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ; FakeRate="susy-ewkino/2lss/fr-jecDn.txt", SkipMe=True
+#convs_jec_Dn  	   : WGToLNuG : xsec : eventBTagSF_down_jes/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; FakeRate="susy-ewkino/2lss/fr-jecDn.txt", SkipMe=True
 
 ## SYSTEMATIC VARIATION: BTAG LIGHT UP
 ## ===========================================================
-prompt_WZ_bTagLF_Up   : WZTo3LNu		     : xsec : eventBTagSF_up_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-prompt_ZZH_bTagLF_Up  : ZZTo4L		             : xsec : eventBTagSF_up_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_ttX_bTagLF_Up   : TTWToLNu                    : xsec : eventBTagSF_up_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_ttX_bTagLF_Up   : TTHnobb_mWCutfix_ch1        : xsec : eventBTagSF_up_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_ttX_bTagLF_Up   : TTZToLLNuNu                 : xsec : eventBTagSF_up_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_ttX_bTagLF_Up   : TTLLJets_m1to10             : xsec : eventBTagSF_up_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_ttX_bTagLF_Up   : TTJets_DiLepton             : xsec : eventBTagSF_up_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_ttX_bTagLF_Up   : TTJets_SingleLeptonFromT    : xsec : eventBTagSF_up_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_ttX_bTagLF_Up   : TTJets_SingleLeptonFromTbar : xsec : eventBTagSF_up_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_ttX_bTagLF_Up   : TTTT     		     : xsec : eventBTagSF_up_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_ttX_bTagLF_Up   : tZq_ll   		     : xsec : eventBTagSF_up_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_VVV_bTagLF_Up  : WpWpJJ 		     : xsec : eventBTagSF_up_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_VVV_bTagLF_Up   : WWDouble 		     : xsec : eventBTagSF_up_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_VVV_bTagLF_Up   : WWW      		     : xsec : eventBTagSF_up_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_VVV_bTagLF_Up   : WWZ      		     : xsec : eventBTagSF_up_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_VVV_bTagLF_Up   : WZZ      		     : xsec : eventBTagSF_up_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_VVV_bTagLF_Up   : ZZZ      		     : xsec : eventBTagSF_up_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-convs_bTagLF_Up       : TTGJets  : xsec : eventBTagSF_up_lf/eventBTagSF*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ;  SkipMe=True
-convs_bTagLF_Up       : WGToLNuG : xsec : eventBTagSF_up_lf/eventBTagSF*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ;  SkipMe=True
-convs_bTagLF_Up       : ZGTo2LG  : xsec : eventBTagSF_up_lf/eventBTagSF*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ;  SkipMe=True
-convs_bTagLF_Up       : TGJets   : xsec : eventBTagSF_up_lf/eventBTagSF*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ;  SkipMe=True
-convs_bTagLF_Up       : WGToLNuG : xsec : eventBTagSF_up_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge)                                                   ;  SkipMe=True
-
-## SYSTEMATIC VARIATION: BTAG LIGHT DOWN
-## ===========================================================
-prompt_WZ_bTagLF_Dn   : WZTo3LNu		     : xsec : eventBTagSF_down_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-prompt_ZZH_bTagLF_Dn  : ZZTo4L		             : xsec : eventBTagSF_down_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_ttX_bTagLF_Dn   : TTWToLNu                    : xsec : eventBTagSF_down_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_ttX_bTagLF_Dn   : TTHnobb_mWCutfix_ch1        : xsec : eventBTagSF_down_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_ttX_bTagLF_Dn   : TTZToLLNuNu                 : xsec : eventBTagSF_down_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_ttX_bTagLF_Dn   : TTLLJets_m1to10             : xsec : eventBTagSF_down_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_ttX_bTagLF_Dn   : TTJets_DiLepton             : xsec : eventBTagSF_down_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_ttX_bTagLF_Dn   : TTJets_SingleLeptonFromT    : xsec : eventBTagSF_down_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_ttX_bTagLF_Dn   : TTJets_SingleLeptonFromTbar : xsec : eventBTagSF_down_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_ttX_bTagLF_Dn   : TTTT     		     : xsec : eventBTagSF_down_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_ttX_bTagLF_Dn   : tZq_ll   		     : xsec : eventBTagSF_down_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_VVV_bTagLF_Dn  : WpWpJJ 		     : xsec : eventBTagSF_down_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_VVV_bTagLF_Dn   : WWDouble 		     : xsec : eventBTagSF_down_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_VVV_bTagLF_Dn   : WWW      		     : xsec : eventBTagSF_down_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_VVV_bTagLF_Dn   : WWZ      		     : xsec : eventBTagSF_down_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_VVV_bTagLF_Dn   : WZZ      		     : xsec : eventBTagSF_down_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_VVV_bTagLF_Dn   : ZZZ      		     : xsec : eventBTagSF_down_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-convs_bTagLF_Dn       : TTGJets  : xsec : eventBTagSF_down_lf/eventBTagSF*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ;  SkipMe=True
-convs_bTagLF_Dn       : WGToLNuG : xsec : eventBTagSF_down_lf/eventBTagSF*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ;  SkipMe=True
-convs_bTagLF_Dn       : ZGTo2LG  : xsec : eventBTagSF_down_lf/eventBTagSF*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ;  SkipMe=True
-convs_bTagLF_Dn       : TGJets   : xsec : eventBTagSF_down_lf/eventBTagSF*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ;  SkipMe=True
-convs_bTagLF_Dn       : WGToLNuG : xsec : eventBTagSF_down_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge)                                                   ;  SkipMe=True
-
+#prompt_WZ_bTagLF_Up   : WZTo3LNu		     : xsec : eventBTagSF_up_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#prompt_ZZH_bTagLF_Up  : ZZTo4L		             : xsec : eventBTagSF_up_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_ttX_bTagLF_Up   : TTWToLNu                    : xsec : eventBTagSF_up_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_ttX_bTagLF_Up   : TTHnobb_mWCutfix_ch1        : xsec : eventBTagSF_up_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_ttX_bTagLF_Up   : TTZToLLNuNu                 : xsec : eventBTagSF_up_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_ttX_bTagLF_Up   : TTLLJets_m1to10             : xsec : eventBTagSF_up_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_ttX_bTagLF_Up   : TTJets_DiLepton             : xsec : eventBTagSF_up_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_ttX_bTagLF_Up   : TTJets_SingleLeptonFromT    : xsec : eventBTagSF_up_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_ttX_bTagLF_Up   : TTJets_SingleLeptonFromTbar : xsec : eventBTagSF_up_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_ttX_bTagLF_Up   : TTTT     		     : xsec : eventBTagSF_up_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_ttX_bTagLF_Up   : tZq_ll   		     : xsec : eventBTagSF_up_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_VVV_bTagLF_Up  : WpWpJJ 		     : xsec : eventBTagSF_up_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_VVV_bTagLF_Up   : WWDouble 		     : xsec : eventBTagSF_up_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_VVV_bTagLF_Up   : WWW      		     : xsec : eventBTagSF_up_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_VVV_bTagLF_Up   : WWZ      		     : xsec : eventBTagSF_up_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_VVV_bTagLF_Up   : WZZ      		     : xsec : eventBTagSF_up_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_VVV_bTagLF_Up   : ZZZ      		     : xsec : eventBTagSF_up_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#convs_bTagLF_Up       : TTGJets  : xsec : eventBTagSF_up_lf/eventBTagSF*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ;  SkipMe=True
+#convs_bTagLF_Up       : WGToLNuG : xsec : eventBTagSF_up_lf/eventBTagSF*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ;  SkipMe=True
+#convs_bTagLF_Up       : ZGTo2LG  : xsec : eventBTagSF_up_lf/eventBTagSF*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ;  SkipMe=True
+#convs_bTagLF_Up       : TGJets   : xsec : eventBTagSF_up_lf/eventBTagSF*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ;  SkipMe=True
+#convs_bTagLF_Up       : WGToLNuG : xsec : eventBTagSF_up_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge)                                                   ;  SkipMe=True
+#
+### SYSTEMATIC VARIATION: BTAG LIGHT DOWN
+### ===========================================================
+##prompt_WZ_bTagLF_Dn   : WZTo3LNu		     : xsec : eventBTagSF_down_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#prompt_ZZH_bTagLF_Dn  : ZZTo4L		             : xsec : eventBTagSF_down_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_ttX_bTagLF_Dn   : TTWToLNu                    : xsec : eventBTagSF_down_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_ttX_bTagLF_Dn   : TTHnobb_mWCutfix_ch1        : xsec : eventBTagSF_down_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_ttX_bTagLF_Dn   : TTZToLLNuNu                 : xsec : eventBTagSF_down_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_ttX_bTagLF_Dn   : TTLLJets_m1to10             : xsec : eventBTagSF_down_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_ttX_bTagLF_Dn   : TTJets_DiLepton             : xsec : eventBTagSF_down_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_ttX_bTagLF_Dn   : TTJets_SingleLeptonFromT    : xsec : eventBTagSF_down_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_ttX_bTagLF_Dn   : TTJets_SingleLeptonFromTbar : xsec : eventBTagSF_down_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_ttX_bTagLF_Dn   : TTTT     		     : xsec : eventBTagSF_down_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_ttX_bTagLF_Dn   : tZq_ll   		     : xsec : eventBTagSF_down_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_VVV_bTagLF_Dn  : WpWpJJ 		     : xsec : eventBTagSF_down_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_VVV_bTagLF_Dn   : WWDouble 		     : xsec : eventBTagSF_down_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_VVV_bTagLF_Dn   : WWW      		     : xsec : eventBTagSF_down_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_VVV_bTagLF_Dn   : WWZ      		     : xsec : eventBTagSF_down_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_VVV_bTagLF_Dn   : WZZ      		     : xsec : eventBTagSF_down_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_VVV_bTagLF_Dn   : ZZZ      		     : xsec : eventBTagSF_down_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#convs_bTagLF_Dn       : TTGJets  : xsec : eventBTagSF_down_lf/eventBTagSF*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ;  SkipMe=True
+#convs_bTagLF_Dn       : WGToLNuG : xsec : eventBTagSF_down_lf/eventBTagSF*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ;  SkipMe=True
+#convs_bTagLF_Dn       : ZGTo2LG  : xsec : eventBTagSF_down_lf/eventBTagSF*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ;  SkipMe=True
+#convs_bTagLF_Dn       : TGJets   : xsec : eventBTagSF_down_lf/eventBTagSF*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ;  SkipMe=True
+#convs_bTagLF_Dn       : WGToLNuG : xsec : eventBTagSF_down_lf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge)                                                   ;  SkipMe=True
+#
 ## SYSTEMATIC VARIATION: BTAG Heavy Flavour UP
 ## ===========================================================
-prompt_WZ_bTagHF_Up   : WZTo3LNu		     : xsec : eventBTagSF_up_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-prompt_ZZH_bTagHF_Up  : ZZTo4L		             : xsec : eventBTagSF_up_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_ttX_bTagHF_Up   : TTWToLNu                    : xsec : eventBTagSF_up_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_ttX_bTagHF_Up   : TTHnobb_mWCutfix_ch1        : xsec : eventBTagSF_up_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_ttX_bTagHF_Up   : TTZToLLNuNu                 : xsec : eventBTagSF_up_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_ttX_bTagHF_Up   : TTLLJets_m1to10             : xsec : eventBTagSF_up_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_ttX_bTagHF_Up   : TTJets_DiLepton             : xsec : eventBTagSF_up_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_ttX_bTagHF_Up   : TTJets_SingleLeptonFromT    : xsec : eventBTagSF_up_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_ttX_bTagHF_Up   : TTJets_SingleLeptonFromTbar : xsec : eventBTagSF_up_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_ttX_bTagHF_Up   : TTTT     		     : xsec : eventBTagSF_up_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_ttX_bTagHF_Up   : tZq_ll   		     : xsec : eventBTagSF_up_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_VVV_bTagHF_Up  : WpWpJJ 		     	     : xsec : eventBTagSF_up_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_VVV_bTagHF_Up   : WWDouble 		     : xsec : eventBTagSF_up_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_VVV_bTagHF_Up   : WWW      		     : xsec : eventBTagSF_up_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_VVV_bTagHF_Up   : WWZ      		     : xsec : eventBTagSF_up_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_VVV_bTagHF_Up   : WZZ      		     : xsec : eventBTagSF_up_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_VVV_bTagHF_Up   : ZZZ      		     : xsec : eventBTagSF_up_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-convs_bTagHF_Up       : TTGJets  : xsec : eventBTagSF_up_hf/eventBTagSF*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ;  SkipMe=True
-convs_bTagHF_Up       : WGToLNuG : xsec : eventBTagSF_up_hf/eventBTagSF*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ;  SkipMe=True
-convs_bTagHF_Up       : ZGTo2LG  : xsec : eventBTagSF_up_hf/eventBTagSF*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ;  SkipMe=True
-convs_bTagHF_Up       : TGJets   : xsec : eventBTagSF_up_hf/eventBTagSF*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ;  SkipMe=True
-convs_bTagHF_Up       : WGToLNuG : xsec : eventBTagSF_up_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge)                                                   ;  SkipMe=True
-
+#prompt_WZ_bTagHF_Up   : WZTo3LNu		     : xsec : eventBTagSF_up_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#prompt_ZZH_bTagHF_Up  : ZZTo4L		             : xsec : eventBTagSF_up_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_ttX_bTagHF_Up   : TTWToLNu                    : xsec : eventBTagSF_up_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_ttX_bTagHF_Up   : TTHnobb_mWCutfix_ch1        : xsec : eventBTagSF_up_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_ttX_bTagHF_Up   : TTZToLLNuNu                 : xsec : eventBTagSF_up_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_ttX_bTagHF_Up   : TTLLJets_m1to10             : xsec : eventBTagSF_up_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_ttX_bTagHF_Up   : TTJets_DiLepton             : xsec : eventBTagSF_up_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#usy-ewkino/2lss/mca-2lss-mcdata-frdata.txtares_ttX_bTagHF_Up   : TTJets_SingleLeptonFromT    : xsec : eventBTagSF_up_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_ttX_bTagHF_Up   : TTJets_SingleLeptonFromTbar : xsec : eventBTagSF_up_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_ttX_bTagHF_Up   : TTTT     		     : xsec : eventBTagSF_up_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_ttX_bTagHF_Up   : tZq_ll   		     : xsec : eventBTagSF_up_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_VVV_bTagHF_Up  : WpWpJJ 		     	     : xsec : eventBTagSF_up_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_VVV_bTagHF_Up   : WWDouble 		     : xsec : eventBTagSF_up_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_VVV_bTagHF_Up   : WWW      		     : xsec : eventBTagSF_up_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_VVV_bTagHF_Up   : WWZ      		     : xsec : eventBTagSF_up_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_VVV_bTagHF_Up   : WZZ      		     : xsec : eventBTagSF_up_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_VVV_bTagHF_Up   : ZZZ      		     : xsec : eventBTagSF_up_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#convs_bTagHF_Up       : TTGJets  : xsec : eventBTagSF_up_hf/eventBTagSF*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ;  SkipMe=True
+#convs_bTagHF_Up       : WGToLNuG : xsec : eventBTagSF_up_hf/eventBTagSF*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ;  SkipMe=True
+#convs_bTagHF_Up       : ZGTo2LG  : xsec : eventBTagSF_up_hf/eventBTagSF*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ;  SkipMe=True
+#convs_bTagHF_Up       : TGJets   : xsec : eventBTagSF_up_hf/eventBTagSF*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ;  SkipMe=True
+#convs_bTagHF_Up       : WGToLNuG : xsec : eventBTagSF_up_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge)                                                   ;  SkipMe=True
+#
 ## SYSTEMATIC VARIATION: BTAG btag_CB DOWN
 ## ===========================================================
-prompt_WZ_bTagHF_Dn   : WZTo3LNu		     : xsec : eventBTagSF_down_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-prompt_ZZH_bTagHF_Dn  : ZZTo4L		             : xsec : eventBTagSF_down_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_ttX_bTagHF_Dn   : TTWToLNu                    : xsec : eventBTagSF_down_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_ttX_bTagHF_Dn   : TTHnobb_mWCutfix_ch1        : xsec : eventBTagSF_down_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_ttX_bTagHF_Dn   : TTZToLLNuNu                 : xsec : eventBTagSF_down_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_ttX_bTagHF_Dn   : TTLLJets_m1to10             : xsec : eventBTagSF_down_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_ttX_bTagHF_Dn   : TTJets_DiLepton             : xsec : eventBTagSF_down_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_ttX_bTagHF_Dn   : TTJets_SingleLeptonFromT    : xsec : eventBTagSF_down_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_ttX_bTagHF_Dn   : TTJets_SingleLeptonFromTbar : xsec : eventBTagSF_down_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_ttX_bTagHF_Dn   : TTTT     		     : xsec : eventBTagSF_down_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_ttX_bTagHF_Dn   : tZq_ll   		     : xsec : eventBTagSF_down_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_VVV_bTagHF_Dn  : WpWpJJ 		             : xsec : eventBTagSF_down_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_VVV_bTagHF_Dn   : WWDouble 		     : xsec : eventBTagSF_down_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_VVV_bTagHF_Dn   : WWW      		     : xsec : eventBTagSF_down_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_VVV_bTagHF_Dn   : WWZ      		     : xsec : eventBTagSF_down_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_VVV_bTagHF_Dn   : WZZ      		     : xsec : eventBTagSF_down_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_VVV_bTagHF_Dn   : ZZZ      		     : xsec : eventBTagSF_down_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-convs_bTagHF_Dn       : TTGJets  : xsec : eventBTagSF_down_hf/eventBTagSF*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ;  SkipMe=True
-convs_bTagHF_Dn       : WGToLNuG : xsec : eventBTagSF_down_hf/eventBTagSF*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ;  SkipMe=True
-convs_bTagHF_Dn       : ZGTo2LG  : xsec : eventBTagSF_down_hf/eventBTagSF*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ;  SkipMe=True
-convs_bTagHF_Dn       : TGJets   : xsec : eventBTagSF_down_hf/eventBTagSF*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ;  SkipMe=True
-convs_bTagHF_Dn       : WGToLNuG : xsec : eventBTagSF_down_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge)                                                   ;  SkipMe=True
+#prompt_WZ_bTagHF_Dn   : WZTo3LNu		     : xsec : eventBTagSF_down_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#prompt_ZZH_bTagHF_Dn  : ZZTo4L		             : xsec : eventBTagSF_down_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_ttX_bTagHF_Dn   : TTWToLNu                    : xsec : eventBTagSF_down_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_ttX_bTagHF_Dn   : TTHnobb_mWCutfix_ch1        : xsec : eventBTagSF_down_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_ttX_bTagHF_Dn   : TTZToLLNuNu                 : xsec : eventBTagSF_down_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_ttX_bTagHF_Dn   : TTLLJets_m1to10             : xsec : eventBTagSF_down_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_ttX_bTagHF_Dn   : TTJets_DiLepton             : xsec : eventBTagSF_down_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_ttX_bTagHF_Dn   : TTJets_SingleLeptonFromT    : xsec : eventBTagSF_down_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_ttX_bTagHF_Dn   : TTJets_SingleLeptonFromTbar : xsec : eventBTagSF_down_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_ttX_bTagHF_Dn   : TTTT     		     : xsec : eventBTagSF_down_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_ttX_bTagHF_Dn   : tZq_ll   		     : xsec : eventBTagSF_down_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_VVV_bTagHF_Dn  : WpWpJJ 		             : xsec : eventBTagSF_down_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_VVV_bTagHF_Dn   : WWDouble 		     : xsec : eventBTagSF_down_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_VVV_bTagHF_Dn   : WWW      		     : xsec : eventBTagSF_down_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_VVV_bTagHF_Dn   : WWZ      		     : xsec : eventBTagSF_down_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_VVV_bTagHF_Dn   : WZZ      		     : xsec : eventBTagSF_down_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_VVV_bTagHF_Dn   : ZZZ      		     : xsec : eventBTagSF_down_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#convs_bTagHF_Dn       : TTGJets  : xsec : eventBTagSF_down_hf/eventBTagSF*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ;  SkipMe=True
+#convs_bTagHF_Dn       : WGToLNuG : xsec : eventBTagSF_down_hf/eventBTagSF*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ;  SkipMe=True
+#convs_bTagHF_Dn       : ZGTo2LG  : xsec : eventBTagSF_down_hf/eventBTagSF*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ;  SkipMe=True
+#convs_bTagHF_Dn       : TGJets   : xsec : eventBTagSF_down_hf/eventBTagSF*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ;  SkipMe=True
+#convs_bTagHF_Dn       : WGToLNuG : xsec : eventBTagSF_down_hf/eventBTagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge)                                                   ;  SkipMe=True
 
 
 ## SYSTEMATIC VARIATION: LeptonSF UP
@@ -492,7 +492,7 @@ convs_puw_Up       : WGToLNuG : xsec : puw2016_nInt_ICHEP(nTrueInt,1)/puw2016_nI
 prompt_WZ_puw_Dn   : WZTo3LNu		     : xsec : puw2016_nInt_ICHEP(nTrueInt,-1)/puw2016_nInt_ICHEP(nTrueInt)*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
 prompt_ZZH_puw_Dn  : ZZTo4L		             : xsec : puw2016_nInt_ICHEP(nTrueInt,-1)/puw2016_nInt_ICHEP(nTrueInt)*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
 rares_ttX_puw_Dn   : TTWToLNu                    : xsec : puw2016_nInt_ICHEP(nTrueInt,-1)/puw2016_nInt_ICHEP(nTrueInt)*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
-rares_ttX_puw_Dn   : TTHnobb_mWCutfix_ch1        : xsec : puw2016_nInt_ICHEP(nTrueInt,-1)/puw2016_nInt_ICHEP(nTrueInt)*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
+#rares_ttX_puw_Dn   : TTHnobb_mWCutfix_ch1        : xsec : puw2016_nInt_ICHEP(nTrueInt,-1)/puw2016_nInt_ICHEP(nTrueInt)*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
 rares_ttX_puw_Dn   : TTZToLLNuNu                 : xsec : puw2016_nInt_ICHEP(nTrueInt,-1)/puw2016_nInt_ICHEP(nTrueInt)*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
 rares_ttX_puw_Dn   : TTLLJets_m1to10             : xsec : puw2016_nInt_ICHEP(nTrueInt,-1)/puw2016_nInt_ICHEP(nTrueInt)*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
 rares_ttX_puw_Dn   : TTJets_DiLepton             : xsec : puw2016_nInt_ICHEP(nTrueInt,-1)/puw2016_nInt_ICHEP(nTrueInt)*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ;  SkipMe=True
@@ -511,3 +511,10 @@ convs_puw_Dn       : WGToLNuG : xsec : puw2016_nInt_ICHEP(nTrueInt,-1)/puw2016_n
 convs_puw_Dn       : ZGTo2LG  : xsec : puw2016_nInt_ICHEP(nTrueInt,-1)/puw2016_nInt_ICHEP(nTrueInt)*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ;  SkipMe=True
 convs_puw_Dn       : TGJets   : xsec : puw2016_nInt_ICHEP(nTrueInt,-1)/puw2016_nInt_ICHEP(nTrueInt)*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ;  SkipMe=True
 convs_puw_Dn       : WGToLNuG : xsec : puw2016_nInt_ICHEP(nTrueInt,-1)/puw2016_nInt_ICHEP(nTrueInt)*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge)                                                   ;  SkipMe=True
+
+
+# Signal
+################################
+sig_250_225+ : TChiNeuSlepSneu_05_250_225 : 782.487/2000 : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FillColor=ROOT.kBlue-3, Label="250_225",   NormSystematic=0.50
+sig_550_400+ : TChiNeuSlepSneu_05_550_400 : 30.1656/2000 : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FillColor=ROOT.kCyan, Label="550_400",   NormSystematic=0.50
+sig_600_50+  : TChiNeuSlepSneu_05_600_50  : 20.1372/2000 : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FillColor=ROOT.kPink, Label="600_50",   NormSystematic=0.50
