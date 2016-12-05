@@ -245,69 +245,7 @@ float eleWPT(float pt, float etaSc, float mva){
   else return 0;
 }
 
-int SR_ewk_ss2l_byCharge1(int nj, float ptl1, float phil1, float ptl2, float phil2, float met, float metphi, int charge){
-  
-  float mtw1 = mt_2(ptl1,phil1, met, metphi);
-  float mtw2 = mt_2(ptl2,phil2, met, metphi);
-  float mtw  = std::min(mtw1,mtw2);
-  float ptdil = pt_2(ptl1,phil1,ptl2,phil2);
-  int   cha  = charge;
 
-  if      (nj==0 && ptdil<75 && mtw<100 && met<100)            return 1;  //VR
-
-  else if (nj==0 && ptdil<75 && mtw<100 && met>100 && met<150 && cha == +1) return 2;
-  else if (nj==0 && ptdil<75 && mtw<100 && met>100 && met<150 && cha == -1) return 3;
-
-
-  else if (nj==0 && ptdil<75 && mtw<100 && met>150 && met < 200)            return 4;
-  else if (nj==0 && ptdil<75 && mtw<100 && met > 200)            			    return 5;
-
-  else if (nj==0 && ptdil>75 && mtw<100 && met<100)            return 6; //VR
-
-
-  else if (nj==0 && ptdil>75 && mtw<100 && met>100 && met<150 && cha == +1) return 7;
-  else if (nj==0 && ptdil>75 && mtw<100 && met>100 && met<150 && cha == -1) return 8;
-
-  else if (nj==0 && ptdil>75 && mtw<100 && met>150 && met < 200)            return 9;
-  else if (nj==0 && ptdil>75 && mtw<100 && met>200)				             return 10;
-
-  else if (nj==0 && mtw>100 && met<100)                        return 11;  //VR
-
-
-  else if (nj==0 && mtw>100 && met>100 && met<150 && cha == +1)             return 12;
-  else if (nj==0 && mtw>100 && met>100 && met<150 && cha == -1)             return 13;
-
-  else if (nj==0 && mtw>100 && met>150 && met<200)                          return 14;
-  else if (nj==0 && mtw>100 && met>200)                        			    return 15;
-
-  else if (nj==1 && ptdil<75 && mtw<100 && met<100 )            return 16;  //VR
-
-  else if (nj==1 && ptdil<75 && mtw<100 && met>100 && met<150 && cha == +1) return 17;
-  else if (nj==1 && ptdil<75 && mtw<100 && met>100 && met<150 && cha == -1) return 18;
-
-  else if (nj==1 && ptdil<75 && mtw<100 && met>150 && met<200)              return 19;
-  else if (nj==1 && ptdil<75 && mtw<100 && met>200)         		          return 20;
-
-  else if (nj==1 && ptdil>75 && mtw<100 && met<100)            return 21; //VR
-
-
-  else if (nj==1 && ptdil>75 && mtw<100 && met>100 && met<150 && cha == +1) return 22;
-  else if (nj==1 && ptdil>75 && mtw<100 && met>100 && met<150 && cha == -1) return 23;
-
-  else if (nj==1 && ptdil>75 && mtw<100 && met>150 && met < 200)            return 24;
-  else if (nj==1 && ptdil>75 && mtw<100 && met>200) 					          return 25;
-
-  else if (nj==1 && mtw>100 && met<100)                        return 26;  //VR
-
-  else if (nj==1 && mtw>100 && met>100 && met<150 && cha == +1)             return 27;
-  else if (nj==1 && mtw>100 && met>100 && met<150 && cha == -1)             return 28;
-
-  else if (nj==1 && mtw>100 && met>150 && met<200)                          return 29;
-  else if (nj==1 && mtw>100 && met>200)                   				       return 30;
-
-  return -99;  
-  
-}
 
 
 float relax_cut_in_eta_bins(float val, float eta, float eta1, float eta2, float eta3, float val1, float val2, float val3, float val1t, float val2t, float val3t){
@@ -411,12 +349,368 @@ int regroupSignalRegions_RA5(int SR){
 
 }
 
-int SR_ewk_ss2l(int nj, float ptl1, float phil1, float ptl2, float phil2, float met, float metphi){
+int SR_ewk_ss2l(int nj, float ptl1, float phil1, float ptl2, float phil2, float met, float metphi, int charge){
   
   float mtw1 = mt_2(ptl1,phil1, met, metphi);
   float mtw2 = mt_2(ptl2,phil2, met, metphi);
   float mtw  = std::min(mtw1,mtw2);
   float ptdil = pt_2(ptl1,phil1,ptl2,phil2);
+  int   cha  = charge;
+  // V0 --- LPC version
+//V0-LPC  if      (nj==0 && mtw<40 && met>100 && met<200)             return 1;
+//V0-LPC  else if (nj==0 && mtw<40 && met>200)                        return 2;
+//V0-LPC  else if (nj==0 && mtw>40 && mtw<120 && met>100 && met<200)  return 3;
+//V0-LPC  else if (nj==0 && mtw>40 && mtw<120 && met>200)             return 4;
+//V0-LPC  else if (nj==0 && mtw>120 && met>100 && met<200)            return 5;
+//V0-LPC  else if (nj==0 && mtw>120 && met>200)                       return 6;
+//V0-LPC  else if (nj==1 && mtw<40 && met>100 && met<200)             return 7;
+//V0-LPC  else if (nj==1 && mtw<40 && met>200)                        return 8;
+//V0-LPC  else if (nj==1 && mtw>40 && mtw<120 && met>100 && met<200)  return 9;
+//V0-LPC  else if (nj==1 && mtw>40 && mtw<120 && met>200)             return 10;
+//V0-LPC  else if (nj==1 && mtw>120 && met>100 && met<200)            return 11;
+//V0-LPC  else if (nj==1 && mtw>120 && met>200)                       return 12;
+
+  if      (nj==0 && ptdil<75 && mtw<100 && met<100)            return 1;  //VR
+
+  else if (nj==0 && ptdil<75 && mtw<100 && met>100 && met<150 && cha == +1) return 2;
+  else if (nj==0 && ptdil<75 && mtw<100 && met>100 && met<150 && cha == -1) return 3;
+
+
+  else if (nj==0 && ptdil<75 && mtw<100 && met>150 && met < 200)            return 4;
+  else if (nj==0 && ptdil<75 && mtw<100 && met > 200)            			    return 5;
+
+  else if (nj==0 && ptdil>75 && mtw<100 && met<100)            return 6; //VR
+
+
+  else if (nj==0 && ptdil>75 && mtw<100 && met>100 && met<150 && cha == +1) return 7;
+  else if (nj==0 && ptdil>75 && mtw<100 && met>100 && met<150 && cha == -1) return 8;
+
+  else if (nj==0 && ptdil>75 && mtw<100 && met>150 && met < 200)            return 9;
+  else if (nj==0 && ptdil>75 && mtw<100 && met>200)				             return 10;
+
+  else if (nj==0 && mtw>100 && met<100)                        return 11;  //VR
+
+
+  else if (nj==0 && mtw>100 && met>100 && met<150 && cha == +1)             return 12;
+  else if (nj==0 && mtw>100 && met>100 && met<150 && cha == -1)             return 13;
+
+  else if (nj==0 && mtw>100 && met>150 && met<200)                          return 14;
+  else if (nj==0 && mtw>100 && met>200)                        			    return 15;
+
+  else if (nj==1 && ptdil<75 && mtw<100 && met<100 )            return 16;  //VR
+
+  else if (nj==1 && ptdil<75 && mtw<100 && met>100 && met<150 && cha == +1) return 17;
+  else if (nj==1 && ptdil<75 && mtw<100 && met>100 && met<150 && cha == -1) return 18;
+
+  else if (nj==1 && ptdil<75 && mtw<100 && met>150 && met<200)              return 19;
+  else if (nj==1 && ptdil<75 && mtw<100 && met>200)         		          return 20;
+
+  else if (nj==1 && ptdil>75 && mtw<100 && met<100)            return 21; //VR
+
+
+  else if (nj==1 && ptdil>75 && mtw<100 && met>100 && met<150 && cha == +1) return 22;
+  else if (nj==1 && ptdil>75 && mtw<100 && met>100 && met<150 && cha == -1) return 23;
+
+  else if (nj==1 && ptdil>75 && mtw<100 && met>150 && met < 200)            return 24;
+  else if (nj==1 && ptdil>75 && mtw<100 && met>200) 					          return 25;
+
+  else if (nj==1 && mtw>100 && met<100)                        return 26;  //VR
+
+  else if (nj==1 && mtw>100 && met>100 && met<150 && cha == +1)             return 27;
+  else if (nj==1 && mtw>100 && met>100 && met<150 && cha == -1)             return 28;
+
+  else if (nj==1 && mtw>100 && met>150 && met<200)                          return 29;
+  else if (nj==1 && mtw>100 && met>200)                   				       return 30;
+
+  return -99;   
+  
+}
+
+int SR_ewk_ss2l_ptll(int nj, float ptl1, float phil1, float ptl2, float phil2, float met, float metphi){
+  
+  float mtw1 = mt_2(ptl1,phil1, met, metphi);
+  float mtw2 = mt_2(ptl2,phil2, met, metphi);
+  float mtw  = std::min(mtw1,mtw2);
+  float ptdil = ptl1 + ptl2;
+
+  // V0 --- LPC version
+//V0-LPC  if      (nj==0 && mtw<40 && met>100 && met<200)             return 1;
+//V0-LPC  else if (nj==0 && mtw<40 && met>200)                        return 2;
+//V0-LPC  else if (nj==0 && mtw>40 && mtw<120 && met>100 && met<200)  return 3;
+//V0-LPC  else if (nj==0 && mtw>40 && mtw<120 && met>200)             return 4;
+//V0-LPC  else if (nj==0 && mtw>120 && met>100 && met<200)            return 5;
+//V0-LPC  else if (nj==0 && mtw>120 && met>200)                       return 6;
+//V0-LPC  else if (nj==1 && mtw<40 && met>100 && met<200)             return 7;
+//V0-LPC  else if (nj==1 && mtw<40 && met>200)                        return 8;
+//V0-LPC  else if (nj==1 && mtw>40 && mtw<120 && met>100 && met<200)  return 9;
+//V0-LPC  else if (nj==1 && mtw>40 && mtw<120 && met>200)             return 10;
+//V0-LPC  else if (nj==1 && mtw>120 && met>100 && met<200)            return 11;
+//V0-LPC  else if (nj==1 && mtw>120 && met>200)                       return 12;
+
+  if (nj== 0){      
+	  if(mtw < 100){
+		  if (ptdil<50 && met<100)                 return 1;  //VR
+		  else if (ptdil<50 && met>100 && met<150) return 2;
+  		  else if (ptdil<50 && met>150)            return 3;
+  		  else if (ptdil>50 && met<100)            return 4; //VR
+  	     else if (ptdil>50 && met>100 && met<150) return 5;
+  		  else if (ptdil>50 && met>150)            return 6;
+		}  	  
+
+	  else if(mtw > 100){
+		  if (met<100)                      	    return 7;  //VR
+  		  else if (met>100 && met<150)             return 8;
+  		  else if (met>150)                        return 9;
+	  }
+  }
+
+  else if (nj==1){
+	  if(mtw < 100){
+		  if (ptdil<50 && met<100)                 return 10;  //VR
+		  else if (ptdil<50 && met>100 && met<150) return 11;
+  		  else if (ptdil<50 && met>150)            return 12;
+  		  else if (ptdil>50 && met<100)            return 13; //VR
+  	     else if (ptdil>50 && met>100 && met<150) return 14;
+  		  else if (ptdil>50 && met>150)            return 15;
+		}  	  
+
+	  else if(mtw > 100){
+		  if (met<100)                      	    return 16;  //VR
+  		  else if (met>100 && met<150)             return 17;
+  		  else if (met>150)                        return 18;
+	  }
+  }
+  return -99;  
+  
+}
+
+
+
+int bymet(int nj, float ptl1, float phil1, float ptl2, float phil2, float met, float metphi, float m1, float m2, float m3){/*
+ 
+  float mtw1 = mt_2(ptl1,phil1, met, metphi);
+  float mtw2 = mt_2(ptl2,phil2, met, metphi);
+  float mtw  = std::min(mtw1,mtw2);
+  float ptdil = pt_2(ptl1,phil1,ptl2,phil2);
+  float metcut1 = m1;
+  float metcut2 = m2;
+  float mtcut   = m3;
+
+  // V0 --- LPC version
+//V0-LPC  if      (nj==0 && mtw<40 && met>100 && met<200)             return 1;
+//V0-LPC  else if (nj==0 && mtw<40 && met>200)                        return 2;
+//V0-LPC  else if (nj==0 && mtw>40 && mtw<120 && met>100 && met<200)  return 3;
+//V0-LPC  else if (nj==0 && mtw>40 && mtw<120 && met>200)             return 4;
+//V0-LPC  else if (nj==0 && mtw>120 && met>100 && met<200)            return 5;
+//V0-LPC  else if (nj==0 && mtw>120 && met>200)                       return 6;
+//V0-LPC  else if (nj==1 && mtw<40 && met>100 && met<200)             return 7;
+//V0-LPC  else if (nj==1 && mtw<40 && met>200)                        return 8;
+//V0-LPC  else if (nj==1 && mtw>40 && mtw<120 && met>100 && met<200)  return 9;
+//V0-LPC  else if (nj==1 && mtw>40 && mtw<120 && met>200)             return 10;
+//V0-LPC  else if (nj==1 && mtw>120 && met>100 && met<200)            return 11;
+//V0-LPC  else if (nj==1 && mtw>120 && met>200)                       return 12;
+
+   if (nj== 0){      
+	  if(mtw < mtcut){
+		  if (ptdil<50 && met<metcut1)                 return 1;  //VR
+		  else if (ptdil<50 && met>metcut1 && met<metcut2) return 2;
+  		  else if (ptdil<50 && met>metcut2)                return 3;
+  		  else if (ptdil>50 && met<metcut1)            return 4; //VR
+  	    	  else if (ptdil>50 && met>metcut1 && met<metcut2) return 5;
+  		  else if (ptdil>50 && met>metcut1)            return 6;
+		}  	  
+
+	  else if(mtw > mtcut){
+		  if (met<metcut1)                      	    return 7;  //VR
+  		  else if (met>metcut1 && met<metcut2)             return 8;
+  		  else if (met>metcut2)                        return 9;
+	  }
+  }
+
+  else if (nj==1){
+	  if(mtw < mtcut){
+		  if (ptdil<50 && met<metcut1)                 return 10;  //VR
+		  else if (ptdil<50 && met>metcut1 && met<metcut2) return 11;
+  		  else if (ptdil<50 && met>metcut2)            return 12;
+  		  else if (ptdil>50 && met<metcut1)            return 13; //VR
+  	     else if (ptdil>50 && met>metcut1 && met<metcut2) return 14;
+  		  else if (ptdil>50 && met>metcut2)            return 15;
+		}  	  
+
+	  else if(mtw > mtcut){
+		  if (met<metcut1)                      	   return 16;  //VR
+  		  else if (met>metcut1 && met<metcut2)             return 17;
+  		  else if (met>metcut2)                        return 18;
+	  }
+  }*/
+  return -99;
+}
+
+
+
+int SR_ewk_ss2l_byCharge1(int nj, float ptl1, float phil1, float ptl2, float phil2, float met, float metphi, int charge){
+  
+  float mtw1 = mt_2(ptl1,phil1, met, metphi);
+  float mtw2 = mt_2(ptl2,phil2, met, metphi);
+  float mtw  = std::min(mtw1,mtw2);
+  float ptdil = pt_2(ptl1,phil1,ptl2,phil2);
+  int   cha  = charge;
+  // V0 --- LPC version
+//V0-LPC  if      (nj==0 && mtw<40 && met>100 && met<200)             return 1;
+//V0-LPC  else if (nj==0 && mtw<40 && met>200)                        return 2;
+//V0-LPC  else if (nj==0 && mtw>40 && mtw<120 && met>100 && met<200)  return 3;
+//V0-LPC  else if (nj==0 && mtw>40 && mtw<120 && met>200)             return 4;
+//V0-LPC  else if (nj==0 && mtw>120 && met>100 && met<200)            return 5;
+//V0-LPC  else if (nj==0 && mtw>120 && met>200)                       return 6;
+//V0-LPC  else if (nj==1 && mtw<40 && met>100 && met<200)             return 7;
+//V0-LPC  else if (nj==1 && mtw<40 && met>200)                        return 8;
+//V0-LPC  else if (nj==1 && mtw>40 && mtw<120 && met>100 && met<200)  return 9;
+//V0-LPC  else if (nj==1 && mtw>40 && mtw<120 && met>200)             return 10;
+//V0-LPC  else if (nj==1 && mtw>120 && met>100 && met<200)            return 11;
+//V0-LPC  else if (nj==1 && mtw>120 && met>200)                       return 12;
+
+  if      (nj==0 && ptdil<75 && mtw<100 && met<100)            return 1;  //VR
+
+  else if (nj==0 && ptdil<75 && mtw<100 && met>100 && met<150 && cha == +1) return 2;
+  else if (nj==0 && ptdil<75 && mtw<100 && met>100 && met<150 && cha == -1) return 3;
+
+
+  else if (nj==0 && ptdil<75 && mtw<100 && met>150 && met < 200)            return 4;
+  else if (nj==0 && ptdil<75 && mtw<100 && met > 200)            			    return 5;
+
+  else if (nj==0 && ptdil>75 && mtw<100 && met<100)            return 6; //VR
+
+
+  else if (nj==0 && ptdil>75 && mtw<100 && met>100 && met<150 && cha == +1) return 7;
+  else if (nj==0 && ptdil>75 && mtw<100 && met>100 && met<150 && cha == -1) return 8;
+
+  else if (nj==0 && ptdil>75 && mtw<100 && met>150 && met < 200)            return 9;
+  else if (nj==0 && ptdil>75 && mtw<100 && met>200)				             return 10;
+
+  else if (nj==0 && mtw>100 && met<100)                        return 11;  //VR
+
+
+  else if (nj==0 && mtw>100 && met>100 && met<150 && cha == +1)             return 12;
+  else if (nj==0 && mtw>100 && met>100 && met<150 && cha == -1)             return 13;
+
+  else if (nj==0 && mtw>100 && met>150 && met<200)                          return 14;
+  else if (nj==0 && mtw>100 && met>200)                        			    return 15;
+
+  else if (nj==1 && ptdil<75 && mtw<100 && met<100 )            return 16;  //VR
+
+  else if (nj==1 && ptdil<75 && mtw<100 && met>100 && met<150 && cha == +1) return 17;
+  else if (nj==1 && ptdil<75 && mtw<100 && met>100 && met<150 && cha == -1) return 18;
+
+  else if (nj==1 && ptdil<75 && mtw<100 && met>150 && met<200)              return 19;
+  else if (nj==1 && ptdil<75 && mtw<100 && met>200)         		          return 20;
+
+  else if (nj==1 && ptdil>75 && mtw<100 && met<100)            return 21; //VR
+
+
+  else if (nj==1 && ptdil>75 && mtw<100 && met>100 && met<150 && cha == +1) return 22;
+  else if (nj==1 && ptdil>75 && mtw<100 && met>100 && met<150 && cha == -1) return 23;
+
+  else if (nj==1 && ptdil>75 && mtw<100 && met>150 && met < 200)            return 24;
+  else if (nj==1 && ptdil>75 && mtw<100 && met>200) 					          return 25;
+
+  else if (nj==1 && mtw>100 && met<100)                        return 26;  //VR
+
+  else if (nj==1 && mtw>100 && met>100 && met<150 && cha == +1)             return 27;
+  else if (nj==1 && mtw>100 && met>100 && met<150 && cha == -1)             return 28;
+
+  else if (nj==1 && mtw>100 && met>150 && met<200)                          return 29;
+  else if (nj==1 && mtw>100 && met>200)                   				       return 30;
+
+  return -99;  
+  
+}
+
+int SR_ewk_ss2l_byCharge3(int nj, float ptl1, float phil1, float ptl2, float phil2, float met, float metphi, int charge){
+  
+  float mtw1 = mt_2(ptl1,phil1, met, metphi);
+  float mtw2 = mt_2(ptl2,phil2, met, metphi);
+  float mtw  = std::min(mtw1,mtw2);
+  float ptdil = pt_2(ptl1,phil1,ptl2,phil2);
+  int   cha  = charge;
+
+  // V0 --- LPC version
+//V0-LPC  if      (nj==0 && mtw<40 && met>100 && met<200)             return 1;
+//V0-LPC  else if (nj==0 && mtw<40 && met>200)                        return 2;
+//V0-LPC  else if (nj==0 && mtw>40 && mtw<120 && met>100 && met<200)  return 3;
+//V0-LPC  else if (nj==0 && mtw>40 && mtw<120 && met>200)             return 4;
+//V0-LPC  else if (nj==0 && mtw>120 && met>100 && met<200)            return 5;
+//V0-LPC  else if (nj==0 && mtw>120 && met>200)                       return 6;
+//V0-LPC  else if (nj==1 && mtw<40 && met>100 && met<200)             return 7;
+//V0-LPC  else if (nj==1 && mtw<40 && met>200)                        return 8;
+//V0-LPC  else if (nj==1 && mtw>40 && mtw<120 && met>100 && met<200)  return 9;
+//V0-LPC  else if (nj==1 && mtw>40 && mtw<120 && met>200)             return 10;
+//V0-LPC  else if (nj==1 && mtw>120 && met>100 && met<200)            return 11;
+//V0-LPC  else if (nj==1 && mtw>120 && met>200)                       return 12;
+
+  if      (nj==0 && ptdil<50 && mtw<120 && met<100)            return 1;  //VR
+
+  else if (nj==0 && ptdil<50 && mtw<120 && met>100 && met<200 && cha == -1) return 2;
+  else if (nj==0 && ptdil<50 && mtw<120 && met>100 && met<200 && cha == +1) return 3;
+
+
+  else if (nj==0 && ptdil<50 && mtw<120 && met>200 && cha == -1)            return 4;
+  else if (nj==0 && ptdil<50 && mtw<120 && met>200 && cha == +1)            return 5;
+
+  else if (nj==0 && ptdil>50 && mtw<120 && met<100)            return 6; //VR
+
+
+  else if (nj==0 && ptdil>50 && mtw<120 && met>100 && met<200 && cha == -1) return 7;
+  else if (nj==0 && ptdil>50 && mtw<120 && met>100 && met<200 && cha == +1) return 8;
+
+  else if (nj==0 && ptdil>50 && mtw<120 && met>200 && cha == -1)            return 9;
+  else if (nj==0 && ptdil>50 && mtw<120 && met>200 && cha == +1)            return 10;
+
+  else if (nj==0 && mtw>120 && met<100)                        return 11;  //VR
+
+
+  else if (nj==0 && mtw>120 && met>100 && met<200 && cha == -1)             return 12;
+  else if (nj==0 && mtw>120 && met>100 && met<200 && cha == +1)             return 13;
+
+  else if (nj==0 && mtw>120 && met>200 && cha == -1)                        return 14;
+  else if (nj==0 && mtw>120 && met>200 && cha == +1)                        return 15;
+
+  else if (nj==1 && ptdil<50 && mtw<120 && met<100 )            return 16;  //VR
+
+  else if (nj==1 && ptdil<50 && mtw<120 && met>100 && met<200 && cha == -1) return 17;
+  else if (nj==1 && ptdil<50 && mtw<120 && met>100 && met<200 && cha == +1) return 18;
+
+  else if (nj==1 && ptdil<50 && mtw<120 && met>200 && cha == -1)            return 19;
+  else if (nj==1 && ptdil<50 && mtw<120 && met>200 && cha == +1)            return 20;
+
+  else if (nj==1 && ptdil>50 && mtw<120 && met<100)            return 21; //VR
+
+
+  else if (nj==1 && ptdil>50 && mtw<120 && met>100 && met<200 && cha == -1) return 22;
+  else if (nj==1 && ptdil>50 && mtw<120 && met>100 && met<200 && cha == +1) return 23;
+
+  else if (nj==1 && ptdil>50 && mtw<120 && met>200 && cha == -1)            return 24;
+  else if (nj==1 && ptdil>50 && mtw<120 && met>200 && cha == +1)            return 25;
+
+  else if (nj==1 && mtw>120 && met<100)                        return 26;  //VR
+
+  else if (nj==1 && mtw>120 && met>100 && met<200 && cha == -1)             return 27;
+  else if (nj==1 && mtw>120 && met>100 && met<200 && cha == +1)             return 28;
+
+  else if (nj==1 && mtw>120 && met>200 && cha == -1)                        return 29;
+  else if (nj==1 && mtw>120 && met>200 && cha == +1)                        return 30;
+
+  return -99;  
+  
+}
+
+
+int SR_ewk_ss2l_byCharge2(int nj, float ptl1, float phil1, float ptl2, float phil2, float met, float metphi, int charge){
+  
+  float mtw1 = mt_2(ptl1,phil1, met, metphi);
+  float mtw2 = mt_2(ptl2,phil2, met, metphi);
+  float mtw  = std::min(mtw1,mtw2);
+  float ptdil = pt_2(ptl1,phil1,ptl2,phil2);
+  int   cha  = charge;
 
   // V0 --- LPC version
 //V0-LPC  if      (nj==0 && mtw<40 && met>100 && met<200)             return 1;
@@ -433,65 +727,308 @@ int SR_ewk_ss2l(int nj, float ptl1, float phil1, float ptl2, float phil2, float 
 //V0-LPC  else if (nj==1 && mtw>120 && met>200)                       return 12;
 
   if      (nj==0 && ptdil<50 && mtw<100 && met<100)            return 1;  //VR
+
   else if (nj==0 && ptdil<50 && mtw<100 && met>100 && met<150) return 2;
-  else if (nj==0 && ptdil<50 && mtw<100 && met>150)            return 3;
-  else if (nj==0 && ptdil>50 && mtw<100 && met<100)            return 4; //VR
-  else if (nj==0 && ptdil>50 && mtw<100 && met>100 && met<150) return 5;
-  else if (nj==0 && ptdil>50 && mtw<100 && met>150)            return 6;
-  else if (nj==0 && mtw>100 && met<100)                        return 7;  //VR
-  else if (nj==0 && mtw>100 && met>100 && met<150)             return 8;
-  else if (nj==0 && mtw>100 && met>150)                        return 9;
-  else if (nj==1 && ptdil<50 && mtw<100 && met<100)            return 10;  //VR
-  else if (nj==1 && ptdil<50 && mtw<100 && met>100 && met<150) return 11;
-  else if (nj==1 && ptdil<50 && mtw<100 && met>150)            return 12;
-  else if (nj==1 && ptdil>50 && mtw<100 && met<100)            return 13; //VR
-  else if (nj==1 && ptdil>50 && mtw<100 && met>100 && met<150) return 14;
-  else if (nj==1 && ptdil>50 && mtw<100 && met>150)            return 15;
-  else if (nj==1 && mtw>100 && met<100)                        return 16;  //VR
-  else if (nj==1 && mtw>100 && met>100 && met<150)             return 17;
-  else if (nj==1 && mtw>100 && met>150)                        return 18;
+
+
+
+  else if (nj==0 && ptdil<50 && mtw<100 && met>150 && cha == -1)            return 3;
+  else if (nj==0 && ptdil<50 && mtw<100 && met>150 && cha == +1)            return 4;
+
+  else if (nj==0 && ptdil>50 && mtw<100 && met<100)            return 5; //VR
+
+
+  else if (nj==0 && ptdil>50 && mtw<100 && met>100 && met<150) return 6;
+
+
+  else if (nj==0 && ptdil>50 && mtw<100 && met>150 && cha == -1)            return 7;
+  else if (nj==0 && ptdil>50 && mtw<100 && met>150 && cha == +1)            return 8;
+
+  else if (nj==0 && mtw>100 && met<100)                        return 9;  //VR
+
+
+
+  else if (nj==0 && mtw>100 && met>100 && met<150)             return 10;
+
+  else if (nj==0 && mtw>100 && met>150 && cha == -1)                        return 11;
+  else if (nj==0 && mtw>100 && met>150 && cha == +1)                        return 12;
+
+  else if (nj==1 && ptdil<50 && mtw<100 && met<100 )            return 13;  //VR
+
+
+  else if (nj==1 && ptdil<50 && mtw<100 && met>100 && met<150) return 14;
+
+  else if (nj==1 && ptdil<50 && mtw<100 && met>150 && cha == -1)            return 15;
+  else if (nj==1 && ptdil<50 && mtw<100 && met>150 && cha == +1)            return 16;
+
+  else if (nj==1 && ptdil>50 && mtw<100 && met<100)            return 17; //VR
+
+
+  else if (nj==1 && ptdil>50 && mtw<100 && met>100 && met<150 ) return 18;
+
+  else if (nj==1 && ptdil>50 && mtw<100 && met>150 && cha == -1)            return 19;
+  else if (nj==1 && ptdil>50 && mtw<100 && met>150 && cha == +1)            return 20;
+
+  else if (nj==1 && mtw>100 && met<100)                        return 21;  //VR
+
+
+  else if (nj==1 && mtw>100 && met>100 && met<150)             return 22;
+
+  else if (nj==1 && mtw>100 && met>150 && cha == -1)                        return 23;
+  else if (nj==1 && mtw>100 && met>150 && cha == +1)                        return 24;
 
   return -99;  
   
 }
 
-int SR_ewk_ss2l_metSplit(int nj, float ptl1, float phil1, float ptl2, float phil2, float met, float metphi){
-
+int SR_ewk_ss2l_new(int nj, float ptl1, float phil1, float ptl2, float phil2, float met, float metphi, float lepcharge){
+  
   float mtw1 = mt_2(ptl1,phil1, met, metphi);
   float mtw2 = mt_2(ptl2,phil2, met, metphi);
   float mtw  = std::min(mtw1,mtw2);
-  float ptdil = pt_2(ptl1,phil1,ptl2,phil2);
+  float ptll = ptl1+ptl2;
 
-  if      (nj==0 && ptdil<50 && mtw<100 && met<100)            return 1;  //VR
-  else if (nj==0 && ptdil<50 && mtw<100 && met>100 && met<150) return 2;
-  else if (nj==0 && ptdil<50 && mtw<100 && met>150 && met < 200)            return 3;
-  else if (nj==0 && ptdil<50 && mtw<100 && met>200)            return 4;
-  else if (nj==0 && ptdil>50 && mtw<100 && met<100)            return 5; //VR
-  else if (nj==0 && ptdil>50 && mtw<100 && met>100 && met<150) return 6;
-  else if (nj==0 && ptdil>50 && mtw<100 && met>150 && met < 200)            return 7;
-  else if (nj==0 && ptdil>50 && mtw<100 && met>200)            return 8;
-  else if (nj==0 && mtw>100 && met<100)                        return 9;  //VR
-  else if (nj==0 && mtw>100 && met>100 && met<150)             return 10;
-  else if (nj==0 && mtw>100 && met>150 && met < 200)                        return 11;
-  else if (nj==0 && mtw>100 && met>200)                        return 12;
-  else if (nj==1 && ptdil<50 && mtw<100 && met<100)            return 13;  //VR
-  else if (nj==1 && ptdil<50 && mtw<100 && met>100 && met<150) return 14;
-  else if (nj==1 && ptdil<50 && mtw<100 && met>150 && met < 200)            return 15;
-  else if (nj==1 && ptdil<50 && mtw<100 && met>200)            return 16;
-  else if (nj==1 && ptdil>50 && mtw<100 && met<100)            return 17; //VR
-  else if (nj==1 && ptdil>50 && mtw<100 && met>100 && met<150) return 18;
-  else if (nj==1 && ptdil>50 && mtw<100 && met>150 && met < 200)            return 19;
-  else if (nj==1 && ptdil>50 && mtw<100 && met>200)            return 20;
-  else if (nj==1 && mtw>100 && met<100)                        return 21;  //VR
-  else if (nj==1 && mtw>100 && met>100 && met<150)             return 22;
-  else if (nj==1 && mtw>100 && met>150 && met < 200)                        return 23;
-  else if (nj==1 && mtw>100 && met>200)                        return 24;
+	if (nj == 0){
+		if (mtw < 80){
+			if (met < 100){
+				if (ptll < 200) return 1;
+				else if (ptll >200) return 2;
+			}
+			else if (100 < met && met <200){
+				if (ptll < 100) return 3;
+				else if (ptll >100 && lepcharge == -1) return 4;
+				else if (ptll >100 && lepcharge == +1) return 5;
+			}
+			else if (met > 200){
+				if (ptll < 100) return 3;
+				else if (ptll >100 && lepcharge == -1) return 4;
+				else if (ptll >100 && lepcharge == +1) return 5;
+			}
+		}
+		if (80 < mtw && mtw < 120){
+			if (met < 100){
+				if (ptll < 200) return 1;
+				else if (ptll >200) return 2;
+			}
+			else if (100 < met && met <200){
+				if (ptll < 200) return 6;
+				else if (ptll > 200 && lepcharge == -1) return 7;
+				else if (ptll > 200 && lepcharge == +1) return 8;
+			}
+			else if (met > 200){
+				if (ptll < 200) return 6;
+				else if (ptll > 200 && lepcharge == -1) return 7;
+				else if (ptll > 200 && lepcharge == +1) return 8;
+			}
+		}
+		if (120 < mtw){
+			if (met < 100){
+				if (ptll < 200) return 9;
+				else if (ptll >200) return 10;
+			}
+/*			else if (100 < met && met <200){
+				if (ptll < 100) return 22;
+				else if (ptll > 200 && lepcharge == -1) return 23;
+				else if (ptll > 200 && lepcharge == +1) return 24;
+			}*/
+			else if (met > 100){
+				if (ptll < 100) return 11;
+				else if (ptll > 100 && lepcharge == -1) return 23;
+				else if (ptll > 100 && lepcharge == +1) return 24;
+			}
+		}
+	}
 
-  return -99;
+  else if      (nj==1 && mtw > 80 && met > 200)		     			              return 11;
+  else if      (nj==1 && mtw < 80 && met > 200 && ptll >100)  			              return 12;
+  else if      (nj==1 && mtw < 80 && met > 200 && ptll <100)  			              return 13;
+  else if      (nj==1 && mtw > 120 && met < 200 && ptll >100)  			              return 14;
+  else if      (nj==1 && mtw > 120 && met < 200 && ptll <100)  			              return 15;
+  else if      (nj==1 && mtw < 80 && met < 100)  			      	              return 16;
+  else if      (nj==1 && 80 < mtw  && mtw < 120 && met < 100 && ptll < 200)  		      return 17;
+  else if      (nj==1 && 80 < mtw  && mtw < 120 && met < 100 && ptll > 200)  		      return 18;
+  else if      (nj==1 && mtw < 80 && 100 < met &&  met < 200 && ptll < 200)  		      return 19;
+  else if      (nj==1 && mtw < 80 && 100 < met &&  met < 200 && ptll > 200)  		      return 20;
+  else if      (nj==1 && 80 < mtw  && mtw < 120 && 100 < met &&  met < 200 && ptll > 200 && lepcharge == +1)  		      return 23;
+  else if      (nj==1 && 80 < mtw  && mtw < 120 && 100 < met &&  met < 200 && ptll > 100 && lepcharge == -1)  		      return 22;
 
+  else if      (nj==1 && 80 < mtw  && mtw < 120 && 100 < met &&  met < 200 && ptll < 200 && lepcharge == +1)  		      return 21;
+  else if      (nj==1 && 80 < mtw  && mtw < 120 && 100 < met &&  met < 200 && ptll < 100 && lepcharge == -1)  		      return 21;
+
+  return -99;  
+  
 }
 
+int SR_ewk_ss2l_newbis(int nj, float ptl1, float phil1, float ptl2, float phil2, float met, float metphi, float lepcharge){
+  
+  float mtw1 = mt_2(ptl1,phil1, met, metphi);
+  float mtw2 = mt_2(ptl2,phil2, met, metphi);
+  float mtw  = std::min(mtw1,mtw2);
+  float ptll = ptl1+ptl2;
 
+	if (nj == 0){
+		if (mtw < 80){
+			if (met < 100){
+				if (ptll < 200) return 1;
+				else if (ptll >200) return 2;
+			}
+			else if (100 < met && met <200){
+				if (ptll < 100) return 3;
+				else if (ptll >100 && lepcharge == -1) return 4;
+				else if (ptll >100 && lepcharge == +1) return 5;
+			}
+			else if (met > 200){
+				if (ptll < 100) return 3;
+				else if (ptll >100 && lepcharge == -1) return 4;
+				else if (ptll >100 && lepcharge == +1) return 5;
+			}
+		}
+		if (80 < mtw && mtw < 120){
+			if (met < 100){
+				if (ptll < 200) return 1;
+				else if (ptll >200) return 2;
+			}
+			else if (100 < met && met <200){
+				if (ptll < 100) return 6;
+				else if (ptll > 100 && lepcharge == -1) return 7;
+				else if (ptll > 100 && lepcharge == +1) return 8;
+			}
+			else if (met > 200){
+				if (ptll < 100) return 6;
+				else if (ptll > 100 && lepcharge == -1) return 7;
+				else if (ptll > 100 && lepcharge == +1) return 8;
+			}
+		}
+		if (120 < mtw){
+			if (met < 100){
+				if (ptll < 200) return 9;
+				else if (ptll >200) return 10;
+			}
+			else if (100 < met && met <200){
+				if (ptll < 100) return 11;
+				else if (ptll > 200 && lepcharge == -1) return 12;
+				else if (ptll > 200 && lepcharge == +1) return 13;
+			}
+			else if (met > 200){
+				if (ptll < 100) return 11;
+				else if (ptll > 100 && lepcharge == -1) return 14;
+				else if (ptll > 100 && lepcharge == +1) return 15;
+			}
+		}
+	}
+	if (nj == 1){
+		if (mtw < 80){
+			if (met < 100){
+				if (ptll < 200) return 16;
+				else if (ptll >200) return 17;
+			}
+			else if (100 < met && met <200){
+				if (ptll < 100) return 18;
+				else if (ptll >100 && lepcharge == -1) return 19;
+				else if (ptll >100 && lepcharge == +1) return 20;
+			}
+			else if (met > 200){
+				if (ptll < 100) return 18;
+				else if (ptll >100 && lepcharge == -1) return 19;
+				else if (ptll >100 && lepcharge == +1) return 20;
+			}
+		}
+		if (80 < mtw && mtw < 120){
+			if (met < 100){
+				if (ptll < 200) return 16;
+				else if (ptll >200) return 17;
+			}
+			else if (100 < met && met <200){
+				if (ptll < 100) return 21;
+				else if (ptll > 100 && lepcharge == -1) return 22;
+				else if (ptll > 100 && lepcharge == +1) return 23;
+			}
+			else if (met > 200){
+				if (ptll < 100) return 21;
+				else if (ptll > 100 && lepcharge == -1) return 22;
+				else if (ptll > 100 && lepcharge == +1) return 23;
+			}
+		}
+		if (120 < mtw){
+			if (met < 100){
+				if (ptll < 200) return 24;
+				else if (ptll >200) return 25;
+			}
+			else if (100 < met && met <200){
+				if (ptll < 100) return 26;
+				else if (ptll > 200 && lepcharge == -1) return 27;
+				else if (ptll > 200 && lepcharge == +1) return 28;
+			}
+			else if (met > 200){
+				if (ptll < 100) return 26;
+				else if (ptll > 100 && lepcharge == -1) return 29;
+				else if (ptll > 100 && lepcharge == +1) return 30;
+			}
+		}
+	 }
+  return -99;  
+  
+}
+
+int SR_ewk_ss2l_ptllmoresplit(int nj, float ptl1, float phil1, float ptl2, float phil2, float met, float metphi){
+  
+  float mtw1 = mt_2(ptl1,phil1, met, metphi);
+  float mtw2 = mt_2(ptl2,phil2, met, metphi);
+  float mtw  = std::min(mtw1,mtw2);
+  float ptdil = ptl1 + ptl2;
+
+  // V0 --- LPC version
+//V0-LPC  if      (nj==0 && mtw<40 && met>100 && met<200)             return 1;
+//V0-LPC  else if (nj==0 && mtw<40 && met>200)                        return 2;
+//V0-LPC  else if (nj==0 && mtw>40 && mtw<120 && met>100 && met<200)  return 3;
+//V0-LPC  else if (nj==0 && mtw>40 && mtw<120 && met>200)             return 4;
+//V0-LPC  else if (nj==0 && mtw>120 && met>100 && met<200)            return 5;
+//V0-LPC  else if (nj==0 && mtw>120 && met>200)                       return 6;
+//V0-LPC  else if (nj==1 && mtw<40 && met>100 && met<200)             return 7;
+//V0-LPC  else if (nj==1 && mtw<40 && met>200)                        return 8;
+//V0-LPC  else if (nj==1 && mtw>40 && mtw<120 && met>100 && met<200)  return 9;
+//V0-LPC  else if (nj==1 && mtw>40 && mtw<120 && met>200)             return 10;
+//V0-LPC  else if (nj==1 && mtw>120 && met>100 && met<200)            return 11;
+//V0-LPC  else if (nj==1 && mtw>120 && met>200)                       return 12;
+
+  if (nj== 0){      
+	  if(mtw < 100){
+		  if (ptdil<50 && met<100)                 return 1;  //VR
+		  else if (ptdil<50 && met>100 && met<150) return 2;
+  		  else if (ptdil<50 && met>150)            return 3;
+  		  else if (ptdil>50 && met<100)            return 4; //VR
+  	     else if (ptdil>50 && met>100 && met<150) return 5;
+  		  else if (ptdil>50 && met>150)            return 6;
+		}  	  
+
+	  else if(mtw > 100){
+		  if (met<100)                      	    return 7;  //VR
+  		  else if (met>100 && met<150)             return 8;
+  		  else if (met>150 && ptdil<50)                        return 9;
+  		  else if (met>150 && ptdil>50)                        return 19;
+	  }
+  }
+
+  else if (nj==1){
+	  if(mtw < 100){
+		  if (ptdil<50 && met<100)                 return 10;  //VR
+		  else if (ptdil<50 && met>100 && met<150) return 11;
+  		  else if (ptdil<50 && met>150)            return 12;
+  		  else if (ptdil>50 && met<100)            return 13; //VR
+  	     else if (ptdil>50 && met>100 && met<150) return 14;
+  		  else if (ptdil>50 && met>150)            return 15;
+		}  	  
+
+	  else if(mtw > 100){
+		  if (met<100)                      	    return 16;  //VR
+  		  else if (met>100 && met<150)             return 17;
+  		  else if (met>150 && ptdil<50)                        return 18;
+  		  else if (met>150 && ptdil>50)                        return 20;
+	  }
+  }
+  return -99;  
+  
+}
 
 int SR_ewk_ss2l_HH25(int nj, float ptl1, float phil1, float ptl2, float phil2, float met, float metphi){
   float mtw1 = mt_2(ptl1,phil1, met, metphi);
@@ -519,103 +1056,6 @@ int SR_ewk_ss2l_HH25(int nj, float ptl1, float phil1, float ptl2, float phil2, f
   else if (nj==1 && mtw>100 && met>150)                        return 18;
   return -99;  
 }
-
-int SR20_ewk_ss2l_HH25(int nj, float ptl1, float phil1, float ptl2, float phil2, float met, float metphi){
-  float mtw1 = mt_2(ptl1,phil1, met, metphi);
-  float mtw2 = mt_2(ptl2,phil2, met, metphi);
-  float mtw  = std::min(mtw1,mtw2);
-  float ptdil = pt_2(ptl1,phil1,ptl2,phil2);
-  bool HH = (ptl1 > 25 && ptl2 > 25);
-  if      (nj==0 && !HH && mtw<100 && met<100)            return 1;  //VR
-  else if (nj==0 && !HH && mtw<100 && met>100 && met<150) return 2;
-  else if (nj==0 && !HH && mtw<100 && met>150)            return 3;
-  else if (nj==0 && HH && mtw<100 && met<100)            return 4; //VR
-  else if (nj==0 && HH && mtw<100 && met>100 && met<150) return 5;
-  else if (nj==0 && HH && mtw<100 && met>150)            return 6;
-  else if (nj==0 && mtw>100 && met<100)                        return 7;  //VR
-  else if (nj==0 && mtw>100 && met>100 && met<150)             return 8;
-  else if (nj==0 && mtw>100 && met>150 && !HH)                        return 9;
-  else if (nj==0 && mtw>100 && met>150 &&  HH)                        return 10;
-  else if (nj==1 && !HH && mtw<100 && met<100)            return 11;  //VR
-  else if (nj==1 && !HH && mtw<100 && met>100 && met<150) return 12;
-  else if (nj==1 && !HH && mtw<100 && met>150)            return 13;
-  else if (nj==1 && HH && mtw<100 && met<100)            return 14; //VR
-  else if (nj==1 && HH && mtw<100 && met>100 && met<150) return 15;
-  else if (nj==1 && HH && mtw<100 && met>150)            return 16;
-  else if (nj==1 && mtw>100 && met<100)                        return 17;  //VR
-  else if (nj==1 && mtw>100 && met>100 && met<150)             return 18;
-  else if (nj==1 && mtw>100 && met>150 && !HH)                        return 19;
-  else if (nj==1 && mtw>100 && met>150 &&  HH)                        return 20;
-  return -99;
-}
-
-
-int SR24_ewk_ss2l_HH25(int nj, float ptl1, float phil1, float ptl2, float phil2, float met, float metphi){
-  float mtw1 = mt_2(ptl1,phil1, met, metphi);
-  float mtw2 = mt_2(ptl2,phil2, met, metphi);
-  float mtw  = std::min(mtw1,mtw2);
-  float ptdil = pt_2(ptl1,phil1,ptl2,phil2);
-  bool HH = (ptl1 > 25 && ptl2 > 25);
-  if      (nj==0 && !HH && mtw<100 && met<100)            return 1;  //VR
-  else if (nj==0 && !HH && mtw<100 && met>100 && met<150) return 2;
-  else if (nj==0 && !HH && mtw<100 && met>150)            return 3;
-  else if (nj==0 && HH && mtw<100 && met<100)            return 4; //VR
-  else if (nj==0 && HH && mtw<100 && met>100 && met<150) return 5;
-  else if (nj==0 && HH && mtw<100 && met>150)            return 6;
-  else if (nj==0 && mtw>100 && met<100 && !HH)                        return 7;  //VR
-  else if (nj==0 && mtw>100 && met<100 && HH)                        return 8;  //VR
-  else if (nj==0 && mtw>100 && met>100 && met<150 && !HH)             return 9;
-  else if (nj==0 && mtw>100 && met>100 && met<150 && HH)             return 10;
-  else if (nj==0 && mtw>100 && met>150 && !HH)                        return 11;
-  else if (nj==0 && mtw>100 && met>150 && HH)                        return 12;
-  else if (nj==1 && !HH && mtw<100 && met<100)            return 13;  //VR
-  else if (nj==1 && !HH && mtw<100 && met>100 && met<150) return 14;
-  else if (nj==1 && !HH && mtw<100 && met>150)            return 15;
-  else if (nj==1 && HH && mtw<100 && met<100)            return 16; //VR
-  else if (nj==1 && HH && mtw<100 && met>100 && met<150) return 17;
-  else if (nj==1 && HH && mtw<100 && met>150)            return 18;
-  else if (nj==1 && mtw>100 && met<100 && !HH)                        return 19;  //VR
-  else if (nj==1 && mtw>100 && met<100 && HH)                        return 20;  //VR
-  else if (nj==1 && mtw>100 && met>100 && met<150 && !HH)             return 21;
-  else if (nj==1 && mtw>100 && met>100 && met<150 && HH)             return 22;
-  else if (nj==1 && mtw>100 && met>150 && !HH)                        return 23;
-  else if (nj==1 && mtw>100 && met>150 && HH)                        return 24;
-  return -99;
-}
-
-int SR24_ewk_ss2l_HH30(int nj, float ptl1, float phil1, float ptl2, float phil2, float met, float metphi){
-  float mtw1 = mt_2(ptl1,phil1, met, metphi);
-  float mtw2 = mt_2(ptl2,phil2, met, metphi);
-  float mtw  = std::min(mtw1,mtw2);
-  float ptdil = pt_2(ptl1,phil1,ptl2,phil2);
-  bool HH = (ptl1 > 30 && ptl2 > 30);
-  if      (nj==0 && !HH && mtw<100 && met<100)            return 1;  //VR
-  else if (nj==0 && !HH && mtw<100 && met>100 && met<150) return 2;
-  else if (nj==0 && !HH && mtw<100 && met>150)            return 3;
-  else if (nj==0 && HH && mtw<100 && met<100)            return 4; //VR
-  else if (nj==0 && HH && mtw<100 && met>100 && met<150) return 5;
-  else if (nj==0 && HH && mtw<100 && met>150)            return 6;
-  else if (nj==0 && mtw>100 && met<100 && !HH)                        return 7;  //VR
-  else if (nj==0 && mtw>100 && met<100 && HH)                        return 8;  //VR
-  else if (nj==0 && mtw>100 && met>100 && met<150 && !HH)             return 9;
-  else if (nj==0 && mtw>100 && met>100 && met<150 && HH)             return 10;
-  else if (nj==0 && mtw>100 && met>150 && !HH)                        return 11;
-  else if (nj==0 && mtw>100 && met>150 && HH)                        return 12;
-  else if (nj==1 && !HH && mtw<100 && met<100)            return 13;  //VR
-  else if (nj==1 && !HH && mtw<100 && met>100 && met<150) return 14;
-  else if (nj==1 && !HH && mtw<100 && met>150)            return 15;
-  else if (nj==1 && HH && mtw<100 && met<100)            return 16; //VR
-  else if (nj==1 && HH && mtw<100 && met>100 && met<150) return 17;
-  else if (nj==1 && HH && mtw<100 && met>150)            return 18;
-  else if (nj==1 && mtw>100 && met<100 && !HH)                        return 19;  //VR
-  else if (nj==1 && mtw>100 && met<100 && HH)                        return 20;  //VR
-  else if (nj==1 && mtw>100 && met>100 && met<150 && !HH)             return 21;
-  else if (nj==1 && mtw>100 && met>100 && met<150 && HH)             return 22;
-  else if (nj==1 && mtw>100 && met>150 && !HH)                        return 23;
-  else if (nj==1 && mtw>100 && met>150 && HH)                        return 24;
-  return -99;
-}
-
 
 int SR_ewk_ss2l_HH30(int nj, float ptl1, float phil1, float ptl2, float phil2, float met, float metphi){
   float mtw1 = mt_2(ptl1,phil1, met, metphi);
@@ -742,7 +1182,6 @@ int ttH_catIndex_3l(int LepGood1_charge, int LepGood2_charge, int LepGood3_charg
 }
 
 
-//PU weights
 
 #include <assert.h>
 #include "TH2F.h"
@@ -753,6 +1192,214 @@ int ttH_catIndex_3l(int LepGood1_charge, int LepGood2_charge, int LepGood3_charg
 float _puw2016_nTrueInt_13fb[60] = {0.0004627598152210959, 0.014334910915287028, 0.01754727657726197, 0.03181477917631854, 0.046128282569231016, 0.03929080994013006, 0.057066019809589925, 0.19570744862221007, 0.3720256062526554, 0.6440076202772811, 0.9218024454406528, 1.246743510634073, 1.5292543296414058, 1.6670061646418215, 1.7390553377117133, 1.6114721876895595, 1.4177294439817985, 1.420132866045718, 1.3157656415540477, 1.3365188060918483, 1.1191478126677334, 0.9731079434848392, 0.9219564145009487, 0.8811793391804676, 0.7627315352977334, 0.7265186492688713, 0.558602385324645, 0.4805954159733825, 0.34125298049234554, 0.2584848657646724, 0.1819638766151892, 0.12529545619337035, 0.11065705912071645, 0.08587356267495487, 0.09146322371620583, 0.11885517671051576, 0.1952483711863489, 0.23589115679998116, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
 float puw2016_nTrueInt_13fb(int nTrueInt) { if (nTrueInt<60) return _puw2016_nTrueInt_13fb[nTrueInt]; else return 0; }
 
+TFile* puw2016_ICHEP = NULL;
+TFile* puw2016_ICHEP_Up = NULL;
+TFile* puw2016_ICHEP_Dn = NULL;
+TH1F* _puw2016_nInt_ICHEP = NULL;
+TH1F* _puw2016_nInt_ICHEP_Up = NULL;
+TH1F* _puw2016_nInt_ICHEP_Dn = NULL;
+float puw2016_nInt_ICHEP(float nInt, int var=0) { 
+  
+  if (var==0) { 
+    if (!_puw2016_nInt_ICHEP){ 
+      puw2016_ICHEP = new TFile(CMSSW_BASE+"/src/CMGTools/TTHAnalysis/data/pileup/puWeights_12fb_63mb.root", "read");
+      _puw2016_nInt_ICHEP = (TH1F*) (puw2016_ICHEP->Get("puw"));
+    }
+    return _puw2016_nInt_ICHEP->GetBinContent(_puw2016_nInt_ICHEP->FindBin(nInt));
+  }
+  else if (var==1) { 
+    if (!puw2016_ICHEP_Up) {
+      puw2016_ICHEP_Up = new TFile(CMSSW_BASE+"/src/CMGTools/TTHAnalysis/data/pileup/puWeights_12fb_63mb_Up.root", "read");
+      _puw2016_nInt_ICHEP_Up = (TH1F*) (puw2016_ICHEP_Up->Get("puw"));
+    }
+    return _puw2016_nInt_ICHEP_Up->GetBinContent(_puw2016_nInt_ICHEP_Up->FindBin(nInt));
+  }
+  else if (var==-1) {
+    if (!puw2016_ICHEP_Dn) {
+      puw2016_ICHEP_Dn = new TFile(CMSSW_BASE+"/src/CMGTools/TTHAnalysis/data/pileup/puWeights_12fb_63mb_Down.root", "read");
+      _puw2016_nInt_ICHEP_Dn = (TH1F*) (puw2016_ICHEP_Dn->Get("puw"));
+    }
+    return _puw2016_nInt_ICHEP_Dn->GetBinContent(_puw2016_nInt_ICHEP_Dn->FindBin(nInt));
+  }
+  cout <<"[WARNING!!!]  don't know what to do with PUweight, please check!! ";
+  return -9999.;
+}
+
+TFile *_file_recoToLoose_leptonSF_mu1_b = NULL;
+TFile *_file_recoToLoose_leptonSF_mu1_e = NULL;
+TFile *_file_recoToLoose_leptonSF_mu2 = NULL;
+TFile *_file_recoToLoose_leptonSF_mu3 = NULL;
+TGraphAsymmErrors *_histo_recoToLoose_leptonSF_mu1_b = NULL;
+TGraphAsymmErrors *_histo_recoToLoose_leptonSF_mu1_e = NULL;
+TH2F *_histo_recoToLoose_leptonSF_mu2 = NULL;
+TGraphAsymmErrors *_histo_recoToLoose_leptonSF_mu3 = NULL;
+TFile *_file_recoToLoose_leptonSF_el = NULL;
+TH2F *_histo_recoToLoose_leptonSF_el1 = NULL;
+TH2F *_histo_recoToLoose_leptonSF_el2 = NULL;
+TH2F *_histo_recoToLoose_leptonSF_el3 = NULL;
+TFile *_file_recoToLoose_leptonSF_gsf = NULL;
+TH2F *_histo_recoToLoose_leptonSF_gsf = NULL;
+
+float _get_recoToLoose_leptonSF_ttH(int pdgid, float pt, float eta, int nlep, float var){
+
+  if (var!=0 && abs(pdgid)!=11) assert(0); // NOT IMPLEMENTED
+
+  if (!_histo_recoToLoose_leptonSF_mu1_b) {
+    _file_recoToLoose_leptonSF_mu1_b = new TFile("../../data/leptonSF/mu_ttH_presel_barrel.root","read");
+    _file_recoToLoose_leptonSF_mu1_e = new TFile("../../data/leptonSF/mu_ttH_presel_endcap.root","read");
+    _file_recoToLoose_leptonSF_mu2 = new TFile("../../data/leptonSF/MuonID_Z_RunBCD_prompt80X_7p65_looseID.root","read");
+    _file_recoToLoose_leptonSF_mu3 = new TFile("../../data/leptonSF/ratios_HIP_trkEff.root","read");
+    _histo_recoToLoose_leptonSF_mu1_b = (TGraphAsymmErrors*)(_file_recoToLoose_leptonSF_mu1_b->Get("ratio"));
+    _histo_recoToLoose_leptonSF_mu1_e = (TGraphAsymmErrors*)(_file_recoToLoose_leptonSF_mu1_e->Get("ratio"));
+    _histo_recoToLoose_leptonSF_mu2 = (TH2F*)(_file_recoToLoose_leptonSF_mu2->Get("pt_abseta_ratio_MC_NUM_LooseID_DEN_genTracks_PAR_pt_spliteta_bin1"));
+    _histo_recoToLoose_leptonSF_mu3 = (TGraphAsymmErrors*)(_file_recoToLoose_leptonSF_mu3->Get("ratio_eta"));
+  }
+  if (!_histo_recoToLoose_leptonSF_el1) {
+    _file_recoToLoose_leptonSF_el = new TFile("../../data/leptonSF/el_scaleFactors_20160724.root","read");
+    _histo_recoToLoose_leptonSF_el1 = (TH2F*)(_file_recoToLoose_leptonSF_el->Get("GsfElectronToFOID2D"));
+    _histo_recoToLoose_leptonSF_el2 = (TH2F*)(_file_recoToLoose_leptonSF_el->Get("MVAVLooseElectronToMini4"));
+    _histo_recoToLoose_leptonSF_el3 = (TH2F*)(_file_recoToLoose_leptonSF_el->Get("MVAVLooseElectronToConvIHit1"));
+  }
+  if (!_histo_recoToLoose_leptonSF_gsf) {
+    _file_recoToLoose_leptonSF_gsf = new TFile("../../data/leptonSF/el_scaleFactors_gsf.root","read");
+    _histo_recoToLoose_leptonSF_gsf = (TH2F*)(_file_recoToLoose_leptonSF_gsf->Get("EGamma_SF2D"));
+  }
+
+  if (abs(pdgid)==13){
+
+    TGraphAsymmErrors *hist1 = (fabs(eta)<1.2) ? _histo_recoToLoose_leptonSF_mu1_b : _histo_recoToLoose_leptonSF_mu1_e;
+    float pt1 = std::max(float(hist1->GetXaxis()->GetXmin()+1e-5), std::min(float(hist1->GetXaxis()->GetXmax()-1e-5), pt));
+    float out = hist1->Eval(pt1);
+
+    TH2F *hist = _histo_recoToLoose_leptonSF_mu2;
+    int ptbin  = std::max(1, std::min(hist->GetNbinsX(), hist->GetXaxis()->FindBin(pt)));
+    int etabin = std::max(1, std::min(hist->GetNbinsY(), hist->GetYaxis()->FindBin(fabs(eta))));
+    out *= hist->GetBinContent(ptbin,etabin);
+
+    hist1 = _histo_recoToLoose_leptonSF_mu3;
+    float eta1 = std::max(float(hist1->GetXaxis()->GetXmin()+1e-5), std::min(float(hist1->GetXaxis()->GetXmax()-1e-5), eta));
+    out *= hist1->Eval(eta1);
+
+    return out;
+
+  }
+  if (abs(pdgid)==11){
+    TH2F *hist = _histo_recoToLoose_leptonSF_el1;
+    int ptbin  = std::max(1, std::min(hist->GetNbinsX(), hist->GetXaxis()->FindBin(pt)));
+    int etabin = std::max(1, std::min(hist->GetNbinsY(), hist->GetYaxis()->FindBin(fabs(eta))));
+    float out = hist->GetBinContent(ptbin,etabin)+var*hist->GetBinError(ptbin,etabin);
+    hist = _histo_recoToLoose_leptonSF_el2;
+    ptbin  = std::max(1, std::min(hist->GetNbinsX(), hist->GetXaxis()->FindBin(pt)));
+    etabin = std::max(1, std::min(hist->GetNbinsY(), hist->GetYaxis()->FindBin(fabs(eta))));
+    out *= hist->GetBinContent(ptbin,etabin)+var*hist->GetBinError(ptbin,etabin);
+    hist = _histo_recoToLoose_leptonSF_el3;
+    ptbin  = std::max(1, std::min(hist->GetNbinsX(), hist->GetXaxis()->FindBin(pt)));
+    etabin = std::max(1, std::min(hist->GetNbinsY(), hist->GetYaxis()->FindBin(fabs(eta))));
+    out *= hist->GetBinContent(ptbin,etabin)+var*hist->GetBinError(ptbin,etabin);
+
+    hist = _histo_recoToLoose_leptonSF_gsf;
+    etabin = std::max(1, std::min(hist->GetNbinsX(), hist->GetXaxis()->FindBin(eta))); // careful, different convention
+    ptbin  = std::max(1, std::min(hist->GetNbinsY(), hist->GetYaxis()->FindBin(pt)));
+    out *= hist->GetBinContent(etabin,ptbin);
+
+    return out;
+  }
+
+  assert(0);
+  return -999;
+
+}
+
+TFile *_file_looseToTight_leptonSF_mu_2lss = NULL;
+TH2F *_histo_looseToTight_leptonSF_mu_2lss = NULL;
+TFile *_file_looseToTight_leptonSF_el_2lss = NULL;
+TH2F *_histo_looseToTight_leptonSF_el_2lss = NULL;
+TFile *_file_looseToTight_leptonSF_mu_3l = NULL;
+TH2F *_histo_looseToTight_leptonSF_mu_3l = NULL;
+TFile *_file_looseToTight_leptonSF_el_3l = NULL;
+TH2F *_histo_looseToTight_leptonSF_el_3l = NULL;
+
+float _get_looseToTight_leptonSF_ttH(int pdgid, float pt, float eta, int nlep, float var){
+
+  if (var!=0) assert(0); // NOT IMPLEMENTED
+
+  if (!_histo_looseToTight_leptonSF_mu_2lss) {
+    _file_looseToTight_leptonSF_mu_2lss = new TFile("../../data/lepMVAEffSF_m_2lss.root","read");
+    _histo_looseToTight_leptonSF_mu_2lss = (TH2F*)(_file_looseToTight_leptonSF_mu_2lss->Get("sf"));
+  }
+  if (!_histo_looseToTight_leptonSF_el_2lss) {
+    _file_looseToTight_leptonSF_el_2lss = new TFile("../../data/lepMVAEffSF_e_2lss.root","read");
+    _histo_looseToTight_leptonSF_el_2lss = (TH2F*)(_file_looseToTight_leptonSF_el_2lss->Get("sf"));
+  }
+  if (!_histo_looseToTight_leptonSF_mu_3l) {
+    _file_looseToTight_leptonSF_mu_3l = new TFile("../../data/lepMVAEffSF_m_3l.root","read");
+    _histo_looseToTight_leptonSF_mu_3l = (TH2F*)(_file_looseToTight_leptonSF_mu_3l->Get("sf"));
+  }
+  if (!_histo_looseToTight_leptonSF_el_3l) {
+    _file_looseToTight_leptonSF_el_3l = new TFile("../../data/lepMVAEffSF_e_3l.root","read");
+    _histo_looseToTight_leptonSF_el_3l = (TH2F*)(_file_looseToTight_leptonSF_el_3l->Get("sf"));
+  }
+
+  TH2F *hist = 0;
+  if (abs(pdgid)==13) hist = (nlep>2) ? _histo_looseToTight_leptonSF_mu_3l : _histo_looseToTight_leptonSF_mu_2lss;
+  else if (abs(pdgid)==11) hist = (nlep>2) ? _histo_looseToTight_leptonSF_el_3l : _histo_looseToTight_leptonSF_el_2lss;
+  assert(hist);
+  int ptbin  = std::max(1, std::min(hist->GetNbinsX(), hist->GetXaxis()->FindBin(pt)));
+  int etabin = std::max(1, std::min(hist->GetNbinsY(), hist->GetYaxis()->FindBin(fabs(eta))));
+  return hist->GetBinContent(ptbin,etabin);
+
+}
+
+float leptonSF_ttH(int pdgid, float pt, float eta, int nlep, float var=0){
+
+  float recoToLoose = _get_recoToLoose_leptonSF_ttH(pdgid,pt,eta,nlep,var);
+  float looseToTight = _get_looseToTight_leptonSF_ttH(pdgid,pt,eta,nlep,var);
+  float res = recoToLoose*looseToTight;
+  assert (res>0);
+  return res;
+
+}
+
+TFile *file_triggerSF_ttH = NULL;
+TH2Poly* t2poly_triggerSF_ttH_mm = NULL;
+TH2Poly* t2poly_triggerSF_ttH_ee = NULL;
+TH2Poly* t2poly_triggerSF_ttH_em = NULL;
+TH2Poly* t2poly_triggerSF_ttH_3l = NULL;
+
+float triggerSF_ttH(int pdgid1, float pt1, int pdgid2, float pt2, int nlep, float var=0){
+  if (!file_triggerSF_ttH) {
+    file_triggerSF_ttH = new TFile("../../data/triggerSF/trig_eff_map_v4.root");
+    t2poly_triggerSF_ttH_mm = (TH2Poly*)(file_triggerSF_ttH->Get("SSuu2DPt_effic"));
+    t2poly_triggerSF_ttH_ee = (TH2Poly*)(file_triggerSF_ttH->Get("SSee2DPt__effic"));
+    t2poly_triggerSF_ttH_em = (TH2Poly*)(file_triggerSF_ttH->Get("SSeu2DPt_effic"));
+    t2poly_triggerSF_ttH_3l = (TH2Poly*)(file_triggerSF_ttH->Get("__3l2DPt_effic"));
+    if (!(t2poly_triggerSF_ttH_mm && t2poly_triggerSF_ttH_ee && t2poly_triggerSF_ttH_em && t2poly_triggerSF_ttH_3l)) {
+	std::cout << "Impossible to load trigger scale factors!" << std::endl;
+	file_triggerSF_ttH->ls();
+	file_triggerSF_ttH = NULL;
+      }
+  }
+  TH2Poly* hist = NULL;
+  if (nlep==2){
+    if (abs(pdgid1)==13 && abs(pdgid2)==13) hist = t2poly_triggerSF_ttH_mm;
+    else if (abs(pdgid1)==11 && abs(pdgid2)==11) hist = t2poly_triggerSF_ttH_ee;
+    else hist = t2poly_triggerSF_ttH_em;
+  }
+  else if (nlep==3) hist = t2poly_triggerSF_ttH_3l;
+  else std::cout << "Wrong options to trigger scale factors" << std::endl;
+  pt1 = std::max(float(hist->GetXaxis()->GetXmin()+1e-5), std::min(float(hist->GetXaxis()->GetXmax()-1e-5), pt1));
+  pt2 = std::max(float(hist->GetYaxis()->GetXmin()+1e-5), std::min(float(hist->GetYaxis()->GetXmax()-1e-5), pt2));
+  int bin = hist->FindBin(pt1,pt2);
+  float eff = hist->GetBinContent(bin) + var * hist->GetBinError(bin);
+
+  if (nlep>2) return eff;
+  int cat = (abs(pdgid1)==11) + (abs(pdgid2)==11);
+  if (cat==2) return eff*1.02;
+  else if (cat==1) return eff*1.02;
+  else return eff*1.01;
+
+
+}
 
 float mass_3_cheap(float pt1, float eta1, float pt2, float eta2, float phi2, float pt3, float eta3, float phi3) {
     typedef ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double> > PtEtaPhiMVector;

@@ -1,0 +1,7 @@
+dphimumu    : deltaPhi(LepGood1_phi,LepGood2_phi):  30, -3.14, 3.14;  XTitle="#Delta #phi_{#mu#mu} [rad]", Legend='TL', Logy, YMax=20000, YMin=0.001
+
+dphimumugrad    : deltaPhi(LepGood1_phi,LepGood2_phi)*360/(2*3.141592):  30, -180, 180;  XTitle="#Delta #phi_{#mu#mu} [^{o}]", Legend='TL', Logy, YMax=20000, YMin=0.001
+
+dphimumu_m60    : deltaPhi(LepGood1_phi,LepGood2_phi)*360/(2*3.141592):  22, -66, 66;  XTitle="#Delta #phi(#mu#mu) [^{o}]", Legend='TL', Logy
+
+
