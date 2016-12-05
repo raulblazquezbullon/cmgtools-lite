@@ -1,15 +1,16 @@
 
-INPUTDIR="/pool/ciencias/HeppyTrees/RA7/estructura/trees_8011_July5_allscans/"
-#INPUTDIR="/pool/ciencias/HeppyTrees/RA7/estructura/prueba/"
+#INPUTDIR="/pool/ciencias/HeppyTrees/RA7/estructura/trees_8011_July5_allscans/"
+INPUTDIR="/pool/ciencias/HeppyTrees/RA7/estructura/prueba/"
 OUTPUTDIR="/pool/ciencias/HeppyTrees/RA7/estructura/testbtag/"
 WEBDIR="/nfs/fanae/user/vischia/www/taus/"
 
 if [ "$1" == "ft" ]; then
     MODULE=""    
     PRETEND=" -q local --direct --pretend"
-    #PRETEND=" -q batch --direct "
+    PRETEND=" -q batch --direct "
     ONLY=" --accept WZZ "
     ONLY=" --accept WJetsToLNu " 
+    ONLY=" "
     if [ "$2" == "btag" ]; then
         MODULE="eventBTagWeight"
         #python susy-interface/friendmaker.py 3l 3lA ${INPUTDIR} ${INPUTDIR} --modules eventBTagWeight -q batch 
@@ -22,7 +23,9 @@ if [ "$1" == "ft" ]; then
             MODULE="tauFakesBuilderEWKMini"
         elif [ "$2" == "tauRecl" ]; then
             MODULE="tauFakesBuilderEWKRecl"
-        elif [ "$2" == "stdReCleaner" ]; then
+        elif [ "$2" == "stdReCleaner2L" ]; then
+            MODULE="leptonJetReCleanerSusyEWK2L"
+        elif [ "$2" == "stdReCleaner3L" ]; then
             MODULE="leptonJetReCleanerSusyEWK3L"
         elif [ "$2" == "leptonBuilder" ]; then
             MODULE="leptonBuilderEWK"
@@ -39,11 +42,19 @@ elif [ "$1" == "plot" ]; then
     ACTION=""
     SUBACTION=""
     # ACTION can be generalplots or tauopt or crtau
+    
+    if [ "$2" == "" ]; then
+        echo "ACTION is empty. It can be generalplots or tauopt or crtau or crconv"
+    fi
     if [ "$2" != "" ]; then
         ACTION=" -a ${2}"
         if [ "$3" != "" ]; then
             SUBACTION=" -s ${3} "
         fi
+    fi
+
+    if [ "$ACTION" == "crconv" ]; then
+        WEBDIR="/nfs/fanae/user/vischia/www/conversions/"
     fi
     PRETEND=" --pretend  "
     PRETEND=""

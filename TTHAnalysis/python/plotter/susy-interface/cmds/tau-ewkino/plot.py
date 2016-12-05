@@ -100,7 +100,7 @@ elif(action=='crtau'):
         #mca='susy-ewkino/crwz/mca_crwz_forScan_12p9.txt'
         plots='susy-ewkino/3l/taus/plots_taus.txt'
         mcc='susy-ewkino/3l/mcc_ewkino.txt'
-        mcc='susy-ewkino/crwz/lepchoice-crwz-FO.txt'
+        #mcc='susy-ewkino/crwz/lepchoice-crwz-FO.txt'
         trigdef='susy-ewkino/mcc_triggerdefs.txt'
         functions='susy-ewkino/3l/functionsEWK.cc'
         toplot='--sP \'MET\''
@@ -126,8 +126,7 @@ elif(action=='crtau'):
         # When I will plot signal region, reimplement the {blind} part
         cmd = "python mcPlots.py {mca} {cuts} {plots} -P {inputDir} --Fs {inputDir}/leptonJetReCleanerSusyEWK2L --Fs {inputDir}/leptonBuilderEWK --pdir {outputDir} -j {jei} -l {lumi} --s2v --tree treeProducerSusyMultilepton --mcc {mcc} --mcc {trigdef} -f  --plotgroup fakes_appldata+=promptsub  --legendWidth 0.20 --legendFontSize 0.035 --showMCError -f {toplot} --showRatio --perBin --legendHeader \'EWK #tau_{{h}} CR\' --maxRatioRange 0.5 1.5 --fixRatioRange --ratioOffset 0.03  --load-macro {functions}".format(mca=mca,cuts=cuts,plots=plots,inputDir=inputDir,outputDir=out,jei=jei,lumi=lumi,mcc=mcc,trigdef=trigdef,toplot=toplot,functions=functions)
         #print cmd
-        
-        #command(cmd, pretend)
+        command(cmd, pretend)
         os.system('cp {index} {outputDir}'.format(index=index,outputDir=out))
 
         cuts='susy-ewkino/3l/taus/cuts_ttbar.txt'
@@ -136,7 +135,7 @@ elif(action=='crtau'):
         # When I will plot signal region, reimplement the {blind} part
         cmd = "python mcPlots.py {mca} {cuts} {plots} -P {inputDir} --Fs {inputDir}/leptonJetReCleanerSusyEWK2L --Fs {inputDir}/leptonBuilderEWK --pdir {outputDir} -j {jei} -l {lumi} --s2v --tree treeProducerSusyMultilepton --mcc {mcc} --mcc {trigdef} -f  --plotgroup fakes_appldata+=promptsub  --legendWidth 0.20 --legendFontSize 0.035 --showMCError -f {toplot} --showRatio --perBin --legendHeader \'EWK #tau_{{h}} CR\' --maxRatioRange 0.5 1.5 --fixRatioRange --ratioOffset 0.03  --load-macro {functions}".format(mca=mca,cuts=cuts,plots=plots,inputDir=inputDir,outputDir=out,jei=jei,lumi=lumi,mcc=mcc,trigdef=trigdef,toplot=toplot,functions=functions)
         #print cmd
-        #command(cmd, pretend)
+        command(cmd, pretend)
         #os.system('cp {index} {outputDir}'.format(index=index,outputDir=out))
 
         cuts='susy-ewkino/3l/taus/cuts_wjet.txt'
@@ -147,5 +146,62 @@ elif(action=='crtau'):
         #print cmd
         command(cmd, pretend)
         os.system('cp {index} {outputDir}'.format(index=index,outputDir=out))
+
+elif(action=='crconv'):
+        print 'Now plotting CRs for estimating fakes from conversions'
+        plots='susy-ewkino/3l/plots_ewkino.txt'
+        mcc='susy-ewkino/3l/mcc_ewkino.txt'
+        trigdef='susy-ewkino/mcc_triggerdefs.txt'
+        functions='susy-ewkino/3l/functionsEWK.cc'
+        toplot='--sP \'MET\''
+        if(subaction!=''):
+                toplot='--sP \'{toplot}\''.format(toplot=subaction)
+        if(subaction=='all'):
+                toplot=''
+        batch=' -q batch '
+        batch=''
+        direct=' --pretend '
+        direct=' '
+        jei='6'
+        jei='60'
+        lumi='1.0'
+
+
+        cuts='susy-ewkino/crconv/cuts_convs_3l.txt'
+        mca='susy-ewkino/crconv/mca-3l-mc-conv.txt'
+        out=outputDir+'3l_mc_conv/'
+        clean(out)
+        os.system('cp {index} {outputDir}'.format(index=index,outputDir=out))
+        cmd = "python mcPlots.py {mca} {cuts} {plots} -P {inputDir} --Fs {inputDir}/leptonJetReCleanerSusyEWK3L --Fs {inputDir}/leptonBuilderEWK --pdir {outputDir} -j {jei} -l {lumi} --s2v --tree treeProducerSusyMultilepton --mcc {mcc} --mcc {trigdef} -f  --plotgroup fakes_appldata+=promptsub  --legendWidth 0.20 --legendFontSize 0.035 --showMCError -f {toplot} --showRatio --perBin --legendHeader \'EWK #tau_{{h}} CR\' --maxRatioRange 0.5 1.5 --fixRatioRange --ratioOffset 0.03  --load-macro {functions}".format(mca=mca,cuts=cuts,plots=plots,inputDir=inputDir,outputDir=out,jei=jei,lumi=lumi,mcc=mcc,trigdef=trigdef,toplot=toplot,functions=functions)
+        print cmd
+        command(cmd, pretend)
+        os.system('cp {index} {outputDir}'.format(index=index,outputDir=out))
+        cuts='susy-ewkino/crconv/cuts_convs_3l.txt'
+        mca='susy-ewkino/crconv/mca-3l-mcdata-conv.txt'
+        out=outputDir+'3l_mcdata_conv/'
+        clean(out)
+        os.system('cp {index} {outputDir}'.format(index=index,outputDir=out))
+        cmd = "python mcPlots.py {mca} {cuts} {plots} -P {inputDir} --Fs {inputDir}/leptonJetReCleanerSusyEWK3L --Fs {inputDir}/leptonBuilderEWK --pdir {outputDir} -j {jei} -l {lumi} --s2v --tree treeProducerSusyMultilepton --mcc {mcc} --mcc {trigdef} -f  --plotgroup fakes_appldata+=promptsub  --legendWidth 0.20 --legendFontSize 0.035 --showMCError -f {toplot} --showRatio --perBin --legendHeader \'EWK #tau_{{h}} CR\' --maxRatioRange 0.5 1.5 --fixRatioRange --ratioOffset 0.03  --load-macro {functions}".format(mca=mca,cuts=cuts,plots=plots,inputDir=inputDir,outputDir=out,jei=jei,lumi=lumi,mcc=mcc,trigdef=trigdef,toplot=toplot,functions=functions)
+        command(cmd, pretend)
+        os.system('cp {index} {outputDir}'.format(index=index,outputDir=out))
+
+        cuts='susy-ewkino/crconv/cuts_convs_2lgamma.txt'
+        mca='susy-ewkino/crconv/mca-ss2l-mcdata-conv.txt'
+        out=outputDir+'ss2lgamma_mcdata_conv/'
+        clean(out)
+        os.system('cp {index} {outputDir}'.format(index=index,outputDir=out))
+        cmd = "python mcPlots.py {mca} {cuts} {plots} -P {inputDir} --Fs {inputDir}/leptonJetReCleanerSusyEWK3L --Fs {inputDir}/leptonBuilderEWK --pdir {outputDir} -j {jei} -l {lumi} --s2v --tree treeProducerSusyMultilepton --mcc {mcc} --mcc {trigdef} -f  --plotgroup fakes_appldata+=promptsub  --legendWidth 0.20 --legendFontSize 0.035 --showMCError -f {toplot} --showRatio --perBin --legendHeader \'EWK #tau_{{h}} CR\' --maxRatioRange 0.5 1.5 --fixRatioRange --ratioOffset 0.03  --load-macro {functions}".format(mca=mca,cuts=cuts,plots=plots,inputDir=inputDir,outputDir=out,jei=jei,lumi=lumi,mcc=mcc,trigdef=trigdef,toplot=toplot,functions=functions)
+        command(cmd, pretend)
+        os.system('cp {index} {outputDir}'.format(index=index,outputDir=out))
+
+        cuts='susy-ewkino/crconv/cuts_convs_ss2l.txt'
+        mca='susy-ewkino/crconv/mca-ss2l-mcdata-conv.txt'
+        out=outputDir+'ss2l_mcdata_conv/'
+        clean(out)
+        os.system('cp {index} {outputDir}'.format(index=index,outputDir=out))
+        cmd = "python mcPlots.py {mca} {cuts} {plots} -P {inputDir} --Fs {inputDir}/leptonJetReCleanerSusyEWK2L --Fs {inputDir}/leptonBuilderEWK --pdir {outputDir} -j {jei} -l {lumi} --s2v --tree treeProducerSusyMultilepton --mcc {mcc} --mcc {trigdef} -f  --plotgroup fakes_appldata+=promptsub  --legendWidth 0.20 --legendFontSize 0.035 --showMCError -f {toplot} --showRatio --perBin --legendHeader \'EWK #tau_{{h}} CR\' --maxRatioRange 0.5 1.5 --fixRatioRange --ratioOffset 0.03  --load-macro {functions}".format(mca=mca,cuts=cuts,plots=plots,inputDir=inputDir,outputDir=out,jei=jei,lumi=lumi,mcc=mcc,trigdef=trigdef,toplot=toplot,functions=functions)
+        command(cmd, pretend)
+        os.system('cp {index} {outputDir}'.format(index=index,outputDir=out))        
+
         
 print 'Everything is done now'
