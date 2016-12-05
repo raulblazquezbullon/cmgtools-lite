@@ -7,7 +7,8 @@ pt2010: LepGood1_conePt>20 && (abs(LepGood1_pdgId)!=11 || LepGood1_conePt>25) &&
 pt25:  if3(abs(LepGood1_pdgId)!=13 && abs(LepGood2_pdgId)!=11,LepGood1_conePt>25,1)
 TT: LepGood1_isTight && LepGood2_isTight
 #exclusive: nLepTight<=2 && if3(nLepFO>2,LepGood3_mvaSUSY<-0.20+(0.20+0.50)*(abs(LepGood3_pdgId)==11),1) && nTightTauSel==0
-exclusive: nLepTight_Mini<3 && nTightTauSel==0
+#exclusive: nLepTight_Mini<3 && nTightTauSel==0
+exclusive: nLepTight_Recl<3 && nTightTauSel==0
 same-sign: (LepGood1_charge*LepGood2_charge > 0)
 met: met_pt > 60
 0bjetM: nBJetMedium25 == 0
@@ -32,11 +33,19 @@ ee: abs(LepGood1_pdgId)==11 && abs(LepGood2_pdgId)==11; Disable=True
 em: abs(LepGood1_pdgId) != abs(LepGood2_pdgId);         Disable=True
 mm: abs(LepGood1_pdgId)==13 && abs(LepGood2_pdgId)==13; Disable=True
 sr: SR_ewk_ss2l(nJet40,LepGood1_pt,LepGood1_phi, LepGood2_pt,LepGood2_phi, met_pt,met_phi)>0; Disable=True
+nomet100:  met_pt < 100; Disable=True
 met100:  met_pt > 100; Disable=True
+met140:  met_pt > 140; Disable=True
+met250:  met_pt > 250; Disable=True
+met200:  met_pt > 200; Disable=True
 met150:  met_pt > 100 && met_pt < 150 ; Disable=True
 metge150: met_pt > 150 ; Disable=True
 mtminse100: min(mt_2(LepGood1_pt,LepGood1_phi,met_pt,met_phi),mt_2(LepGood2_pt,LepGood2_phi,met_pt,met_phi)) < 100 ; Disable=True
 mtmin100: min(mt_2(LepGood1_pt,LepGood1_phi,met_pt,met_phi),mt_2(LepGood2_pt,LepGood2_phi,met_pt,met_phi)) > 100 ; Disable=True
 ptdil0: pt_2(LepGood1_pt, LepGood1_phi, LepGood2_pt, LepGood2_phi) < 50 ; Disable=True
 ptdil50: pt_2(LepGood1_pt, LepGood1_phi, LepGood2_pt, LepGood2_phi) > 50 && pt_2(LepGood1_pt, LepGood1_phi, LepGood2_pt, LepGood2_phi) < 100 ; Disable=True
+ptll: (LepGood1_pt + LepGood2_pt) < 120 ; Disable=True
 ptdil100: pt_2(LepGood1_pt, LepGood1_phi, LepGood2_pt, LepGood2_phi) > 100 ; Disable=True
+Cutptdil: pt_2(LepGood1_pt, LepGood1_phi, LepGood2_pt, LepGood2_phi) < 60 ; Disable = True
+gHH: (LepGood1_pt > 30 && LepGood2_pt > 30); Disable=True
+noHH: !(LepGood1_pt > 30 && LepGood2_pt > 30); Disable=True
