@@ -1,16 +1,21 @@
-
 #INPUTDIR="/pool/ciencias/HeppyTrees/RA7/estructura/trees_8011_July5_allscans/"
 INPUTDIR="/pool/ciencias/HeppyTrees/RA7/estructura/prueba/"
+INPUTDIR="/pool/ciencias/HeppyTrees/RA7/estructura/TREES_80X_011216_Spring16MVA/"
+
 OUTPUTDIR="/pool/ciencias/HeppyTrees/RA7/estructura/testbtag/"
+OUTPUTDIR="/pool/ciencias/HeppyTrees/RA7/estructura/tempTrees_011216/"
+
 WEBDIR="/nfs/fanae/user/vischia/www/taus/"
 
 if [ "$1" == "ft" ]; then
     MODULE=""    
     PRETEND=" -q local --direct --pretend"
     PRETEND=" -q batch --direct "
+    #PRETEND=" -q batch --direct --pretend"
     ONLY=" --accept WZZ "
     ONLY=" --accept WJetsToLNu " 
     ONLY=" "
+    ONLY=" --accept DoubleEG_Run2016B_23Sep2016_v3_runs_273150_275376_part1 "
     if [ "$2" == "btag" ]; then
         MODULE="eventBTagWeight"
         #python susy-interface/friendmaker.py 3l 3lA ${INPUTDIR} ${INPUTDIR} --modules eventBTagWeight -q batch 
@@ -35,7 +40,11 @@ if [ "$1" == "ft" ]; then
             exit -1
         fi
         #3lA
-        python susy-interface/friendmaker.py taustudies CRTAUH ${INPUTDIR} ${OUTPUTDIR} --modules ${MODULE} ${ONLY} ${PRETEND}
+        for EXCL in `ls ${INPUTDIR}`;
+        do
+            ONLY=" --accept ${EXCL} "
+            echo "python susy-interface/friendmaker.py taustudies CRTAUH ${INPUTDIR} ${OUTPUTDIR} --modules ${MODULE} ${ONLY} ${PRETEND}"
+        done
     fi
 elif [ "$1" == "plot" ]; then
     
@@ -63,3 +72,4 @@ elif [ "$1" == "plot" ]; then
 fi
 
 exit 0
+
