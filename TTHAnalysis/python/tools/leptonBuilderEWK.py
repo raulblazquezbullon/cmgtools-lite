@@ -576,7 +576,8 @@ class LeptonBuilderEWK:
                 setattr(l, "relIso"       , 0                                   )
                 setattr(l, "ptratio"      , 0                                   )
                 setattr(l, "ptrel"        , 0                                   )
-                setattr(l, "mva"          , tau.idMVAOldDMRun2 if not tau is None else 0 )
+                setattr(l, "mva"          , tau.idMVA          if not tau is None else 0 )
+                #setattr(l, "mva"          , tau.idMVAOldDMRun2 if not tau is None else 0 )
             else:
                 setattr(l, "isTight"      , (l in self.lepsT  )                 )
                 setattr(l, "mcMatchId"    , l.mcMatchId     if not isData else 1)
@@ -623,14 +624,16 @@ class LeptonBuilderEWK:
 ## _susyEWK_tauId_CBloose
 ## _______________________________________________________________
 def _susyEWK_tauId_CBloose(tau):
-    return (tau.pt > 20 and abs(tau.eta)<2.3 and abs(tau.dxy)<1000 and abs(tau.dz)<0.2 and tau.idMVAOldDMRun2 >= 1 and tau.idDecayMode and tau.idAntiE >= 2)
+    return (tau.pt > 20 and abs(tau.eta)<2.3 and abs(tau.dxy)<1000 and abs(tau.dz)<0.2 and tau.idMVA >= 1 and tau.idDecayMode and tau.idAntiE >= 2)
+    #return (tau.pt > 20 and abs(tau.eta)<2.3 and abs(tau.dxy)<1000 and abs(tau.dz)<0.2 and tau.idMVAOldDMRun2 >= 1 and tau.idDecayMode and tau.idAntiE >= 2)
 
 
 ## _susyEWK_tauId_CBtight
 ## _______________________________________________________________
 def _susyEWK_tauId_CBtight(tau):
     if not _susyEWK_tauId_CBloose(tau): return False
-    return (tau.idMVAOldDMRun2 >= 4)
+    return (tau.idMVA >= 4)
+    #return (tau.idMVAOldDMRun2 >= 4)
 
 
 ## _susyEWK_lepId_CBloose
