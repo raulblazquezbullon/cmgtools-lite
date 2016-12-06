@@ -98,25 +98,39 @@ class LeptonBuilderEWK:
 
         self.passCleverPtCut()
         if not self.passPtAndMll(): return
+        
+        self.ret["passPtMll"] = 1 # the sanity bit
 
-        self.ret["is_3l"] = 1 # the sanity bit
+        if len(self.lepSelFO)>=3: self.ret["is_3l"] = 1
+        if len(self.lepSelFO)>=4: self.ret["is_4l"] = 1
+        if len(self.lepSelFO)>=5: self.ret["is_5l"] = 1
+
         self.collectOSpairs(3)
         self.makeMass(3)
         self.makeMt2(3)
         self.findBestOSpair(3)
         self.findMtMin(3)
+        self.findBestOSpair(3, "mllL", True , False)
+        self.findMtMin(3, "L")
+        self.findBestOSpair(3, "mllT", False, True )
+        self.findMtMin(3, "T")
 
-        self.ret["is_4l"] = 1 # the sanity bit
         self.collectOSpairs(4, True)
         self.makeMass(4)
         self.makeMt2(4)
         self.findBestOSpair(4)
         self.findMtMin(4)
+        self.findBestOSpair(4, "mllL", True , False)
+        self.findMtMin(4, "L")
+        self.findBestOSpair(4, "mllT", False, True )
+        self.findMtMin(4, "T")
 
 
     ## collectObjects
     ## _______________________________________________________________
     def collectObjects(self, event):
+
+        self.event = event
 
         ## light leptons
         self.leps       = [l             for l  in Collection(event, "LepGood", "nLepGood")  ]
@@ -153,39 +167,27 @@ class LeptonBuilderEWK:
 
         self.metgen        = {}
         self.metgen[0]     = event.met_genPt if not event.isData else event.met_pt
-        self.metgen[1]     = getattr(event, "met_jecUp_genPt"  , event.met_genPt if not event.isData else event.met_pt)
-        self.metgen[-1]    = getattr(event, "met_jecDown_genPt", event.met_genPt if not event.isData else event.met_pt)
+        self.metgen[1]     = event.met_jecUp_genPt   if hasattr(event, "met_jecUp_genPt"  ) else event.met_genPt if not event.isData else event.met_pt
+        self.metgen[-1]    = event.met_jecDown_genPt if hasattr(event, "met_jecDown_genPt") else event.met_genPt if not event.isData else event.met_pt
 
         self.metgenphi     = {}
         self.metgenphi[0]  = event.met_genPhi if not event.isData else event.met_phi
-        self.metgenphi[1]  = getattr(event, "met_jecUp_genPhi"  , event.met_genPhi if not event.isData else event.met_phi)
-        self.metgenphi[-1] = getattr(event, "met_jecDown_genPhi", event.met_genPhi if not event.isData else event.met_phi)
+        self.metgenphi[1]  = event.met_jecUp_genPhi   if hasattr(event, "met_jecUp_genPhi"  ) else event.met_genPhi if not event.isData else event.met_phi
+        self.metgenphi[-1] = event.met_jecDown_genPhi if hasattr(event, "met_jecDown_genPhi") else event.met_genPhi if not event.isData else event.met_phi
 
         self.OS = []
 
             
     ## collectOSpairs
     ## _______________________________________________________________
-    def collectOSpairs(self, max, useBuffer = False):
+    def collectOSpairs(self, max, useBuffer = False, withTaus = False):
         ## useBuffer = True if you want to know the number of OSSF pairs
         ## useBuffer is only for OSSF pairs used
-
-        #self.OS = []
-        #used = []
-        #for i in range(min(max, len(self.lepSelFO))):
-        #    if useBuffer and self.lepSelFO[i] in used: continue
-        #    for j in range(i+1,min(max, len(self.lepSelFO))):
-        #        if useBuffer and self.lepSelFO[j] in used: continue
-        #        if abs(self.lepSelFO[i].pdgId) == 15 and abs(self.lepSelFO[j].pdgId) == 15: continue # no SF tautau pairs
-        #        if self.lepSelFO[i].pdgId * self.lepSelFO[j].pdgId < 0 and (not useBuffer or abs(self.lepSelFO[i].pdgId) == abs(self.lepSelFO[j].pdgId)): 
-        #            self.OS.append(OSpair(self.lepSelFO[i], self.lepSelFO[j]))
-        #            used.append(self.lepSelFO[i]); used.append(self.lepSelFO[j]) 
-        #            if useBuffer: break
 
         self.OS = []
         for i in range(min(max, len(self.lepSelFO))):
             for j in range(i+1,min(max, len(self.lepSelFO))):
-                if abs(self.lepSelFO[i].pdgId) == 15 and abs(self.lepSelFO[j].pdgId) == 15: continue # no SF tautau pairs
+                ##if not withTaus and abs(self.lepSelFO[i].pdgId) == 15 and abs(self.lepSelFO[j].pdgId) == 15: continue # no SF tautau
                 if useBuffer and abs(self.lepSelFO[i].pdgId) != abs(self.lepSelFO[j].pdgId): continue # if buffer then SF
                 if self.lepSelFO[i].pdgId * self.lepSelFO[j].pdgId < 0: 
                     self.OS.append(OSpair(self.lepSelFO[i], self.lepSelFO[j]))
@@ -201,9 +203,11 @@ class LeptonBuilderEWK:
                     self.OS.append(os)
                     used.append(os.l1); used.append(os.l2)
 
-        self.ret["nOSSF_" + str(max) + "l"] = self.countOSSF(max)
-        self.ret["nOSTF_" + str(max) + "l"] = self.countOSTF(max)
-        self.ret["nOSLF_" + str(max) + "l"] = self.countOSLF(max)
+        self.ret["nOSSF_"  + str(max) + "l"] = self.countOSSF(max              )
+        self.ret["nOSSFL_" + str(max) + "l"] = self.countOSSF(max, True , False)
+        self.ret["nOSSFT_" + str(max) + "l"] = self.countOSSF(max, False, True )
+        self.ret["nOSLF_"  + str(max) + "l"] = self.countOSLF(max              )
+        self.ret["nOSTF_"  + str(max) + "l"] = self.countOSTF(max              )
 
 
     ## countOSLF
@@ -212,10 +216,16 @@ class LeptonBuilderEWK:
         return sum(1 if not os.wTau else 0 for os in self.OS)
 
 
+    ## countOSTF
+    ## _______________________________________________________________
+    def countOSTF(self, max):
+        return sum(1 if os.wTau else 0 for os in self.OS)
+
+
     ## countOSSF
     ## _______________________________________________________________
-    def countOSSF(self, max):
-        return sum(1 if os.isSF else 0 for os in self.OS)
+    def countOSSF(self, max, onlyLight = False, onlyTau = False):
+        return sum(1 if os.isSF and (not onlyLight or not os.wTau) and (not onlyTau or os.wTau) else 0 for os in self.OS)
 
 
     ## countOSTF
@@ -226,27 +236,28 @@ class LeptonBuilderEWK:
 
     ## findBestOSpair
     ## _______________________________________________________________
-    def findBestOSpair(self, max):
+    def findBestOSpair(self, max, name = "mll", onlyLight = False, onlyTaus = False):
 
         self.bestOSPair = None
 
         all = []
         for os in self.OS:
+            if onlyLight and os.isSF and     os.wTau: continue
+            if onlyTaus  and os.isSF and not os.wTau: continue
             all.append((0 if os.isSF else 1, os.diff, os)) # priority to SF, then difference to target
-            #all.append((0 if os.isSF else 1, 1 if os.wTau else 0, os.diff, os)) # priority to SF, then light, then difference to target
 
         if all:
             all.sort()
             self.bestOSPair = all[0][2]
-            self.ret["mll_" + str(max) + "l"] = self.bestOSPair.mll
+            self.ret[name + "_" + str(max) + "l"] = self.bestOSPair.mll
             return
 
-        self.ret["mll_" + str(max) + "l"] = -1
+        self.ret[name + "_" + str(max) + "l"] = -1
 
 
     ## findMtMin
     ## _______________________________________________________________
-    def findMtMin(self, max):
+    def findMtMin(self, max, name=""):
 
         self.mTmin = {}
         used = [self.bestOSPair.l1, self.bestOSPair.l2] if self.bestOSPair else []
@@ -265,15 +276,16 @@ class LeptonBuilderEWK:
 
             if len(bufferPF):
                 bufferPF.sort()
-                self.ret["mT_" + str(max) + "l" + self.systsJEC[var]] = bufferPF[0]
+                self.ret["mT"+name+"_" + str(max) + "l" + self.systsJEC[var]] = bufferPF[0]
             else:
-                self.ret["mT_" + str(max) + "l" + self.systsJEC[var]] = -1
+                self.ret["mT"+name+"_" + str(max) + "l" + self.systsJEC[var]] = -1
 
             if len(bufferGEN):
                 bufferGEN.sort()
-                self.ret["mT_" + str(max) + "l_gen" + self.systsJEC[var]] = bufferGEN[0]
+                self.ret["mT"+name+"_" + str(max) + "l_gen" + self.systsJEC[var]] = bufferGEN[0]
             else:
-                self.ret["mT_" + str(max) + "l_gen" + self.systsJEC[var]] = -1
+                self.ret["mT"+name+"_" + str(max) + "l_gen" + self.systsJEC[var]] = -1
+            if self.event.isData: return
 
 
     ## findTau
@@ -306,21 +318,32 @@ class LeptonBuilderEWK:
     def listBranches(self):
 
         biglist = [
+            ("passPtMll"   , "I"),
             ("is_3l"       , "I"),
+            ("is_4l"       , "I"),
+            ("is_5l"       , "I"),
             ("nOSSF_3l"    , "I"),
+            ("nOSSFL_3l"   , "I"),
+            ("nOSSFT_3l"   , "I"),
             ("nOSLF_3l"    , "I"),
             ("nOSTF_3l"    , "I"),
             ("mll_3l"      , "F"),
+            ("mllL_3l"     , "F"),
+            ("mllT_3l"     , "F"),
             ("m3L"         , "F"),
-            ("is_4l"       , "I"),
             ("nOSSF_4l"    , "I"),
+            ("nOSSFL_4l"   , "I"),
+            ("nOSSFT_4l"   , "I"),
             ("nOSLF_4l"    , "I"),
             ("nOSTF_4l"    , "I"),
             ("mll_4l"      , "F"),
+            ("mllL_4l"     , "F"),
+            ("mllT_4l"     , "F"),
             ("m4L"         , "F")]
 
         biglist.append(("nOS"   , "I"))
         biglist.append(("mll"   , "F", 20, "nOS"))
+        biglist.append(("mll_fl", "I", 20, "nOS"))
         biglist.append(("mll_i1", "I", 20, "nOS"))
         biglist.append(("mll_i2", "I", 20, "nOS"))
 
@@ -332,15 +355,23 @@ class LeptonBuilderEWK:
   
         for var in self.systsJEC:
             biglist.append(("mT_3l"       + self.systsJEC[var], "F"))
+            biglist.append(("mTL_3l"      + self.systsJEC[var], "F"))
+            biglist.append(("mTT_3l"      + self.systsJEC[var], "F"))
             biglist.append(("mT2L_3l"     + self.systsJEC[var], "F"))
             biglist.append(("mT2T_3l"     + self.systsJEC[var], "F"))
             biglist.append(("mT_4l"       + self.systsJEC[var], "F"))
+            biglist.append(("mTL_4l"      + self.systsJEC[var], "F"))
+            biglist.append(("mTT_4l"      + self.systsJEC[var], "F"))
             biglist.append(("mT2L_4l"     + self.systsJEC[var], "F"))
             biglist.append(("mT2T_4l"     + self.systsJEC[var], "F"))
             biglist.append(("mT_3l_gen"   + self.systsJEC[var], "F"))
+            biglist.append(("mTL_3l_gen"  + self.systsJEC[var], "F"))
+            biglist.append(("mTT_3l_gen"  + self.systsJEC[var], "F"))
             biglist.append(("mT2L_3l_gen" + self.systsJEC[var], "F"))
             biglist.append(("mT2T_3l_gen" + self.systsJEC[var], "F"))
             biglist.append(("mT_4l_gen"   + self.systsJEC[var], "F"))
+            biglist.append(("mTL_4l_gen"  + self.systsJEC[var], "F"))
+            biglist.append(("mTT_4l_gen"  + self.systsJEC[var], "F"))
             biglist.append(("mT2L_4l_gen" + self.systsJEC[var], "F"))
             biglist.append(("mT2T_4l_gen" + self.systsJEC[var], "F"))
 
@@ -390,6 +421,7 @@ class LeptonBuilderEWK:
             if len(mt2l)>0: 
                 self.ret["mT2L_" + str(max) + "l"     + self.systsJEC[var]] = self.mt2(mt2l[0][1].l1, mt2l[0][1].l2, var)
                 self.ret["mT2L_" + str(max) + "l_gen" + self.systsJEC[var]] = self.mt2(mt2l[0][1].l1, mt2l[0][1].l2, var, True)
+            if self.event.isData: return
 
 
     ## mt  
@@ -469,21 +501,32 @@ class LeptonBuilderEWK:
 
         self.ret = {};
 
+        self.ret["passPtMll"            ] = 0
         self.ret["is_3l"                ] = 0
+        self.ret["is_4l"                ] = 0
+        self.ret["is_5l"                ] = 0
         self.ret["nOSSF_3l"             ] = 0
+        self.ret["nOSSFL_3l"            ] = 0
+        self.ret["nOSSFT_3l"            ] = 0
         self.ret["nOSLF_3l"             ] = 0
         self.ret["nOSTF_3l"             ] = 0
         self.ret["mll_3l"               ] = 0
+        self.ret["mllL_3l"              ] = 0
+        self.ret["mllT_3l"              ] = 0
         self.ret["m3L"                  ] = 0
-        self.ret["is_4l"                ] = 0
         self.ret["nOSSF_4l"             ] = 0
+        self.ret["nOSSFL_4l"            ] = 0
+        self.ret["nOSSFT_4l"            ] = 0
         self.ret["nOSLF_4l"             ] = 0
         self.ret["nOSTF_4l"             ] = 0
         self.ret["mll_4l"               ] = 0
+        self.ret["mllL_4l"              ] = 0
+        self.ret["mllT_4l"              ] = 0
         self.ret["m4L"                  ] = 0
 
         self.ret["nOS"   ] = 0
         self.ret["mll"   ] = [0]*20
+        self.ret["mll_fl"] = [0]*20
         self.ret["mll_i1"] = [-1]*20
         self.ret["mll_i2"] = [-1]*20
 
@@ -495,15 +538,23 @@ class LeptonBuilderEWK:
 
         for var in self.systsJEC:
             self.ret["mT_3l"       + self.systsJEC[var]] = 0.
+            self.ret["mTL_3l"      + self.systsJEC[var]] = 0.
+            self.ret["mTT_3l"      + self.systsJEC[var]] = 0.
             self.ret["mT2L_3l"     + self.systsJEC[var]] = 0.  
             self.ret["mT2T_3l"     + self.systsJEC[var]] = 0. 
             self.ret["mT_4l"       + self.systsJEC[var]] = 0.
+            self.ret["mTL_4l"      + self.systsJEC[var]] = 0.
+            self.ret["mTT_4l"      + self.systsJEC[var]] = 0.
             self.ret["mT2L_4l"     + self.systsJEC[var]] = 0.  
             self.ret["mT2T_4l"     + self.systsJEC[var]] = 0. 
             self.ret["mT_3l_gen"   + self.systsJEC[var]] = 0.
+            self.ret["mTL_3l_gen"  + self.systsJEC[var]] = 0.
+            self.ret["mTT_3l_gen"  + self.systsJEC[var]] = 0.
             self.ret["mT2L_3l_gen" + self.systsJEC[var]] = 0.  
             self.ret["mT2T_3l_gen" + self.systsJEC[var]] = 0. 
             self.ret["mT_4l_gen"   + self.systsJEC[var]] = 0.
+            self.ret["mTL_4l_gen"  + self.systsJEC[var]] = 0.
+            self.ret["mTT_4l_gen"  + self.systsJEC[var]] = 0.
             self.ret["mT2L_4l_gen" + self.systsJEC[var]] = 0.  
             self.ret["mT2T_4l_gen" + self.systsJEC[var]] = 0. 
 
@@ -529,7 +580,8 @@ class LeptonBuilderEWK:
                 setattr(l, "relIso"       , 0                                   )
                 setattr(l, "ptratio"      , 0                                   )
                 setattr(l, "ptrel"        , 0                                   )
-                setattr(l, "mva"          , tau.idMVAOldDMRun2 if not tau is None else 0 )
+                setattr(l, "mva"          , tau.idMVA          if not tau is None else 0 )
+                #setattr(l, "mva"          , tau.idMVAOldDMRun2 if not tau is None else 0 )
             else:
                 setattr(l, "isTight"      , (l in self.lepsT  )                 )
                 setattr(l, "mcMatchId"    , l.mcMatchId     if not isData else 1)
@@ -566,7 +618,8 @@ class LeptonBuilderEWK:
             all.sort()
             self.ret["nOS"] = len(all)
             for i,os in enumerate(all):
-                self.ret["mll"][i] = os[3].mll
+                self.ret["mll"   ][i] = os[3].mll
+                self.ret["mll_fl"][i] = abs(os[3].l1.pdgId)+abs(os[3].l2.pdgId)
                 self.ret["mll_i1"][i] = self.lepSelFO.index(os[3].l1)
                 self.ret["mll_i2"][i] = self.lepSelFO.index(os[3].l2)
 
@@ -575,14 +628,16 @@ class LeptonBuilderEWK:
 ## _susyEWK_tauId_CBloose
 ## _______________________________________________________________
 def _susyEWK_tauId_CBloose(tau):
-    return (tau.pt > 20 and abs(tau.eta)<2.3 and abs(tau.dxy)<1000 and abs(tau.dz)<0.2 and tau.idMVAOldDMRun2 >= 1 and tau.idDecayMode and tau.idAntiE >= 2)
+    return (tau.pt > 20 and abs(tau.eta)<2.3 and abs(tau.dxy)<1000 and abs(tau.dz)<0.2 and tau.idMVA >= 1 and tau.idDecayMode and tau.idAntiE >= 2)
+    #return (tau.pt > 20 and abs(tau.eta)<2.3 and abs(tau.dxy)<1000 and abs(tau.dz)<0.2 and tau.idMVAOldDMRun2 >= 1 and tau.idDecayMode and tau.idAntiE >= 2)
 
 
 ## _susyEWK_tauId_CBtight
 ## _______________________________________________________________
 def _susyEWK_tauId_CBtight(tau):
     if not _susyEWK_tauId_CBloose(tau): return False
-    return (tau.idMVAOldDMRun2 >= 4)
+    return (tau.idMVA >= 4)
+    #return (tau.idMVAOldDMRun2 >= 4)
 
 
 ## _susyEWK_lepId_CBloose
@@ -595,8 +650,7 @@ def _susyEWK_lepId_CBloose(lep):
             if lep.pt <= 7: return False
             if not (lep.convVeto and lep.lostHits == 0): 
                 return False
-            if not lep.mvaIdSpring15 > -0.70+(-0.83+0.70)*(abs(lep.etaSc)>0.8)+(-0.92+0.83)*(abs(lep.etaSc)>1.479):
-                return False
+            #if not lep.mvaIdSpring15 > -0.70+(-0.83+0.70)*(abs(lep.etaSc)>0.8)+(-0.92+0.83)*(abs(lep.etaSc)>1.479):
             if not _susyEWK_idEmu_cuts(lep): return False
             return True
         return False
@@ -629,9 +683,9 @@ def _susyEWK_lepId_IPcuts(lep):
 def _susyEWK_lepId_MVAFO(lep):
     if not _susyEWK_lepId_CBloose(lep): return False
     if not _susyEWK_lepId_IPcuts(lep): return False
-    if not (lep.pt > 10 and (abs(lep.pdgId) == 11 or lep.mediumMuonID2016 > 0)): return False
+    if not (lep.pt > 10 and (abs(lep.pdgId) == 11 or lep.mediumMuonId > 0)): return False
     if _susyEWK_lepId_MVAmedium(lep): return True
-    if not (lep.jetPtRatiov2 > 0.3 and lep.jetBTagCSV < 0.3 and (abs(lep.pdgId)!=11 or (abs(lep.eta)<1.479 and lep.mvaIdSpring15>0.0) or (abs(lep.eta)>1.479 and lep.mvaIdSpring15>0.3))): return False
+    if not (lep.jetPtRatiov2 > 0.3 and lep.jetBTagCSV < 0.3 and (abs(lep.pdgId)!=11 or (abs(lep.eta)<1.479 and lep.mvaIdSpring16GP>0.0) or (abs(lep.eta)>1.479 and lep.mvaIdSpring16GP>0.3))): return False
     return True
 
 
@@ -642,11 +696,20 @@ def _susyEWK_lepId_MVAmedium(lep):
     if not _susyEWK_lepId_IPcuts(lep): return False
     if lep.pt <= 10: return False
     if abs(lep.pdgId) == 13:
-        return (lep.mvaSUSY>-0.20 and lep.mediumMuonID2016>0)
+        return (lep.mvaSUSY>-0.20 and lep.mediumMuonId>0)
     elif abs(lep.pdgId)==11:
         return lep.mvaSUSY>0.5
     return False
 
+def _susyEWK_nontrigmva_VL(lep):
+    if not abs(lep.pdgId) == 11: return False
+    A = -0.48+(-0.67+0.48)*(abs(lep.eta)>0.8)+(-0.49+0.67)*(abs(lep.eta)>1.479)
+    B = -0.85+(-0.91+0.85)*(abs(lep.eta)>0.8)+(-0.83+0.91)*(abs(lep.eta)>1.479)
+    if lep.pt < 10:
+        return lep.mvaIdSpring16HZZ > 0.46+(-0.03-0.46)*(abs(lep.eta)>0.8)+(0.06+0.03)*(abs(lep.eta)>1.479)
+    elif lep.pt > 10:
+        return lep.mvaIdSpring16GP > min( A , max( B , A+(B-A)/10*(lep.pt-15) ) )
+    return False
 
 ## passPtCutTriple
 ## _______________________________________________________________
@@ -710,4 +773,5 @@ if __name__ == '__main__':
             print self.sf5(ev)
     el = EventLoop([ Tester("tester") ])
     el.loop([tree], maxEvents = 50)
+
 

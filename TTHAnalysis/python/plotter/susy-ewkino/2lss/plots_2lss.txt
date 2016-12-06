@@ -1,13 +1,56 @@
 tot_weight: 1 : 1,0.5,1.5; XTitle = "Selected events", Legend='TR', MoreY=2.0
 
+
+SR : SR_ewk_ss2l(nJet40,LepGood1_conePt,LepGood1_phi, LepGood2_conePt,LepGood2_phi, met_pt,met_phi,LepGood1_charge):  30,0.5,30.5; XTitle="SR", LegendCutoff=1e-3, YMin=0.1, YMax=5e4
+
+SR_log : SR_ewk_ss2l(nJet40,LepGood1_conePt,LepGood1_phi, LepGood2_conePt,LepGood2_phi, met_pt,met_phi,LepGood1_charge):  30,0.5,30.5; XTitle="SR", LegendCutoff=1e-3, Logy, YMin=0.1, YMax=5e4
+
+MET        : met_pt               : 35,0,700     ; XTitle="E_{T}^{miss} [GeV]"
+
+MET_log        : met_pt               : 35,0,700     ; XTitle="E_{T}^{miss} [GeV]", Logy
+
+mtWmin	   : min(mt_2(LepGood1_conePt,LepGood1_phi,met_pt,met_phi),mt_2(LepGood2_conePt,LepGood2_phi,met_pt,met_phi)) : 30,0,300; XTitle="min M_{T}(l_{i}\,E_{T}^{miss}) [GeV]"
+
+mtWmin_log	   : min(mt_2(LepGood1_conePt,LepGood1_phi,met_pt,met_phi),mt_2(LepGood2_conePt,LepGood2_phi,met_pt,met_phi)) : 30,0,300; XTitle="min M_{T}(l_{i}\,E_{T}^{miss}) [GeV]", Logy
+
+ptll    : LepGood1_pt+LepGood2_pt : 30, 0., 450. ;  XTitle="p_{T}^{l1} + p_{T}^{l2} [GeV]"
+
+ptll_log    : LepGood1_pt+LepGood2_pt : 30, 0., 450. ;  XTitle="p_{T}^{l1} + p_{T}^{l2} [GeV]", Logy
+
+
+
 ##### SEARCH STRATEGY
-SR :   SR_ewk_ss2l(nJet40,LepGood1_conePt,LepGood1_phi, LepGood2_conePt,LepGood2_phi, met_pt,met_phi):  18,0.5,18.5; XTitle="SR"
+#SR :   SR_ewk_ss2l(nJet40,LepGood1_conePt,LepGood1_phi, LepGood2_conePt,LepGood2_phi, met_pt,met_phi):  18,0.5,18.5; XTitle="SR", LegendCutoff=1e-3, YMin=0.1, YMax=5e4
+
+#SRchar2 : SR_ewk_ss2l_byCharge2(nJet40,LepGood1_conePt,LepGood1_phi, LepGood2_conePt,LepGood2_phi, met_pt,met_phi,LepGood1_charge):  24,0.5,24.5; XTitle="SR", LegendCutoff=1e-3, YMin=0.1, YMax=5e4
+SRptll  :   SR_ewk_ss2l_ptll(nJet40,LepGood1_conePt,LepGood1_phi, LepGood2_conePt,LepGood2_phi, met_pt,met_phi):  18,0.5,18.5; XTitle="SR", LegendCutoff=1e-3, YMin=0.1, YMax=5e4
+
+#SRnew   : SR_ewk_ss2l_new(nJet40,LepGood1_conePt,LepGood1_phi, LepGood2_conePt,LepGood2_phi, met_pt,met_phi,LepGood1_charge):  30,0.5,30.5; XTitle="SR", LegendCutoff=1e-3, YMin=0.1, YMax=5e4
+
+
+
+#SR_log :   SR_ewk_ss2l(nJet40,LepGood1_conePt,LepGood1_phi, LepGood2_conePt,LepGood2_phi, met_pt,met_phi):  18,0.5,18.5; XTitle="SR", LegendCutoff=1e-3, Logy, YMin=0.1, YMax=5e4
+
+#SRchar2_log : SR_ewk_ss2l_byCharge2(nJet40,LepGood1_conePt,LepGood1_phi, LepGood2_conePt,LepGood2_phi, met_pt,met_phi,LepGood1_charge):  24,0.5,24.5; XTitle="SR", LegendCutoff=1e-3, Logy, YMin=0.1, YMax=5e4
+SRptll_log  :   SR_ewk_ss2l_ptll(nJet40,LepGood1_conePt,LepGood1_phi, LepGood2_conePt,LepGood2_phi, met_pt,met_phi):  18,0.5,18.5; XTitle="SR", LegendCutoff=1e-3, Logy, YMin=0.1, YMax=5e4
+
+#SRnew_log :   SR_ewk_ss2l_new(nJet40,LepGood1_conePt,LepGood1_phi, LepGood2_conePt,LepGood2_phi, met_pt,met_phi,LepGood1_charge):  30,0.5,30.5; XTitle="SR", LegendCutoff=1e-3, Logy, YMin=0.1, YMax=5e4
+
+
+
 #SR_nice :   SR_ewk_ss2l(nJet40,LepGood1_conePt,LepGood1_phi, LepGood2_conePt,LepGood2_phi, met_pt,met_phi):  18,0.5,18.5; XTitle="", xBinLabels="N_{j}=0 M_{T}<100 GeV p_{T}(ll) < 50 E_{T}^{miss} < 100 GeV\, N_{j}=0 M_{T}<100 GeV p_{T}(ll) < 50 100 < E_{T}^{miss} < 150 GeV\,N_{j}=0 M_{T}<100 GeV p_{T}(ll) < 50 E_{T}^{miss} > 150 GeV"
 
-SR_log :   SR_ewk_ss2l(nJet40,LepGood1_conePt,LepGood1_phi, LepGood2_conePt,LepGood2_phi, met_pt,met_phi):  18,0.5,18.5; XTitle="SR",Logy
+
+
+
+
+
+
 
 ptdil   : pt_2(LepGood1_conePt, LepGood1_phi, LepGood2_conePt, LepGood2_phi): 20, 0., 300. ;  XTitle="p_{T}(dilepton) [GeV]"
 ptll    : LepGood1_pt+LepGood2_pt : 20, 0., 300. ;  XTitle="p_{T}(dilepton) [GeV]"
+ptll_log    : LepGood1_pt+LepGood2_pt : 20, 0., 300. ;  XTitle="p_{T}(dilepton) [GeV]", Logy
+
 dphi    : abs(deltaPhi(LepGood1_phi,LepGood2_phi)):  30, -1.5, 3.5;  XTitle="#Delta #phi(ll) [GeV]", Legend='TL'
 flav    : if3(nLepFO>1,if3(abs(LepGood1_pdgId)!=abs(LepGood2_pdgId),1,abs(LepGood1_pdgId)-11),-99)  : [-0.5,0.5,1.5,2.5]; XTitle="ee/e#mu/#mu#mu", XNDdiv=505, MoreY=2.0
 nTight  : if3(nLepFO>1,LepGood1_isTight+LepGood2_isTight,-99)                                       : [-0.5,0.5,1.5,2.5]; XTitle="Tight leptons among the first two", XNDdiv=505, Legend='TL', IncludeOverflows=False
@@ -48,6 +91,7 @@ dphijet2: if3(nJet40>0, abs(deltaPhi(Jet1_phi,LepGood2_phi)),-99.):  30, -1.5, 3
 
 #### MET-RELATED VARIABLES
 MET        : met_pt               : 35,0,500     ; XTitle="E_{T}^{miss} [GeV]"
+MET_log    : met_pt               : 35,0,500     ; XTitle="E_{T}^{miss} [GeV]", Logy
 MET_SR     : met_pt               : [60.,100.,150.,500]; XTitle="E_{T}^{miss} [GeV]"
 MET_SR_log : met_pt               : [60.,100.,150.,500]; XTitle="E_{T}^{miss} [GeV]", Logy
 

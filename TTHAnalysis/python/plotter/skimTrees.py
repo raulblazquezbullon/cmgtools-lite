@@ -138,7 +138,7 @@ if __name__ == "__main__":
         for tty in mca._allData[proc]:
             print "\t component %-40s" % tty.cname()
             myoutpath = outdir+"/"+tty.cname()
-            mysource  = options.path+"/"+tty.cname()
+            mysource  = options.path[0]+"/"+tty.cname()
             mycut = tty.adaptExpr(cut.allCuts(),cut=True)
             if options.doS2V: mycut  = scalarToVector(mycut)
             if options.pretend: continue
