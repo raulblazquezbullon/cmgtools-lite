@@ -150,7 +150,7 @@ elif(action=='crtau'):
 elif(action=='crconv'):
         print 'Now plotting CRs for estimating fakes from conversions'
         plots='susy-ewkino/3l/plots_ewkino.txt'
-        mcc='susy-ewkino/3l/mcc_ewkino.txt'
+        mcc='susy-ewkino/crconv/mcc_convs.txt'
         trigdef='susy-ewkino/mcc_triggerdefs.txt'
         functions='susy-ewkino/3l/functionsEWK.cc'
         toplot='--sP \'MET\''
