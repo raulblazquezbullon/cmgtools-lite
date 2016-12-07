@@ -1,9 +1,9 @@
-#INPUTDIR="/pool/ciencias/HeppyTrees/RA7/estructura/trees_8011_July5_allscans/"
-INPUTDIR="/pool/ciencias/HeppyTrees/RA7/estructura/prueba/"
-INPUTDIR="/pool/ciencias/HeppyTrees/RA7/estructura/TREES_80X_011216_Spring16MVA/"
 
-OUTPUTDIR="/pool/ciencias/HeppyTrees/RA7/estructura/testbtag/"
-OUTPUTDIR="/pool/ciencias/HeppyTrees/RA7/estructura/tempTrees_011216/"
+
+INPUTDIR="/nfs/fanae/user/vischia/TREES_80X_011216_Spring16MVA_skim_2lep_OR_1lep_2tau/"
+
+OUTPUTDIR="/OBSOLETE"
+
 
 WEBDIR="/nfs/fanae/user/vischia/www/taus/"
 
