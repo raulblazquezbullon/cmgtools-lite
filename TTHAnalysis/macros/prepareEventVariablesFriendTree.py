@@ -185,6 +185,7 @@ if options.queue:
 
     runner = ""
     super = ""
+    theoutput=args[1]
     if options.env == "cern":
         runner = "lxbatch_runner.sh"
         super  = "bsub -q {queue}".format(queue = options.queue)
