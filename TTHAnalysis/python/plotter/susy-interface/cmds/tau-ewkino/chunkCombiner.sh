@@ -1,30 +1,23 @@
+#!/bin/bash
 
-# Must convert it to sh script with command line input
+INPUT="$1"
+PREFIX="$2"
 
-#cd /pool/ciencias/HeppyTrees/RA7/estructura/testbtag/leptonJetReCleanerNoCleanTausSusyEWK3L/ 
-#
-#sh $CMSSW_BASE/src/CMGTools/TTHAnalysis/macros/leptons/friendChunkAdd.sh evVarFriend
-#
-#cd -
+if [ "${INPUT}" == "help"]; then
+    echo "USAGE: ${0} chunksFolder prefix"
+    echo "Default prefix: evVarFriend"
+    exit 0
+fi
 
-# cd /pool/ciencias/HeppyTrees/RA7/estructura/testbtag/tauFakesBuilderEWKMini/
-# 
-# sh $CMSSW_BASE/src/CMGTools/TTHAnalysis/macros/leptons/friendChunkAdd.sh evVarFriend
-# 
-# cd -
-#                            
-# cd /pool/ciencias/HeppyTrees/RA7/estructura/testbtag/tauFakesBuilderEWKRecl
-# 
-# sh $CMSSW_BASE/src/CMGTools/TTHAnalysis/macros/leptons/friendChunkAdd.sh evVarFriend
-# 
-# cd -
-
-cd /pool/ciencias/HeppyTrees/RA7/estructura/testbtag/leptonBuilderEWK
+if [ "${PREFIX}" == "" ]; then
+    PREFIX="evVarFriend"
+fi
 
 
-#cd /pool/ciencias/HeppyTrees/RA7/estructura/testbtag/leptonJetReCleanerSusyEWK3L
 
-sh $CMSSW_BASE/src/CMGTools/TTHAnalysis/macros/leptons/friendChunkAdd.sh evVarFriend
+cd ${INPUT}
+
+sh $CMSSW_BASE/src/CMGTools/TTHAnalysis/macros/leptons/friendChunkAdd.sh ${PREFIX}
 
 mkdir chunks
 mv *.chunk*root chunks/
