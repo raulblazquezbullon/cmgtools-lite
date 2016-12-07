@@ -331,12 +331,13 @@ int SuperSig(int nLep, int nTau, int nOSSF, int nOSLF, float mT2L, float mT2T, f
 
     if(nLep == 3){
         if(nTau==0 && (mT   >= 120 && met >= 200)) return 1;
-        if(nTau==1 && (mT2L >=  50 && met >= 200)) return 2;
-        if(nTau==2 && (mT2T >=  50 && met >= 200)) return 3;
-        if(nTau==2 &&                 met >=  75 ) return 4;
+        if(nTau==0 &&                 met >= 250 ) return 2;
+        if(nTau==1 && (mT2L >=  50 && met >= 200)) return 3;
+        if(nTau==2 && (mT2T >=  50 && met >= 200)) return 4;
+        if(nTau==2 &&                 met >=  75 ) return 5;
     }
     if(nLep == 4){
-        if(met >= 200                            ) return 5;
+        if(met >= 200                            ) return 6;
     }
     return 0;
 }
