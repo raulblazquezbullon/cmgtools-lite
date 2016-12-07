@@ -141,7 +141,7 @@ BEGIN::4lG
   cutfile      := susy-ewkino/4l/cuts_ewkino.txt
   bkgs        +:= fakes_appldata;promptsub;prompt_.*;rares_.*;convs
   sigs        +:= sig_TNeuNeuZZ_.*;sig_TNeuNeuHZ_.*;sig_TNeuNeuHH_.*
-  flags       +:= -A alwaystrue BRcut 'BR >= 7' 
+  flags       +:= -A alwaystrue BRcut 'BR == 7' 
   flagsPlots  +:= --legendHeader 'G: 2 OSSF'
   plots       #:= {lep      : lep.*._pt ; .*_eta ; flavor4l ; charge4l                                  }
   plots       #:= {evt      : mll4l ; met ; mtW4l ; htJet30j ; nJet30 ; nBJet25 ; m4l ; mT2L4l ; mT2T4l }
