@@ -32,7 +32,7 @@ parser.add_option("--log"         , dest="log"    , action="store_true", default
 parser.add_option("-F", "--force" , dest="force"  , action="store_true", default=False, help="Run the module even if it already exists")
 parser.add_option("--finalize"    , dest="finalize", action="store_true", default=False, help="Merge the chunks and check if everything is correct")
 
-base = "python prepareEventVariablesFriendTree.py {T} {O} --tree {TREENAME} --vector -T sf -d {SAMPLES} -m {MODULES} {FRIENDS} {ADDITIONAL}"
+base = "python prepareEventVariablesFriendTree.py {T} {O} --tra2 --tree {TREENAME} --vector -T sf -d {SAMPLES} -m {MODULES} {FRIENDS} {ADDITIONAL}"
 (options, args) = parser.parse_args()
 options         = maker.splitLists(options)
 options.modules = func.splitList(options.modules)
@@ -78,18 +78,21 @@ for module in mm.getFriendModules():
 		if not passed: continue
 
 		## skip if exists (and not force recreation)
-		#if not options.force and os.path.exists(mm.treedir +"/"+ module +"/evVarFriend_"+d+".root"): continue
+		if not options.force and os.path.exists(output +"/evVarFriend_"+d+".root"): continue
 
 
 		## submit
 		friends    = collectFriends(requires)
 		additional = "--bk" if options.bk else ""
-	
+
 		if not options.direct and options.queue:
 			nevt        = mm.getNEvtSample(d)
 			additional += " -N "+nevt if nevt else ""
 			additional += " -q "+ options.queue
 			if options.queue in ["all.q", "long.q", "short.q"]: additional += " --env psi"
+                        if options.queue in ["batch"]: 
+                                additional += " --env oviedo"
+
 			if options.log: additional += " --log "+output+"/log"
 
 		attr = [mm.treedir, output, mm.getVariable("treename","treeProducerSusyMultilepton"), d, module, friends, additional]
