@@ -26,6 +26,8 @@ def addMakerOptions(parser):
 	parser.add_option("--sigs"   , dest="sigs"    , type="string" , action="append", default=[], help="Overwrite the sigs from the region")
 	parser.add_option("-p", "--procs" , dest="procs" , type="string" , action="append", default=[], help="Overwrite both bkgs and sigs from the region")
 	parser.add_option("-W", "--weight", dest="weight", type="string" , default=None, help="Overwrite the weight expression")
+	parser.add_option("--noWeight", dest="noWeight", action="store_true", default=False, help="Do no use the weight string.")
+	parser.add_option("--noFlags" , dest="noFlags", action="store_true", default=False, help="Do no use flags stored in the config and region but only the ones given on command line")
 	return parser
 
 def splitLists(options):
@@ -85,14 +87,15 @@ class Maker():
 		cleandir(self.jobpath, False)
 		return True
 	def collectFlags(self, additionals = "", useWeight = True, isFastSim = False, forceRedo = False):
-		theflags = copy.deepcopy(getattr(self.config , "flags", []))
-		theflags.extend(getattr(self.region , "flags", []))
-		theflags.extend(self.getOption("flags", []))
-		theflags.extend(getattr(self.config , additionals, []))
-		theflags.extend(getattr(self.region , additionals, []))
+		theflags = copy.deepcopy(self.getOption("flags", []))
 		theflags.extend(self.getOption(additionals, []))
+		if not self.options.noFlags:
+			theflags.extend(getattr(self.config , "flags", []))
+			theflags.extend(getattr(self.region , "flags", []))
+			theflags.extend(getattr(self.config , additionals, []))
+			theflags.extend(getattr(self.region , additionals, []))
 		weight   = self.getWeight(isFastSim)
-		if useWeight and weight: theflags.append("-W '"+weight+"'")
+		if not self.options.noWeight and useWeight and weight: theflags.append("-W '"+weight+"'")
 		theflags = filter(lambda x: x, theflags)
 		return " ".join(theflags)
 		#self.flags = theFlags
@@ -190,7 +193,7 @@ class Maker():
 		filtered = filter(lambda x: x[0].find(sample)>-1, self.nevts)
 		if len(filtered)>0:
 			return str(max([int(l[1]) for l in filtered]))
-		return "50000"
+		return "100000"
 	def getOption(self, key, default = None):
 		raw = getattr(self.options, key, default)
 		if not raw or raw=="''" or raw=='""': raw = default
