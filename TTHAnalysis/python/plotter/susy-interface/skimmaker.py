@@ -24,7 +24,7 @@ baseFriends = "python skimFTrees.py {T} {F} {O}"
 (options, args) = parser.parse_args()
 options         = maker.splitLists(options)
 options.samples = func.splitList(options.samples)
-mm              = maker.Maker("skimmaker", base, args, options)
+mm              = maker.Maker("skimmaker", base, args, options, parser.defaults)
 
 ## skim main tree
 friends = mm.collectFriends()	
@@ -42,7 +42,7 @@ for r in range(len(mm.regions)):
 	json = options.json if options.json else ""
 	
 	base = "python skimTrees.py {MCA} {CUTS} {O} -P {T} --tree {TREENAME} -j 4 {MCCS} {MACROS} {FRIENDS} {JSON}"
-	mm.submit([mca, mm.getVariable("cutfile",""), output, mm.treedir, options.treename, mccs, macros, friends, json],"main",True)
+	mm.submit([mca, mm.getVariable("cutfile",""), output, mm.treedir, mm.getVariable("treename","treeProducerSusyMultilepton"), mccs, macros, friends, json],"main",True)
 
 	## skim friend trees
 	mm.reloadBase(baseFriends)

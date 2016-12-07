@@ -38,7 +38,7 @@ options         = maker.splitLists(options)
 options.modules = func.splitList(options.modules)
 options.accept  = func.splitList(options.accept )
 options.exclude = func.splitList(options.exclude)
-mm              = maker.Maker("friendmaker", base, args, options)
+mm              = maker.Maker("friendmaker", base, args, options, parser.defaults)
 mm.loadNEvtSample()
 
 
@@ -61,8 +61,8 @@ for module in mm.getFriendModules():
 
 		## only consider real samples
 		if not os.path.isdir(mm.treedir +"/"+ d): continue
-		if not os.path.exists(mm.treedir +"/"+ d +"/"+options.treename+"/tree.root") and \
-           not os.path.exists(mm.treedir +"/"+ d +"/"+options.treename+"/tree.root.url"): continue
+		if not os.path.exists(mm.treedir +"/"+ d +"/"+mm.getVariable("treename","treeProducerSusyMultilepton")+"/tree.root") and \
+           not os.path.exists(mm.treedir +"/"+ d +"/"+mm.getVariable("treename","treeProducerSusyMultilepton")+"/tree.root.url"): continue
 
 		## exclude or accept
 		if options.accept  != [] and all([d.find(a) == -1 for a in options.accept ]): continue
@@ -92,7 +92,7 @@ for module in mm.getFriendModules():
 			if options.queue in ["all.q", "long.q", "short.q"]: additional += " --env psi"
 			if options.log: additional += " --log "+output+"/log"
 
-		attr = [mm.treedir, output, options.treename, d, module, friends, additional]
+		attr = [mm.treedir, output, mm.getVariable("treename","treeProducerSusyMultilepton"), d, module, friends, additional]
 		if options.direct and options.queue and not options.noSplit:
 			mm.prepareSplit(d)
 			mm.splittedSubmit(attr, d, False)

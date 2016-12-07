@@ -59,10 +59,10 @@ class Job():
 			line = line.replace("[JOBID]"      , self.id                              )
 			f.write(line+"\n")
 		f.close()
-		cmd("chmod 755 "+self.script)
-		cmd("chmod 755 "+self.master.jobpath)
 	def prepareCommands(self):
 		replaceInFile(self.script, "[PLACEHOLDER]", "\n".join([b for b in self.commands]))
+		cmd("chmod 755 "+self.script)
+		cmd("chmod 755 "+self.master.jobpath)
 	def run(self):
 		self.prepareCommands() # here, because of the add commands method
 		if self.options.queue and not self.forceLocal:
