@@ -27,7 +27,7 @@ def makeMCA(path, samples):
 	f.close()
 
 def collectMcaSamples(mm):
-	s = mm.options.samples if len(mm.options.samples)>0 and not mm.options.allSamples else mm.getAllSamples(m.options.allSamples)
+	s = mm.options.samples if len(mm.options.samples)>0 and not mm.options.allSamples else mm.getAllSamples(mm.options.allSamples)
 	return s
 
 def collectInputSamples(mm):
