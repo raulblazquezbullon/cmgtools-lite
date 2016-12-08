@@ -7,7 +7,7 @@ dilep: nLepFO>=2
 pt2010: LepGood1_conePt>20 && (abs(LepGood1_pdgId)!=11 || LepGood1_conePt>25) && LepGood2_conePt>10 && (abs(LepGood2_pdgId)!=11 || LepGood2_conePt>15)
 pt25:  if3(abs(LepGood1_pdgId)!=13 && abs(LepGood2_pdgId)!=11,LepGood1_conePt>25,1)
 TT: LepGood1_isTight && LepGood2_isTight
-exclusive: nLepTight_Mini<3 && nTightTauSel==0
+exclusive: nLepTight_Recl<3 && nTightTauSel==0
 same-sign: (LepGood1_charge*LepGood2_charge > 0)
 met: met_pt > 60
 0bjetM: nBJetMedium25 == 0

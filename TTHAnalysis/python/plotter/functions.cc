@@ -582,7 +582,7 @@ float puw2016_nInt_Moriond(float nInt, int var=0) {
       puw2016_MORIOND = new TFile(CMSSW_BASE+"/src/CMGTools/TTHAnalysis/data/pileup/puw_nTrueInt_Moriond2017_36p4fb.root", "read");
       _puw2016_nInt_MORIOND = (TH1F*) (puw2016_MORIOND->Get("puw"));
     }
-    return _puw2016_nInt_ICHEP->GetBinContent(_puw2016_nInt_ICHEP->FindBin(nInt));
+    return _puw2016_nInt_MORIOND->GetBinContent(_puw2016_nInt_MORIOND->FindBin(nInt));
   }
   else if (var==1) { 
     if (!puw2016_MORIOND_Up) {
@@ -859,28 +859,28 @@ float leptonSF_2lss_ewk(int pdgid, float pt, float eta, int var=0){
 
 
 
-//TFile* trigSF = NULL; 
-//TH2F* _trigSF_2l_m = NULL;
-//TH2F* _trigSF_2l_e = NULL;
+TFile* trigSF = NULL; 
+TH2F* _trigSF_2l_m = NULL;
+TH2F* _trigSF_2l_e = NULL;
 //
-//float triggerSF_2lss_ewk(float pt1, float pt2, int pdg2){
-//  // Lesya's mail:
-//  // - split for trailing ele or trailing mu
-//  // - 3l: subleading vs trailing lepton pt (1l + 2l triggers)
-//  // - 2l: leading light lepton vs subleading light lepton ==> good for both 2l+tau and 2lSS cases (1l + 2l triggers)
-//  // - l+tautau: use flat 86% everywhere; pt_e > 35 GeV; pt_mu > 25 GeV (1l + l/tau triggers) 
-//  if (!_trigSF_2l_m) { 
-//    trigSF = new TFile(CMSSW_BASE+"/src/CMGTools/TTHAnalysis/data/triggerSF/EWKino_9p2_triggerSF.root", "read");
-//    _trigSF_2l_m = (TH2F*) trigSF->Get("eff_2l_mu" );
-//    _trigSF_2l_e = (TH2F*) trigSF->Get("eff_2l_ele");
-//  }
-//  // 2l
-//  TH2F* hist = (pdg2 == 13)?_trigSF_2l_m:_trigSF_2l_e;
-//  int xbin = std::max(1, std::min(hist->GetNbinsX(), hist->GetXaxis()->FindBin(pt1)));
-//  int ybin = std::max(1, std::min(hist->GetNbinsY(), hist->GetYaxis()->FindBin(pt2)));
-//  //  cout << pt1 << " " << pt2 << " " << xbin << " " << ybin << " " << hist->GetBinContent(xbin,ybin) << endl;
-//  return hist->GetBinContent(xbin,ybin);
-//}
+float triggerSF_2lss_ewk(float pt1, float pt2, int pdg2){
+  // Lesya's mail:
+  // - split for trailing ele or trailing mu
+  // - 3l: subleading vs trailing lepton pt (1l + 2l triggers)
+  // - 2l: leading light lepton vs subleading light lepton ==> good for both 2l+tau and 2lSS cases (1l + 2l triggers)
+  // - l+tautau: use flat 86% everywhere; pt_e > 35 GeV; pt_mu > 25 GeV (1l + l/tau triggers) 
+  if (!_trigSF_2l_m) { 
+    trigSF = new TFile(CMSSW_BASE+"/src/CMGTools/TTHAnalysis/data/triggerSF/triggerSF_EWKino_fullsim_ICHEP2016_9p2fb.root", "read");
+    _trigSF_2l_m = (TH2F*) trigSF->Get("eff_2l_mu" );
+    _trigSF_2l_e = (TH2F*) trigSF->Get("eff_2l_ele");
+  }
+  // 2l
+  TH2F* hist = (pdg2 == 13)?_trigSF_2l_m:_trigSF_2l_e;
+  int xbin = std::max(1, std::min(hist->GetNbinsX(), hist->GetXaxis()->FindBin(pt1)));
+  int ybin = std::max(1, std::min(hist->GetNbinsY(), hist->GetYaxis()->FindBin(pt2)));
+  //  cout << pt1 << " " << pt2 << " " << xbin << " " << ybin << " " << hist->GetBinContent(xbin,ybin) << endl;
+  return hist->GetBinContent(xbin,ybin);
+}
 //
 //#include "TGraphAsymmErrors.h"
 //TFile *_file_reco_leptonSF_mu = NULL;
