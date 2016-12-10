@@ -46,6 +46,16 @@ if [ "$1" == "ft" ]; then
             python susy-interface/friendmaker.py taustudies CRTAUH ${INPUTDIR} ${OUTPUTDIR} --modules ${MODULE} ${ONLY} ${PRETEND}
         done
     fi
+
+elif [ "$1" == "skim" ]; then
+
+    # Improve flexibility through txt parsing, or acquire from "ls " as a default, and single comma separated sets if $3 is filled
+    if [ "$2" == "tree" ]; then
+        python /mnt_pool/fanae105/user/vischia/workarea/cmssw/susy/CMSSW_8_0_19/src/CMGTools/TTHAnalysis/python/plotter/skimTrees.py -j 64 -P /nfs/fanae/user/vischia/TREES_80X_011216_Spring16MVA_skim_2lep_OR_1lep_2tau/ --tree treeProducerSusyMultilepton  --Fs {P}/leptonJetReCleanerSusyEWK2L  --mcc susy-ewkino/mcc_triggerdefs.txt  --mcc susy-ewkino/2lss/lepchoice-2lss-FO.txt mca-skim.txt cuts-skim.txt /nfs/fanae/user/vischia/skimmedtrees_full
+    elif [ "$2" == "ft" ]; then
+        python skimFTrees.py /nfs/fanae/user/vischia/skimmedtrees_full /nfs/fanae/user/vischia/TREES_80X_011216_Spring16MVA_skim_2lep_OR_1lep_2tau/leptonBuilderEWK /nfs/fanae/user/vischia/skimmedtrees_full/leptonBuilderEWK  DoubleEG_Run2016F_23Sep2016_v1_runs_271036_284044_part1 DoubleEG_Run2016F_23Sep2016_v1_runs_271036_284044_part2 DoubleEG_Run2016F_23Sep2016_v1_runs_271036_284044_part3 DoubleEG_Run2016G_23Sep2016_v1_runs_271036_284044_part1 DoubleEG_Run2016G_23Sep2016_v1_runs_271036_284044_part2 DoubleEG_Run2016G_23Sep2016_v1_runs_271036_284044_part3 DoubleEG_Run2016G_23Sep2016_v1_runs_271036_284044_part4 DoubleEG_Run2016G_23Sep2016_v1_runs_271036_284044_part5 DoubleEG_Run2016G_23Sep2016_v1_runs_271036_284044_part6 DoubleMuon_Run2016F_23Sep2016_v1_runs_271036_284044_part1 DoubleMuon_Run2016F_23Sep2016_v1_runs_271036_284044_part2 DoubleMuon_Run2016F_23Sep2016_v1_runs_271036_284044_part3 DoubleMuon_Run2016F_23Sep2016_v1_runs_271036_284044_part4 DoubleMuon_Run2016F_23Sep2016_v1_runs_271036_284044_part5 DoubleMuon_Run2016G_23Sep2016_v1_runs_271036_284044_part1 DoubleMuon_Run2016G_23Sep2016_v1_runs_271036_284044_part2 DoubleMuon_Run2016G_23Sep2016_v1_runs_271036_284044_part3 DoubleMuon_Run2016G_23Sep2016_v1_runs_271036_284044_part4 DoubleMuon_Run2016G_23Sep2016_v1_runs_271036_284044_part5 DoubleMuon_Run2016G_23Sep2016_v1_runs_271036_284044_part6 DoubleMuon_Run2016G_23Sep2016_v1_runs_271036_284044_part7 DoubleMuon_Run2016G_23Sep2016_v1_runs_271036_284044_part8 DoubleMuon_Run2016G_23Sep2016_v1_runs_271036_284044_part9 MuonEG_Run2016F_23Sep2016_v1_runs_271036_284044 MuonEG_Run2016G_23Sep2016_v1_runs_271036_284044_part1 MuonEG_Run2016G_23Sep2016_v1_runs_271036_284044_part2 SingleElectron_Run2016F_23Sep2016_v1_runs_271036_284044 SingleElectron_Run2016G_23Sep2016_v1_runs_271036_284044 SingleMuon_Run2016F_23Sep2016_v1_runs_271036_284044 SingleMuon_Run2016G_23Sep2016_v1_runs_271036_284044_part1 SingleMuon_Run2016G_23Sep2016_v1_runs_271036_284044_part2
+    fi
+    
 elif [ "$1" == "plot" ]; then
     
     ACTION=""
