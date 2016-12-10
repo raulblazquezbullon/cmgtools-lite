@@ -77,7 +77,15 @@ elif [ "$1" == "plot" ]; then
     fi
     PRETEND=" --pretend  "
     PRETEND=""
+    echo " ========================== WARNING ==========================="
+    echo " Process WWTo2L2Nu is missing from the current trees production"
+    echo " When present, must re-enable it in the mca"
+    echo " =============================================================="
     python susy-interface/cmds/tau-ewkino/plot.py -i ${INPUTDIR} -o ${WEBDIR} ${ACTION} ${SUBACTION} ${PRETEND}
+    echo " ========================== WARNING ==========================="
+    echo " Process WWTo2L2Nu is missing from the current trees production"
+    echo " When present, must re-enable it in the mca"
+    echo " =============================================================="
 
 fi
 
