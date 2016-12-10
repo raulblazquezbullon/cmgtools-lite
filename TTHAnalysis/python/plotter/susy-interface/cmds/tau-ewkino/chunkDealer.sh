@@ -10,24 +10,26 @@ if [ "${INPUT}" == "help" ]; then
     exit 0
 fi
 
+if [ "${PREFIX}" == "" ]; then
+    PREFIX="evVarFriend"
+fi
+
 CMD="$CMSSW_BASE/src/CMGTools/TTHAnalysis/macros/leptons/friendChunkAdd.sh ${PREFIX}"
+
 
 if [ "${ACTION}" == "check" ]; then
     CMD="$CMSSW_BASE/src/CMGTools/TTHAnalysis/macros/leptons/friendChunkCheck.sh -z ${INPUT}"
 fi
 
-if [ "${PREFIX}" == "" ]; then
-    PREFIX="evVarFriend"
-fi
 
 cd ${INPUT}
 
 sh ${CMD}
 
-if [ "${ACTION}" == "merge" ]; then
-    mkdir chunks
-    mv *.chunk*root chunks/
-fi
+#if [ "${ACTION}" == "merge" ]; then
+#    mkdir chunks
+#    mv *.chunk*root chunks/
+#fi
 
 cd -
                            
