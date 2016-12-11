@@ -90,20 +90,20 @@ lep2_miniRelIso  : LepGood2_miniRelIso  : 20,0,0.3   ; YTitle="Leptons", XTitle=
 lep3_miniRelIso  : LepGood3_miniRelIso  : 20,0,0.3   ; YTitle="Leptons", XTitle="miniRelIso(third lep.)"     , LegendCutoff=1e-4
 lep4_miniRelIso  : LepGood4_miniRelIso  : 20,0,0.3   ; YTitle="Leptons", XTitle="miniRelIso(forth lep.)"     , LegendCutoff=1e-4
 
-lep1_ptratio     : LepGood1_ptratio     : 20,0,1     ; YTitle="Leptons", XTitle="p_{T}^{l}/p_{T}^{j}(leading lep.)"   , LegendCutoff=1e-4
-lep2_ptratio     : LepGood2_ptratio     : 20,0,1     ; YTitle="Leptons", XTitle="p_{T}^{l}/p_{T}^{j}(subleading lep.)", LegendCutoff=1e-4
-lep3_ptratio     : LepGood3_ptratio     : 20,0,1     ; YTitle="Leptons", XTitle="p_{T}^{l}/p_{T}^{j}(third lep.)"     , LegendCutoff=1e-4
-lep4_ptratio     : LepGood4_ptratio     : 20,0,1     ; YTitle="Leptons", XTitle="p_{T}^{l}/p_{T}^{j}(forth lep.)"     , LegendCutoff=1e-4
+#lep1_ptratio     : LepGood1_ptratio     : 20,0,1     ; YTitle="Leptons", XTitle="p_{T}^{l}/p_{T}^{j}(leading lep.)"   , LegendCutoff=1e-4
+#lep2_ptratio     : LepGood2_ptratio     : 20,0,1     ; YTitle="Leptons", XTitle="p_{T}^{l}/p_{T}^{j}(subleading lep.)", LegendCutoff=1e-4
+#lep3_ptratio     : LepGood3_ptratio     : 20,0,1     ; YTitle="Leptons", XTitle="p_{T}^{l}/p_{T}^{j}(third lep.)"     , LegendCutoff=1e-4
+#lep4_ptratio     : LepGood4_ptratio     : 20,0,1     ; YTitle="Leptons", XTitle="p_{T}^{l}/p_{T}^{j}(forth lep.)"     , LegendCutoff=1e-4
 
-lep1_ptrel       : LepGood1_ptrel       : 20,0,40    ; YTitle="Leptons", XTitle="p_{Trel}(leading lep.)"   , LegendCutoff=1e-4
-lep2_ptrel       : LepGood2_ptrel       : 20,0,40    ; YTitle="Leptons", XTitle="p_{Trel}(subleading lep.)", LegendCutoff=1e-4
-lep3_ptrel       : LepGood3_ptrel       : 20,0,40    ; YTitle="Leptons", XTitle="p_{Trel}(third lep.)"     , LegendCutoff=1e-4
-lep4_ptrel       : LepGood4_ptrel       : 20,0,40    ; YTitle="Leptons", XTitle="p_{Trel}(forth lep.)"     , LegendCutoff=1e-4
+#lep1_ptrel       : LepGood1_ptrel       : 20,0,40    ; YTitle="Leptons", XTitle="p_{Trel}(leading lep.)"   , LegendCutoff=1e-4
+#lep2_ptrel       : LepGood2_ptrel       : 20,0,40    ; YTitle="Leptons", XTitle="p_{Trel}(subleading lep.)", LegendCutoff=1e-4
+#lep3_ptrel       : LepGood3_ptrel       : 20,0,40    ; YTitle="Leptons", XTitle="p_{Trel}(third lep.)"     , LegendCutoff=1e-4
+#lep4_ptrel       : LepGood4_ptrel       : 20,0,40    ; YTitle="Leptons", XTitle="p_{Trel}(forth lep.)"     , LegendCutoff=1e-4
 
-lep1_mva         : LepGood1_mva         : 20,0,1     ; YTitle="Leptons", XTitle="MVA(leading lep.)"   , LegendCutoff=1e-4
-lep2_mva         : LepGood2_mva         : 20,0,1     ; YTitle="Leptons", XTitle="MVA(subleading lep.)", LegendCutoff=1e-4
-lep3_mva         : LepGood3_mva         : 20,0,1     ; YTitle="Leptons", XTitle="MVA(third lep.)"     , LegendCutoff=1e-4
-lep4_mva         : LepGood4_mva         : 20,0,1     ; YTitle="Leptons", XTitle="MVA(forth lep.)"     , LegendCutoff=1e-4
+#lep1_mva         : LepGood1_mva         : 20,0,1     ; YTitle="Leptons", XTitle="MVA(leading lep.)"   , LegendCutoff=1e-4
+#lep2_mva         : LepGood2_mva         : 20,0,1     ; YTitle="Leptons", XTitle="MVA(subleading lep.)", LegendCutoff=1e-4
+#lep3_mva         : LepGood3_mva         : 20,0,1     ; YTitle="Leptons", XTitle="MVA(third lep.)"     , LegendCutoff=1e-4
+#lep4_mva         : LepGood4_mva         : 20,0,1     ; YTitle="Leptons", XTitle="MVA(forth lep.)"     , LegendCutoff=1e-4
 
 
 ## event observables
@@ -111,7 +111,7 @@ lep4_mva         : LepGood4_mva         : 20,0,1     ; YTitle="Leptons", XTitle=
 
 #met       : met_pt         : 35,0,700    ; XTitle="E_{T}^{miss}  [GeV]"         , LegendCutoff=1e-4
 met       : met_pt         : 15,-75,300  ; XTitle="E_{T}^{miss}  [GeV]"         , LegendCutoff=1e-4, Logy, YMin=0.7, YMax=100000, Legend="TL"
-htJet30j  : htJet30j       : 20,0,200    ; XTitle="H_{T}(jet p_{T} > 30) [GeV]" , LegendCutoff=1e-4
+#htJet30j  : htJet30j       : 20,0,200    ; XTitle="H_{T}(jet p_{T} > 30) [GeV]" , LegendCutoff=1e-4
 nJet30    : nJet30         : 10,-0.5,9.5 ; XTitle="N(jet\, p_{T} > 30)"         , LegendCutoff=1e-4
 nBJet25   : nBJetMedium25  : 5,-0.5,4.5  ; XTitle="N(b-jet\, p_{T} > 25\, CSVM)", LegendCutoff=1e-4
 
