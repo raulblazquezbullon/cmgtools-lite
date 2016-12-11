@@ -48,6 +48,14 @@ blind = '--flags "-X blinding"'
 
 index="/nfs/fanae/user/vischia/www/index.php"
 
+def runPlots(cuts, mca, out, plots, inputDir, outputDir, jei, lumi, mcc, trigdef, toplot, functions):
+        clean(out)
+        os.system('cp {index} {outputDir}'.format(index=index,outputDir=out))
+        cmd = "python mcPlots.py {mca} {cuts} {plots} -P {inputDir} --Fs {inputDir}/leptonJetReCleanerSusyEWK3L --Fs {inputDir}/leptonBuilderEWK --pdir {outputDir} -j {jei} -l {lumi} --s2v --tree treeProducerSusyMultilepton --mcc {mcc} --mcc {trigdef} -f  --plotgroup fakes_appldata+=promptsub  --legendWidth 0.20 --legendFontSize 0.035 --showMCError -f {toplot} --showRatio --perBin --legendHeader \'EWK #tau_{{h}} CR\' --maxRatioRange 0.5 1.5 --fixRatioRange --ratioOffset 0.03  --load-macro {functions}".format(mca=mca,cuts=cuts,plots=plots,inputDir=inputDir,outputDir=out,jei=jei,lumi=lumi,mcc=mcc,trigdef=trigdef,toplot=toplot,functions=functions)
+        command(cmd, pretend)
+        os.system('cp {index} {outputDir}'.format(index=index,outputDir=out))
+
+
 if(action=='generalplots'):
         cmd = 'print susy-interface/plotmaker.py 3l 3lA {inputDir} {outputDir} -l 12.9 --make data --plots br -o SR {blind} --pretend'.format(inputDir=inputDir,outputDir=outputDir,blind=blind)
         command(cmd, pretend)
@@ -149,8 +157,8 @@ elif(action=='crtau'):
 
 elif(action=='crconv'):
         print 'Now plotting CRs for estimating fakes from conversions'
-        plots='susy-ewkino/3l/plots_ewkino.txt'
-        mcc='susy-ewkino/3l/mcc_ewkino.txt'
+        plots='susy-ewkino/crconv/plots_convs.txt'
+        mcc='susy-ewkino/crconv/mcc_convs.txt'
         trigdef='susy-ewkino/mcc_triggerdefs.txt'
         functions='susy-ewkino/3l/functionsEWK.cc'
         toplot='--sP \'MET\''
@@ -166,42 +174,25 @@ elif(action=='crconv'):
         jei='60'
         lumi='1.0'
 
-
         cuts='susy-ewkino/crconv/cuts_convs_3l.txt'
         mca='susy-ewkino/crconv/mca-3l-mc-conv.txt'
         out=outputDir+'3l_mc_conv/'
-        clean(out)
-        os.system('cp {index} {outputDir}'.format(index=index,outputDir=out))
-        cmd = "python mcPlots.py {mca} {cuts} {plots} -P {inputDir} --Fs {inputDir}/leptonJetReCleanerSusyEWK3L --Fs {inputDir}/leptonBuilderEWK --pdir {outputDir} -j {jei} -l {lumi} --s2v --tree treeProducerSusyMultilepton --mcc {mcc} --mcc {trigdef} -f  --plotgroup fakes_appldata+=promptsub  --legendWidth 0.20 --legendFontSize 0.035 --showMCError -f {toplot} --showRatio --perBin --legendHeader \'EWK #tau_{{h}} CR\' --maxRatioRange 0.5 1.5 --fixRatioRange --ratioOffset 0.03  --load-macro {functions}".format(mca=mca,cuts=cuts,plots=plots,inputDir=inputDir,outputDir=out,jei=jei,lumi=lumi,mcc=mcc,trigdef=trigdef,toplot=toplot,functions=functions)
-        print cmd
-        command(cmd, pretend)
-        os.system('cp {index} {outputDir}'.format(index=index,outputDir=out))
+        runPlots(cuts, mca, out, plots, inputDir, outputDir, jei, lumi, mcc, trigdef, toplot, functions)
+
+
         cuts='susy-ewkino/crconv/cuts_convs_3l.txt'
         mca='susy-ewkino/crconv/mca-3l-mcdata-conv.txt'
         out=outputDir+'3l_mcdata_conv/'
-        clean(out)
-        os.system('cp {index} {outputDir}'.format(index=index,outputDir=out))
-        cmd = "python mcPlots.py {mca} {cuts} {plots} -P {inputDir} --Fs {inputDir}/leptonJetReCleanerSusyEWK3L --Fs {inputDir}/leptonBuilderEWK --pdir {outputDir} -j {jei} -l {lumi} --s2v --tree treeProducerSusyMultilepton --mcc {mcc} --mcc {trigdef} -f  --plotgroup fakes_appldata+=promptsub  --legendWidth 0.20 --legendFontSize 0.035 --showMCError -f {toplot} --showRatio --perBin --legendHeader \'EWK #tau_{{h}} CR\' --maxRatioRange 0.5 1.5 --fixRatioRange --ratioOffset 0.03  --load-macro {functions}".format(mca=mca,cuts=cuts,plots=plots,inputDir=inputDir,outputDir=out,jei=jei,lumi=lumi,mcc=mcc,trigdef=trigdef,toplot=toplot,functions=functions)
-        command(cmd, pretend)
-        os.system('cp {index} {outputDir}'.format(index=index,outputDir=out))
+        runPlots(cuts, mca, out, plots, inputDir, outputDir, jei, lumi, mcc, trigdef, toplot, functions)
 
         cuts='susy-ewkino/crconv/cuts_convs_2lgamma.txt'
         mca='susy-ewkino/crconv/mca-ss2l-mcdata-conv.txt'
         out=outputDir+'ss2lgamma_mcdata_conv/'
-        clean(out)
-        os.system('cp {index} {outputDir}'.format(index=index,outputDir=out))
-        cmd = "python mcPlots.py {mca} {cuts} {plots} -P {inputDir} --Fs {inputDir}/leptonJetReCleanerSusyEWK3L --Fs {inputDir}/leptonBuilderEWK --pdir {outputDir} -j {jei} -l {lumi} --s2v --tree treeProducerSusyMultilepton --mcc {mcc} --mcc {trigdef} -f  --plotgroup fakes_appldata+=promptsub  --legendWidth 0.20 --legendFontSize 0.035 --showMCError -f {toplot} --showRatio --perBin --legendHeader \'EWK #tau_{{h}} CR\' --maxRatioRange 0.5 1.5 --fixRatioRange --ratioOffset 0.03  --load-macro {functions}".format(mca=mca,cuts=cuts,plots=plots,inputDir=inputDir,outputDir=out,jei=jei,lumi=lumi,mcc=mcc,trigdef=trigdef,toplot=toplot,functions=functions)
-        command(cmd, pretend)
-        os.system('cp {index} {outputDir}'.format(index=index,outputDir=out))
+        runPlots(cuts, mca, out, plots, inputDir, outputDir, jei, lumi, mcc, trigdef, toplot, functions)
 
         cuts='susy-ewkino/crconv/cuts_convs_ss2l.txt'
         mca='susy-ewkino/crconv/mca-ss2l-mcdata-conv.txt'
         out=outputDir+'ss2l_mcdata_conv/'
-        clean(out)
-        os.system('cp {index} {outputDir}'.format(index=index,outputDir=out))
-        cmd = "python mcPlots.py {mca} {cuts} {plots} -P {inputDir} --Fs {inputDir}/leptonJetReCleanerSusyEWK2L --Fs {inputDir}/leptonBuilderEWK --pdir {outputDir} -j {jei} -l {lumi} --s2v --tree treeProducerSusyMultilepton --mcc {mcc} --mcc {trigdef} -f  --plotgroup fakes_appldata+=promptsub  --legendWidth 0.20 --legendFontSize 0.035 --showMCError -f {toplot} --showRatio --perBin --legendHeader \'EWK #tau_{{h}} CR\' --maxRatioRange 0.5 1.5 --fixRatioRange --ratioOffset 0.03  --load-macro {functions}".format(mca=mca,cuts=cuts,plots=plots,inputDir=inputDir,outputDir=out,jei=jei,lumi=lumi,mcc=mcc,trigdef=trigdef,toplot=toplot,functions=functions)
-        command(cmd, pretend)
-        os.system('cp {index} {outputDir}'.format(index=index,outputDir=out))        
+        runPlots(cuts, mca, out, plots, inputDir, outputDir, jei, lumi, mcc, trigdef, toplot, functions)
 
-        
 print 'Everything is done now'
