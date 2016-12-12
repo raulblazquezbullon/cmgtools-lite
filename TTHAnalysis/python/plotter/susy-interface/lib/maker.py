@@ -7,7 +7,7 @@ from init import *
 
 def addMakerOptions(parser):
 	parser.add_option("-j"       , "--jobs"       , dest="jobs"   , type="int"   , default=0     , help="Number of jobs in multi-processing")
-	parser.add_option("-l"       , "--lumi"       , dest="lumi"   , type="string", default="12.9", help="Luminosity in /fb")
+	parser.add_option("-l"       , "--lumi"       , dest="lumi"   , type="string", default=None  , help="Overwrite the lumi from the config")
 	parser.add_option("-o"       , "--out"        , dest="outname", type="string", default=None, help="Name of the production, default is name of config.") 
 	parser.add_option("-q"       , "--queue"      , dest="queue"  , type="string", default=None, help="Submit jobs to batch system queue")
 	parser.add_option("--flags"  , dest="flags"   , type="string" , action="append", default=[], help="Give additional strings to be added to the final command")
@@ -21,11 +21,13 @@ def addMakerOptions(parser):
 	parser.add_option("--mccs"   , dest="mccs"    , type="string" , action="append", default=[], help="Overwrite MCC from the config");
 	parser.add_option("--macros" , dest="macros"  , type="string" , action="append", default=[], help="Overwrite macros from the config");
 	parser.add_option("--pretend", dest="pretend" , action="store_true", default=False, help="Only write the commands");
-	parser.add_option("--tree"   , dest="treename", type="string", default="treeProducerSusyMultilepton", help="Give name of tree producer")
+	parser.add_option("--tree"   , dest="treename", type="string", default=None, help="Overwrite the treename from the config")
 	parser.add_option("--bkgs"   , dest="bkgs"    , type="string" , action="append", default=[], help="Overwrite the bkgs from the region")
 	parser.add_option("--sigs"   , dest="sigs"    , type="string" , action="append", default=[], help="Overwrite the sigs from the region")
 	parser.add_option("-p", "--procs" , dest="procs" , type="string" , action="append", default=[], help="Overwrite both bkgs and sigs from the region")
 	parser.add_option("-W", "--weight", dest="weight", type="string" , default=None, help="Overwrite the weight expression")
+	parser.add_option("--noWeight", dest="noWeight", action="store_true", default=False, help="Do no use the weight string.")
+	parser.add_option("--noFlags" , dest="noFlags", action="store_true", default=False, help="Do no use flags stored in the config and region but only the ones given on command line")
 	return parser
 
 def splitLists(options):
@@ -38,11 +40,12 @@ def splitLists(options):
 	return options
 
 class Maker():
-	def __init__(self, module, base, args, options):
+	def __init__(self, module, base, args, options, defaults):
 		self.module   = module
 		self.base     = base
 		self.args     = args
 		self.options  = options
+		self.defaults = defaults
 		self.cmssw    = os.environ["CMSSW_BASE"]
 		self.workdir  = self.cmssw   +"/src/CMGTools/TTHAnalysis/python/plotter"
 		self.dir      = self.workdir +"/susy-interface"
@@ -84,15 +87,17 @@ class Maker():
 		self.jobs = []
 		cleandir(self.jobpath, False)
 		return True
-	def collectFlags(self, additionals = "", useWeight = True, isFastSim = False, forceRedo = False):
-		theflags = copy.deepcopy(getattr(self.config , "flags", []))
-		theflags.extend(getattr(self.region , "flags", []))
-		theflags.extend(self.getOption("flags", []))
-		theflags.extend(getattr(self.config , additionals, []))
-		theflags.extend(getattr(self.region , additionals, []))
+	def collectFlags(self, additionals = "", useWeight = True, useAlias = True, isFastSim = False, forceRedo = False):
+		theflags = copy.deepcopy(self.getOption("flags", []))
 		theflags.extend(self.getOption(additionals, []))
+		if not self.options.noFlags:
+			theflags.extend(getattr(self.config , "flags", []))
+			theflags.extend(getattr(self.region , "flags", []))
+			theflags.extend(getattr(self.config , additionals, []))
+			theflags.extend(getattr(self.region , additionals, []))
+		if useAlias: theflags.extend(["--alias "+k+" '"+v[0]+"'" for k,v in getattr(self.config, "alias", {}).iteritems()])
 		weight   = self.getWeight(isFastSim)
-		if useWeight and weight: theflags.append("-W '"+weight+"'")
+		if not self.options.noWeight and useWeight and weight: theflags.append("-W '"+weight+"'")
 		theflags = filter(lambda x: x, theflags)
 		return " ".join(theflags)
 		#self.flags = theFlags
@@ -128,7 +133,7 @@ class Maker():
 		for inst in os.listdir(self.tmpdir):
 			del init
 			init = Init(self.tmpdir+"/"+inst+"/init")
-			if init.identify(self.module, self.args, self.options):
+			if init.identify(self.module, self.args, self.options, self.defaults):
 				self.init = init
 				return inst
 		del init
@@ -190,7 +195,7 @@ class Maker():
 		filtered = filter(lambda x: x[0].find(sample)>-1, self.nevts)
 		if len(filtered)>0:
 			return str(max([int(l[1]) for l in filtered]))
-		return "50000"
+		return "100000"
 	def getOption(self, key, default = None):
 		raw = getattr(self.options, key, default)
 		if not raw or raw=="''" or raw=='""': raw = default

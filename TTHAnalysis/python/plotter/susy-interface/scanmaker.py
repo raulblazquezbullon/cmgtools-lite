@@ -65,13 +65,13 @@ baseSig = "python makeShapeCardsSusy.py [[[MCA]]] {CUTS} \\\"{EXPR}\\\" \\\"{BIN
 (options, args) = parser.parse_args()
 options         = maker.splitLists(options)
 options.models  = func.splitList(options.models)
-mm              = maker.Maker("scanmaker", baseBkg, args, options)
+mm              = maker.Maker("scanmaker", baseBkg, args, options, parser.defaults)
 mm.loadModels()
 
 friends = mm.collectFriends()	
 mccs    = mm.collectMCCs   ()
 macros  = mm.collectMacros ()	
-sl      = str(options.lumi).replace(".","p")
+sl      = mm.getVariable("lumi","12.9").replace(".","p")
 
 
 ## first do bkg
@@ -84,8 +84,8 @@ if not options.sigOnly:
 	for r in range(len(mm.regions)):
 		mm.iterateRegion()
 		
-		sc    = mm.getScenario(True)
-		flags = mm.collectFlags("flagsScans", True, False, True)
+		scenario = mm.getScenario(True)
+		flags    = mm.collectFlags("flagsScans", True, True, False, True)
 	
 		## looping over binnings
 		binnings = [mm.getVariable("bins","")] if not options.perBin else getAllBins(mm.getVariable("bins",""))
@@ -94,15 +94,15 @@ if not options.sigOnly:
 			## change scenario if looping over all bins
 			if options.perBin: 
 				min, max = getMinMax(b)
-				sc += "_" + min.replace(".","p")
+				scenario += "_" + min.replace(".","p")
 		
 			## background first
-			output = mm.outdir +"/"+ sc +"/"+ sl +"fb" 
+			output = mm.outdir +"/scan/"+ scenario +"/"+ sl +"fb"
 			bkgDir = output +"/bkg"
 			if not options.redoBkg and os.path.exists(bkgDir+"/common/SR.input.root"): continue
 			func.mkdir(bkgDir)
 		
-			mm.submit([mm.getVariable("mcafile",""), mm.getVariable("cutfile",""), mm.getVariable("expr",""), mm.getVariable("bins",""), sc.replace("/","_"), mm.treedir, options.treename, mccs, macros, options.lumi, bkgDir, friends, flags, func.getCut(mm.getVariable("firstCut","alwaystrue"), mm.getVariable("expr",""), mm.getVariable("bins",""))],sc.replace("/", "_")+"_bkg",False)
+			mm.submit([mm.getVariable("mcafile",""), mm.getVariable("cutfile",""), mm.getVariable("expr",""), mm.getVariable("bins",""), scenario.replace("/","_"), mm.treedir, mm.getVariable("treename","treeProducerSusyMultilepton"), mccs, macros, mm.getVariable("lumi","12.9"), bkgDir, friends, flags, func.getCut(mm.getVariable("firstCut","alwaystrue"), mm.getVariable("expr",""), mm.getVariable("bins",""))],scenario.replace("/", "_")+"_bkg",False)
 	mm.runJobs()
 	mm.clearJobs()
 		
@@ -118,8 +118,8 @@ if not options.bkgOnly:
 	for r in range(len(mm.regions)):
 		mm.iterateRegion()
 	
-		sc    = mm.getScenario(True)
-		flags = mm.collectFlags("flagsScans", True, False, True)
+		scenario = mm.getScenario(True)
+		flags    = mm.collectFlags("flagsScans", True, True, False, True)
 	
 		## looping over binnings
 		binnings = [mm.getVariable("bins","")] if not options.perBin else getAllBins(mm.getVariable("bins",""))
@@ -128,10 +128,10 @@ if not options.bkgOnly:
 			## change scenario if looping over all bins
 			if options.perBin: 
 				min, max = getMinMax(b)
-				sc += "_" + min.replace(".","p")
+				scenario += "_" + min.replace(".","p")
 		
 			## background first
-			output = mm.outdir +"/"+ sc +"/"+ sl +"fb" 
+			output = mm.outdir +"/scan/"+ scenario +"/"+ sl +"fb" 
 	
 			## looping over models
 			mm.resetModel()
@@ -152,10 +152,10 @@ if not options.bkgOnly:
 
 				## looping over masspoints
 				for iiii,mp in enumerate(mps):
-					flags   = mm.collectFlags("flagsScans", True, True)
-					thebase = mm.makeCmd([mm.getVariable("cutfile",""), mm.getVariable("expr",""), b, sc.replace("/","_"), mm.treedir, options.treename, mccs, macros, options.lumi, friends, flags, func.getCut(mm.getVariable("firstCut","alwaystrue"), mm.getVariable("expr",""), mm.getVariable("bins",""))])
-					thecmd = prepareJob(mm, sc.replace("/", "_")+"_mp_"+mp[2], mp, thebase, b, bkgDir, myDir, xslist, options)
-					mm.registerCmd(thecmd, sc.replace("/", "_")+"_mp_"+mp[2],False,10)
+					flags   = mm.collectFlags("flagsScans", True, True, True)
+					thebase = mm.makeCmd([mm.getVariable("cutfile",""), mm.getVariable("expr",""), b, scenario.replace("/","_"), mm.treedir, mm.getVariable("treename","treeProducerSusyMultilepton"), mccs, macros, mm.getVariable("lumi","12.9"), friends, flags, func.getCut(mm.getVariable("firstCut","alwaystrue"), mm.getVariable("expr",""), mm.getVariable("bins",""))])
+					thecmd = prepareJob(mm, scenario.replace("/", "_")+"_mp_"+mp[2], mp, thebase, b, bkgDir, myDir, xslist, options)
+					mm.registerCmd(thecmd, scenario.replace("/", "_")+"_mp_"+mp[2],False,10)
 	mm.runJobs()
 	mm.clearJobs()
 

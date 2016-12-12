@@ -130,6 +130,8 @@ class LeptonBuilderEWK:
     ## _______________________________________________________________
     def collectObjects(self, event):
 
+        self.event = event
+
         ## light leptons
         self.leps       = [l             for l  in Collection(event, "LepGood", "nLepGood")  ]
         self.lepsFO     = [self.leps[il] for il in list(getattr   (event, "iF" + self.inputlabel))[0:int(getattr(event,"nLepFO"+self.inputlabel))]]
@@ -165,13 +167,13 @@ class LeptonBuilderEWK:
 
         self.metgen        = {}
         self.metgen[0]     = event.met_genPt if not event.isData else event.met_pt
-        self.metgen[1]     = getattr(event, "met_jecUp_genPt"  , event.met_genPt if not event.isData else event.met_pt)
-        self.metgen[-1]    = getattr(event, "met_jecDown_genPt", event.met_genPt if not event.isData else event.met_pt)
+        self.metgen[1]     = event.met_jecUp_genPt   if hasattr(event, "met_jecUp_genPt"  ) else event.met_genPt if not event.isData else event.met_pt
+        self.metgen[-1]    = event.met_jecDown_genPt if hasattr(event, "met_jecDown_genPt") else event.met_genPt if not event.isData else event.met_pt
 
         self.metgenphi     = {}
         self.metgenphi[0]  = event.met_genPhi if not event.isData else event.met_phi
-        self.metgenphi[1]  = getattr(event, "met_jecUp_genPhi"  , event.met_genPhi if not event.isData else event.met_phi)
-        self.metgenphi[-1] = getattr(event, "met_jecDown_genPhi", event.met_genPhi if not event.isData else event.met_phi)
+        self.metgenphi[1]  = event.met_jecUp_genPhi   if hasattr(event, "met_jecUp_genPhi"  ) else event.met_genPhi if not event.isData else event.met_phi
+        self.metgenphi[-1] = event.met_jecDown_genPhi if hasattr(event, "met_jecDown_genPhi") else event.met_genPhi if not event.isData else event.met_phi
 
         self.OS = []
 
@@ -283,6 +285,7 @@ class LeptonBuilderEWK:
                 self.ret["mT"+name+"_" + str(max) + "l_gen" + self.systsJEC[var]] = bufferGEN[0]
             else:
                 self.ret["mT"+name+"_" + str(max) + "l_gen" + self.systsJEC[var]] = -1
+            if self.event.isData: return
 
 
     ## findTau
@@ -418,6 +421,7 @@ class LeptonBuilderEWK:
             if len(mt2l)>0: 
                 self.ret["mT2L_" + str(max) + "l"     + self.systsJEC[var]] = self.mt2(mt2l[0][1].l1, mt2l[0][1].l2, var)
                 self.ret["mT2L_" + str(max) + "l_gen" + self.systsJEC[var]] = self.mt2(mt2l[0][1].l1, mt2l[0][1].l2, var, True)
+            if self.event.isData: return
 
 
     ## mt  
@@ -576,7 +580,8 @@ class LeptonBuilderEWK:
                 setattr(l, "relIso"       , 0                                   )
                 setattr(l, "ptratio"      , 0                                   )
                 setattr(l, "ptrel"        , 0                                   )
-                setattr(l, "mva"          , tau.idMVAOldDMRun2 if not tau is None else 0 )
+                setattr(l, "mva"          , tau.idMVA if not tau is None else 0 )
+                #setattr(l, "mva"          , tau.idMVAOldDMRun2 if not tau is None else 0 )
             else:
                 setattr(l, "isTight"      , (l in self.lepsT  )                 )
                 setattr(l, "mcMatchId"    , l.mcMatchId     if not isData else 1)
@@ -623,14 +628,16 @@ class LeptonBuilderEWK:
 ## _susyEWK_tauId_CBloose
 ## _______________________________________________________________
 def _susyEWK_tauId_CBloose(tau):
-    return (tau.pt > 20 and abs(tau.eta)<2.3 and abs(tau.dxy)<1000 and abs(tau.dz)<0.2 and tau.idMVAOldDMRun2 >= 1 and tau.idDecayMode and tau.idAntiE >= 2)
+    return (tau.pt > 20 and abs(tau.eta)<2.3 and abs(tau.dxy)<1000 and abs(tau.dz)<0.2 and tau.idMVA >= 1 and tau.idDecayMode and tau.idAntiE >= 2)
+    #return (tau.pt > 20 and abs(tau.eta)<2.3 and abs(tau.dxy)<1000 and abs(tau.dz)<0.2 and tau.idMVAOldDMRun2 >= 1 and tau.idDecayMode and tau.idAntiE >= 2)
 
 
 ## _susyEWK_tauId_CBtight
 ## _______________________________________________________________
 def _susyEWK_tauId_CBtight(tau):
     if not _susyEWK_tauId_CBloose(tau): return False
-    return (tau.idMVAOldDMRun2 >= 4)
+    return (tau.idMVA >= 4)
+    #return (tau.idMVAOldDMRun2 >= 4)
 
 
 ## _susyEWK_lepId_CBloose
@@ -643,8 +650,8 @@ def _susyEWK_lepId_CBloose(lep):
             if lep.pt <= 7: return False
             if not (lep.convVeto and lep.lostHits == 0): 
                 return False
-            if not lep.mvaIdSpring15 > -0.70+(-0.83+0.70)*(abs(lep.etaSc)>0.8)+(-0.92+0.83)*(abs(lep.etaSc)>1.479):
-                return False
+            #if not lep.mvaIdSpring15 > -0.70+(-0.83+0.70)*(abs(lep.etaSc)>0.8)+(-0.92+0.83)*(abs(lep.etaSc)>1.479):
+            #    return False
             if not _susyEWK_idEmu_cuts(lep): return False
             return True
         return False
@@ -677,9 +684,11 @@ def _susyEWK_lepId_IPcuts(lep):
 def _susyEWK_lepId_MVAFO(lep):
     if not _susyEWK_lepId_CBloose(lep): return False
     if not _susyEWK_lepId_IPcuts(lep): return False
-    if not (lep.pt > 10 and (abs(lep.pdgId) == 11 or lep.mediumMuonID2016 > 0)): return False
+    if not (lep.pt > 10 and (abs(lep.pdgId) == 11 or lep.mediumMuonId > 0)): return False
+    #if not (lep.pt > 10 and (abs(lep.pdgId) == 11 or lep.mediumMuonID2016 > 0)): return False
     if _susyEWK_lepId_MVAmedium(lep): return True
-    if not (lep.jetPtRatiov2 > 0.3 and lep.jetBTagCSV < 0.3 and (abs(lep.pdgId)!=11 or (abs(lep.eta)<1.479 and lep.mvaIdSpring15>0.0) or (abs(lep.eta)>1.479 and lep.mvaIdSpring15>0.3))): return False
+    if not (lep.jetPtRatiov2 > 0.3 and lep.jetBTagCSV < 0.3 and (abs(lep.pdgId)!=11 or (abs(lep.eta)<1.479 and lep.mvaIdSpring16GP>0.0) or (abs(lep.eta)>1.479 and lep.mvaIdSpring16GP>0.3))): return False
+    #if not (lep.jetPtRatiov2 > 0.3 and lep.jetBTagCSV < 0.3 and (abs(lep.pdgId)!=11 or (abs(lep.eta)<1.479 and lep.mvaIdSpring15>0.0) or (abs(lep.eta)>1.479 and lep.mvaIdSpring15>0.3))): return False
     return True
 
 
@@ -690,7 +699,8 @@ def _susyEWK_lepId_MVAmedium(lep):
     if not _susyEWK_lepId_IPcuts(lep): return False
     if lep.pt <= 10: return False
     if abs(lep.pdgId) == 13:
-        return (lep.mvaSUSY>-0.20 and lep.mediumMuonID2016>0)
+        return (lep.mvaSUSY>-0.20 and lep.mediumMuonId>0)
+        #return (lep.mvaSUSY>-0.20 and lep.mediumMuonID2016>0)
     elif abs(lep.pdgId)==11:
         return lep.mvaSUSY>0.5
     return False
