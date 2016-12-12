@@ -17,26 +17,31 @@ int tauIdx2(int lep1pdg, int lep2pdg, int lep3pdg, int lep4pdg = 0){
 }
 
 int isConv(int nLep, int lep1mcUCSX, int lep2mcUCSX, int lep3mcUCSX, int lep4mcUCSX = 0) {
+    if(nLep == 2) return (lep1mcUCSX==4 || lep2mcUCSX==4);
     if(nLep == 3) return (lep1mcUCSX==4 || lep2mcUCSX==4 || lep3mcUCSX==4);
     return (lep1mcUCSX==4 || lep2mcUCSX==4 || lep3mcUCSX==4 || lep4mcUCSX==4);
 }
 
-int isFake(int nLep, int lep1mcUCSX, int lep2mcUCSX, int lep3mcUCSX, int lep4mcUCSX = 0) {
+int isFake(int nLep, int lep1mcUCSX, int lep2mcUCSX, int lep3mcUCSX = 0, int lep4mcUCSX = 0) {
+    if(nLep == 2) return ((lep1mcUCSX==2 || lep1mcUCSX==3) || (lep2mcUCSX==2 || lep2mcUCSX==3));
     if(nLep == 3) return ((lep1mcUCSX==2 || lep1mcUCSX==3) || (lep2mcUCSX==2 || lep2mcUCSX==3) || (lep3mcUCSX==2 || lep3mcUCSX==3));
     return ((lep1mcUCSX==2 || lep1mcUCSX==3) || (lep2mcUCSX==2 || lep2mcUCSX==3) || (lep3mcUCSX==2 || lep3mcUCSX==3) || (lep4mcUCSX==2 || lep4mcUCSX==3));
 }
 
-int isFakeHF(int nLep, int lep1mcUCSX, int lep2mcUCSX, int lep3mcUCSX, int lep4mcUCSX = 0) {
+int isFakeHF(int nLep, int lep1mcUCSX, int lep2mcUCSX, int lep3mcUCSX = 0, int lep4mcUCSX = 0) {
+    if(nLep == 2) return (lep1mcUCSX==3 || lep2mcUCSX==3);
     if(nLep == 3) return (lep1mcUCSX==3 || lep2mcUCSX==3 || lep3mcUCSX==3);
     return (lep1mcUCSX==3 || lep2mcUCSX==3 || lep3mcUCSX==3 || lep4mcUCSX==3);
 }
 
-int isFakeLF(int nLep, int lep1mcUCSX, int lep2mcUCSX, int lep3mcUCSX, int lep4mcUCSX = 0) {
+int isFakeLF(int nLep, int lep1mcUCSX, int lep2mcUCSX, int lep3mcUCSX = 0, int lep4mcUCSX = 0) {
+    if(nLep == 2) return (lep1mcUCSX==2 || lep2mcUCSX==2);
     if(nLep == 3) return (lep1mcUCSX==2 || lep2mcUCSX==2 || lep3mcUCSX==2);
     return (lep1mcUCSX==2 || lep2mcUCSX==2 || lep3mcUCSX==2 || lep4mcUCSX==2);
 }
 
-int isPrompt(int nLep, int lep1mcUCSX, int lep2mcUCSX, int lep3mcUCSX, int lep4mcUCSX = 0) {
+int isPrompt(int nLep, int lep1mcUCSX, int lep2mcUCSX, int lep3mcUCSX = 0, int lep4mcUCSX = 0) {
+    if(nLep == 2) return ((lep1mcUCSX==0 || lep1mcUCSX==1) && (lep2mcUCSX==0 || lep2mcUCSX==1));
     if(nLep == 3) return ((lep1mcUCSX==0 || lep1mcUCSX==1) && (lep2mcUCSX==0 || lep2mcUCSX==1) && (lep3mcUCSX==0 || lep3mcUCSX==1));
     return ((lep1mcUCSX==0 || lep1mcUCSX==1) && (lep2mcUCSX==0 || lep2mcUCSX==1) && (lep3mcUCSX==0 || lep3mcUCSX==1) && (lep4mcUCSX==0 || lep4mcUCSX==1));
 }
@@ -47,7 +52,8 @@ int isGoodFake(float pt, int isTight) {
     return 1;
 }
 
-int allTight(int nLep, int l1isTight, int l2isTight, int l3isTight, int l4isTight = 0){
+int allTight(int nLep, int l1isTight, int l2isTight, int l3isTight = 0, int l4isTight = 0){
+    if(nLep == 2) return ((l1isTight+l2isTight)==2);
     if(nLep == 3) return ((l1isTight+l2isTight+l3isTight)==3);
     return ((l1isTight+l2isTight+l3isTight+l4isTight)==4);
 }
@@ -220,11 +226,11 @@ int SR3lD(float mT2L, float mT2T, float mll, float mT, float met, int offset = 0
 int SR3lE(float mT2L, float mT2T, float mll, float mT, float met, int offset = 0) {
 
     if(mT2T >= 0 && mT2T < 100){
-        if(mll >=   0 && mll <  60 && met >=   0 && met < 100) return offset +  1;
-        if(mll >=   0 && mll <  60 && met >= 100 && met < 150) return offset +  2;
-        if(mll >=   0 && mll <  60 && met >= 150 && met < 200) return offset +  3;
-        if(mll >=   0 && mll <  60 && met >= 200 && met < 250) return offset +  4;
-        if(mll >=   0 && mll <  60 && met >= 250             ) return offset +  5;
+        if(mll >=  -1 && mll <  60 && met >=   0 && met < 100) return offset +  1;
+        if(mll >=  -1 && mll <  60 && met >= 100 && met < 150) return offset +  2;
+        if(mll >=  -1 && mll <  60 && met >= 150 && met < 200) return offset +  3;
+        if(mll >=  -1 && mll <  60 && met >= 200 && met < 250) return offset +  4;
+        if(mll >=  -1 && mll <  60 && met >= 250             ) return offset +  5;
         if(mll >=  60 && mll < 100 && met >=   0 && met < 100) return offset +  6;
         if(mll >=  60 && mll < 100 && met >= 100 && met < 150) return offset +  7;
         if(mll >=  60 && mll < 100 && met >= 150 && met < 200) return offset +  8;

@@ -21,7 +21,6 @@ def collectPlots(region, plotsname, custom):
 
 def collectPPlots(mm, plotsname, custom):
 	if len(custom)>0: 
-		print "i am here"
 		return " ".join("--sP "+p for p in func.splitList(custom))
 	if not plotsname in mm.region.plots.keys(): return ""
 	return " ".join("--sP "+v for v in mm.region.plots[plotsname])
@@ -49,7 +48,7 @@ parser.add_option("--selPlots", dest="customPlots", action="append", default=[],
 parser.add_option("--lspam", dest="lspam", type="string", default="Preliminary", help="Left-spam for CMS_lumi in mcPlots, either Preliminary, Simulation, Internal or nothing")
 parser.add_option("--noRatio", dest="ratio", action="store_false", default=True, help="Do NOT plot the ratio (i.e. give flag --showRatio)")
 
-base = "python mcPlots.py {MCA} {CUTS} {PLOTFILE} -P {T} --neg --s2v --tree {TREENAME} -f --cmsprel '{LSPAM}' --legendWidth 0.20 --legendFontSize 0.035 {MCCS} {MACROS} {RATIO} -l {LUMI} --pdir {O} {FRIENDS} {PROCS} {PLOTS} {FLAGS} --showMCError"
+base = "python mcPlots.py {MCA} {CUTS} {PLOTFILE} -P {T} --neg --s2v --tree {TREENAME} -f --cmsprel '{LSPAM}' --legendWidth 0.20 --legendFontSize 0.035 {MCCS} {MACROS} {RATIO} -l {LUMI} --pdir {O} {FRIENDS} {PROCS} {PLOTS} {FLAGS} --showMCError -j 4"
 (options, args) = parser.parse_args()
 options = maker.splitLists(options)
 mm      = maker.Maker("plotmaker", base, args, options, parser.defaults)
@@ -78,6 +77,7 @@ for r in range(len(mm.regions)):
 			pplots  = collectPPlots   (mm, p, options.customPlots)
 
 			mm.submit([mm.getVariable("mcafile",""), mm.getVariable("cutfile",""), mm.getVariable("plotfile",""), mm.treedir, mm.getVariable("treename","treeProducerSusyMultilepton"), options.lspam, mccs, macros, ratio, mm.getVariable("lumi","12.9"), output, friends, procs, pplots, flags],mm.region.name+"_"+p+"_"+m,False)
+
 mm.runJobs()
 mm.clearJobs()
 

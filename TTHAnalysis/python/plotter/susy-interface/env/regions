@@ -120,7 +120,7 @@ BEGIN::3lF
   bkgs        +:= fakes_appldata;promptsub;prompt_.*;rares_.*;convs
   sigs        +:= sig_TChiNeuWH_.*;sig_TChiNeuSlepSneu_TD_.*
   flags       +:= -A 3l BRcut 'BR == 6' 
-#  flags       +:= -R trigger trigger2T '!isData || Triggers_leplep || Triggers_tautau'
+  flags       +:= -R trigger trigger2T '!isData || Triggers_leptau'
   flags       +:= -A sanity tigherpteta 'abs(LepSel1_eta)<2.1 && abs(LepSel2_eta)<2.1 && abs(LepSel3_eta)<2.1' 
   flags       +:= -A sanity tighterpt '(abs(LepSel1_pdgId)==11 && LepSel1_pt>30) || (abs(LepSel1_pdgId)==13 && LepSel1_pt>25) || (abs(LepSel2_pdgId)==11 && LepSel2_pt>30) || (abs(LepSel2_pdgId)==13 && LepSel2_pt>25) || (abs(LepSel3_pdgId)==11 && LepSel3_pt>30) || (abs(LepSel3_pdgId)==13 && LepSel3_pt>25)'
   flagsPlots  +:= --legendHeader 'F: e/\#mu + \#tau\#tau'
@@ -232,6 +232,16 @@ BEGIN::crwz
   flagsPlots  +:= --legendHeader 'WZ CR'
   plots       #:= {lep      : lep.*._pt ; .*_eta ; flavor3l ; charge3l                }
   plots       #:= {evt      : mll3l ; met ; mtW3l ; htJet30j ; nJet30 ; nBJet25 ; m3l }
+  fmt          := {LepSel1_pdgId:+2d} {LepSel1_pt:5.1f} {LepSel1_mcUCSX:2d}\\t{LepSel2_pdgId:+2d} {LepSel2_pt:5.1f} {LepSel2_mcUCSX:2d}\\t{LepSel3_pdgId:+2d} {LepSel3_pt:5.1f} {LepSel3_mcUCSX:2d}\\t{nJet30:d}\\t{nBJetMedium25:2d}\\t{met_pt:5.1f}\\t{htJet30j:6.1f}\\t{mll_3l:6.1f}\\t{mT_3l:6.1f}\\t{mT2L_3l:6.1f}\\t{mT2T_3l:6.1f}
+ENDDEF
+
+BEGIN::cretau
+  expr         := 1
+  bins         := 1,0.5,1.5
+  bkgs        +:= fakes_appldata;promptsub;prompt_.*;rares_.*;convs
+  sigs        +:= sig_TChiNeuWZ_.*;sig_TChiNeuSlepSneu_FD_.*
+  flagsPlots  +:= --legendHeader 'e#tau CR'
+  plots       #:= {all : lep1_pt; lep2_pt; el_pt; el_eta; tau_pt; tau_eta; met; nBJet25 }
   fmt          := {LepSel1_pdgId:+2d} {LepSel1_pt:5.1f} {LepSel1_mcUCSX:2d}\\t{LepSel2_pdgId:+2d} {LepSel2_pt:5.1f} {LepSel2_mcUCSX:2d}\\t{LepSel3_pdgId:+2d} {LepSel3_pt:5.1f} {LepSel3_mcUCSX:2d}\\t{nJet30:d}\\t{nBJetMedium25:2d}\\t{met_pt:5.1f}\\t{htJet30j:6.1f}\\t{mll_3l:6.1f}\\t{mT_3l:6.1f}\\t{mT2L_3l:6.1f}\\t{mT2T_3l:6.1f}
 ENDDEF
 
