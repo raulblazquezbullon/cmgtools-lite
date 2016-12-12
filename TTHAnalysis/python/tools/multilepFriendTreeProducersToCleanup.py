@@ -52,8 +52,10 @@ MODULES.append( ('leptonJetReCleanerSusyRA7', lambda : LeptonJetReCleaner("Mini"
                    cleanJet = lambda lep,jet,dr : dr<0.4,
                    selectJet = lambda jet: abs(jet.eta)<2.4,
                    cleanTau = lambda lep,tau,dr: dr<0.4,
-                   looseTau = lambda tau: tau.pt > 20 and abs(tau.eta)<2.3 and abs(tau.dxy) < 1000 and abs(tau.dz) < 0.2 and tau.idMVAOldDMRun2 >= 1 and tau.idDecayMode, # used in cleaning
-                   tightTau = lambda tau: tau.idMVAOldDMRun2 == 3, # on top of loose
+                   looseTau = lambda tau: tau.pt > 20 and abs(tau.eta)<2.3 and abs(tau.dxy) < 1000 and abs(tau.dz) < 0.2 and tau.idMVA >= 1 and tau.idDecayMode, # used in cleaning
+                   tightTau = lambda tau: tau.idMVA == 3, # on top of loose
+                   #looseTau = lambda tau: tau.pt > 20 and abs(tau.eta)<2.3 and abs(tau.dxy) < 1000 and abs(tau.dz) < 0.2 and tau.idMVAOldDMRun2 >= 1 and tau.idDecayMode, # used in cleaning
+                   #tightTau = lambda tau: tau.idMVAOldDMRun2 == 3, # on top of loose
                    cleanJetsWithTaus = True,
                    doVetoZ = False,
                    doVetoLMf = False,

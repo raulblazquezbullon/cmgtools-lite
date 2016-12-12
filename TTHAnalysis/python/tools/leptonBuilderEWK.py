@@ -580,7 +580,7 @@ class LeptonBuilderEWK:
                 setattr(l, "relIso"       , 0                                   )
                 setattr(l, "ptratio"      , 0                                   )
                 setattr(l, "ptrel"        , 0                                   )
-                setattr(l, "mva"          , tau.idMVA          if not tau is None else 0 )
+                setattr(l, "mva"          , tau.idMVA if not tau is None else 0 )
                 #setattr(l, "mva"          , tau.idMVAOldDMRun2 if not tau is None else 0 )
             else:
                 setattr(l, "isTight"      , (l in self.lepsT  )                 )

@@ -1,6 +1,6 @@
 ## super signal regions
 ## ----------------------------------------------------------
-SSR         : SuperSig           : 5,0.5,5.5   ; YTitle="Events", XTitle="Super Signal Region", Legend="TR", IncludeOverflows=False, LegendCutoff=1e-5, Logy 
+SSR         : SuperSig           : 6,0.5,6.5   ; YTitle="Events", XTitle="Super Signal Region", Legend="TR", IncludeOverflows=False, LegendCutoff=1e-5, Logy 
 
 ## baseline region per final state
 ## ----------------------------------------------------------

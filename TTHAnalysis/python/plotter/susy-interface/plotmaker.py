@@ -51,11 +51,12 @@ parser.add_option("--noRatio", dest="ratio", action="store_false", default=True,
 base = "python mcPlots.py {MCA} {CUTS} {PLOTFILE} -P {T} --neg --s2v --tree {TREENAME} -f --cmsprel '{LSPAM}' --legendWidth 0.20 --legendFontSize 0.035 {MCCS} {MACROS} {RATIO} -l {LUMI} --pdir {O} {FRIENDS} {PROCS} {PLOTS} {FLAGS} --showMCError -j 4"
 (options, args) = parser.parse_args()
 options = maker.splitLists(options)
-mm      = maker.Maker("plotmaker", base, args, options)
+mm      = maker.Maker("plotmaker", base, args, options, parser.defaults)
 
 friends = mm.collectFriends()	
 mccs    = mm.collectMCCs   ()
 macros  = mm.collectMacros ()	
+sl      = mm.getVariable("lumi","12.9").replace(".","p")
 
 for r in range(len(mm.regions)):
 	mm.iterateRegion()
@@ -65,17 +66,18 @@ for r in range(len(mm.regions)):
 	
 	makes    = collectMakes(mm.region, options.make)
 	plots    = collectPlots(mm.region, options.plots, options.customPlots)
-	scenario = mm.getScenario()
+	scenario = mm.getScenario(True)
 	
 	for p in plots:
 		for m in makes:
-			output = mm.outdir +"/"+ scenario +"/"+ p +"/"+ mm.region.name +"/"+ m
+			output = mm.outdir +"/plot/"+ scenario +"/"+ sl +"fb/"+ p +"/"+ m
 			func.mkdir(output)
 	
-			procs   = collectProcesses(mm       , m)
+			procs   = collectProcesses(mm, m)
 			pplots  = collectPPlots   (mm, p, options.customPlots)
-	
-			mm.submit([mm.getVariable("mcafile",""), mm.getVariable("cutfile",""), mm.getVariable("plotfile",""), mm.treedir, options.treename, options.lspam, mccs, macros, ratio, options.lumi, output, friends, procs, pplots, flags],mm.region.name+"_"+p+"_"+m,False)
+
+			mm.submit([mm.getVariable("mcafile",""), mm.getVariable("cutfile",""), mm.getVariable("plotfile",""), mm.treedir, mm.getVariable("treename","treeProducerSusyMultilepton"), options.lspam, mccs, macros, ratio, mm.getVariable("lumi","12.9"), output, friends, procs, pplots, flags],mm.region.name+"_"+p+"_"+m,False)
+
 mm.runJobs()
 mm.clearJobs()
 

@@ -1,10 +1,16 @@
 ## STANDARD SELECTION (CENTRAL VALUE)
 ## ===========================================================
 
+## Sync Exercises
+## -----------------------------------------------------------
+TTWsync : TTW_EWK_sync : 1 ; Label="TTW", FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_filters_mc.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt"
+WZsync  : WZ_EWK_sync  : 1 ; Label="WZ", FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_filters_mc.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt"
+ZZsync  : ZZ_EWK_sync  : 1 ; Label="ZZ", FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_filters_mc.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt"
+
 ## Optimization
 ## -----------------------------------------------------------
 sig_TChiNeuWZ_150_120+         : TChiNeuWZ_150_120                 : 0.10099*5180.86/1000 ; Label="WZ (150/120)", LineStyle=7, FillColor=ROOT.kGreen+2, FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_filters_fastsim.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", NormSystematic=0.2
-sig_TChiNeuWZ_200_100+         : TChiNeuWZ_200_100                 : 0.10099*1807.39/1000 ; Label="WZ (200/100)", LineStyle=7, FillColor=ROOT.kBlue, FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_filters_fastsim.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", NormSystematic=0.2
+sig_TChiNeuWZ_200_100+         : TChiNeuWZ_200_100                 : 0.10099*1807.39/1000 ; Label="WZ (200/100)", LineStyle=7, FillColor=ROOT.kRed, FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_filters_fastsim.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", NormSystematic=0.2
 sig_TChiNeuWZ_350_25+          : TChiNeuWZ_350_25                  : 0.10099*209.439/1000 ; Label="WZ (350/25)" , LineStyle=7, FillColor=ROOT.kRed, FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_filters_fastsim.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", NormSystematic=0.2
 sig_TChiNeuWZ_400_1+           : TChiNeuWZ_400_1                   : 0.10099*121.013/1000 ; Label="WZ (400/1)"  , LineStyle=7, FillColor=ROOT.kBlue, FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_filters_fastsim.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", NormSystematic=0.2
 
@@ -22,6 +28,7 @@ sig_TChiNeuSlepSneuTD_200_150+ : TChiNeuSlepSneu_TD_200_150        : 1807.39/100
 sig_TChiNeuSlepSneuTD_300_125+ : TChiNeuSlepSneu_TD_300_125        : 386.936/1000 ; Label="TD (300/125)", LineStyle=7, FillColor=ROOT.kGreen, FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_filters_fastsim.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", NormSystematic=0.2
 sig_TChiNeuSlepSneuTD_400_125+ : TChiNeuSlepSneu_TD_400_125        : 121.013/1000 ; Label="TD (400/125)", LineStyle=7, FillColor=ROOT.kGreen, FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_filters_fastsim.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", NormSystematic=0.2
 sig_TChiNeuSlepSneuTD_500_1+   : TChiNeuSlepSneu_TD_500_1          : 46.3533/1000 ; Label="TD (500/1)"  , LineStyle=1, FillColor=ROOT.kGreen+2, FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_filters_fastsim.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", NormSystematic=0.2
+sig_TChiNeuSlepSneuTD_700_1+   : TChiNeuSlepSneu_TD_700_1          : 9.51032/1000 ; Label="TD (700/1)"  , LineStyle=1, FillColor=ROOT.kGreen+2, FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_filters_fastsim.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", NormSystematic=0.2
 
 
 ## Acceptance Study
