@@ -48,10 +48,10 @@ blind = '--flags "-X blinding"'
 
 index="/nfs/fanae/user/vischia/www/index.php"
 
-def runPlots(cuts, mca, out, plots, inputDir, outputDir, jei, lumi, mcc, trigdef, toplot, functions):
+def runPlots(cuts, mca, out, plots, inputDir, outputDir, jei, lumi, mcc, mccother, trigdef, toplot, functions):
         clean(out)
         os.system('cp {index} {outputDir}'.format(index=index,outputDir=out))
-        cmd = "python mcPlots.py {mca} {cuts} {plots} -P {inputDir} --Fs {inputDir}/leptonJetReCleanerSusyEWK3L --Fs {inputDir}/leptonBuilderEWK --pdir {outputDir} -j {jei} -l {lumi} --s2v --tree treeProducerSusyMultilepton --mcc {mcc} --mcc {trigdef} -f  --plotgroup fakes_appldata+=promptsub  --legendWidth 0.20 --legendFontSize 0.035 --showMCError -f {toplot} --showRatio --perBin --legendHeader \'EWK #tau_{{h}} CR\' --maxRatioRange 0.5 1.5 --fixRatioRange --ratioOffset 0.03  --load-macro {functions}".format(mca=mca,cuts=cuts,plots=plots,inputDir=inputDir,outputDir=out,jei=jei,lumi=lumi,mcc=mcc,trigdef=trigdef,toplot=toplot,functions=functions)
+        cmd = "python mcPlots.py {mca} {cuts} {plots} -P {inputDir} --Fs {inputDir}/leptonJetReCleanerSusyEWK2L --Fs {inputDir}/leptonJetReCleanerSusyEWK3L --Fs {inputDir}/leptonBuilderEWK --pdir {outputDir} -j {jei} -l {lumi} --s2v --tree treeProducerSusyMultilepton --mcc {mcc} --mcc {mccother} --mcc {trigdef} -f  --plotgroup fakes_appldata+=promptsub  --legendWidth 0.20 --legendFontSize 0.035 --showMCError -f {toplot} --showRatio --perBin --legendHeader \'EWK #tau_{{h}} CR\' --maxRatioRange 0.5 1.5 --fixRatioRange --ratioOffset 0.03  --load-macro {functions}".format(mca=mca,cuts=cuts,plots=plots,inputDir=inputDir,outputDir=out,jei=jei,lumi=lumi,mcc=mcc,mccother=mccother,trigdef=trigdef,toplot=toplot,functions=functions)
         command(cmd, pretend)
         os.system('cp {index} {outputDir}'.format(index=index,outputDir=out))
 
@@ -159,6 +159,7 @@ elif(action=='crconv'):
         print 'Now plotting CRs for estimating fakes from conversions'
         plots='susy-ewkino/crconv/plots_convs.txt'
         mcc='susy-ewkino/crconv/mcc_convs.txt'
+        mccother='susy-ewkino/2lss/lepchoice-2lss-FO.txt'
         trigdef='susy-ewkino/mcc_triggerdefs.txt'
         functions='susy-ewkino/3l/functionsEWK.cc'
         toplot='--sP \'MET\''
@@ -177,22 +178,21 @@ elif(action=='crconv'):
         cuts='susy-ewkino/crconv/cuts_convs_3l.txt'
         mca='susy-ewkino/crconv/mca-3l-mc-conv.txt'
         out=outputDir+'3l_mc_conv/'
-        runPlots(cuts, mca, out, plots, inputDir, outputDir, jei, lumi, mcc, trigdef, toplot, functions)
-
+        runPlots(cuts, mca, out, plots, inputDir, outputDir, jei, lumi, mcc, mccother, trigdef, toplot, functions)
 
         cuts='susy-ewkino/crconv/cuts_convs_3l.txt'
         mca='susy-ewkino/crconv/mca-3l-mcdata-conv.txt'
         out=outputDir+'3l_mcdata_conv/'
-        runPlots(cuts, mca, out, plots, inputDir, outputDir, jei, lumi, mcc, trigdef, toplot, functions)
+        runPlots(cuts, mca, out, plots, inputDir, outputDir, jei, lumi, mcc, mccother, trigdef, toplot, functions)
 
         cuts='susy-ewkino/crconv/cuts_convs_2lgamma.txt'
         mca='susy-ewkino/crconv/mca-ss2l-mcdata-conv.txt'
         out=outputDir+'ss2lgamma_mcdata_conv/'
-        runPlots(cuts, mca, out, plots, inputDir, outputDir, jei, lumi, mcc, trigdef, toplot, functions)
+        runPlots(cuts, mca, out, plots, inputDir, outputDir, jei, lumi, mcc, mccother, trigdef, toplot, functions)
 
         cuts='susy-ewkino/crconv/cuts_convs_ss2l.txt'
         mca='susy-ewkino/crconv/mca-ss2l-mcdata-conv.txt'
         out=outputDir+'ss2l_mcdata_conv/'
-        runPlots(cuts, mca, out, plots, inputDir, outputDir, jei, lumi, mcc, trigdef, toplot, functions)
+        runPlots(cuts, mca, out, plots, inputDir, outputDir, jei, lumi, mcc, mccother, trigdef, toplot, functions)
 
 print 'Everything is done now'
