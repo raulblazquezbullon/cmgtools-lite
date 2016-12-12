@@ -941,14 +941,12 @@ class PlotMaker:
                     total.GetZaxis().SetRangeUser(pspec.getOption('ZMin',1.0), pspec.getOption('ZMax',1.0))
                 #if options.yrange: 
                 #    total.GetYaxis().SetRangeUser(options.yrange[0], options.yrange[1])
-                ####### ----->>> HERE
                 if options.showSigShape or options.showIndivSigShapes or options.showIndivSigs: 
                     signorms = doStackSignalNorm(pspec,pmap,options.showIndivSigShapes or options.showIndivSigs,extrascale=options.signalPlotScale, norm=not options.showIndivSigs)
                     for signorm in signorms:
                         if outputDir: 
                             signorm.SetDirectory(outputDir); outputDir.WriteTObject(signorm)
                         reMax(total,signorm,islog,doWide=doWide)
-                ####### ----->>> HERE
                 legendCutoff = pspec.getOption('LegendCutoff', 1e-5 if c1.GetLogy() else 1e-2)
                 if plotmode == "norm": legendCutoff = 0 
                 if plotmode == "stack":
@@ -975,14 +973,6 @@ class PlotMaker:
                     else:
                         doSpam(options.addspam, .23, .855, .6, .895, align=12, textSize=(0.045 if doRatio else 0.033)*options.topSpamSize)
                 signorm = None; datnorm = None; sfitnorm = None
-                ## COPY-PASTE THIS ONE
-                ##if options.showSigShape or options.showIndivSigShapes or options.showIndivSigs: 
-                ##    signorms = doStackSignalNorm(pspec,pmap,options.showIndivSigShapes or options.showIndivSigs,extrascale=options.signalPlotScale, norm=not options.showIndivSigs)
-                ##    for signorm in signorms:
-                ##        if outputDir: 
-                ##            signorm.SetDirectory(outputDir); outputDir.WriteTObject(signorm)
-                ##        reMax(total,signorm,islog,doWide=doWide)
-                ## COPY-PASTE TILL HERE
                 if options.showDatShape: 
                     datnorm = doDataNorm(pspec,pmap)
                     if datnorm != None:
