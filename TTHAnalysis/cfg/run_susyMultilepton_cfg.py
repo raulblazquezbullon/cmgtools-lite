@@ -44,7 +44,6 @@ print 'Using analysis type: %s'%analysis
 # Lepton Skimming
 ttHLepSkim.minLeptons = 2
 ttHLepSkim.maxLeptons = 999
-ttHLepSkim.allowLepTauComb = True
 
 if analysis=='susy':
     susyCoreSequence.insert(susyCoreSequence.index(ttHLepSkim)+1,globalSkim)
@@ -380,7 +379,7 @@ if not skipT1METCorr:
 
 from CMGTools.RootTools.samples.triggers_13TeV_DATA2016 import *
 triggerFlagsAna.triggerBits = {
-    'DoubleMu' : triggers_mumu_iso ,
+    'DoubleMu' : triggers_mumu_iso,
     'DoubleMuSS' : triggers_mumu_ss,
     'DoubleMuNoIso' : triggers_mumu_noniso + triggers_mu27tkmu8,
     'DoubleEl' : triggers_ee + triggers_doubleele33 + triggers_doubleele33_MW,
@@ -400,7 +399,7 @@ triggerFlagsAna.triggerBits = {
     'SOSTripleMu' : triggers_SOS_tripleMu,
     'LepTau' : triggers_leptau,
     'MET' : triggers_metNoMu90_mhtNoMu90 + triggers_htmet,
-    'htall' : triggers_pfht
+    'HT' : triggers_pfht
     
     #'MonoJet80MET90' : triggers_Jet80MET90,
     #'MonoJet80MET120' : triggers_Jet80MET120,
@@ -494,12 +493,6 @@ if runData and not isTest: # For running on data
     is50ns = False
     dataChunks = []
 
-#    json = os.environ['CMSSW_BASE']+'/src/CMGTools/TTHAnalysis/data/json/Cert_271036-274421_13TeV_PromptReco_Collisions16_JSON.txt' # 2.07/fb
-#    json = os.environ['CMSSW_BASE']+'/src/CMGTools/TTHAnalysis/data/json/Cert_271036-274443_13TeV_PromptReco_Collisions16_JSON.txt' # 2.6/fb
-#    json = os.environ['CMSSW_BASE']+'/src/CMGTools/TTHAnalysis/data/json/Cert_271036-275125_13TeV_PromptReco_Collisions16_JSON.txt' # 4.0/fb
-#    json = os.environ['CMSSW_BASE']+'/src/CMGTools/TTHAnalysis/data/json/Cert_271036-275783_13TeV_PromptReco_Collisions16_JSON.txt' # 6.3/fb
-    #json = os.environ['CMSSW_BASE']+'/src/CMGTools/TTHAnalysis/data/json/Cert_271036-276811_13TeV_PromptReco_Collisions16_JSON_NoL1T.txt' # 12.9/fb
-    #json = os.environ['CMSSW_BASE']+'/src/CMGTools/TTHAnalysis/data/json/Cert_271036-283685_13TeV_PromptReco_Collisions16_JSON_NoL1T.txt' # 33.6/fb
     json = os.environ['CMSSW_BASE']+'/src/CMGTools/TTHAnalysis/data/json/Cert_271036-284044_13TeV_PromptReco_Collisions16_JSON_NoL1T.txt' # 36.15/fb
 
     #processing = "Run2016B-23Sep2016-v1"; short = "Run2016B_23Sep2016_v1"; run_ranges = [(272760,273017)]; useAAA=True; # -v2 starts from 272760 to 273017
@@ -523,6 +516,7 @@ if runData and not isTest: # For running on data
     dataChunks.append((json,processing,short,run_ranges,useAAA))
     processing = "Run2016H-PromptReco-v3"; short = "Run2016H-PromptReco-v3"; run_ranges = [(284036,284044)]; useAAA=True;
     dataChunks.append((json,processing,short,run_ranges,useAAA))
+
 
     compSelection = ""; compVeto = ""
     DatasetsAndTriggers = []
@@ -929,11 +923,15 @@ elif test == '80X-MC':
         if not getHeppyOption("single"): comp.fineSplitFactor = 4
     else: raise RuntimeError, "Unknown MC sample: %s" % what
 elif test == '80X-Data':
-    DoubleMuon = kreator.makeDataComponent("DoubleMuon_Run2016B_run274315", "/DoubleMuon/Run2016B-PromptReco-v2/MINIAOD", "CMS", ".*root", run_range = (274315,274315), triggers = triggers_mumu)
-    DoubleEG = kreator.makeDataComponent("DoubleEG_Run2016B_run274315", "/DoubleEG/Run2016B-PromptReco-v2/MINIAOD", "CMS", ".*root", run_range = (274315,274315), triggers = triggers_ee)
-    DoubleMuon.files = [ 'root://eoscms//eos/cms/store/data/Run2016B/DoubleMuon/MINIAOD/PromptReco-v2/000/274/315/00000/A287989F-E129-E611-B5FB-02163E0142C2.root' ]
-    DoubleEG.files = [ 'root://eoscms//eos/cms/store/data/Run2016B/DoubleEG/MINIAOD/PromptReco-v2/000/274/315/00000/FEF59D1D-EE29-E611-8793-02163E0143AE.root' ]
-    selectedComponents = [ DoubleMuon, DoubleEG ]
+    #DoubleMuon = kreator.makeDataComponent("DoubleMuon_Run2016B_run274315", "/DoubleMuon/Run2016B-PromptReco-v2/MINIAOD", "CMS", ".*root", run_range = (274315,274315), triggers = triggers_mumu + triggers_mumu_ht + triggers_ee + triggers_ee_ht )
+    #DoubleEG = kreator.makeDataComponent("DoubleEG_Run2016B_run274315", "/DoubleEG/Run2016B-PromptReco-v2/MINIAOD", "CMS", ".*root", run_range = (274315,274315), triggers = triggers_ee)
+    SingleMuon = kreator.makeDataComponent("SingleMuon_Run2016H_run281693","/SingleMuon/Run2016H-PromptReco-v2/MINIAOD","CMS",".*root", run_range=(281680, 281700), triggers = triggers_1mu_iso)
+    #DoubleMuon.files = [ 'root://eoscms//eos/cms/store/data/Run2016B/DoubleMuon/MINIAOD/PromptReco-v2/000/274/315/00000/A287989F-E129-E611-B5FB-02163E0142C2.root' ]
+    #DoubleEG.files = [ 'root://eoscms//eos/cms/store/data/Run2016B/DoubleEG/MINIAOD/PromptReco-v2/000/274/315/00000/FEF59D1D-EE29-E611-8793-02163E0143AE.root' ]
+    #SingleMuon.files = [ 'root://eoscms//eos/cms/store/data/Run2016H/SingleMuon/MINIAOD/PromptReco-v2/000/281/693/00000/4E8924DC-3B86-E611-BB28-FA163E72F1B8.root' ]
+    #SingleMuon.files = [ 'root://eoscms//eos/cms/store/data/Run2016H/SingleMuon/MINIAOD/PromptReco-v2/000/281/693/00000/4E8924DC-3B86-E611-BB28-FA163E72F1B8.root' ]
+    SingleMuon.files = [ 'root://eoscms//eos/cms/store/data/Run2016B/DoubleMuon/MINIAOD/23Sep2016-v3/00000/5ADA8008-EE98-E611-A57D-848F69FD852B.root' ]
+    selectedComponents = [ SingleMuon ] #DoubleMuon, DoubleEG ]
     for comp in selectedComponents:
         comp.json = '/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions16/13TeV/Cert_271036-283685_13TeV_PromptReco_Collisions16_JSON_NoL1T.txt'
         tmpfil = os.path.expandvars("/tmp/$USER/%s" % os.path.basename(comp.files[0]))
