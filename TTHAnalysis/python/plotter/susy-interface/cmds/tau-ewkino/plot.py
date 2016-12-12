@@ -172,7 +172,7 @@ elif(action=='crconv'):
         direct=' '
         jei='6'
         jei='60'
-        lumi='1.0'
+        lumi='36.5'
 
         cuts='susy-ewkino/crconv/cuts_convs_3l.txt'
         mca='susy-ewkino/crconv/mca-3l-mc-conv.txt'

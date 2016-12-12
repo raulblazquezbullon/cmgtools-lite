@@ -1,3 +1,10 @@
+LepSel1_(\w+)  : LepSel_\1[0]       ; AlsoData 
+LepSel2_(\w+)  : LepSel_\1[1]       ; AlsoData
+LepSel3_(\w+)  : LepSel_\1[2]       ; AlsoData
+LepSel4_(\w+)  : LepSel_\1[3]       ; AlsoData
+nJet30\b       : nJet30_Mini        ; AlsoData
+htJet30j\b     : htJet30j_Mini      ; AlsoData
+nBJetMedium25\b: nBJetMedium25_Mini ; AlsoData
 nLepFO\b : nLepFO_Mini; AlsoData                                                       
 nLepFlavor\b : nLepFlavor(countTaus(3, LepSel_pdgId[0], LepSel_pdgId[1], LepSel_pdgId[2]), is_4l, is_5l) ; AlsoData
 srMll\b      : srMll(3, mll_3l, mllL_3l, mllT_3l) ; AlsoData
