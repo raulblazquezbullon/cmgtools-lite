@@ -117,6 +117,7 @@ MODULES.append( ('leptonJetReCleanerSusyEWK2L', lambda : LeptonJetReCleaner("Rec
                    looseTau = lambda tau: _susyEWK_tauId_CBloose(tau), # used in cleaning
                    tightTau = lambda tau: _susyEWK_tauId_CBtight(tau), # on top of loose
                    cleanJetsWithTaus = True,
+                   cleanTausWithLoose = True,
                    doVetoZ = True,
                    doVetoLMf = True,
                    doVetoLMt = True,
