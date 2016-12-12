@@ -50,6 +50,13 @@ float mt_2(float pt1, float phi1, float pt2, float phi2) {
     return std::sqrt(2*pt1*pt2*(1-std::cos(phi1-phi2)));
 }
 
+float lepMass(int pdgId){
+    if(abs(pdgId)==11) return 0.0005;
+    if(abs(pdgId)==13) return 0.1   ;
+    if(abs(pdgId)==15) return 1.7   ;
+    return 0;
+}
+
 float mass_2(float pt1, float eta1, float phi1, float m1, float pt2, float eta2, float phi2, float m2) {
     typedef ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double> > PtEtaPhiMVector;
     PtEtaPhiMVector p41(pt1,eta1,phi1,m1);
