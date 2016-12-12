@@ -35,13 +35,47 @@ Rares : WZZ      : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepG
 Rares : TTTT     : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kViolet+1
 Rares : tZq_ll   : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kViolet+1
 
-data : DoubleEG_Run2015C_25ns_16Dec2015
-data : DoubleEG_Run2015D_16Dec2015
-data : DoubleMuon_Run2015C_25ns_16Dec2015
-data : DoubleMuon_Run2015D_16Dec2015
-data : MuonEG_Run2015C_25ns_16Dec2015
-data : MuonEG_Run2015D_16Dec2015
-data : SingleElectron_Run2015C_25ns_16Dec2015
-data : SingleElectron_Run2015D_16Dec2015
-data : SingleMuon_Run2015C_25ns_16Dec2015
-data : SingleMuon_Run2015D_16Dec2015
+## DATA
+## -----------------------------------------------------------
+
+data : DoubleEG_Run2016B_PromptReco_v2_runs_273150_275125       ; Label="data"
+data : DoubleEG_Run2016B_PromptReco_v2_runs_275126_275783       ; Label="data"
+data : DoubleEG_Run2016C_PromptReco_v2_runs_271350_275783       ; Label="data"
+data : DoubleEG_Run2016C_PromptReco_v2_runs_275784_276283       ; Label="data"
+data : DoubleEG_Run2016DPromptReco_v2_runs_276283_276384        ; Label="data"
+data : DoubleEG_Run2016D_PromptReco_v2_runs_276284_276811       ; Label="data"
+data : DoubleMuon_Run2016B_PromptReco_v2_runs_273150_275125     ; Label="data"
+data : DoubleMuon_Run2016B_PromptReco_v2_runs_275126_275783     ; Label="data"
+data : DoubleMuon_Run2016C_PromptReco_v2_runs_271350_275783     ; Label="data"
+data : DoubleMuon_Run2016C_PromptReco_v2_runs_275784_276283     ; Label="data"
+data : DoubleMuon_Run2016DPromptReco_v2_runs_276283_276384      ; Label="data"
+data : DoubleMuon_Run2016D_PromptReco_v2_runs_276284_276811     ; Label="data"
+data : MuonEG_Run2016B_PromptReco_v2_runs_273150_275125         ; Label="data"
+data : MuonEG_Run2016B_PromptReco_v2_runs_275126_275783         ; Label="data"
+data : MuonEG_Run2016C_PromptReco_v2_runs_271350_275783         ; Label="data"
+data : MuonEG_Run2016C_PromptReco_v2_runs_275784_276283         ; Label="data"
+data : MuonEG_Run2016DPromptReco_v2_runs_276283_276384          ; Label="data"
+data : MuonEG_Run2016D_PromptReco_v2_runs_276284_276811         ; Label="data"
+data : SingleElectron_Run2016B_PromptReco_v2_runs_273150_275125 ; Label="data"
+data : SingleElectron_Run2016B_PromptReco_v2_runs_275126_275783 ; Label="data"
+data : SingleElectron_Run2016C_PromptReco_v2_runs_271350_275783 ; Label="data"
+data : SingleElectron_Run2016C_PromptReco_v2_runs_275784_276283 ; Label="data"
+data : SingleElectron_Run2016DPromptReco_v2_runs_276283_276384  ; Label="data"
+data : SingleElectron_Run2016D_PromptReco_v2_runs_276284_276811 ; Label="data"
+data : SingleMuon_Run2016B_PromptReco_v2_runs_271350_275783     ; Label="data"
+data : SingleMuon_Run2016C_PromptReco_v2_runs_271350_275783     ; Label="data"
+data : SingleMuon_Run2016C_PromptReco_v2_runs_275784_276283     ; Label="data"
+data : SingleMuon_Run2016DPromptReco_v2_runs_276283_276384      ; Label="data"
+data : SingleMuon_Run2016D_PromptReco_v2_runs_276284_276811     ; Label="data"
+#data : Tau_Run2016B_PromptReco_v2_runs_273150_274442            ; Label="data"
+#data : Tau_Run2016B_PromptReco_v2_runs_274443_275125            ; Label="data"
+#data : Tau_Run2016B_PromptReco_v2_runs_275126_275783            ; Label="data"
+#data : Tau_Run2016C_PromptReco_v2_runs_275784_276283            ; Label="data"
+#data : Tau_Run2016DPromptReco_v2_runs_276283_276384             ; Label="data"
+#data : Tau_Run2016D_PromptReco_v2_runs_276284_276811            ; Label="data"
+#data : SingleElectron_Run2016B_PromptReco_v2_runs_271350_275376 ; Label="data"
+#data : SingleElectron_Run2016C_PromptReco_v2_runs_275657_276283 ; Label="data"
+#data : SingleElectron_Run2016D_PromptReco_v2_runs_276315_276811 ; Label="data"
+#data : SingleMuon_Run2016B_PromptReco_v2_runs_271350_275376     ; Label="data"
+#data : SingleMuon_Run2016C_PromptReco_v2_runs_275657_276283     ; Label="data"
+#data : SingleMuon_Run2016D_PromptReco_v2_runs_276315_276811     ; Label="data"
