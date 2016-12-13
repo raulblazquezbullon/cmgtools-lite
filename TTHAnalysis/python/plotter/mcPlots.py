@@ -1174,6 +1174,7 @@ def addPlotMakerOptions(parser, addAlsoMCAnalysis=True):
     parser.add_option("--cmsprel", dest="cmsprel", type="string", default="Preliminary", help="Additional text (Simulation, Preliminary, Internal)")
     parser.add_option("--cmssqrtS", dest="cmssqrtS", type="string", default="13 TeV", help="Sqrt of s to be written in the official CMS text.")
     parser.add_option("--printBin", dest="printBinning", type="string", default=None, help="Write 'Events/xx' instead of 'Events' on the y axis")
+    parser.add_option('--env',      dest='env'         , type='string', default=None, help='Set environment (currently supported: "oviedo")')
 
 if __name__ == "__main__":
     from optparse import OptionParser
@@ -1187,12 +1188,12 @@ if __name__ == "__main__":
     outname  = options.out if options.out else (args[2].replace(".txt","")+".root")
     if (not options.out) and options.printDir:
         outname = options.printDir + "/"+os.path.basename(args[2].replace(".txt","")+".root")
-    if '/pool/ciencias' in outname:
+    if 'oviedo' in env:
         outname = outname.replace('/pool/ciencias/','/pool/cienciasrw/')
     if os.path.dirname(outname) and not os.path.exists(os.path.dirname(outname)):
         os.system("mkdir -p "+os.path.dirname(outname))
         if os.path.exists("/afs/cern.ch"): os.system("cp /afs/cern.ch/user/g/gpetrucc/php/index.php "+os.path.dirname(outname))
-        elif os.path.exists("/pool/ciencias/"): os.system("cp /pool/ciencias/HeppyTrees/RA7/additionalReferenceCode/index.php "+os.path.dirname(outname))
+        elif 'oviedo' in env: os.system("cp /pool/ciencias/HeppyTrees/RA7/additionalReferenceCode/index.php "+os.path.dirname(outname))
     print "Will save plots to ",outname
     fcmd = open(re.sub("\.root$","",outname)+"_command.txt","w")
     fcmd.write("%s\n\n" % " ".join(sys.argv))
