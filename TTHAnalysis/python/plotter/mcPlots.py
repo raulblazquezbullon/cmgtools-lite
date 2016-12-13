@@ -1188,12 +1188,12 @@ if __name__ == "__main__":
     outname  = options.out if options.out else (args[2].replace(".txt","")+".root")
     if (not options.out) and options.printDir:
         outname = options.printDir + "/"+os.path.basename(args[2].replace(".txt","")+".root")
-    if 'oviedo' in env:
+    if 'oviedo' in options.env:
         outname = outname.replace('/pool/ciencias/','/pool/cienciasrw/')
     if os.path.dirname(outname) and not os.path.exists(os.path.dirname(outname)):
         os.system("mkdir -p "+os.path.dirname(outname))
         if os.path.exists("/afs/cern.ch"): os.system("cp /afs/cern.ch/user/g/gpetrucc/php/index.php "+os.path.dirname(outname))
-        elif 'oviedo' in env: os.system("cp /pool/ciencias/HeppyTrees/RA7/additionalReferenceCode/index.php "+os.path.dirname(outname))
+        elif 'oviedo' in options.env: os.system("cp /pool/ciencias/HeppyTrees/RA7/additionalReferenceCode/index.php "+os.path.dirname(outname))
     print "Will save plots to ",outname
     fcmd = open(re.sub("\.root$","",outname)+"_command.txt","w")
     fcmd.write("%s\n\n" % " ".join(sys.argv))
