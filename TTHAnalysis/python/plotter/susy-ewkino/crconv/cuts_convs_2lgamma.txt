@@ -7,8 +7,8 @@ pt2010: LepGood1_conePt>20 && LepGood2_conePt>10 && (abs(LepGood2_pdgId)!=11 || 
 MediumID:  if3(abs(LepGood1_pdgId)==13,LepGood1_mediumMuonId>0, 1) && if3(abs(LepGood2_pdgId)==13,LepGood2_mediumMuonId>0, 1) && if3(abs(LepGood3_pdgId)==13,LepGood3_mediumMuonId>0, 1)
 tightMVAM : (LepGood1_mvaSUSY>-0.20+(0.20+0.50)*(abs(LepGood1_pdgId)==11)) && (LepGood2_mvaSUSY>-0.20+(0.20+0.50)*(abs(LepGood2_pdgId)==11)) && (LepGood3_mvaSUSY>-0.20+(0.20+0.50)*(abs(LepGood3_pdgId)==11))
 opposite-sign: LepGood1_charge*LepGood2_charge < 0
-gamma: ngamma==1
-gammaisolated: gamma_idCutBased[0]>0 && gamma_sigmaIetaIeta[0] < 0.0103+(-0.0103+0.0277)*(abs(gamma_eta[0])>1.479) && gamma_hOverE[0] < 0.05 && gamma_chHadIso[0] < 2.5	
+gamma: ngamma==1 ; Disable=True
+gammaisolated: gamma_idCutBased[0]>0 && gamma_sigmaIetaIeta[0] < 0.0103+(-0.0103+0.0277)*(abs(gamma_eta[0])>1.479) && gamma_hOverE[0] < 0.05 && gamma_chHadIso[0] < 2.5	; Disable=True
 2lfromZ: abs(mass_2(LepGood1_pt,LepGood1_eta,LepGood1_phi,LepGood1_mass, LepGood2_pt,LepGood2_eta,LepGood2_phi,LepGood2_mass)-91.2) < 20
 0bjetM: nBJetMedium25 == 0
 
