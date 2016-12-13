@@ -308,9 +308,6 @@ int SR3l(int nTau, int nOSSF, int nOSLF, float mT2L, float mT2T, float mll, floa
     if(nTau == 1 && nOSLF <  1              ) return SR3lE(mT2L, mT2T, mll, mT, met, 84);
     // 1 light + 2 tau
     if(nTau == 2                            ) return SR3lF(mT2L, mT2T, mll, mT, met, 96);
-
-    
-
     return 0;
 }
 
@@ -326,7 +323,6 @@ int SR4l(int nTau, int nOSSF, int nOSLF, float mT2L, float mT2T, float mll, floa
     if(nTau == 2 && nOSSF <= 1              ) return SR4lK(mT2L, mT2T, mll, mT, met, 125);
     return 0;
 }
-
 
 int SR(int nLep, int nTau, int nOSSF, int nOSLF, float mT2L, float mT2T, float mll, float mT, float met) {
 
