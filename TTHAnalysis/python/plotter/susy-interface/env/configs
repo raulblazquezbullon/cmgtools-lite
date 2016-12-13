@@ -15,9 +15,7 @@ BEGIN::2lss
   friends     +:=
   macros      +:= susy-ewkino/3l/functionsEWK.cc
   mccs        +:= susy-ewkino/mcc_triggerdefs.txt; susy-ewkino/2lss/lepchoice-2lss-FO.txt
-
   weight       := puw_nInt_Moriond(nTrueInt)*triggerSF(4,LepGood1_conePt,LepGood1_pdgId,LepGood2_conePt,LepGood2_pdgId,0,0)*leptonSF_2lss_ewk(LepGood1_pdgId,LepGood1_conePt,LepGood1_eta)*leptonSF_2lss_ewk(LepGood2_pdgId,LepGood2_conePt,LepGood2_eta)*eventBTagSF
-
   flags       +:=
   flagsDumps  +:=
   flagsEffs   +:=
@@ -182,7 +180,6 @@ BEGIN::taustudies
   wVars       #:= {lepSFFS  : leptonSFFS(getLeptonSFFS(LepSel_pt[0], LepSel_eta[0], LepSel_pdgId[0],1), getLeptonSFFS(LepSel_pt[1], LepSel_eta[1], LepSel_pdgId[1],1), getLeptonSFFS(LepSel_pt[2], LepSel_eta[2], LepSel_pdgId[2],1)); leptonSFFS(getLeptonSFFS(LepSel_pt[0], LepSel_eta[0], LepSel_pdgId[0],-1), getLeptonSFFS(LepSel_pt[1], LepSel_eta[1], LepSel_pdgId[1],-1), getLeptonSFFS(LepSel_pt[2], LepSel_eta[2], LepSel_pdgId[2],-1))}
 ENDDEF
 
-
 BEGIN::cretau
   firstCut     := alwaystrue
   mcafile      := susy-ewkino/cretau/mca_ewkino.txt
@@ -228,7 +225,6 @@ BEGIN::cretau
   wVarsFS     #:= {lepSF    : leptonSF(getLepSF(LepSel_pt[0], LepSel_eta[0], LepSel_pdgId[0], 0, 1), getLepSF(LepSel_pt[1], LepSel_eta[1], LepSel_pdgId[1], 0, 1), getLepSF(LepSel_pt[2], LepSel_eta[2], LepSel_pdgId[2], 0, 1)) ; leptonSF(getLepSF(LepSel_pt[0], LepSel_eta[0], LepSel_pdgId[0], 0, -1), getLepSF(LepSel_pt[1], LepSel_eta[1], LepSel_pdgId[1], 0, -1), getLepSF(LepSel_pt[2], LepSel_eta[2], LepSel_pdgId[2], 0, -1)) }
   wVarsFS     #:= {lepSFFS  : leptonSFFS(getLepSFFS(LepSel_pt[0], LepSel_eta[0], LepSel_pdgId[0], 0, 1), getLepSFFS(LepSel_pt[1], LepSel_eta[1], LepSel_pdgId[1], 0, 1), getLepSFFS(LepSel_pt[2], LepSel_eta[2], LepSel_pdgId[2], 0, 1)) ; leptonSF(getLepSFFS(LepSel_pt[0], LepSel_eta[0], LepSel_pdgId[0], 0, -1), getLepSFFS(LepSel_pt[1], LepSel_eta[1], LepSel_pdgId[1], 0, -1), getLepSFFS(LepSel_pt[2], LepSel_eta[2], LepSel_pdgId[2], 0, -1)) }
 ENDDEF
-
 
 BEGIN::crlnt
   firstCut     := alwaystrue

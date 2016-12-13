@@ -16,11 +16,9 @@ fi
 
 CMD="$CMSSW_BASE/src/CMGTools/TTHAnalysis/macros/leptons/friendChunkAdd.sh ${PREFIX}"
 
-
 if [ "${ACTION}" == "check" ]; then
     CMD="$CMSSW_BASE/src/CMGTools/TTHAnalysis/macros/leptons/friendChunkCheck.sh -z ${INPUT}"
 fi
-
 
 cd ${INPUT}
 
@@ -32,5 +30,4 @@ sh ${CMD}
 #fi
 
 cd -
-                           
 exit 0

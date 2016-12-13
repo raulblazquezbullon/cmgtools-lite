@@ -1,10 +1,5 @@
-
-
 INPUTDIR="/nfs/fanae/user/vischia/TREES_80X_011216_Spring16MVA_skim_2lep_OR_1lep_2tau/"
-
 OUTPUTDIR="/OBSOLETE"
-
-
 WEBDIR="/nfs/fanae/user/vischia/www/taus/"
 
 if [ "$1" == "ft" ]; then
@@ -88,6 +83,4 @@ elif [ "$1" == "plot" ]; then
     echo " =============================================================="
 
 fi
-
 exit 0
-

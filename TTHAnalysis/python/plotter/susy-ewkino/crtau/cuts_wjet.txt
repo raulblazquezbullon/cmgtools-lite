@@ -10,9 +10,6 @@ jets: nJet40 == 1
 vetobjets: nBJetMedium25 == 0 ; Disable=True
 final: nTauGood == 1 
 
-
-                                                                                                
- 
 zzalwaystrue: 1                         ;  Disable=True
 zzblinding  : !isData || run <= 274240  ;  Disable=True
 zzfilters   : !isData || METfilters     ;  Disable=True

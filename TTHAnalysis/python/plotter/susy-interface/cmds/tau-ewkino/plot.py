@@ -25,8 +25,6 @@ regions = {
 """
 """
 
-
-
 import optparse
 # Command line options
 usage = 'usage: %prog [--newData]'
@@ -56,15 +54,12 @@ def runPlots(cuts, mca, out, plots, inputDir, outputDir, jei, lumi, mcc, mccothe
         command(cmd, pretend)
         os.system('cp {index} {outputDir}'.format(index=index,outputDir=out))
 
-
 if(action=='generalplots'):
         cmd = 'print susy-interface/plotmaker.py 3l 3lA {inputDir} {outputDir} -l 12.9 --make data --plots br -o SR {blind} --pretend'.format(inputDir=inputDir,outputDir=outputDir,blind=blind)
         command(cmd, pretend)
 
 elif(action=='tauopt'):
-        
         mca='susy-ewkino/crtau/mca_taus.txt'
-        
         for region in regions:
                 if subaction and (region != subaction):
                         continue
@@ -99,9 +94,6 @@ elif(action=='crtauNotWorkingBecauseOfPeopleSBadCommitPolicies'):
         cmd = 'python susy-interface/plotmaker.py {config} {region} {inputDir} {outputDir} --mca {mca} --cuts {cuts} -l 12.9 --make data  -o {sr} {blind} {batch} {pretend}'.format(config=config,region=regions[region][0],inputDir=inputDir,outputDir=out,mca=mca,cuts=cuts,blind=blind,sr=regions[region][1],batch=batch,pretend=direct)
         print cmd
         command(cmd, pretend)
-
-
-
 
 elif(action=='crtau'):
         print 'Now plotting CRs for estimating tau fakes'

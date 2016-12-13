@@ -14,8 +14,6 @@ met: met_pt > 60
 0bjetM: nBJetMedium25 == 0
 0and1jet: nJet40<=1
 
-
-
 # some cuts that are off by default but can be turned on with -E
 blinded: (!isData || run<= 274240); Disable=True
 denom_noMVA:  (LepGood_jetPtRatiov2 > 0.3 && LepGood_jetBTagCSV < 0.3 && (abs(LepGood_pdgId)!=11 || (abs(LepGood_eta)<1.479 && LepGood_mvaIdSpring15>0.0) || (abs(LepGood_eta)>1.479 && LepGood_mvaIdSpring15>0.3))); Disable=True

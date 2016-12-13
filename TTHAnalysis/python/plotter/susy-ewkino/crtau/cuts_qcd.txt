@@ -13,5 +13,3 @@ zzfilters   : !isData || METfilters      ;  Disable=True
 zztrigger   : !isData || Triggers_leplep ;  Disable=True
 zz0l        : SR == 147 || SR == 148     ;  Disable=True
 zzfinal     : 1                          ;  Disable=True
-
-                                                                                                                                                                       

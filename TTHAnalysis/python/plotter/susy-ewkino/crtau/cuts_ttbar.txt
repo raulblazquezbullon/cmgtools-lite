@@ -17,10 +17,8 @@ zztrigger   : !isData || Triggers_leplep; Disable=True
 zz0l        : SR == 147 || SR == 148    ; Disable=True
 zzfinal     : 1                         ; Disable=True
 
-                                                                                pt2x1x10: LepGood1_conePt>20 && (abs(LepGood1_pdgId)!=11 || LepGood2_conePt>25) && LepGood2_conePt>10 && (abs(LepGood2_pdgId)!=11 || LepGood2_conePt>15) && LepGood3_conePt>10   ;   Disable=True
+pt2x1x10: LepGood1_conePt>20 && (abs(LepGood1_pdgId)!=11 || LepGood2_conePt>25) && LepGood2_conePt>10 && (abs(LepGood2_pdgId)!=11 || LepGood2_conePt>15) && LepGood3_conePt>10   ;   Disable=True
 muee: !(abs(LepGood1_pdgId)==13 && abs(LepGood2_pdgId)==11 && abs(LepGood3_pdgId)==11 ) || LepGood1_conePt>25 ;  Disable=True
-
-               
 
 zzblinding  : !isData || run <= 274240                      ; Disable=True
 zzfilters   : !isData || METfilters                         ; Disable=True

@@ -138,10 +138,6 @@ promptsub : WGToLNuG : -1*xsec 	: LepGood1_isMatchRightCharge && LepGood2_isMatc
 promptsub : ZGTo2LG  : -1*xsec 	: LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata_prompt.txt"
 
 
-
-
-
-
 ###################################################################################################################################################################################################
 ###################################################################################################################################################################################################
 #############        SYSTEMATIC VARIATIONS START HERE !!! 
@@ -517,7 +513,6 @@ convs_puw_Dn       : WGToLNuG : xsec : puw2016_nInt_ICHEP(nTrueInt,-1)/puw2016_n
 convs_puw_Dn       : ZGTo2LG  : xsec : puw2016_nInt_ICHEP(nTrueInt,-1)/puw2016_nInt_ICHEP(nTrueInt)*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ;  SkipMe=True
 convs_puw_Dn       : TGJets   : xsec : puw2016_nInt_ICHEP(nTrueInt,-1)/puw2016_nInt_ICHEP(nTrueInt)*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ;  SkipMe=True
 convs_puw_Dn       : WGToLNuG : xsec : puw2016_nInt_ICHEP(nTrueInt,-1)/puw2016_nInt_ICHEP(nTrueInt)*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge)                                                   ;  SkipMe=True
-
 
 # Signal
 ################################
