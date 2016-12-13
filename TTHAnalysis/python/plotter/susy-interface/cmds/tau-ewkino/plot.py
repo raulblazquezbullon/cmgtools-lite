@@ -63,7 +63,7 @@ if(action=='generalplots'):
 
 elif(action=='tauopt'):
         
-        mca='susy-ewkino/3l/taus/mca_taus.txt'
+        mca='susy-ewkino/crtau/mca_taus.txt'
         
         for region in regions:
                 if subaction and (region != subaction):
@@ -73,9 +73,9 @@ elif(action=='tauopt'):
 
 elif(action=='crtauNotWorkingBecauseOfPeopleSBadCommitPolicies'):
         print 'Now plotting CRs for estimating tau fakes'
-        mca='susy-ewkino/3l/taus/mca_taus.txt'
+        mca='susy-ewkino/crtau/mca_taus.txt'
         #mca='susy-ewkino/3l/mca_ewkino.txt'
-        cuts='susy-ewkino/3l/taus/cuts_qcd.txt'
+        cuts='susy-ewkino/crtau/cuts_qcd.txt'
         config='taustudies'
         config='taus'
         region='CRTAUH'
@@ -88,13 +88,13 @@ elif(action=='crtauNotWorkingBecauseOfPeopleSBadCommitPolicies'):
         print cmd
         command(cmd, pretend)
         
-        cuts='susy-ewkino/3l/taus/cuts_ttbar.txt'
+        cuts='susy-ewkino/crtau/cuts_ttbar.txt'
         out=outputDir+'ttbar/'
         cmd = 'python susy-interface/plotmaker.py {config} {region} {inputDir} {outputDir} --mca {mca} --cuts {cuts} -l 12.9 --make data  -o {sr} {blind} {batch} {pretend}'.format(config=config,region=regions[region][0],inputDir=inputDir,outputDir=out,mca=mca,cuts=cuts,blind=blind,sr=regions[region][1],batch=batch,pretend=direct)
         print cmd
         command(cmd, pretend)
 
-        cuts='susy-ewkino/3l/taus/cuts_wjet.txt'
+        cuts='susy-ewkino/crtau/cuts_wjet.txt'
         out=outputDir+'wjet/'
         cmd = 'python susy-interface/plotmaker.py {config} {region} {inputDir} {outputDir} --mca {mca} --cuts {cuts} -l 12.9 --make data  -o {sr} {blind} {batch} {pretend}'.format(config=config,region=regions[region][0],inputDir=inputDir,outputDir=out,mca=mca,cuts=cuts,blind=blind,sr=regions[region][1],batch=batch,pretend=direct)
         print cmd
@@ -105,9 +105,9 @@ elif(action=='crtauNotWorkingBecauseOfPeopleSBadCommitPolicies'):
 
 elif(action=='crtau'):
         print 'Now plotting CRs for estimating tau fakes'
-        mca='susy-ewkino/3l/taus/mca_taus.txt'
+        mca='susy-ewkino/crtau/mca_taus.txt'
         #mca='susy-ewkino/crwz/mca_crwz_forScan_12p9.txt'
-        plots='susy-ewkino/3l/taus/plots_taus.txt'
+        plots='susy-ewkino/crtau/plots_taus.txt'
         mcc='susy-ewkino/3l/mcc_ewkino.txt'
         #mcc='susy-ewkino/crwz/lepchoice-crwz-FO.txt'
         trigdef='susy-ewkino/mcc_triggerdefs.txt'
@@ -128,7 +128,7 @@ elif(action=='crtau'):
         jei='60'
         lumi='1.0'
 
-        cuts='susy-ewkino/3l/taus/cuts_qcd.txt'
+        cuts='susy-ewkino/crtau/cuts_qcd.txt'
         #cuts='susy-ewkino/crwz/cuts_crwz.txt'
         out=outputDir+'qcd/'
         clean(out)
@@ -138,7 +138,7 @@ elif(action=='crtau'):
         command(cmd, pretend)
         os.system('cp {index} {outputDir}'.format(index=index,outputDir=out))
 
-        cuts='susy-ewkino/3l/taus/cuts_ttbar.txt'
+        cuts='susy-ewkino/crtau/cuts_ttbar.txt'
         out=outputDir+'ttbar/'
         clean(out)
         # When I will plot signal region, reimplement the {blind} part
@@ -147,7 +147,7 @@ elif(action=='crtau'):
         command(cmd, pretend)
         #os.system('cp {index} {outputDir}'.format(index=index,outputDir=out))
 
-        cuts='susy-ewkino/3l/taus/cuts_wjet.txt'
+        cuts='susy-ewkino/crtau/cuts_wjet.txt'
         out=outputDir+'wjet/'
         clean(out)
         # When I will plot signal region, reimplement the {blind} part
