@@ -705,16 +705,6 @@ def _susyEWK_lepId_MVAmedium(lep):
         return lep.mvaSUSY>0.5
     return False
 
-def _susyEWK_nontrigmva_VL(lep):
-    if not abs(lep.pdgId) == 11: return False
-    A = -0.48+(-0.67+0.48)*(abs(lep.eta)>0.8)+(-0.49+0.67)*(abs(lep.eta)>1.479)
-    B = -0.85+(-0.91+0.85)*(abs(lep.eta)>0.8)+(-0.83+0.91)*(abs(lep.eta)>1.479)
-    if lep.pt < 10:
-        return lep.mvaIdSpring16HZZ > 0.46+(-0.03-0.46)*(abs(lep.eta)>0.8)+(0.06+0.03)*(abs(lep.eta)>1.479)
-    elif lep.pt > 10:
-        return lep.mvaIdSpring16GP > min( A , max( B , A+(B-A)/10*(lep.pt-15) ) )
-    return False
-
 ## passPtCutTriple
 ## _______________________________________________________________
 def passPtCutTriple(l1, l2, l3):
