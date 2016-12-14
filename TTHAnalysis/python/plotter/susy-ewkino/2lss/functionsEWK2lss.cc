@@ -1,9 +1,9 @@
-int SR_ewk_ss2l(int nj, float ptl1, float phil1, float ptl2, float phil2, float met, float metphi, int charge){
+#include <cmath>
+#include <map>
+
+int SR_ewk_ss2l(int nj, float mtw1, float mtw2, float ptdil, float met, int charge){
    
-  float mtw1 = mt_2(ptl1,phil1, met, metphi);
-  float mtw2 = mt_2(ptl2,phil2, met, metphi);
   float mtw  = std::min(mtw1,mtw2);
-  float ptdil = pt_2(ptl1,phil1,ptl2,phil2);
   int   cha  = charge;
   
   if      (nj==0 && ptdil<50 && mtw<100 && met<100)                         return 1;   // 0jet, ptdil<50 -- VR         

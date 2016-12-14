@@ -24,11 +24,11 @@ def base(selection):
     CORE+=" -f -j 4 -l 17.3 --s2v --tree treeProducerSusyMultilepton --mcc susy-ewkino/2lss/lepchoice-2lss-FO.txt --mcc susy-ewkino/mcc_triggerdefs.txt --neg "
     if dowhat == "plots":  
         CORE+="  --legendWidth 0.20 --legendFontSize 0.035 --showRatio --maxRatioRange 0 3  --showMCError --legendHeader '2lss' "
-        CORE+="--ratioOffset 0.03 --load-macro susy-ewkino/2lss/functionsEWK2lss.cc --load-macro susy-ewkino/functionsSF.cc --load-macro susy-ewkino/functionsPUW.cc --wide --noStackSig --showIndivSigs --legendWidth 0.15 --legendFontSize 0.015 --showMCError "
-    CORE+="-W 'puw2016_nInt_Moriond(nTrueInt)*triggerSF_2lss_ewk(LepGood1_pt,LepGood2_pt,LepGood2_pdgId)*leptonSF_2lss_ewk(LepGood1_pdgId,LepGood1_pt,LepGood1_eta)*leptonSF_2lss_ewk(LepGood2_pdgId,LepGood2_pt,LepGood2_eta)' "
-
+        CORE+="--ratioOffset 0.03 --load-macro susy-ewkino/3l/functionsEWK.cc --load-macro susy-ewkino/2lss/functionsEWK2lss.cc --load-macro susy-ewkino/functionsSF.cc --load-macro susy-ewkino/functionsPUW.cc --wide --noStackSig --showIndivSigs --legendWidth 0.15 --legendFontSize 0.015 --showMCError "
+        CORE+="-W 'puw_nInt_Moriond(nTrueInt)*triggerSF_2lss_ewk(LepGood1_pt,LepGood2_pt,LepGood2_pdgId)*leptonSF_2lss_ewk(LepGood1_pdgId,LepGood1_pt,LepGood1_eta)*leptonSF_2lss_ewk(LepGood2_pdgId,LepGood2_pt,LepGood2_eta)' "
+    
     GO="%s susy-ewkino/2lss/mca-2lss-mc.txt susy-ewkino/2lss/cuts_2lss.txt  "%CORE
-    if dowhat == "plots": GO+=" susy-ewkino/2lss/plots_crtnl.txt --xP 'nT_.*' "
+    if dowhat == "plots": GO+=" susy-ewkino/2lss/plots_2lss.txt --xP 'nT_.*' "
     return GO
 
 def procs(GO,mylist):
@@ -45,7 +45,7 @@ def runIt(GO,name,queue='',plots=[],noplots=[]):
         if 'q' in queue:
             if not os.path.exists("tmp/"): os.mkdir("tmp")
             script = "tmp/runplotter_"+name.replace('/','_')+".sh"
-            os.system('cp {orig} {dest}'.format( orig = "runplotter.sh", dest = script))
+            os.system('cp {orig} {dest}'.format( orig = "susy-ewkino/2lss/runplotter.sh", dest = script))
             replaceInFile(script, "WORK=$1; shift", "WORK=\"" + os.getcwd() + "\"")
             replaceInFile(script, "SRC=$1; shift" , "SRC=\"" + os.getcwd().replace("/CMGTools/TTHAnalysis/python/plotter", "") + "\"")
             f = open(script, "a")
