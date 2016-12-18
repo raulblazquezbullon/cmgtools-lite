@@ -28,6 +28,12 @@ int isFake(int nLep, int lep1mcUCSX, int lep2mcUCSX, int lep3mcUCSX = 0, int lep
     return ((lep1mcUCSX==2 || lep1mcUCSX==3) || (lep2mcUCSX==2 || lep2mcUCSX==3) || (lep3mcUCSX==2 || lep3mcUCSX==3) || (lep4mcUCSX==2 || lep4mcUCSX==3));
 }
 
+int isFakeHeppy(int nLep, int lep1mcHeppy, int lep2mcHeppy, int lep3mcHeppy = 1, int lep4mcHeppy = 1) {
+    if(nLep == 2) return (lep1mcHeppy==0 || lep2mcHeppy==0);
+    if(nLep == 3) return (lep1mcHeppy==0 || lep2mcHeppy==0 || lep3mcHeppy==0);
+    return (lep1mcHeppy==0 || lep2mcHeppy==0 || lep3mcHeppy==0 || lep4mcHeppy==0);
+}
+
 int isFakeHF(int nLep, int lep1mcUCSX, int lep2mcUCSX, int lep3mcUCSX = 0, int lep4mcUCSX = 0) {
     if(nLep == 2) return (lep1mcUCSX==3 || lep2mcUCSX==3);
     if(nLep == 3) return (lep1mcUCSX==3 || lep2mcUCSX==3 || lep3mcUCSX==3);
