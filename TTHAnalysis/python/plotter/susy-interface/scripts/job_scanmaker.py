@@ -140,7 +140,7 @@ def makeWeight(wstr, wvar):
 cmdbase = thebase.replace("{","[[").replace("}","]]")
 cmdbase = cmdbase.replace("[[[","{").replace("]]]","}")
 #cmdbase = "python {sc} {{MCA}} {FIRST} {{SYSTS}} --od {{OUTDIR}} ".format(sc=script, FIRST=first)
-mcabase = "sig_{{name}} : {file} : {xs} : {{ws}} ; Label=\"{{name}}\"{{FRfiles}}".format(file=file, xs=xs)
+mcabase = "sig_{{name}} : {file} : {xs} : {{ws}} ; Label=\"{{name}}\", isFastSim{{FRfiles}}".format(file=file, xs=xs)
 
 short = mass1 + "_" + mass2
 accdir = outdir + "/acc/" + short
