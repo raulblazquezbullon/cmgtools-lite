@@ -68,13 +68,14 @@ mm              = maker.Maker("skimmaker", base, args, options, parser.defaults)
 
 ## skim main tree
 friends = mm.collectFriends()	
-mccs    = mm.collectMCCs   ()
-macros  = mm.collectMacros ()
 flags   = " ".join(mm.options.flags) ## we do not want to have all flags, only the additional ones given here
 
 for r in range(len(mm.regions)):
 	mm.iterateRegion()
 	mm.reloadBase(base)
+
+	mccs   = mm.collectMCCs  ()
+	macros = mm.collectMacros()
 
 	output = mm.outdir
 	func.mkdir(output, False)

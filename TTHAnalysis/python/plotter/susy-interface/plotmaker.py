@@ -54,14 +54,14 @@ options = maker.splitLists(options)
 mm      = maker.Maker("plotmaker", base, args, options, parser.defaults)
 
 friends = mm.collectFriends()	
-mccs    = mm.collectMCCs   ()
-macros  = mm.collectMacros ()	
 sl      = mm.getVariable("lumi","12.9").replace(".","p")
 
 for r in range(len(mm.regions)):
 	mm.iterateRegion()
 
-	flags   = mm.collectFlags  ("flagsPlots")
+	mccs    = mm.collectMCCs  ()
+	macros  = mm.collectMacros()	
+	flags   = mm.collectFlags ("flagsPlots")
 	ratio   = "--showRatio" if options.ratio else ""
 	
 	makes    = collectMakes(mm.region, options.make)

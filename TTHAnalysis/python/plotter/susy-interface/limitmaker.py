@@ -14,15 +14,15 @@ options = maker.splitLists(options)
 mm      = maker.Maker("limitmaker", base, args, options, parser.defaults)
 
 friends = mm.collectFriends()	
-mccs    = mm.collectMCCs   ()
-macros  = mm.collectMacros ()	
 sl      = mm.getVariable("lumi","12.9").replace(".","p")
 outDirs = []
 
 for r in range(len(mm.regions)):
 	mm.iterateRegion()
 
-	flags    = mm.collectFlags  ("flagsLimits")
+	mccs     = mm.collectMCCs  ()
+	macros   = mm.collectMacros()	
+	flags    = mm.collectFlags ("flagsLimits")
 	scenario = mm.getScenario(True)
 
 	procs    = " ".join(["-p "+b for b in mm.getProcs()])

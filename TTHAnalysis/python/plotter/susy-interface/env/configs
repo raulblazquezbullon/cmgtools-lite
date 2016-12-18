@@ -1,7 +1,6 @@
 BEGIN::3l
   firstCut     := 3l
-  mcafile      := susy-ewkino/3l/mca_ewkino_merged.txt
-#  mcafile      := susy-ewkino/3l/mca_ewkino.txt
+  mcafile      := susy-ewkino/3l/mca_ewkino.txt
   cutfile      := susy-ewkino/3l/cuts_ewkino.txt
   plotfile     := susy-ewkino/3l/plots_ewkino.txt
   sysfile      := susy-ewkino/systs_ewkino.txt
@@ -15,10 +14,11 @@ BEGIN::3l
 #  sfriends    +:= leptonJetReCleanerSusyEWK3L;leptonBuilderEWK;eventBTagWeight
   friends     +:=
   macros      +:= susy-ewkino/3l/functionsEWK.cc;susy-ewkino/functionsSF.cc;susy-ewkino/functionsPUW.cc
-  mccs        +:= susy-ewkino/3l/mcc_ewkino.txt
+  mccs        +:= susy-ewkino/3l/mcc_ewkino.txt;susy-ewkino/mcc_triggerdefs.txt
   alias       #:= {wBG        : puw_nInt_Moriond(nTrueInt) * triggerSF(BR(3, countTaus(3, LepSel_pdgId[0], LepSel_pdgId[1], LepSel_pdgId[2]), nOSSF_3l, nOSLF_3l, nOSTF_3l), LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1], LepSel_pt[2], LepSel_pdgId[2]) * leptonSF(getLepSF(LepSel_pt[0], LepSel_eta[0], LepSel_pdgId[0], LepSel_isTight[0]), getLepSF(LepSel_pt[1], LepSel_eta[1], LepSel_pdgId[1], LepSel_isTight[1]), getLepSF(LepSel_pt[2], LepSel_eta[2], LepSel_pdgId[2], LepSel_isTight[2]))*if3(BR(3, countTaus(3, LepSel_pdgId[0], LepSel_pdgId[1], LepSel_pdgId[2]), nOSSF_3l, nOSLF_3l, nOSTF_3l)==6, triggerSFBR6(LepSel_pt[0], LepSel_eta[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_eta[1], LepSel_pdgId[1], LepSel_pt[2], LepSel_eta[2], LepSel_pdgId[2]),1)}
   alias       #:= {wBGichep   : puw_nInt_ICHEP(nTrueInt)   * triggerSF(BR(3, countTaus(3, LepSel_pdgId[0], LepSel_pdgId[1], LepSel_pdgId[2]), nOSSF_3l, nOSLF_3l, nOSTF_3l), LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1], LepSel_pt[2], LepSel_pdgId[2]) * leptonSF(getLepSF(LepSel_pt[0], LepSel_eta[0], LepSel_pdgId[0], LepSel_isTight[0]), getLepSF(LepSel_pt[1], LepSel_eta[1], LepSel_pdgId[1], LepSel_isTight[1]), getLepSF(LepSel_pt[2], LepSel_eta[2], LepSel_pdgId[2], LepSel_isTight[2]))*if3(BR(3, countTaus(3, LepSel_pdgId[0], LepSel_pdgId[1], LepSel_pdgId[2]), nOSSF_3l, nOSLF_3l, nOSTF_3l)==6, triggerSFBR6(LepSel_pt[0], LepSel_eta[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_eta[1], LepSel_pdgId[1], LepSel_pt[2], LepSel_eta[2], LepSel_pdgId[2]), 1) * eventBTagSF }
   alias       #:= {wFS   : leptonSFFS(getLepSFFS(LepSel_pt[0], LepSel_eta[0], LepSel_pdgId[0], LepSel_isTight[0]), getLepSFFS(LepSel_pt[1], LepSel_eta[1], LepSel_pdgId[1], LepSel_isTight[1]), getLepSFFS(LepSel_pt[2], LepSel_eta[2], LepSel_pdgId[2], LepSel_isTight[2]))}
+#  weight       := puw_nInt_Moriond(nTrueInt)
   weight       := wBG
   weightFS     := wFS
   flags       +:=
@@ -156,9 +156,8 @@ BEGIN::cretau
   friends     +:=
   macros      +:= susy-ewkino/3l/functionsEWK.cc;susy-ewkino/functionsSF.cc;susy-ewkino/functionsPUW.cc
   mccs        +:= susy-ewkino/cretau/mcc_ewkino.txt
-  weight       := puw_nInt_Moriond(nTrueInt) * triggerSF(-1, LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1], LepSel_pt[2], LepSel_pdgId[2]) * leptonSF(getLepSF(LepSel_pt[0], LepSel_eta[0], LepSel_pdgId[0]), getLepSF(LepSel_pt[1], LepSel_eta[1], LepSel_pdgId[1]), getLepSF(LepSel_pt[2], LepSel_eta[2], LepSel_pdgId[2]))
-#  weight       := puw_nInt_ICHEP(nTrueInt) * triggerSF(BR, LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1], LepSel_pt[2], LepSel_pdgId[2]) * leptonSF(getLepSF(LepSel_pt[0], LepSel_eta[0], LepSel_pdgId[0]), getLepSF(LepSel_pt[1], LepSel_eta[1], LepSel_pdgId[1]), getLepSF(LepSel_pt[2], LepSel_eta[2], LepSel_pdgId[2])) * if3(BR==6, triggerSFBR6(LepSel_pt[0], LepSel_eta[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_eta[1], LepSel_pdgId[1], LepSel_pt[2], LepSel_eta[2], LepSel_pdgId[2]),1) * eventBTagSF
-#  weightFS     := leptonSFFS(getLepSFFS(LepSel_pt[0], LepSel_eta[0], LepSel_pdgId[0]), getLepSFFS(LepSel_pt[1], LepSel_eta[1], LepSel_pdgId[1]), getLepSFFS(LepSel_pt[2], LepSel_eta[2], LepSel_pdgId[2]))
+  alias       #:= {wBG        : puw_nInt_Moriond(nTrueInt) * triggerSF(BR(3, countTaus(3, LepSel_pdgId[0], LepSel_pdgId[1], LepSel_pdgId[2]), nOSSF_3l, nOSLF_3l, nOSTF_3l), LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1], LepSel_pt[2], LepSel_pdgId[2]) * leptonSF(getLepSF(LepSel_pt[0], LepSel_eta[0], LepSel_pdgId[0], LepSel_isTight[0]), getLepSF(LepSel_pt[1], LepSel_eta[1], LepSel_pdgId[1], LepSel_isTight[1]), getLepSF(LepSel_pt[2], LepSel_eta[2], LepSel_pdgId[2], LepSel_isTight[2]))*if3(BR(3, countTaus(3, LepSel_pdgId[0], LepSel_pdgId[1], LepSel_pdgId[2]), nOSSF_3l, nOSLF_3l, nOSTF_3l)==6, triggerSFBR6(LepSel_pt[0], LepSel_eta[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_eta[1], LepSel_pdgId[1], LepSel_pt[2], LepSel_eta[2], LepSel_pdgId[2]),1)}
+  weight       := wBG
   flags       +:=
   flagsDumps  +:=
   flagsEffs   +:=

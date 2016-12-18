@@ -118,11 +118,13 @@ class Maker():
 		return " ".join(self.getFriends())
 	def collectMacros(self):
 		use = getattr(self.config, "macros", [])
-		if len(self.getOption("macros",[]))>0: use = self.getOption("macros",[])
+		if len(getattr(self.region, "macros", []))>0: use = getattr(self.region, "macros", [])
+		if len(self.getOption("macros",[]))       >0: use = self.getOption("macros",[])
 		return " ".join(["--load-macro "+m for m in use])
 	def collectMCCs(self):
 		use = getattr(self.config, "mccs", [])
-		if len(self.getOption("mccs", []))>0: use = self.getOption("mccs", [])
+		if len(getattr(self.region, "mccs", []))>0: use = getattr(self.region, "mccs", [])
+		if len(self.getOption("mccs", []))      >0: use = self.getOption("mccs", [])
 		return " ".join(["--mcc "+m for m in use])
 	def collectProcs(self):
 		return " ".join(["-p "+p for p in self.getProcs()])
@@ -239,10 +241,10 @@ class Maker():
 		thedir = self.treedir+"/"+samplename
 		if not os.path.isdir(thedir): 
 			return None
-		if os.path.exists(thedir+"/"+self.options.treename+"/tree.root"): 
-			return thedir+"/"+self.options.treename+"/tree.root"
-		if os.path.exists(thedir+"/"+self.options.treename+"/tree.root.url"):
-			return open(thedir+"/"+self.options.treename+"/tree.root.url","r").readlines()[0].rstrip("\n")
+		if os.path.exists(thedir+"/"+self.getVariable("treename","treeProducerSusyMultilepton")+"/tree.root"): 
+			return thedir+"/"+self.getVariable("treename","treeProducerSusyMultilepton")+"/tree.root"
+		if os.path.exists(thedir+"/"+self.getVariable("treename","treeProducerSusyMultilepton")+"/tree.root.url"):
+			return open(thedir+"/"+self.getVariable("treename","treeProducerSusyMultilepton")+"/tree.root.url","r").readlines()[0].rstrip("\n")
 		return None
 	def getVariable(self, var, default = None):
 		if var in self.use.keys(): return self.use[var]

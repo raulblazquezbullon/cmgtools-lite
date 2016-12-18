@@ -69,8 +69,6 @@ mm              = maker.Maker("scanmaker", baseBkg, args, options, parser.defaul
 mm.loadModels()
 
 friends = mm.collectFriends()	
-mccs    = mm.collectMCCs   ()
-macros  = mm.collectMacros ()	
 sl      = mm.getVariable("lumi","12.9").replace(".","p")
 
 
@@ -84,8 +82,10 @@ if not options.sigOnly:
 	for r in range(len(mm.regions)):
 		mm.iterateRegion()
 		
-		scenario = mm.getScenario(True)
-		flags    = mm.collectFlags("flagsScans", True, True, False, True)
+		scenario = mm.getScenario  (True)
+		mccs     = mm.collectMCCs  ()
+		macros   = mm.collectMacros()	
+		flags    = mm.collectFlags ("flagsScans", True, True, False, True)
 	
 		## looping over binnings
 		binnings = [mm.getVariable("bins","")] if not options.perBin else getAllBins(mm.getVariable("bins",""))
@@ -118,8 +118,10 @@ if not options.bkgOnly:
 	for r in range(len(mm.regions)):
 		mm.iterateRegion()
 	
-		scenario = mm.getScenario(True)
-		flags    = mm.collectFlags("flagsScans", True, True, False, True)
+		scenario = mm.getScenario  (True)
+		mccs     = mm.collectMCCs  ()
+		macros   = mm.collectMacros()	
+		flags    = mm.collectFlags ("flagsScans", True, True, False, True)
 	
 		## looping over binnings
 		binnings = [mm.getVariable("bins","")] if not options.perBin else getAllBins(mm.getVariable("bins",""))

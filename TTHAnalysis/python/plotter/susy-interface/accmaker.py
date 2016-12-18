@@ -16,15 +16,15 @@ mm      = maker.Maker("accmaker", baseAll, args, options, parser.defaults)
 if options.perBin: mm.reloadBase(baseBin)
 
 friends = mm.collectFriends()	
-mccs    = mm.collectMCCs   ()
-macros  = mm.collectMacros ()	
 sl      = mm.getVariable("lumi","12.9").replace(".","p")
 
 for r in range(len(mm.regions)):
 	mm.iterateRegion()
 	
-	scenario = mm.getScenario(True)
-	flags    = mm.collectFlags("flagsAccs")
+	scenario = mm.getScenario  (True)
+	mccs     = mm.collectMCCs  ()
+	macros   = mm.collectMacros()	
+	flags    = mm.collectFlags ("flagsAccs")
 
 	output = mm.outdir +"/acc/"+ scenario +"/"+ sl +"fb"
 	func.mkdir(output)
