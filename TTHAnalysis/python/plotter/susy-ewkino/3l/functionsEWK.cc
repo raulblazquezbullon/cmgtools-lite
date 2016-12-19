@@ -332,11 +332,11 @@ int SR4l(int nTau, int nOSSF, int nOSLF, float mT2L, float mT2T, float mll, floa
 
 int SR(int nLep, int nTau, int nOSSF, int nOSLF, float mT2L, float mT2T, float mll, float mT, float met) {
 
-    if(nLep == 3)
-        return SR3l(nTau, nOSSF, nOSLF, mT2L, mT2T, mll, mT, met);
-    if(nLep == 4)
-        return SR4l(nTau, nOSSF, nOSLF, mT2L, mT2T, mll, mT, met);
-    return 0;
+  if(nLep == 3)
+    return SR3l(nTau, nOSSF, nOSLF, mT2L, mT2T, mll, mT, met);
+  if(nLep == 4)
+    return SR4l(nTau, nOSSF, nOSLF, mT2L, mT2T, mll, mT, met);
+  return 0;
 }
 
 int SuperSig(int nLep, int nTau, int nOSSF, int nOSLF, float mT2L, float mT2T, float mll, float mT, float met) {
