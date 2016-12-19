@@ -47,7 +47,6 @@ float triggerSFBR6(float pt1, float eta1, int pdg1,
         return hist->GetBinContent(xbin,ybin);
 }
 
-
 float triggerSF(int BR, float pt1, int pdg1, 
                         float pt2, int pdg2, 
                         float pt3 = 0, int pdg3 = 0, 
