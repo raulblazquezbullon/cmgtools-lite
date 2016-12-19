@@ -59,9 +59,10 @@ parser.add_option("--sigOnly"     , dest="sigOnly"    , action="store_true", def
 parser.add_option("--perBin"      , dest="perBin"     , action="store_true", default=False, help="Make datacards for every bin in 'expr' separately.");
 parser.add_option("-m", "--models", dest="models"     , action="append"    , default=[]   , help="Fastsim signal models to loop upon.");
 parser.add_option("--redoBkg"     , dest="redoBkg"    , action="store_true", default=False, help="Redo bkg if it already exists.");
+parser.add_option("--postfix"     , dest="postfix"    , type="string"      , default=None , help="Flags to be run for postfix (i.e. for signal only)");
 
 baseBkg = "python makeShapeCardsSusy.py {MCA} {CUTS} \"{EXPR}\" \"{BINS}\" -o SR --bin {TAG} -P {T} --tree {TREENAME} {MCCS} {MACROS} --s2v -f -l {LUMI} --od {O} {FRIENDS} {FLAGS} {OVERFLOWCUTS}"
-baseSig = "python makeShapeCardsSusy.py [[[MCA]]] {CUTS} \\\"{EXPR}\\\" \\\"{BINS}\\\" [[[SYS]]] -o SR --bin {TAG} -P {T} --tree {TREENAME} {MCCS} {MACROS} --s2v -f -l {LUMI} --od [[[O]]] {FRIENDS} {FLAGS} {OVERFLOWCUTS}"
+baseSig = "python makeShapeCardsSusy.py [[[MCA]]] {CUTS} \\\"{EXPR}\\\" \\\"{BINS}\\\" [[[SYS]]] -o SR --bin {TAG} -P {T} --tree {TREENAME} {MCCS} {MACROS} --s2v -f -l {LUMI} --od [[[O]]] {FRIENDS} {FLAGS} {OVERFLOWCUTS} {POSTFIX}"
 (options, args) = parser.parse_args()
 options         = maker.splitLists(options)
 options.models  = func.splitList(options.models)
@@ -121,7 +122,7 @@ if not options.bkgOnly:
 		scenario = mm.getScenario  (True)
 		mccs     = mm.collectMCCs  ()
 		macros   = mm.collectMacros()	
-		flags    = mm.collectFlags ("flagsScans", True, True, False, True)
+		flags    = mm.collectFlags ("flagsScans", True, True, True, True)
 	
 		## looping over binnings
 		binnings = [mm.getVariable("bins","")] if not options.perBin else getAllBins(mm.getVariable("bins",""))
@@ -154,8 +155,7 @@ if not options.bkgOnly:
 
 				## looping over masspoints
 				for iiii,mp in enumerate(mps):
-					flags   = mm.collectFlags("flagsScans", True, True, True)
-					thebase = mm.makeCmd([mm.getVariable("cutfile",""), mm.getVariable("expr",""), b, scenario.replace("/","_"), mm.treedir, mm.getVariable("treename","treeProducerSusyMultilepton"), mccs, macros, mm.getVariable("lumi","12.9"), friends, flags, func.getCut(mm.getVariable("firstCut","alwaystrue"), mm.getVariable("expr",""), mm.getVariable("bins",""))])
+					thebase = mm.makeCmd([mm.getVariable("cutfile",""), mm.getVariable("expr",""), b, scenario.replace("/","_"), mm.treedir, mm.getVariable("treename","treeProducerSusyMultilepton"), mccs, macros, mm.getVariable("lumi","12.9"), friends, flags, func.getCut(mm.getVariable("firstCut","alwaystrue"), mm.getVariable("expr",""), mm.getVariable("bins","")), "--postfix '"+options.postfix+"'" if options.postfix.strip()!="" else ""])
 					thecmd = prepareJob(mm, scenario.replace("/", "_")+"_mp_"+mp[2], mp, thebase, b, bkgDir, myDir, xslist, options)
 					mm.registerCmd(thecmd, scenario.replace("/", "_")+"_mp_"+mp[2],False,10)
 	mm.runJobs()

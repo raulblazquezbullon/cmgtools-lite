@@ -18,6 +18,8 @@ parser.add_option("--bk",   dest="bookkeeping",  action="store_true", default=Fa
 parser.add_option("--ignore",dest="ignore", type="string", default=[], action="append", help="Ignore processes when loading infile")
 parser.add_option("--noNegVar",dest="noNegVar", action="store_true", default=False, help="Replace negative variations per bin by 0.1% of central value")
 parser.add_option("--hardZero",dest="hardZero", action="store_true", default=False, help="Hard cut-off of processes")
+parser.add_option("--frFile"  ,dest="frFile"  , type="string", default=None, help="Path to the FR file to extract most probable FR for postfix.")
+parser.add_option("--frMap"   ,dest="frMap"   , type="string", default=None, help="Format of the name of the FR map in the FR file, put FL for el/mu")
 
 (options, args) = parser.parse_args()
 options.weight = True
@@ -27,7 +29,7 @@ options.allProcesses  = True
 def fixNegVariations(down, central):
 	for bin in range(1,down.GetNbinsX()+1):
 		if down.GetBinContent(bin) <= 0:
-			down.SetBinContent(bin, central.GetBinContent(bin) * 0.001)
+			down.SetBinContent(bin, central.GetBinContent(bin) * 0.00001)
 	return down
 
 def cutCentralValueAtZero(mca,cut,pname,oldplots):
@@ -50,6 +52,45 @@ def takeFakesPredictionFromMC(mca,cut,pname,oldplots):
             new = oldplots['_special_TT_foremptybins'].GetBinContent(b)
             oldplot.SetBinError(b,new if new>1e-4 else 1e-6)
             print 'takeFakesPredictionFromMC: Fixing bin %d in %s: set to %f +/- %f (was %f +/- %f)'%(b,pname,oldplot.GetBinContent(b),oldplot.GetBinError(b),old[0],old[1])
+
+def getMostProbableFR():
+    global options
+    if not options.frFile or not os.path.exists(options.frFile) or not options.frMap: return 0.0
+    base = options.frMap
+    best = 0.; berr = 999999.; bin = (-1, -1); map = ""
+    f = ROOT.TFile.Open(options.frFile,"read")
+    for fl in ["el", "mu"]:
+        h = f.Get(base.replace("FL",fl))
+        if not h: continue
+        prob = 0.
+        err  = 999999.
+        pos  = (-1,-1)
+        for bx in range(1,h.GetNbinsX()+1):
+            for by in range(1,h.GetNbinsY()+1):
+                rel = float(h.GetBinError(bx, by))/h.GetBinContent(bx, by)
+                if rel < err:
+                    prob = h.GetBinContent(bx, by)
+                    err  = rel
+                    pos  = (bx, by)
+        if err < berr:
+            best = prob
+            berr = err
+            bin  = pos
+            map  = base.replace("FL",fl)
+    return best, berr*best, bin[0], bin[1], map
+
+def fixFakePredictionForZeroEvts(mca,cut,pname,oldplots):
+    if pname=='data': return
+    prob = getMostProbableFR()
+    mostProbableFR = prob[0]
+    print "fixFakePredictionForZeroEvts: Using most probable FR for postfix: %1.3f +/- %1.3f in bin (%d, %d) of map '%s'"%(prob[0], prob[1], prob[2], prob[3], prob[4])
+    oldplot = oldplots[pname]
+    for b in xrange(1,oldplot.GetNbinsX()+1):
+        if oldplot.GetBinContent(b)<=0:
+            old = oldplot.GetBinContent(b), oldplot.GetBinError(b)
+            oldplot.SetBinContent(b, 1e-5)
+            oldplot.SetBinError  (b, 1.8*mostProbableFR/(1.-mostProbableFR))
+            print 'fixFakePredictionForZeroEvts: Fixing bin %d in %s: set %f +/- %f (was %f +/- %f)'%(b,pname,oldplot.GetBinContent(b),oldplot.GetBinError(b),old[0],old[1])
 
 def normTo1Observed(mca,cut,pname,oldplots):
     if pname=='data': return
@@ -97,12 +138,12 @@ else:
     report = mca.getPlotsRaw("x", args[2], args[3], cuts.allCuts(), nodata=options.asimov, closeTreeAfter=True)
 
 
-
 if options.hardZero:
     for key,hist in report.iteritems():
         for bin in range(1,hist.GetNbinsX()+1):
             if hist.GetBinContent(bin) <= 0:
-                hist.SetBinContent(bin, 0.0001)
+                hist.SetBinContent(bin, 0.00001)
+                hist.SetBinError  (bin, 0.000001)
 
 
 for post in postfixes:
