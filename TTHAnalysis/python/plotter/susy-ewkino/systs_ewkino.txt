@@ -50,16 +50,16 @@ ewksub_ML     : fakes_.*                          : .* : ewk        : templates
 
 JES           : sig_.*|prompt_.*|rares_.*|convs   : .* : jec        : templates
 MET           : sig_.*                            : .* : met        : templates
-scale         : sig_.*                            : .* : q2acc      : templates
+#scale         : sig_.*                            : .* : q2acc      : templates
 
 PUreweighting : sig_.*|prompt_.*|rares_.*|convs   : .* : puw        : templates
 
 lepton_idiso  : sig_.*|prompt_.*|rares_.*|convs   : .* : lepSF      : templates
 lepton_FSsfs  : sig_.*                            : .* : lepSFFS    : templates
 
-btag_HF       : prompt_.*|rares_.*|convs          : .* : bTagHF     : templates
-btag_LF       : prompt_.*|rares_.*|convs          : .* : bTagLF     : templates
-btag_FS_ML    : sig_.*                            : .* : bTagFS     : templates
+#btag_HF       : prompt_.*|rares_.*|convs          : .* : bTagHF     : templates
+#btag_LF       : prompt_.*|rares_.*|convs          : .* : bTagLF     : templates
+#btag_FS_ML    : sig_.*                            : .* : bTagFS     : templates
 
 
 ## statistical uncertainties
@@ -85,6 +85,16 @@ stat2lssVVV_ML   : rares_VVV       : .*2lss.* : 1.0 : stat_foreach_shape_bins : 
 stat2lssconvs_ML : convs           : .*2lss.* : 1.0 : stat_foreach_shape_bins : .*
 stat2lssfakes_ML : fakes_.*        : .*2lss.* : 1.0 : stat_foreach_shape_bins : .*
 stat2lssflips_ML : flips_.*        : .*2lss.* : 1.0 : stat_foreach_shape_bins : .*
+
+stat3lAsig_ML    : sig_.*          : .*3lA.*  : 1.0 : stat_foreach_shape_bins : .*
+stat3lAWZ_ML     : prompt_WZ       : .*3lA.*  : 1.0 : stat_foreach_shape_bins : .*
+stat3lAZZH_ML    : prompt_ZZH      : .*3lA.*  : 1.0 : stat_foreach_shape_bins : .*
+stat3lAttW_ML    : rares_ttW       : .*3lA.*  : 1.0 : stat_foreach_shape_bins : .*
+stat3lAttZ_ML    : rares_ttZ       : .*3lA.*  : 1.0 : stat_foreach_shape_bins : .*
+stat3lAttX_ML    : rares_ttX       : .*3lA.*  : 1.0 : stat_foreach_shape_bins : .*
+stat3lAVVV_ML    : rares_VVV       : .*3lA.*  : 1.0 : stat_foreach_shape_bins : .*
+stat3lAconvs_ML  : convs           : .*3lA.*  : 1.0 : stat_foreach_shape_bins : .*
+stat3lAfakes_ML  : fakes_appldata  : .*3lA.*  : 1.0 : stat_foreach_shape_bins : .*
 
 stat3lA1sig_ML   : sig_.*          : .*3lA1.* : 1.0 : stat_foreach_shape_bins : .*
 stat3lA1WZ_ML    : prompt_WZ       : .*3lA1.* : 1.0 : stat_foreach_shape_bins : .*
