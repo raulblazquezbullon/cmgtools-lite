@@ -26,10 +26,10 @@ options.weight = True
 options.final  = True
 options.allProcesses  = True
 
-def fixNegVariations(down, central):
+def fixNegVariations(down, central, value = 0.00001):
 	for bin in range(1,down.GetNbinsX()+1):
 		if down.GetBinContent(bin) <= 0:
-			down.SetBinContent(bin, central.GetBinContent(bin) * 0.00001)
+			down.SetBinContent(bin, value)
 	return down
 
 def cutCentralValueAtZero(mca,cut,pname,oldplots):
@@ -138,18 +138,17 @@ else:
     report = mca.getPlotsRaw("x", args[2], args[3], cuts.allCuts(), nodata=options.asimov, closeTreeAfter=True)
 
 
+for post in postfixes:
+    for rep in report:
+        if re.match(post[0],rep): post[1](mca,cuts.allCuts(),rep,report)
+if '_special_TT_foremptybins' in report: del report['_special_TT_foremptybins']
+
 if options.hardZero:
     for key,hist in report.iteritems():
         for bin in range(1,hist.GetNbinsX()+1):
             if hist.GetBinContent(bin) <= 0:
                 hist.SetBinContent(bin, 0.00001)
                 hist.SetBinError  (bin, 0.000001)
-
-
-for post in postfixes:
-    for rep in report:
-        if re.match(post[0],rep): post[1](mca,cuts.allCuts(),rep,report)
-if '_special_TT_foremptybins' in report: del report['_special_TT_foremptybins']
 
 #def fixClopperPearsonForXG0b(mca,cut,pname,oldplot):
 #    for b in xrange(1,oldplot.GetNbinsX()+1):
@@ -341,8 +340,8 @@ for name in systsEnv.keys():
                         p0Dn.SetBinContent(bin,max(1e-5,p0Dn.GetBinContent(bin)-effect*p0Dn.GetBinError(bin)))
                         p0Dn.SetBinError(bin,p0Dn.GetBinError(bin)*(p0Dn.GetBinContent(bin)/nominal.GetBinContent(bin) if nominal.GetBinContent(bin)!=0 else 1))
                         if options.noNegVar:
-                            p0Up = fixNegVariations(p0Up, report[p])
-                            p0Dn = fixNegVariations(p0Dn, report[p])
+                            p0Up = fixNegVariations(p0Up, report[p], 0)
+                            p0Dn = fixNegVariations(p0Dn, report[p], 0)
                         report[str(p0Up.GetName())[2:]] = p0Up
                         report[str(p0Dn.GetName())[2:]] = p0Dn
                         break # otherwise you apply more than once to the same bin if more regexps match
