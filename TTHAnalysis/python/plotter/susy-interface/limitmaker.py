@@ -22,7 +22,7 @@ for r in range(len(mm.regions)):
 
 	mccs     = mm.collectMCCs  ()
 	macros   = mm.collectMacros()	
-	flags    = mm.collectFlags ("flagsLimits")
+	flags    = mm.collectFlags (["flagsLimits"])
 	scenario = mm.getScenario(True)
 
 	procs    = " ".join(["-p "+b for b in mm.getProcs()])

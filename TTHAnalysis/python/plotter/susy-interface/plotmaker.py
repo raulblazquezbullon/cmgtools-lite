@@ -61,7 +61,7 @@ for r in range(len(mm.regions)):
 
 	mccs    = mm.collectMCCs  ()
 	macros  = mm.collectMacros()	
-	flags   = mm.collectFlags ("flagsPlots")
+	flags   = mm.collectFlags (["flagsPlots"])
 	ratio   = "--showRatio" if options.ratio else ""
 	
 	makes    = collectMakes(mm.region, options.make)

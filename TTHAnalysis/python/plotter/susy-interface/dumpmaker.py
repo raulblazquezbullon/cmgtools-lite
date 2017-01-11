@@ -18,7 +18,7 @@ for r in range(len(mm.regions)):
 	
 	mccs     = mm.collectMCCs  ()
 	macros   = mm.collectMacros()	
-	flags    = mm.collectFlags ("flagDumps", False, True)
+	flags    = mm.collectFlags (["flagDumps"], False, True)
 	scenario = mm.getScenario  (True)
 
 	procs    = mm.getProcs()

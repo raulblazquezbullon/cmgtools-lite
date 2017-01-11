@@ -24,7 +24,7 @@ for r in range(len(mm.regions)):
 	scenario = mm.getScenario  (True)
 	mccs     = mm.collectMCCs  ()
 	macros   = mm.collectMacros()	
-	flags    = mm.collectFlags ("flagsAccs")
+	flags    = mm.collectFlags (["flagsAccs"])
 
 	output = mm.outdir +"/acc/"+ scenario +"/"+ sl +"fb"
 	func.mkdir(output)
