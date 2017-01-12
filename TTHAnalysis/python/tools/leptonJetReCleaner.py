@@ -249,12 +249,17 @@ class LeptonJetReCleaner:
         tausd = [t for t in Collection(event,"TauOther","nTauOther")] 
         ## below: new way of dealing with JEC
         jetsc={}
-        jetsd={0: [], -1: [], 1: []} # savest for now: just empty collection (no need to change the functions)
+        jetsd={} 
         jetsc[ 0] = [j for j in Collection(event,"Jet","nJet")]
         jetsc[ 1] = [j for j in Collection(event,"Jet","nJet")]
         jetsc[-1] = [j for j in Collection(event,"Jet","nJet")]
+        jetsd[ 0] = [j for j in Collection(event,"DiscJet","nDiscJet")]
+        jetsd[ 1] = [j for j in Collection(event,"DiscJet","nDiscJet")]
+        jetsd[-1] = [j for j in Collection(event,"DiscJet","nDiscJet")]
         jetsc[ 1] = self.applyJEC(event, jetsc[ 1],  1)
         jetsc[-1] = self.applyJEC(event, jetsc[-1], -1)
+        jetsd[ 1] = self.applyJEC(event, jetsd[ 1],  1)
+        jetsd[-1] = self.applyJEC(event, jetsd[-1], -1)
         ## below: old way of dealing with JEC
         #jetsc={}
         #jetsd={}
