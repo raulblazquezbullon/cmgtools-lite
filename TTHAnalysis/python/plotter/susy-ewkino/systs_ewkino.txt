@@ -23,6 +23,7 @@ normVVV_ML    : rares_VVV                                     : .*              
 normTTX_ML    : rares_ttX                                     : .*                : 1.5
 theoTTV_ML    : rares_ttW|rares_ttZ                           : .*                : 1.15
 
+scale         : sig_.*                                        : .*                : 1.02
 ISR           : sig_.*                                        : .*                : 1.1
 signalcont_ML : sig_TChiNeuWZ                                 : .*crwz.*          : 1.06
 signalcont_ML : sig_TChiNeuWH|sig_TChiNeuSlep.*|sig_TNeuNeu.* : .*crwz.*          : 1.01
