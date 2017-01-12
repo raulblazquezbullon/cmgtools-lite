@@ -309,7 +309,6 @@ class Maker():
 		if self.options.pretend:
 			print cmd
 			return
-		print cmd
 		self.registerJob(name, [cmd], forceLocal, collect, work, src)
 	def registerJob(self, name, commands, forceLocal = False, collect = 0, work = None, src = None):
 		if not hasattr(self, "jobs"    ): self.jobs = []
