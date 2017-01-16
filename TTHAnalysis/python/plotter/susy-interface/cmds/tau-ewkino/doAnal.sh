@@ -58,7 +58,7 @@ elif [ "$1" == "plot" ]; then
     # ACTION can be generalplots or tauopt or crtau
     
     if [ "$2" == "" ]; then
-        echo "ACTION is empty. It can be generalplots or tauopt or crtau or crconv"
+        echo "ACTION is empty. It can be generalplots or tauopt or crtau or crconv or crconvcards"
         exit -1
     else
         ACTION=" -a ${2}"
@@ -67,7 +67,7 @@ elif [ "$1" == "plot" ]; then
         fi
     fi
     
-    if [ "$ACTION" == " -a crconv" ]; then
+    if [ "$ACTION" == " -a crconv" ] || [ "$ACTION" == " -a crconvcards" ]; then
         WEBDIR="/nfs/fanae/user/vischia/www/conversions/"
     fi
     PRETEND=" --pretend  "
