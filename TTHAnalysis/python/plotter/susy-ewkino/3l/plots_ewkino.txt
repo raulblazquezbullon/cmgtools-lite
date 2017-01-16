@@ -31,12 +31,12 @@ SR_G        : SR-108        : 5,0.5,5.5   ; YTitle="Events", XTitle="E_{T}^{miss
 
 ## signal region, 4l 0tau nOSSF <= 1
 ## ----------------------------------------------------------
-SR_H        : SR-113        : 4,0.5,4.5   ; YTitle="Events", XTitle="E_{T}^{miss} (GeV)", Legend="TR", IncludeOverflows=False, LegendCutoff=1e-5, xBinLabels="0\,50\,100\,150", LegendHeader="H: <2 OSSF", RMin=0, RMax=3, Logy, YMin=0.01, YMax=1000
+SR_H        : SR-113        : 4,0.5,4.5   ; YTitle="Events", XTitle="E_{T}^{miss} (GeV)", Legend="TR", IncludeOverflows=False, LegendCutoff=1e-5, xBinLabels="0\,50\,100\,150", LegendHeader="H: <2 OSSF", RMin=0, RMax=3, Logy, YMin=0.1, YMax=1000
 #SR_H        : SR-113        : 4,0.5,4.5   ; YTitle="Events", XTitle="Signal Region H (4l\,0#tau)", Legend="TR", IncludeOverflows=False, LegendCutoff=1e-5, xBinLabels="01\,02\,03\,04", LegendHeader="H: <2 OSSF", RMin=0, RMax=3, Logy, YMin=0.01, YMax=1000
 
 ## signal region, 4l 1tau
 ## ----------------------------------------------------------
-SR_I        : SR-117        : 4,0.5,4.5   ; YTitle="Events", XTitle="E_{T}^{miss} (GeV)", Legend="TR", IncludeOverflows=False, LegendCutoff=1e-5, xBinLabels="0\,50\,100\,150", LegendHeader="I: 3l+\#tau", RMin=0, RMax=3, Logy, YMin=0.01, YMax=1000
+SR_I        : SR-117        : 4,0.5,4.5   ; YTitle="Events", XTitle="E_{T}^{miss} (GeV)", Legend="TR", IncludeOverflows=False, LegendCutoff=1e-5, xBinLabels="0\,50\,100\,150", LegendHeader="I: 3l+\#tau", RMin=0, RMax=3, Logy, YMin=0.1, YMax=1000
 #SR_I        : SR-117        : 4,0.5,4.5   ; YTitle="Events", XTitle="Signal Region I (4l\,1#tau)", Legend="TR", IncludeOverflows=False, LegendCutoff=1e-5, xBinLabels="01\,02\,03\,04", LegendHeader="I: 3l+\#tau", RMin=0, RMax=3, Logy, YMin=0.01, YMax=1000
 
 ## signal region, 4l 2tau nOSSF >= 2
@@ -146,5 +146,7 @@ mTmll      : mT_3l\:mllL_3l : [0,75,105,200]*[0,40,80,100,120,140,160,200] ; XTi
 mTmet      : mT_3l\:mllL_3l : [50,100,150,200,300]*[0,40,80,100,120,140,160,200] ; XTitle="E_{T}^{miss} [GeV]", YTitle="M_{T}^{W} [GeV]", UnbinnedData2D=True, PlotMode='COLZ'
 mtautau    : mass_2(FirstTau_conePt, FirstTau_eta, FirstTau_phi, 1.776, SeconTau_conePt, SeconTau_eta, SeconTau_phi, 1.776) : 14,0,210    ; XTitle="M(#tau#tau) [GeV]"                 , LegendCutoff=1e-4, Logy, YMin=0.7, YMax=100000, Legend="TR"
 
+minDR3l    : minDeltaR(LepSel1_eta, LepSel1_phi, LepSel2_eta, LepSel2_phi, LepSel3_eta, LepSel3_phi)                           : 15,0,3 ; XTitle="minDeltaR(l\,l)", LegendCutoff=1e-4
+minDR4l    : minDeltaR(LepSel1_eta, LepSel1_phi, LepSel2_eta, LepSel2_phi, LepSel3_eta, LepSel3_phi, LepSel4_eta, LepSel4_phi) : 15,0,3 ; XTitle="minDeltaR(l\,l)", LegendCutoff=1e-4
 
 

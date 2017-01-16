@@ -1,5 +1,6 @@
 #include <cmath>
 #include <map>
+#include <algorithm>
 #include "Math/GenVector/LorentzVector.h"
 #include "Math/GenVector/PtEtaPhiM4D.h"
 #include "Math/GenVector/PxPyPzM4D.h"
@@ -39,6 +40,24 @@ float deltaR2(float eta1, float phi1, float eta2, float phi2) {
 }
 float deltaR(float eta1, float phi1, float eta2, float phi2) {
     return std::sqrt(deltaR2(eta1,phi1,eta2,phi2));
+}
+
+float minDeltaR(float eta1, float phi1, float eta2, float phi2, float eta3=0, float phi3=0, float eta4=0, float phi4=0){
+    std::vector<float> deltaRs;
+	deltaRs.push_back(deltaR(eta1, phi1, eta2, phi2));
+	if(eta3!=0 && phi3!=0) {
+        deltaRs.push_back(deltaR(eta1, phi1, eta3, phi3));
+        deltaRs.push_back(deltaR(eta2, phi2, eta3, phi3));
+    }
+	if(eta4!=0 && phi4!=0) {
+        deltaRs.push_back(deltaR(eta1, phi1, eta4, phi4));
+        deltaRs.push_back(deltaR(eta2, phi2, eta4, phi4));
+    }
+    if(eta3!=0 && phi3!=0 && eta4!=0 && phi4!=0) {
+        deltaRs.push_back(deltaR(eta3, phi3, eta4, phi4));
+    }
+    std::vector<float>::iterator theMin = std::min_element(std::begin(deltaRs), std::end(deltaRs));
+    return *theMin;
 }
 
 float pt_2(float pt1, float phi1, float pt2, float phi2) {
