@@ -46,12 +46,14 @@ blind = '--flags "-X blinding"'
 
 index="/nfs/fanae/user/vischia/www/index.php"
 
-def runPlots(cuts, mca, out, plots, inputDir, outputDir, jei, lumi, mcc, mccother, trigdef, toplot, functions):
+def runPlots(cuts, mca, out, plots, inputDir, outputDir, jei, lumi, mcc, mccother, trigdef, toplot, weights, functions):
         clean(out)
         os.system('cp {index} {outputDir}'.format(index=index,outputDir=out))
         # --Fs {inputDir}/leptonJetReCleanerSusyEWK3L --Fs {inputDir}/leptonBuilderEWK 
-        print "runPlots: please add -W here"
-        cmd = "python mcPlots.py {mca} {cuts} {plots} -P {inputDir} --Fs {inputDir}/leptonJetReCleanerSusyEWK2L --pdir {outputDir} -j {jei} -l {lumi} --s2v --tree treeProducerSusyMultilepton --mcc {mcc} --mcc {mccother} --mcc {trigdef} -f  --plotgroup fakes_appldata+=promptsub  --legendWidth 0.20 --legendFontSize 0.035 --showMCError -f {toplot} --showRatio --perBin --legendHeader \'EWK #tau_{{h}} CR\' --maxRatioRange 0.5 1.5 --fixRatioRange --ratioOffset 0.03  --load-macro {functions}".format(mca=mca,cuts=cuts,plots=plots,inputDir=inputDir,outputDir=out,jei=jei,lumi=lumi,mcc=mcc,mccother=mccother,trigdef=trigdef,toplot=toplot,functions=functions)
+        daweights=''
+        if weights != '':
+                daweights=" -W '{weights}' ".format(weights=weights)
+        cmd = "python mcPlots.py {mca} {cuts} {plots} -P {inputDir} --Fs {inputDir}/leptonJetReCleanerSusyEWK2L --pdir {outputDir} -j {jei} -l {lumi} --s2v --tree treeProducerSusyMultilepton --mcc {mcc} --mcc {mccother} --mcc {trigdef} -f {daweights} --plotgroup fakes_appldata+=promptsub  --legendWidth 0.20 --legendFontSize 0.035 --showMCError -f {toplot} --showRatio --perBin --legendHeader \'EWK #tau_{{h}} CR\' --maxRatioRange 0.5 1.5 --fixRatioRange --ratioOffset 0.03  --load-macro {functions}".format(mca=mca,cuts=cuts,plots=plots,inputDir=inputDir,outputDir=out,jei=jei,lumi=lumi,mcc=mcc,mccother=mccother,trigdef=trigdef,daweights=daweights,toplot=toplot,functions=functions)
         command(cmd, pretend)
         os.system('cp {index} {outputDir}'.format(index=index,outputDir=out))
 
@@ -59,7 +61,10 @@ def runPlots(cuts, mca, out, plots, inputDir, outputDir, jei, lumi, mcc, mccothe
 def runCards(variable, binning, cuts, mca, out, plots, systs, inputDir, outputDir, jei, lumi, mcc, mccother, trigdef, weights, functions):
         # example var: SSR4bins
         # example binning: '4,0.5,4.5'
-        cmd = "python makeShapeCardsSusy.py {mca} {cuts} {variable} '{binning}' {systs} -P {inputDir} --Fs {inputDir}/leptonJetReCleanerSusyEWK2L -j {jei} -l {lumi} --s2v --tree treeProducerSusyMultilepton --mcc {mcc} --mcc {mccother} --mcc {trigdef} -f -p prompt.* -p fakes.* -p sig.* -p convs -p data -W '{weights}' --load-macro {functions}  --pgroup prompt_ttX+=prompt_ttW --pgroup prompt_ttX+=prompt_ttZ --pgroup prompt_ttX+=prompt_ttH --od {outputDir} -o {variable}".format(mca=mca,cuts=cuts,variable=variable,binning=binning,systs=systs,inputDir=inputDir,jei=jei,lumi=lumi,mcc=mcc,mccother=mccother,trigdef=trigdef,weights=weights,functions=functions,outputDir=outputDir)
+        daweights=''
+        if weights != '':
+                daweights=" -W '{weights}' ".format(weights=weights)
+        cmd = "python makeShapeCardsSusy.py {mca} {cuts} {variable} '{binning}' {systs} -P {inputDir} --Fs {inputDir}/leptonJetReCleanerSusyEWK2L -j {jei} -l {lumi} --s2v --tree treeProducerSusyMultilepton --mcc {mcc} --mcc {mccother} --mcc {trigdef} -f  {daweights} --load-macro {functions}  --pgroup prompt_ttX+=prompt_ttW --pgroup prompt_ttX+=prompt_ttZ --pgroup prompt_ttX+=prompt_ttH --od {outputDir} -o {variable}".format(mca=mca,cuts=cuts,variable=variable,binning=binning,systs=systs,inputDir=inputDir,jei=jei,lumi=lumi,mcc=mcc,mccother=mccother,trigdef=trigdef,daweights=daweights,functions=functions,outputDir=outputDir)
         command(cmd, pretend)
         os.system('cp {index} {outputDir}'.format(index=index,outputDir=out))
         
@@ -127,8 +132,7 @@ elif(action=='crtau'):
         batch=''
         direct=' --pretend '
         direct=' '
-        jei='6'
-        jei='60'
+        jei='8'
         lumi='1.0'
 
         cuts='susy-ewkino/crtau/cuts_qcd.txt'
@@ -165,8 +169,13 @@ elif(action=='crconv'):
         mcc='susy-ewkino/crconv/mcc_convs.txt'
         mccother='susy-ewkino/2lss/lepchoice-2lss-FO.txt'
         trigdef='susy-ewkino/mcc_triggerdefs.txt'
-        functions='susy-ewkino/3l/functionsEWK.cc'
-        toplot='--sP \'MET\''
+        print "WARNING: Please re-add eventBTagSF to applied weights, when new recipe is out"
+        #weights3l='puw_nInt_Moriond(nTrueInt)*triggerSF(0,LepGood1_conePt,LepGood1_pdgId,LepGood2_conePt,LepGood2_pdgId,LepGood3_conePt,LepGood3_pdgId)*leptonSF_2lss_ewk(LepGood1_pdgId,LepGood1_conePt,LepGood1_eta)*leptonSF_2lss_ewk(LepGood2_pdgId,LepGood2_conePt,LepGood2_eta)*eventBTagSF'
+        weights3l='puw_nInt_Moriond(nTrueInt)*triggerSF(0,LepGood1_conePt,LepGood1_pdgId,LepGood2_conePt,LepGood2_pdgId,LepGood3_conePt,LepGood3_pdgId)*getLepSF(LepGood1_conePt,LepGood1_eta,LepGood1_pdgId,LepGood1_isTight,1)*getLepSF(LepGood2_conePt,LepGood2_eta,LepGood2_pdgId,LepGood2_isTight,1)*getLepSF(LepGood3_conePt,LepGood3_eta,LepGood3_pdgId,LepGood3_isTight,1)'
+        #weights2l='puw_nInt_Moriond(nTrueInt)*triggerSF(-1,LepGood1_conePt,LepGood1_pdgId,LepGood2_conePt,LepGood2_pdgId,0,0)*leptonSF_2lss_ewk(LepGood1_pdgId,LepGood1_conePt,LepGood1_eta)*leptonSF_2lss_ewk(LepGood2_pdgId,LepGood2_conePt,LepGood2_eta)*eventBTagSF'
+        weights2l='puw_nInt_Moriond(nTrueInt)*triggerSF(-1,LepGood1_conePt,LepGood1_pdgId,LepGood2_conePt,LepGood2_pdgId)*getLepSF(LepGood1_conePt,LepGood1_eta,LepGood1_pdgId,LepGood1_isTight,1)*getLepSF(LepGood2_conePt,LepGood2_eta,LepGood2_pdgId,LepGood2_isTight,1)'
+        functions='susy-ewkino/3l/functionsEWK.cc --load-macro susy-ewkino/functionsPUW.cc --load-macro susy-ewkino/functionsSF.cc '
+        toplot='--sP \'met\''
         if(subaction!=''):
                 toplot='--sP \'{toplot}\''.format(toplot=subaction)
         if(subaction=='all'):
@@ -182,22 +191,22 @@ elif(action=='crconv'):
         cuts='susy-ewkino/crconv/cuts_convs_3l.txt'
         mca='susy-ewkino/crconv/mca-3l-mc-conv.txt'
         out=outputDir+'3l_mc_conv/'
-        runPlots(cuts, mca, out, plots, inputDir, outputDir, jei, lumi, mcc, mccother, trigdef, toplot, functions)
+        #runPlots(cuts, mca, out, plots, inputDir, outputDir, jei, lumi, mcc, mccother, trigdef, toplot, weights3l, functions)
 
         cuts='susy-ewkino/crconv/cuts_convs_3l.txt'
         mca='susy-ewkino/crconv/mca-3l-mcdata-conv.txt'
         out=outputDir+'3l_mcdata_conv/'
-        runPlots(cuts, mca, out, plots, inputDir, outputDir, jei, lumi, mcc, mccother, trigdef, toplot, functions)
+        #runPlots(cuts, mca, out, plots, inputDir, outputDir, jei, lumi, mcc, mccother, trigdef, toplot, weights3l, functions)
 
         cuts='susy-ewkino/crconv/cuts_convs_2lgamma.txt'
         mca='susy-ewkino/crconv/mca-ss2l-mcdata-conv.txt'
         out=outputDir+'ss2lgamma_mcdata_conv/'
-        runPlots(cuts, mca, out, plots, inputDir, outputDir, jei, lumi, mcc, mccother, trigdef, toplot, functions)
+        runPlots(cuts, mca, out, plots, inputDir, outputDir, jei, lumi, mcc, mccother, trigdef, toplot, weights2l, functions)
 
         cuts='susy-ewkino/crconv/cuts_convs_ss2l.txt'
         mca='susy-ewkino/crconv/mca-ss2l-mcdata-conv.txt'
         out=outputDir+'ss2l_mcdata_conv/'
-        runPlots(cuts, mca, out, plots, inputDir, outputDir, jei, lumi, mcc, mccother, trigdef, toplot, functions)
+        runPlots(cuts, mca, out, plots, inputDir, outputDir, jei, lumi, mcc, mccother, trigdef, toplot, weights2l, functions)
 
 
 elif(action=='crconvcards'):
@@ -206,7 +215,12 @@ elif(action=='crconvcards'):
         mcc='susy-ewkino/crconv/mcc_convs.txt'
         mccother='susy-ewkino/2lss/lepchoice-2lss-FO.txt'
         trigdef='susy-ewkino/mcc_triggerdefs.txt'
-        functions='susy-ewkino/3l/functionsEWK.cc'
+        print "WARNING: Please re-add eventBTagSF to applied weights, when new recipe is out"
+        #weights3l='puw_nInt_Moriond(nTrueInt)*triggerSF(0,LepGood1_conePt,LepGood1_pdgId,LepGood2_conePt,LepGood2_pdgId,LepGood3_conePt,LepGood3_pdgId)*leptonSF_2lss_ewk(LepGood1_pdgId,LepGood1_conePt,LepGood1_eta)*leptonSF_2lss_ewk(LepGood2_pdgId,LepGood2_conePt,LepGood2_eta)*eventBTagSF'
+        weights3l='puw_nInt_Moriond(nTrueInt)*triggerSF(0,LepGood1_conePt,LepGood1_pdgId,LepGood2_conePt,LepGood2_pdgId,LepGood3_conePt,LepGood3_pdgId)*getLepSF(LepGood1_conePt,LepGood1_eta,LepGood1_pdgId,LepGood1_isTight,1)*getLepSF(LepGood2_conePt,LepGood2_eta,LepGood2_pdgId,LepGood2_isTight,1)*getLepSF(LepGood3_conePt,LepGood3_eta,LepGood3_pdgId,LepGood3_isTight,1)'
+        #weights2l='puw_nInt_Moriond(nTrueInt)*triggerSF(-1,LepGood1_conePt,LepGood1_pdgId,LepGood2_conePt,LepGood2_pdgId,0,0)*leptonSF_2lss_ewk(LepGood1_pdgId,LepGood1_conePt,LepGood1_eta)*leptonSF_2lss_ewk(LepGood2_pdgId,LepGood2_conePt,LepGood2_eta)*eventBTagSF'
+        weights2l='puw_nInt_Moriond(nTrueInt)*triggerSF(-1,LepGood1_conePt,LepGood1_pdgId,LepGood2_conePt,LepGood2_pdgId)*getLepSF(LepGood1_conePt,LepGood1_eta,LepGood1_pdgId,LepGood1_isTight,1)*getLepSF(LepGood2_conePt,LepGood2_eta,LepGood2_pdgId,LepGood2_isTight,1)'
+        functions='susy-ewkino/3l/functionsEWK.cc --load-macro susy-ewkino/functionsPUW.cc --load-macro susy-ewkino/functionsSF.cc '
         systs='susy-ewkino/systs_dummy.txt'
         variable='met'
         binning='10,50,300'
@@ -219,27 +233,20 @@ elif(action=='crconvcards'):
         jei='6'
         jei='60'
         lumi='36.5'
-
-        weights='puw_nInt_Moriond(nTrueInt) * triggerSF(BR(3, countTaus(3, LepSel_pdgId[0], LepSel_pdgId[1], LepSel_pdgId[2]), nOSSF_3l, nOSLF_3l, nOSTF_3l), LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1], LepSel_pt[2], LepSel_pdgId[2]) * leptonSF(getLepSF(LepSel_pt[0], LepSel_eta[0], LepSel_pdgId[0], LepSel_isTight[0]), getLepSF(LepSel_pt[1], LepSel_eta[1], LepSel_pdgId[1], LepSel_isTight[1]), getLepSF(LepSel_pt[2], LepSel_eta[2], LepSel_pdgId[2], LepSel_isTight[2]))*if3(BR(3, countTaus(3, LepSel_pdgId[0], LepSel_pdgId[1], LepSel_pdgId[2]), nOSSF_3l, nOSLF_3l, nOSTF_3l)==6, triggerSFBR6(LepSel_pt[0], LepSel_eta[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_eta[1], LepSel_pdgId[1], LepSel_pt[2], LepSel_eta[2], LepSel_pdgId[2]),1)'
-        weightFS='leptonSFFS(getLepSFFS(LepSel_pt[0], LepSel_eta[0], LepSel_pdgId[0], LepSel_isTight[0]), getLepSFFS(LepSel_pt[1], LepSel_eta[1], LepSel_pdgId[1], LepSel_isTight[1]), getLepSFFS(LepSel_pt[2], LepSel_eta[2], LepSel_pdgId[2], LepSel_isTight[2]))'
-        weights=''
-
         cuts='susy-ewkino/crconv/cuts_convs_3l.txt'
         mca='susy-ewkino/crconv/mca-3l-mcdata-conv.txt'
         out=outputDir+'3l_mcdata_conv/'
-        runCards(variable, binning, cuts, mca, out, plots, systs, inputDir, outputDir, jei, lumi, mcc, mccother, trigdef, weights, functions)
+        runCards(variable, binning, cuts, mca, out, plots, systs, inputDir, outputDir, jei, lumi, mcc, mccother, trigdef, weights3l, functions)
 
         cuts='susy-ewkino/crconv/cuts_convs_2lgamma.txt'
         mca='susy-ewkino/crconv/mca-ss2l-mcdata-conv.txt'
-        weights='puw_nInt_Moriond(nTrueInt)*triggerSF(4,LepGood1_conePt,LepGood1_pdgId,LepGood2_conePt,LepGood2_pdgId,0,0)*leptonSF_2lss_ewk(LepGood1_pdgId,LepGood1_conePt,LepGood1_eta)*leptonSF_2lss_ewk(LepGood2_pdgId,LepGood2_conePt,LepGood2_eta)*eventBTagSF'
-        weights=''
         out=outputDir+'ss2lgamma_mcdata_conv/'
-        runCards(variable, binning, cuts, mca, out, plots, systs, inputDir, outputDir, jei, lumi, mcc, mccother, trigdef, weights, functions)
+        runCards(variable, binning, cuts, mca, out, plots, systs, inputDir, outputDir, jei, lumi, mcc, mccother, trigdef, weights2l, functions)
 
 
         cuts='susy-ewkino/crconv/cuts_convs_ss2l.txt'
         mca='susy-ewkino/crconv/mca-ss2l-mcdata-conv.txt'
         out=outputDir+'ss2l_mcdata_conv/'
-        runCards(variable, binning, cuts, mca, out, plots, systs, inputDir, outputDir, jei, lumi, mcc, mccother, trigdef, weights, functions)
+        runCards(variable, binning, cuts, mca, out, plots, systs, inputDir, outputDir, jei, lumi, mcc, mccother, trigdef, weights2l, functions)
 
 print 'Everything is done now'
