@@ -53,18 +53,22 @@ def runPlots(cuts, mca, out, plots, inputDir, outputDir, jei, lumi, mcc, mccothe
         daweights=''
         if weights != '':
                 daweights=" -W '{weights}' ".format(weights=weights)
-        cmd = "python mcPlots.py {mca} {cuts} {plots} -P {inputDir} --Fs {inputDir}/leptonJetReCleanerSusyEWK2L --pdir {outputDir} -j {jei} -l {lumi} --s2v --tree treeProducerSusyMultilepton --mcc {mcc} --mcc {mccother} --mcc {trigdef} -f {daweights} --plotgroup fakes_appldata+=promptsub  --legendWidth 0.20 --legendFontSize 0.035 --showMCError -f {toplot} --showRatio --perBin --legendHeader \'EWK #tau_{{h}} CR\' --maxRatioRange 0.5 1.5 --fixRatioRange --ratioOffset 0.03  --load-macro {functions}".format(mca=mca,cuts=cuts,plots=plots,inputDir=inputDir,outputDir=out,jei=jei,lumi=lumi,mcc=mcc,mccother=mccother,trigdef=trigdef,daweights=daweights,toplot=toplot,functions=functions)
+        cmd = "python mcPlots.py {mca} {cuts} {plots} -P {inputDir} --Fs {inputDir}/leptonJetReCleanerSusyEWK2L --pdir {outputDir} -j {jei} -l {lumi} --s2v --tree treeProducerSusyMultilepton --mcc {mcc} --mcc {mccother} --mcc {trigdef} -f {daweights} --plotgroup fakes_appldata+=promptsub  --legendWidth 0.20 --legendFontSize 0.035 --showMCError -f {toplot} --showRatio --perBin --legendHeader \'Conversions\' --maxRatioRange 0.5 1.5 --fixRatioRange --ratioOffset 0.03  --load-macro {functions}".format(mca=mca,cuts=cuts,plots=plots,inputDir=inputDir,outputDir=out,jei=jei,lumi=lumi,mcc=mcc,mccother=mccother,trigdef=trigdef,daweights=daweights,toplot=toplot,functions=functions)
         command(cmd, pretend)
         os.system('cp {index} {outputDir}'.format(index=index,outputDir=out))
 
 
-def runCards(variable, binning, cuts, mca, out, plots, systs, inputDir, outputDir, jei, lumi, mcc, mccother, trigdef, weights, functions):
+def runCards(variable, binning, cuts, mca, out, plots, systs, inputDir, processes, outputDir, jei, lumi, mcc, mccother, trigdef, weights, functions):
         # example var: SSR4bins
         # example binning: '4,0.5,4.5'
         daweights=''
         if weights != '':
                 daweights=" -W '{weights}' ".format(weights=weights)
-        cmd = "python makeShapeCardsSusy.py {mca} {cuts} {variable} '{binning}' {systs} -P {inputDir} --Fs {inputDir}/leptonJetReCleanerSusyEWK2L -j {jei} -l {lumi} --s2v --tree treeProducerSusyMultilepton --mcc {mcc} --mcc {mccother} --mcc {trigdef} -f  {daweights} --load-macro {functions}  --pgroup prompt_ttX+=prompt_ttW --pgroup prompt_ttX+=prompt_ttZ --pgroup prompt_ttX+=prompt_ttH --od {outputDir} -o {variable}".format(mca=mca,cuts=cuts,variable=variable,binning=binning,systs=systs,inputDir=inputDir,jei=jei,lumi=lumi,mcc=mcc,mccother=mccother,trigdef=trigdef,daweights=daweights,functions=functions,outputDir=outputDir)
+        daprocesses=''
+        if processes != '':
+                daprocesses=" -p data,{processes} ".format(processes=processes)
+
+        cmd = "python makeShapeCardsSusy.py {mca} {cuts} {variable} '{binning}' {systs} -P {inputDir} --Fs {inputDir}/leptonJetReCleanerSusyEWK2L -j {jei} -l {lumi} --s2v --tree treeProducerSusyMultilepton --mcc {mcc} --mcc {mccother} --mcc {trigdef} -e -f  {daweights} --load-macro {functions} {daprocesses} --pgroup prompt_ttX+=prompt_ttW --pgroup prompt_ttX+=prompt_ttZ --pgroup prompt_ttX+=prompt_ttH --od {outputDir} --ms -o {variable}".format(mca=mca,cuts=cuts,variable=variable,binning=binning,systs=systs,inputDir=inputDir,daprocesses=daprocesses,jei=jei,lumi=lumi,mcc=mcc,mccother=mccother,trigdef=trigdef,daweights=daweights,functions=functions,outputDir=out)
         command(cmd, pretend)
         os.system('cp {index} {outputDir}'.format(index=index,outputDir=out))
         
@@ -191,12 +195,12 @@ elif(action=='crconv'):
         cuts='susy-ewkino/crconv/cuts_convs_3l.txt'
         mca='susy-ewkino/crconv/mca-3l-mc-conv.txt'
         out=outputDir+'3l_mc_conv/'
-        #runPlots(cuts, mca, out, plots, inputDir, outputDir, jei, lumi, mcc, mccother, trigdef, toplot, weights3l, functions)
+        runPlots(cuts, mca, out, plots, inputDir, outputDir, jei, lumi, mcc, mccother, trigdef, toplot, weights3l, functions)
 
         cuts='susy-ewkino/crconv/cuts_convs_3l.txt'
         mca='susy-ewkino/crconv/mca-3l-mcdata-conv.txt'
         out=outputDir+'3l_mcdata_conv/'
-        #runPlots(cuts, mca, out, plots, inputDir, outputDir, jei, lumi, mcc, mccother, trigdef, toplot, weights3l, functions)
+        runPlots(cuts, mca, out, plots, inputDir, outputDir, jei, lumi, mcc, mccother, trigdef, toplot, weights3l, functions)
 
         cuts='susy-ewkino/crconv/cuts_convs_2lgamma.txt'
         mca='susy-ewkino/crconv/mca-ss2l-mcdata-conv.txt'
@@ -221,11 +225,11 @@ elif(action=='crconvcards'):
         #weights2l='puw_nInt_Moriond(nTrueInt)*triggerSF(-1,LepGood1_conePt,LepGood1_pdgId,LepGood2_conePt,LepGood2_pdgId,0,0)*leptonSF_2lss_ewk(LepGood1_pdgId,LepGood1_conePt,LepGood1_eta)*leptonSF_2lss_ewk(LepGood2_pdgId,LepGood2_conePt,LepGood2_eta)*eventBTagSF'
         weights2l='puw_nInt_Moriond(nTrueInt)*triggerSF(-1,LepGood1_conePt,LepGood1_pdgId,LepGood2_conePt,LepGood2_pdgId)*getLepSF(LepGood1_conePt,LepGood1_eta,LepGood1_pdgId,LepGood1_isTight,1)*getLepSF(LepGood2_conePt,LepGood2_eta,LepGood2_pdgId,LepGood2_isTight,1)'
         functions='susy-ewkino/3l/functionsEWK.cc --load-macro susy-ewkino/functionsPUW.cc --load-macro susy-ewkino/functionsSF.cc '
-        systs='susy-ewkino/systs_dummy.txt'
+        systs='susy-ewkino/systs_ewkino.txt'
         variable='met'
         binning='10,50,300'
         if(subaction!=''):
-                variable='{toplot}'.format(variable=subaction)
+                variable='{toplot}'.format(toplot=subaction)
         batch=' -q batch '
         batch=''
         direct=' --pretend '
@@ -235,18 +239,21 @@ elif(action=='crconvcards'):
         lumi='36.5'
         cuts='susy-ewkino/crconv/cuts_convs_3l.txt'
         mca='susy-ewkino/crconv/mca-3l-mcdata-conv.txt'
-        out=outputDir+'3l_mcdata_conv/'
-        runCards(variable, binning, cuts, mca, out, plots, systs, inputDir, outputDir, jei, lumi, mcc, mccother, trigdef, weights3l, functions)
+        out=outputDir+'datacards/3l_mcdata_conv/'
+        processes='WZ,Fakes,Rares,ttZ,Gstar,TTG,WG,ZG'
+        runCards(variable, binning, cuts, mca, out, plots, systs, inputDir, processes, outputDir, jei, lumi, mcc, mccother, trigdef, weights3l, functions)
 
         cuts='susy-ewkino/crconv/cuts_convs_2lgamma.txt'
         mca='susy-ewkino/crconv/mca-ss2l-mcdata-conv.txt'
-        out=outputDir+'ss2lgamma_mcdata_conv/'
-        runCards(variable, binning, cuts, mca, out, plots, systs, inputDir, outputDir, jei, lumi, mcc, mccother, trigdef, weights2l, functions)
+        out=outputDir+'datacards/ss2lgamma_mcdata_conv/'
+        processes='Gstar,TG,TTG,ttZ,WG,ZG,WZ,Fakes,Rares,Flips'
+        runCards(variable, binning, cuts, mca, out, plots, systs, inputDir, processes, outputDir, jei, lumi, mcc, mccother, trigdef, weights2l, functions)
 
 
         cuts='susy-ewkino/crconv/cuts_convs_ss2l.txt'
         mca='susy-ewkino/crconv/mca-ss2l-mcdata-conv.txt'
-        out=outputDir+'ss2l_mcdata_conv/'
-        runCards(variable, binning, cuts, mca, out, plots, systs, inputDir, outputDir, jei, lumi, mcc, mccother, trigdef, weights2l, functions)
+        out=outputDir+'datacards/ss2l_mcdata_conv/'
+        processes='Gstar,TG,TTG,ttZ,WG,ZG,WZ,Fakes,Rares,Flips,TTG'
+        runCards(variable, binning, cuts, mca, out, plots, systs, inputDir, processes, outputDir, jei, lumi, mcc, mccother, trigdef, weights2l, functions)
 
 print 'Everything is done now'
