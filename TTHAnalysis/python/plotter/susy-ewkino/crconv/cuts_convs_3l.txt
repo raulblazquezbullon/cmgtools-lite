@@ -1,4 +1,5 @@
 alwaystrue: 1
+#blinding  : !isData || (run <= 276811 || (run>=278820 && run<=279931))
 trigger: Triggers_ee || Triggers_mm || Triggers_em
 cleanup: minMllAFAS > 12
 trilep: nLepFO>=3
