@@ -1,7 +1,7 @@
 
 ## flat uncertainties
 
-lumi          : sig_.*|prompt_.*|rares_.*|convs               : .*                : 1.062
+lumi          : .*                                            : .*                : 1.062
 trigeff_ML    : sig_.*|prompt_.*|rares_.*|convs               : .*                : 1.04
 taueff_ML     : sig_.*|prompt_.*|rares_.*|convs               : .*3l[C,D,E,I].*   : 1.06
 taueff_ML     : sig_.*|prompt_.*|rares_.*|convs               : .*3lF.*           : 1.12
