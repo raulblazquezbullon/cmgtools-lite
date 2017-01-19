@@ -58,7 +58,7 @@ def runPlots(cuts, mca, out, plots, inputDir, outputDir, jei, lumi, mcc, mccothe
         os.system('cp {index} {outputDir}'.format(index=index,outputDir=out))
 
 
-def runCards(variable, binning, cuts, mca, out, plots, systs, inputDir, processes, outputDir, jei, lumi, mcc, mccother, trigdef, weights, functions):
+def runCards(variable, binning, cuts, mca, out, plots, systs, inputDir, processes, signals, pgroup, outputDir, jei, lumi, mcc, mccother, trigdef, weights, functions):
         # example var: SSR4bins
         # example binning: '4,0.5,4.5'
         daweights=''
@@ -68,7 +68,7 @@ def runCards(variable, binning, cuts, mca, out, plots, systs, inputDir, processe
         if processes != '':
                 daprocesses=" -p data,{processes} ".format(processes=processes)
 
-        cmd = "python makeShapeCardsSusy.py {mca} {cuts} {variable} '{binning}' {systs} -P {inputDir} --Fs {inputDir}/leptonJetReCleanerSusyEWK2L -j {jei} -l {lumi} --s2v --tree treeProducerSusyMultilepton --mcc {mcc} --mcc {mccother} --mcc {trigdef} -e -f  {daweights} --load-macro {functions} {daprocesses} --pgroup prompt_ttX+=prompt_ttW --pgroup prompt_ttX+=prompt_ttZ --pgroup prompt_ttX+=prompt_ttH --od {outputDir} --ms -o {variable}".format(mca=mca,cuts=cuts,variable=variable,binning=binning,systs=systs,inputDir=inputDir,daprocesses=daprocesses,jei=jei,lumi=lumi,mcc=mcc,mccother=mccother,trigdef=trigdef,daweights=daweights,functions=functions,outputDir=out)
+        cmd = "python makeShapeCardsSusy.py {mca} {cuts} {variable} '{binning}' {systs} -P {inputDir} --Fs {inputDir}/leptonJetReCleanerSusyEWK2L -j {jei} -l {lumi} --s2v --tree treeProducerSusyMultilepton --mcc {mcc} --mcc {mccother} --mcc {trigdef} -e -f  {daweights} --load-macro {functions} {daprocesses} {signals} {pgroup} --od {outputDir} --ms -o {variable}".format(mca=mca,cuts=cuts,variable=variable,binning=binning,systs=systs,inputDir=inputDir,daprocesses=daprocesses,signals=signals,pgroup=pgroup,jei=jei,lumi=lumi,mcc=mcc,mccother=mccother,trigdef=trigdef,daweights=daweights,functions=functions,outputDir=out)
         command(cmd, pretend)
         os.system('cp {index} {outputDir}'.format(index=index,outputDir=out))
         
@@ -237,23 +237,29 @@ elif(action=='crconvcards'):
         jei='6'
         jei='60'
         lumi='36.5'
+        pgroup=' --pgroup internal:=ttZ,Gstar --pgroup external:=TTG,WG,ZG,TG '
+        signals=' --sp internal --sp external '
+
+
         cuts='susy-ewkino/crconv/cuts_convs_3l.txt'
         mca='susy-ewkino/crconv/mca-3l-mcdata-conv.txt'
         out=outputDir+'datacards/3l_mcdata_conv/'
         processes='WZ,Fakes,Rares,ttZ,Gstar,TTG,WG,ZG'
-        runCards(variable, binning, cuts, mca, out, plots, systs, inputDir, processes, outputDir, jei, lumi, mcc, mccother, trigdef, weights3l, functions)
+        processes=''
+        runCards(variable, binning, cuts, mca, out, plots, systs, inputDir, processes, signals, pgroup, outputDir, jei, lumi, mcc, mccother, trigdef, weights3l, functions)
 
         cuts='susy-ewkino/crconv/cuts_convs_2lgamma.txt'
         mca='susy-ewkino/crconv/mca-ss2l-mcdata-conv.txt'
         out=outputDir+'datacards/ss2lgamma_mcdata_conv/'
         processes='Gstar,TG,TTG,ttZ,WG,ZG,WZ,Fakes,Rares,Flips'
-        runCards(variable, binning, cuts, mca, out, plots, systs, inputDir, processes, outputDir, jei, lumi, mcc, mccother, trigdef, weights2l, functions)
-
+        processes=''
+        runCards(variable, binning, cuts, mca, out, plots, systs, inputDir, processes, signals, pgroup, outputDir, jei, lumi, mcc, mccother, trigdef, weights2l, functions)
 
         cuts='susy-ewkino/crconv/cuts_convs_ss2l.txt'
         mca='susy-ewkino/crconv/mca-ss2l-mcdata-conv.txt'
         out=outputDir+'datacards/ss2l_mcdata_conv/'
         processes='Gstar,TG,TTG,ttZ,WG,ZG,WZ,Fakes,Rares,Flips,TTG'
-        runCards(variable, binning, cuts, mca, out, plots, systs, inputDir, processes, outputDir, jei, lumi, mcc, mccother, trigdef, weights2l, functions)
+        processes=''
+        runCards(variable, binning, cuts, mca, out, plots, systs, inputDir, processes, signals, pgroup, outputDir, jei, lumi, mcc, mccother, trigdef, weights2l, functions)
 
 print 'Everything is done now'
