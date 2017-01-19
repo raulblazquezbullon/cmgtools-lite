@@ -354,7 +354,7 @@ for signal in mca.listSignals():
             # I should put a break after the first run, since looping with multiple signals produces multiple times the same card with different column order, but it is not a large overhead (<<1sec).
             myout = outdir
             myout += "card/"  
-            myprocs = ( backgrounds + signals + [ signal ] ) if signal in signals else backgrounds + signals
+            myprocs = backgrounds + signals
     if not os.path.exists(myout): os.system("mkdir -p "+myout)
     myyields = dict([(k,v) for (k,v) in allyields.iteritems()]) 
     datacard = open(myout+filename+".card.txt", "w"); 
