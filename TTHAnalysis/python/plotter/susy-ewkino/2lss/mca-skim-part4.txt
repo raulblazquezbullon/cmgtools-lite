@@ -1,3 +1,0 @@
-convs  : WGToLNuG : xsec 
-prompt_ZZH : GGHZZ4L   : xsec
-prompt_ZZH : VHToNonbb : xsec 

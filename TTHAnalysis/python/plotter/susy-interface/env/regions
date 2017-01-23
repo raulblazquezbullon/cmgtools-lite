@@ -1,7 +1,7 @@
 BEGIN::2lss
   expr         := SR_ewk_ss2l(nJet40,LepGood1_conePt,LepGood1_phi, LepGood2_conePt,LepGood2_phi, met_pt,met_phi,LepGood1_charge)
   bins         := 30,0.5,30.5
-  bkgs        +:= prompt_.*;rares_.*;convs_.*;flips_.*;promptsub;fakes_data.*
+  bkgs        +:= prompt_.*;rares_.*;convs;flips_.*;promptsub;fakes_data.*
   flags       +:= 
   flagsPlots  +:= --legendHeader '2lSS'
   plots		  #:= {SR      : SR_log                                                    }
@@ -262,18 +262,6 @@ BEGIN::crlnt
   fmt          := {LepSel1_pdgId:+2d} {LepSel1_pt:5.1f} {LepSel1_mcUCSX:2d}\\t{LepSel2_pdgId:+2d} {LepSel2_pt:5.1f} {LepSel2_mcUCSX:2d}\\t{LepSel3_pdgId:+2d} {LepSel3_pt:5.1f} {LepSel3_mcUCSX:2d}\\t{nJet30:d}\\t{nBJetMedium25:2d}\\t{met_pt:5.1f}\\t{htJet30j:6.1f}\\t{mll_3l:6.1f}\\t{mT_3l:6.1f}\\t{mT2L_3l:6.1f}\\t{mT2T_3l:6.1f}
 ENDDEF
 
-BEGIN::2lssblind
-  expr         := SR_ewk_ss2l(nJet40,LepGood1_conePt,LepGood1_phi, LepGood2_conePt,LepGood2_phi, met_pt,met_phi,LepGood1_charge)
-  bins         := 30,0.5,30.5
-  bkgs        +:= prompt_.*;rares_.*;convs_.*;flips_.*;promptsub;fakes_data.*
-  mcafile      := susy-ewkino/2lss/mca-blinded.txt
-  cutfile      := susy-ewkino/2lss/cuts_baseline.txt
-  plotfile	   := susy-ewkino/2lss/plots_baseline.txt
-  flags       +:= 
-  flagsPlots  +:= --legendHeader '2lSS'
-  plots		  #:= {All		: .*                                               }
-  fmt          := {LepSel1_pdgId:+2d} {LepSel1_pt:5.1f} {LepSel1_mcUCSX:2d}\\t{LepSel2_pdgId:+2d} {LepSel2_pt:5.1f} {LepSel2_dz:1.5f} {LepSel2_mcUCSX:2d}\\t{LepSel3_pdgId:+2d} {LepSel3_pt:5.1f} {LepSel3_mcUCSX:2d}\\t{nJet30:d}\\t{nBJetMedium25:2d}\\t{met_pt:5.1f}\\t{htJet30j:6.1f}\\t{mll_3l:6.1f}\\t{mT_3l:6.1f}\\t{mT2L_3l:6.1f}\\t{mT2T_3l:6.1f}
-ENDDEF
 
 BEGIN::cretau
   expr         := 1

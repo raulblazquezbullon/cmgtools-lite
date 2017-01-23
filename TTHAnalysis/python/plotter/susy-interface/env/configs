@@ -35,7 +35,7 @@ BEGIN::2lss
   wVarsFSJec   := 1;1;1
   wVarsFSMet   := 1;1
 #  wVarsFS     #:= {bTagFS   : (eventBTagSF_up_correlated/eventBTagSF) ; (eventBTagSF_down_correlated/eventBTagSF) }
-  wVarsFS     #:= {puw      : puw_nInt_ICHEP(nTrueInt,1) ; puw_nInt_ICHEP(nTrueInt,-1) } 
+  wVarsFS     #:= {puw      : puw_nInt_MORIOND(nTrueInt,1) ; puw_nInt_MORIOND(nTrueInt,-1) } 
   wVarsFS     #:= {lepSF    : leptonSF(getLepSF(LepSel_pt[0], LepSel_eta[0], LepSel_pdgId[0], 1, 1), getLepSF(LepSel_pt[1], LepSel_eta[1], LepSel_pdgId[1], 1, 1), getLepSF(LepSel_pt[2], LepSel_eta[2], LepSel_pdgId[2], 1, 1)) ; leptonSF(getLepSF(LepSel_pt[0], LepSel_eta[0], LepSel_pdgId[0], 1, -1), getLepSF(LepSel_pt[1], LepSel_eta[1], LepSel_pdgId[1], 1, -1), getLepSF(LepSel_pt[2], LepSel_eta[2], LepSel_pdgId[2], 1, -1)) }
   wVarsFS     #:= {lepSFFS  : leptonSFFS(getLepSFFS(LepSel_pt[0], LepSel_eta[0], LepSel_pdgId[0], 1, 1), getLepSFFS(LepSel_pt[1], LepSel_eta[1], LepSel_pdgId[1], 1, 1), getLepSFFS(LepSel_pt[2], LepSel_eta[2], LepSel_pdgId[2], 1, 1)) ; leptonSF(getLepSFFS(LepSel_pt[0], LepSel_eta[0], LepSel_pdgId[0], 1, -1), getLepSFFS(LepSel_pt[1], LepSel_eta[1], LepSel_pdgId[1], 1, -1), getLepSFFS(LepSel_pt[2], LepSel_eta[2], LepSel_pdgId[2], 1, -1)) }
 ENDDEF

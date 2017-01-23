@@ -49,13 +49,6 @@ triggers_3mu_alt = [ "HLT_TrkMu15_DoubleTrkMu5NoFiltersNoVtx_v*" ]
 triggers_2mu1e = [ "HLT_DiMu9_Ele9_CaloIdL_TrackIdL_v*" ]
 triggers_2e1mu = [ "HLT_Mu8_DiEle12_CaloIdL_TrackIdL_v*" ]
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-triggers_1mu_iso = [ 'HLT_IsoMu20_v*', 'HLT_IsoTkMu20_v*', 'HLT_IsoMu22_v*', 'HLT_IsoTkMu22_v*', 'HLT_IsoMu24_v*', 'HLT_IsoTkMu24_v*'  ]  # Mu20's prescaled in column 0, Mu22 prescaled in high lumi post-ichep data
-triggers_1mu_noniso = [ 'HLT_Mu45_eta2p1_v*', 'HLT_Mu50_v*', 'HLT_TkMu50_v*' ]
-=======
-=======
->>>>>>> pietroVis/80X_M17
 triggers_1mu_iso = [ 'HLT_IsoMu20_v*', 
                      'HLT_IsoTkMu20_v*', 
                      'HLT_IsoMu22_v*', 
@@ -65,10 +58,6 @@ triggers_1mu_iso = [ 'HLT_IsoMu20_v*',
 triggers_1mu_noniso = [ 'HLT_Mu45_eta2p1_v*', 
                         'HLT_Mu50_v*', 
                         'HLT_TkMu50_v*' ]
-<<<<<<< HEAD
->>>>>>> origin/80X_M17
-=======
->>>>>>> pietroVis/80X_M17
 
 # note: here the WP75 is th name in MC, WPLoose and WPTight should be in data
 triggers_1e      = [ 
@@ -211,4 +200,5 @@ triggers_doubleele33  = ['HLT_DoubleEle33_CaloIdL_GsfTrkIdVL_v*']
 triggers_pfht = triggers_pfht200 + triggers_pfht250 + triggers_pfht300 + triggers_pfht350 + triggers_pfht400 + triggers_pfht475 + triggers_pfht600 + triggers_pfht650 + triggers_pfht800
 ###---- MET:
 triggers_htmet = ['HLT_PFHT300_PFMET110_v*']
+
 
