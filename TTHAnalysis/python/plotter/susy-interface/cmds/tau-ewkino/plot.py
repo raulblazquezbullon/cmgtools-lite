@@ -180,7 +180,7 @@ elif(action=='crconv'):
         #weights2l='puw_nInt_Moriond(nTrueInt)*triggerSF(-1,LepGood1_conePt,LepGood1_pdgId,LepGood2_conePt,LepGood2_pdgId,0,0)*leptonSF_2lss_ewk(LepGood1_pdgId,LepGood1_conePt,LepGood1_eta)*leptonSF_2lss_ewk(LepGood2_pdgId,LepGood2_conePt,LepGood2_eta)*eventBTagSF'
         wp='1'
         weights2l='puw_nInt_Moriond(nTrueInt)*triggerSF(-1,LepGood1_conePt,LepGood1_pdgId,LepGood2_conePt,LepGood2_pdgId)*getLepSF(LepGood1_conePt,LepGood1_eta,LepGood1_pdgId,{wp},0)*getLepSF(LepGood2_conePt,LepGood2_eta,LepGood2_pdgId,{wp},0)'.format(wp=wp)
-        functions='susy-ewkino/3l/functionsEWK.cc --load-macro susy-ewkino/functionsPUW.cc --load-macro susy-ewkino/functionsSF.cc '
+        functions='susy-ewkino/3l/functionsEWK.cc --load-macro susy-ewkino/functionsPUW.cc --load-macro susy-ewkino/functionsSF.cc --load-macro functions.cc '
         toplot='--sP \'met\''
         if(subaction!=''):
                 toplot='--sP \'{toplot}\''.format(toplot=subaction)
@@ -204,15 +204,17 @@ elif(action=='crconv'):
         out=outputDir+'3l_mcdata_conv/'
         runPlots(cuts, mca, out, plots, inputDir, outputDir, jei, lumi, mcc, mccother, trigdef, toplot, weights3l, functions)
 
+        twoltoplot='{toplot} --xP m3l '.format(toplot=toplot)
+
         cuts='susy-ewkino/crconv/cuts_convs_2lgamma.txt'
         mca='susy-ewkino/crconv/mca-ss2l-mcdata-conv.txt'
         out=outputDir+'ss2lgamma_mcdata_conv/'
-        runPlots(cuts, mca, out, plots, inputDir, outputDir, jei, lumi, mcc, mccother, trigdef, toplot, weights2l, functions)
+        runPlots(cuts, mca, out, plots, inputDir, outputDir, jei, lumi, mcc, mccother, trigdef, twoltoplot, weights2l, functions)
 
         cuts='susy-ewkino/crconv/cuts_convs_ss2l.txt'
         mca='susy-ewkino/crconv/mca-ss2l-mcdata-conv.txt'
         out=outputDir+'ss2l_mcdata_conv/'
-        runPlots(cuts, mca, out, plots, inputDir, outputDir, jei, lumi, mcc, mccother, trigdef, toplot, weights2l, functions)
+        runPlots(cuts, mca, out, plots, inputDir, outputDir, jei, lumi, mcc, mccother, trigdef, twoltoplot, weights2l, functions)
 
 
 elif(action=='crconvcards'):
@@ -227,12 +229,14 @@ elif(action=='crconvcards'):
         #weights2l='puw_nInt_Moriond(nTrueInt)*triggerSF(-1,LepGood1_conePt,LepGood1_pdgId,LepGood2_conePt,LepGood2_pdgId,0,0)*leptonSF_2lss_ewk(LepGood1_pdgId,LepGood1_conePt,LepGood1_eta)*leptonSF_2lss_ewk(LepGood2_pdgId,LepGood2_conePt,LepGood2_eta)*eventBTagSF'
         wp='1'
         weights2l='puw_nInt_Moriond(nTrueInt)*triggerSF(-1,LepGood1_conePt,LepGood1_pdgId,LepGood2_conePt,LepGood2_pdgId)*getLepSF(LepGood1_conePt,LepGood1_eta,LepGood1_pdgId,{wp},0)*getLepSF(LepGood2_conePt,LepGood2_eta,LepGood2_pdgId,{wp},0)'.format(wp=wp)
-        functions='susy-ewkino/3l/functionsEWK.cc --load-macro susy-ewkino/functionsPUW.cc --load-macro susy-ewkino/functionsSF.cc '
+        functions='susy-ewkino/3l/functionsEWK.cc --load-macro susy-ewkino/functionsPUW.cc --load-macro susy-ewkino/functionsSF.cc --load-macro functions.cc '
         systs='susy-ewkino/crconv/systs_conv.txt'
         variable='met'
         binning='10,50,300'
         if(subaction!=''):
                 variable='{toplot}'.format(toplot=subaction)
+        if(subaction=='all'):
+                variable=''
         batch=' -q batch '
         batch=''
         direct=' --pretend '
@@ -243,6 +247,8 @@ elif(action=='crconvcards'):
         pgroup=' --pgroup internal:=ttZ,Gstar --pgroup external:=TTG,WG,ZG,TG '
         signals=' --sp internal --sp external '
 
+        # Overwrite var, for now
+        variable='m3l'
 
         cuts='susy-ewkino/crconv/cuts_convs_3l.txt'
         mca='susy-ewkino/crconv/mca-3l-mcdata-conv.txt'
@@ -251,6 +257,8 @@ elif(action=='crconvcards'):
         processes=''
         runCards(variable, binning, cuts, mca, out, plots, systs, inputDir, processes, signals, pgroup, outputDir, jei, lumi, mcc, mccother, trigdef, weights3l, functions)
 
+        variable='mll'
+        
         cuts='susy-ewkino/crconv/cuts_convs_2lgamma.txt'
         mca='susy-ewkino/crconv/mca-ss2l-mcdata-conv.txt'
         out=outputDir+'datacards/ss2lgamma_mcdata_conv/'
