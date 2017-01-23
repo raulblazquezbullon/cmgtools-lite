@@ -1,5 +1,5 @@
 alwaystrue: 1
-blinding  : !isData || (run <= 276811 || (run>=278820 && run<=279931))
+#blinding  : !isData || (run <= 276811 || (run>=278820 && run<=279931))
 filters: $DATA{ Flag_EcalDeadCellTriggerPrimitiveFilter && Flag_HBHENoiseIsoFilter && Flag_HBHENoiseFilter && Flag_eeBadScFilter && Flag_goodVertices && Flag_globalTightHalo2016Filter && Flag_badChargedHadronFilter && Flag_badMuonFilter } $MC{1}
 trigger: $DATA{(Triggers_ee || Triggers_mm || Triggers_em)} $MC{1}
 cleanup: minMllAFAS > 12
