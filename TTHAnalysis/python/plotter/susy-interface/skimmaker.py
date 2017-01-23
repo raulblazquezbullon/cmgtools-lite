@@ -64,7 +64,7 @@ options         = maker.splitLists(options)
 options.samples = func.splitList(options.samples)
 options.accept  = func.splitList(options.accept )
 options.exclude = func.splitList(options.exclude)
-mm              = maker.Maker("skimmaker", base, args, options)
+mm              = maker.Maker("skimmaker", base, args, options, parser.defaults)
 
 ## skim main tree
 friends = mm.collectFriends()	
@@ -82,22 +82,22 @@ for r in range(len(mm.regions)):
 	mcas   = makeDummyMCAs(mm)
 	
 	for mca in mcas:
-		mm.submit([mca, mm.getVariable("cutfile",""), output, mm.treedir, options.treename, mccs, macros, friends, json, flags],"main_"+mca[mca.rfind("/")+1:].rstrip(".txt"),False)
+		mm.submit([mca, mm.getVariable("cutfile",""), output, mm.treedir, mm.getVariable("treename", "treeProducerSusyMultilepton"), mccs, macros, friends, json, flags],"main_"+mca[mca.rfind("/")+1:].rstrip(".txt"),False)
 
 	mm.runJobs()
 	mm.clearJobs()
 
 
 	#### skim friend trees
-	##mm.reloadBase(baseFriends)
-	##fs, fm = mm.getFriendLocations()
-	##
-	##for i,f in enumerate(fs):
-	##	#output = mm.outdir+"/"+fm[i]
-	##	func.mkdir(output)	
-	##	mm.submit([mm.outdir, f, mm.outdir],"friend_"+f[f.rfind("/")+1:],False)
+	mm.reloadBase(baseFriends)
+	fs, fm = mm.getFriendLocations()
+	
+	for i,f in enumerate(fs):
+		#output = mm.outdir+"/"+fm[i]
+		func.mkdir(output)	
+		mm.submit([mm.outdir, f, mm.outdir],"friend_"+f[f.rfind("/")+1:],False)
 
-	##mm.runJobs()
-	##mm.clearJobs()
+	mm.runJobs()
+	mm.clearJobs()
 
 
