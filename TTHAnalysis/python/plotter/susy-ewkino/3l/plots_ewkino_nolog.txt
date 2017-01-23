@@ -1,10 +1,10 @@
 ## super signal regions
 ## ----------------------------------------------------------
-SSR         : SuperSig           : 6,0.5,6.5   ; YTitle="Events", XTitle="Super Signal Region", Legend="TR", IncludeOverflows=False, LegendCutoff=1e-5 
+SSR         : SuperSig      : 6,0.5,6.5   ; YTitle="Events", XTitle="Super Signal Region", Legend="TR", IncludeOverflows=False, LegendCutoff=1e-5 
 
 ## baseline region per final state
 ## ----------------------------------------------------------
-BR          : BR            : 11,0.5,11.5   ; YTitle="Events", XTitle="Baseline Region", Wide=True, Legend="TR", LegendCutoff=1e-5, xBinLabels="A\,B\,C\,D\,E\,F\,G\,H\,I\,J\,K"
+BR          : BR            : 11,0.5,11.5 ; YTitle="Events", XTitle="Baseline Region", Wide=True, Legend="TR", LegendCutoff=1e-5, xBinLabels="A\,B\,C\,D\,E\,F\,G\,H\,I\,J\,K"
 
 ## signal regions per final state
 ## ----------------------------------------------------------
@@ -27,27 +27,27 @@ SR_JK       : SR-121        : 7,0.5,7.5   ; YTitle="Events", XTitle="Signal Regi
 
 ## signal region, 4l 0tau nOSSF >= 2
 ## ----------------------------------------------------------
-SR_G        : SR-108        : 5,0.5,5.5   ; YTitle="Events", XTitle="E_{T}^{miss} (GeV)", Legend="TR", IncludeOverflows=False, LegendCutoff=1e-5, xBinLabels="0\,50\,100\,150\,200", LegendHeader="G: 2 OSSF", RMin=0, RMax=3   
+SR_G        : SR-108        : 5,0.5,5.5   ; YTitle="Events", XTitle="E_{T}^{miss} [GeV]", Legend="TR", IncludeOverflows=False, LegendCutoff=1e-5, xBinLabels="0\,50\,100\,150\,200", LegendHeader="G: 2 OSSF", RMin=0, RMax=3   
 #SR_G        : SR-108        : 5,0.5,5.5   ; YTitle="Events", XTitle="Signal Region G (4l\,0#tau)", Legend="TR", IncludeOverflows=False, LegendCutoff=1e-5, xBinLabels="01\,02\,03\,04\,05", LegendHeader="G: 2 OSSF", RMin=0, RMax=3
 
 ## signal region, 4l 0tau nOSSF <= 1
 ## ----------------------------------------------------------
-SR_H        : SR-113        : 4,0.5,4.5   ; YTitle="Events", XTitle="E_{T}^{miss} (GeV)", Legend="TR", IncludeOverflows=False, LegendCutoff=1e-5, xBinLabels="0\,50\,100\,150", LegendHeader="H: <2 OSSF", RMin=0, RMax=3
+SR_H        : SR-113        : 4,0.5,4.5   ; YTitle="Events", XTitle="E_{T}^{miss} [GeV]", Legend="TR", IncludeOverflows=False, LegendCutoff=1e-5, xBinLabels="0\,50\,100\,150", LegendHeader="H: <2 OSSF", RMin=0, RMax=3
 #SR_H        : SR-113        : 4,0.5,4.5   ; YTitle="Events", XTitle="Signal Region H (4l\,0#tau)", Legend="TR", IncludeOverflows=False, LegendCutoff=1e-5, xBinLabels="01\,02\,03\,04", LegendHeader="H: <2 OSSF", RMin=0, RMax=3
 
 ## signal region, 4l 1tau
 ## ----------------------------------------------------------
-SR_I        : SR-117        : 4,0.5,4.5   ; YTitle="Events", XTitle="E_{T}^{miss} (GeV)", Legend="TR", IncludeOverflows=False, LegendCutoff=1e-5, xBinLabels="0\,50\,100\,150", LegendHeader="I: 3l+\#tau", RMin=0, RMax=3
+SR_I        : SR-117        : 4,0.5,4.5   ; YTitle="Events", XTitle="E_{T}^{miss} [GeV]", Legend="TR", IncludeOverflows=False, LegendCutoff=1e-5, xBinLabels="0\,50\,100\,150", LegendHeader="I: 3l+\#tau", RMin=0, RMax=3
 #SR_I        : SR-117        : 4,0.5,4.5   ; YTitle="Events", XTitle="Signal Region I (4l\,1#tau)", Legend="TR", IncludeOverflows=False, LegendCutoff=1e-5, xBinLabels="01\,02\,03\,04", LegendHeader="I: 3l+\#tau", RMin=0, RMax=3
 
 ## signal region, 4l 2tau nOSSF >= 2
 ## ----------------------------------------------------------
-SR_J        : SR-121        : 4,0.5,4.5   ; YTitle="Events", XTitle="E_{T}^{miss} (GeV)", Legend="TR", IncludeOverflows=False, LegendCutoff=1e-5, xBinLabels="0\,50\,100\,150", LegendHeader="J: 2 OSSF", RMin=0, RMax=3
+SR_J        : SR-121        : 4,0.5,4.5   ; YTitle="Events", XTitle="E_{T}^{miss} [GeV]", Legend="TR", IncludeOverflows=False, LegendCutoff=1e-5, xBinLabels="0\,50\,100\,150", LegendHeader="J: 2 OSSF", RMin=0, RMax=3
 #SR_J        : SR-121        : 4,0.5,4.5   ; YTitle="Events", XTitle="Signal Region J (4l\,2#tau)", Legend="TR", IncludeOverflows=False, LegendCutoff=1e-5, xBinLabels="01\,02\,03\,04", LegendHeader="J: 2 OSSF", RMin=0, RMax=3
 
 ## signal region, 4l 1tau
 ## ----------------------------------------------------------
-SR_K        : SR-125        : 3,0.5,3.5   ; YTitle="Events", XTitle="E_{T}^{miss} (GeV)", Legend="TR", IncludeOverflows=False, LegendCutoff=1e-5, xBinLabels="0\,50\,100", LegendHeader="K: <2 OSSF", RMin=0, RMax=3
+SR_K        : SR-125        : 3,0.5,3.5   ; YTitle="Events", XTitle="E_{T}^{miss} [GeV]", Legend="TR", IncludeOverflows=False, LegendCutoff=1e-5, xBinLabels="0\,50\,100", LegendHeader="K: <2 OSSF", RMin=0, RMax=3
 #SR_K        : SR-125        : 3,0.5,3.5   ; YTitle="Events", XTitle="Signal Region K (4l\,2#tau)", Legend="TR", IncludeOverflows=False, LegendCutoff=1e-5, xBinLabels="01\,02\,03", LegendHeader="K: <2 OSSF", RMin=0, RMax=3
 
 
@@ -122,7 +122,7 @@ nBJet25    : nBJetMedium25  : 5,-0.5,4.5  ; XTitle="N(b-jet\, p_{T} > 25\, CSVM)
 
 m3l        : m3L            : 40,0,200    ; XTitle="m_{3L} [GeV]"                , LegendCutoff=1e-4, Legend="TL" 
 mll3l      : mllL_3l        : 28,0,210    ; XTitle="M(ll) [GeV]"                 , LegendCutoff=1e-4, Legend="TR"
-mtW3l      : mT_3l          : 10,0,200    ; XTitle="M_{T}^{W} [GeV]"             , LegendCutoff=1e-4, Legend="TR"
+mtW3l      : mTL_3l         : 10,0,200    ; XTitle="M_{T}^{W} [GeV]"             , LegendCutoff=1e-4, Legend="TR"
 mT2L3l     : mT2L_3l        : 30,0,300    ; XTitle="M_{T2}(l\,l) [GeV]"          , LegendCutoff=1e-4
 mT2T3l     : mT2T_3l        : 30,0,300    ; XTitle="M_{T2}(l\,#tau) [GeV]"       , LegendCutoff=1e-4
 
@@ -143,5 +143,9 @@ mTmll      : mT_3l\:mllL_3l : [0,75,105,200]*[0,40,80,100,120,140,160,200] ; XTi
 mTmet      : mT_3l\:mllL_3l : [50,100,150,200,300]*[0,40,80,100,120,140,160,200] ; XTitle="E_{T}^{miss} [GeV]", YTitle="M_{T}^{W} [GeV]", UnbinnedData2D=True, PlotMode='COLZ'
 mtautau    : mass_2(FirstTau_conePt, FirstTau_eta, FirstTau_phi, 1.776, SeconTau_conePt, SeconTau_eta, SeconTau_phi, 1.776) : 14,0,210    ; XTitle="M(#tau#tau) [GeV]"                 , LegendCutoff=1e-4, Legend="TR"
 
+minDR3l    : minDeltaR_3l      : 50,0,5 ; XTitle="minDeltaR(l\,l)", LegendCutoff=1e-4, IncludeOverflows=False
+minDR4l    : minDeltaR_4l      : 50,0,5 ; XTitle="minDeltaR(l\,l)", LegendCutoff=1e-4, IncludeOverflows=False
+minDR3lmm  : minDeltaR_3l_mumu : 50,0,5 ; XTitle="minDeltaR(#mu\,#mu)", LegendCutoff=1e-4, IncludeOverflows=False
+minDR4lmm  : minDeltaR_4l_mumu : 50,0,5 ; XTitle="minDeltaR(#mu\,#mu)", LegendCutoff=1e-4, IncludeOverflows=False
 
 
