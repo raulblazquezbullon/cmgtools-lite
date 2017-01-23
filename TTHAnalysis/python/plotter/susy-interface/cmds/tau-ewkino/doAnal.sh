@@ -68,7 +68,10 @@ elif [ "$1" == "plot" ]; then
     fi
     
     if [ "$ACTION" == " -a crconv" ] || [ "$ACTION" == " -a crconvcards" ]; then
-        WEBDIR="/nfs/fanae/user/vischia/www/conversions/"
+        #WEBDIR="/nfs/fanae/user/vischia/www/conversions/"
+        #WEBDIR="/nfs/fanae/user/vischia/www/conversions/mva0/"
+        #WEBDIR="/nfs/fanae/user/vischia/www/conversions/mva1/"
+        WEBDIR="/nfs/fanae/user/vischia/www/conversions/forFit/"
     fi
     PRETEND=" --pretend  "
     PRETEND=""
