@@ -46,19 +46,19 @@ blind = '--flags "-X blinding"'
 
 index="/nfs/fanae/user/vischia/www/index.php"
 
-def runPlots(cuts, mca, out, plots, inputDir, outputDir, jei, lumi, mcc, mccother, trigdef, toplot, weights, functions):
+def runPlots(cuts, mca, out, plots, inputDir, outputDir, pgroup, jei, lumi, mcc, mccother, trigdef, toplot, weights, functions, enablecuts):
         clean(out)
         os.system('cp {index} {outputDir}'.format(index=index,outputDir=out))
         # --Fs {inputDir}/leptonJetReCleanerSusyEWK3L --Fs {inputDir}/leptonBuilderEWK 
         daweights=''
         if weights != '':
                 daweights=" -W '{weights}' ".format(weights=weights)
-        cmd = "python mcPlots.py {mca} {cuts} {plots} -P {inputDir} --Fs {inputDir}/leptonJetReCleanerSusyEWK2L --pdir {outputDir} -j {jei} -l {lumi} --s2v --tree treeProducerSusyMultilepton --mcc {mcc} --mcc {mccother} --mcc {trigdef} -f {daweights} --plotgroup fakes_appldata+=promptsub  --legendWidth 0.20 --legendFontSize 0.035 --showMCError -f {toplot} --showRatio --perBin --legendHeader \'Conversions\' --maxRatioRange 0.5 1.5 --fixRatioRange --ratioOffset 0.03  --load-macro {functions}".format(mca=mca,cuts=cuts,plots=plots,inputDir=inputDir,outputDir=out,jei=jei,lumi=lumi,mcc=mcc,mccother=mccother,trigdef=trigdef,daweights=daweights,toplot=toplot,functions=functions)
+        cmd = "python mcPlots.py {mca} {cuts} {plots} -P {inputDir} --Fs {inputDir}/leptonJetReCleanerSusyEWK2L --pdir {outputDir} {pgroup} -j {jei} -l {lumi} --s2v --tree treeProducerSusyMultilepton --mcc {mcc} --mcc {mccother} --mcc {trigdef} -f {daweights} --plotgroup fakes_appldata+=promptsub  --legendWidth 0.20 --legendFontSize 0.035 --showMCError -f {toplot} --showRatio --perBin --legendHeader \'Conversions\' --maxRatioRange 0.5 1.5 --fixRatioRange --ratioOffset 0.03  --load-macro {functions} {enablecuts} ".format(mca=mca,cuts=cuts,plots=plots,inputDir=inputDir,outputDir=out,pgroup=pgroup,jei=jei,lumi=lumi,mcc=mcc,mccother=mccother,trigdef=trigdef,daweights=daweights,toplot=toplot,functions=functions,enablecuts=enablecuts)
         command(cmd, pretend)
         os.system('cp {index} {outputDir}'.format(index=index,outputDir=out))
 
 
-def runCards(variable, binning, cuts, mca, out, plots, systs, inputDir, processes, signals, pgroup, outputDir, jei, lumi, mcc, mccother, trigdef, weights, functions):
+def runCards(variable, binning, cuts, mca, out, plots, systs, inputDir, processes, signals, pgroup, outputDir, jei, lumi, mcc, mccother, trigdef, weights, functions, enablecuts):
         # example var: SSR4bins
         # example binning: '4,0.5,4.5'
         daweights=''
@@ -68,7 +68,7 @@ def runCards(variable, binning, cuts, mca, out, plots, systs, inputDir, processe
         if processes != '':
                 daprocesses=" -p data,{processes} ".format(processes=processes)
 
-        cmd = "python makeShapeCardsSusy.py {mca} {cuts} {variable} '{binning}' {systs} -P {inputDir} --Fs {inputDir}/leptonJetReCleanerSusyEWK2L -j {jei} -l {lumi} --s2v --tree treeProducerSusyMultilepton --mcc {mcc} --mcc {mccother} --mcc {trigdef} -f  {daweights} --load-macro {functions} {daprocesses} {signals} {pgroup} --od {outputDir} --ms -o {variable}".format(mca=mca,cuts=cuts,variable=variable,binning=binning,systs=systs,inputDir=inputDir,daprocesses=daprocesses,signals=signals,pgroup=pgroup,jei=jei,lumi=lumi,mcc=mcc,mccother=mccother,trigdef=trigdef,daweights=daweights,functions=functions,outputDir=out)
+        cmd = "python makeShapeCardsSusy.py {mca} {cuts} {variable} '{binning}' {systs} -P {inputDir} --Fs {inputDir}/leptonJetReCleanerSusyEWK2L -j {jei} -l {lumi} --s2v --tree treeProducerSusyMultilepton --mcc {mcc} --mcc {mccother} --mcc {trigdef} -f  {daweights} --load-macro {functions} {daprocesses} {signals} {pgroup} --od {outputDir} --ms -o {variable} {enablecuts} ".format(mca=mca,cuts=cuts,variable=variable,binning=binning,systs=systs,inputDir=inputDir,daprocesses=daprocesses,signals=signals,pgroup=pgroup,jei=jei,lumi=lumi,mcc=mcc,mccother=mccother,trigdef=trigdef,daweights=daweights,functions=functions,outputDir=out,enablecuts=enablecuts)
         command(cmd, pretend)
         os.system('cp {index} {outputDir}'.format(index=index,outputDir=out))
         
@@ -181,7 +181,7 @@ elif(action=='crconv'):
         wp='1'
         weights2l='puw_nInt_Moriond(nTrueInt)*triggerSF(-1,LepGood1_conePt,LepGood1_pdgId,LepGood2_conePt,LepGood2_pdgId)*getLepSF(LepGood1_conePt,LepGood1_eta,LepGood1_pdgId,{wp},0)*getLepSF(LepGood2_conePt,LepGood2_eta,LepGood2_pdgId,{wp},0)'.format(wp=wp)
         functions='susy-ewkino/3l/functionsEWK.cc --load-macro susy-ewkino/functionsPUW.cc --load-macro susy-ewkino/functionsSF.cc --load-macro functions.cc '
-        toplot='--sP \'met\''
+        toplot='--sP \'m3l\''
         if(subaction!=''):
                 toplot='--sP \'{toplot}\''.format(toplot=subaction)
         if(subaction=='all'):
@@ -193,28 +193,43 @@ elif(action=='crconv'):
         jei='6'
         jei='60'
         lumi='36.5'
+        enablecuts=' '
+        pgroup=' --pgroup internal:=ttZ,Gstar --pgroup external:=TTG,WG,ZG,TG '
 
         cuts='susy-ewkino/crconv/cuts_convs_3l.txt'
         mca='susy-ewkino/crconv/mca-3l-mc-conv.txt'
         out=outputDir+'3l_mc_conv/'
-        runPlots(cuts, mca, out, plots, inputDir, outputDir, jei, lumi, mcc, mccother, trigdef, toplot, weights3l, functions)
+        #runPlots(cuts, mca, out, plots, inputDir, outputDir, pgroup, jei, lumi, mcc, mccother, trigdef, toplot, weights3l, functions,enablecuts)
 
         cuts='susy-ewkino/crconv/cuts_convs_3l.txt'
         mca='susy-ewkino/crconv/mca-3l-mcdata-conv.txt'
-        out=outputDir+'3l_mcdata_conv/'
-        runPlots(cuts, mca, out, plots, inputDir, outputDir, jei, lumi, mcc, mccother, trigdef, toplot, weights3l, functions)
 
+        # Inclusive
+        out=outputDir+'3l_mcdata_conv/'
+        runPlots(cuts, mca, out, plots, inputDir, outputDir, pgroup, jei, lumi, mcc, mccother, trigdef, toplot, weights3l, functions,enablecuts)
+        
+        # eee
+        out=outputDir+'3l_mcdata_conv/eee/'
+        enablecuts=' --enable-cut=trielectron '
+        runPlots(cuts, mca, out, plots, inputDir, outputDir, pgroup, jei, lumi, mcc, mccother, trigdef, toplot, weights3l, functions,enablecuts)
+
+        # mmm
+        out=outputDir+'3l_mcdata_conv/mmm/'
+        enablecuts=' --enable-cut=trimuonx '
+        runPlots(cuts, mca, out, plots, inputDir, outputDir, pgroup, jei, lumi, mcc, mccother, trigdef, toplot, weights3l, functions,enablecuts)
+
+        enablecuts=' '
         twoltoplot='{toplot} --xP m3l '.format(toplot=toplot)
 
         cuts='susy-ewkino/crconv/cuts_convs_2lgamma.txt'
         mca='susy-ewkino/crconv/mca-ss2l-mcdata-conv.txt'
         out=outputDir+'ss2lgamma_mcdata_conv/'
-        runPlots(cuts, mca, out, plots, inputDir, outputDir, jei, lumi, mcc, mccother, trigdef, twoltoplot, weights2l, functions)
+        #runPlots(cuts, mca, out, plots, inputDir, outputDir, pgroup, jei, lumi, mcc, mccother, trigdef, twoltoplot, weights2l, functions, enablecuts)
 
         cuts='susy-ewkino/crconv/cuts_convs_ss2l.txt'
         mca='susy-ewkino/crconv/mca-ss2l-mcdata-conv.txt'
         out=outputDir+'ss2l_mcdata_conv/'
-        runPlots(cuts, mca, out, plots, inputDir, outputDir, jei, lumi, mcc, mccother, trigdef, twoltoplot, weights2l, functions)
+        #runPlots(cuts, mca, out, plots, inputDir, outputDir, pgroup, jei, lumi, mcc, mccother, trigdef, twoltoplot, weights2l, functions, enablecuts)
 
 
 elif(action=='crconvcards'):
@@ -246,31 +261,45 @@ elif(action=='crconvcards'):
         lumi='36.5'
         pgroup=' --pgroup internal:=ttZ,Gstar --pgroup external:=TTG,WG,ZG,TG '
         signals=' --sp internal --sp external '
+        enablecuts=' '
 
         # Overwrite var, for now
         variable='m3l'
+        binning='7,60,130'
 
         cuts='susy-ewkino/crconv/cuts_convs_3l.txt'
         mca='susy-ewkino/crconv/mca-3l-mcdata-conv.txt'
-        out=outputDir+'datacards/3l_mcdata_conv/'
+        out=outputDir+'datacards/3l_mcdata_conv/inclusive/'
         processes='WZ,Fakes,Rares,ttZ,Gstar,TTG,WG,ZG'
         processes=''
-        runCards(variable, binning, cuts, mca, out, plots, systs, inputDir, processes, signals, pgroup, outputDir, jei, lumi, mcc, mccother, trigdef, weights3l, functions)
-
-        variable='mll'
         
+        enablecuts=''
+        runCards(variable, binning, cuts, mca, out, plots, systs, inputDir, processes, signals, pgroup, outputDir, jei, lumi, mcc, mccother, trigdef, weights3l, functions, enablecuts)
+        
+        out=outputDir+'datacards/3l_mcdata_conv/eee/'
+        enablecuts=' --enable-cut=trielectron '
+        runCards(variable, binning, cuts, mca, out, plots, systs, inputDir, processes, signals, pgroup, outputDir, jei, lumi, mcc, mccother, trigdef, weights3l, functions, enablecuts)
+
+        out=outputDir+'datacards/3l_mcdata_conv/mmm/'
+        enablecuts=' --enable-cut=trimuons '
+        runCards(variable, binning, cuts, mca, out, plots, systs, inputDir, processes, signals, pgroup, outputDir, jei, lumi, mcc, mccother, trigdef, weights3l, functions, enablecuts)
+
+        
+        enablecuts=''
+        variable='mll'
+        binning='40,0,400'        
         cuts='susy-ewkino/crconv/cuts_convs_2lgamma.txt'
         mca='susy-ewkino/crconv/mca-ss2l-mcdata-conv.txt'
         out=outputDir+'datacards/ss2lgamma_mcdata_conv/'
         processes='Gstar,TG,TTG,ttZ,WG,ZG,WZ,Fakes,Rares,Flips'
         processes=''
-        runCards(variable, binning, cuts, mca, out, plots, systs, inputDir, processes, signals, pgroup, outputDir, jei, lumi, mcc, mccother, trigdef, weights2l, functions)
+        runCards(variable, binning, cuts, mca, out, plots, systs, inputDir, processes, signals, pgroup, outputDir, jei, lumi, mcc, mccother, trigdef, weights2l, functions, enablecuts)
 
         cuts='susy-ewkino/crconv/cuts_convs_ss2l.txt'
         mca='susy-ewkino/crconv/mca-ss2l-mcdata-conv.txt'
         out=outputDir+'datacards/ss2l_mcdata_conv/'
         processes='Gstar,TG,TTG,ttZ,WG,ZG,WZ,Fakes,Rares,Flips,TTG'
         processes=''
-        runCards(variable, binning, cuts, mca, out, plots, systs, inputDir, processes, signals, pgroup, outputDir, jei, lumi, mcc, mccother, trigdef, weights2l, functions)
+        runCards(variable, binning, cuts, mca, out, plots, systs, inputDir, processes, signals, pgroup, outputDir, jei, lumi, mcc, mccother, trigdef, weights2l, functions, enablecuts)
 
 print 'Everything is done now'
