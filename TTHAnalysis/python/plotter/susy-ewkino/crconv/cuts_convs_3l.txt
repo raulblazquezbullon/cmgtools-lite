@@ -16,9 +16,11 @@ tightMVAM : (LepGood1_mvaSUSY>-0.20+(0.20+0.50)*(abs(LepGood1_pdgId)==11)) && (L
 met: met_pt < 50
 0bjetM: nBJetMedium25 == 0
 
-# Two cuts to be enabled with -E
-trielectron : abs(LepGood1_pdgId)==11 && abs(LepGood2_pdgId)==11 && abs(LepGood3_pdgId)==11 ; Disable=True
-trimuon     : abs(LepGood1_pdgId)==13 && abs(LepGood2_pdgId)==13 && abs(LepGood3_pdgId)==13 ; Disable=True
+# Exclusive final states: cuts to be enabled with -E
+eee : pdgid3l == 1331 ; Disable=True
+mmm : pdgid3l == 2197 ; Disable=True
+eem : pdgid3l == 1573 ; Disable=True
+mme : pdgid3l == 1859 ; Disable=True
 
 # some cuts that are off by default but can be turned on with -E
 

@@ -48,6 +48,7 @@ index="/nfs/fanae/user/vischia/www/index.php"
 
 def runPlots(cuts, mca, out, plots, inputDir, outputDir, pgroup, jei, lumi, mcc, mccother, trigdef, toplot, weights, functions, enablecuts):
         clean(out)
+        os.system('mkdir -p {out}'.format(out=out)
         os.system('cp {index} {outputDir}'.format(index=index,outputDir=out))
         # --Fs {inputDir}/leptonJetReCleanerSusyEWK3L --Fs {inputDir}/leptonBuilderEWK 
         daweights=''
@@ -61,6 +62,7 @@ def runPlots(cuts, mca, out, plots, inputDir, outputDir, pgroup, jei, lumi, mcc,
 def runCards(variable, binning, cuts, mca, out, plots, systs, inputDir, processes, signals, pgroup, outputDir, jei, lumi, mcc, mccother, trigdef, weights, functions, enablecuts):
         # example var: SSR4bins
         # example binning: '4,0.5,4.5'
+        os.system('mkdir -p {out}'.format(out=out)
         daweights=''
         if weights != '':
                 daweights=" -W '{weights}' ".format(weights=weights)
@@ -210,13 +212,24 @@ elif(action=='crconv'):
         
         # eee
         out=outputDir+'3l_mcdata_conv/eee/'
-        enablecuts=' --enable-cut=trielectron '
+        enablecuts=' --enable-cut=eee '
         runPlots(cuts, mca, out, plots, inputDir, outputDir, pgroup, jei, lumi, mcc, mccother, trigdef, toplot, weights3l, functions,enablecuts)
 
         # mmm
         out=outputDir+'3l_mcdata_conv/mmm/'
-        enablecuts=' --enable-cut=trimuonx '
+        enablecuts=' --enable-cut=mmm '
         runPlots(cuts, mca, out, plots, inputDir, outputDir, pgroup, jei, lumi, mcc, mccother, trigdef, toplot, weights3l, functions,enablecuts)
+
+        # eem
+        out=outputDir+'3l_mcdata_conv/eem/'
+        enablecuts=' --enable-cut=eem '
+        runPlots(cuts, mca, out, plots, inputDir, outputDir, pgroup, jei, lumi, mcc, mccother, trigdef, toplot, weights3l, functions,enablecuts)
+
+        # mme
+        out=outputDir+'3l_mcdata_conv/mme/'
+        enablecuts=' --enable-cut=mme '
+        runPlots(cuts, mca, out, plots, inputDir, outputDir, pgroup, jei, lumi, mcc, mccother, trigdef, toplot, weights3l, functions,enablecuts)
+
 
         enablecuts=' '
         twoltoplot='{toplot} --xP m3l '.format(toplot=toplot)
@@ -273,15 +286,28 @@ elif(action=='crconvcards'):
         processes='WZ,Fakes,Rares,ttZ,Gstar,TTG,WG,ZG'
         processes=''
         
+        # Inclusive
         enablecuts=''
         runCards(variable, binning, cuts, mca, out, plots, systs, inputDir, processes, signals, pgroup, outputDir, jei, lumi, mcc, mccother, trigdef, weights3l, functions, enablecuts)
-        
+
+        # eee
         out=outputDir+'datacards/3l_mcdata_conv/eee/'
-        enablecuts=' --enable-cut=trielectron '
+        enablecuts=' --enable-cut=eee '
         runCards(variable, binning, cuts, mca, out, plots, systs, inputDir, processes, signals, pgroup, outputDir, jei, lumi, mcc, mccother, trigdef, weights3l, functions, enablecuts)
 
+        # mmm
         out=outputDir+'datacards/3l_mcdata_conv/mmm/'
-        enablecuts=' --enable-cut=trimuons '
+        enablecuts=' --enable-cut=mmm '
+        runCards(variable, binning, cuts, mca, out, plots, systs, inputDir, processes, signals, pgroup, outputDir, jei, lumi, mcc, mccother, trigdef, weights3l, functions, enablecuts)
+
+        # eem
+        out=outputDir+'datacards/3l_mcdata_conv/eem/'
+        enablecuts=' --enable-cut=eem '
+        runCards(variable, binning, cuts, mca, out, plots, systs, inputDir, processes, signals, pgroup, outputDir, jei, lumi, mcc, mccother, trigdef, weights3l, functions, enablecuts)
+
+        # mme
+        out=outputDir+'datacards/3l_mcdata_conv/mme/'
+        enablecuts=' --enable-cut=mme '
         runCards(variable, binning, cuts, mca, out, plots, systs, inputDir, processes, signals, pgroup, outputDir, jei, lumi, mcc, mccother, trigdef, weights3l, functions, enablecuts)
 
         
