@@ -48,7 +48,7 @@ index="/nfs/fanae/user/vischia/www/index.php"
 
 def runPlots(cuts, mca, out, plots, inputDir, outputDir, pgroup, jei, lumi, mcc, mccother, trigdef, toplot, weights, functions, enablecuts):
         clean(out)
-        os.system('mkdir -p {out}'.format(out=out)
+        os.system('mkdir -p {out}'.format(out=out))
         os.system('cp {index} {outputDir}'.format(index=index,outputDir=out))
         # --Fs {inputDir}/leptonJetReCleanerSusyEWK3L --Fs {inputDir}/leptonBuilderEWK 
         daweights=''
@@ -62,7 +62,7 @@ def runPlots(cuts, mca, out, plots, inputDir, outputDir, pgroup, jei, lumi, mcc,
 def runCards(variable, binning, cuts, mca, out, plots, systs, inputDir, processes, signals, pgroup, outputDir, jei, lumi, mcc, mccother, trigdef, weights, functions, enablecuts):
         # example var: SSR4bins
         # example binning: '4,0.5,4.5'
-        os.system('mkdir -p {out}'.format(out=out)
+        os.system('mkdir -p {out}'.format(out=out))
         daweights=''
         if weights != '':
                 daweights=" -W '{weights}' ".format(weights=weights)
@@ -278,7 +278,7 @@ elif(action=='crconvcards'):
 
         # Overwrite var, for now
         variable='m3l'
-        binning='7,60,130'
+        binning='40,0,400'
 
         cuts='susy-ewkino/crconv/cuts_convs_3l.txt'
         mca='susy-ewkino/crconv/mca-3l-mcdata-conv.txt'
