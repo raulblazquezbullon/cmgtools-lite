@@ -47,8 +47,10 @@ parser.add_option("--plots",  dest="plots",   type="string", default="all", help
 parser.add_option("--selPlots", dest="customPlots", action="append", default=[], help="Bypass --plots option and give directly the name of the plots in the plotsfile")
 parser.add_option("--lspam", dest="lspam", type="string", default="Preliminary", help="Left-spam for CMS_lumi in mcPlots, either Preliminary, Simulation, Internal or nothing")
 parser.add_option("--noRatio", dest="ratio", action="store_false", default=True, help="Do NOT plot the ratio (i.e. give flag --showRatio)")
+parser.add_option("--dcc", dest="dcc", action="store_true", default=False, help="Run the double-count-checker after you have run all the plots.")
 
-base = "python mcPlots.py {MCA} {CUTS} {PLOTFILE} -P {T} --neg --s2v --tree {TREENAME} -f --cmsprel '{LSPAM}' --legendWidth 0.20 --legendFontSize 0.035 {MCCS} {MACROS} {RATIO} -l {LUMI} --pdir {O} {FRIENDS} {PROCS} {PLOTS} {FLAGS} --showMCError -j 4"
+base = "python mcPlots.py {MCA} {CUTS} {PLOTFILE} -P {T} --neg --s2v --tree {TREENAME} -f --cmsprel '{LSPAM}' --legendWidth 0.20 --legendFontSize 0.035 {MCCS} {MACROS} {RATIO} -l {LUMI} --pdir {O} {FRIENDS} {PROCS} {PLOTS} {FLAGS} --showMCError"
+baseDcc = "python mcDump.py {MCA} {CUTS} '{run:1d} {lumi:9d} {evt:12d}' -P {T} --tree {TREENAME} {MCCS} {MACROS} {FRIENDS} {PROCS} {FLAGS}" 
 (options, args) = parser.parse_args()
 options = maker.splitLists(options)
 mm      = maker.Maker("plotmaker", base, args, options, parser.defaults)
@@ -80,5 +82,17 @@ for r in range(len(mm.regions)):
 
 mm.runJobs()
 mm.clearJobs()
+
+if options.dcc:
+	flags = mm.collectFlags ([])
+	mm.reloadBase(baseDcc)
+	base = mm.makeCmd([mm.getVariable("mcafile",""), mm.getVariable("cutfile",""), mm.treedir, mm.getVariable("treename", "treeProducerSusyMultilepton"), mccs, macros, friends, procs, flags])
+	evtlist = sorted(filter(lambda x: x[0:1].isdigit(), filter(None, func.bashML(base))))
+	preceeding = ""
+	for entry in evtlist:
+		if entry == preceeding:
+			print "DOUBLE COUNTED: "+entry
+			continue
+		preceeding = entry
 
 
