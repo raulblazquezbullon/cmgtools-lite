@@ -194,7 +194,7 @@ elif(action=='crconv'):
         direct=' '
         jei='6'
         jei='60'
-        lumi='36.5'
+        lumi='36.814'
         enablecuts=' '
         pgroup=' --pgroup internal:=ttZ,Gstar --pgroup external:=TTG,WG,ZG,TG '
 
@@ -271,7 +271,7 @@ elif(action=='crconvcards'):
         direct=' '
         jei='6'
         jei='60'
-        lumi='36.5'
+        lumi='36.814'
         pgroup=' --pgroup internal:=ttZ,Gstar --pgroup external:=TTG,WG,ZG,TG '
         signals=' --sp internal --sp external '
         enablecuts=' '
