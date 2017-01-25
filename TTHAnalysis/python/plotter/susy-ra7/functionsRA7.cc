@@ -18,338 +18,7 @@ int isFake(int nLep, int lep1mcUCSX, int lep2mcUCSX, int lep3mcUCSX, int lep4mcU
     return ((lep1mcUCSX==2 || lep1mcUCSX==3) || (lep2mcUCSX==2 || lep2mcUCSX==3) || (lep3mcUCSX==2 || lep3mcUCSX==3) || (lep4mcUCSX==2 || lep4mcUCSX==3));
 }
 
-int SignalRegionSymm(int SRorig, float met, float ht) {
-    // Start from ICHEP SRs
-    int SR = SRorig;
-    
-    // Push SRs to make room for the new bins
-    if (SRorig>14) SR++; // (offZ 14)
-    if (SRorig>15) SR++; // (offZ 15)
 
-    // Now split SR offZ 14 and 15 just like onZ 14 and 15
-    if (SRorig==14 && met > 150.) SR++;
-    if (SRorig==15 && ht  > 600.) SR++;
-
-    return SR;
-}
-
-
-int SR_step1(int nbj, float met, float ht, float mtw, int SR, int isOnZ){
-  
-  if (SR<=0) return -99;
-  int offset = isOnZ*23;
-
-  if      (nbj==0 && ht > 60 && ht < 400 && met> 50 && met<150 && mtw < 120 && (isOnZ==0 || met>70))            return offset+1;   //1a
-  else if (nbj==0 && ht > 60 && ht < 400 && met>150 && met<300 && mtw < 120)            return offset+2;   //2a
-  else if (nbj==0 && ht >400 && ht < 600 && met> 50 && met<150 && mtw < 120)            return offset+3;   //3a
-  else if (nbj==0 && ht >400 && ht < 600 && met>150 && met<300 && mtw < 120)            return offset+4;   //4a
-  else if (nbj==0 && ht > 60 && ht < 400 && met> 50 && met<150 && mtw > 120 && (isOnZ==0 || met>70))            return offset+5;   //1b
-  else if (nbj==0 && ht > 60 && ht < 400 && met>150 && met<300 && mtw > 120)            return offset+6;   //2b
-  else if (nbj==0 && ht >400 && ht < 600 && met> 50 && met<150 && mtw > 120)            return offset+7;   //3b
-  else if (nbj==0 && ht >400 && ht < 600 && met>150 && met<300 && mtw > 120)            return offset+8;   //4b
-
-  else if (nbj==1 && ht > 60 && ht < 400 && met> 50 && met<150              && (isOnZ==0 || met>70))            return offset+9;   //5
-  else if (nbj==1 && ht > 60 && ht < 400 && met>150 && met<300             )            return offset+10;  //6
-  else if (nbj==1 && ht >400 && ht < 600 && met> 50 && met<150             )            return offset+11;  //7
-  else if (nbj==1 && ht >400 && ht < 600 && met>150 && met<300             )            return offset+12;  //8
-
-  else if (nbj==2 && ht > 60 && ht < 400 && met> 50 && met<150             )            return offset+13;  //9
-  else if (nbj==2 && ht > 60 && ht < 400 && met>150 && met<300             )            return offset+14;  //10
-  else if (nbj==2 && ht >400 && ht < 600 && met> 50 && met<150             )            return offset+15;  //11
-  else if (nbj==2 && ht >400 && ht < 600 && met>150 && met<300             )            return offset+16;  //12
-
-  else if (nbj>=3 && ht > 60 && ht < 600 && met> 50 && met<300             )            return offset+17;  //13
-
-  else if (                     ht > 600 && met> 50 && met<150 && mtw < 120)            return offset+18;  //14a
-  else if (                     ht > 600 && met>150 && met<300 && mtw < 120)            return offset+19;  //15a
-  else if (                     ht > 600 && met> 50 && met<150 && mtw > 120)            return offset+20;  //14b  
-  else if (                     ht > 600 && met>150 && met<300 && mtw > 120)            return offset+21;  //15b  
-
-  else if (          ht > 60 && ht < 600 &&            met>300             )            return offset+22;  //16  
-  else if (                     ht > 600 &&            met>300             )            return offset+23;  //17  
-    
-  return -99;  
-  
-}
-
-int SR_step2(int nbj, float met, float ht, float mtw, int SR, int isOnZ){
-  
-  if (SR<=0) return -99;
-  int offset = isOnZ*23;
-
-  if      (nbj==0 && ht > 60 && ht < 400 && met> 50 && met<150 && mtw < 120 && (isOnZ==0 || met>70))            return offset+1;   //1a
-  else if (nbj==0 && ht > 60 && ht < 400 && met>150 && met<300 && mtw < 120)            return offset+2;   //2a
-  else if (nbj==0 && ht >400 && ht < 600 && met> 50 && met<150 && mtw < 120)            return offset+3;   //3a
-  else if (nbj==0 && ht >400 && ht < 600 && met>150 && met<300 && mtw < 120)            return offset+4;   //4a
-  else if (nbj==0 && ht > 60 && ht < 400 && met> 50 && met<150 && mtw > 120 && (isOnZ==0 || met>70))            return offset+5;   //1b
-  else if (nbj==0 && ht > 60 && ht < 400 && met>150 && met<300 && mtw > 120)            return offset+6;   //2b
-  else if (nbj==0 && ht >400 && ht < 600 && met> 50 && met<150 && mtw > 120)            return offset+7;   //3b
-  else if (nbj==0 && ht >400 && ht < 600 && met>150 && met<300 && mtw > 120)            return offset+8;   //4b
-
-  else if (nbj==1 && ht > 60 && ht < 400 && met> 50 && met<150              && (isOnZ==0 || met>70))            return offset+9;   //5
-  else if (nbj==1 && ht > 60 && ht < 400 && met>150 && met<300             )            return offset+10;  //6
-  else if (nbj==1 && ht >400 && ht < 600 && met> 50 && met<150             )            return offset+11;  //7
-  else if (nbj==1 && ht >400 && ht < 600 && met>150 && met<300             )            return offset+12;  //8
-
-  else if (nbj==2 && ht > 60 && ht < 400 && met> 50 && met<150             )            return offset+13;  //9
-  else if (nbj==2 && ht > 60 && ht < 400 && met>150 && met<300             )            return offset+14;  //10
-  else if (nbj==2 && ht >400 && ht < 600 && met> 50 && met<150             )            return offset+15;  //11
-  else if (nbj==2 && ht >400 && ht < 600 && met>150 && met<300             )            return offset+16;  //12
-
-  else if (nbj>=3 && ht > 60 && ht < 600 && met> 50 && met<300             )            return offset+17;  //13
-
-  else if (                     ht > 600 && met> 50 && met<150 && mtw < 120)            return offset+18;  //14a
-  else if (                     ht > 600 && met>150 && met<300 && mtw < 120)            return offset+19;  //15a
-  else if (                     ht > 600 && met> 50 && met<150 && mtw > 120)            return offset+20;  //14b  
-  else if (                     ht > 600 && met>150 && met<300 && mtw > 120)            return offset+21;  //15b  
-
-  else if (          ht > 60 && mtw < 120 &&           met>300             )            return offset+22;  //16  
-  else if (                     mtw > 120 &&           met>300             )            return offset+23;  //17  
-    
-  return -99;  
-  
-}
-
-
-int SR_step3(int nbj, float met, float ht, float mtw, int SR, int isOnZ){
-  
-  if (SR<=0) return -99;
-  int offset = isOnZ*27;
-
-  if      (nbj==0 && ht > 60 && ht < 400 && met> 50 && met<150 && mtw < 120 && (isOnZ==0 || met>70))            return offset+1;   //1a
-  else if (nbj==0 && ht > 60 && ht < 400 && met>150 && met<300 && mtw < 120)            return offset+2;   //2a
-  else if (nbj==0 && ht >400 && ht < 600 && met> 50 && met<150 && mtw < 120)            return offset+3;   //3a
-  else if (nbj==0 && ht >400 && ht < 600 && met>150 && met<300 && mtw < 120)            return offset+4;   //4a
-  else if (nbj==0 && ht > 60 && ht < 400 && met> 50 && met<150 && mtw > 120 && (isOnZ==0 || met>70))            return offset+5;   //1b
-  else if (nbj==0 && ht > 60 && ht < 400 && met>150 && met<300 && mtw > 120)            return offset+6;   //2b
-  else if (nbj==0 && ht >400 && ht < 600 && met> 50 && met<150 && mtw > 120)            return offset+7;   //3b
-  else if (nbj==0 && ht >400 && ht < 600 && met>150 && met<300 && mtw > 120)            return offset+8;   //4b
-
-  else if (nbj==1 && ht > 60 && ht < 400 && met> 50 && met<150 && mtw < 120 && (isOnZ==0 || met>70))            return offset+9;   //5a
-  else if (nbj==1 && ht > 60 && ht < 400 && met>150 && met<300 && mtw < 120)            return offset+10;  //6a
-  else if (nbj==1 && ht > 60 && ht < 400 && met> 50 && met<150 && mtw > 120 && (isOnZ==0 || met>70))            return offset+11;   //5b
-  else if (nbj==1 && ht > 60 && ht < 400 && met>150 && met<300 && mtw > 120)            return offset+12;  //6b
-
-  else if (nbj==1 && ht >400 && ht < 600 && met> 50 && met<150             )            return offset+13;  //7
-  else if (nbj==1 && ht >400 && ht < 600 && met>150 && met<300             )            return offset+14;  //8
-
-  else if (nbj==2 && ht > 60 && ht < 400 && met> 50 && met<150 && mtw < 120)            return offset+15;  //9a
-  else if (nbj==2 && ht > 60 && ht < 400 && met>150 && met<300 && mtw < 120)            return offset+16;  //10a
-  else if (nbj==2 && ht > 60 && ht < 400 && met> 50 && met<150 && mtw > 120)            return offset+17;  //9b
-  else if (nbj==2 && ht > 60 && ht < 400 && met>150 && met<300 && mtw > 120)            return offset+18;  //10b
-
-  else if (nbj==2 && ht >400 && ht < 600 && met> 50 && met<150             )            return offset+19;  //11
-  else if (nbj==2 && ht >400 && ht < 600 && met>150 && met<300             )            return offset+20;  //12
-
-  else if (nbj>=3 && ht > 60 && ht < 600 && met> 50 && met<300             )            return offset+21;  //13
-
-  else if (                     ht > 600 && met> 50 && met<150 && mtw < 120)            return offset+22;  //14a
-  else if (                     ht > 600 && met>150 && met<300 && mtw < 120)            return offset+23;  //15a
-  else if (                     ht > 600 && met> 50 && met<150 && mtw > 120)            return offset+24;  //14b  
-  else if (                     ht > 600 && met>150 && met<300 && mtw > 120)            return offset+25;  //15b  
-
-  else if (          ht > 60 && mtw < 120 &&           met>300             )            return offset+26;  //16  
-  else if (                     mtw > 120 &&           met>300             )            return offset+27;  //17  
-    
-  return -99;  
-  
-}
-
-int SR1b2b(int SRorig, float mT) {
-    // Start from ICHEP SRs
-    int SR = SRorig;
-    
-    // Push SRs to make room for the new bins
-    if (SRorig>5) SR++;  // (offZ 5)
-    if (SRorig>6) SR++;  // (offZ 6)
-    if (SRorig>9) SR++;  // (offZ 9)
-    if (SRorig>10) SR++; // (offZ 10)
-    if (SRorig>20) SR++; // (onZ 5)
-    if (SRorig>21) SR++; // (onZ 6)
-    if (SRorig>24) SR++; // (onZ 9)
-    if (SRorig>25) SR++; // (onZ 10)
-
-    // Now split interesting SRs according to mT
-    if (SRorig==5 || SRorig==6 || SRorig==9 || SRorig==10 || SRorig==20 || SRorig==21 || SRorig==24 || SRorig==25) {
-      if (mT > 120.) SR++;
-    }
-
-    return SR;
-}
-
-
-
-int SR_pt(int nbj, float met, float ht, int SR, int isOnZ, float pt, float ptcut){
-  
-  if (SR<=0) return -99;
-  int offset = isOnZ*23;
-
-  if      (nbj==0 && ht > 60 && ht < 400 && met> 50 && met<150 && pt <ptcut && (isOnZ==0 || met>70))            return offset+1;   //1a
-  else if (nbj==0 && ht > 60 && ht < 400 && met>150 && met<300 && pt <ptcut)            return offset+2;   //2a
-  else if (nbj==0 && ht >400 && ht < 600 && met> 50 && met<150 && pt <ptcut)            return offset+3;   //3a
-  else if (nbj==0 && ht >400 && ht < 600 && met>150 && met<300 && pt <ptcut)            return offset+4;   //4a
-  else if (nbj==0 && ht > 60 && ht < 400 && met> 50 && met<150 && pt >ptcut && (isOnZ==0 || met>70))            return offset+5;   //1b
-  else if (nbj==0 && ht > 60 && ht < 400 && met>150 && met<300 && pt >ptcut)            return offset+6;   //2b
-  else if (nbj==0 && ht >400 && ht < 600 && met> 50 && met<150 && pt >ptcut)            return offset+7;   //3b
-  else if (nbj==0 && ht >400 && ht < 600 && met>150 && met<300 && pt >ptcut)            return offset+8;   //4b
-
-  else if (nbj==1 && ht > 60 && ht < 400 && met> 50 && met<150              && (isOnZ==0 || met>70))            return offset+9;   //5
-  else if (nbj==1 && ht > 60 && ht < 400 && met>150 && met<300             )            return offset+10;  //6
-  else if (nbj==1 && ht >400 && ht < 600 && met> 50 && met<150             )            return offset+11;  //7
-  else if (nbj==1 && ht >400 && ht < 600 && met>150 && met<300             )            return offset+12;  //8
-
-  else if (nbj==2 && ht > 60 && ht < 400 && met> 50 && met<150             )            return offset+13;  //9
-  else if (nbj==2 && ht > 60 && ht < 400 && met>150 && met<300             )            return offset+14;  //10
-  else if (nbj==2 && ht >400 && ht < 600 && met> 50 && met<150             )            return offset+15;  //11
-  else if (nbj==2 && ht >400 && ht < 600 && met>150 && met<300             )            return offset+16;  //12
-
-  else if (nbj>=3 && ht > 60 && ht < 600 && met> 50 && met<300             )            return offset+17;  //13
-
-  else if (                     ht > 600 && met> 50 && met<150 && pt <ptcut)            return offset+18;  //14a
-  else if (                     ht > 600 && met>150 && met<300 && pt <ptcut)            return offset+19;  //15a
-  else if (                     ht > 600 && met> 50 && met<150 && pt >ptcut)            return offset+20;  //14b  
-  else if (                     ht > 600 && met>150 && met<300 && pt >ptcut)            return offset+21;  //15b  
-
-  else if (          ht > 60 && pt <ptcut &&           met>300             )            return offset+22;  //16a  
-  else if (                     pt >ptcut &&           met>300             )            return offset+23;  //16b 
-    
-  return -99;  
-  
-}
-
-int SR_morept(int nbj, float met, float ht, int SR, int isOnZ, float pt, float ptcut){
-  
-  if (SR<=0) return -99;
-  int offset = isOnZ*27;
-
-  if      (nbj==0 && ht > 60 && ht < 400 && met> 50 && met<150 && pt <ptcut && (isOnZ==0 || met>70))            return offset+1;   //1a
-  else if (nbj==0 && ht > 60 && ht < 400 && met>150 && met<300 && pt <ptcut)            return offset+2;   //2a
-  else if (nbj==0 && ht >400 && ht < 600 && met> 50 && met<150 && pt <ptcut)            return offset+3;   //3a
-  else if (nbj==0 && ht >400 && ht < 600 && met>150 && met<300 && pt <ptcut)            return offset+4;   //4a
-  else if (nbj==0 && ht > 60 && ht < 400 && met> 50 && met<150 && pt >ptcut && (isOnZ==0 || met>70))            return offset+5;   //1b
-  else if (nbj==0 && ht > 60 && ht < 400 && met>150 && met<300 && pt >ptcut)            return offset+6;   //2b
-  else if (nbj==0 && ht >400 && ht < 600 && met> 50 && met<150 && pt >ptcut)            return offset+7;   //3b
-  else if (nbj==0 && ht >400 && ht < 600 && met>150 && met<300 && pt >ptcut)            return offset+8;   //4b
-
-  else if (nbj==1 && ht > 60 && ht < 400 && met> 50 && met<150 && pt <ptcut && (isOnZ==0 || met>70))            return offset+9;   //5a
-  else if (nbj==1 && ht > 60 && ht < 400 && met>150 && met<300 && pt <ptcut)            return offset+10;  //6a
-  else if (nbj==1 && ht > 60 && ht < 400 && met> 50 && met<150 && pt >ptcut && (isOnZ==0 || met>70))            return offset+11;   //5b
-  else if (nbj==1 && ht > 60 && ht < 400 && met>150 && met<300 && pt >ptcut)            return offset+12;  //6b
-
-  else if (nbj==1 && ht >400 && ht < 600 && met> 50 && met<150             )            return offset+13;  //7
-  else if (nbj==1 && ht >400 && ht < 600 && met>150 && met<300             )            return offset+14;  //8
-
-  else if (nbj==2 && ht > 60 && ht < 400 && met> 50 && met<150 && pt <ptcut)            return offset+15;  //9a
-  else if (nbj==2 && ht > 60 && ht < 400 && met>150 && met<300 && pt <ptcut)            return offset+16;  //10a
-  else if (nbj==2 && ht > 60 && ht < 400 && met> 50 && met<150 && pt >ptcut)            return offset+17;  //9b
-  else if (nbj==2 && ht > 60 && ht < 400 && met>150 && met<300 && pt >ptcut)            return offset+18;  //10b
-
-  else if (nbj==2 && ht >400 && ht < 600 && met> 50 && met<150             )            return offset+19;  //11
-  else if (nbj==2 && ht >400 && ht < 600 && met>150 && met<300             )            return offset+20;  //12
-
-  else if (nbj>=3 && ht > 60 && ht < 600 && met> 50 && met<300             )            return offset+21;  //13
-
-  else if (                     ht > 600 && met> 50 && met<150 && pt <ptcut)            return offset+22;  //14a
-  else if (                     ht > 600 && met>150 && met<300 && pt <ptcut)            return offset+23;  //15a
-  else if (                     ht > 600 && met> 50 && met<150 && pt >ptcut)            return offset+24;  //14b  
-  else if (                     ht > 600 && met>150 && met<300 && pt >ptcut)            return offset+25;  //15b  
-
-  else if (          ht > 60 && pt <ptcut &&           met>300             )            return offset+26;  //16  
-  else if (                     pt >ptcut &&           met>300             )            return offset+27;  //17  
-    
-  return -99;  
-  
-}
-
-int SR_step2flex(int nbj, float met, float ht, float mtw, int SR, int isOnZ, float mtcut){
-  
-  if (SR<=0) return -99;
-  int offset = isOnZ*23;
-
-  if      (nbj==0 && ht > 60 && ht < 400 && met> 50 && met<150 && mtw <mtcut && (isOnZ==0 || met>70))            return offset+1;   //1a
-  else if (nbj==0 && ht > 60 && ht < 400 && met>150 && met<300 && mtw <mtcut)            return offset+2;   //2a
-  else if (nbj==0 && ht >400 && ht < 600 && met> 50 && met<150 && mtw <mtcut)            return offset+3;   //3a
-  else if (nbj==0 && ht >400 && ht < 600 && met>150 && met<300 && mtw <mtcut)            return offset+4;   //4a
-  else if (nbj==0 && ht > 60 && ht < 400 && met> 50 && met<150 && mtw >mtcut && (isOnZ==0 || met>70))            return offset+5;   //1b
-  else if (nbj==0 && ht > 60 && ht < 400 && met>150 && met<300 && mtw >mtcut)            return offset+6;   //2b
-  else if (nbj==0 && ht >400 && ht < 600 && met> 50 && met<150 && mtw >mtcut)            return offset+7;   //3b
-  else if (nbj==0 && ht >400 && ht < 600 && met>150 && met<300 && mtw >mtcut)            return offset+8;   //4b
-
-  else if (nbj==1 && ht > 60 && ht < 400 && met> 50 && met<150              && (isOnZ==0 || met>70))            return offset+9;   //5
-  else if (nbj==1 && ht > 60 && ht < 400 && met>150 && met<300             )            return offset+10;  //6
-  else if (nbj==1 && ht >400 && ht < 600 && met> 50 && met<150             )            return offset+11;  //7
-  else if (nbj==1 && ht >400 && ht < 600 && met>150 && met<300             )            return offset+12;  //8
-
-  else if (nbj==2 && ht > 60 && ht < 400 && met> 50 && met<150             )            return offset+13;  //9
-  else if (nbj==2 && ht > 60 && ht < 400 && met>150 && met<300             )            return offset+14;  //10
-  else if (nbj==2 && ht >400 && ht < 600 && met> 50 && met<150             )            return offset+15;  //11
-  else if (nbj==2 && ht >400 && ht < 600 && met>150 && met<300             )            return offset+16;  //12
-
-  else if (nbj>=3 && ht > 60 && ht < 600 && met> 50 && met<300             )            return offset+17;  //13
-
-  else if (                     ht > 600 && met> 50 && met<150 && mtw <mtcut)            return offset+18;  //14a
-  else if (                     ht > 600 && met>150 && met<300 && mtw <mtcut)            return offset+19;  //15a
-  else if (                     ht > 600 && met> 50 && met<150 && mtw >mtcut)            return offset+20;  //14b  
-  else if (                     ht > 600 && met>150 && met<300 && mtw >mtcut)            return offset+21;  //15b  
-
-  else if (          ht > 60 && mtw <mtcut &&           met>300             )            return offset+22;  //16  
-  else if (                     mtw >mtcut &&           met>300             )            return offset+23;  //17  
-    
-  return -99;  
-  
-}
-
-int SR_step3flex(int nbj, float met, float ht, float mtw, int SR, int isOnZ, float mtcut){
-  
-  if (SR<=0) return -99;
-  int offset = isOnZ*27;
-
-  if      (nbj==0 && ht > 60 && ht < 400 && met> 50 && met<150 && mtw <mtcut && (isOnZ==0 || met>70))            return offset+1;   //1a
-  else if (nbj==0 && ht > 60 && ht < 400 && met>150 && met<300 && mtw <mtcut)            return offset+2;   //2a
-  else if (nbj==0 && ht >400 && ht < 600 && met> 50 && met<150 && mtw <mtcut)            return offset+3;   //3a
-  else if (nbj==0 && ht >400 && ht < 600 && met>150 && met<300 && mtw <mtcut)            return offset+4;   //4a
-  else if (nbj==0 && ht > 60 && ht < 400 && met> 50 && met<150 && mtw >mtcut && (isOnZ==0 || met>70))            return offset+5;   //1b
-  else if (nbj==0 && ht > 60 && ht < 400 && met>150 && met<300 && mtw >mtcut)            return offset+6;   //2b
-  else if (nbj==0 && ht >400 && ht < 600 && met> 50 && met<150 && mtw >mtcut)            return offset+7;   //3b
-  else if (nbj==0 && ht >400 && ht < 600 && met>150 && met<300 && mtw >mtcut)            return offset+8;   //4b
-
-  else if (nbj==1 && ht > 60 && ht < 400 && met> 50 && met<150 && mtw <mtcut && (isOnZ==0 || met>70))            return offset+9;   //5a
-  else if (nbj==1 && ht > 60 && ht < 400 && met>150 && met<300 && mtw <mtcut)            return offset+10;  //6a
-  else if (nbj==1 && ht > 60 && ht < 400 && met> 50 && met<150 && mtw >mtcut && (isOnZ==0 || met>70))            return offset+11;   //5b
-  else if (nbj==1 && ht > 60 && ht < 400 && met>150 && met<300 && mtw >mtcut)            return offset+12;  //6b
-
-  else if (nbj==1 && ht >400 && ht < 600 && met> 50 && met<150             )            return offset+13;  //7
-  else if (nbj==1 && ht >400 && ht < 600 && met>150 && met<300             )            return offset+14;  //8
-
-  else if (nbj==2 && ht > 60 && ht < 400 && met> 50 && met<150 && mtw <mtcut)            return offset+15;  //9a
-  else if (nbj==2 && ht > 60 && ht < 400 && met>150 && met<300 && mtw <mtcut)            return offset+16;  //10a
-  else if (nbj==2 && ht > 60 && ht < 400 && met> 50 && met<150 && mtw >mtcut)            return offset+17;  //9b
-  else if (nbj==2 && ht > 60 && ht < 400 && met>150 && met<300 && mtw >mtcut)            return offset+18;  //10b
-
-  else if (nbj==2 && ht >400 && ht < 600 && met> 50 && met<150             )            return offset+19;  //11
-  else if (nbj==2 && ht >400 && ht < 600 && met>150 && met<300             )            return offset+20;  //12
-
-  else if (nbj>=3 && ht > 60 && ht < 600 && met> 50 && met<300             )            return offset+21;  //13
-
-  else if (                     ht > 600 && met> 50 && met<150 && mtw <mtcut)            return offset+22;  //14a
-  else if (                     ht > 600 && met>150 && met<300 && mtw <mtcut)            return offset+23;  //15a
-  else if (                     ht > 600 && met> 50 && met<150 && mtw >mtcut)            return offset+24;  //14b  
-  else if (                     ht > 600 && met>150 && met<300 && mtw >mtcut)            return offset+25;  //15b  
-
-  else if (          ht > 60 && mtw <mtcut &&           met>300             )            return offset+26;  //16  
-  else if (                     mtw >mtcut &&           met>300             )            return offset+27;  //17  
-    
-  return -99;  
-  
-}
-
-int SSR4bins(int nbj, float met, float ht, int isOnZ){
-  if      (nbj<3 && ht > 200 && met > 250 && isOnZ==0)            return 1;
-  else if (nbj>2                          && isOnZ==0)            return 2;
-  else if (nbj<3 && ht > 200 && met > 250 && isOnZ==1)            return 3;
-  else if (nbj>2                          && isOnZ==1)            return 4;
-  return -99;
-}
 
 float mTcalc(float mT_3l, float mT_4l, float mT_fo_3l, float mT_fo_4l, int nLepTight, int nLepSel, int UCSX1, int UCSX2, int UCSX3){
   float mTW = 0.;
@@ -372,9 +41,11 @@ float getLeptonSF_mu_Unc(float pt, int var) {
 }
 
 #include <assert.h>
+#include <iostream>
 #include "TH2F.h"
 #include "TH1F.h"
 #include "TFile.h"
+#include "TSystem.h"
 #include "TGraphAsymmErrors.h"
 TFile *_file_reco_leptonSF_mu = NULL;
 TFile *_file_recoToMedium_leptonSF_mu = NULL;
@@ -393,22 +64,29 @@ TH2F *_histo_reco_leptonSF_el = NULL;
 TH2F *_histo_recoToTight_leptonSF_el = NULL;
 TH2F *_histo_TightToMultiIso_leptonSF_el = NULL;
 
+
+
+TString CMSSW_BASE_RA7 = gSystem->ExpandPathName("${CMSSW_BASE}");
+TString DATA_RA7 = CMSSW_BASE_RA7+"/src/CMGTools/TTHAnalysis/data";
+
+//// LEPTON SF FULLSIM
+
 float leptonSF_ra7(int pdgid, float pt, float eta, int var=0){
   
   if (!_histo_reco_leptonSF_mu) {
-     _file_reco_leptonSF_mu = new TFile("/nfs/fanae/user/nachos/leptonSF/sf_mu_trk_susy_ICHEP.root", "data");
-     _file_recoToMedium_leptonSF_mu = new TFile("/nfs/fanae/user/nachos/leptonSF/TnP_MuonID_NUM_MediumID_DENOM_generalTracks_VAR_map_pt_eta.root", "read");
-     _file_MediumToMultiIso_leptonSF_mu = new TFile("/nfs/fanae/user/nachos/leptonSF/TnP_MuonID_NUM_MultiIsoLoose_DENOM_MediumID_VAR_map_pt_eta.root", "read");
+     _file_reco_leptonSF_mu = new TFile(DATA_RA7+"/leptonSF/ra7_lepsf_fullsim/muons/sf_mu_trk_susy_ICHEP.root", "data");
+     _file_recoToMedium_leptonSF_mu = new TFile(DATA_RA7+"/leptonSF/ra7_lepsf_fullsim/muons/TnP_MuonID_NUM_MediumID_DENOM_generalTracks_VAR_map_pt_eta.root", "read");
+     _file_MediumToMultiIso_leptonSF_mu = new TFile(DATA_RA7+"/leptonSF/ra7_lepsf_fullsim/muons/TnP_MuonID_NUM_MultiIsoLoose_DENOM_MediumID_VAR_map_pt_eta.root", "read");
      _histo_reco_leptonSF_mu = (TGraphAsymmErrors*)(_file_reco_leptonSF_mu->Get("ratio_eta"));
      _histo_recoToMedium_leptonSF_mu = (TH2F*)(_file_recoToMedium_leptonSF_mu->Get("pt_abseta_PLOT_pair_probeMultiplicity_bin0"));
      _histo_MediumToMultiIso_leptonSF_mu = (TH2F*)(_file_MediumToMultiIso_leptonSF_mu->Get("pt_abseta_PLOT_pair_probeMultiplicity_bin0_&_Medium2016_pass"));
    }
    if (!_histo_recoToTight_leptonSF_el) {
-     _file_recoToMVA_leptonSF_el = new TFile("/nfs/fanae/user/nachos/leptonSF/sf_el_susy_ICHEP.root", "read");
+     _file_recoToMVA_leptonSF_el = new TFile(DATA_RA7+"/leptonSF/ra7_lepsf_fullsim/electrons/sf_el_susy_ICHEP.root", "read");
      _histo_recoToTight_leptonSF_el = (TH2F*)(_file_recoToMVA_leptonSF_el->Get("GsfElectronToTightID2D3D"));
      _histo_TightToMultiIso_leptonSF_el = (TH2F*)(_file_recoToMVA_leptonSF_el->Get("MVATightElectronToMultiIsoM"));
      
-     _file_reco_leptonSF_el = new TFile("/nfs/fanae/user/nachos/leptonSF/sf_el_trk_susy_ICHEP.root", "read");
+     _file_reco_leptonSF_el = new TFile(DATA_RA7+"/leptonSF/ra7_lepsf_fullsim/electrons/sf_el_trk_susy_ICHEP.root", "read");
      _histo_reco_leptonSF_el = (TH2F*) (_file_reco_leptonSF_el->Get("EGamma_SF2D"));
    }
    float out = 0.;
@@ -449,10 +127,17 @@ float leptonSF_ra7(int pdgid, float pt, float eta, int var=0){
  }
 
 
-TString CMSSW_BASE_SF = gSystem->ExpandPathName("${CMSSW_BASE}");
-TString DATA_SF = CMSSW_BASE_SF+"/src/CMGTools/TTHAnalysis/data";
-TFile* f_trigSF       = new TFile(DATA_SF+"/triggerSF/triggerSF_EWKino_fullsim_ICHEP2016_9p2fb.root"       , "read");
-TFile* f_trigSF_ele27 = new TFile(DATA_SF+"/triggerSF/triggerSF_Ele27_EWKino_fullsim_ICHEP2016_12p9fb.root", "read");
+
+//// LEPTON SF FASTSIM (PENDING)
+
+
+
+
+
+
+
+TFile* f_trigSF       = new TFile(DATA_RA7+"/triggerSF/triggerSF_EWKino_fullsim_ICHEP2016_9p2fb.root"       , "read");
+TFile* f_trigSF_ele27 = new TFile(DATA_RA7+"/triggerSF/triggerSF_Ele27_EWKino_fullsim_ICHEP2016_12p9fb.root", "read");
 
 TH2F* h_trigSF_3l_mu = (TH2F*) f_trigSF      ->Get("eff_3l_mu" );
 TH2F* h_trigSF_3l_el = (TH2F*) f_trigSF      ->Get("eff_3l_ele");
@@ -504,6 +189,49 @@ float triggerSF(int BR, float pt1, int pdg1,
     // others: (4l, crwz) 
     return 1;
 }
+
+
+
+
+
+
+
+TFile* f_puw_nInt_ICHEP    = new TFile(DATA_RA7+"/pileup/puWeights_12fb_63mb.root"     , "read");;
+TFile* f_puw_nInt_ICHEP_Up = new TFile(DATA_RA7+"/pileup/puWeights_12fb_63mb_Up.root"  , "read");
+TFile* f_puw_nInt_ICHEP_Dn = new TFile(DATA_RA7+"/pileup/puWeights_12fb_63mb_Down.root", "read");
+TH1F* h_puw_nInt_ICHEP    = (TH1F*) (f_puw_nInt_ICHEP   ->Get("puw"));
+TH1F* h_puw_nInt_ICHEP_Up = (TH1F*) (f_puw_nInt_ICHEP_Up->Get("puw"));
+TH1F* h_puw_nInt_ICHEP_Dn = (TH1F*) (f_puw_nInt_ICHEP_Dn->Get("puw"));
+
+float puw_nInt_ICHEP(float nInt, int var=0) { 
+
+  float puw = h_puw_nInt_ICHEP->GetBinContent(h_puw_nInt_ICHEP->FindBin(nInt)); 
+  if(var== 0) return puw;
+  if(var== 1) return h_puw_nInt_ICHEP_Up->GetBinContent(h_puw_nInt_ICHEP_Up->FindBin(nInt)) / puw;
+  if(var==-1) return h_puw_nInt_ICHEP_Dn->GetBinContent(h_puw_nInt_ICHEP_Dn->FindBin(nInt)) / puw;
+  cout <<"[WARNING!!!]  don't know what to do with PUweight, please check!! ";
+  return -9999.;
+}
+
+TFile* f_puw_nInt_Moriond    = new TFile(DATA_RA7+"/pileup/puw_nTrueInt_Moriond2017_36p4fb.root", "read");
+TFile* f_puw_nInt_Moriond_Up = new TFile(DATA_RA7+"/pileup/puw_nTrueInt_Moriond2017_36p4fb.root", "read");
+TFile* f_puw_nInt_Moriond_Dn = new TFile(DATA_RA7+"/pileup/puw_nTrueInt_Moriond2017_36p4fb.root", "read");
+TH1F* h_puw_nInt_Moriond    = (TH1F*) (f_puw_nInt_Moriond   ->Get("puw"));
+TH1F* h_puw_nInt_Moriond_Up = (TH1F*) (f_puw_nInt_Moriond_Up->Get("puw"));
+TH1F* h_puw_nInt_Moriond_Dn = (TH1F*) (f_puw_nInt_Moriond_Dn->Get("puw"));
+
+float puw_nInt_Moriond(float nInt, int var=0) { 
+ 
+  float puw = h_puw_nInt_Moriond->GetBinContent(h_puw_nInt_Moriond->FindBin(nInt)); 
+  if(var== 0) return puw;
+  if(var== 1) return h_puw_nInt_Moriond_Up->GetBinContent(h_puw_nInt_Moriond_Up->FindBin(nInt)) / puw;
+  if(var==-1) return h_puw_nInt_Moriond_Dn->GetBinContent(h_puw_nInt_Moriond_Dn->FindBin(nInt)) / puw;
+  cout <<"[WARNING!!!]  don't know what to do with PUweight, please check!! ";
+  return -9999.;
+}
+
+
+
 
 
 void functionsRA7() {}
