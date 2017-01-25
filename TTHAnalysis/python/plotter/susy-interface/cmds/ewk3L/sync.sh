@@ -14,12 +14,12 @@ QUEUE="" #"-q all.q"
 
 ## dumps
 #python susy-interface/dumpmaker.py 3l 3lA $T $O -p TTWsync --flags '-X blinding ' $QUEUE
-#python susy-interface/dumpmaker.py 3l 3lA $T $O -p WZsync --flags '-X blinding ' $QUEUE
 #python susy-interface/dumpmaker.py 3l 3lF $T $O -p TTWsync --flags '-X blinding ' $QUEUE
-#python susy-interface/dumpmaker.py 3l 3lE $T $O -p WZsync --flags '-X blinding ' $QUEUE
+#python susy-interface/dumpmaker.py 3l 3lA $T $O -p WZsync2 --flags '-X blinding ' $QUEUE
+python susy-interface/dumpmaker.py 3l 3lE $T $O -p WZsync2 --flags '-X blinding ' $QUEUE
 #python susy-interface/dumpmaker.py 3l 4lG $T $O -p ZZsync --flags '-X blinding ' $QUEUE
-python susy-interface/dumpmaker.py 3l 3lA $T $O -p dataDE --flags '-X blinding ' $QUEUE
-python susy-interface/dumpmaker.py 3l 3lE $T $O -p dataDE --flags '-X blinding ' $QUEUE
-python susy-interface/dumpmaker.py 3l 4lG $T $O -p dataDE --flags '-X blinding ' $QUEUE
+#python susy-interface/dumpmaker.py 3l 3lA $T $O -p dataDE --flags '-X blinding ' $QUEUE
+#python susy-interface/dumpmaker.py 3l 3lE $T $O -p dataDE --flags '-X blinding ' $QUEUE
+#python susy-interface/dumpmaker.py 3l 4lG $T $O -p dataDE --flags '-X blinding ' $QUEUE
 #python susy-interface/dumpmaker.py 3l 4lG $T $O -p dataDMsync --flags '-R blinding onlyG "run>=278820 && run<=279931" ' --mca susy-ewkino/3l/mca_ewkino_merged.txt $QUEUE
 #python susy-interface/dumpmaker.py 3l 4lG $T $O -p dataDEsync --flags '-R blinding onlyG "run>=278820 && run<=279931" ' --mca susy-ewkino/3l/mca_ewkino_merged.txt $QUEUE
