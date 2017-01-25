@@ -230,16 +230,16 @@ class LeptonJetReCleaner:
                 for g in goodtaus:
                     tauret[tfloat].append( getattr(g, tfloat) if hasattr(event,"TauGood_"+tfloat) else -99 )
         return goodtaus
-    def applyJEC(self, event, corrected, var):
+    def applyJEC(self, event, name, corrected, var):
         if len(corrected) < 1: return corrected
         if not var in [-1, 1]: return corrected
-        if not hasattr(event, "Jet_corr_JECUp") or not hasattr(event, "Jet_corr_JECDown") or not hasattr(event, "Jet_CorrFactor_L1L2L3Res"): return corrected
+        if not hasattr(event, name+"_corr_JECUp") or not hasattr(event, name+"_corr_JECDown") or not hasattr(event, name+"_CorrFactor_L1L2L3Res"): return corrected
         for jet in corrected:
             corr = getattr(jet, "corr_JECUp") if var == 1 else getattr(jet, "corr_JECDown")
             jet.pt = jet.pt * corr / getattr(jet, "CorrFactor_L1L2L3Res")
         return corrected
 
-    def __call__(self,event):
+    def __call__(self, event):
         self.ev = event
         fullret = {}
         leps = [l for l in Collection(event,"LepGood","nLepGood")]
@@ -250,16 +250,19 @@ class LeptonJetReCleaner:
         ## below: new way of dealing with JEC
         jetsc={}
         jetsd={} 
-        jetsc[ 0] = [j for j in Collection(event,"Jet","nJet")]
-        jetsc[ 1] = [j for j in Collection(event,"Jet","nJet")]
-        jetsc[-1] = [j for j in Collection(event,"Jet","nJet")]
-        jetsd[ 0] = [j for j in Collection(event,"DiscJet","nDiscJet")]
-        jetsd[ 1] = [j for j in Collection(event,"DiscJet","nDiscJet")]
-        jetsd[-1] = [j for j in Collection(event,"DiscJet","nDiscJet")]
-        jetsc[ 1] = self.applyJEC(event, jetsc[ 1],  1)
-        jetsc[-1] = self.applyJEC(event, jetsc[-1], -1)
-        jetsd[ 1] = self.applyJEC(event, jetsd[ 1],  1)
-        jetsd[-1] = self.applyJEC(event, jetsd[-1], -1)
+        jetsc[0] = [j for j in Collection(event,"Jet"    ,"nJet"    )]
+        jetsd[0] = [j for j in Collection(event,"DiscJet","nDiscJet")]
+        for var in [-1,1]:
+            if hasattr(event,"nJet"+self.systsJEC[var]):
+                jetsc[var] = [j for j in Collection(event,"Jet"+self.systsJEC[var],"nJet"+self.systsJEC[var])]
+            else:
+                jetsc[var] = [j for j in Collection(event,"Jet","nJet")]
+                jetsc[var] = self.applyJEC(event, "Jet", jetsc[var], var)
+            if hasattr(event,"nDiscJet"+self.systsJEC[var]):
+                jetsd[var] = [j for j in Collection(event,"DiscJet"+self.systsJEC[var],"nDiscJet"+self.systsJEC[var])]
+            else:
+                jetsd[var] = [j for j in Collection(event,"DiscJet","nDiscJet")]
+                jetsd[var] = self.applyJEC(event, "DiscJet", jetsd[var], var)
         ## below: old way of dealing with JEC
         #jetsc={}
         #jetsd={}
