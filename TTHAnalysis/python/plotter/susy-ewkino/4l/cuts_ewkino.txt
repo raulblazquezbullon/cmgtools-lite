@@ -9,6 +9,6 @@ trigger   : $DATA{Triggers_ee||Triggers_em||Triggers_mm        } $MC{1} $FASTSIM
 lowmass   : minMllSFOS > 12 || minMllSFOS == -1
 sanity    : passPtMll && is_4l
 SRevent   : allTight(4, LepSel_isTight[0], LepSel_isTight[1], LepSel_isTight[2], LepSel_isTight[3]) 
-event     : BR >= 7
+BRevent   : BR >= 7
 bJetVeto  : nBJetMedium25 == 0
 met       : met_pt > 0

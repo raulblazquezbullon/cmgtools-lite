@@ -1,3 +1,4 @@
+#include <iostream>
 
 int tauIdx1(int lep1pdg, int lep2pdg, int lep3pdg, int lep4pdg = 0){
     if(abs(lep1pdg)==15) return 0;
@@ -107,6 +108,13 @@ int BR(int nLep, int nTau, int nOSSF, int nOSLF, int nOSTF){
     if(nLep == 4 && nTau == 2 && nOSSF <= 1              ) return 11;
 
     return 0;
+}
+
+int BRos(int nLep, int nTau, int nOSSF, int nOSLF, int nOSTF){
+
+    int br = BR(nLep, nTau, nOSSF, nOSLF, nOSTF);
+    if(br == 3 || br == 4) return 5; // mimicking BR = 5 event
+	return 0;
 }
 
 int SR3lA(float mT2L, float mT2T, float mll, float mT, float met, int offset = 0) {
@@ -337,6 +345,12 @@ int SR(int nLep, int nTau, int nOSSF, int nOSLF, float mT2L, float mT2T, float m
   if(nLep == 4)
     return SR4l(nTau, nOSSF, nOSLF, mT2L, mT2T, mll, mT, met);
   return 0;
+}
+
+int SRos(int nLep, int nTau, int nOSSF, int nOSLF, float mT2L, float mT2T, float mll, float mT, float met) {
+    if(nLep != 3 || nTau != 1) return 0;
+    if(nOSSF >= 1 || (nOSSF <  1 && nOSLF >= 1)) return SR3lE(mT2L, mT2T, mll, mT, met, 84);
+    return 0;
 }
 
 int SuperSig(int nLep, int nTau, int nOSSF, int nOSLF, float mT2L, float mT2T, float mll, float mT, float met) {
