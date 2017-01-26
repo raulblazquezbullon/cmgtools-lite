@@ -1,5 +1,6 @@
 #include <cmath>
 #include <map>
+#include <algorithm>
 #include "Math/GenVector/LorentzVector.h"
 #include "Math/GenVector/PtEtaPhiM4D.h"
 #include "Math/GenVector/PxPyPzM4D.h"
