@@ -61,6 +61,13 @@ float triggerSF(int BR, float pt1, int pdg1,
     // 3l: 2tau (flat 86% in dedicated function)
     if(BR == 6) return 1.0;
 
+    // 2lss 
+    if(BR == -1){
+        TH2F* hist = (pdg2 == 13)?h_trigSF_2l_mu:h_trigSF_2l_el;
+        int xbin = std::max(1, std::min(hist->GetNbinsX(), hist->GetXaxis()->FindBin(pt1)));
+        int ybin = std::max(1, std::min(hist->GetNbinsY(), hist->GetYaxis()->FindBin(pt2)));
+        return hist->GetBinContent(xbin,ybin);
+    }
     // 3l: 3light
     if(BR <= 2) {
         TH2F* hist = (abs(pdg3) == 13)?h_trigSF_3l_mu:h_trigSF_3l_el;
@@ -78,14 +85,6 @@ float triggerSF(int BR, float pt1, int pdg1,
         TH2F* hist = (pdgs[1] == 13)?h_trigSF_2l_mu:h_trigSF_2l_el;
         int xbin = std::max(1, std::min(hist->GetNbinsX(), hist->GetXaxis()->FindBin(pts[0])));
         int ybin = std::max(1, std::min(hist->GetNbinsY(), hist->GetYaxis()->FindBin(pts[1])));
-        return hist->GetBinContent(xbin,ybin);
-    }
-
-    // 2lss 
-    if(BR == -1){
-        TH2F* hist = (pdg2 == 13)?h_trigSF_2l_mu:h_trigSF_2l_el;
-        int xbin = std::max(1, std::min(hist->GetNbinsX(), hist->GetXaxis()->FindBin(pt1)));
-        int ybin = std::max(1, std::min(hist->GetNbinsY(), hist->GetYaxis()->FindBin(pt2)));
         return hist->GetBinContent(xbin,ybin);
     }
 
