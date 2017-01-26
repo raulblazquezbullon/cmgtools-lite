@@ -160,6 +160,9 @@ from CMGTools.TTHAnalysis.tools.leptonBuilderEWK import LeptonBuilderEWK
 MODULES.append( ('leptonBuilderEWK', lambda : LeptonBuilderEWK("Mini")))
 MODULES.append( ('leptonBuilderWZCR_EWK', lambda : LeptonBuilderEWK("Recl")))
 
+from CMGTools.TTHAnalysis.tools.leptonBuilderRA7 import LeptonBuilderRA7
+MODULES.append( ('leptonBuilderRA7', lambda : LeptonBuilderRA7("Mini")))
+
 #--- Tau builder instances
 from CMGTools.TTHAnalysis.tools.TauFakesBuilder import TauFakesBuilder
 
