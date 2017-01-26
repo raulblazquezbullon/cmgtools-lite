@@ -137,3 +137,4 @@ promptsub : TGJets   : -1*xsec 	: ((LepGood1_mcMatchId==0 && LepGood1_mcPromptGa
 promptsub : WGToLNuG : -1*xsec 	: LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata_prompt.txt"
 promptsub : ZGTo2LG  : -1*xsec 	: LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata_prompt.txt"
 
+
