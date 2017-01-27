@@ -18,7 +18,7 @@ rares_ttW_bTagLF_Up  : TTWToLNu_ext1+TTWToLNu_ext2 : xsec ; eventBTagSF_up_lf/ev
 rares_ttZ_bTagLF_Up  : TTZToLLNuNu                 : xsec : eventBTagSF_up_lf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
 rares_ttZ_bTagLF_Up  : TTHnobb_pow                 : xsec : eventBTagSF_up_lf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
 #rares_ttZ_bTagLF_Up  : TTHnobb_mWCutfix_ch1        : xsec : eventBTagSF_up_lf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
-rares_ttX_bTagLF_Up  : TTLLJets_m1to10             : xsec : eventBTagSF_up_lf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
+rares_ttX_bTagLF_Up  : TTLLJets_m1to10             : 0.0493 : eventBTagSF_up_lf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
 rares_ttX_bTagLF_Up  : TTJets_DiLepton             : xsec : eventBTagSF_up_lf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
 rares_ttX_bTagLF_Up  : TTJets_SingleLeptonFromT    : xsec : eventBTagSF_up_lf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
 rares_ttX_bTagLF_Up  : TTJets_SingleLeptonFromTbar : xsec : eventBTagSF_up_lf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
@@ -44,7 +44,7 @@ rares_ttW_bTagLF_Dn  : TTWToLNu_ext1+TTWToLNu_ext2 : xsec ; eventBTagSF_down_lf/
 rares_ttZ_bTagLF_Dn  : TTZToLLNuNu                 : xsec : eventBTagSF_down_lf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
 rares_ttZ_bTagLF_Dn  : TTHnobb_pow                 : xsec : eventBTagSF_down_lf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
 #rares_ttZ_bTagLF_Dn  : TTHnobb_mWCutfix_ch1        : xsec : eventBTagSF_down_lf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
-rares_ttX_bTagLF_Dn  : TTLLJets_m1to10             : xsec : eventBTagSF_down_lf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
+rares_ttX_bTagLF_Dn  : TTLLJets_m1to10             : 0.0493 : eventBTagSF_down_lf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
 rares_ttX_bTagLF_Dn  : TTJets_DiLepton             : xsec : eventBTagSF_down_lf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
 rares_ttX_bTagLF_Dn  : TTJets_SingleLeptonFromT    : xsec : eventBTagSF_down_lf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
 rares_ttX_bTagLF_Dn  : TTJets_SingleLeptonFromTbar : xsec : eventBTagSF_down_lf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
