@@ -10,4 +10,7 @@ change     : nJet30\b       : nJet30_Mini
 change     : htJet30j\b     : htJet30j_Mini
 change     : nBJetMedium25\b: nBJetMedium25_Mini
 
-load-histo : QF_el : $DATA/fliprate/chargeMId_80X_2016_AllMVA.root : elChMId
+load-histo : QF_el : $DATA/fliprate/fliprate_mvaM_EWKino_Moriond2017_36p5.root : elChMId
+
+
+
