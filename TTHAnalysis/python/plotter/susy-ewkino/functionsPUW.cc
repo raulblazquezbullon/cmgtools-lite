@@ -41,3 +41,21 @@ float puw_nInt_Moriond(float nInt, int var=0) {
   cout <<"[WARNING!!!]  don't know what to do with PUweight, please check!! ";
   return -9999.;
 }
+
+// Fastsim is still Spring16 !!
+TFile* f_puw_nInt_MoriondFS    = new TFile(DATA_PUW+"/pileup/puw_nTrueInt_Moriond2017_36p5fb_Spring16_central.root", "read");
+TFile* f_puw_nInt_MoriondFS_Up = new TFile(DATA_PUW+"/pileup/puw_nTrueInt_Moriond2017_36p5fb_Spring16_up.root", "read");
+TFile* f_puw_nInt_MoriondFS_Dn = new TFile(DATA_PUW+"/pileup/puw_nTrueInt_Moriond2017_36p5fb_Spring16_down.root", "read");
+TH1F* h_puw_nInt_MoriondFS    = (TH1F*) (f_puw_nInt_MoriondFS   ->Get("puw"));
+TH1F* h_puw_nInt_MoriondFS_Up = (TH1F*) (f_puw_nInt_MoriondFS_Up->Get("puw"));
+TH1F* h_puw_nInt_MoriondFS_Dn = (TH1F*) (f_puw_nInt_MoriondFS_Dn->Get("puw"));
+
+float puw_nInt_Moriond_FS(float nInt, int var=0) { 
+ 
+  float puw = h_puw_nInt_MoriondFS->GetBinContent(h_puw_nInt_MoriondFS->FindBin(nInt)); 
+  if(var== 0) return puw;
+  if(var== 1) return h_puw_nInt_MoriondFS_Up->GetBinContent(h_puw_nInt_MoriondFS_Up->FindBin(nInt)) / puw;
+  if(var==-1) return h_puw_nInt_MoriondFS_Dn->GetBinContent(h_puw_nInt_MoriondFS_Dn->FindBin(nInt)) / puw;
+  cout <<"[WARNING!!!]  don't know what to do with PUweight, please check!! ";
+  return -9999.;
+}
