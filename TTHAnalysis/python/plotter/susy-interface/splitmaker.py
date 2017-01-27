@@ -1,10 +1,12 @@
-import datetime, sys
+import datetime, sys, os
 from optparse import OptionParser
 from lib import maker
 from lib import functions as func
 
 parser = OptionParser(usage="%prog cfg regions treedir outdir [options]")
 parser = maker.addMakerOptions(parser)
+parser.add_option("--exclude", dest="exclude", type="string", action="append", default=[], help="Sample names to exclude")
+parser.add_option("--accept" , dest="accept" , type="string", action="append", default=[], help="Sample names to accept")
 parser.add_option("--tmpdir" , dest="tmpdir" , type="string", default=None, help="Temporary output directory") 
 parser.add_option("--gen"    , dest="gen"    , action="store_true", default=False, help="Use GenPart collection for splitting")
 parser.add_option("--pdgId1" , dest="pdgId1" , type="int", default=None, help="PdgId of particle 1 when using --gen")
@@ -25,18 +27,33 @@ if options.gen:
 	gen += " --pdgId1 %d"%options.pdgId1 if options.pdgId1 else ""
 	gen += " --pdgId2 %d"%options.pdgId2 if options.pdgId2 else ""
 
-## split tree per mass (parallel splitting)
-if options.minmass and options.maxmass and options.step:
 
-	masses = [options.minmass + i*options.step for i in range((options.maxmass - options.minmass)/options.step+1)]
-	for mass in masses:
-		lsp = "--lsp "+str(mass-options.deltam) if options.deltam else ""
-		mm.submit([mm.outdir, mm.treedir, gen, tmp, mm.getVariable("treename","treeProducerSusyMultilepton"), "--mass "+str(mass), lsp],str(mass),False)
-	mm.runJobs()
-	mm.clearJobs()
+## loop over all directories in the input dir
+for d in os.listdir(mm.treedir):
 
-## only one splitting job
-else:
-	mm.submit([mm.outdir, mm.treedir, gen, tmp, mm.getVariable("treename","treeProducerSusyMultilepton"), "", ""])
+
+	## only consider real samples
+	if not os.path.isdir(mm.treedir +"/"+ d): continue
+	if not os.path.exists(mm.treedir +"/"+ d +"/"+mm.getVariable("treename","treeProducerSusyMultilepton")+"/tree.root") and \
+       not os.path.exists(mm.treedir +"/"+ d +"/"+mm.getVariable("treename","treeProducerSusyMultilepton")+"/tree.root.url"): continue
+
+	if options.accept  != [] and all([d.find(a) == -1 for a in options.accept ]): continue
+	if options.exclude != [] and any([d.find(e) >  -1 for e in options.exclude]): continue
+
+	dset = mm.treedir +"/"+ d
+
+	## split tree per mass (parallel splitting)
+	if options.minmass and options.maxmass and options.step:
+	
+		masses = [options.minmass + i*options.step for i in range((options.maxmass - options.minmass)/options.step+1)]
+		for mass in masses:
+			lsp = "--lsp "+str(mass-options.deltam) if options.deltam else ""
+			mm.submit([mm.outdir, dset, gen, tmp, mm.getVariable("treename","treeProducerSusyMultilepton"), "--mass "+str(mass), lsp],str(mass)+"_"+d,False)
+		mm.runJobs()
+		mm.clearJobs()
+	
+	## only one splitting job
+	else:
+		mm.submit([mm.outdir, dset, gen, tmp, mm.getVariable("treename","treeProducerSusyMultilepton"), "", ""], d)
 
 
