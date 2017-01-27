@@ -687,6 +687,13 @@ class PlotMaker:
             for pspec in pspecs:
                 print "    plot: ",pspec.name
                 pmap = mca.getPlots(pspec,cut,makeSummary=True,closeTreeAfter=True)
+                if options.addHistos and os.path.exists(options.addHistos):
+                    tf = ROOT.TFile.Open(options.addHistos, "read")
+                    procs = pmap.keys()
+                    for proc in pmap.keys():
+                        toAdd = tf.Get(pspec.name+"_"+proc)
+                        if toAdd: pmap[proc].Add(toAdd)
+                    tf.Close()
                 #
                 # blinding policy
                 blind = pspec.getOption('Blinded','None') if 'data' in pmap else 'None'
@@ -1176,6 +1183,7 @@ def addPlotMakerOptions(parser, addAlsoMCAnalysis=True):
     parser.add_option("--cmssqrtS", dest="cmssqrtS", type="string", default="13 TeV", help="Sqrt of s to be written in the official CMS text.")
     parser.add_option("--printBin", dest="printBinning", type="string", default=None, help="Write 'Events/xx' instead of 'Events' on the y axis")
     parser.add_option('--env',      dest='env'         , type='string', default="", help='Set environment (currently supported: "oviedo")')
+    parser.add_option('--add-histos', dest='addHistos' , type='string', default=None, help='File path to load and add histograms from to the ones that are newly made.')
 
 if __name__ == "__main__":
     from optparse import OptionParser
