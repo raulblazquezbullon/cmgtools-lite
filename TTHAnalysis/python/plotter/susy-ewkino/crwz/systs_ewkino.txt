@@ -53,7 +53,7 @@ stat3lA2VVV   : rares_VVV                         : .*3lA2.* : 1.0 : stat_foreac
 stat3lA2convs : convs                             : .*3lA2.* : 1.0 : stat_foreach_shape_bins : .*
 stat3lA2fakes : fakes_appldata                    : .*3lA2.* : 1.0 : stat_foreach_shape_bins : .*
 
-WZ_SF      : prompt_WZ              : .* : 100 : lnU
+#WZ_SF      : prompt_WZ              : .* : 100 : lnU
 
 ## theoretical stuff
 
