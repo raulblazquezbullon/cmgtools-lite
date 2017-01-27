@@ -35,8 +35,8 @@ def collectInputSamples(mm):
 	for d in os.listdir(mm.treedir):
 		## only consider real samples
 		if not os.path.isdir(mm.treedir +"/"+ d): continue
-		if not os.path.exists(mm.treedir +"/"+ d +"/"+options.treename+"/tree.root") and \
-           not os.path.exists(mm.treedir +"/"+ d +"/"+options.treename+"/tree.root.url"): continue
+		if not os.path.exists(mm.treedir +"/"+ d +"/"+mm.getVariable("treename","treeProducerSusyMultilepton")+"/tree.root") and \
+           not os.path.exists(mm.treedir +"/"+ d +"/"+mm.getVariable("treename","treeProducerSusyMultilepton")+"/tree.root.url"): continue
 		## exclude or accept
 		if mm.options.accept  != [] and all([d.find(a) == -1 for a in mm.options.accept ]): continue
 		if mm.options.exclude != [] and any([d.find(e) >  -1 for e in mm.options.exclude]): continue
