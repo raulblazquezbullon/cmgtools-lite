@@ -1,6 +1,11 @@
 #include "TMath.h"
-#include "TSystem.h"
+#include <assert.h>
 #include <iostream>
+#include "TH2F.h"
+#include "TH1F.h"
+#include "TFile.h"
+#include "TSystem.h"
+#include "TGraphAsymmErrors.h"
 
 int allTight(int nLep, int l1isTight, int l2isTight, int l3isTight, int l4isTight = 0){
     if(nLep == 3) return ((l1isTight+l2isTight+l3isTight)==3);
@@ -40,13 +45,22 @@ float getLeptonSF_mu_Unc(float pt, int var) {
     return var*TMath::Sqrt(0.02*0.02+0.01*0.01);  
 }
 
-#include <assert.h>
-#include <iostream>
-#include "TH2F.h"
-#include "TH1F.h"
-#include "TFile.h"
-#include "TSystem.h"
-#include "TGraphAsymmErrors.h"
+
+
+
+float getSF(TH2F* hist, float pt, float eta){
+    int xbin = std::max(1, std::min(hist->GetNbinsX(), hist->GetXaxis()->FindBin(pt)));
+    int ybin = std::max(1, std::min(hist->GetNbinsY(), hist->GetYaxis()->FindBin(eta)));
+    return hist->GetBinContent(xbin,ybin);
+}
+
+float getUnc(TH2F* hist, float pt, float eta){
+    int xbin = std::max(1, std::min(hist->GetNbinsX(), hist->GetXaxis()->FindBin(pt)));
+    int ybin = std::max(1, std::min(hist->GetNbinsY(), hist->GetYaxis()->FindBin(eta)));
+    return hist->GetBinError(xbin,ybin);
+}
+
+
 TFile *_file_reco_leptonSF_mu = NULL;
 TFile *_file_recoToMedium_leptonSF_mu = NULL;
 TFile *_file_MediumToMVA_leptonSF_mu = NULL;
@@ -128,7 +142,50 @@ float leptonSF_ra7(int pdgid, float pt, float eta, int var=0){
 
 
 
-//// LEPTON SF FASTSIM (PENDING)
+// LEPTON SCALE FACTORS FASTSIM
+// -------------------------------------------------------------
+
+// electrons
+TFile* f_elSF_FS_MIM = new TFile(DATA_RA7+"/leptonSF/ra7_lepsf_fastsim/electrons/sf_el_multiMedium.root", "read");
+TFile* f_elSF_FS_Tid = new TFile(DATA_RA7+"/leptonSF/ra7_lepsf_fastsim/electrons/sf_el_tightMVA_IDISOEmu_mutliT_tight2DIP_tight3DIP_vtxC_hitseq0_charge.root"   , "read");
+TH2F* h_elSF_FS_MIM  = (TH2F*) f_elSF_FS_MIM->Get("histo2D");
+TH2F* h_elSF_FS_Tid  = (TH2F*) f_elSF_FS_Tid->Get("histo2D");
+
+// muons
+TFile* f_muSF_FS_MIL = new TFile(DATA_RA7+"/leptonSF/ra7_lepsf_fastsim/muons/sf_mu_mediumID_multiL.root", "read");
+TFile* f_muSF_FS_Mid = new TFile(DATA_RA7+"/leptonSF/ra7_lepsf_fastsim/muons/sf_mu_medium.root"   , "read");
+TH2F* h_muSF_FS_MIL  = (TH2F*) f_muSF_FS_MIL->Get("histo2D");
+TH2F* h_muSF_FS_Mid  = (TH2F*) f_muSF_FS_Mid->Get("histo2D");
+
+
+float getElectronSFFS(float pt, float eta){
+    return getSF(h_elSF_FS_MIM, pt, abs(eta))*getSF(h_elSF_FS_Tid, pt, abs(eta));
+}
+
+float getElectronUncFS(int var = 0){
+	return var*0.02;
+}
+
+float getMuonSFFS(float pt, float eta){
+    return getSF(h_muSF_FS_MIL, pt, abs(eta))*getSF(h_muSF_FS_Mid, pt, abs(eta)); 
+}
+
+float getMuonUncFS(float pt, int var = 0) {
+	return var*0.02;
+}
+
+
+
+float getLepSFFS(float pt, float eta, int pdgId, int isTight, int wp = 0, int var = 0){
+    if(!isTight) return 1.0;
+    if(abs(pdgId) == 13) return (var==0)?getMuonSFFS    (pt, eta):(1+getMuonUncFS(var));
+    if(abs(pdgId) == 11) return (var==0)?getElectronSFFS(pt, eta):(1+getElectronUncFS(var));
+    return 1.0;
+}
+
+float leptonSFFS(float lepSF1, float lepSF2, float lepSF3 = 1.0, float lepSF4 = 1.0){
+    return lepSF1*lepSF2*lepSF3*lepSF4;
+}
 
 
 

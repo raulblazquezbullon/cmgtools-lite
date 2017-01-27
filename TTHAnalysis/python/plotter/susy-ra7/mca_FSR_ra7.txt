@@ -7,20 +7,20 @@
 ## DATA
 ## -----------------------------------------------------------
 
-data : DoubleEG_Run2016B_23Sep2016_v3_runs_273150_275376_skimmed_part1
-data : DoubleEG_Run2016B_23Sep2016_v3_runs_273150_275376_skimmed_part2
-data : DoubleEG_Run2016B_23Sep2016_v3_runs_273150_275376_skimmed_part3
-data : DoubleEG_Run2016B_23Sep2016_v3_runs_273150_275376_skimmed_part4
-data : DoubleEG_Run2016B_23Sep2016_v3_runs_273150_275376_skimmed_part5
+data : DoubleEG_Run2016B_23Sep2016_v3_runs_273150_275376_part1
+data : DoubleEG_Run2016B_23Sep2016_v3_runs_273150_275376_part2
+data : DoubleEG_Run2016B_23Sep2016_v3_runs_273150_275376_part3
+data : DoubleEG_Run2016B_23Sep2016_v3_runs_273150_275376_part4
+data : DoubleEG_Run2016B_23Sep2016_v3_runs_273150_275376_part5
 data : DoubleEG_Run2016C_23Sep2016_v1_runs_271036_284044_part1
 data : DoubleEG_Run2016C_23Sep2016_v1_runs_271036_284044_part2
 data : DoubleEG_Run2016C_23Sep2016_v1_runs_271036_284044_part3
 data : DoubleEG_Run2016D_23Sep2016_v1_runs_271036_284044_part1
 data : DoubleEG_Run2016D_23Sep2016_v1_runs_271036_284044_part2
 data : DoubleEG_Run2016D_23Sep2016_v1_runs_271036_284044_part3
-#data : DoubleEG_Run2016D_23Sep2016_v1_runs_271036_284044_part4
+data : DoubleEG_Run2016D_23Sep2016_v1_runs_271036_284044_part4
 data : DoubleEG_Run2016E_23Sep2016_v1_runs_271036_284044_part1
-#data : DoubleEG_Run2016E_23Sep2016_v1_runs_271036_284044_part2
+data : DoubleEG_Run2016E_23Sep2016_v1_runs_271036_284044_part2
 data : DoubleEG_Run2016E_23Sep2016_v1_runs_271036_284044_part3
 data : DoubleEG_Run2016E_23Sep2016_v1_runs_271036_284044_part4
 data : DoubleEG_Run2016F_23Sep2016_v1_runs_271036_284044_part1
@@ -40,17 +40,17 @@ data : DoubleEG_Run2016H-PromptReco-v2_runs_281613_284035_part5; FakeRate="susy-
 data : DoubleEG_Run2016H-PromptReco-v2_runs_281613_284035_part6; FakeRate="susy-ra7/fakerate_triggersHdata.txt"
 data : DoubleEG_Run2016H-PromptReco-v3_runs_284036_284044; FakeRate="susy-ra7/fakerate_triggersHdata.txt"
 
-data : DoubleMuon_Run2016B_23Sep2016_v3_runs_273150_275376_skimmed_part1
-data : DoubleMuon_Run2016B_23Sep2016_v3_runs_273150_275376_skimmed_part10
-data : DoubleMuon_Run2016B_23Sep2016_v3_runs_273150_275376_skimmed_part11
-data : DoubleMuon_Run2016B_23Sep2016_v3_runs_273150_275376_skimmed_part2
-data : DoubleMuon_Run2016B_23Sep2016_v3_runs_273150_275376_skimmed_part3
-data : DoubleMuon_Run2016B_23Sep2016_v3_runs_273150_275376_skimmed_part4
-data : DoubleMuon_Run2016B_23Sep2016_v3_runs_273150_275376_skimmed_part5
-data : DoubleMuon_Run2016B_23Sep2016_v3_runs_273150_275376_skimmed_part6
-data : DoubleMuon_Run2016B_23Sep2016_v3_runs_273150_275376_skimmed_part7
-data : DoubleMuon_Run2016B_23Sep2016_v3_runs_273150_275376_skimmed_part8
-data : DoubleMuon_Run2016B_23Sep2016_v3_runs_273150_275376_skimmed_part9
+data : DoubleMuon_Run2016B_23Sep2016_v3_runs_273150_275376_part1
+data : DoubleMuon_Run2016B_23Sep2016_v3_runs_273150_275376_part10
+data : DoubleMuon_Run2016B_23Sep2016_v3_runs_273150_275376_part11
+data : DoubleMuon_Run2016B_23Sep2016_v3_runs_273150_275376_part2
+data : DoubleMuon_Run2016B_23Sep2016_v3_runs_273150_275376_part3
+data : DoubleMuon_Run2016B_23Sep2016_v3_runs_273150_275376_part4
+data : DoubleMuon_Run2016B_23Sep2016_v3_runs_273150_275376_part5
+data : DoubleMuon_Run2016B_23Sep2016_v3_runs_273150_275376_part6
+data : DoubleMuon_Run2016B_23Sep2016_v3_runs_273150_275376_part7
+data : DoubleMuon_Run2016B_23Sep2016_v3_runs_273150_275376_part8
+data : DoubleMuon_Run2016B_23Sep2016_v3_runs_273150_275376_part9
 data : DoubleMuon_Run2016C_23Sep2016_v1_runs_271036_284044_part1
 data : DoubleMuon_Run2016C_23Sep2016_v1_runs_271036_284044_part2
 data : DoubleMuon_Run2016D_23Sep2016_v1_runs_271036_284044_part1
@@ -73,7 +73,7 @@ data : DoubleMuon_Run2016F_23Sep2016_v1_runs_271036_284044_part4
 data : DoubleMuon_Run2016F_23Sep2016_v1_runs_271036_284044_part5
 data : DoubleMuon_Run2016G_23Sep2016_v1_runs_271036_284044_part1
 data : DoubleMuon_Run2016G_23Sep2016_v1_runs_271036_284044_part2
-#data : DoubleMuon_Run2016G_23Sep2016_v1_runs_271036_284044_part3
+data : DoubleMuon_Run2016G_23Sep2016_v1_runs_271036_284044_part3
 data : DoubleMuon_Run2016G_23Sep2016_v1_runs_271036_284044_part4
 data : DoubleMuon_Run2016G_23Sep2016_v1_runs_271036_284044_part5
 data : DoubleMuon_Run2016G_23Sep2016_v1_runs_271036_284044_part6
@@ -194,11 +194,11 @@ prompt_WZ               : WZTo3LNu                        : xsec : (LepSel_mcUCS
 
 
 
-fakes_appldata : DoubleEG_Run2016B_23Sep2016_v3_runs_273150_275376_skimmed_part1; FakeRate="susy-ra7/fakerate_fakeappl_data.txt" , FillColor=ROOT.kGray+1, Label="Nonprompt", NormSystematic=0.3
-fakes_appldata : DoubleEG_Run2016B_23Sep2016_v3_runs_273150_275376_skimmed_part2; FakeRate="susy-ra7/fakerate_fakeappl_data.txt" , FillColor=ROOT.kGray+1, Label="Nonprompt", NormSystematic=0.3
-fakes_appldata : DoubleEG_Run2016B_23Sep2016_v3_runs_273150_275376_skimmed_part3; FakeRate="susy-ra7/fakerate_fakeappl_data.txt" , FillColor=ROOT.kGray+1, Label="Nonprompt", NormSystematic=0.3
-fakes_appldata : DoubleEG_Run2016B_23Sep2016_v3_runs_273150_275376_skimmed_part4; FakeRate="susy-ra7/fakerate_fakeappl_data.txt" , FillColor=ROOT.kGray+1, Label="Nonprompt", NormSystematic=0.3
-fakes_appldata : DoubleEG_Run2016B_23Sep2016_v3_runs_273150_275376_skimmed_part5; FakeRate="susy-ra7/fakerate_fakeappl_data.txt" , FillColor=ROOT.kGray+1, Label="Nonprompt", NormSystematic=0.3
+fakes_appldata : DoubleEG_Run2016B_23Sep2016_v3_runs_273150_275376_part1; FakeRate="susy-ra7/fakerate_fakeappl_data.txt" , FillColor=ROOT.kGray+1, Label="Nonprompt", NormSystematic=0.3
+fakes_appldata : DoubleEG_Run2016B_23Sep2016_v3_runs_273150_275376_part2; FakeRate="susy-ra7/fakerate_fakeappl_data.txt" , FillColor=ROOT.kGray+1, Label="Nonprompt", NormSystematic=0.3
+fakes_appldata : DoubleEG_Run2016B_23Sep2016_v3_runs_273150_275376_part3; FakeRate="susy-ra7/fakerate_fakeappl_data.txt" , FillColor=ROOT.kGray+1, Label="Nonprompt", NormSystematic=0.3
+fakes_appldata : DoubleEG_Run2016B_23Sep2016_v3_runs_273150_275376_part4; FakeRate="susy-ra7/fakerate_fakeappl_data.txt" , FillColor=ROOT.kGray+1, Label="Nonprompt", NormSystematic=0.3
+fakes_appldata : DoubleEG_Run2016B_23Sep2016_v3_runs_273150_275376_part5; FakeRate="susy-ra7/fakerate_fakeappl_data.txt" , FillColor=ROOT.kGray+1, Label="Nonprompt", NormSystematic=0.3
 fakes_appldata : DoubleEG_Run2016C_23Sep2016_v1_runs_271036_284044_part1; FakeRate="susy-ra7/fakerate_fakeappl_data.txt" , FillColor=ROOT.kGray+1, Label="Nonprompt", NormSystematic=0.3
 fakes_appldata : DoubleEG_Run2016C_23Sep2016_v1_runs_271036_284044_part2; FakeRate="susy-ra7/fakerate_fakeappl_data.txt" , FillColor=ROOT.kGray+1, Label="Nonprompt", NormSystematic=0.3
 fakes_appldata : DoubleEG_Run2016C_23Sep2016_v1_runs_271036_284044_part3; FakeRate="susy-ra7/fakerate_fakeappl_data.txt" , FillColor=ROOT.kGray+1, Label="Nonprompt", NormSystematic=0.3
@@ -226,17 +226,17 @@ fakes_appldata : DoubleEG_Run2016H-PromptReco-v2_runs_281613_284035_part4; FakeR
 fakes_appldata : DoubleEG_Run2016H-PromptReco-v2_runs_281613_284035_part5; FakeRate="susy-ra7/fakerate_triggersHfake.txt" , FillColor=ROOT.kGray+1, Label="Nonprompt", NormSystematic=0.3
 fakes_appldata : DoubleEG_Run2016H-PromptReco-v2_runs_281613_284035_part6; FakeRate="susy-ra7/fakerate_triggersHfake.txt" , FillColor=ROOT.kGray+1, Label="Nonprompt", NormSystematic=0.3
 fakes_appldata : DoubleEG_Run2016H-PromptReco-v3_runs_284036_284044; FakeRate="susy-ra7/fakerate_triggersHfake.txt" , FillColor=ROOT.kGray+1, Label="Nonprompt", NormSystematic=0.3
-fakes_appldata : DoubleMuon_Run2016B_23Sep2016_v3_runs_273150_275376_skimmed_part1; FakeRate="susy-ra7/fakerate_fakeappl_data.txt" , FillColor=ROOT.kGray+1, Label="Nonprompt", NormSystematic=0.3
-fakes_appldata : DoubleMuon_Run2016B_23Sep2016_v3_runs_273150_275376_skimmed_part10; FakeRate="susy-ra7/fakerate_fakeappl_data.txt" , FillColor=ROOT.kGray+1, Label="Nonprompt", NormSystematic=0.3
-fakes_appldata : DoubleMuon_Run2016B_23Sep2016_v3_runs_273150_275376_skimmed_part11; FakeRate="susy-ra7/fakerate_fakeappl_data.txt" , FillColor=ROOT.kGray+1, Label="Nonprompt", NormSystematic=0.3
-fakes_appldata : DoubleMuon_Run2016B_23Sep2016_v3_runs_273150_275376_skimmed_part2; FakeRate="susy-ra7/fakerate_fakeappl_data.txt" , FillColor=ROOT.kGray+1, Label="Nonprompt", NormSystematic=0.3
-fakes_appldata : DoubleMuon_Run2016B_23Sep2016_v3_runs_273150_275376_skimmed_part3; FakeRate="susy-ra7/fakerate_fakeappl_data.txt" , FillColor=ROOT.kGray+1, Label="Nonprompt", NormSystematic=0.3
-fakes_appldata : DoubleMuon_Run2016B_23Sep2016_v3_runs_273150_275376_skimmed_part4; FakeRate="susy-ra7/fakerate_fakeappl_data.txt" , FillColor=ROOT.kGray+1, Label="Nonprompt", NormSystematic=0.3
-fakes_appldata : DoubleMuon_Run2016B_23Sep2016_v3_runs_273150_275376_skimmed_part5; FakeRate="susy-ra7/fakerate_fakeappl_data.txt" , FillColor=ROOT.kGray+1, Label="Nonprompt", NormSystematic=0.3
-fakes_appldata : DoubleMuon_Run2016B_23Sep2016_v3_runs_273150_275376_skimmed_part6; FakeRate="susy-ra7/fakerate_fakeappl_data.txt" , FillColor=ROOT.kGray+1, Label="Nonprompt", NormSystematic=0.3
-fakes_appldata : DoubleMuon_Run2016B_23Sep2016_v3_runs_273150_275376_skimmed_part7; FakeRate="susy-ra7/fakerate_fakeappl_data.txt" , FillColor=ROOT.kGray+1, Label="Nonprompt", NormSystematic=0.3
-fakes_appldata : DoubleMuon_Run2016B_23Sep2016_v3_runs_273150_275376_skimmed_part8; FakeRate="susy-ra7/fakerate_fakeappl_data.txt" , FillColor=ROOT.kGray+1, Label="Nonprompt", NormSystematic=0.3
-fakes_appldata : DoubleMuon_Run2016B_23Sep2016_v3_runs_273150_275376_skimmed_part9; FakeRate="susy-ra7/fakerate_fakeappl_data.txt" , FillColor=ROOT.kGray+1, Label="Nonprompt", NormSystematic=0.3
+fakes_appldata : DoubleMuon_Run2016B_23Sep2016_v3_runs_273150_275376_part1; FakeRate="susy-ra7/fakerate_fakeappl_data.txt" , FillColor=ROOT.kGray+1, Label="Nonprompt", NormSystematic=0.3
+fakes_appldata : DoubleMuon_Run2016B_23Sep2016_v3_runs_273150_275376_part10; FakeRate="susy-ra7/fakerate_fakeappl_data.txt" , FillColor=ROOT.kGray+1, Label="Nonprompt", NormSystematic=0.3
+fakes_appldata : DoubleMuon_Run2016B_23Sep2016_v3_runs_273150_275376_part11; FakeRate="susy-ra7/fakerate_fakeappl_data.txt" , FillColor=ROOT.kGray+1, Label="Nonprompt", NormSystematic=0.3
+fakes_appldata : DoubleMuon_Run2016B_23Sep2016_v3_runs_273150_275376_part2; FakeRate="susy-ra7/fakerate_fakeappl_data.txt" , FillColor=ROOT.kGray+1, Label="Nonprompt", NormSystematic=0.3
+fakes_appldata : DoubleMuon_Run2016B_23Sep2016_v3_runs_273150_275376_part3; FakeRate="susy-ra7/fakerate_fakeappl_data.txt" , FillColor=ROOT.kGray+1, Label="Nonprompt", NormSystematic=0.3
+fakes_appldata : DoubleMuon_Run2016B_23Sep2016_v3_runs_273150_275376_part4; FakeRate="susy-ra7/fakerate_fakeappl_data.txt" , FillColor=ROOT.kGray+1, Label="Nonprompt", NormSystematic=0.3
+fakes_appldata : DoubleMuon_Run2016B_23Sep2016_v3_runs_273150_275376_part5; FakeRate="susy-ra7/fakerate_fakeappl_data.txt" , FillColor=ROOT.kGray+1, Label="Nonprompt", NormSystematic=0.3
+fakes_appldata : DoubleMuon_Run2016B_23Sep2016_v3_runs_273150_275376_part6; FakeRate="susy-ra7/fakerate_fakeappl_data.txt" , FillColor=ROOT.kGray+1, Label="Nonprompt", NormSystematic=0.3
+fakes_appldata : DoubleMuon_Run2016B_23Sep2016_v3_runs_273150_275376_part7; FakeRate="susy-ra7/fakerate_fakeappl_data.txt" , FillColor=ROOT.kGray+1, Label="Nonprompt", NormSystematic=0.3
+fakes_appldata : DoubleMuon_Run2016B_23Sep2016_v3_runs_273150_275376_part8; FakeRate="susy-ra7/fakerate_fakeappl_data.txt" , FillColor=ROOT.kGray+1, Label="Nonprompt", NormSystematic=0.3
+fakes_appldata : DoubleMuon_Run2016B_23Sep2016_v3_runs_273150_275376_part9; FakeRate="susy-ra7/fakerate_fakeappl_data.txt" , FillColor=ROOT.kGray+1, Label="Nonprompt", NormSystematic=0.3
 fakes_appldata : DoubleMuon_Run2016C_23Sep2016_v1_runs_271036_284044_part1; FakeRate="susy-ra7/fakerate_fakeappl_data.txt" , FillColor=ROOT.kGray+1, Label="Nonprompt", NormSystematic=0.3
 fakes_appldata : DoubleMuon_Run2016C_23Sep2016_v1_runs_271036_284044_part2; FakeRate="susy-ra7/fakerate_fakeappl_data.txt" , FillColor=ROOT.kGray+1, Label="Nonprompt", NormSystematic=0.3
 fakes_appldata : DoubleMuon_Run2016D_23Sep2016_v1_runs_271036_284044_part1; FakeRate="susy-ra7/fakerate_fakeappl_data.txt" , FillColor=ROOT.kGray+1, Label="Nonprompt", NormSystematic=0.3
@@ -259,7 +259,7 @@ fakes_appldata : DoubleMuon_Run2016F_23Sep2016_v1_runs_271036_284044_part4; Fake
 fakes_appldata : DoubleMuon_Run2016F_23Sep2016_v1_runs_271036_284044_part5; FakeRate="susy-ra7/fakerate_fakeappl_data.txt" , FillColor=ROOT.kGray+1, Label="Nonprompt", NormSystematic=0.3
 fakes_appldata : DoubleMuon_Run2016G_23Sep2016_v1_runs_271036_284044_part1; FakeRate="susy-ra7/fakerate_fakeappl_data.txt" , FillColor=ROOT.kGray+1, Label="Nonprompt", NormSystematic=0.3
 fakes_appldata : DoubleMuon_Run2016G_23Sep2016_v1_runs_271036_284044_part2; FakeRate="susy-ra7/fakerate_fakeappl_data.txt" , FillColor=ROOT.kGray+1, Label="Nonprompt", NormSystematic=0.3
-#fakes_appldata : DoubleMuon_Run2016G_23Sep2016_v1_runs_271036_284044_part3; FakeRate="susy-ra7/fakerate_fakeappl_data.txt" , FillColor=ROOT.kGray+1, Label="Nonprompt", NormSystematic=0.3
+fakes_appldata : DoubleMuon_Run2016G_23Sep2016_v1_runs_271036_284044_part3; FakeRate="susy-ra7/fakerate_fakeappl_data.txt" , FillColor=ROOT.kGray+1, Label="Nonprompt", NormSystematic=0.3
 fakes_appldata : DoubleMuon_Run2016G_23Sep2016_v1_runs_271036_284044_part4; FakeRate="susy-ra7/fakerate_fakeappl_data.txt" , FillColor=ROOT.kGray+1, Label="Nonprompt", NormSystematic=0.3
 fakes_appldata : DoubleMuon_Run2016G_23Sep2016_v1_runs_271036_284044_part5; FakeRate="susy-ra7/fakerate_fakeappl_data.txt" , FillColor=ROOT.kGray+1, Label="Nonprompt", NormSystematic=0.3
 fakes_appldata : DoubleMuon_Run2016G_23Sep2016_v1_runs_271036_284044_part6; FakeRate="susy-ra7/fakerate_fakeappl_data.txt" , FillColor=ROOT.kGray+1, Label="Nonprompt", NormSystematic=0.3
