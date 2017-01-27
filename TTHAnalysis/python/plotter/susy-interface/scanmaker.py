@@ -1,4 +1,4 @@
-import os
+import os, sys
 from optparse import OptionParser
 from lib import maker
 from lib import functions as func
@@ -8,16 +8,17 @@ def getXS(xs, mass, factor):
 	thexs   = [p[1] for p in xs]
 	return str(thexs[themass.index(float(mass))]) + "*" + str(factor)
 
-def prepareJob(mm, name, mp, baseSig, binning, bkgpath, outpath, xslist, options):
+def prepareJob(mm, name, mp, baseSig, baseSys, binning, bkgpath, outpath, xslist, options):
 
 	mp = [m.strip() for m in mp]
 	#name = "mp_"+mm.model.name+"_"+mp[0]+"_"+mp[1]
 	sig  = mm.model.name +"_"+ mp[0] +"_"+ mp[1]
 	xs = getXS(xslist, float(mp[0]), mm.model.brcorr)
 
-	source  = open("susy-interface/scripts/job_scanmaker.py", "r").readlines()
+	cardpath = (outpath +"/mps/"+mp[0]+"_"+mp[1], "sig_"+sig+"/SR.card.txt")
+	source   = open("susy-interface/scripts/job_scanmaker.py", "r").readlines()
+	tmpfile  = open(mm.srcpath +"/submitJob_"+ name +".py", "w")
 
-	tmpfile = open(mm.srcpath +"/submitJob_"+ name +".py", "w")
 	for line in source:
 		line = line.replace("THENAME"      , name                                              )
 		line = line.replace("THESIGNAL"    , sig                                               )
@@ -43,10 +44,11 @@ def prepareJob(mm, name, mp, baseSig, binning, bkgpath, outpath, xslist, options
 		line = line.replace("THEOUTDIR"    , outpath                                           )
 		line = line.replace("THEMCA"       , mm.getVariable("mcafile","")                      )
 		line = line.replace("THESYST"      , mm.getVariable("sysfile","")                      )
-		line = line.replace("THEBASE"      , baseSig                                           )
+		line = line.replace("THEBASESIG"   , baseSig                                           )
+		line = line.replace("THEBASESYS"   , baseSys                                           )
 		tmpfile.write(line)
 	tmpfile.close()
-	return "python "+ mm.srcpath +"/submitJob_"+ name +".py"
+	return "python "+ mm.srcpath +"/submitJob_"+ name +".py", cardpath
 
 	
 parser = OptionParser(usage="%prog cfg regions treedir outdir [options]")
@@ -59,9 +61,11 @@ parser.add_option("--sigOnly"     , dest="sigOnly"    , action="store_true", def
 parser.add_option("--perBin"      , dest="perBin"     , action="store_true", default=False, help="Make datacards for every bin in 'expr' separately.");
 parser.add_option("-m", "--models", dest="models"     , action="append"    , default=[]   , help="Fastsim signal models to loop upon.");
 parser.add_option("--redoBkg"     , dest="redoBkg"    , action="store_true", default=False, help="Redo bkg if it already exists.");
+parser.add_option("--postfix"     , dest="postfix"    , type="string"      , default=""   , help="Flags to be run for postfix (i.e. for signal only)");
+parser.add_option("--check"       , dest="doCheck"    , action="store_true", default=False, help="Automatically run some (systematics) checks of the datacards that were produced.");
 
 baseBkg = "python makeShapeCardsSusy.py {MCA} {CUTS} \"{EXPR}\" \"{BINS}\" -o SR --bin {TAG} -P {T} --tree {TREENAME} {MCCS} {MACROS} --s2v -f -l {LUMI} --od {O} {FRIENDS} {FLAGS} {OVERFLOWCUTS}"
-baseSig = "python makeShapeCardsSusy.py [[[MCA]]] {CUTS} \\\"{EXPR}\\\" \\\"{BINS}\\\" [[[SYS]]] -o SR --bin {TAG} -P {T} --tree {TREENAME} {MCCS} {MACROS} --s2v -f -l {LUMI} --od [[[O]]] {FRIENDS} {FLAGS} {OVERFLOWCUTS}"
+baseSig = "python makeShapeCardsSusy.py [[[MCA]]] {CUTS} \\\"{EXPR}\\\" \\\"{BINS}\\\" [[[SYS]]] -o SR --bin {TAG} -P {T} --tree {TREENAME} {MCCS} {MACROS} --s2v -f -l {LUMI} --od [[[O]]] {FRIENDS} {FLAGS} {OVERFLOWCUTS} {POSTFIX}"
 (options, args) = parser.parse_args()
 options         = maker.splitLists(options)
 options.models  = func.splitList(options.models)
@@ -69,10 +73,18 @@ mm              = maker.Maker("scanmaker", baseBkg, args, options, parser.defaul
 mm.loadModels()
 
 friends = mm.collectFriends()	
-mccs    = mm.collectMCCs   ()
-macros  = mm.collectMacros ()	
 sl      = mm.getVariable("lumi","12.9").replace(".","p")
 
+combinePath = mm.getVariable("combineTool")
+combinePath = combinePath.rstrip("/")
+if options.doCheck and (not combinePath or not os.path.isdir(combinePath) or combinePath[-3:] != "src"):
+	print "WARNING: You want to run the automatic systematics check for your datacards"
+	print "but you have not given all necessary information in your configuration!"
+	print "Please give the path to the 'src' directory (e.g. /usr/cheidegg/CMSSW_7_1_5/src)"
+	print "of the CMSSW release where HiggsCombine is installed. You should store this"
+	print "path in your configuration with the variable 'combineTool'"
+	cont = raw_input("Do you want to continue now without the systematics check? [y/n]\n>> ")
+	if not cont in ["y"]: sys.exit()
 
 ## first do bkg
 if not options.sigOnly:
@@ -84,8 +96,10 @@ if not options.sigOnly:
 	for r in range(len(mm.regions)):
 		mm.iterateRegion()
 		
-		scenario = mm.getScenario(True)
-		flags    = mm.collectFlags("flagsScans", True, True, False, True)
+		scenario = mm.getScenario  (True)
+		mccs     = mm.collectMCCs  ()
+		macros   = mm.collectMacros()	
+		flags    = mm.collectFlags (["flagsScans"], True, True, False, True)
 	
 		## looping over binnings
 		binnings = [mm.getVariable("bins","")] if not options.perBin else getAllBins(mm.getVariable("bins",""))
@@ -110,6 +124,8 @@ if not options.sigOnly:
 
 ## second do models
 if not options.bkgOnly:
+
+	cards = []
 	
 	mm.reloadBase(baseSig)
 	mm.resetRegion()
@@ -118,8 +134,11 @@ if not options.bkgOnly:
 	for r in range(len(mm.regions)):
 		mm.iterateRegion()
 	
-		scenario = mm.getScenario(True)
-		flags    = mm.collectFlags("flagsScans", True, True, False, True)
+		scenario = mm.getScenario  (True)
+		mccs     = mm.collectMCCs  ()
+		macros   = mm.collectMacros()	
+		flagsSig = mm.collectFlags (["flagsScans"              ], True, True, True, True)
+		flagsSys = mm.collectFlags (["flagsScans", "flagsSysts"], True, True, True, True)
 	
 		## looping over binnings
 		binnings = [mm.getVariable("bins","")] if not options.perBin else getAllBins(mm.getVariable("bins",""))
@@ -152,12 +171,22 @@ if not options.bkgOnly:
 
 				## looping over masspoints
 				for iiii,mp in enumerate(mps):
-					flags   = mm.collectFlags("flagsScans", True, True, True)
-					thebase = mm.makeCmd([mm.getVariable("cutfile",""), mm.getVariable("expr",""), b, scenario.replace("/","_"), mm.treedir, mm.getVariable("treename","treeProducerSusyMultilepton"), mccs, macros, mm.getVariable("lumi","12.9"), friends, flags, func.getCut(mm.getVariable("firstCut","alwaystrue"), mm.getVariable("expr",""), mm.getVariable("bins",""))])
-					thecmd = prepareJob(mm, scenario.replace("/", "_")+"_mp_"+mp[2], mp, thebase, b, bkgDir, myDir, xslist, options)
+					thebasesig = mm.makeCmd([mm.getVariable("cutfile",""), mm.getVariable("expr",""), b, scenario.replace("/","_"), mm.treedir, mm.getVariable("treename","treeProducerSusyMultilepton"), mccs, macros, mm.getVariable("lumi","12.9"), friends, flagsSig, func.getCut(mm.getVariable("firstCut","alwaystrue"), mm.getVariable("expr",""), mm.getVariable("bins","")), ""])
+					thebasesys = mm.makeCmd([mm.getVariable("cutfile",""), mm.getVariable("expr",""), b, scenario.replace("/","_"), mm.treedir, mm.getVariable("treename","treeProducerSusyMultilepton"), mccs, macros, mm.getVariable("lumi","12.9"), friends, flagsSys, func.getCut(mm.getVariable("firstCut","alwaystrue"), mm.getVariable("expr",""), mm.getVariable("bins","")), options.postfix])
+					thecmd, cardpath = prepareJob(mm, scenario.replace("/", "_")+"_mp_"+mp[2], mp, thebasesig, thebasesys, b, bkgDir, myDir, xslist, options)
 					mm.registerCmd(thecmd, scenario.replace("/", "_")+"_mp_"+mp[2],False,10)
+					cards.append(cardpath)
 	mm.runJobs()
 	mm.clearJobs()
 
 
-	
+## do the HTML systematics check page
+if options.doCheck and os.path.isdir(combinePath) and os.path.exists(combinePath+"/HiggsAnalysis/CombinedLimit/test/systematicsAnalyzer.py"):
+	for card in cards:
+		func.mkdir(card[0]+"/html")
+		mm.registerCmd("python "+combinePath+"/HiggsAnalysis/CombinedLimit/test/systematicsAnalyzer.py "+card[0]+"/"+card[1]+" --all -f html > "+card[0]+"/html/SR.card.html", "sysCheck", False, 9999999999, work = combinePath, src = combinePath)
+	mm.runJobs()
+	mm.clearJobs()
+
+
+

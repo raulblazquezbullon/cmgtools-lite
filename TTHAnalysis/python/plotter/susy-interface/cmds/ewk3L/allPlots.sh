@@ -1,11 +1,13 @@
 #!/bin/bash
 
-T="/mnt/t3nfs01/data01/shome/cheidegg/o/2015-11-29_ewkskims80X_M17_MERGED"
-O="/afs/cern.ch/user/c/cheidegg/www/heppy/2016-12-09_ewk80X_mccTest" # Do NOT give a trailing /
+T="/mnt/t3nfs01/data01/shome/cheidegg/o/2016-11-29_ewkskims80X_M17_MERGED"
 #O="/afs/cern.ch/user/c/cheidegg/www/heppy/2016-12-09_ewk80X_fullstatusAll" # Do NOT give a trailing /
-L=17.3
+O="/afs/cern.ch/user/c/cheidegg/www/heppy/2017-01-18_ewk80X_unblinded" # Do NOT give a trailing /
+L=36.5
+#L=17.3
 FL=36.5
 QUEUE="" #"-q all.q"
+BLIND="-X blinding" #""
 
 ## WITH LOGARITHMIC SCALE
 ## =================================================================
@@ -13,66 +15,96 @@ QUEUE="" #"-q all.q"
 ## signal regions and baseline regions plots
 ## -----------------------------------------------------------------
 
-## data fakes
-python susy-interface/plotmaker.py 3l "3lA;3lB;3lC;3lD;3lE;3lF" $T $O -l $L  --make data --plots perCateg -o SR   --flags '--perBin' $QUEUE
-python susy-interface/plotmaker.py 3l "4lG;4lH;4lI;4lJ;4lK"     $T $O -l $L  --make data --plots perCateg -o SR   --flags '--perBin' $QUEUE --mccs susy-ewkino/4l/mcc_ewkino.txt
-#python susy-interface/plotmaker.py 3l "3lA;3lB;3lC;3lD;3lE;3lF" $T $O -l $L  --make data --plots evt      -o SR   --flags '--perBin' $QUEUE
-#python susy-interface/plotmaker.py 3l "4lG;4lH;4lI;4lJ;4lK"     $T $O -l $L  --make data --plots evt      -o SR   --flags '--perBin' $QUEUE --mccs susy-ewkino/4l/mcc_ewkino.txt
-#python susy-interface/plotmaker.py 3l "3lA;3lB;3lC;3lD;3lE;3lF" $T $O -l $L  --make data --plots lep      -o SR   --flags '--perBin' $QUEUE
-#python susy-interface/plotmaker.py 3l "4lG;4lH;4lI;4lJ;4lK"     $T $O -l $L  --make data --plots lep      -o SR   --flags '--perBin' $QUEUE --mccs susy-ewkino/4l/mcc_ewkino.txt
-#
+### data fakes
+#python susy-interface/plotmaker.py 3l "3lA;3lB;3lC;3lD;3lF;4lG;4lH;4lI;4lJ;4lK" $T $O -l $L  --make data --plots perCateg -o SR   --flags "--perBin $BLIND" $QUEUE
+#python susy-interface/plotmaker.py 3l "3lA;3lB;3lC;3lD;3lF;4lG;4lH;4lI;4lJ;4lK" $T $O -l $L  --make data --plots evt      -o SR   --flags "--perBin $BLIND" $QUEUE
+#python susy-interface/plotmaker.py 3l "3lA;3lB;3lC;3lD;3lF;4lG;4lH;4lI;4lJ;4lK" $T $O -l $L  --make data --plots lep      -o SR   --flags "--perBin $BLIND" $QUEUE
+#python susy-interface/plotmaker.py 3l "3lE"                                     $T $O -l $L  --make data --plots perCateg -o SR   --flags "--perBin $BLIND" $QUEUE -p "fakes_appldata;flips_appldata;prompt_.*;rares_.*;convs;data"
+#python susy-interface/plotmaker.py 3l "3lE"                                     $T $O -l $L  --make data --plots evt      -o SR   --flags "--perBin $BLIND" $QUEUE -p "fakes_appldata;flips_appldata;prompt_.*;rares_.*;convs;data"
+#python susy-interface/plotmaker.py 3l "3lE"                                     $T $O -l $L  --make data --plots lep      -o SR   --flags "--perBin $BLIND" $QUEUE -p "fakes_appldata;flips_appldata;prompt_.*;rares_.*;convs;data"
+
 ### MC fakes
-#python susy-interface/plotmaker.py 3l "3lA;3lB;3lC;3lD;3lE;3lF" $T $O -l $L  --make data --plots perCateg -o SRmc --flags '--perBin --plotgroup fakes_matched_DY+=fakes_matched_WJ --plotgroup fakes_matched_DY+=fakes_matched_TT --plotgroup fakes_matched_DY+=fakes_matched_ST' $QUEUE -p "fakes_matched_.*;prompt_.*;rares_.*;convs;data" 
-#python susy-interface/plotmaker.py 3l "4lG;4lH;4lI;4lJ;4lK"     $T $O -l $L  --make data --plots perCateg -o SRmc --flags '--perBin --plotgroup fakes_matched_DY+=fakes_matched_WW --plotgroup fakes_matched_DY+=fakes_matched_WJ --plotgroup fakes_matched_DY+=fakes_matched_TT --plotgroup fakes_matched_DY+=fakes_matched_ST' $QUEUE -p "fakes_matched_.*;prompt_.*;rares_.*;convs;data" --mccs susy-ewkino/4l/mcc_ewkino.txt
-#python susy-interface/plotmaker.py 3l "3lA;3lB;3lC;3lD;3lE;3lF" $T $O -l $L  --make data --plots evt      -o SRmc --flags '--perBin --plotgroup fakes_matched_DY+=fakes_matched_WJ --plotgroup fakes_matched_DY+=fakes_matched_TT --plotgroup fakes_matched_DY+=fakes_matched_ST' $QUEUE -p "fakes_matched_.*;prompt_.*;rares_.*;convs;data" 
-#python susy-interface/plotmaker.py 3l "4lG;4lH;4lI;4lJ;4lK"     $T $O -l $L  --make data --plots evt      -o SRmc --flags '--perBin --plotgroup fakes_matched_DY+=fakes_matched_WW --plotgroup fakes_matched_DY+=fakes_matched_WJ --plotgroup fakes_matched_DY+=fakes_matched_TT --plotgroup fakes_matched_DY+=fakes_matched_ST' $QUEUE -p "fakes_matched_.*;prompt_.*;rares_.*;convs;data" --mccs susy-ewkino/4l/mcc_ewkino.txt
-#python susy-interface/plotmaker.py 3l "3lA;3lB;3lC;3lD;3lE;3lF" $T $O -l $L  --make data --plots lep      -o SRmc --flags '--perBin --plotgroup fakes_matched_DY+=fakes_matched_WJ --plotgroup fakes_matched_DY+=fakes_matched_TT --plotgroup fakes_matched_DY+=fakes_matched_ST' $QUEUE -p "fakes_matched_.*;prompt_.*;rares_.*;convs;data" 
-#python susy-interface/plotmaker.py 3l "4lG;4lH;4lI;4lJ;4lK"     $T $O -l $L  --make data --plots lep      -o SRmc --flags '--perBin --plotgroup fakes_matched_DY+=fakes_matched_WW --plotgroup fakes_matched_DY+=fakes_matched_WJ --plotgroup fakes_matched_DY+=fakes_matched_TT --plotgroup fakes_matched_DY+=fakes_matched_ST' $QUEUE -p "fakes_matched_.*;prompt_.*;rares_.*;convs;data" --mccs susy-ewkino/4l/mcc_ewkino.txt
+#python susy-interface/plotmaker.py 3l "3lA;3lB;3lC;3lD;3lF;4lG;4lH;4lI;4lJ;4lK" $T $O -l $L  --make data --plots perCateg -o SRmc --flags "--perBin $BLIND" $QUEUE -p "fakes_matched;prompt_.*;rares_.*;convs;data" 
+#python susy-interface/plotmaker.py 3l "3lA;3lB;3lC;3lD;3lF;4lG;4lH;4lI;4lJ;4lK" $T $O -l $L  --make data --plots evt      -o SRmc --flags "--perBin $BLIND" $QUEUE -p "fakes_matched;prompt_.*;rares_.*;convs;data" 
+#python susy-interface/plotmaker.py 3l "3lA;3lB;3lC;3lD;3lF;4lG;4lH;4lI;4lJ;4lK" $T $O -l $L  --make data --plots lep      -o SRmc --flags "--perBin $BLIND" $QUEUE -p "fakes_matched;prompt_.*;rares_.*;convs;data" 
+#python susy-interface/plotmaker.py 3l "3lE"                                     $T $O -l $L  --make data --plots perCateg -o SRmc --flags "--perBin $BLIND" $QUEUE -p "fakes_matched;flips_appldata;prompt_.*;rares_.*;convs;data" 
+#python susy-interface/plotmaker.py 3l "3lE"                                     $T $O -l $L  --make data --plots evt      -o SRmc --flags "--perBin $BLIND" $QUEUE -p "fakes_matched;flips_appldata;prompt_.*;rares_.*;convs;data" 
+#python susy-interface/plotmaker.py 3l "3lE"                                     $T $O -l $L  --make data --plots lep      -o SRmc --flags "--perBin $BLIND" $QUEUE -p "fakes_matched;flips_appldata;prompt_.*;rares_.*;convs;data" 
+
+### MC fakes splitted
+#python susy-interface/plotmaker.py 3l "3lA;3lB;3lC;3lD;3lF;4lG;4lH;4lI;4lJ;4lK" $T $O -l $L  --make data --plots perCateg -o SRmcproc --flags "--perBin $BLIND" $QUEUE -p "fakes_process_.*;prompt_.*;rares_.*;convs;data" 
+#python susy-interface/plotmaker.py 3l "3lA;3lB;3lC;3lD;3lF;4lG;4lH;4lI;4lJ;4lK" $T $O -l $L  --make data --plots evt      -o SRmcproc --flags "--perBin $BLIND" $QUEUE -p "fakes_process_.*;prompt_.*;rares_.*;convs;data" 
+#python susy-interface/plotmaker.py 3l "3lA;3lB;3lC;3lD;3lF;4lG;4lH;4lI;4lJ;4lK" $T $O -l $L  --make data --plots lep      -o SRmcproc --flags "--perBin $BLIND" $QUEUE -p "fakes_process_.*;prompt_.*;rares_.*;convs;data" 
+#python susy-interface/plotmaker.py 3l "3lE"                                     $T $O -l $L  --make data --plots perCateg -o SRmcproc --flags "--perBin $BLIND" $QUEUE -p "fakes_process_.*;flips_appldata;prompt_.*;rares_.*;convs;data" 
+#python susy-interface/plotmaker.py 3l "3lE"                                     $T $O -l $L  --make data --plots evt      -o SRmcproc --flags "--perBin $BLIND" $QUEUE -p "fakes_process_.*;flips_appldata;prompt_.*;rares_.*;convs;data" 
+#python susy-interface/plotmaker.py 3l "3lE"                                     $T $O -l $L  --make data --plots lep      -o SRmcproc --flags "--perBin $BLIND" $QUEUE -p "fakes_process_.*;flips_appldata;prompt_.*;rares_.*;convs;data" 
 #
 ### sideband
 ### -----------------------------------------------------------------
 #
 ### MC fakes
-#python susy-interface/plotmaker.py 3l "3lA;3lB;3lC;3lD;3lE;3lF" $T $O -l $FL --make data --plots perCateg -o SBfakes --flags '-X blinding -I SRevent --perBin --plotgroup fakes_matched_DY+=fakes_matched_WJ --plotgroup fakes_matched_DY+=fakes_matched_TT --plotgroup fakes_matched_DY+=fakes_matched_ST' $QUEUE -p "fakes_matched_.*;prompt_.*;rares_.*;convs;data" 
-#python susy-interface/plotmaker.py 3l "4lG;4lH;4lI;4lJ;4lK"     $T $O -l $FL --make data --plots perCateg -o SBfakes --flags '-X blinding -I SRevent --perBin --plotgroup fakes_matched_DY+=fakes_matched_WW --plotgroup fakes_matched_DY+=fakes_matched_WJ --plotgroup fakes_matched_DY+=fakes_matched_TT --plotgroup fakes_matched_DY+=fakes_matched_ST' $QUEUE -p "fakes_matched_.*;prompt_.*;rares_.*;convs;data" --mccs susy-ewkino/4l/mcc_ewkino.txt
-#python susy-interface/plotmaker.py 3l "3lA;3lB;3lC;3lD;3lE;3lF" $T $O -l $FL --make data --plots evt      -o SBfakes --flags '-X blinding -I SRevent --perBin --plotgroup fakes_matched_DY+=fakes_matched_WJ --plotgroup fakes_matched_DY+=fakes_matched_TT --plotgroup fakes_matched_DY+=fakes_matched_ST' $QUEUE -p "fakes_matched_.*;prompt_.*;rares_.*;convs;data" 
-#python susy-interface/plotmaker.py 3l "4lG;4lH;4lI;4lJ;4lK"     $T $O -l $FL --make data --plots evt      -o SBfakes --flags '-X blinding -I SRevent --perBin --plotgroup fakes_matched_DY+=fakes_matched_WW --plotgroup fakes_matched_DY+=fakes_matched_WJ --plotgroup fakes_matched_DY+=fakes_matched_TT --plotgroup fakes_matched_DY+=fakes_matched_ST' $QUEUE -p "fakes_matched_.*;prompt_.*;rares_.*;convs;data" --mccs susy-ewkino/4l/mcc_ewkino.txt
-#python susy-interface/plotmaker.py 3l "3lA;3lB;3lC;3lD;3lE;3lF" $T $O -l $FL --make data --plots lep      -o SBfakes --flags '-X blinding -I SRevent --perBin --plotgroup fakes_matched_DY+=fakes_matched_WJ --plotgroup fakes_matched_DY+=fakes_matched_TT --plotgroup fakes_matched_DY+=fakes_matched_ST' $QUEUE -p "fakes_matched_.*;prompt_.*;rares_.*;convs;data" 
-#python susy-interface/plotmaker.py 3l "4lG;4lH;4lI;4lJ;4lK"     $T $O -l $FL --make data --plots lep      -o SBfakes --flags '-X blinding -I SRevent --perBin --plotgroup fakes_matched_DY+=fakes_matched_WW --plotgroup fakes_matched_DY+=fakes_matched_WJ --plotgroup fakes_matched_DY+=fakes_matched_TT --plotgroup fakes_matched_DY+=fakes_matched_ST' $QUEUE -p "fakes_matched_.*;prompt_.*;rares_.*;convs;data" --mccs susy-ewkino/4l/mcc_ewkino.txt
-#
-#
-#
-### NO LOGARITHMIC SCALE
-### =================================================================
-#O="${O}_noLog"
-#
+#python susy-interface/plotmaker.py 3l "3lE" $T $O -l $FL --make data --plots perCateg -o SBfakes --flags '-X blinding -I SRevent --perBin' $QUEUE -p "fakes_bare;bare_.*;data" --plot susy-ewkino/3l/plots_ewkino_sideband.txt  
+#python susy-interface/plotmaker.py 3l "3lE" $T $O -l $FL --make data --plots evt      -o SBfakes --flags '-X blinding -I SRevent --perBin' $QUEUE -p "fakes_bare;bare_.*;data" --plot susy-ewkino/3l/plots_ewkino_sideband.txt 
+#python susy-interface/plotmaker.py 3l "3lE" $T $O -l $FL --make data --plots lep      -o SBfakes --flags '-X blinding -I SRevent --perBin' $QUEUE -p "fakes_bare;bare_.*;data" --plot susy-ewkino/3l/plots_ewkino_sideband.txt 
+#python susy-interface/plotmaker.py 3l "3lA;3lB;3lC;3lD;3lE;3lF;4lG;4lH;4lI;4lJ;4lK" $T $O -l $FL --make data --plots perCateg -o SBfakes --flags '-X blinding -I SRevent --perBin' $QUEUE -p "fakes_bare;bare_.*;data" --plot susy-ewkino/3l/plots_ewkino_sideband.txt  
+#python susy-interface/plotmaker.py 3l "3lA;3lB;3lC;3lD;3lE;3lF;4lG;4lH;4lI;4lJ;4lK" $T $O -l $FL --make data --plots evt      -o SBfakes --flags '-X blinding -I SRevent --perBin' $QUEUE -p "fakes_bare;bare_.*;data" --plot susy-ewkino/3l/plots_ewkino_sideband.txt 
+#python susy-interface/plotmaker.py 3l "3lA;3lB;3lC;3lD;3lE;3lF;4lG;4lH;4lI;4lJ;4lK" $T $O -l $FL --make data --plots lep      -o SBfakes --flags '-X blinding -I SRevent --perBin' $QUEUE -p "fakes_bare;bare_.*;data" --plot susy-ewkino/3l/plots_ewkino_sideband.txt 
+
+
+
+## NO LOGARITHMIC SCALE
+## =================================================================
+O="${O}_noLog"
+
 ### signal regions and baseline regions plots
 ### -----------------------------------------------------------------
 #
 ### data fakes
-#python susy-interface/plotmaker.py 3l "3lA;3lB;3lC;3lD;3lE;3lF" $T $O -l $L --make data --plots perCateg -o SR   --flags '--perBin' $QUEUE --plot susy-ewkino/3l/plots_ewkino_nolog.txt
-#python susy-interface/plotmaker.py 3l "4lG;4lH;4lI;4lJ;4lK"     $T $O -l $L --make data --plots perCateg -o SR   --flags '--perBin' $QUEUE --mccs susy-ewkino/4l/mcc_ewkino.txt --plot susy-ewkino/3l/plots_ewkino_nolog.txt
-#python susy-interface/plotmaker.py 3l "3lA;3lB;3lC;3lD;3lE;3lF" $T $O -l $L --make data --plots evt      -o SR   --flags '--perBin' $QUEUE --plot susy-ewkino/3l/plots_ewkino_nolog.txt
-#python susy-interface/plotmaker.py 3l "4lG;4lH;4lI;4lJ;4lK"     $T $O -l $L --make data --plots evt      -o SR   --flags '--perBin' $QUEUE --mccs susy-ewkino/4l/mcc_ewkino.txt --plot susy-ewkino/3l/plots_ewkino_nolog.txt
-#python susy-interface/plotmaker.py 3l "3lA;3lB;3lC;3lD;3lE;3lF" $T $O -l $L --make data --plots lep      -o SR   --flags '--perBin' $QUEUE --plot susy-ewkino/3l/plots_ewkino_nolog.txt
-#python susy-interface/plotmaker.py 3l "4lG;4lH;4lI;4lJ;4lK"     $T $O -l $L --make data --plots lep      -o SR   --flags '--perBin' $QUEUE --mccs susy-ewkino/4l/mcc_ewkino.txt --plot susy-ewkino/3l/plots_ewkino_nolog.txt
+#python susy-interface/plotmaker.py 3l "3lA;3lB;3lC;3lD;3lF;4lG;4lH;4lI;4lJ;4lK" $T $O -l $L --make data --plots perCateg -o SR   --flags "--perBin $BLIND" $QUEUE --plot susy-ewkino/3l/plots_ewkino_nolog.txt
+#python susy-interface/plotmaker.py 3l "3lA;3lB;3lC;3lD;3lF;4lG;4lH;4lI;4lJ;4lK" $T $O -l $L --make data --plots evt      -o SR   --flags "--perBin $BLIND" $QUEUE --plot susy-ewkino/3l/plots_ewkino_nolog.txt
+#python susy-interface/plotmaker.py 3l "3lA;3lB;3lC;3lD;3lF;4lG;4lH;4lI;4lJ;4lK" $T $O -l $L --make data --plots lep      -o SR   --flags "--perBin $BLIND" $QUEUE --plot susy-ewkino/3l/plots_ewkino_nolog.txt
+#python susy-interface/plotmaker.py 3l "3lE"                                     $T $O -l $L  --make data --plots perCateg -o SR   --flags "--perBin $BLIND" $QUEUE --plot susy-ewkino/3l/plots_ewkino_nolog.txt -p "fakes_appldata;flips_appldata;prompt_.*;rares_.*;convs;data"
+#python susy-interface/plotmaker.py 3l "3lE"                                     $T $O -l $L  --make data --plots evt      -o SR   --flags "--perBin $BLIND" $QUEUE --plot susy-ewkino/3l/plots_ewkino_nolog.txt -p "fakes_appldata;flips_appldata;prompt_.*;rares_.*;convs;data"
+#python susy-interface/plotmaker.py 3l "3lE"                                     $T $O -l $L  --make data --plots lep      -o SR   --flags "--perBin $BLIND" $QUEUE --plot susy-ewkino/3l/plots_ewkino_nolog.txt -p "fakes_appldata;flips_appldata;prompt_.*;rares_.*;convs;data"
 #
 ### MC fakes
-#python susy-interface/plotmaker.py 3l "3lA;3lB;3lC;3lD;3lE;3lF" $T $O -l $L --make data --plots perCateg -o SRmc --flags '--perBin --plotgroup fakes_matched_DY+=fakes_matched_WJ --plotgroup fakes_matched_DY+=fakes_matched_TT --plotgroup fakes_matched_DY+=fakes_matched_ST' $QUEUE -p "fakes_matched_.*;prompt_.*;rares_.*;convs;data" --plot susy-ewkino/3l/plots_ewkino_nolog.txt
-#python susy-interface/plotmaker.py 3l "4lG;4lH;4lI;4lJ;4lK"     $T $O -l $L --make data --plots perCateg -o SRmc --flags '--perBin --plotgroup fakes_matched_DY+=fakes_matched_WW --plotgroup fakes_matched_DY+=fakes_matched_WJ --plotgroup fakes_matched_DY+=fakes_matched_TT --plotgroup fakes_matched_DY+=fakes_matched_ST' $QUEUE -p "fakes_matched_.*;prompt_.*;rares_.*;convs;data" --mccs susy-ewkino/4l/mcc_ewkino.txt --plot susy-ewkino/3l/plots_ewkino_nolog.txt
-#python susy-interface/plotmaker.py 3l "3lA;3lB;3lC;3lD;3lE;3lF" $T $O -l $L --make data --plots evt      -o SRmc --flags '--perBin --plotgroup fakes_matched_DY+=fakes_matched_WJ --plotgroup fakes_matched_DY+=fakes_matched_TT --plotgroup fakes_matched_DY+=fakes_matched_ST' $QUEUE -p "fakes_matched_.*;prompt_.*;rares_.*;convs;data" --plot susy-ewkino/3l/plots_ewkino_nolog.txt
-#python susy-interface/plotmaker.py 3l "4lG;4lH;4lI;4lJ;4lK"     $T $O -l $L --make data --plots evt      -o SRmc --flags '--perBin --plotgroup fakes_matched_DY+=fakes_matched_WW --plotgroup fakes_matched_DY+=fakes_matched_WJ --plotgroup fakes_matched_DY+=fakes_matched_TT --plotgroup fakes_matched_DY+=fakes_matched_ST' $QUEUE -p "fakes_matched_.*;prompt_.*;rares_.*;convs;data" --mccs susy-ewkino/4l/mcc_ewkino.txt --plot susy-ewkino/3l/plots_ewkino_nolog.txt
-#python susy-interface/plotmaker.py 3l "3lA;3lB;3lC;3lD;3lE;3lF" $T $O -l $L --make data --plots lep      -o SRmc --flags '--perBin --plotgroup fakes_matched_DY+=fakes_matched_WJ --plotgroup fakes_matched_DY+=fakes_matched_TT --plotgroup fakes_matched_DY+=fakes_matched_ST' $QUEUE -p "fakes_matched_.*;prompt_.*;rares_.*;convs;data" --plot susy-ewkino/3l/plots_ewkino_nolog.txt
-#python susy-interface/plotmaker.py 3l "4lG;4lH;4lI;4lJ;4lK"     $T $O -l $L --make data --plots lep      -o SRmc --flags '--perBin --plotgroup fakes_matched_DY+=fakes_matched_WW --plotgroup fakes_matched_DY+=fakes_matched_WJ --plotgroup fakes_matched_DY+=fakes_matched_TT --plotgroup fakes_matched_DY+=fakes_matched_ST' $QUEUE -p "fakes_matched_.*;prompt_.*;rares_.*;convs;data" --mccs susy-ewkino/4l/mcc_ewkino.txt --plot susy-ewkino/3l/plots_ewkino_nolog.txt
+#python susy-interface/plotmaker.py 3l "3lA;3lB;3lC;3lD;3lF;4lG;4lH;4lI;4lJ;4lK" $T $O -l $L --make data --plots perCateg -o SRmc --flags "--perBin $BLIND" $QUEUE -p "fakes_matched;prompt_.*;rares_.*;convs;data" --plot susy-ewkino/3l/plots_ewkino_nolog.txt
+#python susy-interface/plotmaker.py 3l "3lA;3lB;3lC;3lD;3lF;4lG;4lH;4lI;4lJ;4lK" $T $O -l $L --make data --plots evt      -o SRmc --flags "--perBin $BLIND" $QUEUE -p "fakes_matched;prompt_.*;rares_.*;convs;data" --plot susy-ewkino/3l/plots_ewkino_nolog.txt
+#python susy-interface/plotmaker.py 3l "3lA;3lB;3lC;3lD;3lF;4lG;4lH;4lI;4lJ;4lK" $T $O -l $L --make data --plots lep      -o SRmc --flags "--perBin $BLIND" $QUEUE -p "fakes_matched;prompt_.*;rares_.*;convs;data" --plot susy-ewkino/3l/plots_ewkino_nolog.txt
+#python susy-interface/plotmaker.py 3l "3lE"                                     $T $O -l $L --make data --plots perCateg -o SRmc --flags "--perBin $BLIND" $QUEUE -p "fakes_matched;flips_appldata;prompt_.*;rares_.*;convs;data" --plot susy-ewkino/3l/plots_ewkino_nolog.txt
+#python susy-interface/plotmaker.py 3l "3lE"                                     $T $O -l $L --make data --plots evt      -o SRmc --flags "--perBin $BLIND" $QUEUE -p "fakes_matched;flips_appldata;prompt_.*;rares_.*;convs;data" --plot susy-ewkino/3l/plots_ewkino_nolog.txt
+#python susy-interface/plotmaker.py 3l "3lE"                                     $T $O -l $L --make data --plots lep      -o SRmc --flags "--perBin $BLIND" $QUEUE -p "fakes_matched;flips_appldata;prompt_.*;rares_.*;convs;data" --plot susy-ewkino/3l/plots_ewkino_nolog.txt
+
+### MC fakes processsplit
+#python susy-interface/plotmaker.py 3l "3lA;3lB;3lC;3lD;3lF;4lG;4lH;4lI;4lJ;4lK" $T $O -l $L --make data --plots perCateg -o SRmcproc --flags "--perBin $BLIND" $QUEUE -p "fakes_process_.*;prompt_.*;rares_.*;convs;data" --plot susy-ewkino/3l/plots_ewkino_nolog.txt
+#python susy-interface/plotmaker.py 3l "3lA;3lB;3lC;3lD;3lF;4lG;4lH;4lI;4lJ;4lK" $T $O -l $L --make data --plots evt      -o SRmcproc --flags "--perBin $BLIND" $QUEUE -p "fakes_process_.*;prompt_.*;rares_.*;convs;data" --plot susy-ewkino/3l/plots_ewkino_nolog.txt
+#python susy-interface/plotmaker.py 3l "3lA;3lB;3lC;3lD;3lF;4lG;4lH;4lI;4lJ;4lK" $T $O -l $L --make data --plots lep      -o SRmcproc --flags "--perBin $BLIND" $QUEUE -p "fakes_process_.*;prompt_.*;rares_.*;convs;data" --plot susy-ewkino/3l/plots_ewkino_nolog.txt
+#python susy-interface/plotmaker.py 3l "3lE"                                     $T $O -l $L --make data --plots perCateg -o SRmcproc --flags "--perBin $BLIND" $QUEUE -p "fakes_process_.*;flips_appldata;prompt_.*;rares_.*;convs;data" --plot susy-ewkino/3l/plots_ewkino_nolog.txt
+#python susy-interface/plotmaker.py 3l "3lE"                                     $T $O -l $L --make data --plots evt      -o SRmcproc --flags "--perBin $BLIND" $QUEUE -p "fakes_process_.*;flips_appldata;prompt_.*;rares_.*;convs;data" --plot susy-ewkino/3l/plots_ewkino_nolog.txt
+#python susy-interface/plotmaker.py 3l "3lE"                                     $T $O -l $L --make data --plots lep      -o SRmcproc --flags "--perBin $BLIND" $QUEUE -p "fakes_process_.*;flips_appldata;prompt_.*;rares_.*;convs;data" --plot susy-ewkino/3l/plots_ewkino_nolog.txt
 #
 ### sideband
 ### -----------------------------------------------------------------
 #
-## MC fakes
-#python susy-interface/plotmaker.py 3l "3lA;3lB;3lC;3lD;3lE;3lF" $T $O -l $FL --make data --plots perCateg -o SBfakes --flags '-X blinding -I SRevent --perBin --plotgroup fakes_matched_DY+=fakes_matched_WJ --plotgroup fakes_matched_DY+=fakes_matched_TT --plotgroup fakes_matched_DY+=fakes_matched_ST' $QUEUE -p "fakes_matched_.*;prompt_.*;rares_.*;convs;data" --plot susy-ewkino/3l/plots_ewkino_nolog.txt 
-#python susy-interface/plotmaker.py 3l "4lG;4lH;4lI;4lJ;4lK"     $T $O -l $FL --make data --plots perCateg -o SBfakes --flags '-X blinding -I SRevent --perBin --plotgroup fakes_matched_DY+=fakes_matched_WW --plotgroup fakes_matched_DY+=fakes_matched_WJ --plotgroup fakes_matched_DY+=fakes_matched_TT --plotgroup fakes_matched_DY+=fakes_matched_ST' $QUEUE -p "fakes_matched_.*;prompt_.*;rares_.*;convs;data" --mccs susy-ewkino/4l/mcc_ewkino.txt --plot susy-ewkino/3l/plots_ewkino_nolog.txt
-#python susy-interface/plotmaker.py 3l "3lA;3lB;3lC;3lD;3lE;3lF" $T $O -l $FL --make data --plots evt      -o SBfakes --flags '-X blinding -I SRevent --perBin --plotgroup fakes_matched_DY+=fakes_matched_WJ --plotgroup fakes_matched_DY+=fakes_matched_TT --plotgroup fakes_matched_DY+=fakes_matched_ST' $QUEUE -p "fakes_matched_.*;prompt_.*;rares_.*;convs;data" --plot susy-ewkino/3l/plots_ewkino_nolog.txt
-#python susy-interface/plotmaker.py 3l "4lG;4lH;4lI;4lJ;4lK"     $T $O -l $FL --make data --plots evt      -o SBfakes --flags '-X blinding -I SRevent --perBin --plotgroup fakes_matched_DY+=fakes_matched_WW --plotgroup fakes_matched_DY+=fakes_matched_WJ --plotgroup fakes_matched_DY+=fakes_matched_TT --plotgroup fakes_matched_DY+=fakes_matched_ST' $QUEUE -p "fakes_matched_.*;prompt_.*;rares_.*;convs;data" --mccs susy-ewkino/4l/mcc_ewkino.txt --plot susy-ewkino/3l/plots_ewkino_nolog.txt
-#python susy-interface/plotmaker.py 3l "3lA;3lB;3lC;3lD;3lE;3lF" $T $O -l $FL --make data --plots lep      -o SBfakes --flags '-X blinding -I SRevent --perBin --plotgroup fakes_matched_DY+=fakes_matched_WJ --plotgroup fakes_matched_DY+=fakes_matched_TT --plotgroup fakes_matched_DY+=fakes_matched_ST' $QUEUE -p "fakes_matched_.*;prompt_.*;rares_.*;convs;data" --plot susy-ewkino/3l/plots_ewkino_nolog.txt
-#python susy-interface/plotmaker.py 3l "4lG;4lH;4lI;4lJ;4lK"     $T $O -l $FL --make data --plots lep      -o SBfakes --flags '-X blinding -I SRevent --perBin --plotgroup fakes_matched_DY+=fakes_matched_WW --plotgroup fakes_matched_DY+=fakes_matched_WJ --plotgroup fakes_matched_DY+=fakes_matched_TT --plotgroup fakes_matched_DY+=fakes_matched_ST' $QUEUE -p "fakes_matched_.*;prompt_.*;rares_.*;convs;data" --mccs susy-ewkino/4l/mcc_ewkino.txt --plot susy-ewkino/3l/plots_ewkino_nolog.txt
-#
+### MC fakes
+#python susy-interface/plotmaker.py 3l "3lE" $T $O -l $FL --make data --plots perCateg -o SBfakes --flags '-X blinding -I SRevent --perBin' $QUEUE -p "fakes_bare;bare_.*;data" --plot susy-ewkino/3l/plots_ewkino_nolog.txt 
+#python susy-interface/plotmaker.py 3l "3lE" $T $O -l $FL --make data --plots evt      -o SBfakes --flags '-X blinding -I SRevent --perBin' $QUEUE -p "fakes_bare;bare_.*;data" --plot susy-ewkino/3l/plots_ewkino_nolog.txt
+#python susy-interface/plotmaker.py 3l "3lE" $T $O -l $FL --make data --plots lep      -o SBfakes --flags '-X blinding -I SRevent --perBin' $QUEUE -p "fakes_bare;bare_.*;data" --plot susy-ewkino/3l/plots_ewkino_nolog.txt
+#python susy-interface/plotmaker.py 3l "3lA;3lB;3lC;3lD;3lE;3lF;4lG;4lH;4lI;4lJ;4lK" $T $O -l $FL --make data --plots perCateg -o SBfakes --flags '-X blinding -I SRevent --perBin' $QUEUE -p "fakes_bare;bare_.*;data" --plot susy-ewkino/3l/plots_ewkino_nolog.txt 
+#python susy-interface/plotmaker.py 3l "3lA;3lB;3lC;3lD;3lE;3lF;4lG;4lH;4lI;4lJ;4lK" $T $O -l $FL --make data --plots evt      -o SBfakes --flags '-X blinding -I SRevent --perBin' $QUEUE -p "fakes_bare;bare_.*;data" --plot susy-ewkino/3l/plots_ewkino_nolog.txt
+#python susy-interface/plotmaker.py 3l "3lA;3lB;3lC;3lD;3lE;3lF;4lG;4lH;4lI;4lJ;4lK" $T $O -l $FL --make data --plots lep      -o SBfakes --flags '-X blinding -I SRevent --perBin' $QUEUE -p "fakes_bare;bare_.*;data" --plot susy-ewkino/3l/plots_ewkino_nolog.txt
+
+
+
+## CONFERENCE MODE
+## =================================================================
+
+#O="/afs/cern.ch/user/c/cheidegg/www/heppy/2016-12-17_confTest" # Do NOT give a trailing /
+
+## log scale
+#python susy-interface/plotmaker.py 3l "3lA;3lB;3lC;3lD;3lE;3lF" $T $O -l $L  --make data --plots perCateg -o SR   --flags "--perBin $BLIND" -p "prompt_WZ;fakes_appldata;promptsub;conf;data" $QUEUE
+#python susy-interface/plotmaker.py 3l "4lG;4lH;4lI;4lJ;4lK"     $T $O -l $L  --make data --plots perCateg -o SR   --flags "--perBin $BLIND" -p "conf_ZZH;fakes_appldata;promptsub;conf;data"  $QUEUE
+
+## no log scale
+#python susy-interface/plotmaker.py 3l "3lA;3lB;3lC;3lD;3lE;3lF" $T $O -l $L --make data --plots perCateg -o SR   --flags "--perBin $BLIND" -p "prompt_WZ;fakes_appldata;promptsub;conf;data" $QUEUE --plot susy-ewkino/3l/plots_ewkino_nolog.txt
+#python susy-interface/plotmaker.py 3l "4lG;4lH;4lI;4lJ;4lK"     $T $O -l $L --make data --plots perCateg -o SR   --flags "--perBin $BLIND" -p "conf_ZZH;fakes_appldata;promptsub;conf;data"  $QUEUE --plot susy-ewkino/3l/plots_ewkino_nolog.txt

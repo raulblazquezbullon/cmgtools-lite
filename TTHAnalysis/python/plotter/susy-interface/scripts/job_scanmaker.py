@@ -27,7 +27,8 @@ themca   = "THEMCA"
 thesyst  = "THESYST"
 #first    = "THECMDFIRST"
 #second   = "THECMDSECOND"
-thebase  = "THEBASE"
+sigbase  = "THEBASESIG" # without certain flags that affect the systematics
+sysbase  = "THEBASESYS" # the final command including all systematic variations
 
 ## ---------
 
@@ -137,10 +138,12 @@ def makeWeight(wstr, wvar):
 	if wvar == "1": return wstr
 	return "("+wstr+")*"+wvar
 
-cmdbase = thebase.replace("{","[[").replace("}","]]")
+cmdbase = sigbase.replace("{","[[").replace("}","]]")
 cmdbase = cmdbase.replace("[[[","{").replace("]]]","}")
+sysbase = sysbase.replace("{","[[").replace("}","]]")
+sysbase = sysbase.replace("[[[","{").replace("]]]","}")
 #cmdbase = "python {sc} {{MCA}} {FIRST} {{SYSTS}} --od {{OUTDIR}} ".format(sc=script, FIRST=first)
-mcabase = "sig_{{name}} : {file} : {xs} : {{ws}} ; Label=\"{{name}}\"{{FRfiles}}".format(file=file, xs=xs)
+mcabase = "sig_{{name}} : {file} : {xs} : {{ws}} ; Label=\"{{name}}\", isFastSim{{FRfiles}}".format(file=file, xs=xs)
 
 short = mass1 + "_" + mass2
 accdir = outdir + "/acc/" + short
@@ -190,6 +193,7 @@ if q2file:
 f.close()
 
 ## run the proper job, which is actually just making the cards
-mybase = cmdbase.format(MCA=mcadir + "/mca_full_"+name+".txt", SYS=thesyst, O=outdir+"/mps/"+short)
+mybase = sysbase.format(MCA=mcadir + "/mca_full_"+name+".txt", SYS=thesyst, O=outdir+"/mps/"+short)
 cmd(mybase.replace("[[","{").replace("]]","}") + " --ip x " + plugFiles([bkgdir+"/common/SR.input.root", accdir+"/acc_SR.input.root"]))
+
 
