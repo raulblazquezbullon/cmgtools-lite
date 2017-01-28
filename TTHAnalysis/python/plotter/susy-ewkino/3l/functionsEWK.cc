@@ -353,6 +353,37 @@ int SRos(int nLep, int nTau, int nOSSF, int nOSLF, float mT2L, float mT2T, float
     return 0;
 }
 
+int SuperSig3L1(int nTau, float mT, float met) {
+    if(nTau==0 && (mT   >= 120 && met >= 200)) return 1;
+    return 0;
+}
+
+int SuperSig3L2(int nTau, float met) {
+    if(nTau==0 &&                 met >= 200)  return 1;
+    return 0;
+}
+
+int SuperSig3L3(int nTau, float mT2L, float met) {
+    if(nTau==1 && (mT2L >=  50 && met >= 200)) return 1;
+    return 0;
+}
+
+int SuperSig3L4(int nTau, float mT2T, float met) {
+    if(nTau==2 && (mT2T >=  50 && met >= 200)) return 1;
+    return 0;
+}
+
+int SuperSig3L5(int nTau, float met) {
+    if(nTau==2 && met >=  75 ) return 1;
+    return 0;
+}
+
+int SuperSig4L1(float met) {
+    if(met >= 200) return 1;
+    return 0;
+}
+
+
 int SuperSig(int nLep, int nTau, int nOSSF, int nOSLF, float mT2L, float mT2T, float mll, float mT, float met) {
 
     if(nLep == 3){

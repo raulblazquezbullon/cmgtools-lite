@@ -6,8 +6,6 @@ from PhysicsTools.HeppyCore.statistics.counter import Counter
 if __name__ == "__main__":
     from optparse import OptionParser
     parser = OptionParser(usage="%prog [options] outputDir inputDirs")
-    parser.add_option("--exclude", dest="exclude", type="string", action="append", default=[], help="Sample names to exclude")
-    parser.add_option("--accept" , dest="accept" , type="string", action="append", default=[], help="Sample names to accept")
     parser.add_option("-t", "--tree",  dest="tree", default='treeProducerSusyMultilepton', help="Pattern for tree name");
     parser.add_option("-u", "--url",  dest="url", default=None, help="Url to remotely save the produced trees")
     parser.add_option("-q", dest="queue", default=None, help="Queue to send jobs (one per dataset/chunk)")
@@ -48,8 +46,6 @@ if __name__ == "__main__":
 
         indir = _in.strip()
         dset = indir.strip().split('/')[-1]
-        if options.accept  != [] and all([dset.find(a) == -1 for a in options.accept ]): continue
-        if options.exclude != [] and any([dset.find(e) >  -1 for e in options.exclude]): continue
 
         remdir = args[0].strip()
         outdir = options.tmpdir
