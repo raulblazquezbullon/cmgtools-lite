@@ -1,0 +1,31 @@
+###### Data -----------------------------------------------------------
+#incl_data : + ; IncludeMca="susy-ewkino/2lss/includes/data/mca_data_old.txt"
+incl_data : + ; IncludeMca="susy-ewkino/2lss/includes/data/mca_data_M17.txt"
+#incl_data : + ; IncludeMca="susy-ewkino/2lss/includes/data/mca_data_ICHEP.txt"
+
+###### MC ---------------------------------------------------------------
+incl_prompt : + ; IncludeMca="susy-ewkino/2lss/includes/mca_prompt.txt" 
+incl_convs  : + ; IncludeMca="susy-ewkino/2lss/includes/mca_convs.txt"
+#incl_prompt : + ; IncludeMca="susy-ewkino/2lss/includes/mca_prompt_old.txt" 
+#incl_convs  : + ; IncludeMca="susy-ewkino/2lss/includes/mca_convs_old.txt"
+
+######## Fakes and flips -----------------------------------------------
+incl_fakes_data     : + ; IncludeMca="susy-ewkino/2lss/includes/fakes/mca_fakes_data.txt"
+#incl_fakes_data     : + ; IncludeMca="susy-ewkino/2lss/includes/fakes/mca_fakes_data_old.txt"
+incl_flips_data     : + ; IncludeMca="susy-ewkino/2lss/includes/flips/mca_flips_data.txt"
+#incl_flips_data     : + ; IncludeMca="susy-ewkino/2lss/includes/flips/mca_flips_data_old.txt"
+
+## Prompt sub
+## -----------------------------------------------------------
+#incl_promptsub      : + ; IncludeMca="susy-ewkino/2lss/includes/mca_promptsub.txt"
+
+
+
+## Signals
+## -----------------------------------------------------------
+#sig_TChiNeuWZ_350_200+ : TChiNeuWZ_350_200 : xsec ; FillColor=ROOT.kRed, FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", Label="WZ 350/200", NormSystematic=0.3
+#incl_sig_opt  : + ; IncludeMca="susy-ewkino/3l/includes/mca_sig_opt.txt"
+#incl_sig_acc  : + ; IncludeMca="susy-ewkino/3l/includes/mca_sig_acc.txt"
+#incl_sig_exc  : + ; IncludeMca="susy-ewkino/3l/includes/mca_sig_exercise.txt"
+#incl_sig_fs   : + ; IncludeMca="susy-ewkino/3l/includes/mca_sig_fullsim.txt"
+
