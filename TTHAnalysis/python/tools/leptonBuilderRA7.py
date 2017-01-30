@@ -842,8 +842,8 @@ def _susy3l_lepId_CBloose(lep):
             if lep.pt <= 7 or abs(lep.eta) > 2.5 : return False
             if not (lep.convVeto and lep.lostHits <= 1): 
                 return False
-            #if not _susy_elec_nontrigmva_VL(lep):
-            #    return False
+            if not _susy_elec_nontrigmva_VL(lep):
+                return False
             if not _susy3l_idEmu_cuts(lep): return False
             return True
         return False
