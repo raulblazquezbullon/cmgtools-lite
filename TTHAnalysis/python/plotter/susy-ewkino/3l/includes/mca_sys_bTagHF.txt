@@ -1,7 +1,7 @@
 
 ## UP VARIATION
 ## -----------------------------------------------------------
-prompt_WZ_bTagHF_Up  : WZTo3LNu                    : xsec : eventBTagSF_up_hf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
+prompt_WZ_bTagHF_Up  : WZTo3LNu                    : 1.02*xsec : eventBTagSF_up_hf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
 prompt_ZZH_bTagHF_Up : VHToNonbb                   : xsec : eventBTagSF_up_hf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
 prompt_ZZH_bTagHF_Up : GGHZZ4L                     : xsec : eventBTagSF_up_hf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
 prompt_ZZH_bTagHF_Up : ZZTo4L                      : xsec : eventBTagSF_up_hf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
@@ -16,8 +16,8 @@ rares_VVV_bTagHF_Up  : ZZZ                         : xsec : eventBTagSF_up_hf/ev
 rares_ttW_bTagHF_Up  : TTWToLNu_ext1+TTWToLNu_ext2 : xsec ; eventBTagSF_up_hf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
 #rares_ttW_bTagHF_Up  : TTWToLNu                    : xsec : eventBTagSF_up_hf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
 rares_ttZ_bTagHF_Up  : TTZToLLNuNu                 : xsec : eventBTagSF_up_hf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
-rares_ttZ_bTagHF_Up  : TTHnobb_pow_Spring16        : xsec : eventBTagSF_up_hf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
-#rares_ttZ_bTagHF_Up  : TTHnobb_pow                 : xsec : eventBTagSF_up_hf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
+#rares_ttZ_bTagHF_Up  : TTHnobb_pow_Spring16        : xsec : eventBTagSF_up_hf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
+rares_ttZ_bTagHF_Up  : TTHnobb_pow                 : xsec : eventBTagSF_up_hf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
 #rares_ttZ_bTagHF_Up  : TTHnobb_mWCutfix_ch1        : xsec : eventBTagSF_up_hf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
 rares_ttX_bTagHF_Up  : TTLLJets_m1to10             : 0.0493 : eventBTagSF_up_hf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
 rares_ttX_bTagHF_Up  : TTJets_DiLepton             : xsec : eventBTagSF_up_hf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
@@ -25,10 +25,11 @@ rares_ttX_bTagHF_Up  : TTJets_SingleLeptonFromT    : xsec : eventBTagSF_up_hf/ev
 rares_ttX_bTagHF_Up  : TTJets_SingleLeptonFromTbar : xsec : eventBTagSF_up_hf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
 rares_ttX_bTagHF_Up  : TTTT                        : xsec : eventBTagSF_up_hf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
 rares_ttX_bTagHF_Up  : tZq_ll                      : xsec : eventBTagSF_up_hf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
+rares_ttX_bTagHF_Up  : tZW_ll                      : xsec : eventBTagSF_up_hf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
 
 ## DN VARIATION
 ## -----------------------------------------------------------
-prompt_WZ_bTagHF_Dn  : WZTo3LNu                    : xsec : eventBTagSF_down_hf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
+prompt_WZ_bTagHF_Dn  : WZTo3LNu                    : 1.02*xsec : eventBTagSF_down_hf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
 prompt_ZZH_bTagHF_Dn : VHToNonbb                   : xsec : eventBTagSF_down_hf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
 prompt_ZZH_bTagHF_Dn : GGHZZ4L                     : xsec : eventBTagSF_down_hf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
 prompt_ZZH_bTagHF_Dn : ZZTo4L                      : xsec : eventBTagSF_down_hf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
@@ -43,8 +44,8 @@ rares_VVV_bTagHF_Dn  : ZZZ                         : xsec : eventBTagSF_down_hf/
 rares_ttW_bTagHF_Dn  : TTWToLNu_ext1+TTWToLNu_ext2 : xsec ; eventBTagSF_down_hf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
 #rares_ttW_bTagHF_Dn  : TTWToLNu                    : xsec : eventBTagSF_down_hf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
 rares_ttZ_bTagHF_Dn  : TTZToLLNuNu                 : xsec : eventBTagSF_down_hf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
-rares_ttZ_bTagHF_Dn  : TTHnobb_pow_Spring16        : xsec : eventBTagSF_down_hf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
-#rares_ttZ_bTagHF_Dn  : TTHnobb_pow                 : xsec : eventBTagSF_down_hf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
+#rares_ttZ_bTagHF_Dn  : TTHnobb_pow_Spring16        : xsec : eventBTagSF_down_hf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
+rares_ttZ_bTagHF_Dn  : TTHnobb_pow                 : xsec : eventBTagSF_down_hf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
 #rares_ttZ_bTagHF_Dn  : TTHnobb_mWCutfix_ch1        : xsec : eventBTagSF_down_hf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
 rares_ttX_bTagHF_Dn  : TTLLJets_m1to10             : 0.0493 : eventBTagSF_down_hf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
 rares_ttX_bTagHF_Dn  : TTJets_DiLepton             : xsec : eventBTagSF_down_hf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
@@ -52,3 +53,4 @@ rares_ttX_bTagHF_Dn  : TTJets_SingleLeptonFromT    : xsec : eventBTagSF_down_hf/
 rares_ttX_bTagHF_Dn  : TTJets_SingleLeptonFromTbar : xsec : eventBTagSF_down_hf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
 rares_ttX_bTagHF_Dn  : TTTT                        : xsec : eventBTagSF_down_hf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
 rares_ttX_bTagHF_Dn  : tZq_ll                      : xsec : eventBTagSF_down_hf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
+rares_ttX_bTagHF_Dn  : tZW_ll                      : xsec : eventBTagSF_down_hf/eventBTagSF ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", SkipMe=True
