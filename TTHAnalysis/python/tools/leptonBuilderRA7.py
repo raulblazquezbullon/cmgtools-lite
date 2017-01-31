@@ -171,9 +171,21 @@ class LeptonBuilderRA7:
         #self.jets30     = filter(lambda x: x.pt > 30., [ (jetcollcleaned[idx] if idx>=0 else jetcolldiscarded[-1-idx]) for idx in getattr(event,"iJSel"+self.inputlabel)  ])
         #self.jets25     = filter(lambda x: x.pt > 25., [ (jetcollcleaned[idx] if idx>=0 else jetcolldiscarded[-1-idx]) for idx in getattr(event,"iJSel"+self.inputlabel)  ])
         #self.bJets25    = filter(lambda j: j.btagCSV >  0.80, self.jets25)
-        self.nJets30    = getattr(event,"nJet30"+self.inputlabel)
-        self.nbJets25   = getattr(event,"nBJetMedium25"+self.inputlabel)
-        self.ht         = getattr(event,"htJet30j"+self.inputlabel)
+
+        self.nJets30    = {}
+        self.nJets30[0]    = getattr(event,"nJet30"+self.inputlabel)
+        self.nJets30[1]    = getattr(event,"nJet30"+self.inputlabel+"_jecUp")
+        self.nJets30[-1]   = getattr(event,"nJet30"+self.inputlabel+"_jecDown")
+
+        self.nbJets25   = {}
+        self.nbJets25[0]   = getattr(event,"nBJetMedium25"+self.inputlabel)
+        self.nbJets25[1]   = getattr(event,"nBJetMedium25"+self.inputlabel+"_jecUp")
+        self.nbJets25[-1]  = getattr(event,"nBJetMedium25"+self.inputlabel+"_jecDown")
+
+        self.ht         = {}
+        self.ht[0]         = getattr(event,"htJet30j"+self.inputlabel)
+        self.ht[1]         = getattr(event,"htJet30j"+self.inputlabel+"_jecUp")
+        self.ht[-1]        = getattr(event,"htJet30j"+self.inputlabel+"_jecDown")
 
             
     ## collectOSpairs
@@ -226,38 +238,38 @@ class LeptonBuilderRA7:
     ## categorizeEvent
     ## _______________________________________________________________
     def categorizeEvent(self, event):
-
+        self.fillOnZ()
+        self.fillOnZFO()
         for var in self.systsJEC:
-            self.fillOnZ(var)
-            self.fillOnZFO(var)
             self.fillSR(var)
             self.fillSRFO(var)
 
-    ## fillOnZ
-    ## _______________________________________________________________
-    def fillOnZ(self, t, var = 0):
-        self.ret["isOnZ" + self.systsJEC[var]] = 1 if self.isOnZ(self.lepsT, var) else 0
 
     ## fillOnZ
     ## _______________________________________________________________
-    def fillOnZFO(self, t, var = 0):
-        self.ret["isOnZ_fo" + self.systsJEC[var]] = 1 if self.isOnZ(self.lepSelFO, var) else 0
+    def fillOnZ(self):
+        self.ret["isOnZ"] = 1 if self.isOnZ(self.lepsT) else 0
+
+    ## fillOnZ
+    ## _______________________________________________________________
+    def fillOnZFO(self):
+        self.ret["isOnZ_fo"] = 1 if self.isOnZ(self.lepSelFO) else 0
 
 
     ## fillSR
     ## _______________________________________________________________
-    def fillSR(self, t, var = 0):
+    def fillSR(self, var = 0):
 
         BR  = -1
         SR  = -1
         SSR = -1
 
         if len(self.lepsT) == 3:
-            SR  = self.findSR(var, self.ret["mT_3l" + self.systsJEC[var]], self.ret["isOnZ" + self.systsJEC[var]])
-            SSR = self.findSSR(var, self.ret["mT_3l" + self.systsJEC[var]], self.ret["isOnZ" + self.systsJEC[var]])
+            SR  = self.findSR(var, self.ret["mT_3l" + self.systsJEC[var]], self.ret["isOnZ"])
+            SSR = self.findSSR(var, self.ret["mT_3l" + self.systsJEC[var]], self.ret["isOnZ"])
         elif len(self.lepsT) == 4:
-            SR  = self.findSR(var, self.ret["mT_4l" + self.systsJEC[var]], self.ret["isOnZ" + self.systsJEC[var]])
-            SSR = self.findSSR(var, self.ret["mT_4l" + self.systsJEC[var]], self.ret["isOnZ" + self.systsJEC[var]])
+            SR  = self.findSR(var, self.ret["mT_4l" + self.systsJEC[var]], self.ret["isOnZ"])
+            SSR = self.findSSR(var, self.ret["mT_4l" + self.systsJEC[var]], self.ret["isOnZ"])
 
         if (SR>=1 and SR<=23): BR=0
         elif (SR>=24 and SR<=46): BR=1
@@ -268,18 +280,18 @@ class LeptonBuilderRA7:
 
     ## fillSR
     ## _______________________________________________________________
-    def fillSRFO(self, t, var = 0):
+    def fillSRFO(self,  var = 0):
 
         BRf  = -1
         SRf  = -1
         SSRf = -1
 
         if len(self.lepSelFO) == 3:
-            SRf  = self.findSR(var, self.ret["mT_fo_3l" + self.systsJEC[var]], self.ret["isOnZ_fo" + self.systsJEC[var]])
-            SSRf = self.findSSR(var, self.ret["mT_fo_3l" + self.systsJEC[var]], self.ret["isOnZ_fo" + self.systsJEC[var]])
+            SRf  = self.findSR(var, self.ret["mT_fo_3l" + self.systsJEC[var]], self.ret["isOnZ_fo"])
+            SSRf = self.findSSR(var, self.ret["mT_fo_3l" + self.systsJEC[var]], self.ret["isOnZ_fo"])
         elif len(self.lepSelFO) == 4:
-            SRf  = self.findSR(var, self.ret["mT_fo_4l" + self.systsJEC[var]], self.ret["isOnZ_fo" + self.systsJEC[var]])
-            SSRf = self.findSSR(var, self.ret["mT_fo_4l" + self.systsJEC[var]], self.ret["isOnZ_fo" + self.systsJEC[var]])
+            SRf  = self.findSR(var, self.ret["mT_fo_4l" + self.systsJEC[var]], self.ret["isOnZ_fo"])
+            SSRf = self.findSSR(var, self.ret["mT_fo_4l" + self.systsJEC[var]], self.ret["isOnZ_fo"])
 
         if (SRf>=1 and SRf<=23): BRf=0
         elif (SRf>=24 and SRf<=46): BRf=1
@@ -290,7 +302,7 @@ class LeptonBuilderRA7:
 
     ## isOnZ
     ## _______________________________________________________________
-    def isOnZ(self, leps, var = 0):
+    def isOnZ(self, leps):
         if len(leps) < 3: return False
         nlep = len(leps)
         if nlep>4: nlep=4
@@ -308,41 +320,41 @@ class LeptonBuilderRA7:
 
         SR = -1
         offset = isonZ*23
-        if   self.nJets30 >= 2 and self.nbJets25 == 0 and  50+isonZ*20 <= self.met[var] < 150 and  60 <= self.ht < 400 and mT < 120 :   SR =  1 #1a
-        elif self.nJets30 >= 2 and self.nbJets25 == 0 and 150          <= self.met[var] < 300 and  60 <= self.ht < 400 and mT < 120 :   SR =  2 #2a
-        elif self.nJets30 >= 2 and self.nbJets25 == 0 and  50          <= self.met[var] < 150 and 400 <= self.ht < 600 and mT < 120 :   SR =  3 #3a
-        elif self.nJets30 >= 2 and self.nbJets25 == 0 and 150          <= self.met[var] < 300 and 400 <= self.ht < 600 and mT < 120 :   SR =  4 #4a
-        elif self.nJets30 >= 2 and self.nbJets25 == 0 and  50+isonZ*20 <= self.met[var] < 150 and  60 <= self.ht < 400 and mT > 120 :   SR =  5 #1b
-        elif self.nJets30 >= 2 and self.nbJets25 == 0 and 150          <= self.met[var] < 300 and  60 <= self.ht < 400 and mT > 120 :   SR =  6 #2b
-        elif self.nJets30 >= 2 and self.nbJets25 == 0 and  50          <= self.met[var] < 150 and 400 <= self.ht < 600 and mT > 120 :   SR =  7 #3b
-        elif self.nJets30 >= 2 and self.nbJets25 == 0 and 150          <= self.met[var] < 300 and 400 <= self.ht < 600 and mT > 120 :   SR =  8 #4b
-        elif self.nJets30 >= 2 and self.nbJets25 == 1 and  50+isonZ*20 <= self.met[var] < 150 and  60 <= self.ht < 400              :   SR =  9 #5 
-        elif self.nJets30 >= 2 and self.nbJets25 == 1 and 150          <= self.met[var] < 300 and  60 <= self.ht < 400              :   SR = 10 #6
-        elif self.nJets30 >= 2 and self.nbJets25 == 1 and  50          <= self.met[var] < 150 and 400 <= self.ht < 600              :   SR = 11 #7
-        elif self.nJets30 >= 2 and self.nbJets25 == 1 and 150          <= self.met[var] < 300 and 400 <= self.ht < 600              :   SR = 12 #8
-        elif self.nJets30 >= 2 and self.nbJets25 == 2 and  50          <= self.met[var] < 150 and  60 <= self.ht < 400              :   SR = 13 #9
-        elif self.nJets30 >= 2 and self.nbJets25 == 2 and 150          <= self.met[var] < 300 and  60 <= self.ht < 400              :   SR = 14 #10
-        elif self.nJets30 >= 2 and self.nbJets25 == 2 and  50          <= self.met[var] < 150 and 400 <= self.ht < 600              :   SR = 15 #11
-        elif self.nJets30 >= 2 and self.nbJets25 == 2 and 150          <= self.met[var] < 300 and 400 <= self.ht < 600              :   SR = 16 #12
-        elif self.nJets30 >= 2 and self.nbJets25 >= 3 and  50          <= self.met[var] < 300 and  60 <= self.ht < 600              :   SR = 17 #13
-        elif self.nJets30 >= 2 and self.nbJets25 >= 0 and  50          <= self.met[var] < 150 and 600 <= self.ht       and mT < 120 :   SR = 18 #14a
-        elif self.nJets30 >= 2 and self.nbJets25 >= 0 and 150          <= self.met[var] < 300 and 600 <= self.ht       and mT < 120 :   SR = 19 #15a
-        elif self.nJets30 >= 2 and self.nbJets25 >= 0 and  50          <= self.met[var] < 150 and 600 <= self.ht       and mT > 120 :   SR = 20 #14b
-        elif self.nJets30 >= 2 and self.nbJets25 >= 0 and 150          <= self.met[var] < 300 and 600 <= self.ht       and mT > 120 :   SR = 21 #15b
-        elif self.nJets30 >= 2 and self.nbJets25 >= 0 and 300          <= self.met[var]       and  60 <= self.ht       and mT < 120 :   SR = 22 #16a
-        elif self.nJets30 >= 2 and self.nbJets25 >= 0 and 300          <= self.met[var]       and  60 <= self.ht       and mT > 120 :   SR = 23 #16b
+        if   self.nJets30[var] >= 2 and self.nbJets25[var] == 0 and  50+isonZ*20 <= self.met[var] < 150 and  60 <= self.ht[var] < 400 and mT < 120 :   SR =  1 #1a
+        elif self.nJets30[var] >= 2 and self.nbJets25[var] == 0 and 150          <= self.met[var] < 300 and  60 <= self.ht[var] < 400 and mT < 120 :   SR =  2 #2a
+        elif self.nJets30[var] >= 2 and self.nbJets25[var] == 0 and  50          <= self.met[var] < 150 and 400 <= self.ht[var] < 600 and mT < 120 :   SR =  3 #3a
+        elif self.nJets30[var] >= 2 and self.nbJets25[var] == 0 and 150          <= self.met[var] < 300 and 400 <= self.ht[var] < 600 and mT < 120 :   SR =  4 #4a
+        elif self.nJets30[var] >= 2 and self.nbJets25[var] == 0 and  50+isonZ*20 <= self.met[var] < 150 and  60 <= self.ht[var] < 400 and mT > 120 :   SR =  5 #1b
+        elif self.nJets30[var] >= 2 and self.nbJets25[var] == 0 and 150          <= self.met[var] < 300 and  60 <= self.ht[var] < 400 and mT > 120 :   SR =  6 #2b
+        elif self.nJets30[var] >= 2 and self.nbJets25[var] == 0 and  50          <= self.met[var] < 150 and 400 <= self.ht[var] < 600 and mT > 120 :   SR =  7 #3b
+        elif self.nJets30[var] >= 2 and self.nbJets25[var] == 0 and 150          <= self.met[var] < 300 and 400 <= self.ht[var] < 600 and mT > 120 :   SR =  8 #4b
+        elif self.nJets30[var] >= 2 and self.nbJets25[var] == 1 and  50+isonZ*20 <= self.met[var] < 150 and  60 <= self.ht[var] < 400              :   SR =  9 #5 
+        elif self.nJets30[var] >= 2 and self.nbJets25[var] == 1 and 150          <= self.met[var] < 300 and  60 <= self.ht[var] < 400              :   SR = 10 #6
+        elif self.nJets30[var] >= 2 and self.nbJets25[var] == 1 and  50          <= self.met[var] < 150 and 400 <= self.ht[var] < 600              :   SR = 11 #7
+        elif self.nJets30[var] >= 2 and self.nbJets25[var] == 1 and 150          <= self.met[var] < 300 and 400 <= self.ht[var] < 600              :   SR = 12 #8
+        elif self.nJets30[var] >= 2 and self.nbJets25[var] == 2 and  50          <= self.met[var] < 150 and  60 <= self.ht[var] < 400              :   SR = 13 #9
+        elif self.nJets30[var] >= 2 and self.nbJets25[var] == 2 and 150          <= self.met[var] < 300 and  60 <= self.ht[var] < 400              :   SR = 14 #10
+        elif self.nJets30[var] >= 2 and self.nbJets25[var] == 2 and  50          <= self.met[var] < 150 and 400 <= self.ht[var] < 600              :   SR = 15 #11
+        elif self.nJets30[var] >= 2 and self.nbJets25[var] == 2 and 150          <= self.met[var] < 300 and 400 <= self.ht[var] < 600              :   SR = 16 #12
+        elif self.nJets30[var] >= 2 and self.nbJets25[var] >= 3 and  50          <= self.met[var] < 300 and  60 <= self.ht[var] < 600              :   SR = 17 #13
+        elif self.nJets30[var] >= 2 and self.nbJets25[var] >= 0 and  50          <= self.met[var] < 150 and 600 <= self.ht[var]       and mT < 120 :   SR = 18 #14a
+        elif self.nJets30[var] >= 2 and self.nbJets25[var] >= 0 and 150          <= self.met[var] < 300 and 600 <= self.ht[var]       and mT < 120 :   SR = 19 #15a
+        elif self.nJets30[var] >= 2 and self.nbJets25[var] >= 0 and  50          <= self.met[var] < 150 and 600 <= self.ht[var]       and mT > 120 :   SR = 20 #14b
+        elif self.nJets30[var] >= 2 and self.nbJets25[var] >= 0 and 150          <= self.met[var] < 300 and 600 <= self.ht[var]       and mT > 120 :   SR = 21 #15b
+        elif self.nJets30[var] >= 2 and self.nbJets25[var] >= 0 and 300          <= self.met[var]       and  60 <= self.ht[var]       and mT < 120 :   SR = 22 #16a
+        elif self.nJets30[var] >= 2 and self.nbJets25[var] >= 0 and 300          <= self.met[var]       and  60 <= self.ht[var]       and mT > 120 :   SR = 23 #16b
 
-        if SR==-1: return SR
+        if SR<1:   return SR
         else:      return SR + offset
 
     ## findSSR
     ## _______________________________________________________________
     def findSSR(self, var, mT, isonZ):
         SSR = -1
-        if   self.nJets30 >= 2 and self.nbJets25 <= 2 and self.met[var] >= 250 and self.ht >= 200 and mT > 120 and not isonZ:   SSR =  1 #SSR1
-        elif self.nJets30 >= 2 and self.nbJets25 >= 3 and self.met[var] >=  50 and self.ht >=  60 and mT > 120 and not isonZ:   SSR =  2 #SSR2
-        elif self.nJets30 >= 2 and self.nbJets25 <= 2 and self.met[var] >= 250 and self.ht >= 200 and mT > 120 and     isonZ:   SSR =  3 #SSR3
-        elif self.nJets30 >= 2 and self.nbJets25 >= 3 and self.met[var] >=  50 and self.ht >=  60 and mT > 120 and     isonZ:   SSR =  4 #SSR4        
+        if   self.nJets30[var] >= 2 and self.nbJets25[var] <= 2 and self.met[var] >= 250 and self.ht[var] >= 200 and mT > 120 and not isonZ:   SSR =  1 #SSR1
+        elif self.nJets30[var] >= 2 and self.nbJets25[var] >= 3 and self.met[var] >=  50 and self.ht[var] >=  60 and mT > 120 and not isonZ:   SSR =  2 #SSR2
+        elif self.nJets30[var] >= 2 and self.nbJets25[var] <= 2 and self.met[var] >= 250 and self.ht[var] >= 200 and mT > 120 and     isonZ:   SSR =  3 #SSR3
+        elif self.nJets30[var] >= 2 and self.nbJets25[var] >= 3 and self.met[var] >=  50 and self.ht[var] >=  60 and mT > 120 and     isonZ:   SSR =  4 #SSR4        
         return SSR
         
         
@@ -490,7 +502,10 @@ class LeptonBuilderRA7:
             ("nOSLF_4l"    , "I"),
             ("nOSTF_4l"    , "I"),
             ("mll_4l"      , "F"),
-            ("m4L"         , "F")]
+            ("m4L"         , "F"),
+            ("isOnZ"       , "I"),
+            ("isOnZ_fo"    , "I"),
+            ]
 
         biglist.append(("nOS"   , "I"))
         biglist.append(("mll"   , "F", 20, "nOS"))
@@ -522,11 +537,9 @@ class LeptonBuilderRA7:
             biglist.append(("mT2T_4l_gen" + self.systsJEC[var], "F"))
 
         for var in self.systsJEC:
-            biglist.append(("isOnZ"     + self.systsJEC[var], "I"))
             biglist.append(("BR"        + self.systsJEC[var], "I"))
             biglist.append(("SR"        + self.systsJEC[var], "I"))
             biglist.append(("SSR"       + self.systsJEC[var], "I"))
-            biglist.append(("isOnZ_fo"  + self.systsJEC[var], "I"))
             biglist.append(("BR_fo"     + self.systsJEC[var], "I"))
             biglist.append(("SR_fo"     + self.systsJEC[var], "I"))
             biglist.append(("SSR_fo"    + self.systsJEC[var], "I"))
@@ -668,6 +681,8 @@ class LeptonBuilderRA7:
         self.ret["nOSTF_4l"             ] = 0
         self.ret["mll_4l"               ] = 0
         self.ret["m4L"                  ] = 0
+        self.ret["isOnZ"                ] = 0
+        self.ret["isOnZ_fo"             ] = 0
 
         self.ret["nOS"   ] = 0
         self.ret["mll"   ] = [0]*20
@@ -698,11 +713,9 @@ class LeptonBuilderRA7:
             self.ret["mT2T_4l_gen" + self.systsJEC[var]] = 0. 
 
         for var in self.systsJEC: 
-            self.ret["isOnZ"     + self.systsJEC[var]] = 0
             self.ret["BR"        + self.systsJEC[var]] = 0
             self.ret["SR"        + self.systsJEC[var]] = 0
             self.ret["SSR"       + self.systsJEC[var]] = 0
-            self.ret["isOnZ_fo"  + self.systsJEC[var]] = 0
             self.ret["BR_fo"     + self.systsJEC[var]] = 0
             self.ret["SR_fo"     + self.systsJEC[var]] = 0
             self.ret["SSR_fo"    + self.systsJEC[var]] = 0
