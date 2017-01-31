@@ -95,7 +95,7 @@ ENDDEF
 
 BEGIN::crwz
   firstCut     := alwaystrue
-  mcafile      := susy-ewkino/crwz/mca_forICHEPscans.txt
+  mcafile      := susy-ewkino/crwz/mca_crwz_PreApp.txt
   cutfile      := susy-ewkino/crwz/cuts_crwz.txt
   plotfile     := susy-ewkino/3l/plots_ewkino.txt
   sysfile      := susy-ewkino/systs_ewkino.txt
