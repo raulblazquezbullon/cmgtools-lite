@@ -6,10 +6,12 @@ sig      = "THESIGNAL"
 mass1    = "THEMASS1"
 mass2    = "THEMASS2"
 offset   = int("THEOFFSET")
+treedir  = "THETREEDIR"
+treename = "THETREENAME"
 file     = "THEFILE"
 xs       = THEXS
-q2file   = "THEQ2FILE"
-q2syntax = "THEQ2SYNTAX"
+#q2file   = "THEQ2FILE"
+#q2syntax = "THEQ2SYNTAX"
 wstr     = "THEWEIGHTSTR"
 frfiles  = THEFRFILES
 thejec   = "THEJEC" # name of the jec in the systs file
@@ -58,18 +60,69 @@ def div(num, den):
 	if den==0: return 1
 	return float(num)/den
 
-def doMetVariation(infile, outfile, sig, jec, met, wVars):
-	global mass1, mass2, q2file, q2syntax, q2acc
-	## Q2ACC
-	if q2file:
-		f       = ROOT.TFile.Open(q2file, "read")
-		dmass1=mass1; dmass2=mass2
-		if dmass1 == "127": dmass1="150" # FIXME: something TChiNeuWH dependent!
-		if dmass1 == "150" and dmass2=="24": dmass2="1"
-		theq2Up = f.Get(q2syntax.replace("[m1]",dmass1).replace("[m2]",dmass2).replace("[var]","Up")).Clone()
-		theq2Dn = f.Get(q2syntax.replace("[m1]",dmass1).replace("[m2]",dmass2).replace("[var]","Dn")).Clone()
-		q2UpFull = copy.deepcopy(theq2Up)
-		q2DnFull = copy.deepcopy(theq2Dn)
+
+def getWsum():
+	global file, treedir, treename
+	print "retrieving wsums"
+	wsums = []
+	fpath = None
+	if   os.path.exists(treedir+"/"+file+"/"+treename+"/tree.root"):
+		fpath = treedir+"/"+file+"/"+treename+"/tree.root"
+	elif os.path.exists(treedir+"/"+file+"/"+treename+"/tree.root.url"):
+		fpath = open(treedir+"/"+file+"/"+treename+"/tree.root.url").readlines[0].rstrip("\n")
+	else:
+		continue
+	f = ROOT.TFile.Open(fpath, "read")
+	if not f: return []
+	t = f.Get("tree")
+	if not t: return []
+	total = f.GetEntries()
+	if total == 0: return []
+	up    = 0
+	dn    = 0
+	for evt in t:
+		up += evt.LHEweight_wgt[4]/LHEweight_wgt[0]
+		dn += evt.LHEweight_wgt[9]/LHEweight_wgt[0]
+	f.Close()
+	return [total, up, dn]
+
+def doQ2Variation(infile, outfile, sig):
+	## extracts relative correction for Q2 Acceptance
+	global mass1, mass2
+	wsum = getWsum(sig)
+	print "running q2 acceptance variation"
+	f   = ROOT.TFile.Open(infile, "read")
+	hcn = f.Get("x_sig_{s}_central".format(s=sig))
+	hup = f.Get("x_sig_{s}_up"     .format(s=sig))
+	hdn = f.Get("x_sig_{s}_down"   .format(s=sig))
+	ff = ROOT.TFile.Open(outfile, "recreate")
+	ff.cd()
+	hOutUp = ROOT.TH1F(procName+"_Up",procName+"_Up",histos[0].GetNbinsX(),histos[0].GetXmin(),histos[0].GetXmax())
+	hOutDn = ROOT.TH1F(procName+"_Dn",procName+"_Dn",histos[0].GetNbinsX(),histos[0].GetXmin(),histos[0].GetXmax())
+	final.Write()
+	## loop over SR
+	for sr in range(1,h.GetNbinsX()+1):
+	    valZero = histos[ 0].GetBinContent(sr)
+	    errZero = histos[ 0].GetBinError  (sr)
+	    valUp   = histos[ 1].GetBinContent(sr)*wsum[0]/wsum[ 1]
+	    errUp   = histos[ 1].GetBinError  (sr)*wsum[0]/wsum[ 1]
+	    valDn   = histos[-1].GetBinContent(sr)*wsum[0]/wsum[-1]
+	    errDn   = histos[-1].GetBinError  (sr)*wsum[0]/wsum[-1]
+	    if valUp==0 or valDn==0 or valZero==0: continue
+	    sysUp  = valUp/valZero - 1.0;
+	    sysDn  = 1.0 - valZero/valDn
+	    #RMS    = sysUp*sysUp + sysDn*sysDn
+	    hOutUp = SetBinContent(sr, cutOff(1+sysUp if sysUp>0 else -1/(sysUp-1), 2, 0.5))
+	    hOutDn = SetBinContent(sr, cutOff(1+sysDn if sysDn>0 else -1/(sysDn-1), 2, 0.5))	
+	hOutUp.Write()	
+	hOutDn.Write()	
+	ff.Close()
+	return [hOutUp, hOutDn]
+
+
+def doMetVariation(infile, outfile, sig, jec, met, wVars, q2vars = []):
+	global mass1, mass2, q2acc
+	print "running met variation"
 	## retrieve all histograms
 	f = ROOT.TFile.Open(infile, "read")
 	pfMET  = f.Get("x_sig_{s}_pfMET" .format(s=sig))
@@ -80,51 +133,42 @@ def doMetVariation(infile, outfile, sig, jec, met, wVars):
 	for key, vals in wVars.iteritems():
 		wvHist[key + "Up"] = f.Get("x_sig_{s}_{j}_Up".format(s=sig, j=key))
 		wvHist[key + "Dn"] = f.Get("x_sig_{s}_{j}_Dn".format(s=sig, j=key))
-	final  = pfMET.Clone("x_sig_{s}"       .format(s=sig))
-	metUp  = pfMET.Clone("x_sig_{s}_{m}_Up".format(s=sig, m=met))
-	metDn  = pfMET.Clone("x_sig_{s}_{m}_Dn".format(s=sig, m=met))
-	if q2file:
-		q2Up   = pfMET.Clone("x_sig_{s}_{q}_Up".format(s=sig, q=q2acc))
-		q2Dn   = pfMET.Clone("x_sig_{s}_{q}_Dn".format(s=sig, q=q2acc))
-	## change naming and stuff
-	final.Reset()
-	metUp.Reset()
-	metDn.Reset()
-	## build the q2 variation
-	if q2file:
-		q2Up .Reset()
-		q2Dn .Reset()
-		for bin in range(1,q2Up.GetNbinsX()+1): 
-			q2Up.SetBinContent(bin, q2UpFull.GetBinContent(bin+offset))
-			q2Dn.SetBinContent(bin, q2DnFull.GetBinContent(bin+offset))
+	final = pfMET.Clone("x_sig_{s}"       .format(s=sig       )); final.Reset()
+	metUp = pfMET.Clone("x_sig_{s}_{m}_Up".format(s=sig, m=met)); metUp.Reset()
+	metDn = pfMET.Clone("x_sig_{s}_{m}_Dn".format(s=sig, m=met)); metDn.Reset()
+	if len(q2vars)>0:
+		q2Up = pfMET.Clone("x_sig_{s}_{q}_Up".format(s=sig, q=q2acc)); q2Up.Reset()
+		q2Dn = pfMET.Clone("x_sig_{s}_{q}_Dn".format(s=sig, q=q2acc)); q2Dn.Reset()
 	## do the correction
 	for bin in range(1,final.GetNbinsX()+1):
 		diff = abs(pfMET.GetBinContent(bin)-genMET.GetBinContent(bin))/2
 		avg  = float(pfMET.GetBinContent(bin)+genMET.GetBinContent(bin))/2
 		sf   = div(avg, pfMET.GetBinContent(bin))
-		final   .SetBinContent(bin, avg     )
-		final   .SetBinError  (bin, diff    )
-		if q2file:
-			q2Up    .SetBinContent(bin, avg * q2Up.GetBinContent(bin)/100.*sf)
-			q2Dn    .SetBinContent(bin, avg * q2Dn.GetBinContent(bin)/100.*sf)
-		metUp   .SetBinContent(bin, avg+diff)
-		metDn   .SetBinContent(bin, avg-diff)
-		jecUp   .SetBinContent(bin, jecUp   .GetBinContent(bin)*sf)
-		jecDn   .SetBinContent(bin, jecDn   .GetBinContent(bin)*sf)
+		final.SetBinContent(bin, avg     )
+		final.SetBinError  (bin, diff    )
+		metUp.SetBinContent(bin, avg+diff)
+		metDn.SetBinContent(bin, avg-diff)
+		jecUp.SetBinContent(bin, jecUp   .GetBinContent(bin)*sf)
+		jecDn.SetBinContent(bin, jecDn   .GetBinContent(bin)*sf)
+		if len(q2vars)>0:
+			q2Up.SetBinContent(bin, avg * q2vars[0].GetBinContent(bin))
+			q2Dn.SetBinContent(bin, avg * q2vars[1].GetBinContent(bin))
+			#q2Up.SetBinContent(bin, avg * q2vars[0].GetBinContent(bin)/100.*sf)
+			#q2Dn.SetBinContent(bin, avg * q2vars[1].GetBinContent(bin)/100.*sf)
 		for key, vals in wVars.iteritems():
 			wvHist[key + "Up"].SetBinContent(bin, wvHist[key + "Up"].GetBinContent(bin)*sf)
 			wvHist[key + "Dn"].SetBinContent(bin, wvHist[key + "Dn"].GetBinContent(bin)*sf)
 	## write all to output file
 	ff = ROOT.TFile.Open(outfile, "recreate")
 	ff.cd()
-	final   .Write()
-	if q2file:
-		q2Up    .Write()
-		q2Dn    .Write()
-	metUp   .Write()
-	metDn   .Write()
-	jecUp   .Write()
-	jecDn   .Write()
+	final.Write()
+	metUp.Write()
+	metDn.Write()
+	jecUp.Write()
+	jecDn.Write()
+	if len(q2vars)>0:
+		q2Up.Write()
+		q2Dn.Write()
 	for key, vals in wVars.iteritems():
 		wvHist[key + "Up"].Write()
 		wvHist[key + "Dn"].Write()
@@ -146,12 +190,30 @@ sysbase = sysbase.replace("[[[","{").replace("]]]","}")
 mcabase = "sig_{{name}} : {file} : {xs} : {{ws}} ; Label=\"{{name}}\", isFastSim{{FRfiles}}".format(file=file, xs=xs)
 
 short = mass1 + "_" + mass2
+q2dir  = outdir + "/q2/"  + short
 accdir = outdir + "/acc/" + short
 mpsdir = outdir + "/mps/" + short
 mkdir(mcadir)
 mkdir(outdir)
+mkdir(q2dir )
 mkdir(accdir)
 mkdir(mpsdir)
+
+
+## first do Q2 acceptance variation
+q2vars = []
+if q2acc:
+	f = open(mcadir + "/mca_q2_"+name+".txt", "w")
+	f.write(mcabase.format(name=sig+"_central", ws=makeWeight(wstr, "LHEweight_wgt[0]/LHEweight_wgt[0]"), FRfiles=makeFakeRate(frfiles)) + "\n")
+	f.write(mcabase.format(name=sig+"_up"     , ws=makeWeight(wstr, "LHEweight_wgt[4]/LHEweight_wgt[0]"), FRfiles=makeFakeRate(frfiles)) + "\n")
+	f.write(mcabase.format(name=sig+"_down"   , ws=makeWeight(wstr, "LHEweight_wgt[9]/LHEweight_wgt[0]"), FRfiles=makeFakeRate(frfiles)) + "\n")
+	f.close()
+	mybase = cmdbase.format(MCA=mcadir + "/mca_q2_"+name+".txt", SYS="", O=outdir + "/q2/"+short)
+	cmd(mybase.replace("[[","{").replace("]]","}") + " --asimov")
+
+	## get central value of acceptance 
+	q2vars = doQ2Variation(q2dir+"/common/SR.input.root", q2dir+"/q2_SR.input.root", sig)
+	
 
 
 ## first loop on pfMET and genMET, and the JEC
@@ -171,7 +233,7 @@ if len(frmet)==2:
 	
 	
 	## get central value of acceptance 
-	doMetVariation(accdir + "/common/SR.input.root", accdir + "/acc_SR.input.root", sig, thejec, themet, wVars)
+	doMetVariation(accdir + "/common/SR.input.root", accdir + "/acc_SR.input.root", sig, thejec, themet, wVars, q2vars)
 
 
 ## prepare the proper job
