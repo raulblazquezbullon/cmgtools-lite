@@ -1,7 +1,7 @@
 ###### Data -----------------------------------------------------------
 #incl_data : + ; IncludeMca="susy-ewkino/2lss/includes/data/mca_data_old.txt"
-incl_data : + ; IncludeMca="susy-ewkino/2lss/includes/data/mca_data_M17.txt"
 #incl_data : + ; IncludeMca="susy-ewkino/2lss/includes/data/mca_data_ICHEP.txt"
+incl_data : + ; IncludeMca="susy-ewkino/2lss/includes/data/mca_data_M17.txt"
 
 ###### MC ---------------------------------------------------------------
 incl_prompt : + ; IncludeMca="susy-ewkino/2lss/includes/mca_prompt.txt" 
@@ -29,3 +29,13 @@ incl_flips_data     : + ; IncludeMca="susy-ewkino/2lss/includes/flips/mca_flips_
 #incl_sig_exc  : + ; IncludeMca="susy-ewkino/3l/includes/mca_sig_exercise.txt"
 #incl_sig_fs   : + ; IncludeMca="susy-ewkino/3l/includes/mca_sig_fullsim.txt"
 
+
+## Systematics
+## -----------------------------------------------------------
+incl_sys_btagHF   : + ; IncludeMca="susy-ewkino/2lss/includes/sys/mca_sys_bTagHF.txt"
+incl_sys_btagLF   : + ; IncludeMca="susy-ewkino/2lss/includes/sys/mca_sys_bTagLF.txt"
+incl_sys_jec      : + ; IncludeMca="susy-ewkino/2lss/includes/sys/mca_sys_jec.txt"
+incl_sys_lep      : + ; IncludeMca="susy-ewkino/2lss/includes/sys/mca_sys_lepSF.txt"
+incl_sys_puw      : + ; IncludeMca="susy-ewkino/2lss/includes/sys/mca_sys_puw.txt"
+incl_sys_ewkM17   : + ; IncludeMca="susy-ewkino/2lss/includes/sys/mca_sys_ewk_M17.txt"
+incl_sys_ewkMC    : + ; IncludeMca="susy-ewkino/2lss/includes/sys/mca_sys_ewk_MC.txt"
