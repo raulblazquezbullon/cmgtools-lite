@@ -3,11 +3,8 @@
 #incl_data : + ; IncludeMca="susy-ewkino/2lss/includes/data/mca_data_ICHEP.txt"
 incl_data : + ; IncludeMca="susy-ewkino/2lss/includes/data/mca_data_M17.txt"
 
-###### MC ---------------------------------------------------------------
-incl_prompt : + ; IncludeMca="susy-ewkino/2lss/includes/mca_prompt.txt" 
-incl_convs  : + ; IncludeMca="susy-ewkino/2lss/includes/mca_convs.txt"
-#incl_prompt : + ; IncludeMca="susy-ewkino/2lss/includes/mca_prompt_old.txt" 
-#incl_convs  : + ; IncludeMca="susy-ewkino/2lss/includes/mca_convs_old.txt"
+######## WZ
+prompt_WZ : WZTo3LNu : xsec*1.02 : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FillColor=ROOT.kOrange, Label="WZ", NormSystematic=0.25
 
 ######## Fakes and flips -----------------------------------------------
 incl_fakes_data     : + ; IncludeMca="susy-ewkino/2lss/includes/fakes/mca_fakes_data.txt"
@@ -19,7 +16,11 @@ incl_flips_data     : + ; IncludeMca="susy-ewkino/2lss/includes/flips/mca_flips_
 ## -----------------------------------------------------------
 #incl_promptsub      : + ; IncludeMca="susy-ewkino/2lss/includes/mca_promptsub.txt"
 
-
+###### MC ---------------------------------------------------------------
+incl_prompt : + ; IncludeMca="susy-ewkino/2lss/includes/mca_prompt.txt" 
+incl_convs  : + ; IncludeMca="susy-ewkino/2lss/includes/mca_convs.txt"
+#incl_prompt : + ; IncludeMca="susy-ewkino/2lss/includes/mca_prompt_old.txt" 
+#incl_convs  : + ; IncludeMca="susy-ewkino/2lss/includes/mca_convs_old.txt"
 
 ## Signals
 ## -----------------------------------------------------------
