@@ -18,12 +18,11 @@ promptsub : TTJets_SingleLeptonFromT_part1 +  TTJets_SingleLeptonFromT_part2 + T
 promptsub : TTJets_SingleLeptonFromTbar : -1*xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata_prompt.txt" 
 promptsub : TTTT        : -1*xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata_prompt.txt" 
 promptsub : tZq_ll      : -1*xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata_prompt.txt" 
-promptsub :  TTWToQQ : -1*xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata_prompt.txt" 
-# promptsub : TTZToQQ : -1*xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata_prompt.txt" 
+promptsub : TTWToQQ : -1*xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata_prompt.txt" 
+promptsub : TTZToQQ : -1*xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata_prompt.txt" 
 
-# ICHEP!!!! 
-#promptsub : TTHnobb_pow        : -1*xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata_prompt.txt" 
-#promptsub : tWq_ll      : -1*xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata_prompt.txt" 
+promptsub : TTHnobb_pow        : -1*xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata_prompt.txt" 
+promptsub : tZW_ll      : -1*xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata_prompt.txt" 
 
 ######### VVV
 ################################################
@@ -34,7 +33,7 @@ promptsub : WWZ             : -1*xsec : LepGood1_isMatchRightCharge && LepGood2_
 promptsub : WZZ             : -1*xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata_prompt.txt" 
 promptsub : ZZZ             : -1*xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata_prompt.txt" 
 
-#promptsub : WWG             : -1*xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata_prompt.txt" 
-#promptsub : WWTo2L2Nu       : -1*xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata_prompt.txt" 
-#promptsub : WZG             : -1*xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata_prompt.txt" 
-#promptsub : WZTo2L2Q        : -1*xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata_prompt.txt" 
+promptsub : WWG             : -1*xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata_prompt.txt" 
+promptsub : WWTo2L2Nu       : -1*xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata_prompt.txt" 
+promptsub : WZG             : -1*xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata_prompt.txt" 
+promptsub : WZTo2L2Q        : -1*xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata_prompt.txt" 
