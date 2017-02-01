@@ -1,6 +1,6 @@
 ######### PUW  SFs  for WZ, ZZH, ttW, ttZ, ttX, VVV, convs
 ################################################
-prompt_WZ_puw_Up : WZTo3LNu : xsec*1.02 : puw_nInt_Moriond(nTrueInt,1)*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; SkipMe=True
+prompt_WZ_puw_Up : WZTo3LNu : xsec : puw_nInt_Moriond(nTrueInt,1)*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; SkipMe=True
 prompt_ZZH_puw_Up         : ZZTo4L_part1 + ZZTo4L_part2   : xsec : puw_nInt_Moriond(nTrueInt,1)*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; SkipMe=True
 prompt_ZZH_puw_Up         : VHToNonbb  : xsec : puw_nInt_Moriond(nTrueInt,1)*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; SkipMe=True
 prompt_ZZH_puw_Up         : GGHZZ4L  : xsec : puw_nInt_Moriond(nTrueInt,1)*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; SkipMe=True
@@ -31,7 +31,7 @@ convs_puw_Up  : TTGJets  : xsec : puw_nInt_Moriond(nTrueInt,1)*(LepGood1_isMatch
 convs_puw_Up  : TTGJets  : xsec : puw_nInt_Moriond(nTrueInt,1)*((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ; SkipMe=True
 
 
-prompt_WZ_puw_Dn: WZTo3LNu : xsec*1.02 : puw_nInt_Moriond(nTrueInt,-1)*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; SkipMe=True
+prompt_WZ_puw_Dn: WZTo3LNu : xsec : puw_nInt_Moriond(nTrueInt,-1)*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; SkipMe=True
 prompt_ZZH_puw_Dn: ZZTo4L_part1 + ZZTo4L_part2   : xsec : puw_nInt_Moriond(nTrueInt,-1)*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; SkipMe=True
 prompt_ZZH_puw_Dn: VHToNonbb  : xsec : puw_nInt_Moriond(nTrueInt,-1)*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; SkipMe=True
 prompt_ZZH_puw_Dn: GGHZZ4L  : xsec : puw_nInt_Moriond(nTrueInt,-1)*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; SkipMe=True

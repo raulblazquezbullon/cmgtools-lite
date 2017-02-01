@@ -2,7 +2,7 @@
 ######### Uses: susy-ewkino/2lss/fakeRate_standatd_jecUp.txt
 #########       susy-ewkino/2lss/fakeRate_standard_jecDown.txt
 ################################################
-prompt_WZ_jec_Up : WZTo3LNu : xsec*1.02 : (LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; FakeRate="susy-ewkino/2lss/fakerate_standard_jecUp.txt", SkipMe=True
+prompt_WZ_jec_Up : WZTo3LNu : xsec : (LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; FakeRate="susy-ewkino/2lss/fakerate_standard_jecUp.txt", SkipMe=True
 prompt_ZZH_jec_Up         : ZZTo4L_part1 + ZZTo4L_part2   : xsec : (LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; FakeRate="susy-ewkino/2lss/fakerate_standard_jecUp.txt", SkipMe=True
 prompt_ZZH_jec_Up         : VHToNonbb  : xsec : (LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; FakeRate="susy-ewkino/2lss/fakerate_standard_jecUp.txt", SkipMe=True
 prompt_ZZH_jec_Up         : GGHZZ4L  : xsec : (LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; FakeRate="susy-ewkino/2lss/fakerate_standard_jecUp.txt", SkipMe=True
@@ -33,7 +33,7 @@ convs_jec_Up  : TTGJets  : xsec : (LepGood1_isMatchRightCharge && LepGood2_isMat
 convs_jec_Up  : TTGJets  : xsec : ((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ; FakeRate="susy-ewkino/2lss/fakerate_standard_jecUp.txt", SkipMe=True
 
 
-prompt_WZ_jec_Dn: WZTo3LNu : xsec*1.02 : (LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; FakeRate="susy-ewkino/2lss/fakerate_standard_jecDown.txt", SkipMe=True
+prompt_WZ_jec_Dn: WZTo3LNu : xsec : (LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; FakeRate="susy-ewkino/2lss/fakerate_standard_jecDown.txt", SkipMe=True
 prompt_ZZH_jec_Dn: ZZTo4L_part1 + ZZTo4L_part2   : xsec : (LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; FakeRate="susy-ewkino/2lss/fakerate_standard_jecDown.txt", SkipMe=True
 prompt_ZZH_jec_Dn: VHToNonbb  : xsec : (LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; FakeRate="susy-ewkino/2lss/fakerate_standard_jecDown.txt", SkipMe=True
 prompt_ZZH_jec_Dn: GGHZZ4L  : xsec : (LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; FakeRate="susy-ewkino/2lss/fakerate_standard_jecDown.txt", SkipMe=True
