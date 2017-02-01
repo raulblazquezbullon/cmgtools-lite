@@ -1122,7 +1122,7 @@ class PlotMaker:
                                         pmap["data"].Draw("P SAME")
                                         c1.Print("%s/%s_data_%s.%s" % (fdir, outputName, p, ext))
                             else:
-                                if total.Integral()>0:
+                                if total.Integral()>0 or self._options.emptyStack or not self._options.plotmode=="stack":
                                     c1.Print("%s/%s.%s" % (fdir, outputName, ext))
                             ROOT.gErrorIgnoreLevel = savErrorLevel;
                 c1.Close()

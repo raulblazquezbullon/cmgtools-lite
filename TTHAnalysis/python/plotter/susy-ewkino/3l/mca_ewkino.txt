@@ -1,5 +1,5 @@
 # Dummy (to plot signals unstacked)
-dummy : TTWToLNu : 0 ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt", Label=""
+dummy : TTWToLNu_ext1 : 0 ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt", Label=""
 
 ## Sync samples
 ## -----------------------------------------------------------
@@ -16,7 +16,7 @@ incl_sig_opt  : + ; IncludeMca="susy-ewkino/3l/includes/mca_sig_opt.txt"
 ## Data
 ## -----------------------------------------------------------
 incl_data : + ; IncludeMca="susy-ewkino/3l/includes/mca_data_M17.txt"
-#incl_data : + ; IncludeMca="susy-ewkino/3l/includes/mca_data_ICHEP.txt"
+incl_datanew : + ; IncludeMca="susy-ewkino/3l/includes/mca_data_M17_new.txt"
 
 ## WZ (to keep the order)
 ## -----------------------------------------------------------
