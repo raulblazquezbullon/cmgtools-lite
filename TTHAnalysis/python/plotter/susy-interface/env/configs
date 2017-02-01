@@ -11,8 +11,8 @@ BEGIN::2lss
   friendFile  #:= {leptonBuilderEWK            : leptonBuilderEWK.py         }
 #  friendFile  #:= {eventBTagWeight             : eventBTagWeight.py          }
   sfriends    +:= leptonJetReCleanerSusyEWK2L;leptonBuilderEWK
-#  sfriends    +:= leptonJetReCleanerSusyEWK2L;leptonBuilderEWK;eventBTagWeight
-  friends     +:=
+  smcfriends  +:= bTagEventWeightFullSim
+  sfsfriends  +:= bTagEventWeightFastSim
   macros      +:= susy-ewkino/3l/functionsEWK.cc; susy-ewkino/2lss/functions2lss.cc; susy-ewkino/functionsPUW.cc; susy-ewkino/functionsSF.cc
   mccs        +:= susy-ewkino/mcc_triggerdefs.txt; susy-ewkino/2lss/lepchoice-2lss-FO.txt
   weight       := puw_nInt_Moriond(nTrueInt)*leptonSF(getLepSF(LepGood1_pt, LepGood1_eta, LepGood1_pdgId, LepGood1_isTight_Recl, 1, 0), getLepSF(LepGood2_pt, LepGood2_eta, LepGood2_pdgId, LepGood2_isTight_Recl, 1, 0))*bTagWeight
@@ -59,7 +59,8 @@ BEGIN::3l
   friendFile  #:= {leptonBuilderEWK            : leptonBuilderEWK.py         }
   friendFile  #:= {eventBTagWeight             : eventBTagWeight.py          }
   sfriends    +:= leptonJetReCleanerSusyEWK3L;leptonBuilderEWK
-#  sfriends    +:= leptonJetReCleanerSusyEWK3L;leptonBuilderEWK;eventBTagWeight
+  smcfriends  +:= bTagEventWeightFullSim
+  sfsfriends  +:= bTagEventWeightFastSim
   friends     +:=
   macros      +:= susy-ewkino/3l/functionsEWK.cc;susy-ewkino/functionsSF.cc;susy-ewkino/functionsPUW.cc
   mccs        +:= susy-ewkino/3l/mcc_ewkino.txt;susy-ewkino/mcc_triggerdefs.txt
@@ -110,8 +111,8 @@ BEGIN::crwz
   friendFile  #:= {leptonBuilderEWK            : leptonBuilderEWK.py         }
   friendFile  #:= {eventBTagWeight             : eventBTagWeight.py          }
   sfriends    +:= leptonJetReCleanerSusyEWK2L;leptonBuilderEWK
-#  sfriends    +:= leptonJetReCleanerSusyEWK2L;leptonBuilderEWK;eventBTagWeight
-  friends     +:=
+  smcfriends  +:= bTagEventWeightFullSim
+  sfsfriends  +:= bTagEventWeightFastSim
   macros      +:= susy-ewkino/3l/functionsEWK.cc;susy-ewkino/functionsSF.cc;susy-ewkino/functionsPUW.cc
   mccs        +:= susy-ewkino/crwz/lepchoice-crwz-FO.txt;susy-ewkino/mcc_triggerdefs.txt
   weight       := puw_nInt_Moriond(nTrueInt) * leptonSF(getLepSF(LepGood_pt[iF_Recl[0]], LepGood_eta[iF_Recl[0]], LepGood_pdgId[iF_Recl[0]], LepGood_isTight_Recl[iF_Recl[0]], 1), getLepSF(LepGood_pt[iF_Recl[1]], LepGood_eta[iF_Recl[1]], LepGood_pdgId[iF_Recl[1]], LepGood_isTight_Recl[iF_Recl[1]], 1), getLepSF(LepGood_pt[iF_Recl[2]], LepGood_eta[iF_Recl[2]], LepGood_pdgId[iF_Recl[2]], LepGood_isTight_Recl[iF_Recl[2]], 1))*bTagWeight

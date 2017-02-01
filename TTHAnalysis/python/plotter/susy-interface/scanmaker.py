@@ -75,7 +75,6 @@ options.models  = func.splitList(options.models)
 mm              = maker.Maker("scanmaker", baseBkg, args, options, parser.defaults)
 mm.loadModels()
 
-friends = mm.collectFriends()	
 sl      = mm.getVariable("lumi","12.9").replace(".","p")
 
 combinePath = mm.getVariable("combineTool")
@@ -91,6 +90,8 @@ if options.doCheck and (not combinePath or not os.path.isdir(combinePath) or com
 
 ## first do bkg
 if not options.sigOnly:
+
+	friends = mm.collectFriends(False)
 
 	mm.reloadBase(baseBkg)
 	mm.resetRegion()
@@ -130,6 +131,8 @@ if not options.bkgOnly:
 
 	cards = []
 	
+	friends = mm.collectFriends(True)
+
 	mm.reloadBase(baseSig)
 	mm.resetRegion()
 
