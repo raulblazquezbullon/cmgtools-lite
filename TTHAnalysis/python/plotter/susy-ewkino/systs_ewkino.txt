@@ -14,7 +14,7 @@ convs_ML      : convs                                         : .*              
 #convs_ML      : convs                                         : .*3l.*            : 1.2
 #convs_ML      : convs                                         : .*2lss.*          : 1.5
 
-SFWZ_ML       : prompt_WZ                                     : .*crwz.*          : 1.08
+SFWZ_ML       : prompt_WZ                                     : .*crwz.*          : 1.09
 floatWZ_ML    : prompt_WZ                                     : .*crwz.*          : 100   : lnU
 floatWZ_ML    : prompt_WZ                                     : .*3lA.*           : 100   : lnU
 normWZ_ML     : prompt_WZ                                     : .*3l[B,C,D,E,F].* : 1.30
@@ -78,9 +78,10 @@ PUreweighting : sig_.*|prompt_.*|rares_.*|convs   : .* : puw        : templates
 lepton_idiso  : sig_.*|prompt_.*|rares_.*|convs   : .* : lepSF      : templates
 lepton_FSsfs  : sig_.*                            : .* : lepSFFS    : templates
 
-#btag_HF       : prompt_.*|rares_.*|convs          : .* : bTagHF     : templates
-#btag_LF       : prompt_.*|rares_.*|convs          : .* : bTagLF     : templates
-#btag_FS_ML    : sig_.*                            : .* : bTagFS     : templates
+btag_HF       : prompt_.*|rares_.*|convs          : .* : bTagHF     : templates
+btag_LF       : prompt_.*|rares_.*|convs          : .* : bTagLF     : templates
+btag_FS_HF_ML : sig_.*                            : .* : bTagFSHF   : templates
+btag_FS_LF_ML : sig_.*                            : .* : bTagFSLF   : templates
 
 
 ## statistical uncertainties

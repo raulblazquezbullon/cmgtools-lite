@@ -18,6 +18,7 @@ class bTagWeightAnalyzer():
         self.algo      = algo
         self.wp        = wp
         self.isFastSim = isFastSim
+        self.label     = "FS" if isFastSim else ""
 
         self.branchflavor = branchflavor
         self.branchbtag   = "btagCSV" if algo in ["csvv2", "csv"] else "btagCMVA"
@@ -116,11 +117,11 @@ class bTagWeightAnalyzer():
 
         central = (dataNoTag * dataTag ) / ( mcNoTag * mcTag )
 
-        self.ret["bTagWeight"      ] = central
-        self.ret["bTagWeight_HF_Up"] = central * ( 1 - sysHFup )
-        self.ret["bTagWeight_HF_Dn"] = central * ( 1 + sysHFdn )
-        self.ret["bTagWeight_LF_Up"] = central * ( 1 - sysLFup )
-        self.ret["bTagWeight_LF_Dn"] = central * ( 1 + sysLFdn )
+        self.ret["bTagWeight"+self.label         ] = central
+        self.ret["bTagWeight"+self.label+"_HF_Up"] = central * ( 1 - sysHFup )
+        self.ret["bTagWeight"+self.label+"_HF_Dn"] = central * ( 1 + sysHFdn )
+        self.ret["bTagWeight"+self.label+"_LF_Up"] = central * ( 1 - sysLFup )
+        self.ret["bTagWeight"+self.label+"_LF_Dn"] = central * ( 1 + sysLFdn )
 
 
     ## getCutVal
@@ -164,11 +165,11 @@ class bTagWeightAnalyzer():
     def listBranches(self):
 
         biglist = [
-            ("bTagWeight"       , "F"),
-            ("bTagWeight_HF_Up" , "F"),
-            ("bTagWeight_HF_Dn" , "F"),
-            ("bTagWeight_LF_Up" , "F"),
-            ("bTagWeight_LF_Dn" , "F")]
+            ("bTagWeight"+self.label          , "F"),
+            ("bTagWeight"+self.label+"_HF_Up" , "F"),
+            ("bTagWeight"+self.label+"_HF_Dn" , "F"),
+            ("bTagWeight"+self.label+"_LF_Up" , "F"),
+            ("bTagWeight"+self.label+"_LF_Dn" , "F")]
         return biglist
 
 
@@ -184,11 +185,11 @@ class bTagWeightAnalyzer():
     ## _______________________________________________________________
     def resetMemory(self):
         self.ret = {}
-        self.ret["bTagWeight"      ] = 0.
-        self.ret["bTagWeight_HF_Up"] = 0.
-        self.ret["bTagWeight_HF_Dn"] = 0.
-        self.ret["bTagWeight_LF_Up"] = 0.
-        self.ret["bTagWeight_LF_Dn"] = 0.
+        self.ret["bTagWeight"+self.label         ] = 0.
+        self.ret["bTagWeight"+self.label+"_HF_Up"] = 0.
+        self.ret["bTagWeight"+self.label+"_HF_Dn"] = 0.
+        self.ret["bTagWeight"+self.label+"_LF_Up"] = 0.
+        self.ret["bTagWeight"+self.label+"_LF_Dn"] = 0.
 
 
 

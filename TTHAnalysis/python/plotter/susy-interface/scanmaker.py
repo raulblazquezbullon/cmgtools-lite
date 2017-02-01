@@ -36,6 +36,7 @@ def prepareJob(mm, name, mp, baseSig, baseSys, binning, bkgpath, outpath, xslist
 		line = line.replace("THEJEC"       , mm.getVariable("jec","")                                )
 		line = line.replace("THEMET"       , mm.getVariable("met","")                                )
 		line = line.replace("THEQ2ACC"     , mm.getVariable("q2acc","")                              )
+		line = line.replace("THEPUW"       , mm.getVariable("puw","")                                )
 		line = line.replace("THEFRJEC"     , "["+",".join(["\""+f+"\"" for f in mm.getVariable("frFilesFSJec","").split(";")])+"]")
 		line = line.replace("THEWVJEC"     , "["+",".join(["\""+f+"\"" for f in mm.getVariable("wVarsFSJec"  ,"").split(";")])+"]")
 		line = line.replace("THEFRMET"     , "["+",".join(["\""+f+"\"" for f in mm.getVariable("frFilesFSMet","").split(";")])+"]")

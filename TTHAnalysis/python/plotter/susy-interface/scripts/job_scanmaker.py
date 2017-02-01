@@ -17,6 +17,7 @@ frfiles  = THEFRFILES
 thejec   = "THEJEC" # name of the jec in the systs file
 themet   = "THEMET" # name of the met in the systs file
 q2acc    = "THEQ2ACC" # name of the q2acc in the systs file
+puw      = "THEPUW"   # name of the puw in the systs file
 frjec    = THEFRJEC # central, jecUp, jecDn
 wvjec    = THEWVJEC # central, jecUp, jecDn
 frmet    = THEFRMET # pfMET, genMET
@@ -31,6 +32,8 @@ thesyst  = "THESYST"
 #second   = "THECMDSECOND"
 sigbase  = "THEBASESIG" # without certain flags that affect the systematics
 sysbase  = "THEBASESYS" # the final command including all systematic variations
+
+
 
 ## ---------
 
@@ -77,20 +80,20 @@ def getWsum():
 	t = f.Get("tree")
 	if not t: return []
 	total = f.GetEntries()
+	upP   = f.GetEntries("nVert>20")
+	dnP   = f.GetEntries("nVert<20")
 	if total == 0: return []
-	up    = 0
-	dn    = 0
+	upW = 0
+	dnW = 0
 	for evt in t:
-		up += evt.LHEweight_wgt[4]/LHEweight_wgt[0]
-		dn += evt.LHEweight_wgt[9]/LHEweight_wgt[0]
+		upW += evt.LHEweight_wgt[4]/LHEweight_wgt[0]
+		dnW += evt.LHEweight_wgt[9]/LHEweight_wgt[0]
 	f.Close()
-	return [total, up, dn]
+	return [total, upW, dnW, upP, dnP]
 
-def doQ2Variation(infile, outfile, sig):
-	## extracts relative correction for Q2 Acceptance
-	global mass1, mass2
-	wsum = getWsum(sig)
-	print "running q2 acceptance variation"
+
+def doReweightingVariations(infile, outfile, procName, total, up, down):
+	global sig
 	f   = ROOT.TFile.Open(infile, "read")
 	hcn = f.Get("x_sig_{s}_central".format(s=sig))
 	hup = f.Get("x_sig_{s}_up"     .format(s=sig))
@@ -104,10 +107,10 @@ def doQ2Variation(infile, outfile, sig):
 	for sr in range(1,h.GetNbinsX()+1):
 	    valZero = histos[ 0].GetBinContent(sr)
 	    errZero = histos[ 0].GetBinError  (sr)
-	    valUp   = histos[ 1].GetBinContent(sr)*wsum[0]/wsum[ 1]
-	    errUp   = histos[ 1].GetBinError  (sr)*wsum[0]/wsum[ 1]
-	    valDn   = histos[-1].GetBinContent(sr)*wsum[0]/wsum[-1]
-	    errDn   = histos[-1].GetBinError  (sr)*wsum[0]/wsum[-1]
+	    valUp   = histos[ 1].GetBinContent(sr)*total/up
+	    errUp   = histos[ 1].GetBinError  (sr)*total/up
+	    valDn   = histos[-1].GetBinContent(sr)*total/down
+	    errDn   = histos[-1].GetBinError  (sr)*total/down
 	    if valUp==0 or valDn==0 or valZero==0: continue
 	    sysUp  = valUp/valZero - 1.0;
 	    sysDn  = 1.0 - valZero/valDn
@@ -120,8 +123,22 @@ def doQ2Variation(infile, outfile, sig):
 	return [hOutUp, hOutDn]
 
 
-def doMetVariation(infile, outfile, sig, jec, met, wVars, q2vars = []):
-	global mass1, mass2, q2acc
+def doPuwVariation(infile, outfile, wsum):
+	## extracts relative correction for pileup according to susy recommendation
+    global sig, puw
+	print "running pileup variation"
+	return doReweightingVariations(infile, outfile, sig, "x_sig_{s}_{j}_Up".format(s=sig, j=puw), wsum[0], wsum[3], wsum[4])
+
+
+def doQ2Variation(infile, outfile, sig, wsum):
+	## extracts relative correction for Q2 Acceptance
+	global sig, q2acc
+	print "running q2 acceptance variation"
+	return doReweightingVariations(infile, outfile, sig, "x_sig_{s}_{j}_Up".format(s=sig, j=q2acc), wsum[0], wsum[1], wsum[2])
+
+
+def doMetVariation(infile, outfile, sig, jec, met, wVars, q2vars = [], puwvars = []):
+	global mass1, mass2, q2acc, puw
 	print "running met variation"
 	## retrieve all histograms
 	f = ROOT.TFile.Open(infile, "read")
@@ -136,6 +153,9 @@ def doMetVariation(infile, outfile, sig, jec, met, wVars, q2vars = []):
 	final = pfMET.Clone("x_sig_{s}"       .format(s=sig       )); final.Reset()
 	metUp = pfMET.Clone("x_sig_{s}_{m}_Up".format(s=sig, m=met)); metUp.Reset()
 	metDn = pfMET.Clone("x_sig_{s}_{m}_Dn".format(s=sig, m=met)); metDn.Reset()
+	if len(puwvars)>0:
+		puwUp = pfMET.Clone("x_sig_{s}_{q}_Up".format(s=sig, q=puw)); puwUp.Reset()
+		puwDn = pfMET.Clone("x_sig_{s}_{q}_Dn".format(s=sig, q=puw)); puwDn.Reset()
 	if len(q2vars)>0:
 		q2Up = pfMET.Clone("x_sig_{s}_{q}_Up".format(s=sig, q=q2acc)); q2Up.Reset()
 		q2Dn = pfMET.Clone("x_sig_{s}_{q}_Dn".format(s=sig, q=q2acc)); q2Dn.Reset()
@@ -150,6 +170,9 @@ def doMetVariation(infile, outfile, sig, jec, met, wVars, q2vars = []):
 		metDn.SetBinContent(bin, avg-diff)
 		jecUp.SetBinContent(bin, jecUp   .GetBinContent(bin)*sf)
 		jecDn.SetBinContent(bin, jecDn   .GetBinContent(bin)*sf)
+		if len(puwvars)>0:
+			puwUp.SetBinContent(bin, avg * puwvars[0].GetBinContent(bin))
+			puwDn.SetBinContent(bin, avg * puwvars[1].GetBinContent(bin))
 		if len(q2vars)>0:
 			q2Up.SetBinContent(bin, avg * q2vars[0].GetBinContent(bin))
 			q2Dn.SetBinContent(bin, avg * q2vars[1].GetBinContent(bin))
@@ -166,6 +189,9 @@ def doMetVariation(infile, outfile, sig, jec, met, wVars, q2vars = []):
 	metDn.Write()
 	jecUp.Write()
 	jecDn.Write()
+	if len(puwvars)>0:
+		puwUp.Write()
+		puwDn.Write()
 	if len(q2vars)>0:
 		q2Up.Write()
 		q2Dn.Write()
@@ -190,17 +216,34 @@ sysbase = sysbase.replace("[[[","{").replace("]]]","}")
 mcabase = "sig_{{name}} : {file} : {xs} : {{ws}} ; Label=\"{{name}}\", isFastSim{{FRfiles}}".format(file=file, xs=xs)
 
 short = mass1 + "_" + mass2
+puwdir = outdir + "/puw/" + short
 q2dir  = outdir + "/q2/"  + short
 accdir = outdir + "/acc/" + short
 mpsdir = outdir + "/mps/" + short
 mkdir(mcadir)
 mkdir(outdir)
+mkdir(puwdir)
 mkdir(q2dir )
 mkdir(accdir)
 mkdir(mpsdir)
 
+wsum = getWsum(sig)
 
-## first do Q2 acceptance variation
+## first do pileup variation
+if puw:
+	f = open(mcadir + "/mca_puw_"+name+".txt", "w")
+	f.write(mcabase.format(name=sig+"_central", ws=wstr                        , FRfiles=makeFakeRate(frfiles)) + "\n")
+	f.write(mcabase.format(name=sig+"_up"     , ws=makeWeight(wstr, "nVert>20"), FRfiles=makeFakeRate(frfiles)) + "\n")
+	f.write(mcabase.format(name=sig+"_down"   , ws=makeWeight(wstr, "nVert<20"), FRfiles=makeFakeRate(frfiles)) + "\n")
+	f.close()
+	mybase = cmdbase.format(MCA=mcadir + "/mca_puw_"+name+".txt", SYS="", O=outdir + "/puw/"+short)
+	cmd(mybase.replace("[[","{").replace("]]","}") + " --asimov")
+
+	## get central value of acceptance 
+	puwvars = doPuwVariation(puwdir+"/common/SR.input.root", puwdir+"/puw_SR.input.root", sig, wsum)
+
+
+## then do Q2 acceptance variation
 q2vars = []
 if q2acc:
 	f = open(mcadir + "/mca_q2_"+name+".txt", "w")
@@ -212,11 +255,11 @@ if q2acc:
 	cmd(mybase.replace("[[","{").replace("]]","}") + " --asimov")
 
 	## get central value of acceptance 
-	q2vars = doQ2Variation(q2dir+"/common/SR.input.root", q2dir+"/q2_SR.input.root", sig)
+	q2vars = doQ2Variation(q2dir+"/common/SR.input.root", q2dir+"/q2_SR.input.root", sig, wsum)
 	
 
 
-## first loop on pfMET and genMET, and the JEC
+## then loop on pfMET and genMET, and the JEC
 if len(frmet)==2:
 	f = open(mcadir + "/mca_acc_"+name+".txt", "w")
 	f.write(mcabase.format(name=sig+"_pfMET"           , ws=wstr                      , FRfiles=makeFakeRate(frfiles,frmet, 0)) + "\n")
@@ -233,7 +276,7 @@ if len(frmet)==2:
 	
 	
 	## get central value of acceptance 
-	doMetVariation(accdir + "/common/SR.input.root", accdir + "/acc_SR.input.root", sig, thejec, themet, wVars, q2vars)
+	doMetVariation(accdir + "/common/SR.input.root", accdir + "/acc_SR.input.root", sig, thejec, themet, wVars, q2vars, puwvars)
 
 
 ## prepare the proper job
