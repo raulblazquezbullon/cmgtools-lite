@@ -1,10 +1,10 @@
 conf : VHToNonbb                   : xsec ; FillColor=ROOT.kRed+1, FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", Label="other SM bkg", NormSystematic=0.25
 conf : GGHZZ4L                     : xsec ; FillColor=ROOT.kRed+1, FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", Label="other SM bkg", NormSystematic=0.25
 conf : ZZTo4L                      : xsec ; FillColor=ROOT.kRed+1, FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", Label="other SM bkg", NormSystematic=0.25
-conf : TTGJets                     : xsec ; FillColor=ROOT.kRed+1, FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isconv.txt"  , Label="other SM bkg", NormSystematic=0.5
-conf : ZGTo2LG                     : xsec ; FillColor=ROOT.kRed+1, FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isconv.txt"  , Label="other SM bkg", NormSystematic=0.5
-conf : TTGJets                     : xsec ; FillColor=ROOT.kRed+1, FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", Label="other SM bkg", NormSystematic=0.5
-conf : ZGTo2LG                     : xsec ; FillColor=ROOT.kRed+1, FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", Label="other SM bkg", NormSystematic=0.5
+conf : TTGJets                     : xsec ; FillColor=ROOT.kRed+1, FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isconv.txt"  , Label="other SM bkg", NormSystematic=0.25
+conf : ZGTo2LG                     : xsec ; FillColor=ROOT.kRed+1, FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isconv.txt"  , Label="other SM bkg", NormSystematic=0.25
+conf : TTGJets                     : xsec ; FillColor=ROOT.kRed+1, FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", Label="other SM bkg", NormSystematic=0.25
+conf : ZGTo2LG                     : xsec ; FillColor=ROOT.kRed+1, FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", Label="other SM bkg", NormSystematic=0.25
 conf : WWW                         : xsec ; FillColor=ROOT.kRed+1, FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", Label="other SM bkg", NormSystematic=0.5
 conf : WWZ                         : xsec ; FillColor=ROOT.kRed+1, FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", Label="other SM bkg", NormSystematic=0.5
 conf : WZZ                         : xsec ; FillColor=ROOT.kRed+1, FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", Label="other SM bkg", NormSystematic=0.5
