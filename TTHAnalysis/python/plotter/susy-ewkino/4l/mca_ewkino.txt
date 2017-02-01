@@ -1,5 +1,5 @@
 # Dummy (to plot signals unstacked)
-dummy : TTWToLNu : 0 ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt", Label=""
+dummy : TTWToLNu_ext1 : 0 ; FakeRate="susy-ewkino/3l/fakerate_standard_central.txt", Label=""
 
 ## Sync samples
 ## -----------------------------------------------------------
