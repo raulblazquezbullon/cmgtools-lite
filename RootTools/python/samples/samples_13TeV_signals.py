@@ -7,6 +7,11 @@ from CMGTools.RootTools.samples.ComponentCreator import ComponentCreator
 kreator = ComponentCreator()
 
 ## strong signals
+SMS_T1tttt   = kreator.makeMCComponent("SMS_T1tttt","/SMS-T1tttt_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISpring16MiniAODv2-PUSpring16Fast_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/MINIAODSIM","CMS",".*root",1,True)
+SMS_T5qqqqVV = kreator.makeMCComponent("SMS_T5qqqqVV","/SMS-T5qqqqVV_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISpring16MiniAODv2-PUSpring16Fast_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/MINIAODSIM","CMS",".*root",1,True)
+SMS_T6ttWW   = kreator.makeMCComponent("SMS_T6ttWW","/SMS-T6ttWW_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISpring16MiniAODv2-PUSpring16Fast_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/MINIAODSIM","CMS",".*root",1,True)
+SMS_T6ttHZ   = kreator.makeMCComponent("SMS_T6ttHZ","/SMS-T6ttHZ_BR-H_0p6_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUSummer16Fast_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM","CMS",".*root",1,True)
+
 SMS_T1bbbb_mGluino1500_mLSP100 = kreator.makeMCComponent("SMS_T1bbbb_mGluino1500_mLSP100", "/SMS-T1bbbb_mGluino-1500_mLSP-100_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISpring16MiniAODv1-PUSpring16_80X_mcRun2_asymptotic_2016_v3-v1/MINIAODSIM", "CMS", ".*root", 0.0141903)
 SMS_T1tttt_mGluino1500_mLSP100 = kreator.makeMCComponent("SMS_T1tttt_mGluino1500_mLSP100", "/SMS-T1tttt_mGluino-1500_mLSP-100_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISpring16MiniAODv1-PUSpring16_80X_mcRun2_asymptotic_2016_v3-v1/MINIAODSIM", "CMS", ".*root", 0.0141903)
 SMS_T2tt_mStop_150to250 = kreator.makeMCComponent("SMS_T2tt_mStop_150to250", "/SMS-T2tt_mStop-150to250_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISpring16MiniAODv2-PUSpring16Fast_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/MINIAODSIM", "CMS", ".*root", -1)
@@ -37,6 +42,10 @@ SMS_TChiHZ=kreator.makeMCComponent("SMS_TChiHZ","/SMS-TChiHZ_HToWWZZTauTau_2LFil
 SMS_TChiHH=kreator.makeMCComponent("SMS_TChiHH","/SMS-TChiHH_HToWWZZTauTau_HToWWZZTauTau_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISpring16MiniAODv2-PUSpring16Fast_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/MINIAODSIM","CMS",".*root",1,True)
 
 SignalSUSY = [
+SMS_T1tttt,
+SMS_T5qqqqVV,
+SMS_T6ttWW,
+SMS_T6ttHZ,
 SMS_T1bbbb_mGluino1500_mLSP100,
 SMS_T1tttt_mGluino1500_mLSP100,
 SMS_T2tt_mStop_150to250,

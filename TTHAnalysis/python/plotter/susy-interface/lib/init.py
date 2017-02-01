@@ -4,7 +4,7 @@ from functions import *
 
 class Init():
 	def __init__(self, path):
-		self.path = path
+		self.myInitPath = path
 		self.load()
 	def identify(self, module, args, options, defaults):
 		if not module or len(args)==0: return False
@@ -25,8 +25,8 @@ class Init():
 				if opt != str(val): return False
 		return True
 	def load(self):
-		if not os.path.exists(self.path): return
-		for line in [l.strip("\n") for l in open(self.path,"r").readlines()]:
+		if not os.path.exists(self.myInitPath): return
+		for line in [l.strip("\n") for l in open(self.myInitPath,"r").readlines()]:
 			if line[0]=="#" or len(line.strip())==0: continue
 			sl = [s.strip() for s in line.split(":")]
 			if sl[1].count(";")>0: setattr(self, sl[0], sl[1].split(";"))
@@ -38,8 +38,8 @@ class Init():
 		for key, val in options.__dict__.iteritems():
 			setattr(self, "opt_"+key, val)
 	def write(self):
-		if os.path.exists(self.path): cmd("rm "+self.path)
-		f = open(self.path, "w")
+		if os.path.exists(self.myInitPath): cmd("rm "+self.myInitPath)
+		f = open(self.myInitPath, "w")
 		for key, val in self.__dict__.iteritems():
 			if key=="pretend": continue
 			if type(val) is list or type(val) is tuple:

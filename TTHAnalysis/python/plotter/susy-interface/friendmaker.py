@@ -32,7 +32,7 @@ parser.add_option("--log"         , dest="log"    , action="store_true", default
 parser.add_option("-F", "--force" , dest="force"  , action="store_true", default=False, help="Run the module even if it already exists")
 parser.add_option("--finalize"    , dest="finalize", action="store_true", default=False, help="Merge the chunks and check if everything is correct")
 
-base = "python prepareEventVariablesFriendTree.py {T} {O} --tra2 --tree {TREENAME} --vector -T sf -d {SAMPLES} -m {MODULES} {FRIENDS} {ADDITIONAL}"
+base = "python prepareEventVariablesFriendTree.py {T} {O} --tra2 --tree {TREENAME} --vector -T sf -d {SAMPLES} -m {MODULES} {FRIENDS} {ADDITIONAL} -I CMGTools.TTHAnalysis.tools.multilepFriendTreeProducersToCleanup"
 (options, args) = parser.parse_args()
 options         = maker.splitLists(options)
 options.modules = func.splitList(options.modules)

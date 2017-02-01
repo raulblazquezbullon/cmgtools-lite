@@ -1,3 +1,4 @@
+#include <iostream>
 
 int tauIdx1(int lep1pdg, int lep2pdg, int lep3pdg, int lep4pdg = 0){
     if(abs(lep1pdg)==15) return 0;
@@ -26,6 +27,12 @@ int isFake(int nLep, int lep1mcUCSX, int lep2mcUCSX, int lep3mcUCSX = 0, int lep
     if(nLep == 2) return ((lep1mcUCSX==2 || lep1mcUCSX==3) || (lep2mcUCSX==2 || lep2mcUCSX==3));
     if(nLep == 3) return ((lep1mcUCSX==2 || lep1mcUCSX==3) || (lep2mcUCSX==2 || lep2mcUCSX==3) || (lep3mcUCSX==2 || lep3mcUCSX==3));
     return ((lep1mcUCSX==2 || lep1mcUCSX==3) || (lep2mcUCSX==2 || lep2mcUCSX==3) || (lep3mcUCSX==2 || lep3mcUCSX==3) || (lep4mcUCSX==2 || lep4mcUCSX==3));
+}
+
+int isFakeHeppy(int nLep, int lep1mcHeppy, int lep2mcHeppy, int lep3mcHeppy = 1, int lep4mcHeppy = 1) {
+    if(nLep == 2) return (lep1mcHeppy==0 || lep2mcHeppy==0);
+    if(nLep == 3) return (lep1mcHeppy==0 || lep2mcHeppy==0 || lep3mcHeppy==0);
+    return (lep1mcHeppy==0 || lep2mcHeppy==0 || lep3mcHeppy==0 || lep4mcHeppy==0);
 }
 
 int isFakeHF(int nLep, int lep1mcUCSX, int lep2mcUCSX, int lep3mcUCSX = 0, int lep4mcUCSX = 0) {
@@ -101,6 +108,13 @@ int BR(int nLep, int nTau, int nOSSF, int nOSLF, int nOSTF){
     if(nLep == 4 && nTau == 2 && nOSSF <= 1              ) return 11;
 
     return 0;
+}
+
+int BRos(int nLep, int nTau, int nOSSF, int nOSLF, int nOSTF){
+
+    int br = BR(nLep, nTau, nOSSF, nOSLF, nOSTF);
+    if(br == 3 || br == 4) return 5; // mimicking BR = 5 event
+	return 0;
 }
 
 int SR3lA(float mT2L, float mT2T, float mll, float mT, float met, int offset = 0) {
@@ -332,6 +346,43 @@ int SR(int nLep, int nTau, int nOSSF, int nOSLF, float mT2L, float mT2T, float m
     return SR4l(nTau, nOSSF, nOSLF, mT2L, mT2T, mll, mT, met);
   return 0;
 }
+
+int SRos(int nLep, int nTau, int nOSSF, int nOSLF, float mT2L, float mT2T, float mll, float mT, float met) {
+    if(nLep != 3 || nTau != 1) return 0;
+    if(nOSSF >= 1 || (nOSSF <  1 && nOSLF >= 1)) return SR3lE(mT2L, mT2T, mll, mT, met, 84);
+    return 0;
+}
+
+int SuperSig3L1(int nTau, float mT, float met) {
+    if(nTau==0 && (mT   >= 120 && met >= 200)) return 1;
+    return 0;
+}
+
+int SuperSig3L2(int nTau, float met) {
+    if(nTau==0 &&                 met >= 200)  return 1;
+    return 0;
+}
+
+int SuperSig3L3(int nTau, float mT2L, float met) {
+    if(nTau==1 && (mT2L >=  50 && met >= 200)) return 1;
+    return 0;
+}
+
+int SuperSig3L4(int nTau, float mT2T, float met) {
+    if(nTau==2 && (mT2T >=  50 && met >= 200)) return 1;
+    return 0;
+}
+
+int SuperSig3L5(int nTau, float met) {
+    if(nTau==2 && met >=  75 ) return 1;
+    return 0;
+}
+
+int SuperSig4L1(float met) {
+    if(met >= 200) return 1;
+    return 0;
+}
+
 
 int SuperSig(int nLep, int nTau, int nOSSF, int nOSLF, float mT2L, float mT2T, float mll, float mT, float met) {
 

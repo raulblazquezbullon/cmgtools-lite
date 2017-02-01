@@ -46,6 +46,7 @@ if __name__ == "__main__":
 
         indir = _in.strip()
         dset = indir.strip().split('/')[-1]
+
         remdir = args[0].strip()
         outdir = options.tmpdir
         treename = options.tree
@@ -122,6 +123,10 @@ if __name__ == "__main__":
             os.system("mkdir -p "+splitdir)
             os.system("mkdir -p %s/%s"%(splitdir,treename))
             if os.path.exists('%s/%s/%s/tree.root'%(remdir,splitdir.split('/')[-1],treename)): raise RuntimeError, 'Output file already exists'
+            f2 = ROOT.TFile("%s/selection_eventlist.root"%splitdir,"recreate")
+            f2.cd()
+            elist.Write()
+            f2.Close()
             fout = ROOT.TFile('%s/%s/tree.root'%(splitdir,treename),'recreate')
             fout.cd()
             t.SetEventList(elist)
