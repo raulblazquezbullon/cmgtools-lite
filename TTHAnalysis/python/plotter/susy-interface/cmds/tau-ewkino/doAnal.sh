@@ -71,7 +71,8 @@ elif [ "$1" == "plot" ]; then
         #WEBDIR="/nfs/fanae/user/vischia/www/conversions/"
         #WEBDIR="/nfs/fanae/user/vischia/www/conversions/mva0/"
         #WEBDIR="/nfs/fanae/user/vischia/www/conversions/mva1/"
-        WEBDIR="/nfs/fanae/user/vischia/www/conversions/forFit/"
+        #WEBDIR="/nfs/fanae/user/vischia/www/conversions/preFit/"
+        WEBDIR="/nfs/fanae/user/vischia/www/conversions/postFit/"
     fi
     PRETEND=" --pretend  "
     PRETEND=""
