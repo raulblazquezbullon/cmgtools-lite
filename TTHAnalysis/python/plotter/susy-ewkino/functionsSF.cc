@@ -99,10 +99,10 @@ float triggerSF(int BR, float pt1, int pdg1,
 
 // electrons
 TFile* f_elSF_id   = new TFile(DATA_SF+"/leptonSF/scaleFactors.root"    , "read");
-TFile* f_elSF_eff  = new TFile(DATA_SF+"/leptonSF/egammaEffi.txt_EGM2D.root", "read");
+TFile* f_elSF_eff  = new TFile(DATA_SF+"/leptonSF/egammaEffi_EGM2D.root", "read");
 TH2F* h_elSF_mvaVT = (TH2F*) f_elSF_id ->Get("GsfElectronToLeptonMvaVTIDEmuTightIP2DSIP3D8mini04");
 TH2F* h_elSF_mvaM  = (TH2F*) f_elSF_id ->Get("GsfElectronToLeptonMvaMIDEmuTightIP2DSIP3D8mini04");
-TH2F* h_elSF_id    = (TH2F*) f_elSF_id ->Get("GsfElectronToLoose2D");
+TH2F* h_elSF_id    = (TH2F*) f_elSF_id ->Get("GsfElectronToMVAVLooseFOIDEmuTightIP2D");
 TH2F* h_elSF_trk   = (TH2F*) f_elSF_eff->Get("EGamma_SF2D");
 
 // muons
