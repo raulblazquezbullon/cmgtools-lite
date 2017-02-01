@@ -14,7 +14,7 @@ incl_flips_data     : + ; IncludeMca="susy-ewkino/2lss/includes/flips/mca_flips_
 
 ## Prompt sub
 ## -----------------------------------------------------------
-#incl_promptsub      : + ; IncludeMca="susy-ewkino/2lss/includes/mca_promptsub.txt"
+incl_promptsub      : + ; IncludeMca="susy-ewkino/2lss/includes/mca_promptsub.txt"
 
 ###### MC ---------------------------------------------------------------
 incl_prompt : + ; IncludeMca="susy-ewkino/2lss/includes/mca_prompt.txt" 

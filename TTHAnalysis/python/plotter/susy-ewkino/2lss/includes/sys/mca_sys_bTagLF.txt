@@ -23,10 +23,7 @@ rares_VVV_bTagLF_Up   : WWW             : xsec : eventBTagSF_up_lf/eventBtagSF*(
 rares_VVV_bTagLF_Up   : WWZ             : xsec : eventBTagSF_up_lf/eventBtagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; SkipMe=True
 rares_VVV_bTagLF_Up   : WZZ             : xsec : eventBTagSF_up_lf/eventBtagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; SkipMe=True
 rares_VVV_bTagLF_Up   : ZZZ             : xsec : eventBTagSF_up_lf/eventBtagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; SkipMe=True
-rares_VVV_bTagLF_Up   : WWG             : xsec : eventBTagSF_up_lf/eventBtagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; SkipMe=True
 rares_VVV_bTagLF_Up   : WWTo2L2Nu       : xsec : eventBTagSF_up_lf/eventBtagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; SkipMe=True
-rares_VVV_bTagLF_Up   : WZG             : xsec : eventBTagSF_up_lf/eventBtagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; SkipMe=True
-rares_VVV_bTagLF_Up   : WZTo2L2Q        : xsec : eventBTagSF_up_lf/eventBtagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; SkipMe=True
 convs_bTagLF_Up  : ZGTo2LG  : xsec : eventBTagSF_up_lf/eventBtagSF((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ; SkipMe=True
 convs_bTagLF_Up  : TGJets   : xsec : eventBTagSF_up_lf/eventBtagSF((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ; SkipMe=True
 convs_bTagLF_Up  : WGToLNuG : xsec : eventBTagSF_up_lf/eventBtagSF(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; SkipMe=True
@@ -57,10 +54,7 @@ rares_VVV_bTagLF_Dn   : WWW             : xsec : eventBTagSF_down_lf/eventBtagSF
 rares_VVV_bTagLF_Dn   : WWZ             : xsec : eventBTagSF_down_lf/eventBtagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; SkipMe=True
 rares_VVV_bTagLF_Dn   : WZZ             : xsec : eventBTagSF_down_lf/eventBtagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; SkipMe=True
 rares_VVV_bTagLF_Dn   : ZZZ             : xsec : eventBTagSF_down_lf/eventBtagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; SkipMe=True
-rares_VVV_bTagLF_Dn   : WWG             : xsec : eventBTagSF_down_lf/eventBtagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; SkipMe=True
 rares_VVV_bTagLF_Dn   : WWTo2L2Nu       : xsec : eventBTagSF_down_lf/eventBtagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; SkipMe=True
-rares_VVV_bTagLF_Dn   : WZG             : xsec : eventBTagSF_down_lf/eventBtagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; SkipMe=True
-rares_VVV_bTagLF_Dn   : WZTo2L2Q        : xsec : eventBTagSF_down_lf/eventBtagSF*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; SkipMe=True
 convs_bTagLF_Dp  : ZGTo2LG  : xsec : eventBTagSF_down_lf/eventBtagSF((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ; SkipMe=True
 convs_bTagLF_Dn  : TGJets   : xsec : eventBTagSF_down_lf/eventBtagSF((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1)) ; SkipMe=True
 convs_bTagLF_Dn  : WGToLNuG : xsec : eventBTagSF_down_lf/eventBtagSF(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge) ; SkipMe=True
