@@ -1,6 +1,7 @@
-INPUTDIR="/nfs/fanae/user/vischia/TREES_80X_011216_Spring16MVA_skim_2lep_OR_1lep_2tau/"
+#INPUTDIR="/nfs/fanae/user/vischia/TREES_80X_011216_Spring16MVA_skim_2lep_OR_1lep_2tau/"
+INPUTDIR="/pool/ciencias/HeppyTrees/RA7/estructura/Prod23Jan/"
 OUTPUTDIR="/OBSOLETE"
-WEBDIR="/nfs/fanae/user/vischia/www/taus/"
+WEBDIR="/nfs/fanae/user/vischia/www/somewhereovertherainbow/"
 
 if [ "$1" == "ft" ]; then
     MODULE=""    
@@ -72,7 +73,7 @@ elif [ "$1" == "plot" ]; then
         #WEBDIR="/nfs/fanae/user/vischia/www/conversions/mva0/"
         #WEBDIR="/nfs/fanae/user/vischia/www/conversions/mva1/"
         #WEBDIR="/nfs/fanae/user/vischia/www/conversions/preFit/"
-        WEBDIR="/nfs/fanae/user/vischia/www/conversions/postFit/"
+        WEBDIR="/nfs/fanae/user/vischia/www/conversions_prodjan23/postFit/"
     fi
     PRETEND=" --pretend  "
     PRETEND=""
