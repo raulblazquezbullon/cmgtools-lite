@@ -67,6 +67,7 @@ class bTagWeightAnalyzer():
         indices   = list(getattr(self.event, "iJSel" + self.recllabel))[0:int(getattr(self.event,"nJetSel"+self.recllabel))]
         self.jets = []
         for idx in indices:
+            if abs(idx)>99: continue
             if idx >= 0: self.jets.append(goodJets[idx])
             else       : self.jets.append(discJets[-idx-1])
 
