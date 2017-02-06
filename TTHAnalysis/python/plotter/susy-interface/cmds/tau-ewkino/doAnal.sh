@@ -72,20 +72,12 @@ elif [ "$1" == "plot" ]; then
         #WEBDIR="/nfs/fanae/user/vischia/www/conversions/"
         #WEBDIR="/nfs/fanae/user/vischia/www/conversions/mva0/"
         #WEBDIR="/nfs/fanae/user/vischia/www/conversions/mva1/"
-        #WEBDIR="/nfs/fanae/user/vischia/www/conversions/preFit/"
-        WEBDIR="/nfs/fanae/user/vischia/www/conversions_prodjan23/postFit/"
+        WEBDIR="/nfs/fanae/user/vischia/www/conversions_prodjan23/preFit/"
+        #WEBDIR="/nfs/fanae/user/vischia/www/conversions_prodjan23/postFit/"
     fi
     PRETEND=" --pretend  "
-    PRETEND=""
-    echo " ========================== WARNING ==========================="
-    echo " Process WWTo2L2Nu is missing from the current trees production"
-    echo " When present, must re-enable it in the mca"
-    echo " =============================================================="
+    #PRETEND=""
     python susy-interface/cmds/tau-ewkino/plot.py -i ${INPUTDIR} -o ${WEBDIR} ${ACTION} ${SUBACTION} ${PRETEND}
-    echo " ========================== WARNING ==========================="
-    echo " Process WWTo2L2Nu is missing from the current trees production"
-    echo " When present, must re-enable it in the mca"
-    echo " =============================================================="
 
 fi
 exit 0
