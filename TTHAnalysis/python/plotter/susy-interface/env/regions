@@ -122,6 +122,7 @@ BEGIN::3lE
   flags       +:= -A 3l BRcut 'BR == 5' 
   flags       +:= -R trigger triggerTau '$DATA{Triggers_ee||Triggers_em||Triggers_mm||Triggers_lt} $MC{1} $FASTSIM{1}'
   flags       +:= -A sanity tightcharge '((LepSel1_tightCharge>1 || abs(LepSel1_pdgId)!=11) && (LepSel2_tightCharge>1 || abs(LepSel2_pdgId)!=11) && (LepSel3_tightCharge>1 || abs(LepSel3_pdgId)!=11))'
+  flags       +:= -A sanity rightcharge '$DATA{1} $MC{isPromptRightCharge(3, LepSel_mcUCSX[0], LepSel_mcUCSX[1], LepSel_mcUCSX[2])} $FASTSIM{isPromptRightCharge(3, LepSel_mcUCSX[0], LepSel_mcUCSX[1], LepSel_mcUCSX[2])}'
 #  flags       +:= -R trigger trigger2T '!isData || Triggers_leplep || Triggers_leptau'
   flagsPlots  +:= --legendHeader 'E: SS + \#tau'
   plots       #:= {lep      : lep.*._pt ; .*_eta ; flavor3l ; charge3l; minDR3l                         }
@@ -292,4 +293,14 @@ BEGIN::cretau
   flagsPlots  +:= --legendHeader 'e#tau CR'
   plots       #:= {all : lep1_pt; lep2_pt; el_pt; el_eta; tau_pt; tau_eta; mll; met; nBJet25 }
   fmt          := {LepSel1_pdgId:+2d} {LepSel1_pt:5.1f} {LepSel1_mcUCSX:2d}\\t{LepSel2_pdgId:+2d} {LepSel2_pt:5.1f} {LepSel2_mcUCSX:2d}\\t{LepSel3_pdgId:+2d} {LepSel3_pt:5.1f} {LepSel3_mcUCSX:2d}\\t{nJet30:d}\\t{nBJetMedium25:2d}\\t{met_pt:5.1f}\\t{htJet30j:6.1f}\\t{mll_3l:6.1f}\\t{mT_3l:6.1f}\\t{mT2L_3l:6.1f}\\t{mT2T_3l:6.1f}
+ENDDEF
+
+BEGIN::frtau
+  expr         := 1
+  bins         := 1,0.5,1.5
+  bkgs        +:= dataFakes;promptsub
+  flagsPlots  +:= --legendHeader 'CR nonprompt #tau'
+  plots       #:= {lep      : lep.*._pt ; .*_eta ; flavor3l ; charge3l; minDR3l; minDR3lmm    }
+  plots       #:= {evt      : mll3l ; met ; mtW3l ; htJet30j ; nJet30 ; nBJet25 ; m3l ; mTmll }
+  fmt          := {LepSel1_pdgId:+2d} {LepSel1_pt:5.1f} {LepSel1_mcUCSX:2d}\\t{LepSel2_pdgId:+2d} {LepSel2_pt:5.1f} {LepSel2_mcUCSX:2d}\\t{LepSel3_pdgId:+2d} {LepSel3_pt:5.1f} {LepSel3_mcUCSX:2d}\\t{nJet30:d}\\t{nBJetMedium25:2d}\\t{met_pt:5.1f}\\t{htJet30j:6.1f}\\t{mll_3l:6.1f}\\t{mT_3l:6.1f}\\t{mT2L_3l:6.1f}\\t{mT2T_3l:6.1f}\\t{wBG:1.5f}
 ENDDEF
