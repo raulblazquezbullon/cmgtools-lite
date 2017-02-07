@@ -10,6 +10,7 @@ def addMakerOptions(parser):
 	parser.add_option("-l"       , "--lumi"       , dest="lumi"   , type="string", default=None  , help="Overwrite the lumi from the config")
 	parser.add_option("-o"       , "--out"        , dest="outname", type="string", default=None, help="Name of the production, default is name of config.") 
 	parser.add_option("-q"       , "--queue"      , dest="queue"  , type="string", default=None, help="Submit jobs to batch system queue")
+	parser.add_option("--email"  , dest="email"   , type="string" , default=""   , help="Give email address to send notification that the jobs are done.");
 	parser.add_option("--flags"  , dest="flags"   , type="string" , action="append", default=[], help="Give additional strings to be added to the final command")
 	parser.add_option("--mca"    , dest="mcafile" , type="string" , default=None, help="Overwrite the mca file from the config");
 	parser.add_option("--cuts"   , dest="cutfile" , type="string" , default=None, help="Overwrite the cuts file from the config");
@@ -28,6 +29,8 @@ def addMakerOptions(parser):
 	parser.add_option("-W", "--weight", dest="weight", type="string" , default=None, help="Overwrite the weight expression")
 	parser.add_option("--noWeight", dest="noWeight", action="store_true", default=False, help="Do no use the weight string.")
 	parser.add_option("--noFlags" , dest="noFlags", action="store_true", default=False, help="Do no use flags stored in the config and region but only the ones given on command line")
+	parser.add_option("--noCFlags", dest="noCFlags", action="store_true", default=False, help="Do no use flags stored in the config")
+	parser.add_option("--noRFlags", dest="noRFlags", action="store_true", default=False, help="Do no use flags stored in the region")
 	return parser
 
 def splitLists(options):
@@ -94,11 +97,11 @@ class Maker():
 		for additional in additionals:
 			theflags.extend(self.getOption(additional, []))
 		if not self.options.noFlags:
-			theflags.extend(getattr(self.config , "flags", []))
-			theflags.extend(getattr(self.region , "flags", []))
+			if not self.options.noCFlags: theflags.extend(getattr(self.config , "flags", []))
+			if not self.options.noRFlags: theflags.extend(getattr(self.region , "flags", []))
 			for additional in additionals:
-				theflags.extend(getattr(self.config , additional, []))
-				theflags.extend(getattr(self.region , additional, []))
+				if not self.options.noCFlags: theflags.extend(getattr(self.config , additional, []))
+				if not self.options.noRFlags: theflags.extend(getattr(self.region , additional, []))
 		if useAlias: theflags.extend(["--alias "+k+" '"+v[0]+"'" for k,v in getattr(self.config, "alias", {}).iteritems()])
 		weight   = self.getWeight(isFastSim)
 		if not self.options.noWeight and useWeight and weight: theflags.append("-W '"+weight+"'")
@@ -118,8 +121,8 @@ class Maker():
 		#if useWeight and weight: theflags.append("-W '"+weight+"'")
 		#theflags = filter(lambda x: x, theflags)
 		#return " ".join(theflags)
-	def collectFriends(self):
-		return " ".join(self.getFriends())
+	def collectFriends(self, isFastSim = False):
+		return " ".join(self.getFriends(isFastSim))
 	def collectMacros(self):
 		use = getattr(self.config, "macros", [])
 		if len(getattr(self.region, "macros", []))>0: use = getattr(self.region, "macros", [])
@@ -172,14 +175,18 @@ class Maker():
 		return getCut(getattr(self.config, "firstCut", "alwaystrue"), self.getVariable("expr"), self.getVariable("bins"))
 	def getFriends(self,isFastSim=False):
 		friends = []
-		friends += ["-F sf/t {P}/"+f+"/evVarFriend_{cname}.root"    for f in getattr(self.config,"sfriends"  ,[])]
+		friends += ["-F sf/t {P}/"+f+"/evVarFriend_{cname}.root"     for f in getattr(self.config,"sfriends"   ,[])]
+		friends += ["-F sf/t {RP}/"+f+"/evVarFriend_{cname}.root"    for f in getattr(self.config,"srfriends"  ,[])]
 		friends += getattr(self.config, "friends" , [])
-		friends += ["--FD sf/t {P}/"+f+"/evVarFriend_{cname}.root"  for f in getattr(self.config,"sdfriends" ,[])]
+		friends += ["--FD sf/t {P}/"+f+"/evVarFriend_{cname}.root"   for f in getattr(self.config,"sdfriends"  ,[])]
+		friends += ["--FD sf/t {RP}/"+f+"/evVarFriend_{cname}.root"  for f in getattr(self.config,"srdfriends" ,[])]
 		friends += getattr(self.config, "dfriends" , [])
-		friends += ["--FMC sf/t {P}/"+f+"/evVarFriend_{cname}.root" for f in getattr(self.config,"smcfriends",[])]
+		friends += ["--FMC sf/t {P}/"+f+"/evVarFriend_{cname}.root"  for f in getattr(self.config,"smcfriends" ,[])]
+		friends += ["--FMC sf/t {RP}/"+f+"/evVarFriend_{cname}.root" for f in getattr(self.config,"srmcfriends",[])]
 		friends += getattr(self.config, "mcfriends", [])
 		if isFastSim:
-			friends += ["-F sf/t {P}/"+f+"/evVarFriend_{cname}.root" for f in getattr(self.config,"sfsfriends",[])]
+			friends += ["--FMC sf/t {P}/"+f+"/evVarFriend_{cname}.root"  for f in getattr(self.config,"sfsfriends" ,[])]
+			friends += ["--FMC sf/t {RP}/"+f+"/evVarFriend_{cname}.root" for f in getattr(self.config,"srfsfriends",[])]
 			friends += getattr(self.config, "fsfriends" , [])
 		return friends
 	def getFriendLocations(self):
