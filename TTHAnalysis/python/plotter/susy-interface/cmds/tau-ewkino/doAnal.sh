@@ -76,7 +76,7 @@ elif [ "$1" == "plot" ]; then
         #WEBDIR="/nfs/fanae/user/vischia/www/conversions_prodjan23/postFit/"
     fi
     PRETEND=" --pretend  "
-    #PRETEND=""
+    PRETEND=""
     python susy-interface/cmds/tau-ewkino/plot.py -i ${INPUTDIR} -o ${WEBDIR} ${ACTION} ${SUBACTION} ${PRETEND}
 
 fi
