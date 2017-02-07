@@ -78,8 +78,8 @@ mm.loadModels()
 sl      = mm.getVariable("lumi","12.9").replace(".","p")
 
 combinePath = mm.getVariable("combineTool")
-combinePath = combinePath.rstrip("/")
 if options.doCheck and (not combinePath or not os.path.isdir(combinePath) or combinePath[-3:] != "src"):
+	combinePath = combinePath.rstrip("/")
 	print "WARNING: You want to run the automatic systematics check for your datacards"
 	print "but you have not given all necessary information in your configuration!"
 	print "Please give the path to the 'src' directory (e.g. /usr/cheidegg/CMSSW_7_1_5/src)"
