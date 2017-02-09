@@ -54,7 +54,7 @@ def runPlots(cuts, mca, out, plots, inputDir, outputDir, pgroup, jei, lumi, mcc,
         daweights=''
         if weights != '':
                 daweights=" -W '{weights}' ".format(weights=weights)
-        cmd = "python mcPlots.py {mca} {cuts} {plots} -P {inputDir} --Fs {inputDir}/leptonJetReCleanerSusyEWK2L --pdir {outputDir} {pgroup} -j {jei} -l {lumi} --s2v --tree treeProducerSusyMultilepton --mcc {mcc} --mcc {mccother} --mcc {trigdef} -f {daweights} --plotgroup fakes_appldata+=promptsub  --legendWidth 0.20 --legendFontSize 0.035 --showMCError -f {toplot} --showRatio --perBin --legendHeader \'{header}\' --maxRatioRange 0.5 1.5 --fixRatioRange --ratioOffset 0.03  --load-macro {functions} {enablecuts} ".format(mca=mca,cuts=cuts,plots=plots,inputDir=inputDir,outputDir=out,pgroup=pgroup,jei=jei,lumi=lumi,mcc=mcc,mccother=mccother,trigdef=trigdef,daweights=daweights,toplot=toplot,functions=functions,enablecuts=enablecuts,header=header)
+        cmd = "python mcPlots.py {mca} {cuts} {plots} -P {inputDir} --Fs {inputDir}/leptonJetReCleanerSusyEWK2L --pdir {outputDir} {pgroup} -j {jei} -l {lumi} --s2v --tree treeProducerSusyMultilepton --mcc {mcc} --mcc {mccother} --mcc {trigdef} -f {daweights} --plotgroup fakes_appldata+=promptsub  --legendWidth 0.20 --legendFontSize 0.035 --showMCError -f {toplot} --showRatio --perBin --legendHeader \'{header}\' --maxRatioRange 0.5 1.5 --fixRatioRange --ratioOffset 0.03 {functions} {enablecuts} ".format(mca=mca,cuts=cuts,plots=plots,inputDir=inputDir,outputDir=out,pgroup=pgroup,jei=jei,lumi=lumi,mcc=mcc,mccother=mccother,trigdef=trigdef,daweights=daweights,toplot=toplot,functions=functions,enablecuts=enablecuts,header=header)
         command(cmd, pretend)
         os.system('cp {index} {outputDir}'.format(index=index,outputDir=out))
 
@@ -70,7 +70,7 @@ def runCards(variable, binning, cuts, mca, out, plots, systs, inputDir, processe
         if processes != '':
                 daprocesses=" -p data,{processes} ".format(processes=processes)
 
-        cmd = "python makeShapeCardsSusy.py {mca} {cuts} {variable} '{binning}' {systs} -P {inputDir} --Fs {inputDir}/leptonJetReCleanerSusyEWK2L -j {jei} -l {lumi} --s2v --tree treeProducerSusyMultilepton --mcc {mcc} --mcc {mccother} --mcc {trigdef} -f  {daweights} --load-macro {functions} {daprocesses} {signals} {pgroup} --od {outputDir} --ms -o {variable} {enablecuts} ".format(mca=mca,cuts=cuts,variable=variable,binning=binning,systs=systs,inputDir=inputDir,daprocesses=daprocesses,signals=signals,pgroup=pgroup,jei=jei,lumi=lumi,mcc=mcc,mccother=mccother,trigdef=trigdef,daweights=daweights,functions=functions,outputDir=out,enablecuts=enablecuts)
+        cmd = "python makeShapeCardsSusy.py {mca} {cuts} {variable} '{binning}' {systs} -P {inputDir} --Fs {inputDir}/leptonJetReCleanerSusyEWK2L -j {jei} -l {lumi} --s2v --tree treeProducerSusyMultilepton --mcc {mcc} --mcc {mccother} --mcc {trigdef} -f  {daweights} {functions} {daprocesses} {signals} {pgroup} --od {outputDir} --ms -o {variable} {enablecuts} ".format(mca=mca,cuts=cuts,variable=variable,binning=binning,systs=systs,inputDir=inputDir,daprocesses=daprocesses,signals=signals,pgroup=pgroup,jei=jei,lumi=lumi,mcc=mcc,mccother=mccother,trigdef=trigdef,daweights=daweights,functions=functions,outputDir=out,enablecuts=enablecuts)
         command(cmd, pretend)
         os.system('cp {index} {outputDir}'.format(index=index,outputDir=out))
         
@@ -178,11 +178,13 @@ elif(action=='crconv'):
         print "WARNING: Please re-add eventBTagSF to applied weights, when new recipe is out"
         #weights3l='puw_nInt_Moriond(nTrueInt)*triggerSF(0,LepGood1_conePt,LepGood1_pdgId,LepGood2_conePt,LepGood2_pdgId,LepGood3_conePt,LepGood3_pdgId)*leptonSF_2lss_ewk(LepGood1_pdgId,LepGood1_conePt,LepGood1_eta)*leptonSF_2lss_ewk(LepGood2_pdgId,LepGood2_conePt,LepGood2_eta)*eventBTagSF'
         wp='0'
+        wp='1'
         weights3l='puw_nInt_Moriond(nTrueInt)*triggerSF(0,LepGood1_conePt,LepGood1_pdgId,LepGood2_conePt,LepGood2_pdgId,LepGood3_conePt,LepGood3_pdgId)*getLepSF(LepGood1_conePt,LepGood1_eta,LepGood1_pdgId,{wp},0)*getLepSF(LepGood2_conePt,LepGood2_eta,LepGood2_pdgId,{wp},0)*getLepSF(LepGood3_conePt,LepGood3_eta,LepGood3_pdgId,{wp},0)'.format(wp=wp)
         #weights2l='puw_nInt_Moriond(nTrueInt)*triggerSF(-1,LepGood1_conePt,LepGood1_pdgId,LepGood2_conePt,LepGood2_pdgId,0,0)*leptonSF_2lss_ewk(LepGood1_pdgId,LepGood1_conePt,LepGood1_eta)*leptonSF_2lss_ewk(LepGood2_pdgId,LepGood2_conePt,LepGood2_eta)*eventBTagSF'
         wp='1'
         weights2l='puw_nInt_Moriond(nTrueInt)*triggerSF(-1,LepGood1_conePt,LepGood1_pdgId,LepGood2_conePt,LepGood2_pdgId)*getLepSF(LepGood1_conePt,LepGood1_eta,LepGood1_pdgId,{wp},0)*getLepSF(LepGood2_conePt,LepGood2_eta,LepGood2_pdgId,{wp},0)'.format(wp=wp)
-        functions='susy-ewkino/3l/functionsEWK.cc --load-macro susy-ewkino/functionsPUW.cc --load-macro susy-ewkino/functionsSF.cc --load-macro functions.cc '
+        #functions='--load-macro susy-ewkino/3l/functionsEWK.cc --load-macro susy-ewkino/functionsPUW.cc --load-macro susy-ewkino/functionsSF.cc --load-macro functions.cc '
+        functions=' --load-macro susy-ewkino/functionsPUW.cc --load-macro susy-ewkino/functionsSF.cc --load-macro functions.cc '
         toplot='--sP \'m3l\''
         if(subaction!=''):
                 toplot='--sP \'{toplot}\''.format(toplot=subaction)
@@ -196,11 +198,9 @@ elif(action=='crconv'):
         jei='40'
         lumi='36.814'
         enablecuts=' '
-        pgroup=' --pgroup internal:=ttZ,Gstar --pgroup external:=TTG,WG,ZG,TG --pgroup fakes_appldata+=incl_promptsub '
+        pgroup=' --pgroup internal:=ttZ,Gstar --pgroup external:=TTG,WG,ZG,TG,Gstare --pgroup incl_fakes_appldata+=incl_promptsub '
+        #
         header=''
-        #fakes_appldata+=promptsub
-
-      
 
         cuts='susy-ewkino/crconv/cuts_convs_3l.txt'
         mca='susy-ewkino/crconv/mca-3l-mc-conv.txt'
@@ -213,7 +213,7 @@ elif(action=='crconv'):
         # Inclusive
         out=outputDir+'3l_mcdata_conv/'
         header='Inclusive'
-        toplot='--sP \'flavor3l\' --sP \'m3l\''                                                                              
+        toplot=' --sP \'m3l\' --sP \'flavor3l\' '
         runPlots(cuts, mca, out, plots, inputDir, outputDir, pgroup, jei, lumi, mcc, mccother, trigdef, toplot, weights3l, functions, enablecuts, header)
         toplot='--sP \'m3l\''
         # eee
@@ -265,11 +265,12 @@ elif(action=='crconvcards'):
         trigdef='susy-ewkino/mcc_triggerdefs.txt'
         print "WARNING: Please re-add eventBTagSF to applied weights, when new recipe is out"
         wp='0'
+        wp='1'
         weights3l='puw_nInt_Moriond(nTrueInt)*triggerSF(0,LepGood1_conePt,LepGood1_pdgId,LepGood2_conePt,LepGood2_pdgId,LepGood3_conePt,LepGood3_pdgId)*getLepSF(LepGood1_conePt,LepGood1_eta,LepGood1_pdgId,{wp},0)*getLepSF(LepGood2_conePt,LepGood2_eta,LepGood2_pdgId,{wp},0)*getLepSF(LepGood3_conePt,LepGood3_eta,LepGood3_pdgId,{wp},0)'.format(wp=wp)
         #weights2l='puw_nInt_Moriond(nTrueInt)*triggerSF(-1,LepGood1_conePt,LepGood1_pdgId,LepGood2_conePt,LepGood2_pdgId,0,0)*leptonSF_2lss_ewk(LepGood1_pdgId,LepGood1_conePt,LepGood1_eta)*leptonSF_2lss_ewk(LepGood2_pdgId,LepGood2_conePt,LepGood2_eta)*eventBTagSF'
         wp='1'
         weights2l='puw_nInt_Moriond(nTrueInt)*triggerSF(-1,LepGood1_conePt,LepGood1_pdgId,LepGood2_conePt,LepGood2_pdgId)*getLepSF(LepGood1_conePt,LepGood1_eta,LepGood1_pdgId,{wp},0)*getLepSF(LepGood2_conePt,LepGood2_eta,LepGood2_pdgId,{wp},0)'.format(wp=wp)
-        functions='susy-ewkino/3l/functionsEWK.cc --load-macro susy-ewkino/functionsPUW.cc --load-macro susy-ewkino/functionsSF.cc --load-macro functions.cc '
+        functions=' --load-macro susy-ewkino/functionsPUW.cc --load-macro susy-ewkino/functionsSF.cc --load-macro functions.cc '
         systs='susy-ewkino/crconv/systs_conv.txt'
         variable='met'
         binning='10,50,300'
@@ -300,12 +301,12 @@ elif(action=='crconvcards'):
         
         # Inclusive
         enablecuts=''
-        #runCards(variable, binning, cuts, mca, out, plots, systs, inputDir, processes, signals, pgroup, outputDir, jei, lumi, mcc, mccother, trigdef, weights3l, functions, enablecuts)
+        runCards(variable, binning, cuts, mca, out, plots, systs, inputDir, processes, signals, pgroup, outputDir, jei, lumi, mcc, mccother, trigdef, weights3l, functions, enablecuts)
 
         # eee
         out=outputDir+'datacards/3l_mcdata_conv/eee/'
         enablecuts=' --enable-cut=eee '
-        #runCards(variable, binning, cuts, mca, out, plots, systs, inputDir, processes, signals, pgroup, outputDir, jei, lumi, mcc, mccother, trigdef, weights3l, functions, enablecuts)
+        runCards(variable, binning, cuts, mca, out, plots, systs, inputDir, processes, signals, pgroup, outputDir, jei, lumi, mcc, mccother, trigdef, weights3l, functions, enablecuts)
 
         # mmm
         out=outputDir+'datacards/3l_mcdata_conv/mmm/'
@@ -331,13 +332,13 @@ elif(action=='crconvcards'):
         out=outputDir+'datacards/ss2lgamma_mcdata_conv/'
         processes='Gstar,TG,TTG,ttZ,WG,ZG,WZ,Fakes,Rares,Flips'
         processes=''
-        runCards(variable, binning, cuts, mca, out, plots, systs, inputDir, processes, signals, pgroup, outputDir, jei, lumi, mcc, mccother, trigdef, weights2l, functions, enablecuts)
+        #runCards(variable, binning, cuts, mca, out, plots, systs, inputDir, processes, signals, pgroup, outputDir, jei, lumi, mcc, mccother, trigdef, weights2l, functions, enablecuts)
 
         cuts='susy-ewkino/crconv/cuts_convs_ss2l.txt'
         mca='susy-ewkino/crconv/mca-ss2l-mcdata-conv.txt'
         out=outputDir+'datacards/ss2l_mcdata_conv/'
         processes='Gstar,TG,TTG,ttZ,WG,ZG,WZ,Fakes,Rares,Flips,TTG'
         processes=''
-        runCards(variable, binning, cuts, mca, out, plots, systs, inputDir, processes, signals, pgroup, outputDir, jei, lumi, mcc, mccother, trigdef, weights2l, functions, enablecuts)
+        #runCards(variable, binning, cuts, mca, out, plots, systs, inputDir, processes, signals, pgroup, outputDir, jei, lumi, mcc, mccother, trigdef, weights2l, functions, enablecuts)
 
 print 'Everything is done now'
