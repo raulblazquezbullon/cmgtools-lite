@@ -285,7 +285,7 @@ elif(action=='crconvcards'):
         jei='6'
         jei='60'
         lumi='36.814'
-        pgroup=' --pgroup internal:=ttZ,Gstar --pgroup external:=TTG,WG,ZG,TG '
+        pgroup=' --pgroup internal:=ttZ,Gstar --pgroup external:=TTG,WG,ZG,TG,Gstare --pgroup incl_fakes_appldata+=incl_promptsub '
         signals=' --sp internal --sp external '
         enablecuts=' '
 
