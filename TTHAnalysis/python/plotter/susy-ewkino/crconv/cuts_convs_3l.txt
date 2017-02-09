@@ -13,10 +13,16 @@ trileptontight : LepGood1_isTight && LepGood2_isTight && LepGood3_isTight
 ########tightMVAVT: (LepGood1_mvaSUSY>0.45+(-0.45+0.75)*(abs(LepGood1_pdgId)==11)) && (LepGood2_mvaSUSY>0.45+(-0.45+0.75)*(abs(LepGood2_pdgId)==11)) && (LepGood3_mvaSUSY>0.45+(-0.45+0.75)*(abs(LepGood3_pdgId)==11))
 
 ##TTT: LepGood1_isTight && LepGood2_isTight && LepGood3_isTight
-twolnotfromZ_12: if3( LepGood1_pdgId == -LepGood2_pdgId, abs(mass_2(LepGood1_conePt,LepGood1_eta,LepGood1_phi,LepGood1_mass, LepGood2_conePt,LepGood2_eta,LepGood2_phi,LepGood2_mass)-91.2) > 15, 1 )
-twolnotfromZ_13: if3( LepGood2_pdgId == -LepGood3_pdgId, abs(mass_2(LepGood1_conePt,LepGood1_eta,LepGood1_phi,LepGood1_mass, LepGood3_conePt,LepGood3_eta,LepGood3_phi,LepGood3_mass)-91.2) > 15, 1 )
-twolnotfromZ_23: if3( LepGood3_pdgId == -LepGood3_pdgId, abs(mass_2(LepGood2_conePt,LepGood2_eta,LepGood2_phi,LepGood2_mass, LepGood3_conePt,LepGood3_eta,LepGood3_phi,LepGood3_mass)-91.2) > 15, 1 )
+
+#twolnotfromZ_12: if3( LepGood1_pdgId == -LepGood2_pdgId, abs(mass_2(LepGood1_conePt,LepGood1_eta,LepGood1_phi,LepGood1_mass, LepGood2_conePt,LepGood2_eta,LepGood2_phi,LepGood2_mass)-91.2) > 15, 1 )
+#twolnotfromZ_13: if3( LepGood2_pdgId == -LepGood3_pdgId, abs(mass_2(LepGood1_conePt,LepGood1_eta,LepGood1_phi,LepGood1_mass, LepGood3_conePt,LepGood3_eta,LepGood3_phi,LepGood3_mass)-91.2) > 15, 1 )
+#twolnotfromZ_23: if3( LepGood3_pdgId == -LepGood3_pdgId, abs(mass_2(LepGood2_conePt,LepGood2_eta,LepGood2_phi,LepGood2_mass, LepGood3_conePt,LepGood3_eta,LepGood3_phi,LepGood3_mass)-91.2) > 15, 1 )
 #3lfromconv: abs(mass_3_cheap(LepGood1_pt,LepGood1_eta,LepGood2_pt,LepGood2_eta,deltaPhi(LepGood1_phi,LepGood2_phi),LepGood3_pt,LepGood3_eta,deltaPhi(LepGood1_phi,LepGood3_phi))-91.2) < 30
+
+twolnotfromZ_12: if3( LepGood1_pdgId == -LepGood2_pdgId, mass_2(LepGood1_conePt,LepGood1_eta,LepGood1_phi,LepGood1_mass, LepGood2_conePt,LepGood2_eta,LepGood2_phi,LepGood2_mass) < 75. , 1 )
+twolnotfromZ_13: if3( LepGood2_pdgId == -LepGood3_pdgId, mass_2(LepGood1_conePt,LepGood1_eta,LepGood1_phi,LepGood1_mass, LepGood3_conePt,LepGood3_eta,LepGood3_phi,LepGood3_mass) < 75. , 1 )
+twolnotfromZ_23: if3( LepGood3_pdgId == -LepGood3_pdgId, mass_2(LepGood2_conePt,LepGood2_eta,LepGood2_phi,LepGood2_mass, LepGood3_conePt,LepGood3_eta,LepGood3_phi,LepGood3_mass) < 75. , 1 )
+
 met: met_pt < 50
 
 zerobjetM: nBJetMedium25 == 0
