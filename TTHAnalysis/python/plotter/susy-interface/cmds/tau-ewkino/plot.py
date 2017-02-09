@@ -178,11 +178,11 @@ elif(action=='crconv'):
         print "WARNING: Please re-add eventBTagSF to applied weights, when new recipe is out"
         #weights3l='puw_nInt_Moriond(nTrueInt)*triggerSF(0,LepGood1_conePt,LepGood1_pdgId,LepGood2_conePt,LepGood2_pdgId,LepGood3_conePt,LepGood3_pdgId)*leptonSF_2lss_ewk(LepGood1_pdgId,LepGood1_conePt,LepGood1_eta)*leptonSF_2lss_ewk(LepGood2_pdgId,LepGood2_conePt,LepGood2_eta)*eventBTagSF'
         wp='0'
-        wp='1'
-        weights3l='puw_nInt_Moriond(nTrueInt)*triggerSF(0,LepGood1_conePt,LepGood1_pdgId,LepGood2_conePt,LepGood2_pdgId,LepGood3_conePt,LepGood3_pdgId)*getLepSF(LepGood1_conePt,LepGood1_eta,LepGood1_pdgId,{wp},0)*getLepSF(LepGood2_conePt,LepGood2_eta,LepGood2_pdgId,{wp},0)*getLepSF(LepGood3_conePt,LepGood3_eta,LepGood3_pdgId,{wp},0)'.format(wp=wp)
+        #wp='1'
+        weights3l='puw_nInt_Moriond(nTrueInt)*getLepSF(LepGood1_conePt,LepGood1_eta,LepGood1_pdgId,{wp},0)*getLepSF(LepGood2_conePt,LepGood2_eta,LepGood2_pdgId,{wp},0)*getLepSF(LepGood3_conePt,LepGood3_eta,LepGood3_pdgId,{wp},0)'.format(wp=wp)
         #weights2l='puw_nInt_Moriond(nTrueInt)*triggerSF(-1,LepGood1_conePt,LepGood1_pdgId,LepGood2_conePt,LepGood2_pdgId,0,0)*leptonSF_2lss_ewk(LepGood1_pdgId,LepGood1_conePt,LepGood1_eta)*leptonSF_2lss_ewk(LepGood2_pdgId,LepGood2_conePt,LepGood2_eta)*eventBTagSF'
         wp='1'
-        weights2l='puw_nInt_Moriond(nTrueInt)*triggerSF(-1,LepGood1_conePt,LepGood1_pdgId,LepGood2_conePt,LepGood2_pdgId)*getLepSF(LepGood1_conePt,LepGood1_eta,LepGood1_pdgId,{wp},0)*getLepSF(LepGood2_conePt,LepGood2_eta,LepGood2_pdgId,{wp},0)'.format(wp=wp)
+        weights2l='puw_nInt_Moriond(nTrueInt)*getLepSF(LepGood1_conePt,LepGood1_eta,LepGood1_pdgId,{wp},0)*getLepSF(LepGood2_conePt,LepGood2_eta,LepGood2_pdgId,{wp},0)'.format(wp=wp)
         #functions='--load-macro susy-ewkino/3l/functionsEWK.cc --load-macro susy-ewkino/functionsPUW.cc --load-macro susy-ewkino/functionsSF.cc --load-macro functions.cc '
         functions=' --load-macro susy-ewkino/functionsPUW.cc --load-macro susy-ewkino/functionsSF.cc --load-macro functions.cc '
         toplot='--sP \'m3l\''
@@ -265,11 +265,11 @@ elif(action=='crconvcards'):
         trigdef='susy-ewkino/mcc_triggerdefs.txt'
         print "WARNING: Please re-add eventBTagSF to applied weights, when new recipe is out"
         wp='0'
-        wp='1'
-        weights3l='puw_nInt_Moriond(nTrueInt)*triggerSF(0,LepGood1_conePt,LepGood1_pdgId,LepGood2_conePt,LepGood2_pdgId,LepGood3_conePt,LepGood3_pdgId)*getLepSF(LepGood1_conePt,LepGood1_eta,LepGood1_pdgId,{wp},0)*getLepSF(LepGood2_conePt,LepGood2_eta,LepGood2_pdgId,{wp},0)*getLepSF(LepGood3_conePt,LepGood3_eta,LepGood3_pdgId,{wp},0)'.format(wp=wp)
+        #wp='1'
+        weights3l='puw_nInt_Moriond(nTrueInt)*getLepSF(LepGood1_conePt,LepGood1_eta,LepGood1_pdgId,{wp},0)*getLepSF(LepGood2_conePt,LepGood2_eta,LepGood2_pdgId,{wp},0)*getLepSF(LepGood3_conePt,LepGood3_eta,LepGood3_pdgId,{wp},0)'.format(wp=wp)
         #weights2l='puw_nInt_Moriond(nTrueInt)*triggerSF(-1,LepGood1_conePt,LepGood1_pdgId,LepGood2_conePt,LepGood2_pdgId,0,0)*leptonSF_2lss_ewk(LepGood1_pdgId,LepGood1_conePt,LepGood1_eta)*leptonSF_2lss_ewk(LepGood2_pdgId,LepGood2_conePt,LepGood2_eta)*eventBTagSF'
         wp='1'
-        weights2l='puw_nInt_Moriond(nTrueInt)*triggerSF(-1,LepGood1_conePt,LepGood1_pdgId,LepGood2_conePt,LepGood2_pdgId)*getLepSF(LepGood1_conePt,LepGood1_eta,LepGood1_pdgId,{wp},0)*getLepSF(LepGood2_conePt,LepGood2_eta,LepGood2_pdgId,{wp},0)'.format(wp=wp)
+        weights2l='puw_nInt_Moriond(nTrueInt)*getLepSF(LepGood1_conePt,LepGood1_eta,LepGood1_pdgId,{wp},0)*getLepSF(LepGood2_conePt,LepGood2_eta,LepGood2_pdgId,{wp},0)'.format(wp=wp)
         functions=' --load-macro susy-ewkino/functionsPUW.cc --load-macro susy-ewkino/functionsSF.cc --load-macro functions.cc '
         systs='susy-ewkino/crconv/systs_conv.txt'
         variable='met'
