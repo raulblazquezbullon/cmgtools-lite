@@ -57,8 +57,8 @@ def prepareJob(mm, name, mp, baseSig, baseSys, binning, bkgpath, outpath, xslist
 parser = OptionParser(usage="%prog cfg regions treedir outdir [options]")
 parser = maker.addMakerOptions(parser)
 parser.add_option("--WFS"         , dest="weightFS"   , type="string"      , default=None , help="Overwrite the weightFS expression");
-parser.add_option("--q2accfile"   , dest="q2accfile"  , type="string"      , default=None , help="Overwrite the q2accfile expression");
-parser.add_option("--q2accformat" , dest="q2accformat", type="string"      , default=None , help="Overwrite the q2accfile expression");
+#parser.add_option("--q2accfile"   , dest="q2accfile"  , type="string"      , default=None , help="Overwrite the q2accfile expression");
+#parser.add_option("--q2accformat" , dest="q2accformat", type="string"      , default=None , help="Overwrite the q2accfile expression");
 parser.add_option("--bkgOnly"     , dest="bkgOnly"    , action="store_true", default=False, help="Only run the bkg only");
 parser.add_option("--sigOnly"     , dest="sigOnly"    , action="store_true", default=False, help="Only run the signal (if bkg already is present)");
 parser.add_option("--perBin"      , dest="perBin"     , action="store_true", default=False, help="Make datacards for every bin in 'expr' separately.");

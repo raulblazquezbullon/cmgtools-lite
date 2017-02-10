@@ -7,30 +7,31 @@ from init import *
 
 def addMakerOptions(parser):
 	parser.add_option("-j"       , "--jobs"       , dest="jobs"   , type="int"   , default=0     , help="Number of jobs in multi-processing")
-	parser.add_option("-l"       , "--lumi"       , dest="lumi"   , type="string", default=None  , help="Overwrite the lumi from the config")
 	parser.add_option("-o"       , "--out"        , dest="outname", type="string", default=None, help="Name of the production, default is name of config.") 
 	parser.add_option("-q"       , "--queue"      , dest="queue"  , type="string", default=None, help="Submit jobs to batch system queue")
 	parser.add_option("--email"  , dest="email"   , type="string" , default=""   , help="Give email address to send notification that the jobs are done.");
-	parser.add_option("--flags"  , dest="flags"   , type="string" , action="append", default=[], help="Give additional strings to be added to the final command")
-	parser.add_option("--mca"    , dest="mcafile" , type="string" , default=None, help="Overwrite the mca file from the config");
-	parser.add_option("--cuts"   , dest="cutfile" , type="string" , default=None, help="Overwrite the cuts file from the config");
-	parser.add_option("--plot"   , dest="plotfile", type="string" , default=None, help="Overwrite the plots file from the config");
-	parser.add_option("--sys"    , dest="sysfile" , type="string" , default=None, help="Overwrite the syst file from the config");
-	parser.add_option("--expr"   , dest="expr"    , type="string" , default=None, help="Overwrite the expr from the config");
-	parser.add_option("--bins"   , dest="bins"    , type="string" , default=None, help="Overwrite the bins from the config");
-	parser.add_option("--fmt"    , dest="fmt"     , type="string" , default=None, help="Overwrite the fmt from the config");
-	parser.add_option("--mccs"   , dest="mccs"    , type="string" , action="append", default=[], help="Overwrite MCC from the config");
-	parser.add_option("--macros" , dest="macros"  , type="string" , action="append", default=[], help="Overwrite macros from the config");
 	parser.add_option("--pretend", dest="pretend" , action="store_true", default=False, help="Only write the commands");
-	parser.add_option("--tree"   , dest="treename", type="string", default=None, help="Overwrite the treename from the config")
-	parser.add_option("--bkgs"   , dest="bkgs"    , type="string" , action="append", default=[], help="Overwrite the bkgs from the region")
-	parser.add_option("--sigs"   , dest="sigs"    , type="string" , action="append", default=[], help="Overwrite the sigs from the region")
+
+	parser.add_option("-l"       , "--lumi"       , dest="lumi"   , type="string", default=None  , help="Overwrite the lumi from the config")
 	parser.add_option("-p", "--procs" , dest="procs" , type="string" , action="append", default=[], help="Overwrite both bkgs and sigs from the region")
 	parser.add_option("-W", "--weight", dest="weight", type="string" , default=None, help="Overwrite the weight expression")
-	parser.add_option("--noWeight", dest="noWeight", action="store_true", default=False, help="Do no use the weight string.")
-	parser.add_option("--noFlags" , dest="noFlags", action="store_true", default=False, help="Do no use flags stored in the config and region but only the ones given on command line")
+	parser.add_option("--bins"   , dest="bins"    , type="string" , default=None, help="Overwrite the bins from the config");
+	parser.add_option("--bkgs"   , dest="bkgs"    , type="string" , action="append", default=[], help="Overwrite the bkgs from the region")
+	parser.add_option("--cuts"   , dest="cutfile" , type="string" , default=None, help="Overwrite the cuts file from the config");
+	parser.add_option("--expr"   , dest="expr"    , type="string" , default=None, help="Overwrite the expr from the config");
+	parser.add_option("--flags"  , dest="flags"   , type="string" , action="append", default=[], help="Give additional strings to be added to the final command")
+	parser.add_option("--fmt"    , dest="fmt"     , type="string" , default=None, help="Overwrite the fmt from the config");
+	parser.add_option("--mca"    , dest="mcafile" , type="string" , default=None, help="Overwrite the mca file from the config");
+	parser.add_option("--mccs"   , dest="mccs"    , type="string" , action="append", default=[], help="Overwrite MCC from the config");
+	parser.add_option("--macros" , dest="macros"  , type="string" , action="append", default=[], help="Overwrite macros from the config");
 	parser.add_option("--noCFlags", dest="noCFlags", action="store_true", default=False, help="Do no use flags stored in the config")
+	parser.add_option("--noFlags" , dest="noFlags", action="store_true", default=False, help="Do no use flags stored in the config and region but only the ones given on command line")
 	parser.add_option("--noRFlags", dest="noRFlags", action="store_true", default=False, help="Do no use flags stored in the region")
+	parser.add_option("--noWeight", dest="noWeight", action="store_true", default=False, help="Do no use the weight string.")
+	parser.add_option("--plot"   , dest="plotfile", type="string" , default=None, help="Overwrite the plots file from the config");
+	parser.add_option("--sigs"   , dest="sigs"    , type="string" , action="append", default=[], help="Overwrite the sigs from the region")
+	parser.add_option("--sys"    , dest="sysfile" , type="string" , default=None, help="Overwrite the syst file from the config");
+	parser.add_option("--tree"   , dest="treename", type="string", default=None, help="Overwrite the treename from the config")
 	return parser
 
 def splitLists(options):
