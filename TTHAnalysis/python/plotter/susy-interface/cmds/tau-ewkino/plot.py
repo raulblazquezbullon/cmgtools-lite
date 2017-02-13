@@ -196,7 +196,8 @@ elif(action=='crconv'):
         direct=' '
         jei='6'
         jei='40'
-        lumi='36.814'
+        # https://hypernews.cern.ch/HyperNews/CMS/get/physics-announcements/4495.html
+        lumi='35.867'
         enablecuts=' '
         pgroup=' --pgroup internal:=ttZ,Gstar,ZGi --pgroup external:=TTG,WG,ZG,TG,Gstare --pgroup incl_fakes_appldata+=incl_promptsub '
         #
@@ -284,7 +285,8 @@ elif(action=='crconvcards'):
         direct=' '
         jei='6'
         jei='60'
-        lumi='36.814'
+        # https://hypernews.cern.ch/HyperNews/CMS/get/physics-announcements/4495.html
+        lumi='35.867'
         pgroup=' --pgroup internal:=ttZ,Gstar,ZGi --pgroup external:=TTG,WG,ZG,TG,Gstare --pgroup incl_fakes_appldata+=incl_promptsub '
         signals=' --sp internal --sp external '
         enablecuts=' '
