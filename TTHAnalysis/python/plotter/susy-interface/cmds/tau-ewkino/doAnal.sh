@@ -1,5 +1,6 @@
 #INPUTDIR="/nfs/fanae/user/vischia/TREES_80X_011216_Spring16MVA_skim_2lep_OR_1lep_2tau/"
-INPUTDIR="/pool/ciencias/HeppyTrees/RA7/estructura/Prod23Jan/"
+#INPUTDIR="/pool/ciencias/HeppyTrees/RA7/estructura/Prod23Jan/"
+INPUTDIR="/pool/cienciasrw/userstorage/pietro/conversions_skim/"
 OUTPUTDIR="/OBSOLETE"
 WEBDIR="/nfs/fanae/user/vischia/www/somewhereovertherainbow/"
 
@@ -50,6 +51,13 @@ elif [ "$1" == "skim" ]; then
         python /mnt_pool/fanae105/user/vischia/workarea/cmssw/susy/CMSSW_8_0_19/src/CMGTools/TTHAnalysis/python/plotter/skimTrees.py -j 64 -P /nfs/fanae/user/vischia/TREES_80X_011216_Spring16MVA_skim_2lep_OR_1lep_2tau/ --tree treeProducerSusyMultilepton  --Fs {P}/leptonJetReCleanerSusyEWK2L  --mcc susy-ewkino/mcc_triggerdefs.txt  --mcc susy-ewkino/2lss/lepchoice-2lss-FO.txt mca-skim.txt cuts-skim.txt /nfs/fanae/user/vischia/skimmedtrees_full
     elif [ "$2" == "ft" ]; then
         python skimFTrees.py /nfs/fanae/user/vischia/skimmedtrees_full /nfs/fanae/user/vischia/TREES_80X_011216_Spring16MVA_skim_2lep_OR_1lep_2tau/leptonBuilderEWK /nfs/fanae/user/vischia/skimmedtrees_full/leptonBuilderEWK  DoubleEG_Run2016F_23Sep2016_v1_runs_271036_284044_part1 DoubleEG_Run2016F_23Sep2016_v1_runs_271036_284044_part2 DoubleEG_Run2016F_23Sep2016_v1_runs_271036_284044_part3 DoubleEG_Run2016G_23Sep2016_v1_runs_271036_284044_part1 DoubleEG_Run2016G_23Sep2016_v1_runs_271036_284044_part2 DoubleEG_Run2016G_23Sep2016_v1_runs_271036_284044_part3 DoubleEG_Run2016G_23Sep2016_v1_runs_271036_284044_part4 DoubleEG_Run2016G_23Sep2016_v1_runs_271036_284044_part5 DoubleEG_Run2016G_23Sep2016_v1_runs_271036_284044_part6 DoubleMuon_Run2016F_23Sep2016_v1_runs_271036_284044_part1 DoubleMuon_Run2016F_23Sep2016_v1_runs_271036_284044_part2 DoubleMuon_Run2016F_23Sep2016_v1_runs_271036_284044_part3 DoubleMuon_Run2016F_23Sep2016_v1_runs_271036_284044_part4 DoubleMuon_Run2016F_23Sep2016_v1_runs_271036_284044_part5 DoubleMuon_Run2016G_23Sep2016_v1_runs_271036_284044_part1 DoubleMuon_Run2016G_23Sep2016_v1_runs_271036_284044_part2 DoubleMuon_Run2016G_23Sep2016_v1_runs_271036_284044_part3 DoubleMuon_Run2016G_23Sep2016_v1_runs_271036_284044_part4 DoubleMuon_Run2016G_23Sep2016_v1_runs_271036_284044_part5 DoubleMuon_Run2016G_23Sep2016_v1_runs_271036_284044_part6 DoubleMuon_Run2016G_23Sep2016_v1_runs_271036_284044_part7 DoubleMuon_Run2016G_23Sep2016_v1_runs_271036_284044_part8 DoubleMuon_Run2016G_23Sep2016_v1_runs_271036_284044_part9 MuonEG_Run2016F_23Sep2016_v1_runs_271036_284044 MuonEG_Run2016G_23Sep2016_v1_runs_271036_284044_part1 MuonEG_Run2016G_23Sep2016_v1_runs_271036_284044_part2 SingleElectron_Run2016F_23Sep2016_v1_runs_271036_284044 SingleElectron_Run2016G_23Sep2016_v1_runs_271036_284044 SingleMuon_Run2016F_23Sep2016_v1_runs_271036_284044 SingleMuon_Run2016G_23Sep2016_v1_runs_271036_284044_part1 SingleMuon_Run2016G_23Sep2016_v1_runs_271036_284044_part2
+
+    # Improve flexibility through txt parsing, or acquire from "ls " as a default, and single comma separated sets if $3 is filled
+    elif [ "$2" == "crconvtrees" ]; then
+        python skimTrees.py -j 64 -P ${INPUTDIR} --tree treeProducerSusyMultilepton  --Fs {P}/leptonJetReCleanerSusyEWK2L  --mcc susy-ewkino/mcc_triggerdefs.txt  --mcc susy-ewkino/2lss/lepchoice-2lss-FO.txt susy-ewkino/crconv/mca-skim.txt susy-ewkino/crconv/cuts-skim.txt /pool/cienciasrw/userstorage/pietro/conversions_skim/
+    elif [ "$2" == "crconvfriends" ]; then
+        python skimFTrees.py /pool/cienciasrw/userstorage/pietro/conversions_skim/ ${INPUTDIR}/leptonJetReCleanerSusyEWK2L /pool/cienciasrw/userstorage/pietro/conversions_skim/
+        python skimFTrees.py /pool/cienciasrw/userstorage/pietro/conversions_skim/ ${INPUTDIR}/leptonBuilderEWK /pool/cienciasrw/userstorage/pietro/conversions_skim/
     fi
     
 elif [ "$1" == "plot" ]; then
