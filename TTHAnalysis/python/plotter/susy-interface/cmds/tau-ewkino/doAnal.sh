@@ -1,6 +1,7 @@
 #INPUTDIR="/nfs/fanae/user/vischia/TREES_80X_011216_Spring16MVA_skim_2lep_OR_1lep_2tau/"
-#INPUTDIR="/pool/ciencias/HeppyTrees/RA7/estructura/Prod23Jan/"
-INPUTDIR="/pool/cienciasrw/userstorage/pietro/conversions_skim/"
+INPUTDIR="/pool/ciencias/HeppyTrees/RA7/estructura/Prod23Jan/"
+TREESDIR=${INPUTDIR}
+INPUTDIR="/pool/cienciasrw/userstorage/pietro/conversions_skim_v2/"
 OUTPUTDIR="/OBSOLETE"
 WEBDIR="/nfs/fanae/user/vischia/www/somewhereovertherainbow/"
 
@@ -54,10 +55,10 @@ elif [ "$1" == "skim" ]; then
 
     # Improve flexibility through txt parsing, or acquire from "ls " as a default, and single comma separated sets if $3 is filled
     elif [ "$2" == "crconvtrees" ]; then
-        python skimTrees.py -j 64 -P ${INPUTDIR} --tree treeProducerSusyMultilepton  --Fs {P}/leptonJetReCleanerSusyEWK2L  --mcc susy-ewkino/mcc_triggerdefs.txt  --mcc susy-ewkino/2lss/lepchoice-2lss-FO.txt susy-ewkino/crconv/mca-skim.txt susy-ewkino/crconv/cuts-skim.txt /pool/cienciasrw/userstorage/pietro/conversions_skim/
+        python skimTrees.py -j 64 -P ${TREESDIR} --tree treeProducerSusyMultilepton  --Fs {P}/leptonJetReCleanerSusyEWK2L  --mcc susy-ewkino/mcc_triggerdefs.txt  --mcc susy-ewkino/2lss/lepchoice-2lss-FO.txt susy-ewkino/crconv/mca-skim.txt susy-ewkino/crconv/cuts-skim.txt /pool/cienciasrw/userstorage/pietro/conversions_skim_v2/
     elif [ "$2" == "crconvfriends" ]; then
-        python skimFTrees.py /pool/cienciasrw/userstorage/pietro/conversions_skim/ ${INPUTDIR}/leptonJetReCleanerSusyEWK2L /pool/cienciasrw/userstorage/pietro/conversions_skim/
-        python skimFTrees.py /pool/cienciasrw/userstorage/pietro/conversions_skim/ ${INPUTDIR}/leptonBuilderEWK /pool/cienciasrw/userstorage/pietro/conversions_skim/
+        python skimFTrees.py /pool/cienciasrw/userstorage/pietro/conversions_skim_v2/ ${TREESDIR}/leptonJetReCleanerSusyEWK2L /pool/cienciasrw/userstorage/pietro/conversions_skim_v2/
+        python skimFTrees.py /pool/cienciasrw/userstorage/pietro/conversions_skim_v2/ ${TREESDIR}/leptonBuilderEWK /pool/cienciasrw/userstorage/pietro/conversions_skim_v2/
     fi
     
 elif [ "$1" == "plot" ]; then

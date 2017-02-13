@@ -1,5 +1,5 @@
 alwaystrue: 1
-trigger: Triggers_ee || Triggers_mm || Triggers_em
-metfilters: METfilters
+#trigger: Triggers_ee || Triggers_mm || Triggers_em
+#metfilters: METfilters
 trilep: nLepFO>=3
 met: met_pt < 70
