@@ -1,18 +1,22 @@
 alwaystrue: 1
 #blinding  : !isData || (run <= 276811 || (run>=278820 && run<=279931))
 trigger: Triggers_ee || Triggers_mm || Triggers_em
-metfilters: METfilters
+metfilters: $DATA{METfilters} $MC{1}
 cleanup: minMllAFAS > 12
-trilep: nLepFO>=3
-pt201010: LepGood1_conePt>20 && LepGood2_conePt>10 && (abs(LepGood2_pdgId)!=11 || LepGood2_conePt>15) && LepGood3_conePt>10 && (abs(LepGood3_pdgId)!=11 || LepGood3_conePt>15)
+trilep: nLepFO==3
+pt201010: LepGood1_conePt>20 && LepGood2_conePt>10 && (abs(LepGood2_pdgId)!=11 || LepGood2_conePt>15) && LepGood3_conePt>10 && (abs(LepGood3_pdgId)!=11 || LepGood3_conePt>15) ; Disable=True
+pt252010: LepGood1_conePt>25 && LepGood2_conePt>25 && if3( abs(LepGood3_pdgId)==11, LepGood3_conePt>15, LepGood3_conePt>10)
 
-trileptonmedium : Lep1_isMedium && Lep2_isMedium && Lep3_isMedium
+tightCharge : LepGood1_tightCharge > 1 && LepGood2_tightCharge > 1 && LepGood3_tightCharge > 1
 
-#trileptontight : LepGood1_isTight && LepGood2_isTight && LepGood3_isTight       
+#tauveto : nLepTight_Recl == 3 && nTightTauSel==0
+tauveto :  abs(LepGood1_pdgId)<14 && abs(LepGood2_pdgId)<14 && abs(LepGood3_pdgId)<14 && nTightTauSel_Recl==0 
+
+#trileptonmedium : Lep1_isMedium && Lep2_isMedium && Lep3_isMedium
+
+trileptontight : LepGood1_isTight && LepGood2_isTight && LepGood3_isTight       
 
 ########tightMVAVT: (LepGood1_mvaSUSY>0.45+(-0.45+0.75)*(abs(LepGood1_pdgId)==11)) && (LepGood2_mvaSUSY>0.45+(-0.45+0.75)*(abs(LepGood2_pdgId)==11)) && (LepGood3_mvaSUSY>0.45+(-0.45+0.75)*(abs(LepGood3_pdgId)==11))
-
-##TTT: LepGood1_isTight && LepGood2_isTight && LepGood3_isTight
 
 #twolnotfromZ_12: if3( LepGood1_pdgId == -LepGood2_pdgId, abs(mass_2(LepGood1_conePt,LepGood1_eta,LepGood1_phi,LepGood1_mass, LepGood2_conePt,LepGood2_eta,LepGood2_phi,LepGood2_mass)-91.2) > 15, 1 )
 #twolnotfromZ_13: if3( LepGood2_pdgId == -LepGood3_pdgId, abs(mass_2(LepGood1_conePt,LepGood1_eta,LepGood1_phi,LepGood1_mass, LepGood3_conePt,LepGood3_eta,LepGood3_phi,LepGood3_mass)-91.2) > 15, 1 )
@@ -27,7 +31,7 @@ ossfCleaning: nOSSF_3l>0 && mll_3l<75
 
 met: met_pt < 50
 
-zerobjetM: nBJetMedium25 == 0
+zerobjetM: nBJetLoose25 == 0
 
 ### lepBlah : if3(abs(LepGood1_pdgId[iF_Recl[0]])==13,LepGood1_mediumMuonId[iF_Recl[0]]>0, 1) && (LepGood1_mvaSUSY[iF_Recl[0]]>-0.20+(0.20+0.50)*(abs(LepGood1_pdgId[iF_Recl[0]])==11)) && if3(abs(LepGood2_pdgId[iF_Recl[1]])==13,LepGood2_mediumMuonId[iF_Recl[1]]>0, 1) && (LepGood2_mvaSUSY[iF_Recl[1]]>-0.20+(0.20+0.50)*(abs(LepGood2_pdgId[iF_Recl[1]])==11)) && if3(abs(LepGood3_pdgId[iF_Recl[2]])==13,LepGood3_mediumMuonId[iF_Recl[2]]>0, 1) && (LepGood3_mvaSUSY[iF_Recl[2]]>-0.20+(0.20+0.50)*(abs(LepGood3_pdgId[iF_Recl[2]])==11))
     
