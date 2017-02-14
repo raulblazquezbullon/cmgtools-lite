@@ -177,8 +177,8 @@ elif(action=='crconv'):
         trigdef='susy-ewkino/mcc_triggerdefs.txt'
         print "WARNING: Please re-add eventBTagSF to applied weights, when new recipe is out"
         #weights3l='puw_nInt_Moriond(nTrueInt)*triggerSF(0,LepGood1_conePt,LepGood1_pdgId,LepGood2_conePt,LepGood2_pdgId,LepGood3_conePt,LepGood3_pdgId)*leptonSF_2lss_ewk(LepGood1_pdgId,LepGood1_conePt,LepGood1_eta)*leptonSF_2lss_ewk(LepGood2_pdgId,LepGood2_conePt,LepGood2_eta)*eventBTagSF'
-        wp='0'
-        #wp='1'
+        #wp='0'
+        wp='1'
         weights3l='puw_nInt_Moriond(nTrueInt)*getLepSF(LepGood1_conePt,LepGood1_eta,LepGood1_pdgId,{wp},0)*getLepSF(LepGood2_conePt,LepGood2_eta,LepGood2_pdgId,{wp},0)*getLepSF(LepGood3_conePt,LepGood3_eta,LepGood3_pdgId,{wp},0)'.format(wp=wp)
         #weights2l='puw_nInt_Moriond(nTrueInt)*triggerSF(-1,LepGood1_conePt,LepGood1_pdgId,LepGood2_conePt,LepGood2_pdgId,0,0)*leptonSF_2lss_ewk(LepGood1_pdgId,LepGood1_conePt,LepGood1_eta)*leptonSF_2lss_ewk(LepGood2_pdgId,LepGood2_conePt,LepGood2_eta)*eventBTagSF'
         wp='1'
@@ -214,6 +214,7 @@ elif(action=='crconv'):
         # Inclusive
         out=outputDir+'3l_mcdata_conv/'
         header='Inclusive'
+        #toplot=' --sP \'m3l\' --sP \'flavor3l\' --sP \'lep1_istight\' --sP \'lep1_pt\' --sP \'lep2_istight\' --sP \'lep2_pt\' --sP \'lep3_istight\' --sP \'lep3_pt\' --sP \'lep4_istight\' --sP \'lep4_pt\' '
         toplot=' --sP \'m3l\' --sP \'flavor3l\' '
         runPlots(cuts, mca, out, plots, inputDir, outputDir, pgroup, jei, lumi, mcc, mccother, trigdef, toplot, weights3l, functions, enablecuts, header)
         toplot='--sP \'m3l\''
@@ -265,8 +266,8 @@ elif(action=='crconvcards'):
         mccother='susy-ewkino/2lss/lepchoice-2lss-FO.txt'
         trigdef='susy-ewkino/mcc_triggerdefs.txt'
         print "WARNING: Please re-add eventBTagSF to applied weights, when new recipe is out"
-        wp='0'
-        #wp='1'
+        #wp='0'
+        wp='1'
         weights3l='puw_nInt_Moriond(nTrueInt)*getLepSF(LepGood1_conePt,LepGood1_eta,LepGood1_pdgId,{wp},0)*getLepSF(LepGood2_conePt,LepGood2_eta,LepGood2_pdgId,{wp},0)*getLepSF(LepGood3_conePt,LepGood3_eta,LepGood3_pdgId,{wp},0)'.format(wp=wp)
         #weights2l='puw_nInt_Moriond(nTrueInt)*triggerSF(-1,LepGood1_conePt,LepGood1_pdgId,LepGood2_conePt,LepGood2_pdgId,0,0)*leptonSF_2lss_ewk(LepGood1_pdgId,LepGood1_conePt,LepGood1_eta)*leptonSF_2lss_ewk(LepGood2_pdgId,LepGood2_conePt,LepGood2_eta)*eventBTagSF'
         wp='1'
