@@ -64,9 +64,9 @@ BEGIN::3l
   friendFile  #:= {leptonBuilderEWK            : leptonBuilderEWK.py         }
 #  friendFile  #:= {bTagEventWeightFastSim      : bTagWeightAnalyzer.py       }
 #  friendFile  #:= {bTagEventWeightFullSim      : bTagWeightAnalyzer.py       }
-  sfriends    +:= leptonJetReCleanerSusyEWK3L;leptonBuilderEWK
-  smcfriends  +:= bTagEventWeightFullSim
-  sfsfriends  +:= bTagEventWeightFastSim;ISRWeightModule
+  srfriends    +:= leptonJetReCleanerSusyEWK3L;leptonBuilderEWK
+  srmcfriends  +:= bTagEventWeightFullSim
+  srfsfriends  +:= bTagEventWeightFastSim;ISRWeightModule
   friends     +:=
   macros      +:= susy-ewkino/3l/functionsEWK.cc;susy-ewkino/functionsSF.cc;susy-ewkino/functionsPUW.cc
   mccs        +:= susy-ewkino/3l/mcc_ewkino.txt;susy-ewkino/mcc_triggerdefs.txt
