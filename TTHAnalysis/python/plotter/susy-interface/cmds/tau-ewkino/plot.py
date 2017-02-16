@@ -216,8 +216,13 @@ elif(action=='crconv'):
         header='Inclusive'
         #toplot=' --sP \'m3l\' --sP \'flavor3l\' --sP \'lep1_istight\' --sP \'lep1_pt\' --sP \'lep2_istight\' --sP \'lep2_pt\' --sP \'lep3_istight\' --sP \'lep3_pt\' --sP \'lep4_istight\' --sP \'lep4_pt\' '
         toplot=' --sP \'m3l\' --sP \'flavor3l\' '
+        #--sP \'el_matchStuff\' --sP \'mu_matchStuff\' 
+        if(subaction=='all'):
+                toplot=''
         runPlots(cuts, mca, out, plots, inputDir, outputDir, pgroup, jei, lumi, mcc, mccother, trigdef, toplot, weights3l, functions, enablecuts, header)
         toplot='--sP \'m3l\''
+        if(subaction=='all'):
+                toplot=' '
         # eee
         out=outputDir+'3l_mcdata_conv/eee/'
         enablecuts=' --enable-cut=eee '
