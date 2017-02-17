@@ -71,7 +71,7 @@ void matchingCheck()
       // Now for generic genparticles
       TH2D* matchid   = new TH2D("matchid", "Photons;GenPart_status;GenPart_isPromptHard", 6, -1., 5., 6, -1., 5.);
       
-      t->Draw("GenPart_isPromptHard:GenPart_status >> matchid");
+      t->Draw("GenPart_isPromptHard:GenPart_status >> matchid", "GenPart_pdgId==22");
       
       TCanvas* c3 = new TCanvas("c3", "c3", 800, 800);
       c3->cd();
