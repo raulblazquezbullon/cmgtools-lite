@@ -215,8 +215,8 @@ elif(action=='crconv'):
         out=outputDir+'3l_mcdata_conv/'
         header='Inclusive'
         #toplot=' --sP \'m3l\' --sP \'flavor3l\' --sP \'lep1_istight\' --sP \'lep1_pt\' --sP \'lep2_istight\' --sP \'lep2_pt\' --sP \'lep3_istight\' --sP \'lep3_pt\' --sP \'lep4_istight\' --sP \'lep4_pt\' '
-        toplot=' --sP \'m3l\' --sP \'flavor3l\' '
-        #--sP \'el_matchStuff\' --sP \'mu_matchStuff\' 
+        toplot=' --sP \'m3l\' --sP \'flavor3l\' --sP \'el_matchStuff\' --sP \'mu_matchStuff\' '
+        # 
         if(subaction=='all'):
                 toplot=''
         runPlots(cuts, mca, out, plots, inputDir, outputDir, pgroup, jei, lumi, mcc, mccother, trigdef, toplot, weights3l, functions, enablecuts, header)
@@ -299,7 +299,7 @@ elif(action=='crconvcards'):
 
         # Overwrite var, for now
         variable='m3l'
-        binning='40,0,400'
+        binning='40,0,200'
 
         cuts='susy-ewkino/crconv/cuts_convs_3l.txt'
         mca='susy-ewkino/crconv/mca-3l-mcdata-conv.txt'
