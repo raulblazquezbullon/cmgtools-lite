@@ -1,6 +1,6 @@
 void matchingCheck()
 {
-
+  gROOT->SetBatch(1);
   gStyle->SetOptStat(1111111);
 
   TFile* zg = TFile::Open("/pool/ciencias/HeppyTrees/RA7/Prod23Jan/trees/ZGTo2LG.root", "READ");
@@ -69,7 +69,7 @@ void matchingCheck()
   if(true)
     {
       // Now for generic genparticles
-      TH2D* matchid   = new TH2D("matchid", "Photons;GenPart_status;GenPart_isPromptHard", 47, -23., 23., 47, -23., 23.);
+      TH2D* matchid   = new TH2D("matchid", "Photons;GenPart_status;GenPart_isPromptHard", 6, -1., 5., 6, -1., 5.);
       
       t->Draw("GenPart_isPromptHard:GenPart_status >> matchid");
       
