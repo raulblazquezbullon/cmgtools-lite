@@ -57,8 +57,8 @@ def prepareJob(mm, name, mp, baseSig, baseSys, binning, bkgpath, outpath, xslist
 parser = OptionParser(usage="%prog cfg regions treedir outdir [options]")
 parser = maker.addMakerOptions(parser)
 parser.add_option("--WFS"         , dest="weightFS"   , type="string"      , default=None , help="Overwrite the weightFS expression");
-parser.add_option("--q2accfile"   , dest="q2accfile"  , type="string"      , default=None , help="Overwrite the q2accfile expression");
-parser.add_option("--q2accformat" , dest="q2accformat", type="string"      , default=None , help="Overwrite the q2accfile expression");
+#parser.add_option("--q2accfile"   , dest="q2accfile"  , type="string"      , default=None , help="Overwrite the q2accfile expression");
+#parser.add_option("--q2accformat" , dest="q2accformat", type="string"      , default=None , help="Overwrite the q2accfile expression");
 parser.add_option("--bkgOnly"     , dest="bkgOnly"    , action="store_true", default=False, help="Only run the bkg only");
 parser.add_option("--sigOnly"     , dest="sigOnly"    , action="store_true", default=False, help="Only run the signal (if bkg already is present)");
 parser.add_option("--perBin"      , dest="perBin"     , action="store_true", default=False, help="Make datacards for every bin in 'expr' separately.");
@@ -66,9 +66,11 @@ parser.add_option("-m", "--models", dest="models"     , action="append"    , def
 parser.add_option("--redoBkg"     , dest="redoBkg"    , action="store_true", default=False, help="Redo bkg if it already exists.");
 parser.add_option("--postfix"     , dest="postfix"    , type="string"      , default=""   , help="Flags to be run for postfix (i.e. for signal only)");
 parser.add_option("--check"       , dest="doCheck"    , action="store_true", default=False, help="Automatically run some (systematics) checks of the datacards that were produced.");
+parser.add_option("--m1"          , dest="mass1"      , type="int"         , default=None , help="Only run signal points with this value as first mass");
+parser.add_option("--m2"          , dest="mass2"      , type="int"         , default=None , help="Only run signal points with this value as second mass");
 
-baseBkg = "python makeShapeCardsSusy.py {MCA} {CUTS} \"{EXPR}\" \"{BINS}\" -o SR --bin {TAG} -P {T} --tree {TREENAME} {MCCS} {MACROS} --s2v -f -l {LUMI} --od {O} {FRIENDS} {FLAGS} {OVERFLOWCUTS}"
-baseSig = "python makeShapeCardsSusy.py [[[MCA]]] {CUTS} \\\"{EXPR}\\\" \\\"{BINS}\\\" [[[SYS]]] -o SR --bin {TAG} -P {T} --tree {TREENAME} {MCCS} {MACROS} --s2v -f -l {LUMI} --od [[[O]]] {FRIENDS} {FLAGS} {OVERFLOWCUTS} {POSTFIX}"
+baseBkg = "python makeShapeCardsSusy.py {MCA} {CUTS} \"{EXPR}\" \"{BINS}\" -o SR --bin {TAG} {T} --tree {TREENAME} {MCCS} {MACROS} --s2v -f -l {LUMI} --od {O} {FRIENDS} {FLAGS} {OVERFLOWCUTS}"
+baseSig = "python makeShapeCardsSusy.py [[[MCA]]] {CUTS} \\\"{EXPR}\\\" \\\"{BINS}\\\" [[[SYS]]] -o SR --bin {TAG} {T} --tree {TREENAME} {MCCS} {MACROS} --s2v -f -l {LUMI} --od [[[O]]] {FRIENDS} {FLAGS} {OVERFLOWCUTS} {POSTFIX}"
 (options, args) = parser.parse_args()
 options         = maker.splitLists(options)
 options.models  = func.splitList(options.models)
@@ -78,8 +80,8 @@ mm.loadModels()
 sl      = mm.getVariable("lumi","12.9").replace(".","p")
 
 combinePath = mm.getVariable("combineTool")
-combinePath = combinePath.rstrip("/")
 if options.doCheck and (not combinePath or not os.path.isdir(combinePath) or combinePath[-3:] != "src"):
+	combinePath = combinePath.rstrip("/")
 	print "WARNING: You want to run the automatic systematics check for your datacards"
 	print "but you have not given all necessary information in your configuration!"
 	print "Please give the path to the 'src' directory (e.g. /usr/cheidegg/CMSSW_7_1_5/src)"
@@ -120,7 +122,7 @@ if not options.sigOnly:
 			if not options.redoBkg and os.path.exists(bkgDir+"/common/SR.input.root"): continue
 			func.mkdir(bkgDir)
 		
-			mm.submit([mm.getVariable("mcafile",""), mm.getVariable("cutfile",""), mm.getVariable("expr",""), mm.getVariable("bins",""), scenario.replace("/","_"), mm.treedir, mm.getVariable("treename","treeProducerSusyMultilepton"), mccs, macros, mm.getVariable("lumi","12.9"), bkgDir, friends, flags, func.getCut(mm.getVariable("firstCut","alwaystrue"), mm.getVariable("expr",""), mm.getVariable("bins",""))],scenario.replace("/", "_")+"_bkg",False)
+			mm.submit([mm.getVariable("mcafile",""), mm.getVariable("cutfile",""), mm.getVariable("expr",""), mm.getVariable("bins",""), scenario.replace("/","_"), mm.treedirs, mm.getVariable("treename","treeProducerSusyMultilepton"), mccs, macros, mm.getVariable("lumi","12.9"), bkgDir, friends, flags, func.getCut(mm.getVariable("firstCut","alwaystrue"), mm.getVariable("expr",""), mm.getVariable("bins",""))],scenario.replace("/", "_")+"_bkg",False)
 	mm.runJobs()
 	mm.clearJobs()
 		
@@ -174,11 +176,15 @@ if not options.bkgOnly:
 				xslist = [[float(m.strip()),float(xs.strip())] for [m,xs,err] in xslist ]
 				mps    = [l.rstrip("\n").split(":") for l in open(mm.model.masspoints, "r").readlines()]
 				mps    = [[m[0].strip(), m[1].strip(), m[2].strip()] for m in mps]
+				if options.mass1:
+					mps = [mp for mp in mps if int(mp[1])==options.mass1]
+				if options.mass2:
+					mps = [mp for mp in mps if int(mp[2])==options.mass2]
 
 				## looping over masspoints
 				for iiii,mp in enumerate(mps):
-					thebasesig = mm.makeCmd([mm.getVariable("cutfile",""), mm.getVariable("expr",""), b, scenario.replace("/","_"), mm.treedir, mm.getVariable("treename","treeProducerSusyMultilepton"), mccs, macros, mm.getVariable("lumi","12.9"), friends, flagsSig, func.getCut(mm.getVariable("firstCut","alwaystrue"), mm.getVariable("expr",""), mm.getVariable("bins","")), ""])
-					thebasesys = mm.makeCmd([mm.getVariable("cutfile",""), mm.getVariable("expr",""), b, scenario.replace("/","_"), mm.treedir, mm.getVariable("treename","treeProducerSusyMultilepton"), mccs, macros, mm.getVariable("lumi","12.9"), friends, flagsSys, func.getCut(mm.getVariable("firstCut","alwaystrue"), mm.getVariable("expr",""), mm.getVariable("bins","")), options.postfix])
+					thebasesig = mm.makeCmd([mm.getVariable("cutfile",""), mm.getVariable("expr",""), b, scenario.replace("/","_"), mm.treedirs, mm.getVariable("treename","treeProducerSusyMultilepton"), mccs, macros, mm.getVariable("lumi","12.9"), friends, flagsSig, func.getCut(mm.getVariable("firstCut","alwaystrue"), mm.getVariable("expr",""), mm.getVariable("bins","")), ""])
+					thebasesys = mm.makeCmd([mm.getVariable("cutfile",""), mm.getVariable("expr",""), b, scenario.replace("/","_"), mm.treedirs, mm.getVariable("treename","treeProducerSusyMultilepton"), mccs, macros, mm.getVariable("lumi","12.9"), friends, flagsSys, func.getCut(mm.getVariable("firstCut","alwaystrue"), mm.getVariable("expr",""), mm.getVariable("bins","")), options.postfix])
 					thecmd, cardpath = prepareJob(mm, scenario.replace("/", "_")+"_mp_"+mp[2], mp, thebasesig, thebasesys, b, bkgDir, myDir, xslist, options)
 					mm.registerCmd(thecmd, scenario.replace("/", "_")+"_mp_"+mp[2],False,10)
 					cards.append(cardpath)
