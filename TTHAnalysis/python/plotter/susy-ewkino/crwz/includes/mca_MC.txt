@@ -11,7 +11,6 @@ rares_ttX : TTTT       : xsec : ((LepGood1_mcUCSXMatchId==0 || LepGood1_mcUCSXMa
 
 convs  : TTGJets  : xsec : ((LepGood1_mcUCSXMatchId==0 || LepGood1_mcUCSXMatchId==1 || LepGood1_mcUCSXMatchId==4) && (LepGood2_mcUCSXMatchId==0 || LepGood2_mcUCSXMatchId==1 || LepGood2_mcUCSXMatchId==4) && (LepGood3_mcUCSXMatchId==0 || LepGood3_mcUCSXMatchId==1 || LepGood3_mcUCSXMatchId==4)) ; FillColor=ROOT.kOrange+7, Label="Conversions", NormSystematic=0.5
 convs  : ZGTo2LG  : xsec : ((LepGood1_mcUCSXMatchId==0 || LepGood1_mcUCSXMatchId==1 || LepGood1_mcUCSXMatchId==4) && (LepGood2_mcUCSXMatchId==0 || LepGood2_mcUCSXMatchId==1 || LepGood2_mcUCSXMatchId==4) && (LepGood3_mcUCSXMatchId==0 || LepGood3_mcUCSXMatchId==1 || LepGood3_mcUCSXMatchId==4)) ; FillColor=ROOT.kOrange+7, Label="Conversions", NormSystematic=0.5
-convs  : WGToLNuG : xsec : ((LepGood1_mcUCSXMatchId==4) && (LepGood2_mcUCSXMatchId==4) && (LepGood3_mcUCSXMatchId==4)) ; FillColor=ROOT.kOrange+7, Label="Conversions", NormSystematic=0.5
 convs  : TGJets   : xsec : ((LepGood1_mcUCSXMatchId==0 || LepGood1_mcUCSXMatchId==1 || LepGood1_mcUCSXMatchId==4) && (LepGood2_mcUCSXMatchId==0 || LepGood2_mcUCSXMatchId==1 || LepGood2_mcUCSXMatchId==4) && (LepGood3_mcUCSXMatchId==0 || LepGood3_mcUCSXMatchId==1 || LepGood3_mcUCSXMatchId==4)) ; FillColor=ROOT.kOrange+7, Label="Conversions", NormSystematic=0.5
 
 
