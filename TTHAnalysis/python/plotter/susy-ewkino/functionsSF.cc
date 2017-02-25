@@ -134,7 +134,6 @@ TH2F* h_muSF_mvaM  = (TH2F*) f_muSF_mvaM ->Get("SF" );
 TH2F* h_muSF_id    = (TH2F*) f_muSF_id   ->Get("SF" );
 TGraphAsymmErrors* h_muSF_trk = (TGraphAsymmErrors*) f_muSF_eff->Get("ratio_eff_eta3_dr030e030_corr");
 
-
 float getElectronSF(float pt, float eta, int wp = 0){
     TH2F* hist = (wp == 1)?h_elSF_mvaVT:h_elSF_mvaM;
     return getSF(hist, pt, abs(eta))*getSF(h_elSF_id, pt, abs(eta))*getSF(h_elSF_trk, eta, pt);
