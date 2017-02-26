@@ -25,9 +25,17 @@ float getUnc(TH2F* hist, float pt, float eta){
 // TRIGGER SCALE FACTORS FULLSIM
 // -------------------------------------------------------------
 
-float triggerSF2lss(float pt1, int pdg1, float pt2, int pdg2) {
-    if(abs(pdg1)+abs(pdg2)!=22) return 1.0;
-    if(pt1>30 || pt2>20       ) return 1.0;
+float triggerSF2lss(int BR, float pt1, int pdg1, float pt2, int pdg2, float pt3=0, int pdg3=0) {
+    if(BR!=-1 && BR<3 && BR>5) return 1.0;
+    float elpt1 = pt1; int elpdg1 = pdg1;
+    float elpt2 = pt2; int elpdg2 = pdg2;
+    if(BR!=-1){
+        if(abs(pdg1)!=11) { elpt1 = pt2; elpt2 = pt3; elpdg1 = pdg2; elpdg2 = pdg3; }
+        if(abs(pdg2)!=11) { elpt1 = pt1; elpt2 = pt3; elpdg1 = pdg1; elpdg2 = pdg3; }
+        if(abs(pdg3)!=11) { elpt1 = pt1; elpt2 = pt2; elpdg1 = pdg1; elpdg2 = pdg2; }
+    }
+    if(abs(elpdg1)+abs(elpdg2)!=22) return 1.0;
+    if(elpt1>30 || elpt2>20       ) return 1.0;
     return 0.95;
 }
 
@@ -155,7 +163,7 @@ float getLepSF(float pt, float eta, int pdgId, int isTight, int wp = 0, int var 
     float sf  = 1.0; 
     float err = 0.0;
     if(abs(pdgId) == 11) { sf = getElectronSF(pt, eta, wp); err = getElectronUnc(pt, eta, wp, var); }
-    if(abs(pdgId) == 13) { sf = getMuonSF    (pt, eta, wp); err = getMuonUnc    (pt, var);          }
+    if(abs(pdgId) == 13) { sf = getMuonSF    (pt, eta, wp); err = sf*getMuonUnc (pt, var);          } // only relative error
     if(abs(pdgId) == 15) { sf = 0.95                      ; err = 0.05;                             }
     return (var==0)?sf:(sf+var*err)/sf;
 }
@@ -170,23 +178,23 @@ float leptonSF(float lepSF1, float lepSF2, float lepSF3 = 1, float lepSF4 = 1){
 // -------------------------------------------------------------
 
 // electrons
-TFile* f_elSF_FS_mvaVT = new TFile(DATA_SF+"/leptonSF/electronSF_mvaVT_EWKino_fastsim_ICHEP2016_12p9fb.root", "read");
-TFile* f_elSF_FS_mvaM  = new TFile(DATA_SF+"/leptonSF/electronSF_mvaM_EWKino_fastsim_ICHEP2016_12p9fb.root" , "read");
-TFile* f_elSF_FS_id    = new TFile(DATA_SF+"/leptonSF/electronSF_id_EWKino_fastsim_ICHEP2016_12p9fb.root"   , "read");
+TFile* f_elSF_FS_mvaVT = new TFile(DATA_SF+"/leptonSF/electronSF_mvaVT_EWKino_fastsim_M17_36p5fb.root", "read");
+TFile* f_elSF_FS_mvaM  = new TFile(DATA_SF+"/leptonSF/electronSF_mvaM_EWKino_fastsim_M17_36p5fb.root" , "read");
+TFile* f_elSF_FS_id    = new TFile(DATA_SF+"/leptonSF/electronSF_id_EWKino_fastsim_M17_36p5fb.root"   , "read");
 TH2F* h_elSF_FS_mvaVT  = (TH2F*) f_elSF_FS_mvaVT->Get("histo2D");
 TH2F* h_elSF_FS_mvaM   = (TH2F*) f_elSF_FS_mvaM ->Get("histo2D");
 TH2F* h_elSF_FS_id     = (TH2F*) f_elSF_FS_id   ->Get("histo2D");
 
 // muons
-TFile* f_muSF_FS_mvaVT = new TFile(DATA_SF+"/leptonSF/muonSF_mvaVT_EWKino_fastsim_ICHEP2016_12p9fb.root", "read");
-TFile* f_muSF_FS_mvaM  = new TFile(DATA_SF+"/leptonSF/muonSF_mvaM_EWKino_fastsim_ICHEP2016_12p9fb.root" , "read");
-TFile* f_muSF_FS_id    = new TFile(DATA_SF+"/leptonSF/muonSF_id_EWKino_fastsim_ICHEP2016_12p9fb.root"   , "read");
-TH2F* h_muSF_FS_mvaVT = (TH2F*) f_muSF_FS_mvaVT->Get("histo2D");
-TH2F* h_muSF_FS_mvaM  = (TH2F*) f_muSF_FS_mvaM ->Get("histo2D");
-TH2F* h_muSF_FS_id    = (TH2F*) f_muSF_FS_id   ->Get("histo2D");
+TFile* f_muSF_FS_mvaVT = new TFile(DATA_SF+"/leptonSF/muonSF_mvaVT_EWKino_fastsim_M17_36p5fb.root", "read");
+TFile* f_muSF_FS_mvaM  = new TFile(DATA_SF+"/leptonSF/muonSF_mvaM_EWKino_fastsim_M17_36p5fb.root" , "read");
+TFile* f_muSF_FS_id    = new TFile(DATA_SF+"/leptonSF/muonSF_id_EWKino_fastsim_M17_36p5fb.root"   , "read");
+TH2F* h_muSF_FS_mvaVT  = (TH2F*) f_muSF_FS_mvaVT->Get("histo2D");
+TH2F* h_muSF_FS_mvaM   = (TH2F*) f_muSF_FS_mvaM ->Get("histo2D");
+TH2F* h_muSF_FS_id     = (TH2F*) f_muSF_FS_id   ->Get("histo2D");
 
 // taus
-TFile* f_tauSF_FS_id = new TFile(DATA_SF+"/leptonSF/tauSF_id_EWKino_fastsim_ICHEP2016_12p9fb.root", "read");
+TFile* f_tauSF_FS_id = new TFile(DATA_SF+"/leptonSF/tauSF_id_EWKino_fastsim_M17_36p5fb.root", "read");
 TH2F* h_tauSF_FS_id  = (TH2F*) f_tauSF_FS_id->Get("histo2D" );
 
 float getElectronSFFS(float pt, float eta, int wp = 0){
@@ -219,9 +227,9 @@ float getLepSFFS(float pt, float eta, int pdgId, int isTight, int wp = 0, int va
     if(!isTight) return 1.0;
     float sf  = 1.0; 
     float err = 0.0;
-    if(abs(pdgId) == 11) { sf = getElectronSFFS(pt, eta, wp); err = getElectronUncFS(var);         }
-    if(abs(pdgId) == 13) { sf = getMuonSFFS    (pt, eta, wp); err = getMuonUncFS    (var);         }
-    if(abs(pdgId) == 15) { sf = getTauSFFS     (pt, eta    ); err = getTauUncFS     (pt, eta, var);}
+    if(abs(pdgId) == 11) { sf = getElectronSFFS(pt, eta, wp); err = sf*getElectronUncFS(var); } // relative uncertainty
+    if(abs(pdgId) == 13) { sf = getMuonSFFS    (pt, eta, wp); err = sf*getMuonUncFS    (var); } // relative uncertainty
+    if(abs(pdgId) == 15) { sf = getTauSFFS     (pt, eta    ); err = getTauUncFS(pt, eta, var);}
     return (var==0)?sf:(sf+var*err)/sf;
 }
 

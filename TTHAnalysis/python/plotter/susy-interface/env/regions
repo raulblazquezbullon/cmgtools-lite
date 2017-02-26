@@ -83,7 +83,7 @@ BEGIN::3lC
   bkgs        +:= fakes_appldata;promptsub;prompt_.*;rares_.*;convs
   sigs        +:= sig_TChiWH_.*;sig_TChiSlepSnu_TE_.*;sig_TChiSlepSneu_TD_.*
   flags       +:= -A 3l BRcut 'BR == 3' 
-  flags       +:= -R trigger triggerTau '$DATA{Triggers_ee||Triggers_em||Triggers_mm||Triggers_lt} $MC{Triggers_ee||Triggers_em||Triggers_mm||Triggers_lt} $FASTSIM{1}'
+##  flags       +:= -R trigger triggerTau '$DATA{Triggers_ee||Triggers_em||Triggers_mm} $MC{Triggers_ee||Triggers_em||Triggers_mm} $FASTSIM{1}'
   flagsPlots  +:= --legendHeader 'C: OSSF + \#tau'
   plots       #:= {lep      : lep.*._pt ; .*_eta ; flavor3l ; charge3l; minDR3l; minDR3lmm              }
   plots       #:= {evt      : mll3l ; met ; mtW3l ; htJet30j ; nJet30 ; nBJet25 ; m3l ; mT2L3l ; mT2T3l }
@@ -101,7 +101,7 @@ BEGIN::3lD
   bkgs        +:= fakes_appldata;promptsub;prompt_.*;rares_.*;convs
   sigs        +:= sig_TChiWH_.*;sig_TChiSlepSnu_TE_.*;sig_TChiSlepSneu_TD_.*
   flags       +:= -A 3l BRcut 'BR == 4' 
-  flags       +:= -R trigger triggerTau '$DATA{Triggers_ee||Triggers_em||Triggers_mm||Triggers_lt} $MC{Triggers_ee||Triggers_em||Triggers_mm||Triggers_lt} $FASTSIM{1}'
+##  flags       +:= -R trigger triggerTau '$DATA{Triggers_ee||Triggers_em||Triggers_mm} $MC{Triggers_ee||Triggers_em||Triggers_mm} $FASTSIM{1}'
   flagsPlots  +:= --legendHeader 'D: e^{\#pm}\#mu^{\#mp}\#tau'
   plots       #:= {lep      : lep.*._pt ; .*_eta ; flavor3l ; charge3l; minDR3l; minDR3lmm              }
   plots       #:= {evt      : mll3l ; met ; mtW3l ; htJet30j ; nJet30 ; nBJet25 ; m3l ; mT2L3l ; mT2T3l }
@@ -119,7 +119,7 @@ BEGIN::3lE
   bkgs        +:= fakes_appldata;promptsub;prompt_.*;rares_.*;convs
   sigs        +:= sig_TChiWH_.*;sig_TChiSlepSnu_TE_.*;sig_TChiSlepSneu_TD_.*
   flags       +:= -A 3l BRcut 'BR == 5' 
-  flags       +:= -R trigger triggerTau '$DATA{Triggers_ee||Triggers_em||Triggers_mm||Triggers_lt} $MC{Triggers_ee||Triggers_em||Triggers_mm||Triggers_lt} $FASTSIM{1}'
+##  flags       +:= -R trigger triggerTau '$DATA{Triggers_ee||Triggers_em||Triggers_mm} $MC{Triggers_ee||Triggers_em||Triggers_mm} $FASTSIM{1}'
   flags       +:= -A sanity tightcharge 'tightChargeCut(3, LepSel1_pdgId, LepSel1_tightCharge, LepSel2_pdgId, LepSel2_tightCharge, LepSel3_pdgId, LepSel3_tightCharge)'
   flags       +:= -A sanity rightcharge '$DATA{1} $MC{isPromptRightCharge(3, LepSel_mcUCSX[0], LepSel_mcUCSX[1], LepSel_mcUCSX[2])} $FASTSIM{isPromptRightCharge(3, LepSel_mcUCSX[0], LepSel_mcUCSX[1], LepSel_mcUCSX[2])}'
   flagsPlots  +:= --legendHeader 'E: SS + \#tau'
@@ -139,7 +139,7 @@ BEGIN::3lF
   bkgs        +:= fakes_appldata;promptsub;prompt_.*;rares_.*;convs
   sigs        +:= sig_TChiWH_.*;sig_TChiSlepSneu_TD_.*
   flags       +:= -A 3l BRcut 'BR == 6' 
-  flags       +:= -R trigger triggerTau '$DATA{Triggers_lt} $MC{Triggers_lt} $FASTSIM{1}'
+  flags       +:= -R trigger triggerTau '$DATA{Triggers_sl} $MC{Triggers_sl} $FASTSIM{1}'
   flags       +:= -A sanity tigherpteta 'abs(LepSel1_eta)<2.1 && abs(LepSel2_eta)<2.1 && abs(LepSel3_eta)<2.1' 
   flags       +:= -A sanity tighterpt '(abs(LepSel1_pdgId)==11 && LepSel1_pt>30) || (abs(LepSel1_pdgId)==13 && LepSel1_pt>25) || (abs(LepSel2_pdgId)==11 && LepSel2_pt>30) || (abs(LepSel2_pdgId)==13 && LepSel2_pt>25) || (abs(LepSel3_pdgId)==11 && LepSel3_pt>30) || (abs(LepSel3_pdgId)==13 && LepSel3_pt>25)'
   flagsPlots  +:= --legendHeader 'F: e/\#mu + \#tau\#tau'

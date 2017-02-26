@@ -17,7 +17,7 @@ BEGIN::2lss
   sfsfriends  +:= bTagEventWeightFastSim2L;ISRPtWeightModule
   macros      +:= susy-ewkino/3l/functionsEWK.cc; susy-ewkino/2lss/functions2lss.cc; susy-ewkino/functionsPUW.cc; susy-ewkino/functionsSF.cc
   mccs        +:= susy-ewkino/mcc_triggerdefs.txt; susy-ewkino/2lss/lepchoice-2lss-FO.txt
-  weight       := puw_nInt_Moriond(nTrueInt)*leptonSF(getLepSF(LepGood1_pt, LepGood1_eta, LepGood1_pdgId, LepGood1_isTight_Recl, 1, 0), getLepSF(LepGood2_pt, LepGood2_eta, LepGood2_pdgId, LepGood2_isTight_Recl, 1, 0))*bTagWeight*triggerSF2lss(LepGood1_pt, LepGood1_pdgId, LepGood2_pt, LepGood2_pdgId)
+  weight       := puw_nInt_Moriond(nTrueInt)*leptonSF(getLepSF(LepGood1_pt, LepGood1_eta, LepGood1_pdgId, LepGood1_isTight_Recl, 1, 0), getLepSF(LepGood2_pt, LepGood2_eta, LepGood2_pdgId, LepGood2_isTight_Recl, 1, 0))*bTagWeight*triggerSF2lss(-1, LepGood1_pt, LepGood1_pdgId, LepGood2_pt, LepGood2_pdgId)
   weightFS     := leptonSFFS(getLepSFFS(LepGood1_pt, LepGood1_eta, LepGood1_pdgId, LepGood1_isTight_Recl, 1, 1), getLepSFFS(LepGood2_pt, LepGood2_eta, LepGood2_pdgId, LepGood2_isTight_Recl, 1, 1))*ISRweight*bTagWeightFS
   flags       +:=
   flagsDumps  +:=
@@ -65,8 +65,8 @@ BEGIN::3l
   friends     +:=
   macros      +:= susy-ewkino/3l/functionsEWK.cc;susy-ewkino/functionsSF.cc;susy-ewkino/functionsPUW.cc
   mccs        +:= susy-ewkino/3l/mcc_ewkino.txt;susy-ewkino/mcc_triggerdefs.txt
-  alias       #:= {wBG        : puw_nInt_Moriond(nTrueInt) * leptonSF(getLepSF(LepSel_pt[0], LepSel_eta[0], LepSel_pdgId[0], LepSel_isTight[0]), getLepSF(LepSel_pt[1], LepSel_eta[1], LepSel_pdgId[1], LepSel_isTight[1]), getLepSF(LepSel_pt[2], LepSel_eta[2], LepSel_pdgId[2], LepSel_isTight[2]), getLepSF(LepSel_pt[3], LepSel_eta[3], LepSel_pdgId[3], LepSel_isTight[3])) * bTagWeight }
-  alias       #:= {wFS   : leptonSFFS(getLepSFFS(LepSel_pt[0], LepSel_eta[0], LepSel_pdgId[0], LepSel_isTight[0]), getLepSFFS(LepSel_pt[1], LepSel_eta[1], LepSel_pdgId[1], LepSel_isTight[1]), getLepSFFS(LepSel_pt[2], LepSel_eta[2], LepSel_pdgId[2], LepSel_isTight[2]),getLepSFFS(LepSel_pt[3], LepSel_eta[3], LepSel_pdgId[3], LepSel_isTight[3]))*ISRweight * bTagWeightFS}
+  alias       #:= {wBG : puw_nInt_Moriond(nTrueInt) * leptonSF(getLepSF(LepSel_pt[0], LepSel_eta[0], LepSel_pdgId[0], LepSel_isTight[0]), getLepSF(LepSel_pt[1], LepSel_eta[1], LepSel_pdgId[1], LepSel_isTight[1]), getLepSF(LepSel_pt[2], LepSel_eta[2], LepSel_pdgId[2], LepSel_isTight[2]), getLepSF(LepSel_pt[3], LepSel_eta[3], LepSel_pdgId[3], LepSel_isTight[3])) * bTagWeight * triggerSF2lss(BR, LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1], LepSel_pt[2], LepSel_pdgId[2]))}
+  alias       #:= {wFS : leptonSFFS(getLepSFFS(LepSel_pt[0], LepSel_eta[0], LepSel_pdgId[0], LepSel_isTight[0]), getLepSFFS(LepSel_pt[1], LepSel_eta[1], LepSel_pdgId[1], LepSel_isTight[1]), getLepSFFS(LepSel_pt[2], LepSel_eta[2], LepSel_pdgId[2], LepSel_isTight[2]),getLepSFFS(LepSel_pt[3], LepSel_eta[3], LepSel_pdgId[3], LepSel_isTight[3]))*ISRweight * bTagWeightFS}
   weight       := wBG
   weightFS     := wFS
   flags       +:=
@@ -126,7 +126,7 @@ ENDDEF
 BEGIN::crwz
   combineTool  := /mnt/t3nfs01/data01/shome/cheidegg/p/CMSSW_7_1_5/src
   firstCut     := alwaystrue
-  mcafile      := susy-ewkino/crwz/mca_crwz_PreApp_merged.txt
+  mcafile      := susy-ewkino/crwz/mca_includesM17.txt
   cutfile      := susy-ewkino/crwz/cuts_crwz.txt
   plotfile     := susy-ewkino/3l/plots_ewkino.txt
   sysfile      := susy-ewkino/systs_ewkino.txt
