@@ -470,7 +470,6 @@ rares_ttX_bTagHF_Dn       : tZq_ll                          : xsec : bTagWeight_
 rares_ttX_bTagHF_Dn       : tZW_ll                          : xsec : bTagWeight_HF_Dn/bTagWeight*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge && LepGood3_isMatchRightCharge)             ; FillColor=ROOT.kViolet-3, Label="t\#bar{t}X", NormSystematic=0.2,  SkipMe=True
 
 
-
 ## SYSTEMATIC VARIATION: BTAG LF SF UP
 ## ===========================================================
 prompt_WZ_bTagLF_Up       : WZTo3LNu                         : xsec*1.02 : bTagWeight_LF_Up/bTagWeight*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge && LepGood3_isMatchRightCharge)             ; FillColor=ROOT.kOrange  , Label="WZ", NormSystematic=0.25,  SkipMe=True
@@ -522,10 +521,6 @@ rares_ttX_bTagLF_Dn       : TTJets_SingleLeptonFromTbar     : xsec : bTagWeight_
 rares_ttX_bTagLF_Dn       : TTTT                            : xsec : bTagWeight_LF_Dn/bTagWeight*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge && LepGood3_isMatchRightCharge)             ; FillColor=ROOT.kViolet-3, Label="t\#bar{t}X", NormSystematic=0.2,  SkipMe=True
 rares_ttX_bTagLF_Dn       : tZq_ll                          : xsec : bTagWeight_LF_Dn/bTagWeight*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge && LepGood3_isMatchRightCharge)             ; FillColor=ROOT.kViolet-3, Label="t\#bar{t}X", NormSystematic=0.2,  SkipMe=True
 rares_ttX_bTagLF_Dn       : tZW_ll                          : xsec : bTagWeight_LF_Dn/bTagWeight*(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge && LepGood3_isMatchRightCharge)             ; FillColor=ROOT.kViolet-3, Label="t\#bar{t}X", NormSystematic=0.2,  SkipMe=True
-
-
-
-
 
 
 
