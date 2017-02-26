@@ -3,8 +3,9 @@
 #include "TGraphAsymmErrors.h"
 #include "TFile.h"
 #include "TSystem.h"
+#include <iostream>
 
-
+using namespace std;
 
 TString CMSSW_BASE_SF = gSystem->ExpandPathName("${CMSSW_BASE}");
 TString DATA_SF = CMSSW_BASE_SF+"/src/CMGTools/TTHAnalysis/data";
@@ -25,8 +26,9 @@ float getUnc(TH2F* hist, float pt, float eta){
 // TRIGGER SCALE FACTORS FULLSIM
 // -------------------------------------------------------------
 
-float triggerSF2lss(int BR, float pt1, int pdg1, float pt2, int pdg2, float pt3=0, int pdg3=0) {
-    if(BR!=-1 && BR<3 && BR>5) return 1.0;
+float triggerSFee(int BR, float pt1, int pdg1, float pt2, int pdg2, float pt3=0, int pdg3=0) {
+
+	if(BR!=-1 && (BR<3 || BR>5)) return 1.0;    
     float elpt1 = pt1; int elpdg1 = pdg1;
     float elpt2 = pt2; int elpdg2 = pdg2;
     if(BR!=-1){
@@ -39,6 +41,20 @@ float triggerSF2lss(int BR, float pt1, int pdg1, float pt2, int pdg2, float pt3=
     return 0.95;
 }
 
+TFile* f_trigSF_ele27 = new TFile(DATA_SF+"/triggerSF/triggerSF_Ele27_EWKino_fullsim_M17_36p5fb.root", "read");
+TH2F* h_trigSF_ele27 = (TH2F*) f_trigSF_ele27->Get("ele27");
+
+float triggerSFele27(float pt1, float eta1, int pdg1,
+                     float pt2, float eta2, int pdg2,
+                     float pt3, float eta3, int pdg3) {
+
+    if(abs(pdg1)+abs(pdg2)+abs(pdg3)!=41) return 1.0;
+    
+    float pt = pt1; float eta = eta1;
+    if(abs(pdg2)==11) {pt = pt2; eta=eta2; }
+    if(abs(pdg3)==11) {pt = pt3; eta=eta3; }
+    return getSF(h_trigSF_ele27, pt, abs(eta));
+}
 
 
 //TFile* f_trigSF       = new TFile(DATA_SF+"/triggerSF/triggerSF_EWKino_fullsim_ICHEP2016_9p2fb.root"       , "read");
