@@ -3,7 +3,9 @@
 #include "TGraphAsymmErrors.h"
 #include "TFile.h"
 #include "TSystem.h"
+#include <iostream>
 
+using namespace std;
 
 
 TString CMSSW_BASE_SF = gSystem->ExpandPathName("${CMSSW_BASE}");
@@ -26,7 +28,7 @@ float getUnc(TH2F* hist, float pt, float eta){
 // -------------------------------------------------------------
 
 float triggerSF2lss(int BR, float pt1, int pdg1, float pt2, int pdg2, float pt3=0, int pdg3=0) {
-    if(BR!=-1 && BR<3 && BR>5) return 1.0;
+    if(BR!=-1 && (BR<3 || BR>5)) return 1.0;
     float elpt1 = pt1; int elpdg1 = pdg1;
     float elpt2 = pt2; int elpdg2 = pdg2;
     if(BR!=-1){
