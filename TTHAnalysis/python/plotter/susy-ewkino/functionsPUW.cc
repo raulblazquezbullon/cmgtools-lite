@@ -44,19 +44,19 @@ float puw_nInt_Moriond(float nInt, int var=0, int evt = 0) {
 }
 
 // debugging
-TFile* f_puw_63    = new TFile("pileup_63.root", "read");
-TFile* f_puw_66    = new TFile("pileup_66.root", "read");
-TFile* f_puw_69    = new TFile("pileup_69.root", "read");
-TH1F* h_puw_63    = (TH1F*) (f_puw_63   ->Get("puw"));
-TH1F* h_puw_66    = (TH1F*) (f_puw_66   ->Get("puw"));
-TH1F* h_puw_69    = (TH1F*) (f_puw_69   ->Get("puw"));
-float puw63(float nInt) { 
-  return  h_puw_63->GetBinContent(h_puw_63->FindBin(nInt)); 
-}
-float puw66(float nInt) { 
-  return  h_puw_66->GetBinContent(h_puw_66->FindBin(nInt)); 
-}
-float puw69(float nInt) { 
-  return  h_puw_69->GetBinContent(h_puw_69->FindBin(nInt)); 
-}
+//TFile* f_puw_63    = new TFile("pileup_63.root", "read");
+//TFile* f_puw_66    = new TFile("pileup_66.root", "read");
+//TFile* f_puw_69    = new TFile("pileup_69.root", "read");
+//TH1F* h_puw_63    = (TH1F*) (f_puw_63   ->Get("puw"));
+//TH1F* h_puw_66    = (TH1F*) (f_puw_66   ->Get("puw"));
+//TH1F* h_puw_69    = (TH1F*) (f_puw_69   ->Get("puw"));
+//float puw63(float nInt) { 
+//  return  h_puw_63->GetBinContent(h_puw_63->FindBin(nInt)); 
+//}
+//float puw66(float nInt) { 
+//  return  h_puw_66->GetBinContent(h_puw_66->FindBin(nInt)); 
+//}
+//float puw69(float nInt) { 
+//  return  h_puw_69->GetBinContent(h_puw_69->FindBin(nInt)); 
+//}
 
