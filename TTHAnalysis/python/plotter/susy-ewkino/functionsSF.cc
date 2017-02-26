@@ -26,34 +26,78 @@ float getUnc(TH2F* hist, float pt, float eta){
 // TRIGGER SCALE FACTORS FULLSIM
 // -------------------------------------------------------------
 
-float triggerSFee(int BR, float pt1, int pdg1, float pt2, int pdg2, float pt3=0, int pdg3=0) {
+// files
+TFile* f_trigEff_0tau = new TFile(DATA_SF+"/triggerSF/triggerSF_0tau_EWKino_fastsim_M17_36p5fb.root", "read");
+TFile* f_trigEff_1tau = new TFile(DATA_SF+"/triggerSF/triggerSF_1tau_EWKino_fastsim_M17_36p5fb.root", "read");
+TFile* f_trigSF_1lep  = new TFile(DATA_SF+"/triggerSF/triggerSF_1lep_EWKino_M17_36p5fb.root"        , "read");
 
-	if(BR!=-1 && (BR<3 || BR>5)) return 1.0;    
-    float elpt1 = pt1; int elpdg1 = pdg1;
-    float elpt2 = pt2; int elpdg2 = pdg2;
-    if(BR!=-1){
-        if(abs(pdg1)!=11) { elpt1 = pt2; elpt2 = pt3; elpdg1 = pdg2; elpdg2 = pdg3; }
-        if(abs(pdg2)!=11) { elpt1 = pt1; elpt2 = pt3; elpdg1 = pdg1; elpdg2 = pdg3; }
-        if(abs(pdg3)!=11) { elpt1 = pt1; elpt2 = pt2; elpdg1 = pdg1; elpdg2 = pdg2; }
+// fullsim
+TH2F* h_trigSF_1el   = (TH2F*) f_trigSF_1lep -> Get("ele27_sf");
+TH2F* h_trigSF_1mu   = (TH2F*) f_trigSF_1lep -> Get("isomu24_sf");
+
+float triggerSFfullsim(float pt1  , float eta1  , int pdg1  ,
+                       float pt2  , float eta2  , int pdg2  ,
+                       float pt3=0, float eta3=0, int pdg3=0) {
+
+    int nTaus = (abs(pdg1)==15)+(abs(pdg2)==15)+(abs(pdg3)==15);
+
+    // 2lss or 3l 1tau region
+    if(pdg3==0 || nTaus==1) {
+        float lpt1 = pt1; float lpt2 = pt2; int lpdg1 = pdg1; int lpdg2 = pdg2;
+        if(abs(pdg1)==15) {lpt1 = pt2; lpdg1 = pdg2; lpt2 = pt3; lpdg2 = pdg3; } 
+        if(abs(pdg2)==15) {lpt1 = pt1; lpdg1 = pdg1; lpt2 = pt3; lpdg2 = pdg3; } 
+        if(abs(lpdg1)+abs(lpdg2)!=22) return 1.0;
+        if(lpt1>30 || lpt2>20       ) return 1.0;
+        return 0.95;
     }
-    if(abs(elpdg1)+abs(elpdg2)!=22) return 1.0;
-    if(elpt1>30 || elpt2>20       ) return 1.0;
-    return 0.95;
+
+    // 3l 2tau
+    if(nTaus==2){ 
+        float lpt = pt1; float leta = eta1; int lpdg = pdg1;
+        if(abs(pdg2)!=15) {lpt = pt2; leta = eta2; lpdg = pdg2; } 
+        if(abs(pdg3)!=15) {lpt = pt3; leta = eta3; lpdg = pdg3; } 
+        TH2F* hist = (abs(lpdg)==13)?h_trigSF_1mu:h_trigSF_1el;
+        return getSF(hist, lpt, abs(leta));
+    }
+
+    return 1.0;
 }
 
-TFile* f_trigSF_ele27 = new TFile(DATA_SF+"/triggerSF/triggerSF_Ele27_EWKino_fullsim_M17_36p5fb.root", "read");
-TH2F* h_trigSF_ele27 = (TH2F*) f_trigSF_ele27->Get("ele27");
+// fastsim
+TH2F* h_trigEff_0tau = (TH2F*) f_trigEff_0tau -> Get("h_0tau_num");
+TH2F* h_trigEff_1tau = (TH2F*) f_trigEff_1tau -> Get("h_1tau_num");
+TH2F* h_trigEff_1el  = (TH2F*) f_trigSF_1lep  -> Get("hist2dnum_Ele27_WPTight_Gsf_fromemu__HLT_Ele27_WPTight_Gsfpt");
+TH2F* h_trigEff_1mu  = (TH2F*) f_trigSF_1lep  -> Get("hist2dnum_IsoMu24orIsoTkMu24_fromemu__HLT_IsoMu24orIsoTkMu24pt");
 
-float triggerSFele27(float pt1, float eta1, int pdg1,
-                     float pt2, float eta2, int pdg2,
-                     float pt3, float eta3, int pdg3) {
 
-    if(abs(pdg1)+abs(pdg2)+abs(pdg3)!=41) return 1.0;
-    
-    float pt = pt1; float eta = eta1;
-    if(abs(pdg2)==11) {pt = pt2; eta=eta2; }
-    if(abs(pdg3)==11) {pt = pt3; eta=eta3; }
-    return getSF(h_trigSF_ele27, pt, abs(eta));
+float triggerSFfastsim(float pt1  , float eta1  , int pdg1  ,
+                       float pt2  , float eta2  , int pdg2  ,
+                       float pt3=0, float eta3=0, int pdg3=0) {
+
+    int nTaus = (abs(pdg1)==15)+(abs(pdg2)==15)+(abs(pdg3)==15);
+
+    // 2lss or 3l 1tau region
+    if(pdg3==0 || nTaus==1) {
+        float lpt1 = pt1; float lpt2 = pt2;
+        if(abs(pdg1)==15) {lpt1 = pt2; lpt2 = pt3; } 
+        if(abs(pdg2)==15) {lpt1 = pt1; lpt2 = pt3; } 
+        return getSF(h_trigEff_1tau, lpt1, lpt2);
+    }
+
+    // 3l 2tau
+    if(nTaus==2){ 
+        float lpt = pt1; float leta = eta1; int lpdg = pdg1;
+        if(abs(pdg2)!=15) {lpt = pt2; leta = eta2; lpdg = pdg2; } 
+        if(abs(pdg3)!=15) {lpt = pt3; leta = eta3; lpdg = pdg3; } 
+        TH2F* hist = (abs(lpdg)==13)?h_trigEff_1mu:h_trigEff_1el;
+        return getSF(hist, lpt, abs(leta));
+    }
+
+    // 3l 0tau
+    if(nTaus==0){
+        return getSF(h_trigEff_0tau, pt2, pt3);
+    } 
+    return 1.0;
 }
 
 
