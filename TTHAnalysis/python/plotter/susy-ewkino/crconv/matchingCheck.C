@@ -70,12 +70,18 @@ void matchingCheck()
     {
       // Now for generic genparticles
       TH2D* matchid   = new TH2D("matchid", "Photons;GenPart_status;GenPart_isPromptHard", 6, -1., 5., 6, -1., 5.);
+      TH2D* checkMothers = new TH2D("checkMothers", "Photons with status 1;GenPart_motherId;Mother status", 47, -23., 23., 6, -1, 5);
       
       t->Draw("GenPart_isPromptHard:GenPart_status >> matchid", "GenPart_pdgId==22");
+      t->Draw("(GenPart_motherIndex<0 ? -1 : GenPart_status[GenPart_motherIndex]):GenPart_motherId >> checkMothers", "GenPart_pdgId==22 && GenPart_status==1");
       
-      TCanvas* c3 = new TCanvas("c3", "c3", 800, 800);
-      c3->cd();
+
+      TCanvas* c3 = new TCanvas("c3", "c3", 1600, 800);
+      c3->Divide(2);
+      c3->cd(1);
       matchid->Draw("col z");
+      c3->cd(2);
+      checkMothers->Draw("col z");
       c3->Print("genparticles.png");
       gSystem->Exec("mv genparticles.png ~/www/conversions_matchingCheck/");
     }
