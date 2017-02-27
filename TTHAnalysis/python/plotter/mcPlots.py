@@ -394,9 +394,7 @@ def doNormFit(pspec,pmap,mca,saveScales=False):
 
 def doRatioHists(pspec,pmap,total,totalSyst,maxRange,fixRange=False,fitRatio=None,errorsOnRef=True,ratioNums="signal",ratioDen="background",ylabel="Data/pred.",doWide=False,showStatTotLegend=False,cumulative=False):
     numkeys = [ "data" ]
-    if cumulative:
-        total=total.GetCumulative()
-        totalSyst=totalSyst.GetCumulative()
+
     if "data" not in pmap: 
         if ratioDen in pmap or ratioDen=="total":
         #if len(pmap) >= 4 and ratioDen in pmap:
@@ -418,8 +416,8 @@ def doRatioHists(pspec,pmap,total,totalSyst,maxRange,fixRange=False,fitRatio=Non
             # then we can overwrite total with background
             numkey = 'signal'
             if ratioDen!="total":
-                total     = pmap[ratioDen]
-                totalSyst = pmap[ratioDen]
+                total     = pmap[ratioDen] if not cumulative else pmap[ratioDen].GetCumulative()
+                totalSyst = pmap[ratioDen] if not cumulative else pmap[ratioDen].GetCumulative()
         else:    
             return (None,None,None,None)
     ratios = [] #None
@@ -434,11 +432,11 @@ def doRatioHists(pspec,pmap,total,totalSyst,maxRange,fixRange=False,fitRatio=Non
                                        ratio.GetErrorYlow(i)/div  if div > 0 else 0, 
                                        ratio.GetErrorYhigh(i)/div if div > 0 else 0) 
         else:
-            ratio = pmap[numkey].Clone("data_div"); 
+            ratio = pmap[numkey].Clone("data_div") if not cumulative else pmap[numkey].GetCumulative().Clone("data_div"); 
             ratio.Divide(total)
         ratios.append(ratio)
-    unity  = totalSyst.Clone("sim_div");
-    unity0 = total.Clone("sim_div");
+    unity  = totalSyst.Clone("sim_div")
+    unity0 = total.Clone("sim_div")
     rmin, rmax =  1,1
     for b in xrange(1,unity.GetNbinsX()+1):
         e,e0,n = unity.GetBinError(b), unity0.GetBinError(b), unity.GetBinContent(b)
@@ -764,8 +762,8 @@ class PlotMaker:
                 #
                 stack = ROOT.THStack(pspec.name+"_stack",pspec.name)
                 hists = [v for k,v in pmap.iteritems() if k != 'data']
-                total = hists[0].Clone(pspec.name+"_total"); total.Reset()
-                totalSyst = hists[0].Clone(pspec.name+"_totalSyst"); totalSyst.Reset()
+                total = hists[0].Clone(pspec.name+"_total") if not self._options.cumulative else hists[0].GetCumulative().Clone(pspec.name+"_total"); total.Reset()
+                totalSyst = hists[0].Clone(pspec.name+"_totalSyst") if not self._options.cumulative else hists[0].GetCumulative().Clone(pspec.name+"_totalSyst"); totalSyst.Reset()
                 if self._options.plotmode == "norm": 
                     if 'data' in pmap:
                         total.GetYaxis().SetTitle(total.GetYaxis().GetTitle()+" (normalized)")
@@ -798,8 +796,8 @@ class PlotMaker:
                 if outputName == None: outputName = pspec.name
                 stack = ROOT.THStack(outputName+"_stack",outputName)
                 hists = [v for k,v in pmap.iteritems() if k != 'data']
-                total = hists[0].Clone(outputName+"_total"); total.Reset()
-                totalSyst = hists[0].Clone(outputName+"_totalSyst"); totalSyst.Reset()
+                total = hists[0].Clone(outputName+"_total") if not self._options.cumulative else hists[0].GetCumulative().Clone(outputName+"_total") ; total.Reset()
+                totalSyst = hists[0].Clone(outputName+"_totalSyst") if not self._options.cumulative else hists[0].GetCumulative().Clone(outputName+"_totalSyst"); totalSyst.Reset()
 
                 if plotmode == "norm": 
                     if 'data' in pmap:
@@ -829,9 +827,20 @@ class PlotMaker:
                             plot.SetLineColor(plot.GetFillColor())
                             continue 
                         if plotmode == "stack" or (plotmode=="closure" and not p in [options.numerator]):
-                            stack.Add(plot if not self._options.cumulative else plot.GetCumulative())
-                            total.Add(plot if not self._options.cumulative else plot.GetCumulative())
-                            totalSyst.Add(plot if not self._options.cumulative else plot.GetCumulative())
+                            cumPlot = plot
+                            if self._options.cumulative:
+                                cumPlot=plot.GetCumulative()
+                                weightArray=plot.GetSumw2()
+                                for b in xrange(1,plot.GetNbinsX()+1):
+                                    cumPlot.SetBinError(b,sqrt(cumPlot.GetBinContent(b)))
+                                    #weightArray[b+1] = weightArray[b]+weightArray[b+1]
+
+                            stack.Add(plot if not self._options.cumulative else cumPlot)
+                            total.Add(plot if not self._options.cumulative else cumPlot)
+                            totalSyst.Add(plot if not self._options.cumulative else cumPlot)
+                            #if self._options.cumulative:
+                            #    total.Sumw2()
+                            #    totalSyst.Sumw2()
                             if mca.getProcessOption(p,'NormSystematic',0.0) > 0:
                                 syst = mca.getProcessOption(p,'NormSystematic',0.0)
                                 if "TH1" in plot.ClassName():
