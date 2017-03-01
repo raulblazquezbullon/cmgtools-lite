@@ -63,7 +63,7 @@ def getMostProbableFR():
 	best = 0.; bin = (-1, -1); flav = None
 	flavs = ["el", "mu"] if options.mpfr=="2lss" else ["el","mu","tau"]
 	for fl in flavs:
-		h = f.Get("looseNotTight_{R}_{F}".format(R=options.mpfr,F=fl))
+		h = f.Get("nFO_{R}_{F}".format(R=options.mpfr,F=fl))
 		if not h: continue
 		myb  = 0.
 		pos  = (-1,-1)
