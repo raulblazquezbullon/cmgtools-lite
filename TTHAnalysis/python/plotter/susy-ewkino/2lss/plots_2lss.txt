@@ -3,7 +3,7 @@ tot_weight: 1 : 1,0.5,1.5; XTitle = "Selected events", Legend='TR', MoreY=2.0
 runNum : if3(isData,run,-1) : 13,271000,284000;
 
 SR : SR_ewk_ss2l(nJet40,LepGood1_conePt,LepGood1_phi, LepGood2_conePt,LepGood2_phi, met_pt,met_phi,LepGood1_charge):  30,0.5,30.5; XTitle="SR", LegendCutoff=1e-3, YMin=0.1, YMax=1.4e3
-SR_log : SR_ewk_ss2l(nJet40,LepGood1_conePt,LepGood1_phi, LepGood2_conePt,LepGood2_phi, met_pt,met_phi,LepGood1_charge):  30,0.5,30.5; XTitle="SR", LegendCutoff=1e-3, Logy, YMin=0.1, YMax=5e4
+SR_log : SR_ewk_ss2l(nJet40,LepGood1_conePt,LepGood1_phi, LepGood2_conePt,LepGood2_phi, met_pt,met_phi,LepGood1_charge):  30,0.5,30.5; XTitle="SR", LegendCutoff=1e-3, Logy, YMin=0.1, YMax=5e4, Wide
 SSR : SSR_2lss(nJet40,LepGood1_conePt,LepGood1_phi, LepGood2_conePt,LepGood2_phi, met_pt,met_phi,LepGood1_charge):  8,1,9; XTitle="SR", LegendCutoff=1e-3, YMin=0.1, YMax=1.4e3, IncludeOverflows=False
 SSR_log : SSR_2lss(nJet40,LepGood1_conePt,LepGood1_phi, LepGood2_conePt,LepGood2_phi, met_pt,met_phi,LepGood1_charge):  8,1,9; XTitle="SR", LegendCutoff=1e-3, YMin=0.1, YMax=1.4e3, Logy, IncludeOverflows=False
 
