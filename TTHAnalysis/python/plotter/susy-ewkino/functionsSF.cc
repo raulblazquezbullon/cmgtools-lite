@@ -204,7 +204,7 @@ float getElectronUnc(float pt, float eta, int wp = 0, int var = 0){
     float error1 = getUnc(hist      , pt , abs(eta));
     float error2 = getUnc(h_elSF_id , pt , abs(eta));
     float error3 = getUnc(h_elSF_trk, eta, pt);
-    return var*TMath::Sqrt(error1*error1 + error2*error2 + error3*error3);
+    return TMath::Sqrt(error1*error1 + error2*error2 + error3*error3);
 }
 
 float getMuonSF(float pt, float eta, int wp = 0){
@@ -214,8 +214,8 @@ float getMuonSF(float pt, float eta, int wp = 0){
 
 float getMuonUnc(float pt, int var = 0) {
     if (pt<20)  //FIXME: check uncertainty on tracking efficiency once it is available
-         return var*TMath::Sqrt(0.03*0.03+0.01*0.01+0.01*0.01);
-    return var*TMath::Sqrt(0.02*0.02+0.01*0.01);  
+         return TMath::Sqrt(0.03*0.03+0.01*0.01+0.01*0.01);
+    return TMath::Sqrt(0.02*0.02+0.01*0.01);  
 }
 
 float getLepSF(float pt, float eta, int pdgId, int isTight, int wp = 0, int var = 0){
@@ -226,6 +226,7 @@ float getLepSF(float pt, float eta, int pdgId, int isTight, int wp = 0, int var 
     if(abs(pdgId) == 13) { sf = getMuonSF    (pt, eta, wp); err = sf*getMuonUnc (pt, var);          } // only relative error
     if(abs(pdgId) == 15) { sf = 0.95                      ; err = 0.05;                             }
     return (var==0)?sf:(sf+var*err)/sf;
+
 }
 
 float leptonSF(float lepSF1, float lepSF2, float lepSF3 = 1, float lepSF4 = 1){
@@ -263,7 +264,7 @@ float getElectronSFFS(float pt, float eta, int wp = 0){
 }
 
 float getElectronUncFS(int var = 0){
-	return var*0.02;
+	return 0.02;
 }
 
 float getMuonSFFS(float pt, float eta, int wp = 0){
@@ -272,7 +273,7 @@ float getMuonSFFS(float pt, float eta, int wp = 0){
 }
 
 float getMuonUncFS(float pt, int var = 0) {
-	return var*0.02;
+	return 0.02;
 }
 
 float getTauSFFS(float pt, float eta){
@@ -280,7 +281,7 @@ float getTauSFFS(float pt, float eta){
 }
 
 float getTauUncFS(float pt, float eta, int var = 0) {
-	return var*getUnc(h_tauSF_FS_id, pt, abs(eta));
+	return getUnc(h_tauSF_FS_id, pt, abs(eta));
 }
 
 float getLepSFFS(float pt, float eta, int pdgId, int isTight, int wp = 0, int var = 0){
