@@ -72,7 +72,7 @@ def getMostProbableFR():
 				if myb < float(h.GetBinContent(bx, by)):
 					myb = float(h.GetBinContent(bx, by))
 					pos = (bx, by)
-		if myb < best:
+		if myb > best:
 		    best = myb
 		    bin  = pos
 		    flav = fl
