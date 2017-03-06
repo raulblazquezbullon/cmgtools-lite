@@ -66,6 +66,7 @@ int hasPromptLight(int nLep, int lep1pdgId, int lep1mcUCSX, int lep2pdgId, int l
     if(abs(lep3pdgId)<15 && !(lep3mcUCSX==0 || lep3mcUCSX==1)) return 0;
     if(nLep == 3                                             ) return 1;
     if(abs(lep4pdgId)<15 && !(lep4mcUCSX==0 || lep4mcUCSX==1)) return 0;
+    return 0;
 }
 
 int hasPromptTau(int nLep, int lep1pdgId, int lep1mcUCSX, int lep2pdgId, int lep2mcUCSX, int lep3pdgId = 0, int lep3mcUCSX = 0, int lep4pdgId = 0, int lep4mcUCSX = 0) {
@@ -75,6 +76,7 @@ int hasPromptTau(int nLep, int lep1pdgId, int lep1mcUCSX, int lep2pdgId, int lep
     if(abs(lep3pdgId)==15 && !(lep3mcUCSX==0 || lep3mcUCSX==1)) return 0;
     if(nLep == 3                                              ) return 1;
     if(abs(lep4pdgId)==15 && !(lep4mcUCSX==0 || lep4mcUCSX==1)) return 0;
+    return 0;
 }
 
 int isGoodFake(float pt, int isTight) {
