@@ -70,15 +70,15 @@ def cutOff(value, up, down):
 	if value < down: return down
 	return value
 
-def openTree():
-	global file, treedir, treename
+def openTree(theFile):
+	global treedir, treename
 	fpath = None
 	for base in treedir.split(";"):
-		if   os.path.exists(base+"/"+file+"/"+treename+"/tree.root"):
-			fpath = base+"/"+file+"/"+treename+"/tree.root"
+		if   os.path.exists(base+"/"+theFile+"/"+treename+"/tree.root"):
+			fpath = base+"/"+theFile+"/"+treename+"/tree.root"
 			break
-		elif os.path.exists(base+"/"+file+"/"+treename+"/tree.root.url"):
-			fpath = open(base+"/"+file+"/"+treename+"/tree.root.url","r").readlines()[0].rstrip("\n")
+		elif os.path.exists(base+"/"+theFile+"/"+treename+"/tree.root.url"):
+			fpath = open(base+"/"+theFile+"/"+treename+"/tree.root.url","r").readlines()[0].rstrip("\n")
 			break
 		else:
 			continue
@@ -90,18 +90,36 @@ def openTree():
 	if t.GetEntries() == 0: return None,None
 	return f,t
 
+def openSkimReports():
+	global file, treedir, treename
+	tote=0; evts = []
+	for theFile in file.split("+"):
+		for base in treedir.split(";"):
+			if not os.path.exists(base+"/"+theFile+"/skimAnalyzerCount/SkimReport.txt"): continue
+			f = open(base+"/"+theFile+"/skimAnalyzerCount/SkimReport.txt","r")
+			for line in f.readlines():
+				sl = line.split()
+				if "All Events" in line:
+					evts.append(float(sl[2]))
+					tote+=evts[-1]
+					break
+			f.close()
+			break
+	return [e/tote for e in evts]	
+
 def getWsum(cutvalue=20):
 	print "retrieving wsums"
+	evts  = openSkimReports()
 	wsums = [0,0,0,0,0]
-	for ff in file.split("+"):
-		f,t = openTree()
+	for iff,ff in enumerate(file.split("+")):
+		f,t = openTree(ff)
 		if not t: continue
-		wsums[0] += t.GetEntries()
-		wsums[1] += t.GetEntries("nVert>="+str(cutvalue))
-		wsums[2] += t.GetEntries("nVert<" +str(cutvalue))
+		wsums[0] += evts[iff]*t.GetEntries()
+		wsums[1] += evts[iff]*t.GetEntries("nVert>="+str(cutvalue))
+		wsums[2] += evts[iff]*t.GetEntries("nVert<" +str(cutvalue))
 		for evt in t:
-			wsums[3] += evt.LHEweight_wgt[4]/evt.LHEweight_wgt[0]
-			wsums[4] += evt.LHEweight_wgt[8]/evt.LHEweight_wgt[0]
+			wsums[3] += evts[iff]*evt.LHEweight_wgt[4]/evt.LHEweight_wgt[0]
+			wsums[4] += evts[iff]*evt.LHEweight_wgt[8]/evt.LHEweight_wgt[0]
 		f.Close()
 	return wsums
 	#return [total, upP, dnP, upW, dnW]

@@ -194,7 +194,7 @@ if not options.bkgOnly:
 					thebasesig = mm.makeCmd([mm.getVariable("expr",""), b, scenario.replace("/","_"), mm.treedirs, mm.getVariable("treename","treeProducerSusyMultilepton"), mccs, macros, mm.getVariable("lumi","12.9"), friends, flagsSig, func.getCut(mm.getVariable("firstCut","alwaystrue"), mm.getVariable("expr",""), mm.getVariable("bins","")), ""])
 					thebasesys = mm.makeCmd([mm.getVariable("expr",""), b, scenario.replace("/","_"), mm.treedirs, mm.getVariable("treename","treeProducerSusyMultilepton"), mccs, macros, mm.getVariable("lumi","12.9"), friends, flagsSys, func.getCut(mm.getVariable("firstCut","alwaystrue"), mm.getVariable("expr",""), mm.getVariable("bins","")), options.postfix])
 					thecmd, cardpath = prepareJob(mm, scenario.replace("/", "_")+"_mp_"+mp[2], mp, thebasesig, thebasesys, b, bkgDir, myDir, xslist, options)
-					mm.registerCmd(thecmd, scenario.replace("/", "_")+"_mp_"+mp[2],False,10)
+					mm.registerCmd(thecmd, scenario.replace("/", "_")+"_mp_"+mp[2],False,5)
 					cards.append(cardpath)
 					break
 	mm.runJobs()
