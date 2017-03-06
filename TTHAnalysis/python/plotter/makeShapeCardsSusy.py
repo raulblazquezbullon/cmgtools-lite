@@ -18,8 +18,8 @@ parser.add_option("--bk",   dest="bookkeeping",  action="store_true", default=Fa
 parser.add_option("--ignore",dest="ignore", type="string", default=[], action="append", help="Ignore processes when loading infile")
 parser.add_option("--noNegVar",dest="noNegVar", action="store_true", default=False, help="Replace negative variations per bin by 0.1% of central value")
 parser.add_option("--hardZero",dest="hardZero", action="store_true", default=False, help="Hard cut-off of processes")
-parser.add_option("--frFile"  ,dest="frFile"  , type="string", default=None, help="Path to the FR file to extract most probable FR for postfix.")
-parser.add_option("--frMap"   ,dest="frMap"   , type="string", default=None, help="Format of the name of the FR map in the FR file, put FL for el/mu")
+parser.add_option("--frFile"  ,dest="frFile"  , type="string", action="append", default=[], help="Path to the FR file to extract most probable FR for postfix.")
+parser.add_option("--frMap"   ,dest="frMap"   , type="string", action="append", default=[], help="Format of the name of the FR map in the FR file, put FL for el/mu")
 parser.add_option("--mpfr"    ,dest="mpfr"    , type="string", default=None, help="Region in the mpfr file to extract most probable FR bin")
 parser.add_option("--poisson" ,dest="poisson" , action="store_true", default=False, help="Put poisson errors in the histogram (not recommended)")
 
@@ -78,12 +78,16 @@ def getMostProbableFR():
 		    flav = fl
 	f.Close()
 	if flav:
-		f  = ROOT.TFile.Open(options.frFile,"read")
-		h  = f.Get(options.frMap.replace("FL",flav))
-		pc = h.GetBinContent(bin[0], bin[1])
-		pe = h.GetBinError  (bin[0], bin[1])
-		f.Close()
-		return pc, pe, bin[0], bin[1], options.frMap.replace("FL",flav)
+		for ii,frFile in enumerate(options.frFile):
+			f  = ROOT.TFile.Open(frFile,"read")
+			h  = f.Get(options.frMap[ii].replace("FL",flav))
+			if not h: 
+				f.Close()
+				continue
+			pc = h.GetBinContent(bin[0], bin[1])
+			pe = h.GetBinError  (bin[0], bin[1])
+			f.Close()
+			return pc, pe, bin[0], bin[1], options.frMap[ii].replace("FL",flav)
 	return 0, 0, -1, -1, ""
 
 def fixFakePredictionForZeroEvts(mca,cut,pname,oldplots):
