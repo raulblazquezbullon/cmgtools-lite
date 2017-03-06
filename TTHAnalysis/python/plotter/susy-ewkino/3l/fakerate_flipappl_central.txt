@@ -1,4 +1,4 @@
-weight     : EWK3L_flipRate(LepSel_conePt[0], LepSel_eta[0], LepSel_pdgId[0], LepSel_conePt[1], LepSel_eta[1], LepSel_pdgId[1], LepSel_conePt[2], LepSel_eta[2], LepSel_pdgId[2])
+weight     : EWK3L_flipRate(LepSel_pt[0], LepSel_eta[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_eta[1], LepSel_pdgId[1], LepSel_pt[2], LepSel_eta[2], LepSel_pdgId[2])
 cut-change : BR\b           : BRos
 change     : SR\b           : SRos
 
