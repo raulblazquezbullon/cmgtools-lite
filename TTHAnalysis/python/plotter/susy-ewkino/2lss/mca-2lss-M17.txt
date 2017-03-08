@@ -7,7 +7,7 @@ incl_data : + ; IncludeMca="susy-ewkino/2lss/includes_M17/data/mca_data_M17.txt"
 
 ######## WZ
 #prompt_WZ : WZTo3LNu : xsec*1.12 : (LepGood1_mcUCSXMatchId==0) && (LepGood2_mcUCSXMatchId==0) ; FakeRate="susy-ewkino/2lss/fakerate_standard.txt", FillColor=ROOT.kOrange, Label="WZ", NormSystematic=0.25
-prompt_WZ : WZTo3LNu_ext : 58.59 : (LepGood1_mcUCSXMatchId==0 || LepGood1_mcUCSXMatchId==1) && (LepGood2_mcUCSXMatchId==0 || LepGood2_mcUCSXMatchId==1) ;  FakeRate="susy-ewkino/2lss/fakerate_standard.txt", FillColor=ROOT.kOrange, Label="WZ", NormSystematic=0.25
+prompt_WZ : WZTo3LNu_ext : 58.59*0.672 : (LepGood1_mcUCSXMatchId==0) && (LepGood2_mcUCSXMatchId==0) ;  FakeRate="susy-ewkino/2lss/fakerate_standard.txt", FillColor=ROOT.kOrange, Label="WZ", NormSystematic=0.25
 
 ######## Fakes and flips -----------------------------------------------
 incl_fakes_data     : + ; IncludeMca="susy-ewkino/2lss/includes_M17/fakes/mca_fakes_data.txt"

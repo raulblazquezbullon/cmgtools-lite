@@ -1,6 +1,6 @@
 ######### PUW  SFs  for WZ, ZZH, ttW, ttZ, ttX, VVV, convs
 ################################################
-prompt_WZ_puw_Up : WZTo3LNu : xsec : puw_nInt_Moriond(nTrueInt,1)*(LepGood1_mcUCSXMatchId==0 && LepGood2_mcUCSXMatchId==0) ; FakeRate="susy-ewkino/2lss/fakerate_standard.txt", SkipMe=True
+prompt_WZ_puw_Up : WZTo3LNu_ext : 58.89*0.672 : puw_nInt_Moriond(nTrueInt,1)*(LepGood1_mcUCSXMatchId==0 && LepGood2_mcUCSXMatchId==0) ; FakeRate="susy-ewkino/2lss/fakerate_standard.txt", SkipMe=True
 prompt_ZZH_puw_Up         : ZZTo4L_part1 + ZZTo4L_part2   : xsec : puw_nInt_Moriond(nTrueInt,1)*(LepGood1_mcUCSXMatchId==0 && LepGood2_mcUCSXMatchId==0) ; FakeRate="susy-ewkino/2lss/fakerate_standard.txt", SkipMe=True
 prompt_ZZH_puw_Up         : VHToNonbb  : xsec : puw_nInt_Moriond(nTrueInt,1)*(LepGood1_mcUCSXMatchId==0 && LepGood2_mcUCSXMatchId==0) ; FakeRate="susy-ewkino/2lss/fakerate_standard.txt", SkipMe=True
 prompt_ZZH_puw_Up         : GGHZZ4L  : xsec : puw_nInt_Moriond(nTrueInt,1)*(LepGood1_mcUCSXMatchId==0 && LepGood2_mcUCSXMatchId==0) ; FakeRate="susy-ewkino/2lss/fakerate_standard.txt", SkipMe=True
@@ -29,7 +29,7 @@ convs_puw_Up   : TTJets_SingleLeptonFromT_part1 +  TTJets_SingleLeptonFromT_part
 convs_puw_Up   : TTJets_SingleLeptonFromTbar : xsec : puw_nInt_Moriond(nTrueInt,1)*(LepGood1_mcUCSXMatchId==0 && LepGood2_mcUCSXMatchId==0) ; FakeRate="susy-ewkino/2lss/fakerate_standard.txt", SkipMe=True
 
 
-prompt_WZ_puw_Dn: WZTo3LNu : xsec : puw_nInt_Moriond(nTrueInt,-1)*(LepGood1_mcUCSXMatchId==0 && LepGood2_mcUCSXMatchId==0) ; FakeRate="susy-ewkino/2lss/fakerate_standard.txt", SkipMe=True
+prompt_WZ_puw_Dn: WZTo3LNu_ext : 58.89*0.672 : puw_nInt_Moriond(nTrueInt,-1)*(LepGood1_mcUCSXMatchId==0 && LepGood2_mcUCSXMatchId==0) ; FakeRate="susy-ewkino/2lss/fakerate_standard.txt", SkipMe=True
 prompt_ZZH_puw_Dn: ZZTo4L_part1 + ZZTo4L_part2   : xsec : puw_nInt_Moriond(nTrueInt,-1)*(LepGood1_mcUCSXMatchId==0 && LepGood2_mcUCSXMatchId==0) ; FakeRate="susy-ewkino/2lss/fakerate_standard.txt", SkipMe=True
 prompt_ZZH_puw_Dn: VHToNonbb  : xsec : puw_nInt_Moriond(nTrueInt,-1)*(LepGood1_mcUCSXMatchId==0 && LepGood2_mcUCSXMatchId==0) ; FakeRate="susy-ewkino/2lss/fakerate_standard.txt", SkipMe=True
 prompt_ZZH_puw_Dn: GGHZZ4L  : xsec : puw_nInt_Moriond(nTrueInt,-1)*(LepGood1_mcUCSXMatchId==0 && LepGood2_mcUCSXMatchId==0) ; FakeRate="susy-ewkino/2lss/fakerate_standard.txt", SkipMe=True

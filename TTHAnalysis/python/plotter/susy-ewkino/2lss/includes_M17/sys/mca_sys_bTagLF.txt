@@ -1,7 +1,7 @@
 ######### bTag LF 
 ######### WZ, ZZH, ttW, ttZ, ttX, VVV, convs
 ################################################
-prompt_WZ_bTagLF_Up : WZTo3LNu : xsec : bTagWeight_LF_Up/bTagWeight*(LepGood1_mcUCSXMatchId==0 && LepGood2_mcUCSXMatchId==0) ; FakeRate="susy-ewkino/2lss/fakerate_standard.txt", SkipMe=True
+prompt_WZ_bTagLF_Up : WZTo3LNu_ext : 58.89*0.672 : bTagWeight_LF_Up/bTagWeight*(LepGood1_mcUCSXMatchId==0 && LepGood2_mcUCSXMatchId==0) ; FakeRate="susy-ewkino/2lss/fakerate_standard.txt", SkipMe=True
 prompt_ZZH_bTagLF_Up         : ZZTo4L_part1 + ZZTo4L_part2   : xsec : bTagWeight_LF_Up/bTagWeight*(LepGood1_mcUCSXMatchId==0 && LepGood2_mcUCSXMatchId==0) ; FakeRate="susy-ewkino/2lss/fakerate_standard.txt", SkipMe=True
 prompt_ZZH_bTagLF_Up         : VHToNonbb  : xsec : bTagWeight_LF_Up/bTagWeight*(LepGood1_mcUCSXMatchId==0 && LepGood2_mcUCSXMatchId==0) ; FakeRate="susy-ewkino/2lss/fakerate_standard.txt", SkipMe=True
 prompt_ZZH_bTagLF_Up         : GGHZZ4L  : xsec : bTagWeight_LF_Up/bTagWeight*(LepGood1_mcUCSXMatchId==0 && LepGood2_mcUCSXMatchId==0) ; FakeRate="susy-ewkino/2lss/fakerate_standard.txt", SkipMe=True
@@ -30,7 +30,7 @@ convs_bTagLF_Up   : TTJets_SingleLeptonFromT_part1 +  TTJets_SingleLeptonFromT_p
 convs_bTagLF_Up   : TTJets_SingleLeptonFromTbar : xsec : bTagWeight_LF_Up/bTagWeight*(LepGood1_mcUCSXMatchId==0 && LepGood2_mcUCSXMatchId==0) ; FakeRate="susy-ewkino/2lss/fakerate_standard.txt", SkipMe=True
 
 
-prompt_WZ_bTagLF_Dn: WZTo3LNu : xsec : bTagWeight_LF_Dn/bTagWeight*(LepGood1_mcUCSXMatchId==0 && LepGood2_mcUCSXMatchId==0) ; FakeRate="susy-ewkino/2lss/fakerate_standard.txt", SkipMe=True
+prompt_WZ_bTagLF_Dn: WZTo3LNu_ext : 58.89*0.672 : bTagWeight_LF_Dn/bTagWeight*(LepGood1_mcUCSXMatchId==0 && LepGood2_mcUCSXMatchId==0) ; FakeRate="susy-ewkino/2lss/fakerate_standard.txt", SkipMe=True
 prompt_ZZH_bTagLF_Dn: ZZTo4L_part1 + ZZTo4L_part2   : xsec : bTagWeight_LF_Dn/bTagWeight*(LepGood1_mcUCSXMatchId==0 && LepGood2_mcUCSXMatchId==0) ; FakeRate="susy-ewkino/2lss/fakerate_standard.txt", SkipMe=True
 prompt_ZZH_bTagLF_Dn: VHToNonbb  : xsec : bTagWeight_LF_Dn/bTagWeight*(LepGood1_mcUCSXMatchId==0 && LepGood2_mcUCSXMatchId==0) ; FakeRate="susy-ewkino/2lss/fakerate_standard.txt", SkipMe=True
 prompt_ZZH_bTagLF_Dn: GGHZZ4L  : xsec : bTagWeight_LF_Dn/bTagWeight*(LepGood1_mcUCSXMatchId==0 && LepGood2_mcUCSXMatchId==0) ; FakeRate="susy-ewkino/2lss/fakerate_standard.txt", SkipMe=True
