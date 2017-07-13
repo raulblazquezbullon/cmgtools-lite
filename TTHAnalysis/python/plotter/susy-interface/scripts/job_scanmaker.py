@@ -315,8 +315,10 @@ if len(frmet)==2:
 		f.write(mcabase.format(name=sig+"_"+thejec+"_Up"   , ws=makeWeight(wstr, wvjec[1]), FRfiles=makeFakeRate(frfiles,frjec, 1)) + "\n")
 		f.write(mcabase.format(name=sig+"_"+thejec+"_Dn"   , ws=makeWeight(wstr, wvjec[2]), FRfiles=makeFakeRate(frfiles,frjec, 2)) + "\n")
 	for k,vals in wVars.iteritems():
-		f.write(mcabase.format(name=sig+"_"+k+"_Up", ws=makeWeight(wstr,vals[0]), FRfiles=makeFakeRate(frfiles)) + "\n")
-		f.write(mcabase.format(name=sig+"_"+k+"_Dn", ws=makeWeight(wstr,vals[1]), FRfiles=makeFakeRate(frfiles)) + "\n")
+		first  = vals[0].replace("Sqrt","TMath::Sqrt").replace("Power","TMath::Power")
+		second = vals[1].replace("Sqrt","TMath::Sqrt").replace("Power","TMath::Power")
+		f.write(mcabase.format(name=sig+"_"+k+"_Up", ws=makeWeight(wstr,first), FRfiles=makeFakeRate(frfiles)) + "\n")
+		f.write(mcabase.format(name=sig+"_"+k+"_Dn", ws=makeWeight(wstr,second), FRfiles=makeFakeRate(frfiles)) + "\n")
 	f.close()
 	mybase = cmdbase.format(MCA=mcadir + "/mca_acc_"+name+".txt", CUTS=thecuts, SYS="", O=outdir + "/acc/"+short)
 	cmd(mybase.replace("[[","{").replace("]]","}") + " --asimov")

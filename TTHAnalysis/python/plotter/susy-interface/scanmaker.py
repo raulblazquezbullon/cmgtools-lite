@@ -82,6 +82,7 @@ parser.add_option("--postfix"     , dest="postfix"    , type="string"      , def
 parser.add_option("--check"       , dest="doCheck"    , action="store_true", default=False, help="Automatically run some (systematics) checks of the datacards that were produced.");
 parser.add_option("--m1"          , dest="mass1"      , type="int"         , default=None , help="Only run signal points with this value as first mass");
 parser.add_option("--m2"          , dest="mass2"      , type="int"         , default=None , help="Only run signal points with this value as second mass");
+parser.add_option("--allowoverflow", dest="allowoverflow", action="store_true", default=False, help="Allow last bin to be overflow bin");
 
 baseBkg = "python makeShapeCardsSusy.py {MCA} {CUTS} \"{EXPR}\" \"{BINS}\" -o SR --bin {TAG} {T} --tree {TREENAME} {MCCS} {MACROS} --s2v -f -l {LUMI} --od {O} {FRIENDS} {FLAGS} {OVERFLOWCUTS}"
 baseSig = "python makeShapeCardsSusy.py [[[MCA]]] [[[CUTS]]] \\\"{EXPR}\\\" \\\"{BINS}\\\" [[[SYS]]] -o SR --bin {TAG} {T} --tree {TREENAME} {MCCS} {MACROS} --s2v -f -l {LUMI} --od [[[O]]] {FRIENDS} {FLAGS} {OVERFLOWCUTS} {POSTFIX}"
@@ -139,7 +140,7 @@ if not options.sigOnly:
 			if not options.redoBkg and os.path.exists(bkgDir+"/common/SR.input.root"): continue
 			func.mkdir(bkgDir)
 		
-			mm.submit([mm.getVariable("mcafile",""), mm.getVariable("cutfile",""), mm.getVariable("expr",""), theBin, theSc.replace("/","_"), mm.treedirs, mm.getVariable("treename","treeProducerSusyMultilepton"), mccs, macros, mm.getVariable("lumi","12.9"), bkgDir, friends, flags, func.getCut(mm.getVariable("firstCut","alwaystrue"), mm.getVariable("expr",""), theBin)], theSc.replace("/", "_")+"_bkg",False)
+			mm.submit([mm.getVariable("mcafile",""), mm.getVariable("cutfile",""), mm.getVariable("expr",""), theBin, theSc.replace("/","_"), mm.treedirs, mm.getVariable("treename","treeProducerSusyMultilepton"), mccs, macros, mm.getVariable("lumi","12.9"), bkgDir, friends, flags, func.getCut(options, mm.getVariable("firstCut","alwaystrue"), mm.getVariable("expr",""), theBin)], theSc.replace("/", "_")+"_bkg",False)
 	mm.runJobs()
 	mm.clearJobs()
 		
@@ -203,8 +204,8 @@ if not options.bkgOnly:
 
 				## looping over masspoints
 				for iiii,mp in enumerate(mps):
-					thebasesig = mm.makeCmd([mm.getVariable("expr",""), b, theSc.replace("/","_"), mm.treedirs, mm.getVariable("treename","treeProducerSusyMultilepton"), mccs, macros, mm.getVariable("lumi","12.9"), friends, flagsSig, func.getCut(mm.getVariable("firstCut","alwaystrue"), mm.getVariable("expr",""), theBin), ""])
-					thebasesys = mm.makeCmd([mm.getVariable("expr",""), b, theSc.replace("/","_"), mm.treedirs, mm.getVariable("treename","treeProducerSusyMultilepton"), mccs, macros, mm.getVariable("lumi","12.9"), friends, flagsSys, func.getCut(mm.getVariable("firstCut","alwaystrue"), mm.getVariable("expr",""), theBin), options.postfix])
+					thebasesig = mm.makeCmd([mm.getVariable("expr",""), b, theSc.replace("/","_"), mm.treedirs, mm.getVariable("treename","treeProducerSusyMultilepton"), mccs, macros, mm.getVariable("lumi","12.9"), friends, flagsSig, func.getCut(options, mm.getVariable("firstCut","alwaystrue"), mm.getVariable("expr",""), theBin), ""])
+					thebasesys = mm.makeCmd([mm.getVariable("expr",""), b, theSc.replace("/","_"), mm.treedirs, mm.getVariable("treename","treeProducerSusyMultilepton"), mccs, macros, mm.getVariable("lumi","12.9"), friends, flagsSys, func.getCut(options, mm.getVariable("firstCut","alwaystrue"), mm.getVariable("expr",""), theBin), options.postfix])
 					thecmd, cardpath = prepareJob(mm, theSc.replace("/", "_")+"_mp_"+deformat(mp[2]), mp, thebasesig, thebasesys, b, bkgDir, myDir, xslist, options)
 					mm.registerCmd(thecmd, theSc.replace("/", "_")+"_mp_"+deformat(mp[2]),False,5)
 					cards.append(cardpath)

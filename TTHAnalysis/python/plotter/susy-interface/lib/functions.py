@@ -64,7 +64,8 @@ def getBinLength(bins):
 		return int(bins.count(","))
 	return int(bins.split(",")[0])
 
-def getCut(firstCut, expr, bins):
+def getCut(options, firstCut, expr, bins):
+	if options.allowoverflow: return ""
 	if not expr or not bins: return ""
 	min, max = getMinMax(bins)
 	return "-A {first} inSR '{EXPR}>={MIN} && {EXPR}<={MAX}'".format(first=firstCut, EXPR=expr, MIN=min, MAX=max)
