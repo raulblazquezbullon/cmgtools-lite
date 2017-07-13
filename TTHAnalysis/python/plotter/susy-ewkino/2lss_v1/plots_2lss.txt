@@ -5,12 +5,12 @@ SSR      : SSR_2lss(nJet40,LepGood1_conePt,LepGood1_phi, LepGood2_conePt,LepGood
 
 ## signal regions
 ## ----------------------------------------------------------
-SR_ss    : SR_ewk_ss2l(nJet40,LepGood1_conePt,LepGood1_phi, LepGood2_conePt,LepGood2_phi, metPt, metPhi, LepGood1_charge):  30,0.5,30.5; Wide=True, XTitle="Signal Region (2lss)", xBinLabels="01\,02\,03\,04\,05\,06\,07\,08\,09\,10\,11\,12\,13\,14\,15\,16\,17\,18\,19\,20\,21\,22\,23\,24\,25\,26\,27\,28\,29\,30", LegendCutoff=1e-4, Logy, YMin=0.1, YMax=5e5
+SR_ss    : SR_ewk_ss2l(nJet40,LepGood1_conePt,LepGood1_phi, LepGood2_conePt,LepGood2_phi, metPt, metPhi, LepGood1_charge):  30,0.5,30.5; Wide=True, XTitle="Signal region (SS)", xBinLabels="01\,02\,03\,04\,05\,06\,07\,08\,09\,10\,11\,12\,13\,14\,15\,16\,17\,18\,19\,20\,21\,22\,23\,24\,25\,26\,27\,28\,29\,30", LegendCutoff=1e-4, Logy, YMin=0.1, YMax=5e5
 
 ## Kinematics
 ## ----------------------------------------------------------
 MET      : metPt                                                              : 35,0,700     ; XTitle="p_{T}^{miss} [GeV]", Logy, LegendCutoff=1e-5, YMin=0.01, YMax = 10e3
-METrebin : metPt                                                              : 13,50,700     ; XTitle="p_{T}^{miss} [GeV]", Logy, LegendCutoff=1e-5, YMin=0.01, YMax = 10e3
+METrebin : metPt                                                              : 13,50,700     ; XTitle="p_{T}^{miss} (GeV)", Logy, LegendCutoff=1e-5, YMin=0.01, YMax = 10e3
 nJet40 	 : nJet40                                                             : 10,-0.5,9.5  ; XTitle='N(jet\, p_{T} > 40)'
 nBJet25	 : nBJetMedium25                                                      : 10,-0.5,9.5  ; XTitle='N(b-jet\, p_{T} > 25\, CSV M)'
 ptdil    : pt_2(LepGood1_conePt, LepGood1_phi, LepGood2_conePt, LepGood2_phi) : 20, 0., 300. ; XTitle="p_{T}(dilepton) [GeV]"

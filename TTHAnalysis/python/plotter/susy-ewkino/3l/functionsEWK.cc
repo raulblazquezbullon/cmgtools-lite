@@ -1,5 +1,21 @@
 #include <iostream>
 
+float WZunc(float met, float mt, int var = 0){
+  if (mt>=  0 && mt<100 && met>= 50 && met<100) return (1 + var*0.05);
+  if (mt>=  0 && mt<100 && met>=100 && met<150) return (1 + var*0.10);
+  if (mt>=  0 && mt<100 && met>=150 && met<200) return (1 + var*0.20);
+  if (mt>=  0 && mt<100 && met>=200           ) return (1 + var*0.20);
+  if (mt>=100 && mt<160 && met>= 50 && met<100) return (1 + var*0.05);
+  if (mt>=100 && mt<160 && met>=100 && met<150) return (1 + var*0.25);
+  if (mt>=100 && mt<160 && met>=150 && met<200) return (1 + var*0.45);
+  if (mt>=100 && mt<160 && met>=200           ) return (1 + var*0.45);
+  if (mt>=160           && met>= 50 && met<100) return (1 + var*0.30);
+  if (mt>=160           && met>=100 && met<150) return (1 + var*0.50);
+  if (mt>=160           && met>=150 && met<200) return (1 + var*0.40);
+  if (mt>=160           && met>=200           ) return (1 + var*0.45);
+  return 0;
+}
+
 int tauIdx1(int lep1pdg, int lep2pdg, int lep3pdg, int lep4pdg = 0){
     if(abs(lep1pdg)==15) return 0;
     if(abs(lep2pdg)==15) return 1;
@@ -464,5 +480,6 @@ int SuperSig(int nLep, int nTau, int nOSSF, int nOSLF, float mT2L, float mT2T, f
     }
     return 0;
 }
+
 
 void functionsEWK() {}

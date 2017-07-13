@@ -1,7 +1,7 @@
 
 ## UP VARIATION
 ## -----------------------------------------------------------
-prompt_WZ_puw_Up  : WZTo3LNu_ext                                                : 58.59*0.672 : puw_nInt_Moriond(nTrueInt, 1)*(LepGood1_mcUCSXMatchId==0 && LepGood2_mcUCSXMatchId==0)     ; FakeRate="susy-ewkino/2lss_v1/fakerate_fakeappl_central.txt", SkipMe=True 
+prompt_WZ_puw_Up  : WZTo3LNu_ext                                                : 58.59*0.672 : puw_nInt_Moriond(nTrueInt, 1)*(LepGood1_mcUCSXMatchId==0 && LepGood2_mcUCSXMatchId==0)     ; FakeRate="susy-ewkino/2lss_v1/fakerate_standard_central.txt", SkipMe=True 
 prompt_ZZH_puw_Up : ZZTo4L                                                      : xsec       : puw_nInt_Moriond(nTrueInt, 1)*(LepGood1_mcUCSXMatchId==0 && LepGood2_mcUCSXMatchId==0)     ; FakeRate="susy-ewkino/2lss_v1/fakerate_standard_central.txt", SkipMe=True 
 prompt_ZZH_puw_Up : VHToNonbb                                                   : xsec       : puw_nInt_Moriond(nTrueInt, 1)*(LepGood1_mcUCSXMatchId==0 && LepGood2_mcUCSXMatchId==0)     ; FakeRate="susy-ewkino/2lss_v1/fakerate_standard_central.txt", SkipMe=True 
 prompt_ZZH_puw_Up : GGHZZ4L                                                     : xsec       : puw_nInt_Moriond(nTrueInt, 1)*(LepGood1_mcUCSXMatchId==0 && LepGood2_mcUCSXMatchId==0)     ; FakeRate="susy-ewkino/2lss_v1/fakerate_standard_central.txt", SkipMe=True 
@@ -30,7 +30,7 @@ rares_ttX_puw_Up  : tZW_ll                                                     :
 
 ## DN VARIATION
 ## -----------------------------------------------------------
-prompt_WZ_puw_Dn  : WZTo3LNu_ext                                                : 58.59*0.672 : puw_nInt_Moriond(nTrueInt, -1)*(LepGood1_mcUCSXMatchId==0 && LepGood2_mcUCSXMatchId==0)     ; FakeRate="susy-ewkino/2lss_v1/fakerate_fakeappl_central.txt", SkipMe=True 
+prompt_WZ_puw_Dn  : WZTo3LNu_ext                                                : 58.59*0.672 : puw_nInt_Moriond(nTrueInt, -1)*(LepGood1_mcUCSXMatchId==0 && LepGood2_mcUCSXMatchId==0)     ; FakeRate="susy-ewkino/2lss_v1/fakerate_standard_central.txt", SkipMe=True 
 prompt_ZZH_puw_Dn : ZZTo4L                                                      : xsec       : puw_nInt_Moriond(nTrueInt, -1)*(LepGood1_mcUCSXMatchId==0 && LepGood2_mcUCSXMatchId==0)     ; FakeRate="susy-ewkino/2lss_v1/fakerate_standard_central.txt", SkipMe=True 
 prompt_ZZH_puw_Dn : VHToNonbb                                                   : xsec       : puw_nInt_Moriond(nTrueInt, -1)*(LepGood1_mcUCSXMatchId==0 && LepGood2_mcUCSXMatchId==0)     ; FakeRate="susy-ewkino/2lss_v1/fakerate_standard_central.txt", SkipMe=True 
 prompt_ZZH_puw_Dn : GGHZZ4L                                                     : xsec       : puw_nInt_Moriond(nTrueInt, -1)*(LepGood1_mcUCSXMatchId==0 && LepGood2_mcUCSXMatchId==0)     ; FakeRate="susy-ewkino/2lss_v1/fakerate_standard_central.txt", SkipMe=True 

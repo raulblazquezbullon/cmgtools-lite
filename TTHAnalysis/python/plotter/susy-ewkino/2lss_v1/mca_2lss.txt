@@ -11,6 +11,8 @@ sig_TChiSlepSnu_05_1000_1+  : TChiSlepSnux0p05_1000_1   : 0.5*1.34352/1000 : Lep
 #sig_TChiSlepSnu_05_500_350+ : TChiSlepSnux0p05_500_350  : 0.5*46.3533/1000 : LepGood1_mcUCSXMatchId==0 && LepGood2_mcUCSXMatchId==0 ; FakeRate="susy-ewkino/2lss_v1/fakerate_standard_central.txt", FillColor=ROOT.kGreen  , Label="\#tilde{\#chi}\#tilde{\#chi}\#rightarrow \#tilde{l} \#tilde{l} (500/350)", isFastSim, NormSystematic=0.3, LineStyle=2
 #sig_TChiSlepSnu_05_1000_1+  : TChiSlepSnux0p05_1000_1   : 0.5*1.34352/1000 : LepGood1_mcUCSXMatchId==0 && LepGood2_mcUCSXMatchId==0 ; FakeRate="susy-ewkino/2lss_v1/fakerate_standard_central.txt", FillColor=ROOT.kGreen+2, Label="\#tilde{\#chi}\#tilde{\#chi}\#rightarrow \#tilde{l} \#tilde{l} (1000/1)" , isFastSim, NormSystematic=0.3
 
+sig_TChiSlepSnu_FD_500_350+ : TChiSlepSnux0p5_500_350   : 0.5*46.3533/1000 : LepGood1_mcUCSXMatchId==0 && LepGood2_mcUCSXMatchId==0 ; FakeRate="susy-ewkino/2lss_v1/fakerate_standard_central.txt", FillColor=ROOT.kBlack  , Label="\#tilde{\#chi}^{0}\#tilde{\#chi}^{\#pm}\#rightarrowlll\#nu(500/350)", isFastSim, NormSystematic=0.3, LineStyle=2
+
 ## WZ (to keep the order)
 ## -----------------------------------------------------------
 prompt_WZ : WZTo3LNu_ext : 0.672*58.59 :  LepGood1_mcUCSXMatchId==0 && LepGood2_mcUCSXMatchId==0 ; FillColor=ROOT.kOrange, FakeRate="susy-ewkino/2lss_v1/fakerate_standard_central.txt", Label="WZ", NormSystematic=0.3

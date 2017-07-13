@@ -16,6 +16,9 @@ change    : SR\b           : SR(3, countTaus(3, LepSel_pdgId[0], LepSel_pdgId[1]
 change    : SRos\b         : SRos(3, countTaus(3, LepSel_pdgId[0], LepSel_pdgId[1], LepSel_pdgId[2]), nOSSF_3l, nOSLF_3l, mT2L_3l, mT2T_3l, srMll(3, mll_3l, mllL_3l, mllT_3l), srMt(3, mT_3l, mTL_3l, mTT_3l), met_pt) 
 change    : SuperSig\b     : SuperSig(3, countTaus(3, LepSel_pdgId[0], LepSel_pdgId[1], LepSel_pdgId[2]), nOSSF_3l, nOSLF_3l, mT2L_3l, mT2T_3l, srMll(3, mll_3l, mllL_3l, mllT_3l), srMt(3, mT_3l, mTL_3l, mTT_3l), met_pt)
 
+change    : SRcorr\b       : SRcorr(mllL_3l, mTL_3l, met_pt, htJet30j_Mini)
+change    : SuperSigcorr\b : SuperSigcorr(mllL_3l, mTL_3l, met_pt, htJet30j_Mini)
+
 load-histo : QF_el : $DATA/fliprate/fliprate_mvaM_EWKino_Moriond2017_36p5.root : elChMId
 
 
