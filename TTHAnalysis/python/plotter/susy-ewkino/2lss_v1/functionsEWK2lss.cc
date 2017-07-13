@@ -5,15 +5,19 @@ float mt_2_2lss(float pt1, float phi1, float pt2, float phi2) {
     return std::sqrt(2*pt1*pt2*(1-std::cos(phi1-phi2)));
 }
 
+float mtwmin(float ptl1, float phil1, float ptl2, float phil2, float met, float metphi){
+  float mtw1 = mt_2_2lss(ptl1, phil1, met, metphi);
+  float mtw2 = mt_2_2lss(ptl2, phil2, met, metphi);
+  return std::min(mtw1,mtw2);
+}
+
 float pt_2_2lss(float pt1, float phi1, float pt2, float phi2) {
     phi2 -= phi1;
     return hypot(pt1 + pt2 * std::cos(phi2), pt2*std::sin(phi2));
 }
 
 int SSR_2lss(int nj, float ptl1, float phil1, float ptl2, float phil2, float met, float metphi, int charge){
-  float mtw1 = mt_2_2lss(ptl1,phil1, met, metphi);
-  float mtw2 = mt_2_2lss(ptl2,phil2, met, metphi);
-  float mtw  = std::min(mtw1,mtw2);
+  float mtw = mtwmin(ptl1, phil1, ptl2, phil2, met, metphi);
   float ptdil = pt_2_2lss(ptl1,phil1,ptl2,phil2);
   int   cha  = charge;
 
