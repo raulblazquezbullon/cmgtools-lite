@@ -9,13 +9,47 @@ isFastSim = False
 
 # btag event weights in 80X
 from CMGTools.TTHAnalysis.tools.bTagEventWeights import BTagEventWeightFriend
-btagsf_payload = os.path.join(utility_files_dir, "btag", "CSVv2_ichep.csv")
-btagsf_payload_fastsim = os.path.join(utility_files_dir, "btag", "CSV_13TEV_TTJets_11_7_2016.csv")
+btagsf_payload = os.path.join(utility_files_dir, "btag", "CSVv2_Moriond17_B_H.csv")
+btagsf_payload_fastsim = os.path.join(utility_files_dir, "btag", "fastsim_csvv2_ttbar_26_1_2017.csv")
 bTagEventWeight = lambda : BTagEventWeightFriend(csvfile=btagsf_payload, algo='csv', recllabel='Recl')
 btag_efficiency_file = os.path.join(utility_files_dir, "btag", "bTagEffs.root")
 bTagEventWeightFastSIM = lambda : BTagEventWeightFriend(csvfile=btagsf_payload, csvfastsim=btagsf_payload_fastsim, eff_rootfile=btag_efficiency_file, algo='csv', recllabel='Recl')
 MODULES.append( ('eventBTagWeight', bTagEventWeight ))
 MODULES.append( ('bTagEventWeightFastSIM', bTagEventWeightFastSIM ))
+
+from CMGTools.TTHAnalysis.tools.bTagWeightAnalyzer import bTagWeightAnalyzer
+btagsf_payload_fullsim  = os.path.join(utility_files_dir, "btag", "CSVv2_Moriond17_B_H.csv"                          )
+btagsf_payload_fastsim  = os.path.join(utility_files_dir, "btag", "fastsim_csvv2_ttbar_26_1_2017_fixed.csv"          )
+btag_efficiency_fullsim = os.path.join(utility_files_dir, "btag", "btageff__ttbar_powheg_pythia8_25ns_Moriond17.root")
+btag_efficiency_fastsim = os.path.join(utility_files_dir, "btag", "btageff__SMS-T1bbbb-T1qqqq_25ns_Moriond17.root"   )
+bTagEventWeightFullSim   = lambda : bTagWeightAnalyzer(btagsf_payload_fullsim, btag_efficiency_fullsim, recllabel='Mini')
+bTagEventWeightFastSim   = lambda : bTagWeightAnalyzer(btagsf_payload_fastsim, btag_efficiency_fastsim, recllabel='Mini', isFastSim=True)
+MODULES.append( ('bTagEventWeightFullSim3L'  , bTagEventWeightFullSim ))
+MODULES.append( ('bTagEventWeightFastSim3L'  , bTagEventWeightFastSim ))
+bTagEventWeightFullSim2L = lambda : bTagWeightAnalyzer(btagsf_payload_fullsim, btag_efficiency_fullsim, recllabel='Recl')
+bTagEventWeightFastSim2L = lambda : bTagWeightAnalyzer(btagsf_payload_fastsim, btag_efficiency_fastsim, recllabel='Recl', isFastSim=True)
+MODULES.append( ('bTagEventWeightFullSim2L', bTagEventWeightFullSim2L ))
+MODULES.append( ('bTagEventWeightFastSim2L', bTagEventWeightFastSim2L ))
+
+
+## PU uncertainty instances
+from CMGTools.TTHAnalysis.tools.fastSimPUW import FastSimPUWProducer
+puwProfile = os.path.join(utility_files_dir, "pileup", "dataProfile_EWKino_M17.root")
+histogram  = "pileup"
+cutsFile2L = os.path.join(utility_files_dir, "pileup", "cutsFile_EWKino_2L.txt")
+cutsFile3L = os.path.join(utility_files_dir, "pileup", "cutsFile_EWKino_3L.txt")
+cutsFile4L = os.path.join(utility_files_dir, "pileup", "cutsFile_EWKino_4L.txt")
+PUWProducer2L = lambda : FastSimPUWProducer(puwProfile, histogram, cutsFile2L)
+PUWProducer3L = lambda : FastSimPUWProducer(puwProfile, histogram, cutsFile3L)
+PUWProducer4L = lambda : FastSimPUWProducer(puwProfile, histogram, cutsFile4L)
+MODULES.append( ('PUWProducer2L', PUWProducer2L) )
+MODULES.append( ('PUWProducer3L', PUWProducer3L) )
+MODULES.append( ('PUWProducer4L', PUWProducer4L) )
+
+
+
+
+
 
 
 #--- Recleaner instances
@@ -52,8 +86,10 @@ MODULES.append( ('leptonJetReCleanerSusyRA7', lambda : LeptonJetReCleaner("Mini"
                    cleanJet = lambda lep,jet,dr : dr<0.4,
                    selectJet = lambda jet: abs(jet.eta)<2.4,
                    cleanTau = lambda lep,tau,dr: dr<0.4,
-                   looseTau = lambda tau: tau.pt > 20 and abs(tau.eta)<2.3 and abs(tau.dxy) < 1000 and abs(tau.dz) < 0.2 and tau.idMVAOldDMRun2 >= 1 and tau.idDecayMode, # used in cleaning
-                   tightTau = lambda tau: tau.idMVAOldDMRun2 == 3, # on top of loose
+                   looseTau = lambda tau: tau.pt > 20 and abs(tau.eta)<2.3 and abs(tau.dxy) < 1000 and abs(tau.dz) < 0.2 and tau.idMVA >= 1 and tau.idDecayMode, # used in cleaning
+                   tightTau = lambda tau: tau.idMVA == 3, # on top of loose
+                   #looseTau = lambda tau: tau.pt > 20 and abs(tau.eta)<2.3 and abs(tau.dxy) < 1000 and abs(tau.dz) < 0.2 and tau.idMVAOldDMRun2 >= 1 and tau.idDecayMode, # used in cleaning
+                   #tightTau = lambda tau: tau.idMVAOldDMRun2 == 3, # on top of loose
                    cleanJetsWithTaus = True,
                    doVetoZ = False,
                    doVetoLMf = False,
@@ -83,6 +119,7 @@ MODULES.append( ('leptonJetReCleanerSusyEWK3L', lambda : LeptonJetReCleaner("Min
                    jetPt = 30,
                    bJetPt = 25,
                    coneptdef = lambda lep: conept_EWK(lep, 2),
+                   storeJetVariables = True
                  ) ))
 
 # All jets, needed for tau fakes study
@@ -117,6 +154,7 @@ MODULES.append( ('leptonJetReCleanerSusyEWK2L', lambda : LeptonJetReCleaner("Rec
                    looseTau = lambda tau: _susyEWK_tauId_CBloose(tau), # used in cleaning
                    tightTau = lambda tau: _susyEWK_tauId_CBtight(tau), # on top of loose
                    cleanJetsWithTaus = True,
+                   cleanTausWithLoose = True,
                    doVetoZ = True,
                    doVetoLMf = True,
                    doVetoLMt = True,
