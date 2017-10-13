@@ -1,5 +1,21 @@
 #include <iostream>
 
+float WZunc(float met, float mt, int var = 0){
+  if (mt>=  0 && mt<100 && met>= 50 && met<100) return (1 + var*0.05);
+  if (mt>=  0 && mt<100 && met>=100 && met<150) return (1 + var*0.10);
+  if (mt>=  0 && mt<100 && met>=150 && met<200) return (1 + var*0.20);
+  if (mt>=  0 && mt<100 && met>=200           ) return (1 + var*0.20);
+  if (mt>=100 && mt<160 && met>= 50 && met<100) return (1 + var*0.05);
+  if (mt>=100 && mt<160 && met>=100 && met<150) return (1 + var*0.25);
+  if (mt>=100 && mt<160 && met>=150 && met<200) return (1 + var*0.45);
+  if (mt>=100 && mt<160 && met>=200           ) return (1 + var*0.45);
+  if (mt>=160           && met>= 50 && met<100) return (1 + var*0.30);
+  if (mt>=160           && met>=100 && met<150) return (1 + var*0.50);
+  if (mt>=160           && met>=150 && met<200) return (1 + var*0.40);
+  if (mt>=160           && met>=200           ) return (1 + var*0.45);
+  return 0;
+}
+
 int tauIdx1(int lep1pdg, int lep2pdg, int lep3pdg, int lep4pdg = 0){
     if(abs(lep1pdg)==15) return 0;
     if(abs(lep2pdg)==15) return 1;
@@ -53,9 +69,75 @@ int isPrompt(int nLep, int lep1mcUCSX, int lep2mcUCSX, int lep3mcUCSX = 0, int l
     return ((lep1mcUCSX==0 || lep1mcUCSX==1) && (lep2mcUCSX==0 || lep2mcUCSX==1) && (lep3mcUCSX==0 || lep3mcUCSX==1) && (lep4mcUCSX==0 || lep4mcUCSX==1));
 }
 
+int isPromptRightCharge(int nLep, int lep1mcUCSX, int lep2mcUCSX, int lep3mcUCSX = 0, int lep4mcUCSX = 0) {
+    if(nLep == 2) return (lep1mcUCSX==0 && lep2mcUCSX==0);
+    if(nLep == 3) return (lep1mcUCSX==0 && lep2mcUCSX==0 && lep3mcUCSX==0);
+    return (lep1mcUCSX==0 && lep2mcUCSX==0 && lep3mcUCSX==0 && lep4mcUCSX==0);
+}
+
+int hasPromptLight(int nLep, int lep1pdgId, int lep1mcUCSX, int lep2pdgId, int lep2mcUCSX, int lep3pdgId = 0, int lep3mcUCSX = 0, int lep4pdgId = 0, int lep4mcUCSX = 0) {
+    if(abs(lep1pdgId)<15 && !(lep1mcUCSX==0 || lep1mcUCSX==1)) return 0;
+    if(abs(lep2pdgId)<15 && !(lep2mcUCSX==0 || lep2mcUCSX==1)) return 0;
+    if(nLep == 2                                             ) return 1;
+    if(abs(lep3pdgId)<15 && !(lep3mcUCSX==0 || lep3mcUCSX==1)) return 0;
+    if(nLep == 3                                             ) return 1;
+    if(abs(lep4pdgId)<15 && !(lep4mcUCSX==0 || lep4mcUCSX==1)) return 0;
+    return 0;
+}
+
+int hasPromptTau(int nLep, int lep1pdgId, int lep1mcUCSX, int lep2pdgId, int lep2mcUCSX, int lep3pdgId = 0, int lep3mcUCSX = 0, int lep4pdgId = 0, int lep4mcUCSX = 0) {
+    if(abs(lep1pdgId)==15 && !(lep1mcUCSX==0 || lep1mcUCSX==1)) return 0;
+    if(abs(lep2pdgId)==15 && !(lep2mcUCSX==0 || lep2mcUCSX==1)) return 0;
+    if(nLep == 2                                              ) return 1;
+    if(abs(lep3pdgId)==15 && !(lep3mcUCSX==0 || lep3mcUCSX==1)) return 0;
+    if(nLep == 3                                              ) return 1;
+    if(abs(lep4pdgId)==15 && !(lep4mcUCSX==0 || lep4mcUCSX==1)) return 0;
+    return 0;
+}
+
 int isGoodFake(float pt, int isTight) {
     if(pt == 0) return 0;
     if(isTight) return 0;
+    return 1;
+}
+
+float getTau(int lep1pdgId, float lep1value, int lep2pdgId, float lep2value, int lep3pdgId, float lep3value, float down=0, float up=0) {
+	float val = 0;
+    if(abs(lep1pdgId)==15) val = lep1value;
+    if(abs(lep2pdgId)==15) val = lep2value;
+    if(abs(lep3pdgId)==15) val = lep3value;
+    if(up  >0) val = std::min(up, val);
+    if(down>0) val = std::max(down, val);
+    return val;
+}
+
+int allTightLight(int nLep, int l1pdgId, int l1isTight, int l2pdgId, int l2isTight, int l3pdgId = 0, int l3isTight = 0, int l4pdgId = 0, int l4isTight = 0){
+    if(abs(l1pdgId)<15 && !l1isTight) return 0;
+    if(abs(l2pdgId)<15 && !l2isTight) return 0;
+    if(nLep == 2                    ) return 1;
+    if(abs(l3pdgId)<15 && !l3isTight) return 0;
+    if(nLep == 3                    ) return 1;
+    if(abs(l4pdgId)<15 && !l4isTight) return 0;
+    return 1;
+}
+
+int allTightTau(int nLep, int l1pdgId, int l1isTight, int l2pdgId, int l2isTight, int l3pdgId = 0, int l3isTight = 0, int l4pdgId = 0, int l4isTight = 0){
+    if(abs(l1pdgId)==15 && !l1isTight) return 0;
+    if(abs(l2pdgId)==15 && !l2isTight) return 0;
+    if(nLep == 2                     ) return 1;
+    if(abs(l3pdgId)==15 && !l3isTight) return 0;
+    if(nLep == 3                     ) return 1;
+    if(abs(l4pdgId)==15 && !l4isTight) return 0;
+    return 1;
+}
+
+int tightChargeCut(int nLep, int l1pdgId, int l1tightCharge, int l2pdgId, int l2tightCharge, int l3pdgId = 0, int l3tightCharge = 0, int l4pdgId = 0, int l4tightCharge = 0) { 
+    if((abs(l1pdgId)==11 && l1tightCharge<2) || (abs(l1pdgId)==13 && l1tightCharge<2)) return 0;
+    if((abs(l2pdgId)==11 && l2tightCharge<2) || (abs(l2pdgId)==13 && l2tightCharge<2)) return 0;
+    if(nLep == 2                                                                     ) return 1;
+    if((abs(l3pdgId)==11 && l3tightCharge<2) || (abs(l3pdgId)==13 && l3tightCharge<2)) return 0;
+    if(nLep == 3                                                                     ) return 1;
+    if((abs(l4pdgId)==11 && l4tightCharge<2) || (abs(l4pdgId)==13 && l4tightCharge<2)) return 0;
     return 1;
 }
 
@@ -353,6 +435,37 @@ int SRos(int nLep, int nTau, int nOSSF, int nOSLF, float mT2L, float mT2T, float
     return 0;
 }
 
+int SuperSig3L1(int nTau, float mT, float met) {
+    if(nTau==0 && (mT   >= 120 && met >= 200)) return 1;
+    return 0;
+}
+
+int SuperSig3L2(int nTau, float met) {
+    if(nTau==0 &&                 met >= 200)  return 1;
+    return 0;
+}
+
+int SuperSig3L3(int nTau, float mT2L, float met) {
+    if(nTau==1 && (mT2L >=  50 && met >= 200)) return 1;
+    return 0;
+}
+
+int SuperSig3L4(int nTau, float mT2T, float met) {
+    if(nTau==2 && (mT2T >=  50 && met >= 200)) return 1;
+    return 0;
+}
+
+int SuperSig3L5(int nTau, float met) {
+    if(nTau==2 && met >=  75 ) return 1;
+    return 0;
+}
+
+int SuperSig4L1(float met) {
+    if(met >= 200) return 1;
+    return 0;
+}
+
+
 int SuperSig(int nLep, int nTau, int nOSSF, int nOSLF, float mT2L, float mT2T, float mll, float mT, float met) {
 
     if(nLep == 3){
@@ -367,5 +480,6 @@ int SuperSig(int nLep, int nTau, int nOSSF, int nOSLF, float mT2L, float mT2T, f
     }
     return 0;
 }
+
 
 void functionsEWK() {}

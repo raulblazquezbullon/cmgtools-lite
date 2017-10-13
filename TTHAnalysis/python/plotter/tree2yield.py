@@ -118,18 +118,18 @@ def makeHistFromBinsAndSpec(name,expr,bins,plotspec):
         return histo
 
 def cropNegativeBins(histo):
-            if "TH1" in histo.ClassName():
-                for b in xrange(0,histo.GetNbinsX()+2):
-                    if histo.GetBinContent(b) < 0: histo.SetBinContent(b, 0.0)
-            elif "TH2" in histo.ClassName():
-                for bx in xrange(0,histo.GetNbinsX()+2):
-                    for by in xrange(0,histo.GetNbinsY()+2):
-                        if histo.GetBinContent(bx,by) < 0: histo.SetBinContent(bx,by, 0.0)
-            elif "TH3" in histo.ClassName():
-                for bx in xrange(0,histo.GetNbinsX()+2):
-                    for by in xrange(0,histo.GetNbinsY()+2):
-                        for bz in xrange(0,histo.GetNbinsZ()+2):
-                            if histo.GetBinContent(bx,by,bz) < 0: histo.SetBinContent(bx,by,bz, 0.0)
+    if "TH1" in histo.ClassName():
+        for b in xrange(0,histo.GetNbinsX()+2):
+            if histo.GetBinContent(b) < 0: histo.SetBinContent(b, 0.0)
+    elif "TH2" in histo.ClassName():
+        for bx in xrange(0,histo.GetNbinsX()+2):
+            for by in xrange(0,histo.GetNbinsY()+2):
+                if histo.GetBinContent(bx,by) < 0: histo.SetBinContent(bx,by, 0.0)
+    elif "TH3" in histo.ClassName():
+        for bx in xrange(0,histo.GetNbinsX()+2):
+            for by in xrange(0,histo.GetNbinsY()+2):
+                for bz in xrange(0,histo.GetNbinsZ()+2):
+                    if histo.GetBinContent(bx,by,bz) < 0: histo.SetBinContent(bx,by,bz, 0.0)
 
 
 class TreeToYield:
@@ -262,7 +262,7 @@ class TreeToYield:
             if not basepath:
                 raise RuntimeError("%s -- ERROR: %s process not found in paths (%s)" % (__name__, cname, repr(options.path)))
 
-            tf_filename = tf_file.format(name=self._name, cname=self._cname, P=basepath)
+            tf_filename = tf_file.format(name=self._name, cname=self._cname, P=basepath, RP=self._fname[0:self._fname.rfind("/")])
             tf = self._tree.AddFriend(tf_tree, tf_filename),
             self._friends.append(tf)
         self._isInit = True

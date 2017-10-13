@@ -24,6 +24,7 @@ def makeMCA(path, samples):
 	f = open(path,"w")
 	for p in samples:
 		f.write(p +" : "+ p +" : 1.0\n")
+		#f.write(p +" : "+ p +" : 1.0 ; FakeRate=\"susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt\", isFastSim\n")
 	f.close()
 
 def collectMcaSamples(mm):
@@ -35,8 +36,8 @@ def collectInputSamples(mm):
 	for d in os.listdir(mm.treedir):
 		## only consider real samples
 		if not os.path.isdir(mm.treedir +"/"+ d): continue
-		if not os.path.exists(mm.treedir +"/"+ d +"/"+options.treename+"/tree.root") and \
-           not os.path.exists(mm.treedir +"/"+ d +"/"+options.treename+"/tree.root.url"): continue
+		if not os.path.exists(mm.treedir +"/"+ d +"/"+mm.getVariable("treename","treeProducerSusyMultilepton")+"/tree.root") and \
+           not os.path.exists(mm.treedir +"/"+ d +"/"+mm.getVariable("treename","treeProducerSusyMultilepton")+"/tree.root.url"): continue
 		## exclude or accept
 		if mm.options.accept  != [] and all([d.find(a) == -1 for a in mm.options.accept ]): continue
 		if mm.options.exclude != [] and any([d.find(e) >  -1 for e in mm.options.exclude]): continue

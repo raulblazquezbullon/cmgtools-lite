@@ -5,7 +5,7 @@ from lib import functions as func
 
 def collectFriends(modulelist):
 	if len(modulelist)==0: return ""
-	return " ".join(["-F sf/t {P}/"+m+"/evVarFriend_{cname}.root" for m in modulelist])
+	return " ".join(["-F sf/t {RP}/"+m+"/evVarFriend_{cname}.root" for m in modulelist])
 
 def getFriendConn(mm, module):
 	friendConn = mm.getVariable("friendConn", {})
@@ -32,7 +32,7 @@ parser.add_option("--log"         , dest="log"    , action="store_true", default
 parser.add_option("-F", "--force" , dest="force"  , action="store_true", default=False, help="Run the module even if it already exists")
 parser.add_option("--finalize"    , dest="finalize", action="store_true", default=False, help="Merge the chunks and check if everything is correct")
 
-base = "python prepareEventVariablesFriendTree.py {T} {O} --tra2 --tree {TREENAME} --vector -T sf -d {SAMPLES} -m {MODULES} {FRIENDS} {ADDITIONAL} -I CMGTools.TTHAnalysis.tools.multilepFriendTreeProducersToCleanup"
+base = "python prepareEventVariablesFriendTree.py {T} {O} --tra2 --tree {TREENAME} --vector -T sf -d {SAMPLES} -m {MODULES} {FRIENDS} {ADDITIONAL} -I CMGTools.TTHAnalysis.tools.multilepFriendTreeProducersToCleanup {FLAGS}"
 (options, args) = parser.parse_args()
 options         = maker.splitLists(options)
 options.modules = func.splitList(options.modules)
@@ -41,6 +41,7 @@ options.exclude = func.splitList(options.exclude)
 mm              = maker.Maker("friendmaker", base, args, options, parser.defaults)
 mm.loadNEvtSample()
 
+flags = mm.getOption("flags", [])
 
 ## loop on modules, submitting jobs
 for module in mm.getFriendModules():
@@ -69,13 +70,13 @@ for module in mm.getFriendModules():
 		if options.exclude != [] and any([d.find(e) >  -1 for e in options.exclude]): continue
 
 		## check if required friend trees exist
-		passed = True
-		for req in requires:
-			if req and not os.path.exists(mm.treedir +"/"+ req +"/evVarFriend_"+d+".root"): 
-				mm.talk("WARNING: required friend tree module '"+req+"' for module '"+module+"' does not exist for sample '"+d+"'")
-				print "Skipping..."
-				passed = False
-		if not passed: continue
+		##passed = True
+		##for req in requires:
+		##	if req and not os.path.exists(mm.treedir +"/"+ req +"/evVarFriend_"+d+".root"): 
+		##		mm.talk("WARNING: required friend tree module '"+req+"' for module '"+module+"' does not exist for sample '"+d+"'")
+		##		print "Skipping..."
+		##		passed = False
+		##if not passed: continue
 
 		## skip if exists (and not force recreation)
 		if not options.force and os.path.exists(output +"/evVarFriend_"+d+".root"): continue
@@ -95,7 +96,7 @@ for module in mm.getFriendModules():
 
 			if options.log: additional += " --log "+output+"/log"
 
-		attr = [mm.treedir, output, mm.getVariable("treename","treeProducerSusyMultilepton"), d, module, friends, additional]
+		attr = [mm.treedir, output, mm.getVariable("treename","treeProducerSusyMultilepton"), d, module, friends, additional, " ".join(flags)]
 		if options.direct and options.queue and not options.noSplit:
 			mm.prepareSplit(d)
 			mm.splittedSubmit(attr, d, False)
