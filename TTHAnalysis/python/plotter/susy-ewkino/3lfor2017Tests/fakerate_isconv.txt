@@ -1,0 +1,3 @@
+#atleastoneconv: 1.0
+#atleastoneconv: (LepGood_mcMatchId[0]==0&&LepGood_mcPromptGamma[0]==1)||(LepGood_mcMatchId[0]==0&&LepGood_mcPromptGamma[1]==1)||(LepGood_mcMatchId[2]==0&&LepGood_mcPromptGamma[2]==1)
+atleastoneconv: isConv(3, LepGood_mcUCSXMatchId[0], LepGood_mcUCSXMatchId[1], LepGood_mcUCSXMatchId[2])
