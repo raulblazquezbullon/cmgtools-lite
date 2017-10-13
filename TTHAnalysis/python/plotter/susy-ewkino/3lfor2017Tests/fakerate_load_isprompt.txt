@@ -1,0 +1,1 @@
+cut-file: susy-ewkino/3lfor2017Tests/fakerate_isprompt.txt
