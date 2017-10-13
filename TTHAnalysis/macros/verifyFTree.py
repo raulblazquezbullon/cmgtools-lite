@@ -26,6 +26,7 @@ def openRootOrUrl(myfile):
 for dset in dsets:
     print "running " + dset
     f_t = openRootOrUrl(sys.argv[1]+'/'+dset+'/treeProducerSusyMultilepton/tree.root')
+    if not f_t: continue
     t_t = f_t.Get("tree")
     n_t = t_t.GetEntries()
     f_t.Close()

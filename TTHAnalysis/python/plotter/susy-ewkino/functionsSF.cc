@@ -47,7 +47,6 @@ float triggerSFBR6(float pt1, float eta1, int pdg1,
         return hist->GetBinContent(xbin,ybin);
 }
 
-
 float triggerSF(int BR, float pt1, int pdg1, 
                         float pt2, int pdg2, 
                         float pt3 = 0, int pdg3 = 0, 
@@ -60,6 +59,14 @@ float triggerSF(int BR, float pt1, int pdg1,
 
     // 3l: 2tau (flat 86% in dedicated function)
     if(BR == 6) return 1.0;
+
+    // 2lss 
+    if(BR == -1){
+        TH2F* hist = (pdg2 == 13)?h_trigSF_2l_mu:h_trigSF_2l_el;
+        int xbin = std::max(1, std::min(hist->GetNbinsX(), hist->GetXaxis()->FindBin(pt1)));
+        int ybin = std::max(1, std::min(hist->GetNbinsY(), hist->GetYaxis()->FindBin(pt2)));
+        return hist->GetBinContent(xbin,ybin);
+    }
 
     // 3l: 3light
     if(BR <= 2) {
@@ -78,14 +85,6 @@ float triggerSF(int BR, float pt1, int pdg1,
         TH2F* hist = (pdgs[1] == 13)?h_trigSF_2l_mu:h_trigSF_2l_el;
         int xbin = std::max(1, std::min(hist->GetNbinsX(), hist->GetXaxis()->FindBin(pts[0])));
         int ybin = std::max(1, std::min(hist->GetNbinsY(), hist->GetYaxis()->FindBin(pts[1])));
-        return hist->GetBinContent(xbin,ybin);
-    }
-
-    // 2lss 
-    if(BR == -1){
-        TH2F* hist = (pdg2 == 13)?h_trigSF_2l_mu:h_trigSF_2l_el;
-        int xbin = std::max(1, std::min(hist->GetNbinsX(), hist->GetXaxis()->FindBin(pt1)));
-        int ybin = std::max(1, std::min(hist->GetNbinsY(), hist->GetYaxis()->FindBin(pt2)));
         return hist->GetBinContent(xbin,ybin);
     }
 
@@ -140,10 +139,11 @@ float getMuonUnc(float pt, int var = 0) {
     return var*TMath::Sqrt(0.02*0.02+0.01*0.01);  
 }
 
-float getLepSF(float pt, float eta, int pdgId, int wp = 0, int var = 0){
+float getLepSF(float pt, float eta, int pdgId, int isTight, int wp = 0, int var = 0){
+    if(!isTight) return 1.0;
     if(abs(pdgId) == 13) return (var==0)?getMuonSF    (pt, eta, wp):(1+getMuonUnc    (pt, var));
     if(abs(pdgId) == 11) return (var==0)?getElectronSF(pt, eta, wp):(1+getElectronUnc(pt, eta, wp, var));
-    if(abs(pdgId) == 15) return 0.83;
+    if(abs(pdgId) == 15) return (var==0)?0.9:1.0;
     return 1.0;
 }
 
@@ -199,12 +199,11 @@ float getTauSFFS(float pt, float eta){
 }
 
 float getTauUncFS(float pt, float eta, int var = 0) {
-	int fact = 1;
-	if(var == 2) fact = -1;
-	return fact * getUnc(h_tauSF_FS_id, pt, abs(eta));
+	return var*getUnc(h_tauSF_FS_id, pt, abs(eta));
 }
 
-float getLepSFFS(float pt, float eta, int pdgId, int wp, int var = 0){
+float getLepSFFS(float pt, float eta, int pdgId, int isTight, int wp = 0, int var = 0){
+    if(!isTight) return 1.0;
     if(abs(pdgId) == 13) return (var==0)?getMuonSFFS    (pt, eta, wp):(1+getMuonUncFS(var));
     if(abs(pdgId) == 11) return (var==0)?getElectronSFFS(pt, eta, wp):(1+getElectronUncFS(var));
     if(abs(pdgId) == 15) return (var==0)?getTauSFFS     (pt, eta    ):(1+getTauUncFS(pt, eta, var));
