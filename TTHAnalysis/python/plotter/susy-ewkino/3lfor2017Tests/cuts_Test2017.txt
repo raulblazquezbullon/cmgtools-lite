@@ -1,18 +1,16 @@
 alwaystrue: 1
 3GoodLeptons      : nLepGood >= 3 #Relaxing to LepGood for low p_T ones
-lowmass   : minMllSFOS_Mini > 12 || minMllSFOS_Mini == -1
-BRevent   : BR > 0 && BR <= 2 #3l A or 3l B
-convveto  : (BR != 1 && BR != 3) || abs(m3L-91) > 15
-sanity    : passPtMll && is_3l
-met       : met_pt > 50
-bJetVeto  : nBJetMedium25 == 0
+flav_mee : (abs(LepGood_pdgId[0])*abs(LepGood_pdgId[1])*abs(LepGood_pdgId[2]))==1573; Disable=True 
+flav_mme : (abs(LepGood_pdgId[0])*abs(LepGood_pdgId[1])*abs(LepGood_pdgId[2]))==1859; Disable=True
+flav_mmm : abs(LepGood_pdgId[0]) == 13 && abs(LepGood_pdgId[1]) == 13 && abs(LepGood_pdgId[2]) == 13; Disable=True
+flav_eee : abs(LepGood_pdgId[0]) == 11 && abs(LepGood_pdgId[1]) == 11 && abs(LepGood_pdgId[2]) == 11; Disable=True
 
 #======================================With 3l===========================================
 
-threeLeptonsAreTight  : nLepGood == 3 && (((abs(LepGood_pdgId[0]) == 13 && isTightMuon(LepGood_eta[0], LepGood_dxy[0], LepGood_dz[0], LepGood_sip3d[0], LepGood_miniRelIso[0], LepGood_mediumMuonId[0], LepGood_tightCharge[0], LepGood_mvaSUSY[0])) + (abs(LepGood_pdgId[0]) == 11 && isTightElecNoEtaVar( LepGood_dxy[0], LepGood_dz[0],  LepGood_sip3d[0], LepGood_miniRelIso[0], LepGood_tightCharge[0], LepGood_mvaSUSY[0],  LepGood_eInvMinusPInv[0], LepGood_convVeto[0], LepGood_lostHits[0])*isTightElecEtaVar( LepGood_eta[0],  LepGood_mvaIdSpring16HZZ[0], LepGood_sigmaIEtaIEta[0], LepGood_dEtaScTrkIn[0], LepGood_dPhiScTrkIn[0],  LepGood_hadronicOverEm[0], LepGood_eInvMinusPInv[0]))) + ((abs(LepGood_pdgId[1]) == 13 && isTightMuon(LepGood_eta[1], LepGood_dxy[1], LepGood_dz[1], LepGood_sip3d[1], LepGood_miniRelIso[1], LepGood_mediumMuonId[1], LepGood_tightCharge[1], LepGood_mvaSUSY[1])) + (abs(LepGood_pdgId[1]) == 11 && isTightElecNoEtaVar( LepGood_dxy[1], LepGood_dz[1],  LepGood_sip3d[1], LepGood_miniRelIso[1], LepGood_tightCharge[1], LepGood_mvaSUSY[1],  LepGood_eInvMinusPInv[1], LepGood_convVeto[1], LepGood_lostHits[1])*isTightElecEtaVar( LepGood_eta[1],  LepGood_mvaIdSpring16HZZ[1], LepGood_sigmaIEtaIEta[1], LepGood_dEtaScTrkIn[1], LepGood_dPhiScTrkIn[1],  LepGood_hadronicOverEm[1], LepGood_eInvMinusPInv[1]))) + ((abs(LepGood_pdgId[2]) == 13 && isTightMuon(LepGood_eta[2], LepGood_dxy[2], LepGood_dz[2], LepGood_sip3d[2], LepGood_miniRelIso[2], LepGood_mediumMuonId[2], LepGood_tightCharge[2], LepGood_mvaSUSY[2])) + (abs(LepGood_pdgId[2]) == 11 && isTightElecNoEtaVar( LepGood_dxy[2], LepGood_dz[2],  LepGood_sip3d[2], LepGood_miniRelIso[2], LepGood_tightCharge[2], LepGood_mvaSUSY[2],  LepGood_eInvMinusPInv[2], LepGood_convVeto[2], LepGood_lostHits[2])*isTightElecEtaVar( LepGood_eta[2],  LepGood_mvaIdSpring16HZZ[2], LepGood_sigmaIEtaIEta[2], LepGood_dEtaScTrkIn[2], LepGood_dPhiScTrkIn[2],  LepGood_hadronicOverEm[2], LepGood_eInvMinusPInv[2])))) == 3
+threeLeptonsAreTight  : nLepGood == 3 && (((abs(LepGood_pdgId[0]) == 13 && isTightMuon(LepGood_eta[0], LepGood_dxy[0], LepGood_dz[0], LepGood_sip3d[0], LepGood_miniRelIso[0], LepGood_mediumMuonId[0], LepGood_tightCharge[0], LepGood_mvaSUSY[0])) + (abs(LepGood_pdgId[0]) == 11 && isTightElecNoEtaVar( LepGood_dxy[0], LepGood_dz[0],  LepGood_sip3d[0], LepGood_miniRelIso[0], LepGood_tightCharge[0], LepGood_mvaSUSY[0],  LepGood_eInvMinusPInv[0], LepGood_convVeto[0], LepGood_lostHits[0])*isTightElecEtaVar( LepGood_eta[0],  LepGood_mvaIdSpring16HZZ[0], LepGood_sigmaIEtaIEta[0], LepGood_dEtaScTrkIn[0], LepGood_dPhiScTrkIn[0],  LepGood_hadronicOverEm[0], LepGood_eInvMinusPInv[0]))) + ((abs(LepGood_pdgId[1]) == 13 && isTightMuon(LepGood_eta[1], LepGood_dxy[1], LepGood_dz[1], LepGood_sip3d[1], LepGood_miniRelIso[1], LepGood_mediumMuonId[1], LepGood_tightCharge[1], LepGood_mvaSUSY[1])) + (abs(LepGood_pdgId[1]) == 11 && isTightElecNoEtaVar( LepGood_dxy[1], LepGood_dz[1],  LepGood_sip3d[1], LepGood_miniRelIso[1], LepGood_tightCharge[1], LepGood_mvaSUSY[1],  LepGood_eInvMinusPInv[1], LepGood_convVeto[1], LepGood_lostHits[1])*isTightElecEtaVar( LepGood_eta[1],  LepGood_mvaIdSpring16HZZ[1], LepGood_sigmaIEtaIEta[1], LepGood_dEtaScTrkIn[1], LepGood_dPhiScTrkIn[1],  LepGood_hadronicOverEm[1], LepGood_eInvMinusPInv[1]))) + ((abs(LepGood_pdgId[2]) == 13 && isTightMuon(LepGood_eta[2], LepGood_dxy[2], LepGood_dz[2], LepGood_sip3d[2], LepGood_miniRelIso[2], LepGood_mediumMuonId[2], LepGood_tightCharge[2], LepGood_mvaSUSY[2])) + (abs(LepGood_pdgId[2]) == 11 && isTightElecNoEtaVar( LepGood_dxy[2], LepGood_dz[2],  LepGood_sip3d[2], LepGood_miniRelIso[2], LepGood_tightCharge[2], LepGood_mvaSUSY[2],  LepGood_eInvMinusPInv[2], LepGood_convVeto[2], LepGood_lostHits[2])*isTightElecEtaVar( LepGood_eta[2],  LepGood_mvaIdSpring16HZZ[2], LepGood_sigmaIEtaIEta[2], LepGood_dEtaScTrkIn[2], LepGood_dPhiScTrkIn[2],  LepGood_hadronicOverEm[2], LepGood_eInvMinusPInv[2])))) == 3; Disable=True
 
 
-
+threeLeptons_notrigger_ALL : 1; Disable=True
 #### OLD TRIGGERS #####
 
 
@@ -26,6 +24,8 @@ threeLeptons_trigger_me_23_8 : trig_me_8_23(LepGood_pt[0], LepGood_pdgId[0], Lep
 threeLeptons_trigger_allOld : trig_ee_23_12(LepGood_pt[0], LepGood_pdgId[0], LepGood_pt[1], LepGood_pdgId[1],LepGood_pt[2], LepGood_pdgId[2]) || trig_e_27(LepGood_pt[0], LepGood_pdgId[0], LepGood_pt[1], LepGood_pdgId[1],LepGood_pt[2], LepGood_pdgId[2]) || trig_mm_17_8(LepGood_pt[0], LepGood_pdgId[0], LepGood_pt[1], LepGood_pdgId[1],LepGood_pt[2], LepGood_pdgId[2]) || trig_m_24(LepGood_pt[0], LepGood_pdgId[0], LepGood_pt[1], LepGood_pdgId[1],LepGood_pt[2], LepGood_pdgId[2]) || trig_me_8_23(LepGood_pt[0], LepGood_pdgId[0], LepGood_pt[1], LepGood_pdgId[1],LepGood_pt[2], LepGood_pdgId[2]) || trig_me_8_23(LepGood_pt[0], LepGood_pdgId[0], LepGood_pt[1], LepGood_pdgId[1],LepGood_pt[2], LepGood_pdgId[2]); Disable=True
 
 
+
+perfect_trigger_m_24 : (run<280919 && ( HLT_BIT_HLT_IsoTkMu24_v || HLT_BIT_HLT_IsoMu24_v)) || (run>=280919 && (HLT_BIT_HLT_IsoTkMu24_v || HLT_BIT_HLT_IsoMu24_v)) ; Disable=True
 #### NEW TRIGGERS ####
 
 
@@ -102,7 +102,10 @@ threeOffiveAreTight  : nLepGood == 5 &&  (((abs(LepGood_pdgId[0]) == 13 && isTig
 trigger_ALLOLD   : $DATA{Triggers_ee||Triggers_em||Triggers_mm        } $MC{Triggers_ee||Triggers_em||Triggers_mm} $FASTSIM{1}; Disable=True
 filters   : $DATA{METfilters                                   } $MC{1} $FASTSIM{1}; Disable=True
 
-mee : (abs(LepGood_pdgId[0]) == 13 + abs(LepGood_pdgId[1]) == 13 + abs(LepGood_pdgId[2]) == 13) == 1; Disable=True 
-mme : (abs(LepGood_pdgId[0]) == 13 + abs(LepGood_pdgId[1]) == 13 + abs(LepGood_pdgId[2]) == 13) == 2; Disable=True
-mmm : abs(LepGood_pdgId[0]) == 13 && abs(LepGood_pdgId[1]) == 13 && abs(LepGood_pdgId[2]) == 13; Disable=True
-eee : abs(LepGood_pdgId[0]) == 11 && abs(LepGood_pdgId[1]) == 11 && abs(LepGood_pdgId[2]) == 11; Disable=True
+
+restofSelection : (minMllSFOS_Mini > 12 || minMllSFOS_Mini == -1) && (BR > 0 && BR <= 2) && ((BR != 1 && BR != 3) || abs(m3L-91) > 15) && (met_pt > 50) && (nBJetMedium25 == 0)
+#lowmass   : minMllSFOS_Mini > 12 || minMllSFOS_Mini == -1
+#BRevent   : BR > 0 && BR <= 2 #3l A or 3l B
+#convveto  : (BR != 1 && BR != 3) || abs(m3L-91) > 15
+#met       : met_pt > 50
+#bJetVeto  : nBJetMedium25 == 0

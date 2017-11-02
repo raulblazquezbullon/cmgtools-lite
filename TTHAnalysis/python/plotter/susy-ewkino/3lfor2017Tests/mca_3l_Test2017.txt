@@ -1,5 +1,8 @@
 #mca for the 2017 triggers tests
 
+###DATA###
+data : MuonEG_Run2017B ; Label="data", FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt"
+
 #NNLO pride
 prompt_WZ : WZTo3LNu : 1.12*xsec ; FillColor=ROOT.kOrange, FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt\,susy-ewkino/3lfor2017Tests/fakerate_load_isprompt.txt", Label="WZ", NormSystematic=0.3
 
