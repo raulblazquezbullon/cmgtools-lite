@@ -1,7 +1,19 @@
 #mca for the 2017 triggers tests
 
 ###DATA###
-data : MuonEG_Run2017B ; Label="data", FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt"
+#data : MuonEG_Run2017B ; Label="data", FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt"
+#data : MuonEG_Run2017C ; Label="data", FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt"
+#data : MuonEG_Run2017D ; Label="data", FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt"
+#data : MuonEG_Run2017E ; Label="data", FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt"
+
+data : MuonEG_Run2016B_03Feb2017_ver2_v2_runs_273150_275376 ; Label="data", FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt"
+data : MuonEG_Run2016C_03Feb2017_v1_runs_271036_284044 ; Label="data", FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt"
+data : MuonEG_Run2016D_03Feb2017_v1_runs_271036_284044 ; Label="data", FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt"
+data : MuonEG_Run2016E_03Feb2017_v1_runs_271036_284044 ; Label="data", FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt"
+data : MuonEG_Run2016F_03Feb2017_v1_runs_271036_284044 ; Label="data", FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt"
+data : MuonEG_Run2016H_03Feb2017_ver2_v1_runs_281085_284035 ; Label="data", FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt"
+data : MuonEG_Run2016H_03Feb2017_ver3_v1_runs_284036_284044 ; Label="data", FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt"
+
 
 #NNLO pride
 prompt_WZ : WZTo3LNu : 1.12*xsec ; FillColor=ROOT.kOrange, FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt\,susy-ewkino/3lfor2017Tests/fakerate_load_isprompt.txt", Label="WZ", NormSystematic=0.3
