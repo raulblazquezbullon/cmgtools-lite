@@ -1,0 +1,53 @@
+### EMPTY TRIGGER ###
+threeLeptons_notrigger_ALL\b : 1; Disable=True
+
+#### OLD TRIGGERS ####
+threeLeptons_trigger_ee_23_12\b : trig_ee_23_12(LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1],LepSel_pt[2], LepSel_pdgId[2]); Disable=True #  HLT_BIT_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v
+
+threeLeptons_trigger_e_27\b : trig_e_27(LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1],LepSel_pt[2], LepSel_pdgId[2]); Disable=True #  HLT_BIT_HLT_Ele27_WPTight_Gsf_v 
+
+threeLeptons_trigger_mm_17_8\b : trig_mm_17_8(LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1],LepSel_pt[2], LepSel_pdgId[2]); Disable=True #  HLT_BIT_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_v, HLT_BIT_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_v
+
+threeLeptons_trigger_m_24\b : trig_m_24(LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1],LepSel_pt[2], LepSel_pdgId[2]); Disable=True #  HLT_BIT_HLT_IsoTkMu24_v  HLT_BIT_HLT_IsoMu24_v
+
+threeLeptons_trigger_me_8_23\b : trig_me_8_23(LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1],LepSel_pt[2], LepSel_pdgId[2]); Disable=True #  HLT_BIT_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v
+
+threeLeptons_trigger_me_23_8\b : trig_me_8_23(LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1],LepSel_pt[2], LepSel_pdgId[2]); Disable=True # HLT_BIT_HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_v
+
+threeLeptons_trigger_allOld\b : trig_ee_23_12(LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1],LepSel_pt[2], LepSel_pdgId[2]) || trig_e_27(LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1],LepSel_pt[2], LepSel_pdgId[2]) || trig_mm_17_8(LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1],LepSel_pt[2], LepSel_pdgId[2]) || trig_m_24(LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1],LepSel_pt[2], LepSel_pdgId[2]) || trig_me_8_23(LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1],LepSel_pt[2], LepSel_pdgId[2]) || trig_me_8_23(LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1],LepSel_pt[2], LepSel_pdgId[2]); Disable=True
+
+#### NEW TRIGGERS ####
+newthreeLeptons_trigger_mmm_5_3_3\b : trig_mmm_5_3_3(LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1],LepSel_pt[2], LepSel_pdgId[2]) && minMaxMasses(mass_2(LepSel_conePt[0],LepSel_eta[0],LepSel_phi[0],LepSel_mass[0],LepSel_conePt[1],LepSel_eta[1],LepSel_phi[1],LepSel_mass[1]), mass_2(LepSel_conePt[0],LepSel_eta[0],LepSel_phi[0],LepSel_mass[0],LepSel_conePt[2],LepSel_eta[2],LepSel_phi[2],LepSel_mass[2]), mass_2(LepSel_conePt[2],LepSel_eta[2],LepSel_phi[2],LepSel_mass[2],LepSel_conePt[1],LepSel_eta[1],LepSel_phi[1],LepSel_mass[1]), 3.8, 60); Disable=True ##DONE HLT_TripleMu_5_3_3_Mass3p8to60_DZ_v
+newthreeLeptons_trigger_mmm_10_5_5\b : trig_mmm_10_5_5(LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1],LepSel_pt[2], LepSel_pdgId[2]); Disable=True ##DONE HLT_TripleMu_10_5_5_DZ_v
+newthreeLeptons_trigger_mmm_12_10_5\b : trig_mmm_12_10_5(LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1],LepSel_pt[2], LepSel_pdgId[2]); Disable=True ##DONE HLT_TripleMu_12_10_5_v
+
+newthreeLeptons_trigger_eee_16_12_8\b : trig_eee_16_12_8(LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1],LepSel_pt[2], LepSel_pdgId[2]); Disable=True ##HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL_v
+
+newthreeLeptons_trigger_mee_8_12_12\b : trig_mee_8_12_12(LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1],LepSel_pt[2], LepSel_pdgId[2]); Disable=True ##DONE HLT_Mu8_DiEle12_CaloIdL_TrackIdL_(DZ)_v
+
+newthreeLeptons_trigger_mm_4_4: trig_mm_4_4(LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1],LepSel_pt[2], LepSel_pdgId[2]) && htJet40j > 350 && minMaxMasses(mass_2(LepSel_conePt[0],LepSel_eta[0],LepSel_phi[0],LepSel_mass[0],LepSel_conePt[1],LepSel_eta[1],LepSel_phi[1],LepSel_mass[1]), mass_2(LepSel_conePt[0],LepSel_eta[0],LepSel_phi[0],LepSel_mass[0],LepSel_conePt[2],LepSel_eta[2],LepSel_phi[2],LepSel_mass[2]), mass_2(LepSel_conePt[2],LepSel_eta[2],LepSel_phi[2],LepSel_mass[2],LepSel_conePt[1],LepSel_eta[1],LepSel_phi[1],LepSel_mass[1]), 8, 100000) ; Disable = True #DONE HLT_DoubleMu4_Mass8_DZ_PFHT350_v
+newthreeLeptons_trigger_mm_8_8: trig_mm_8_8(LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1],LepSel_pt[2], LepSel_pdgId[2]) && htJet40j > 350 && minMaxMasses(mass_2(LepSel_conePt[0],LepSel_eta[0],LepSel_phi[0],LepSel_mass[0],LepSel_conePt[1],LepSel_eta[1],LepSel_phi[1],LepSel_mass[1]), mass_2(LepSel_conePt[0],LepSel_eta[0],LepSel_phi[0],LepSel_mass[0],LepSel_conePt[2],LepSel_eta[2],LepSel_phi[2],LepSel_mass[2]), mass_2(LepSel_conePt[2],LepSel_eta[2],LepSel_phi[2],LepSel_mass[2],LepSel_conePt[1],LepSel_eta[1],LepSel_phi[1],LepSel_mass[1]), 8, 100000) ; Disable=True #DONE HLT_DoubleMu8_Mass8_PFHT350_v
+newthreeLeptons_trigger_mm_17_8: trig_mm_17_8(LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1],LepSel_pt[2], LepSel_pdgId[2]) && minMaxMasses(mass_2(LepSel_conePt[0],LepSel_eta[0],LepSel_phi[0],LepSel_mass[0],LepSel_conePt[1],LepSel_eta[1],LepSel_phi[1],LepSel_mass[1]), mass_2(LepSel_conePt[0],LepSel_eta[0],LepSel_phi[0],LepSel_mass[0],LepSel_conePt[2],LepSel_eta[2],LepSel_phi[2],LepSel_mass[2]), mass_2(LepSel_conePt[2],LepSel_eta[2],LepSel_phi[2],LepSel_mass[2],LepSel_conePt[1],LepSel_eta[1],LepSel_phi[1],LepSel_mass[1]), 8, 100000) ; Disable = True #DONE HLT_DoubleMu8_Mass8_PFHT350_v
+
+newthreeLeptons_trigger_me_8_23\b : trig_me_8_23(LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1],LepSel_pt[2], LepSel_pdgId[2]); Disable=True #  HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_(DZ)_v
+newthreeLeptons_trigger_me_23_12\b : trig_me_23_12(LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1],LepSel_pt[2], LepSel_pdgId[2]); Disable=True # HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_(DZ)_v
+
+newthreeLeptons_trigger_ee_8_8: trig_ee_8_8(LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1],LepSel_pt[2], LepSel_pdgId[2]) && htJet40j > 350 && minMaxMasses(mass_2(LepSel_conePt[0],LepSel_eta[0],LepSel_phi[0],LepSel_mass[0],LepSel_conePt[1],LepSel_eta[1],LepSel_phi[1],LepSel_mass[1]), mass_2(LepSel_conePt[0],LepSel_eta[0],LepSel_phi[0],LepSel_mass[0],LepSel_conePt[2],LepSel_eta[2],LepSel_phi[2],LepSel_mass[2]), mass_2(LepSel_conePt[2],LepSel_eta[2],LepSel_phi[2],LepSel_mass[2],LepSel_conePt[1],LepSel_eta[1],LepSel_phi[1],LepSel_mass[1]), 8, 100000) ; Disable=True #DONE HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_(DZ)_PFHT350_v
+
+newthreeLeptons_trigger_ee_25_25: trig_ee_25_25(LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1],LepSel_pt[2], LepSel_pdgId[2]) ; Disable=True #DONE HLT_DoubleEle25_CaloIdL_MW_v
+
+
+delta_Trigger_mmm\b : newthreeLeptons_trigger_mmm_5_3_3 || newthreeLeptons_trigger_mmm_10_5_5 || newthreeLeptons_trigger_mmm_12_10_5
+delta_Trigger_eee\b : newthreeLeptons_trigger_eee_16_12_8
+delta_Trigger_mee\b : newthreeLeptons_trigger_mee_8_12_12
+delta_Trigger_mm\b : newthreeLeptons_trigger_mm_4_4 || newthreeLeptons_trigger_mm_8_8 || newthreeLeptons_trigger_mm_17_8
+delta_Trigger_me\b : newthreeLeptons_trigger_me_23_12 || newthreeLeptons_trigger_me_8_23
+delta_Trigger_ee\b : newthreeLeptons_trigger_ee_25_25 || newthreeLeptons_trigger_ee_8_8
+delta_trigger_allNew\b : delta_Trigger_mmm || delta_Trigger_eee || delta_Trigger_mee || delta_Trigger_mm || delta_Trigger_me || delta_Trigger_ee
+
+real_Trigger_mmm\b : HLT_BIT_HLT_TripleMu_5_3_3_Mass3p8to60_DZ_v || HLT_BIT_HLT_TripleMu_12_10_5_v || HLT_BIT_HLT_TripleMu_10_5_5_DZ_v
+real_Trigger_eee\b : HLT_BIT_HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL_v
+real_Trigger_mee\b : HLT_BIT_HLT_Mu8_DiEle12_CaloIdL_TrackIdL_DZ_v
+real_Trigger_mm\b : HLT_BIT_HLT_DoubleMu4_Mass8_DZ_PFHT350_v || HLT_BIT_HLT_DoubleMu8_Mass8_PFHT350_v || HLT_BIT_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_v || HLT_BIT_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v || HLT_BIT_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v || HLT_BIT_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v || HLT_BIT_HLT_Mu19_TrkIsoVVL_Mu9_TrkIsoVVL_v || HLT_BIT_HLT_Mu19_TrkIsoVVL_Mu9_TrkIsoVVL_DZ_v
+real_Trigger_me\b : HLT_BIT_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v || HLT_BIT_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v || HLT_BIT_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v || HLT_BIT_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v
+real_Trigger_ee\b : HLT_BIT_HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_PFHT350_v || HLT_BIT_HLT_DoubleEle25_CaloIdL_MW_v || HLT_BIT_HLT_DoubleEle27_CaloIdL_MW_v || HLT_BIT_HLT_DoubleEle33_CaloIdL_MW_v
