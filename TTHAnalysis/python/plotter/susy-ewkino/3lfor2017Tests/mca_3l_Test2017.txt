@@ -8,7 +8,7 @@
 
 
 #NNLO pride
-prompt_WZ : WZTo3LNu_amcatnlo : 1.12*xsec ; FillColor=ROOT.kOrange, FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt\,susy-ewkino/3lfor2017Tests/fakerate_load_isprompt.txt", Label="WZ", NormSystematic=0.3
+prompt_WZ : WZTo3LNu : xsec ; FillColor=ROOT.kOrange, FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt\,susy-ewkino/3lfor2017Tests/fakerate_load_isprompt.txt", Label="WZ", NormSystematic=0.3
 
 fakes_tt : TTJets_DiLepton + TTJets_DiLepton_ext : xsec ; FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt\,susy-ewkino/3lfor2017Tests/fakerate_load_isfake.txt", Label="Fakes (TT)", NormSystematic=0.3,FillColor=ROOT.kAzure-9
 fakes_tt : TTJets_SingleLeptonFromT + TTJets_SingleLeptonFromT_ext : xsec ; FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt\,susy-ewkino/3lfor2017Tests/fakerate_load_isfake.txt", Label="Fakes (TT)", NormSystematic=0.3,FillColor=ROOT.kAzure-9  
@@ -50,4 +50,5 @@ rares_ttX  : tZW_ll                      : xsec ; FillColor=ROOT.kViolet-3, Fake
 
 
 incl_signals          : + ; IncludeMca="susy-ewkino/3lfor2017Tests/includes/mca_signalWZ.txt"
-incl_data2016          : + ; IncludeMca="susy-ewkino/3lfor2017Tests/includes/mca_data2016.txt"
+#incl_data2016          : + ; IncludeMca="susy-ewkino/3lfor2017Tests/includes/mca_data2016.txt"
+#incl_data2017          : + ; IncludeMca="susy-ewkino/3lfor2017Tests/includes/mca_data2017.txt"
