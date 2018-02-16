@@ -4,18 +4,19 @@ from CMGTools.Production.dataset import createDataset, createMyDataset
 import re
 
 class ComponentCreator(object):
-    def makeMCComponent(self,name,dataset,user,pattern,xSec=1,useAAA=False):
+    def makeMCComponent(self,name,dataset,user,pattern,xSec=1,useAAA=False,unsafe=False,fracNegWeights=None):
         
          component = cfg.MCComponent(
              dataset=dataset,
              name = name,
-             files = self.getFiles(dataset,user,pattern,useAAA=useAAA),
+             files = self.getFiles(dataset,user,pattern,useAAA=useAAA,unsafe=unsafe),
              xSection = xSec,
              nGenEvents = 1,
              triggers = [],
              effCorrFactor = 1,
          )
-
+         component.splitFactor = 100
+         component.fracNegWeights = fracNegWeights
          component.dataset_entries = self.getPrimaryDatasetEntries(dataset,user,pattern,useAAA=useAAA)
          return component
 
@@ -36,6 +37,7 @@ class ComponentCreator(object):
              triggers = [],
              effCorrFactor = 1,
          )
+         component.splitFactor = 100
 
          return component
     
@@ -50,6 +52,7 @@ class ComponentCreator(object):
              triggers = [],
              json=json
          )
+         component.splitFactor = 100
 
          return component
 
@@ -64,6 +67,7 @@ class ComponentCreator(object):
             triggers = [],
             effCorrFactor = 1,
         )
+        component.splitFactor = 100
 
         return component
 
@@ -89,6 +93,7 @@ class ComponentCreator(object):
             triggers = [],
             effCorrFactor = 1,
         )
+        component.splitFactor = 100
         return component
 
     def getFilesFromPSI(self,name,dataset,path,pattern=".*root"):
@@ -111,7 +116,8 @@ class ComponentCreator(object):
             nGenEvents = 1,
             triggers = [],
             effCorrFactor = 1,
-        )
+        )  
+        component.splitFactor = 100
         return component
 
     def getFilesFromIC(self, dataset, user, pattern):
@@ -131,6 +137,7 @@ class ComponentCreator(object):
             triggers = [],
             effCorrFactor = 1,
         )
+        component.splitFactor = 100
         return component
 
     def getFilesFromLocal(self,name,dataset,path,pattern=".*root"):
@@ -155,6 +162,7 @@ class ComponentCreator(object):
             triggers = [],
             effCorrFactor = 1,
         )
+        component.splitFactor = 100
         return component
 
     def makeDataComponent(self,name,dataset,user,pattern,json=None,run_range=None,triggers=[],vetoTriggers=[],useAAA=False,jsonFilter=False):
@@ -171,11 +179,12 @@ class ComponentCreator(object):
         component.dataset_entries = self.getPrimaryDatasetEntries(dataset,user,pattern,run_range=run_range)
         component.dataset = dataset
         component.run_range = run_range
+        component.splitFactor = 100
         return component
 
-    def getFiles(self, dataset, user, pattern, useAAA=False, run_range=None, json=None):
+    def getFiles(self, dataset, user, pattern, useAAA=False, run_range=None, json=None, unsafe = False):
         # print 'getting files for', dataset,user,pattern
-        ds = createDataset( user, dataset, pattern, readcache=True, run_range=run_range, json=json )
+        ds = createDataset( user, dataset, pattern, readcache=True, run_range=run_range, json=json, unsafe = unsafe )
         files = ds.listOfGoodFiles()
         mapping = 'root://eoscms.cern.ch//eos/cms%s'
         if useAAA: mapping = 'root://cms-xrd-global.cern.ch/%s'
