@@ -33,6 +33,9 @@ triggers_3mu = [ "HLT_TripleMu_10_5_5_DZ_v*",
                  "HLT_TripleMu_12_10_5_v*", 
                  "HLT_TripleMu_5_3_3_Mass3p8to60_DCA_v*", # 5_3_3 only in late part of the data (esp. DCA one)
                  "HLT_TripleMu_5_3_3_Mass3p8to60_DZ_v*" ]
+
+triggers_3mu_alt=["HLT_TrkMu12_DoubleTrkMu5NoFiltersNoVtx_v*"]
+
 triggers_2mu1e = [ "HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ_v*" ]
 triggers_2e1mu = [ "HLT_Mu8_DiEle12_CaloIdL_TrackIdL_v*" ,
                    "HLT_Mu8_DiEle12_CaloIdL_TrackIdL_DZ_v*" ]
@@ -63,3 +66,27 @@ triggers_pfjet500 = ['HLT_AK8PFJet500_v*']
 
 # AK8 PF Jet
 triggers_pfjet400_mass30 = ['HLT_AK8PFJet400_TrimMass30_v*']
+
+
+#lepton tau
+triggers_leptau = ["HLT_IsoMu27_LooseChargedIsoPFTau20_SingleL1_v*",
+                   "HLT_IsoMu20_eta2p1_LooseChargedIsoPFTau27_eta2p1_CrossL1_v*",
+                   "HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau20_SingleL1_v*",
+                   "HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTau30_eta2p1_CrossL1_v*",
+                   "HLT_DoubleMediumChargedIsoPFTau35_Trk1_eta2p1_Reg_v*"]
+
+
+triggers_htmet = ['HLT_PFHT500_PFMET100_PFMHT100_IDTight_v*']
+
+triggers_metNoMu100_mhtNoMu100=["HLT_PFMETNoMu100_PFMHTNoMu100_IDTight_PFHT60_v*"]
+
+triggers_pfht = ["HLT_PFHT180_v*",
+                 "HLT_PFHT250_v*",
+                 "HLT_PFHT350_v*",
+                 "HLT_PFHT370_v*",
+                 "HLT_PFHT430_v*",
+                 "HLT_PFHT510_v*",
+                 "HLT_PFHT590_v*",
+                 "HLT_PFHT680_v*",
+                 "HLT_PFHT780_v*",
+                 "HLT_PFHT890_v*"]
