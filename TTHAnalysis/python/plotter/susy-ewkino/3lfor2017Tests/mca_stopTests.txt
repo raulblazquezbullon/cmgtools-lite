@@ -1,0 +1,29 @@
+#mca for the 2017 scan tests
+
+#Basic background
+incl_WZ               : + ; IncludeMca="susy-ewkino/3lfor2017Tests/includes/mca_WZ.txt"
+incl_fakes            : + ; IncludeMca="susy-ewkino/3lfor2017Tests/includes/mca_fakes.txt"
+incl_ZZH              : + ; IncludeMca="susy-ewkino/3lfor2017Tests/includes/mca_ZZH.txt"
+incl_convs            : + ; IncludeMca="susy-ewkino/3lfor2017Tests/includes/mca_convs.txt"
+incl_VVV              : + ; IncludeMca="susy-ewkino/3lfor2017Tests/includes/mca_VVV.txt"
+incl_ttX              : + ; IncludeMca="susy-ewkino/3lfor2017Tests/includes/mca_ttX.txt"
+incl_ttZ              : + ; IncludeMca="susy-ewkino/3lfor2017Tests/includes/mca_ttZ.txt"
+
+#Basig signal
+incl_signal           : + ; IncludeMca="susy-ewkino/3lfor2017Tests/includes/mca_stopSig.txt"
+
+
+#JEC
+incl_sys_jec          : + ; IncludeMca="susy-ewkino/3lfor2017Tests/includes/mca_sys_jec.txt"
+
+#PUW
+incl_sys_puw          : + ; IncludeMca="susy-ewkino/3lfor2017Tests/includes/mca_sys_puw.txt"
+
+#SF
+incl_sys_SF           : + ; IncludeMca="susy-ewkino/3lfor2017Tests/includes/mca_sys_lepSF.txt"
+
+#SFFS
+incl_sys_SFFS         : + ; IncludeMca="susy-ewkino/3lfor2017Tests/includes/mca_sys_lepSFFS.txt"
+
+#BTag
+incl_sys_bTag         : + ; IncludeMca="susy-ewkino/3lfor2017Tests/includes/mca_sys_bTag.txt"

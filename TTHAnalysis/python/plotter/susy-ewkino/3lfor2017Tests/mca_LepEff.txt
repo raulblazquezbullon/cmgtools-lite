@@ -1,0 +1,1 @@
+prompt_WZ : WZTo3LNu : xsec ; FillColor=ROOT.kOrange, FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt\,susy-ewkino/3lfor2017Tests/fakerate_load_isprompt_BDT.txt", Label="WZ", NormSystematic=0.3

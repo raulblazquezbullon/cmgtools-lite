@@ -1,0 +1,23 @@
+alwaystrue: 1
+
+3l              : nLepGood == 3 
+3light          : abs(LepGood_pdgId[0]*LepGood_pdgId[1]*LepGood_pdgId[2])%15 != 0
+
+
+
+
+restofSelectionEWKINO : (minMllSFOS > 12 || minMllSFOS == -1) && abs(m3l-91) > 15 && (met_pt > 50) && (nBJetMedium25 == 0); Disable=True #For now do it at once to not clamp a lof of things into non -f commands
+
+restofSelectionttH    : minMllAFAS > 12 && abs(mZ1-91.2) > 10 && (nJet25 >= 4 || met_pt*0.00397 + mhtJet25*0.00265 > 0.2 + 0.1*(mZ1 > 0)) && abs(LepGood_charge[0] + LepGood_charge[1] + LepGood_charge[2]) == 1 && nJet25>=2 && (nBJetLoose25 >= 2 || nBJetMedium25 >= 1) &&  !(mZ2>0 && m4l<140) && (abs(LepGood_pdgId[0])!=11 || (LepGood_convVeto[0] && LepGood_lostHits[0]==0)) && (abs(LepGood_pdgId[1])!=11 || (LepGood_convVeto[1] && LepGood_lostHits[1]==0)) && (abs(LepGood_pdgId[2])!=11 || (LepGood_convVeto[2] && LepGood_lostHits[2]==0)) ; Disable=True
+
+
+
+
+
+
+
+
+
+
+
+pt30 :  LepGood_pt[0] > 30 ; Disable=True

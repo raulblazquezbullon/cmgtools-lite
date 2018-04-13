@@ -9,6 +9,7 @@ __init__.py
 *cc.d
 *C.so
 *C.d
+*cxx_tmp
 *.pcm
 LSFJOB*/
 

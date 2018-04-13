@@ -1,0 +1,40 @@
+alwaystrue: 1
+
+3l        : nLepSel >= 3 || nLepLoose_Mini >= 3 && LepGood_ip3d[iL_Mini[iL_Mini[0]]] < 0.01  && LepGood_ip3d[iL_Mini[iL_Mini[1]]] < 0.01  && LepGood_ip3d[iL_Mini[iL_Mini[2]]] < 0.01  && LepGood_sip3d[iL_Mini[iL_Mini[0]]] < 2 && LepGood_sip3d[iL_Mini[iL_Mini[1]]] < 2 && LepGood_sip3d[iL_Mini[iL_Mini[2]]] < 2 && max(LepGood_dxy[iL_Mini[iL_Mini[0]]], LepGood_dz[iL_Mini[iL_Mini[0]]]) < 0.03 && max(LepGood_dxy[iL_Mini[iL_Mini[1]]], LepGood_dz[iL_Mini[iL_Mini[1]]]) < 0.03 && max(LepGood_dxy[iL_Mini[iL_Mini[2]]], LepGood_dz[iL_Mini[iL_Mini[2]]]) < 0.03
+
+restofSelection : (minMllSFOS_Mini > 12 || minMllSFOS_Mini == -1) && (BR > 0 && BR <= 2) && ((BR != 1 && BR != 3) || abs(m3L-91) > 15) && (met_pt > 50) && (nBJetMedium25 == 0) && LepGood_pt[iL_Mini[iL_Mini[0]]] > 30 #For now do it at once to not clamp a lof of things into non -f commands
+
+Trigger_mu :  $DATA{HLT_SingleMu} $MC{1} ; Disable= True
+Trigger_e :  $DATA{HLT_SingleElec} $MC{1} ; Disable= True
+
+flav_mee : (abs(LepGood_pdgId[iL_Mini[0]])*abs(LepGood_pdgId[iL_Mini[1]])*abs(LepGood_pdgId[iL_Mini[2]]))==1573; Disable=True 
+flav_mme : (abs(LepGood_pdgId[iL_Mini[0]])*abs(LepGood_pdgId[iL_Mini[1]])*abs(LepGood_pdgId[iL_Mini[2]]))==1859; Disable=True
+flav_mmm : abs(LepGood_pdgId[iL_Mini[0]]) == 13 && abs(LepGood_pdgId[iL_Mini[1]]) == 13 && abs(LepGood_pdgId[iL_Mini[2]]) == 13; Disable=True
+flav_eee : abs(LepGood_pdgId[iL_Mini[0]]) == 11 && abs(LepGood_pdgId[iL_Mini[1]]) == 11 && abs(LepGood_pdgId[iL_Mini[2]]) == 11; Disable=True
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#Disable for now
+filters   : $DATA{METfilters} $MC{1} $FASTSIM{1}; Disable=True
+
+#Trigger_ALL : $DATA{HLT_BIT_HLT_TripleMu_5_3_3_Mass3p8to60_DZ_v || HLT_BIT_HLT_TripleMu_10_5_5_DZ_v || HLT_BIT_HLT_TripleMu_12_10_5_v || HLT_BIT_HLT_DoubleMu4_Mass8_DZ_PFHT350_v || HLT_BIT_HLT_DoubleMu8_Mass8_PFHT350_v || HLT_BIT_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_v || HLT_BIT_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v || HLT_BIT_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v || HLT_BIT_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v || HLT_BIT_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v || HLT_BIT_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v || HLT_BIT_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v || HLT_BIT_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v || HLT_BIT_HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL_v || HLT_BIT_HLT_Mu8_DiEle12_CaloIdL_TrackIdL_v || HLT_BIT_HLT_Mu8_DiEle12_CaloIdL_TrackIdL_v || HLT_BIT_HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_PFHT350_v || HLT_BIT_HLT_DoubleEle25_CaloIdL_MW_v} $MC{newthreeLeptons_trigger_mm_4_4 || newthreeLeptons_trigger_mm_8_8 || newthreeLeptons_trigger_mm_17_8 || newthreeLeptons_trigger_me_8_23 || newthreeLeptons_trigger_me_23_12 || newthreeLeptons_trigger_me_8_23 || newthreeLeptons_trigger_me_23_12 || newthreeLeptons_trigger_mmm_5_3_3 || newthreeLeptons_trigger_mmm_10_5_5 || newthreeLeptons_trigger_mmm_12_10_5 || newthreeLeptons_trigger_ee_8_8 || newthreeLeptons_trigger_ee_25_25 || newthreeLeptons_trigger_mee_8_12_12} $FASTSIM{newthreeLeptons_trigger_mee_8_12_12 || newthreeLeptons_trigger_eee_16_12_8} $FASTSIM{newthreeLeptons_trigger_mm_4_4 || newthreeLeptons_trigger_mm_8_8 || newthreeLeptons_trigger_mm_17_8 || newthreeLeptons_trigger_me_8_23 || newthreeLeptons_trigger_me_23_12 || newthreeLeptons_trigger_me_8_23 || newthreeLeptons_trigger_me_23_12 || newthreeLeptons_trigger_mmm_5_3_3 || newthreeLeptons_trigger_mmm_10_5_5 || newthreeLeptons_trigger_mmm_12_10_5 || newthreeLeptons_trigger_ee_8_8 || newthreeLeptons_trigger_ee_25_25 || newthreeLeptons_trigger_mee_8_12_12} $FASTSIM{newthreeLeptons_trigger_mee_8_12_12 || newthreeLeptons_trigger_eee_16_12_8}
+
+#3l : nLepSel >= 3 && allTight(3, LepSel_isTight[iL_Mini[0]], LepSel_isTight[iL_Mini[1]], LepSel_isTight[iL_Mini[2]])  && LepSel4_isTight == 0
+#ugonnafail : thisvariabledoesntexistijustwantthecodetocrash

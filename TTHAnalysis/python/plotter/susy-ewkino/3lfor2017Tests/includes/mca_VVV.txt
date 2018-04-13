@@ -1,0 +1,4 @@
+rares_VVV  : WWW                         : xsec ; FillColor=ROOT.kRed+1   , FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt\,susy-ewkino/3lfor2017Tests/fakerate_load_isprompt.txt", Label="VVV", NormSystematic=0.5
+#rares_VVV  : WWZ                         : xsec ; FillColor=ROOT.kRed+1   , FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt\,susy-ewkino/3lfor2017Tests/fakerate_load_isprompt.txt", Label="VVV", NormSystematic=0.5
+rares_VVV  : WZZ                         : xsec ; FillColor=ROOT.kRed+1   , FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt\,susy-ewkino/3lfor2017Tests/fakerate_load_isprompt.txt", Label="VVV", NormSystematic=0.5
+rares_VVV  : ZZZ                         : xsec ; FillColor=ROOT.kRed+1   , FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt\,susy-ewkino/3lfor2017Tests/fakerate_load_isprompt.txt", Label="VVV", NormSystematic=0.5

@@ -1,0 +1,65 @@
+#pt_1_2 : LepGood_pt[iL_Mini[1]] \: LepGood_pt[iL_Mini[0]] : [5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,30,35,40,45,50,1000]*[5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,30,35,40,45,50,1000]
+#pt_2_3 : LepGood_pt[iL_Mini[2]] \: LepGood_pt[iL_Mini[1]] : [5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,30,35,40,45,50,1000]*[5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,30,35,40,45,50,1000]
+#pt_1_3 : LepGood_pt[iL_Mini[2]] \: LepGood_pt[iL_Mini[0]] : [5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,30,35,40,45,50,1000]*[5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,30,35,40,45,50,1000]
+
+#lep1_pt_l          : LepGood_isTight_Mini[iL_Mini[0]] \: LepGood_pt[iL_Mini[0]]     : [5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,30,35,40,45,50,1000]*[-0.5,0.5, 1.5]  ; YTitle="Leptons", XTitle="p_{T\,cone}(leading lep.)"   , LegendCutoff=1e-4, YMin=0.1, YMax=50000, Logy
+#lep2_pt_l          : LepGood_isTight_Mini[iL_Mini[1]] \: LepGood_pt[iL_Mini[1]]     : [5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,30,35,40,45,50,1000]*[-0.5,0.5, 1.5]   ; YTitle="Leptons", XTitle="p_{T\,cone}(subleading lep.)", LegendCutoff=1e-4, YMin=0.1, YMax=50000, Logy
+#lep3_pt_l          : LepGood_isTight_Mini[iL_Mini[2]] \: LepGood_pt[iL_Mini[2]]     : [5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,30,35,40,45,50,1000]*[-0.5,0.5, 1.5]   ; YTitle="Leptons", XTitle="p_{T\,cone}(third lep.)"     , LegendCutoff=1e-4, YMin=0.1, YMax=50000, Logy
+
+
+#pt_2_3_triggered : HLT_BIT_HLT_TripleMu_12_10_5_v * LepGood_pt[iL_Mini[2]] \: HLT_BIT_HLT_TripleMu_12_10_5_v * LepGood_pt[iL_Mini[1]] : [5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,30,35,40,45,50,1000]*[5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,30,35,40,45,50,1000]
+
+#pt_2_3 : LepGood_pt[iL_Mini[2]] \: LepGood_pt[iL_Mini[1]] : [5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,30,35,40,45,50,1000]*[5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,30,35,40,45,50,1000]
+
+
+
+
+
+lep1_pt_smu_5_3_3          : HLT_BIT_HLT_TripleMu_5_3_3_Mass3p8to60_DZ_v \: LepGood_pt[iL_Mini[0]]     : [5,7.5,10,12.5,15,17.5,20,25,30,35,40,45,50,1000]*[-0.5,0.5, 1.5] ; YTitle="Leptons", XTitle="p_{T\,cone}(leading lep.)"   , LegendCutoff=1e-4, YMin=0.1, YMax=50000, Logy
+lep2_pt_smu_5_3_3          : HLT_BIT_HLT_TripleMu_5_3_3_Mass3p8to60_DZ_v \: LepGood_pt[iL_Mini[1]]     : [5,7.5,10,12.5,15,17.5,20,25,30,35,40,45,50,1000]*[-0.5,0.5, 1.5]  ; YTitle="Leptons", XTitle="p_{T\,cone}(subleading lep.)", LegendCutoff=1e-4, YMin=0.1, YMax=50000, Logy
+lep3_pt_smu_5_3_3          : HLT_BIT_HLT_TripleMu_5_3_3_Mass3p8to60_DZ_v \: LepGood_pt[iL_Mini[2]]     : [5,7.5,10,12.5,15,17.5,20,25,30,35,40,45,50,1000]*[-0.5,0.5, 1.5]  ; YTitle="Leptons", XTitle="p_{T\,cone}(third lep.)"     , LegendCutoff=1e-4, YMin=0.1, YMax=50000, Logy
+
+
+
+
+
+
+lep1_pt_smu_12_10_5         : HLT_BIT_HLT_TripleMu_12_10_5_v \: LepGood_pt[iL_Mini[0]]     : [5,7.5,10,12.5,15,17.5,20,25,30,35,40,45,50,1000]*[-0.5,0.5, 1.5] ; #YTitle="Leptons", XTitle="p_{T\,cone}(leading lep.)"   , LegendCutoff=1e-4, YMin=0.1, YMax=50000, Logy
+lep2_pt_smu_12_10_5          : HLT_BIT_HLT_TripleMu_12_10_5_v \: LepGood_pt[iL_Mini[1]]     : [5,7.5,10,12.5,15,17.5,20,25,30,35,40,45,50,1000]*[-0.5,0.5, 1.5]  ; YTitle="Leptons", XTitle="p_{T\,cone}(subleading lep.)", LegendCutoff=1e-4, YMin=0.1, YMax=50000, Logy
+lep3_pt_smu_12_10_5          : HLT_BIT_HLT_TripleMu_12_10_5_v \: LepGood_pt[iL_Mini[2]]     : [5,7.5,10,12.5,15,17.5,20,25,30,35,40,45,50,1000]*[-0.5,0.5, 1.5]  ; YTitle="Leptons", XTitle="p_{T\,cone}(third lep.)"     , LegendCutoff=1e-4, YMin=0.1, YMax=50000, Logy
+
+
+lep1_pt_smu_10_5_5          : HLT_BIT_HLT_TripleMu_10_5_5_DZ_v \: LepGood_pt[iL_Mini[0]]     : [5,7.5,10,12.5,15,17.5,20,25,30,35,40,45,50,1000]*[-0.5,0.5, 1.5] ; YTitle="Leptons", XTitle="p_{T\,cone}(leading lep.)"   , LegendCutoff=1e-4, YMin=0.1, YMax=50000, Logy
+lep2_pt_smu_10_5_5          : HLT_BIT_HLT_TripleMu_10_5_5_DZ_v \: LepGood_pt[iL_Mini[1]]     : [5,7.5,10,12.5,15,17.5,20,25,30,35,40,45,50,1000]*[-0.5,0.5, 1.5]  ; YTitle="Leptons", XTitle="p_{T\,cone}(subleading lep.)", LegendCutoff=1e-4, YMin=0.1, YMax=50000, Logy
+lep3_pt_smu_10_5_5          : HLT_BIT_HLT_TripleMu_10_5_5_DZ_v \: LepGood_pt[iL_Mini[2]]     : [5,7.5,10,12.5,15,17.5,20,25,30,35,40,45,50,1000]*[-0.5,0.5, 1.5]  ; YTitle="Leptons", XTitle="p_{T\,cone}(third lep.)"     , LegendCutoff=1e-4, YMin=0.1, YMax=50000, Logy
+
+
+
+lep1_pt_smu_4_4_m8          : HLT_BIT_HLT_DoubleMu4_Mass8_DZ_PFHT350_v \: LepGood_pt[iL_Mini[0]]     : [5,7.5,10,12.5,15,17.5,20,25,30,35,40,45,50,1000]*[-0.5,0.5, 1.5] ; YTitle="Leptons", XTitle="p_{T\,cone}(leading lep.)"   , LegendCutoff=1e-4, YMin=0.1, YMax=50000, Logy
+lep2_pt_smu_4_4_m8          : HLT_BIT_HLT_DoubleMu4_Mass8_DZ_PFHT350_v \: LepGood_pt[iL_Mini[1]]     : [5,7.5,10,12.5,15,17.5,20,25,30,35,40,45,50,1000]*[-0.5,0.5, 1.5]  ; YTitle="Leptons", XTitle="p_{T\,cone}(subleading lep.)", LegendCutoff=1e-4, YMin=0.1, YMax=50000, Logy
+lep3_pt_smu_4_4_m8          : HLT_BIT_HLT_DoubleMu4_Mass8_DZ_PFHT350_v \: LepGood_pt[iL_Mini[2]]     : [5,7.5,10,12.5,15,17.5,20,25,30,35,40,45,50,1000]*[-0.5,0.5, 1.5]  ; YTitle="Leptons", XTitle="p_{T\,cone}(third lep.)"     , LegendCutoff=1e-4, YMin=0.1, YMax=50000, Logy
+
+lep1_pt_smu_8_8_m8          : HLT_BIT_HLT_DoubleMu8_Mass8_PFHT350_v \: LepGood_pt[iL_Mini[0]]     : [5,7.5,10,12.5,15,17.5,20,25,30,35,40,45,50,1000]*[-0.5,0.5, 1.5] ; YTitle="Leptons", XTitle="p_{T\,cone}(leading lep.)"   , LegendCutoff=1e-4, YMin=0.1, YMax=50000, Logy
+lep2_pt_smu_8_8_m8          : HLT_BIT_HLT_DoubleMu8_Mass8_PFHT350_v \: LepGood_pt[iL_Mini[1]]     : [5,7.5,10,12.5,15,17.5,20,25,30,35,40,45,50,1000]*[-0.5,0.5, 1.5]  ; YTitle="Leptons", XTitle="p_{T\,cone}(subleading lep.)", LegendCutoff=1e-4, YMin=0.1, YMax=50000, Logy
+lep3_pt_smu_8_8_m8          : HLT_BIT_HLT_DoubleMu8_Mass8_PFHT350_v \: LepGood_pt[iL_Mini[2]]     : [5,7.5,10,12.5,15,17.5,20,25,30,35,40,45,50,1000]*[-0.5,0.5, 1.5]  ; YTitle="Leptons", XTitle="p_{T\,cone}(third lep.)"     , LegendCutoff=1e-4, YMin=0.1, YMax=50000, Logy
+
+
+lep1_pt_smu_17_8          : HLT_BIT_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_v \: LepGood_pt[iL_Mini[0]]     : [5,7.5,10,12.5,15,17.5,20,25,30,35,40,45,50,1000]*[-0.5,0.5, 1.5] ; YTitle="Leptons", XTitle="p_{T\,cone}(leading lep.)"   , LegendCutoff=1e-4, YMin=0.1, YMax=50000, Logy
+lep2_pt_smu_17_8          : HLT_BIT_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_v \: LepGood_pt[iL_Mini[1]]     : [5,7.5,10,12.5,15,17.5,20,25,30,35,40,45,50,1000]*[-0.5,0.5, 1.5]  ; YTitle="Leptons", XTitle="p_{T\,cone}(subleading lep.)", LegendCutoff=1e-4, YMin=0.1, YMax=50000, Logy
+lep3_pt_smu_17_8          : HLT_BIT_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_v \: LepGood_pt[iL_Mini[2]]     : [5,7.5,10,12.5,15,17.5,20,25,30,35,40,45,50,1000]*[-0.5,0.5, 1.5]  ; YTitle="Leptons", XTitle="p_{T\,cone}(third lep.)"     , LegendCutoff=1e-4, YMin=0.1, YMax=50000, Logy
+
+
+lep1_pt_smu_19_9          : HLT_BIT_HLT_Mu19_TrkIsoVVL_Mu9_TrkIsoVVL_v \: LepGood_pt[iL_Mini[0]]     : [5,7.5,10,12.5,15,17.5,20,25,30,35,40,45,50,1000]*[-0.5,0.5, 1.5] ; YTitle="Leptons", XTitle="p_{T\,cone}(leading lep.)"   , LegendCutoff=1e-4, YMin=0.1, YMax=50000, Logy
+lep2_pt_smu_19_9          : HLT_BIT_HLT_Mu19_TrkIsoVVL_Mu9_TrkIsoVVL_v \: LepGood_pt[iL_Mini[1]]     : [5,7.5,10,12.5,15,17.5,20,25,30,35,40,45,50,1000]*[-0.5,0.5, 1.5]  ; YTitle="Leptons", XTitle="p_{T\,cone}(subleading lep.)", LegendCutoff=1e-4, YMin=0.1, YMax=50000, Logy
+lep3_pt_smu_19_9          : HLT_BIT_HLT_Mu19_TrkIsoVVL_Mu9_TrkIsoVVL_v \: LepGood_pt[iL_Mini[2]]     : [5,7.5,10,12.5,15,17.5,20,25,30,35,40,45,50,1000]*[-0.5,0.5, 1.5]  ; YTitle="Leptons", XTitle="p_{T\,cone}(third lep.)"     , LegendCutoff=1e-4, YMin=0.1, YMax=50000, Logy
+
+
+lep1_pt_smu_23_12          : HLT_BIT_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v \: LepGood_pt[iL_Mini[0]]     : [5,7.5,10,12.5,15,17.5,20,25,30,35,40,45,50,1000]*[-0.5,0.5, 1.5] ; YTitle="Leptons", XTitle="p_{T\,cone}(leading lep.)"   , LegendCutoff=1e-4, YMin=0.1, YMax=50000, Logy
+lep2_pt_smu_23_12          : HLT_BIT_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v \: LepGood_pt[iL_Mini[1]]     : [5,7.5,10,12.5,15,17.5,20,25,30,35,40,45,50,1000]*[-0.5,0.5, 1.5]  ; YTitle="Leptons", XTitle="p_{T\,cone}(subleading lep.)", LegendCutoff=1e-4, YMin=0.1, YMax=50000, Logy
+lep3_pt_smu_23_12          : HLT_BIT_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v \: LepGood_pt[iL_Mini[2]]     : [5,7.5,10,12.5,15,17.5,20,25,30,35,40,45,50,1000]*[-0.5,0.5, 1.5]  ; YTitle="Leptons", XTitle="p_{T\,cone}(third lep.)"     , LegendCutoff=1e-4, YMin=0.1, YMax=50000, Logy
+
+
+
+
+
+# HLT_BIT_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v || HLT_BIT_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v || HLT_BIT_HLT_Mu19_TrkIsoVVL_Mu9_TrkIsoVVL_DZ_v || HLT_BIT_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v 

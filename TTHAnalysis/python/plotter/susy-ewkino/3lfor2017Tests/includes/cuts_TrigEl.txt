@@ -1,0 +1,7 @@
+alwaystrue: 1
+#TriggerSingleEl : HLT_SingleMu
+4l   : nLepGood >= 3
+#restofSelection : (minMllSFOS > 12 || minMllSFOS == -1)  && (met_pt > 50) && (nBJetMedium25 == 0) 
+flav : abs(LepGood_pdgId[0]*LepGood_pdgId[1]*LepGood_pdgId[2])%(13*13*13) == 0 # 3mu
+#ptcuts : trig_mmm_12_10_5(LepGood_pt[0], LepGood_pdgId[0], LepGood_pt[1], LepGood_pdgId[1], LepGood_pt[2], LepGood_pdgId[2])
+Triggermmm533 : HLT_BIT_HLT_TripleMu_5_3_3_Mass3p8to60_DZ_v

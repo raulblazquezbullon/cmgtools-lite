@@ -1,0 +1,7 @@
+pt_1_2 : LepSel_pt[1] \: LepSel_pt[0] : [5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,30,35,40,45,50,1000]*[5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,30,35,40,45,50,1000]
+pt_2_3 : LepSel_pt[2] \: LepSel_pt[1] : [5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,30,35,40,45,50,1000]*[5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,30,35,40,45,50,1000]
+pt_1_3 : LepSel_pt[2] \: LepSel_pt[0] : [5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,30,35,40,45,50,1000]*[5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,30,35,40,45,50,1000]
+
+lep1_pt          : LepSel_pt[0]     : 30,0,300   ; YTitle="Leptons", XTitle="p_{T\,cone}(leading lep.)"   , LegendCutoff=1e-4, YMin=0.1, YMax=50000, Logy
+lep2_pt          : LepSel_pt[1]     : 30,0,300   ; YTitle="Leptons", XTitle="p_{T\,cone}(subleading lep.)", LegendCutoff=1e-4, YMin=0.1, YMax=50000, Logy
+lep3_pt          : LepSel_pt[2]     : 30,0,300   ; YTitle="Leptons", XTitle="p_{T\,cone}(third lep.)"     , LegendCutoff=1e-4, YMin=0.1, YMax=50000, Logy

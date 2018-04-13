@@ -1,0 +1,163 @@
+## event observables
+## ----------------------------------------------------------
+
+met        : met_pt         : 100,50,550   ; XTitle="p_{T}^{miss}  (GeV)"         , LegendCutoff=1e-2, Logy, YMin=0.7, YMax=10000, Legend="TR", IncludeOverflows=False
+htJet30j   : htJet30j       : 100,30,330    ; XTitle="H_{T}(jet p_{T} > 30) [GeV]" , LegendCutoff=1e-2, Logy, YMax=10000, YMin=0.9, IncludeOverflows=False
+mll3l      : mllL_3l        : 85,10,180    ; XTitle="M_{ll} (GeV)"                , LegendCutoff=1e-2, Logy, YMin=0.7, YMax=100000, Legend="TR", IncludeOverflows=False
+mtW3l      : mTL_3l         : 100,0,250    ; XTitle="M_{T} (GeV)"                 , LegendCutoff=1e-2, Logy, YMin=0.7, YMax=500000, Legend="TR", IncludeOverflows=False
+
+likelihood_data : TMath::Log(getLikelihood(met_pt, mTL_3l, mllL_3l, htJet30j)) : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL"
+likelihood_fit  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))  : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL"
+
+likelihood_fit_forScan  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))  : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL"
+likelihood_fit_forScan_ht  : TMath::Log(getLikelihoodFitwithht(met_pt, mTL_3l, mllL_3l, htJet30j))  : 720, 0, 24 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL"
+
+like_disc : (TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j)) < 15.5) + (TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j)) < 14.25) : 3, -0.5,2.5; XTitle="log(L_{WZ}) < 21", Legend="TL", YMin=0.7, YMax=10000
+
+ht_disc : (htJet30j < 100) + (htJet30j < 200): 3,-0.5,2.5; XTitle="H_{T}(jet p_{T} > 30) bins", Legend="TL", YMin=0.7, YMax=10000
+
+mll3l_disc      : (mllL_3l < 75) + (mllL_3l < 105) : 3, -0.5,2.5 ; XTitle="M_{ll} Disc" , LegendCutoff=1e-4, YMin=0.7, YMax=10000, Legend="TR", IncludeOverflows=False
+
+mtW3l_disc  : (mTL_3l < 100) + (mTL_3l < 160)  : 3,-0.5,2.5 ; XTitle="M_{T} Disc"                 , LegendCutoff=1e-4, YMin=0.7, YMax=50000, Legend="TR", IncludeOverflows=False
+
+met_disc        : (met_pt < 100) + (met_pt < 150) + (met_pt < 200) + (met_pt < 250) + (met_pt < 300) + (met_pt < 350)   : 7, -0.5,6.5   ; XTitle="p_{T}^{miss}  Disc"         , LegendCutoff=1e-4, YMin=0.7, YMax=10000, Legend="TR", IncludeOverflows=False
+
+ht_disc_log : (htJet30j < 100) + (htJet30j < 200):3, -0.5,2.5; XTitle="H_{T}(jet p_{T} > 30) bins", Legend="TL", YMin=0.7, YMax=10000,
+#like_disc_log : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j)) < 21 : 2, -0.5,1.5; XTitle="log(L_{WZ}) < 21", Legend="TL", YMin=0.7, YMax=10000, Logy,
+
+
+SR_3l_Old : SRcorr : 59,-0.5,58.5 ; XTitle ="SR_Old", Logy, YMin=1, YMax=10000
+
+SR_3l_New : SRcorrLike(mllL_3l, mTL_3l, met_pt,htJet30j,TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))) : 74,-0.5,73.5 ; XTitle ="SR_New", Logy, YMin=1, YMax=10000
+
+SR_3l_Old_lowMll : SRcorr : 14,0.5,14.5 ; XTitle ="SR_Old", Logy, IncludeOverflows=False, YMin=1, YMax=10000
+
+SR_3l_New_lowMll : SRcorrLikev2(mllL_3l, mTL_3l, met_pt,htJet30j,TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))) : 18,0.5,18.5 ; XTitle ="SR_New", Logy, IncludeOverflows=False, YMin=1, YMax=10000
+
+SR_3l_Old_midMlllowht : SRcorr : 12,14.5,26.5 ; XTitle ="SR_Old", Logy, IncludeOverflows=False, YMin=1, YMax=50000
+
+SR_3l_New_midMlllowht : SRcorrLike(mllL_3l, mTL_3l, met_pt,htJet30j,TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))) : 17,18.5,35.5 ; XTitle ="SR_New", Logy, IncludeOverflows=False, YMin=1, YMax=50000
+
+
+SR_3l_Old_midMllmidht : SRcorr : 13,26.5,39.5 ; XTitle ="SR_Old", Logy, IncludeOverflows=False, YMin=1, YMax=10000
+
+SR_3l_New_midMllmidht : SRcorrLike(mllL_3l, mTL_3l, met_pt,htJet30j,TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))) : 17,35.5,52.5 ; XTitle ="SR_New", Logy, IncludeOverflows=False, YMin=1, YMax=10000
+
+
+SR_3l_Old_midMllhighht : SRcorr : 16,39.5,55.5 ; XTitle ="SR_Old", Logy, IncludeOverflows=False, YMin=1, YMax=10000
+
+SR_3l_New_midMllhighht : SRcorrLike(mllL_3l, mTL_3l, met_pt,htJet30j,TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))) : 18,52.5,70.5 ; XTitle ="SR_New", Logy, IncludeOverflows=False, YMin=1, YMax=10000
+
+
+SR_3l_Old_highMll : SRcorr : 3,55.5,58.5 ; XTitle ="SR_Old", Logy, IncludeOverflows=False, YMin=1, YMax=10000
+
+SR_3l_New_highMll : SRcorrLike(mllL_3l, mTL_3l, met_pt,htJet30j,TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))) : 3,70.5,73.5 ; XTitle ="SR_New", Logy, IncludeOverflows=False, YMin=1, YMax=10000
+
+
+SR_3l_v3_low : SRcorrLikev3(mllL_3l, mTL_3l, met_pt,htJet30j,TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))) : 16,0.5,16.5 ; XTitle ="SR", Logy, IncludeOverflows=False, YMin=1, YMax=50000
+SR_3l_v3_mid : SRcorrLikev3(mllL_3l, mTL_3l, met_pt,htJet30j,TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))) : 37,16.5,53.5 ; XTitle ="SR", Logy, IncludeOverflows=False, YMin=1, YMax=50000
+SR_3l_v3_high : SRcorrLikev3(mllL_3l, mTL_3l, met_pt,htJet30j,TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))) : 3,53.5,56.5 ; XTitle ="SR", Logy, IncludeOverflows=False, YMin=1, YMax=50000
+
+
+likelihood_SR0  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==0)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR1  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==1)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR2  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==2)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR3  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==3)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR4  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==4)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR5  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==5)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR6  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==6)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR7  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==7)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR8  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==8)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR9  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==9)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR10  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==10)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR11  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==11)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR12  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==12)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR13  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==13)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR14  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==14)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR15  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==15)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR16  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==16)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR17  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==17)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR18  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==18)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR19  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==19)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR20  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==20)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR21  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==21)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR22  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==22)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR23  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==23)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR24  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==24)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR25  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==25)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR26  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==26)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR27  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==27)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR28  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==28)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR29  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==29)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR30  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==30)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR31  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==31)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR32  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==32)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR33  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==33)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR34  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==34)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR35  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==35)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR36  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==36)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR37  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==37)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR38  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==38)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR39  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==39)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR40  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==40)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR41  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==41)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR42  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==42)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR43  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==43)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR44  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==44)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR45  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==45)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR46  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==46)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR47  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==47)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR48  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==48)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR49  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==49)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR50  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==50)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR51  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==51)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR52  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==52)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR53  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==53)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR54  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==54)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR55  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==55)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR56  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==56)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR57  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==57)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihood_SR58  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==58)   : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+
+
+
+
+
+likelihoodBins_SR0  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==0)   : 20, 12, 17 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihoodBins_SR1  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==1)   : 16, 12, 16 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihoodBins_SR2  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==2)   : 16, 11, 15 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihoodBins_SR5  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==5)   : 16, 10, 14 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihoodBins_SR12  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==12)   : 44, 4, 15 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihoodBins_SR15  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==15)   : 20, 11, 16 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihoodBins_SR16  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==16)   : 20, 9, 14 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihoodBins_SR19  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==19)   : 28, 9, 16 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihoodBins_SR20  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==20)   : 28, 8, 15 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihoodBins_SR27  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==27)   : 16, 12, 16 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+
+likelihoodBins_SR28  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==28)   : 20, 11, 16 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihoodBins_SR29  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==29)   : 20, 9, 14 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihoodBins_SR32  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==32)   : 20, 10, 15 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihoodBins_SR40  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==40)   : 24, 11, 17 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihoodBins_SR41  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==41)   : 24, 8, 14 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+
+likelihoodBins_SR42  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==42)   : 16, 7, 11 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihoodBins_SR44  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==44)   : 24, 10, 16 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihoodBins_SR56  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==56)   : 32, 6, 14 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+likelihoodBins_SR57  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorr==57)   : 20, 7, 12 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+
+
+
+like_h0  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))  : 15, 1.5, 16.5 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy , YMax = 1e4, YMin = 1
+like_h1  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))  : 15, 1.5, 16.5 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy, YMax = 1e4, YMin = 1
+like_h2  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))  : 15, 1.5, 16.5 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy, YMax = 1e4, YMin = 1
+
+
+#likelihoodBinsv3_SR0  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorrLikev3(mllL_3l, mTL_3l, met_pt,  htJet30j, TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j)))==0)   : 20, 12, 17 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+#likelihoodBinsv3_SR12  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorrLikev3(mllL_3l, mTL_3l, met_pt,  htJet30j, TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j)))==1)   : 16, 12, 16 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+
+likelihoodBinsv3_SR0  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorrLikev3(mllL_3l, mTL_3l, met_pt,  htJet30j, TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j)))==0 + SRcorrLikev3(mllL_3l, mTL_3l, met_pt,  htJet30j, TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j)))==17)   : 16, 11, 15 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+
+likelihoodBinsv3_SR18  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorrLikev3(mllL_3l, mTL_3l, met_pt,  htJet30j, TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j)))==18 + SRcorrLikev3(mllL_3l, mTL_3l, met_pt,  htJet30j, TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j)))==19)   : 16, 11, 15 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+
+likelihoodBinsv3_SR20  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))* (SRcorrLikev3(mllL_3l, mTL_3l, met_pt,  htJet30j, TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j)))==20 + SRcorrLikev3(mllL_3l, mTL_3l, met_pt,  htJet30j, TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j)))==21)   : 16, 11, 15 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+

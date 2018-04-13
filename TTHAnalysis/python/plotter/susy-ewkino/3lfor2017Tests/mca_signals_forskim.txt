@@ -1,0 +1,8 @@
+
+_425_295+ :  TChiWZ_425_295 : 93.771*0.10099/1000 ; Label="LL (425/285) TE",FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt\,susy-ewkino/3lfor2017Tests/fakerate_load_isprompt.txt", isFastSim=True
+
+_475_300+ :  TChiWZ_475_300 : 58.0811*0.10099/1000 ; Label="LL (475/300) TE",FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt\,susy-ewkino/3lfor2017Tests/fakerate_load_isprompt.txt", isFastSim=True
+
+
+
+

@@ -130,6 +130,8 @@ class LeptonBuilderEWK:
     ## _______________________________________________________________
     def collectObjects(self, event):
 
+        self.event = event
+
         ## light leptons
         self.leps       = [l             for l  in Collection(event, "LepGood", "nLepGood")  ]
         self.lepsFO     = [self.leps[il] for il in list(getattr   (event, "iF" + self.inputlabel))[0:int(getattr(event,"nLepFO"+self.inputlabel))]]
@@ -165,13 +167,13 @@ class LeptonBuilderEWK:
 
         self.metgen        = {}
         self.metgen[0]     = event.met_genPt if not event.isData else event.met_pt
-        self.metgen[1]     = getattr(event, "met_jecUp_genPt"  , event.met_genPt if not event.isData else event.met_pt)
-        self.metgen[-1]    = getattr(event, "met_jecDown_genPt", event.met_genPt if not event.isData else event.met_pt)
+        self.metgen[1]     = event.met_jecUp_genPt   if hasattr(event, "met_jecUp_genPt"  ) else event.met_genPt if not event.isData else event.met_pt
+        self.metgen[-1]    = event.met_jecDown_genPt if hasattr(event, "met_jecDown_genPt") else event.met_genPt if not event.isData else event.met_pt
 
         self.metgenphi     = {}
         self.metgenphi[0]  = event.met_genPhi if not event.isData else event.met_phi
-        self.metgenphi[1]  = getattr(event, "met_jecUp_genPhi"  , event.met_genPhi if not event.isData else event.met_phi)
-        self.metgenphi[-1] = getattr(event, "met_jecDown_genPhi", event.met_genPhi if not event.isData else event.met_phi)
+        self.metgenphi[1]  = event.met_jecUp_genPhi   if hasattr(event, "met_jecUp_genPhi"  ) else event.met_genPhi if not event.isData else event.met_phi
+        self.metgenphi[-1] = event.met_jecDown_genPhi if hasattr(event, "met_jecDown_genPhi") else event.met_genPhi if not event.isData else event.met_phi
 
         self.OS = []
 
@@ -269,20 +271,19 @@ class LeptonBuilderEWK:
             bufferPF  = [] 
             bufferGEN = [] 
             for l in leps:
-                bufferPF .append(self.mtW(l, var      ))
-                bufferGEN.append(self.mtW(l, var, True))
+                bufferPF .append((self.mtW(l, var      ),l))
+                bufferGEN.append((self.mtW(l, var, True),l))
 
             if len(bufferPF):
                 bufferPF.sort()
-                self.ret["mT"+name+"_" + str(max) + "l" + self.systsJEC[var]] = bufferPF[0]
-            else:
-                self.ret["mT"+name+"_" + str(max) + "l" + self.systsJEC[var]] = -1
+                self.ret["mT"+ name+"_" + str(max) + "l" + self.systsJEC[var]] = bufferPF[0][0]
+                self.ret["imT"+name+"_" + str(max) + "l" + self.systsJEC[var]] = self.lepSelFO.index(bufferPF[0][1])
 
             if len(bufferGEN):
                 bufferGEN.sort()
-                self.ret["mT"+name+"_" + str(max) + "l_gen" + self.systsJEC[var]] = bufferGEN[0]
-            else:
-                self.ret["mT"+name+"_" + str(max) + "l_gen" + self.systsJEC[var]] = -1
+                self.ret["mT" +name+"_" + str(max) + "l_gen" + self.systsJEC[var]] = bufferGEN[0][0]
+                self.ret["imT"+name+"_" + str(max) + "l_gen" + self.systsJEC[var]] = self.lepSelFO.index(bufferGEN[0][1])
+            if self.event.isData: return
 
 
     ## findTau
@@ -315,28 +316,32 @@ class LeptonBuilderEWK:
     def listBranches(self):
 
         biglist = [
-            ("passPtMll"   , "I"),
-            ("is_3l"       , "I"),
-            ("is_4l"       , "I"),
-            ("is_5l"       , "I"),
-            ("nOSSF_3l"    , "I"),
-            ("nOSSFL_3l"   , "I"),
-            ("nOSSFT_3l"   , "I"),
-            ("nOSLF_3l"    , "I"),
-            ("nOSTF_3l"    , "I"),
-            ("mll_3l"      , "F"),
-            ("mllL_3l"     , "F"),
-            ("mllT_3l"     , "F"),
-            ("m3L"         , "F"),
-            ("nOSSF_4l"    , "I"),
-            ("nOSSFL_4l"   , "I"),
-            ("nOSSFT_4l"   , "I"),
-            ("nOSLF_4l"    , "I"),
-            ("nOSTF_4l"    , "I"),
-            ("mll_4l"      , "F"),
-            ("mllL_4l"     , "F"),
-            ("mllT_4l"     , "F"),
-            ("m4L"         , "F")]
+            ("passPtMll"        , "I"),
+            ("is_3l"            , "I"),
+            ("is_4l"            , "I"),
+            ("is_5l"            , "I"),
+            ("nOSSF_3l"         , "I"),
+            ("nOSSFL_3l"        , "I"),
+            ("nOSSFT_3l"        , "I"),
+            ("nOSLF_3l"         , "I"),
+            ("nOSTF_3l"         , "I"),
+            ("mll_3l"           , "F"),
+            ("mllL_3l"          , "F"),
+            ("mllT_3l"          , "F"),
+            ("m3L"              , "F"),
+            ("nOSSF_4l"         , "I"),
+            ("nOSSFL_4l"        , "I"),
+            ("nOSSFT_4l"        , "I"),
+            ("nOSLF_4l"         , "I"),
+            ("nOSTF_4l"         , "I"),
+            ("mll_4l"           , "F"),
+            ("mllL_4l"          , "F"),
+            ("mllT_4l"          , "F"),
+            ("m4L"              , "F"),
+            ("minDeltaR_3l"     , "F"),
+            ("minDeltaR_4l"     , "F"),
+            ("minDeltaR_3l_mumu", "F"),
+            ("minDeltaR_4l_mumu", "F")]
 
         biglist.append(("nOS"   , "I"))
         biglist.append(("mll"   , "F", 20, "nOS"))
@@ -345,32 +350,48 @@ class LeptonBuilderEWK:
         biglist.append(("mll_i2", "I", 20, "nOS"))
 
         biglist.append(("nLepSel"   , "I"))
-        for var in ["pt", "eta", "phi", "mass", "conePt", "dxy", "dz", "sip3d", "miniRelIso", "relIso", "ptratio", "ptrel", "mva"]:
+        for var in ["pt", "eta", "phi", "mass", "conePt", "dxy", "dz", "sip3d", "miniRelIso", "relIso", "ptratio", "ptrel", "mva", "pterr"]:
             biglist.append(("LepSel_" + var, "F", 4))
-        for var in ["pdgId", "isTight", "mcMatchId", "mcMatchAny", "mcPromptGamma", "mcUCSX", "trIdx"]:
+        for var in ["pdgId", "isTight", "tightCharge", "mcMatchId", "mcMatchAny", "mcPromptGamma", "mcUCSX", "trIdx"]:
             biglist.append(("LepSel_" + var, "I", 4))
   
         for var in self.systsJEC:
-            biglist.append(("mT_3l"       + self.systsJEC[var], "F"))
-            biglist.append(("mTL_3l"      + self.systsJEC[var], "F"))
-            biglist.append(("mTT_3l"      + self.systsJEC[var], "F"))
-            biglist.append(("mT2L_3l"     + self.systsJEC[var], "F"))
-            biglist.append(("mT2T_3l"     + self.systsJEC[var], "F"))
-            biglist.append(("mT_4l"       + self.systsJEC[var], "F"))
-            biglist.append(("mTL_4l"      + self.systsJEC[var], "F"))
-            biglist.append(("mTT_4l"      + self.systsJEC[var], "F"))
-            biglist.append(("mT2L_4l"     + self.systsJEC[var], "F"))
-            biglist.append(("mT2T_4l"     + self.systsJEC[var], "F"))
-            biglist.append(("mT_3l_gen"   + self.systsJEC[var], "F"))
-            biglist.append(("mTL_3l_gen"  + self.systsJEC[var], "F"))
-            biglist.append(("mTT_3l_gen"  + self.systsJEC[var], "F"))
-            biglist.append(("mT2L_3l_gen" + self.systsJEC[var], "F"))
-            biglist.append(("mT2T_3l_gen" + self.systsJEC[var], "F"))
-            biglist.append(("mT_4l_gen"   + self.systsJEC[var], "F"))
-            biglist.append(("mTL_4l_gen"  + self.systsJEC[var], "F"))
-            biglist.append(("mTT_4l_gen"  + self.systsJEC[var], "F"))
-            biglist.append(("mT2L_4l_gen" + self.systsJEC[var], "F"))
-            biglist.append(("mT2T_4l_gen" + self.systsJEC[var], "F"))
+            biglist.append(("imT_3l"       + self.systsJEC[var], "I"))
+            biglist.append(("imTL_3l"      + self.systsJEC[var], "I"))
+            biglist.append(("imTT_3l"      + self.systsJEC[var], "I"))
+            biglist.append(("mT_3l"        + self.systsJEC[var], "F"))
+            biglist.append(("mTL_3l"       + self.systsJEC[var], "F"))
+            biglist.append(("mTT_3l"       + self.systsJEC[var], "F"))
+            biglist.append(("mT2L_3l"      + self.systsJEC[var], "F"))
+            biglist.append(("mT2T_3l"      + self.systsJEC[var], "F"))
+            biglist.append(("mT2WZ_3l"     + self.systsJEC[var], "F"))
+            biglist.append(("imT_4l"       + self.systsJEC[var], "I"))
+            biglist.append(("imTL_4l"      + self.systsJEC[var], "I"))
+            biglist.append(("imTT_4l"      + self.systsJEC[var], "I"))
+            biglist.append(("mT_4l"        + self.systsJEC[var], "F"))
+            biglist.append(("mTL_4l"       + self.systsJEC[var], "F"))
+            biglist.append(("mTT_4l"       + self.systsJEC[var], "F"))
+            biglist.append(("mT2L_4l"      + self.systsJEC[var], "F"))
+            biglist.append(("mT2T_4l"      + self.systsJEC[var], "F"))
+            biglist.append(("mT2WZ_4l"     + self.systsJEC[var], "F"))
+            biglist.append(("imT_3l_gen"   + self.systsJEC[var], "I"))
+            biglist.append(("imTL_3l_gen"  + self.systsJEC[var], "I"))
+            biglist.append(("imTT_3l_gen"  + self.systsJEC[var], "I"))
+            biglist.append(("mT_3l_gen"    + self.systsJEC[var], "F"))
+            biglist.append(("mTL_3l_gen"   + self.systsJEC[var], "F"))
+            biglist.append(("mTT_3l_gen"   + self.systsJEC[var], "F"))
+            biglist.append(("mT2L_3l_gen"  + self.systsJEC[var], "F"))
+            biglist.append(("mT2WZ_3l_gen" + self.systsJEC[var], "F"))
+            biglist.append(("mT2T_3l_gen"  + self.systsJEC[var], "F"))
+            biglist.append(("imT_4l_gen"   + self.systsJEC[var], "I"))
+            biglist.append(("imTL_4l_gen"  + self.systsJEC[var], "I"))
+            biglist.append(("imTT_4l_gen"  + self.systsJEC[var], "I"))
+            biglist.append(("mT_4l_gen"    + self.systsJEC[var], "F"))
+            biglist.append(("mTL_4l_gen"   + self.systsJEC[var], "F"))
+            biglist.append(("mTT_4l_gen"   + self.systsJEC[var], "F"))
+            biglist.append(("mT2L_4l_gen"  + self.systsJEC[var], "F"))
+            biglist.append(("mT2T_4l_gen"  + self.systsJEC[var], "F"))
+            biglist.append(("mT2WZ_4l_gen" + self.systsJEC[var], "F"))
 
         return biglist
 
@@ -411,6 +432,22 @@ class LeptonBuilderEWK:
         mt2t.sort(reverse=True) # we want the hardest leptons here! 
         mt2l.sort(reverse=True) # we want the hardest leptons here! 
 
+        if len(self.lepSelFO) == 3:
+            for var in self.systsJEC:
+              lZ1, lZ2, lW, cont = self.assignWZleptons()
+              if not (cont): continue
+              p4Z = lZ1.p4() + lZ2.p4()
+              vector_met     = array.array('d', [0, self.met[var]*cos(self.metphi[var]), self.met[var]*sin(self.metphi[var])])
+              vector_metgen  = array.array('d', [0, self.metgen[var]*cos(self.metgenphi[var]), self.metgen[var]*sin(self.metgenphi[var])])
+              vector_obj1    = array.array('d', [lW.mass, lW.p4(lW.conePt).Px(), lW.p4(lW.conePt).Py()])
+              vector_obj2    = array.array('d', [91.18, p4Z.Px(), p4Z.Py()])
+              self.mt2maker.set_momenta(vector_obj1, vector_obj2, vector_met)
+              self.mt2maker.set_mn(0)
+              self.ret["mT2WZ_" + str(max) + "l"     + self.systsJEC[var]] = self.mt2maker.get_mt2()
+              self.mt2maker.set_momenta(vector_obj1, vector_obj2, vector_metgen)
+              self.mt2maker.set_mn(0)
+              self.ret["mT2WZ_" + str(max) + "l_gen"     + self.systsJEC[var]] = self.mt2maker.get_mt2()           
+
         for var in self.systsJEC:
             if len(mt2t)>0: 
                 self.ret["mT2T_" + str(max) + "l"     + self.systsJEC[var]] = self.mt2(mt2t[0][1].l1, mt2t[0][1].l2, var)
@@ -418,6 +455,7 @@ class LeptonBuilderEWK:
             if len(mt2l)>0: 
                 self.ret["mT2L_" + str(max) + "l"     + self.systsJEC[var]] = self.mt2(mt2l[0][1].l1, mt2l[0][1].l2, var)
                 self.ret["mT2L_" + str(max) + "l_gen" + self.systsJEC[var]] = self.mt2(mt2l[0][1].l1, mt2l[0][1].l2, var, True)
+            if self.event.isData: return
 
 
     ## mt  
@@ -425,6 +463,24 @@ class LeptonBuilderEWK:
     def mt(self, pt1, pt2, phi1, phi2):
         return sqrt(2*pt1*pt2*(1-cos(phi1-phi2)))
 
+    def assignWZleptons(self, dM = 10000.):
+      lepZ1 = 0
+      lepZ2 = 0
+      lepW = 0
+      cont = False
+      for l1 in range(min(3, len(self.lepSelFO))):
+        for l2 in range(min(3, len(self.lepSelFO))):
+          if l1 < l2 and abs((self.lepSelFO[l1].p4()+ self.lepSelFO[l2].p4()).M() - 91) < dM and self.lepSelFO[l1].pdgId * self.lepSelFO[l2].pdgId < 0 and abs(self.lepSelFO[l1].pdgId)==abs(self.lepSelFO[l2].pdgId):
+            lepZ1 = self.lepSelFO[l1]
+            lepZ2 = self.lepSelFO[l2]
+            dM = abs((self.lepSelFO[l1].p4()+ self.lepSelFO[l2].p4()).M() - 91.18)
+            indZ1 = l1
+            indZ2 = l2
+            cont = True
+      for l3 in range(min(3, len(self.lepSelFO))):
+        if not(l3 == l2) and not(l3==l1):
+          lepW = self.lepSelFO[l3]
+      return lepZ1, lepZ2, lepW, cont
 
     ## mt2
     ## _______________________________________________________________
@@ -487,7 +543,7 @@ class LeptonBuilderEWK:
             if not (passTripleMllVeto(l1, l2, l3, 0, 12, True) and passPtCutTriple(l1, l2, l3)): return False
         if len(self.lepSelFO) >= 4:
             l4 = self.lepSelFO[3]
-            if l4.conePt < 10 or not passMllTLVeto(l4, [l1,l2,l3], 0, 12, True): return False
+            if l4.conePt < 5 or not passMllTLVeto(l4, [l1,l2,l3], 0, 12, True): return False
         return True
 
 
@@ -519,6 +575,10 @@ class LeptonBuilderEWK:
         self.ret["mllL_4l"              ] = 0
         self.ret["mllT_4l"              ] = 0
         self.ret["m4L"                  ] = 0
+        self.ret["minDeltaR_3l"         ] = -1
+        self.ret["minDeltaR_4l"         ] = -1
+        self.ret["minDeltaR_3l_mumu"    ] = -1
+        self.ret["minDeltaR_4l_mumu"    ] = -1
 
         self.ret["nOS"   ] = 0
         self.ret["mll"   ] = [0]*20
@@ -527,33 +587,48 @@ class LeptonBuilderEWK:
         self.ret["mll_i2"] = [-1]*20
 
         self.ret["nLepSel"] = 0
-        for var in ["pt", "eta", "phi", "mass", "conePt", "dxy", "dz", "sip3d", "miniRelIso", "relIso", "ptratio", "ptrel", "mva"]:
+        for var in ["pt", "eta", "phi", "mass", "conePt", "dxy", "dz", "sip3d", "miniRelIso", "relIso", "ptratio", "ptrel", "mva", "pterr"]:
             self.ret["LepSel_" + var] = [0.]*20
-        for var in ["pdgId", "isTight", "mcMatchId", "mcMatchAny", "mcPromptGamma", "mcUCSX", "trIdx"]:
+        for var in ["pdgId", "isTight", "tightCharge", "mcMatchId", "mcMatchAny", "mcPromptGamma", "mcUCSX", "trIdx"]:
             self.ret["LepSel_" + var] = [0 ]*20
 
         for var in self.systsJEC:
-            self.ret["mT_3l"       + self.systsJEC[var]] = 0.
-            self.ret["mTL_3l"      + self.systsJEC[var]] = 0.
-            self.ret["mTT_3l"      + self.systsJEC[var]] = 0.
-            self.ret["mT2L_3l"     + self.systsJEC[var]] = 0.  
-            self.ret["mT2T_3l"     + self.systsJEC[var]] = 0. 
-            self.ret["mT_4l"       + self.systsJEC[var]] = 0.
-            self.ret["mTL_4l"      + self.systsJEC[var]] = 0.
-            self.ret["mTT_4l"      + self.systsJEC[var]] = 0.
-            self.ret["mT2L_4l"     + self.systsJEC[var]] = 0.  
-            self.ret["mT2T_4l"     + self.systsJEC[var]] = 0. 
-            self.ret["mT_3l_gen"   + self.systsJEC[var]] = 0.
-            self.ret["mTL_3l_gen"  + self.systsJEC[var]] = 0.
-            self.ret["mTT_3l_gen"  + self.systsJEC[var]] = 0.
-            self.ret["mT2L_3l_gen" + self.systsJEC[var]] = 0.  
-            self.ret["mT2T_3l_gen" + self.systsJEC[var]] = 0. 
-            self.ret["mT_4l_gen"   + self.systsJEC[var]] = 0.
-            self.ret["mTL_4l_gen"  + self.systsJEC[var]] = 0.
-            self.ret["mTT_4l_gen"  + self.systsJEC[var]] = 0.
-            self.ret["mT2L_4l_gen" + self.systsJEC[var]] = 0.  
-            self.ret["mT2T_4l_gen" + self.systsJEC[var]] = 0. 
-
+            self.ret["imT_3l"       + self.systsJEC[var]] = -1 
+            self.ret["imTL_3l"      + self.systsJEC[var]] = -1 
+            self.ret["imTT_3l"      + self.systsJEC[var]] = -1 
+            self.ret["mT_3l"        + self.systsJEC[var]] = -1 
+            self.ret["mTL_3l"       + self.systsJEC[var]] = -1 
+            self.ret["mTT_3l"       + self.systsJEC[var]] = -1 
+            self.ret["mT2L_3l"      + self.systsJEC[var]] = -1   
+            self.ret["mT2T_3l"      + self.systsJEC[var]] = -1  
+            self.ret["mT2WZ_3l"     + self.systsJEC[var]] = -1  
+            self.ret["imT_4l"       + self.systsJEC[var]] = -1 
+            self.ret["imTL_4l"      + self.systsJEC[var]] = -1 
+            self.ret["imTT_4l"      + self.systsJEC[var]] = -1 
+            self.ret["mT_4l"        + self.systsJEC[var]] = -1 
+            self.ret["mTL_4l"       + self.systsJEC[var]] = -1 
+            self.ret["mTT_4l"       + self.systsJEC[var]] = -1 
+            self.ret["mT2L_4l"      + self.systsJEC[var]] = -1   
+            self.ret["mT2T_4l"      + self.systsJEC[var]] = -1  
+            self.ret["mT2WZ_4l"     + self.systsJEC[var]] = -1  
+            self.ret["imT_3l_gen"   + self.systsJEC[var]] = -1 
+            self.ret["imTL_3l_gen"  + self.systsJEC[var]] = -1 
+            self.ret["imTT_3l_gen"  + self.systsJEC[var]] = -1 
+            self.ret["mT_3l_gen"    + self.systsJEC[var]] = -1 
+            self.ret["mTL_3l_gen"   + self.systsJEC[var]] = -1 
+            self.ret["mTT_3l_gen"   + self.systsJEC[var]] = -1 
+            self.ret["mT2L_3l_gen"  + self.systsJEC[var]] = -1   
+            self.ret["mT2T_3l_gen"  + self.systsJEC[var]] = -1  
+            self.ret["mT2WZ_3l_gen" + self.systsJEC[var]] = -1  
+            self.ret["imT_4l_gen"   + self.systsJEC[var]] = -1 
+            self.ret["imTL_4l_gen"  + self.systsJEC[var]] = -1 
+            self.ret["imTT_4l_gen"  + self.systsJEC[var]] = -1 
+            self.ret["mT_4l_gen"    + self.systsJEC[var]] = -1 
+            self.ret["mTL_4l_gen"   + self.systsJEC[var]] = -1 
+            self.ret["mTT_4l_gen"   + self.systsJEC[var]] = -1 
+            self.ret["mT2L_4l_gen"  + self.systsJEC[var]] = -1   
+            self.ret["mT2T_4l_gen"  + self.systsJEC[var]] = -1  
+            self.ret["mT2WZ_4l_gen" + self.systsJEC[var]] = -1
 
     ## setAttributes 
     ## _______________________________________________________________
@@ -564,21 +639,26 @@ class LeptonBuilderEWK:
                 tau = self.findTau(event, l)
                 setattr(l, "pdgId"        , -1*15*tau.charge                      )
                 setattr(l, "isTight"      , (l.reclTauId == 2)                    )
-                setattr(l, "mcMatchId"    , 1                                     )
+                setattr(l, "tightCharge"  , 1                                     )
+                setattr(l, "mcMatchId"    , tau.mcMatchId     if not isData else 1)
                 setattr(l, "mcMatchAny"   , 0                                     )
                 setattr(l, "mcPromptGamma", 0                                     )
                 setattr(l, "mcUCSX"       , tau.mcUCSXMatchId if not isData else 0)
                 setattr(l, "trIdx"        , self.taus.index(l)                    )
-                setattr(l, "dxy"          , tau.dxy if not tau is None else 0   )
-                setattr(l, "dz"           , tau.dz  if not tau is None else 0   )
-                setattr(l, "sip3d"        , 0                                   )
-                setattr(l, "miniRelIso"   , 0                                   )
-                setattr(l, "relIso"       , 0                                   )
-                setattr(l, "ptratio"      , 0                                   )
-                setattr(l, "ptrel"        , 0                                   )
-                setattr(l, "mva"          , tau.idMVAOldDMRun2 if not tau is None else 0 )
+                setattr(l, "dxy"          , tau.dxy if not tau is None else 0     )
+                setattr(l, "dz"           , tau.dz  if not tau is None else 0     )
+                setattr(l, "sip3d"        , 0                                     )
+                setattr(l, "miniRelIso"   , 0                                     )
+                setattr(l, "relIso"       , 0                                     )
+                setattr(l, "ptratio"      , 0                                     )
+                setattr(l, "ptrel"        , 0                                     )
+                setattr(l, "mva"          , tau.idMVA if not tau is None else 0   )
+                #setattr(l, "mva"          , tau.idMVAOldDMRun2 if not tau is None else 0 )
+                setattr(l, "pterr"        , 0                                     )
             else:
+                setattr(l, "pdgId"        , l.pdgId                             )
                 setattr(l, "isTight"      , (l in self.lepsT  )                 )
+                setattr(l, "tightCharge"  , l.tightCharge                       )
                 setattr(l, "mcMatchId"    , l.mcMatchId     if not isData else 1)
                 setattr(l, "mcMatchAny"   , l.mcMatchAny    if not isData else 0)
                 setattr(l, "mcPromptGamma", l.mcPromptGamma if not isData else 0)
@@ -592,6 +672,7 @@ class LeptonBuilderEWK:
                 setattr(l, "ptratio"      , l.jetPtRatiov2                      )
                 setattr(l, "ptrel"        , l.jetPtRelv2                        )
                 setattr(l, "mva"          , l.mvaSUSY                           )
+                setattr(l, "pterr"        , l.ptErrTk                           )
 
 
     ## writeLepSel
@@ -601,9 +682,9 @@ class LeptonBuilderEWK:
         self.ret["nLepSel"] = len(self.lepSelFO)
         for i, l in enumerate(self.lepSelFO):
             if i == 4: break # only keep the first 4 entries
-            for var in ["pt", "eta", "phi", "mass", "conePt", "dxy", "dz", "sip3d", "miniRelIso", "relIso", "ptratio", "ptrel", "mva"]:
+            for var in ["pt", "eta", "phi", "mass", "conePt", "dxy", "dz", "sip3d", "miniRelIso", "relIso", "ptratio", "ptrel", "mva", "pterr"]:
                 self.ret["LepSel_" + var][i] = getattr(l, var, 0)
-            for var in ["pdgId", "isTight", "mcMatchId", "mcMatchAny", "mcPromptGamma", "mcUCSX", "trIdx"]:
+            for var in ["pdgId", "isTight", "tightCharge", "mcMatchId", "mcMatchAny", "mcPromptGamma", "mcUCSX", "trIdx"]:
                 self.ret["LepSel_" + var][i] = int(getattr(l, var, 0))
 
         all = []
@@ -618,36 +699,71 @@ class LeptonBuilderEWK:
                 self.ret["mll_i1"][i] = self.lepSelFO.index(os[3].l1)
                 self.ret["mll_i2"][i] = self.lepSelFO.index(os[3].l2)
 
+        ## writing deltaR stuff (for spurious muons)
+        pairs3l = []
+        pairs4l = []
+        for i, l1 in enumerate(self.lepSelFO[0:3]):
+            for j, l2 in enumerate(self.lepSelFO[0:3]):
+                if l1 == l2: continue
+                pairs3l.append((l1, l2, deltaR(l1.eta, l1.phi, l2.eta, l2.phi))) 
+        for i, l1 in enumerate(self.lepSelFO):
+            for j, l2 in enumerate(self.lepSelFO):
+                if l1 == l2: continue
+                pairs4l.append((l1, l2, deltaR(l1.eta, l1.phi, l2.eta, l2.phi)))
+        pairs3lmm = [dR for dR in pairs3l if abs(dR[0].pdgId)==abs(dR[1].pdgId) and abs(dR[0].pdgId)==13]
+        pairs4lmm = [dR for dR in pairs4l if abs(dR[0].pdgId)==abs(dR[1].pdgId) and abs(dR[0].pdgId)==13]
+        
+        self.ret["minDeltaR_3l"     ] = min([dR[2] for dR in pairs3l  ]) if len(pairs3l  )>0 else -1
+        self.ret["minDeltaR_4l"     ] = min([dR[2] for dR in pairs4l  ]) if len(pairs4l  )>0 else -1
+        self.ret["minDeltaR_3l_mumu"] = min([dR[2] for dR in pairs3lmm]) if len(pairs3lmm)>0 else -1
+        self.ret["minDeltaR_4l_mumu"] = min([dR[2] for dR in pairs4lmm]) if len(pairs4lmm)>0 else -1
 
+
+## deltaPhi
+## _______________________________________________________________
+def deltaPhi(phi1, phi2):
+    res = phi1 - phi2
+    while res >   math.pi: res -= 2*math.pi
+    while res <= -math.pi: res += 2*math.pi
+    return res
+
+## deltaR
+## _______________________________________________________________
+def deltaR(eta1, phi1, eta2, phi2):
+    dEta = abs(eta1-eta2)
+    dPhi = deltaPhi(phi1, phi2)
+    return math.sqrt(dEta*dEta + dPhi*dPhi)
 
 ## _susyEWK_tauId_CBloose
 ## _______________________________________________________________
 def _susyEWK_tauId_CBloose(tau):
-    return (tau.pt > 20 and abs(tau.eta)<2.3 and abs(tau.dxy)<1000 and abs(tau.dz)<0.2 and tau.idMVAOldDMRun2 >= 1 and tau.idDecayMode and tau.idAntiE >= 2)
+    return (tau.pt > 5 and abs(tau.eta)<2.3 and abs(tau.dxy)<1000 and abs(tau.dz)<0.2 and tau.idMVA >= 1 and tau.idDecayMode and tau.idAntiE >= 2)
+    #return (tau.pt > 20 and abs(tau.eta)<2.3 and abs(tau.dxy)<1000 and abs(tau.dz)<0.2 and tau.idMVAOldDMRun2 >= 1 and tau.idDecayMode and tau.idAntiE >= 2)
 
 
 ## _susyEWK_tauId_CBtight
 ## _______________________________________________________________
 def _susyEWK_tauId_CBtight(tau):
     if not _susyEWK_tauId_CBloose(tau): return False
-    return (tau.idMVAOldDMRun2 >= 4)
+    return (tau.idMVA >= 4)
+    #return (tau.idMVAOldDMRun2 >= 4)
 
 
 ## _susyEWK_lepId_CBloose
 ## _______________________________________________________________
 def _susyEWK_lepId_CBloose(lep):
-        if abs(lep.pdgId) == 13:
-            if lep.pt <= 5: return False
-            return True
-        elif abs(lep.pdgId) == 11:
-            if lep.pt <= 7: return False
-            if not (lep.convVeto and lep.lostHits == 0): 
-                return False
-            if not lep.mvaIdSpring15 > -0.70+(-0.83+0.70)*(abs(lep.etaSc)>0.8)+(-0.92+0.83)*(abs(lep.etaSc)>1.479):
-                return False
-            if not _susyEWK_idEmu_cuts(lep): return False
-            return True
-        return False
+    if abs(lep.pdgId) == 13:
+        if lep.pt <= 5: return False
+        return True
+    elif abs(lep.pdgId) == 11:
+        if lep.pt <= 5: return False
+        if not (lep.convVeto and lep.lostHits == 0): 
+            return False
+        #if not lep.mvaIdSpring15 > -0.70+(-0.83+0.70)*(abs(lep.etaSc)>0.8)+(-0.92+0.83)*(abs(lep.etaSc)>1.479):
+        #    return False
+        if not _susyEWK_idEmu_cuts(lep): return False
+        return True
+    return False
 
 
 ## _susyEWK_idEmu_cuts
@@ -677,9 +793,11 @@ def _susyEWK_lepId_IPcuts(lep):
 def _susyEWK_lepId_MVAFO(lep):
     if not _susyEWK_lepId_CBloose(lep): return False
     if not _susyEWK_lepId_IPcuts(lep): return False
-    if not (lep.pt > 10 and (abs(lep.pdgId) == 11 or lep.mediumMuonID2016 > 0)): return False
+    if not (lep.pt > 5 and (abs(lep.pdgId) == 11 or lep.mediumMuonId > 0)): return False
+    #if not (lep.pt > 10 and (abs(lep.pdgId) == 11 or lep.mediumMuonID2016 > 0)): return False
     if _susyEWK_lepId_MVAmedium(lep): return True
-    if not (lep.jetPtRatiov2 > 0.3 and lep.jetBTagCSV < 0.3 and (abs(lep.pdgId)!=11 or (abs(lep.eta)<1.479 and lep.mvaIdSpring15>0.0) or (abs(lep.eta)>1.479 and lep.mvaIdSpring15>0.3))): return False
+    if not (lep.jetPtRatiov2 > 0.3 and lep.jetBTagCSV < 0.3 and (abs(lep.pdgId)!=11 or (abs(lep.eta)<1.479 and lep.mvaIdSpring16GP>0.0) or (abs(lep.eta)>1.479 and lep.mvaIdSpring16GP>0.3))): return False
+    #if not (lep.jetPtRatiov2 > 0.3 and lep.jetBTagCSV < 0.3 and (abs(lep.pdgId)!=11 or (abs(lep.eta)<1.479 and lep.mvaIdSpring15>0.0) or (abs(lep.eta)>1.479 and lep.mvaIdSpring15>0.3))): return False
     return True
 
 
@@ -688,13 +806,23 @@ def _susyEWK_lepId_MVAFO(lep):
 def _susyEWK_lepId_MVAmedium(lep):
     if not _susyEWK_lepId_CBloose(lep): return False
     if not _susyEWK_lepId_IPcuts(lep): return False
-    if lep.pt <= 10: return False
+    if lep.pt <= 5: return False
     if abs(lep.pdgId) == 13:
-        return (lep.mvaSUSY>-0.20 and lep.mediumMuonID2016>0)
+        return (lep.mvaSUSY>-0.20 and lep.mediumMuonId>0)
+        #return (lep.mvaSUSY>-0.20 and lep.mediumMuonID2016>0)
     elif abs(lep.pdgId)==11:
         return lep.mvaSUSY>0.5
     return False
 
+def _susyEWK_nontrigmva_VL(lep):
+    if not abs(lep.pdgId) == 11: return False
+    A = -0.48+(-0.67+0.48)*(abs(lep.eta)>0.8)+(-0.49+0.67)*(abs(lep.eta)>1.479)
+    B = -0.85+(-0.91+0.85)*(abs(lep.eta)>0.8)+(-0.83+0.91)*(abs(lep.eta)>1.479)
+    if lep.pt < 10:
+        return lep.mvaIdSpring16HZZ > 0.46+(-0.03-0.46)*(abs(lep.eta)>0.8)+(0.06+0.03)*(abs(lep.eta)>1.479)
+    elif lep.pt > 10:
+        return lep.mvaIdSpring16GP > min( A , max( B , A+(B-A)/10*(lep.pt-15) ) )
+    return False
 
 ## passPtCutTriple
 ## _______________________________________________________________
@@ -705,16 +833,16 @@ def passPtCutTriple(l1, l2, l3):
     tau   = [l for l in leps if abs(l.pdgId) == 15                      ]
 
     for t in tau:
-        if t.conePt < 20: return False
+        if t.conePt < 5: return False
 
     for i,l in enumerate(light):
-        if l.conePt < 10: return False
+        if l.conePt < 5: return False
         if i == 0:
-            if abs(l.pdgId) == 11 and l.conePt < 25: return False
-            if abs(l.pdgId) == 13 and l.conePt < 20: return False
+            if abs(l.pdgId) == 11 and l.conePt < 5: return False
+            if abs(l.pdgId) == 13 and l.conePt < 5: return False
             continue
         if i == 1:
-            if abs(l.pdgId) == 11 and l.conePt < 15: return False
+            if abs(l.pdgId) == 11 and l.conePt < 5: return False
             continue
     return True
 
@@ -758,4 +886,5 @@ if __name__ == '__main__':
             print self.sf5(ev)
     el = EventLoop([ Tester("tester") ])
     el.loop([tree], maxEvents = 50)
+
 

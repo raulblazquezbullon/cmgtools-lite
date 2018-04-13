@@ -1,0 +1,17 @@
+#data : MuonEG_Run2017B ; Label="2017", FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt"
+#data : MuonEG_Run2017C ; Label="2017", FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt"
+#data : MuonEG_Run2017D ; Label="2017", FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt"
+#data : MuonEG_Run2017E ; Label="2017", FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt"
+
+data2017+ : MuonEG_Run2017B : 1 ; Label="2017", FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt"
+data2017+ : MuonEG_Run2017C : 1 ; Label="2017", FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt"
+data2017+ : MuonEG_Run2017D : 1 ; Label="2017", FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt"
+data2017+ : MuonEG_Run2017E : 1 ; Label="2017", FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt"
+
+data2016 : MuonEG_Run2016B_03Feb2017_ver2_v2_runs_273150_275376 : 1 ; Label="2016", FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt", LineColor=ROOT.kBlue
+data2016 : MuonEG_Run2016C_03Feb2017_v1_runs_271036_284044 : 1  ; Label="2016", FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt", LineColor=ROOT.kBlue
+data2016 : MuonEG_Run2016D_03Feb2017_v1_runs_271036_284044 : 1  ; Label="2016", FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt", LineColor=ROOT.kBlue
+data2016 : MuonEG_Run2016E_03Feb2017_v1_runs_271036_284044 : 1  ; Label="2016", FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt", LineColor=ROOT.kBlue
+data2016 : MuonEG_Run2016F_03Feb2017_v1_runs_271036_284044 : 1  ; Label="2016", FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt", LineColor=ROOT.kBlue
+data2016 : MuonEG_Run2016H_03Feb2017_ver2_v1_runs_281085_284035 : 1  ; Label="2016", FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt", LineColor=ROOT.kBlue
+data2016 : MuonEG_Run2016H_03Feb2017_ver3_v1_runs_284036_284044 : 1  ; Label="2016", FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt", LineColor=ROOT.kBlue

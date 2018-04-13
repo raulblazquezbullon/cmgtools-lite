@@ -1,0 +1,80 @@
+alwaystrue: 1
+3l        : nLepSel >= 3 || nLepLoose_Mini >= 3 && LepGood_ip3d[iL_Mini[0]] < 0.01  && LepGood_ip3d[iL_Mini[1]] < 0.01  && LepGood_ip3d[iL_Mini[2]] < 0.01  && LepGood_sip3d[iL_Mini[0]] < 2 && LepGood_sip3d[iL_Mini[1]] < 2 && LepGood_sip3d[iL_Mini[2]] < 2 && max(LepGood_dxy[iL_Mini[0]], LepGood_dz[iL_Mini[0]]) < 0.03 && max(LepGood_dxy[iL_Mini[1]], LepGood_dz[iL_Mini[1]]) < 0.03 && max(LepGood_dxy[iL_Mini[2]], LepGood_dz[iL_Mini[2]]) < 0.03
+
+#SRevent   : allTight(3, LepSel_isTight[0], LepSel_isTight[1], LepSel_isTight[2])
+#veto      : LepSel4_isTight == 0
+
+#Disable for now
+#trigger_ALLOLD   : $DATA{Triggers_ee||Triggers_em||Triggers_mm        } $MC{Triggers_ee||Triggers_em||Triggers_mm} $FASTSIM{1}
+#filters   : $DATA{METfilters                                   } $MC{1} $FASTSIM{1}
+
+#restofSelection : (minMllSFOS_Mini > 12 || minMllSFOS_Mini == -1) && (BR > 0 && BR <= 2) && ((BR != 1 && BR != 3) || abs(m3L-91) > 15) && (met_pt > 50) && (nBJetMedium25 == 0) #For now do it at once to not clamp a lof of things into -f
+
+#restofSelectionSOSCompatible : (minMllSFOS_Mini > 60 || minMllSFOS_Mini == -1) && (BR > 0 && BR <= 2) && ((BR != 1 && BR != 3) || abs(m3L-91) > 15) && (met_pt > 50) && (nBJetMedium25 == 0) #Upper limit on minimum invariant mass to check compatibility with SOS analysis
+
+lowmass   : minMllSFOS_Mini > 12 || minMllSFOS_Mini == -1
+BRevent   : BR > 0 && BR <= 2 #3l A or 3l B
+convveto  : (BR != 1 && BR != 3) || abs(m3L-91) > 15
+met       : met_pt > 50
+bJetVeto  : nBJetMedium25 == 0
+lepPt     : LepSel1_conePt > (20 + 5*(abs(LepSel1_pdgId)==11)) && LepSel2_conePt > 5 && LepSel3_conePt > 5 || LepGood_pt[iL_Mini[1]] > 5 && LepGood_pt[iL_Mini[2]] > 5 ; Disable=True 
+
+flav_mee : (abs(LepSel_pdgId[0])*abs(LepSel_pdgId[1])*abs(LepSel_pdgId[2]))==1573; Disable=True 
+flav_mme : (abs(LepSel_pdgId[0])*abs(LepSel_pdgId[1])*abs(LepSel_pdgId[2]))==1859; Disable=True
+flav_mmm : abs(LepSel_pdgId[0]) == 13 && abs(LepSel_pdgId[1]) == 13 && abs(LepSel_pdgId[2]) == 13; Disable=True
+flav_eee : abs(LepSel_pdgId[0]) == 11 && abs(LepSel_pdgId[1]) == 11 && abs(LepSel_pdgId[2]) == 11; Disable=True
+
+maxMll60 : maxMllSFOS > 60 || maxMllSFOS == -1; Disable=True
+maxMll50 : maxMllSFOS > 50 || maxMllSFOS == -1; Disable=True
+maxMll40 : maxMllSFOS > 40 || maxMllSFOS == -1; Disable=True
+maxMll30 : maxMllSFOS > 30 || maxMllSFOS == -1; Disable=True
+maxMll20 : maxMllSFOS > 20 || maxMllSFOS == -1; Disable=True
+firstPt  : LepGood_pt[iL_Mini[0]] > 30; Disable=True
+
+
+#trigger_OLD  : $DATA{Triggers_ee||Triggers_em||Triggers_mm        } $MC{Triggers_ee||Triggers_em||Triggers_mm} $FASTSIM{1}; Disable=True
+
+#trigger_NEW : $DATA{HLT_BIT_HLT_TripleMu_5_3_3_Mass3p8to60_DZ_v || HLT_BIT_HLT_TripleMu_10_5_5_DZ_v || HLT_BIT_HLT_TripleMu_12_10_5_v || HLT_BIT_HLT_DoubleMu4_Mass8_DZ_PFHT350_v || HLT_BIT_HLT_DoubleMu8_Mass8_PFHT350_v || HLT_BIT_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_v || HLT_BIT_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v || HLT_BIT_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v || HLT_BIT_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v || HLT_BIT_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v || HLT_BIT_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v || HLT_BIT_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v || HLT_BIT_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v || HLT_BIT_HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL_v || HLT_BIT_HLT_Mu8_DiEle12_CaloIdL_TrackIdL_v || HLT_BIT_HLT_Mu8_DiEle12_CaloIdL_TrackIdL_v || HLT_BIT_HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_PFHT350_v || HLT_BIT_HLT_DoubleEle25_CaloIdL_MW_v} $MC{newthreeLeptons_trigger_mm_4_4 || newthreeLeptons_trigger_mm_8_8 || newthreeLeptons_trigger_mm_17_8 || newthreeLeptons_trigger_me_8_23 || newthreeLeptons_trigger_me_23_12 || newthreeLeptons_trigger_me_8_23 || newthreeLeptons_trigger_me_23_12 || newthreeLeptons_trigger_mmm_5_3_3 || newthreeLeptons_trigger_mmm_10_5_5 || newthreeLeptons_trigger_mmm_12_10_5 || newthreeLeptons_trigger_ee_8_8 || newthreeLeptons_trigger_ee_25_25 || newthreeLeptons_trigger_mee_8_12_12 || newthreeLeptons_trigger_eee_16_12_8} $FASTSIM{1} ; Disable=True
+
+
+
+Triggers2017 : $DATA{real_trigger_allNew} $MC{delta_trigger_allNew} $FASTSIM{1}; Disable=True
+
+#Trigger_mmm : $DATA{real_Trigger_mmm} $MC{delta_Trigger_mmm} $FASTSIM{1}; Disable=True
+#Trigger_eee : $DATA{real_Trigger_eee} $MC{delta_Trigger_eee} $FASTSIM{1}; Disable=True
+#Trigger_mee : $DATA{real_Trigger_mee} $MC{delta_Trigger_mee} $FASTSIM{1}; Disable=True
+
+Triggermmm533 : $DATA{HLT_BIT_HLT_TripleMu_5_3_3_Mass3p8to60_DZ_v} $MC{newthreeLeptons_trigger_mmm_5_3_3} $FASTSIM{newthreeLeptons_trigger_mmm_5_3_3}; Disable=True
+Triggermmm1055 : $DATA{HLT_BIT_HLT_TripleMu_10_5_5_DZ_v} $MC{newthreeLeptons_trigger_mmm_10_5_5} $FASTSIM{newthreeLeptons_trigger_mmm_10_5_5}; Disable=True
+Triggermmm12105 : $DATA{HLT_BIT_HLT_TripleMu_12_10_5_v} $MC{newthreeLeptons_trigger_mmm_12_10_5} $FASTSIM{newthreeLeptons_trigger_mmm_12_10_5}; Disable=True
+
+Triggereee16128 : $DATA{HLT_BIT_HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL_v} $MC{newthreeLeptons_trigger_eee_16_12_8} $FASTSIM{newthreeLeptons_trigger_eee_16_12_8}; Disable=True
+Triggermee81212 : $DATA{HLT_BIT_HLT_Mu8_DiEle12_CaloIdL_TrackIdL_v || HLT_BIT_HLT_Mu8_DiEle12_CaloIdL_TrackIdL_v} $MC{newthreeLeptons_trigger_mee_8_12_12} $FASTSIM{newthreeLeptons_trigger_mee_8_12_12}; Disable=True
+
+
+
+
+
+Triggermm44 : $DATA{HLT_BIT_HLT_DoubleMu4_Mass8_DZ_PFHT350_v} $MC{newthreeLeptons_trigger_mm_4_4} $FASTSIM{newthreeLeptons_trigger_mm_4_4}; Disable=True
+Triggermm88 : $DATA{HLT_BIT_HLT_DoubleMu8_Mass8_PFHT350_v} $MC{newthreeLeptons_trigger_mm_8_8} $FASTSIM{newthreeLeptons_trigger_mm_8_8}; Disable=True
+Triggermm178 : $DATA{HLT_BIT_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_v || HLT_BIT_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v || HLT_BIT_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v || HLT_BIT_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v} $MC{newthreeLeptons_trigger_mm_17_8} $FASTSIM{newthreeLeptons_trigger_mm_17_8}; Disable=True
+
+Triggerme823 : $DATA{HLT_BIT_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v || HLT_BIT_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v} $MC{newthreeLeptons_trigger_me_8_23} $FASTSIM{newthreeLeptons_trigger_me_8_23}; Disable=True
+Triggerme2312 : $DATA{HLT_BIT_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v || HLT_BIT_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v} $MC{newthreeLeptons_trigger_me_23_12} $FASTSIM{newthreeLeptons_trigger_me_23_12}; Disable=True
+
+Triggeree88 : $DATA{HLT_BIT_HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_PFHT350_v} $MC{newthreeLeptons_trigger_ee_8_8} $FASTSIM{newthreeLeptons_trigger_ee_8_8}; Disable=True
+Triggeree2525 : $DATA{HLT_BIT_HLT_DoubleEle25_CaloIdL_MW_v} $MC{newthreeLeptons_trigger_ee_25_25} $FASTSIM{newthreeLeptons_trigger_ee_25_25}; Disable=True
+
+
+Trigger_mmm_ALL : $DATA{HLT_BIT_HLT_TripleMu_5_3_3_Mass3p8to60_DZ_v || HLT_BIT_HLT_TripleMu_10_5_5_DZ_v || HLT_BIT_HLT_TripleMu_12_10_5_v } $MC{newthreeLeptons_trigger_mmm_5_3_3 || newthreeLeptons_trigger_mmm_10_5_5 || newthreeLeptons_trigger_mmm_12_10_5} $FASTSIM{newthreeLeptons_trigger_mmm_5_3_3 || newthreeLeptons_trigger_mmm_10_5_5 || newthreeLeptons_trigger_mmm_12_10_5}; Disable=True
+
+Trigger_mm_ALL : $DATA{HLT_BIT_HLT_DoubleMu4_Mass8_DZ_PFHT350_v || HLT_BIT_HLT_DoubleMu8_Mass8_PFHT350_v || HLT_BIT_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_v || HLT_BIT_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v || HLT_BIT_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v || HLT_BIT_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v} $MC{newthreeLeptons_trigger_mm_4_4 || newthreeLeptons_trigger_mm_8_8 || newthreeLeptons_trigger_mm_17_8} $FASTSIM{newthreeLeptons_trigger_mm_4_4 || newthreeLeptons_trigger_mm_8_8 || newthreeLeptons_trigger_mm_17_8}; Disable=True
+
+Trigger_me_ALL : $DATA{HLT_BIT_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v || HLT_BIT_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v || HLT_BIT_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v || HLT_BIT_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v} $MC{newthreeLeptons_trigger_me_8_23 || newthreeLeptons_trigger_me_23_12} $FASTSIM{newthreeLeptons_trigger_me_8_23 || newthreeLeptons_trigger_me_23_12}; Disable=True
+
+
+
+
+#Trigger_ALL : $DATA{HLT_BIT_HLT_TripleMu_5_3_3_Mass3p8to60_DZ_v || HLT_BIT_HLT_TripleMu_10_5_5_DZ_v || HLT_BIT_HLT_TripleMu_12_10_5_v || HLT_BIT_HLT_DoubleMu4_Mass8_DZ_PFHT350_v || HLT_BIT_HLT_DoubleMu8_Mass8_PFHT350_v || HLT_BIT_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_v || HLT_BIT_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v || HLT_BIT_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v || HLT_BIT_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v || HLT_BIT_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v || HLT_BIT_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v || HLT_BIT_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v || HLT_BIT_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v || HLT_BIT_HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL_v || HLT_BIT_HLT_Mu8_DiEle12_CaloIdL_TrackIdL_v || HLT_BIT_HLT_Mu8_DiEle12_CaloIdL_TrackIdL_v || HLT_BIT_HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_PFHT350_v || HLT_BIT_HLT_DoubleEle25_CaloIdL_MW_v} $MC{newthreeLeptons_trigger_mm_4_4 || newthreeLeptons_trigger_mm_8_8 || newthreeLeptons_trigger_mm_17_8 || newthreeLeptons_trigger_me_8_23 || newthreeLeptons_trigger_me_23_12 || newthreeLeptons_trigger_me_8_23 || newthreeLeptons_trigger_me_23_12 || newthreeLeptons_trigger_mmm_5_3_3 || newthreeLeptons_trigger_mmm_10_5_5 || newthreeLeptons_trigger_mmm_12_10_5 || newthreeLeptons_trigger_ee_8_8 || newthreeLeptons_trigger_ee_25_25 || newthreeLeptons_trigger_mee_8_12_12} $FASTSIM{newthreeLeptons_trigger_mee_8_12_12 || newthreeLeptons_trigger_eee_16_12_8} $FASTSIM{newthreeLeptons_trigger_mm_4_4 || newthreeLeptons_trigger_mm_8_8 || newthreeLeptons_trigger_mm_17_8 || newthreeLeptons_trigger_me_8_23 || newthreeLeptons_trigger_me_23_12 || newthreeLeptons_trigger_me_8_23 || newthreeLeptons_trigger_me_23_12 || newthreeLeptons_trigger_mmm_5_3_3 || newthreeLeptons_trigger_mmm_10_5_5 || newthreeLeptons_trigger_mmm_12_10_5 || newthreeLeptons_trigger_ee_8_8 || newthreeLeptons_trigger_ee_25_25 || newthreeLeptons_trigger_mee_8_12_12} $FASTSIM{newthreeLeptons_trigger_mee_8_12_12 || newthreeLeptons_trigger_eee_16_12_8}; Disable=True
+
+thisistrue: 1
