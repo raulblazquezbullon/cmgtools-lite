@@ -11,7 +11,7 @@ flav_eee : abs(LepSel_pdgId[0]) == 11 && abs(LepSel_pdgId[1]) == 11 && abs(LepSe
 trigger_ALLOLD   : $DATA{Triggers_ee||Triggers_em||Triggers_mm        } $MC{Triggers_ee||Triggers_em||Triggers_mm} $FASTSIM{1}; Disable=True
 filters   : $DATA{METfilters                                   } $MC{1} $FASTSIM{1}; Disable=True
 
-restofSelection : (minMllSFOS_Mini > 12 || minMllSFOS_Mini == -1) && (BR > 0 && BR <= 2) && ((BR != 1 && BR != 3) || abs(m3L-91) > 15) && (met_pt > 50) && (nBJetMedium25 == 0) #For now do it at once to not clamp a lof of things into -f
+restofSelection : (minMllSFOS_Mini > 12 || minMllSFOS_Mini == -1) && (BR > 0 && BR <= 2) && ((BR != 1 && BR != 3) || abs(m3L-91) > 15) && (met_pt > 50) && (nBJetMedium25 == 0) && LepSel_pt[1] > 30 #For now do it at once to not clamp a lof of things into -f
 
 #restofSelectionSOSCompatible : (minMllSFOS_Mini > 60 || minMllSFOS_Mini == -1) && (BR > 0 && BR <= 2) && ((BR != 1 && BR != 3) || abs(m3L-91) > 15) && (met_pt > 50) && (nBJetMedium25 == 0) #Upper limit on minimum invariant mass to check compatibility with SOS analysis
 

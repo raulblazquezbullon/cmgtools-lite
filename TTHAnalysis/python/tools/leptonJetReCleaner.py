@@ -160,17 +160,11 @@ class LeptonJetReCleaner:
                     discjetret[jfloat] = []
                 for idx in ret["iJSel"+postfix]:
                     jet = jetcollcleaned[idx] if idx >= 0 else jetcolldiscarded[-1-idx]
-                    use = getattr(jet,"rawPt") if idx >= 0 else getattr(jet,"pt")
-                    jetret["rawPt"].append(use)
-                    for jfloat in "pt eta phi mass btagCSV".split():
-                    #for jfloat in "pt eta phi mass btagCSV rawPt".split():
-                        jetret[jfloat].append( getattr(jet,jfloat,getattr(jet,"pt",0)) )
+                    for jfloat in "pt eta phi mass btagCSV rawPt".split():
+                        jetret[jfloat].append( getattr(jet,jfloat) )
                 for idx in ret["iDiscJSel"+postfix]:
                     jet = jetcollcleaned[idx] if idx >= 0 else jetcolldiscarded[-1-idx]
-                    use = getattr(jet,"rawPt") if idx >= 0 else getattr(jet,"pt")
-                    discjetret["rawPt"].append(use)
-                    for jfloat in "pt eta phi mass btagCSV".split():
-                    #for jfloat in "pt eta phi mass btagCSV rawPt".split():
+                    for jfloat in "pt eta phi mass btagCSV rawPt".split():
                         discjetret[jfloat].append( getattr(jet,jfloat) )
          # 5. compute the sums
         ret["nJet"+self.strBJetPt+postfix] = 0; ret["htJet"+self.strBJetPt+"j"+postfix] = 0; ret["mhtJet"+self.strBJetPt+postfix] = 0; ret["nBJetLoose"+self.strBJetPt+postfix] = 0; ret["nBJetMedium"+self.strBJetPt+postfix] = 0

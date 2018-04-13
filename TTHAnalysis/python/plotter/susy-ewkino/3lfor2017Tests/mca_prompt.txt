@@ -1,0 +1,5 @@
+incl_WZ               : + ; IncludeMca="susy-ewkino/3lfor2017Tests/includes/mca_WZ.txt"
+incl_ZZH              : + ; IncludeMca="susy-ewkino/3lfor2017Tests/includes/mca_ZZH.txt"
+incl_VVV              : + ; IncludeMca="susy-ewkino/3lfor2017Tests/includes/mca_VVV.txt"
+incl_ttX              : + ; IncludeMca="susy-ewkino/3lfor2017Tests/includes/mca_ttX.txt"
+incl_ttZ              : + ; IncludeMca="susy-ewkino/3lfor2017Tests/includes/mca_ttZ.txt"

@@ -1,0 +1,9 @@
+fakes_tt : TTJets_DiLepton + TTJets_DiLepton_ext : xsec ; FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt\,susy-ewkino/3lfor2017Tests/fakerate_load_isfake.txt", Label="Fakes (TT)", NormSystematic=0.3,FillColor=ROOT.kAzure-9
+fakes_tt : TTJets_SingleLeptonFromT + TTJets_SingleLeptonFromT_ext : xsec ; FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt\,susy-ewkino/3lfor2017Tests/fakerate_load_isfake.txt", Label="Fakes (TT)", NormSystematic=0.3,FillColor=ROOT.kAzure-9  
+fakes_tt : TTJets_SingleLeptonFromTbar_ext + TTJets_SingleLeptonFromTbar : xsec ; FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt\,susy-ewkino/3lfor2017Tests/fakerate_load_isfake.txt", Label="Fakes (TT)", NormSystematic=0.3,FillColor=ROOT.kAzure-9  
+fakes_tt : T_tch_powheg : xsec ; FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt\,susy-ewkino/3lfor2017Tests/fakerate_load_isfake.txt", Label="Fakes (TT)", NormSystematic=0.3, FillColor=ROOT.kAzure-9  
+fakes_tt : TBar_tch_powheg : xsec ; FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt\,susy-ewkino/3lfor2017Tests/fakerate_load_isfake.txt", Label="Fakes (TT)", NormSystematic=0.3, FillColor=ROOT.kAzure-9  
+fakes_tt : TTLLJets_m1to10 : xsec ; FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt\,susy-ewkino/3lfor2017Tests/fakerate_load_isfake.txt", Label="Fakes (TT)", NormSystematic=0.3, FillColor=ROOT.kAzure-9
+
+fakes_DY : DYJetsToLL_M10to50 : xsec ; FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt\,susy-ewkino/3lfor2017Tests/fakerate_load_isfake.txt", Label="Fakes (DY)", NormSystematic=0.3, FillColor=ROOT.kAzure-9
+fakes_DY : DYJetsToLL_M50 : xsec ; FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt\,susy-ewkino/3lfor2017Tests/fakerate_load_isfake.txt", Label="Fakes (DY)", NormSystematic=0.3, FillColor=ROOT.kAzure-9

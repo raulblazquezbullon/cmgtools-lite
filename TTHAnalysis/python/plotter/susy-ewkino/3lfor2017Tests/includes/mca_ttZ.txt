@@ -1,0 +1,1 @@
+rares_ttZ  : TTZToLLNuNu                 : xsec ; FillColor=ROOT.kViolet-3, FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt\,susy-ewkino/3lfor2017Tests/fakerate_load_isprompt.txt", Label="t\#bar{t}X", NormSystematic=0.15

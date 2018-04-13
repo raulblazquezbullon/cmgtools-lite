@@ -2,19 +2,19 @@
 threeLeptons_notrigger_ALL\b : 1; Disable=True
 
 #### OLD TRIGGERS ####
-threeLeptons_trigger_ee_23_12\b : trig_ee_23_12(LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1],LepSel_pt[2], LepSel_pdgId[2]); Disable=True #  HLT_BIT_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v
+oldthreeLeptons_trigger_ee_23_12\b : trig_ee_23_12(LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1],LepSel_pt[2], LepSel_pdgId[2]); Disable=True #  HLT_BIT_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v
 
-threeLeptons_trigger_e_27\b : trig_e_27(LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1],LepSel_pt[2], LepSel_pdgId[2]); Disable=True #  HLT_BIT_HLT_Ele27_WPTight_Gsf_v 
+oldthreeLeptons_trigger_e_27\b : trig_e_27(LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1],LepSel_pt[2], LepSel_pdgId[2]); Disable=True #  HLT_BIT_HLT_Ele27_WPTight_Gsf_v 
 
-threeLeptons_trigger_mm_17_8\b : trig_mm_17_8(LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1],LepSel_pt[2], LepSel_pdgId[2]); Disable=True #  HLT_BIT_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_v, HLT_BIT_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_v
+oldthreeLeptons_trigger_mm_17_8\b : trig_mm_17_8(LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1],LepSel_pt[2], LepSel_pdgId[2]); Disable=True #  HLT_BIT_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_v, HLT_BIT_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_v
 
-threeLeptons_trigger_m_24\b : trig_m_24(LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1],LepSel_pt[2], LepSel_pdgId[2]); Disable=True #  HLT_BIT_HLT_IsoTkMu24_v  HLT_BIT_HLT_IsoMu24_v
+oldthreeLeptons_trigger_m_24\b : trig_m_24(LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1],LepSel_pt[2], LepSel_pdgId[2]); Disable=True #  HLT_BIT_HLT_IsoTkMu24_v  HLT_BIT_HLT_IsoMu24_v
 
-threeLeptons_trigger_me_8_23\b : trig_me_8_23(LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1],LepSel_pt[2], LepSel_pdgId[2]); Disable=True #  HLT_BIT_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v
+oldthreeLeptons_trigger_me_8_23\b : trig_me_8_23(LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1],LepSel_pt[2], LepSel_pdgId[2]); Disable=True #  HLT_BIT_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v
 
-threeLeptons_trigger_me_23_8\b : trig_me_8_23(LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1],LepSel_pt[2], LepSel_pdgId[2]); Disable=True # HLT_BIT_HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_v
+oldthreeLeptons_trigger_me_23_8\b : trig_me_8_23(LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1],LepSel_pt[2], LepSel_pdgId[2]); Disable=True # HLT_BIT_HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_v
 
-threeLeptons_trigger_allOld\b : trig_ee_23_12(LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1],LepSel_pt[2], LepSel_pdgId[2]) || trig_e_27(LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1],LepSel_pt[2], LepSel_pdgId[2]) || trig_mm_17_8(LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1],LepSel_pt[2], LepSel_pdgId[2]) || trig_m_24(LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1],LepSel_pt[2], LepSel_pdgId[2]) || trig_me_8_23(LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1],LepSel_pt[2], LepSel_pdgId[2]) || trig_me_8_23(LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1],LepSel_pt[2], LepSel_pdgId[2]); Disable=True
+oldthreeLeptons_trigger_allOld\b : trig_ee_23_12(LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1],LepSel_pt[2], LepSel_pdgId[2]) || trig_e_27(LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1],LepSel_pt[2], LepSel_pdgId[2]) || trig_mm_17_8(LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1],LepSel_pt[2], LepSel_pdgId[2]) || trig_m_24(LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1],LepSel_pt[2], LepSel_pdgId[2]) || trig_me_8_23(LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1],LepSel_pt[2], LepSel_pdgId[2]) || trig_me_8_23(LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1],LepSel_pt[2], LepSel_pdgId[2]); Disable=True
 
 #### NEW TRIGGERS ####
 newthreeLeptons_trigger_mmm_5_3_3\b : trig_mmm_5_3_3(LepSel_pt[0], LepSel_pdgId[0], LepSel_pt[1], LepSel_pdgId[1],LepSel_pt[2], LepSel_pdgId[2]) && minMaxMasses(mass_2(LepSel_conePt[0],LepSel_eta[0],LepSel_phi[0],LepSel_mass[0],LepSel_conePt[1],LepSel_eta[1],LepSel_phi[1],LepSel_mass[1]), mass_2(LepSel_conePt[0],LepSel_eta[0],LepSel_phi[0],LepSel_mass[0],LepSel_conePt[2],LepSel_eta[2],LepSel_phi[2],LepSel_mass[2]), mass_2(LepSel_conePt[2],LepSel_eta[2],LepSel_phi[2],LepSel_mass[2],LepSel_conePt[1],LepSel_eta[1],LepSel_phi[1],LepSel_mass[1]), 3.8, 60); Disable=True ##DONE HLT_TripleMu_5_3_3_Mass3p8to60_DZ_v

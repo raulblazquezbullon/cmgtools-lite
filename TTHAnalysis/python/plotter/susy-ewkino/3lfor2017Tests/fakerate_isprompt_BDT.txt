@@ -1,0 +1,3 @@
+#allprompt: 1.0
+allprompt: (LepGood_mcMatchId[0]!=0 && LepGood_mcPromptGamma[0]==0) && (LepGood_mcMatchId[1]!=0 && LepGood_mcPromptGamma[1]==0) && (LepGood_mcMatchId[2]!=0 && LepGood_mcPromptGamma[2]==0)
+#allprompt: isPrompt(3, LepGood_mcPrompt[0], LepGood_mcPrompt[1], LepGood_mcPrompt[2])

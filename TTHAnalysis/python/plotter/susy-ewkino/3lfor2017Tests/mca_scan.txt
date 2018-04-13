@@ -1,0 +1,36 @@
+#mca for the 2017 scan tests
+
+#Basic background
+incl_WZ               : + ; IncludeMca="susy-ewkino/3lfor2017Tests/includes/mca_WZ.txt"
+incl_fakes            : + ; IncludeMca="susy-ewkino/3lfor2017Tests/includes/mca_fakes.txt"
+incl_ZZH              : + ; IncludeMca="susy-ewkino/3lfor2017Tests/includes/mca_ZZH.txt"
+incl_convs            : + ; IncludeMca="susy-ewkino/3lfor2017Tests/includes/mca_convs.txt"
+incl_VVV              : + ; IncludeMca="susy-ewkino/3lfor2017Tests/includes/mca_VVV.txt"
+incl_ttX              : + ; IncludeMca="susy-ewkino/3lfor2017Tests/includes/mca_ttX.txt"
+incl_ttZ              : + ; IncludeMca="susy-ewkino/3lfor2017Tests/includes/mca_ttZ.txt"
+
+#Basig signal
+incl_signal           : + ; IncludeMca="susy-ewkino/3lfor2017Tests/includes/mca_signalWZ.txt"
+
+
+#JEC
+incl_sys_jec          : + ; IncludeMca="susy-ewkino/3lfor2017Tests/includes/mca_sys_jec.txt"
+
+#PUW
+incl_sys_puw          : + ; IncludeMca="susy-ewkino/3lfor2017Tests/includes/mca_sys_puw.txt"
+
+#SF
+incl_sys_SF           : + ; IncludeMca="susy-ewkino/3lfor2017Tests/includes/mca_sys_lepSF.txt"
+
+#SFFS
+incl_sys_SFFS         : + ; IncludeMca="susy-ewkino/3lfor2017Tests/includes/mca_sys_lepSFFS.txt"
+
+#BTag
+incl_sys_bTag         : + ; IncludeMca="susy-ewkino/3lfor2017Tests/includes/mca_sys_bTag.txt"
+
+
+#sig_275_185+ :  TChiWZ_275_185 : 543.03*0.10099/1000 ; Label="LL (275/185) TE",FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt\,susy-ewkino/3lfor2017Tests/fakerate_load_isprompt.txt", isFastSim=True, FillColor=ROOT.kRed
+
+#sig_250_160+ :  TChiWZ_250_160 : 782.487*0.10099/1000 ; Label="LL (250/160) TE",FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt\,susy-ewkino/3lfor2017Tests/fakerate_load_isprompt.txt", isFastSim=True, FillColor=ROOT.kGreen
+
+#sig_225_135+ :  TChiWZ_225_135 : 1165.09*0.10099/1000 ; Label="LL (225/135) TE",FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt\,susy-ewkino/3lfor2017Tests/fakerate_load_isprompt.txt", isFastSim=True, FillColor=ROOT.kBlue
