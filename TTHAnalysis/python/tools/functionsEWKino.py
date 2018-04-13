@@ -45,7 +45,7 @@ def _ewkino_2lss_lepId_FO(lep):
     if (abs(lep.pdgId) == 13):  
         return  (lep.jetPtRatiov2 > 0.3 and lep.jetBTagCSV < 0.3 and lep.mediumMuonId > 0)
     elif (abs(lep.pdgId) == 11): 
-        return lep.jetPtRatiov2 > 0.3 and lep.jetBTagCSV < 0.3 and ((abs(lep.eta)<1.479 and lep.mvaIdSpring16GP>0.0) or (abs(lep.eta)>1.479 and lep.mvaIdSpring16GP>0.3))
+        return lep.jetPtRatiov2 > 0.3 and lep.jetBTagCSV < 0.3 and ((abs(lep.eta)<1.479 and True) or (abs(lep.eta)>1.479 and True))
 
 def _ewkino_2lss_lepId_IPcuts(lep):
     if not lep.sip3d<8: return False
@@ -93,7 +93,7 @@ def _ewkino_3l_lepId_FO(lep):
     if (abs(lep.pdgId) == 13):  
         return  (lep.jetPtRatiov2 > 0.3 and lep.jetBTagCSV < 0.3 and lep.mediumMuonId > 0)
     elif (abs(lep.pdgId) == 11): 
-        return lep.jetPtRatiov2 > 0.3 and lep.jetBTagCSV < 0.3 and ((abs(lep.eta)<1.479 and lep.mvaIdSpring16GP>0.0) or (abs(lep.eta)>1.479 and lep.mvaIdSpring16GP>0.3))
+        return lep.jetPtRatiov2 > 0.3 and lep.jetBTagCSV < 0.3 and ((abs(lep.eta)<1.479 and True) or (abs(lep.eta)>1.479 and True))
 
 def _ewkino_3l_lepId_num(lep):
     if not _ewkino_3l_lepId_FO(lep): return False

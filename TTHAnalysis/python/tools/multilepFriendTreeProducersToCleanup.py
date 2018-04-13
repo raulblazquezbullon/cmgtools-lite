@@ -30,7 +30,10 @@ bTagEventWeightFullSim2L = lambda : bTagWeightAnalyzer(btagsf_payload_fullsim, b
 bTagEventWeightFastSim2L = lambda : bTagWeightAnalyzer(btagsf_payload_fastsim, btag_efficiency_fastsim, recllabel='Recl', isFastSim=True)
 MODULES.append( ('bTagEventWeightFullSim2L', bTagEventWeightFullSim2L ))
 MODULES.append( ('bTagEventWeightFastSim2L', bTagEventWeightFastSim2L ))
-
+bTagEventWeightFullSimWZ = lambda : bTagWeightAnalyzer(btagsf_payload_fullsim, btag_efficiency_fullsim, recllabel='Recl')
+bTagEventWeightFastSimWZ = lambda : bTagWeightAnalyzer(btagsf_payload_fastsim, btag_efficiency_fastsim, recllabel='Recl', isFastSim=True)
+MODULES.append( ('bTagEventWeightFullSimWZ', bTagEventWeightFullSimWZ ))
+MODULES.append( ('bTagEventWeightFastSimWZ', bTagEventWeightFastSimWZ ))
 
 ## PU uncertainty instances
 from CMGTools.TTHAnalysis.tools.fastSimPUW import FastSimPUWProducer
@@ -118,7 +121,6 @@ MODULES.append( ('leptonJetReCleanerSusyEWK3L', lambda : LeptonJetReCleaner("Min
                    jetPt = 30,
                    bJetPt = 25,
                    coneptdef = lambda lep: conept_EWK(lep, 2),
-                   storeJetVariables = True
                  ) ))
 
 # All jets, needed for tau fakes study
@@ -189,6 +191,29 @@ MODULES.append( ('leptonJetReCleanerTTH', lambda : LeptonJetReCleaner("Recl", # 
                    coneptdef = lambda lep: conept_TTH(lep) ) ))
 
 
+
+
+MODULES.append( ('leptonJetReCleanerWZSM', lambda : LeptonJetReCleaner("Recl", 
+                   looseLeptonSel = lambda lep : lep.miniRelIso < 0.4 and _ewkino_2lss_lepId_IPcuts(lep) and _ewkino_2lss_lepId_CBloose(lep),
+                   cleaningLeptonSel = lambda lep : lep.pt>10 and lep.conept>10 and (_ewkino_2lss_lepId_num(lep) or _ewkino_2lss_lepId_FO(lep)), # cuts on top of loose
+                   FOLeptonSel = lambda lep,ht : lep.pt>10 and lep.conept>10 and (_ewkino_2lss_lepId_num(lep) or _ewkino_2lss_lepId_FO(lep)), # cuts on top of loose
+                   tightLeptonSel = lambda lep,ht : lep.pt>10 and lep.conept>10 and _ewkino_2lss_lepId_num(lep), # on top of loose 
+                   cleanJet = lambda lep,jet,dr : dr<0.4,
+                   selectJet = lambda jet: abs(jet.eta)<2.4,
+                   cleanTau = lambda lep,tau,dr: dr<0.4,
+                   looseTau = lambda tau: _susyEWK_tauId_CBloose(tau), # used in cleaning
+                   tightTau = lambda tau: _susyEWK_tauId_CBtight(tau), # on top of loose
+                   cleanJetsWithTaus = False,
+                   cleanTausWithLoose = False,
+                   doVetoZ = False,
+                   doVetoLMf = False,
+                   doVetoLMt = True,
+                   jetPt = 30,
+                   bJetPt = 25,
+                   coneptdef = lambda lep: conept_SSDL(lep)
+                 ) ))
+
+
 #--- Lepton builder instances
 from CMGTools.TTHAnalysis.tools.leptonBuilderEWK import LeptonBuilderEWK
 
@@ -197,6 +222,12 @@ MODULES.append( ('leptonBuilderWZCR_EWK', lambda : LeptonBuilderEWK("Recl")))
 
 from CMGTools.TTHAnalysis.tools.leptonBuilderRA7 import LeptonBuilderRA7
 MODULES.append( ('leptonBuilderRA7', lambda : LeptonBuilderRA7("Mini")))
+
+from CMGTools.TTHAnalysis.tools.leptonBuilderWZSM import LeptonBuilderWZSM
+MODULES.append( ('leptonBuilderWZSM', lambda : LeptonBuilderWZSM("Recl")))
+
+from CMGTools.TTHAnalysis.tools.lepgenVarsWZSM import lepgenVarsWZSM
+MODULES.append( ('lepgenVarsWZSM', lambda : lepgenVarsWZSM("Recl")))
 
 #--- Tau builder instances
 from CMGTools.TTHAnalysis.tools.TauFakesBuilder import TauFakesBuilder
