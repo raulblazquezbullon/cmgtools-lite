@@ -160,11 +160,11 @@ class MCAnalysis:
                     if pname not in getattr(options, '_warning_NormSystematic_variationsFile',[]):
                        options._warning_NormSystematic_variationsFile = [pname] + getattr(options, '_warning_NormSystematic_variationsFile',[])
                        print "Using both a NormSystematic and a variationFile is not supported. Will disable the NormSystematic for process %s" % pname
-            if 'NormSystematic' in extra:
+            """if 'NormSystematic' in extra:
                 variations['_norm'] = Uncertainty('norm_%s'%pname,pname,options.binname,'normSymm',[1+float(extra['NormSystematic'])])
                 if not hasattr(options, '_deprecation_warning_NormSystematic'):
                     print 'Added normalization uncertainty %s to %s, %s. Please migrate away from using the deprecated NormSystematic option.'%(extra['NormSystematic'],pname,field[1])
-                    options._deprecation_warning_NormSystematic = False
+                    options._deprecation_warning_NormSystematic = False"""
 
             cnames = [ x.strip() for x in field[1].split("+") ]
             total_w = 0.; to_norm = False; ttys = [];
@@ -203,8 +203,8 @@ class MCAnalysis:
                     rootfile = "%s/%s/%s/tree.root" % (basepath, cname, treename)
                     rootfile = open(rootfile+".url","r").readline().strip()
                 pckfile = basepath+"/%s/skimAnalyzerCount/SkimReport.pck" % cname
-
-                tty = TreeToYield(rootfile, options, settings=extra, name=pname, cname=cname, objname=objname, variation_inputs=variations.values()); ttys.append(tty)
+                print rootfile
+                tty = TreeToYield(rootfile, options, settings=extra, name=pname, cname=cname, objname=objname); ttys.append(tty)
                 if signal: 
                     self._signals.append(tty)
                     self._isSignal[pname] = True
@@ -215,7 +215,29 @@ class MCAnalysis:
                     self._backgrounds.append(tty)
                 if pname in self._allData: self._allData[pname].append(tty)
                 else                     : self._allData[pname] =     [tty]
-                if "data" not in pname:
+                if "doUnpickled" in extra and extra['doUnpickled']:
+                    rFile = ROOT.TFile.Open(rootfile)
+                    if "data" not in pname:
+                        if options.weight:
+                            hWeights = rFile.Get("SumGenWeights")
+                            is_w = 1
+                            total_w += hWeights.Integral()
+                            scale = "genWeight*(%s)" % field[2]
+                        else:
+                            if (is_w==1): raise RuntimeError, "Can't put together a weighted and an unweighted component (%s)" % cnames
+                            is_w = 0;
+                            hCounters = rFile.Get("Count")
+                            total_w += hCounters.Integral()
+                            scale = "(%s)" % field[2]
+                        if len(field) == 4: scale += "*("+field[3]+")"
+                        for p0,s in options.processesToScale:
+                            for p in p0.split(","):
+                                if re.match(p+"$", pname): scale += "*("+s+")"
+                        to_norm = True
+                    elif len(field) == 3:
+                        tty.setScaleFactor(field[2])
+                else:  
+                  if "data" not in pname:
                     pckobj  = pickle.load(open(pckfile,'r'))
                     counters = dict(pckobj)
                     if ('Sum Weights' in counters) and options.weight:
@@ -233,13 +255,14 @@ class MCAnalysis:
                         for p in p0.split(","):
                             if re.match(p+"$", pname): scale += "*("+s+")"
                     to_norm = True
-                elif len(field) == 2:
-                    pass
-                elif len(field) == 3:
+                  elif len(field) == 3:
                     tty.setScaleFactor(field[2])
-                else:
-                    print "Poorly formatted line: ", field
-                    raise RuntimeError                    
+                  else:
+                    try:
+                        pckobj  = pickle.load(open(pckfile,'r'))
+                        counters = dict(pckobj)
+                    except:
+                        pass     
                 # Adjust free-float and fixed from command line
                 for p0 in options.processesToFloat:
                     for p in p0.split(","):
@@ -256,7 +279,7 @@ class MCAnalysis:
                 if pname not in self._rank: self._rank[pname] = len(self._rank)
             if to_norm: 
                 for tty in ttys: tty.setScaleFactor("%s*%g" % (scale, 1000.0/total_w))
-            for tty in ttys: tty.makeTTYVariations()
+            #for tty in ttys: tty.makeTTYVariations()
         #if len(self._signals) == 0: raise RuntimeError, "No signals!"
         #if len(self._backgrounds) == 0: raise RuntimeError, "No backgrounds!"
     def listProcesses(self,allProcs=False):
@@ -395,7 +418,7 @@ class MCAnalysis:
             if key == 'data' and nodata: continue
             if process != None and key != process: continue
             for tty in ttys:
-                if tty.isEmpty(): continue
+                #if tty.isEmpty(): continue
                 tasks.append((key,tty,plotspec,cut,closeTreeAfter,None))
         if self._options.splitFactor > 1 or  self._options.splitFactor == -1:
             tasks = self._splitTasks(tasks)
@@ -496,12 +519,12 @@ class MCAnalysis:
         for key,ttys in self._allData.iteritems():
             for tty in ttys:
                 myttys = [tty]
-                for (variation,direction,vtty) in tty.getTTYVariations():
+                """for (variation,direction,vtty) in tty.getTTYVariations():
                     if variation.isTrivial(direction): continue # these are never run
                     if variation.changesSelection(direction):
                         myttys.append(vtty)
                     else:
-                        ttysNotToRun.append((vtty,tty))
+                        ttysNotToRun.append((vtty,tty))"""
                 for itty in myttys:
                     revmap[id(itty)] = itty
                     tasks.append( (id(itty), itty, cut, None) )
@@ -523,8 +546,8 @@ class MCAnalysis:
         for key,ttys in self._allData.iteritems():
             for tty in ttys:
                 tty.clearCut() 
-                for (v,d,vtty) in tty.getTTYVariations():
-                    vtty.clearCut()
+                """for (v,d,vtty) in tty.getTTYVariations():
+                    vtty.clearCut()"""
     def prettyPrint(self,reports,makeSummary=True):
         allSig = []; allBg = []
         for key in reports:
