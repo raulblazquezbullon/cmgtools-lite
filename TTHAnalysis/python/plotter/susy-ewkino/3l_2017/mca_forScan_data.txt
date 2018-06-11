@@ -1,0 +1,14 @@
+## Data
+## -----------------------------------------------------------
+incl_data : + ; IncludeMca="susy-ewkino/3l_2017/includes/mca_data_2017.txt"
+
+
+## WZ (to keep the order)
+## -----------------------------------------------------------
+prompt_WZ : WZTo3LNu_amcatnlo : xsec*1.10 ; FillColor=ROOT.kOrange, FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", Label="WZ", doUnpickled=1, AddWeight="puw_nInt_2017(nTrueInt\, 18)"
+
+## Backgrounds
+## -----------------------------------------------------------
+incl_fakes_data : + ; IncludeMca="susy-ewkino/3l_2017/includes/mca_data_2017.txt",Label="Nonprompt e/\#mu/\#tau", FillColor=ROOT.kAzure+1, FakeRate="susy-ewkino/3l/fakerate_fakeappl_central.txt", NormSystematic=0.3, PostFix='_fakes'
+incl_prompts        : + ; IncludeMca="susy-ewkino/3l_2017/includes/mca_prompts.txt"
+

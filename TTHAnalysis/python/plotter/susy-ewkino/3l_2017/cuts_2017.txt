@@ -1,0 +1,24 @@
+alwaystrue: 1
+#blinding  : $DATA{run <= 276811} $MC{1} $FASTSIM{1}
+filters   : $DATA{METfilters} $MC{1} $FASTSIM{1}
+trigger   : $DATA{Triggers_ee || Triggers_em || Triggers_mm} $MC{Triggers_ee || Triggers_em || Triggers_mm} $FASTSIM{1}
+#trigger   : $DATA{Triggers_mm} $MC{Triggers_mm} $FASTSIM{1}
+3l        : nLepSel >= 3
+lowmass   : minMllSFOS_Mini > 12 || minMllSFOS_Mini == -1
+sanity    : passPtMll && is_3l && LepSel_pt[0] >= (20 + 5*(abs(LepSel_pdgId[0])==11)) && LepSel_pt[1] >= (10 + 5*(abs(LepSel_pdgId[1])==11)) && LepSel_pt[2] >= (10 + 0*(abs(LepSel_pdgId[3])==11)) 
+SRevent   : allTight(3, LepSel_isTight[0], LepSel_isTight[1], LepSel_isTight[2]) 
+veto      : nLepSel < 4
+BRevent   : abs(LepSel_pdgId[0]) < 15 && abs(LepSel_pdgId[1]) < 15 && abs(LepSel_pdgId[2]) < 15 && nOSSF_3l >= 1
+convveto  : abs(m3L-91) > 15
+bJetVeto  : nBJetMedium25 == 0
+met       : met_pt > 50
+
+CRWZ      : met_pt < 100 && mll_3l > 75 && mll_3l < 105 && htJet30j_Mini < 100 && mTL_3l < 100; Disable=True
+CRConv    : met_pt < 50 && mll_3l < 75; Disable=True
+
+LnotT : (LepSel_isTight[0]+LepSel_isTight[1]+LepSel_isTight[2]) < 3; Disable=True
+
+flav_mumumu     : abs(LepSel_pdgId[0])*abs(LepSel_pdgId[1])*abs(LepSel_pdgId[2]) == 13*13*13; Disable=True
+flav_mumue     : abs(LepSel_pdgId[0])*abs(LepSel_pdgId[1])*abs(LepSel_pdgId[2]) == 13*13*11; Disable=True
+flav_eemu    : abs(LepSel_pdgId[0])*abs(LepSel_pdgId[1])*abs(LepSel_pdgId[2]) == 13*11*11; Disable=True
+flav_eee     : abs(LepSel_pdgId[0])*abs(LepSel_pdgId[1])*abs(LepSel_pdgId[2]) == 11*11*11; Disable=True

@@ -1,0 +1,4 @@
+prompt_WZ : WZTo3LNu_amcatnlo : xsec*1.10 ; FillColor=ROOT.kOrange, FakeRate="susy-ewkino/3l/fakerate_standard_central.txt", Label="WZ", doUnpickled=1, AddWeight="puw_nInt_2017(nTrueInt\, 18)"
+
+fakes_TT : TTLep_pow_0 + TTLep_pow_1 : xsec ; FillColor=ROOT.kGray , FakeRate="susy-ewkino/3l/fakerate_standard_central.txt", Label="Fakes TT", doUnpickled=1, AddWeight="puw_nInt_2017(nTrueInt\, 4)"
+

@@ -1,0 +1,9 @@
+## Data
+## -----------------------------------------------------------
+incl_data : + ; IncludeMca="susy-ewkino/3l_2017/includes/mca_data_2017.txt"
+
+
+## WZ (to keep the order)
+## -----------------------------------------------------------
+prompt_WZ : WZTo3LNu_amcatnlo : xsec*1.10 ; FillColor=ROOT.kOrange, Label="WZ", doUnpickled=1, AddWeight="puw_nInt_2017(nTrueInt\, 18)"
+

@@ -1,0 +1,7 @@
+alwaystrue: 1 
+tagTight  : $DATA{Triggers_ee || Triggers_em || Triggers_mm} $MC{Triggers_ee || Triggers_em || Triggers_mm} $FASTSIM{1} && nLepGood == 3 && isTAG(LepGood_tightId[0], LepGood_tightId[1], LepGood_tightId[2],LepGood_pdgId[0], LepGood_pdgId[1], LepGood_pdgId[2])
+plus      : LepGood_charge[inoTAG(LepGood_tightId[0], LepGood_tightId[1], LepGood_tightId[2],LepGood_pdgId[0], LepGood_pdgId[1], LepGood_pdgId[2])] > 0 ; Disable=True
+minus     : LepGood_charge[inoTAG(LepGood_tightId[0], LepGood_tightId[1], LepGood_tightId[2],LepGood_pdgId[0], LepGood_pdgId[1], LepGood_pdgId[2])] < 0 ; Disable=True
+elec      : abs(LepGood_pdgId[inoTAG(LepGood_tightId[0], LepGood_tightId[1], LepGood_tightId[2],LepGood_pdgId[0], LepGood_pdgId[1], LepGood_pdgId[2])] == 11); Disable=True
+muon      : abs(LepGood_pdgId[inoTAG(LepGood_tightId[0], LepGood_tightId[1], LepGood_tightId[2],LepGood_pdgId[0], LepGood_pdgId[1], LepGood_pdgId[2])] == 13);  Disable=True
+passTightMVA: LepGood_isTight_Mini[inoTAG(LepGood_tightId[0], LepGood_tightId[1], LepGood_tightId[2],LepGood_pdgId[0], LepGood_pdgId[1], LepGood_pdgId[2])]

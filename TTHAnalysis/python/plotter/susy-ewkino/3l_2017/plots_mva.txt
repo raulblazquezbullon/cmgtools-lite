@@ -1,0 +1,58 @@
+el1_mva_low_FAKES : LepGood_mvaSUSY[0] - 2* (LepGood_mcUCSXMatchId[0] <=1 || abs(LepGood_pdgId[0]) != 11|| LepGood_pt[0] > 25): 10000,-1.,1.;
+
+el2_mva_low_FAKES : LepGood_mvaSUSY[1] - 2* (LepGood_mcUCSXMatchId[1] <=1 || abs(LepGood_pdgId[1]) != 11|| LepGood_pt[1] > 25): 10000,-1.,1.;
+
+el3_mva_low_FAKES : LepGood_mvaSUSY[2] - 2* (LepGood_mcUCSXMatchId[2] <=1 || abs(LepGood_pdgId[2]) != 11|| LepGood_pt[2] > 25): 10000,-1.,1.;
+
+
+el1_mva_low_PROMPT : LepGood_mvaSUSY[0] - 2* (LepGood_mcUCSXMatchId[0] >1 || abs(LepGood_pdgId[0]) != 11|| LepGood_pt[0] > 25): 10000,-1.,1.;
+
+el2_mva_low_PROMPT : LepGood_mvaSUSY[1] - 2* (LepGood_mcUCSXMatchId[1] >1 || abs(LepGood_pdgId[1]) != 11|| LepGood_pt[1] > 25): 10000,-1.,1.;
+
+el3_mva_low_PROMPT : LepGood_mvaSUSY[2] - 2* (LepGood_mcUCSXMatchId[2] >1 || abs(LepGood_pdgId[2]) != 11|| LepGood_pt[2] > 25): 10000,-1.,1.;
+
+
+mu1_mva_low_FAKES : LepGood_mvaSUSY[0] - 2* (LepGood_mcUCSXMatchId[0] <=1 || abs(LepGood_pdgId[0]) != 13|| LepGood_pt[0] > 25): 10000,-1.,1.;
+
+mu2_mva_low_FAKES : LepGood_mvaSUSY[1] - 2* (LepGood_mcUCSXMatchId[1] <=1 || abs(LepGood_pdgId[1]) != 13|| LepGood_pt[1] > 25): 10000,-1.,1.;
+
+mu3_mva_low_FAKES : LepGood_mvaSUSY[2] - 2* (LepGood_mcUCSXMatchId[2] <=1 || abs(LepGood_pdgId[2]) != 13|| LepGood_pt[2] > 25): 10000,-1.,1.;
+
+
+mu1_mva_low_PROMPT : LepGood_mvaSUSY[0] - 2* (LepGood_mcUCSXMatchId[0] >1 || abs(LepGood_pdgId[0]) != 13|| LepGood_pt[0] > 25): 10000,-1.,1.;
+
+mu2_mva_low_PROMPT : LepGood_mvaSUSY[1] - 2* (LepGood_mcUCSXMatchId[1] >1 || abs(LepGood_pdgId[1]) != 13|| LepGood_pt[1] > 25): 10000,-1.,1.;
+
+mu3_mva_low_PROMPT : LepGood_mvaSUSY[2] - 2* (LepGood_mcUCSXMatchId[2] >1 || abs(LepGood_pdgId[2]) != 13|| LepGood_pt[2] > 25): 10000,-1.,1.;
+
+
+
+
+
+
+el1_mva_high_FAKES : LepGood_mvaSUSY[0] - 2* (LepGood_mcUCSXMatchId[0] <=1 || abs(LepGood_pdgId[0]) != 11|| LepGood_pt[0] < 25): 10000,-1.,1.;
+
+el2_mva_high_FAKES : LepGood_mvaSUSY[1] - 2* (LepGood_mcUCSXMatchId[1] <=1 || abs(LepGood_pdgId[1]) != 11|| LepGood_pt[1] < 25): 10000,-1.,1.;
+
+el3_mva_high_FAKES : LepGood_mvaSUSY[2] - 2* (LepGood_mcUCSXMatchId[2] <=1 || abs(LepGood_pdgId[2]) != 11|| LepGood_pt[2] < 25): 10000,-1.,1.;
+
+
+el1_mva_high_PROMPT : LepGood_mvaSUSY[0] - 2* (LepGood_mcUCSXMatchId[0] >1 || abs(LepGood_pdgId[0]) != 11|| LepGood_pt[0] < 25): 10000,-1.,1.;
+
+el2_mva_high_PROMPT : LepGood_mvaSUSY[1] - 2* (LepGood_mcUCSXMatchId[1] >1 || abs(LepGood_pdgId[1]) != 11|| LepGood_pt[1] < 25): 10000,-1.,1.;
+
+el3_mva_high_PROMPT : LepGood_mvaSUSY[2] - 2* (LepGood_mcUCSXMatchId[2] >1 || abs(LepGood_pdgId[2]) != 11|| LepGood_pt[2] < 25): 10000,-1.,1.;
+
+
+mu1_mva_high_FAKES : LepGood_mvaSUSY[0] - 2* (LepGood_mcUCSXMatchId[0] <=1 || abs(LepGood_pdgId[0]) != 13|| LepGood_pt[0] < 25): 10000,-1.,1.;
+
+mu2_mva_high_FAKES : LepGood_mvaSUSY[1] - 2* (LepGood_mcUCSXMatchId[1] <=1 || abs(LepGood_pdgId[1]) != 13|| LepGood_pt[1] < 25): 10000,-1.,1.;
+
+mu3_mva_high_FAKES : LepGood_mvaSUSY[2] - 2* (LepGood_mcUCSXMatchId[2] <=1 || abs(LepGood_pdgId[2]) != 13|| LepGood_pt[2] < 25): 10000,-1.,1.;
+
+
+mu1_mva_high_PROMPT : LepGood_mvaSUSY[0] - 2* (LepGood_mcUCSXMatchId[0] >1 || abs(LepGood_pdgId[0]) != 13|| LepGood_pt[0] < 25): 10000,-1.,1.;
+
+mu2_mva_high_PROMPT : LepGood_mvaSUSY[1] - 2* (LepGood_mcUCSXMatchId[1] >1 || abs(LepGood_pdgId[1]) != 13|| LepGood_pt[1] < 25): 10000,-1.,1.;
+
+mu3_mva_high_PROMPT : LepGood_mvaSUSY[2] - 2* (LepGood_mcUCSXMatchId[2] >1 || abs(LepGood_pdgId[2]) != 13|| LepGood_pt[2] < 25): 10000,-1.,1.;

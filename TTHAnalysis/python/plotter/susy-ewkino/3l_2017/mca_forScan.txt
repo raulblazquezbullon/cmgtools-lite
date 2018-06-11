@@ -1,11 +1,11 @@
 ## Data
 ## -----------------------------------------------------------
-incl_data : + ; IncludeMca="susy-ewkino/3l2017/includes/mca_data_2017.txt"
+incl_data : + ; IncludeMca="susy-ewkino/3l_2017/includes/mca_data_2017.txt"
 
 
 ## WZ (to keep the order)
 ## -----------------------------------------------------------
-prompt_WZ : WZTo3LNu_amcatnlo : 1.04*xsec ; FillColor=ROOT.kOrange, FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", Label="WZ", NormSystematic=0.3
+prompt_WZ : WZTo3LNu_amcatnlo : xsec*1.10 ; FillColor=ROOT.kOrange, FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", Label="WZ", doUnpickled=1, AddWeight="puw_nInt_2017(nTrueInt\, 18)", NormSystematic=0.15
 
 ## Backgrounds
 ## -----------------------------------------------------------
