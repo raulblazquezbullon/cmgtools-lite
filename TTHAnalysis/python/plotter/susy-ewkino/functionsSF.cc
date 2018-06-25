@@ -16,6 +16,12 @@ float getSF(TH2F* hist, float pt, float eta){
     return hist->GetBinContent(xbin,ybin);
 }
 
+float getSF(TH2D* hist, float pt, float eta){
+    int xbin = std::max(1, std::min(hist->GetNbinsX(), hist->GetXaxis()->FindBin(pt)));
+    int ybin = std::max(1, std::min(hist->GetNbinsY(), hist->GetYaxis()->FindBin(eta)));
+    return hist->GetBinContent(xbin,ybin);
+}
+
 float getUnc(TH2F* hist, float pt, float eta){
     int xbin = std::max(1, std::min(hist->GetNbinsX(), hist->GetXaxis()->FindBin(pt)));
     int ybin = std::max(1, std::min(hist->GetNbinsY(), hist->GetYaxis()->FindBin(eta)));
@@ -194,10 +200,12 @@ TH2F* h_muSF_mvaM  = (TH2F*) f_muSF_mvaM ->Get("SF" );
 TH2F* h_muSF_id    = (TH2F*) f_muSF_id   ->Get("SF" );
 TGraphAsymmErrors* h_muSF_trk = (TGraphAsymmErrors*) f_muSF_eff->Get("ratio_eff_eta3_dr030e030_corr");
 
+
 float getElectronSF(float pt, float eta, int wp = 0){
     TH2F* hist = (wp == 1)?h_elSF_mvaVT:h_elSF_mvaM;
     return getSF(hist, pt, abs(eta))*getSF(h_elSF_id, pt, abs(eta))*getSF(h_elSF_trk, eta, pt);
 }
+
 
 float getElectronUnc(float pt, float eta, int wp = 0, int var = 0){
     TH2F* hist = (wp == 1)?h_elSF_mvaVT:h_elSF_mvaM;
@@ -206,6 +214,7 @@ float getElectronUnc(float pt, float eta, int wp = 0, int var = 0){
     float error3 = getUnc(h_elSF_trk, eta, pt);
     return TMath::Sqrt(error1*error1 + error2*error2 + error3*error3);
 }
+
 
 float getMuonSF(float pt, float eta, int wp = 0){
     TH2F* hist = (wp == 1)?h_muSF_mvaVT:h_muSF_mvaM;
@@ -218,16 +227,52 @@ float getMuonUnc(float pt, int var = 0) {
     return TMath::Sqrt(0.02*0.02+0.01*0.01);  
 }
 
-float getLepSF(float pt, float eta, int pdgId, int isTight, int wp = 0, int var = 0){
+
+
+
+
+
+
+// electrons
+//TFile* f_elSF_id   = new TFile(DATA_SF+"/leptonSF/electronSF_id_EWKino_fullsim_M17_36p5fb.root"    , "read");
+TFile* f_elSF_eff2018  = new TFile(DATA_SF+"/leptonSF/egamma2018.root", "read");
+TH2F* h_elSF_trk2018   = (TH2F*) f_elSF_eff2018->Get("EGamma_SF2D");
+
+// muons
+TFile* f_muSF_id2018    = new TFile(DATA_SF+"/leptonSF/muon_SF_ID_2018.root"   , "read");
+TH2D* h_muSF_id2018    = (TH2D*) f_muSF_id2018   ->Get("NUM_LooseID_DEN_genTracks_pt_abseta" );
+
+float getElectronSF2018(float pt, float eta, int wp = 0){
+    TH2F* hist = (wp == 1)?h_elSF_mvaVT:h_elSF_mvaM;
+    //return getSF(hist, pt, abs(eta))*getSF(h_elSF_id, pt, abs(eta))*getSF(h_elSF_trk, eta, pt);
+    return getSF(hist, pt, abs(eta))*getSF(h_elSF_trk2018, eta, pt);
+}
+
+float getMuonSF2018(float pt, float eta, int wp = 0){
+    TH2F* hist = (wp == 1)?h_muSF_mvaVT:h_muSF_mvaM;
+    //return h_muSF_trk->Eval(eta)*getSF(hist, pt, abs(eta))*getSF(h_muSF_id, pt, abs(eta)); 
+    return getSF(h_muSF_id2018, abs(eta), pt)*getSF(hist, pt, abs(eta));
+}
+
+
+float getLepSF2018(float pt, float eta, int pdgId, int isTight, int wp = 0, int var = 0){
     if(!isTight) return 1.0;
     float sf  = 1.0; 
     float err = 0.0;
-    if(abs(pdgId) == 11) { sf = getElectronSF(pt, eta, wp); err = getElectronUnc(pt, eta, wp, var); }
-    if(abs(pdgId) == 13) { sf = getMuonSF    (pt, eta, wp); err = sf*getMuonUnc (pt, var);          } // only relative error
-    if(abs(pdgId) == 15) { sf = 0.95                      ; err = 0.05;                             }
+    if(abs(pdgId) == 11) { sf = getElectronSF2018(pt, eta, wp);}
+    if(abs(pdgId) == 13) { sf = getMuonSF2018    (pt, eta, wp);} // only relative error
+    if(abs(pdgId) == 15) { sf = 0.95                      ; err = 0.05;                             };
     return (var==0)?sf:(sf+var*err)/sf;
 
 }
+
+
+
+
+
+
+
+
 
 float leptonSF(float lepSF1, float lepSF2, float lepSF3 = 1, float lepSF4 = 1){
     return lepSF1*lepSF2*lepSF3*lepSF4;
