@@ -12,4 +12,4 @@ __init__.py
 *cxx_tmp
 *.pcm
 LSFJOB*/
-
+./TTHAnalysis/macros/getFTrees.py
