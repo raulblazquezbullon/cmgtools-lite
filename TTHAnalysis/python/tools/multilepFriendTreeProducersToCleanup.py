@@ -104,9 +104,9 @@ MODULES.append( ('leptonJetReCleanerSusyRA7', lambda : LeptonJetReCleaner("Mini"
 # MVA (upper limits and combination)
 MODULES.append( ('leptonJetReCleanerSusyEWK3L', lambda : LeptonJetReCleaner("Mini", 
                    lambda lep : lep.miniRelIso < 0.4 and _susyEWK_lepId_CBloose(lep) and _susyEWK_lepId_IPcuts(lep), 
-                   lambda lep : lep.pt>10 and lep.conept>10 and (_susyEWK_lepId_MVAmedium(lep) or _susyEWK_lepId_MVAFO(lep)),
-                   lambda lep,ht : lep.pt>10 and lep.conept>10 and (_susyEWK_lepId_MVAmedium(lep) or _susyEWK_lepId_MVAFO(lep)), # cuts applied on top of loose
-                   lambda lep,ht : lep.pt>10 and lep.conept>10 and _susyEWK_lepId_MVAmedium(lep), # medium WP
+                   lambda lep : lep.pt>5 and lep.conept>5 and (_susyEWK_lepId_MVAFO(lep)),
+                   lambda lep,ht : lep.pt>5 and lep.conept>5 and (_susyEWK_lepId_MVAFO(lep)), # cuts applied on top of loose
+                   lambda lep,ht : lep.pt>5 and lep.conept>5 and _susyEWK_lepId_MVAmedium(lep), # medium WP
                    cleanJet = lambda lep,jet,dr : dr<0.4,
                    selectJet = lambda jet: abs(jet.eta)<2.4,
                    cleanTau = lambda lep,tau,dr: dr<0.4,
