@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 
 inFile =  ROOT.TFile("/nfs/fanae/user/carlosec/www/ewk_2017_summer_mvaCUT//plots_mva.root", "READ")
 
-sigs = ["mu1_mva_high_PROMPT_prompt_WZ","mu2_mva_high_PROMPT_prompt_WZ","mu3_mva_high_PROMPT_prompt_WZ"]
-backs = ["mu1_mva_high_FAKES_fakes_TT", "mu2_mva_high_FAKES_fakes_TT", "mu3_mva_high_FAKES_fakes_TT"]
+sigs = ["mu1_mva_low_PROMPT_prompt_WZ","mu2_mva_low_PROMPT_prompt_WZ","mu3_mva_low_PROMPT_prompt_WZ"]
+backs = ["mu1_mva_low_FAKES_fakes_TT", "mu2_mva_low_FAKES_fakes_TT", "mu3_mva_low_FAKES_fakes_TT"]
 
 sigH = inFile.Get(sigs[0])
 
