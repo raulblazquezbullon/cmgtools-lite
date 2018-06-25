@@ -9,8 +9,11 @@ mtW3l      : mTL_3l         : 100,0,250    ; XTitle="M_{T} (GeV)"               
 likelihood_data : TMath::Log(getLikelihood(met_pt, mTL_3l, mllL_3l, htJet30j)) : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL"
 likelihood_fit  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))  : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL"
 
-likelihood_fit_forScan  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))  : 720, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL"
-likelihood_fit_forScan_ht  : TMath::Log(getLikelihoodFitwithht(met_pt, mTL_3l, mllL_3l, htJet30j))  : 720, 0, 24 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL"
+likelihood_fit_forScan  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))  : 36, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL"
+likelihood_fit_forScan_log  : TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j))  : 36, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL", Logy
+
+
+likelihood_fit_forScan_ht  : TMath::Log(getLikelihoodFitwithht(met_pt, mTL_3l, mllL_3l, htJet30j))  : 36, 0, 18 ; XTitle="log(L_{WZ})", LegendCutoff=1e-4, Legend="TL"
 
 like_disc : (TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j)) < 15.5) + (TMath::Log(getLikelihoodFit(met_pt, mTL_3l, mllL_3l, htJet30j)) < 14.25) : 3, -0.5,2.5; XTitle="log(L_{WZ}) < 21", Legend="TL", YMin=0.7, YMax=10000
 
