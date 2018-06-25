@@ -1,14 +1,14 @@
 alwaystrue: 1
-blinding  : $DATA{run <= 276811} $MC{1} $FASTSIM{1}
+#blinding  : $DATA{run <= 276811} $MC{1} $FASTSIM{1}
 #blinding  : $DATA{run <= 276811 || (run>=278820 && run<=279931)} $MC{1} $FASTSIM{1}
-filters   : $DATA{METfilters                                   } $MC{1} $FASTSIM{1}
-trigger   : $DATA{Triggers_ee||Triggers_em||Triggers_mm        } $MC{Triggers_ee||Triggers_em||Triggers_mm} $FASTSIM{1}
+filters   : $DATA{Flag_EcalDeadCellTriggerPrimitiveFilter && Flag_HBHENoiseIsoFilter && Flag_HBHENoiseFilter && Flag_eeBadScFilter && Flag_goodVertices && Flag_globalTightHalo2016Filter && Flag_badChargedHadronFilter && Flag_badMuonMoriond2017 && Flag_badCloneMuonMoriond2017                                   } $MC{1} $FASTSIM{1}
+trigger   : $DATA{(HLT_BIT_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v || HLT_BIT_HLT_Ele27_WPTight_Gsf_v) ||((run<280919 && (HLT_BIT_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v || HLT_BIT_HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_v)) || (run>=280919 && (HLT_BIT_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v || HLT_BIT_HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ_v))) || ((run<280919 && (HLT_BIT_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_v || HLT_BIT_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_v || HLT_BIT_HLT_IsoTkMu24_v || HLT_BIT_HLT_IsoMu24_v)) || (run>=280919 && (HLT_BIT_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v || HLT_BIT_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v || HLT_BIT_HLT_IsoTkMu24_v || HLT_BIT_HLT_IsoMu24_v)) )        } $MC{(HLT_BIT_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v || HLT_BIT_HLT_Ele27_WPTight_Gsf_v) ||((run<280919 && (HLT_BIT_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v || HLT_BIT_HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_v)) || (run>=280919 && (HLT_BIT_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v || HLT_BIT_HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ_v))) || ((run<280919 && (HLT_BIT_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_v || HLT_BIT_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_v || HLT_BIT_HLT_IsoTkMu24_v || HLT_BIT_HLT_IsoMu24_v)) || (run>=280919 && (HLT_BIT_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v || HLT_BIT_HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v || HLT_BIT_HLT_IsoTkMu24_v || HLT_BIT_HLT_IsoMu24_v)) )} $FASTSIM{1}
 3l        : nLepSel >= 3
 lowmass   : minMllSFOS_Mini > 12 || minMllSFOS_Mini == -1
-sanity    : passPtMll && is_3l
+sanity    : passPtMll && is_3l && LepSel_pt[0] >= (20 + 5*(abs(LepSel_pdgId[0])==11)) && LepSel_pt[1] >= (10 + 5*(abs(LepSel_pdgId[1])==11)) && LepSel_pt[2] >= (10 + 0*(abs(LepSel_pdgId[3])==11)) 
 SRevent   : allTight(3, LepSel_isTight[0], LepSel_isTight[1], LepSel_isTight[2]) 
-veto      : LepSel4_isTight == 0
-BRevent   : BR > 0
-convveto  : (BR != 1 && BR != 3) || abs(m3L-91) > 15
+veto      : nLepSel < 4
+BRevent   : abs(LepSel_pdgId[0]) < 15 && abs(LepSel_pdgId[1]) < 15 && abs(LepSel_pdgId[2]) < 15 && nOSSF_3l >= 1
+convveto  : abs(m3L-91) > 15
 bJetVeto  : nBJetMedium25 == 0
 met       : met_pt > 50
