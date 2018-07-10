@@ -193,9 +193,10 @@ if __name__ == "__main__":
                 mysource  = path+"/"+tty.cname()
                 if os.path.exists(mysource): break
             ttys = [ tty ]
-            for (var,vdir,vtty) in tty.getTTYVariations():
-                if (not var.isTrivial(vdir)) and var.changesSelection(vdir):
-                    ttys.append(vtty)
+            print ttys
+            #for (var,vdir,vtty) in tty.getTTYVariations():
+            #    if (not var.isTrivial(vdir)) and var.changesSelection(vdir):
+            #        ttys.append(vtty)
             for tty in ttys:
                 mycut = tty.adaptExpr(cut.allCuts(),cut=True)
                 if options.doS2V: mycut  = scalarToVector(mycut)
