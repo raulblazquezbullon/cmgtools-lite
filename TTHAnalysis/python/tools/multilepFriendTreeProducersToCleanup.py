@@ -383,12 +383,12 @@ MODULES.append( ('leptonJetReCleanerTTH', lambda : LeptonJetReCleaner("Recl", # 
                                                                       bJetPt = 25,
                                                                       coneptdef = lambda lep: conept_TTH(lep) ) ))
 
-from CMGTools.TTHAnalysis.tools.tiamattZComputer import TiamattZComputer
+#from CMGTools.TTHAnalysis.tools.tiamattZComputer import TiamattZComputer
 #MODULES.append( ('TiamattZWZ', lambda: TiamattZComputer(label="NNWZ",training="TiamattZ_WZ_v5.h5")) )
 #MODULES.append( ('TiamattZtZW', lambda: TiamattZComputer(label="NNtZW",training="TiamattZ_tZW_v5.LO.h5")) )
 #MODULES.append( ('TiamattZttH', lambda: TiamattZComputer(label="NNttH",training="TiamattZ_ttH_v5.h5")) )
 #MODULES.append( ('TiamattZtZq', lambda: TiamattZComputer(label="NNtZq",training="TiamattZ_tZq_v5.2.h5")) )
-MODULES.append( ('TiamattZtZqFall17', lambda: TiamattZComputer(label="NNtZq",training="TiamattZ_tZq_v1_Fall17.h5", preprocessing="TiamattZ_preprocessing.h5")) )
+#MODULES.append( ('TiamattZtZqFall17', lambda: TiamattZComputer(label="NNtZq",training="TiamattZ_tZq_v1_Fall17.h5", preprocessing="TiamattZ_preprocessing.h5")) )
 
 
 from CMGTools.TTHAnalysis.tools.functionsTTV import _ttV_looseTTVLepId, _ttV_conePt, _ttV_fakableTTVLepId, _ttV_tightTTVLepId
@@ -411,5 +411,21 @@ MODULES.append( ('leptonJetReCleanerTTV', lambda : LeptonJetReCleaner("Mini",
                                                                       coneptdef = lambda lep: _ttV_conePt(lep),
                                                                       storeJetVariables = True
                                                                       ) ))
+
+from CMGTools.TTHAnalysis.tools.vertexWeightFriend import VertexWeightFriend
+MODULES.append( ('vtxWeight', lambda : VertexWeightFriend(myfile=None, targetfile=os.environ["CMSSW_BASE"]+"/src/CMGTools/TTHAnalysis/data/pileup/puNominal2017Fall17.root",
+                                                          myhist=None,targethist="pileup",name="vtxWeight2017Nominal",
+                                                          verbose=False,vtx_coll_to_reweight="nTrueInt",autoPU=True)) )
+MODULES.append( ('vtxWeightUp', lambda : VertexWeightFriend(myfile=None, targetfile=os.environ["CMSSW_BASE"]+"/src/CMGTools/TTHAnalysis/data/pileup/puUp2017Fall17.root",
+                                                          myhist=None,targethist="pileup",name="vtxWeight2017Up",
+                                                          verbose=False,vtx_coll_to_reweight="nTrueInt",autoPU=True)) )
+MODULES.append( ('vtxWeightDown', lambda : VertexWeightFriend(myfile=None, targetfile=os.environ["CMSSW_BASE"]+"/src/CMGTools/TTHAnalysis/data/pileup/puDown2017Fall17.root",
+                                                          myhist=None,targethist="pileup",name="vtxWeight2017Down",
+                                                          verbose=False,vtx_coll_to_reweight="nTrueInt",autoPU=True)) )
+
+
+from CMGTools.TTHAnalysis.tools.bTagEventWeightsCSVFullShape import BTagEventWeightFriend
+MODULES.append( ('eventBTagWeightDeepCSV', lambda : BTagEventWeightFriend(csvfile=os.environ["CMSSW_BASE"]+"/src/CMGTools/TTHAnalysis/data/btag/DeepCSV_94XSF_V3_B_F.csv",
+                                                                   discrname="btagDeepCSV", recllabel="_Mini")))
 
 #MODULES.append( ('TiamattZValidation', lambda: TiamattZComputer(label="nnl",training="TiamattZ_WZ_v2.0.h5",layers=["lstm_btag_lstm2","lstm_jet_lstm2","lstm_htop_lstm2","lstm_sltop_lstm2","lstm_hW_lstm2","lstm_lep_lstm2","lstm_ewk_lstm2","dense_d1","dense_d2","dense_d3","dense_d4"]) ) )
