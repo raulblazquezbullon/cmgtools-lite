@@ -23,8 +23,6 @@ class VariableProducer(Module):
         self.t = PyTree(self.book("TTree","t","t"))
         self.branches = {}
         for name,mod in self._modules:
-            print name
-            print mod.listBranches()
             if hasattr(mod,'setOutputTree'):
                 mod.setOutputTree(self.t)
             for B in mod.listBranches():
@@ -78,6 +76,8 @@ parser.add_option("--env",   dest="env",     type="string", default="lxbatch", h
 parser.add_option("--run",   dest="runner",     type="string", default="lxbatch_runner.sh", help="Give the runner script (default: lxbatch_runner.sh)");
 parser.add_option("--bk",   dest="bookkeeping",  action="store_true", default=False, help="If given the command used to run the friend tree will be stored");
 parser.add_option("--tra2",  dest="useTRAv2", action="store_true", default=False, help="Use the new experimental version of treeReAnalyzer");
+parser.add_option("--onlyMC",  dest="onlyMC", action="store_true", default=False, help="Only run over MC, i.e. some event weights related variables");
+
 (options, args) = parser.parse_args()
 
 
@@ -138,6 +138,7 @@ for D in glob(args[0]+"/*"):
                 if re.match(dm,short): found = True
             if not found: continue
         data =  any(x in short for x in "DoubleMu DoubleEl DoubleEG MuEG MuonEG SingleMu SingleEl".split()) # FIXME
+        if data and options.onlyMC: continue
         f = ROOT.TFile.Open(fname)
         t = f.Get(treename)
         if not t:
