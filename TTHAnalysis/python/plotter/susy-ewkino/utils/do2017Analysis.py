@@ -7,6 +7,10 @@ pr = OptionParser(usage="%prog doWhat [options]")
 pr.add_option("--2016", dest = "use2016", action="store_true", default = False, help = "Use 2016 MC/Data")
 pr.add_option("--pdir", dest = "outname", type="string", default = "~/www/EWKino/", help = "Output (folder) name")
 pr.add_option("--idir", dest = "inname", type="string", default = None, help = "Input (folder) name")
+pr.add_option("--cut", dest = "cut", type="string", default = None, help = "Input cutfile")
+pr.add_option("--mca", dest = "mca", type="string", default = None, help = "Input mcafile")
+pr.add_option("-j", dest = "jobs", type="int", default = None, help = "Number of simultaneous jobs for multithreaded cases")
+
 #Output formats
 (options, args) = pr.parse_args()
 
@@ -49,3 +53,12 @@ if "friend_" in doWhat:
         print "Pile-up friend tree producer, from $CMSSW/src/CMGTools/TTHAnalysis/macros:"
         print "The script runs all trees in %s by default unless a specific dataset is given by -d"%options.inname
         print baseCommand.replace("[INTREES]", options.inname).replace("[OUTTREES]", options.outname)
+
+if doWhat == "skim":
+        mca = "susy-ewkino/utils/mca_3l_skim.txt" if not options.mca, else options.mca
+        cut = "susy-ewkino/utils/cuts_3l_skim.txt" if not options.cut, else options.cut
+        jobs = 8 if not options.jobs, else options.jobs
+        print "python skimTrees.py %s %s -P %s --tree treeProducerSusyMultilepton --s2v %s -j %i"%(mca,cut, options.inname, options.outname, options.jobs)
+        ###Skimming friends
+        print "Then execute later for each of the friends..."
+        print "python skimFTrees.py %s  %s/%s %s"%(options.outname, options.inname + "[FTREE]", options.outname)
