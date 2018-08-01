@@ -179,13 +179,13 @@ class LeptonJetReCleaner:
             cleanjets.append(j)
             if j.pt > float(self.bJetPt):
                 ret["nJet"+self.strBJetPt+postfix] += 1; ret["htJet"+self.strBJetPt+"j"+postfix] += j.pt; 
-                if j.btagCSV>0.5426: ret["nBJetLoose"+self.strBJetPt+postfix] += 1
-                if j.btagCSV>0.8484: ret["nBJetMedium"+self.strBJetPt+postfix] += 1
+                if j.btagDeepCSV>0.1522: ret["nBJetLoose"+self.strBJetPt+postfix] += 1
+                if j.btagDeepCSV>0.4941: ret["nBJetMedium"+self.strBJetPt+postfix] += 1
                 mhtBJetPtvec = mhtBJetPtvec - j.p4()
             if j.pt > float(self.jetPt):
                 ret["nJet"+self.strJetPt+postfix] += 1; ret["htJet"+self.strJetPt+"j"+postfix] += j.pt; 
-                if j.btagCSV>0.5426: ret["nBJetLoose"+self.strJetPt+postfix] += 1
-                if j.btagCSV>0.8484: ret["nBJetMedium"+self.strJetPt+postfix] += 1
+                if j.btagDeepCSV>0.1522: ret["nBJetLoose"+self.strJetPt+postfix] += 1
+                if j.btagDeepCSV>0.4941: ret["nBJetMedium"+self.strJetPt+postfix] += 1
                 mhtJetPtvec = mhtJetPtvec - j.p4()
         ret["mhtJet"+self.strBJetPt+postfix] = mhtBJetPtvec.Pt()
         ret["mhtJet"+self.strJetPt+postfix] = mhtJetPtvec.Pt()
@@ -235,7 +235,7 @@ class LeptonJetReCleaner:
         if not var in [-1, 1]: return corrected
         if not hasattr(event, name+"_corr_JECUp") or not hasattr(event, name+"_corr_JECDown") or not hasattr(event, name+"_CorrFactor_L1L2L3Res"): return corrected
         for jet in corrected:
-            corr = getattr(jet, "corr_JECUp") if var == 1 else getattr(jet, "corr_JECDown")
+	    corr = getattr(jet, "corr_JECUp") if var == 1 else getattr(jet, "corr_JECDown")
             quot = getattr(jet, "CorrFactor_L1L2L3Res") if getattr(jet, "CorrFactor_L1L2L3Res") > 0 else getattr(jet, "CorrFactor_L1L2L3")
             jet.pt = jet.pt * corr / quot
         return corrected
