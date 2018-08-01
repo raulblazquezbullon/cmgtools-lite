@@ -1,0 +1,4 @@
+prompt_WZ : WZTo3LNu_amcatnlo : xsec*1.10 ; FillColor=ROOT.kOrange, FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", Label="WZ", doUnpickled=1, NormSystematic=0.15
+
+prompt_WZ_jecUp : WZTo3LNu_amcatnlo : xsec*1.10 ; FillColor=ROOT.kBlue, FakeRate="susy-ewkino/3l/fakerate_standard_jecUp.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", Label="WZ", doUnpickled=1, NormSystematic=0.15
+prompt_WZ_jecDown : WZTo3LNu_amcatnlo : xsec*1.10 ; FillColor=ROOT.kRed, FakeRate="susy-ewkino/3l/fakerate_standard_jecDn.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", Label="WZ", doUnpickled=1, NormSystematic=0.15
