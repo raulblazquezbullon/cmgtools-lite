@@ -5,10 +5,36 @@ incl_data : + ; IncludeMca="susy-ewkino/3l_2017/includes/mca_data_2017.txt"
 
 ## WZ (to keep the order)
 ## -----------------------------------------------------------
-prompt_WZ : WZTo3LNu_amcatnlo : xsec*1.10 ; FillColor=ROOT.kOrange, FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", Label="WZ", doUnpickled=1, AddWeight="puw_nInt_2017(nTrueInt\, 18)", NormSystematic=0.15
+prompt_WZ : WZTo3LNu_amcatnlo : xsec*1.10 ; FillColor=ROOT.kOrange, FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", Label="WZ", doUnpickled=1, NormSystematic=0.15
 
 ## Backgrounds
 ## -----------------------------------------------------------
-incl_fakes_mc : + ; IncludeMca="susy-ewkino/3l_2017/includes/mca_fakes_mc.txt"
+#incl_data_fakes : + ; IncludeMca="susy-ewkino/3l_2017/includes/mca_data_2017.txt", FakeRate="susy-ewkino/3l_2017/fakeRate_2016.txt", Label="Non-prompt", FillColor=ROOT.kBlack, FillStyle=3005, PostFix='_fakes'
+#incl_promptsub : + ; IncludeMca="susy-ewkino/3l_2017/includes/mca_promptsub.txt", PostFix='_promptsub', Label="Non-prompt", FillColor=ROOT.kBlack, FillStyle=3005
+
 incl_prompts        : + ; IncludeMca="susy-ewkino/3l_2017/includes/mca_prompts.txt"
+incl_convs        : + ; IncludeMca="susy-ewkino/3l_2017/includes/mca_convs.txt"
+incl_fakes_mc : + ; IncludeMca="susy-ewkino/3l_2017/includes/mca_fakes_mc.txt"
+
+
+#Pile-Up uncertainties
+prompt_WZ_pileUp_Up : WZTo3LNu_amcatnlo : xsec*1.10 ; FillColor=ROOT.kOrange, FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", Label="WZ", doUnpickled=1, NormSystematic=0.15, AddWeight="vtxWeight2017Up/vtxWeight2017Nominal", SkipMe=True
+prompt_WZ_pileUp_Down : WZTo3LNu_amcatnlo : xsec*1.10 ; FillColor=ROOT.kOrange, FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", Label="WZ", doUnpickled=1, NormSystematic=0.15, AddWeight="vtxWeight2017Down/vtxWeight2017Nominal", SkipMe=True
+incl_prompts_puUp        : +  ; IncludeMca="susy-ewkino/3l_2017/includes/mca_prompts.txt" , AddWeight="vtxWeight2017Up/vtxWeight2017Nominal"  , SkipMe=True, PostFit="_pileUp_Up"
+incl_prompts_puDown      : +  ; IncludeMca="susy-ewkino/3l_2017/includes/mca_prompts.txt" , AddWeight="vtxWeight2017Down/vtxWeight2017Nominal", SkipMe=True, PostFit="_pileUp_Down"
+incl_convs_puUp          : +  ; IncludeMca="susy-ewkino/3l_2017/includes/mca_convs.txt"   , AddWeight="vtxWeight2017Up/vtxWeight2017Nominal"  , SkipMe=True, PostFit="_pileUp_Up"
+incl_convs_puDown        : +  ; IncludeMca="susy-ewkino/3l_2017/includes/mca_convs.txt"   , AddWeight="vtxWeight2017Down/vtxWeight2017Nominal", SkipMe=True, PostFit="_pileUp_Down"
+incl_fakes_puUp          : +  ; IncludeMca="susy-ewkino/3l_2017/includes/mca_fakes_mc.txt", AddWeight="vtxWeight2017Up/vtxWeight2017Nominal"  , SkipMe=True, PostFit="_pileUp_Up"
+incl_fakes_puDown        : +  ; IncludeMca="susy-ewkino/3l_2017/includes/mca_fakes_mc.txt", AddWeight="vtxWeight2017Down/vtxWeight2017Nominal", SkipMe=True, PostFit="_pileUp_Down"
+
+
+#JEC Uncertainties
+prompt_WZ_jecUp   : WZTo3LNu_amcatnlo : xsec*1.10 ; FillColor=ROOT.kOrange, FakeRate="susy-ewkino/3l/fakerate_standard_jecUp.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", Label="WZ", doUnpickled=1, NormSystematic=0.15, SkipMe=True
+prompt_WZ_jecDown : WZTo3LNu_amcatnlo : xsec*1.10 ; FillColor=ROOT.kOrange, FakeRate="susy-ewkino/3l/fakerate_standard_jecDn.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", Label="WZ", doUnpickled=1, NormSystematic=0.15, SkipMe=True
+incl_prompts_jecUp        : +  ; FakeRate="susy-ewkino/3l/fakerate_standard_jecUp.txt", IncludeMca="susy-ewkino/3l_2017/includes/mca_prompts.txt" , SkipMe=True, PostFit="_jecUp"
+incl_prompts_jecDown      : +  ; FakeRate="susy-ewkino/3l/fakerate_standard_jecDn.txt", IncludeMca="susy-ewkino/3l_2017/includes/mca_prompts.txt" , SkipMe=True, PostFit="_jecDn"
+incl_convs_jecUp          : +  ; FakeRate="susy-ewkino/3l/fakerate_standard_jecUp.txt", IncludeMca="susy-ewkino/3l_2017/includes/mca_convs.txt"   , SkipMe=True, PostFit="_jecUp"
+incl_convs_jecDown        : +  ; FakeRate="susy-ewkino/3l/fakerate_standard_jecDn.txt", IncludeMca="susy-ewkino/3l_2017/includes/mca_convs.txt"   , SkipMe=True, PostFit="_jecDn"
+incl_fakes_jecUp          : +  ; FakeRate="susy-ewkino/3l/fakerate_standard_jecUp.txt", IncludeMca="susy-ewkino/3l_2017/includes/mca_fakes_mc.txt", SkipMe=True, PostFit="_jecUp"
+incl_fakes_jecDown        : +  ; FakeRate="susy-ewkino/3l/fakerate_standard_jecDn.txt", IncludeMca="susy-ewkino/3l_2017/includes/mca_fakes_mc.txt", SkipMe=True, PostFit="_jecDn"
 

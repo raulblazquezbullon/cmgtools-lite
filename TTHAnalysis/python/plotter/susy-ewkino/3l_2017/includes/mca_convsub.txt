@@ -1,0 +1,31 @@
+prompt_VH : VBF_HToZZTo4L_0 : xsec ;  FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l_2017/convRate_2017.txt",  doUnpickled=1, AddWeight="-1**puw_nInt_2017(nTrueInt\, 18)", NormSystematic=0.50
+prompt_ZZH : GGHZZ4L_0 + GGHZZ4L_ext_0                     : xsec ;  FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l_2017/convRate_2017.txt",  doUnpickled=1, AddWeight="-1**puw_nInt_2017(nTrueInt\, 18)", NormSystematic=0.25
+prompt_ZZH : ZZTo4L_0 + ZZTo4L_1                      : xsec ;  FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l_2017/convRate_2017.txt",  doUnpickled=1, AddWeight="-1**puw_nInt_2017(nTrueInt\, 18)", NormSystematic=0.25
+
+
+rares_VVV  : WWW_4F                         : xsec ;  FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l_2017/convRate_2017.txt",  doUnpickled=1, AddWeight="-1**puw_nInt_2017(nTrueInt\, 16)", NormSystematic=0.5
+#rares_VVV  : WWZ                         : xsec ;  FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l_2017/convRate_2017.txt",  doUnpickled=1, AddWeight="-1**puw_nInt_2017(nTrueInt\, 16)", NormSystematic=0.5
+rares_VVV  : WZZ                         : xsec ;  FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l_2017/convRate_2017.txt",  doUnpickled=1, AddWeight="-1**puw_nInt_2017(nTrueInt\, 19)", NormSystematic=0.5
+rares_VVV  : ZZZ                         : xsec ;  FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l_2017/convRate_2017.txt",  doUnpickled=1, AddWeight="-1**puw_nInt_2017(nTrueInt\, 21)", NormSystematic=0.5
+rares_ttX  : TTWToLNu : xsec ;  FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l_2017/convRate_2017.txt",  doUnpickled=1, AddWeight="-1**puw_nInt_2017(nTrueInt\, 8)", NormSystematic=0.15
+rares_ttX  : TTZToLLNuNu                 : xsec ;  FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l_2017/convRate_2017.txt",  doUnpickled=1, AddWeight="-1**puw_nInt_2017(nTrueInt\, 12)", NormSystematic=0.15
+rares_ttX  : TTHnobb_pow                 : xsec ;  FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l_2017/convRate_2017.txt",  doUnpickled=1, AddWeight="-1**puw_nInt_2017(nTrueInt\, 3)", NormSystematic=0.15
+rares_ttX  : TTLLJets_m1to10             : 0.0493 ;  FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l_2017/convRate_2017.txt",  doUnpickled=1, AddWeight="-1**puw_nInt_2017(nTrueInt\, 5)", NormSystematic=0.15
+#rares_ttX  : TTTT                        : xsec ;  FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l_2017/convRate_2017.txt",  doUnpickled=1, AddWeight="-1**puw_nInt_2017(nTrueInt\, 6)"
+#rares_ttX  : tZW_ll                      : xsec ;  FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l_2017/convRate_2017.txt", doUnpickled=1, AddWeight="-1**puw_nInt_2017(nTrueInt\, 22)"
+rares_ttX  : tZq_ll                      : xsec ;  FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l_2017/convRate_2017.txt",  doUnpickled=1, AddWeight="-1**puw_nInt_2017(nTrueInt\, 22)", NormSystematic=0.15
+
+
+fakes_TT : TTLep_pow_0 + TTLep_pow_1 : xsec ; FillColor=ROOT.kGray , FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isfake.txt", doUnpickled=1, AddWeight="-1*puw_nInt_2017(nTrueInt\, 4)", NormSystematic=0.35
+
+fakes_TT : TTHad_pow_0 + TTHad_pow_1 + TTHad_pow_2 : xsec ; FillColor=ROOT.kGray , FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isfake.txt", doUnpickled=1, AddWeight="-1*puw_nInt_2017(nTrueInt\, 4)", NormSystematic=0.35
+
+fakes_TT : TTSemi_pow_0 + TTSemi_pow_1 + TTSemi_pow_2 : xsec ; FillColor=ROOT.kGray , FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isfake.txt", doUnpickled=1, AddWeight="-1*puw_nInt_2017(nTrueInt\, 4)", NormSystematic=0.35
+
+
+fakes_T : T_tWch_noFullHad : xsec ; FillColor=ROOT.kYellow , FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isfake.txt,susy-ewkino/3l_2017/convRate_2017.txt", doUnpickled=1, AddWeight="-1*puw_nInt_2017(nTrueInt\, 13)", NormSystematic=0.35
+
+fakes_W : WJetsToLNu_LO : xsec ; FillColor=ROOT.kBlue-10 , FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isfake.txt,susy-ewkino/3l_2017/convRate_2017.txt", doUnpickled=1, AddWeight="-1*puw_nInt_2017(nTrueInt\, 15)", NormSystematic=0.35
+
+fakes_DY : DYJetsToLL_M10to50_LO_0 : xsec ; FillColor=ROOT.kAzure+10 , FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isfake.txt,susy-ewkino/3l_2017/convRate_2017.txt", doUnpickled=1, AddWeight="-1*puw_nInt_2017(nTrueInt\, 18)", NormSystematic=0.35
+fakes_DY: DYJetsToLL_M50_LO : xsec ; FillColor=ROOT.kAzure+10 , FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isfake.txt,susy-ewkino/3l_2017/convRate_2017.txt", doUnpickled=1, AddWeight="-1*puw_nInt_2017(nTrueInt\, 18)", NormSystematic=0.35
