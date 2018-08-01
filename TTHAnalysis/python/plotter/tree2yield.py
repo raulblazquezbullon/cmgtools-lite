@@ -225,7 +225,7 @@ class TreeToYield:
     def adaptExpr(self,expr,cut=False):
         ret = self.adaptDataMCExpr(expr)
         for mcc in self._mcCorrs:
-            ret = mcc(ret,self._name,self._cname,cut)
+            ret = mcc(ret,self._name,self._cname,cut,self._isdata)
         return ret
     def _init(self):
         if "root://" in self._fname:
