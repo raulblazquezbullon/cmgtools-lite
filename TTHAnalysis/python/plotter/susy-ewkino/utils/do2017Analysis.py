@@ -70,9 +70,9 @@ if "friend_" in doWhat:
 
 ###Tree Skimming
 if doWhat == "skim":
-        mca = "susy-ewkino/utils/mca_3l_skim.txt" if not options.mca, else options.mca
-        cut = "susy-ewkino/utils/cuts_3l_skim.txt" if not options.cut, else options.cut
-        jobs = 8 if not options.jobs, else options.jobs
+        mca = "susy-ewkino/utils/mca_3l_skim.txt" if not options.mca else options.mca
+        cut = "susy-ewkino/utils/cuts_3l_skim.txt" if not options.cut else options.cut
+        jobs = 8 if not options.jobs else options.jobs
         print "python skimTrees.py %s %s -P %s --tree treeProducerSusyMultilepton --s2v %s -j %i"%(mca,cut, options.inname, options.outname, options.jobs)
         ###Skimming friends
         print "Then execute later for each of the friends..."
