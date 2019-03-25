@@ -236,6 +236,25 @@ class MCAnalysis:
                         to_norm = True
                     elif len(field) == 3:
                         tty.setScaleFactor(field[2])
+                if "noNorm" in extra and extra['noNorm']:
+                    if "data" not in pname:
+                        if options.weight:                      
+                            is_w = 1
+                            total_w += 1
+                            scale = "genWeight*(%s)" % field[2]
+                        else:
+                            if (is_w==1): raise RuntimeError, "Can't put together a weighted and an unweighted component (%s)" % cnames
+                            is_w = 0;
+                            total_w += 1
+                            scale = "(%s)" % field[2]
+                        if len(field) == 4: scale += "*("+field[3]+")"
+                        for p0,s in options.processesToScale:
+                            for p in p0.split(","):
+                                if re.match(p+"$", pname): scale += "*("+s+")"
+                        to_norm = True
+                    elif len(field) == 3:
+                        tty.setScaleFactor(field[2])
+
                 else:  
                   if "data" not in pname:
                     pckobj  = pickle.load(open(pckfile,'r'))
@@ -690,17 +709,30 @@ class MCAnalysis:
             stylePlot(plot, pspec, lambda key,default : opts[key] if key in opts else default)
         elif not mayBeMissing:
             raise KeyError, "Process %r not found" % process
-    def _processTasks(self,func,tasks,name=None,chunkTasks=200):
+    def _processTasks(self,func,tasks,name=None,chunkTasks=2048):
         #timer = ROOT.TStopwatch()
-        #print "Starting job %s with %d tasks, %d threads" % (name,len(tasks),self._options.jobs)
+        print "Starting job %s with %d tasks, %d threads" % (name,len(tasks),self._options.jobs)
         if self._options.jobs == 0: 
             retlist = map(func, tasks)
         else:
             from multiprocessing import Pool
             retlist = []
+            nChunks = len(tasks)/chunkTasks
+            t0 = time.time()
             for i in xrange(0,len(tasks),chunkTasks):
+                nDone = 0
                 pool = Pool(self._options.jobs)
-                retlist += pool.map(func, tasks[i:(i+chunkTasks)], 1)
+                retemp = pool.map_async(func, tasks[i:(i+chunkTasks)], 1)
+                realtasks = min(chunkTasks, len(tasks)- i)
+                while not retemp.ready():
+                    dt = time.time() - t0
+                    nDone = i+realtasks - retemp._number_left
+                    print("Chunk number %s of %s"%(i/chunkTasks,nChunks))
+                    print("Jobs left: {}".format(retemp._number_left))
+                    print("Time left: %1.1f s"%(dt/(nDone+0.01)*(len(tasks)-nDone)))
+                    print nDone
+                    time.sleep(1)
+                retlist += retemp.get()
                 pool.close()
                 pool.join()
                 del pool

@@ -613,21 +613,22 @@ def doLegend(pmap,mca,corner="TR",textSize=0.035,cutoff=1e-2,cutoffSignals=True,
                 myStyle = mcStyle if type(mcStyle) == str else mcStyle[1]
                 bgEntries.append( (pmap[p],lbl,myStyle) )
         nentries = len(sigEntries) + len(bgEntries) + ('data' in pmap)
-
-        (x1,y1,x2,y2) = (0.97-legWidth if doWide else .85-legWidth, .7 - textSize*max(nentries-3,0), .90, .91)
+        columns = 2
+        height = (.20 + textSize*max(nentries-3,0))
+        height = 1.3*height/columns   
+        (x1,y1,x2,y2) = (0.97-legWidth*columns if doWide else .85-legWidth*columns, .9 - height, .90, .91)
         if corner == "TR":
-            (x1,y1,x2,y2) = (0.97-legWidth if doWide else .85-legWidth, .7 - textSize*max(nentries-3,0), .90, .91)
+            (x1,y1,x2,y2) = (0.97-legWidth*columns if doWide else .85-legWidth*columns, .9 - height, .90, .91)
         elif corner == "TC":
-            (x1,y1,x2,y2) = (.5, .75 - textSize*max(nentries-3,0), .5+legWidth, .91)
+            (x1,y1,x2,y2) = (.5, .9 - height, .55+legWidth*columns, .91)
         elif corner == "TL":
-            (x1,y1,x2,y2) = (.2, .75 - textSize*max(nentries-3,0), .2+legWidth, .91)
+            (x1,y1,x2,y2) = (.2, .9 - height, .25+legWidth*columns, .91)
         elif corner == "BR":
-            (x1,y1,x2,y2) = (.85-legWidth, .33 + textSize*max(nentries-3,0), .90, .15)
+            (x1,y1,x2,y2) = (.85-legWidth*columns, .16 + height, .90, .15)
         elif corner == "BC":
-            (x1,y1,x2,y2) = (.5, .33 + textSize*max(nentries-3,0), .5+legWidth, .15)
+            (x1,y1,x2,y2) = (.5, .16 + height, .5+legWidth*columns, .15)
         elif corner == "BL":
-            (x1,y1,x2,y2) = (.2, .33 + textSize*max(nentries-3,0), .2+legWidth, .15)
-
+            (x1,y1,x2,y2) = (.2, .16 + height, .2+legWidth*columns, .15)
         leg = ROOT.TLegend(x1,y1,x2,y2)
         if header: leg.SetHeader(header.replace("\#", "#"))
         leg.SetFillColor(0)
@@ -637,13 +638,22 @@ def doLegend(pmap,mca,corner="TR",textSize=0.035,cutoff=1e-2,cutoffSignals=True,
             leg.SetLineColor(0)
         leg.SetTextFont(42)
         leg.SetTextSize(textSize)
+        leg.SetNColumns(columns)
+        entries = []
         if 'data' in pmap: 
             leg.AddEntry(pmap['data'], mca.getProcessOption('data','Label','Data', noThrow=True), 'LPE')
         if options.plotmode == "closure" and options.numerator in pmap: 
             leg.AddEntry(pmap[options.numerator], mca.getProcessOption(options.numerator,'Label','Data', noThrow=True), 'LPE')
         total = sum([x.Integral() for x in pmap.itervalues()])
-        for (plot,label,style) in sigEntries: leg.AddEntry(plot,label,style)
-        for (plot,label,style) in  bgEntries: leg.AddEntry(plot,label,style)
+        for (plot,label,style) in sigEntries: entries.append((plot,label,style))
+        for (plot,label,style) in bgEntries: entries.append((plot,label,style))
+        nrows = int(ceil(len(entries)/float(columns)))
+        for r in xrange(nrows):
+            for c in xrange(columns):
+                i = r+c*nrows
+                if i >= len(entries): break
+                leg.AddEntry(*entries[i])
+
         if totalError: leg.AddEntry(totalError,"Total bkg. unc.","F") 
         leg.Draw()
         ## assign it to a global variable so it's not deleted
@@ -921,7 +931,7 @@ class PlotMaker:
                     outputDir.WriteTObject(totalSyst)
                 # 
                 if not makeCanvas and not self._options.printPlots: return
-                doRatio = self._options.showRatio and ('data' in pmap or (plotmode != "stack")) and ("TH2" not in total.ClassName())
+                doRatio = self._options.showRatio #and ('data' in pmap or (plotmode != "stack")) and ("TH2" not in total.ClassName())
                 islog = pspec.hasOption('Logy'); 
                 if doRatio: ROOT.gStyle.SetPaperSize(20.,sf*(plotformat[1]+150))
                 else:       ROOT.gStyle.SetPaperSize(20.,sf*plotformat[1])
