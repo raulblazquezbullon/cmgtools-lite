@@ -83,6 +83,24 @@ float mt2davis(float pt1, float eta1, float phi1, float pt2, float eta2, float p
     return result;
 }
 
+float mt2davis_mass(float pt1, float eta1, float phi1, float pt2, float eta2, float phi2, float met, float metphi, float mass){
+    // NOTE THAT THIS FUNCTION ASSUMES MASSLESS OBJECTS. NOT ADVISED TO USE WITH HEMISPHERES ETC.
+    typedef ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double> > PtEtaPhiMVector;
+    PtEtaPhiMVector p1(pt1,eta1,phi1,mass);
+    PtEtaPhiMVector p2(pt2,eta2,phi2,mass);
+    PtEtaPhiMVector mv(met,0.,metphi,0.);
+    double a[] = {p1.M(), p1.Px(), p1.Py()};
+    double b[] = {p2.M(), p2.Px(), p2.Py()};
+    double c[] = {mv.M(), mv.Px(), mv.Py()};
+
+    heppy::Davismt2 mt2obj;
+    mt2obj.set_momenta( a, b, c );
+    mt2obj.set_mn( 0. );
+
+    float result = (float) mt2obj.get_mt2();
+    return result;
+}
+
 float phi_2(float pt1, float phi1, float pt2, float phi2) {
     float px1 = pt1 * std::cos(phi1);
     float py1 = pt1 * std::sin(phi1);
