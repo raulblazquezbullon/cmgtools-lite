@@ -109,7 +109,7 @@ def _runIt(args):
         while friends and friends.GetSize() > 0:
             out.RemoveFriend(friends.At(0).GetTree())
             friends = out.GetListOfFriends() or []
-        fout.WriteTObject(out,options.tree if options.oldstyle else "tree")
+        fout.WriteTObject(out,options.obj)
         if histo: histo.Write()
         if histo_w: histo_w.Write()
         fout.Close(); timer.Stop()

@@ -1,0 +1,2 @@
+alwaystrue : 1
+3leporss : (nLepGood >= 2 && LepGood_pdgId[0]*LepGood_pdgId[1] > 0) || nLepGood >= 3
