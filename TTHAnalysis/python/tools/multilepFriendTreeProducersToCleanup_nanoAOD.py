@@ -38,10 +38,40 @@ btagsf_CSV_94X        = os.path.join(utility_files_dir, "btag", "CSVv2_94XSF_V2_
 btagsf_DeepCSV_94X    = os.path.join(utility_files_dir, "btag", "DeepCSV_94XSF_V3_B_F.csv")
 btagsf_DeepFlavor_94X = os.path.join(utility_files_dir, "btag", "DeepFlavour_94XSF_V1_B_F.csv")
 
+btagsf_DeepCSV_102X    = os.path.join(utility_files_dir, "btag", "DeepCSV_102XSF_V1.csv")
+btagsf_DeepFlavor_102X = os.path.join(utility_files_dir, "btag", "DeepJet_102XSF_V1.csv")
 
 btag_efficiency_fullsimCSV        = os.path.join(utility_files_dir, "btag", "btagEffCSV.root")
 btag_efficiency_fullsimDeepCSV    = os.path.join(utility_files_dir, "btag", "btagEffDeepCSV.root")
 btag_efficiency_fullsimDeepFlavor = os.path.join(utility_files_dir, "btag", "btagEffDeepFlavor.root")
 
+#For retrocompatibility
+MODULES.append( ('eventBTagWeightDeepCSVM_2017',  lambda : bTagWeightAnalyzer(btagsf_DeepCSV_94X, btag_efficiency_fullsimDeepCSV, algo='DeepCSV', branchbtag='btagDeepB', branchflavor='hadronFlavour', label='eventBTagSFDeepCSVM', recllabel='Mini', wp=1, year=2017)))
 
-MODULES.append( ('eventBTagWeightDeepCSVM',  lambda : bTagWeightAnalyzer(btagsf_DeepCSV_94X, btag_efficiency_fullsimDeepCSV, algo='DeepCSV', branchbtag='btagDeepB', branchflavor='hadronFlavour', label='eventBTagSFDeepCSVM', recllabel='Mini', wp=1)))
+#This is the one we use
+MODULES.append( ('eventBTagWeightDeepCSVT_2017',  lambda : bTagWeightAnalyzer(btagsf_DeepCSV_94X, btag_efficiency_fullsimDeepCSV, algo='DeepCSV', branchbtag='btagDeepB', branchflavor='hadronFlavour', label='DeepCSVT', recllabel='Mini', wp=2, year=2017)))
+
+
+#For retrocompatibility
+MODULES.append( ('eventBTagWeightDeepCSVM_2018',  lambda : bTagWeightAnalyzer(btagsf_DeepCSV_102X, btag_efficiency_fullsimDeepCSV, algo='DeepCSV', branchbtag='btagDeepB', branchflavor='hadronFlavour', label='eventBTagSFDeepCSVM', recllabel='Mini', wp=1, year=2018)))
+
+#This is the one we use
+MODULES.append( ('eventBTagWeightDeepCSVT_2018',  lambda : bTagWeightAnalyzer(btagsf_DeepCSV_102X, btag_efficiency_fullsimDeepCSV, algo='DeepCSV', branchbtag='btagDeepB', branchflavor='hadronFlavour', label='DeepCSVT', recllabel='Mini', wp=2, year=2018)))
+
+#Lepton energy scale corrections + uncertainties
+from CMGTools.TTHAnalysis.tools.leptonEnergyCorrections import leptonEnergyCorrections
+MODULES.append( ('leptonEnergyCorrections_2017', lambda: leptonEnergyCorrections("", "RoccoR2017.txt", "2017")))
+MODULES.append( ('leptonEnergyCorrections_2018', lambda: leptonEnergyCorrections("", "RoccoR2018.txt", "2018")))
+
+#Pileup reweighting
+from CMGTools.TTHAnalysis.tools.vertexWeightFriend import VertexWeightFriend
+MODULES.append( ('vtxWeight2018', lambda : VertexWeightFriend(myfile=None, targetfile=os.environ["CMSSW_BASE"]+"/src/CMGTools/TTHAnalysis/data/pileup/pileup_Cert_314472-325175_13TeV_17SeptEarlyReReco2018ABC_PromptEraD_Collisions18_withVar.root",
+                                                          myhist=None,targethist="pileup",name="vtxWeight2018Nominal",
+                                                          verbose=False,vtx_coll_to_reweight="Pileup_nTrueInt",autoPU=True)) )
+MODULES.append( ('vtxWeight2018Up', lambda : VertexWeightFriend(myfile=None, targetfile=os.environ["CMSSW_BASE"]+"/src/CMGTools/TTHAnalysis/data/pileup/pileup_Cert_314472-325175_13TeV_17SeptEarlyReReco2018ABC_PromptEraD_Collisions18_withVar.root",
+                                                          myhist=None,targethist="pileup_plus",name="vtxWeight2018Up",
+                                                          verbose=False,vtx_coll_to_reweight="Pileup_nTrueInt",autoPU=True)) )
+MODULES.append( ('vtxWeight2018Down', lambda : VertexWeightFriend(myfile=None, targetfile=os.environ["CMSSW_BASE"]+"/src/CMGTools/TTHAnalysis/data/pileup/pileup_Cert_314472-325175_13TeV_17SeptEarlyReReco2018ABC_PromptEraD_Collisions18_withVar.root",
+                                                          myhist=None,targethist="pileup_minus",name="vtxWeight2018Down",
+                                                          verbose=False,vtx_coll_to_reweight="Pileup_nTrueInt",autoPU=True)) )
+
