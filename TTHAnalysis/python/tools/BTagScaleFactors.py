@@ -31,6 +31,8 @@ def get_allowed_ranges(csvfile):
         opfield = 'CSVv2;OperatingPoint'
         if not opfield in headers: opfield = 'cMVAv2;OperatingPoint'
         if not opfield in headers: opfield = 'CSV;OperatingPoint'
+        if not opfield in headers: opfield = 'DeepCSV;OperatingPoint'
+        if not opfield in headers: opfield = 'DeepFlavour;OperatingPoint'
 
         reader = DictReader(infile, fieldnames=headers)
         for row in reader:
@@ -83,14 +85,14 @@ class BTagScaleFactors(object):
         self.verbose = verbose
         self.algo = algo.lower()
 
-        if not self.algo in ['csv', 'cmva']:
+        if not self.algo in ['csv', 'cmva', 'deepcsv','deepflavor']:
             print "ERROR: Unknown algorithm. Choose either 'csv' or 'cmva'"
             return
 
         self.working_points = {
-            "L" : 0.460,
-            "M" : 0.800,
-            "T" : 0.935,
+            "L" : 0.5803,
+            "M" : 0.8838,
+            "T" : 0.9693,
         }
 
         if self.algo == 'cmva':
@@ -100,21 +102,34 @@ class BTagScaleFactors(object):
                 "T" :  0.875,
             }
 
+        if self.algo == 'deepcsv':
+            self.working_points = {
+                "L" :  0.1522,
+                "M" :  0.4941,
+                "T" :  0.8001,
+            }
+
+        if self.algo == 'deepflavor':
+            self.working_points = {
+                "L" :  0.0521,
+                "M" :  0.3033,
+                "T" :  0.7489,
+            }
+
         self.mtypes = {
             # Measurement type for each flavor
             0 : "comb", # b
             1 : "comb", # c
             2 : "incl", # light
         }
+
         if self.algo == 'cmva':
             self.mtypes[0] = 'ttbar'
             self.mtypes[1] = 'ttbar'
 
-        self.iterative_systs = ['jes',
-                                'lf', 'hf',
-                                'hfstats1', 'hfstats2',
-                                'lfstats1', 'lfstats2',
-                                'cferr1', 'cferr2' ]
+
+
+        self.iterative_systs = []
 
         self.init()
         self.create_readers()
@@ -194,7 +209,7 @@ class BTagScaleFactors(object):
         v_sys = getattr(ROOT, 'vector<string>')()
 
         for wp in [0, 1, 2]:
-            for syst in ['central', 'up', 'down', 'up_correlated', 'down_correlated']:
+            for syst in ['central', 'up', 'down']:
                 for flavor in [0, 1, 2]:
                     self.readers[(self.mtypes[flavor], wp, syst, flavor)] = BTagCalibrationReader(
                                                         wp,
@@ -222,8 +237,8 @@ class BTagScaleFactors(object):
 
 
         allsysts =  ["up_%s"%s for s in self.iterative_systs]
-        allsysts += ["down_%s"%s for s in self.iterative_systs]
-        allsysts += ["central"]
+        #allsysts += ["down_%s"%s for s in self.iterative_systs]
+        #allsysts += ["central"]
         for syst in allsysts:
             v_iterativefit_sys = getattr(ROOT, 'vector<string>')()
             #v_iterativefit_sys.push_back(syst)
@@ -257,9 +272,10 @@ class BTagScaleFactors(object):
             If unknown wp/syst/mtype/flavor, returns -1.0
         """
 
-        raise RuntimeError, 'BTagScaleFactors.py: some weights were observed to be set to zero. This should be fixed before the module can be used.'
+        #raise RuntimeError, 'BTagScaleFactors.py: some weights were observed to be set to zero. This should be fixed before the module can be used.'
 
         flavor_new = {5:0, 4:1, 0:2}.get(flavor, None)
+        print "FLAVOR : " , flavor, flavor_new, shape_corr
         if flavor_new == None:
             if self.verbose>0:
                 print "Unknown flavor %s, no btagging SF evaluated!" % repr(flavor)
@@ -296,9 +312,9 @@ class BTagScaleFactors(object):
 
 
         # no SF for pT<20 GeV or pt>1000 or abs(eta)>2.4
-        if abs(eta)>2.4 or pt>1000. or pt<20.:
+        if abs(eta)>2.5 or pt>1000. or pt<20.:
             return 1.0
-
+        print "PASSED PT ETA"
         if shape_corr:
             if relevant_iterative_systs(flavor, syst):
                 return self.readers[("iterative", syst)].eval_auto_bounds(syst, flavor, eta, pt, val)
@@ -316,7 +332,7 @@ class BTagScaleFactors(object):
 
         # pt_max = 670.-1e-02 if "CSV" in algo else 320.-1e-02
         # pt_min = 30.+1e-02
-
+        print "PASSED SHAPE"
         if flavor < 2: # b or c jets
             sf = self.readers[(self.mtypes[flavor], wp, syst, flavor)].eval_auto_bounds(syst, flavor, eta, pt)
 
@@ -328,7 +344,9 @@ class BTagScaleFactors(object):
             return sf if sf != 0.0 else 1.0
 
         else: # light jets
+
             sf = self.readers[(self.mtypes[flavor], wp, syst, flavor)].eval_auto_bounds(syst, flavor, eta, pt)
+            print "Light Jet!", (self.mtypes[flavor], wp, syst, flavor)
             return sf if sf != 0.0 else 1.0
 
 #################################################################

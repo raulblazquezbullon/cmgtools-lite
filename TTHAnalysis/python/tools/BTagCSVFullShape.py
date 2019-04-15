@@ -2,7 +2,7 @@
 
 import os
 import ROOT
-ROOT.gSystem.Load('libCondFormatsBTauObjects')
+ROOT.gSystem.Load('libCondFormatsBTauObjects') # In /cvmfs/cms.cern.ch/slc6_amd64_gcc630/cms/cmssw/CMSSW_9_4_4/lib/slc6_amd64_gcc630
 ROOT.gSystem.Load('libCondToolsBTau')
 from ROOT import BTagCalibration, BTagCalibrationReader
 

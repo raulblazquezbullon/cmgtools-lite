@@ -12,10 +12,14 @@ class BTagEventWeightFriend:
                  label='eventBTagSF',
                  recllabel='_Recl',
                  mcOnly=True,
+
+
+
+
+
                  discrname='btagCSV'):
 
         self.reader = BTagCSVFullShape(csvfile=csvfile)
-
         self.systsJEC = {0:"", 1:"_jecUp", -1:"_jecDown"}
         self.recllabel = recllabel
         self.label = label
@@ -48,11 +52,13 @@ class BTagEventWeightFriend:
 
     def __call__(self, event):
         ret = {k:1.0 for k in self.branches}
-        if self.mcOnly and event.isData: return ret
 
+        if self.mcOnly and event.isData: return ret
         jetscoll = {}
         for _var in self.systsJEC:
-            jets = [j for j in Collection(event,"JetSel"+self.recllabel,"nJetSel"+self.recllabel)]
+            jetsc = [j for j in Collection(event, "Jet", "nJet")]
+            #jetsd = [j for j in Collection(event, "DiscJet", "nDiscJet")]
+            jets = jetsc#+jetsd
             jetptcut = 25
             if (_var==0): jets = filter(lambda x : x.pt>jetptcut, jets)
             elif (_var==1): jets = filter(lambda x : x.pt*x.corr_JECUp/x.corr>jetptcut, jets)
