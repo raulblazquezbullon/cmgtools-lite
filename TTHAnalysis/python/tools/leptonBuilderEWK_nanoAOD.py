@@ -4,6 +4,7 @@ from CMGTools.TTHAnalysis.tools.functionsEWKino_nano import conept
 from ROOT import TFile,TH1F
 import ROOT, copy, os
 import array, math
+import numpy
 
 if "mt2_bisect_cc.so" not in ROOT.gSystem.GetLibraries():
     if os.path.isdir('/pool/ciencias/' ):
@@ -19,6 +20,8 @@ from ROOT import mt2_bisect
 
 # FIXME: additional variables were once written to the LepSel but now commented in order
 # to keep the leptonBuilder from becoming too fat
+
+ROOT.gROOT.ProcessLine("Int_t chartoint(UChar_t c) {  return Int_t(c);}" )
 
 
 ## OSpair
@@ -136,10 +139,15 @@ class LeptonBuilderEWK_nanoAOD:
         self.lepsFO     = [self.leps[il] for il in list(getattr   (event, "iF" + self.inputlabel))[0:int(getattr(event,"nLepFO"+self.inputlabel))]]
         self.lepsT      = [self.leps[il] for il in list(getattr   (event, "iT" + self.inputlabel))[0:int(getattr(event,"nLepTight"+self.inputlabel))]]
 
+
         ## taus
         self.goodtaus   = [t             for t  in Collection(event, "TauGood" , "nTauGood" )]
         self.disctaus   = [] #[t             for t  in Collection(event, "TauOther", "nTauOther")] #No disc collection for nanoAOD
         self.taus       = [t             for t  in Collection(event, "TauSel" + self.inputlabel , "nTauSel" + self.inputlabel )]
+
+        for l in (self.leps + self.lepsFO + self.lepsT + self.goodtaus + self.taus):
+            if hasattr(l, "correctedpt"): l.pt = l.correctedpt
+
         for t in self.taus: 
             t.conePt = t.pt
             #t.pdgId  = -t.charge*15
@@ -158,25 +166,25 @@ class LeptonBuilderEWK_nanoAOD:
             self.lepsTT.append(t)
 
         self.met        = {}
-        self.met[0]     = event.METFixEE2017_pt
+        self.met[0]     = event.MET_pt
         self.metphi     = {}
-        self.metphi[0]  = event.METFixEE2017_phi
+        self.metphi[0]  = event.MET_phi
 
         if not(self.isData):
-          self.met[1]     = getattr(event, "METFixEE2017_pt_jesTotalUp"  , event.METFixEE2017_pt) 
-          self.met[-1]    = getattr(event, "METFixEE2017_pt_jesTotalDown", event.METFixEE2017_pt) 
-          self.metphi[1]  = getattr(event, "METFixEE2017_phi_jesTotalUp"  , event.METFixEE2017_phi)
-          self.metphi[-1] = getattr(event, "METFixEE2017_phi_jesTotalDown", event.METFixEE2017_phi)
+          self.met[1]     = getattr(event, "MET_pt_jesTotalUp"  , event.MET_pt) 
+          self.met[-1]    = getattr(event, "MET_pt_jesTotalDown", event.MET_pt) 
+          self.metphi[1]  = getattr(event, "MET_phi_jesTotalUp"  , event.MET_phi)
+          self.metphi[-1] = getattr(event, "MET_phi_jesTotalDown", event.MET_phi)
 
           self.metgen        = {}
-          self.metgen[0]     = event.GenMET_pt if not self.isData else event.METFixEE2017_pt
-          self.metgen[1]     = event.met_jecUp_genPt   if hasattr(event, "met_jecUp_genPt"  ) else event.GenMET_pt if not self.isData else event.METFixEE2017_pt
-          self.metgen[-1]    = event.met_jecDown_genPt if hasattr(event, "met_jecDown_genPt") else event.GenMET_pt if not self.isData else event.METFixEE2017_pt
+          self.metgen[0]     = event.GenMET_pt if not self.isData else event.MET_pt
+          self.metgen[1]     = event.met_jecUp_genPt   if hasattr(event, "met_jecUp_genPt"  ) else event.GenMET_pt if not self.isData else event.MET_pt
+          self.metgen[-1]    = event.met_jecDown_genPt if hasattr(event, "met_jecDown_genPt") else event.GenMET_pt if not self.isData else event.MET_pt
 
           self.metgenphi     = {}
-          self.metgenphi[0]  = event.GenMET_phi if not self.isData else event.METFixEE2017_phi
-          self.metgenphi[1]  = event.met_jecUp_genPhi   if hasattr(event, "met_jecUp_genPhi"  ) else event.GenMET_phi if not self.isData else event.METFixEE2017_phi
-          self.metgenphi[-1] = event.met_jecDown_genPhi if hasattr(event, "met_jecDown_genPhi") else event.GenMET_phi if not self.isData else event.METFixEE2017_phi
+          self.metgenphi[0]  = event.GenMET_phi if not self.isData else event.MET_phi
+          self.metgenphi[1]  = event.met_jecUp_genPhi   if hasattr(event, "met_jecUp_genPhi"  ) else event.GenMET_phi if not self.isData else event.MET_phi
+          self.metgenphi[-1] = event.met_jecDown_genPhi if hasattr(event, "met_jecDown_genPhi") else event.GenMET_phi if not self.isData else event.MET_phi
   
         else:
             self.met[1] = self.met[0]; self.met[-1] = self.met[0]; self.metphi[1] = self.metphi[0]; self.metphi[-1] = self.metphi[0] 
