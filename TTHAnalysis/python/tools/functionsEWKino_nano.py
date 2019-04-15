@@ -5,10 +5,8 @@ def _susyEWK_lepId_CBloose(lep):
         return True
     elif abs(lep.pdgId) == 11:
         if lep.pt <= 7: return False
-        if not (lep.lostHits <= 1): 
-            return False
-        if not ( ((lep.mvaFall17V2noIso > -0.13 -0.19 * (abs(lep.eta) > 0.8) + 0.24 * (abs(lep.eta) > 1.479)) and  lep.pt < 10) or ((lep.mvaFall17V2noIso > -0.86 + 0.05 * (abs(lep.eta) > 0.8) + 0.09 * (abs(lep.eta) > 1.479)) and  lep.pt > 10)):
-            return False
+        if ord(lep.lostHits) > 1: return False
+        if not ( ((lep.mvaFall17V2noIso > -0.13 -0.19 * (abs(lep.eta) > 0.8) + 0.24 * (abs(lep.eta) > 1.479)) and  lep.pt < 10) or ((lep.mvaFall17V2noIso > -0.86 + 0.05 * (abs(lep.eta) > 0.8) + 0.09 * (abs(lep.eta) > 1.479)) and  lep.pt > 10)): return False
         return True
     return False
 
@@ -46,8 +44,8 @@ def _susyEWK_idEmu_cuts(lep):
     if (abs(lep.pdgId)!=11): return True
     if (lep.hoe>=(0.10)): return False
     if (lep.eInvMinusPInv<=-0.04): return False
-    if (lep.sigmaIEtaIEta>=(0.011+0.019*(abs(lep.eta)>1.479))): return False
-    if (lep.lostHits > 0): return False 
+    if (lep.sieie>=(0.011+0.019*(abs(lep.eta)>1.479))): return False
+    if (ord(lep.lostHits) > 0): return False 
     return True
 
 #Last, the tight objects
@@ -59,24 +57,22 @@ def _susyEWK_lepId_MVATTH(lep, jetlist):
     #Needs Matching to closest jet around here, not saved at nanoAOD level
     dR = 200000
     jetbTag    = -1.
-    jetPtRatio = 1./((1 + lep.jetRelIso)) 
     for j in jetlist[0]:
         testR = deltaR(lep.eta, lep.phi, j.eta, j.phi)
         if testR < dR:
             dR = testR
             jetbTag    = j.btagCSVV2
-            jetPtRatio = lep.pt/(j.pt)
     if not( (lep.mvaTTH > 0.90 and jetbTag < 0.4941) and (abs(lep.pdgId)==11 or lep.mediumId>0)): return False 
     return True
 
-#Also the tau IDs, TODO::Now using ttH's, update it with news from Liam whenever they are ready
+#Updated with news from Liam whenever they are ready
 
 def _susyEWK_tauId_CBloose(tau):
-    return (tau.pt > 20 and abs(tau.eta)<2.3 and abs(tau.dxy)<1000 and abs(tau.dz)<0.2 and (ord(tau.idMVAoldDMdR032017v2) & 2))
+    return (tau.pt > 20 and abs(tau.eta)<2.3 and abs(tau.dxy)<1000 and abs(tau.dz)<0.2 and (ord(tau.idMVAoldDMdR032017v2) & 2)) 
 
 def _susyEWK_tauId_CBtight(tau):
     if not _susyEWK_tauId_CBloose(tau): return False
-    return (ord(tau.idMVAoldDMdR032017v2) & 8) 
+    return (ord(tau.idMVAoldDMdR032017v2) & 16) and (ord(tau.idAntiMu) & 1) and (ord(tau.idAntiEle) & 2)
 
 #Utilities
 import math
