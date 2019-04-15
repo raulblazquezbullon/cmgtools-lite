@@ -2,19 +2,27 @@
 ## ----------------------------------------------------------
 
 tot_weight : 1 : 1,0.5,1.5 ; XTitle = "", YTitle = "Total yields", IncludeOverflows=True, Logy, YMax = 1000000, YMin = 0.1
-mu_pt     : if3(abs(LepSel_pdgId)==13,LepSel_conePt,-1) : 20,0,200    ; YTitle="Muons"    , XTitle="p_{T\,cone}(#mu)" , IncludeOverflows=False, IncludeOverflow=True, LegendCutoff=1e-4, Logy, YMin=0.1, YMax=5000
+SR_3l : SR : 44,0.5,44.5 ; XTitle = "SR-3lA", IncludeOverflows=True, Logy, YMax = 1000000, YMin = 0.1
+
+mu_pt     : if3(abs(LepSel_pdgId)==13,LepSel_conePt,-1) : 19,10,200    ; YTitle="Muons"    , XTitle="p_{T\,cone}(#mu)" , IncludeOverflows=False, IncludeOverflow=True, LegendCutoff=1e-4, Logy, YMin=0.1, YMax=5000
 
 mu_eta    : if3(abs(LepSel_pdgId)==13,LepSel_eta,-999)  : 10,-2.5,2.5 ; YTitle="Muons"    , XTitle="#eta(#mu)" , IncludeOverflows=False, LegendCutoff=1e-4, Logy, YMin=0.1, YMax=500000
+mu_phi    : if3(abs(LepSel_pdgId)==13,LepSel_phi,-999)  : 10,-3.14,3.14 ; YTitle="Muons"    , XTitle="#phi(#mu)" , IncludeOverflows=False, LegendCutoff=1e-4, Logy, YMin=0.1, YMax=500000
 
-el_pt     : if3(abs(LepSel_pdgId)==11,LepSel_conePt,-1) : 20,0,200    ; YTitle="Electrons", XTitle="p_{T\,cone}(e)"   , IncludeOverflows=False, IncludeOverflow=True, LegendCutoff=1e-4, Logy, YMin=0.1, YMax=100000
+
+
+el_pt     : if3(abs(LepSel_pdgId)==11,LepSel_conePt,-1) : 19,10,200    ; YTitle="Electrons", XTitle="p_{T\,cone}(e)"   , IncludeOverflows=False, IncludeOverflow=True, LegendCutoff=1e-4, Logy, YMin=0.1, YMax=100000
 el_eta    : if3(abs(LepSel_pdgId)==11,LepSel_eta,-999)  : 10,-2.5,2.5 ; YTitle="Electrons", XTitle="#eta(e)"   , IncludeOverflows=False, LegendCutoff=1e-4, Logy, YMin=0.1, YMax=500000
+
+el_phi    : if3(abs(LepSel_pdgId)==11,LepSel_phi,-999)  : 10,-3.14,3.14 ; YTitle="Electrons"    , XTitle="#phi(e)" , IncludeOverflows=False, LegendCutoff=1e-4, Logy, YMin=0.1, YMax=500000
+
 
 ## further lepton observables
 ## ----------------------------------------------------------
 
-lep1_pt          : LepSel_conePt[0]      : 30,0,300   ; YTitle="Leptons", XTitle="p_{T\,cone}(leading lep.)"   , LegendCutoff=1e-4, YMin=0.1, YMax=10000, Logy
-lep2_pt          : LepSel_conePt[1]      : 30,0,300   ; YTitle="Leptons", XTitle="p_{T\,cone}(subleading lep.)", LegendCutoff=1e-4, YMin=0.1, YMax=5000, Logy
-lep3_pt          : LepSel_conePt[2]      : 30,0,300   ; YTitle="Leptons", XTitle="p_{T\,cone}(third lep.)"     , LegendCutoff=1e-4, YMin=0.1, YMax=3000, Logy
+lep1_pt          : LepSel_conePt[0]      : 27,30,300   ; YTitle="Leptons", XTitle="p_{T\,cone}(leading lep.)"   , LegendCutoff=1e-4, YMin=0.1, YMax=10000, Logy
+lep2_pt          : LepSel_conePt[1]      : 29,10,300   ; YTitle="Leptons", XTitle="p_{T\,cone}(subleading lep.)", LegendCutoff=1e-4, YMin=0.1, YMax=5000, Logy
+lep3_pt          : LepSel_conePt[2]      : 29,10,300   ; YTitle="Leptons", XTitle="p_{T\,cone}(third lep.)"     , LegendCutoff=1e-4, YMin=0.1, YMax=3000, Logy
 
 lep1_eta         : LepSel_eta[0]         : 10,-2.5,2.5 ; YTitle="Leptons", XTitle="#eta(leading lep.)"   , LegendCutoff=1e-4, YMin=1, YMax=1000000, Logy
 lep2_eta         : LepSel_eta[1]         : 10,-2.5,2.5 ; YTitle="Leptons", XTitle="#eta(subleading lep.)", LegendCutoff=1e-4, YMin=1, YMax=500000, Logy
@@ -61,34 +69,65 @@ lep3_miniRelIso  : LepSel_miniRelIso[2]  : 20,0,0.3   ; YTitle="Leptons", XTitle
 ## event observables
 ## ----------------------------------------------------------
 
-met        : met_pt         : 5,50,100   ; XTitle="p_{T}^{miss}  [GeV]"         , LegendCutoff=1e-4, Logy, YMin=0.7, YMax=100000, Legend="TR"
-htJet30j   : htJet30j_Mini       : 10,0,100    ; XTitle="H_{T}(jet p_{T} > 30 GeV) [GeV]" , LegendCutoff=1e-4, Logy, YMax=100000, YMin=0.9
+met        : met_pt         : 32,30,350   ; XTitle="p_{T}^{miss}  [GeV]"         , LegendCutoff=1e-4, Logy, YMin=0.7, YMax=100000, Legend="TR"
+met_CR        : met_pt         : 14,30,100   ; XTitle="p_{T}^{miss}  [GeV]"         , LegendCutoff=1e-4, Logy, YMin=0.7, YMax=100000, Legend="TR"
+met_sub50    : met_pt         : 10,0,50   ; XTitle="p_{T}^{miss}  [GeV]"         , LegendCutoff=1e-4, Logy, YMin=0.7, YMax=100000, Legend="TR"
+htJet30j   : htJet30j       : 30,0,300    ; XTitle="H_{T}(jet p_{T} > 30 GeV) [GeV]" , LegendCutoff=1e-4, Logy, YMax=100000, YMin=0.9
 nJet30     : nJet30         : 10,-0.5,9.5 ; XTitle="N(jet\, p_{T} > 30)"         , LegendCutoff=1e-4, Logy, YMax=100000, YMin=0.009
 nBJet25    : nBJetMedium25  : 5,-0.5,4.5  ; XTitle="N(b-jet\, p_{T} > 25\, CSVM)", LegendCutoff=1e-4, Logy, YMax=100000, YMin=0.9
 
-m3l        : m3L            : 10,110,310    ; XTitle="m_{3L} [GeV]"                , LegendCutoff=1e-4, Logy, Legend="TR", YMin=0.7, YMax=100000
+m3l        : m3L            : 10,100,600    ; XTitle="m_{3L} [GeV]"                , LegendCutoff=1e-4, Logy, Legend="TR", YMin=0.7, YMax=100000
 mll3l      : mllL_3l        : 15,75,105    ; XTitle="M_{ll} [GeV]"                , LegendCutoff=1e-4, Logy, YMin=0.7, YMax=1000000, Legend="TR"
-mtW3l      : mTL_3l         : 10,0,100    ; XTitle="M_{T} [GeV]"                 , LegendCutoff=1e-4, Logy, YMin=0.7, YMax=500000, Legend="TR"
+mll3l_sub75: mllL_3l        : 15,0,75    ; XTitle="M_{ll} [GeV]"                , LegendCutoff=1e-4, Logy, YMin=0.7, YMax=1000000, Legend="TR"
+mtW3l      : mTL_3l         : 40,0,200    ; XTitle="M_{T} [GeV]"                 , LegendCutoff=1e-4, Logy, YMin=0.7, YMax=500000, Legend="TR"
+mtW3l_CR   : mTL_3l         : 20,50,100    ; XTitle="M_{T} [GeV]"                 , LegendCutoff=1e-4, Logy, YMin=0.7, YMax=500000, Legend="TR"
 mT2L3l     : mT2L_3l        : 20,0,200    ; XTitle="M_{T2}(l\,l) [GeV]"          , LegendCutoff=1e-4, Logy, YMin=0.005, YMax=100000
 
-flavor3l   : (abs(LepSel_pdgId[0])+abs(LepSel_pdgId[1])+abs(LepSel_pdgId[2])-33)/2  : 4,-0.5,3.5 ; XTitle="flavor", xBinLabels="eee\,ee#mu\,e#mu#mu\,#mu#mu#mu", Legend="TL", LegendCutoff=1e-4, MoreY=2.0
+flavor3l   : (abs(LepGood_pdgId[0])+abs(LepGood_pdgId[1])+abs(LepGood_pdgId[2])-33)/2  : 4,-0.5,3.5 ; XTitle="flavor", xBinLabels="eee\,ee#mu\,e#mu#mu\,#mu#mu#mu", Legend="TL", LegendCutoff=1e-4, MoreY=2.0
 #charge3l   : if3(LepSel_pdgId[0]>0,-1,1)+if3(LepSel_pdgId[1]>0,-1,1)+if3(LepSel_pdgId[2]>0,-1,1) : 7,-3.5,3.5 ; XTitle="charge", Legend="TL", LegendCutoff=1e-4, MoreY=2.0
 
+
+ttH_like   : (nBJetMedium25 < 2 && (LepGood_charge[0] + LepGood_charge[1] + LepGood_charge[2]) == 1)*0 + (nBJetMedium25 < 2 && (LepGood_charge[0] + LepGood_charge[1] + LepGood_charge[2]) == -1)*1  + (nBJetMedium25 >= 2 && (LepGood_charge[0] + LepGood_charge[1] + LepGood_charge[2]) == 1)*2 + (nBJetMedium25 >= 2 && (LepGood_charge[0] + LepGood_charge[1] + LepGood_charge[2]) == -1)*3   : 4,-0.5,3.5 ; XTitle="ttH category", xBinLabels="q+ bl\,q- bl\,q+ bt\,q- bt", Legend="TL", LegendCutoff=1e-4, MoreY=2.0
 
 
 ## jet stuff
 ## ----------------------------------------------------------
 
-nJet     : nJetSel_Mini      : 10,-0.5,9.5 ; XTitle="N(selected jet)"         , LegendCutoff=1e-4, Logy, YMax=100000, YMin=0.009
+#nJet     : nJet30      : 8,-0.5,7.5 ; XTitle="N(selected jet\, p_{T} > 30 GeV)"         , LegendCutoff=1e-4, Logy, YMin=1, YMax=10000000
+#nJet25     : nJet25      : 8,-0.5,7.5 ; XTitle="N(selected jet\, p_{T} > 25 GeV)"         , LegendCutoff=1e-4, Logy, YMin=1, YMax=10000000
+jet1_pt  : if3(nJetSel_Mini>0,  if3(iJSel_Mini[0] >= 0, Jet_pt[iJSel_Mini[0]*(iJSel_Mini[0]>= 0)], -99)      , -99): 20,0,200 ; XTitle="p_{T}(leading jet) [GeV]", YTitle="Jets", LegendCutoff=1e-4, Logy, YMin=0.1, YMax=50000
+jet2_pt  : if3(nJetSel_Mini>1,  if3(iJSel_Mini[1] >= 0, Jet_pt[iJSel_Mini[1]*(iJSel_Mini[1]>= 0)], -99)      , -99): 20,0,200 ; XTitle="p_{T}(subleading jet) [GeV]", YTitle="Jets", LegendCutoff=1e-4, Logy, YMin=0.1, YMax=50000
 
-#jet1_pt  : if3(nJetSel_Mini>0, JetSel_Mini_pt[0]     , -99) : 40,0,400 ; XTitle="p_{T}(leading jet) [GeV]", YTitle="Jets", LegendCutoff=1e-4, Logy, YMin=0.1, YMax=50000
-#jet2_pt  : if3(nJetSel_Mini>0, JetSel_Mini_pt[1]     , -99) : 40,0,400 ; XTitle="p_{T}(subleading jet) [GeV]", YTitle="Jets", LegendCutoff=1e-4, Logy, YMin=0.1, YMax=50000
-
-#jet1_eta  : if3(nJetSel_Mini>0, JetSel_Mini_eta[0]     , -99) : 40,0,400 ; XTitle="#eta (leading jet) ", YTitle="Jets", LegendCutoff=1e-4, Logy, YMin=0.1, YMax=50000
-#jet2_eta : if3(nJetSel_Mini>0, JetSel_Mini_eta[1]     , -99) : 40,0,400 ; XTitle="#eta (subleading jet) ", YTitle="Jets", LegendCutoff=1e-4, Logy, YMin=0.1, YMax=50000
+#jet1_eta  : if3(nJetSel_Mini>0, if3(iJSel_Mini[0] >= 0, Jet_eta[iJSel_Mini[0]*(iJSel_Mini[0]>= 0)], DiscJet_eta[(-iJSel_Mini[0]-1)*(iJSel_Mini[0] <0)])      , -99) : 20,-2.5,2.5 ; XTitle="#eta (leading jet) ", YTitle="Jets", LegendCutoff=1e-4, Logy, YMin=0.1, YMax=50000
+#jet2_eta : if3(nJetSel_Mini>1, if3(iJSel_Mini[1] >= 0, Jet_eta[iJSel_Mini[1]*(iJSel_Mini[1]>= 0)], DiscJet_eta[(-iJSel_Mini[1]-1)*(iJSel_Mini[1] <0)])    , -99) : 20,-2.5,2.5 ; XTitle="#eta (subleading jet) ", YTitle="Jets", LegendCutoff=1e-4, Logy, YMin=0.1, YMax=50000
 
 
-#jet1_csv : if3(nJetSel_Mini>0, JetSel_Mini_btagCSV[0], -99) : 20,0,1   ; IncludeOverflows=True, XTitle="CSVv2(leading jet)", YTitle="Jets", LegendCutoff=1e-4, Logy, YMin=0.1, YMax=1000000
-#jet2_csv : if3(nJetSel_Mini>0, JetSel_Mini_btagCSV[1], -99) : 20,0,1   ; IncludeOverflows=True, XTitle="CSVv2(subleading jet)", YTitle="Jets", LegendCutoff=1e-4, Logy, YMin=0.1, YMax=1000000
+jet1_csv : if3(nJetSel_Mini>0, if3(iJSel_Mini[0] >= 0, Jet_btagCSV[iJSel_Mini[0]*(iJSel_Mini[0]>= 0)], DiscJet_btagCSV[(-iJSel_Mini[0]-1)*(iJSel_Mini[0] <0)]), -99) : 20,0,1   ; IncludeOverflows=True, XTitle="CSVv2(leading jet)", YTitle="Jets", LegendCutoff=1e-4, Logy, YMin=0.1, YMax=1000000
 
+
+jet2_csv : if3(nJetSel_Mini>1, if3(iJSel_Mini[1] >= 0, Jet_btagCSV[iJSel_Mini[1]*(iJSel_Mini[1]>= 0)], DiscJet_btagCSV[(-iJSel_Mini[1]-1)*(iJSel_Mini[1] <0)]), -99) : 20,0,1   ; IncludeOverflows=True, XTitle="CSVv2(subleading jet)", YTitle="Jets", LegendCutoff=1e-4, Logy, YMin=0.1, YMax=1000000
+
+jet1_deepcsv : if3(nJetSel_Mini>0, if3(iJSel_Mini[0] >= 0, Jet_btagDeepCSV[iJSel_Mini[0]*(iJSel_Mini[0]>= 0)], DiscJet_btagDeepCSV[(-iJSel_Mini[0]-1)*(iJSel_Mini[0] <0)]), -99) : 20,0,1   ; IncludeOverflows=True, XTitle="DeepCSV(leading jet)", YTitle="Jets", LegendCutoff=1e-4, Logy, YMin=0.1, YMax=1000000
+jet2_deepcsv : if3(nJetSel_Mini>1, if3(iJSel_Mini[1] >= 0, Jet_btagDeepCSV[iJSel_Mini[1]*(iJSel_Mini[1]>= 0)], DiscJet_btagDeepCSV[(-iJSel_Mini[1]-1)*(iJSel_Mini[1] <0)]), -99) : 20,0,1   ; IncludeOverflows=True, XTitle="DeepCSV (subleading jet)", YTitle="Jets", LegendCutoff=1e-4, Logy, YMin=0.1, YMax=1000000
+
+
+
+nJB30_log :  CountNJNBJ(nJetSel_Mini, nBJetMedium25_Mini)  : 18,-0.5,17.5; XTitle="( N_{jet}  N_{b jet} )", LegendCutoff=1e-5, xBinLabels="(0 0)\,(0 1)\,(0 2)\,(1 0)\,(1 1)\,(1 2)\,(2 0)\,(2 1)\,(3 0)\,(3 1)\,(3 2)\,(4 0)\,(4 1)\,(4 2)\,(5 0)\,(5 1)\,(5 2)", XNDiv=014, Wide=True, Logy
+
+nJet30_clean : nJet30_Mini : 8, -0.5, 7.5 ; XTitle="N_{jet} \, p_{T} > 30 GeV", Logy
+nBJet25_clean : nBJetMedium25_Mini : 4, -0.5, 3.5 ; XTitle="N_{b-jet} \, p_{T} > 25 GeV\, DeepCSV WP Medium", Logy
+nB25_nJ30_clean : CountNJNBJ(nJet30_Mini , nBJetMedium25_Mini) : 15,-0.5,14.5; XTitle="( N_{jet}\,  N_{b jet} )", xBinLabels="(0  0)\,(1  0)\,(2  0)\,(3  0)\,(#geq 4   0)\,(1  1)\,(2  1)\,(3  1)\,(4  1)\,(#geq 5  1)\,(2  #geq 2)\,(3  #geq 2)\,(4   #geq 2)\,(5   #geq 2)\,(#geq 6  #geq 2)", Logy
+
+
+Triggers_e : Triggers_e : 2, -0.5,1.5 ; XTitle="Triggers_e"
+
+Triggers_m : Triggers_m : 2, -0.5,1.5 ; XTitle="Triggers_m"
+
+Triggers_ee : Triggers_ee : 2, -0.5,1.5 ; XTitle="Triggers_ee"
+
+Triggers_ee : Triggers_ee + : 2, -0.5,1.5 ; XTitle="Triggers_ee"
+
+Triggers_em : Triggers_em : 2, -0.5,1.5 ; XTitle="Triggers_em"
+
+Triggers_mm : Triggers_mm : 2, -0.5,1.5 ; XTitle="Triggers_mm"
 

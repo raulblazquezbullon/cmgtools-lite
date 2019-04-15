@@ -1,0 +1,11 @@
+maxDZ   : max(max(abs(LepGood_dz[0]),abs(LepGood_dz[1])),abs(LepGood_dz[2])) + 99*(LepGood_tightId[0] >= 1 + 2*(abs(LepGood_pdgId[0])==11))*(LepGood_tightId[1] >= 1 + 2*(abs(LepGood_pdgId[1])==11))*(LepGood_tightId[2] >= 1 + 2*(abs(LepGood_pdgId[2])==11)) - 99 : 10000, 0.,0.25 ; XTitle="max(DZ)", Legend="TL", LegendCutoff=1e-4, MoreY=2.0,IncludeOverflows=False
+
+maxIP2D   : max(max(abs(LepGood_dxy[0]),abs(LepGood_dxy[1])),abs(LepGood_dxy[2])) + 99*(LepGood_tightId[0] >= 1 + 2*(abs(LepGood_pdgId[0])==11))*(LepGood_tightId[1] >= 1 + 2*(abs(LepGood_pdgId[1])==11))*(LepGood_tightId[2] >= 1 + 2*(abs(LepGood_pdgId[2])==11)) - 99 : 10000, 0.,0.25 ; XTitle="max(DXY)", Legend="TL", LegendCutoff=1e-4, MoreY=2.0,IncludeOverflows=False
+
+maxIP3D   : max(max(LepGood_ip3d[0],LepGood_ip3d[1]),LepGood_ip3d[2]) + 99*(LepGood_tightId[0] >= 1 + 2*(abs(LepGood_pdgId[0])==11))*(LepGood_tightId[1] >= 1 + 2*(abs(LepGood_pdgId[1])==11))*(LepGood_tightId[2] >= 1 + 2*(abs(LepGood_pdgId[2])==11)) - 99 : 10000, 0.,0.25 ; XTitle="max(IP3D)", Legend="TL", LegendCutoff=1e-4, MoreY=2.0,IncludeOverflows=False
+
+maxSIP3D   : max(max(LepGood_sip3d[0],LepGood_sip3d[1]),LepGood_sip3d[2]) + 99*(LepGood_tightId[0] >= 1 + 2*(abs(LepGood_pdgId[0])==11))*(LepGood_tightId[1] >= 1 + 2*(abs(LepGood_pdgId[1])==11))*(LepGood_tightId[2] >= 1 + 2*(abs(LepGood_pdgId[2])==11)) - 99 : 10000, 0.,20. ; XTitle="max(SIP3D)", Legend="TL", LegendCutoff=1e-4, MoreY=2.0,IncludeOverflows=False
+
+
+minMVA   : -min(min(LepGood_mvaSUSY[0],LepGood_mvaSUSY[1]),LepGood_mvaSUSY[2]) + 99*(LepGood_tightId[0] >= 1 + 2*(abs(LepGood_pdgId[0])==11))*(LepGood_tightId[1] >= 1 + 2*(abs(LepGood_pdgId[1])==11))*(LepGood_tightId[2] >= 1 + 2*(abs(LepGood_pdgId[2])==11)) - 99 : 10000, -1.,1. ; XTitle="min(SUSYMVA)", Legend="TL", LegendCutoff=1e-4, MoreY=2.0,IncludeOverflows=False
+

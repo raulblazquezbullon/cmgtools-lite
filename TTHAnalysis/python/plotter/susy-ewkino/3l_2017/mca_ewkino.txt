@@ -43,5 +43,3 @@ incl_flips_appldata : + ; IncludeMca="susy-ewkino/3lcorr/includes/mca_flips_appl
 incl_prompts        : + ; IncludeMca="susy-ewkino/3lcorr/includes/mca_prompts.txt"
 incl_bares          : + ; IncludeMca="susy-ewkino/3lcorr/includes/mca_bare.txt"
 incl_conf           : + ; IncludeMca="susy-ewkino/3lcorr/includes/mca_conf.txt"
-
-

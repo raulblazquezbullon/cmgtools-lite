@@ -5,7 +5,7 @@ incl_data : + ; IncludeMca="susy-ewkino/3l_2017/includes/mca_data_2017.txt"
 
 ## WZ (to keep the order)
 ## -----------------------------------------------------------
-prompt_WZ+ : WZTo3LNu_amcatnlo : xsec*1.07 ; FillColor=ROOT.kOrange, FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt", Label="WZ", doUnpickled=1, NormSystematic=0.07
+prompt_WZ+ : WZTo3LNu_amcatnlo : xsec*1.109 ; FillColor=ROOT.kOrange, Label="WZ", doUnpickled=1, NormSystematic=0.07
 
 ## Backgrounds
 ## -----------------------------------------------------------

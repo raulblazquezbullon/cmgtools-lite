@@ -1,0 +1,35 @@
+prompt_WZ               : WZTo3LNu_amcatnlo                        : xsec : 1            ; FillColor=ROOT.kOrange  , Label="WZ", NormSystematic=0.15
+
+prompt_WZ_pref : WZTo3LNu_amcatnlo : xsec : 1*weight_Prefiring            ; FillColor=ROOT.kOrange+5  , Label="WZ", NormSystematic=0.15, LineStyle=3
+
+prompt_ZZH : GGHZZ4L   : xsec*1.7 : 1 ; FillColor=ROOT.kGreen+1, Label="ZZ", NormSystematic=0.083
+prompt_ZZH : ZZTo4L    : xsec*1.1 : 1 ; FillColor=ROOT.kGreen+1, Label="ZZ", NormSystematic=0.083
+convs  : TTGJets  : xsec : 1 ; FillColor=ROOT.kOrange+7, Label="X+\#gamma", NormSystematic=0.254
+#convs  : ZGTo2LG  : xsec : 1 ; FillColor=ROOT.kOrange+7, Label="X+\#gamma", NormSystematic=0.254
+#convs  : WGToLNuG : xsec : 1 ; FillColor=ROOT.kOrange+7, Label="X+\#gamma", NormSystematic=0.254
+#convs  : TGJets   : xsec : 1 ; FillColor=ROOT.kOrange+7, Label="X+\#gamma", NormSystematic=0.254
+rares_ttX    : TTWToLNu                    : xsec : 1 ; FillColor=ROOT.kViolet-3, Label="ttX", NormSystematic=0.156
+rares_ttX     : TTHnobb_pow                 : xsec : 1 ; FillColor=ROOT.kViolet-3, Label="ttX", NormSystematic=0.156
+rares_ttX     : TTZToLLNuNu                 : xsec : 1 ; FillColor=ROOT.kViolet-3, Label="ttX", NormSystematic=0.156
+rares_ttX     : TTLLJets_m1to10             : 0.0493 : 1 ; FillColor=ROOT.kViolet-3, Label="ttX", NormSystematic=0.156
+rares_VH  : VHToNonbb : xsec : 1 ; FillColor=ROOT.kRed-1 , Label="VH", NormSystematic=0.254
+rares_tZq     : tZq_ll                      : xsec : 1 ; FillColor=ROOT.kCyan-7, Label="tZq", NormSystematic=0.35
+
+
+
+
+
+
+prompt_ZZH_pref  : GGHZZ4L   : xsec*1.7 : 1*weight_Prefiring ; LineStyle=3, FillColor=ROOT.kGreen+1, Label="ZZ", NormSystematic=0.083
+prompt_ZZH_pref  : ZZTo4L    : xsec*1.1 : 1*weight_Prefiring ; LineStyle=3, FillColor=ROOT.kGreen+1, Label="ZZ", NormSystematic=0.083
+convs_pref   : TTGJets  : xsec : (1)*weight_Prefiring ; LineStyle=3, FillColor=ROOT.kOrange+7, Label="X+\#gamma", NormSystematic=0.254
+#convs_pref   : ZGTo2LG  : xsec : (1)*weight_Prefiring  ; LineStyle=3, FillColor=ROOT.kOrange+7, Label="X+\#gamma", NormSystematic=0.254
+#convs_pref   : WGToLNuG : xsec : (1)*weight_Prefiring  ; LineStyle=3, FillColor=ROOT.kOrange+7, Label="X+\#gamma", NormSystematic=0.254
+#convs_pref   : TGJets   : xsec : (1)*weight_Prefiring  ; LineStyle=3, FillColor=ROOT.kOrange+7, Label="X+\#gamma", NormSystematic=0.254
+rares_ttX_pref     : TTWToLNu                    : xsec : 1*weight_Prefiring ; LineStyle=3, FillColor=ROOT.kViolet-3, Label="ttX", NormSystematic=0.156
+rares_ttX_pref      : TTHnobb_pow                 : xsec : 1*weight_Prefiring ; LineStyle=3, FillColor=ROOT.kViolet-3, Label="ttX", NormSystematic=0.156
+rares_ttX_pref      : TTZToLLNuNu                 : xsec : 1*weight_Prefiring ; LineStyle=3, FillColor=ROOT.kViolet-3, Label="ttX", NormSystematic=0.156
+rares_ttX_pref      : TTLLJets_m1to10             : 0.0493 : 1*weight_Prefiring ; LineStyle=3, FillColor=ROOT.kViolet-3, Label="ttX", NormSystematic=0.156
+rares_VH_pref   : VHToNonbb : xsec : 1*weight_Prefiring ; LineStyle=3, FillColor=ROOT.kRed-1 , Label="VH", NormSystematic=0.254
+rares_tZq_pref      : tZq_ll                      : xsec : 1*weight_Prefiring ; LineStyle=3, FillColor=ROOT.kCyan-7, Label="tZq", NormSystematic=0.35
+

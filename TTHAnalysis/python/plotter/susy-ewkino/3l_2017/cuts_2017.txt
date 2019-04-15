@@ -1,23 +1,31 @@
 alwaystrue: 1
+eraA : $DATA{run >= 294927 && run <= 297019} $MC{1}; Disable=True #0.684 fb-1
+eraB : $DATA{run >= 297020 && run <= 299329} $MC{1}; Disable=True #4.729 fb-1
+eraC : $DATA{run >= 299337 && run <= 302029} $MC{1}; Disable=True #9.755 fb-1
+eraD : $DATA{run >= 302030 && run <= 303434} $MC{1}; Disable=True #4.319 fb-1
+eraE : $DATA{run >= 303435 && run <= 304826} $MC{1}; Disable=True #9.423 fb-1
+yeseraF : $DATA{run >= 304911 && run <= 306462} $MC{1}; Disable=True #13.568 fb-1
+noteraF : $DATA{!(run >= 304911 && run <= 306462)} $MC{1}; Disable=True
 #blinding  : $DATA{run <= 276811} $MC{1} $FASTSIM{1}
 filters   : $DATA{METfilters} $MC{1} $FASTSIM{1}
-trigger   : $DATA{Triggers_ee || Triggers_em || Triggers_mm} $MC{Triggers_ee || Triggers_em || Triggers_mm} $FASTSIM{1}
+
 #trigger   : $DATA{Triggers_mm} $MC{Triggers_mm} $FASTSIM{1}
 3l        : nLepSel >= 3
 lowmass   : minMllSFOS_Mini > 12 || minMllSFOS_Mini == -1
 #sanity    : passPtMll && is_3l && LepSel_pt[0] >= (20 + 5*(abs(LepSel_pdgId[0])==11)) && LepSel_pt[1] >= (10 + 5*(abs(LepSel_pdgId[1])==11)) && LepSel_pt[2] >= (10 + 0*(abs(LepSel_pdgId[3])==11)) 
-ptlep     : LepSel_pt[0] >= 30 && LepSel_pt[1] >= (10 + 0*(abs(LepSel_pdgId[1])==11)) && LepSel_pt[2] >= (10 + 0*(abs(LepSel_pdgId[2])==11)) 
+ptlep     : LepSel_pt[0] >= (20 + 5*(abs(LepSel_pdgId[1])==11))  && LepSel_pt[1] >= (10 + 5*(abs(LepSel_pdgId[1])==11)) && LepSel_pt[2] >= (10 + 0*(abs(LepSel_pdgId[2])==11)) 
 
 SRevent   : allTight(3, LepSel_isTight[0], LepSel_isTight[1], LepSel_isTight[2]) 
 veto      : nLepSel < 4
 BRevent   : abs(LepSel_pdgId[0]) < 15 && abs(LepSel_pdgId[1]) < 15 && abs(LepSel_pdgId[2]) < 15 && nOSSF_3l >= 1
 convveto  : abs(m3L-91) > 15
-bJetVeto  : nBJetMedium25 == 0
-met       : met_pt > 50
+bJetVeto  : nBJetMedium25_Mini == 0
+met       : met_pt > 30
 
 onZ       : mll_3l > 75 && mll_3l < 105; Disable=True
-CRWZ      : met_pt < 100 && mll_3l > 75 && mll_3l < 105 && htJet30j < 100 && mTL_3l < 100; Disable=True
-CRConv    : met_pt < 50 && mll_3l < 75 && abs(m3L-91) < 15; Disable=True
+CRWZ      : met_pt < 100 && mll_3l > 75 && mll_3l < 105 && nJet30_Mini <= 1 && mTL_3l < 100 && mTL_3l > 50; Disable=True
+CRConv    : met_pt < 50 && mll_3l < 75 && abs(m3L - 91.16) < 15; Disable=True
+SMWZ      : mll_3l > 75 && mll_3l < 105; Disable=True 
 
 LnotT : (LepSel_isTight[0]+LepSel_isTight[1]+LepSel_isTight[2]) < 3; Disable=True
 
@@ -25,3 +33,10 @@ flav_mumumu     : abs(LepSel_pdgId[0])*abs(LepSel_pdgId[1])*abs(LepSel_pdgId[2])
 flav_mumue     : abs(LepSel_pdgId[0])*abs(LepSel_pdgId[1])*abs(LepSel_pdgId[2]) == 13*13*11; Disable=True
 flav_eemu    : abs(LepSel_pdgId[0])*abs(LepSel_pdgId[1])*abs(LepSel_pdgId[2]) == 13*11*11; Disable=True
 flav_eee     : abs(LepSel_pdgId[0])*abs(LepSel_pdgId[1])*abs(LepSel_pdgId[2]) == 11*11*11; Disable=True
+
+trigger   : $DATA{Triggers_ee || Triggers_em || Triggers_mm } $MC{Triggers_ee || Triggers_em || Triggers_mm} $FASTSIM{1}
+
+#trigger_sl   : $DATA{Triggers_e} $MC{Triggers_e } $FASTSIM{1}
+
+
+#trigger_nsl   : $DATA{(Triggers_ee || Triggers_em || Triggers_mm) && !Triggers_e} $MC{(Triggers_ee || Triggers_em || Triggers_mm) && !Triggers_e} $FASTSIM{1}

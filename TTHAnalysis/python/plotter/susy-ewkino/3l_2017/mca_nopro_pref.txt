@@ -1,0 +1,33 @@
+bkg      : DYJetsToLL_M10to50_LO_0                     : xsec ; FillColor=ROOT.kOrange+7, FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt"  , Label="All", doUnpickled=1,  NormSystematic=0.25
+bkg      : DYJetsToLL_M50_LO                     : xsec ; FillColor=ROOT.kOrange+7, FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt"  , Label="All", doUnpickled=1,  NormSystematic=0.25
+bkg : TTLep_pow_0 + TTLep_pow_1 : xsec ; FillColor=ROOT.kGray , FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isfake.txt", Label="All", doUnpickled=1, NormSystematic=0.45
+bkg : TTHad_pow_0 + TTHad_pow_1 + TTHad_pow_2 : xsec ; FillColor=ROOT.kGray , FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isfake.txt", Label="All", doUnpickled=1, NormSystematic=0.45
+bkg : TTSemi_pow_0 + TTSemi_pow_1 + TTSemi_pow_2 : xsec ; FillColor=ROOT.kGray , FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isfake.txt", Label="All", doUnpickled=1, NormSystematic=0.45
+bkg : T_tWch_noFullHad : xsec ; FillColor=ROOT.kYellow , FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isfake.txt", Label="All", doUnpickled=1, NormSystematic=0.45
+bkg : WJetsToLNu_LO : xsec ; FillColor=ROOT.kBlue-10 , FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isfake.txt", Label="All", doUnpickled=1, NormSystematic=0.45
+bkg : DYJetsToLL_M10to50_LO_0 : xsec ; FillColor=ROOT.kAzure+10 , FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isfake.txt", Label="All", doUnpickled=1,  NormSystematic=0.45
+bkg: DYJetsToLL_M50_LO : xsec ; FillColor=ROOT.kAzure+10 , FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isfake.txt", Label="All", doUnpickled=1, NormSystematic=0.45
+
+
+
+bkg_pref      : DYJetsToLL_M10to50_LO_0                     : xsec ; AddWeight="weight_PrefiringJets",  FillColor=ROOT.kOrange+7, FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt"  , Label="Weighted", doUnpickled=1,  NormSystematic=0.25
+bkg_pref      : DYJetsToLL_M50_LO                     : xsec ; AddWeight="weight_PrefiringJets",  FillColor=ROOT.kOrange+7, FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt"  , Label="Weighted", doUnpickled=1,  NormSystematic=0.25
+bkg_pref : TTLep_pow_0 + TTLep_pow_1 : xsec ; AddWeight="weight_PrefiringJets",  FillColor=ROOT.kGray , FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isfake.txt", Label="Weighted", doUnpickled=1, NormSystematic=0.45
+bkg_pref : TTHad_pow_0 + TTHad_pow_1 + TTHad_pow_2 : xsec ; AddWeight="weight_PrefiringJets",  FillColor=ROOT.kGray , FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isfake.txt", Label="Weighted", doUnpickled=1, NormSystematic=0.45
+bkg_pref : TTSemi_pow_0 + TTSemi_pow_1 + TTSemi_pow_2 : xsec ; AddWeight="weight_PrefiringJets",  FillColor=ROOT.kGray , FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isfake.txt", Label="Weighted", doUnpickled=1, NormSystematic=0.45
+bkg_pref : T_tWch_noFullHad : xsec ; AddWeight="weight_PrefiringJets",  FillColor=ROOT.kYellow , FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isfake.txt", Label="Weighted", doUnpickled=1, NormSystematic=0.45
+bkg_pref : WJetsToLNu_LO : xsec ; AddWeight="weight_PrefiringJets",  FillColor=ROOT.kBlue-10 , FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isfake.txt", Label="Weighted", doUnpickled=1, NormSystematic=0.45
+bkg_pref : DYJetsToLL_M10to50_LO_0 : xsec ; AddWeight="weight_PrefiringJets",  FillColor=ROOT.kAzure+10 , FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isfake.txt", Label="Weighted", doUnpickled=1,  NormSystematic=0.45
+bkg_pref: DYJetsToLL_M50_LO : xsec ; AddWeight="weight_PrefiringJets",  FillColor=ROOT.kAzure+10 , FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isfake.txt", Label="Weighted", doUnpickled=1, NormSystematic=0.45
+
+
+
+bkg_trouble      : DYJetsToLL_M10to50_LO_0                     : xsec ; AddWeight="(1-is_Prefiring_central)",  FillColor=ROOT.kOrange+7, FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt"  , Label="Removed", doUnpickled=1,  NormSystematic=0.25
+bkg_trouble      : DYJetsToLL_M50_LO                     : xsec ; AddWeight="(1-is_Prefiring_central)",  FillColor=ROOT.kOrange+7, FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isprompt.txt"  , Label="Removed", doUnpickled=1,  NormSystematic=0.25
+bkg_trouble : TTLep_pow_0 + TTLep_pow_1 : xsec ; AddWeight="(1-is_Prefiring_central)",  FillColor=ROOT.kGray , FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isfake.txt", Label="Removed", doUnpickled=1, NormSystematic=0.45
+bkg_trouble : TTHad_pow_0 + TTHad_pow_1 + TTHad_pow_2 : xsec ; AddWeight="(1-is_Prefiring_central)",  FillColor=ROOT.kGray , FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isfake.txt", Label="Removed", doUnpickled=1, NormSystematic=0.45
+bkg_trouble : TTSemi_pow_0 + TTSemi_pow_1 + TTSemi_pow_2 : xsec ; AddWeight="(1-is_Prefiring_central)",  FillColor=ROOT.kGray , FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isfake.txt", Label="Removed", doUnpickled=1, NormSystematic=0.45
+bkg_trouble : T_tWch_noFullHad : xsec ; AddWeight="(1-is_Prefiring_central)",  FillColor=ROOT.kYellow , FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isfake.txt", Label="Removed", doUnpickled=1, NormSystematic=0.45
+bkg_trouble : WJetsToLNu_LO : xsec ; AddWeight="(1-is_Prefiring_central)",  FillColor=ROOT.kBlue-10 , FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isfake.txt", Label="Removed", doUnpickled=1, NormSystematic=0.45
+bkg_trouble : DYJetsToLL_M10to50_LO_0 : xsec ; AddWeight="(1-is_Prefiring_central)",  FillColor=ROOT.kAzure+10 , FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isfake.txt", Label="Removed", doUnpickled=1,  NormSystematic=0.45
+bkg_trouble: DYJetsToLL_M50_LO : xsec ; AddWeight="(1-is_Prefiring_central)",  FillColor=ROOT.kAzure+10 , FakeRate="susy-ewkino/3l/fakerate_standard_central.txt\,susy-ewkino/3l/fakerate_load_isfake.txt", Label="Removed", doUnpickled=1, NormSystematic=0.45

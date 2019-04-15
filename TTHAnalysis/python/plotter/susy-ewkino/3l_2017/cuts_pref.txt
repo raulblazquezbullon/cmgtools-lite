@@ -1,0 +1,20 @@
+alwaystrue: 1
+eraA : $DATA{run >= 294927 && run <= 297019} $MC{1}; Disable=True #0.684 fb-1
+eraB : $DATA{run >= 297020 && run <= 299329} $MC{1}; Disable=True #4.729 fb-1
+eraC : $DATA{run >= 299337 && run <= 302029} $MC{1}; Disable=True #9.755 fb-1
+eraD : $DATA{run >= 302030 && run <= 303434} $MC{1}; Disable=True #4.319 fb-1
+eraE : $DATA{run >= 303435 && run <= 304826} $MC{1}; Disable=True #9.423 fb-1
+eraF : $DATA{run >= 304911 && run <= 306462} $MC{1}; Disable=True #13.568 fb-1
+#noteraF : $DATA{!(run >= 304911 && run <= 306462)} $MC{1}; Disable=True
+#blinding  : $DATA{run <= 276811} $MC{1} $FASTSIM{1}
+filters   : $DATA{METfilters} $MC{1} $FASTSIM{1}
+
+#trigger   : $DATA{Triggers_mm} $MC{Triggers_mm} $FASTSIM{1}
+3l        : nLepGood >= 3
+lowmass   : minMllSFOS > 12 || minMllSFOS == -1
+ptlep     : LepGood_pt[0] >= 25 && LepGood_pt[1] >=15 && LepGood_pt[2] >= 15
+mvalep    : LepGood_mvaTTH[0] > 0.90 && LepGood_mvaTTH[1] > 0.90 && LepGood_mvaTTH[2] >0.90
+Zveto : abs(mZ1 - 91.2) > 10
+veto      : nLepGood < 4
+nJet  : nJet30 >= 4  && (nBJetLoose25 >= 2 || nBJetMedium25 >= 1)
+met       : met_pt > 50
