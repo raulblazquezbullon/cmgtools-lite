@@ -1,6 +1,6 @@
 METfilters\b  : Flag_EcalDeadCellTriggerPrimitiveFilter && Flag_HBHENoiseIsoFilter && Flag_HBHENoiseFilter && Flag_eeBadScFilter && Flag_goodVertices && Flag_globalTightHalo2016Filter && Flag_badChargedHadronFilter && Flag_badMuonMoriond2017 && Flag_badCloneMuonMoriond2017 ; AlsoData
 Triggers_ee\b : HLT_BIT_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v || HLT_BIT_HLT_DoubleEle25_CaloIdL_MW_v ; AlsoData
-Triggers_mm\b :  HLT_BIT_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v ; AlsoData
+Triggers_mm\b :  (HLT_BIT_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v && run <= 299329) || HLT_BIT_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v ; AlsoData
 Triggers_em\b :  HLT_BIT_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v || HLT_BIT_HLT_Mu8_DiEle12_CaloIdL_TrackIdL_v || HLT_BIT_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v ; AlsoData
 Triggers_e\b : HLT_BIT_HLT_Ele35_WPTight_Gsf_v || (run >= 302031 && HLT_BIT_HLT_Ele32_WPTight_Gsf_v); AlsoData
-Triggers_m\n : (HLT_BIT_HLT_IsoMu24_v && run < 305040)|| HLT_BIT_HLT_IsoMu27_v; AlsoData
+Triggers_m\b : (HLT_BIT_HLT_IsoMu24_v && run < 305040) || HLT_BIT_HLT_IsoMu27_v; AlsoData
