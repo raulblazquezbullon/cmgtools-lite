@@ -762,6 +762,11 @@ int SuperSigcorr6(float mll, float mT, float met, float ht, int offset = 0) {
     return 0;
 }
 
-
+int CountNJNBJ(int nJ, int nBJ){
+    if (nBJ >= 2) nBJ = 2;
+    nJ = nJ - nBJ;
+    if (nJ >=  4) nJ = 4;
+    return 5*nBJ+ nJ;
+}
 
 void functionsEWKcorr() {}
