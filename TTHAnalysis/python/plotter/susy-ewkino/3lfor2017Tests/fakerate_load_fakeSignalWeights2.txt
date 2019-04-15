@@ -1,0 +1,1 @@
+weight: getLepSF2018(LepGood_pt[0], LepGood_eta[0], LepGood_pdgId[0], 1, 0, 0)*getLepSF2018(LepGood_pt[1], LepGood_eta[1], LepGood_pdgId[1], 1, 0, 0)*getLepSF2018(LepGood_pt[2], LepGood_eta[2], LepGood_pdgId[2], 1, 0, 0)*vtxWeight2017Nominal
