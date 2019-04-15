@@ -11,9 +11,10 @@ if __name__ == "__main__":
     parser.add_option("-q", dest="queue", default=None, help="Queue to send jobs (one per dataset/chunk)")
     parser.add_option("-D", "--drop",  dest="drop", type="string", default=[], action="append",  help="Branches to drop, as per TTree::SetBranchStatus") 
     parser.add_option("-K", "--keep",  dest="keep", type="string", default=[], action="append",  help="Branches to keep, as per TTree::SetBranchStatus") 
-
+    parser.add_option("-m", "--model",  dest="model", type="string", default="SMS",  help="Model name for the folder structure") 
+    parser.add_option("-n", "--noChunks",  dest="--noChunks", default=False, action="store_true",  help="When you have everything in a big file, don't produce chunks. Just merge everything.") 
     (options, args) = parser.parse_args()
-
+    print "No chunks : ", options.noChunks
     for _in in args[1:]:
 
         if options.queue:
@@ -71,7 +72,8 @@ if __name__ == "__main__":
         for keep in options.keep: t.SetBranchStatus(keep,1)
 
         for m,elist in allmasses.iteritems():
-            splitdir = '%s/SMS_%d_%d_%s_Chunk%d'%(outdir,m[0],m[1],dset,random.randint(1e5,1e10))
+            if not(options.noChunks): splitdir = '%s/%s_%d_%d_%s_Chunk%d'%(options.model,outdir,m[0],m[1],dset,random.randint(1e5,1e10))
+            else: splitdir = '%s/%s_%d_%d'%(options.model,outdir,m[0],m[1])
             os.system("mkdir -p "+splitdir)
             os.system("mkdir -p %s/%s"%(splitdir,treename))
             if os.path.exists('%s/%s/%s/tree.root'%(remdir,splitdir.split('/')[-1],treename)): raise RuntimeError, 'Output file already exists'
@@ -88,7 +90,7 @@ if __name__ == "__main__":
             cx.inc('Sum Weights', hw.GetBinContent(hw.GetXaxis().FindBin(m[0]),hw.GetYaxis().FindBin(m[1]),1))
             os.system("mkdir -p %s/skimAnalyzerCount"%splitdir)
             cx.write('%s/skimAnalyzerCount'%splitdir)
-            if options.url:
+            """if options.url:
                 os.system('archiveTreesOnEOS.py --auto -t %s --dset %s %s %s'%(treename,splitdir.split('/')[-1],outdir,options.url))
             os.system('rsync -av %s %s'%(splitdir.rstrip('/'),remdir))
             os.system('rm %s/%s/tree.root'%(splitdir,treename))
@@ -98,9 +100,4 @@ if __name__ == "__main__":
             os.system('rmdir %s/%s'%(splitdir,treename))
             os.system('rmdir %s/skimAnalyzerCount'%splitdir)
             os.system('rmdir %s'%splitdir)
-            os.system('rmdir %s'%outdir)
-
-    
-
-
-
+            os.system('rmdir %s'%outdir)"""
