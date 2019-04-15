@@ -1,7 +1,39 @@
 #!/usr/bin/env python
 import ROOT
-import pickle, os, random, sys
+import pickle, os, random, sys, copy
 from PhysicsTools.HeppyCore.statistics.counter import Counter
+from multiprocessing import Pool
+
+
+def doSplitPoint(dargs):
+  t = dargs[2]
+  m = dargs[0]
+  elist = dargs[1] 
+  print "Point... ", m
+  if not(options.noChunks): splitdir = '%s/%s_%d_%d_%s_Chunk%d'%(options.model,outdir,m[0],m[1],dset,random.randint(1e5,1e10))
+  else: splitdir = '%s/%s_%d_%d'%(options.model,outdir,m[0],m[1])
+  os.system("mkdir -p "+splitdir)
+  os.system("mkdir -p %s/%s"%(splitdir,treename))
+  if os.path.exists('%s/%s/%s/tree.root'%(remdir,splitdir.split('/')[-1],treename)): raise RuntimeError, 'Output file already exists'
+  f2 = ROOT.TFile("%s/selection_eventlist.root"%splitdir,"recreate")
+  f2.cd()
+  elist.Write()
+  f2.Close()
+  fout = ROOT.TFile('%s/%s/tree.root'%(splitdir,treename),'recreate')
+  fout.cd()
+  #t.SetEventList(elist)
+  out = t.CopyTree('1')
+  #fout.WriteTObject(out,'tree')
+  #fout.Close()
+  cx = Counter('SkimReport')
+  cx.register('All Events')
+  cx.register('Sum Weights')
+  cx.inc('All Events' , elist.GetN() if options.gen or not options.useHist else h.GetBinContent(h.GetXaxis().FindBin(m[0]),h.GetYaxis().FindBin(m[1]),1))
+  cx.inc('Sum Weights', elist.GetN() if options.gen or not options.useHist else hw.GetBinContent(hw.GetXaxis().FindBin(m[0]),hw.GetYaxis().FindBin(m[1]),1))
+  os.system("mkdir -p %s/skimAnalyzerCount"%splitdir)
+  cx.write('%s/skimAnalyzerCount'%splitdir)
+
+    
 
 if __name__ == "__main__":
     from optparse import OptionParser
@@ -23,6 +55,7 @@ if __name__ == "__main__":
     parser.add_option("--lsp",  dest="lsp", type="int", default=0, help="Minimal mass of the second particle (basically mass-deltaM) (only if --mass is given)") 
     parser.add_option("-m", "--model",  dest="model", type="string", default="SMS",  help="Model name for the folder structure") 
     parser.add_option("-n", "--noChunks",  dest="noChunks", default=False, action="store_true",  help="When you have everything in a big file, don't produce chunks. Just merge everything.") 
+    parser.add_option("-j", dest="jobs", type="int", default=1, help="Number of parallel jobs to run") 
     (options, args) = parser.parse_args()
     print "No chunks : ", options.noChunks
 
@@ -85,7 +118,7 @@ if __name__ == "__main__":
             t.SetBranchStatus('nGenPart',1)
             t.SetBranchStatus('GenPart_pdgId',1)
             t.SetBranchStatus('GenPart_mass' ,1)
-            for nev in xrange(t.GetEntries()):
+            for nev in xrange(100000): #t.GetEntries()):
                 if nev%1000==0: print 'Gen-Scanning event %d'%nev
                 t.GetEntry(nev)
                 mass1 = 0
@@ -109,7 +142,7 @@ if __name__ == "__main__":
         else:
             t.SetBranchStatus(options.branch1,1)
             t.SetBranchStatus(options.branch2,1)
-            for nev in xrange(t.GetEntries()):
+            for nev in xrange(100000): #t.GetEntries()):
                 if nev%1000==0: print 'Scanning event %d'%nev
                 t.GetEntry(nev)
                 m = (getattr(t, options.branch1),getattr(t, options.branch2))
@@ -119,50 +152,25 @@ if __name__ == "__main__":
                     mname = '%s_%s'%(m[0],m[1])
                     allmasses[m] = ROOT.TEventList(mname,mname)
                 allmasses[m].Enter(nev)
-
+    
         for m in sorted(allmasses.keys()): print '(%d,%d): %d events'%(m[0],m[1],allmasses[m].GetN())
 
         t.SetBranchStatus("*",1)
         for drop in options.drop: t.SetBranchStatus(drop,0)
         for keep in options.keep: t.SetBranchStatus(keep,1)
+        theArg = allmasses.iteritems()
+        theArgs = []
+        for i in range(len(allmasses)):
+            theArgs.append(theArg[i] + [copy.deepcopy(t.Clone(str(i)))])
+        
+        pool = Pool(options.jobs)
+        retlist = pool.map(doSplitPoint, theArgs, 1)
+        pool.close()
+        pool.join()
 
-        for m,elist in allmasses.iteritems():
-            if not(options.noChunks): splitdir = '%s/%s_%d_%d_%s_Chunk%d'%(options.model,outdir,m[0],m[1],dset,random.randint(1e5,1e10))
-            else: splitdir = '%s/%s_%d_%d'%(options.model,outdir,m[0],m[1])
-            print "Point: " , m, elist
-            os.system("mkdir -p "+splitdir)
-            os.system("mkdir -p %s/%s"%(splitdir,treename))
-            if os.path.exists('%s/%s/%s/tree.root'%(remdir,splitdir.split('/')[-1],treename)): raise RuntimeError, 'Output file already exists'
-            f2 = ROOT.TFile("%s/selection_eventlist.root"%splitdir,"recreate")
-            f2.cd()
-            elist.Write()
-            f2.Close()
-            fout = ROOT.TFile('%s/%s/tree.root'%(splitdir,treename),'recreate')
-            fout.cd()
-            t.SetEventList(elist)
-            out = t.CopyTree('1')
-            fout.WriteTObject(out,'tree')
-            fout.Close()
-            cx = Counter('SkimReport')
-            cx.register('All Events')
-            cx.register('Sum Weights')
-            cx.inc('All Events' , elist.GetN() if options.gen or not options.useHist else h.GetBinContent(h.GetXaxis().FindBin(m[0]),h.GetYaxis().FindBin(m[1]),1))
-            cx.inc('Sum Weights', elist.GetN() if options.gen or not options.useHist else hw.GetBinContent(hw.GetXaxis().FindBin(m[0]),hw.GetYaxis().FindBin(m[1]),1))
-            os.system("mkdir -p %s/skimAnalyzerCount"%splitdir)
-            cx.write('%s/skimAnalyzerCount'%splitdir)
-            if options.url:
-                os.system('archiveTreesOnEOS.py --auto -t %s --dset %s %s %s'%(treename,splitdir.split('/')[-1],outdir,options.url))
-                os.system('rsync -av %s %s'%(splitdir.rstrip('/'),remdir))
-                os.system('rm %s/%s/tree.root'%(splitdir,treename))
-                os.system('rm %s/%s/tree.root.url'%(splitdir,treename))
-                os.system('rm %s/skimAnalyzerCount/SkimReport.pck'%splitdir)
-                os.system('rm %s/skimAnalyzerCount/SkimReport.txt'%splitdir)
-                os.system('rm -r %s/%s'%(splitdir,treename))
-                os.system('rm -r %s/skimAnalyzerCount'%splitdir)
-                os.system('rm -r %s'%splitdir)
-                #os.system('rmdir %s'%outdir)
 
-    
+
+
 
 
 
