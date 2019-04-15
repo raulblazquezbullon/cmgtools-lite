@@ -1,0 +1,1 @@
+sig_TChiHH_1000_1+ : TChiHH_1000_1 : 1.34352*0.09/1000.; isFastSim=True

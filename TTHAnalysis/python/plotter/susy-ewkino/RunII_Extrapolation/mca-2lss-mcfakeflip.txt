@@ -1,0 +1,14 @@
+fakes        : TTJets_DiLepton_ext             : xsec*9./7. : 1 ; FillColor=ROOT.kCyan, Label="Fakes",FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata.txt"
+fakes        : TTJets_SingleLeptonFromT + TTJets_SingleLeptonFromT_ext    : xsec*9./7. : 1 ; FillColor=ROOT.kCyan, Label="Fakes",FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata.txt"
+fakes        : TTJets_SingleLeptonFromTbar + TTJets_SingleLeptonFromTbar_ext : xsec*9./7. : 1 ; FillColor=ROOT.kCyan, Label="Fakes",FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata.txt"
+fakes        : DYJetsToLL_M10to50          : xsec*9./7. : 1 ; FillColor=ROOT.kCyan, Label="Fakes",FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata.txt"
+fakes        : DYJetsToLL_M50              : xsec*9./7. : 1 ; FillColor=ROOT.kCyan, Label="Fakes",FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata.txt"
+fakes        : WJetsToLNu_LO               : xsec*9./7. : 1 ; FillColor=ROOT.kCyan, Label="Fakes",FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata.txt"
+fakes        : TBar_tch_powheg                      : xsec*9./7. : 1 ; FillColor=ROOT.kCyan, Label="Fakes",FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata.txt"
+fakes        : T_tch_powheg                   : xsec*9./7. : 1 ; FillColor=ROOT.kCyan, Label="Fakes",FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata.txt"
+fakes        : WWTo2L2Nu                   : xsec*9./7. : 1 ; FillColor=ROOT.kCyan, Label="Fakes",FakeRate="susy-ewkino/2lss/fakeRate-2lss-frdata.txt"
+
+flips : TTJets_DiLepton_ext    : xsec*9./7. : (LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && !(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge)) ; Label="Flips", FillColor=ROOT.kCyan-10
+flips : DYJetsToLL_M10to50 : xsec*9./7. : (LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && !(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge)) ; Label="Flips", FillColor=ROOT.kCyan-10
+flips : DYJetsToLL_M50     : xsec*9./7. : (LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && !(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge)) ; Label="Flips", FillColor=ROOT.kCyan-10
+flips : WWTo2L2Nu          : xsec*9./7. : (LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && !(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge)) ; Label="Flips", FillColor=ROOT.kCyan-10

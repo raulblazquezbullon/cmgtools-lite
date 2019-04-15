@@ -1,0 +1,10 @@
+alwaystrue: 1
+trigger   : $DATA{Triggers_ee || Triggers_em || Triggers_mm || Triggers_sl || Triggers_lt} $MC{Triggers_ee || Triggers_em || Triggers_mm|| Triggers_sl || Triggers_lt} $FASTSIM{1}
+3l        : nLepGood >= 3
+#lowmass   : minMllSFOS_Mini > 12 || minMllSFOS_Mini == -1
+sanity    : LepGood_pt[0] >= (20 + 5*(abs(LepGood_pdgId[0])==11)) && LepGood_pt[1] >= (10 + 5*(abs(LepGood_pdgId[1])==11)) && LepGood_pt[2] >= (10 + 0*(abs(LepGood_pdgId[2])==11)) 
+#SRevent   : LepGood_mvaSUSY[0] >= -0.2 + 0.7*(abs(LepGood_pdgId[0]) == 11) && LepGood_mvaSUSY[1] >= -0.2 + 0.7*(abs(LepGood_pdgId[0]) == 11) && LepGood_mvaSUSY[2] >= -0.2 + 0.7*(abs(LepGood_pdgId[0]) == 11)
+bJetVeto  : nBJetMedium25 == 0
+met       : met_pt < 50
+CRCONV : met_pt < 50 && mZ1 < 75 && abs(LepGood_pdgId[0]) < 15 && abs(LepGood_pdgId[1]) < 15 && abs(LepGood_pdgId[2]) < 15
+convVeto : LepGood_convVeto[0] && LepGood_convVeto[1] && LepGood_convVeto[2] && LepGood_lostHits[0] == 0  && LepGood_lostHits[1] == 0 && LepGood_lostHits[2] == 0

@@ -1,0 +1,4 @@
+alwaystrue : 1
+samesign   : LepGood_charge[0]*LepGood_charge[1] > 0
+met : met_pt > 60
+

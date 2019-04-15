@@ -1,0 +1,10 @@
+fakes_TT : TTJets_DiLepton + TTJets_DiLepton_ext : xsec ;  Label="Fakes (TT)", NormSystematic=0.3,FillColor=ROOT.kMagenta-10
+fakes_TT : TTJets_SingleLeptonFromT + TTJets_SingleLeptonFromT_ext : xsec ;  Label="Fakes (TT)", NormSystematic=0.3,FillColor=ROOT.kMagenta-10 
+fakes_TT : TTJets_SingleLeptonFromTbar_ext + TTJets_SingleLeptonFromTbar : xsec ;  Label="Fakes (TT)", NormSystematic=0.3,FillColor=ROOT.kMagenta-10 
+fakes_TT : T_tch_powheg : xsec ;  Label="Fakes (TT)", NormSystematic=0.3, FillColor=ROOT.kMagenta-10
+fakes_TT : TBar_tch_powheg : xsec ;  Label="Fakes (TT)", NormSystematic=0.3, FillColor=ROOT.kMagenta-10  
+fakes_TT : TTLLJets_m1to10 : xsec ;  Label="Fakes (TT)", NormSystematic=0.3, FillColor=ROOT.kMagenta-10
+
+fakes_DY : DYJetsToLL_M10to50 : xsec ;  Label="Fakes (DY)", NormSystematic=0.3, FillColor=ROOT.kAzure-9
+fakes_DY : DYJetsToLL_M50 : xsec ;  Label="Fakes (DY)", NormSystematic=0.3, FillColor=ROOT.kAzure-9
+

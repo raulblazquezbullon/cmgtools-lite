@@ -1,0 +1,6 @@
+convs      : TTGJets                     : xsec ;  Label="Conversions", NormSystematic=0.25
+convs      : TGJets                     : xsec ;  Label="Conversions", NormSystematic=0.25
+convs      : ZGTo2LG                     : xsec ;  Label="Conversions", NormSystematic=0.25
+convs      : WZG                    : xsec ;  Label="Conversions", NormSystematic=0.25
+convs      : WWG                    : xsec ;  Label="Conversions", NormSystematic=0.25
+convs      : WGToLNuG                    : xsec ;  Label="Conversions", NormSystematic=0.25

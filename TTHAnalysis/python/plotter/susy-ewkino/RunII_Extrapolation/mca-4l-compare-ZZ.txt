@@ -1,0 +1,8 @@
+GGHZZ        : GGHZZ4L                     : 0.01212 ; FillColor=ROOT.kGreen-1 , Label="H to ZZ", FakeRate="susy-ewkino/4l/fakerate_standard_central.txt\,susy-ewkino/4l/fakerate_load_isprompt.txt"
+ZZ_Incl      : ZZTo4L                      : 1.256 ; FillColor=ROOT.kGreen+1 , Label="QQ to ZZ", FakeRate="susy-ewkino/4l/fakerate_standard_central.txt\,susy-ewkino/4l/fakerate_load_isprompt.txt"
+GGContZZ   : GGToContToZZ4e                : 0.00159 ; FillColor=ROOT.kRed , Label="GG to ZZ", FakeRate="susy-ewkino/4l/fakerate_standard_central.txt\,susy-ewkino/4l/fakerate_load_isprompt.txt"
+GGContZZ   : GGToContToZZ4m_part1 + GGToContToZZ4m_part2              : 0.00159 ; FillColor=ROOT.kRed , Label="GG to ZZ", FakeRate="susy-ewkino/4l/fakerate_standard_central.txt\,susy-ewkino/4l/fakerate_load_isprompt.txt"
+GGContZZ   : GGToContToZZ2e2m_part1 + GGToContToZZ2e2m_part2          : 0.00319 ; FillColor=ROOT.kRed , Label="GG to ZZ", FakeRate="susy-ewkino/4l/fakerate_standard_central.txt\,susy-ewkino/4l/fakerate_load_isprompt.txt"
+GGContZZ   : GGToContToZZ4tau                : 0.00159 ; FillColor=ROOT.kRed , Label="GG to ZZ", FakeRate="susy-ewkino/4l/fakerate_standard_central.txt\,susy-ewkino/4l/fakerate_load_isprompt.txt"
+GGContZZ   : GGToContToZZ2tau2e              : 0.00319 ; FillColor=ROOT.kRed , Label="GG to ZZ", FakeRate="susy-ewkino/4l/fakerate_standard_central.txt\,susy-ewkino/4l/fakerate_load_isprompt.txt"
+GGContZZ   : GGToContToZZ2tau2m              : 0.00319 ; FillColor=ROOT.kRed , Label="GG to ZZ", FakeRate="susy-ewkino/4l/fakerate_standard_central.txt\,susy-ewkino/4l/fakerate_load_isprompt.txt"

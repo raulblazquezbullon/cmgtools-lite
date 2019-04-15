@@ -1,0 +1,48 @@
+alwaystrue: 1
+filters   : $DATA{METfilters                                   } $MC{1} $FASTSIM{1}
+trigger   : $DATA{Triggers_ee||Triggers_em||Triggers_mm        } $MC{Triggers_ee||Triggers_em||Triggers_mm} $FASTSIM{1}
+4l        : nLepSel >= 4
+lowmass   : minMllSFOS > 12 || minMllSFOS == -1
+sanity    : passPtMll && is_4l
+SRevent   : allTight(4, LepSel_isTight[0], LepSel_isTight[1], LepSel_isTight[2], LepSel_isTight[3]) 
+BRevent   : BR >= 7
+bJetVeto  : nBJetMedium25 == 0
+met       : met_pt > 0
+
+BR7 : BR == 7  ; Disable=True
+BRnon7: BR > 7 ; Disable=True
+BR8 : BR == 8  ; Disable=True
+BR9 : BR == 9  ; Disable=True
+BR10 : BR == 10 ; Disable=True
+BR11 : BR == 11 ; Disable=True
+BR12 : BR == 12 ; Disable=True
+
+metg50: met_pt >= 50; Disable=True
+metg100: met_pt >= 100; Disable=True
+metg200: met_pt >= 200; Disable=True
+metl200: met_pt < 200; Disable=True
+metl100: met_pt < 100; Disable=True
+mZ1in  : mZ1 > 60; Disable=True
+
+SRG: SR3lG_v3(min(mt_2(pt_2(LepSel_conePt[mll_i1[0]],LepSel_phi[mll_i1[0]],LepSel_conePt[mll_i2[0]],LepSel_phi[mll_i2[0]]), phi_2(LepSel_conePt[mll_i1[0]],LepSel_phi[mll_i1[0]],LepSel_conePt[mll_i2[0]],LepSel_phi[mll_i2[0]]),met_pt,met_phi), mt_2(pt_2(LepSel_conePt[mll_i1[1]],LepSel_phi[mll_i1[1]],LepSel_conePt[mll_i2[1]],LepSel_phi[mll_i2[1]]), phi_2(LepSel_conePt[mll_i1[1]],LepSel_phi[mll_i1[1]],LepSel_conePt[mll_i2[1]],LepSel_phi[mll_i2[1]]),met_pt,met_phi)),mZ2,met_pt) == 1; Disable=True
+
+SRG_prev: met_pt > 250; Disable=True
+
+mZ1l60: mllL_4l < 60; Disable=True
+dRHl: deltaR(LepSel_eta[unused4(mll_i1[0], mll_i2[0], 1)], LepSel_phi[unused4(mll_i1[0], mll_i2[0], 1)], LepSel_eta[unused4(mll_i1[0], mll_i2[0], 2)], LepSel_phi[unused4(mll_i1[0], mll_i2[0], 2)]) < 1.0; Disable=True #Añadir corte en met?
+dRHg: deltaR(LepSel_eta[unused4(mll_i1[0], mll_i2[0], 1)], LepSel_phi[unused4(mll_i1[0], mll_i2[0], 1)], LepSel_eta[unused4(mll_i1[0], mll_i2[0], 2)], LepSel_phi[unused4(mll_i1[0], mll_i2[0], 2)]) > 1.0; Disable=True #Añadir corte en met?
+
+
+noSRH1: SR4lHplot(deltaR(LepSel_eta[unused4(mll_i1[0], mll_i2[0], 1)], LepSel_phi[unused4(mll_i1[0], mll_i2[0], 1)], LepSel_eta[unused4(mll_i1[0], mll_i2[0], 2)], LepSel_phi[unused4(mll_i1[0], mll_i2[0], 2)]),mllL_4l) > 1; Disable=True
+noSRI1: SR4lIplot(deltaR(LepSel_eta[unused4(mll_i1[0], mll_i2[0], 1)], LepSel_phi[unused4(mll_i1[0], mll_i2[0], 1)], LepSel_eta[unused4(mll_i1[0], mll_i2[0], 2)], LepSel_phi[unused4(mll_i1[0], mll_i2[0], 2)]),mllL_4l) > 1; Disable=True
+
+noSRJ1: SR4lJplot(pt_3(LepSel_conePt[unused4(mll_i1[0], mll_i2[0], 1)], LepSel_phi[unused4(mll_i1[0], mll_i2[0], 1)],LepSel_conePt[unused4(mll_i1[0], mll_i2[0], 2)], LepSel_phi[unused4(mll_i1[0], mll_i2[0], 2)],0, 0),mllL_4l) > 1; Disable=True
+
+dRllHl1p6: deltaR(LepSel_eta[unused4(mll_i1[0], mll_i2[0], 1)], LepSel_phi[unused4(mll_i1[0], mll_i2[0], 1)], LepSel_eta[unused4(mll_i1[0], mll_i2[0], 2)], LepSel_phi[unused4(mll_i1[0], mll_i2[0], 2)]) < 1.6; Disable=True
+dRllHg1p6: deltaR(LepSel_eta[unused4(mll_i1[0], mll_i2[0], 1)], LepSel_phi[unused4(mll_i1[0], mll_i2[0], 1)], LepSel_eta[unused4(mll_i1[0], mll_i2[0], 2)], LepSel_phi[unused4(mll_i1[0], mll_i2[0], 2)]) > 1.6; Disable=True
+mllg60: mllL_4l > 60; Disable=True
+
+no2OSSF: nOSSF_4l < 2; Disable=True
+dRllHl0p8: deltaR(LepSel_eta[unused4(mll_i1[0], mll_i2[0], 1)], LepSel_phi[unused4(mll_i1[0], mll_i2[0], 1)], LepSel_eta[unused4(mll_i1[0], mll_i2[0], 2)], LepSel_phi[unused4(mll_i1[0], mll_i2[0], 2)]) < 0.8; Disable=True
+
+isSSR:  SSR_4l_new(BR, met_pt, mllL_4l) > 0; Disable= True

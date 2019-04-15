@@ -1,0 +1,11 @@
+#sig_TChiSlepSnuTEx0p05_350_325+ : TChiSlepSnuTEx0p05_350_325 : 209.439*1.0/1000.; isFastSim=True,  Label="TE 350-325", FillColor=ROOT.kRed-1
+#sig_TChiSlepSnuTEx0p95_350_325+ : TChiSlepSnuTEx0p95_350_325 : 209.439*1.0/1000.; isFastSim=True,  Label="TE Sl 350-325", FillColor=ROOT.kRed+1
+#sig_TChiSlepSnux0p05_350_325+ : TChiSlepSnux0p05_350_325 : 209.439*1.0/1000.; isFastSim=True,  Label="Sl 350-325", FillColor=ROOT.kBlue-1
+#sig_TChiWZ_150_130+ : TChiWZ_150_130 : 5180.86*0.10099/1000.; isFastSim=True,  Label="TChiWZ 150-130", FillColor=ROOT.kBlack
+sig_TChiSlepSnux0p95_350_325+ : TChiSlepSnux0p95_350_325 : 209.439*0.5/1000.; isFastSim=True,  Label="Sl 350-325", FillColor=ROOT.kBlue
+sig_TChiSlepSnux0p95_650_500+ : TChiSlepSnux0p95_650_500 : 13.7303*0.5/1000.; isFastSim=True,  Label="Sl 650-500", FillColor=ROOT.kGreen
+sig_TChiSlepSnux0p95_700_1+ : TChiSlepSnux0p95_700_1 : 9.51032*0.5/1000.; isFastSim=True,  Label="Sl 700-1", FillColor=ROOT.kBlack
+
+#sig_TChiSlepSnux0p95_600_500+ : TChiSlepSnux0p95_600_500 : 20.1372*0.5/1000.; isFastSim=True, FillColor=ROOT.kBlue+1
+#sig_TChiSlepSnux0p95_500_425+ : TChiSlepSnux0p95_500_425 : 46.3533*0.5/1000.; isFastSim=True, FillColor=ROOT.kRed+1
+#sig_TChiSlepSnux0p95_450_400+ : TChiSlepSnux0p95_450_400 : 73.4361*0.5/1000.; isFastSim=True, FillColor=ROOT.kGreen+1

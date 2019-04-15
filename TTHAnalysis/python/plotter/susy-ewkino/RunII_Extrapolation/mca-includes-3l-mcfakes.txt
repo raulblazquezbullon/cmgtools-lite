@@ -1,0 +1,5 @@
+#Nominal
+incl_fakesflips : + ; IncludeMca="susy-ewkino/RunII_Extrapolation/mca-3l-mcfakeflip.txt", FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt\,susy-ewkino/3lfor2017Tests/fakerate_load_isfake.txt"
+incl_mc         : + ; IncludeMca="susy-ewkino/RunII_Extrapolation/mca-3l-mc.txt", FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt\,susy-ewkino/3lfor2017Tests/fakerate_load_isprompt.txt"
+incl_mc_convs   : + ; IncludeMca="susy-ewkino/RunII_Extrapolation/mca-3l-mc-convs.txt", FillColor=ROOT.kOrange+7, FakeRate="susy-ewkino/3lfor2017Tests/fakerate_standard_central.txt\,susy-ewkino/3lfor2017Tests/fakerate_load_isconv.txt"
+
