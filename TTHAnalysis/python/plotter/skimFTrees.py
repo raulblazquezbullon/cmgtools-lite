@@ -11,7 +11,7 @@ def goodPath(thePath):
 dsets = sys.argv[4:]
 if len(sys.argv)<5:
     dsets = [d.replace('evVarFriend_','').replace('.root','') for d in os.listdir(sys.argv[2]) if 'evVarFriend' in d]
-dsets = [d for d in dsets if d in os.listdir(sys.argv[1])]
+#dsets = [d for d in dsets if d in os.listdir(sys.argv[1])]
 
 fname = [x for x in sys.argv[2].split('/') if x!=''][-1]
 
