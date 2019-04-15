@@ -6,12 +6,12 @@ if "/fakeRate_cc.so" not in ROOT.gSystem.GetLibraries():
     ROOT.gROOT.ProcessLine(".L %s/src/CMGTools/TTHAnalysis/python/plotter/fakeRate.cc+" % os.environ['CMSSW_BASE']);
 
 
-def hist2ROC1d(hsig,hbg):
+def hist2ROC1d(hsig,hbg,isWP=False):
     bins = hsig.GetNbinsX()+2
     si = [ hsig.GetBinContent(i) for i in xrange(bins) ]
     bi = [  hbg.GetBinContent(i) for i in xrange(bins) ]
-    if hsig.GetMean() > hbg.GetMean():
-        si.reverse(); bi.reverse()
+    #if hsig.GetMean() > hbg.GetMean():
+    si.reverse(); bi.reverse()
     sums,sumb = sum(si), sum(bi)
     if sums == 0 or sumb == 0: 
         return None
@@ -28,7 +28,7 @@ def hist2ROC1d(hsig,hbg):
         if fullsi[i] != fullsi[i-1] or fullbi[i] != fullbi[i-1]:
             si.append(fullsi[i])
             bi.append(fullbi[i])
-    if len(si) == 2: # just one WP + dummy (100%,100%)
+    if len(si) == 2 or isWP: # just one WP + dummy (100%,100%)
         si = [si[0]]; bi = [ bi[0] ]
     bins = len(si)
     ret = ROOT.TGraph(bins)
@@ -102,19 +102,31 @@ def addROCMakerOptions(parser):
     parser.add_option("--select-plot", "--sP", dest="plotselect", action="append", default=[], help="Select only these plots out of the full file")
     parser.add_option("--exclude-plot", "--xP", dest="plotexclude", action="append", default=[], help="Exclude these plots from the full file")
 
-def doLegend(rocs,textSize=0.035,placement='BR'):
+def doLegend(rocs,textSize=0.025,placement='BR'):
         if placement == 'BR':
             (x1,y1,x2,y2) = (.68, .25 + textSize*max(len(rocs)-3,0), .962, .13)
         elif placement == 'TL':
-            (x1,y1,x2,y2) = (.21, .83 - textSize*max(len(rocs)-3,0), .492, .95)
+            (x1,y1,x2,y2) = (.21, .83 - textSize*max(len(rocs)-3,0), .392, .95)
         else: raise RuntimeError, "Unsupported placement %r" % placement
         leg = ROOT.TLegend(x1,y1,x2,y2)
         leg.SetFillColor(0)
         leg.SetShadowColor(0)
         leg.SetTextFont(42)
         leg.SetTextSize(textSize)
+        doneWP = []
+        toAdd = []
         for key,val in rocs:
+            if not (hasattr(val, "isWP")): val.isWP = False
+            if val.isWP and (key in doneWP):
+                continue
+            if val.isWP: 
+                toAdd += [val, key, val.style]
+                doneWP.append(key)
+                continue
             leg.AddEntry(val, key, val.style)
+        for i in range(len(toAdd)/3):
+            leg.AddEntry(toAdd[0+i*3], toAdd[1+i*3], toAdd[2+i*3])
+
         leg.Draw()
         ## assign it to a global variable so it's not deleted
         global legend_;
@@ -129,6 +141,7 @@ def stackRocks(outname,outfile,rocs,xtit,ytit,options):
     c1 = ROOT.TCanvas("roc_canvas","roc_canvas")
     c1.SetGridy(options.showGrid)
     c1.SetGridx(options.showGrid)
+    c1.SetLogy(options.logy)
     c1.SetLogx(options.logx)
     if options.xrange and options.yrange:
         frame = ROOT.TH1F("frame","frame",1000,options.xrange[0], options.xrange[1])
@@ -171,7 +184,9 @@ if __name__ == "__main__":
     parser.add_option("--splitBkg", dest="splitBkg", default=False, action="store_true", help="Make one ROC per background")
     parser.add_option("--grid", dest="showGrid", action="store_true", default=False, help="Show grid lines")
     parser.add_option("--logx", dest="logx", action="store_true", default=False, help="Log x-axis")
+    parser.add_option("--logy", dest="logy", action="store_true", default=False, help="Log x-axis")
     parser.add_option("--groupBy",  dest="groupBy",  default="process",  type="string", help="Group by: variable, process")
+    parser.add_option("--dummy",  dest="dummy",  action="store_true", default=False,  help="Add a dummy sig vs sif curve (random sampling like)")
     (options, args) = parser.parse_args()
     options.globalRebin = 1
     options.allowNegative = True # with the fine bins used in ROCs, one otherwise gets nonsensical results
@@ -186,7 +201,18 @@ if __name__ == "__main__":
     ROOT.gStyle.SetOptStat(0)
     pmaps = [  mca.getPlots(p,cut,makeSummary=True) for p in plots ]
     if len(signals+backgrounds)>2 and "variable" in options.groupBy:
-        for ip,plot in enumerate(plots):
+        if options.dummy: backgrounds += signals
+        tpplots = []
+        wpplots = []
+        for pl in plots:
+            if pl.getOption("isWP", False):
+                print "WP", pl 
+                wpplots.append(pl)
+            else: 
+                print "TP", pl
+                tpplots.append(pl)
+
+        for ip,plot in enumerate(tpplots):
             pmap = pmaps[ip]
             rocs = []
             myname = outname.replace(".root","_%s.root" % plot.name)
@@ -195,7 +221,8 @@ if __name__ == "__main__":
                 if len(signals)>1 and len(backgrounds)==1:
                     mytitle = mca.getProcessOption(sig,"Label",sig); ptitle = sig
                 elif len(signals) == 1 and len(backgrounds)>1: 
-                    mytitle = mca.getProcessOption(bkg,"Label",bkg); ptitle = bkg
+                    if options.dummy and bkg == backgrounds[-1]: mytitle = "Random"
+                    else: mytitle = mca.getProcessOption(bkg,"Label",bkg); ptitle = bkg
                 else:
                     mytitle = "%s/%s" % (mca.getProcessOption(sig,"Label",sig),mca.getProcessOption(bkg,"Label",bkg)) 
                 roc = makeROC(pmap,mca,sname=sig,bname=bkg)
@@ -213,7 +240,21 @@ if __name__ == "__main__":
                     roc.SetMarkerSize(mca.getProcessOption(ptitle,"MarkerSize",1.0) if ptitle else 1.0)
                     roc.style = "P"
                 roc.SetName("%s_%s_%s" % (plot.name,s,b))
+                roc.isWP = False
                 rocs.append((mytitle,roc))
+                ic = 0                
+                for it,pp in enumerate(wpplots):
+                    if not re.match(pp.getOption("match", "asdaskdgasdjqgwfevsdxzc"),plot.name): continue #The failing case is unlikely
+                    pmap2 = pmaps[it+ len(tpplots)]
+                    roc = makeROC(pmap2,mca,sname=sig,bname=bkg)
+                    roc.SetLineColor(SAFE_COLOR_LIST[ic])
+                    roc.SetMarkerColor(SAFE_COLOR_LIST[ic])
+                    roc.SetMarkerStyle(20)
+                    roc.SetMarkerSize(1.0)
+                    roc.style= "P"
+                    roc.isWP = True
+                    rocs.append((pp.getOption("XTitle", ""),roc))
+                    ic += 1
             if len(rocs) == 0: continue
             stackRocks(myname,outfile,rocs,options.xtitle,options.ytitle,options)
     if "process" in options.groupBy:
@@ -226,8 +267,9 @@ if __name__ == "__main__":
                 ytit = ytit % stit if "%" in ytit else "%s (%s)" % (ytit,stit)
             if len(backgrounds)>1: 
                 myname = myname.replace(".root","_%s.root" % bkg)
-                btit = mca.getProcessOption(bkg,"Label",bkg);
-                xtit = xtit % btit if "%" in xtit else "%s (%s)" % (xtit,btit)
+                if options.dummy and not(bkg in sig): 
+                    btit = mca.getProcessOption(bkg,"Label",bkg);
+                    xtit = xtit % btit if "%" in xtit else "%s (%s)" % (xtit,btit)
             for i,plot in enumerate(plots):
                 pmap = pmaps[i]
                 roc = makeROC(pmap,mca,sname=sig,bname=bkg)
@@ -264,5 +306,3 @@ if __name__ == "__main__":
             if len(rocs) == 0: continue
             stackRocks(myname,outfile,rocs,xtit,ytit,options)
     outfile.Close()
-
-
