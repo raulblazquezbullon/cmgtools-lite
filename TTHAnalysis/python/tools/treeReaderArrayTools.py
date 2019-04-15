@@ -63,8 +63,8 @@ def readBranch(tree, branchName):
 
 ####### PRIVATE IMPLEMENTATION PART #######
 
-_rootType2Python = { 'Int_t':int, 'Long_t':long, 'UInt_t':int, 'ULong_t':long, 'ULong64_t':"unsigned long long",
-                     'Float_t':float, 'Double_t':float }
+_rootType2Python = { 'Int_t':int, 'Long_t':long, 'UInt_t':int, 'UInt_t':"unsigned int", 'ULong_t':long, 'ULong64_t':"unsigned long long",
+                     'Float_t':float, 'Double_t':float, 'Bool_t': bool, 'UChar_t': "unsigned char", 'Char_t':"char" }
 
 def _makeArrayReader(tree, typ, nam):
     if not tree._ttreereader._isClean: _remakeAllReaders(tree)
