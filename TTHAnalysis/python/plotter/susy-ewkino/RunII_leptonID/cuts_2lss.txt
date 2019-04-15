@@ -1,0 +1,21 @@
+alwaystrue: 1
+trigger: $DATA{(Triggers_ee || Triggers_mm || Triggers_em)} $MC{(Triggers_ee || Triggers_mm || Triggers_em)} $FASTSIM{1}
+cleanup: minMllAFAS > 12
+dilep: nLepGood>=2
+pt1010: LepGood_conePt[0]>10 && LepGood_conePt[1]>10 
+same-sign: (LepGood1_charge*LepGood2_charge > 0)
+met: met_pt > 60
+#0bjetM: nBJetMedium25_Recl == 0
+0and1jet: nJet40_Recl <=1
+exclusive: nTightTauSel==0
+Medium_notLepMVA: LepGood_mediumMuonId[0] && LepGood_mediumMuonId[1] && LepGood_tightCharge[0]>0 && LepGood_tightCharge[1]>0 
+
+ConvVeto: LepGood_convVeto[0] && LepGood_convVeto[1];Disable=True
+TT: LepGood1_isTight && LepGood2_isTight ; Disable=True
+flav_mm : abs(LepGood_pdgId[0]) == 13 && abs(LepGood_pdgId[1]) == 13 ; Disable=True
+flav_em : abs(LepGood_pdgId[0])*abs(LepGood_pdgId[1]) == 13*11 ; Disable=True 
+flav_ee : abs(LepGood_pdgId[0]) == 11 && abs(LepGood_pdgId[1]) == 11 ; Disable=True
+
+high_pt : LepGood_pt[0] > 25 && LepGood_pt[1] > 25; Disable=True
+
+low_pt : LepGood_pt[0] < 25 && LepGood_pt[1] < 25; Disable=True

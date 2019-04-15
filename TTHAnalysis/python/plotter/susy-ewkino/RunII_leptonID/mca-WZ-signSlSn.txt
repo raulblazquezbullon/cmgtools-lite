@@ -1,0 +1,12 @@
+prompt_WZ    : WZTo3LNu_ext: xsec*1.3 : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FillColor=ROOT.kOrange, Label="WZ <p_T> = 45 GeV"
+prompt_WZ    : WZTo3LNu : xsec*1.3 : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FillColor=ROOT.kOrange, Label="WZ <p_T> = 45 GeV"
+
+sig_TChiSlepSnux0p95_700_1+ : TChiSlepSnux0p95_700_1     : 1; isFastSim=True, Label="SlSn_700_1 <p_T> = 177 GeV"
+sig_TChiSlepSnux0p95_700_300+ : TChiSlepSnux0p95_700_300 : 1; isFastSim=True, Label="SlSn_700_300 <p_T> = 148 GeV"
+sig_TChiSlepSnux0p95_700_500+ : TChiSlepSnux0p95_700_500 : 1; isFastSim=True, Label="SlSn_700_500 <p_T> = 96 GeV"
+sig_TChiSlepSnux0p95_600_500+ : TChiSlepSnux0p95_600_500 : 1; isFastSim=True, Label="SlSn_600_500 <p_T> = 65 GeV"
+sig_TChiSlepSnux0p95_450_400+ : TChiSlepSnux0p95_450_400 : 1; isFastSim=True, Label="SlSn_450_400 <p_T> = 45 GeV"
+sig_TChiSlepSnux0p95_350_325+ : TChiSlepSnux0p95_350_325 : 1; isFastSim=True, Label="SlSn_350_325 <p_T> = 25 GeV"
+
+WZ+    : WZTo3LNu_ext: xsec*1.3 : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FillColor=ROOT.kOrange, Label="WZ <p_T> = 45 GeV"
+WZ+    : WZTo3LNu : xsec*1.3 : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FillColor=ROOT.kOrange, Label="WZ <p_T> = 45 GeV"

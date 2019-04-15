@@ -1,0 +1,12 @@
+2l_susyMVA   : min(LepGood_mvaSUSY[0], LepGood_mvaSUSY[1])  : 10000, -1.,1. ; XTitle="min(SUSYMVA)", Legend="TL", IncludeOverflows=False
+2l_ttHMVA    : min(LepGood_mvaTTH[0] , LepGood_mvaTTH[1] )  : 10000, -1.,1.  ; XTitle="min(TTHMVA)", Legend="TL", IncludeOverflows=False
+2l_tZqMVA    : min(LepGood_mvaFriendTZQMVA[0] , LepGood_mvaFriendTZQMVA[1] )  : 10000, -1.,1.  ; XTitle="min(tZqMVA)", Legend="TL", IncludeOverflows=False
+2l_ttH2018MVA    : min(LepGood_mvaFriendTTH2018MVA[0] , LepGood_mvaFriendTTH2018MVA[1] )  : 10000, -1.,1.  ; XTitle="min(ttH2018MVA)", Legend="TL", IncludeOverflows=False
+
+pog_tight   :  min(LepGood_tightId[0], LepGood_tightId[1]) >= 1  : [-0.5, 0.5,1.5] ; XTitle="POG T", Legend="TL", IncludeOverflows=False, isWP = True, match="2l_ttHMVA"
+susy_WPVT   : (LepGood_mvaSUSY[0] > 0.75 + (abs(LepGood_pdgId[0]) == 13)*(-0.3))*(LepGood_mvaSUSY[1] > 0.75 + (abs(LepGood_pdgId[1]) == 13)*(-0.3))  : [-0.5, 0.5,1.5] ; XTitle="SUS VT", Legend="TL", IncludeOverflows=False, isWP = True, match="2l_.*"
+susy_WPM    : (LepGood_mvaSUSY[0] > 0.5 + (abs(LepGood_pdgId[0]) == 13)*(-0.7))*(LepGood_mvaSUSY[1] > 0.5 + (abs(LepGood_pdgId[1]) == 13)*(-0.7))  : [-0.5, 0.5,1.5] ; XTitle="SUS M", Legend="TL", IncludeOverflows=False, isWP = True, match="2l_susyMVA"
+ttH_WPVT    : (LepGood_mvaTTH[0] > 0.90 + (abs(LepGood_pdgId[0]) == 13)*(-0.0))*(LepGood_mvaTTH[1] > 0.90 + (abs(LepGood_pdgId[1]) == 13)*(-0.0)) : [-0.5, 0.5,1.5] ; XTitle="TTH VT", Legend="TL", IncludeOverflows=False, isWP = True, match="2l_ttHMVA"
+
+ttH_WP0_9    : (LepGood_mvaFriendTTH2018MVA[0] > 0.0 + (abs(LepGood_pdgId[0]) == 13)*(-0.0))*(LepGood_mvaFriendTTH2018MVA[1] > 0.0 + (abs(LepGood_pdgId[1]) == 13)*(-0.0)) : [-0.5, 0.5,1.5] ; XTitle="TTH2018 0.9", Legend="TL", IncludeOverflows=False, isWP = True, match="2l_ttH2018MVA"
+

@@ -1,0 +1,25 @@
+alwaystrue : 1
+nLep3 : nLepGood == 3 ; Disable=True
+nLep2 : nLepGood == 2 ; Disable=True
+nLep1 : nLepGood == 1 ; Disable=True
+
+samesign    :  LepGood_pdgId[0]*LepGood_pdgId[1] < 0; Disable=True
+oppositesign:  LepGood_pdgId[0]*LepGood_pdgId[1] > 0; Disable=True
+
+flav_ee : abs(LepGood_pdgId[0]*LepGood_pdgId[1]) == 11*11; Disable=True
+flav_em : abs(LepGood_pdgId[0]*LepGood_pdgId[1]) == 13*11; Disable=True
+flav_mm : abs(LepGood_pdgId[0]*LepGood_pdgId[1]) == 13*13; Disable=True
+
+first25  : LepGood_pt[0] >= 25; Disable=True
+second25 : LepGood_pt[1] >= 25; Disable=True
+third25  : LepGood_pt[2] >= 25; Disable=True
+
+firstlow  : LepGood_pt[0] < 25; Disable=True
+secondlow : LepGood_pt[1] < 25; Disable=True
+thirdlow  : LepGood_pt[2] < 25; Disable=True
+met60 : met_pt > 60; Disable=True
+nBJet25 : nBJetMedium25 == 0; Disable=True
+nBJetTRUE : 1; Disable=True
+noBad :  min(LepGood_mvaFriendTTH2018MVA[0] , LepGood_mvaFriendTTH2018MVA[1] ) >= -1 && min(LepGood_mvaFriendTZQMVA[0] , LepGood_mvaFriendTZQMVA[1] ) >= -1
+noBad3 :  LepGood_mvaFriendTTH2018MVA[2] >= -1 && LepGood_mvaFriendTZQMVA[2] >= -1
+

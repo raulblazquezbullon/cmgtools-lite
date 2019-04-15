@@ -1,0 +1,18 @@
+alwaystrue: 1
+trigger   : $DATA{Triggers_ee || Triggers_em || Triggers_mm || Triggers_sl || Triggers_lt} $MC{Triggers_ee || Triggers_em || Triggers_mm|| Triggers_sl || Triggers_lt} $FASTSIM{1}
+3l        : nLepSel >= 3
+lowmass   : minMllSFOS_Mini > 12 || minMllSFOS_Mini == -1
+sanity    : passPtMll && is_3l && LepSel_conePt[0] >= (20 + 5*(abs(LepSel_pdgId[0])==11)) && LepSel_conePt[1] >= (10 + 5*(abs(LepSel_pdgId[1])==11)) && LepSel_conePt[2] >= (10 + 0*(abs(LepSel_pdgId[3])==11)) 
+SRevent   : allTight(3, LepSel_isTight[0], LepSel_isTight[1], LepSel_isTight[2])
+veto      : LepSel4_isTight == 0
+bJetVeto  : nBJetMedium25 == 0
+met       : met_pt > 50
+convveto  : ((BR != 1 && BR != 3) || abs(m3L-91) > 15)
+
+BR1 : BR == 1 ; Disable=True
+BR2 : BR == 2 ; Disable=True
+BR3 : BR == 3 ; Disable=True
+BR4 : BR == 4 ; Disable=True
+BR5 : BR == 5 ; Disable=True
+BR6 : BR == 6 ; Disable=True
+

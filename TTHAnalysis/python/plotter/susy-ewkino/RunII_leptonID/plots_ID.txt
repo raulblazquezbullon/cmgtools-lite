@@ -1,0 +1,17 @@
+3l_susyMVA   : min(LepGood_mvaSUSY[0], LepGood_mvaSUSY[1], LepGood_mvaSUSY[2]) : 10000, -1.,1. ; XTitle="min(SUSYMVA)", Legend="TL", LegendCutoff=1e-4, MoreY=2.0,IncludeOverflows=False
+3l_ttHMVA    : min(LepGood_mvaTTH[0] , LepGood_mvaTTH[1] , LepGood_mvaTTH[2])  : 10000, -1.,1.  ; XTitle="min(TTHMVA)", Legend="TL", IncludeOverflows=False
+#3l_tZqMVA    : min(LepGood_mvaTTZ[0] , LepGood_mvaTTZ[1] , LepGood_mvaTTZ[2])  : 10000, -1.,1.  ; XTitle="min(tZqMVA)", Legend="TL", IncludeOverflows=False
+
+
+2l_susyMVA   : min(LepGood_mvaSUSY[0], LepGood_mvaSUSY[1])  : 10000, -1.,1. ; XTitle="min(SUSYMVA)", Legend="TL", IncludeOverflows=False
+2l_ttHMVA    : min(LepGood_mvaTTH[0] , LepGood_mvaTTH[1] )  : 10000, -1.,1.  ; XTitle="min(TTHMVA)", Legend="TL", IncludeOverflows=False
+#2l_tZqMVA    : min(LepGood_mvaTTZ[0] , LepGood_mvaTTZ[1] )  : 10000, -1.,1.  ; XTitle="min(tZqMVA)", Legend="TL", IncludeOverflows=False
+
+#pog_tight   :  min(LepGood_tightId[0], LepGood_tightId[1]) >= 1  : [-0.5, 0.5,1.5] ; XTitle="POG T", Legend="TL", IncludeOverflows=False, isWP = True
+susy_WPVT   : (LepGood_mvaSUSY[0] > 0.75 + (abs(LepGood_pdgId[0]) == 13)*(-0.3))*(LepGood_mvaSUSY[1] > 0.75 + (abs(LepGood_pdgId[1]) == 13)*(-0.3))  : [-0.5, 0.5,1.5] ; XTitle="SUS VT", Legend="TL", IncludeOverflows=False, isWP = True, match="2l_susyMVA"
+susy_WPM    : (LepGood_mvaSUSY[0] > 0.5 + (abs(LepGood_pdgId[0]) == 13)*(-0.7))*(LepGood_mvaSUSY[1] > 0.5 + (abs(LepGood_pdgId[1]) == 13)*(-0.7))  : [-0.5, 0.5,1.5] ; XTitle="SUS M", Legend="TL", IncludeOverflows=False, isWP = True, match="2l_susyMVA"
+ttH_WPVT    : (LepGood_mvaTTH[0] > 0.90 + (abs(LepGood_pdgId[0]) == 13)*(-0.0))*(LepGood_mvaTTH[1] > 0.90 + (abs(LepGood_pdgId[1]) == 13)*(-0.0)) : [-0.5, 0.5,1.5] ; XTitle="TTH VT", Legend="TL", IncludeOverflows=False, isWP = True, match="2l_ttHMVA"
+
+4l_susyMVA   : min(LepGood_mvaSUSY[0], LepGood_mvaSUSY[1], LepGood_mvaSUSY[2], LepGood_mvaSUSY[3]) : 10000, -1.,1. ; XTitle="min(SUSYMVA)", Legend="TL", LegendCutoff=1e-4, MoreY=2.0,IncludeOverflows=False
+4l_ttHMVA    : min(LepGood_mvaTTH[0] , LepGood_mvaTTH[1] , LepGood_mvaTTH[2] , LepGood_mvaTTH[3] )  : 10000, -1.,1.  ; XTitle="min(TTHMVA)", Legend="TL", IncludeOverflows=False
+#4l_tZqMVA    : min(LepGood_mvaTTZ[0] , LepGood_mvaTTZ[1] , LepGood_mvaTTZ[2] , LepGood_mvaTTZ[3] )  : 10000, -1.,1.  ; XTitle="min(tZqMVA)", Legend="TL", IncludeOverflows=False
