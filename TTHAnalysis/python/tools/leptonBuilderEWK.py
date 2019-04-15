@@ -806,9 +806,9 @@ def _susyEWK_lepId_MVAmedium(lep):
     if not _susyEWK_lepId_IPcuts(lep): return False
     if lep.pt <= 5: return False
     if abs(lep.pdgId) == 13:
-        return (lep.mvaSUSY>-0.6 and lep.mediumMuonId>0 and lep.tightCharge > 0) #For same sigeff as 2016, Old (2016) WP: -0.20
+        return (lep.mvaSUSY>-0.2 and lep.mediumMuonId>0 and lep.tightCharge > 0) #For same sigeff as 2016, Old (2016) WP: -0.20
     elif abs(lep.pdgId)==11:
-        return (lep.mvaSUSY>0.25 and _susyEWK_idEmu_cuts(lep) and lep.convVeto) #For same sigeff as 2016, Old (2016) WP: 0.50
+        return (lep.mvaSUSY>0.5 and _susyEWK_idEmu_cuts(lep) and lep.convVeto) #For same sigeff as 2016, Old (2016) WP: 0.50
     return False
 
 def _susyEWK_nontrigmva_VL(lep):
