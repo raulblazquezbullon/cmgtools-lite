@@ -7,8 +7,10 @@ from CMGTools.TTHAnalysis.tools.leptonJetReCleaner import LeptonJetReCleaner
 utility_files_dir = os.path.join(os.environ["CMSSW_BASE"], "src/CMGTools/TTHAnalysis/data/")
 isFastSim = False
 
+
 # btag event weights in 80X
 from CMGTools.TTHAnalysis.tools.bTagEventWeights import BTagEventWeightFriend
+"""
 btagsf_payload = os.path.join(utility_files_dir, "btag", "CSVv2_Moriond17_B_H.csv")
 btagsf_payload_fastsim = os.path.join(utility_files_dir, "btag", "fastsim_csvv2_ttbar_26_1_2017.csv")
 bTagEventWeight = lambda : BTagEventWeightFriend(csvfile=btagsf_payload, algo='csv', recllabel='Recl')
@@ -16,6 +18,7 @@ btag_efficiency_file = os.path.join(utility_files_dir, "btag", "bTagEffs.root")
 bTagEventWeightFastSIM = lambda : BTagEventWeightFriend(csvfile=btagsf_payload, csvfastsim=btagsf_payload_fastsim, eff_rootfile=btag_efficiency_file, algo='csv', recllabel='Recl')
 MODULES.append( ('eventBTagWeight', bTagEventWeight ))
 MODULES.append( ('bTagEventWeightFastSIM', bTagEventWeightFastSIM ))
+"""
 
 from CMGTools.TTHAnalysis.tools.bTagWeightAnalyzer import bTagWeightAnalyzer
 btagsf_payload_fullsim  = os.path.join(utility_files_dir, "btag", "CSVv2_Moriond17_B_H.csv"                          )
@@ -35,6 +38,38 @@ bTagEventWeightFastSimWZ = lambda : bTagWeightAnalyzer(btagsf_payload_fastsim, b
 MODULES.append( ('bTagEventWeightFullSimWZ', bTagEventWeightFullSimWZ ))
 MODULES.append( ('bTagEventWeightFastSimWZ', bTagEventWeightFastSimWZ ))
 
+
+
+
+btagsf_CSV_94X        = os.path.join(utility_files_dir, "btag", "CSVv2_94XSF_V2_B_F.csv")
+btagsf_DeepCSV_94X    = os.path.join(utility_files_dir, "btag", "DeepCSV_94XSF_V4_B_F.csv")
+btagsf_DeepFlavor_94X = os.path.join(utility_files_dir, "btag", "DeepFlavour_94XSF_V2_B_F.csv")
+
+
+btag_efficiency_fullsimCSV        = os.path.join(utility_files_dir, "btag", "btagEffCSV.root")
+btag_efficiency_fullsimDeepCSV    = os.path.join(utility_files_dir, "btag", "btagEffDeepCSV.root")
+btag_efficiency_fullsimDeepFlavor = os.path.join(utility_files_dir, "btag", "btagEffDeepFlavor.root")
+
+MODULES.append( ('eventBTagWeightCSVL',  lambda : bTagWeightAnalyzer(btagsf_CSV_94X, btag_efficiency_fullsimCSV, algo='CSV', branchbtag='btagCSV', branchflavor='hadronFlavour', label='eventBTagSFCSVL', recllabel='Mini', wp=0)))
+MODULES.append( ('eventBTagWeightCSVM',  lambda : bTagWeightAnalyzer(btagsf_CSV_94X, btag_efficiency_fullsimCSV, algo='CSV', branchbtag='btagCSV', branchflavor='hadronFlavour', label='eventBTagSFCSVM', recllabel='Mini', wp=1)))
+MODULES.append( ('eventBTagWeightCSVT',  lambda : bTagWeightAnalyzer(btagsf_CSV_94X, btag_efficiency_fullsimCSV, algo='CSV', branchbtag='btagCSV', branchflavor='hadronFlavour', label='eventBTagSFCSVT', recllabel='Mini', wp=2)))
+
+MODULES.append( ('eventBTagWeightDeepCSVL',  lambda : bTagWeightAnalyzer(btagsf_DeepCSV_94X, btag_efficiency_fullsimDeepCSV, algo='DeepCSV', branchbtag='btagDeepCSV', branchflavor='hadronFlavour', label='eventBTagSFDeepCSVL', recllabel='Mini', wp=0)))
+MODULES.append( ('eventBTagWeightDeepCSVM',  lambda : bTagWeightAnalyzer(btagsf_DeepCSV_94X, btag_efficiency_fullsimDeepCSV, algo='DeepCSV', branchbtag='btagDeepCSV', branchflavor='hadronFlavour', label='eventBTagSFDeepCSVM', recllabel='Mini', wp=1)))
+MODULES.append( ('eventBTagWeightDeepCSVT',  lambda : bTagWeightAnalyzer(btagsf_DeepCSV_94X, btag_efficiency_fullsimDeepCSV, algo='DeepCSV', branchbtag='btagDeepCSV', branchflavor='hadronFlavour', label='eventBTagSFDeepCSVT', recllabel='Mini', wp=2)))
+
+MODULES.append( ('eventBTagWeightDeepFlavorL',  lambda : bTagWeightAnalyzer(btagsf_DeepFlavor_94X, btag_efficiency_fullsimDeepFlavor, algo='DeepFlavour', branchbtag='bTagDeepFlavorB', branchflavor='hadronFlavour', label='eventBTagSFDeepFlavorL', recllabel='Mini', wp=0)))
+MODULES.append( ('eventBTagWeightDeepFlavorM',  lambda : bTagWeightAnalyzer(btagsf_DeepFlavor_94X, btag_efficiency_fullsimDeepFlavor, algo='DeepFlavour', branchbtag='bTagDeepFlavorB', branchflavor='hadronFlavour', label='eventBTagSFDeepFlavorM', recllabel='Mini', wp=1)))
+MODULES.append( ('eventBTagWeightDeepFlavorT',  lambda : bTagWeightAnalyzer(btagsf_DeepFlavor_94X, btag_efficiency_fullsimDeepFlavor, algo='DeepFlavour', branchbtag='bTagDeepFlavorB', branchflavor='hadronFlavour', label='eventBTagSFDeepFlavorT', recllabel='Mini', wp=2)))
+
+
+
+
+
+
+
+
+
 ## PU uncertainty instances
 from CMGTools.TTHAnalysis.tools.fastSimPUW import FastSimPUWProducer
 puwProfile = os.path.join(utility_files_dir, "pileup", "dataProfile_EWKino_M17.root")
@@ -49,8 +84,8 @@ MODULES.append( ('PUWProducer2L', PUWProducer2L) )
 MODULES.append( ('PUWProducer3L', PUWProducer3L) )
 MODULES.append( ('PUWProducer4L', PUWProducer4L) )
 
-
-
+from CMGTools.TTHAnalysis.tools.JetPhotonPrefiring import JetPhotonPrefiring
+MODULES.append( ('JetPhotonPrefiring',lambda : JetPhotonPrefiring() ) )
 
 
 
@@ -313,6 +348,15 @@ MODULES.append( ('SoftMuonID2016', lambda : ObjTagger(label='SoftMuonID2016', co
 
 #--- Lepton MVA in friend tree
 
+from CMGTools.TTHAnalysis.tools.LeptonMVA_2017 import LepMVA_2017
+
+MODULES.append( ('LepMVAFriend2017', lambda: LepMVA_2017((
+                                                 os.environ["CMSSW_BASE"]+"/src/CMGTools/TTHAnalysis/data/leptonMVA/tZq/",
+                                                 os.environ["CMSSW_BASE"]+"/src/CMGTools/TTHAnalysis/data/leptonMVA/tth2018/"),
+                                                 training=["TZQ_Feb2018","TTH_Dec2018"], 
+label=["FriendTZQMVA","FriendTTH2018MVA"]) ))
+
+
 from CMGTools.TTHAnalysis.tools.LepMVAFriend import LepMVAFriend
 
 MODULES.append( ('LepMVAFriendTTH', lambda: LepMVAFriend((os.environ["CMSSW_BASE"]+"/src/CMGTools/TTHAnalysis/data/leptonMVA/tth/%s_BDTG.weights.xml",
@@ -425,7 +469,22 @@ MODULES.append( ('vtxWeightDown', lambda : VertexWeightFriend(myfile=None, targe
 
 
 from CMGTools.TTHAnalysis.tools.bTagEventWeightsCSVFullShape import BTagEventWeightFriend
-MODULES.append( ('eventBTagWeightDeepCSV', lambda : BTagEventWeightFriend(csvfile=os.environ["CMSSW_BASE"]+"/src/CMGTools/TTHAnalysis/data/btag/DeepCSV_94XSF_V3_B_F.csv",
+MODULES.append( ('eventBTagWeightCSV', lambda : BTagEventWeightFriend(csvfile=os.environ["CMSSW_BASE"]+"/src/CMGTools/TTHAnalysis/data/btag/DeepCSV_94XSF_V3_B_F.csv", label='CSV',
+                                                                   discrname="btagCSV", recllabel="_Mini")))
+MODULES.append( ('eventBTagWeightDeepCSV', lambda : BTagEventWeightFriend(csvfile=os.environ["CMSSW_BASE"]+"/src/CMGTools/TTHAnalysis/data/btag/DeepCSV_94XSF_V3_B_F.csv", label='DeepCSV',
                                                                    discrname="btagDeepCSV", recllabel="_Mini")))
+MODULES.append( ('eventBTagWeightDeepFlavor', lambda : BTagEventWeightFriend(csvfile=os.environ["CMSSW_BASE"]+"/src/CMGTools/TTHAnalysis/data/btag/DeepFlavour_94XSF_V1_B_F.csv", label='DeepFlavor',
+                                                                   discrname="bTagDeepFlavorB", recllabel="_Mini")))
 
+from CMGTools.TTHAnalysis.tools.ISRpTCorr import ISRpTCorr
+MODULES.append( ('ISRpTCorr', lambda : ISRpTCorr()))
+from CMGTools.TTHAnalysis.tools.ISRpTReWeight import ISRpTReWeight
+MODULES.append( ('ISRpTReWeight', lambda : ISRpTReWeight()))
+from CMGTools.TTHAnalysis.tools.ISRpTReWeightVars import ISRpTReWeightVars
+MODULES.append( ('ISRpTReWeightVars', lambda : ISRpTReWeightVars()))
+
+from CMGTools.TTHAnalysis.tools.GenLepMatching import GenLepMatching
+MODULES.append( ('GenLepMatching', lambda : GenLepMatching()))
 #MODULES.append( ('TiamattZValidation', lambda: TiamattZComputer(label="nnl",training="TiamattZ_WZ_v2.0.h5",layers=["lstm_btag_lstm2","lstm_jet_lstm2","lstm_htop_lstm2","lstm_sltop_lstm2","lstm_hW_lstm2","lstm_lep_lstm2","lstm_ewk_lstm2","dense_d1","dense_d2","dense_d3","dense_d4"]) ) )
+
+
