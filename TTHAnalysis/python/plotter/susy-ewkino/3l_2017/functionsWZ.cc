@@ -991,4 +991,12 @@ int SR_likeHT(float ht, float like){
   if (ht > 200) extra = 32; 
   return first + extra;
 }
+
+int CountNJNBJ(int nJ, int nBJ){
+    if (nBJ >= 2) nBJ = 2;
+    nJ = nJ + nBJ;
+    if (nJ >= nBJ + 4) nJ = 4;
+    return 5*nBJ+ nJ;
+}
+
 void functionsEWK_WZ() {}
