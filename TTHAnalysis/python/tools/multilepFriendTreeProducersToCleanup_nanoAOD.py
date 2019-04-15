@@ -26,6 +26,26 @@ MODULES.append( ('leptonJetReCleanerSusyEWK3L_nanoAOD', lambda : LeptonJetReClea
                    coneptdef = lambda lep: conept(lep),
                  ) ))
 
+from CMGTools.TTHAnalysis.tools.leptonJetReCleaner_notaus import LeptonJetReCleaner_noTaus
+MODULES.append( ('leptonJetReCleanerSusyEWK3L_nanoAOD_noFO_noTaus', lambda : LeptonJetReCleaner_noTaus("Mini", 
+                   lambda lep : lep.miniPFRelIso_all < 0.4 and _susyEWK_lepId_CBloose(lep) and _susyEWK_lepId_IPcuts(lep), #Loose selection 
+                   lambda lep,jetlist: lep.pt>5  and (_susyEWK_lepId_MVATTH(lep,jetlist)), #We clean on the FO
+                   lambda lep,jetlist: lep.pt>5  and (_susyEWK_lepId_MVATTH(lep,jetlist)), #FO selection
+                   lambda lep,jetlist: lep.pt>5  and (_susyEWK_lepId_MVATTH(lep,jetlist)), #Tight selection
+                   cleanJet = lambda lep,jet,dr : dr<0.4,
+                   selectJet = lambda jet: abs(jet.eta)<2.4 and (jet.jetId & 2), #Jet ID tight as it is already very efficient (>=98%), Take second bit with python "/" def + evaluate it with %
+                   cleanTau = lambda lep,tau,dr: dr<0.4,
+                   looseTau = lambda tau: _susyEWK_tauId_CBloose(tau), # used in cleaning
+                   tightTau = lambda tau: _susyEWK_tauId_CBtight(tau), # on top of loose
+                   cleanJetsWithTaus = True,
+                   cleanTausWithLoose = True,
+                   doVetoZ = False,
+                   doVetoLMf = False,
+                   doVetoLMt = True,
+                   jetPt = 30,
+                   bJetPt = 25,
+                   coneptdef = lambda lep: lep.pt,
+                 ) ))
 
 
 from CMGTools.TTHAnalysis.tools.leptonBuilderEWK_nanoAOD import LeptonBuilderEWK_nanoAOD
