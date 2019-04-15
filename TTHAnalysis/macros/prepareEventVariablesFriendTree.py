@@ -55,6 +55,7 @@ parser = OptionParser(usage="%prog [options] <TREE_DIR> <OUT>")
 parser.add_option("-m", "--modules", dest="modules",  type="string", default=[], action="append", help="Run these modules");
 parser.add_option("-d", "--dataset", dest="datasets",  type="string", default=[], action="append", help="Process only this dataset (or dataset if specified multiple times)");
 parser.add_option("-D", "--dm", "--dataset-match", dest="datasetMatches",  type="string", default=[], action="append", help="Process only this dataset (or dataset if specified multiple times): REGEXP");
+parser.add_option("-E", "--em", "--dataset-excludes", dest="datasetExcludes",  type="string", default=[], action="append", help="Exclude only this dataset (or dataset if specified multiple times): REGEXP");
 parser.add_option("-c", "--chunk",   dest="chunks",    type="int",    default=[], action="append", help="Process only these chunks (works only if a single dataset is selected with -d)");
 parser.add_option("--subChunk", dest="subChunk",    type="int",    default=None, nargs=None, help="Process sub-chunk of this chunk");
 parser.add_option("--fineSplit", dest="fineSplit",    type="int",    default=None, nargs=1, help="Split each chunk in N subchunks");
@@ -64,6 +65,7 @@ parser.add_option("-p", "--pretend", dest="pretend",   action="store_true", defa
 parser.add_option("-T", "--tree-dir",   dest="treeDir",     type="string", default="sf", help="Directory of the friend tree in the file (default: 'sf')");
 parser.add_option("-q", "--queue",   dest="queue",     type="string", default=None, help="Run jobs on lxbatch instead of locally");
 parser.add_option("-t", "--tree",    dest="tree",      default='ttHLepTreeProducerTTH', help="Pattern for tree name");
+parser.add_option("--ttree",    dest="ttree",      default='tree', help="Pattern for ttree name");
 parser.add_option("-V", "--vector",  dest="vectorTree", action="store_true", default=True, help="Input tree is a vector");
 parser.add_option("-F", "--add-friend",    dest="friendTrees",  action="append", default=[], nargs=2, help="Add a friend tree (treename, filename). Can use {name}, {cname} patterns in the treename")
 parser.add_option("--FMC", "--add-friend-mc",    dest="friendTreesMC",  action="append", default=[], nargs=2, help="Add a friend tree (treename, filename) to MC only. Can use {name}, {cname} patterns in the treename")
@@ -77,6 +79,7 @@ parser.add_option("--run",   dest="runner",     type="string", default="lxbatch_
 parser.add_option("--bk",   dest="bookkeeping",  action="store_true", default=False, help="If given the command used to run the friend tree will be stored");
 parser.add_option("--tra2",  dest="useTRAv2", action="store_true", default=False, help="Use the new experimental version of treeReAnalyzer");
 parser.add_option("--onlyMC",  dest="onlyMC", action="store_true", default=False, help="Only run over MC, i.e. some event weights related variables");
+parser.add_option("--onlyData",  dest="onlyData", action="store_true", default=False, help="Only run over Data");
 
 (options, args) = parser.parse_args()
 
@@ -137,10 +140,18 @@ for D in glob(args[0]+"/*"):
             for dm in  options.datasetMatches:
                 if re.match(dm,short): found = True
             if not found: continue
-        data =  any(x in short for x in "DoubleMu DoubleEl DoubleEG MuEG MuonEG SingleMu SingleEl".split()) # FIXME
+
+        if options.datasetExcludes != []:
+            found = False
+            for dm in  options.datasetExcludes:
+                if re.match(dm,short): found = True
+            if found: continue
+
+        data =  any(x in short for x in "DoubleMu DoubleEl DoubleEG MuEG MuonEG SingleMu SingleEl Tau EGamma MuonEG MET".split()) # FIXME
         if data and options.onlyMC: continue
+        if not(data) and options.onlyData: continue
         f = ROOT.TFile.Open(fname)
-        t = f.Get(treename)
+        t = f.Get(options.ttree)
         if not t:
             print "Corrupted ",fname
             continue
@@ -149,13 +160,16 @@ for D in glob(args[0]+"/*"):
         if options.newOnly:
             fout = "%s/evVarFriend_%s.root" % (args[1],short)
             if os.path.exists(fout):
-                f = ROOT.TFile.Open(fname);
-                t = f.Get(treename)
+                if os.path.getsize(fout) <= 1000: continue
+                f = ROOT.TFile.Open(fout);
+                t = f.Get("sf/t")
+                print fout
                 if t.GetEntries() != entries:
                     print "Component %s has to be remade, mismatching number of entries (%d vs %d)" % (short, entries, t.GetEntries())
                     f.Close()
                 else:
                     print "Component %s exists already and has matching number of entries (%d)" % (short, entries)
+                    f.Close()
                     continue
         chunk = options.chunkSize
         if entries < chunk:
@@ -165,6 +179,19 @@ for D in glob(args[0]+"/*"):
             nchunk = int(ceil(entries/float(chunk)))
             print "  ",os.path.basename(D),("  DATA" if data else "  MC")," %d chunks" % nchunk
             for i in xrange(nchunk):
+                if options.newOnly:
+                    fout = "%s/evVarFriend_%s.chunk%d.root" % (args[1],short,i)
+                    if os.path.exists(fout):
+                        ffout = ROOT.TFile.Open(fout)
+                        test = ffout.Get("sf/t")
+                        test2 = ffout.Get("blorgons")
+                        ffout.Close()
+                        if not( type(test) == type(test2)):
+                               print "Skipping chunk in " + fout
+                               continue
+                    else:
+                        ffout.Close()
+
                 if options.chunks != []:
                     if i not in options.chunks: continue
                 if not options.fineSplit:
@@ -198,10 +225,10 @@ if options.queue:
         runner = options.runner
         super  = "bsub -q {queue}".format(queue = options.queue)
 
-    basecmd = "{dir}/{runner} {dir} {cmssw} python {self} -N {chunkSize} -T {tdir} -t {tree} {data} {output}".format(
+    basecmd = "{dir}/{runner} {dir} {cmssw} python {self} -N {chunkSize} -T {tdir} -t {tree} {data} {output} {extra}".format(
                 dir = os.getcwd(), runner=runner, cmssw = os.environ['CMSSW_BASE'],
                 self=sys.argv[0], chunkSize=options.chunkSize, tdir=options.treeDir,
-                tree=options.tree, data=args[0], output=theoutput)
+                tree=options.tree, data=args[0], output=theoutput, extra="--ttree " + options.ttree)
 
     writelog = ""
     logdir   = ""
@@ -268,9 +295,9 @@ def _runIt(myargs):
         print fb
 
     print "getting tree.."
-    tb = fb.Get(options.tree)
+    tb = fb.Get(options.ttree)
 
-    if not tb: tb = fb.Get("tree") # new trees
+    if not tb: tb = fb.Get("tree") # old trees
     if options.vectorTree:
         tb.vectorTree = True
     else:
@@ -282,6 +309,7 @@ def _runIt(myargs):
     for tf_tree,tf_file in friends:
         tf = tb.AddFriend(tf_tree, tf_file.format(name=name, cname=name, P=args[0])),
         friends_.append(tf) # to make sure pyroot does not delete them
+        tb.GetListOfFriends()
     nev = tb.GetEntries()
     if options.pretend:
         print "==== pretending to run %s (%d entries, %s) ====" % (name, nev, fout)
@@ -317,6 +345,7 @@ def _runIt(myargs):
 if options.jobs > 0:
     from multiprocessing import Pool
     pool = Pool(options.jobs)
+    print _runIt, jobs
     ret  = dict(pool.map(_runIt, jobs)) if options.jobs > 0 else dict([_runIt(j) for j in jobs])
 else:
     ret = dict(map(_runIt, jobs))
