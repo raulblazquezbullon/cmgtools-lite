@@ -176,7 +176,7 @@ int hasPromptTau(int nLep, int lep1pdgId, int lep1mcUCSX, int lep2pdgId, int lep
 }
 
 int isGoodFake(float pt, int isTight) {
-    if(pt == 0) return 0;
+    //if(pt == 0) return 0;
     if(isTight) return 0;
     return 1;
 }
@@ -1032,4 +1032,352 @@ int SR_likeHT(float ht, float like){
   if (ht > 200) extra = 32; 
   return first + extra;
 }
+
+
+int SR3lB_v2(float dR3L, float mll) {
+
+    if (mll > 80) return 3;
+    if (dR3L < 1){
+         return 1;
+    }
+    else return 2;
+    return 0;
+}
+
+//Reoptimizations
+
+int SR_ewk_ss2l_v7(float dileppt, float met, float ptll, float ptdil, float mtW, float charge){
+  int SR = 1;
+  if (dileppt < 20){
+      if (ptll < 70){
+          if (met < 100) SR =  2;
+          else if (met < 200 && charge > 0) SR =  3;
+          else if (met < 200 && charge < 0) SR =  4;
+          else if (charge > 0) SR =  5;
+          else SR = 6;
+      }
+  }
+  else if (dileppt < 100){
+      if (ptdil < 30){
+          if (met < 200 && charge > 0) SR = 7;
+          else if (met < 200 && charge < 0) SR = 8;
+          else if (charge > 0) SR = 9;
+          else if (charge < 0) SR = 10;
+      }
+      else {
+          if (mtW < 100 && met < 200) SR=11;
+          else if (mtW < 100 && met > 200) SR=12;
+          else if (mtW > 100 && met < 200) SR=13;
+          else if (mtW > 100 && met > 200) SR=14;
+      }
+  }
+  else if (dileppt >= 100){
+      if (met < 100 && ptll < 200) SR = 15;
+      else if (met < 200 && ptll < 200 && charge > 0) SR = 16;
+      else if (met < 200 && ptll < 200 && charge < 0) SR = 17;
+      else if (ptll < 200 && charge > 0) SR = 18;
+      else if (ptll < 200 && charge < 0) SR = 19;
+      if (ptll > 200){
+          if (met < 100) SR =  20;
+          else if (met < 200 && charge > 0) SR =  21;
+          else if (met < 200 && charge < 0) SR =  22;
+          else if (met < 900 && charge > 0) SR =  23;
+          else if (met < 900 && charge < 0) SR =  24;
+          else SR = 20;
+      }
+  }
+  return SR;   
+}
+
+
+int SR3lB_v3(float dR3L) {//Esta es la güena
+
+    if (dR3L < 0.4){
+         return 1;
+    }
+    else if (dR3L < 1.0) return 2;
+    else return 3;
+    return 0;
+}
+
+int SR3lG_v2(float met, float mZ2) {//Esta es la güena
+
+    if (met < 100){
+         if (mZ2 < 60) return 1;
+         else return 2;
+    }
+    else if (met < 200) return 3;
+    else return 4;
+    return 0;
+}
+
+int SR3lG_v3(float mtZ, float mZ2, float met) {//Esta es la güena
+    if (mtZ > 200){
+         if (met > 200) return 1;
+         else return 2;
+    }
+    else if (mZ2 < 60){
+         if (met > 80) return 3;
+         else return 4;
+    }
+    return 4;
+}
+
+int SR3lH_v2(float mll, float dR4L) {//Esta es la güena
+
+    if (mll < 60){
+        return 1;
+    }
+    else if (dR4L < 0.5) return 2;
+    else return 3;
+    return 0;
+}
+
+int SR3lH_v3(float met, float dR4L) {//Esta es la güena
+
+    if (met < 50){
+        return 1;
+    }
+    else if (dR4L < 0.6) return 2;
+    else return 3;
+    return -1;
+}
+
+int SR3lI_v2(float mll_4l, float met) {//Esta es la güena para IJK, retuniar el corte en met
+
+    if (mll_4l < 60){
+        return 1;
+    }
+    else if (met < 125) return 2;
+    else return 3;
+    return 0;
+}
+
+int unused4(int id1, int id2, int ord){
+    int idx = 0;
+    for (int i = 0; i< 4; i ++){
+        if (i == id1 || i == id2){continue;}
+        else idx++;
+        if (idx == ord) return i;
+    }
+    return -1;
+}
+
+int SR4lGplot(float mT2Z, float met, float mZ2, int offset=0) {
+    if(mT2Z > 450) return 5+offset;
+    if(mT2Z > 300) return 4+offset;
+    if(mT2Z > 150 && mZ2 < 60) return 3+offset;
+    if(mT2Z > 150 && mZ2 >= 60) return 2+offset;
+    if(mT2Z < 150) return 1+offset;
+    return -1;
+}
+
+
+int SR4lHplot(float dRllH, float bestZ, int offset=0) {//Low MET CUT
+    if(dRllH < 0.8) return 3+offset;
+    if(dRllH > 0.8 && bestZ < 60) return 2+offset;
+    if(dRllH > 0.8 && bestZ > 60) return 1+offset;
+    return -1;
+}
+
+
+int SR4lIplot(float dRllH, float bestZ, int offset=0) {//Low MET CUT
+    if(dRllH < 0.8) return 3+offset;
+    if(dRllH > 0.8 && bestZ < 60) return 2+offset;
+    if(dRllH > 0.8 && bestZ > 60) return 1+offset;
+    return -1;
+}
+
+int SR4lJplot(float ptH, float bestZ, int offset=0) {//Low MET CUT
+    if(bestZ < 60) return 3+offset;
+    if(ptH > 100 && bestZ > 60) return 2+offset;
+    if(ptH < 100 && bestZ > 60) return 1+offset;
+    return -1;
+}
+
+int SR4lKplot(float met, float bestZ, int offset=0) {//Low MET CUT
+    if(bestZ < 60 && met > 100) return 3+offset;
+    if(bestZ < 60 && met < 100) return 2+offset;
+    if(bestZ > 60) return 1+offset;
+    return -1;
+}
+
+
+int SR4lplot(int BR, float mT2Z, float met, float mZ2, float mZ1, float dRllH, float ptH){
+    // 4 light
+    if(met < 50) return 0;
+    if(BR==7) return SR4lGplot(mT2Z, met, mZ2, 0);
+    if(BR==8) return SR4lHplot(dRllH, mZ1, 5);
+    // 3light + 1tau
+    if(BR==9) return SR4lIplot(dRllH, mZ1, 8);
+    // 2light + 2tau
+    if(BR==10) return SR4lJplot(ptH, mZ1, 11);
+    if(BR==11) return SR4lKplot(met, mZ1, 14);
+    return -1;
+}
+
+
+
+int SR4lplot_Alt(int BR, float mT2Z, float met, float mZ2, float mZ1, float dRllH, float ptH){
+    // 4 light
+    if(met < 50) return 0;
+    if(BR==7) return SR4lGplot(mT2Z, met, mZ2, 0);
+    if(mZ1 > 60) return 6;
+    if(BR==8) return SR4lHplot(dRllH, mZ1, 6);
+    // 3light + 1tau
+    if(BR==9) return SR4lIplot(dRllH, mZ1, 9);
+    // 2light + 2tau
+    if(BR==10) return SR4lJplot(ptH, mZ1, 12);
+    if(BR==11) return SR4lKplot(met, mZ1, 15);
+    return 0;
+}
+
+
+int SR4lplot_v2(int BR, float mT2Z, float met, float mZ2, float mZ1, float dRllH, float ptH){
+    // 4 light
+    if(met < 50) return 0;
+    if(BR==7) return SR4lGplot(mT2Z, met, mZ2, 0);
+    if(BR==8) return SR4lHplot(dRllH, mZ1, 5);
+    // 3light + 1tau
+    if(BR==9) return SR4lHplot(dRllH, mZ1, 8);
+    // 2light + 2tau
+    if(BR==10) return SR4lHplot(dRllH, mZ1, 11);
+    if(BR==11) return SR4lHplot(dRllH, mZ1, 14);
+    return -1;
+}
+
+int SR4lplot_v3(int BR, float mT2Z, float met, float mZ2, float mZ1, float dRllH, float ptH){
+    // 4 light
+    if(met < 50) return 0;
+    if(BR==7) return SR4lGplot(mT2Z, met, mZ2, 0);
+    if(BR>7) return SR4lHplot(dRllH, mZ1, 5);
+    return -1;
+}
+
+int SSR_4l_new(int BR, float met, float mZ1){
+    // 4 light
+    if((BR==7 || BR==10) && met > 200) return 1;
+    else if ((BR==6 || BR==8 || BR==9 || BR==11) && met > 50 &&  mZ1 < 60) return 2;
+    return -1;
+}
+
+
+int SRC_new(float mll, float ptlll, float met, float mtZprime){
+    if (abs(mll - 91.186) < 25) return 2;
+    else if (ptlll < 100) return 1;
+    else if (met < 100) return 3;
+    else if (met < 200) return 4;
+    else if (met < 250) return 5;
+    else if (met < 300) return 6;
+    else if (mtZprime < 500) return 7;
+    else return 8;
+}
+
+int SRC_new_v2(float mll, float ptlll, float met, float mtZprime){
+    if (abs(mll - 91.186) < 25) return 1;
+    else if (ptlll < 100) return 2;
+    else if (met < 200) return 3;
+    else if (met > 200 && met < 300){
+        if (mtZprime < 250) return 4;
+        if (mtZprime < 500) return 5;
+        return 6;
+    }
+    else if (met > 300){
+        if (mtZprime < 250) return 7;
+        if (mtZprime < 500) return 8;
+        return 9;
+    }
+}
+
+int SRC_new_v3(float mll, float ptlll, float met, float mtZprime, float mt2ll){
+    if (ptlll < 125) return 2;
+    if (abs(mll - 91.186) < 25){
+        return 2;
+    }
+    else if (met < 200){
+        if (mt2ll < 80) return 3;
+        if (mt2ll < 120) return 4;
+        else return 5;
+    }
+    else if (met > 200 && met < 300){
+        if (mt2ll < 80) return 6;
+        if (mt2ll < 120) return 7;
+        return 8;
+    }
+    else if (met > 300){
+        if (mtZprime < 250) return 9;
+        if (mtZprime < 500) return 10;
+        return 11;
+    }
+}
+
+/*            if (met < 200) return 1;
+            else if (met < 300) return 2;
+            else return 3;*/
+
+int SRD_new(float deltaR, float mt2, float met){
+    if (met < 100){
+        if (deltaR > 0.8){
+            if (mt2 < 80) return 1;
+            else return 2;
+        }
+        else if (deltaR < 0.8){
+            if (mt2 < 80) return 3;
+            else return 4;
+        }
+    }
+    if (met < 200){
+        if (deltaR > 0.8){
+            if (mt2 < 80) return 5;
+            else return 6;
+        }
+        else if (deltaR < 0.8){
+            if (mt2 < 80) return 7;
+            else return 8;
+        }
+    }
+    if (met > 200){
+        if (deltaR > 1.6){
+            if (mt2 < 80) return 9;
+            else return 10;
+        }
+        else if (deltaR > 0.8){
+            if (mt2 < 80) return 11;
+            else return 12;
+        }
+        else if (deltaR < 0.8){
+            if (mt2 < 80) return 13;
+            else return 14;
+        }
+    }
+}
+
+
+
+int SRE_new(float mt2, float mll, float met){
+    if (mt2 < 80){
+        if (mll < 50){
+            if (met < 100) return 1;
+            if (met < 250) return 2;
+            else return 3;
+        }
+        else{
+            if (met < 100) return 4;
+            if (met < 250) return 5;
+            else return 5;
+        }
+    }
+    else{
+        if (mll < 100){
+            if (met < 150) return 6;
+            else return 7;
+        }       
+        else{
+            if (met < 200) return 8;
+            else return 9;
+        }       
+    }
+}
+
+
 void functionsEWK_WZ() {}
