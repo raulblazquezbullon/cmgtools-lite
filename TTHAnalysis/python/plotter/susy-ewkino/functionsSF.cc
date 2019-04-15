@@ -138,7 +138,7 @@ float triggerSFfastsim(float pt1  , float eta1  , int pdg1  ,
 //    // Lesya's mail:
 //    // - split for trailing ele or trailing mu
 //    // - 3l: subleading vs trailing lepton pt (1l + 2l triggers)
-//    // - 2l: leading light lepton vs subleading light lepton ==> good for both 2l+tau and 2lSS cases (1l + 2l triggers)
+//    // - 2l: leading light lepton vs subleading light lepton ==> good for both 2l+tau and 2lSS case:s (1l + 2l triggers)
 //    // - l+tautau: use flat 86% everywhere; pt_e > 35 GeV; pt_mu > 25 GeV (1l + l/tau triggers)
 //
 //    // 3l: 2tau (flat 86% in dedicated function)
@@ -230,28 +230,42 @@ float getMuonUnc(float pt, int var = 0) {
 
 
 
+float getLepSF(float pt, float eta, int pdgId, int isTight, int wp = 0, int var = 0){
+    if(!isTight) return 1.0;
+    float sf  = 1.0; 
+    float err = 0.0;
+    if(abs(pdgId) == 11) { sf = getElectronSF(pt, eta, wp);}
+    if(abs(pdgId) == 13) { sf = getMuonSF(pt, eta, wp);} // only relative error
+    if(abs(pdgId) == 15) { sf = 0.95                      ; err = 0.05;                             };
+    return (var==0)?sf:(sf+var*err)/sf;
 
+}
 
 
 // electrons
 //TFile* f_elSF_id   = new TFile(DATA_SF+"/leptonSF/electronSF_id_EWKino_fullsim_M17_36p5fb.root"    , "read");
-TFile* f_elSF_eff2018  = new TFile(DATA_SF+"/leptonSF/egamma2018.root", "read");
-TH2F* h_elSF_trk2018   = (TH2F*) f_elSF_eff2018->Get("EGamma_SF2D");
+TFile* f_elSF_Loose2018  = new TFile(DATA_SF+"/leptonSF/egamma2017_Loose.root", "read"); //Loose ID + ISO SF
+TH2F* h_elSF_Loose2018   = (TH2F*) f_elSF_Loose2018->Get("EGamma_SF2D");
+TFile* f_elSF_Tight2018  = new TFile(DATA_SF+"/leptonSF/egamma2017_Tight_Old.root", "read"); //Loose to Tight ID + ISO SF
+TH2F* h_elSF_Tight2018   = (TH2F*) f_elSF_Tight2018->Get("EGamma_SF2D");
 
 // muons
 TFile* f_muSF_id2018    = new TFile(DATA_SF+"/leptonSF/muon_SF_ID_2018.root"   , "read");
-TH2D* h_muSF_id2018    = (TH2D*) f_muSF_id2018   ->Get("NUM_LooseID_DEN_genTracks_pt_abseta" );
+TH2F* h_muSF_id2018    = (TH2F*) f_muSF_id2018->Get("NUM_LooseID_DEN_genTracks_pt_abseta" );
+
+TFile* f_muSF_id2018_T    = new TFile(DATA_SF+"/leptonSF/EfficienciesAndSF_Tight_EWKino_2017Cut_NUM_Tight_EWKino_2017Cut_DEN_Loose_EWKino_2017Cut_PAR_pt_eta.root"   , "read");
+TH2F* h_muSF_id2018_T    = (TH2F*) f_muSF_id2018_T->Get("EfficiencyLOOSEMVA_TightMVA_Final/pt_abseta_ratio");
+
 
 float getElectronSF2018(float pt, float eta, int wp = 0){
-    TH2F* hist = (wp == 1)?h_elSF_mvaVT:h_elSF_mvaM;
+    //TH2F* hist1 = (wp == 1)?h_elSF_mvaVT:h_elSF_mvaM;
     //return getSF(hist, pt, abs(eta))*getSF(h_elSF_id, pt, abs(eta))*getSF(h_elSF_trk, eta, pt);
-    return getSF(hist, pt, abs(eta))*getSF(h_elSF_trk2018, eta, pt);
+    return getSF(h_elSF_Loose2018, eta, pt)*getSF(h_elSF_Tight2018, eta, pt);
 }
 
 float getMuonSF2018(float pt, float eta, int wp = 0){
-    TH2F* hist = (wp == 1)?h_muSF_mvaVT:h_muSF_mvaM;
-    //return h_muSF_trk->Eval(eta)*getSF(hist, pt, abs(eta))*getSF(h_muSF_id, pt, abs(eta)); 
-    return getSF(h_muSF_id2018, abs(eta), pt)*getSF(hist, pt, abs(eta));
+    return getSF(h_muSF_id2018_T, pt, abs(eta))*getSF(h_muSF_id2018, pt, abs(eta)); 
+    //return getSF(h_muSF_id2018, abs(eta), pt)*getSF(hist, pt, abs(eta));
 }
 
 
@@ -267,7 +281,16 @@ float getLepSF2018(float pt, float eta, int pdgId, int isTight, int wp = 0, int 
 }
 
 
+float getLepSF2018Loose(float pt, float eta, int pdgId, int isTight, int wp = 0, int var = 0){
+    if(!isTight) return 1.0;
+    float sf  = 1.0; 
+    float err = 0.0;
+    if(abs(pdgId) == 11) { sf = getSF(h_elSF_Loose2018, eta, pt);}
+    if(abs(pdgId) == 13) { sf = h_muSF_trk->Eval(eta)*getSF(h_muSF_id2018, pt, abs(eta));} // only relative error
+    if(abs(pdgId) == 15) { sf = 0.95                      ; err = 0.05;                             };
+    return (var==0)?sf:(sf+var*err)/sf;
 
+}
 
 
 
@@ -400,6 +423,331 @@ float leptonSFFS16(float lepSF1, float lepSF2, float lepSF3 = 1.0, float lepSF4 
     return lepSF1*lepSF2*lepSF3*lepSF4;
 }
 
+float AdHoc(Int_t Trigee, Int_t Trige, Int_t Trigem){
+    float SF = 1;
+    if (Trige > 0) SF *= 1./1.139;
+    else SF *= 1./0.82;
+    return SF;
+}
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Lepton SF for the first set of legacy Data/MC (nanoAODv4), 17Jul2018 (2016) + 17Nov2017 (2017) + 17Sep2018 (2018) data reprocessing//
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+///////////
+// EL SF //
+///////////
+
+TFile* f_elSF_v4_2016_mva_highpt  = new TFile(DATA_SF+"/leptonSF/EGM2D_BtoH_GT20GeV_RecoSF_Legacy2016.root", "read");
+TH2F*  h_elSF_v4_2016_mva_highpt  = (TH2F*) f_elSF_v4_2016_mva_highpt->Get("EGamma_SF2D");
+
+TFile* f_elSF_v4_2016_mva_lowpt  = new TFile(DATA_SF+"/leptonSF/EGM2D_BtoH_low_RecoSF_Legacy2016.root", "read");
+TH2F*  h_elSF_v4_2016_mva_lowpt  = (TH2F*) f_elSF_v4_2016_mva_lowpt->Get("EGamma_SF2D");
+
+TFile* f_elSF_v4_2016_LtoL_mva  = new TFile(DATA_SF+"/leptonSF/el_scaleFactors_20160724.root", "read");
+TH2F*  h_elSF_v4_2016_mva_gsftoSIP    = (TH2F*) f_elSF_v4_2016_LtoL_mva->Get("GsfElectronToFOID2D");
+TH2F*  h_elSF_v4_2016_mva_SIPtoMini   = (TH2F*) f_elSF_v4_2016_LtoL_mva->Get("MVAVLooseElectronToMini4");
+TH2F*  h_elSF_v4_2016_mva_MinitoConv  = (TH2F*) f_elSF_v4_2016_LtoL_mva->Get("MVAVLooseElectronToConvIHit1");
+
+TFile* f_elSF_v4_2016_LtoT_mva       = new TFile(DATA_SF+"/leptonSF/lepMVAEffSF_e_2lss_2016.root", "read");
+TH2F*  h_elSF_v4_2016_LtoT_mva       = (TH2F*) f_elSF_v4_2016_LtoT_mva->Get("sf");
+
+float getElSF_v4_2016(int wp, int unc, float pt, float eta){
+  //El SF are subdivided
+  //First from cluster to Loose gsfelec
+  float sfTtoL; float sfTtoLcorr;
+  if (pt < 20){
+    sfTtoL     = getSF(h_elSF_v4_2016_mva_lowpt, eta, pt);
+    sfTtoLcorr = getUnc(h_elSF_v4_2016_mva_lowpt, eta, pt);
+  }
+  else{
+    sfTtoL     = getSF(h_elSF_v4_2016_mva_highpt, eta, pt);
+    sfTtoLcorr = getUnc(h_elSF_v4_2016_mva_highpt, eta, pt);
+  }
+  //Now Loose POG to loose leptonMVA
+  float sfLtoL = getSF(h_elSF_v4_2016_mva_gsftoSIP, pt, abs(eta));
+  sfLtoL *= getSF(h_elSF_v4_2016_mva_SIPtoMini, pt, abs(eta));
+  sfLtoL *= getSF(h_elSF_v4_2016_mva_MinitoConv, pt, abs(eta));
+  float sfLtoLcorr = TMath::Power( TMath::Power(getUnc(h_elSF_v4_2016_mva_gsftoSIP, pt, abs(eta)), 2) +  TMath::Power(getUnc(h_elSF_v4_2016_mva_SIPtoMini, pt, abs(eta)), 2) +  TMath::Power(getUnc(h_elSF_v4_2016_mva_MinitoConv, pt, abs(eta)), 2), 0.5); 
+  //And then loose leptonMVA to tight leptonMVA
+  float sfLtoT     =  getSF(h_elSF_v4_2016_LtoT_mva, pt, abs(eta));
+  float sfLtoTcorr =  getUnc(h_elSF_v4_2016_LtoT_mva, pt, abs(eta));
+  return sfTtoL*sfLtoL*sfLtoT*(1 + unc*sfTtoLcorr)*(1+unc*sfLtoLcorr)*(1+unc*sfLtoTcorr);
+}
+
+
+
+TFile* f_elSF_v4_2017_mva_highpt  = new TFile(DATA_SF+"/leptonSF/egammaEffi.txt_EGM2D_runBCDEF_passingRECO.root", "read");
+TH2F*  h_elSF_v4_2017_mva_highpt  = (TH2F*) f_elSF_v4_2017_mva_highpt->Get("EGamma_SF2D");
+
+TFile* f_elSF_v4_2017_mva_lowpt  = new TFile(DATA_SF+"/leptonSF/egammaEffi.txt_EGM2D_runBCDEF_passingRECO_lowEt.root", "read");
+TH2F*  h_elSF_v4_2017_mva_lowpt  = (TH2F*) f_elSF_v4_2017_mva_lowpt->Get("EGamma_SF2D");
+
+TFile* f_elSF_v4_2017_LtoL_mva  = new TFile(DATA_SF+"/leptonSF/egammaEffi.txt_EGM2D_looseTTH_2017.root", "read");
+TH2F*  h_elSF_v4_2017_LtoL_mva    = (TH2F*) f_elSF_v4_2017_LtoL_mva->Get("EGamma_SF2D");
+TFile* f_elSF_v4_2017_LtoT_mva       = new TFile(DATA_SF+"/leptonSF/lepMVAEffSF_e_2lss.root", "read");
+TH2F*  h_elSF_v4_2017_LtoT_mva       = (TH2F*) f_elSF_v4_2017_LtoT_mva->Get("sf");
+
+float getElSF_v4_2017(int wp, int unc, float pt, float eta){
+  //El SF are subdivided
+  //First from cluster to Loose gsfelec
+  float sfTtoL; float sfTtoLcorr;
+  if (pt < 20){
+    sfTtoL     = getSF(h_elSF_v4_2017_mva_lowpt, eta, pt);
+    sfTtoLcorr = getUnc(h_elSF_v4_2017_mva_lowpt, eta, pt);
+  }
+  else{
+    sfTtoL     = getSF(h_elSF_v4_2017_mva_highpt, eta, pt);
+    sfTtoLcorr = getUnc(h_elSF_v4_2017_mva_highpt, eta, pt);
+  }
+  //Now Loose POG to loose leptonMVA
+  float sfLtoL = getSF(h_elSF_v4_2017_LtoL_mva, eta, pt);
+  float sfLtoLcorr = getUnc(h_elSF_v4_2017_LtoL_mva, eta, pt); 
+
+  //And then loose leptonMVA to tight leptonMVA
+  float sfLtoT     =  getSF(h_elSF_v4_2017_LtoT_mva, pt, abs(eta));
+  float sfLtoTcorr =  getUnc(h_elSF_v4_2017_LtoT_mva, pt, abs(eta));
+  return sfTtoL*sfLtoL*sfLtoT*(1 + unc*sfTtoLcorr)*(1+unc*sfLtoLcorr)*(1+unc*sfLtoTcorr);
+}
+
+TFile* f_elSF_v4_2018_mva = new TFile(DATA_SF+"/leptonSF/egammaEffi.txt_EGM2D_updatedAll.root", "read");
+TH2F*  h_elSF_v4_2018_mva = (TH2F*) f_elSF_v4_2018_mva->Get("EGamma_SF2D");
+
+
+float getElSF_v4_2018(int wp, int unc, float pt, float eta){
+    //Placeholder
+    getElSF_v4_2017(wp, unc, pt, eta);
+}
+
+float getElSF_v4(int wp, int unc, int year, float pt, float eta){
+  //El SF
+  if (year==2016) return getElSF_v4_2016(wp, unc, pt, eta);
+  if (year==2017) return getElSF_v4_2017(wp, unc, pt, eta);
+  if (year==2018) return getElSF_v4_2018(wp, unc, pt, eta);
+  else std::cout << "Wrong year for el SF!!" << std::endl;
+  return -1.;
+}
+
+
+///////////
+// MU SF //
+///////////
+
+TFile* f_muSF_v4_2016_BCDEF_mva       = new TFile(DATA_SF+"/leptonSF/muSF_v4_2016_IDLoose_BCDEF.root", "read");
+TH2F*  h_muSF_v4_2016_BCDEF_mva       = (TH2F*) f_muSF_v4_2016_BCDEF_mva->Get("NUM_LooseID_DEN_genTracks_eta_pt");
+TH2F*  h_muSF_v4_2016_BCDEF_mva_stat  = (TH2F*) f_muSF_v4_2016_BCDEF_mva->Get("NUM_LooseID_DEN_genTracks_eta_pt_stat");
+TH2F*  h_muSF_v4_2016_BCDEF_mva_syst  = (TH2F*) f_muSF_v4_2016_BCDEF_mva->Get("NUM_LooseID_DEN_genTracks_eta_pt_syst");
+
+TFile* f_muSF_v4_2016_GH_mva       = new TFile(DATA_SF+"/leptonSF/muSF_v4_2016_IDLoose_GH.root", "read");
+TH2F*  h_muSF_v4_2016_GH_mva       = (TH2F*) f_muSF_v4_2016_GH_mva->Get("NUM_LooseID_DEN_genTracks_eta_pt");
+TH2F*  h_muSF_v4_2016_GH_mva_stat  = (TH2F*) f_muSF_v4_2016_GH_mva->Get("NUM_LooseID_DEN_genTracks_eta_pt_stat");
+TH2F*  h_muSF_v4_2016_GH_mva_syst  = (TH2F*) f_muSF_v4_2016_GH_mva->Get("NUM_LooseID_DEN_genTracks_eta_pt_syst");
+
+TFile* f_muSF_v4_2016_LtoLB_mva       = new TFile(DATA_SF+"/leptonSF/mu_ttH_presel_barrel.root", "read");
+TGraphAsymmErrors*  h_muSF_v4_2016_LtoLB_mva       = (TGraphAsymmErrors*) f_muSF_v4_2016_LtoLB_mva->Get("ratio");
+
+TFile* f_muSF_v4_2016_LtoLE_mva       = new TFile(DATA_SF+"/leptonSF/mu_ttH_presel_endcap.root", "read");
+TGraphAsymmErrors*  h_muSF_v4_2016_LtoLE_mva       = (TGraphAsymmErrors*) f_muSF_v4_2016_LtoLE_mva->Get("ratio");
+
+TFile* f_muSF_v4_2016_LtoT_mva       = new TFile(DATA_SF+"/leptonSF/lepMVAEffSF_m_2lss_2016.root", "read");
+TH2F*  h_muSF_v4_2016_LtoT_mva       = (TH2F*) f_muSF_v4_2016_LtoT_mva->Get("sf");
+
+
+float getMuSF_v4_2016(int wp, int unc, float pt, float eta){
+  //Mu SF are subdivided
+  //First from gentrack to Loose POG
+  float sfBCDEF; float corrBCDEF;
+  float sfGH; float corrGH;
+  sfBCDEF   = getSF(h_muSF_v4_2016_BCDEF_mva, eta, pt);
+  corrBCDEF = getSF(h_muSF_v4_2016_BCDEF_mva_stat, eta, pt);
+  corrBCDEF = TMath::Power(TMath::Power(getSF(h_muSF_v4_2016_BCDEF_mva_stat, eta, pt),2) + TMath::Power(corrBCDEF,2), 0.5);
+  sfGH   = getSF(h_muSF_v4_2016_GH_mva, eta, pt);
+  corrGH = getSF(h_muSF_v4_2016_GH_mva_stat, eta, pt);
+  corrGH = TMath::Power(TMath::Power(getSF(h_muSF_v4_2016_GH_mva_stat, eta, pt),2) + TMath::Power(corrGH,2), 0.5);
+  float sf1 = sfGH*(1+unc*corrGH); float sf2 = sfBCDEF*(1+corrBCDEF*unc);
+  float sfGenTrackToLooseID = (sf1*16.29 + sf2*19.22)/(16.29+19.22);
+  //Now Loose POG to loose leptonMVA
+  float sfLtoL; float sfLtoLcorr;
+  if (abs(eta) < 1.2){
+    sfLtoL = h_muSF_v4_2016_LtoLB_mva->Eval(pt);
+    sfLtoLcorr = 0.;
+  }
+  else{
+    sfLtoL =  h_muSF_v4_2016_LtoLE_mva->Eval(pt);
+    sfLtoLcorr = 0.;
+  }
+  //TODO: Add LtoL lepton uncertainty
+  //And then loose leptonMVA to tight leptonMVA
+  float sfLtoT     =  getSF(h_muSF_v4_2016_LtoT_mva, pt, abs(eta));
+  float sfLtoTcorr = getUnc(h_muSF_v4_2016_LtoT_mva, pt, abs(eta));
+  return sfGenTrackToLooseID*sfLtoL*sfLtoT*(1+unc*sfLtoLcorr)*(1+unc*sfLtoTcorr);
+}
+
+TFile* f_muSF_v4_2017_mva  = new TFile(DATA_SF+"/leptonSF/muSF_v4_2017_IDLoose_syst.root", "read");
+TH2F*  h_muSF_v4_2017_mva  = (TH2F*) f_muSF_v4_2017_mva->Get("NUM_LooseID_DEN_genTracks_pt_abseta");
+TH2F*  h_muSF_v4_2017_mva_stat  = (TH2F*) f_muSF_v4_2017_mva->Get("NUM_LooseID_DEN_genTracks_pt_abseta_stat");
+TH2F*  h_muSF_v4_2017_mva_syst  = (TH2F*) f_muSF_v4_2017_mva->Get("NUM_LooseID_DEN_genTracks_pt_abseta_syst");
+
+
+TFile* f_muSF_v4_2017_LtoL_mva       = new TFile(DATA_SF+"/leptonSF/scaleFactors_mu_DxyDzSip8mIso04_over_LooseID.root", "read");
+TH2F*  h_muSF_v4_2017_LtoL_mva       = (TH2F*) f_muSF_v4_2017_LtoL_mva->Get("NUM_ttHLoo_DEN_LooseID");
+
+TFile* f_muSF_v4_2017_LtoT_mva       = new TFile(DATA_SF+"/leptonSF/lepMVAEffSF_m_2lss.root", "read");
+TH2F*  h_muSF_v4_2017_LtoT_mva       = (TH2F*) f_muSF_v4_2017_LtoT_mva->Get("sf");
+
+float getMuSF_v4_2017(int wp, int unc, float pt, float eta){
+  //Mu SF are subdivided
+  //First from gentrack to Loose POG
+  float sfTtoL     = getSF(h_muSF_v4_2017_mva, pt, abs(eta));
+  float sfTtoLcorr = TMath::Power( TMath::Power(getSF(h_muSF_v4_2017_mva_stat, pt, abs(eta)),2) + TMath::Power(getSF(h_muSF_v4_2017_mva_syst, pt, abs(eta)),2),0.5);
+
+  //Now Loose POG to loose leptonMVA
+  float sfLtoL = getSF(h_muSF_v4_2017_LtoL_mva, pt, abs(eta));
+  float sfLtoLcorr = 0.;
+  //TODO: Add LtoL lepton uncertainty
+  //And then loose leptonMVA to tight leptonMVA
+  float sfLtoT     =  getSF(h_muSF_v4_2017_LtoT_mva, pt, abs(eta));
+  float sfLtoTcorr =  getUnc(h_muSF_v4_2017_LtoT_mva, pt, abs(eta));
+  return sfTtoL*sfLtoL*sfLtoT*(1 + unc*sfTtoLcorr)*(1+unc*sfLtoLcorr)*(1+unc*sfLtoTcorr);
+}
+
+
+TFile* f_muSF_v4_2018_mva  = new TFile(DATA_SF+"/leptonSF/RunABCD_SF_ID.root", "read");
+TH2F*  h_muSF_v4_2018_mva  = (TH2F*) f_muSF_v4_2018_mva->Get("NUM_LooseID_DEN_TrackerMuons_pt_abseta");
+
+float getMuSF_v4_2018(int wp, int unc, float pt, float eta){
+  //Mu SF are subdivided
+  //First from gentrack to Loose POG
+  float sfTtoL     = getSF(h_muSF_v4_2018_mva, pt, abs(eta));
+  float sfTtoLcorr = getUnc(h_muSF_v4_2018_mva, pt, abs(eta));
+
+  //PLACEHOLDER
+  //Now Loose POG to loose leptonMVA
+  float sfLtoL = getSF(h_muSF_v4_2017_LtoL_mva, pt, abs(eta));
+  float sfLtoLcorr = 0.;
+  //TODO: Add LtoL lepton uncertainty
+  //And then loose leptonMVA to tight leptonMVA
+  float sfLtoT     =  getSF(h_muSF_v4_2017_LtoT_mva, pt, abs(eta));
+  float sfLtoTcorr =  getUnc(h_muSF_v4_2017_LtoT_mva, pt, abs(eta));
+  return sfTtoL*sfLtoL*sfLtoT*(1 + unc*sfTtoLcorr)*(1+unc*sfLtoLcorr)*(1+unc*sfLtoTcorr);
+}
+
+float getMuSF_v4(int wp, int unc, int year, float pt, float eta){
+  //Mu SF
+  if (year==2016) return getMuSF_v4_2016(wp, unc, pt, eta);
+  if (year==2017) return getMuSF_v4_2017(wp, unc, pt, eta);
+  if (year==2018) return getMuSF_v4_2018(wp, unc, pt, eta);
+  else std::cout << "Wrong year for mu SF!!" << std::endl;
+  return -1.;
+}
+
+////////////
+// TAU SF //
+////////////
+
+
+float getTauSF_v4_2016(int wp, int unc){
+  //From here https://twiki.cern.ch/twiki/bin/view/CMS/TauIDRecommendation13TeV#Performance_in_data_and_recommen
+  float sf; float corr;
+  switch (wp){
+  case 0:
+    sf=0.90; corr=0.03;
+    break;
+  case 1:
+    sf=0.90; corr=0.03;
+    break;
+  case 2:
+    sf=0.86; corr=0.02;
+    break;
+  case 3:
+    sf=0.88; corr=0.02;
+    break;
+  case 4:
+    sf=0.87; corr=0.02;
+    break;
+  case 5:
+    sf=0.86; corr=0.02;
+    break;
+  case 6:
+    sf=0.86; corr=0.02;
+    break;
+  return sf*(1+corr*unc);
+  }
+}
+
+float getTauSF_v4_2017(int wp, int unc){
+  //From here https://twiki.cern.ch/twiki/bin/view/CMS/TauIDRecommendation13TeV#Performance_in_data_and_recommen
+  float sf; float corr;
+  switch (wp){
+  case 0:
+    sf=0.89; corr=0.03;
+    break;
+  case 1:
+    sf=0.88; corr=0.03;
+    break;
+  case 2:
+    sf=0.89; corr=0.03;
+    break;
+  case 3:
+    sf=0.89; corr=0.03;
+    break;
+  case 4:
+    sf=0.89; corr=0.03;
+    break;
+  case 5:
+    sf=0.86; corr=0.03;
+    break;
+  case 6:
+    sf=0.84; corr=0.03;
+    break;
+  return sf*(1+corr*unc);
+  }
+}
+
+float getTauSF_v4_2018(int wp, int unc){
+  //From here https://twiki.cern.ch/twiki/bin/view/CMS/TauIDRecommendation13TeV#Performance_in_data_and_recommen
+  float sf; float corr;
+  switch (wp){
+  case 0:
+    sf=0.86; corr=0.04;
+    break;
+  case 1:
+    sf=0.90; corr=0.03;
+    break;
+  case 2:
+    sf=0.90; corr=0.03;
+    break;
+  case 3:
+    sf=0.90; corr=0.02;
+    break;
+  case 4:
+    sf=0.90; corr=0.02;
+    break;
+  case 5:
+    sf=0.89; corr=0.02;
+    break;
+  case 6:
+    sf=0.89; corr=0.02;
+    break;
+  return sf*(1+corr*unc);
+  }
+}
+
+float getTauSF_v4(int wp, int unc, int year){
+  //Tau SF are flat in p_T
+  if (year==2016) return getTauSF_v4_2016(wp, unc);
+  if (year==2017) return getTauSF_v4_2017(wp, unc);
+  if (year==2018) return getTauSF_v4_2018(wp, unc);
+  else std::cout << "Wrong year for tau SF!!" << std::endl;
+  return -1.;
+}
+
+float getLeptonSF_v4(int wp, int unc, int year, float pt, float eta, int pdgId){
+    if (abs(pdgId) == 15) return getTauSF_v4(wp, unc, year);
+    if (abs(pdgId) == 13) return getMuSF_v4(wp, unc, year, pt, eta);
+    if (abs(pdgId) == 11) return getElSF_v4(wp, unc, year, pt, eta);
+    else std::cout << "Wrong pdg Id for lepton SF!!" << std::endl;
+    return -1.;
+}
 
 void functionsSF() {}
