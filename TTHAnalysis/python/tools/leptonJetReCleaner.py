@@ -79,9 +79,9 @@ class LeptonJetReCleaner:
                     ("nJetSel"+label+self.systsJEC[key], "I"), ("iJSel"+label+self.systsJEC[key],"I",20,"nJetSel"+label+self.systsJEC[key]), # index >= 0 if in Jet; -1-index (<0) if in DiscJet
                     ("nDiscJetSel"+label+self.systsJEC[key], "I"), ("iDiscJSel"+label+self.systsJEC[key],"I",20,"nDiscJetSel"+label+self.systsJEC[key]), # index >= 0 if in Jet; -1-index (<0) if in DiscJet
                     ("nJet"+self.strJetPt+label+self.systsJEC[key], "I"), "htJet"+self.strJetPt + "j"+label+self.systsJEC[key],
-                    "mhtJet"+self.strJetPt + label+self.systsJEC[key], ("nBJetLoose"+self.strJetPt+label+self.systsJEC[key], "I"), ("nBJetMedium"+self.strJetPt+label+self.systsJEC[key], "I"),
+                    "mhtJet"+self.strJetPt + label+self.systsJEC[key], ("nBJetLoose"+self.strJetPt+label+self.systsJEC[key], "I"), ("nBJetMedium"+self.strJetPt+label+self.systsJEC[key], "I"), ("nBJetTight"+self.strJetPt+label+self.systsJEC[key], "I"),
                     ("nJet"+self.strBJetPt+label+self.systsJEC[key], "I"), "htJet"+self.strBJetPt+"j"+label+self.systsJEC[key],
-                    "mhtJet"+self.strBJetPt + label+self.systsJEC[key], ("nBJetLoose"+self.strBJetPt+label+self.systsJEC[key], "I"), ("nBJetMedium"+self.strBJetPt+label+self.systsJEC[key], "I"),
+                    "mhtJet"+self.strBJetPt + label+self.systsJEC[key], ("nBJetLoose"+self.strBJetPt+label+self.systsJEC[key], "I"), ("nBJetMedium"+self.strBJetPt+label+self.systsJEC[key], "I"), ("nBJetTight"+self.strBJetPt+label+self.systsJEC[key], "I"),
                     ])
 
 
@@ -96,7 +96,7 @@ class LeptonJetReCleaner:
         ret['i'+lab] = [];
         ret['i'+lab+'V'] = [];
         for lep in leps:
-            if (selection(lep) if ht<0 else selection(lep,ht)):
+            if (selection(lep) if ht<0 else selection(lep,self.jetColl)):
                 ret['i'+lab].append(refcollection.index(lep))
         ret['i'+lab] = self.sortIndexListByFunction(ret['i'+lab],refcollection,sortby)
         ret['nLep'+labext] = len(ret['i'+lab])
@@ -167,8 +167,8 @@ class LeptonJetReCleaner:
                     for jfloat in "pt eta phi mass btagCSV rawPt".split():
                         discjetret[jfloat].append( getattr(jet,jfloat) )
          # 5. compute the sums
-        ret["nJet"+self.strBJetPt+postfix] = 0; ret["htJet"+self.strBJetPt+"j"+postfix] = 0; ret["mhtJet"+self.strBJetPt+postfix] = 0; ret["nBJetLoose"+self.strBJetPt+postfix] = 0; ret["nBJetMedium"+self.strBJetPt+postfix] = 0
-        ret["nJet"+self.strJetPt+postfix] = 0; ret["htJet"+self.strJetPt+"j"+postfix] = 0; ret["mhtJet"+self.strJetPt+postfix] = 0; ret["nBJetLoose"+self.strJetPt+postfix] = 0; ret["nBJetMedium"+self.strJetPt+postfix] = 0
+        ret["nJet"+self.strBJetPt+postfix] = 0; ret["htJet"+self.strBJetPt+"j"+postfix] = 0; ret["mhtJet"+self.strBJetPt+postfix] = 0; ret["nBJetLoose"+self.strBJetPt+postfix] = 0; ret["nBJetMedium"+self.strBJetPt+postfix] = 0 ; ret["nBJetTight"+self.strBJetPt+postfix] = 0
+        ret["nJet"+self.strJetPt+postfix] = 0; ret["htJet"+self.strJetPt+"j"+postfix] = 0; ret["mhtJet"+self.strJetPt+postfix] = 0; ret["nBJetLoose"+self.strJetPt+postfix] = 0; ret["nBJetMedium"+self.strJetPt+postfix] = 0; ret["nBJetTight"+self.strJetPt+postfix] = 0
         cleanjets = [];
         mhtBJetPtvec = ROOT.TLorentzVector(0,0,0,0)
         mhtJetPtvec = ROOT.TLorentzVector(0,0,0,0)
@@ -179,13 +179,15 @@ class LeptonJetReCleaner:
             cleanjets.append(j)
             if j.pt > float(self.bJetPt):
                 ret["nJet"+self.strBJetPt+postfix] += 1; ret["htJet"+self.strBJetPt+"j"+postfix] += j.pt; 
-                if j.btagDeepCSV>0.1522: ret["nBJetLoose"+self.strBJetPt+postfix] += 1
-                if j.btagDeepCSV>0.4941: ret["nBJetMedium"+self.strBJetPt+postfix] += 1
+                if j.btagDeepB>0.1241: ret["nBJetLoose"+self.strBJetPt+postfix] += 1
+                if j.btagDeepB>0.4184: ret["nBJetMedium"+self.strBJetPt+postfix] += 1
+                if j.btagDeepB>0.7527: ret["nBJetTight"+self.strBJetPt+postfix] += 1
                 mhtBJetPtvec = mhtBJetPtvec - j.p4()
             if j.pt > float(self.jetPt):
                 ret["nJet"+self.strJetPt+postfix] += 1; ret["htJet"+self.strJetPt+"j"+postfix] += j.pt; 
-                if j.btagDeepCSV>0.1522: ret["nBJetLoose"+self.strJetPt+postfix] += 1
-                if j.btagDeepCSV>0.4941: ret["nBJetMedium"+self.strJetPt+postfix] += 1
+                if j.btagDeepB>0.1241: ret["nBJetLoose"+self.strJetPt+postfix] += 1
+                if j.btagDeepB>0.4184: ret["nBJetMedium"+self.strJetPt+postfix] += 1
+                if j.btagDeepB>0.7527: ret["nBJetTight"+self.strJetPt+postfix] += 1
                 mhtJetPtvec = mhtJetPtvec - j.p4()
         ret["mhtJet"+self.strBJetPt+postfix] = mhtBJetPtvec.Pt()
         ret["mhtJet"+self.strJetPt+postfix] = mhtJetPtvec.Pt()
@@ -221,7 +223,7 @@ class LeptonJetReCleaner:
         ret["nTightTauSel" + postfix] = sum([1 for g in goodtaus if g.reclTauId == 2])
         # 4. store the tau 4-vectors
         if postfix==self.label:
-            for tfloat in "pt eta phi mass reclTauId pdgId".split():
+            for tfloat in "pt eta phi mass reclTauId".split():
                 tauret[tfloat] = []
                 for g in goodtaus:
                     tauret[tfloat].append( getattr(g, tfloat) )
@@ -235,7 +237,7 @@ class LeptonJetReCleaner:
         if not var in [-1, 1]: return corrected
         if not hasattr(event, name+"_corr_JECUp") or not hasattr(event, name+"_corr_JECDown") or not hasattr(event, name+"_CorrFactor_L1L2L3Res"): return corrected
         for jet in corrected:
-	    corr = getattr(jet, "corr_JECUp") if var == 1 else getattr(jet, "corr_JECDown")
+            corr = getattr(jet, "corr_JECUp") if var == 1 else getattr(jet, "corr_JECDown")
             quot = getattr(jet, "CorrFactor_L1L2L3Res") if getattr(jet, "CorrFactor_L1L2L3Res") > 0 else getattr(jet, "CorrFactor_L1L2L3")
             jet.pt = jet.pt * corr / quot
         return corrected
@@ -244,15 +246,20 @@ class LeptonJetReCleaner:
         self.ev = event
         fullret = {}
         leps = [l for l in Collection(event,"LepGood","nLepGood")]
+        for l in leps:
+            if hasattr(l, "correctedpt"): l.pt = l.correctedpt
         if not self.coneptdef: raise RuntimeError, 'Choose the definition to be used for cone pt'
         for lep in leps: lep.conept = self.coneptdef(lep)
         tausc = [t for t in Collection(event,"TauGood","nTauGood")]
-        tausd = [t for t in Collection(event,"TauOther","nTauOther")] 
+        for t in tausc:
+            if hasattr(t, "correctedpt"): t.pt = t.correctedpt
+        tausd = [] #[t for t in Collection(event,"TauOther","nTauOther")] 
         ## below: new way of dealing with JEC
         jetsc={}
         jetsd={} 
         jetsc[0] = [j for j in Collection(event,"Jet"    ,"nJet"    )]
-        jetsd[0] = [j for j in Collection(event,"DiscJet","nDiscJet")]
+
+        jetsd[0] = [] #[j for j in Collection(event,"DiscJet","nDiscJet")]
         for var in [-1,1]:
             if hasattr(event,"nJet"+self.systsJEC[var]):
                 jetsc[var] = [j for j in Collection(event,"Jet"+self.systsJEC[var],"nJet"+self.systsJEC[var])]
@@ -260,10 +267,12 @@ class LeptonJetReCleaner:
                 jetsc[var] = [j for j in Collection(event,"Jet","nJet")]
                 jetsc[var] = self.applyJEC(event, "Jet", jetsc[var], var)
             if hasattr(event,"nDiscJet"+self.systsJEC[var]):
-                jetsd[var] = [j for j in Collection(event,"DiscJet"+self.systsJEC[var],"nDiscJet"+self.systsJEC[var])]
+                jetsd[var] = [] #[j for j in Collection(event,"DiscJet"+self.systsJEC[var],"nDiscJet"+self.systsJEC[var])]
             else:
-                jetsd[var] = [j for j in Collection(event,"DiscJet","nDiscJet")]
+                jetsd[var] = [] #[j for j in Collection(event,"DiscJet","nDiscJet")]
                 jetsd[var] = self.applyJEC(event, "DiscJet", jetsd[var], var)
+        self.jetColl = jetsc
+        #print "Jets def"
         ## below: old way of dealing with JEC
         #jetsc={}
         #jetsd={}
@@ -280,30 +289,30 @@ class LeptonJetReCleaner:
         self.debugprinted = True
         ret = {}; retwlabel = {}; jetret = {}; discjetret = {};
         lepsl = []; lepslv = [];
-        ret, lepsl, lepslv = self.fillCollWithVeto(ret,leps,leps,'L','Loose',self.looseLeptonSel, lepsforveto=None, doVetoZ=self.doVetoZ, doVetoLM=self.doVetoLMf, sortby=None)
+        ret, lepsl, lepslv = self.fillCollWithVeto(ret,leps,leps,'L','Loose',self.looseLeptonSel, lepsforveto=None, doVetoZ=self.doVetoZ, doVetoLM=self.doVetoLMf, sortby=None, ht=-1)
         lepsc = []; lepscv = [];
-        ret, lepsc, lepscv = self.fillCollWithVeto(ret,leps,lepsl,'C','Cleaning',self.cleaningLeptonSel, lepsforveto=lepsl, doVetoZ=self.doVetoZ, doVetoLM=self.doVetoLMf, sortby=None)
-
+        ret, lepsc, lepscv = self.fillCollWithVeto(ret,leps,lepsl,'C','Cleaning',self.cleaningLeptonSel, lepsforveto=lepsl, doVetoZ=self.doVetoZ, doVetoLM=self.doVetoLMf, sortby=None, ht = 1)
+        #print "Light leps def"
         ret['mZ1'] = bestZ1TL(lepsl, lepsl)
         ret['minMllAFAS'] = minMllTL(lepsl, lepsl) 
         ret['minMllAFOS'] = minMllTL(lepsl, lepsl, paircut = lambda l1,l2 : l1.charge !=  l2.charge) 
         ret['minMllAFSS'] = minMllTL(lepsl, lepsl, paircut = lambda l1,l2 : l1.charge ==  l2.charge) 
         ret['minMllSFOS'] = minMllTL(lepsl, lepsl, paircut = lambda l1,l2 : l1.pdgId  == -l2.pdgId) 
-
+        #print "All the masses"
         loosetaus=[]; rettlabel = {}; tauret = {}; 
         loosetaus = self.recleanTaus(tausc, tausd, lepsl if self.cleanTausWithLoose else lepsc, self.label, rettlabel, tauret, event)
-
+        #print "Taus def"
         cleanjets={}
         for var in self.systsJEC:
             cleanjets[var] = self.recleanJets(jetsc[var],jetsd[var],lepsc+loosetaus if self.cleanJetsWithTaus else lepsc,self.label+self.systsJEC[var],retwlabel,jetret,discjetret)
-
+        #print "Jets def"
         # calculate FOs and tight leptons using the cleaned HT, sorted by conept
         lepsf = []; lepsfv = [];
-        ret, lepsf, lepsfv = self.fillCollWithVeto(ret,leps,lepsl,'F','FO',self.FOLeptonSel,lepsforveto=lepsl,ht=retwlabel["htJet"+self.strJetPt+"j"+self.label],sortby = lambda x: x.conept, doVetoZ=self.doVetoZ, doVetoLM=self.doVetoLMf)
+        ret, lepsf, lepsfv = self.fillCollWithVeto(ret,leps,lepsl,'F','FO',self.FOLeptonSel,lepsforveto=lepsl, ht=1, sortby = lambda x: x.conept, doVetoZ=self.doVetoZ, doVetoLM=self.doVetoLMf)
         lepst = []; lepstv = [];
-        ret, lepst, lepstv = self.fillCollWithVeto(ret,leps,lepsl,'T','Tight',self.tightLeptonSel,lepsforveto=lepsl,ht=retwlabel["htJet"+self.strJetPt+"j"+self.label],sortby = lambda x: x.conept, doVetoZ=self.doVetoZ, doVetoLM=self.doVetoLMt)
+        ret, lepst, lepstv = self.fillCollWithVeto(ret,leps,lepsl,'T','Tight',self.tightLeptonSel,lepsforveto=lepsl, ht=1, sortby = lambda x: x.conept, doVetoZ=self.doVetoZ, doVetoLM=self.doVetoLMt)
 
-
+        #print "Tight leps def"
         ### attach labels and return
         fullret["nLepGood"]=len(leps)
         fullret["LepGood_conePt"] = [lep.conept for lep in leps]
@@ -315,6 +324,7 @@ class LeptonJetReCleaner:
             fullret["TauSel%s_%s" % (self.label,k)] = v
         for k,v in jetret.iteritems(): 
             fullret["JetSel%s_%s" % (self.label,k)] = v
+        #print "All done"
         return fullret
 
 
