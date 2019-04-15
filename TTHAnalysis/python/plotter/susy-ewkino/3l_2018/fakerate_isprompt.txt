@@ -1,0 +1,1 @@
+allprompt: (LepGood_genPartFlav[iF_Mini[0]] == 1 || LepGood_genPartFlav[iF_Mini[0]] == 15) && (LepGood_genPartFlav[iF_Mini[1]] == 1 || LepGood_genPartFlav[iF_Mini[1]] == 15)  && (LepGood_genPartFlav[iF_Mini[2]] == 1 || LepGood_genPartFlav[iF_Mini[2]] == 15) 

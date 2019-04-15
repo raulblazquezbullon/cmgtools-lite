@@ -1,0 +1,17 @@
+alwaystrue: 1
+
+
+filters   : $DATA{Flag_goodVertices && Flag_globalSuperTightHalo2016Filter && Flag_HBHENoiseFilter && Flag_HBHENoiseIsoFilter && Flag_EcalDeadCellTriggerPrimitiveFilter && Flag_BadPFMuonFilter && Flag_BadChargedCandidateFilter && Flag_eeBadScFilter && Flag_ecalBadCalibFilterV2} $MC{1} $FASTSIM{1}
+trigger   : $DATA{Triggers_ee || Triggers_mm || Triggers_em || Triggers_e || Triggers_m} $MC{Triggers_ee || Triggers_mm || Triggers_em || Triggers_e || Triggers_m} $FASTSIM{1}
+
+
+3l        : nLepSel >= 3
+lowmass   : minMllSFOS_Mini > 12 || minMllSFOS_Mini == -1
+sanity    : LepSel_pt[0] >= (20 + 5*(abs(LepSel_pdgId[0])==11)) && LepSel_pt[1] >= (20 + 5*(abs(LepSel_pdgId[1])==11)) && LepSel_pt[2] >= (10 + 0*(abs(LepSel_pdgId[3])==11)) 
+SRevent   : LepSel_isTight[0] &&  LepSel_isTight[1] && LepSel_isTight[2]
+veto      : nLepSel < 4
+BRevent   : abs(LepSel_pdgId[0]) < 15 && abs(LepSel_pdgId[1]) < 15 && abs(LepSel_pdgId[2]) < 15 && nOSSF_3l >= 1
+convveto  : m3L >= 100
+bJetVeto  : nBJetTight25_Mini == 0
+met       : MET_pt > 30
+monZ      : abs(mll_3l - 91.16) < 15

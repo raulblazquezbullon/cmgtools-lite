@@ -1,0 +1,14 @@
+alwaystrue: 1
+
+filters   : $DATA{Flag_goodVertices && Flag_globalSuperTightHalo2016Filter && Flag_HBHENoiseFilter && Flag_HBHENoiseIsoFilter && Flag_EcalDeadCellTriggerPrimitiveFilter && Flag_BadPFMuonFilter && Flag_BadChargedCandidateFilter && Flag_eeBadScFilter && Flag_ecalBadCalibFilterV2} $MC{1} $FASTSIM{1}
+trigger   : $DATA{Triggers_ee || Triggers_mm || Triggers_em || Triggers_e || Triggers_m} $MC{Triggers_ee || Triggers_mm || Triggers_em || Triggers_e || Triggers_m} $FASTSIM{1}
+
+
+2l        : nLepSel >= 2
+veto      : nLepSel < 3
+BRevent   : abs(LepSel_pdgId[0]) < 15 && abs(LepSel_pdgId[1])
+
+lowmass   : minMllSFOS_Mini > 12 || minMllSFOS_Mini == -1
+pt        : LepSel_pt[0] >= 25 && LepSel_pt[1] >= 25
+SRevent   : LepSel_isTight[0] &&  LepSel_isTight[1]
+AllPrompt : $DATA{1} $MC{LepGood_genPartFlav[0]==1 && LepGood_genPartFlav[1]==1}

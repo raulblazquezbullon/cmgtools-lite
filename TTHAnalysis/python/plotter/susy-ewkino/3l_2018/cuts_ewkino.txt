@@ -1,0 +1,29 @@
+alwaystrue: 1
+
+dummyCut  : 999
+filters   : $DATA{Flag_goodVertices && Flag_globalSuperTightHalo2016Filter && Flag_HBHENoiseFilter && Flag_HBHENoiseIsoFilter && Flag_EcalDeadCellTriggerPrimitiveFilter && Flag_BadPFMuonFilter && Flag_BadChargedCandidateFilter && Flag_eeBadScFilter && Flag_ecalBadCalibFilterV2} $MC{1} $FASTSIM{1}
+trigger   : $DATA{Triggers_ee || Triggers_mm || Triggers_em || Triggers_e || Triggers_m} $MC{Triggers_ee || Triggers_mm || Triggers_em || Triggers_e || Triggers_m} $FASTSIM{1}
+
+
+3l        : nLepSel >= 3
+veto      : nLepSel < 4
+BRevent   : abs(LepSel_pdgId[0]) < 15 && abs(LepSel_pdgId[1]) < 15 && abs(LepSel_pdgId[2]) < 15 && nOSSF_3l >= 1
+
+lowmass   : minMllSFOS_Mini > 12 || minMllSFOS_Mini == -1
+sanity    : LepSel_pt[0] >= (20 + 5*(abs(LepSel_pdgId[0])==11)) && LepSel_pt[1] >= (10 + 5*(abs(LepSel_pdgId[1])==11)) && LepSel_pt[2] >= (10 + 0*(abs(LepSel_pdgId[3])==11)) 
+SRevent   : LepSel_isTight[0] &&  LepSel_isTight[1] && LepSel_isTight[2]
+
+convveto  : abs(m3L-91) > 15
+bJetVeto  : nBJetTight25_Mini == 0
+met       : MET_pt > 50
+
+
+CRConv    : MET_pt < 50 && mll_3l < 75 && abs(m3L - 91.16) < 15; Disable=True
+CRWZ      : MET_pt < 100 && mll_3l > 75 && mll_3l < 105 && nJet30_Mini <= 1 && mTL_3l < 100 && mTL_3l > 50; Disable=True
+
+dangerEVeto : (abs(LepSel_pdgId[0])==13 || LepSel_eta[0] <= -0.87 || LepSel_eta[0] >= -1.57 || LepSel_phi[0] > -3 || LepSel_phi[0] < -1.3) && (abs(LepSel_pdgId[1])==13 || LepSel_eta[1] <= -0.87 || LepSel_eta[1] >= -1.57 || LepSel_phi[1] > -3 || LepSel_phi[1] < -1.3) && (abs(LepSel_pdgId[2])==13 || LepSel_eta[2] <= -0.87 || LepSel_eta[2] >= -1.57 || LepSel_phi[2] > -3 || LepSel_phi[2] < -1.3) ; Disable=True
+indangerEVeto : !((abs(LepSel_pdgId[0])==13 || LepSel_eta[0] <= -0.87 || LepSel_eta[0] >= -1.57 || LepSel_phi[0] > -3 || LepSel_phi[0] < -1.3) && (abs(LepSel_pdgId[1])==13 || LepSel_eta[1] <= -0.87 || LepSel_eta[1] >= -1.57 || LepSel_phi[1] > -3 || LepSel_phi[1] < -1.3) && (abs(LepSel_pdgId[2])==13 || LepSel_eta[2] <= -0.87 || LepSel_eta[2] >= -1.57 || LepSel_phi[2] > -3 || LepSel_phi[2] < -1.3)); Disable=True
+ARevent   : !(LepSel_isTight[0] + LepSel_isTight[1] + LepSel_isTight[2] == 3); Disable=True
+
+
+hasJetOrElectronInEtaPhi:   (LepSel_eta[0] <= -0.87 && LepSel_eta[0] >= -1.57 && LepSel_phi[0] > -3 && LepSel_phi[0] < -1.3) || (LepSel_eta[1] <= -0.87 && LepSel_eta[1] >= -1.57 && LepSel_phi[1] > -3 && LepSel_phi[1] < -1.3) || (LepSel_eta[2] <= -0.87 && LepSel_eta[2] >= -1.57 && LepSel_phi[2] > -3 && LepSel_phi[2] < -1.3)  || (Jet_eta <= -0.87 && Jet_eta >= -1.57 && Jet_phi > -3 && Jet_phi < -1.3)  ; Disable=True

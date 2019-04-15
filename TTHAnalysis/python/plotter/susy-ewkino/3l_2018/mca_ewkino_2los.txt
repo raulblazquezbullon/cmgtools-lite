@@ -1,0 +1,21 @@
+## Data
+## -----------------------------------------------------------
+incl_data      : + ; IncludeMca="susy-ewkino/3l_2018/includes/mca_data_2018_nanoAODv4.txt"
+
+## Backgrounds
+## -----------------------------------------------------------
+DY : DYJetsToLL_M10to50 : xsec ; FillColor=ROOT.kGray , FakeRate="susy-ewkino/3l_2018/fakerate_standard_central.txt", Label="DY", NormSystematic=0.05
+DY : DYJetsToLL_M50_mad_part0 + DYJetsToLL_M50_mad_part1 + DYJetsToLL_M50_mad_part2 + DYJetsToLL_M50_mad_part3 + DYJetsToLL_M50_mad_part4 + DYJetsToLL_M50_mad_part5 + DYJetsToLL_M50_mad_part6 + DYJetsToLL_M50_mad_part7 + DYJetsToLL_M50_mad_part8 + DYJetsToLL_M50_mad_part9 + DYJetsToLL_M50_mad_part10 + DYJetsToLL_M50_mad_part11 : xsec ; FillColor=ROOT.kGray , FakeRate="susy-ewkino/3l_2018/fakerate_standard_central.txt", Label="DY", NormSystematic=0.05
+
+TT_Dil : TTTo2L2Nu_part0 + TTTo2L2Nu_part1 + TTTo2L2Nu_part2 + TTTo2L2Nu_part3 + TTTo2L2Nu_part4 + TTTo2L2Nu_part5 + TTTo2L2Nu_part6 + TTTo2L2Nu_part7 + TTTo2L2Nu_part8 + TTTo2L2Nu_part9 + TTTo2L2Nu_part10 + TTTo2L2Nu_part11 + TTTo2L2Nu_part12 + TTTo2L2Nu_part13 + TTTo2L2Nu_part14 + TTTo2L2Nu_part15 + TTTo2L2Nu_part16 + TTTo2L2Nu_part17 + TTTo2L2Nu_part18 + TTTo2L2Nu_part19 + TTTo2L2Nu_part20 + TTTo2L2Nu_part21 : xsec ; FillColor=ROOT.kRed , FakeRate="susy-ewkino/3l_2018/fakerate_standard_central.txt", Label="TT (2l)", NormSystematic=0.06
+
+tW : TW_part0 + TW_part1 : xsec ; FillColor=ROOT.kGreen , FakeRate="susy-ewkino/3l_2018/fakerate_standard_central.txt", Label="tW", NormSystematic=0.15
+tW : TbarW : xsec ; FillColor=ROOT.kGreen , FakeRate="susy-ewkino/3l_2018/fakerate_standard_central.txt", Label="tW", NormSystematic=0.15
+
+#ST : T_sch_part0 + T_sch_part1 : xsec ; FillColor=ROOT.kGray-2 , FakeRate="susy-ewkino/3l_2018/fakerate_standard_central.txt", Label="Fakes ST", NormSystematic=0.15
+#ST : T_tch_part0 + T_tch_part1 + T_tch_part2 + T_tch_part3 + T_tch_part4 + T_tch_part5 : xsec ; FillColor=ROOT.kGray-2 , FakeRate="susy-ewkino/3l_2018/fakerate_standard_central.txt", Label="Fakes ST", NormSystematic=0.15
+#ST : Tbar_tch_part0 + Tbar_tch_part1 + Tbar_tch_part2 : xsec ; FillColor=ROOT.kGray-2 , FakeRate="susy-ewkino/3l_2018/fakerate_standard_central.txt", Label="Fakes ST", NormSystematic=0.15
+
+
+WW : WWTo2L2Nu_part0 : xsec ; FillColor=ROOT.kBlue+1 , FakeRate="susy-ewkino/3l_2018/fakerate_standard_central.txt", Label="WW", NormSystematic=0.10
+

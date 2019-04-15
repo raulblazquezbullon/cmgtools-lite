@@ -1,0 +1,9 @@
+## Data
+## -----------------------------------------------------------
+incl_data      : + ; IncludeMca="susy-ewkino/3l_2018/includes/mca_data_2018_nanoAODv4.txt"
+
+## Backgrounds
+## -----------------------------------------------------------
+incl_prompts        : + ; IncludeMca="susy-ewkino/3l_2018/includes/mca_prompts_nanoAODv4.txt"
+incl_convs          : + ; IncludeMca="susy-ewkino/3l_2018/includes/mca_convs_nanoAODv4.txt"
+incl_fakes          : + ; IncludeMca="susy-ewkino/3l_2018/includes/mca_mcfakes_nanoAODv4.txt"
