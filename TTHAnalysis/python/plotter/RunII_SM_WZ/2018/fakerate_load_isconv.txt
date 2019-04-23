@@ -1,1 +1,1 @@
-cut-file: susy-ewkino/3l_2018/fakerate_isconv.txt
+cut-file: RunII_SM_WZ/fakerate_isconv.txt
