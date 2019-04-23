@@ -166,7 +166,7 @@ class LeptonBuilderEWK_nanoAOD:
             self.lepsTT.append(t)
 
         self.met        = {}
-        self.met[0]     = event.MET_pt
+        self.met[0]     = getattr(event, "MET_pt_nom", event.MET_pt)
         self.metphi     = {}
         self.metphi[0]  = event.MET_phi
 

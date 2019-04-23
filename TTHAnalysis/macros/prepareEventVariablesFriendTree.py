@@ -183,14 +183,16 @@ for D in glob(args[0]+"/*"):
                     fout = "%s/evVarFriend_%s.chunk%d.root" % (args[1],short,i)
                     if os.path.exists(fout):
                         ffout = ROOT.TFile.Open(fout)
-                        test = ffout.Get("sf/t")
-                        test2 = ffout.Get("blorgons")
-                        ffout.Close()
-                        if not( type(test) == type(test2)):
-                               print "Skipping chunk in " + fout
-                               continue
-                    else:
-                        ffout.Close()
+                        if ffout:
+                            test = ffout.Get("sf/t")
+                            test2 = ffout.Get("blorgons")
+
+                            if not( type(test) == type(test2)):
+                               if test.GetEntries() == options.chunkSize or ((i == nchunk -1) and test.GetEntries() == entries - options.chunkSize*(nchunk-1)):
+                                   print "Skipping chunk in " + fout
+                                   ffout.Close()
+                                   continue
+                            ffout.Close()
 
                 if options.chunks != []:
                     if i not in options.chunks: continue

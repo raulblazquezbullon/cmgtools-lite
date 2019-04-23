@@ -88,7 +88,7 @@ class bTagWeightAnalyzer():
         for jet in self.jets:
         
             flavor = getattr(jet, self.branchflavor) if hasattr(jet, self.branchflavor) else jet.mcFlavour
-
+            if hasattr(jet, "pt_nom"): jet.pt = getattr(jet, "pt_nom")
             if(abs(jet.eta) > 2.5): continue
             if(abs(jet.pt)  < 20 ): continue
 

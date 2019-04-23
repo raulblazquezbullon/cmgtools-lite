@@ -271,7 +271,10 @@ class LeptonJetReCleaner:
             else:
                 jetsd[var] = [] #[j for j in Collection(event,"DiscJet","nDiscJet")]
                 jetsd[var] = self.applyJEC(event, "DiscJet", jetsd[var], var)
+        for jet in jetsc:
+            if hasattr(jet, "pt_nom"): jet.pt = getattr(jet, "pt_nom")
         self.jetColl = jetsc
+        
         #print "Jets def"
         ## below: old way of dealing with JEC
         #jetsc={}
