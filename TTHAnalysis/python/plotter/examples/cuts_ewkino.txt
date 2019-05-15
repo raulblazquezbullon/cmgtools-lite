@@ -1,0 +1,35 @@
+#All events pass this
+alwaystrue: 1
+
+#These are the required met filters that only apply to data
+filters   : $DATA{Flag_goodVertices && Flag_globalSuperTightHalo2016Filter && Flag_HBHENoiseFilter && Flag_HBHENoiseIsoFilter && Flag_EcalDeadCellTriggerPrimitiveFilter && Flag_BadPFMuonFilter && Flag_BadChargedCandidateFilter && Flag_eeBadScFilter && Flag_ecalBadCalibFilterV2} $MC{1} $FASTSIM{1}
+
+#Require exactly 3 light leptons that pass the FO cuts
+3l          : nLepSel >= 3
+veto        : nLepSel < 4
+lightleps   : abs(LepSel_pdgId[0]) < 15 && abs(LepSel_pdgId[1]) < 15 && abs(LepSel_pdgId[2]) < 15 && nOSSF_3l >= 1
+
+#Veto low mass resonances
+lowmass     : minMllSFOS_Mini > 12 || minMllSFOS_Mini == -1
+
+#Also, selected leptons pass the tight cut
+SRevent    : LepSel_isTight[0] &&  LepSel_isTight[1] && LepSel_isTight[2]
+
+#Lepton pT cuts
+leppT     : LepSel_pt[0] >= (20 + 5*(abs(LepSel_pdgId[0])==11)) && LepSel_pt[1] >= (10 + 5*(abs(LepSel_pdgId[1])==11)) && LepSel_pt[2] >= (10 + 0*(abs(LepSel_pdgId[3])==11)) 
+
+#Now the reference trigger
+refTrigger : HLT_PFMET120_PFMHT120_IDTight
+
+#And last the measured trigger
+measTrigger: HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL || HLT_DoubleEle25_CaloIdL_MW || HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8 || HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ || HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL ||  HLT_Ele32_WPTight_Gsf || HLT_IsoMu24 
+
+
+
+
+#Now disabled, but might be interesting to test in different settings
+withTripleElec : HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL || HLT_DoubleEle25_CaloIdL_MW || HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8 || HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ || HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL ||  HLT_Ele32_WPTight_Gsf || HLT_IsoMu24 || HLT_TripleMu_12_10_5 || HLT_TripleMu_10_5_5_DZ || HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ || HLT_Mu8_DiEle12_CaloIdL_TrackIdL ; Disable=True
+
+#Low Lepton pT cuts
+lowptCuts     : LepSel_pt[0] >= (30 + 0*(abs(LepSel_pdgId[0])==11)) && LepSel_pt[1] >= (5 + 0*(abs(LepSel_pdgId[1])==11)) && LepSel_pt[2] >= (5 + 0*(abs(LepSel_pdgId[3])==11)) ; Disable=True
+
