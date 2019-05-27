@@ -17,7 +17,7 @@ class MyVarProxy:
 
 class LeptonJetReCleaner:
 
-    def __init__(self,label,looseLeptonSel,cleaningLeptonSel,FOLeptonSel,tightLeptonSel,cleanJet,selectJet,cleanTau,looseTau,tightTau,cleanJetsWithTaus,doVetoZ,doVetoLMf,doVetoLMt,jetPt,bJetPt,coneptdef,storeJetVariables=False,cleanTausWithLoose=False):
+    def __init__(self,label,looseLeptonSel,cleaningLeptonSel,FOLeptonSel,tightLeptonSel,cleanJet,selectJet,cleanTau,looseTau,tightTau,cleanJetsWithTaus,doVetoZ,doVetoLMf,doVetoLMt,jetPt,bJetPt,coneptdef,storeJetVariables=False,cleanTausWithLoose=False, year=2016, bAlgo="DeepCSV"):
         self.label = "" if (label in ["",None]) else ("_"+label)
         self.looseLeptonSel = looseLeptonSel
         self.cleaningLeptonSel = cleaningLeptonSel # applied on top of looseLeptonSel
@@ -41,6 +41,8 @@ class LeptonJetReCleaner:
         self.systsJEC = {0:"", 1:"_jecUp", -1:"_jecDown"}
         self.debugprinted = False
         self.storeJetVariables = storeJetVariables
+        self.year = year
+        self.bAlgo = bAlgo
 
     def listBranches(self):
         label = self.label
@@ -178,17 +180,109 @@ class LeptonJetReCleaner:
             if not (j._clean and self.selectJet(j)): continue
             cleanjets.append(j)
             if j.pt > float(self.bJetPt):
-                ret["nJet"+self.strBJetPt+postfix] += 1; ret["htJet"+self.strBJetPt+"j"+postfix] += j.pt; 
-                if j.btagDeepB>0.1241: ret["nBJetLoose"+self.strBJetPt+postfix] += 1
-                if j.btagDeepB>0.4184: ret["nBJetMedium"+self.strBJetPt+postfix] += 1
-                if j.btagDeepB>0.7527: ret["nBJetTight"+self.strBJetPt+postfix] += 1
-                mhtBJetPtvec = mhtBJetPtvec - j.p4()
+                if self.year == 2016 and self.bAlgo == "CSV":
+                    ret["nJet"+self.strBJetPt+postfix] += 1; ret["htJet"+self.strBJetPt+"j"+postfix] += j.pt; 
+                    if j.btagCSVV2>0.5426: ret["nBJetLoose"+self.strBJetPt+postfix]  += 1
+                    if j.btagCSVV2>0.8484: ret["nBJetMedium"+self.strBJetPt+postfix] += 1
+                    if j.btagCSVV2>0.9535: ret["nBJetTight"+self.strBJetPt+postfix]  += 1
+                    mhtBJetPtvec = mhtBJetPtvec - j.p4()
+                if self.year == 2016 and self.bAlgo == "cMVA":
+                    ret["nJet"+self.strBJetPt+postfix] += 1; ret["htJet"+self.strBJetPt+"j"+postfix] += j.pt; 
+                    if j.btagCMVA>-0.5884: ret["nBJetLoose"+self.strBJetPt+postfix]  += 1
+                    if j.btagCMVA> 0.4432: ret["nBJetMedium"+self.strBJetPt+postfix] += 1
+                    if j.btagCMVA> 0.9432: ret["nBJetTight"+self.strBJetPt+postfix]  += 1
+                    mhtBJetPtvec = mhtBJetPtvec - j.p4()
+                if self.year == 2016 and self.bAlgo == "DeepCSV":
+                    ret["nJet"+self.strBJetPt+postfix] += 1; ret["htJet"+self.strBJetPt+"j"+postfix] += j.pt; 
+                    if j.btagDeepB>0.2219: ret["nBJetLoose"+self.strBJetPt+postfix]  += 1
+                    if j.btagDeepB>0.6324: ret["nBJetMedium"+self.strBJetPt+postfix] += 1
+                    if j.btagDeepB>0.8958: ret["nBJetTight"+self.strBJetPt+postfix]  += 1
+                    mhtBJetPtvec = mhtBJetPtvec - j.p4()
+
+                if self.year == 2017 and self.bAlgo == "CSV":
+                    ret["nJet"+self.strBJetPt+postfix] += 1; ret["htJet"+self.strBJetPt+"j"+postfix] += j.pt; 
+                    if j.btagCSVV2>0.5803: ret["nBJetLoose"+self.strBJetPt+postfix]  += 1
+                    if j.btagCSVV2>0.8838: ret["nBJetMedium"+self.strBJetPt+postfix] += 1
+                    if j.btagCSVV2>0.9693: ret["nBJetTight"+self.strBJetPt+postfix]  += 1
+                    mhtBJetPtvec = mhtBJetPtvec - j.p4()
+                if self.year == 2017 and self.bAlgo == "DeepCSV":
+                    ret["nJet"+self.strBJetPt+postfix] += 1; ret["htJet"+self.strBJetPt+"j"+postfix] += j.pt; 
+                    if j.btagDeepB>0.1522: ret["nBJetLoose"+self.strBJetPt+postfix]  += 1
+                    if j.btagDeepB>0.4941: ret["nBJetMedium"+self.strBJetPt+postfix] += 1
+                    if j.btagDeepB>0.8001: ret["nBJetTight"+self.strBJetPt+postfix]  += 1
+                    mhtBJetPtvec = mhtBJetPtvec - j.p4()
+                if self.year == 2017 and self.bAlgo == "DeepJet":
+                    ret["nJet"+self.strBJetPt+postfix] += 1; ret["htJet"+self.strBJetPt+"j"+postfix] += j.pt; 
+                    if j.btagDeepFlavB>0.0521: ret["nBJetLoose"+self.strBJetPt+postfix]  += 1
+                    if j.btagDeepFlavB>0.3033: ret["nBJetMedium"+self.strBJetPt+postfix] += 1
+                    if j.btagDeepFlavB>0.7489: ret["nBJetTight"+self.strBJetPt+postfix]  += 1
+                    mhtBJetPtvec = mhtBJetPtvec - j.p4()
+
+                if self.year == 2018 and self.bAlgo == "DeepCSV":
+                    ret["nJet"+self.strBJetPt+postfix] += 1; ret["htJet"+self.strBJetPt+"j"+postfix] += j.pt; 
+                    if j.btagDeepB>0.2217: ret["nBJetLoose"+self.strBJetPt+postfix]  += 1
+                    if j.btagDeepB>0.6321: ret["nBJetMedium"+self.strBJetPt+postfix] += 1
+                    if j.btagDeepB>0.8953: ret["nBJetTight"+self.strBJetPt+postfix]  += 1
+                    mhtBJetPtvec = mhtBJetPtvec - j.p4()
+                if self.year == 2018 and self.bAlgo == "DeepJet":
+                    ret["nJet"+self.strBJetPt+postfix] += 1; ret["htJet"+self.strBJetPt+"j"+postfix] += j.pt; 
+                    if j.btagDeepFlavB>0.0614: ret["nBJetLoose"+self.strBJetPt+postfix]  += 1
+                    if j.btagDeepFlavB>0.3093: ret["nBJetMedium"+self.strBJetPt+postfix] += 1
+                    if j.btagDeepFlavB>0.7221: ret["nBJetTight"+self.strBJetPt+postfix]  += 1
+                    mhtBJetPtvec = mhtBJetPtvec - j.p4()
+
             if j.pt > float(self.jetPt):
-                ret["nJet"+self.strJetPt+postfix] += 1; ret["htJet"+self.strJetPt+"j"+postfix] += j.pt; 
-                if j.btagDeepB>0.1241: ret["nBJetLoose"+self.strJetPt+postfix] += 1
-                if j.btagDeepB>0.4184: ret["nBJetMedium"+self.strJetPt+postfix] += 1
-                if j.btagDeepB>0.7527: ret["nBJetTight"+self.strJetPt+postfix] += 1
-                mhtJetPtvec = mhtJetPtvec - j.p4()
+                if self.year == 2016 and self.bAlgo == "CSV":
+                    ret["nJet"+self.strJetPt+postfix] += 1; ret["htJet"+self.strJetPt+"j"+postfix] += j.pt; 
+                    if j.btagCSVV2>0.5426: ret["nBJetLoose"+self.strJetPt+postfix]  += 1
+                    if j.btagCSVV2>0.8484: ret["nBJetMedium"+self.strJetPt+postfix] += 1
+                    if j.btagCSVV2>0.9535: ret["nBJetTight"+self.strJetPt+postfix]  += 1
+                    mhtBJetPtvec = mhtBJetPtvec - j.p4()
+                if self.year == 2016 and self.bAlgo == "cMVA":
+                    ret["nJet"+self.strJetPt+postfix] += 1; ret["htJet"+self.strJetPt+"j"+postfix] += j.pt; 
+                    if j.btagCMVA>-0.5884: ret["nBJetLoose"+self.strJetPt+postfix]  += 1
+                    if j.btagCMVA> 0.4432: ret["nBJetMedium"+self.strJetPt+postfix] += 1
+                    if j.btagCMVA> 0.9432: ret["nBJetTight"+self.strJetPt+postfix]  += 1
+                    mhtBJetPtvec = mhtBJetPtvec - j.p4()
+                if self.year == 2016 and self.bAlgo == "DeepCSV":
+                    ret["nJet"+self.strJetPt+postfix] += 1; ret["htJet"+self.strJetPt+"j"+postfix] += j.pt; 
+                    if j.btagDeepB>0.2219: ret["nBJetLoose"+self.strJetPt+postfix]  += 1
+                    if j.btagDeepB>0.6324: ret["nBJetMedium"+self.strJetPt+postfix] += 1
+                    if j.btagDeepB>0.8958: ret["nBJetTight"+self.strJetPt+postfix]  += 1
+                    mhtBJetPtvec = mhtBJetPtvec - j.p4()
+
+                if self.year == 2017 and self.bAlgo == "CSV":
+                    ret["nJet"+self.strJetPt+postfix] += 1; ret["htJet"+self.strJetPt+"j"+postfix] += j.pt; 
+                    if j.btagCSVV2>0.5803: ret["nBJetLoose"+self.strJetPt+postfix]  += 1
+                    if j.btagCSVV2>0.8838: ret["nBJetMedium"+self.strJetPt+postfix] += 1
+                    if j.btagCSVV2>0.9693: ret["nBJetTight"+self.strJetPt+postfix]  += 1
+                    mhtBJetPtvec = mhtBJetPtvec - j.p4()
+                if self.year == 2017 and self.bAlgo == "DeepCSV":
+                    ret["nJet"+self.strJetPt+postfix] += 1; ret["htJet"+self.strJetPt+"j"+postfix] += j.pt; 
+                    if j.btagDeepB>0.1522: ret["nBJetLoose"+self.strJetPt+postfix]  += 1
+                    if j.btagDeepB>0.4941: ret["nBJetMedium"+self.strJetPt+postfix] += 1
+                    if j.btagDeepB>0.8001: ret["nBJetTight"+self.strJetPt+postfix]  += 1
+                    mhtBJetPtvec = mhtBJetPtvec - j.p4()
+                if self.year == 2017 and self.bAlgo == "DeepJet":
+                    ret["nJet"+self.strJetPt+postfix] += 1; ret["htJet"+self.strJetPt+"j"+postfix] += j.pt; 
+                    if j.btagDeepFlavB>0.0521: ret["nBJetLoose"+self.strJetPt+postfix]  += 1
+                    if j.btagDeepFlavB>0.3033: ret["nBJetMedium"+self.strJetPt+postfix] += 1
+                    if j.btagDeepFlavB>0.7489: ret["nBJetTight"+self.strJetPt+postfix]  += 1
+                    mhtBJetPtvec = mhtBJetPtvec - j.p4()
+
+                if self.year == 2018 and self.bAlgo == "DeepCSV":
+                    ret["nJet"+self.strJetPt+postfix] += 1; ret["htJet"+self.strJetPt+"j"+postfix] += j.pt; 
+                    if j.btagDeepB>0.2217: ret["nBJetLoose"+self.strJetPt+postfix]  += 1
+                    if j.btagDeepB>0.6321: ret["nBJetMedium"+self.strJetPt+postfix] += 1
+                    if j.btagDeepB>0.8953: ret["nBJetTight"+self.strJetPt+postfix]  += 1
+                    mhtBJetPtvec = mhtBJetPtvec - j.p4()
+                if self.year == 2018 and self.bAlgo == "DeepJet":
+                    ret["nJet"+self.strJetPt+postfix] += 1; ret["htJet"+self.strJetPt+"j"+postfix] += j.pt; 
+                    if j.btagDeepFlavB>0.0614: ret["nBJetLoose"+self.strJetPt+postfix]  += 1
+                    if j.btagDeepFlavB>0.3093: ret["nBJetMedium"+self.strJetPt+postfix] += 1
+                    if j.btagDeepFlavB>0.7221: ret["nBJetTight"+self.strJetPt+postfix]  += 1
+                    mhtBJetPtvec = mhtBJetPtvec - j.p4()
+
         ret["mhtJet"+self.strBJetPt+postfix] = mhtBJetPtvec.Pt()
         ret["mhtJet"+self.strJetPt+postfix] = mhtJetPtvec.Pt()
         return cleanjets
@@ -259,7 +353,7 @@ class LeptonJetReCleaner:
         jetsd={} 
         jetsc[0] = [j for j in Collection(event,"Jet"    ,"nJet"    )]
 
-        jetsd[0] = [] #[j for j in Collection(event,"DiscJet","nDiscJet")]
+        jetsd[0] = [] 
         for var in [-1,1]:
             if hasattr(event,"nJet"+self.systsJEC[var]):
                 jetsc[var] = [j for j in Collection(event,"Jet"+self.systsJEC[var],"nJet"+self.systsJEC[var])]
@@ -270,7 +364,6 @@ class LeptonJetReCleaner:
                 jetsd[var] = [] #[j for j in Collection(event,"DiscJet"+self.systsJEC[var],"nDiscJet"+self.systsJEC[var])]
             else:
                 jetsd[var] = [] #[j for j in Collection(event,"DiscJet","nDiscJet")]
-                jetsd[var] = self.applyJEC(event, "DiscJet", jetsd[var], var)
         for jet in jetsc:
             if hasattr(jet, "pt_nom"): jet.pt = getattr(jet, "pt_nom")
         self.jetColl = jetsc

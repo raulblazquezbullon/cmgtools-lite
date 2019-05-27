@@ -14,7 +14,7 @@ class leptonEnergyCorrections:
     def __init__(self, inputlabel, muonFile, era):
         self.inputlabel = '_' + inputlabel
         self.isData = False
-        #ROOT.gROOT.ProcessLine('#include \"RoccoR.cc\"')
+        ROOT.gROOT.ProcessLine('#include \"/nfs/fanae/user/carlosec/WZ/CMSSW_9_4_4/src/CMGTools/TTHAnalysis/python/tools/RoccoR.cc\"')
         ROOT.gSystem.Load(os.path.join(os.path.dirname(__file__), 'RoccoR_cc.so'))
         #print "BLAH"
         self.rc = ROOT.RoccoR()
