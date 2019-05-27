@@ -1,0 +1,152 @@
+import os
+utility_files_dir = os.path.join(os.environ["CMSSW_BASE"], "src/CMGTools/TTHAnalysis/data/")
+
+MODULES = []
+
+###################################
+######## Pileup reweighting #######
+###################################
+from CMGTools.TTHAnalysis.tools.vertexWeightFriend import VertexWeightFriend
+MODULES.append( ('vtxWeight2018', lambda : VertexWeightFriend(myfile=None, targetfile=os.environ["CMSSW_BASE"]+"/src/CMGTools/TTHAnalysis/data/pileup/pileup_Cert_314472-325175_13TeV_17SeptEarlyReReco2018ABC_PromptEraD_Collisions18_withVar.root",
+                                                          myhist=None,targethist="pileup",name="vtxWeight2018Nominal",
+                                                          verbose=False,vtx_coll_to_reweight="Pileup_nTrueInt",autoPU=True)) )
+MODULES.append( ('vtxWeight2018Up', lambda : VertexWeightFriend(myfile=None, targetfile=os.environ["CMSSW_BASE"]+"/src/CMGTools/TTHAnalysis/data/pileup/pileup_Cert_314472-325175_13TeV_17SeptEarlyReReco2018ABC_PromptEraD_Collisions18_withVar.root",
+                                                          myhist=None,targethist="pileup_plus",name="vtxWeight2018Up",
+                                                          verbose=False,vtx_coll_to_reweight="Pileup_nTrueInt",autoPU=True)) )
+
+MODULES.append( ('vtxWeight2018Down', lambda : VertexWeightFriend(myfile=None, targetfile=os.environ["CMSSW_BASE"]+"/src/CMGTools/TTHAnalysis/data/pileup/pileup_Cert_314472-325175_13TeV_17SeptEarlyReReco2018ABC_PromptEraD_Collisions18_withVar.root",
+                                                          myhist=None,targethist="pileup_minus",name="vtxWeight2018Down",
+                                                          verbose=False,vtx_coll_to_reweight="Pileup_nTrueInt",autoPU=True)) )
+
+#################################################
+#Lepton energy scale corrections + uncertainties#
+#################################################
+from CMGTools.TTHAnalysis.tools.leptonEnergyCorrections import leptonEnergyCorrections
+MODULES.append( ('leptonEnergyCorrections_2016', lambda: leptonEnergyCorrections("", "RoccoR2016.txt", "2016")))
+MODULES.append( ('leptonEnergyCorrections_2017', lambda: leptonEnergyCorrections("", "RoccoR2017.txt", "2017")))
+MODULES.append( ('leptonEnergyCorrections_2018', lambda: leptonEnergyCorrections("", "RoccoR2018.txt", "2018")))
+
+
+
+###################################
+########## lepReCleaner ###########
+###################################
+
+from CMGTools.TTHAnalysis.tools.leptonJetReCleaner import LeptonJetReCleaner
+from CMGTools.TTHAnalysis.tools.functionsWZ import _lepId_IPcuts, conept, _looseID_ExtraCuts_2016, _elidEmu_cuts_2016, _FOID_2016, _Tight_2016,  _looseID_ExtraCuts_2017, _elidEmu_cuts_2017, _FOID_2017, _Tight_2017,  _looseID_ExtraCuts_2018, _elidEmu_cuts_2018, _FOID_2018, _Tight_2018, _tauId_CBloose, _tauId_CBtight
+
+
+MODULES.append( ('leptonJetReCleanerWZSM_2016', lambda : LeptonJetReCleaner("Mini", 
+                   lambda lep : lep.miniPFRelIso_all < 0.4 and _looseID_ExtraCuts_2016(lep) and _lepId_IPcuts(lep), #Loose selection 
+                   lambda lep,jetlist: lep.pt>10 and conept(lep)>10 and (_FOID_2016(lep, jetlist)), #We clean on the FO
+                   lambda lep,jetlist: lep.pt>10 and conept(lep)>10 and (_FOID_2016(lep, jetlist)), #FO selection
+                   lambda lep,jetlist: lep.pt>10 and conept(lep)>10 and (_Tight_2016(lep, jetlist)), #Tight selection
+                   cleanJet = lambda lep,jet,dr : dr<0.4,
+                   selectJet = lambda jet: abs(jet.eta)<4.7 and (jet.jetId & 2), #Jet ID tight as it is already very efficient (>=98%), Take second bit with python "/" def + evaluate it with %
+                   cleanTau = lambda lep,tau,dr: dr<0.4,
+                   looseTau = lambda tau: _tauId_CBloose(tau), # used in cleaning
+                   tightTau = lambda tau: _tauId_CBtight(tau), # on top of loose
+                   cleanJetsWithTaus = False,
+                   cleanTausWithLoose = False,
+                   doVetoZ = False,
+                   doVetoLMf = False,
+                   doVetoLMt = True,
+                   jetPt = 30,
+                   bJetPt = 25,
+                   coneptdef = lambda lep: conept(lep),
+                   year = 2016,
+                   bAlgo = "CSV"
+                   )))
+
+
+MODULES.append( ('leptonJetReCleanerWZSM_2017', lambda : LeptonJetReCleaner("Mini", 
+                   lambda lep : lep.miniPFRelIso_all < 0.4 and _looseID_ExtraCuts_2017(lep) and _lepId_IPcuts(lep), #Loose selection 
+                   lambda lep,jetlist: lep.pt>10 and conept(lep)>10 and (_FOID_2017(lep, jetlist)), #We clean on the FO
+                   lambda lep,jetlist: lep.pt>10 and conept(lep)>10 and (_FOID_2017(lep, jetlist)), #FO selection
+                   lambda lep,jetlist: lep.pt>10 and conept(lep)>10 and (_Tight_2017(lep, jetlist)), #Tight selection
+                   cleanJet = lambda lep,jet,dr : dr<0.4,
+                   selectJet = lambda jet: abs(jet.eta)<4.7 and (jet.jetId & 2), #Jet ID tight as it is already very efficient (>=98%), Take second bit with python "/" def + evaluate it with %
+                   cleanTau = lambda lep,tau,dr: dr<0.4,
+                   looseTau = lambda tau: _tauId_CBloose(tau), # used in cleaning
+                   tightTau = lambda tau: _tauId_CBtight(tau), # on top of loose
+                   cleanJetsWithTaus = False,
+                   cleanTausWithLoose = False,
+                   doVetoZ = False,
+                   doVetoLMf = False,
+                   doVetoLMt = True,
+                   jetPt = 30,
+                   bJetPt = 25,
+                   coneptdef = lambda lep: conept(lep),
+                   year = 2017,
+                   bAlgo = "DeepCSV"
+                   )))
+
+
+MODULES.append( ('leptonJetReCleanerWZSM_2018', lambda : LeptonJetReCleaner("Mini", 
+                   lambda lep : lep.miniPFRelIso_all < 0.4 and _looseID_ExtraCuts_2018(lep) and _lepId_IPcuts(lep), #Loose selection 
+                   lambda lep,jetlist: lep.pt>10 and conept(lep)>10 and (_FOID_2018(lep, jetlist)), #We clean on the FO
+                   lambda lep,jetlist: lep.pt>10 and conept(lep)>10 and (_FOID_2018(lep, jetlist)), #FO selection
+                   lambda lep,jetlist: lep.pt>10 and conept(lep)>10 and (_Tight_2018(lep, jetlist)), #Tight selection
+                   cleanJet = lambda lep,jet,dr : dr<0.4,
+                   selectJet = lambda jet: abs(jet.eta)<4.7 and (jet.jetId & 2), #Jet ID tight as it is already very efficient (>=98%), Take second bit with python "/" def + evaluate it with %
+                   cleanTau = lambda lep,tau,dr: dr<0.4,
+                   looseTau = lambda tau: _tauId_CBloose(tau), # used in cleaning
+                   tightTau = lambda tau: _tauId_CBtight(tau), # on top of loose
+                   cleanJetsWithTaus = False,
+                   cleanTausWithLoose = False,
+                   doVetoZ = False,
+                   doVetoLMf = False,
+                   doVetoLMt = True,
+                   jetPt = 30,
+                   bJetPt = 25,
+                   coneptdef = lambda lep: conept(lep),
+                   year = 2018,
+                   bAlgo = "DeepCSV"
+                   )))
+
+
+###################################
+########### lepBuilder ############
+###################################
+"""
+from CMGTools.TTHAnalysis.tools.leptonBuilderWZSM import leptonBuilderWZSM
+
+MODULES.append( ('leptonBuilderWZSM_2016', lambda : LeptonBuilderEWK_nanoAOD("Mini", metbranch="MET")))
+MODULES.append( ('leptonBuilderWZSM_2017', lambda : LeptonBuilderEWK_nanoAOD("Mini", metbranch="METFixEE2017")))
+MODULES.append( ('leptonBuilderWZSM_2018', lambda : LeptonBuilderEWK_nanoAOD("Mini", metbranch="MET")))
+"""
+
+
+
+###################################
+############ b-Tag SF #############
+###################################
+
+from CMGTools.TTHAnalysis.tools.bTagWeightAnalyzer import bTagWeightAnalyzer
+
+btagsf_DeepCSV_80X    = os.path.join( utility_files_dir,"btag", "DeepCSV_2016LegacySF_V1.csv")
+
+btagsf_CSV_94X        = os.path.join(utility_files_dir, "btag", "CSVv2_94XSF_V2_B_F.csv")
+btagsf_DeepCSV_94X    = os.path.join(utility_files_dir, "btag", "DeepCSV_94XSF_V3_B_F.csv")
+btagsf_DeepFlavor_94X = os.path.join(utility_files_dir, "btag", "DeepFlavour_94XSF_V1_B_F.csv")
+
+btagsf_DeepCSV_102X    = os.path.join(utility_files_dir, "btag", "DeepCSV_102XSF_V1.csv")
+btagsf_DeepFlavor_102X = os.path.join(utility_files_dir, "btag", "DeepJet_102XSF_V1.csv")
+
+btag_efficiency_fullsimCSV        = os.path.join(utility_files_dir, "btag", "btagEffCSV.root")
+btag_efficiency_fullsimDeepCSV    = os.path.join(utility_files_dir, "btag", "btagEffDeepCSV.root")
+btag_efficiency_fullsimDeepFlavor = os.path.join(utility_files_dir, "btag", "btagEffDeepFlavor.root")
+
+MODULES.append( ('eventBTagWeightDeepCSVL_2016',  lambda : bTagWeightAnalyzer(btagsf_DeepCSV_80X, btag_efficiency_fullsimDeepCSV, algo='DeepCSV', branchbtag='btagDeepB', branchflavor='hadronFlavour', label='DeepCSVL', recllabel='Mini', wp=0, year=2016)))
+MODULES.append( ('eventBTagWeightDeepCSVM_2016',  lambda : bTagWeightAnalyzer(btagsf_DeepCSV_80X, btag_efficiency_fullsimDeepCSV, algo='DeepCSV', branchbtag='btagDeepB', branchflavor='hadronFlavour', label='DeepCSVM', recllabel='Mini', wp=1, year=2016)))
+MODULES.append( ('eventBTagWeightDeepCSVT_2016',  lambda : bTagWeightAnalyzer(btagsf_DeepCSV_80X, btag_efficiency_fullsimDeepCSV, algo='DeepCSV', branchbtag='btagDeepB', branchflavor='hadronFlavour', label='DeepCSVT', recllabel='Mini', wp=2, year=2016)))
+MODULES.append( ('eventBTagWeightDeepCSVL_2017',  lambda : bTagWeightAnalyzer(btagsf_DeepCSV_94X, btag_efficiency_fullsimDeepCSV, algo='DeepCSV', branchbtag='btagDeepB', branchflavor='hadronFlavour', label='DeepCSVL', recllabel='Mini', wp=0, year=2017)))
+MODULES.append( ('eventBTagWeightDeepCSVM_2017',  lambda : bTagWeightAnalyzer(btagsf_DeepCSV_94X, btag_efficiency_fullsimDeepCSV, algo='DeepCSV', branchbtag='btagDeepB', branchflavor='hadronFlavour', label='DeepCSVM', recllabel='Mini', wp=1, year=2017)))
+MODULES.append( ('eventBTagWeightDeepCSVT_2017',  lambda : bTagWeightAnalyzer(btagsf_DeepCSV_94X, btag_efficiency_fullsimDeepCSV, algo='DeepCSV', branchbtag='btagDeepB', branchflavor='hadronFlavour', label='DeepCSVT', recllabel='Mini', wp=2, year=2017)))
+MODULES.append( ('eventBTagWeightDeepCSVL_2018',  lambda : bTagWeightAnalyzer(btagsf_DeepCSV_102X, btag_efficiency_fullsimDeepCSV, algo='DeepCSV', branchbtag='btagDeepB', branchflavor='hadronFlavour', label='DeepCSVL', recllabel='Mini', wp=0, year=2018)))
+MODULES.append( ('eventBTagWeightDeepCSVM_2018',  lambda : bTagWeightAnalyzer(btagsf_DeepCSV_102X, btag_efficiency_fullsimDeepCSV, algo='DeepCSV', branchbtag='btagDeepB', branchflavor='hadronFlavour', label='DeepCSVM', recllabel='Mini', wp=1, year=2018)))
+MODULES.append( ('eventBTagWeightDeepCSVT_2018',  lambda : bTagWeightAnalyzer(btagsf_DeepCSV_102X, btag_efficiency_fullsimDeepCSV, algo='DeepCSV', branchbtag='btagDeepB', branchflavor='hadronFlavour', label='DeepCSVT', recllabel='Mini', wp=2, year=2018)))
+
+
+
+
