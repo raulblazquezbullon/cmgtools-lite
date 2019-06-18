@@ -2,13 +2,13 @@ from CMGTools.TTHAnalysis.treeReAnalyzer import *
 import ROOT 
 
 class JetPhotonPrefiring: 
-    def __init__(self):
+    def __init__(self, jetfile, photonfile, jetmap, photonmap):
         self.branches = ["is_Prefiring_central","is_Prefiring", "weight_PrefiringJets", "weight_PrefiringPhotons"]
-        self.fJets = ROOT.TFile("/nfs/fanae/user/carlosec/EWKino/CMSSW_9_4_4/src/CMGTools/TTHAnalysis/data/jetPref/L1prefiring_jet_2017BtoF.root")
-        self.mapJets = self.fJets.Get("L1prefiring_jet_2017BtoF")
-        self.fPhotons = ROOT.TFile("/nfs/fanae/user/carlosec/EWKino/CMSSW_9_4_4/src/CMGTools/TTHAnalysis/data/jetPref/L1prefiring_photon_2017BtoF.root")
-        self.mapPhotons = self.fJets.Get("L1prefiring_photon_2017BtoF")
-
+        self.fJets = ROOT.TFile(jetfile)
+        self.mapJets = self.fJets.Get(jetmap)
+        self.fPhotons = ROOT.TFile(photonfile)
+        self.mapPhotons = self.fPhotons.Get(photonmap)
+        
     def listBranches(self):
         return self.branches[:]
 
@@ -19,7 +19,7 @@ class JetPhotonPrefiring:
         self.allret["weight_PrefiringJets"] = 1.
         self.allret["weight_PrefiringPhotons"] = 1.
         self.jets      = [j             for j  in Collection(event, "Jet", "nJet")        ]
-        self.photons   = []#p             for p  in Collection(event, "PhoGood", "nPhoGood")]# For future use
+        self.photons   = [p             for p  in Collection(event, "Photon", "nPhoton")  ]
         self.catchFire()
         self.weightFire()
         return self.allret
