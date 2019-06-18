@@ -150,12 +150,16 @@ for D in glob(args[0]+"/*"):
         data =  any(x in short for x in "DoubleMu DoubleEl DoubleEG MuEG MuonEG SingleMu SingleEl Tau EGamma MuonEG MET".split()) # FIXME
         if data and options.onlyMC: continue
         if not(data) and options.onlyData: continue
+        print fname, short
         f = ROOT.TFile.Open(fname)
         t = f.Get(options.ttree)
         if not t:
             print "Corrupted ",fname
+            t = 0
+            f.Close()
             continue
         entries = t.GetEntries()
+        t = 0
         f.Close()
         if options.newOnly:
             fout = "%s/evVarFriend_%s.root" % (args[1],short)
@@ -166,11 +170,14 @@ for D in glob(args[0]+"/*"):
                 print fout
                 if t.GetEntries() != entries:
                     print "Component %s has to be remade, mismatching number of entries (%d vs %d)" % (short, entries, t.GetEntries())
+                    t = 0
                     f.Close()
                 else:
                     print "Component %s exists already and has matching number of entries (%d)" % (short, entries)
+                    t = 0                    
                     f.Close()
                     continue
+
         chunk = options.chunkSize
         if entries < chunk:
             print "  ",os.path.basename(D),("  DATA" if data else "  MC")," single chunk"
@@ -191,8 +198,12 @@ for D in glob(args[0]+"/*"):
                                if test.GetEntries() == options.chunkSize or ((i == nchunk -1) and test.GetEntries() == entries - options.chunkSize*(nchunk-1)):
                                    print "Skipping chunk in " + fout
                                    ffout.Close()
+                                   test = 0
+                                   test2 = 0
                                    continue
-                            ffout.Close()
+                            test = 0
+                            test2 = 0
+                        ffout.Close()
 
                 if options.chunks != []:
                     if i not in options.chunks: continue
@@ -247,7 +258,7 @@ if options.queue:
         if chunk != -1:
             if options.logdir: writelog = "-o {logdir}/{data}_{chunk}.out -e {logdir}/{data}_{chunk}.err".format(logdir=logdir, data=name, chunk=chunk)
             cmd = "{super} {writelog} {base} -d {data} -c {chunk} {post}".format(super=super, writelog=writelog, base=basecmd, data=name, chunk=chunk, post=friendPost)
-            if options.queue == "batch":
+            if False:
                 cmd = "echo \"{base} -d {data} -c {chunk} {post}\" | {super} {writelog}".format(super=super, writelog=writelog, base=basecmd, data=name, chunk=chunk, post=friendPost)
             if fs:
                 cmd += " --fineSplit %d --subChunk %d" % (fs[1], fs[0])
@@ -255,7 +266,7 @@ if options.queue:
             if options.logdir: writelog = "-o {logdir}/{data}.out -e {logdir}/{data}.err".format(logdir=logdir, data=name)
             cmd = "{super} {writelog} {base} -d {data} {post}".format(super=super, writelog=writelog, base=basecmd, data=name, chunk=chunk, post=friendPost)
 
-            if options.queue == "batch":
+            if False:
                 cmd = "echo \"{base} -d {data} {post}\" | {super} {writelog}".format(super=super, writelog=writelog, base=basecmd, data=name, chunk=chunk, post=friendPost)
         print cmd
         if not options.pretend:
