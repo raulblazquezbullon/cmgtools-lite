@@ -1,0 +1,1 @@
+atleastonefake: (LepGood_mcUCSX_v2[iF_Mini[0]] == 2 || LepGood_mcUCSX_v2[iF_Mini[1]] == 2 || LepGood_mcUCSX_v2[iF_Mini[2]] == 2) || (LepGood_mcUCSX_v2[iF_Mini[0]] == 3 || LepGood_mcUCSX_v2[iF_Mini[1]] == 3 || LepGood_mcUCSX_v2[iF_Mini[2]] == 3) || (LepGood_mcUCSX_v2[iF_Mini[0]] == -1 || LepGood_mcUCSX_v2[iF_Mini[1]] == -1 || LepGood_mcUCSX_v2[iF_Mini[2]] == -1)
