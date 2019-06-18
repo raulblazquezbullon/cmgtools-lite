@@ -11,7 +11,8 @@ pr.add_option("--year", dest = "year", type=int, default = 2018, help = "What ye
 pr.add_option("--datatype", dest = "datatype", type="string", default = "nano", help = "What kind of data format: nanoAOD, heppyTree, etc.")
 pr.add_option("--extra", dest = "extra", type="string", default = "", help = "Whatever fancy things you want to add to the command")
 pr.add_option("--pdir", dest = "outname", type="string", default = "~/www/wzsm/", help = "Output (folder) name")
-pr.add_option("--idir", dest = "inname", type="string", default = "/pool/ciencias/HeppyTrees/RA7/nanoAODv4_2018_skim_3lepgood/", help = "Input (folder) name")
+pr.add_option("--idir", dest = "inname", type="string", default = "NONE", help = "Input (folder) name")
+pr.add_option("--skim", dest = "skim", action="store_true", default = False, help = "Input (folder) name")
 pr.add_option("--cut", dest = "cut", type="string", default = "RunII_SM_WZ/2018/cuts_wzsm.txt", help = "Input cutfile")
 pr.add_option("--mca", dest = "mca", type="string", default = "RunII_SM_WZ/2018/mca_wz.txt", help = "Input mcafile")
 pr.add_option("--plots", dest = "plots", type="string", default = "RunII_SM_WZ/2018/plots_wz.txt", help = "Input plotfile")
@@ -26,60 +27,60 @@ doWhat = args[0]
 toShow = ["Fits"]
 
 ### Always copy the php script for easiness of work and also create the output dir 
-if not(os.path.isdir(options.outname)):
+if False: #not(os.path.isdir(options.outname)):
     os.mkdir(options.outname)
-    if doWhat in toShow:
+    showIt = any([j in doWhat for j in toShow])
+    if showIt:
         os.system("cp ~/www/index.php %s"%options.outname)
+
+### This are general use cases
+if options.datatype == "nano":
+    treeName     = "Events"
+    moduleFolder = "multilepWZTreeProducers"
+    if options.inname == "NONE":
+        options.inname = "/pool/ciencias/HeppyTrees/RA7/nanoAODv4_%s_estructure%s/"%(str(options.year), "_skim_3lepgood" if options.skim else "")
+
+elif options.datatype == "heppy":
+    treeName = "tree"
+    moduleFolder = "multilepFriendTreeProducersToCleanup"
+
+
 
 ###FriendTree producer
 if "friend_" in doWhat:
-
-    baseCommand = "python prepareEventVariablesFriendTree.py [INTREES] [OUTTREES] --tree treeProducerSusyMultilepton --ttree [TTREE] --tra2  -I CMGTools.TTHAnalysis.tools.[MODULEFOLDER] [MODULES] [EXTRAARGS]"
-    if "nano" in options.datatype:
-        baseCommand = baseCommand.replace("[TTREE]", "Events").replace("[MODULEFOLDER]", "multilepFriendTreeProducersToCleanup_nanoAOD")
-    else:
-        baseCommand = baseCommand.replace("[TTREE]", "tree").replace("[MODULEFOLDER]", "multilepFriendTreeProducersToCleanup")
-
-
-    print "Remember to move to the friend tree producer folder: cd $CMSSW/src/CMGTools/TTHAnalysis/macros/"
-
-    if options.year == 2016:
-        print "Year 2016 not year implemented, can I suggest you try your hand and prove you understand the analysis by doing so?"
-
-    if options.year == 2017:
-        print "Year 2017 not year implemented, can I suggest you try your hand and prove you understand the analysis by doing so?"
-
-    if options.year == 2018:
-        if "all" in doWhat:
-            ### Everything, just everything
-            print "The script runs all trees in %s by default unless a specific dataset is given by -d"%options.inname
-            print baseCommand.replace("[INTREES]", options.inname).replace("[OUTTREES]", options.outname).replace("[MODULES]", " -m vtxWeight2018 -m vtxWeight2018Up -m vtxWeight2018Down -m leptonEnergyCorrections_2018 -m leptonJetReCleanerSusyEWK3L_nanoAOD -m leptonBuilderEWK_nano -m eventBTagWeightDeepCSVT_2018 ").replace("[EXTRAARGS]", options.extra + " --onlyMC ")
-            print baseCommand.replace("[INTREES]", options.inname).replace("[OUTTREES]", options.outname).replace("[MODULES]", " -m leptonEnergyCorrections_2018 -m leptonJetReCleanerSusyEWK3L_nanoAOD -m leptonBuilderEWK_nano  ").replace("[EXTRAARGS]", options.extra + " --onlyData ")
-
-        if "PU" in doWhat or "PileUp" in doWhat:
-            ### Pile-up reweighting. Nominal (62.9) +-5% files already in ../data/pileup/ folder
-            print "The script runs all trees in %s by default unless a specific dataset is given by -d"%options.inname
-            print baseCommand.replace("[INTREES]", options.inname).replace("[OUTTREES]", options.outname).replace("[MODULES]", "-m vtxWeight2018 -m vtxWeight2018Up -m vtxWeight2018Down").replace("[EXTRAARGS]", options.extra + " --onlyMC ")
-
-        elif "Corrections" in doWhat or "Co" in doWhat:
-            ### Standard 3l recleaner
-            print "The script runs all trees in %s by default unless a specific dataset is given by -d"%options.inname
-            print baseCommand.replace("[INTREES]", options.inname).replace("[OUTTREES]", options.outname).replace("[MODULES]", " -m leptonEnergyCorrections_2018 ").replace("[EXTRAARGS]", options.extra)
-
-        elif "ReCleaner" in doWhat or "Cl" in doWhat:
-            ### Standard 3l recleaner
-            print "The script runs all trees in %s by default unless a specific dataset is given by -d"%options.inname
-            print baseCommand.replace("[INTREES]", options.inname).replace("[OUTTREES]", options.outname).replace("[MODULES]", " -m leptonJetReCleanerSusyEWK3L_nanoAOD ").replace("[EXTRAARGS]", options.extra)
+    baseCommand = "python prepareEventVariablesFriendTree.py %s [OUTTREES] --tree treeProducerSusyMultilepton --ttree %s --tra2 -n -I CMGTools.TTHAnalysis.tools.%s [MODULES] [EXTRAARGS]"%(options.inname, treeName, moduleFolder)
     
-        elif "Builder" in doWhat or "Bu" in doWhat:
-            ### Standard 3l builder
-            print "The script runs all trees in %s by default unless a specific dataset is given by -d"%options.inname
-            print baseCommand.replace("[INTREES]", options.inname).replace("[OUTTREES]", options.outname).replace("[MODULES]", " -m leptonBuilderEWK_nano -F sf/t %s/leptonJetReCleanerSusyEWK3L_nanoAOD/evVarFriend_{cname}.root"%options.outname).replace("[EXTRAARGS]", options.extra)
+    if "all" in doWhat:
+        ### Everything, just everything
+        print "The script runs all trees in %s by default unless a specific dataset is given by -d"%options.inname
+        print baseCommand.replace("[OUTTREES]", options.outname).replace("[MODULES]", " -m vtxWeight%s -m vtxWeight%sUp -m vtxWeight%sDown -m leptonEnergyCorrections_%s -m leptonJetReCleanerWZSM_%s -m leptonBuilderWZSM_%s -m eventBTagWeightDeepCSVT_%s "%(str(options.year),str(options.year),str(options.year),str(options.year),str(options.year),str(options.year),str(options.year)) ).replace("[EXTRAARGS]", options.extra + " --onlyMC ")
+        print baseCommand.replace("[INTREES]", options.inname).replace("[OUTTREES]", options.outname).replace("[MODULES]", " -m leptonEnergyCorrections_%s -m leptonJetReCleanerWZSM_%s -m leptonBuilderWZSM_%s "%(str(options.year),str(options.year),str(options.year))).replace("[EXTRAARGS]", options.extra + " --onlyData ")
 
-        elif "bTag" in doWhat or "Bt" in doWhat:
-            ### Standard 3l btag Weights
-            print "The script runs all trees in %s by default unless a specific dataset is given by -d"%options.inname
-            print baseCommand.replace("[INTREES]", options.inname).replace("[OUTTREES]", options.outname).replace("[MODULES]", " -m eventBTagWeightDeepCSVT_2018 -F sf/t %s/leptonJetReCleanerSusyEWK3L_nanoAOD/evVarFriend_{cname}.root"%options.outname).replace("[EXTRAARGS]", options.extra + " --onlyMC ")
+    if "PU" in doWhat or "PileUp" in doWhat:
+        ### Pile-up reweighting. Nominal (62.9) +-5% files already in ../data/pileup/ folder
+        print "The script runs all trees in %s by default unless a specific dataset is given by -d"%options.inname
+        print baseCommand.replace("[INTREES]", options.inname).replace("[OUTTREES]", options.outname).replace("[MODULES]", "-m vtxWeight%s -m vtxWeight%sUp -m vtxWeight%sDown"%(str(options.year),str(options.year),str(options.year))).replace("[EXTRAARGS]", options.extra + " --onlyMC ")
+
+    elif "Corrections" in doWhat or "Co" in doWhat:
+        ### Standard 3l recleaner
+        print "The script runs all trees in %s by default unless a specific dataset is given by -d"%options.inname
+        print baseCommand.replace("[INTREES]", options.inname).replace("[OUTTREES]", options.outname).replace("[MODULES]", " -m leptonEnergyCorrections_%s "%str(options.year)).replace("[EXTRAARGS]", options.extra)
+
+    elif "ReCleaner" in doWhat or "Cl" in doWhat:
+        ### Standard 3l recleaner
+        print "The script runs all trees in %s by default unless a specific dataset is given by -d"%options.inname
+        print baseCommand.replace("[INTREES]", options.inname).replace("[OUTTREES]", options.outname).replace("[MODULES]", " -m leptonJetReCleanerWZSM_%s "%str(options.year)).replace("[EXTRAARGS]", options.extra + "-F sf/t %s/leptonPtCorrections/evVarFriend_{cname}.root"%options.inname )
+    
+    elif "Builder" in doWhat or "Bu" in doWhat:
+        ### Standard 3l builder
+        print "The script runs all trees in %s by default unless a specific dataset is given by -d"%options.inname
+        print baseCommand.replace("[INTREES]", options.inname).replace("[OUTTREES]", options.outname).replace("[MODULES]", " -m leptonBuilderWZSM_%s "%str(options.year)).replace("[EXTRAARGS]", options.extra+ "-F sf/t %s/leptonPtCorrections/evVarFriend_{cname}.root -F sf/t %s/leptonJetReCleanerWZSM/evVarFriend_{cname}.root"%(options.inname, options.inname))
+
+    elif "bTag" in doWhat or "Bt" in doWhat:
+        ### Standard 3l btag Weights
+        print "The script runs all trees in %s by default unless a specific dataset is given by -d"%options.inname
+        print baseCommand.replace("[INTREES]", options.inname).replace("[OUTTREES]", options.outname).replace("[MODULES]", " -m eventBTagWeightDeepCSVT_%s"%str(options.year)).replace("[EXTRAARGS]", options.extra + " --onlyMC " + "-F sf/t %s/leptonPtCorrections/evVarFriend_{cname}.root -F sf/t %s/leptonJetReCleanerWZSM/evVarFriend_{cname}.root"%(options.inname, options.inname))
+
 
 
 if "plot_" in doWhat:
