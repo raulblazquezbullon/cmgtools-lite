@@ -17,6 +17,7 @@ fname = [x for x in sys.argv[2].split('/') if x!=''][-1]
 
 for dset in dsets:
     print dset
+    if not os.path.isfile(sys.argv[1]+'/'+dset+'/selection_eventlist.root'): continue
     fsel = ROOT.TFile.Open(sys.argv[1]+'/'+dset+'/selection_eventlist.root')
     elist = fsel.elist
     f_f = ROOT.TFile.Open(goodPath(sys.argv[2]+'/evVarFriend_'+dset+'.root'))
