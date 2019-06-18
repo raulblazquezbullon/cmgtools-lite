@@ -108,15 +108,38 @@ MODULES.append( ('leptonJetReCleanerWZSM_2018', lambda : LeptonJetReCleaner("Min
 ###################################
 ########### lepBuilder ############
 ###################################
-"""
+
 from CMGTools.TTHAnalysis.tools.leptonBuilderWZSM import leptonBuilderWZSM
 
-MODULES.append( ('leptonBuilderWZSM_2016', lambda : LeptonBuilderEWK_nanoAOD("Mini", metbranch="MET")))
-MODULES.append( ('leptonBuilderWZSM_2017', lambda : LeptonBuilderEWK_nanoAOD("Mini", metbranch="METFixEE2017")))
-MODULES.append( ('leptonBuilderWZSM_2018', lambda : LeptonBuilderEWK_nanoAOD("Mini", metbranch="MET")))
-"""
+MODULES.append( ('leptonBuilderWZSM_2016', lambda : leptonBuilderWZSM("Mini", metbranch="MET")))
+MODULES.append( ('leptonBuilderWZSM_2017', lambda : leptonBuilderWZSM("Mini", metbranch="METFixEE2017")))
+MODULES.append( ('leptonBuilderWZSM_2018', lambda : leptonBuilderWZSM("Mini", metbranch="MET")))
 
+###################################
+############ MC Match #############
+###################################
 
+from CMGTools.TTHAnalysis.tools.leptonMatcher import leptonMatcher
+MODULES.append( ('leptonMatcher', lambda : leptonMatcher("Mini")))
+
+###################################
+############ Trigger  #############
+###################################
+
+from CMGTools.TTHAnalysis.tools.trigTagger_nano import trigTagger
+MODULES.append( ('Trigger_2016', lambda : trigTagger("Trigger_3l_2016",[
+                    ["HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",0,1000000],
+                    ["HLT_Ele27_WPTight_Gsf",0,1000000],
+                    ["HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL",0,280919],
+                    ["HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL",0,280919],
+                    ["HLT_IsoMu24",0,1000000],
+                    ["HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ",280919,1000000],
+                    ["HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ",280919,1000000],
+                    ["HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL",0,280919],
+                    ["HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL",0,280919],
+                    ["HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ",280919,1000000],
+                    ["HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ",280919,1000000]
+                    ] )))
 
 ###################################
 ############ b-Tag SF #############
@@ -124,7 +147,9 @@ MODULES.append( ('leptonBuilderWZSM_2018', lambda : LeptonBuilderEWK_nanoAOD("Mi
 
 from CMGTools.TTHAnalysis.tools.bTagWeightAnalyzer import bTagWeightAnalyzer
 
+btagsf_CSV_80X        = os.path.join( utility_files_dir,"btag", "CSVv2Moriond17_2017_1_26_BtoH.csv")
 btagsf_DeepCSV_80X    = os.path.join( utility_files_dir,"btag", "DeepCSV_2016LegacySF_V1.csv")
+btagsf_DeepFlavor_80X = os.path.join( utility_files_dir,"btag", "DeepJet_2016LegacySF_V1.csv")
 
 btagsf_CSV_94X        = os.path.join(utility_files_dir, "btag", "CSVv2_94XSF_V2_B_F.csv")
 btagsf_DeepCSV_94X    = os.path.join(utility_files_dir, "btag", "DeepCSV_94XSF_V3_B_F.csv")
@@ -133,20 +158,32 @@ btagsf_DeepFlavor_94X = os.path.join(utility_files_dir, "btag", "DeepFlavour_94X
 btagsf_DeepCSV_102X    = os.path.join(utility_files_dir, "btag", "DeepCSV_102XSF_V1.csv")
 btagsf_DeepFlavor_102X = os.path.join(utility_files_dir, "btag", "DeepJet_102XSF_V1.csv")
 
-btag_efficiency_fullsimCSV        = os.path.join(utility_files_dir, "btag", "btagEffCSV.root")
-btag_efficiency_fullsimDeepCSV    = os.path.join(utility_files_dir, "btag", "btagEffDeepCSV.root")
-btag_efficiency_fullsimDeepFlavor = os.path.join(utility_files_dir, "btag", "btagEffDeepFlavor.root")
+btag_efficiency_fullsimCSV_2016        = os.path.join(utility_files_dir, "btag", "btagEffCSV_2016.root")
+btag_efficiency_fullsimDeepCSV_2016    = os.path.join(utility_files_dir, "btag", "btagEffDeepCSV_2016.root")
+btag_efficiency_fullsimDeepFlavor_2016 = os.path.join(utility_files_dir, "btag", "btagEffDeepFlavor_2016.root")
 
-MODULES.append( ('eventBTagWeightDeepCSVL_2016',  lambda : bTagWeightAnalyzer(btagsf_DeepCSV_80X, btag_efficiency_fullsimDeepCSV, algo='DeepCSV', branchbtag='btagDeepB', branchflavor='hadronFlavour', label='DeepCSVL', recllabel='Mini', wp=0, year=2016)))
-MODULES.append( ('eventBTagWeightDeepCSVM_2016',  lambda : bTagWeightAnalyzer(btagsf_DeepCSV_80X, btag_efficiency_fullsimDeepCSV, algo='DeepCSV', branchbtag='btagDeepB', branchflavor='hadronFlavour', label='DeepCSVM', recllabel='Mini', wp=1, year=2016)))
-MODULES.append( ('eventBTagWeightDeepCSVT_2016',  lambda : bTagWeightAnalyzer(btagsf_DeepCSV_80X, btag_efficiency_fullsimDeepCSV, algo='DeepCSV', branchbtag='btagDeepB', branchflavor='hadronFlavour', label='DeepCSVT', recllabel='Mini', wp=2, year=2016)))
-MODULES.append( ('eventBTagWeightDeepCSVL_2017',  lambda : bTagWeightAnalyzer(btagsf_DeepCSV_94X, btag_efficiency_fullsimDeepCSV, algo='DeepCSV', branchbtag='btagDeepB', branchflavor='hadronFlavour', label='DeepCSVL', recllabel='Mini', wp=0, year=2017)))
-MODULES.append( ('eventBTagWeightDeepCSVM_2017',  lambda : bTagWeightAnalyzer(btagsf_DeepCSV_94X, btag_efficiency_fullsimDeepCSV, algo='DeepCSV', branchbtag='btagDeepB', branchflavor='hadronFlavour', label='DeepCSVM', recllabel='Mini', wp=1, year=2017)))
-MODULES.append( ('eventBTagWeightDeepCSVT_2017',  lambda : bTagWeightAnalyzer(btagsf_DeepCSV_94X, btag_efficiency_fullsimDeepCSV, algo='DeepCSV', branchbtag='btagDeepB', branchflavor='hadronFlavour', label='DeepCSVT', recllabel='Mini', wp=2, year=2017)))
-MODULES.append( ('eventBTagWeightDeepCSVL_2018',  lambda : bTagWeightAnalyzer(btagsf_DeepCSV_102X, btag_efficiency_fullsimDeepCSV, algo='DeepCSV', branchbtag='btagDeepB', branchflavor='hadronFlavour', label='DeepCSVL', recllabel='Mini', wp=0, year=2018)))
-MODULES.append( ('eventBTagWeightDeepCSVM_2018',  lambda : bTagWeightAnalyzer(btagsf_DeepCSV_102X, btag_efficiency_fullsimDeepCSV, algo='DeepCSV', branchbtag='btagDeepB', branchflavor='hadronFlavour', label='DeepCSVM', recllabel='Mini', wp=1, year=2018)))
-MODULES.append( ('eventBTagWeightDeepCSVT_2018',  lambda : bTagWeightAnalyzer(btagsf_DeepCSV_102X, btag_efficiency_fullsimDeepCSV, algo='DeepCSV', branchbtag='btagDeepB', branchflavor='hadronFlavour', label='DeepCSVT', recllabel='Mini', wp=2, year=2018)))
+btag_efficiency_fullsimCSV_2017        = os.path.join(utility_files_dir, "btag", "btagEffCSV_2017.root")
+btag_efficiency_fullsimDeepCSV_2017    = os.path.join(utility_files_dir, "btag", "btagEffDeepCSV_2017.root")
+btag_efficiency_fullsimDeepFlavor_2017 = os.path.join(utility_files_dir, "btag", "btagEffDeepFlavor_2017.root")
+
+btag_efficiency_fullsimCSV_2018        = os.path.join(utility_files_dir, "btag", "btagEffCSV.root")
+btag_efficiency_fullsimDeepCSV_2018    = os.path.join(utility_files_dir, "btag", "btagEffDeepCSV.root")
+btag_efficiency_fullsimDeepFlavor_2018 = os.path.join(utility_files_dir, "btag", "btagEffDeepFlavor.root")
 
 
+MODULES.append( ('eventBTagWeightDeepCSVL_2016',  lambda : bTagWeightAnalyzer(btagsf_DeepCSV_80X, btag_efficiency_fullsimDeepCSV_2016, algo='DeepCSV', branchbtag='btagDeepB', branchflavor='hadronFlavour', label='DeepCSVL', recllabel='Mini', wp=0, year=2016)))
+MODULES.append( ('eventBTagWeightDeepCSVM_2016',  lambda : bTagWeightAnalyzer(btagsf_DeepCSV_80X, btag_efficiency_fullsimDeepCSV_2016, algo='DeepCSV', branchbtag='btagDeepB', branchflavor='hadronFlavour', label='DeepCSVM', recllabel='Mini', wp=1, year=2016)))
+MODULES.append( ('eventBTagWeightDeepCSVT_2016',  lambda : bTagWeightAnalyzer(btagsf_DeepCSV_80X, btag_efficiency_fullsimDeepCSV_2016, algo='DeepCSV', branchbtag='btagDeepB', branchflavor='hadronFlavour', label='DeepCSVT', recllabel='Mini', wp=2, year=2016)))
 
+MODULES.append( ('eventBTagWeightDeepCSVL_2017',  lambda : bTagWeightAnalyzer(btagsf_DeepCSV_94X, btag_efficiency_fullsimDeepCSV_2017, algo='DeepCSV', branchbtag='btagDeepB', branchflavor='hadronFlavour', label='DeepCSVL', recllabel='Mini', wp=0, year=2017)))
+MODULES.append( ('eventBTagWeightDeepCSVM_2017',  lambda : bTagWeightAnalyzer(btagsf_DeepCSV_94X, btag_efficiency_fullsimDeepCSV_2017, algo='DeepCSV', branchbtag='btagDeepB', branchflavor='hadronFlavour', label='DeepCSVM', recllabel='Mini', wp=1, year=2017)))
+MODULES.append( ('eventBTagWeightDeepCSVT_2017',  lambda : bTagWeightAnalyzer(btagsf_DeepCSV_94X, btag_efficiency_fullsimDeepCSV_2017, algo='DeepCSV', branchbtag='btagDeepB', branchflavor='hadronFlavour', label='DeepCSVT', recllabel='Mini', wp=2, year=2017)))
+
+MODULES.append( ('eventBTagWeightDeepCSVL_2018',  lambda : bTagWeightAnalyzer(btagsf_DeepCSV_102X, btag_efficiency_fullsimDeepCSV_2018, algo='DeepCSV', branchbtag='btagDeepB', branchflavor='hadronFlavour', label='DeepCSVL', recllabel='Mini', wp=0, year=2018)))
+MODULES.append( ('eventBTagWeightDeepCSVM_2018',  lambda : bTagWeightAnalyzer(btagsf_DeepCSV_102X, btag_efficiency_fullsimDeepCSV_2018, algo='DeepCSV', branchbtag='btagDeepB', branchflavor='hadronFlavour', label='DeepCSVM', recllabel='Mini', wp=1, year=2018)))
+MODULES.append( ('eventBTagWeightDeepCSVT_2018',  lambda : bTagWeightAnalyzer(btagsf_DeepCSV_102X, btag_efficiency_fullsimDeepCSV_2018, algo='DeepCSV', branchbtag='btagDeepB', branchflavor='hadronFlavour', label='DeepCSVT', recllabel='Mini', wp=2, year=2018)))
+
+from CMGTools.TTHAnalysis.tools.JetPhotonPrefiring import JetPhotonPrefiring
+MODULES.append( ('JetPhotonPrefiring_2016',  lambda : JetPhotonPrefiring(os.path.join(utility_files_dir, "jetPref", "L1prefiring_jetpt_2016BtoH.root"), os.path.join(utility_files_dir, "jetPref", "L1prefiring_photonpt_2016BtoH.root"), "L1prefiring_jetpt_2016BtoH", "L1prefiring_photonpt_2016BtoH" ) ))
+MODULES.append( ('JetPhotonPrefiring_2017',  lambda : JetPhotonPrefiring(os.path.join(utility_files_dir, "jetPref", "L1prefiring_jetpt_2017BtoF.root"), os.path.join(utility_files_dir, "jetPref", "L1prefiring_photon_2017BtoF.root"), "L1prefiring_jetpt_2016BtoH", "L1prefiring_photonpt_2016BtoH" ) ))
 
