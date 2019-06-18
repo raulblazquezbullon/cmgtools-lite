@@ -136,6 +136,8 @@ class bTagWeightAnalyzer():
     def getCutVal(self):
         if self.algo in ["CSVv2", "CSV", "csvv2", "csv"]:
             return [0.5803, 0.8838, 0.9693][self.wp]
+        if self.algo in ["DeepCSV"]  and self.year == 2016:
+            return [0.2217, 0.6321, 0.8953][self.wp]
         if self.algo in ["DeepCSV"]  and self.year == 2017:
             return [0.1522, 0.4941, 0.8001][self.wp]
         if self.algo in ["DeepFlavour"] and self.year == 2017:
@@ -162,14 +164,13 @@ class bTagWeightAnalyzer():
         	
        flavor     = self.pogFlavor(mcFlavor) 
        pt_cutoff  = max(20. , min(999., pt))
-       eta_cutoff = min(2.49, abs(eta))
+       eta_cutoff = min(2.39, abs(eta))
 
        theReader   = [self.reader_b, self.reader_c, self.reader_l][flavor]
     
        SF     = theReader.eval_auto_bounds("central", flavor, eta_cutoff, pt_cutoff)  
        SFup   = theReader.eval_auto_bounds("up"  , flavor, eta_cutoff, pt_cutoff)  
-       SFdn   = theReader.eval_auto_bounds("down", flavor, eta_cutoff, pt_cutoff)  
-
+       SFdn   = theReader.eval_auto_bounds("down", flavor, eta_cutoff, pt_cutoff)         
        return [SF, SFup, SFdn]
 
 
