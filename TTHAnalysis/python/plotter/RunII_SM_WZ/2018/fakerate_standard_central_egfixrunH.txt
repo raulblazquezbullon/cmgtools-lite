@@ -9,3 +9,4 @@ change    : htJet30j\b     : htJet30j_Mini
 change    : nBJetMedium25\b: nBJetMedium25_Mini
 change    : nBJetTight25\b : nBJetTight25_Mini
 change    : nBJetLoose25\b : nBJetLoose25_Mini
+cut-file: RunII_SM_WZ/2016/eg_fixcut_runH.txt
