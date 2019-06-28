@@ -107,76 +107,6 @@ float triggerSFfastsim(float pt1  , float eta1  , int pdg1  ,
 }
 
 
-//TFile* f_trigSF       = new TFile(DATA_SF+"/triggerSF/triggerSF_EWKino_fullsim_ICHEP2016_9p2fb.root"       , "read");
-//TFile* f_trigSF_ele27 = new TFile(DATA_SF+"/triggerSF/triggerSF_Ele27_EWKino_fullsim_ICHEP2016_12p9fb.root", "read");
-//
-//TH2F* h_trigSF_3l_mu = (TH2F*) f_trigSF      ->Get("eff_3l_mu" );
-//TH2F* h_trigSF_3l_el = (TH2F*) f_trigSF      ->Get("eff_3l_ele");
-//TH2F* h_trigSF_2l_mu = (TH2F*) f_trigSF      ->Get("eff_2l_mu" );
-//TH2F* h_trigSF_2l_el = (TH2F*) f_trigSF      ->Get("eff_2l_ele");
-//TH2F* h_trigSF_ele27 = (TH2F*) f_trigSF_ele27->Get("hist2dnum_Ele27_WPLoose_Gsf__HLT_Ele27_WPLoose_Gsf");
-//
-//float triggerSFBR6(float pt1, float eta1, int pdg1,
-//                   float pt2, float eta2, int pdg2,
-//                   float pt3, float eta3, int pdg3) {
-//
-//        if(abs(pdg1)+abs(pdg2)+abs(pdg3)==43) return 0.86;
-//
-//        float pt = pt1; float eta = eta1;
-//        if(abs(pdg2)==11) {pt = pt2; eta=eta2; }
-//        if(abs(pdg3)==11) {pt = pt3; eta=eta3; }
-//        TH2F* hist = h_trigSF_ele27;
-//        int xbin = std::max(1, std::min(hist->GetNbinsX(), hist->GetXaxis()->FindBin(pt)));
-//        int ybin = std::max(1, std::min(hist->GetNbinsY(), hist->GetYaxis()->FindBin(abs(eta))));
-//        return hist->GetBinContent(xbin,ybin);
-//}
-//
-//float triggerSF(int BR, float pt1, int pdg1, 
-//                        float pt2, int pdg2, 
-//                        float pt3 = 0, int pdg3 = 0, 
-//                        float pt4 = 0, int pdg4 = 0){
-//    // Lesya's mail:
-//    // - split for trailing ele or trailing mu
-//    // - 3l: subleading vs trailing lepton pt (1l + 2l triggers)
-//    // - 2l: leading light lepton vs subleading light lepton ==> good for both 2l+tau and 2lSS case:s (1l + 2l triggers)
-//    // - l+tautau: use flat 86% everywhere; pt_e > 35 GeV; pt_mu > 25 GeV (1l + l/tau triggers)
-//
-//    // 3l: 2tau (flat 86% in dedicated function)
-//    if(BR == 6) return 1.0;
-//
-//    // 2lss 
-//    if(BR == -1){
-//        TH2F* hist = (pdg2 == 13)?h_trigSF_2l_mu:h_trigSF_2l_el;
-//        int xbin = std::max(1, std::min(hist->GetNbinsX(), hist->GetXaxis()->FindBin(pt1)));
-//        int ybin = std::max(1, std::min(hist->GetNbinsY(), hist->GetYaxis()->FindBin(pt2)));
-//        return hist->GetBinContent(xbin,ybin);
-//    }
-//
-//    // 3l: 3light
-//    if(BR <= 2) {
-//        TH2F* hist = (abs(pdg3) == 13)?h_trigSF_3l_mu:h_trigSF_3l_el;
-//        int xbin = std::max(1, std::min(hist->GetNbinsX(), hist->GetXaxis()->FindBin(pt2)));
-//        int ybin = std::max(1, std::min(hist->GetNbinsY(), hist->GetYaxis()->FindBin(pt3)));
-//        return hist->GetBinContent(xbin,ybin);
-//    } 
-//
-//    // 3l: 2light + 1tau
-//    if(BR >= 3 && BR <= 5){
-//        vector<int> pdgs; vector<float> pts;
-//        if(abs(pdg1)!=15) { pdgs.push_back(abs(pdg1)); pts.push_back(pt1); }
-//        if(abs(pdg2)!=15) { pdgs.push_back(abs(pdg2)); pts.push_back(pt2); }
-//        if(abs(pdg3)!=15) { pdgs.push_back(abs(pdg3)); pts.push_back(pt3); }
-//        TH2F* hist = (pdgs[1] == 13)?h_trigSF_2l_mu:h_trigSF_2l_el;
-//        int xbin = std::max(1, std::min(hist->GetNbinsX(), hist->GetXaxis()->FindBin(pts[0])));
-//        int ybin = std::max(1, std::min(hist->GetNbinsY(), hist->GetYaxis()->FindBin(pts[1])));
-//        return hist->GetBinContent(xbin,ybin);
-//    }
-//
-//    // others: (4l, crwz) 
-//    return 1;
-//}
-
-
 
 // LEPTON SCALE FACTORS FULLSIM
 // -------------------------------------------------------------
@@ -652,25 +582,25 @@ float getTauSF_v4_2016(int wp, int unc){
   switch (wp){
   case 0:
     sf=0.90; corr=0.03;
-    break;
+
   case 1:
     sf=0.90; corr=0.03;
-    break;
+
   case 2:
     sf=0.86; corr=0.02;
-    break;
+
   case 3:
     sf=0.88; corr=0.02;
-    break;
+
   case 4:
     sf=0.87; corr=0.02;
-    break;
+
   case 5:
     sf=0.86; corr=0.02;
-    break;
+
   case 6:
     sf=0.86; corr=0.02;
-    break;
+
   return sf*(1+corr*unc);
   }
 }
@@ -681,25 +611,25 @@ float getTauSF_v4_2017(int wp, int unc){
   switch (wp){
   case 0:
     sf=0.89; corr=0.03;
-    break;
+
   case 1:
     sf=0.88; corr=0.03;
-    break;
+
   case 2:
     sf=0.89; corr=0.03;
-    break;
+
   case 3:
     sf=0.89; corr=0.03;
-    break;
+
   case 4:
     sf=0.89; corr=0.03;
-    break;
+
   case 5:
     sf=0.86; corr=0.03;
-    break;
+
   case 6:
     sf=0.84; corr=0.03;
-    break;
+
   return sf*(1+corr*unc);
   }
 }
@@ -710,44 +640,124 @@ float getTauSF_v4_2018(int wp, int unc){
   switch (wp){
   case 0:
     sf=0.86; corr=0.04;
-    break;
+
   case 1:
     sf=0.90; corr=0.03;
-    break;
+
   case 2:
     sf=0.90; corr=0.03;
-    break;
+
   case 3:
     sf=0.90; corr=0.02;
-    break;
+
   case 4:
     sf=0.90; corr=0.02;
-    break;
+
   case 5:
     sf=0.89; corr=0.02;
-    break;
+
   case 6:
     sf=0.89; corr=0.02;
-    break;
+
   return sf*(1+corr*unc);
   }
 }
 
 float getTauSF_v4(int wp, int unc, int year){
   //Tau SF are flat in p_T
-  if (year==2016) return getTauSF_v4_2016(wp, unc);
-  if (year==2017) return getTauSF_v4_2017(wp, unc);
-  if (year==2018) return getTauSF_v4_2018(wp, unc);
+  if (year==2016) return getTauSF_v4_2016(4, unc);
+  if (year==2017) return getTauSF_v4_2017(4, unc);
+  if (year==2018) return getTauSF_v4_2018(4, unc);
   else std::cout << "Wrong year for tau SF!!" << std::endl;
   return -1.;
 }
 
 float getLeptonSF_v4(int wp, int unc, int year, float pt, float eta, int pdgId){
-    if (abs(pdgId) == 15) return getTauSF_v4(wp, unc, year);
+ 
+    if (abs(pdgId) == 15) return getTauSF_v4(4, unc, year); //We use tight
     if (abs(pdgId) == 13) return getMuSF_v4(wp, unc, year, pt, eta);
     if (abs(pdgId) == 11) return getElSF_v4(wp, unc, year, pt, eta);
-    else std::cout << "Wrong pdg Id for lepton SF!!" << std::endl;
+    else if(abs(pdgId) != 0) std::cout << "Wrong pdg Id for lepton SF!!" << std::endl;
     return -1.;
+}
+
+float getLeptonSF_v4_var(int wp, int unc, int year, float pt, float eta, int pdgId, int target){
+    float trueVar = 1;
+    if (abs(pdgId) == target) trueVar = 1 + unc*0.008;
+    if (abs(pdgId) == 15) return trueVar*getTauSF_v4(4, 0, year); //We use tight
+    if (abs(pdgId) == 13) return trueVar*getMuSF_v4(wp, 0, year, pt, eta);
+    if (abs(pdgId) == 11) return trueVar*getElSF_v4(wp, 0, year, pt, eta);
+    else if(abs(pdgId) != 0) std::cout << "Wrong pdg Id for lepton SF!!" << std::endl;
+    return -1.;
+}
+
+
+float extraTauSFs_2016(float eta, int mcMatch, int var){
+    float sf = 1.; float unc= 0.;
+    if (mcMatch == 1 || mcMatch == 3){ //Matched to electron
+        if      (abs(eta) < 1.460){ sf = 1.32; unc = 0.03;}
+        else if (abs(eta) > 1.558){ sf = 1.38; unc = 0.04;}
+        else                      { sf = 1   ; unc = 0.00;}
+    }
+    if (mcMatch == 2 || mcMatch == 4){ //Matched to electron
+        if      (abs(eta) < 0.400) { sf = 1.22; unc = 0.04;}
+        else if (abs(eta) < 0.800) { sf = 1.12; unc = 0.04;}
+        else if (abs(eta) < 1.200) { sf = 1.26; unc = 0.04;}
+        else if (abs(eta) < 1.700) { sf = 1.22; unc = 0.15;}
+        else if (abs(eta) < 2.300) { sf = 2.39; unc = 0.16;}
+        else                       { sf = 1.00; unc = 0.00;}
+    }
+    return sf + var*unc;
+}
+
+float extraTauSFs_2017(float eta, int mcMatch, int var){
+    float sf = 1.; float unc= 0.;
+    if (mcMatch == 1 || mcMatch == 3){ //Matched to electron
+        if      (abs(eta) < 1.460){ sf = 1.17; unc = 0.04;}
+        else if (abs(eta) > 1.558){ sf = 1.25; unc = 0.06;}
+        else                      { sf = 1   ; unc = 0.00;}
+    }
+    if (mcMatch == 2 || mcMatch == 4){ //Matched to electron
+        if      (abs(eta) < 0.400) { sf = 1.06; unc = 0.05;}
+        else if (abs(eta) < 0.800) { sf = 1.02; unc = 0.04;}
+        else if (abs(eta) < 1.200) { sf = 1.10; unc = 0.04;}
+        else if (abs(eta) < 1.700) { sf = 1.03; unc = 0.18;}
+        else if (abs(eta) < 2.300) { sf = 1.94; unc = 0.35;}
+        else                       { sf = 1.00; unc = 0.00;}
+    }
+    return sf + var*unc;
+}
+
+float extraTauSFs_2018(float eta, int mcMatch, int var){
+    float sf = 1.; float unc= 0.;
+    //Warning! Dummy values from 2017!
+    if (mcMatch == 1 || mcMatch == 3){ //Matched to electron
+        if      (abs(eta) < 1.460){ sf = 1.17; unc = 0.04;}
+        else if (abs(eta) > 1.558){ sf = 1.25; unc = 0.06;}
+        else                      { sf = 1   ; unc = 0.00;}
+    }
+    if (mcMatch == 2 || mcMatch == 4){ //Matched to electron
+        if      (abs(eta) < 0.400) { sf = 1.06; unc = 0.05;}
+        else if (abs(eta) < 0.800) { sf = 1.02; unc = 0.04;}
+        else if (abs(eta) < 1.200) { sf = 1.10; unc = 0.04;}
+        else if (abs(eta) < 1.700) { sf = 1.03; unc = 0.18;}
+        else if (abs(eta) < 2.300) { sf = 1.94; unc = 0.35;}
+        else                       { sf = 1.00; unc = 0.00;}
+    }
+    return sf + var*unc;
+}
+
+float extraTauSFs(float eta, int mcMatch, int year, int var){
+    if (year==2016) return extraTauSFs_2016(eta, mcMatch, var);
+    if (year==2017) return extraTauSFs_2017(eta, mcMatch, var);
+    if (year==2018) return extraTauSFs_2018(eta, mcMatch, var);
+}
+
+Float_t scaleLepton(Float_t pt, Int_t pdgId, Float_t var, Int_t refId){
+  if (not(pdgId == refId)) return pt;
+  else{
+    return var*pt;
+  }
 }
 
 void functionsSF() {}

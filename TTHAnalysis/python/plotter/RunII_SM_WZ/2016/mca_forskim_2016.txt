@@ -144,7 +144,7 @@ ZZTo2L2Nu_part1 : ZZTo2L2Nu_part1 : 1
 ZZTo2L2Q : ZZTo2L2Q : 1
 ZZTo2Q2Nu : ZZTo2Q2Nu : 1
 ZZTo4L : ZZTo4L : 1
-ZZZ : ZZZ : 1
+#ZZZ : ZZZ : 1
 tZq_ll_part0 : tZq_ll_part0 : 1
 tZq_ll_part1 : tZq_ll_part1 : 1
 tZq_ll_part2 : tZq_ll_part2 : 1
