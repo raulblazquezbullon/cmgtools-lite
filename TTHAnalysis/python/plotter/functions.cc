@@ -254,6 +254,36 @@ float lnN1D_p1(float kappa, float x, float xmin, float xmax) {
     return std::pow(kappa,(x-xmin)/(xmax-xmin));
 }
 
+Float_t sump4(Int_t component, Float_t v1pt, Float_t v1eta, Float_t v1phi, Float_t v1m, Float_t v2pt, Float_t v2eta, Float_t v2phi, Float_t v2m)
+{
+  TLorentzVector v1; v1.SetPtEtaPhiM(v1pt, v1eta, v1phi, v1m);
+  TLorentzVector v2; v2.SetPtEtaPhiM(v2pt, v2eta, v2phi, v2m);
+  TLorentzVector v; v = v1 + v2;
+  Float_t ret;
+  
+  switch(component)
+    {
+    case 0:
+      ret = v.Pt();
+      break;
+    case 1: 
+      ret = v.Eta();
+      break;
+    case 2:
+      ret = v.Phi();
+      break;
+    case 3:
+      ret = v.M();
+      break;
+    default:
+      ret = -99999.;
+    }
+  return ret;
+}
+
+float phistar(float eta1, float phi1, float eta2, float phi2){
+  return std::tan((3.141592 - abs(phi1 - phi2))/2.)*std::pow(1 - std::tanh(eta1-eta2)*std::tanh(eta1-eta2) ,0.5);
+}
 void functions() {}
 
 
