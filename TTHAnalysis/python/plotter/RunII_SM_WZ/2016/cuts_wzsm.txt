@@ -7,14 +7,14 @@ BRevent   : abs(LepSel_pdgId[0]) < 15 && abs(LepSel_pdgId[1]) < 15 && abs(LepSel
 lowmass   : minMllSFOS_Mini > 12 || minMllSFOS_Mini == -1
 lepPt     : LepZ1_pt >= 25  && LepZ2_pt >= 10  && LepW_pt >= 25 
 AllTight  : LepSel_isTight[0] &&  LepSel_isTight[1] && LepSel_isTight[2]
+NOallTight  : !(LepSel_isTight[0] &&  LepSel_isTight[1] && LepSel_isTight[2])
 
-#Testing with LepGood instead of LepSel
 SRWZ      : m3L >= 100 && nBJetTight25_Mini == 0 && MET_pt > 30 && abs(mll_3l - 91.16) < 15 && nLepGood < 4; Disable=True
-SRWZnoB   : m3L >= 100 && MET_pt > 30 && abs(mll_3l - 91.16) < 15 && nLepGood < 4; Disable=True
 
-SRWZnoBnomet   : m3L >= 100 && abs(mll_3l - 91.16) < 15 && nLepGood < 4; Disable=True
+SRCr-top      : m3L >= 100 && nBJetTight25_Mini > 0 && MET_pt > 30 && abs(mll_3l - 91.16) > 5 && nLepGood < 4; Disable=True
+
+SRCr-Conv     : m3L <= 100 && nBJetTight25_Mini == 0 && MET_pt <= 30 && abs(mll_3l - 91.16) > 15 && nLepGood < 4; Disable=True
+
+SRCr-ZZ      : m3L >= 100 && nBJetTight25_Mini == 0 && MET_pt > 30 && abs(mll_3l - 91.16) < 15 && nLepGood == 4 && LepSel_pt[3] >=10; Disable=True
 
 
-CRZZ   : m3L >= 100 && nBJetTight25_Mini == 0  && abs(mll_3l - 91.16) < 15 && nLepSel == 4 && LepSel_pt[3] > 10; Disable=True
-CRTT   : m3L >= 100 && nBJetTight25_Mini > 0   && abs(mll_3l - 91.16) > 15 && nLepGood < 4; Disable=True
-CRconv : m3L < 100 && nBJetTight25_Mini == 0  && MET_pt < 30 && nLepGood < 4; Disable=True
