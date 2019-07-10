@@ -6,7 +6,9 @@ incl_data      : + ; IncludeMca="RunII_SM_WZ/2016/includes/mca_data_2016_nanoAOD
 ## -----------------------------------------------------------
 incl_prompts        : + ; IncludeMca="RunII_SM_WZ/2016/includes/mca_prompts_nanoAODv4.txt"
 incl_convs          : + ; IncludeMca="RunII_SM_WZ/2016/includes/mca_convs_nanoAODv4.txt"
-incl_fakes          : + ; IncludeMca="RunII_SM_WZ/2016/includes/mca_mcfakes_nanoAODv4.txt"
+#incl_fakes          : + ; IncludeMca="RunII_SM_WZ/2016/includes/mca_mcfakes_nanoAODv4.txt"
+
+incl_fakes          : + ; IncludeMca="RunII_SM_WZ/2016/includes/mca_datafakes_nanoAODv4.txt"
 
 ## Variations
 
@@ -48,3 +50,4 @@ incl_convs_SFEl_Dn          : + ; IncludeMca="RunII_SM_WZ/2016/includes/mca_conv
 
 ## Others ##
 incl_jec_scale : +; IncludeMca="RunII_SM_WZ/2016/includes/mca_promptsconvs_sys.txt"
+

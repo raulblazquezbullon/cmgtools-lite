@@ -187,3 +187,26 @@ from CMGTools.TTHAnalysis.tools.JetPhotonPrefiring import JetPhotonPrefiring
 MODULES.append( ('JetPhotonPrefiring_2016',  lambda : JetPhotonPrefiring(os.path.join(utility_files_dir, "jetPref", "L1prefiring_jetpt_2016BtoH.root"), os.path.join(utility_files_dir, "jetPref", "L1prefiring_photonpt_2016BtoH.root"), "L1prefiring_jetpt_2016BtoH", "L1prefiring_photonpt_2016BtoH" ) ))
 MODULES.append( ('JetPhotonPrefiring_2017',  lambda : JetPhotonPrefiring(os.path.join(utility_files_dir, "jetPref", "L1prefiring_jetpt_2017BtoF.root"), os.path.join(utility_files_dir, "jetPref", "L1prefiring_photonpt_2017BtoF.root"), "L1prefiring_jetpt_2017BtoF", "L1prefiring_photonpt_2017BtoF" ) ))
 
+###################################
+###### Boson polarization #########
+###################################
+
+from  CMGTools.TTHAnalysis.tools.bosonPolarizationWZ import bosonPolarizationWZ
+MODULES.append( ('bosonPolarizationWZ_2016', lambda : bosonPolarizationWZ(metbranch="MET")))
+MODULES.append( ('bosonPolarizationWZ_2017', lambda : bosonPolarizationWZ(metbranch="METFixEE2017")))
+MODULES.append( ('bosonPolarizationWZ_2018', lambda : bosonPolarizationWZ(metbranch="MET")))
+
+
+###################################
+###### Gen level builder  #########
+###################################
+
+from  CMGTools.TTHAnalysis.tools.lepgenVarsWZSM import lepgenVarsWZSM
+MODULES.append( ('lepgenVarsWZSM_2016', lambda : lepgenVarsWZSM("Mini")))
+MODULES.append( ('lepgenVarsWZSM_2017', lambda : lepgenVarsWZSM("Mini")))
+MODULES.append( ('lepgenVarsWZSM_2018', lambda : lepgenVarsWZSM("Mini")))
+
+
+from  CMGTools.TTHAnalysis.tools.bosonPolarizationGEN_TotalTruth import bosonPolarizationGEN_TotalTruth
+
+MODULES.append( ('bosonPolarizationGEN', lambda : bosonPolarizationGEN_TotalTruth()))

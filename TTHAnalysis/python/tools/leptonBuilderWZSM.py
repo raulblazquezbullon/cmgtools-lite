@@ -173,6 +173,7 @@ class leptonBuilderWZSM:
 
           self.metphi[1]  = getattr(event, self.metbranch + "_phi" + self.systsJEC[1], self.metphi[0])
           self.metphi[-1] = getattr(event, self.metbranch + "_phi" + self.systsJEC[-1], self.metphi[0])
+
         else:
           self.met[1]  = self.met[0]
           self.met[-1] = self.met[0]
@@ -181,8 +182,8 @@ class leptonBuilderWZSM:
           self.metphi[-1] = self.metphi[0]
 
         #Only fot data
-        self.metgen        = self.met
-        self.metgenphi     = self.metphi
+        self.metgen        = copy.deepcopy(self.met)
+        self.metgenphi     = copy.deepcopy(self.metphi)
         
         if not self.isData:
             self.metgen[0]     = event.GenMET_pt

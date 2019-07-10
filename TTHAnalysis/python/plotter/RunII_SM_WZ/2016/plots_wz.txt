@@ -39,6 +39,8 @@ mtW3l      : mT_3l         : 20,0,200    ; XTitle="M_{T} (GeV)"                 
 
 flavor3l   : (abs(LepSel1_pdgId)+abs(LepSel2_pdgId)+abs(LepSel3_pdgId)-33)/2  : 4,-0.5,3.5 ; XTitle="flavor", xBinLabels="eee\,ee#mu\,e#mu#mu\,#mu#mu#mu", Legend="TL", LegendCutoff=1e-4, MoreY=3.0
 charge3l   : if3(LepSel1_pdgId>0,-1,1)+if3(LepSel2_pdgId>0,-1,1)+if3(LepSel3_pdgId>0,-1,1) : 7,-3.5,3.5 ; XTitle="charge", Legend="TL", LegendCutoff=1e-4, MoreY=3.0
+m3lmet_Meas : m3Lmet : [100,200,300,400,500,1000,1500,3000] ; XTitle="m_{WZ} [GeV]", LegendCutoff=1e-8, YTitle='Events/bin', Logy, YMin=1, YMax=1000000
+
 
 
 
