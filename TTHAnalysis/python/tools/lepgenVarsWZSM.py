@@ -54,9 +54,8 @@ class OSpair:
         else                                                     : self.target = 50
   
         self.mll  = (self.l1.p4()               + self.l2.p4()              ).M()
-        self.diff = abs(91.1876 - self.mll)
+        self.diff = abs(self.target - self.mll)
 
-        if  self.l1.motherId == 23 and self.l2.motherId == 23: self.isZ = True
     ## test
     ## _______________________________________________________________
     def test(self, leps):
@@ -84,7 +83,6 @@ class lepgenVarsWZSM:
     ## __call__
     ## _______________________________________________________________
     def __call__(self, event):
-
         self.resetMemory()
         self.collectObjects(event)
         self.analyzeTopology()
@@ -99,8 +97,9 @@ class lepgenVarsWZSM:
         #self.passCleverPtCut()
         #if not self.passPtAndMll(): return
         if len(self.genleps)>=3: self.ret["is_3l_gen"] = 1
+        if len(self.genleps)>=4: self.ret["is_4l_gen"] = 1
+        if len(self.genleps)>=5: self.ret["is_5l_gen"] = 1
 
-        self.dressLeptons(0.1) #Dress leptons before collecting the pairs!!!
         self.collectOSpairs(3, False)
         self.makeMass(3)
         self.makeMt2(3)
@@ -108,61 +107,40 @@ class lepgenVarsWZSM:
         self.makeMassMET(3)
 
 
+        # This in principle is not needed anymore
+        #self.collectOSpairs(4, True)
+        #self.makeMass(4)
+        #self.makeMt2(4)
+        #self.findBestOSpair(4)
+        #self.findMtMin(4)
+        #self.makeMassMET(4)
+
+
+
     ## collectObjects
     ## _______________________________________________________________
     def collectObjects(self, event):
 
         ## gen leptons
-        templeps    = [l             for l  in Collection(event, "genLep", "ngenLep")  ]
-        self.genleps = []
-        for l in templeps:
-          if abs(l.pdgId) in [11,13]:
-            self.genleps.append(l)
-
-        ## Get Gen leptons
-        self.setAttributes(event, self.genleps, event.isData, True)
-        self.genleps.sort(key = lambda x: x.pt, reverse=True)
-
+        self.genleps    = [l             for l  in Collection(event, "GenDressedLepton", "nGenDressedLepton")  ]
+        self.setAttributes(event, self.genleps, False, True)
+        self.genleps.sort(key = lambda x: x.pt, reverse=True)       
         self.metgen        = {}
-        self.metgen[0]     = event.met_genPt if not event.isData else event.met_pt
-        self.metgen[1]     = getattr(event, "met_jecUp_genPt"  , event.met_genPt if not event.isData else event.met_pt)
-        self.metgen[-1]    = getattr(event, "met_jecDown_genPt", event.met_genPt if not event.isData else event.met_pt)
+        self.metgen[0]     = event.GenMET_pt if not False else event.MET_pt
 
         self.metgenphi     = {}
-        self.metgenphi[0]  = event.met_genPhi if not event.isData else event.met_phi
-        self.metgenphi[1]  = getattr(event, "met_jecUp_genPhi"  , event.met_genPhi if not event.isData else event.met_phi)
-        self.metgenphi[-1] = getattr(event, "met_jecDown_genPhi", event.met_genPhi if not event.isData else event.met_phi)
-
-        # Gen photons
-        self.genphotons = [l for l in Collection(event, "GenPart", "nGenPart") ]
-        self.setAttributes(event, self.genphotons, event.isData, True)
-        # Not really needed
-        self.genphotons.sort(key = lambda x: x.pt, reverse=True)
+        self.metgenphi[0]  = event.GenMET_phi if not False else event.MET_phi
         
         self.OS = []
-
-    def dressLeptons(self,delta_r=0.1):
-        usedPhoton = [ 0  ] * len(self.genphotons)
-        for i in range(min(max, len(self.genleps))):
-            for j in range(0,len(self.genphotons)):
-                if usedPhoton[j] == 0:
-                    if abs(self.genphotons[j].pdgId) == 22 and deltaR(self.genleps[i].p4().Eta(), self.genleps[i].p4().Phi(), self.genphotons[j].p4().Eta(), self.genphotons[j].p4().Phi()) < delta_r:
-                        tempLep = self.genleps[i].p4()
-                        tempPhot = self.genphotons[j].p4()
-                        tempLep += tempPhot
-                        self.genleps[i].pt = tempLep.Pt()
-                        self.genleps[i].eta = tempLep.Eta()
-                        self.genleps[i].phi = tempLep.Phi()
-                        self.genleps[i].mass = tempLep.M()
-                        usedPhoton[j] = 1
             
+
     ## collectOSpairs
     ## _______________________________________________________________
     def collectOSpairs(self, max, useBuffer = False):
 
         self.OS = []
-        for i in range(min(10, len(self.genleps))):
-            for j in range(i+1,min(10, len(self.genleps))):
+        for i in range(min(max, len(self.genleps))):
+            for j in range(i+1,min(max, len(self.genleps))):
                 if abs(self.genleps[i].pdgId) == 15 and abs(self.genleps[j].pdgId) == 15: continue # no SF tautau pairs
                 if useBuffer and abs(self.genleps[i].pdgId) != abs(self.genleps[j].pdgId): continue # if buffer then SF
                 if self.genleps[i].pdgId * self.genleps[j].pdgId < 0: 
@@ -179,9 +157,9 @@ class lepgenVarsWZSM:
                     self.OS.append(os)
                     used.append(os.l1); used.append(os.l2)
 
-        self.ret["nOSSF_" + str(max) + "l_gen"] = self.countOSSF(10)
-        self.ret["nOSTF_" + str(max) + "l_gen"] = self.countOSTF(10)
-        self.ret["nOSLF_" + str(max) + "l_gen"] = self.countOSLF(10)
+        self.ret["nOSSF_" + str(max) + "l_gen"] = self.countOSSF(max)
+        self.ret["nOSTF_" + str(max) + "l_gen"] = self.countOSTF(max)
+        self.ret["nOSLF_" + str(max) + "l_gen"] = self.countOSLF(max)
 
 
     ## countOSLF
@@ -207,7 +185,7 @@ class lepgenVarsWZSM:
        
         if len(self.genleps) < 3: return 
         sum = self.genleps[0].p4()
-        for i in range(1,min(10,len(self.genleps))):
+        for i in range(1,min(max,len(self.genleps))):
             sum += self.genleps[i].p4(self.genleps[i].pt)
         self.ret["m" + str(max) + "L_gen"] = sum.M()
 
@@ -215,9 +193,7 @@ class lepgenVarsWZSM:
         minMllSFOS = 10000
 
         for i in range(len(self.genleps)):
-          #if not(abs(self.genleps[i].motherId) in [23,24]): continue
           for j in range(i,len(self.genleps)):
-            #if not(abs(self.genleps[j].motherId) in [23,24]): continue
             if i==j: continue
             testMass = (self.genleps[i].p4() + self.genleps[j].p4()).M()
             #if testMass <  5: print testMass, i, j
@@ -236,7 +212,7 @@ class lepgenVarsWZSM:
         if len(self.genleps) < 3: return 
         sumlep = self.genleps[0].p4()
         metp4 = ROOT.TLorentzVector()
-        for i in range(1,min(10,len(self.genleps))):
+        for i in range(1,min(max,len(self.genleps))):
             sumlep += self.genleps[i].p4(self.genleps[i].pt) 
         for var in self.systsJEC:
             metp4.SetPtEtaPhiM(self.metgen[var],0,self.metgenphi[var],0)
@@ -253,8 +229,8 @@ class lepgenVarsWZSM:
         if not self.mt2maker: return False
         #if self.mt2maker: print "I have mT2maker\n"
         anyPairs = []
-        for i in range(min(10, len(self.genleps))):
-            for j in range(i+1,min(10, len(self.genleps))):
+        for i in range(min(max, len(self.genleps))):
+            for j in range(i+1,min(max, len(self.genleps))):
                 if abs(self.genleps[i].pdgId) == 15 or abs(self.genleps[j].pdgId) == 15:
                     anyPairs.append(OSpair(self.genleps[i], self.genleps[j]))
 
@@ -315,36 +291,49 @@ class lepgenVarsWZSM:
 
         all = []
         for os in self.OS:
-            all.append((0 if os.isSF else 1, os.diff, os)) # priority to SF, then difference to target
+            all.append((0 if os.isZ else 1, 0 if os.isSF else 1, os.diff, os)) # priority to SF, then difference to target
             #all.append((0 if os.isSF else 1, 1 if os.wTau else 0, os.diff, os)) # priority to SF, then light, then difference to target
 
         if all:
             all.sort()
-            self.bestOSPair = all[0][2]
-            #if self.bestOSPair.isZ:  print self.bestOSPair.diff, self.bestOSPair.l1.p4().Pt(), self.bestOSPair.l2.p4().Pt()
+            self.bestOSPair = all[0][3]
             self.ret["mll_" + str(max) + "l_gen"] = self.bestOSPair.mll
             used = [self.bestOSPair.l1, self.bestOSPair.l2] if self.bestOSPair else []
             
             for var in ["pt", "eta", "phi", "mass"]:
                 self.ret["genLepZ1_" + var] = getattr(self.bestOSPair.l1, var, 0)
                 self.ret["genLepZ2_" + var] = getattr(self.bestOSPair.l2, var, 0)
-            for var in ["pdgId", "motherId"]:
+            for var in ["pdgId"]:
                 self.ret["genLepZ1_" + var] = int(getattr(self.bestOSPair.l1, var, 0))
                 self.ret["genLepZ2_" + var] = int(getattr(self.bestOSPair.l2, var, 0))
-           
-            didW = False
-            for i in range(min(10,len(self.genleps))):
-                if self.genleps[i] in used: continue # or not(abs(self.genleps[i].motherId) == 24) : continue
-                if didW: continue
+
+
+            for i in range(min(max,len(self.genleps))):
+                if self.genleps[i] in used : continue
                 for var in ["pt", "eta", "phi", "mass"]:
                     self.ret["genLepW_" + var] = getattr(self.genleps[i], var, 0)
-                for var in ["pdgId", "motherId"]:
+                for var in ["pdgId"]:
                     self.ret["genLepW_" + var] = int(getattr(self.genleps[i], var, 0))
-                didW = True
+                #for var in ["pt", "pt"]:
+                #    self.ret["wzBalance_" + var] = getattr(self.bestOSPair.l1.p4()+self.bestOSPair.l2.p4()-self.genleps[i].p4(), var, 0)
+                balance = self.bestOSPair.l1.p4()
+                balance += self.bestOSPair.l2.p4()
+                self.ret["deltaR_WZ_gen"] = deltaR(balance.Eta(), balance.Phi(), self.genleps[i].p4().Eta(), self.genleps[i].p4().Phi())
+                balance += self.genleps[i].p4()
+                metmom = ROOT.TLorentzVector()
+                metmom.SetPtEtaPhiM(self.metgen[0],0,self.metgenphi[0],0)
+                balance += metmom
+                # Later do it with standalone function like makeMassMET
+                self.ret["wzBalance_pt_gen"] = balance.Pt()
+                balance = self.bestOSPair.l1.p4(self.bestOSPair.l1.pt)
+                balance += self.bestOSPair.l2.p4(self.bestOSPair.l2.pt)
+                balance += self.genleps[i].p4(self.genleps[i].pt)
+                balance += metmom
+                self.ret["wzBalance_pt_gen"] = balance.Pt()
             return
 
         self.ret["mll_" + str(max) + "l_gen"] = -1
-        return
+
 
     ## listBranches
     ## _______________________________________________________________
@@ -352,13 +341,22 @@ class lepgenVarsWZSM:
 
         biglist = [
             ("is_3l_gen"            , "I"),
+            ("is_4l_gen"            , "I"),
+            ("is_5l_gen"            , "I"),
             ("nOSSF_3l_gen"         , "I"),
             ("nOSLF_3l_gen"         , "I"),
             ("nOSTF_3l_gen"         , "I"),
             ("mll_3l_gen"           , "F"),
             ("m3L_gen"              , "F"),
+            ("nOSSF_4l_gen"         , "I"),
+            ("nOSLF_4l_gen"         , "I"),
+            ("nOSTF_4l_gen"         , "I"),
+            ("mll_4l_gen"           , "F"),
+            ("m4L_gen"              , "F"),
             ("minDeltaR_3l_gen"     , "F"),
+            ("minDeltaR_4l_gen"     , "F"),
             ("minDeltaR_3l_mumu_gen", "F"),
+            ("minDeltaR_4l_mumu_gen", "F"),
             ("minmllAFAS_gen"       , "F"),
             ("minmllSFOS_gen"       , "F")]
             
@@ -370,12 +368,12 @@ class lepgenVarsWZSM:
 
         biglist.append(("nLepGen_gen"   , "I"))
         for var in ["pt", "eta", "phi", "mass"]:
-            biglist.append(("LepGen_" + var, "F", 10))
+            biglist.append(("LepGen_" + var, "F", 4))
             biglist.append(("genLepZ1_"  + var, "F"))
             biglist.append(("genLepZ2_"  + var, "F"))
             biglist.append(("genLepW_"   + var, "F"))
-        for var in ["pdgId", "motherId"]:
-            biglist.append(("LepGen_" + var, "I", 10))
+        for var in ["pdgId"]:
+            biglist.append(("LepGen_" + var, "I", 4))
             biglist.append(("genLepZ1_"  + var, "I"))
             biglist.append(("genLepZ2_"  + var, "I"))
             biglist.append(("genLepW_"   + var, "I"))
@@ -387,7 +385,11 @@ class lepgenVarsWZSM:
             biglist.append(("mT_3l"       + self.systsJEC[var] + "_gen", "F"))
             biglist.append(("mT2L_3l"     + self.systsJEC[var] + "_gen", "F"))
             biglist.append(("mT2T_3l"     + self.systsJEC[var] + "_gen", "F"))
+            biglist.append(("mT_4l"       + self.systsJEC[var] + "_gen", "F"))
+            biglist.append(("mT2L_4l"     + self.systsJEC[var] + "_gen", "F"))
+            biglist.append(("mT2T_4l"     + self.systsJEC[var] + "_gen", "F"))
             biglist.append(("m3Lmet"      + self.systsJEC[var] + "_gen", "F"))
+            biglist.append(("m4Lmet"      + self.systsJEC[var] + "_gen", "F"))
         return biglist
 
 
@@ -398,13 +400,22 @@ class lepgenVarsWZSM:
         self.ret = {};
 
         self.ret["is_3l_gen"                ] = 0
+        self.ret["is_4l_gen"                ] = 0
+        self.ret["is_5l_gen"                ] = 0
         self.ret["nOSSF_3l_gen"             ] = 0
         self.ret["nOSLF_3l_gen"             ] = 0
         self.ret["nOSTF_3l_gen"             ] = 0
         self.ret["mll_3l_gen"               ] = 0
         self.ret["m3L_gen"                  ] = 0
+        self.ret["nOSSF_4l_gen"             ] = 0
+        self.ret["nOSLF_4l_gen"             ] = 0
+        self.ret["nOSTF_4l_gen"             ] = 0
+        self.ret["mll_4l_gen"               ] = 0
+        self.ret["m4L_gen"                  ] = 0
         self.ret["minDeltaR_3l_gen"         ] = -1
+        self.ret["minDeltaR_4l_gen"         ] = -1
         self.ret["minDeltaR_3l_mumu_gen"    ] = -1
+        self.ret["minDeltaR_4l_mumu_gen"    ] = -1
         self.ret["deltaR_WZ_gen"            ] = 0
 
         self.ret["nOS_gen"   ] = 0
@@ -418,7 +429,7 @@ class lepgenVarsWZSM:
             self.ret["genLepZ1_"  + var] = 0.
             self.ret["genLepZ2_"  + var] = 0.
             self.ret["genLepW_"   + var] = 0.
-        for var in ["pdgId", "motherId"]:
+        for var in ["pdgId"]:
             self.ret["LepGen_" + var] = [0]*20
             self.ret["genLepZ1_"  + var] = 0
             self.ret["genLepZ2_"  + var] = 0
@@ -431,17 +442,17 @@ class lepgenVarsWZSM:
             self.ret["mT_3l"       + self.systsJEC[var] + "_gen"] = 0.
             self.ret["mT2L_3l"     + self.systsJEC[var] + "_gen"] = 0.  
             self.ret["mT2T_3l"     + self.systsJEC[var] + "_gen"] = 0. 
-            self.ret["m3Lmet"      + self.systsJEC[var] + "_gen"] = 0.
+            self.ret["mT_4l"       + self.systsJEC[var] + "_gen"] = 0.
+            self.ret["mT2L_4l"     + self.systsJEC[var] + "_gen"] = 0.  
+            self.ret["mT2T_4l"     + self.systsJEC[var] + "_gen"] = 0. 
+            self.ret["m3Lmet"      + self.systsJEC[var] + "_gen"] = 0. 
+            self.ret["m4Lmet"      + self.systsJEC[var] + "_gen"] = 0. 
 
 
     ## setAttributes 
     ## _______________________________________________________________
     def setAttributes(self, event, lepSel, isData = False,  isGen = True):
-
-        for i, l in enumerate(lepSel): 
-            if  isGen:
-                setattr(l, "motherId"     , l.motherId                          )
-                setattr(l, "grandmotherId"     , l.grandmotherId                     )
+        pass
 
                 
 
@@ -455,8 +466,8 @@ class lepgenVarsWZSM:
 
         self.ret["nLepGen_gen"] = len(self.genleps)
         for i, l in enumerate(self.genleps):
-            if i == 10: break # only keep the first 4 entries
-            for var in ["pt", "eta", "phi", "mass", "motherId"]:
+            if i == 4: break # only keep the first 4 entries
+            for var in ["pt", "eta", "phi", "mass"]:
                 self.ret["LepGen_" + var][i] = getattr(l, var, 0)
             for var in ["pdgId"]:
                 self.ret["LepGen_" + var][i] = int(getattr(l, var, 0))
