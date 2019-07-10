@@ -21,6 +21,8 @@ lepZ1_eta         : LepZ1_eta         : 10,-2.5,2.5 ; YTitle="Leptons", XTitle="
 lepZ2_eta         : LepZ2_eta         : 10,-2.5,2.5 ; YTitle="Leptons", XTitle="#eta(Z2 lep.)", LegendCutoff=1e-4, YMin=1, YMax=5000000, Logy
 lepW_eta         : LepW_eta         : 10,-2.5,2.5 ; YTitle="Leptons", XTitle="#eta(W lep.)"     , LegendCutoff=1e-4, YMin=1, YMax=300000, Logy
 
+m3lmet_Meas : m3Lmet : [100,200,300,400,500,1000,1500,3000] ; XTitle="m_{WZ} [GeV]", LegendCutoff=1e-8, YTitle='Events/bin', Logy, YMin=1, YMax=1000000
+
 ## event observables
 ## ----------------------------------------------------------
 

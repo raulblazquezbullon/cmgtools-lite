@@ -255,7 +255,7 @@ TTW_LO_ext1_part1 : TTW_LO_ext1_part1 : 1
 TTW_LO_ext1_part2 : TTW_LO_ext1_part2 : 1
 TTW_LO_ext1_part3 : TTW_LO_ext1_part3 : 1
 #TTW_LO_part1 : TTW_LO_part1 : 1
-TTW_LO_part2 : TTW_LO_part2 : 1
+#TTW_LO_part2 : TTW_LO_part2 : 1
 TTZ_LO_ext1_part1 : TTZ_LO_ext1_part1 : 1
 TTZ_LO_ext1_part2 : TTZ_LO_ext1_part2 : 1
 TTZ_LO_part1 : TTZ_LO_part1 : 1
