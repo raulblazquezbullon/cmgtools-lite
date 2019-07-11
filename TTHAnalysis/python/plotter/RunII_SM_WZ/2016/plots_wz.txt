@@ -74,3 +74,18 @@ jet_phi  : if3(nJetSel_Mini>0, Jet_phi[iJSel_Mini], -99) : 20,-3.14,3.14 ; XTitl
 run: $DATA{run} $MC{-1} : 100, 272000, 285000
 
 phistarZ : phistar(LepZ1_eta, LepZ1_phi, LepZ2_eta, LepZ2_phi) : 20, -4, 4 ; XTitle="#phi*" , Logy, YMin=1, YMax=500000
+
+cosWfromFT_Dn : cos_ThetaWDn_HE :  40,-1,1  ; XTitle="cos(#theta_{W}^{Dn})", Legend='TL', LegendCutoff=1e-5, MoreY=2.0 
+
+cosWfromFT_Dn_Fit : cos_ThetaWDn_HE :  10,-1,1  ; XTitle="cos(#theta_{W}^{Dn})", Legend='TL', LegendCutoff=1e-5, YMin=0, YMax = 1200, MoreY=2.0 
+
+cosZfromFT_Dn_Fit : ThetaZDn_HE :  40,0,3.1415  ; XTitle="cos(#theta_{Z}^{Dn})", Legend='TL', LegendCutoff=1e-5, YMin=0, YMax = 1200, MoreY=2.0 
+
+
+cosW_Dn : cos(ThetaWDn_HE)*((LepW_pdgId < 0)*2 -1) :  40,-1,1  ; XTitle="cos(#theta_{W}^{Dn})", Legend='TL', LegendCutoff=1e-5
+cosW_Up : cos(ThetaWUp_HE)*((LepW_pdgId < 0)*2 -1) :  40,-1,1  ; XTitle="cos(#theta_{W}^{Up})", Legend='TL', LegendCutoff=1e-5
+
+thetaW_Dn : ThetaWDn_HE :  40,-3.14,3.14  ; XTitle="#theta_{W}^{Dn}", Legend='TL', LegendCutoff=1e-5
+thetaW_Up : ThetaWUp_HE :  40,-3.14,3.14  ; XTitle="#theta_{W}^{Up}", Legend='TL', LegendCutoff=1e-5
+
+
