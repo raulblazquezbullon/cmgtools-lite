@@ -29,7 +29,7 @@ m3lmet_Meas : m3Lmet : [100,200,300,400,500,1000,1500,3000] ; XTitle="m_{WZ} [Ge
 #nInt       : nTrueInt       : 50,0,50     ; XTitle="N(TrueInt)"                  , LegendCutoff=1e-4
 #nVert      : nVert          : 50,0,50     ; XTitle="N(PV)"                       , LegendCutoff=1e-4
 
-met        : MET_pt         : 30,0,300   ; XTitle="p_{T}^{miss}  (GeV)"         , LegendCutoff=1e-4, Logy, YMin=1, YMax=500000, Legend="TR"
+met        : MET_pt_nom         : 30,0,300   ; XTitle="p_{T}^{miss}  (GeV)"         , LegendCutoff=1e-4, Logy, YMin=1, YMax=500000, Legend="TR"
 metCRWZ    : MET_pt         : 10,50,100   ; XTitle="p_{T}^{miss}  (GeV)"         , LegendCutoff=1e-4, Logy, YMin=1, YMax=500000, Legend="TR"
 htJet30j   : htJet30j       : 20,0,200    ; XTitle="H_{T}(jet p_{T} > 30) [GeV]" , LegendCutoff=1e-4, Logy, YMax=500000, YMin=1
 nJet30     : nJet30_Mini         : 10,-0.5,9.5 ; XTitle="N(jet\, p_{T} > 30)"         , LegendCutoff=1e-4, Logy, YMax=500000, YMin=1

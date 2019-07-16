@@ -28,7 +28,7 @@ lepW_eta         : LepW_eta         : 10,-2.5,2.5 ; YTitle="Leptons", XTitle="#e
 #nVert      : nVert          : 50,0,50     ; XTitle="N(PV)"                       , LegendCutoff=1e-4
 
 met        : MET_pt     : 20,0,400   ; XTitle="p_{T}^{miss}  (GeV)"         , LegendCutoff=1e-4, Logy, YMin=1, YMax=100000, Legend="TR"
-metCRWZ    : MET_pt         : 5,0,200   ; XTitle="p_{T}^{miss}  (GeV)"         , LegendCutoff=1e-4, Logy, YMin=1, YMax=100000, Legend="TR"
+metCRWZ    : MET_pt      : 5,0,200   ; XTitle="p_{T}^{miss}  (GeV)"         , LegendCutoff=1e-4, Logy, YMin=1, YMax=100000, Legend="TR"
 htJet30j   : htJet30j       : 20,0,200    ; XTitle="H_{T}(jet p_{T} > 30) [GeV]" , LegendCutoff=1e-4, Logy, YMax=50000, YMin=1e-1
 nJet30     : nJet30_Mini         : 10,-0.5,9.5 ; XTitle="N(jet\, p_{T} > 30)"         , LegendCutoff=1e-4, Logy, YMax=50000, YMin=1e-1
 nBJet25    : nBJetTight25_Mini  : 5,-0.5,4.5  ; XTitle="N(b-jet\, p_{T} > 25\, DCSVT)", LegendCutoff=1e-4, Logy, YMax=50000, YMin=1
@@ -74,3 +74,35 @@ jet_phi  : if3(nJetSel_Mini>0, Jet_phi[iJSel_Mini], -99) : 20,-3.14,3.14 ; XTitl
 run: $DATA{run} $MC{-1} : 100, 272000, 285000
 
 phistarZ : phistar(LepZ1_eta, LepZ1_phi, LepZ2_eta, LepZ2_phi) : 20, -4, 4 ; XTitle="#phi*" , Logy, YMin=1, YMax=50000
+
+
+#lepZ12_pt          : LepZ2_pt-LepZ1_pt         : 5,0,300   ; YTitle="Leptons", XTitle="p_{T\,cone}(Z1 lep.)"   , LegendCutoff=1e-4, YMin=1, YMax=50000, Logy
+
+#lepZ12_eta         : LepZ2_eta-LepZ1_eta          : 5,-2.5,2.5 ; YTitle="Leptons", XTitle="#eta(Z1 lep.)"   , LegendCutoff=1e-4, YMin=1, YMax=50000, Logy
+
+#lepWCharge    : if3( LepW_pdgId>0,-1,1)      : 7,-3.5,3.5 ; XTitle="charge W", Legend="TL", LegendCutoff=1e-4, MoreY=3.0
+
+
+#cosWfromFT_Dn : cos_ThetaWDn_HE :  40,-1,1  ; XTitle="cos(#theta_{W}^{Dn})", Legend='TL', LegendCutoff=1e-5, MoreY=2.0 
+
+cosWfromFT_Dn_Fit : cos_ThetaWDn_HE :  10,-1,1  ; XTitle="cos(#theta_{W}^{Dn})", Legend='TL', LegendCutoff=1e-5, YMin=0, YMax = 1200, MoreY=2.0 
+
+#cosZfromFT_Dn_Fit : ThetaZDn_HE :  40,0,3.1415  ; XTitle="cos(#theta_{Z}^{Dn})", Legend='TL', LegendCutoff=1e-5, YMin=0, YMax = 1200, MoreY=2.0 
+
+
+#cosW_Dn : cos(ThetaWDn_HE)*((LepW_pdgId < 0)*2 -1) :  40,-1,1  ; XTitle="cos(#theta_{W}^{Dn})", Legend='TL', LegendCutoff=1e-5
+#cosW_Up : cos(ThetaWUp_HE)*((LepW_pdgId < 0)*2 -1) :  40,-1,1  ; XTitle="cos(#theta_{W}^{Up})", Legend='TL', LegendCutoff=1e-5
+
+#thetaW_Dn : ThetaWDn_HE :  40,-3.14,3.14  ; XTitle="#theta_{W}^{Dn}", Legend='TL', LegendCutoff=1e-5
+#thetaW_Up : ThetaWUp_HE :  40,-3.14,3.14  ; XTitle="#theta_{W}^{Up}", Legend='TL', LegendCutoff=1e-5
+
+#Prueba:   : 10,0,500    ; YTitle="Muons"    , XTitle="p_{T\,cone}(#mu)" , IncludeOverflows=False, IncludeOverflow=True, LegendCutoff=1e-4, Logy, MoreY=3.0
+#Prueba2: sqrt(LepSel_eta*LepSel_eta+LepZ2_eta*LepZ2_eta+LepZ1_eta*LepZ1_eta+LepW_eta*LepW_eta)/ sqrt(LepSel_pt*LepSel_pt+LepZ2_pt*LepZ2_pt+LepZ1_pt*LepZ1_pt+LepW_pt*LepW_pt)      : 15,-0,0.1  ; XTitle="#Delta #phi", Legend='TL', LegendCutoff=1e-5, MoreY=1.5 
+#Prueba3: sqrt(LepSel_phi*LepSel_phi+LepZ2_phi*LepZ2_phi+LepZ1_phi*LepZ1_phi+LepW_phi*LepW_phi)/sqrt(LepSel_pt*LepSel_pt+LepZ2_pt*LepZ2_pt+LepZ1_pt*LepZ1_pt+LepW_pt*LepW_pt)     : 15,-0,0.15  ; XTitle="#Delta #eta", Legend='TL', LegendCutoff=1e-5, MoreY=1.5 
+
+RecWphiPL: abs(deltaPhi(sump4(2, LepW_pt, LepW_eta, LepW_phi, LepW_mass, MET_pt, 0, MET_phi, 0),LepW_phi))  : 10,-0.1,3.5  ; XTitle="Reconstruction W^{+}_{#phi}", Legend='TL', LegendCutoff=1e-5, MoreY=2.5 
+RecWetaPL: abs(sump4(1, LepW_pt, LepW_eta, LepW_phi, LepW_mass, MET_pt, 0, MET_phi, 0)-LepW_eta)  : 10,-0.1,5  ; XTitle="Reconstruction W^{+}_{#eta}", Legend='TL', LegendCutoff=1e-5, MoreY=2.5 
+RecWphiMn: abs(deltaPhi(sump4(2, LepW_pt, LepW_eta, LepW_phi, LepW_mass, MET_pt, 0, MET_phi, 0),LepW_phi))  : 10,-0.1,3.5  ; XTitle="Reconstruction W^{-}_{#phi}", Legend='TL', LegendCutoff=1e-5, MoreY=2.5 
+RecWetaMn: abs(sump4(1, LepW_pt, LepW_eta, LepW_phi, LepW_mass, MET_pt, 0, MET_phi, 0)-LepW_eta)  : 10,-0.1,5  ; XTitle="Reconstruction W^{-}_{#eta}", Legend='TL', LegendCutoff=1e-5, MoreY=2.5 
+DeltaRPL: sqrt((deltaPhi(sump4(2, LepW_pt, LepW_eta, LepW_phi, LepW_mass, MET_pt, 0, MET_phi, 0),LepW_phi))^2 +abs(sump4(1, LepW_pt, LepW_eta, LepW_phi, LepW_mass, MET_pt, 0, MET_phi, 0)-LepW_eta)^2) : 10,-0.1,5  ; XTitle="Reconstruction #Delta R(W^{+})", Legend='TL', LegendCutoff=1e-5, MoreY=2.5 
+DeltaRMn: sqrt((deltaPhi(sump4(2, LepW_pt, LepW_eta, LepW_phi, LepW_mass, MET_pt, 0, MET_phi, 0),LepW_phi))^2 +abs(sump4(1, LepW_pt, LepW_eta, LepW_phi, LepW_mass, MET_pt, 0, MET_phi, 0)-LepW_eta)^2) : 10,-0.1,5  ; XTitle="Reconstruction #Delta R(W^{-})", Legend='TL', LegendCutoff=1e-5, MoreY=2.5 

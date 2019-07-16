@@ -8,10 +8,13 @@ lepPt     : LepZ1_pt >= 25  && LepZ2_pt >= 10  && LepW_pt >= 25
 AllTight  : LepSel_isTight[0] &&  LepSel_isTight[1] && LepSel_isTight[2]
 NOallTight  : !(LepSel_isTight[0] &&  LepSel_isTight[1] && LepSel_isTight[2]); Disable= True
 
-SRWZ      : m3L >= 100 && nBJetTight25_Mini == 0 && MET_pt > 30 && abs(mll_3l - 91.16) < 15 && nLepGood < 4; Disable=True
+SRWZ      : m3L >= 100 && nBJetTight25_Mini == 0 && MET_pt > 30  && abs(mll_3l - 91.16) < 15 && nLepGood < 4; Disable=True
 
-SRCr-top      : m3L >= 100 && nBJetTight25_Mini > 0 && MET_pt > 30 && abs(mll_3l - 91.16) > 5 && nLepGood < 4; Disable=True
+SRwzPL      : m3L >= 100 && nBJetTight25_Mini == 0 && MET_pt > 30  && abs(mll_3l - 91.16) < 15 && nLepGood < 4 && LepW_pdgId < 0; Disable=True
+SRWzMn      : m3L >= 100 && nBJetTight25_Mini == 0 && MET_pt > 30  && abs(mll_3l - 91.16) < 15 && nLepGood < 4 && LepW_pdgId > 0; Disable=True
 
-SRCr-Conv     : m3L <= 100 && nBJetTight25_Mini == 0 && MET_pt <= 30 && abs(mll_3l - 91.16) > 15 && nLepGood < 4; Disable=True
+CRTT  : m3L >= 100 && nBJetTight25_Mini > 0  && MET_pt > 30  && abs(mll_3l - 91.16) > 5  && nLepGood < 4; Disable=True
 
-SRCr-ZZ      : m3L >= 100 && nBJetTight25_Mini == 0 && MET_pt > 30 && abs(mll_3l - 91.16) < 15 && nLepGood == 4 && LepSel_pt[3] >=10; Disable=True
+CRconv : m3L <= 100 && nBJetTight25_Mini == 0 && MET_pt <= 30 && abs(mll_3l - 91.16) > 15 && nLepGood < 4; Disable=True
+
+CRZZ   : m3L >= 100 && nBJetTight25_Mini == 0 && MET_pt > 30  && abs(mll_3l - 91.16) < 15 && nLepGood == 4 && LepSel_pt[3] >=10 && LepSel_isTight[3]; Disable=True
