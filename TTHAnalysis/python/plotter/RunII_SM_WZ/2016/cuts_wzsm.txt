@@ -15,6 +15,15 @@ SRWzMn      : m3L >= 100 && nBJetTight25_Mini == 0 && MET_pt > 30  && abs(mll_3l
 
 CRTT  : m3L >= 100 && nBJetTight25_Mini > 0  && MET_pt > 30  && abs(mll_3l - 91.16) > 5  && nLepGood < 4; Disable=True
 
-CRconv : m3L <= 100 && nBJetTight25_Mini == 0 && MET_pt <= 30 && abs(mll_3l - 91.16) > 15 && nLepGood < 4; Disable=True
 
-CRZZ   : m3L >= 100 && nBJetTight25_Mini == 0 && MET_pt > 30  && abs(mll_3l - 91.16) < 15 && nLepGood == 4 && LepSel_pt[3] >=10 && LepSel_isTight[3]; Disable=True
+CRZZ   : m3L >= 100 && nBJetTight25_Mini == 0  && abs(mll_3l - 91.16) < 15 && nLepSel == 4 && LepSel_pt[3] > 10 && MET_pt > 30; Disable=True
+CRTT   : m3L >= 100 && nBJetTight25_Mini > 0   && abs(mll_3l - 91.16) > 5 && nLepGood < 4; Disable=True
+CRconv : m3L < 100 && nBJetTight25_Mini == 0  && MET_pt < 30 && nLepGood < 4; Disable=True
+
+cIn : abs(cos_ThetaWDn_HE) < 0.9; Disable=True
+
+flav_eee : (abs(LepZ1_pdgId)+abs(LepZ2_pdgId)+abs(LepW_pdgId)-33)/2 == 0; Disable=True
+flav_eem : (abs(LepZ1_pdgId)+abs(LepZ2_pdgId)+abs(LepW_pdgId)-33)/2 == 1; Disable=True
+flav_mme : (abs(LepZ1_pdgId)+abs(LepZ2_pdgId)+abs(LepW_pdgId)-33)/2 == 2; Disable=True
+flav_mmm : (abs(LepZ1_pdgId)+abs(LepZ2_pdgId)+abs(LepW_pdgId)-33)/2 == 3; Disable=True
+
