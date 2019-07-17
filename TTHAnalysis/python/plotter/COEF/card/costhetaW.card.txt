@@ -1,0 +1,40 @@
+## Datacard for cut file RunII_SM_WZ/2016/cuts_wzsm.txt (signal prompt_WZ_other)
+## Event selection: 
+##   alwaystrue : 1
+##   filters : $DATA{Flag_goodVertices && Flag_globalSuperTightHalo2016Filter && Flag_HBHENoiseFilter && Flag_HBHENoiseIsoFilter && Flag_EcalDeadCellTriggerPrimitiveFilter && Flag_BadPFMuonFilter && Flag_BadChargedCandidateFilter && Flag_eeBadScFilter && Flag_ecalBadCalibFilter} $MC{1} $FASTSIM{1}
+##   trigger : Trigger_3l_2016
+##   3l : nLepSel >= 3
+##   BRevent : abs(LepSel_pdgId[0]) < 15 && abs(LepSel_pdgId[1]) < 15 && abs(LepSel_pdgId[2]) < 15 && nOSSF_3l >= 1
+##   lowmass : minMllSFOS_Mini > 12 || minMllSFOS_Mini == -1
+##   lepPt : LepZ1_pt >= 25  && LepZ2_pt >= 10  && LepW_pt >= 25
+##   AllTight : LepSel_isTight[0] &&  LepSel_isTight[1] && LepSel_isTight[2]
+##   SRWZ : m3L >= 100 && nBJetTight25_Mini == 0 && MET_pt > 30  && abs(mll_3l - 91.16) < 15 && nLepGood < 4
+shapes *        * ../common/costhetaW.input.root x_$PROCESS x_$PROCESS_$SYSTEMATIC
+##----------------------------------
+bin         cuts_wzsm
+observation 447.863199648
+##----------------------------------
+##----------------------------------
+bin                    cuts_wzsm         cuts_wzsm         cuts_wzsm         cuts_wzsm         cuts_wzsm         cuts_wzsm         cuts_wzsm         cuts_wzsm         cuts_wzsm         cuts_wzsm         cuts_wzsm         cuts_wzsm         cuts_wzsm         cuts_wzsm         cuts_wzsm         cuts_wzsm 
+process               prompt_hZZ         prompt_ZZ       prompt_ggZZ        prompt_TTX        prompt_TZQ         prompt_VH        prompt_VVV       prompt_TTXX             convs          fakes_DY          fakes_TT          fakes_VV     prompt_WZ_WfL     prompt_WZ_WfR     prompt_WZ_WfO   prompt_WZ_other 
+process                        1                 2                 3                 4                 5                 6                 7                 8                 9                10                11                13                -3                -2                -1                 0 
+rate                       0.801           142.110            10.086            56.255            25.770            19.701            30.948             0.515            62.698            90.744             7.814             0.422          1202.219           814.937           431.243            30.019 
+##----------------------------------
+convs_ML     lnN               -                 -                 -                 -                 -                 -                 -                 -               1.2                 -                 -                 -                 -                 -                 -                 - 
+trigeffbias_ML lnN     0.997/1.003       0.997/1.003       0.997/1.003       0.997/1.003       0.997/1.003       0.997/1.003       0.997/1.003       0.997/1.003       0.997/1.003                 -                 -                 -       0.997/1.003       0.997/1.003       0.997/1.003       0.997/1.003 
+lumi_2016_ML lnN           1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025             1.025                 -                 -                 -             1.025             1.025             1.025             1.025 
+normTTX_ML   lnN               -                 -                 -              1.15                 -                 -                 -              1.15                 -                 -                 -                 -                 -                 -                 -                 - 
+normtZq_ML   lnN               -                 -                 -                 -              1.35                 -                 -                 -                 -                 -                 -                 -                 -                 -                 -                 - 
+fakes_ML     lnN               -                 -                 -                 -                 -                 -                 -                 -                 -               1.5               1.5               1.5                 -                 -                 -                 - 
+normVVV_ML   lnN               -                 -                 -                 -                 -                 -               1.5                 -                 -                 -                 -                 -                 -                 -                 -                 - 
+normVH_ML    lnN               -                 -                 -                 -                 -              1.25                 -                 -                 -                 -                 -                 -                 -                 -                 -                 - 
+trigeffstat_2016_ML lnN     0.985/1.009       0.985/1.009       0.985/1.009       0.985/1.009       0.985/1.009       0.985/1.009       0.985/1.009       0.985/1.009       0.985/1.009                 -                 -                 -       0.985/1.009       0.985/1.009       0.985/1.009       0.985/1.009 
+normZZ_ML    lnN            1.07              1.07              1.07                 -                 -                 -                 -                 -                 -                 -                 -                 -                 -                 -                 -                 - 
+LepSFEl_ML shape               1                 1                 1                 1                 1                 1                 1                 1                 1                 -                 -                 -                 1                 1                 1                 1 
+ElScale_ML shape               1                 1                 1                 1                 1                 1                 1                 1                 1                 -                 -                 -                 1                 1                 1                 1 
+PUW_ML     shape               1                 1                 1                 1                 1                 1                 1                 1                 1                 -                 -                 -                 1                 1                 1                 1 
+MuScale_ML shape               1                 1                 1                 1                 1                 1                 1                 1                 1                 -                 -                 -                 1                 1                 1                 1 
+btag_HF_ML shape               1                 1                 1                 1                 1                 1                 1                 1                 1                 -                 -                 -                 1                 1                 1                 1 
+JES_ML     shape               1                 1                 1                 1                 1                 1                 1                 1                 1                 -                 -                 -                 1                 1                 1                 1 
+btag_LF_ML shape               1                 1                 1                 1                 1                 1                 1                 1                 1                 -                 -                 -                 1                 1                 1                 1 
+LepSFMu_ML shape               1                 1                 1                 1                 1                 1                 1                 1                 1                 -                 -                 -                 1                 1                 1                 1 
