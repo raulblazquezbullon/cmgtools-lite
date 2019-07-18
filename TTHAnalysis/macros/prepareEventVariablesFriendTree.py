@@ -168,7 +168,11 @@ for D in glob(args[0]+"/*"):
                 f = ROOT.TFile.Open(fout);
                 t = f.Get("sf/t")
                 print fout
-                if t.GetEntries() != entries:
+                tttt = f.Get("ajkshd")
+                if t == tttt:
+                    print "Component %s corrupted, need to be remade"%short
+                    f.Close()
+                elif t.GetEntries() != entries:
                     print "Component %s has to be remade, mismatching number of entries (%d vs %d)" % (short, entries, t.GetEntries())
                     t = 0
                     f.Close()
