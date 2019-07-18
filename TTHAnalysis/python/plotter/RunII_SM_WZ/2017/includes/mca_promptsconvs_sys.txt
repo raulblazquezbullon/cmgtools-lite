@@ -1,4 +1,4 @@
-prompt_WZ_jec_Up+ : WZTo3LNu_part2 : xsec*1.0 ; FillColor=ROOT.kOrange , FakeRate="RunII_SM_WZ/2016/fakerate_standard_jecUp.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="WZ (k-NNLO)", NormSystematic=0.12
+prompt_WZ_jec_Up+ : WZTo3LNu_pow : xsec*1.124 ; FillColor=ROOT.kOrange , FakeRate="RunII_SM_WZ/2016/fakerate_standardPU2017_jecUp.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="WZ (k-NNLO)", NormSystematic=0.12
 
 convs_jec_Up : TTGJets_part1 + TTGJets_part2  : xsec ; FillColor=ROOT.kOrange-3 , FakeRate="RunII_SM_WZ/2016/fakerate_standard_jecUp.txt\,RunII_SM_WZ/2016/fakerate_load_isconv.txt", Label="X+g", NormSystematic=0.20
 convs_jec_Up : WJetsToLNu : xsec ; FillColor=ROOT.kOrange-3 , FakeRate="RunII_SM_WZ/2016/fakerate_standard_jecUp.txt\,RunII_SM_WZ/2016/fakerate_load_isconv.txt", Label="X+g", NormSystematic=0.20
@@ -42,7 +42,7 @@ prompt_TTXX_jec_Up : TTZH                                          : xsec ; Fill
 prompt_TTXX_jec_Up : TTZZ                                          : xsec ; FillColor=ROOT.kViolet , FakeRate="RunII_SM_WZ/2016/fakerate_standard_jecUp.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="ttXX", NormSystematic=0.15
 
 
-prompt_WZ_jec_Dn+ : WZTo3LNu_part2 : xsec*1.0 ; FillColor=ROOT.kOrange , FakeRate="RunII_SM_WZ/2016/fakerate_standard_jecDn.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="WZ (k-NNLO)", NormSystematic=0.12
+prompt_WZ_jec_Dn+ : WZTo3LNu_pow : xsec*1.124 ; FillColor=ROOT.kOrange , FakeRate="RunII_SM_WZ/2016/fakerate_standardPU2017_jecDn.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="WZ (k-NNLO)", NormSystematic=0.12
 
 convs_jec_Dn : TTGJets_part1 + TTGJets_part2  : xsec ; FillColor=ROOT.kOrange-3 , FakeRate="RunII_SM_WZ/2016/fakerate_standard_jecDn.txt\,RunII_SM_WZ/2016/fakerate_load_isconv.txt", Label="X+g", NormSystematic=0.20
 convs_jec_Dn : WJetsToLNu : xsec ; FillColor=ROOT.kOrange-3 , FakeRate="RunII_SM_WZ/2016/fakerate_standard_jecDn.txt\,RunII_SM_WZ/2016/fakerate_load_isconv.txt", Label="X+g", NormSystematic=0.20
@@ -86,7 +86,7 @@ prompt_TTXX_jec_Dn : TTZH                                          : xsec ; Fill
 prompt_TTXX_jec_Dn : TTZZ                                          : xsec ; FillColor=ROOT.kViolet , FakeRate="RunII_SM_WZ/2016/fakerate_standard_jecDn.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="ttXX", NormSystematic=0.15
 
 
-prompt_WZ_elscale_Up+ : WZTo3LNu_part2 : xsec*1.0 ; FillColor=ROOT.kOrange , FakeRate="RunII_SM_WZ/2016/fakerate_standard_elecScaleUp.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="WZ (k-NNLO)", NormSystematic=0.12
+prompt_WZ_elscale_Up+ : WZTo3LNu_pow : xsec*1.124 ; FillColor=ROOT.kOrange , FakeRate="RunII_SM_WZ/2016/fakerate_standardPU2017_elecScaleUp.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="WZ (k-NNLO)", NormSystematic=0.12
 
 convs_elscale_Up : TTGJets_part1 + TTGJets_part2  : xsec ; FillColor=ROOT.kOrange-3 , FakeRate="RunII_SM_WZ/2016/fakerate_standard_elecScaleUp.txt\,RunII_SM_WZ/2016/fakerate_load_isconv.txt", Label="X+g", NormSystematic=0.20
 convs_elscale_Up : WJetsToLNu : xsec ; FillColor=ROOT.kOrange-3 , FakeRate="RunII_SM_WZ/2016/fakerate_standard_elecScaleUp.txt\,RunII_SM_WZ/2016/fakerate_load_isconv.txt", Label="X+g", NormSystematic=0.20
@@ -130,7 +130,7 @@ prompt_TTXX_elscale_Up : TTZH                                          : xsec ; 
 prompt_TTXX_elscale_Up : TTZZ                                          : xsec ; FillColor=ROOT.kViolet , FakeRate="RunII_SM_WZ/2016/fakerate_standard_elecScaleUp.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="ttXX", NormSystematic=0.15
 
 
-prompt_WZ_elscale_Dn+ : WZTo3LNu_part2 : xsec*1.0 ; FillColor=ROOT.kOrange , FakeRate="RunII_SM_WZ/2016/fakerate_standard_elecScaleDn.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="WZ (k-NNLO)", NormSystematic=0.12
+prompt_WZ_elscale_Dn+ : WZTo3LNu_pow : xsec*1.124 ; FillColor=ROOT.kOrange , FakeRate="RunII_SM_WZ/2016/fakerate_standardPU2017_elecScaleDn.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="WZ (k-NNLO)", NormSystematic=0.12
 
 convs_elscale_Dn : TTGJets_part1 + TTGJets_part2  : xsec ; FillColor=ROOT.kOrange-3 , FakeRate="RunII_SM_WZ/2016/fakerate_standard_elecScaleDn.txt\,RunII_SM_WZ/2016/fakerate_load_isconv.txt", Label="X+g", NormSystematic=0.20
 convs_elscale_Dn : WJetsToLNu : xsec ; FillColor=ROOT.kOrange-3 , FakeRate="RunII_SM_WZ/2016/fakerate_standard_elecScaleDn.txt\,RunII_SM_WZ/2016/fakerate_load_isconv.txt", Label="X+g", NormSystematic=0.20
@@ -174,7 +174,7 @@ prompt_TTXX_elscale_Dn : TTZH                                          : xsec ; 
 prompt_TTXX_elscale_Dn : TTZZ                                          : xsec ; FillColor=ROOT.kViolet , FakeRate="RunII_SM_WZ/2016/fakerate_standard_elecScaleDn.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="ttXX", NormSystematic=0.15
 
 
-prompt_WZ_muscale_Up+ : WZTo3LNu_part2 : xsec*1.0 ; FillColor=ROOT.kOrange , FakeRate="RunII_SM_WZ/2016/fakerate_standard_muonScaleUp.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="WZ (k-NNLO)", NormSystematic=0.12
+prompt_WZ_muscale_Up+ : WZTo3LNu_pow : xsec*1.124 ; FillColor=ROOT.kOrange , FakeRate="RunII_SM_WZ/2016/fakerate_standardPU2017_muonScaleUp.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="WZ (k-NNLO)", NormSystematic=0.12
 
 convs_muscale_Up : TTGJets_part1 + TTGJets_part2  : xsec ; FillColor=ROOT.kOrange-3 , FakeRate="RunII_SM_WZ/2016/fakerate_standard_muonScaleUp.txt\,RunII_SM_WZ/2016/fakerate_load_isconv.txt", Label="X+g", NormSystematic=0.20
 convs_muscale_Up : WJetsToLNu : xsec ; FillColor=ROOT.kOrange-3 , FakeRate="RunII_SM_WZ/2016/fakerate_standard_muonScaleUp.txt\,RunII_SM_WZ/2016/fakerate_load_isconv.txt", Label="X+g", NormSystematic=0.20
@@ -218,7 +218,7 @@ prompt_TTXX_muscale_Up : TTZH                                          : xsec ; 
 prompt_TTXX_muscale_Up : TTZZ                                          : xsec ; FillColor=ROOT.kViolet , FakeRate="RunII_SM_WZ/2016/fakerate_standard_muonScaleUp.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="ttXX", NormSystematic=0.15
 
 
-prompt_WZ_muscale_Dn+ : WZTo3LNu_part2 : xsec*1.0 ; FillColor=ROOT.kOrange , FakeRate="RunII_SM_WZ/2016/fakerate_standard_muonScaleDn.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="WZ (k-NNLO)", NormSystematic=0.12
+prompt_WZ_muscale_Dn+ : WZTo3LNu_pow : xsec*1.124 ; FillColor=ROOT.kOrange , FakeRate="RunII_SM_WZ/2016/fakerate_standardPU2017_muonScaleDn.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="WZ (k-NNLO)", NormSystematic=0.12
 
 convs_muscale_Dn : TTGJets_part1 + TTGJets_part2  : xsec ; FillColor=ROOT.kOrange-3 , FakeRate="RunII_SM_WZ/2016/fakerate_standard_muonScaleDn.txt\,RunII_SM_WZ/2016/fakerate_load_isconv.txt", Label="X+g", NormSystematic=0.20
 convs_muscale_Dn : WJetsToLNu : xsec ; FillColor=ROOT.kOrange-3 , FakeRate="RunII_SM_WZ/2016/fakerate_standard_muonScaleDn.txt\,RunII_SM_WZ/2016/fakerate_load_isconv.txt", Label="X+g", NormSystematic=0.20

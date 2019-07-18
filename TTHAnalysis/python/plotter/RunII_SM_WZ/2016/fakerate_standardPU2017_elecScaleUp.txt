@@ -14,3 +14,6 @@ change: LepZ1_pt\b: scaleLepton(LepZ1_pt, abs(LepZ1_pdgId), 1.01, 11)
 change: LepZ2_pt\b: scaleLepton(LepZ2_pt, abs(LepZ2_pdgId), 1.01, 11)
 change: LepW_pt\b:  scaleLepton(LepW_pt, abs(LepW_pdgId), 1.01, 11)
 
+change    : puWeight\b : puWeight_auto
+change    : puWeightUp\b : puWeightUp_auto
+change    : puWeightDown\b : puWeightDown_auto
