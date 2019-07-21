@@ -8,14 +8,14 @@ MODULES = []
 ###################################
 from CMGTools.TTHAnalysis.tools.vertexWeightFriend import VertexWeightFriend
 
-MODULES.append( ('vtxWeight2016', lambda : VertexWeightFriend(myfile=None, targetfile=os.environ["CMSSW_BASE"]+"/src/CMGTools/TTHAnalysis/data/pileup/pileup_profile_Summer16.root",
+MODULES.append( ('vtxWeight2016', lambda : VertexWeightFriend(myfile=None, targetfile=os.environ["CMSSW_BASE"]+"/src/CMGTools/TTHAnalysis/data/pileup/PileupData_GoldenJSON_Full2016.root",
                                                           myhist=None,targethist="pileup",name="puWeight_auto",
                                                           verbose=False,vtx_coll_to_reweight="Pileup_nTrueInt",autoPU=True)) )
-MODULES.append( ('vtxWeight2016Up', lambda : VertexWeightFriend(myfile=None, targetfile=os.environ["CMSSW_BASE"]+"/src/CMGTools/TTHAnalysis/data/pileup/pileup_profile_Summer16.root",
+MODULES.append( ('vtxWeight2016Up', lambda : VertexWeightFriend(myfile=None, targetfile=os.environ["CMSSW_BASE"]+"/src/CMGTools/TTHAnalysis/data/pileup/PileupData_GoldenJSON_Full2016.root",
                                                           myhist=None,targethist="pileup_plus",name="puWeightUp_auto",
                                                           verbose=False,vtx_coll_to_reweight="Pileup_nTrueInt",autoPU=True)) )
 
-MODULES.append( ('vtxWeight2016Down', lambda : VertexWeightFriend(myfile=None, targetfile=os.environ["CMSSW_BASE"]+"/src/CMGTools/TTHAnalysis/data/pileup/pileup_profile_Summer16.root",
+MODULES.append( ('vtxWeight2016Down', lambda : VertexWeightFriend(myfile=None, targetfile=os.environ["CMSSW_BASE"]+"/src/CMGTools/TTHAnalysis/data/pileup/PileupData_GoldenJSON_Full2016.root",
                                                           myhist=None,targethist="pileup_minus",name="puWeightDown_auto",
                                                           verbose=False,vtx_coll_to_reweight="Pileup_nTrueInt",autoPU=True)) )
 
