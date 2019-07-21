@@ -8,7 +8,7 @@
 using namespace std;
 
 bool isFakeL(int id){
-  return (id == 2) || (id == 3) || (id == 12) || (id == 13) || (id == -1) || (id == 9) || (id == 5) || (id == 15) || (id == 0) || (id == 10);
+  return (id == 2) || (id == 3) || (id == 12) || (id == 13) || (id == -1) || (id == 9) || (id == 5) || (id == 15);
 }
 
 bool isFakeT(int id){
