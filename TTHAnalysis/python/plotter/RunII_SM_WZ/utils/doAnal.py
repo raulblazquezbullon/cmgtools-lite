@@ -50,37 +50,72 @@ elif options.datatype == "heppy":
 if "friend_" in doWhat:
     baseCommand = "python prepareEventVariablesFriendTree.py %s [OUTTREES] --tree treeProducerSusyMultilepton --ttree %s --tra2 -n -I CMGTools.TTHAnalysis.tools.%s [MODULES] [EXTRAARGS]"%(options.inname, treeName, moduleFolder)
     
-    if "all" in doWhat:
-        ### Everything, just everything
-        print "The script runs all trees in %s by default unless a specific dataset is given by -d"%options.inname
-        print baseCommand.replace("[OUTTREES]", options.outname).replace("[MODULES]", " -m vtxWeight%s -m vtxWeight%sUp -m vtxWeight%sDown -m leptonEnergyCorrections_%s -m leptonJetReCleanerWZSM_%s -m leptonBuilderWZSM_%s -m eventBTagWeightDeepCSVT_%s "%(str(options.year),str(options.year),str(options.year),str(options.year),str(options.year),str(options.year),str(options.year)) ).replace("[EXTRAARGS]", options.extra + " --onlyMC ")
-        print baseCommand.replace("[INTREES]", options.inname).replace("[OUTTREES]", options.outname).replace("[MODULES]", " -m leptonEnergyCorrections_%s -m leptonJetReCleanerWZSM_%s -m leptonBuilderWZSM_%s "%(str(options.year),str(options.year),str(options.year))).replace("[EXTRAARGS]", options.extra + " --onlyData ")
-
-    if "PU" in doWhat or "PileUp" in doWhat:
+    if "PU" in doWhat or "PileUp" in doWhat or "all" in doWhat:
         ### Pile-up reweighting. Nominal (62.9) +-5% files already in ../data/pileup/ folder
+        print "----------------------------------------------------"
         print "The script runs all trees in %s by default unless a specific dataset is given by -d"%options.inname
-        print baseCommand.replace("[INTREES]", options.inname).replace("[OUTTREES]", options.outname).replace("[MODULES]", "-m vtxWeight%s -m vtxWeight%sUp -m vtxWeight%sDown"%(str(options.year),str(options.year),str(options.year))).replace("[EXTRAARGS]", options.extra + " --onlyMC ")
-
-    elif "Corrections" in doWhat or "Co" in doWhat:
+        print baseCommand.replace("[INTREES]", options.inname).replace("[OUTTREES]", options.inname + "/pileUpWeight/").replace("[MODULES]", "-m vtxWeight%s -m vtxWeight%sUp -m vtxWeight%sDown"%(str(options.year),str(options.year),str(options.year))).replace("[EXTRAARGS]", options.extra + " --onlyMC ")
+        print "----------------------------------------------------"
+    if "Corrections" in doWhat or "Co" in doWhat or "all" in doWhat:
         ### Standard 3l recleaner
+        print "----------------------------------------------------"
         print "The script runs all trees in %s by default unless a specific dataset is given by -d"%options.inname
-        print baseCommand.replace("[INTREES]", options.inname).replace("[OUTTREES]", options.outname).replace("[MODULES]", " -m leptonEnergyCorrections_%s "%str(options.year)).replace("[EXTRAARGS]", options.extra)
-
-    elif "ReCleaner" in doWhat or "Cl" in doWhat:
+        print baseCommand.replace("[INTREES]", options.inname).replace("[OUTTREES]", options.inname + "/leptonPtCorrections/").replace("[MODULES]", " -m leptonEnergyCorrections_%s "%str(options.year)).replace("[EXTRAARGS]", options.extra)
+        print "----------------------------------------------------"
+    if "ReCleaner" in doWhat or "Cl" in doWhat or "all" in doWhat:
         ### Standard 3l recleaner
+        print "----------------------------------------------------"
         print "The script runs all trees in %s by default unless a specific dataset is given by -d"%options.inname
-        print baseCommand.replace("[INTREES]", options.inname).replace("[OUTTREES]", options.outname).replace("[MODULES]", " -m leptonJetReCleanerWZSM_%s "%str(options.year)).replace("[EXTRAARGS]", options.extra + "-F sf/t %s/leptonPtCorrections/evVarFriend_{cname}.root"%options.inname )
-    
-    elif "Builder" in doWhat or "Bu" in doWhat:
+        print baseCommand.replace("[INTREES]", options.inname).replace("[OUTTREES]", options.inname + "/leptonJetReCleanerWZSM/").replace("[MODULES]", " -m leptonJetReCleanerWZSM_%s "%str(options.year)).replace("[EXTRAARGS]", options.extra + "-F sf/t %s/leptonPtCorrections/evVarFriend_{cname}.root"%options.inname )
+        print "----------------------------------------------------"    
+    if "Builder" in doWhat or "Bu" in doWhat or "all" in doWhat:
         ### Standard 3l builder
+        print "----------------------------------------------------"
         print "The script runs all trees in %s by default unless a specific dataset is given by -d"%options.inname
-        print baseCommand.replace("[INTREES]", options.inname).replace("[OUTTREES]", options.outname).replace("[MODULES]", " -m leptonBuilderWZSM_%s "%str(options.year)).replace("[EXTRAARGS]", options.extra+ "-F sf/t %s/leptonPtCorrections/evVarFriend_{cname}.root -F sf/t %s/leptonJetReCleanerWZSM/evVarFriend_{cname}.root"%(options.inname, options.inname))
+        print baseCommand.replace("[INTREES]", options.inname).replace("[OUTTREES]", options.inname+ "/leptonBuilderWZSM/").replace("[MODULES]", " -m leptonBuilderWZSM_%s "%str(options.year)).replace("[EXTRAARGS]", options.extra+ "-F sf/t %s/leptonPtCorrections/evVarFriend_{cname}.root -F sf/t %s/leptonJetReCleanerWZSM/evVarFriend_{cname}.root"%(options.inname, options.inname))
+        print "----------------------------------------------------"
 
-    elif "bTag" in doWhat or "Bt" in doWhat:
+    if "bTag" in doWhat or "Bt" in doWhat or "all" in doWhat:
         ### Standard 3l btag Weights
+        print "----------------------------------------------------"
         print "The script runs all trees in %s by default unless a specific dataset is given by -d"%options.inname
-        print baseCommand.replace("[INTREES]", options.inname).replace("[OUTTREES]", options.outname).replace("[MODULES]", " -m eventBTagWeightDeepCSVT_%s"%str(options.year)).replace("[EXTRAARGS]", options.extra + " --onlyMC " + "-F sf/t %s/leptonPtCorrections/evVarFriend_{cname}.root -F sf/t %s/leptonJetReCleanerWZSM/evVarFriend_{cname}.root"%(options.inname, options.inname))
+        print baseCommand.replace("[INTREES]", options.inname).replace("[OUTTREES]", options.inname+ "/bTagWeights/").replace("[MODULES]", " -m eventBTagWeightDeepCSVT_%s"%str(options.year)).replace("[EXTRAARGS]", options.extra + " --onlyMC " + "-F sf/t %s/leptonPtCorrections/evVarFriend_{cname}.root --onlyMC -F sf/t %s/leptonJetReCleanerWZSM/evVarFriend_{cname}.root"%(options.inname, options.inname))
+        print "----------------------------------------------------"
 
+    if "Matcher" in doWhat or "Ma" in doWhat or "all" in doWhat:
+        ### UCSX matching
+        print "----------------------------------------------------"
+        print "The script runs all trees in %s by default unless a specific dataset is given by -d"%options.inname
+        print baseCommand.replace("[INTREES]", options.inname).replace("[OUTTREES]", options.inname+ "/leptonMatcher/").replace("[MODULES]", " -m leptonMatcher ").replace("[EXTRAARGS]", options.extra + " --onlyMC " + "-F sf/t %s/leptonPtCorrections/evVarFriend_{cname}.root --onlyMC -F sf/t %s/leptonJetReCleanerWZSM/evVarFriend_{cname}.root"%(options.inname, options.inname))
+        print "----------------------------------------------------"
+
+    if "Trigger" in doWhat or "Tr" in doWhat or "all" in doWhat:
+        ### Trigger Flags
+        print "----------------------------------------------------"
+        print "The script runs all trees in %s by default unless a specific dataset is given by -d"%options.inname
+        print baseCommand.replace("[INTREES]", options.inname).replace("[OUTTREES]", options.inname+ "/trigger_%s/"%str(options.year)).replace("[MODULES]", " -m Trigger_%s "%str(options.year)).replace("[EXTRAARGS]", options.extra + " --onlyMC " + "-F sf/t %s/leptonPtCorrections/evVarFriend_{cname}.root -F sf/t %s/leptonJetReCleanerWZSM/evVarFriend_{cname}.root"%(options.inname, options.inname))
+        print "----------------------------------------------------"
+
+    if "Gen" in doWhat or "Ge" in doWhat or "all" in doWhat:
+        ### Gen Level variables
+        print "----------------------------------------------------"
+        print "The script runs all trees in %s by default unless a specific dataset is given by -d"%options.inname
+        print baseCommand.replace("[INTREES]", options.inname).replace("[OUTTREES]", options.inname+ "/lepgenVarsWZSM/").replace("[MODULES]", " -m lepgenVarsWZSM_%s "%str(options.year)).replace("[EXTRAARGS]", options.extra + " --onlyMC " + "-F sf/t %s/leptonPtCorrections/evVarFriend_{cname}.root --onlyMC -F sf/t %s/leptonJetReCleanerWZSM/evVarFriend_{cname}.root"%(options.inname, options.inname))
+        print "----------------------------------------------------"
+
+    if "Polarization" in doWhat or "Po" in doWhat or "all" in doWhat:
+        ### Boson polarization variables
+        print "----------------------------------------------------"
+        print "The script runs all trees in %s by default unless a specific dataset is given by -d"%options.inname
+        print baseCommand.replace("[INTREES]", options.inname).replace("[OUTTREES]", options.inname+ "/bosonPolarizationWZ/").replace("[MODULES]", " -m bosonPolarizationWZ_%s "%str(options.year)).replace("[EXTRAARGS]", options.extra + " --onlyMC " + "-F sf/t %s/leptonPtCorrections/evVarFriend_{cname}.root -F sf/t %s/leptonJetReCleanerWZSM/evVarFriend_{cname}.root"%(options.inname, options.inname))
+        print "----------------------------------------------------"
+
+    if "PolarizationGEN" in doWhat or "Pg" in doWhat or "all" in doWhat:
+        ### Boson polarization gen level variables
+        print "----------------------------------------------------"
+        print "The script runs all trees in %s by default unless a specific dataset is given by -d"%options.inname
+        print baseCommand.replace("[INTREES]", options.inname).replace("[OUTTREES]", options.inname+ "/bosonPolarizationGEN/").replace("[MODULES]", " -m bosonPolarizationGEN ").replace("[EXTRAARGS]", options.extra + " --onlyMC " + "-F sf/t %s/leptonPtCorrections/evVarFriend_{cname}.root --onlyMC -F sf/t %s/leptonJetReCleanerWZSM/evVarFriend_{cname}.root"%(options.inname, options.inname))
+        print "----------------------------------------------------"
 
 
 if "plot_" in doWhat:

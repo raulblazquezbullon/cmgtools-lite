@@ -7,6 +7,32 @@ MODULES = []
 ######## Pileup reweighting #######
 ###################################
 from CMGTools.TTHAnalysis.tools.vertexWeightFriend import VertexWeightFriend
+
+MODULES.append( ('vtxWeight2016', lambda : VertexWeightFriend(myfile=None, targetfile=os.environ["CMSSW_BASE"]+"/src/CMGTools/TTHAnalysis/data/pileup/PileupData_GoldenJSON_Full2016.root",
+                                                          myhist=None,targethist="pileup",name="puWeight_auto",
+                                                          verbose=False,vtx_coll_to_reweight="Pileup_nTrueInt",autoPU=True)) )
+MODULES.append( ('vtxWeight2016Up', lambda : VertexWeightFriend(myfile=None, targetfile=os.environ["CMSSW_BASE"]+"/src/CMGTools/TTHAnalysis/data/pileup/PileupData_GoldenJSON_Full2016.root",
+                                                          myhist=None,targethist="pileup_plus",name="puWeightUp_auto",
+                                                          verbose=False,vtx_coll_to_reweight="Pileup_nTrueInt",autoPU=True)) )
+
+MODULES.append( ('vtxWeight2016Down', lambda : VertexWeightFriend(myfile=None, targetfile=os.environ["CMSSW_BASE"]+"/src/CMGTools/TTHAnalysis/data/pileup/PileupData_GoldenJSON_Full2016.root",
+                                                          myhist=None,targethist="pileup_minus",name="puWeightDown_auto",
+                                                          verbose=False,vtx_coll_to_reweight="Pileup_nTrueInt",autoPU=True)) )
+
+
+MODULES.append( ('vtxWeight2017', lambda : VertexWeightFriend(myfile=None, targetfile=os.environ["CMSSW_BASE"]+"/src/CMGTools/TTHAnalysis/data/pileup/pileup_Cert_294927-306462_13TeV_PromptReco_Collisions17_withVar.root",
+                                                          myhist=None,targethist="pileup",name="puWeight_auto",
+                                                          verbose=False,vtx_coll_to_reweight="Pileup_nTrueInt",autoPU=True)) )
+MODULES.append( ('vtxWeight2017Up', lambda : VertexWeightFriend(myfile=None, targetfile=os.environ["CMSSW_BASE"]+"/src/CMGTools/TTHAnalysis/data/pileup/pileup_Cert_294927-306462_13TeV_PromptReco_Collisions17_withVar.root",
+                                                          myhist=None,targethist="pileup_plus",name="puWeightUp_auto",
+                                                          verbose=False,vtx_coll_to_reweight="Pileup_nTrueInt",autoPU=True)) )
+
+MODULES.append( ('vtxWeight2017Down', lambda : VertexWeightFriend(myfile=None, targetfile=os.environ["CMSSW_BASE"]+"/src/CMGTools/TTHAnalysis/data/pileup/pileup_Cert_294927-306462_13TeV_PromptReco_Collisions17_withVar.root",
+                                                          myhist=None,targethist="pileup_minus",name="puWeightDown_auto",
+                                                          verbose=False,vtx_coll_to_reweight="Pileup_nTrueInt",autoPU=True)) )
+
+
+
 MODULES.append( ('vtxWeight2018', lambda : VertexWeightFriend(myfile=None, targetfile=os.environ["CMSSW_BASE"]+"/src/CMGTools/TTHAnalysis/data/pileup/pileup_Cert_314472-325175_13TeV_17SeptEarlyReReco2018ABC_PromptEraD_Collisions18_withVar.root",
                                                           myhist=None,targethist="pileup",name="vtxWeight2018Nominal",
                                                           verbose=False,vtx_coll_to_reweight="Pileup_nTrueInt",autoPU=True)) )
@@ -182,6 +208,33 @@ MODULES.append( ('eventBTagWeightDeepCSVT_2017',  lambda : bTagWeightAnalyzer(bt
 MODULES.append( ('eventBTagWeightDeepCSVL_2018',  lambda : bTagWeightAnalyzer(btagsf_DeepCSV_102X, btag_efficiency_fullsimDeepCSV_2018, algo='DeepCSV', branchbtag='btagDeepB', branchflavor='hadronFlavour', label='DeepCSVL', recllabel='Mini', wp=0, year=2018)))
 MODULES.append( ('eventBTagWeightDeepCSVM_2018',  lambda : bTagWeightAnalyzer(btagsf_DeepCSV_102X, btag_efficiency_fullsimDeepCSV_2018, algo='DeepCSV', branchbtag='btagDeepB', branchflavor='hadronFlavour', label='DeepCSVM', recllabel='Mini', wp=1, year=2018)))
 MODULES.append( ('eventBTagWeightDeepCSVT_2018',  lambda : bTagWeightAnalyzer(btagsf_DeepCSV_102X, btag_efficiency_fullsimDeepCSV_2018, algo='DeepCSV', branchbtag='btagDeepB', branchflavor='hadronFlavour', label='DeepCSVT', recllabel='Mini', wp=2, year=2018)))
+
+
+from CMGTools.TTHAnalysis.tools.bTagWeightAnalyzerFastSim import bTagWeightAnalyzerFastSim
+
+btagsffs_DeepCSV_80X    = os.path.join( utility_files_dir,"btag", "deepcsv_13TEV_16SL_18_3_2019.csv")
+btagsffs_DeepFlavor_80X = os.path.join( utility_files_dir,"btag", "DeepFlav_13TEV_16SL_18_3_2019.csv")
+
+btagsffs_CSV_94X        = os.path.join(utility_files_dir, "btag", "csvv2_13TEV_17SL_18_3_2019.csv")
+btagsffs_DeepCSV_94X    = os.path.join(utility_files_dir, "btag", "deepcsv_13TEV_17SL_18_3_2019.csv")
+btagsffs_DeepFlavor_94X = os.path.join(utility_files_dir, "btag", "DeepFlav_13TEV_17SL_18_3_2019.csv")
+
+btagsffs_DeepCSV_102X    = os.path.join(utility_files_dir, "btag", "deepcsv_13TEV_18SL_7_5_2019.csv")
+btagsffs_DeepFlavor_102X = os.path.join(utility_files_dir, "btag", "DeepFlav_13TEV_18SL_7_5_2019.csv")
+
+
+MODULES.append( ('eventBTagWeightDeepCSVLFS_2016',  lambda : bTagWeightAnalyzerFastSim(btagsffs_DeepCSV_80X, btag_efficiency_fullsimDeepCSV_2016, algo='DeepCSV', branchbtag='btagDeepB', branchflavor='hadronFlavour', label='DeepCSVL', recllabel='Mini', wp=0, year=2016)))
+MODULES.append( ('eventBTagWeightDeepCSVMFS_2016',  lambda : bTagWeightAnalyzerFastSim(btagsffs_DeepCSV_80X, btag_efficiency_fullsimDeepCSV_2016, algo='DeepCSV', branchbtag='btagDeepB', branchflavor='hadronFlavour', label='DeepCSVM', recllabel='Mini', wp=1, year=2016)))
+MODULES.append( ('eventBTagWeightDeepCSVTFS_2016',  lambda : bTagWeightAnalyzerFastSim(btagsffs_DeepCSV_80X, btag_efficiency_fullsimDeepCSV_2016, algo='DeepCSV', branchbtag='btagDeepB', branchflavor='hadronFlavour', label='DeepCSVT', recllabel='Mini', wp=2, year=2016)))
+
+MODULES.append( ('eventBTagWeightDeepCSVLFS_2017',  lambda : bTagWeightAnalyzerFastSim(btagsffs_DeepCSV_94X, btag_efficiency_fullsimDeepCSV_2017, algo='DeepCSV', branchbtag='btagDeepB', branchflavor='hadronFlavour', label='DeepCSVL', recllabel='Mini', wp=0, year=2017)))
+MODULES.append( ('eventBTagWeightDeepCSVMFS_2017',  lambda : bTagWeightAnalyzerFastSim(btagsffs_DeepCSV_94X, btag_efficiency_fullsimDeepCSV_2017, algo='DeepCSV', branchbtag='btagDeepB', branchflavor='hadronFlavour', label='DeepCSVM', recllabel='Mini', wp=1, year=2017)))
+MODULES.append( ('eventBTagWeightDeepCSVTFS_2017',  lambda : bTagWeightAnalyzerFastSim(btagsffs_DeepCSV_94X, btag_efficiency_fullsimDeepCSV_2017, algo='DeepCSV', branchbtag='btagDeepB', branchflavor='hadronFlavour', label='DeepCSVT', recllabel='Mini', wp=2, year=2017)))
+
+MODULES.append( ('eventBTagWeightDeepCSVLFS_2018',  lambda : bTagWeightAnalyzerFastSim(btagsffs_DeepCSV_102X, btag_efficiency_fullsimDeepCSV_2018, algo='DeepCSV', branchbtag='btagDeepB', branchflavor='hadronFlavour', label='DeepCSVL', recllabel='Mini', wp=0, year=2018)))
+MODULES.append( ('eventBTagWeightDeepCSVMFS_2018',  lambda : bTagWeightAnalyzerFastSim(btagsffs_DeepCSV_102X, btag_efficiency_fullsimDeepCSV_2018, algo='DeepCSV', branchbtag='btagDeepB', branchflavor='hadronFlavour', label='DeepCSVM', recllabel='Mini', wp=1, year=2018)))
+MODULES.append( ('eventBTagWeightDeepCSVTFS_2018',  lambda : bTagWeightAnalyzerFastSim(btagsffs_DeepCSV_102X, btag_efficiency_fullsimDeepCSV_2018, algo='DeepCSV', branchbtag='btagDeepB', branchflavor='hadronFlavour', label='DeepCSVT', recllabel='Mini', wp=2, year=2018)))
+
 
 from CMGTools.TTHAnalysis.tools.JetPhotonPrefiring import JetPhotonPrefiring
 MODULES.append( ('JetPhotonPrefiring_2016',  lambda : JetPhotonPrefiring(os.path.join(utility_files_dir, "jetPref", "L1prefiring_jetpt_2016BtoH.root"), os.path.join(utility_files_dir, "jetPref", "L1prefiring_photonpt_2016BtoH.root"), "L1prefiring_jetpt_2016BtoH", "L1prefiring_photonpt_2016BtoH" ) ))
