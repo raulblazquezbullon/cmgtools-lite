@@ -93,6 +93,7 @@ data : SingleMuon_Run2016B_part0 ; Label="Data", FakeRate="RunII_SM_WZ/2016/fake
 data : SingleMuon_Run2016B_part1 ; Label="Data", FakeRate="RunII_SM_WZ/2016/fakerate_standard_central.txt"
 data : SingleMuon_Run2016B_part2 ; Label="Data", FakeRate="RunII_SM_WZ/2016/fakerate_standard_central.txt"
 data : SingleMuon_Run2016B_part3 ; Label="Data", FakeRate="RunII_SM_WZ/2016/fakerate_standard_central.txt"
+data : SingleMuon_Run2016C       ; Label="Data", FakeRate="RunII_SM_WZ/2016/fakerate_standard_central.txt"
 data : SingleMuon_Run2016D_part0 ; Label="Data", FakeRate="RunII_SM_WZ/2016/fakerate_standard_central.txt"
 data : SingleMuon_Run2016D_part1 ; Label="Data", FakeRate="RunII_SM_WZ/2016/fakerate_standard_central.txt"
 data : SingleMuon_Run2016D_part2 ; Label="Data", FakeRate="RunII_SM_WZ/2016/fakerate_standard_central.txt"
