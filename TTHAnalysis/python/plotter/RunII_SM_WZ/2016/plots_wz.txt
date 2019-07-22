@@ -27,8 +27,8 @@ lepW_eta         : LepW_eta         : 10,-2.5,2.5 ; YTitle="Leptons", XTitle="#e
 #nInt       : nTrueInt       : 50,0,50     ; XTitle="N(TrueInt)"                  , LegendCutoff=1e-4
 #nVert      : nVert          : 50,0,50     ; XTitle="N(PV)"                       , LegendCutoff=1e-4
 
-met        : MET_pt     : 20,0,400   ; XTitle="p_{T}^{miss}  (GeV)"         , LegendCutoff=1e-4, Logy, YMin=1, YMax=100000, Legend="TR"
-metCRWZ    : MET_pt      : 5,0,200   ; XTitle="p_{T}^{miss}  (GeV)"         , LegendCutoff=1e-4, Logy, YMin=1, YMax=100000, Legend="TR"
+met        : MET_pt    : 20,0,400   ; XTitle="p_{T}^{miss}  (GeV)"         , LegendCutoff=1e-4, Logy, YMin=1, YMax=100000, Legend="TR"
+metCRWZ    : MET_pt    : 5,0,200   ; XTitle="p_{T}^{miss}  (GeV)"         , LegendCutoff=1e-4, Logy, YMin=1, YMax=100000, Legend="TR"
 htJet30j   : htJet30j       : 20,0,200    ; XTitle="H_{T}(jet p_{T} > 30) [GeV]" , LegendCutoff=1e-4, Logy, YMax=50000, YMin=1e-1
 nJet30     : nJet30_Mini         : 10,-0.5,9.5 ; XTitle="N(jet\, p_{T} > 30)"         , LegendCutoff=1e-4, Logy, YMax=50000, YMin=1e-1
 nBJet25    : nBJetTight25_Mini  : 5,-0.5,4.5  ; XTitle="N(b-jet\, p_{T} > 25\, DCSVT)", LegendCutoff=1e-4, Logy, YMax=50000, YMin=1
@@ -87,7 +87,7 @@ phistarZ : phistar(LepZ1_eta, LepZ1_phi, LepZ2_eta, LepZ2_phi) : 20, -4, 4 ; XTi
 
 #cosWfromFT_Dn : cos_ThetaWDn_HE :  40,-1,1  ; XTitle="cos(#theta_{W}^{Dn})", Legend='TL', LegendCutoff=1e-5, MoreY=2.0 
 
-cosWfromFT_Dn_Fit : cos_ThetaWDn_HE :  10,-1,1  ; XTitle="cos(#theta_{W}^{Dn})", Legend='TL', LegendCutoff=1e-5, YMin=0, YMax = 1200, MoreY=2.0 
+#cosWfromFT_Dn_Fit : cos_ThetaWDn_HE :  10,-1,1  ; XTitle="cos(#theta_{W}^{Dn})", Legend='TL', LegendCutoff=1e-5, YMin=0, YMax = 1200, MoreY=2.0 
 
 #cosZfromFT_Dn_Fit : ThetaZDn_HE :  40,0,3.1415  ; XTitle="cos(#theta_{Z}^{Dn})", Legend='TL', LegendCutoff=1e-5, YMin=0, YMax = 1200, MoreY=2.0 
 
@@ -102,10 +102,10 @@ cosWfromFT_Dn_Fit : cos_ThetaWDn_HE :  10,-1,1  ; XTitle="cos(#theta_{W}^{Dn})",
 #Prueba2: sqrt(LepSel_eta*LepSel_eta+LepZ2_eta*LepZ2_eta+LepZ1_eta*LepZ1_eta+LepW_eta*LepW_eta)/ sqrt(LepSel_pt*LepSel_pt+LepZ2_pt*LepZ2_pt+LepZ1_pt*LepZ1_pt+LepW_pt*LepW_pt)      : 15,-0,0.1  ; XTitle="#Delta #phi", Legend='TL', LegendCutoff=1e-5, MoreY=1.5 
 #Prueba3: sqrt(LepSel_phi*LepSel_phi+LepZ2_phi*LepZ2_phi+LepZ1_phi*LepZ1_phi+LepW_phi*LepW_phi)/sqrt(LepSel_pt*LepSel_pt+LepZ2_pt*LepZ2_pt+LepZ1_pt*LepZ1_pt+LepW_pt*LepW_pt)     : 15,-0,0.15  ; XTitle="#Delta #eta", Legend='TL', LegendCutoff=1e-5, MoreY=1.5 
 
-RecWphiPL: abs(deltaPhi(sump4(2, LepW_pt, LepW_eta, LepW_phi, LepW_mass, MET_pt, 0, MET_phi, 0),LepW_phi))  : [0,0.4,0.8,1.2,1.6,2,2.4,3.5]  ; XTitle="#Delta_{#phi}(W^{+}\,l_{W}) ", Legend='TL', LegendCutoff=1e-5, MoreY=2.5 
-RecWetaPL: abs(sump4(1, LepW_pt, LepW_eta, LepW_phi, LepW_mass, MET_pt, 0, MET_phi, 0)-LepW_eta)  : [0,0.4,0.8,1.2,1.6,2,2.4,4.5]  ; XTitle="#Delta_{#eta}(W^{+}\,l_{W})", Legend='TL', LegendCutoff=1e-5, MoreY=2.5 
-RecWphiMn: abs(deltaPhi(sump4(2, LepW_pt, LepW_eta, LepW_phi, LepW_mass, MET_pt, 0, MET_phi, 0),LepW_phi))  : [0,0.4,0.8,1.2,1.6,2,2.4,3.5]   ; XTitle="#Delta_{#phi}(W^{-}\,l_{W})", Legend='TL', LegendCutoff=1e-5, MoreY=2.5 
-RecWetaMn: abs(sump4(1, LepW_pt, LepW_eta, LepW_phi, LepW_mass, MET_pt, 0, MET_phi, 0)-LepW_eta)  : [0,0.4,0.8,1.2,1.6,2,2.4,4.5]  ; XTitle="#Delta_{#eta}(W^{-}\,l_{W})", Legend='TL', LegendCutoff=1e-5, MoreY=2.5 
-DeltaRPL1: sqrt((deltaPhi(sump4(2, LepW_pt, LepW_eta, LepW_phi, LepW_mass, MET_pt, 0, MET_phi, 0),LepW_phi))^2 +abs(sump4(1, LepW_pt, LepW_eta, LepW_phi, LepW_mass, MET_pt, 0, MET_phi, 0)-LepW_eta)^2) :  [0.0, 0.020249999999999997, 0.5265, 0.70875, 0.8504999999999999, 0.9719999999999999, 1.0935, 1.15425, 1.2352499999999997, 1.31625, 1.39725, 1.4782499999999998, 1.539, 1.6199999999999999, 1.7009999999999998, 1.7819999999999998, 1.863, 1.9439999999999997, 2.0047499999999996, 2.0654999999999997, 2.1262499999999998, 2.2072499999999997, 2.2882499999999997, 2.32875, 2.40975, 2.49075, 4.5]  ; XTitle="#DeltaR^{+}", Legend='TL', LegendCutoff=1e-5, MoreY=2.5 
-DeltaRMn: sqrt((deltaPhi(sump4(2, LepW_pt, LepW_eta, LepW_phi, LepW_mass, MET_pt, 0, MET_phi, 0),LepW_phi))^2 +abs(sump4(1, LepW_pt, LepW_eta, LepW_phi, LepW_mass, MET_pt, 0, MET_phi, 0)-LepW_eta)^2) : [0,0.4,0.8,1.2,1.6,2,2.4,2.8,3.2,4.5]  ; XTitle="#DeltaR^{-}", Legend='TL', LegendCutoff=1e-5, MoreY=2.5 
+#RecWphiPL: abs(deltaPhi(sump4(2, LepW_pt, LepW_eta, LepW_phi, LepW_mass, MET_pt, 0, MET_phi, 0),LepW_phi))  : [0,0.4,0.8,1.2,1.6,2,2.4,3.5]  ; XTitle="#Delta_{#phi}(W^{+}\,l_{W}) ", Legend='TL', LegendCutoff=1e-5, MoreY=2.5 
+#RecWetaPL: abs(sump4(1, LepW_pt, LepW_eta, LepW_phi, LepW_mass, MET_pt, 0, MET_phi, 0)-LepW_eta)  : [0,0.4,0.8,1.2,1.6,2,2.4,4.5]  ; XTitle="#Delta_{#eta}(W^{+}\,l_{W})", Legend='TL', LegendCutoff=1e-5, MoreY=2.5 
+#RecWphiMn: abs(deltaPhi(sump4(2, LepW_pt, LepW_eta, LepW_phi, LepW_mass, MET_pt, 0, MET_phi, 0),LepW_phi))  : [0,0.4,0.8,1.2,1.6,2,2.4,3.5]   ; XTitle="#Delta_{#phi}(W^{-}\,l_{W})", Legend='TL', LegendCutoff=1e-5, MoreY=2.5 
+#RecWetaMn: abs(sump4(1, LepW_pt, LepW_eta, LepW_phi, LepW_mass, MET_pt, 0, MET_phi, 0)-LepW_eta)  : [0,0.4,0.8,1.2,1.6,2,2.4,4.5]  ; XTitle="#Delta_{#eta}(W^{-}\,l_{W})", Legend='TL', LegendCutoff=1e-5, MoreY=2.5 
+#DeltaRPL1: sqrt((deltaPhi(sump4(2, LepW_pt, LepW_eta, LepW_phi, LepW_mass, MET_pt, 0, MET_phi, 0),LepW_phi))^2 +abs(sump4(1, LepW_pt, LepW_eta, LepW_phi, LepW_mass, MET_pt, 0, MET_phi, 0)-LepW_eta)^2) :  [0.0, 0.020249999999999997, 0.5265, 0.70875, 0.8504999999999999, 0.9719999999999999, 1.0935, 1.15425, 1.2352499999999997, 1.31625, 1.39725, 1.4782499999999998, 1.539, 1.6199999999999999, 1.7009999999999998, 1.7819999999999998, 1.863, 1.9439999999999997, 2.0047499999999996, 2.0654999999999997, 2.1262499999999998, 2.2072499999999997, 2.2882499999999997, 2.32875, 2.40975, 2.49075, 4.5]  ; XTitle="#DeltaR^{+}", Legend='TL', LegendCutoff=1e-5, MoreY=2.5 
+#DeltaRMn: sqrt((deltaPhi(sump4(2, LepW_pt, LepW_eta, LepW_phi, LepW_mass, MET_pt, 0, MET_phi, 0),LepW_phi))^2 +abs(sump4(1, LepW_pt, LepW_eta, LepW_phi, LepW_mass, MET_pt, 0, MET_phi, 0)-LepW_eta)^2) : [0,0.4,0.8,1.2,1.6,2,2.4,2.8,3.2,4.5]  ; XTitle="#DeltaR^{-}", Legend='TL', LegendCutoff=1e-5, MoreY=2.5 
 
