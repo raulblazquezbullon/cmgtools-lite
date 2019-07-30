@@ -3,9 +3,9 @@ convs_jec_Up : WGToLNuG : xsec ; SkipMe=True,FillColor=ROOT.kOrange-3 , FakeRate
 convs_jec_Up : WZG      : 585.8 ; SkipMe=True,FillColor=ROOT.kOrange-3 , FakeRate="RunII_SM_WZ/2016/fakerate_standard_jecUp.txt\,RunII_SM_WZ/2016/fakerate_load_isconv.txt", Label="X+g", NormSystematic=0.20
 convs_jec_Up : ZGTo2LG_part1 + ZGTo2LG_part2 + ZGTo2LG_part0 : 131.3 ; SkipMe=True,FillColor=ROOT.kOrange-3 , FakeRate="RunII_SM_WZ/2016/fakerate_standard_jecUp.txt\,RunII_SM_WZ/2016/fakerate_load_isconv.txt", Label="X+g", NormSystematic=0.20
 
-prompt_WZ_plus_jec_Up+ : WZTo3LNu_pow : xsec*1.124 : LepW_pdgId < 0 ; SkipMe=True,FillColor=ROOT.kOrange , FakeRate="RunII_SM_WZ/2016/fakerate_standard_jecUp.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="WZ (k-NNLO)", NormSystematic=0.12
+prompt_WZ_plus_jec_Up+ : WZTo3LNu_pow : xsec*1.124 : genLepW_pdgId < 0 ; SkipMe=True,FillColor=ROOT.kOrange+3 , FakeRate="RunII_SM_WZ/2016/fakerate_standard_jecUp.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="WZ^+ (k-NNLO)", NormSystematic=0.12
 
-prompt_WZ_minus_jec_Up+ : WZTo3LNu_pow : xsec*1.124 : LepW_pdgId > 0 ; SkipMe=True,FillColor=ROOT.kOrange , FakeRate="RunII_SM_WZ/2016/fakerate_standard_jecUp.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="WZ (k-NNLO)", NormSystematic=0.12
+prompt_WZ_minus_jec_Up+ : WZTo3LNu_pow : xsec*1.124 : genLepW_pdgId > 0 ; SkipMe=True,FillColor=ROOT.kOrange-3 , FakeRate="RunII_SM_WZ/2016/fakerate_standard_jecUp.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="WZ^- (k-NNLO)", NormSystematic=0.12
 
 
 prompt_hZZ_jec_Up : HZZ : 0.01212 ; SkipMe=True,FillColor=ROOT.kGreen-1, FakeRate="RunII_SM_WZ/2016/fakerate_standard_jecUp.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="hZZ", NormSystematic=0.07

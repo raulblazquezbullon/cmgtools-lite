@@ -15,7 +15,7 @@ normTTX_ML    : prompt_TT.*                        : .*                : 1.15
 
 
 #Templates#
-JES_ML           : prompt_.*|convs          : .* : jec        : templates
+#JES_ML           : prompt_.*|convs          : .* : jec        : templates
 MuScale_ML       : prompt_.*|convs          : .* : muscale    : templates
 ElScale_ML       : prompt_.*|convs          : .* : elscale    : templates
 PUW_ML           : prompt_.*|convs          : .* : puw        : templates

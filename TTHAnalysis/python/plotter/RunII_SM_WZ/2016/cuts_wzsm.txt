@@ -7,6 +7,7 @@ lowmass   : minMllSFOS_Mini > 12 || minMllSFOS_Mini == -1
 lepPt     : LepZ1_pt >= 25  && LepZ2_pt >= 10  && LepW_pt >= 25 
 AllTight  : LepSel_isTight[0] &&  LepSel_isTight[1] && LepSel_isTight[2]
 NOallTight  : !(LepSel_isTight[0] &&  LepSel_isTight[1] && LepSel_isTight[2]); Disable= True
+Cha_Tight  : LepGood_TightCharge[0]==2 &&   LepGood_TightCharge[1]==2 &&  LepGood_TightCharge[2]==2; Disable= True
 
 SRWZ      : m3L >= 100 && nBJetTight25_Mini == 0 && MET_pt > 30  && abs(mll_3l - 91.16) < 15 && nLepGood < 4; Disable=True
 
