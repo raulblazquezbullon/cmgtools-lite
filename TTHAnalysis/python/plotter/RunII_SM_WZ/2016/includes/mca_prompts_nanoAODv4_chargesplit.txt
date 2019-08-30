@@ -1,5 +1,6 @@
-prompt_WZ_plus+  : WZTo3LNu_pow : xsec*1.124 : genLepW_pdgId < 0 ; FillColor=ROOT.kOrange+3 , FakeRate="RunII_SM_WZ/2016/fakerate_standard_central.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="WZ^+ (k-NNLO)", NormSystematic=0.12
-prompt_WZ_minus+ : WZTo3LNu_pow : xsec*1.124 : genLepW_pdgId > 0 ; FillColor=ROOT.kOrange-3 , FakeRate="RunII_SM_WZ/2016/fakerate_standard_central.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="WZ^- (k-NNLO)", NormSystematic=0.12
+prompt_WZ_plus+  : WZTo3LNu_pow : xsec*1.124: LepW_pdgId<0  ; FillColor=ROOT.kOrange , FakeRate="RunII_SM_WZ/2016/fakerate_standard_central.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="WZ (k-NNLO)", NormSystematic=0.12
+
+prompt_WZ_minus+  : WZTo3LNu_pow : xsec*1.124: LepW_pdgId>0  ; FillColor=ROOT.kOrange , FakeRate="RunII_SM_WZ/2016/fakerate_standard_central.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="WZ (k-NNLO)", NormSystematic=0.12
 
 
 

@@ -5,7 +5,11 @@ trigger   : Triggers_ee || Triggers_mm || Triggers_em || Triggers_e || Triggers_
 BRevent   : abs(LepSel_pdgId[0]) < 15 && abs(LepSel_pdgId[1]) < 15 && abs(LepSel_pdgId[2]) < 15 && nOSSF_3l >= 1
 lowmass   : minMllSFOS_Mini > 12 || minMllSFOS_Mini == -1
 lepPt : LepZ1_pt >= 25 && LepZ2_pt >= 10 && LepW_pt >= 25 
+AllTight  : LepSel_isTight[0] &&  LepSel_isTight[1] && LepSel_isTight[2]
+NOallTight  : !(LepSel_isTight[0] &&  LepSel_isTight[1] && LepSel_isTight[2]); Disable= True
 Cha_Tight  : LepGood_tightCharge[0]==2 &&   LepGood_tightCharge[1]==2 &&  LepGood_tightCharge[2]==2; Disable= True
+cha3_Tight  :   LepGood_tightCharge[iW]==2; Disable= True
+
 
 SRWZ      : m3L >= 100 && nBJetTight25_Mini == 0 && METFixEE2017_pt > 30  && abs(mll_3l - 91.16) < 15 && nLepGood < 4; Disable=True
 

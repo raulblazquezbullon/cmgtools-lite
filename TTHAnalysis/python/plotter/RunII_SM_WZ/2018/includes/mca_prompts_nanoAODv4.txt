@@ -1,5 +1,5 @@
-prompt_WZ_PL+ : WZTo3LNu_pow : xsec*1.124 :genLepW_pdgId<0; FillColor=ROOT.kOrange+3 , FakeRate="RunII_SM_WZ/2018/fakerate_standard_central.txt\,RunII_SM_WZ/2018/fakerate_load_isprompt.txt", Label="{WZ}^+ (k-2016)", NormSystematic=0.12
-prompt_WZ_Mn+ : WZTo3LNu_pow : xsec*1.124 :genLepW_pdgId>0; FillColor=ROOT.kOrange-3 , FakeRate="RunII_SM_WZ/2018/fakerate_standard_central.txt\,RunII_SM_WZ/2018/fakerate_load_isprompt.txt", Label="{WZ}^- (k-2016)", NormSystematic=0.12
+prompt_WZ+ : WZTo3LNu_pow : xsec*1.124; FillColor=ROOT.kOrange , FakeRate="RunII_SM_WZ/2018/fakerate_standard_central.txt\,RunII_SM_WZ/2018/fakerate_load_isprompt.txt", Label="WZ (k-2016)", NormSystematic=0.12
+
 
 
 #prompt_hZZ : HZZ : 0.01212 ; FillColor=ROOT.kGreen-1, FakeRate="RunII_SM_WZ/2018/fakerate_standard_central.txt\,RunII_SM_WZ/2018/fakerate_load_isprompt.txt", Label="hZZ", NormSystematic=0.07
@@ -21,7 +21,7 @@ prompt_TTX : TTZToLL_M-1to10 : 0.05324 ; FillColor=ROOT.kViolet-3 , FakeRate="Ru
 prompt_TTX : TTZToQQ                                       : xsec*1.2 ; FillColor=ROOT.kViolet-3 , FakeRate="RunII_SM_WZ/2018/fakerate_standard_central.txt\,RunII_SM_WZ/2018/fakerate_load_isprompt.txt", Label="ttX", NormSystematic=0.15
 prompt_TTX : TTGJets : xsec*1.2 ; FillColor=ROOT.kViolet-3 , FakeRate="RunII_SM_WZ/2016/fakerate_standard_central.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="ttX", NormSystematic=0.15
 
-prompt_TZQ : tZq_part0 + tZq_part1 + tZq_part2 + tZq_part3 + tZq_part4 + tZq_part5 + tZq_part6 + tZq_part7 + tZq_part8   : xsec ; FillColor=ROOT.kCyan , FakeRate="RunII_SM_WZ/2018/fakerate_standard_central.txt\,RunII_SM_WZ/2018/fakerate_load_isprompt.txt", Label="tZq", NormSystematic=0.35
+#prompt_TZQ : tZq_part0 + tZq_part1 + tZq_part2 + tZq_part3 + tZq_part4 + tZq_part5 + tZq_part6 + tZq_part7 + tZq_part8   : xsec ; FillColor=ROOT.kCyan , FakeRate="RunII_SM_WZ/2018/fakerate_standard_central.txt\,RunII_SM_WZ/2018/fakerate_load_isprompt.txt", Label="tZq", NormSystematic=0.35
 
 prompt_VH : VHToNonbb : xsec ; FillColor=ROOT.kRed-1, FakeRate="RunII_SM_WZ/2018/fakerate_standard_central.txt\,RunII_SM_WZ/2018/fakerate_load_isprompt.txt", Label="VH", NormSystematic=0.25
 

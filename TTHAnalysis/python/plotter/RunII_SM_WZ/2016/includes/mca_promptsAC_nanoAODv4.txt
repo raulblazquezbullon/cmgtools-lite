@@ -1,5 +1,5 @@
-diboson_PL+ : WZTo3LNu_pow : xsec*1.124 : genLepW_pdgId < 0  ; FillColor=ROOT.kOrange+3 , FakeRate="RunII_SM_WZ/2016/fakerate_standard_central.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="{WZ}^+ (k-NNLO)", NormSystematic=0.12
-diboson_Mn+ : WZTo3LNu_pow : xsec*1.124 : genLepW_pdgId > 0  ; FillColor=ROOT.kOrange-3 , FakeRate="RunII_SM_WZ/2016/fakerate_standard_central.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="{WZ}^- (k-NNLO)", NormSystematic=0.12
+diboson+ : WZTo3LNu_pow : xsec*1.124 ; FillColor=ROOT.kOrange , FakeRate="RunII_SM_WZ/2016/fakerate_standard_central.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="WZ (k-NNLO)", NormSystematic=0.12
+
 
 
 prompt_hZZ : HZZ : 0.01212 ; FillColor=ROOT.kGreen-1, FakeRate="RunII_SM_WZ/2016/fakerate_standard_central.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="hZZ", NormSystematic=0.07

@@ -1,5 +1,5 @@
-prompt_WZ_plus+ : WZTo3LNu_pow : xsec*1.124 : LepW_pdgId < 0 ; FillColor=ROOT.kOrange , FakeRate="RunII_SM_WZ/2016/fakerate_standard_central_PU2017.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="WZ (k-NNLO)", NormSystematic=0.12
-prompt_WZ_minus+ : WZTo3LNu_pow : xsec*1.124 : LepW_pdgId > 0 ; FillColor=ROOT.kOrange , FakeRate="RunII_SM_WZ/2016/fakerate_standard_central_PU2017.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="WZ (k-NNLO)", NormSystematic=0.12
+prompt_WZ+ : WZTo3LNu_pow : xsec*1.124 ; FillColor=ROOT.kOrange , FakeRate="RunII_SM_WZ/2016/fakerate_standard_central_PU2017.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="WZ (k-NNLO)", NormSystematic=0.12
+
 
 
 #prompt_hZZ : HZZ : 0.01212 ; FillColor=ROOT.kGreen-1, FakeRate="RunII_SM_WZ/2016/fakerate_standard_central.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="hZZ", NormSystematic=0.07
