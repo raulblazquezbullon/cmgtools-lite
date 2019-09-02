@@ -25,3 +25,4 @@ flav_eem : (abs(LepZ1_pdgId)+abs(LepZ2_pdgId)+abs(LepW_pdgId)-33)/2 == 1; Disabl
 flav_mme : (abs(LepZ1_pdgId)+abs(LepZ2_pdgId)+abs(LepW_pdgId)-33)/2 == 2; Disable=True
 flav_mmm : (abs(LepZ1_pdgId)+abs(LepZ2_pdgId)+abs(LepW_pdgId)-33)/2 == 3; Disable=True
 
+m3lmetblind : $DATA{m3Lmet <= 400} $MC{1} $FASTSIM{1}; Disable=True

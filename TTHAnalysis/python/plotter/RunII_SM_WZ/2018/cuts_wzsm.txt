@@ -25,4 +25,5 @@ flav_mme : (abs(LepZ1_pdgId)+abs(LepZ2_pdgId)+abs(LepW_pdgId)-33)/2 == 2; Disabl
 flav_mmm : (abs(LepZ1_pdgId)+abs(LepZ2_pdgId)+abs(LepW_pdgId)-33)/2 == 3; Disable=True
 
 cIn : abs(cos_ThetaWDn_HE) < 0.9; Disable=True
+m3lmetblind : $DATA{m3Lmet <= 400} $MC{1} $FASTSIM{1}; Disable=True
 

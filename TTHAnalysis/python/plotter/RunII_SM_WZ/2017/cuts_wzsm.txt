@@ -16,8 +16,8 @@ SRWZnoBnoMETFixEE2017   : m3L >= 100 && abs(mll_3l - 91.16) < 15 && nLepSel < 4;
 
 
 
-CRZZ   : m3L >= 100 && nBJetTight25_Mini == 0  && abs(mll_3l - 91.16) < 15 && nLepSel == 4 && LepSel_pt[3] > 10 && METFixEE2017_pt > 30; Disable=True
-CRTT   : m3L >= 100 && nBJetTight25_Mini > 0  && nLepGood < 4; Disable=True
+CRZZ   : m3L >= 100 && nBJetTight25_Mini == 0  && nLepSel == 4 && LepSel_pt[3] > 10 ; Disable=True
+CRTT   : m3L >= 100 && nBJetTight25_Mini > 0  && nLepSel < 4; Disable=True
 CRconv : m3L < 100 && nBJetTight25_Mini == 0  && METFixEE2017_pt < 30 && nLepGood < 4; Disable=True
 
 flav_eee : (abs(LepZ1_pdgId)+abs(LepZ2_pdgId)+abs(LepW_pdgId)-33)/2 == 0; Disable=True
@@ -26,4 +26,5 @@ flav_mme : (abs(LepZ1_pdgId)+abs(LepZ2_pdgId)+abs(LepW_pdgId)-33)/2 == 2; Disabl
 flav_mmm : (abs(LepZ1_pdgId)+abs(LepZ2_pdgId)+abs(LepW_pdgId)-33)/2 == 3; Disable=True
 
 cIn : abs(cos_ThetaWDn_HE) < 0.9; Disable=True
+m3lmetblind : $DATA{m3Lmet <= 400} $MC{1} $FASTSIM{1}; Disable=True
 
