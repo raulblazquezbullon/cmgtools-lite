@@ -71,7 +71,7 @@ prompt_TTX_jec_Dn : TTZToQQ                                       : xsec ; FillC
 
 prompt_TZQ_jec_Dn : tZq_ll_part4 + tZq_ll_part1 + tZq_ll_part2 + tZq_ll_part3 + tZq_ll_part5 + tZq_ll_part6    : xsec ; FillColor=ROOT.kCyan , FakeRate="RunII_SM_WZ/2016/fakerate_standard_jecDn.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="tZq", NormSystematic=0.35
 
-#prompt_VH_jec_Dn : VHToNonbb : xsec ; FillColor=ROOT.kRed-1, FakeRate="RunII_SM_WZ/2016/fakerate_standard_jecDn.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="VH", NormSystematic=0.25
+#prompt_VH_jec_Dn : VHToNonbb: xsec ; FillColor=ROOT.kRed-1, FakeRate="RunII_SM_WZ/2016/fakerate_standard_jecDn.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="VH", NormSystematic=0.25
 
 prompt_VVV_jec_Dn : WWW : xsec ; FillColor=ROOT.kRed + 1, FakeRate="RunII_SM_WZ/2016/fakerate_standard_jecDn.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="VVV", NormSystematic=0.50
 prompt_VVV_jec_Dn : WWZ : xsec ; FillColor=ROOT.kRed + 1, FakeRate="RunII_SM_WZ/2016/fakerate_standard_jecDn.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="VVV", NormSystematic=0.50
@@ -253,7 +253,7 @@ prompt_TTX_muscale_Dn : TTZToQQ                                       : xsec ; F
 
 prompt_TZQ_muscale_Dn : tZq_ll_part4 + tZq_ll_part1 + tZq_ll_part2 + tZq_ll_part3 + tZq_ll_part5 + tZq_ll_part6    : xsec ; FillColor=ROOT.kCyan , FakeRate="RunII_SM_WZ/2016/fakerate_standard_muonScaleDn.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="tZq", NormSystematic=0.35
 
-#prompt_VH_muscale_Dn : VHToNonbb : xsec ; FillColor=ROOT.kRed-1, FakeRate="RunII_SM_WZ/2016/fakerate_standard_muonScaleDn.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="VH", NormSystematic=0.25
+#prompt_VH_muscale_Dn : VHToNonbb: xsec ; FillColor=ROOT.kRed-1, FakeRate="RunII_SM_WZ/2016/fakerate_standard_muonScaleDn.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="VH", NormSystematic=0.25
 
 prompt_VVV_muscale_Dn : WWW : xsec ; FillColor=ROOT.kRed + 1, FakeRate="RunII_SM_WZ/2016/fakerate_standard_muonScaleDn.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="VVV", NormSystematic=0.50
 prompt_VVV_muscale_Dn : WWZ : xsec ; FillColor=ROOT.kRed + 1, FakeRate="RunII_SM_WZ/2016/fakerate_standard_muonScaleDn.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="VVV", NormSystematic=0.50
