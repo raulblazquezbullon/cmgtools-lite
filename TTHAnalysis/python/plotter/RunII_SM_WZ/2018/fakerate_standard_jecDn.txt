@@ -1,5 +1,5 @@
 weight: 1.0
 
-change: met_pt\b: met_jecDown_pt
+change: met_pt_nom\b: met_jecDown_pt
 change: met_phi\b: met_jecDown_phi
 

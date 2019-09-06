@@ -11,8 +11,8 @@ NOallTight  : !(LepSel_isTight[0] &&  LepSel_isTight[1] && LepSel_isTight[2]); D
 Cha_Tight  : LepGood_tightCharge[0]==2 &&   LepGood_tightCharge[1]==2 &&  LepGood_tightCharge[2]==2; Disable= True
 cha3_Tight  :   LepGood_tightCharge[iW]==2; Disable= True
 
-SRWZ      : m3L >= 100 && nBJetTight25_Mini == 0 && MET_pt_nom > 30  && abs(mll_3l - 91.16) < 15 && nLepGood < 4; Disable=True
-#SRWZ      : m3L >= 100&& MET_pt_nom > 30  && abs(mll_3l - 91.16) < 15 && nLepGood < 4; Disable=True
+#SRWZ      : m3L >= 100 && nBJetTight25_Mini == 0 && MET_pt_nom > 30  && abs(mll_3l - 91.16) < 15 && nLepGood < 4; Disable=True
+SRWZ      : m3L >= 100&& MET_pt_nom > 30  && abs(mll_3l - 91.16) < 15 && nLepGood < 4; Disable=True
 
 SRwzPL      : m3L >= 100 && nBJetTight25_Mini == 0 && MET_pt_nom > 30  && abs(mll_3l - 91.16) < 15 && nLepGood < 4 && LepW_pdgId < 0; Disable=True
 SRWzMn      : m3L >= 100 && nBJetTight25_Mini == 0 && MET_pt_nom > 30  && abs(mll_3l - 91.16) < 15 && nLepGood < 4 && LepW_pdgId > 0; Disable=True
