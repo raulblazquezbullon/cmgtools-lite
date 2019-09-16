@@ -21,5 +21,5 @@ ElScale_ML       : prompt_.*|convs          : .* : elscale    : templates
 PUW_ML           : prompt_.*|convs          : .* : puw        : templates
 LepSFMu_ML            : prompt_.*|convs          : .* : lepSFMu : templates 
 LepSFEl_ML            : prompt_.*|convs          : .* : lepSFEl : templates 
-#btag_HF_ML       : prompt_.*|convs          : .* : bTagHF     : templates
-#btag_LF_ML       : prompt_.*|convs          : .* : bTagLF     : templates
+btag_HF_ML       : prompt_.*|convs          : .* : bTagHF     : templates
+btag_LF_ML       : prompt_.*|convs          : .* : bTagLF     : templates
