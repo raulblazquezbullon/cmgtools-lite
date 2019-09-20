@@ -24,7 +24,7 @@ pr.add_option("-j", dest = "jobs", type="int", default = None, help = "Number of
 doWhat = args[0]
 
 #This is just to know whether to copy or not the thingie to visualize in the web
-toShow = ["Fits"]
+toShow  ["Fits"]
 
 ### Always copy the php script for easiness of work and also create the output dir 
 if False: #not(os.path.isdir(options.outname)):
@@ -118,13 +118,25 @@ if "friend_" in doWhat:
         print "----------------------------------------------------"
 
 
-if "plot_" in doWhat:
+if "plot" in doWhat:
+    if options.year == 2016:
+	print "python mcPlots.py RunII_SM_WZ/2016/mca_wz.txt RunII_SM_WZ/2016/cuts_wzsm.txt RunII_SM_WZ/2016/plots_wz.txt --tree treeProducerSusyMultilepton -P /pool/ciencias/HeppyTrees/RA7/nanoAODv4_2016_skimWZ/ {P}/leptonPtCorrections/ --FMCs {P}/trigger_prefiring/ --Fs {P}/leptonJetReCleanerWZSM/ --Fs {P}/leptonBuilderWZSM_v2/ --Fs {P}/trigger_2016/ --FMCs {P}/leptonMatcher/ --FMCs {P}/bTagWeights/ -L RunII_SM_WZ/functionsSF.cc -L RunII_SM_WZ/functionsMCMatch.cc --mcc RunII_SM_WZ/2016/mcc_triggerdefs.txt --maxRatioRange 0.5 2.0 --fixRatioRange --print C,pdf,png,txt --legendWidth 0.23 --legendFontSize 0.036 --showMCError --showRatio --perBin -W 'getLeptonSF_v4(0,0,2016,LepSel_pt[0],LepSel_eta[0],LepSel_pdgId[0])*getLeptonSF_v4(0,0,2016,LepSel_pt[1],LepSel_eta[1],LepSel_pdgId[1])*getLeptonSF_v4(0,0,2016,LepSel_pt[2],LepSel_eta[2],LepSel_pdgId[2])*puWeight*bTagWeightDeepCSVT*weight_PrefiringJets*weight_PrefiringPhotons' --obj Events -j 32 -l 35.9 -f --pdir ./plots/ --showRatio -E SRWZ "
+
+    if options.year == 2017:
+	print "python mcPlots.py RunII_SM_WZ/2017/mca_wz.txt RunII_SM_WZ/2017/cuts_wzsm.txt RunII_SM_WZ/2017/plots_wz.txt --tree treeProducerSusyMultilepton -P /pool/ciencias/HeppyTrees/RA7/nanoAODv4_2017_skimWZ/ -P /pool/cienciasrw/HeppyTrees/RA7/nanoAODv4_2017_unSkimmed_estructure/ {P}/leptonPtCorrections/ --FMCs {P}/trigger_prefiring/ --FMCs {P}/pileUpWeights/ --FMCs {P}/lepgenVarsWZSM/ --Fs {P}/leptonJetReCleanerWZSM/ --Fs {P}/leptonBuilderWZSM_v2/ --FMCs {P}/leptonMatcher/ --FMCs {P}/bTagWeights/ -L RunII_SM_WZ/functionsSF.cc -L RunII_SM_WZ/functionsMCMatch.cc --mcc RunII_SM_WZ/2017/mcc_triggerdefs.txt --maxRatioRange 0 2.0 --fixRatioRange --print C,pdf,png,txt --legendWidth 0.23 --legendFontSize 0.036 --showMCError --showRatio --perBin -W 'getLeptonSF_v4(0,0,2017,LepGood_pt[0],LepGood_eta[0],LepGood_pdgId[0])*getLeptonSF_v4(0,0,2017,LepGood_pt[1],LepGood_eta[1],LepGood_pdgId[1])*getLeptonSF_v4(0,0,2017,LepGood_pt[2],LepGood_eta[2],LepGood_pdgId[2])*puWeight*bTagWeightDeepCSVT*weight_PrefiringJets*weight_PrefiringPhotons' --obj Events -j 32 -l 41.2 -f --pdir ./plots/ --showRatio -E SRWZ "
+
     if options.year == 2018:
-        baseCommand = "python mcPlots.py [MCA] [CUT] [PLOT] --tree treeProducerSusyMultilepton -P [INDIR] [FTREES] -L RunII_SM_WZ/functionsSF.cc --mcc RunII_SM_WZ/2018/mcc_triggerdefs.txt --maxRatioRange 0.5 1.5 --fixRatioRange --print C,pdf,png,txt --legendWidth 0.23 --legendFontSize 0.036 --showMCError --showRatio --perBin -W 'getLeptonSF_v4(0,0,2018,LepGood_pt[0],LepGood_eta[0],LepGood_pdgId[0])*getLeptonSF_v4(0,0,2018,LepGood_pt[1],LepGood_eta[1],LepGood_pdgId[1])*getLeptonSF_v4(0,0,2018,LepGood_pt[2],LepGood_eta[2],LepGood_pdgId[2])*vtxWeight2018Nominal*bTagWeightDeepCSVT'  --obj [TTREE] -j [JOBS] -l 59.74 -f --pdir [PDIR] --showRatio ".replace("[MCA]", options.mca).replace("[CUT]", options.cut).replace("[PLOT]", options.plots).replace("[INDIR]", options.inname).replace("[FTREES]", "--Fs /pool/cienciasrw/HeppyTrees/RA7/nanoAODv4_2018_skim_3lepgood/leptonJetReCleanerSusyEWK3L_withBuilder_correctedPt/ --FMCs /pool/ciencias/HeppyTrees/RA7/nanoAODv4_2018_skim_3lepgood/pileUp/ --FMCs /pool/ciencias/HeppyTrees/RA7/nanoAODv4_2018_skim_3lepgood/bTagWeight_DeepCSVT/ ").replace("[PDIR]", options.outname).replace("[JOBS]", str(options.jobs))
-        if "nano" in options.datatype:
-            baseCommand = baseCommand.replace("[TTREE]", "Events")
-        else:
-            baseCommand = baseCommand.replace("[TTREE]", "tree")
-        print baseCommand
+	print "python mcPlots.py RunII_SM_WZ/2018/mca_wz.txt RunII_SM_WZ/2018/cuts_wzsm.txt RunII_SM_WZ/2018/plots_wz.txt --tree treeProducerSusyMultilepton -P /pool/ciencias/HeppyTrees/RA7/nanoAODv4_2018_skimWZ/ --Fs {P}/leptonPtCorrections/ --Fs {P}/leptonJetReCleanerWZSM/ --Fs {P}/leptonBuilderWZSM_v2/ --FMCs {P}/leptonMatcher/ --FMCs {P}/bTagWeights/ --FMCs {P}/pileUpWeight/ -L RunII_SM_WZ/functionsSF.cc -L RunII_SM_WZ/functionsMCMatch.cc --maxRatioRange 0.5 2.0 --fixRatioRange --print C,pdf,png,txt --legendWidth 0.23 --legendFontSize 0.036 --showMCError --showRatio --perBin -W 'getLeptonSF_v4(0,0,2018,LepSel_pt[0],LepSel_eta[0],LepSel_pdgId[0])*getLeptonSF_v4(0,0,2018,LepSel_pt[1],LepSel_eta[1],LepSel_pdgId[1])*getLeptonSF_v4(0,0,2018,LepSel_pt[2],LepSel_eta[2],LepSel_pdgId[2])*vtxWeight2018Nominal*bTagWeightDeepCSVT' --obj Events --mcc RunII_SM_WZ/2018/mcc_triggerdefs.txt -j 32 -l 58.9 -f --pdir /nfs/fanae/user/joanrs/www/2018/wz --showRatio -E SRWZ "
+
+if "cards" in doWhat:
+    if options.year == 2016:
+	print "python makeShapeCardsSusy.py RunII_SM_WZ/2016/mca_wz.txt RunII_SM_WZ/2016/cuts_wzsm.txt \"4*(LepW_pdgId < 0) + (abs(LepZ1_pdgId)+abs(LepZ2_pdgId)+abs(LepW_pdgId)-33)/2\" \"8,-0.5,7.5\" RunII_SM_WZ/2016/systs_wz.txt  --tree treeProducerSusyMultilepton -P /pool/ciencias/HeppyTrees/RA7/nanoAODv4_2016_skimWZ/ --Fs  {P}/leptonPtCorrections/ --FMCs {P}/trigger_prefiring/ --Fs {P}/leptonJetReCleanerWZSM/ --Fs {P}/leptonBuilderWZSM_v2/ --Fs {P}/trigger_2016/ --FMCs {P}/leptonMatcher/ --FMCs {P}/bTagWeights/  -L RunII_SM_WZ/functionsSF.cc -L RunII_SM_WZ/functionsMCMatch.cc -L RunII_SM_WZ/functionsWZ.cc --mcc RunII_SM_WZ/2016/mcc_triggerdefs.txt  -W 'getLeptonSF_v4(0,0,2016,LepGood_pt[0],LepGood_eta[0],LepGood_pdgId[0])*getLeptonSF_v4(0,0,2016,LepGood_pt[1],LepGood_eta[1],LepGood_pdgId[1])*getLeptonSF_v4(0,0,2016,LepGood_pt[2],LepGood_eta[2],LepGood_pdgId[2])*puWeight*bTagWeightDeepCSVT*weight_PrefiringJets*weight_PrefiringPhotons' --obj Events -j 32 -l 35.9 -f  -E SRWZ -o 2016 --od ./cards/ --ms"
+
+    if options.year == 2017:
+	print "python makeShapeCardsSusy.py RunII_SM_WZ/2017/mca_wz.txt RunII_SM_WZ/2017/cuts_wzsm.txt \"4*(LepW_pdgId < 0) + (abs(LepZ1_pdgId)+abs(LepZ2_pdgId)+abs(LepW_pdgId)-33)/2\" \"8,-0.5,7.5\" RunII_SM_WZ/2017/systs_wz.txt --tree treeProducerSusyMultilepton -P /pool/ciencias/HeppyTrees/RA7/nanoAODv4_2017_skimWZ/ -P /pool/ciencias/HeppyTrees/RA7/nanoAODv4_2017_unSkimmed_estructure/ --Fs  {P}/leptonPtCorrections/  --FMCs {P}/pileUpWeights/ --FMCs {P}/trigger_prefiring/ --Fs {P}/leptonJetReCleanerWZSM/ --Fs {P}/leptonBuilderWZSM_v2/ --FMCs {P}/leptonMatcher/ --FMCs {P}/bTagWeights/ -L RunII_SM_WZ/functionsSF.cc -L RunII_SM_WZ/functionsMCMatch.cc -L RunII_SM_WZ/functionsWZ.cc --mcc RunII_SM_WZ/2017/mcc_triggerdefs.txt -W 'getLeptonSF_v4(0,0,2017,LepGood_pt[0],LepGood_eta[0],LepGood_pdgId[0])*getLeptonSF_v4(0,0,2017,LepGood_pt[1],LepGood_eta[1],LepGood_pdgId[1])*getLeptonSF_v4(0,0,2017,LepGood_pt[2],LepGood_eta[2],LepGood_pdgId[2])*puWeight*bTagWeightDeepCSVT*weight_PrefiringJets*weight_PrefiringPhotons' --obj Events -j 32 -l 41.2 -f  -E SRWZ -o 2017 --od ./cards/ --ms"
+
+    if options.year == 2018:
+	print "python makeShapeCardsSusy.py RunII_SM_WZ/2018/mca_wz.txt RunII_SM_WZ/2018/cuts_wzsm.txt \"4*(LepW_pdgId < 0) + (abs(LepZ1_pdgId)+abs(LepZ2_pdgId)+abs(LepW_pdgId)-33)/2\" \"8,-0.5,7.5\" RunII_SM_WZ/2018/systs_wz.txt  --tree treeProducerSusyMultilepton -P /pool/ciencias/HeppyTrees/RA7/nanoAODv4_2018_skimWZ/ --Fs {P}/leptonPtCorrections/ --Fs {P}/leptonJetReCleanerWZSM/ --Fs {P}/leptonBuilderWZSM_v2/ --FMCs {P}/leptonMatcher/ --FMCs {P}/bTagWeights/ --FMCs {P}/pileUpWeight/ -L RunII_SM_WZ/functionsSF.cc -L RunII_SM_WZ/functionsMCMatch.cc  -W 'getLeptonSF_v4(0,0,2018,LepSel_pt[0],LepSel_eta[0],LepSel_pdgId[0])*getLeptonSF_v4(0,0,2018,LepSel_pt[1],LepSel_eta[1],LepSel_pdgId[1])*getLeptonSF_v4(0,0,2018,LepSel_pt[2],LepSel_eta[2],LepSel_pdgId[2])*vtxWeight2018Nominal*bTagWeightDeepCSVT' --obj Events --mcc RunII_SM_WZ/2018/mcc_triggerdefs.txt -j 32 -l 58.9 -f -E SRWZ -o 2018 --od ./cards/ --ms"
+
 
 
