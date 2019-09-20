@@ -196,6 +196,13 @@ def _tauId_CBtight(tau):
     if not _tauId_CBloose(tau): return False
     return (ord(tau.idMVAoldDMdR032017v2) & 16) and (ord(tau.idAntiMu) & 1) and (ord(tau.idAntiEle) & 2)
 
+###############################################################################################################################
+def _phoId_CBloose(photon):
+    return (photon.pt > 40 and abs(photon.eta) < 2.4 and photon.mvaID_WP90 and photon.electronVeto)
+
+def _phoId_CBtight(photon):
+    return (photon.pt > 40 and abs(photon.eta) < 2.4 and photon.mvaID_WP90 and photon.electronVeto)
+
 #Utilities
 import math
 def deltaR(eta1, phi1, eta2, phi2):
