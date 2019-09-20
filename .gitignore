@@ -1,3 +1,4 @@
+
 __init__.py
 *.pyc
 .*.swp
@@ -58,3 +59,4 @@ TTHAnalysis/python/plotter/susy-ewkino/utils/IDtests
 TTHAnalysis/python/plotter/susy-ewkino/bTagEfficiencies/plots/
 TTHAnalysis/python/plotter/splitSMSTrees.py
 TTHAnalysis/python/plotter/susy-ewkino/skimmer/*
+TTHAnalysis/python/plotter/tempFiles
