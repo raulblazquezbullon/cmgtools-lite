@@ -2,6 +2,7 @@
 from CMGTools.TTHAnalysis.plotter.mcAnalysis import *
 import re, sys, os, os.path, copy
 systs = {}
+ROOT.v5.TFormula.SetMaxima(3000)
 
 from optparse import OptionParser
 parser = OptionParser(usage="%prog [options] mc.txt cuts.txt var bins systs.txt ")
