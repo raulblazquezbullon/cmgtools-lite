@@ -59,7 +59,8 @@ MODULES.append( ('leptonEnergyCorrections_2018', lambda: leptonEnergyCorrections
 ###################################
 
 from CMGTools.TTHAnalysis.tools.leptonJetReCleaner import LeptonJetReCleaner
-from CMGTools.TTHAnalysis.tools.functionsWZ import _lepId_IPcuts, conept, _looseID_ExtraCuts_2016, _elidEmu_cuts_2016, _FOID_2016, _Tight_2016,  _looseID_ExtraCuts_2017, _elidEmu_cuts_2017, _FOID_2017, _Tight_2017,  _looseID_ExtraCuts_2018, _elidEmu_cuts_2018, _FOID_2018, _Tight_2018, _tauId_CBloose, _tauId_CBtight
+from CMGTools.TTHAnalysis.tools.leptonphotonJetReCleaner import LeptonPhotonJetReCleaner
+from CMGTools.TTHAnalysis.tools.functionsWZ import _lepId_IPcuts, conept, _looseID_ExtraCuts_2016, _elidEmu_cuts_2016, _FOID_2016, _Tight_2016,  _looseID_ExtraCuts_2017, _elidEmu_cuts_2017, _FOID_2017, _Tight_2017,  _looseID_ExtraCuts_2018, _elidEmu_cuts_2018, _FOID_2018, _Tight_2018, _tauId_CBloose, _tauId_CBtight, _phoId_CBloose, _phoId_CBtight
 
 
 MODULES.append( ('leptonJetReCleanerWZSM_2016', lambda : LeptonJetReCleaner("Mini", 
@@ -81,7 +82,7 @@ MODULES.append( ('leptonJetReCleanerWZSM_2016', lambda : LeptonJetReCleaner("Min
                    bJetPt = 25,
                    coneptdef = lambda lep: conept(lep),
                    year = 2016,
-                   bAlgo = "CSV"
+                   bAlgo = "DeepCSV"
                    )))
 
 
@@ -131,15 +132,75 @@ MODULES.append( ('leptonJetReCleanerWZSM_2018', lambda : LeptonJetReCleaner("Min
                    )))
 
 
+MODULES.append( ('leptonPhotonJetReCleanerWZSM_2016', lambda : LeptonPhotonJetReCleaner("Mini", 
+                   lambda lep : lep.miniPFRelIso_all < 0.4 and _looseID_ExtraCuts_2016(lep) and _lepId_IPcuts(lep), #Loose selection 
+                   lambda lep,jetlist: lep.pt>10 and conept(lep)>10 and (_FOID_2016(lep, jetlist)), #We clean on the FO
+                   lambda lep,jetlist: lep.pt>10 and conept(lep)>10 and (_FOID_2016(lep, jetlist)), #FO selection
+                   lambda lep,jetlist: lep.pt>10 and conept(lep)>10 and (_Tight_2016(lep, jetlist)), #Tight selection
+                   cleanJet = lambda lep,jet,dr : dr<0.4,
+                   selectJet = lambda jet: abs(jet.eta)<4.7 and (jet.jetId & 2), #Jet ID tight as it is already very efficient (>=98%), Take second bit with python "/" def + evaluate it with %
+                   cleanTau = lambda lep,tau,dr: dr<0.4,
+                   looseTau = lambda tau: _tauId_CBloose(tau), # used in cleaning
+                   tightTau = lambda tau: _tauId_CBtight(tau), # on top of loose
+                   cleanPhoton = lambda lep,photon,dr: dr<0.4,
+                   loosePhoton = lambda photon: _phoId_CBloose(photon), # used in cleaning
+                   tightPhoton = lambda photon: _phoId_CBtight(photon), # on top of loose
+                   cleanJetsWithTaus = False,
+                   cleanTausWithLoose = False,
+                   cleanJetsWithPhotons = True,
+                   cleanPhotonsWithLoose = False,
+                   doVetoZ = False,
+                   doVetoLMf = False,
+                   doVetoLMt = True,
+                   jetPt = 30,
+                   bJetPt = 25,
+                   coneptdef = lambda lep: conept(lep),
+                   year = 2016,
+                   bAlgo = "DeepCSV"
+                   )))
+
+
+
+MODULES.append( ('leptonPhotonJetReCleanerWZSM_2018', lambda : LeptonPhotonJetReCleaner("Mini",
+                   lambda lep : lep.miniPFRelIso_all < 0.4 and _looseID_ExtraCuts_2018(lep) and _lepId_IPcuts(lep), #Loose selection 
+                   lambda lep,jetlist: lep.pt>10 and conept(lep)>10 and (_FOID_2018(lep, jetlist)), #We clean on the FO
+                   lambda lep,jetlist: lep.pt>10 and conept(lep)>10 and (_FOID_2018(lep, jetlist)), #FO selection
+                   lambda lep,jetlist: lep.pt>10 and conept(lep)>10 and (_Tight_2018(lep, jetlist)), #Tight selection
+                   cleanJet = lambda lep,jet,dr : dr<0.4,
+                   selectJet = lambda jet: abs(jet.eta)<4.7 and (jet.jetId & 2), #Jet ID tight as it is already very efficient (>=98%), Take second bit with python "/" def + evaluate it with %
+                   cleanTau = lambda lep,tau,dr: dr<0.4,
+                   looseTau = lambda tau: _tauId_CBloose(tau), # used in cleaning
+                   tightTau = lambda tau: _tauId_CBtight(tau), # on top of loose
+                   cleanPhoton = lambda lep,photon,dr: dr<0.4,
+                   loosePhoton = lambda photon: _phoId_CBloose(photon), # used in cleaning
+                   tightPhoton = lambda photon: _phoId_CBtight(photon), # on top of loose
+                   cleanJetsWithTaus = False,
+                   cleanTausWithLoose = False,
+                   cleanJetsWithPhotons = True,
+                   cleanPhotonsWithLoose = False,
+                   doVetoZ = False,
+                   doVetoLMf = False,
+                   doVetoLMt = True,
+                   jetPt = 30,
+                   bJetPt = 25,
+                   coneptdef = lambda lep: conept(lep),
+                   year = 2018,
+                   bAlgo = "DeepCSV"
+                   )))
+
 ###################################
 ########### lepBuilder ############
 ###################################
 
 from CMGTools.TTHAnalysis.tools.leptonBuilderWZSM import leptonBuilderWZSM
+from CMGTools.TTHAnalysis.tools.leptonBuilderWZSM_byTag import leptonBuilderWZSM_byTag
 
 MODULES.append( ('leptonBuilderWZSM_2016', lambda : leptonBuilderWZSM("Mini", metbranch="MET")))
 MODULES.append( ('leptonBuilderWZSM_2017', lambda : leptonBuilderWZSM("Mini", metbranch="METFixEE2017")))
 MODULES.append( ('leptonBuilderWZSM_2018', lambda : leptonBuilderWZSM("Mini", metbranch="MET")))
+
+
+MODULES.append( ('leptonBuilderWZSM_byTag_2016', lambda : leptonBuilderWZSM_byTag("Mini", metbranch="MET")))
 
 ###################################
 ############ MC Match #############
@@ -263,3 +324,4 @@ MODULES.append( ('lepgenVarsWZSM_2018', lambda : lepgenVarsWZSM("Mini")))
 from  CMGTools.TTHAnalysis.tools.bosonPolarizationGEN_TotalTruth import bosonPolarizationGEN_TotalTruth
 
 MODULES.append( ('bosonPolarizationGEN', lambda : bosonPolarizationGEN_TotalTruth()))
+

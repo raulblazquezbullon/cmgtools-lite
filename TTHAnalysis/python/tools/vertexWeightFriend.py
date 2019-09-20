@@ -15,7 +15,11 @@ class VertexWeightFriend:
             if self.mybounds!=self.targetbounds or len(self.myvals)!=len(self.targetvals): raise RuntimeError, 'Source and target histogram have different ranges or binnings'
         self.vtxCollectionInEvent = vtx_coll_to_reweight
         self.warned = False
+	self.skip = False
     def init(self,tree):
+	if tree.GetEntries()== 0:
+            self.skip = True
+            return 0
         if self.autoPU:
             print 'Auto-determining pileup profile from source file, using %s as the variable to reweight...'%self.vtxCollectionInEvent
             tree.Draw("%s >> autoPUhist(%d,%f,%f)"%(self.vtxCollectionInEvent,len(self.targetvals),self.targetbounds[0],self.targetbounds[1]))
@@ -68,6 +72,7 @@ class VertexWeightFriend:
     def listBranches(self):
         return [ (self.name,'F') ]
     def __call__(self,event):
+	if self.skip: return {self.name : 0}
         if hasattr(event,self.vtxCollectionInEvent):
             _nvtx = getattr(event,self.vtxCollectionInEvent)
             if math.isinf(_nvtx) or math.isnan(_nvtx) or _nvtx < 0:

@@ -1,7 +1,5 @@
 prompt_WZ+ : WZTo3LNu_pow : xsec*1.124 ; FillColor=ROOT.kOrange , FakeRate="RunII_SM_WZ/2016/fakerate_standard_central.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="WZ (k-2016)", NormSystematic=0.12
 
-
-
 prompt_hZZ : HZZ : 0.01212 ; FillColor=ROOT.kGreen-1, FakeRate="RunII_SM_WZ/2016/fakerate_standard_central.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="hZZ", NormSystematic=0.07
 prompt_ZZ : ZZTo4L : xsec ; FillColor=ROOT.kGreen+1, FakeRate="RunII_SM_WZ/2016/fakerate_standard_central.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="qqZZ", NormSystematic=0.07
 prompt_ggZZ : GluGluToContinToZZTo2e2mu   : xsec ; FillColor=ROOT.kGreen, FakeRate="RunII_SM_WZ/2016/fakerate_standard_central.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="ggZZ", NormSystematic=0.07

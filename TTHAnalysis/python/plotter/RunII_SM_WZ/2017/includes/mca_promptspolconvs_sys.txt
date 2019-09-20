@@ -10,7 +10,7 @@ convs_jec_Up : WZG      : 585.8 ; FillColor=ROOT.kOrange-3 , FakeRate="RunII_SM_
 convs_jec_Up : DYJetsToLL_M50_part1 + DYJetsToLL_M50_part2 + DYJetsToLL_M50_part3 + DYJetsToLL_M50_part4 + DYJetsToLL_M50_part5 + DYJetsToLL_M50_part6 + DYJetsToLL_M50_part7 + DYJetsToLL_M50_part8 + DYJetsToLL_M50_part9 + DYJetsToLL_M50_part10 + DYJetsToLL_M50_part11 + DYJetsToLL_M50_part12 + DYJetsToLL_M50_part13 + DYJetsToLL_M50_part14 + DYJetsToLL_M50_part15 + DYJetsToLL_M50_part16 + DYJetsToLL_M50_part17 + DYJetsToLL_M50_part18 + DYJetsToLL_M50_part19 + DYJetsToLL_M50_part20 + DYJetsToLL_M50_part21 + DYJetsToLL_M50_part22 + DYJetsToLL_M50_part23 : xsec ; FillColor=ROOT.kOrange-3 , FakeRate="RunII_SM_WZ/2016/fakerate_standard_jecUp.txt\,RunII_SM_WZ/2016/fakerate_load_isconv.txt", Label="X+g", NormSystematic=0.20
 
 
-#prompt_hZZ_jec_Up : HZZ : 0.01212 ; FillColor=ROOT.kGreen-1, FakeRate="RunII_SM_WZ/2016/fakerate_standard_jecUp.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="hZZ", NormSystematic=0.07
+prompt_hZZ_jec_Up : HZZ : 0.01212 ; FillColor=ROOT.kGreen-1, FakeRate="RunII_SM_WZ/2016/fakerate_standard_jecUp.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="hZZ", NormSystematic=0.07
 prompt_ZZ_jec_Up : ZZTo4L_part1 + ZZTo4L_part2 + ZZTo4L_part3 : xsec ; FillColor=ROOT.kGreen+1, FakeRate="RunII_SM_WZ/2016/fakerate_standard_jecUp.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="qqZZ", NormSystematic=0.07
 prompt_ggZZ_jec_Up : GluGluToContinToZZTo2e2mu   : xsec ; FillColor=ROOT.kGreen, FakeRate="RunII_SM_WZ/2016/fakerate_standard_jecUp.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="ggZZ", NormSystematic=0.07
 prompt_ggZZ_jec_Up : GluGluToContinToZZTo2e2nu   : xsec ; FillColor=ROOT.kGreen, FakeRate="RunII_SM_WZ/2016/fakerate_standard_jecUp.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="ggZZ", NormSystematic=0.07
@@ -29,7 +29,7 @@ prompt_TTX_jec_Up : TTZToQQ                                       : xsec ; FillC
 
 prompt_TZQ_jec_Up : tZq_ll_part4 + tZq_ll_part1 + tZq_ll_part2 + tZq_ll_part3 + tZq_ll_part5 + tZq_ll_part6    : xsec ; FillColor=ROOT.kCyan , FakeRate="RunII_SM_WZ/2016/fakerate_standard_jecUp.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="tZq", NormSystematic=0.35
 
-#prompt_VH_jec_Up : VHToNonbb : xsec ; FillColor=ROOT.kRed-1, FakeRate="RunII_SM_WZ/2016/fakerate_standard_jecUp.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="VH", NormSystematic=0.25
+#prompt_VH_jec_Up : VHToNonbb: xsec ; FillColor=ROOT.kRed-1, FakeRate="RunII_SM_WZ/2016/fakerate_standard_jecUp.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="VH", NormSystematic=0.25
 
 prompt_VVV_jec_Up : WWW : xsec ; FillColor=ROOT.kRed + 1, FakeRate="RunII_SM_WZ/2016/fakerate_standard_jecUp.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="VVV", NormSystematic=0.50
 prompt_VVV_jec_Up : WWZ : xsec ; FillColor=ROOT.kRed + 1, FakeRate="RunII_SM_WZ/2016/fakerate_standard_jecUp.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="VVV", NormSystematic=0.50
@@ -57,7 +57,7 @@ convs_jec_Dn : WZG      : 585.8 ; FillColor=ROOT.kOrange-3 , FakeRate="RunII_SM_
 convs_jec_Dn : DYJetsToLL_M50_part1 + DYJetsToLL_M50_part2 + DYJetsToLL_M50_part3 + DYJetsToLL_M50_part4 + DYJetsToLL_M50_part5 + DYJetsToLL_M50_part6 + DYJetsToLL_M50_part7 + DYJetsToLL_M50_part8 + DYJetsToLL_M50_part9 + DYJetsToLL_M50_part10 + DYJetsToLL_M50_part11 + DYJetsToLL_M50_part12 + DYJetsToLL_M50_part13 + DYJetsToLL_M50_part14 + DYJetsToLL_M50_part15 + DYJetsToLL_M50_part16 + DYJetsToLL_M50_part17 + DYJetsToLL_M50_part18 + DYJetsToLL_M50_part19 + DYJetsToLL_M50_part20 + DYJetsToLL_M50_part21 + DYJetsToLL_M50_part22 + DYJetsToLL_M50_part23 : xsec ; FillColor=ROOT.kOrange-3 , FakeRate="RunII_SM_WZ/2016/fakerate_standard_jecDn.txt\,RunII_SM_WZ/2016/fakerate_load_isconv.txt", Label="X+g", NormSystematic=0.20
 
 
-#prompt_hZZ_jec_Dn : HZZ : 0.01212 ; FillColor=ROOT.kGreen-1, FakeRate="RunII_SM_WZ/2016/fakerate_standard_jecDn.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="hZZ", NormSystematic=0.07
+prompt_hZZ_jec_Dn : HZZ : 0.01212 ; FillColor=ROOT.kGreen-1, FakeRate="RunII_SM_WZ/2016/fakerate_standard_jecDn.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="hZZ", NormSystematic=0.07
 prompt_ZZ_jec_Dn : ZZTo4L_part1 + ZZTo4L_part2 + ZZTo4L_part3 : xsec ; FillColor=ROOT.kGreen+1, FakeRate="RunII_SM_WZ/2016/fakerate_standard_jecDn.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="qqZZ", NormSystematic=0.07
 prompt_ggZZ_jec_Dn : GluGluToContinToZZTo2e2mu   : xsec ; FillColor=ROOT.kGreen, FakeRate="RunII_SM_WZ/2016/fakerate_standard_jecDn.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="ggZZ", NormSystematic=0.07
 prompt_ggZZ_jec_Dn : GluGluToContinToZZTo2e2nu   : xsec ; FillColor=ROOT.kGreen, FakeRate="RunII_SM_WZ/2016/fakerate_standard_jecDn.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="ggZZ", NormSystematic=0.07
@@ -218,7 +218,7 @@ prompt_TTX_muscale_Up : TTZToQQ                                       : xsec ; F
 
 prompt_TZQ_muscale_Up : tZq_ll_part4 + tZq_ll_part1 + tZq_ll_part2 + tZq_ll_part3 + tZq_ll_part5 + tZq_ll_part6    : xsec ; FillColor=ROOT.kCyan , FakeRate="RunII_SM_WZ/2016/fakerate_standard_muonScaleUp.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="tZq", NormSystematic=0.35
 
-#prompt_VH_muscale_Up : VHToNonbb : xsec ; FillColor=ROOT.kRed-1, FakeRate="RunII_SM_WZ/2016/fakerate_standard_muonScaleUp.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="VH", NormSystematic=0.25
+#prompt_VH_muscale_Up : VH : xsec ; FillColor=ROOT.kRed-1, FakeRate="RunII_SM_WZ/2016/fakerate_standard_muonScaleUp.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="VH", NormSystematic=0.25
 
 prompt_VVV_muscale_Up : WWW : xsec ; FillColor=ROOT.kRed + 1, FakeRate="RunII_SM_WZ/2016/fakerate_standard_muonScaleUp.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="VVV", NormSystematic=0.50
 prompt_VVV_muscale_Up : WWZ : xsec ; FillColor=ROOT.kRed + 1, FakeRate="RunII_SM_WZ/2016/fakerate_standard_muonScaleUp.txt\,RunII_SM_WZ/2016/fakerate_load_isprompt.txt", Label="VVV", NormSystematic=0.50
