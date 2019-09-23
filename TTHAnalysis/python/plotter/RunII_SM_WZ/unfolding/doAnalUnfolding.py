@@ -24,19 +24,28 @@ class Steer:
             
         print('Folders with base %s have been created'.format(outputDir))
 
-
-    def prepareInputs(self):
         
-        for ch in channels:
-            os.mkdir('%s_%s/inputs'.format(self.outputDir,ch))
-            
-        pairs={
+        self.inputPairs={
             'sump4(0, LepZ1_pt,LepZ1_eta,LepZ1_phi,LepZ1_mass,LepZ2_pt,LepZ2_eta,LepZ2_phi,LepZ2_mass)' : ['[0,5,10,15,20,25,30,40,50,60,70,80,90,100,110,120,130,140,160,180,200,250,300]','Reco p\_\{T\}(Z) [GeV]','Zpt'],
             'LeadJet_pt' : ['[25,30,35,40,50,60,70,80,90,100,110,120,130,140,160,180,200,250,300]','Reco p\_\{T\}(leading jet) [GeV]','LeadJetPt'],
             'm3Lmet' :  ['[100,140,160,180,200,250,300,400,600,1000,3000]','Reco M\_\{WZ\} [GeV]','MWZ'],
             'LepW_pt' : ['[25,30,35,40,50,60,70,80,90,100,110,120,130,140,160,180,200,250,300]','Reco p\_\{T\}(W) [GeV]','Wpt'],
             'Njets'   : ['[0,1,2,3,4,5]', 'Reco N\_\{jets\}', 'Njets'], # This won't work yet---must check name of Njets variables in tree
         }
+        self.responsePairs={
+            'sump4(0, genLepZ1_pt,genLepZ1_eta,genLepZ1_phi,genLepZ1_mass,genLepZ2_pt,genLepZ2_eta,genLepZ2_phi,genLepZ2_mass):sump4(0,LepZ1_pt,LepZ1_eta,LepZ1_phi,LepZ1_mass,LepZ2_pt,LepZ2_eta,LepZ2_phi,LepZ2_mass)' : ['[0,5,10,15,20,25,30,40,50,60,70,80,90,100,110,120,130,140,160,180,200,250,300]*[0,10,20,30,50,70,90,110,130,160,200,300]','Reco p\_\{T\}(Z) [GeV]','Gen p\_\{T\}(Z) [GeV]','Zpt'],
+            'LeadJet_mcPt:LeadJet_pt' : ['[25,30,35,40,50,60,70,80,90,100,110,120,130,140,160,180,200,250,300]*[25,35,50,70,90,110,130,160,200,300]','Reco p\_\{T\}(leading jet) [GeV]','Gen p\_\{T\}(leading jet) [GeV]','LeadJetPt'],
+            'm3Lmet_gen:m3Lmet' : ['[100,140,160,180,200,250,300,400,600,1000,3000]*[100,160,200,300,600,3000]','Reco M\_\{WZ\} [GeV]','Gen M\_\{WZ\} [GeV]','MWZ'],
+            'genLepW_pt:LepW_pt' : ['[25,30,35,40,50,60,70,80,90,100,110,120,130,140,160,180,200,250,300]*[25,35,50,70,90,110,130,160,200,300]','Reco p\_\{T\}(W) [GeV]','Gen p\_\{T\}(W) [GeV]','Wpt'],
+            'genNjets:Njets'   : ['[0,1,2,3,4,5]*[0,1,2,3,4,5]', 'Reco N\_\{jets\}', 'Gen N\_\{jets\}', 'Njets'], # This won't work yet---must check name of Njets variables in tree
+        }
+
+
+    def prepareInputs(self):
+        
+        for ch in channels:
+            os.mkdir('%s_%s/inputs'.format(self.outputDir,ch))
+            
         
         inputdir='/pool/ciencias/HeppyTrees/RA7/estructura/wzSkimmed/'
         
@@ -47,7 +56,7 @@ class Steer:
         doSignSplit=True
 
         if not doSignSplit: 
-            for iShape, iPack in pairs.items():
+            for iShape, iPack in self.inputPairs.items():
                 iRange=iPack[0]
                 iXTitle=iPack[1]
                 iOut=iPack[2]
@@ -95,7 +104,7 @@ class Steer:
                     print('rm -r /nfs/fanae/user/vischia/workarea/cmssw/combine/CMSSW_8_1_0/src/wz_unfolding/mmm_fitWZonly/ ')
                     
                     # WZ exclusive
-                    for iShape, iPack in pairs.items():
+                    for iShape, iPack in self.inputPairs.items():
                         iRange=iPack[0]
                         iXTitle=iPack[1]
                         iOut=iPack[2]
@@ -137,14 +146,6 @@ class Steer:
 
 # Then restructure the doVariedResponses.py script
 
-pairs={
-    'sump4(0, genLepZ1_pt,genLepZ1_eta,genLepZ1_phi,genLepZ1_mass,genLepZ2_pt,genLepZ2_eta,genLepZ2_phi,genLepZ2_mass):sump4(0,LepZ1_pt,LepZ1_eta,LepZ1_phi,LepZ1_mass,LepZ2_pt,LepZ2_eta,LepZ2_phi,LepZ2_mass)' : ['[0,5,10,15,20,25,30,40,50,60,70,80,90,100,110,120,130,140,160,180,200,250,300]*[0,10,20,30,50,70,90,110,130,160,200,300]','Reco p\_\{T\}(Z) [GeV]','Gen p\_\{T\}(Z) [GeV]','Zpt'],
-    'LeadJet_mcPt:LeadJet_pt' : ['[25,30,35,40,50,60,70,80,90,100,110,120,130,140,160,180,200,250,300]*[25,35,50,70,90,110,130,160,200,300]','Reco p\_\{T\}(leading jet) [GeV]','Gen p\_\{T\}(leading jet) [GeV]','LeadJetPt'],
-    'm3Lmet_gen:m3Lmet' : ['[100,140,160,180,200,250,300,400,600,1000,3000]*[100,160,200,300,600,3000]','Reco M\_\{WZ\} [GeV]','Gen M\_\{WZ\} [GeV]','MWZ'],
-    'genLepW_pt:LepW_pt' : ['[25,30,35,40,50,60,70,80,90,100,110,120,130,140,160,180,200,250,300]*[25,35,50,70,90,110,130,160,200,300]','Reco p\_\{T\}(W) [GeV]','Gen p\_\{T\}(W) [GeV]','Wpt'],
-    'genNjets:Njets'   : ['[0,1,2,3,4,5]*[0,1,2,3,4,5]', 'Reco N\_\{jets\}', 'Gen N\_\{jets\}', 'Njets'], # This won't work yet---must check name of Njets variables in tree
-
-    }
 
 mca='./wzsm/mca_unfolding.txt'
 #inputdir='/pool/ciencias/HeppyTrees/RA7/estructura/wzSkimmed/'
@@ -165,7 +166,7 @@ processes=' -p prompt_altWZ.* '
 doSignSplit=True
 
 if not doSignSplit:
-    for iShape, iPack in pairs.items():
+    for iShape, iPack in self.responsePairs.items():
         iRange=iPack[0]
         iXTitle=iPack[1]
         iYTitle=iPack[2]
@@ -206,7 +207,7 @@ else:
 
     for iWhat, iCut in enabler.items():
 
-        for iShape, iPack in pairs.items():
+        for iShape, iPack in self.responsePairs.items():
             iRange=iPack[0]
             iXTitle=iPack[1]
             iYTitle=iPack[2]
