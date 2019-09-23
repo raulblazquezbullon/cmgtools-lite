@@ -8,14 +8,17 @@
 # Build inputs to the unfolding procedure (together with systematics)
 
 
+# yearlyStuff.py is a symlink to ../utils/yearlyStuff.py
+from yearlyStuff import *
+
 class Steer:
 
     def __init__(self, years, outputDir):
         self.outputDir=self.outputDir+string(self.year)
         self.year=year
         self.channels=['incl', 'eee', 'eem', 'mme', 'mmm']
-        self.mca='./mca_unfoldingInputs.txt'
-
+        self.mca='./mca_unfoldingInputs.txt' # File to be updated
+        
         
         os.mkdir(self.outputDir)
 
@@ -47,8 +50,8 @@ class Steer:
             os.mkdir('%s_%s/inputs'.format(self.outputDir,ch))
             
         
-        inputdir='/pool/ciencias/HeppyTrees/RA7/estructura/wzSkimmed/'
-        
+        inputdir = "/pool/ciencias/HeppyTrees/RA7/nanoAODv4_%s_estructure/"%(str(self.year))
+
         # Preliminary cleanup
         for ch in channels:
             print('rm -r %s_$s/inputs/*'.format(self.outputDir, ch))
@@ -61,6 +64,8 @@ class Steer:
                 iXTitle=iPack[1]
                 iOut=iPack[2]
                 iYTitle='Events'
+                
+                #here pick stuff from the yearly command line I am preparing for doAnal (it's done for plotting, but here I need it for cards)
 
                 print('python makeShapeCardsSusy.py {mca} ./wzsm/cuts_wzsm.txt \'{iShape}\' \'{iRange}\' ./wzsm/systs_wz.txt -P {inputdir} --Fs {{P}}/leptonJetReCleanerWZSM --Fs {{P}}/leptonBuilderWZSM --FMCs {{P}}/bTagEventWeightFullSimWZ30 -j 64 -l 35.9 --s2v --s2v --tree treeProducerSusyMultilepton --mcc wzsm/mcc_varsub_wzsm.txt --mcc wzsm/mcc_triggerdefs.txt -f -W \' puw_nInt_Moriond(nTrueInt)*getLepSF(LepSel1_pt,LepSel1_eta,LepSel1_pdgId,1,1)*getLepSF(LepSel2_pt,LepSel2_eta,LepSel2_pdgId,1,1)*getLepSF(LepSel3_pt,LepSel3_eta,LepSel3_pdgId,1,1)*bTagWeight \' -p data -p prompt_.* -p convs.* -p rares.* -p fakes_appldata.* --plotgroup fakes_appldata+=promptsub  --load-macro wzsm/functionsPUW.cc --load-macro wzsm/functionsSF.cc  --load-macro wzsm/functionsWZ.cc --od /nfs/fanae/user/vischia/workarea/cmssw/combine/CMSSW_8_1_0/src/wz_unfolding/incl_fitWZonly/ --bin incl -o WZSR -E SR  --neglist promptsub --autoMCStats --XTitle "{iXTitle}" --YTitle "{iYTitle}"'.format(mca=self.mca, iShape=iShape, iRange=iRange, inputdir=inputdir, iXTitle=iXTitle, iYTitle=iYTitle) )
 
