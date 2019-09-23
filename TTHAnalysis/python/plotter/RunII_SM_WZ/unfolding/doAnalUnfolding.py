@@ -7,9 +7,12 @@
 # Created by pietro.vischia@cern.ch
 # Build inputs to the unfolding procedure (together with systematics)
 
-
-# yearlyStuff.py is a symlink to ../utils/yearlyStuff.py
+import sys
+sys.path.append('$CMSSW_BASE/src/CMGTools/TTHAnalysis/python/plotter/RunII_SM_WZ/utils/')
 from yearlyStuff import *
+
+print('done0')
+exit
 
 class Steer:
 
@@ -247,7 +250,7 @@ class Steer:
 
 def doTheUnfolding(self):
     # Finally call runUnfold and unfold.py 
-    echo "python runUnfold.py -n 1"
+    print("python runUnfold.py -n 1")
 
 
 def bad(what):
@@ -281,9 +284,11 @@ def main(args):
         anal.doTheUnfolding()
 
 
+import argparse
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('-w', '--what',           help='Action to be taken [inputs, responses, unfolding, all]' default='all')
+    parser.add_argument('-w', '--what',           help='Action to be taken [inputs, responses, unfolding, all]', default='all')
     parser.add_argument('-o', '--outputDir',      help='Output directory', default='./temp')
     parser.add_argument('-y', '--year',           help='Year', default=2016)
     args = parser.parse_args()
