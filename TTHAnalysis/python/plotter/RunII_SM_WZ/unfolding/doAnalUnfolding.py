@@ -12,9 +12,10 @@ pairs={
     'LeadJet_pt' : ['[25,30,35,40,50,60,70,80,90,100,110,120,130,140,160,180,200,250,300]','Reco p\_\{T\}(leading jet) [GeV]','LeadJetPt'],
     'm3Lmet' :  ['[100,140,160,180,200,250,300,400,600,1000,3000]','Reco M\_\{WZ\} [GeV]','MWZ'],
     'LepW_pt' : ['[25,30,35,40,50,60,70,80,90,100,110,120,130,140,160,180,200,250,300]','Reco p\_\{T\}(W) [GeV]','Wpt'],
+    'Njets'   : ['[0,1,2,3,4,5]', 'Reco N\_\{jets\}', 'Njets'],
     }
 
-mca='./wzsm/mca_unfoldingInputs.txt'
+mca='./mca_unfoldingInputs.txt'
 inputdir='/pool/ciencias/HeppyTrees/RA7/estructura/wzSkimmed/'
 
 # Preliminary cleanup
@@ -117,6 +118,8 @@ pairs={
     'LeadJet_mcPt:LeadJet_pt' : ['[25,30,35,40,50,60,70,80,90,100,110,120,130,140,160,180,200,250,300]*[25,35,50,70,90,110,130,160,200,300]','Reco p\_\{T\}(leading jet) [GeV]','Gen p\_\{T\}(leading jet) [GeV]','LeadJetPt'],
     'm3Lmet_gen:m3Lmet' : ['[100,140,160,180,200,250,300,400,600,1000,3000]*[100,160,200,300,600,3000]','Reco M\_\{WZ\} [GeV]','Gen M\_\{WZ\} [GeV]','MWZ'],
     'genLepW_pt:LepW_pt' : ['[25,30,35,40,50,60,70,80,90,100,110,120,130,140,160,180,200,250,300]*[25,35,50,70,90,110,130,160,200,300]','Reco p\_\{T\}(W) [GeV]','Gen p\_\{T\}(W) [GeV]','Wpt'],
+    'genNjets:Njets'   : ['[0,1,2,3,4,5]*[0,1,2,3,4,5]', 'Reco N\_\{jets\}', 'Gen N\_\{jets\}', 'Njets'],
+
     }
 
 #mca='./wzsm/mca_unfoldingInputs.txt'
