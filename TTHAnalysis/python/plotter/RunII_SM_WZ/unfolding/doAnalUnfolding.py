@@ -144,105 +144,105 @@ class Steer:
 
         print('Blah')
 
-# Then restructure the doVariedResponses.py script
+        # Then restructure the doVariedResponses.py script
 
 
-mca='./wzsm/mca_unfolding.txt'
-#inputdir='/pool/ciencias/HeppyTrees/RA7/estructura/wzSkimmed/'
-inputdir='/pool/ciencias/HeppyTrees/RA7/wz/wzUnskimmed/'
-baseoutputdir='/nfs/fanae/user/vischia/workarea/cmssw/combine/CMSSW_8_1_0/src/wz_unfolding/responses/'
-#baseoutputdir="tempo/"
-fts='--Fs {P}/lepgenVarsWZSM --Fs {P}/leptonJetReCleanerWZSM --Fs {P}/leptonBuilderWZSM --FMCs {P}/bTagEventWeightFullSimWZ30 '
-#processes="-p data -p prompt_.* -p convs.* -p rares.* -p fakes_appldata.* --plotgroup fakes_appldata+=promptsub "
-processes=' -p prompt_altWZ.* '
-
-# Preliminary cleanup
-#echo "rm -r ${baseoutputdir}incl_fitWZonly/"
-#echo "rm -r ${baseoutputdir}eee_fitWZonly/ "
-#echo "rm -r ${baseoutputdir}eem_fitWZonly/ "
-#echo "rm -r ${baseoutputdir}mme_fitWZonly/ "
-#echo "rm -r ${baseoutputdir}mmm_fitWZonly/ "
-
-doSignSplit=True
-
-if not doSignSplit:
-    for iShape, iPack in self.responsePairs.items():
-        iRange=iPack[0]
-        iXTitle=iPack[1]
-        iYTitle=iPack[2]
-        iOut=iPack[3]
-        print('echo \"{iShape}, range {iRange}\"'.format(iShape=iShape,iRange=iRange))
-        print('python makeShapeCardsSusy.py {mca} ./wzsm/cuts_wzsm.txt \'{iShape}\' \'{iRange}\' ./wzsm/systs_wz.txt -P {inputdir}  {fts}  -j 64 -l 35.9 --s2v --s2v --tree treeProducerSusyMultilepton --mcc wzsm/mcc_varsub_wzsm.txt --mcc wzsm/mcc_triggerdefs.txt -f -W \' puw_nInt_Moriond(nTrueInt)*getLepSF(LepSel1_pt,LepSel1_eta,LepSel1_pdgId,1,1)*getLepSF(LepSel2_pt,LepSel2_eta,LepSel2_pdgId,1,1)*getLepSF(LepSel3_pt,LepSel3_eta,LepSel3_pdgId,1,1)*bTagWeight \' {processes} --load-macro wzsm/functionsPUW.cc --load-macro wzsm/functionsSF.cc  --load-macro wzsm/functionsWZ.cc --od {baseoutputdir}incl_fitWZonly/ --bin incl -o WZSR -E SR  --neglist promptsub --autoMCStats --asimov --XTitle "{iXTitle}" --YTitle "{iYTitle}"'.format(mca=self.mca,iShape=iShape,iRange=iRange,inputdir=inputdir,fts=fts,processes=processes,baseoutputdir=baseoutputdir,iXTitle=iXTitle,iYTitle=iYTitle))
+        mca='./wzsm/mca_unfolding.txt'
+        #inputdir='/pool/ciencias/HeppyTrees/RA7/estructura/wzSkimmed/'
+        inputdir='/pool/ciencias/HeppyTrees/RA7/wz/wzUnskimmed/'
+        baseoutputdir='/nfs/fanae/user/vischia/workarea/cmssw/combine/CMSSW_8_1_0/src/wz_unfolding/responses/'
+        #baseoutputdir="tempo/"
+        fts='--Fs {P}/lepgenVarsWZSM --Fs {P}/leptonJetReCleanerWZSM --Fs {P}/leptonBuilderWZSM --FMCs {P}/bTagEventWeightFullSimWZ30 '
+        #processes="-p data -p prompt_.* -p convs.* -p rares.* -p fakes_appldata.* --plotgroup fakes_appldata+=promptsub "
+        processes=' -p prompt_altWZ.* '
         
-        print('python makeShapeCardsSusy.py {mca} ./wzsm/cuts_wzsm.txt \'{iShape}\' \'{iRange}\' ./wzsm/systs_wz.txt -P {inputdir}  {fts}  -j 64 -l 35.9 --s2v --s2v --tree treeProducerSusyMultilepton --mcc wzsm/mcc_varsub_wzsm.txt --mcc wzsm/mcc_triggerdefs.txt -f -W \' puw_nInt_Moriond(nTrueInt)*getLepSF(LepSel1_pt,LepSel1_eta,LepSel1_pdgId,1,1)*getLepSF(LepSel2_pt,LepSel2_eta,LepSel2_pdgId,1,1)*getLepSF(LepSel3_pt,LepSel3_eta,LepSel3_pdgId,1,1)*bTagWeight \' {processes} --load-macro wzsm/functionsPUW.cc --load-macro wzsm/functionsSF.cc  --load-macro wzsm/functionsWZ.cc --od {baseoutputdir}eee_fitWZonly/ --bin eee -o WZSR -E SR -E eee --neglist promptsub --autoMCStats --asimov --XTitle "{iXTitle}" --YTitle "{iYTitle}"'.format(mca=self.mca,iShape=iShape,iRange=iRange,inputdir=inputdir,fts=fts,processes=processes,baseoutputdir=baseoutputdir,iXTitle=iXTitle,iYTitle=iYTitle))
+        # Preliminary cleanup
+        #echo "rm -r ${baseoutputdir}incl_fitWZonly/"
+        #echo "rm -r ${baseoutputdir}eee_fitWZonly/ "
+        #echo "rm -r ${baseoutputdir}eem_fitWZonly/ "
+        #echo "rm -r ${baseoutputdir}mme_fitWZonly/ "
+        #echo "rm -r ${baseoutputdir}mmm_fitWZonly/ "
         
-        print('python makeShapeCardsSusy.py {mca} ./wzsm/cuts_wzsm.txt \'{iShape}\' \'{iRange}\' ./wzsm/systs_wz.txt -P {inputdir}  {fts}  -j 64 -l 35.9 --s2v --s2v --tree treeProducerSusyMultilepton --mcc wzsm/mcc_varsub_wzsm.txt --mcc wzsm/mcc_triggerdefs.txt -f -W \' puw_nInt_Moriond(nTrueInt)*getLepSF(LepSel1_pt,LepSel1_eta,LepSel1_pdgId,1,1)*getLepSF(LepSel2_pt,LepSel2_eta,LepSel2_pdgId,1,1)*getLepSF(LepSel3_pt,LepSel3_eta,LepSel3_pdgId,1,1)*bTagWeight \' {processes} --load-macro wzsm/functionsPUW.cc --load-macro wzsm/functionsSF.cc  --load-macro wzsm/functionsWZ.cc --od {baseoutputdir}eem_fitWZonly/ --bin eem -o WZSR -E SR -E eem --neglist promptsub --autoMCStats --asimov --XTitle "{iXTitle}" --YTitle "{iYTitle}"'.format(mca=self.mca,iShape=iShape,iRange=iRange,inputdir=inputdir,fts=fts,processes=processes,baseoutputdir=baseoutputdir,iXTitle=iXTitle,iYTitle=iYTitle))
+        doSignSplit=True
 
-        print('python makeShapeCardsSusy.py {mca} ./wzsm/cuts_wzsm.txt \'{iShape}\' \'{iRange}\' ./wzsm/systs_wz.txt -P {inputdir}  {fts}  -j 64 -l 35.9 --s2v --s2v --tree treeProducerSusyMultilepton --mcc wzsm/mcc_varsub_wzsm.txt --mcc wzsm/mcc_triggerdefs.txt -f -W \' puw_nInt_Moriond(nTrueInt)*getLepSF(LepSel1_pt,LepSel1_eta,LepSel1_pdgId,1,1)*getLepSF(LepSel2_pt,LepSel2_eta,LepSel2_pdgId,1,1)*getLepSF(LepSel3_pt,LepSel3_eta,LepSel3_pdgId,1,1)*bTagWeight \' {processes} --load-macro wzsm/functionsPUW.cc --load-macro wzsm/functionsSF.cc  --load-macro wzsm/functionsWZ.cc --od {baseoutputdir}mme_fitWZonly/ --bin mme -o WZSR -E SR -E mme --neglist promptsub --autoMCStats --asimov --XTitle "{iXTitle}" --YTitle "{iYTitle}"'.format(mca=self.mca,iShape=iShape,iRange=iRange,inputdir=inputdir,fts=fts,processes=processes,baseoutputdir=baseoutputdir,iXTitle=iXTitle,iYTitle=iYTitle))
-
-        print('python makeShapeCardsSusy.py {mca} ./wzsm/cuts_wzsm.txt \'{iShape}\' \'{iRange}\' ./wzsm/systs_wz.txt -P {inputdir}  {fts}  -j 64 -l 35.9 --s2v --s2v --tree treeProducerSusyMultilepton --mcc wzsm/mcc_varsub_wzsm.txt --mcc wzsm/mcc_triggerdefs.txt -f -W \' puw_nInt_Moriond(nTrueInt)*getLepSF(LepSel1_pt,LepSel1_eta,LepSel1_pdgId,1,1)*getLepSF(LepSel2_pt,LepSel2_eta,LepSel2_pdgId,1,1)*getLepSF(LepSel3_pt,LepSel3_eta,LepSel3_pdgId,1,1)*bTagWeight \' {processes} --load-macro wzsm/functionsPUW.cc --load-macro wzsm/functionsSF.cc  --load-macro wzsm/functionsWZ.cc --od {baseoutputdir}mmm_fitWZonly/ --bin mmm -o WZSR -E SR -E mmm --neglist promptsub --autoMCStats --asimov --XTitle "{iXTitle}" --YTitle "{iYTitle}"'.format(mca=self.mca,iShape=iShape,iRange=iRange,inputdir=inputdir,fts=fts,processes=processes,baseoutputdir=baseoutputdir,iXTitle=iXTitle,iYTitle=iYTitle))
-
-        print('rm -r {baseoutputdir}incl_fitWZonly_{iout}/'.format(baseoutputdir=baseoutputdir,iout=iOut))
-        print('mv {baseoutputdir}incl_fitWZonly/ {baseoutputdir}incl_fitWZonly_{iout}/'.format(baseoutputdir=baseoutputdir,iout=iOut))
+        if not doSignSplit:
+            for iShape, iPack in self.responsePairs.items():
+                iRange=iPack[0]
+                iXTitle=iPack[1]
+                iYTitle=iPack[2]
+                iOut=iPack[3]
+                print('echo \"{iShape}, range {iRange}\"'.format(iShape=iShape,iRange=iRange))
+                print('python makeShapeCardsSusy.py {mca} ./wzsm/cuts_wzsm.txt \'{iShape}\' \'{iRange}\' ./wzsm/systs_wz.txt -P {inputdir}  {fts}  -j 64 -l 35.9 --s2v --s2v --tree treeProducerSusyMultilepton --mcc wzsm/mcc_varsub_wzsm.txt --mcc wzsm/mcc_triggerdefs.txt -f -W \' puw_nInt_Moriond(nTrueInt)*getLepSF(LepSel1_pt,LepSel1_eta,LepSel1_pdgId,1,1)*getLepSF(LepSel2_pt,LepSel2_eta,LepSel2_pdgId,1,1)*getLepSF(LepSel3_pt,LepSel3_eta,LepSel3_pdgId,1,1)*bTagWeight \' {processes} --load-macro wzsm/functionsPUW.cc --load-macro wzsm/functionsSF.cc  --load-macro wzsm/functionsWZ.cc --od {baseoutputdir}incl_fitWZonly/ --bin incl -o WZSR -E SR  --neglist promptsub --autoMCStats --asimov --XTitle "{iXTitle}" --YTitle "{iYTitle}"'.format(mca=self.mca,iShape=iShape,iRange=iRange,inputdir=inputdir,fts=fts,processes=processes,baseoutputdir=baseoutputdir,iXTitle=iXTitle,iYTitle=iYTitle))
         
-        print('rm -r {baseoutputdir}eee_fitWZonly_{iout}/'.format(baseoutputdir=baseoutputdir,iout=iOut))
-        print('mv {baseoutputdir}eee_fitWZonly/ {baseoutputdir}eee_fitWZonly_{iout}/'.format(baseoutputdir=baseoutputdir,iout=iOut))
+                print('python makeShapeCardsSusy.py {mca} ./wzsm/cuts_wzsm.txt \'{iShape}\' \'{iRange}\' ./wzsm/systs_wz.txt -P {inputdir}  {fts}  -j 64 -l 35.9 --s2v --s2v --tree treeProducerSusyMultilepton --mcc wzsm/mcc_varsub_wzsm.txt --mcc wzsm/mcc_triggerdefs.txt -f -W \' puw_nInt_Moriond(nTrueInt)*getLepSF(LepSel1_pt,LepSel1_eta,LepSel1_pdgId,1,1)*getLepSF(LepSel2_pt,LepSel2_eta,LepSel2_pdgId,1,1)*getLepSF(LepSel3_pt,LepSel3_eta,LepSel3_pdgId,1,1)*bTagWeight \' {processes} --load-macro wzsm/functionsPUW.cc --load-macro wzsm/functionsSF.cc  --load-macro wzsm/functionsWZ.cc --od {baseoutputdir}eee_fitWZonly/ --bin eee -o WZSR -E SR -E eee --neglist promptsub --autoMCStats --asimov --XTitle "{iXTitle}" --YTitle "{iYTitle}"'.format(mca=self.mca,iShape=iShape,iRange=iRange,inputdir=inputdir,fts=fts,processes=processes,baseoutputdir=baseoutputdir,iXTitle=iXTitle,iYTitle=iYTitle))
         
-        print('rm -r {baseoutputdir}eem_fitWZonly_{iout}/'.format(baseoutputdir=baseoutputdir,iout=iOut))
-        print('mv {baseoutputdir}eem_fitWZonly/ {baseoutputdir}eem_fitWZonly_{iout}/'.format(baseoutputdir=baseoutputdir,iout=iOut))
+                print('python makeShapeCardsSusy.py {mca} ./wzsm/cuts_wzsm.txt \'{iShape}\' \'{iRange}\' ./wzsm/systs_wz.txt -P {inputdir}  {fts}  -j 64 -l 35.9 --s2v --s2v --tree treeProducerSusyMultilepton --mcc wzsm/mcc_varsub_wzsm.txt --mcc wzsm/mcc_triggerdefs.txt -f -W \' puw_nInt_Moriond(nTrueInt)*getLepSF(LepSel1_pt,LepSel1_eta,LepSel1_pdgId,1,1)*getLepSF(LepSel2_pt,LepSel2_eta,LepSel2_pdgId,1,1)*getLepSF(LepSel3_pt,LepSel3_eta,LepSel3_pdgId,1,1)*bTagWeight \' {processes} --load-macro wzsm/functionsPUW.cc --load-macro wzsm/functionsSF.cc  --load-macro wzsm/functionsWZ.cc --od {baseoutputdir}eem_fitWZonly/ --bin eem -o WZSR -E SR -E eem --neglist promptsub --autoMCStats --asimov --XTitle "{iXTitle}" --YTitle "{iYTitle}"'.format(mca=self.mca,iShape=iShape,iRange=iRange,inputdir=inputdir,fts=fts,processes=processes,baseoutputdir=baseoutputdir,iXTitle=iXTitle,iYTitle=iYTitle))
+
+                print('python makeShapeCardsSusy.py {mca} ./wzsm/cuts_wzsm.txt \'{iShape}\' \'{iRange}\' ./wzsm/systs_wz.txt -P {inputdir}  {fts}  -j 64 -l 35.9 --s2v --s2v --tree treeProducerSusyMultilepton --mcc wzsm/mcc_varsub_wzsm.txt --mcc wzsm/mcc_triggerdefs.txt -f -W \' puw_nInt_Moriond(nTrueInt)*getLepSF(LepSel1_pt,LepSel1_eta,LepSel1_pdgId,1,1)*getLepSF(LepSel2_pt,LepSel2_eta,LepSel2_pdgId,1,1)*getLepSF(LepSel3_pt,LepSel3_eta,LepSel3_pdgId,1,1)*bTagWeight \' {processes} --load-macro wzsm/functionsPUW.cc --load-macro wzsm/functionsSF.cc  --load-macro wzsm/functionsWZ.cc --od {baseoutputdir}mme_fitWZonly/ --bin mme -o WZSR -E SR -E mme --neglist promptsub --autoMCStats --asimov --XTitle "{iXTitle}" --YTitle "{iYTitle}"'.format(mca=self.mca,iShape=iShape,iRange=iRange,inputdir=inputdir,fts=fts,processes=processes,baseoutputdir=baseoutputdir,iXTitle=iXTitle,iYTitle=iYTitle))
+
+                print('python makeShapeCardsSusy.py {mca} ./wzsm/cuts_wzsm.txt \'{iShape}\' \'{iRange}\' ./wzsm/systs_wz.txt -P {inputdir}  {fts}  -j 64 -l 35.9 --s2v --s2v --tree treeProducerSusyMultilepton --mcc wzsm/mcc_varsub_wzsm.txt --mcc wzsm/mcc_triggerdefs.txt -f -W \' puw_nInt_Moriond(nTrueInt)*getLepSF(LepSel1_pt,LepSel1_eta,LepSel1_pdgId,1,1)*getLepSF(LepSel2_pt,LepSel2_eta,LepSel2_pdgId,1,1)*getLepSF(LepSel3_pt,LepSel3_eta,LepSel3_pdgId,1,1)*bTagWeight \' {processes} --load-macro wzsm/functionsPUW.cc --load-macro wzsm/functionsSF.cc  --load-macro wzsm/functionsWZ.cc --od {baseoutputdir}mmm_fitWZonly/ --bin mmm -o WZSR -E SR -E mmm --neglist promptsub --autoMCStats --asimov --XTitle "{iXTitle}" --YTitle "{iYTitle}"'.format(mca=self.mca,iShape=iShape,iRange=iRange,inputdir=inputdir,fts=fts,processes=processes,baseoutputdir=baseoutputdir,iXTitle=iXTitle,iYTitle=iYTitle))
+
+                print('rm -r {baseoutputdir}incl_fitWZonly_{iout}/'.format(baseoutputdir=baseoutputdir,iout=iOut))
+                print('mv {baseoutputdir}incl_fitWZonly/ {baseoutputdir}incl_fitWZonly_{iout}/'.format(baseoutputdir=baseoutputdir,iout=iOut))
         
-        print('rm -r {baseoutputdir}mme_fitWZonly_{iout}/'.format(baseoutputdir=baseoutputdir,iout=iOut))
-        print('mv {baseoutputdir}mme_fitWZonly/ {baseoutputdir}mme_fitWZonly_{iout}/'.format(baseoutputdir=baseoutputdir,iout=iOut))
+                print('rm -r {baseoutputdir}eee_fitWZonly_{iout}/'.format(baseoutputdir=baseoutputdir,iout=iOut))
+                print('mv {baseoutputdir}eee_fitWZonly/ {baseoutputdir}eee_fitWZonly_{iout}/'.format(baseoutputdir=baseoutputdir,iout=iOut))
         
-        print('rm -r {baseoutputdir}mmm_fitWZonly_{iout}/'.format(baseoutputdir=baseoutputdir,iout=iOut))
-        print('mv {baseoutputdir}mmm_fitWZonly/ {baseoutputdir}mmm_fitWZonly_{iout}/'.format(baseoutputdir=baseoutputdir,iout=iOut))
-
+                print('rm -r {baseoutputdir}eem_fitWZonly_{iout}/'.format(baseoutputdir=baseoutputdir,iout=iOut))
+                print('mv {baseoutputdir}eem_fitWZonly/ {baseoutputdir}eem_fitWZonly_{iout}/'.format(baseoutputdir=baseoutputdir,iout=iOut))
         
-else:         
+                print('rm -r {baseoutputdir}mme_fitWZonly_{iout}/'.format(baseoutputdir=baseoutputdir,iout=iOut))
+                print('mv {baseoutputdir}mme_fitWZonly/ {baseoutputdir}mme_fitWZonly_{iout}/'.format(baseoutputdir=baseoutputdir,iout=iOut))
+        
+                print('rm -r {baseoutputdir}mmm_fitWZonly_{iout}/'.format(baseoutputdir=baseoutputdir,iout=iOut))
+                print('mv {baseoutputdir}mmm_fitWZonly/ {baseoutputdir}mmm_fitWZonly_{iout}/'.format(baseoutputdir=baseoutputdir,iout=iOut))
 
-    enabler={
-        'plus' : ' -E pmp ',
-        'minus' : ' -E pmm',
-        }
+        else:         
 
-    for iWhat, iCut in enabler.items():
+            enabler={
+                'plus' : ' -E pmp ',
+                'minus' : ' -E pmm',
+            }
 
-        for iShape, iPack in self.responsePairs.items():
-            iRange=iPack[0]
-            iXTitle=iPack[1]
-            iYTitle=iPack[2]
-            iOut=iPack[3]
-            print('echo \"{iShape}, range {iRange}\"'.format(iShape=iShape,iRange=iRange))
-            print('python makeShapeCardsSusy.py {mca} ./wzsm/cuts_wzsm.txt \'{iShape}\' \'{iRange}\' ./wzsm/systs_wz.txt -P {inputdir}  {fts}  -j 64 -l 35.9 --s2v --s2v --tree treeProducerSusyMultilepton --mcc wzsm/mcc_varsub_wzsm.txt --mcc wzsm/mcc_triggerdefs.txt -f -W \' puw_nInt_Moriond(nTrueInt)*getLepSF(LepSel1_pt,LepSel1_eta,LepSel1_pdgId,1,1)*getLepSF(LepSel2_pt,LepSel2_eta,LepSel2_pdgId,1,1)*getLepSF(LepSel3_pt,LepSel3_eta,LepSel3_pdgId,1,1)*bTagWeight \' {processes} --load-macro wzsm/functionsPUW.cc --load-macro wzsm/functionsSF.cc  --load-macro wzsm/functionsWZ.cc --od {baseoutputdir}incl_fitWZonly/ --bin incl -o WZSR -E SR {chargecut}   --neglist promptsub --autoMCStats --asimov --XTitle "{iXTitle}" --YTitle "{iYTitle}"'.format(mca=self.mca,iShape=iShape,iRange=iRange,inputdir=inputdir,chargecut=iCut,fts=fts,processes=processes,baseoutputdir=baseoutputdir,iXTitle=iXTitle,iYTitle=iYTitle))
+            for iWhat, iCut in enabler.items():
+
+                for iShape, iPack in self.responsePairs.items():
+                    iRange=iPack[0]
+                    iXTitle=iPack[1]
+                    iYTitle=iPack[2]
+                    iOut=iPack[3]
+                    print('echo \"{iShape}, range {iRange}\"'.format(iShape=iShape,iRange=iRange))
+                    print('python makeShapeCardsSusy.py {mca} ./wzsm/cuts_wzsm.txt \'{iShape}\' \'{iRange}\' ./wzsm/systs_wz.txt -P {inputdir}  {fts}  -j 64 -l 35.9 --s2v --s2v --tree treeProducerSusyMultilepton --mcc wzsm/mcc_varsub_wzsm.txt --mcc wzsm/mcc_triggerdefs.txt -f -W \' puw_nInt_Moriond(nTrueInt)*getLepSF(LepSel1_pt,LepSel1_eta,LepSel1_pdgId,1,1)*getLepSF(LepSel2_pt,LepSel2_eta,LepSel2_pdgId,1,1)*getLepSF(LepSel3_pt,LepSel3_eta,LepSel3_pdgId,1,1)*bTagWeight \' {processes} --load-macro wzsm/functionsPUW.cc --load-macro wzsm/functionsSF.cc  --load-macro wzsm/functionsWZ.cc --od {baseoutputdir}incl_fitWZonly/ --bin incl -o WZSR -E SR {chargecut}   --neglist promptsub --autoMCStats --asimov --XTitle "{iXTitle}" --YTitle "{iYTitle}"'.format(mca=self.mca,iShape=iShape,iRange=iRange,inputdir=inputdir,chargecut=iCut,fts=fts,processes=processes,baseoutputdir=baseoutputdir,iXTitle=iXTitle,iYTitle=iYTitle))
             
-            print('python makeShapeCardsSusy.py {mca} ./wzsm/cuts_wzsm.txt \'{iShape}\' \'{iRange}\' ./wzsm/systs_wz.txt -P {inputdir}  {fts}  -j 64 -l 35.9 --s2v --s2v --tree treeProducerSusyMultilepton --mcc wzsm/mcc_varsub_wzsm.txt --mcc wzsm/mcc_triggerdefs.txt -f -W \' puw_nInt_Moriond(nTrueInt)*getLepSF(LepSel1_pt,LepSel1_eta,LepSel1_pdgId,1,1)*getLepSF(LepSel2_pt,LepSel2_eta,LepSel2_pdgId,1,1)*getLepSF(LepSel3_pt,LepSel3_eta,LepSel3_pdgId,1,1)*bTagWeight \' {processes} --load-macro wzsm/functionsPUW.cc --load-macro wzsm/functionsSF.cc  --load-macro wzsm/functionsWZ.cc --od {baseoutputdir}eee_fitWZonly/ --bin eee -o WZSR -E SR {chargecut}  -E eee --neglist promptsub --autoMCStats --asimov --XTitle "{iXTitle}" --YTitle "{iYTitle}"'.format(mca=self.mca,iShape=iShape,iRange=iRange,inputdir=inputdir,chargecut=iCut,fts=fts,processes=processes,baseoutputdir=baseoutputdir,iXTitle=iXTitle,iYTitle=iYTitle))
+                    print('python makeShapeCardsSusy.py {mca} ./wzsm/cuts_wzsm.txt \'{iShape}\' \'{iRange}\' ./wzsm/systs_wz.txt -P {inputdir}  {fts}  -j 64 -l 35.9 --s2v --s2v --tree treeProducerSusyMultilepton --mcc wzsm/mcc_varsub_wzsm.txt --mcc wzsm/mcc_triggerdefs.txt -f -W \' puw_nInt_Moriond(nTrueInt)*getLepSF(LepSel1_pt,LepSel1_eta,LepSel1_pdgId,1,1)*getLepSF(LepSel2_pt,LepSel2_eta,LepSel2_pdgId,1,1)*getLepSF(LepSel3_pt,LepSel3_eta,LepSel3_pdgId,1,1)*bTagWeight \' {processes} --load-macro wzsm/functionsPUW.cc --load-macro wzsm/functionsSF.cc  --load-macro wzsm/functionsWZ.cc --od {baseoutputdir}eee_fitWZonly/ --bin eee -o WZSR -E SR {chargecut}  -E eee --neglist promptsub --autoMCStats --asimov --XTitle "{iXTitle}" --YTitle "{iYTitle}"'.format(mca=self.mca,iShape=iShape,iRange=iRange,inputdir=inputdir,chargecut=iCut,fts=fts,processes=processes,baseoutputdir=baseoutputdir,iXTitle=iXTitle,iYTitle=iYTitle))
 
-            print('python makeShapeCardsSusy.py {mca} ./wzsm/cuts_wzsm.txt \'{iShape}\' \'{iRange}\' ./wzsm/systs_wz.txt -P {inputdir}  {fts}  -j 64 -l 35.9 --s2v --s2v --tree treeProducerSusyMultilepton --mcc wzsm/mcc_varsub_wzsm.txt --mcc wzsm/mcc_triggerdefs.txt -f -W \' puw_nInt_Moriond(nTrueInt)*getLepSF(LepSel1_pt,LepSel1_eta,LepSel1_pdgId,1,1)*getLepSF(LepSel2_pt,LepSel2_eta,LepSel2_pdgId,1,1)*getLepSF(LepSel3_pt,LepSel3_eta,LepSel3_pdgId,1,1)*bTagWeight \' {processes} --load-macro wzsm/functionsPUW.cc --load-macro wzsm/functionsSF.cc  --load-macro wzsm/functionsWZ.cc --od {baseoutputdir}eem_fitWZonly/ --bin eem -o WZSR -E SR {chargecut}  -E eem --neglist promptsub --autoMCStats --asimov --XTitle "{iXTitle}" --YTitle "{iYTitle}"'.format(mca=self.mca,iShape=iShape,iRange=iRange,inputdir=inputdir,chargecut=iCut,fts=fts,processes=processes,baseoutputdir=baseoutputdir,iXTitle=iXTitle,iYTitle=iYTitle))
+                    print('python makeShapeCardsSusy.py {mca} ./wzsm/cuts_wzsm.txt \'{iShape}\' \'{iRange}\' ./wzsm/systs_wz.txt -P {inputdir}  {fts}  -j 64 -l 35.9 --s2v --s2v --tree treeProducerSusyMultilepton --mcc wzsm/mcc_varsub_wzsm.txt --mcc wzsm/mcc_triggerdefs.txt -f -W \' puw_nInt_Moriond(nTrueInt)*getLepSF(LepSel1_pt,LepSel1_eta,LepSel1_pdgId,1,1)*getLepSF(LepSel2_pt,LepSel2_eta,LepSel2_pdgId,1,1)*getLepSF(LepSel3_pt,LepSel3_eta,LepSel3_pdgId,1,1)*bTagWeight \' {processes} --load-macro wzsm/functionsPUW.cc --load-macro wzsm/functionsSF.cc  --load-macro wzsm/functionsWZ.cc --od {baseoutputdir}eem_fitWZonly/ --bin eem -o WZSR -E SR {chargecut}  -E eem --neglist promptsub --autoMCStats --asimov --XTitle "{iXTitle}" --YTitle "{iYTitle}"'.format(mca=self.mca,iShape=iShape,iRange=iRange,inputdir=inputdir,chargecut=iCut,fts=fts,processes=processes,baseoutputdir=baseoutputdir,iXTitle=iXTitle,iYTitle=iYTitle))
             
-            print('python makeShapeCardsSusy.py {mca} ./wzsm/cuts_wzsm.txt \'{iShape}\' \'{iRange}\' ./wzsm/systs_wz.txt -P {inputdir}  {fts}  -j 64 -l 35.9 --s2v --s2v --tree treeProducerSusyMultilepton --mcc wzsm/mcc_varsub_wzsm.txt --mcc wzsm/mcc_triggerdefs.txt -f -W \' puw_nInt_Moriond(nTrueInt)*getLepSF(LepSel1_pt,LepSel1_eta,LepSel1_pdgId,1,1)*getLepSF(LepSel2_pt,LepSel2_eta,LepSel2_pdgId,1,1)*getLepSF(LepSel3_pt,LepSel3_eta,LepSel3_pdgId,1,1)*bTagWeight \' {processes} --load-macro wzsm/functionsPUW.cc --load-macro wzsm/functionsSF.cc  --load-macro wzsm/functionsWZ.cc --od {baseoutputdir}mme_fitWZonly/ --bin mme -o WZSR -E SR {chargecut}  -E mme --neglist promptsub --autoMCStats --asimov --XTitle "{iXTitle}" --YTitle "{iYTitle}"'.format(mca=self.mca,iShape=iShape,iRange=iRange,inputdir=inputdir,chargecut=iCut,fts=fts,processes=processes,baseoutputdir=baseoutputdir,iXTitle=iXTitle,iYTitle=iYTitle))
+                    print('python makeShapeCardsSusy.py {mca} ./wzsm/cuts_wzsm.txt \'{iShape}\' \'{iRange}\' ./wzsm/systs_wz.txt -P {inputdir}  {fts}  -j 64 -l 35.9 --s2v --s2v --tree treeProducerSusyMultilepton --mcc wzsm/mcc_varsub_wzsm.txt --mcc wzsm/mcc_triggerdefs.txt -f -W \' puw_nInt_Moriond(nTrueInt)*getLepSF(LepSel1_pt,LepSel1_eta,LepSel1_pdgId,1,1)*getLepSF(LepSel2_pt,LepSel2_eta,LepSel2_pdgId,1,1)*getLepSF(LepSel3_pt,LepSel3_eta,LepSel3_pdgId,1,1)*bTagWeight \' {processes} --load-macro wzsm/functionsPUW.cc --load-macro wzsm/functionsSF.cc  --load-macro wzsm/functionsWZ.cc --od {baseoutputdir}mme_fitWZonly/ --bin mme -o WZSR -E SR {chargecut}  -E mme --neglist promptsub --autoMCStats --asimov --XTitle "{iXTitle}" --YTitle "{iYTitle}"'.format(mca=self.mca,iShape=iShape,iRange=iRange,inputdir=inputdir,chargecut=iCut,fts=fts,processes=processes,baseoutputdir=baseoutputdir,iXTitle=iXTitle,iYTitle=iYTitle))
 
-            print('python makeShapeCardsSusy.py {mca} ./wzsm/cuts_wzsm.txt \'{iShape}\' \'{iRange}\' ./wzsm/systs_wz.txt -P {inputdir}  {fts}  -j 64 -l 35.9 --s2v --s2v --tree treeProducerSusyMultilepton --mcc wzsm/mcc_varsub_wzsm.txt --mcc wzsm/mcc_triggerdefs.txt -f -W \' puw_nInt_Moriond(nTrueInt)*getLepSF(LepSel1_pt,LepSel1_eta,LepSel1_pdgId,1,1)*getLepSF(LepSel2_pt,LepSel2_eta,LepSel2_pdgId,1,1)*getLepSF(LepSel3_pt,LepSel3_eta,LepSel3_pdgId,1,1)*bTagWeight \' {processes} --load-macro wzsm/functionsPUW.cc --load-macro wzsm/functionsSF.cc  --load-macro wzsm/functionsWZ.cc --od {baseoutputdir}mmm_fitWZonly/ --bin mmm -o WZSR -E SR {chargecut}  -E mmm --neglist promptsub --autoMCStats --asimov --XTitle "{iXTitle}" --YTitle "{iYTitle}"'.format(mca=self.mca,iShape=iShape,iRange=iRange,inputdir=inputdir,chargecut=iCut,fts=fts,processes=processes,baseoutputdir=baseoutputdir,iXTitle=iXTitle,iYTitle=iYTitle))
+                    print('python makeShapeCardsSusy.py {mca} ./wzsm/cuts_wzsm.txt \'{iShape}\' \'{iRange}\' ./wzsm/systs_wz.txt -P {inputdir}  {fts}  -j 64 -l 35.9 --s2v --s2v --tree treeProducerSusyMultilepton --mcc wzsm/mcc_varsub_wzsm.txt --mcc wzsm/mcc_triggerdefs.txt -f -W \' puw_nInt_Moriond(nTrueInt)*getLepSF(LepSel1_pt,LepSel1_eta,LepSel1_pdgId,1,1)*getLepSF(LepSel2_pt,LepSel2_eta,LepSel2_pdgId,1,1)*getLepSF(LepSel3_pt,LepSel3_eta,LepSel3_pdgId,1,1)*bTagWeight \' {processes} --load-macro wzsm/functionsPUW.cc --load-macro wzsm/functionsSF.cc  --load-macro wzsm/functionsWZ.cc --od {baseoutputdir}mmm_fitWZonly/ --bin mmm -o WZSR -E SR {chargecut}  -E mmm --neglist promptsub --autoMCStats --asimov --XTitle "{iXTitle}" --YTitle "{iYTitle}"'.format(mca=self.mca,iShape=iShape,iRange=iRange,inputdir=inputdir,chargecut=iCut,fts=fts,processes=processes,baseoutputdir=baseoutputdir,iXTitle=iXTitle,iYTitle=iYTitle))
 
-            print('rm -r {baseoutputdir}incl_fitWZonly_{iout}_{chargeinfo}/'.format(baseoutputdir=baseoutputdir,iout=iOut,chargeinfo=iWhat))
-            print('mv {baseoutputdir}incl_fitWZonly/ {baseoutputdir}incl_fitWZonly_{iout}_{chargeinfo}/'.format(baseoutputdir=baseoutputdir,iout=iOut,chargeinfo=iWhat))
+                    print('rm -r {baseoutputdir}incl_fitWZonly_{iout}_{chargeinfo}/'.format(baseoutputdir=baseoutputdir,iout=iOut,chargeinfo=iWhat))
+                    print('mv {baseoutputdir}incl_fitWZonly/ {baseoutputdir}incl_fitWZonly_{iout}_{chargeinfo}/'.format(baseoutputdir=baseoutputdir,iout=iOut,chargeinfo=iWhat))
             
-            print('rm -r {baseoutputdir}eee_fitWZonly_{iout}_{chargeinfo}/'.format(baseoutputdir=baseoutputdir,iout=iOut,chargeinfo=iWhat))
-            print('mv {baseoutputdir}eee_fitWZonly/ {baseoutputdir}eee_fitWZonly_{iout}_{chargeinfo}/'.format(baseoutputdir=baseoutputdir,iout=iOut,chargeinfo=iWhat))
-            
-            print('rm -r {baseoutputdir}eem_fitWZonly_{iout}_{chargeinfo}/'.format(baseoutputdir=baseoutputdir,iout=iOut,chargeinfo=iWhat))
-            print('mv {baseoutputdir}eem_fitWZonly/ {baseoutputdir}eem_fitWZonly_{iout}_{chargeinfo}/'.format(baseoutputdir=baseoutputdir,iout=iOut,chargeinfo=iWhat))
-            
-            print('rm -r {baseoutputdir}mme_fitWZonly_{iout}_{chargeinfo}/'.format(baseoutputdir=baseoutputdir,iout=iOut,chargeinfo=iWhat))
-            print('mv {baseoutputdir}mme_fitWZonly/ {baseoutputdir}mme_fitWZonly_{iout}_{chargeinfo}/'.format(baseoutputdir=baseoutputdir,iout=iOut,chargeinfo=iWhat))
+                    print('rm -r {baseoutputdir}eee_fitWZonly_{iout}_{chargeinfo}/'.format(baseoutputdir=baseoutputdir,iout=iOut,chargeinfo=iWhat))
+                    print('mv {baseoutputdir}eee_fitWZonly/ {baseoutputdir}eee_fitWZonly_{iout}_{chargeinfo}/'.format(baseoutputdir=baseoutputdir,iout=iOut,chargeinfo=iWhat))
+                    
+                    print('rm -r {baseoutputdir}eem_fitWZonly_{iout}_{chargeinfo}/'.format(baseoutputdir=baseoutputdir,iout=iOut,chargeinfo=iWhat))
+                    print('mv {baseoutputdir}eem_fitWZonly/ {baseoutputdir}eem_fitWZonly_{iout}_{chargeinfo}/'.format(baseoutputdir=baseoutputdir,iout=iOut,chargeinfo=iWhat))
+                    
+                    print('rm -r {baseoutputdir}mme_fitWZonly_{iout}_{chargeinfo}/'.format(baseoutputdir=baseoutputdir,iout=iOut,chargeinfo=iWhat))
+                    print('mv {baseoutputdir}mme_fitWZonly/ {baseoutputdir}mme_fitWZonly_{iout}_{chargeinfo}/'.format(baseoutputdir=baseoutputdir,iout=iOut,chargeinfo=iWhat))
     
-            print('rm -r {baseoutputdir}mmm_fitWZonly_{iout}_{chargeinfo}/'.format(baseoutputdir=baseoutputdir,iout=iOut,chargeinfo=iWhat))
-            print('mv {baseoutputdir}mmm_fitWZonly/ {baseoutputdir}mmm_fitWZonly_{iout}_{chargeinfo}/'.format(baseoutputdir=baseoutputdir,iout=iOut,chargeinfo=iWhat))
+                    print('rm -r {baseoutputdir}mmm_fitWZonly_{iout}_{chargeinfo}/'.format(baseoutputdir=baseoutputdir,iout=iOut,chargeinfo=iWhat))
+                    print('mv {baseoutputdir}mmm_fitWZonly/ {baseoutputdir}mmm_fitWZonly_{iout}_{chargeinfo}/'.format(baseoutputdir=baseoutputdir,iout=iOut,chargeinfo=iWhat))
 
 
-print('echo Done!')
+    print('echo Done!')
 
-# Finally call runUnfold and unfold.py 
-echo "python runUnfold.py -n 1"
+def doTheUnfolding(self):
+    # Finally call runUnfold and unfold.py 
+    echo "python runUnfold.py -n 1"
 
 
 def bad(what):
