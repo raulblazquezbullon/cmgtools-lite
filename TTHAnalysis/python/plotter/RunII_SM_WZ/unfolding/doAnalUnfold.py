@@ -1,4 +1,5 @@
-# Restructure everything in a single steering script
+# Do Analysis of Unfolding
+# Restructured everything in a single steering script
 # Code by pietro.vischia@cern.ch
 
 # First restructure the doUnfoldInput.py script 
