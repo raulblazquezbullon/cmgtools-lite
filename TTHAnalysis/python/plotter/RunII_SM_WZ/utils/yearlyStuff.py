@@ -28,12 +28,6 @@ pileupWeights = {
     2017: 'puWeight',
     2018: 'vtxWeight2018Nominal',
 }
-triggerdefs = {
-    2016: '--mcc RunII_SM_WZ/2016/mcc_triggerdefs.txt',
-    2017: '--mcc RunII_SM_WZ/2017/mcc_triggerdefs.txt',
-    2018: '',
-}
-
 triggerTrees = {
     2016: '--Fs {{P}}/trigger_2016/',
     2017: '',
