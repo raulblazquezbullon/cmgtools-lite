@@ -19,7 +19,7 @@ class Steer:
         
         os.mkdir(self.outputDir)
 
-        for ch in 'incl', 'eee', 'eem', 'mme', 'mmm':
+        for ch in '_incl', '_eee', '_eem', '_mme', '_mmm':
             os.mkdir(self.outputDir+ch)
             
         print('Folders with base %s have been created'.format(outputDir))
