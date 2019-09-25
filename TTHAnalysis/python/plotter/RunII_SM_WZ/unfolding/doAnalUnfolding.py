@@ -6,6 +6,7 @@
 
 # Created by pietro.vischia@cern.ch
 # Build inputs to the unfolding procedure (together with systematics)
+# and run the unfolding (either using TUnfold or combine)
 
 import sys
 sys.path.append('$CMSSW_BASE/src/CMGTools/TTHAnalysis/python/plotter/RunII_SM_WZ/utils/')
