@@ -22,11 +22,13 @@ class Steer:
         self.mca='./mca_unfoldingInputs.txt' # File to be updated
         
         if not os.path.isdir(self.outputDir):
-            os.mkdir(self.outputDir)
+            #os.mkdir(self.outputDir)
+            print('mkdir -p {outputDir}'.format(outputDir=self.outputDir))
 
         for ch in self.channels:
             if not os.path.isdir('%s_%s'.format(self.outputDir,ch)):
-                os.mkdir('%s_%s'.format(self.outputDir,ch))
+                #os.mkdir('%s_%s'.format(self.outputDir,ch))
+                print('mkdir -p {outputDir}_{ch}'.format(outputDir=self.outputDir,ch=ch))
             
         print('Folders with base %s have been created'.format(outputDir))
 
@@ -56,14 +58,15 @@ class Steer:
         
         for ch in self.channels:
             if not os.path.isdir('%s_%s/inputs'.format(self.outputDir,ch)):
-                os.mkdir('%s_%s/inputs'.format(self.outputDir,ch))
+                #os.mkdir('%s_%s/inputs'.format(self.outputDir,ch))
+                print('mkdir -p {outputDir}_{ch}/inputs'.format(outputDir=self.outputDir,ch=ch))
             
         
         inputdir = "/pool/ciencias/HeppyTrees/RA7/nanoAODv4_%s_estructure/"%(str(self.year))
 
         # Preliminary cleanup
         for ch in self.channels:
-            print('rm -r %s_$s/inputs/*'.format(self.outputDir, ch))
+            print('rm -r {outputDir}_{ch}/inputs/*'.format(outputDir=self.outputDir, ch=ch))
             
         doSignSplit=True
 
