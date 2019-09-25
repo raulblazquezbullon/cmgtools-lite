@@ -8,22 +8,25 @@
 # Build inputs to the unfolding procedure (together with systematics)
 # and run the unfolding (either using TUnfold or combine)
 
+import os
 import sys
 sys.path.append('$CMSSW_BASE/src/CMGTools/TTHAnalysis/python/plotter/RunII_SM_WZ/utils/')
 from yearlyStuff import *
 
 class Steer:
 
-    def __init__(self, years, outputDir):
-        self.outputDir=self.outputDir+string(self.year)
+    def __init__(self, year, outputDir):
         self.year=year
+        self.outputDir=outputDir+str(self.year)
         self.channels=['incl', 'eee', 'eem', 'mme', 'mmm']
         self.mca='./mca_unfoldingInputs.txt' # File to be updated
         
-        os.mkdir(self.outputDir)
+        if not os.path.isdir(self.outputDir):
+            os.mkdir(self.outputDir)
 
-        for ch in channels:
-            os.mkdir('%s_%s'.format(self.outputDir,ch))
+        for ch in self.channels:
+            if not os.path.isdir('%s_%s'.format(self.outputDir,ch)):
+                os.mkdir('%s_%s'.format(self.outputDir,ch))
             
         print('Folders with base %s have been created'.format(outputDir))
 
@@ -51,14 +54,15 @@ class Steer:
 
     def prepareInputs(self):
         
-        for ch in channels:
-            os.mkdir('%s_%s/inputs'.format(self.outputDir,ch))
+        for ch in self.channels:
+            if not os.path.isdir('%s_%s/inputs'.format(self.outputDir,ch)):
+                os.mkdir('%s_%s/inputs'.format(self.outputDir,ch))
             
         
         inputdir = "/pool/ciencias/HeppyTrees/RA7/nanoAODv4_%s_estructure/"%(str(self.year))
 
         # Preliminary cleanup
-        for ch in channels:
+        for ch in self.channels:
             print('rm -r %s_$s/inputs/*'.format(self.outputDir, ch))
             
         doSignSplit=True
@@ -151,7 +155,7 @@ class Steer:
 
                 for iChan, iChanCut in self.chanCuts.items():
                     perchan = ' --od {outdir}/responses/{year}_{chan}_fitWZonly/ --bin {chan} -E SRWZ {cut} '.format(outdir=self.outputDir, year=self.year,chan=iChan, cut=iChanCut)
-                    print('python makeShapeCardsSusy.py RunII_SM_WZ/{year}/mca_wz.txt RunII_SM_WZ/{year}/cuts_wzsm.txt \'{iShape}\' \'{iRange}\' RunII_SM_WZ/{year}/systs_wz.txt  --tree treeProducerSusyMultilepton -P /pool/ciencias/HeppyTrees/RA7/nanoAODv4_{year}_skimWZ/ {accidenteCofCof}  --Fs {{P}}/leptonPtCorrections/ {prefiringTrees} {pileupTrees} --Fs {{P}}/leptonJetReCleanerWZSM/ --Fs {{P}}/leptonBuilderWZSM_v2/ {triggerTrees} --FMCs {{P}}/leptonMatcher/ --FMCs {{P}}/bTagWeights/  -L RunII_SM_WZ/functionsSF.cc -L RunII_SM_WZ/functionsMCMatch.cc -L RunII_SM_WZ/functionsWZ.cc -W \'getLeptonSF_v4(0,0,{year},LepSel_pt[0],LepSel_eta[0],LepSel_pdgId[0])*getLeptonSF_v4(0,0,{year},LepSel_pt[1],LepSel_eta[1],LepSel_pdgId[1])*getLeptonSF_v4(0,0,{year},LepSel_pt[2],LepSel_eta[2],LepSel_pdgId[2])*{pileupWeights}*bTagWeightDeepCSVT{prefiringWeights}\' --obj Events -j 32 -l {lumi} -f  -E SRWZ {perchan} {chargecut} --neglist promptsub --asimov --autoMCStats  --XTitle "{iXTitle}" --YTitle "{iYTitle}" -o WZSR_{year} '.format(var=var,binning=binning,year=options.year,accidenteCofCof=accidenteCofCof[options.year],prefiringTrees=prefiringTrees[options.year],prefiringWeights=prefiringWeights[options.year],triggerTrees=triggerTrees[options.year],lumi=lumi[options.year],pileupTrees=pileupTrees[options.year],pileupWeights=pileupWeights[options.year], perchan=perchan, iShape=iShape, iRange=iRange, iXTitle=iXTitle, iYTitle=iYTitle, chargecut=iCut) )
+                    print('python makeShapeCardsSusy.py RunII_SM_WZ/{year}/mca_wz.txt RunII_SM_WZ/{year}/cuts_wzsm.txt \'{iShape}\' \'{iRange}\' RunII_SM_WZ/{year}/systs_wz.txt  --tree treeProducerSusyMultilepton -P /pool/ciencias/HeppyTrees/RA7/nanoAODv4_{year}_skimWZ/ {accidenteCofCof}  --Fs {{P}}/leptonPtCorrections/ {prefiringTrees} {pileupTrees} --Fs {{P}}/leptonJetReCleanerWZSM/ --Fs {{P}}/leptonBuilderWZSM_v2/ {triggerTrees} --FMCs {{P}}/leptonMatcher/ --FMCs {{P}}/bTagWeights/  -L RunII_SM_WZ/functionsSF.cc -L RunII_SM_WZ/functionsMCMatch.cc -L RunII_SM_WZ/functionsWZ.cc -W \'getLeptonSF_v4(0,0,{year},LepSel_pt[0],LepSel_eta[0],LepSel_pdgId[0])*getLeptonSF_v4(0,0,{year},LepSel_pt[1],LepSel_eta[1],LepSel_pdgId[1])*getLeptonSF_v4(0,0,{year},LepSel_pt[2],LepSel_eta[2],LepSel_pdgId[2])*{pileupWeights}*bTagWeightDeepCSVT{prefiringWeights}\' --obj Events -j 32 -l {lumi} -f  -E SRWZ {perchan} {chargecut} --neglist promptsub --asimov --autoMCStats  --XTitle "{iXTitle}" --YTitle "{iYTitle}" -o WZSR_{year} '.format(year=self.year,accidenteCofCof=accidenteCofCof[self.year],prefiringTrees=prefiringTrees[self.year],prefiringWeights=prefiringWeights[self.year],triggerTrees=triggerTrees[self.year],lumi=lumi[self.year],pileupTrees=pileupTrees[self.year],pileupWeights=pileupWeights[self.year], perchan=perchan, iShape=iShape, iRange=iRange, iXTitle=iXTitle, iYTitle=iYTitle, chargecut=iCut) )
 
                     #print('rm -r {baseoutputdir}incl_fitWZonly_{iout}/'.format(baseoutputdir=baseoutputdir,iout=iOut))
                     #print('mv {baseoutputdir}incl_fitWZonly/ {baseoutputdir}incl_fitWZonly_{iout}/'.format(baseoutputdir=baseoutputdir,iout=iOut))
@@ -175,18 +179,16 @@ class Steer:
                     for iChan, iChanCut in self.chanCuts.items():
                         perchan = ' --od {outdir}/responses/{year}_{chan}_fitWZonly/ --bin {chan} -E SRWZ {cut} '.format(outdir=self.outputDir, year=self.year,chan=iChan, cut=iChanCut)
                     
-                        print('python makeShapeCardsSusy.py RunII_SM_WZ/{year}/mca_wz.txt RunII_SM_WZ/{year}/cuts_wzsm.txt \'{iShape}\' \'{iRange}\' RunII_SM_WZ/{year}/systs_wz.txt  --tree treeProducerSusyMultilepton -P /pool/ciencias/HeppyTrees/RA7/nanoAODv4_{year}_skimWZ/ {accidenteCofCof}  --Fs {{P}}/leptonPtCorrections/ {prefiringTrees} {pileupTrees} --Fs {{P}}/leptonJetReCleanerWZSM/ --Fs {{P}}/leptonBuilderWZSM_v2/ {triggerTrees} --FMCs {{P}}/leptonMatcher/ --FMCs {{P}}/bTagWeights/  -L RunII_SM_WZ/functionsSF.cc -L RunII_SM_WZ/functionsMCMatch.cc -L RunII_SM_WZ/functionsWZ.cc -W \'getLeptonSF_v4(0,0,{year},LepSel_pt[0],LepSel_eta[0],LepSel_pdgId[0])*getLeptonSF_v4(0,0,{year},LepSel_pt[1],LepSel_eta[1],LepSel_pdgId[1])*getLeptonSF_v4(0,0,{year},LepSel_pt[2],LepSel_eta[2],LepSel_pdgId[2])*{pileupWeights}*bTagWeightDeepCSVT{prefiringWeights}\' --obj Events -j 32 -l {lumi} -f  -E SRWZ {perchan} {chargecut} --neglist promptsub --autoMCStats --asimov  --XTitle "{iXTitle}" --YTitle "{iYTitle}" -o WZSR_{year} '.format(var=var,binning=binning,year=options.year,accidenteCofCof=accidenteCofCof[options.year],prefiringTrees=prefiringTrees[options.year],prefiringWeights=prefiringWeights[options.year],triggerTrees=triggerTrees[options.year],lumi=lumi[options.year],pileupTrees=pileupTrees[options.year],pileupWeights=pileupWeights[options.year], perchan=perchan, iShape=iShape, iRange=iRange, iXTitle=iXTitle, iYTitle=iYTitle, chargecut=iCut) )
+                        print('python makeShapeCardsSusy.py RunII_SM_WZ/{year}/mca_wz.txt RunII_SM_WZ/{year}/cuts_wzsm.txt \'{iShape}\' \'{iRange}\' RunII_SM_WZ/{year}/systs_wz.txt  --tree treeProducerSusyMultilepton -P /pool/ciencias/HeppyTrees/RA7/nanoAODv4_{year}_skimWZ/ {accidenteCofCof}  --Fs {{P}}/leptonPtCorrections/ {prefiringTrees} {pileupTrees} --Fs {{P}}/leptonJetReCleanerWZSM/ --Fs {{P}}/leptonBuilderWZSM_v2/ {triggerTrees} --FMCs {{P}}/leptonMatcher/ --FMCs {{P}}/bTagWeights/  -L RunII_SM_WZ/functionsSF.cc -L RunII_SM_WZ/functionsMCMatch.cc -L RunII_SM_WZ/functionsWZ.cc -W \'getLeptonSF_v4(0,0,{year},LepSel_pt[0],LepSel_eta[0],LepSel_pdgId[0])*getLeptonSF_v4(0,0,{year},LepSel_pt[1],LepSel_eta[1],LepSel_pdgId[1])*getLeptonSF_v4(0,0,{year},LepSel_pt[2],LepSel_eta[2],LepSel_pdgId[2])*{pileupWeights}*bTagWeightDeepCSVT{prefiringWeights}\' --obj Events -j 32 -l {lumi} -f  -E SRWZ {perchan} {chargecut} --neglist promptsub --autoMCStats --asimov  --XTitle "{iXTitle}" --YTitle "{iYTitle}" -o WZSR_{year} '.format(year=self.year,accidenteCofCof=accidenteCofCof[self.year],prefiringTrees=prefiringTrees[self.year],prefiringWeights=prefiringWeights[self.year],triggerTrees=triggerTrees[self.year],lumi=lumi[self.year],pileupTrees=pileupTrees[self.year],pileupWeights=pileupWeights[self.year], perchan=perchan, iShape=iShape, iRange=iRange, iXTitle=iXTitle, iYTitle=iYTitle, chargecut=iCut) )
 
                         #print('rm -r {baseoutputdir}incl_fitWZonly_{iout}_{chargeinfo}/'.format(baseoutputdir=baseoutputdir,iout=iOut,chargeinfo=iWhat))
                         #print('mv {baseoutputdir}incl_fitWZonly/ {baseoutputdir}incl_fitWZonly_{iout}_{chargeinfo}/'.format(baseoutputdir=baseoutputdir,iout=iOut,chargeinfo=iWhat))
             
 
 
-    print('echo Done!')
-
-def doTheUnfolding(self):
-    # Finally call runUnfold and unfold.py 
-    print("python runUnfold.py -n 1")
+    def doTheUnfolding(self):
+        # Finally call runUnfold and unfold.py 
+        print("python runUnfold.py -n 1")
 
 
 def bad(what):
@@ -221,6 +223,7 @@ def main(args):
 
 
 import argparse
+import ROOT
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
