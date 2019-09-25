@@ -9,8 +9,8 @@ lumi = {
     2018: 58.9,
 }
 prefiringTrees = {
-    2016: '--FMCs {{P}}/trigger_prefiring/',
-    2017: '--FMCs {{P}}/trigger_prefiring/',
+    2016: '--FMCs {P}/trigger_prefiring/',
+    2017: '--FMCs {P}/trigger_prefiring/',
     2018: '',
 }
 prefiringWeights = {
@@ -19,9 +19,9 @@ prefiringWeights = {
     2018: '',
 }
 pileupTrees = {
-    2016: '--FMCs {{P}}/pileUpWeight/',
-    2017: '--FMCs {{P}}/pileUpWeights/',
-    2018: '--FMCs {{P}}/pileUpWeight/',
+    2016: '--FMCs {P}/pileUpWeight/',
+    2017: '--FMCs {P}/pileUpWeights/',
+    2018: '--FMCs {P}/pileUpWeight/',
 }
 pileupWeights = {
     2016: 'puWeight',
@@ -29,7 +29,7 @@ pileupWeights = {
     2018: 'vtxWeight2018Nominal',
 }
 triggerTrees = {
-    2016: '--Fs {{P}}/trigger_2016/',
+    2016: '--Fs {P}/trigger_2016/',
     2017: '',
     2018: '',
 }

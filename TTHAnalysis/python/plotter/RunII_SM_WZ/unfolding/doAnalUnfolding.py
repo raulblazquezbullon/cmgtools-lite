@@ -10,7 +10,7 @@
 
 import os
 import sys
-sys.path.append('$CMSSW_BASE/src/CMGTools/TTHAnalysis/python/plotter/RunII_SM_WZ/utils/')
+sys.path.append('{cmsswpath}/src/CMGTools/TTHAnalysis/python/plotter/RunII_SM_WZ/utils/'.format(cmsswpath=os.environ['CMSSW_BASE']))
 from yearlyStuff import *
 
 class Steer:
