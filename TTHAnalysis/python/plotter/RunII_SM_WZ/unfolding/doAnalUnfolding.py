@@ -192,7 +192,7 @@ class Steer:
             
 
 
-    def get_list_of_jobs(base):
+    def get_list_of_jobs(self, base):
     
         ret=[]
 
@@ -229,7 +229,7 @@ class Steer:
                     
         return ret
 
-    def runner(cmd):
+    def runner(self, cmd):
         print(cmd)
         os.system(cmd)
     
