@@ -12,8 +12,17 @@ import os
 import sys
 from multiprocessing import Pool
 
+
 sys.path.append('{cmsswpath}/src/CMGTools/TTHAnalysis/python/plotter/RunII_SM_WZ/utils/'.format(cmsswpath=os.environ['CMSSW_BASE']))
 from yearlyStuff import *
+
+
+# This is needed for multiprocessing.Pool, and cannot be into the class (<type 'instancemethod'> is not pickable)
+def runner(self, cmd):
+    print(cmd)
+    os.system(cmd)
+    
+
 
 class Steer:
 
@@ -231,10 +240,6 @@ class Steer:
                     
         return ret
 
-    def runner(self, cmd):
-        print(cmd)
-        os.system(cmd)
-    
     def doTheUnfolding(self):
         # Finally call runUnfold and unfold.py 
         print("python runUnfold.py -n 1")
@@ -245,7 +250,7 @@ class Steer:
             print jobs
             quit()
         pool=Pool(self.nthreads)
-        pool.map(self.runner, jobs)
+        pool.map(runner, jobs)
         pool.close()
         pool.join()
         
