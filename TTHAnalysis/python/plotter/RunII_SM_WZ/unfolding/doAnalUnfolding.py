@@ -18,7 +18,7 @@ from yearlyStuff import *
 
 
 # This is needed for multiprocessing.Pool, and cannot be into the class (<type 'instancemethod'> is not pickable)
-def runner(self, cmd):
+def runner(cmd):
     print(cmd)
     os.system(cmd)
     
