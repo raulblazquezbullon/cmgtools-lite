@@ -211,7 +211,7 @@ class Unfolder(object):
         self.histmap=ROOT.TUnfold.kHistMapOutputVert
         self.regmode=ROOT.TUnfold.kRegModeNone
         self.constraint=ROOT.TUnfold.kEConstraintNone
-        self.densitymode=ROOT.TUnfoldDensity.kDensityModeeNone
+        self.densitymode=ROOT.TUnfoldDensity.kDensityModeNone
         self.closure=args.closure
         self.load_data(args.data, args.mc, args.gen)
 
