@@ -365,10 +365,10 @@ class Unfolder(object):
         print('Acquiring response matrices.')
         folder=os.path.join(self.inputDir, 'responses/%s_%s_fitWZonly_%s%s/common/' % (self.year,self.finalState, self.var, self.charge) )        
 
-        file_handle = ROOT.TFile.Open('%sWZSR.input.root' % (folder))
+        file_handle = ROOT.TFile.Open('%sWZSR_%s.input.root' % (folder, self.year))
         print('Opening file: %s' % file_handle.GetName())
-        #file_handle_alt = ROOT.TFile.Open('%sWZSR.input.root' % (folder))
-        #file_handle_inc = ROOT.TFile.Open('%sWZSR.input.root' % (folder))
+        #file_handle_alt = ROOT.TFile.Open('%sWZSR_%s.input.root' % (folder, self.year))
+        #file_handle_inc = ROOT.TFile.Open('%sWZSR_%s.input.root' % (folder, self.year))
         
         self.response_nom = copy.deepcopy(ROOT.TH2D(file_handle.Get('x_prompt_altWZ_%s' % 'Pow')))
         self.response_alt = copy.deepcopy(ROOT.TH2D(file_handle.Get('x_prompt_altWZ_%s' % 'aMC')))
