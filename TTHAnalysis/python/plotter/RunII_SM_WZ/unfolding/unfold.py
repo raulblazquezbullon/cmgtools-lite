@@ -172,6 +172,7 @@ class Unfolder(object):
         self.diffvar=diffvar
         self.logx = False if self.var is not 'MWZ' else True
         self.unfold=None
+        self.year=args.year
         self.response_nom=None
         self.response_alt=None
         self.response_inc=None
@@ -226,8 +227,8 @@ class Unfolder(object):
         mcFile=None
         #genFile=None # Taken from a separate file  
         print('diocane is', self.charge)
-        print('Opening file %s.' % utils.get_file_from_glob(os.path.join(folder, '%s_fitWZonly_%s%s/%s' % (self.finalState, self.var, self.charge, self.combineInput) ) if folder else self.combineInput) )
-        file_handle = ROOT.TFile.Open(utils.get_file_from_glob(os.path.join(folder,  '%s_fitWZonly_%s%s/%s' % (self.finalState, self.var, self.charge, self.combineInput)) if folder else self.combineInput))
+        print('Opening file %s.' % utils.get_file_from_glob(os.path.join(folder, '%s_%s_fitWZonly_%s%s/%s' % (self.year, self.finalState, self.var, self.charge, self.combineInput) ) if folder else self.combineInput) )
+        file_handle = ROOT.TFile.Open(utils.get_file_from_glob(os.path.join(folder,  '%s_%s_fitWZonly_%s%s/%s' % (self.year, self.finalState, self.var, self.charge, self.combineInput)) if folder else self.combineInput))
         # gdata=file_handle.Get('x_data')
         # gdata.Draw('AP')
         # hdata=self.get_graph_as_hist(gdata, ('recodata','recodata',4,0,4))
@@ -362,7 +363,7 @@ class Unfolder(object):
 
     def get_responses(self):
         print('Acquiring response matrices.')
-        folder=os.path.join(self.inputDir, 'responses/%s_fitWZonly_%s%s/common/' % (self.finalState, self.var, self.charge) )        
+        folder=os.path.join(self.inputDir, 'responses/%s_%s_fitWZonly_%s%s/common/' % (self.year,self.finalState, self.var, self.charge) )        
 
         file_handle = ROOT.TFile.Open('%sWZSR.input.root' % (folder))
         print('Opening file: %s' % file_handle.GetName())
@@ -389,7 +390,7 @@ class Unfolder(object):
                     self.response_alt.SetBinError(ibin, jbin, 0)
                     self.response_inc.SetBinError(ibin, jbin, 0)
                     
-        datacardReader = DatacardReader(os.path.join(self.inputDir, 'responses/%s_fitWZonly_%s%s/prompt_altWZ_Pow/WZSR.card.txt' % (self.finalState, self.var,self.charge)), 'prompt_altWZ_Pow')
+        datacardReader = DatacardReader(os.path.join(self.inputDir, 'responses/%s_%s_fitWZonly_%s%s/prompt_altWZ_Pow/WZSR.card.txt' % (self.year, self.finalState, self.var,self.charge)), 'prompt_altWZ_Pow')
         self.normSystsList, self.shapeSystsList = datacardReader.getNormAndShapeSysts()
         # Get theory variations
         self.get_truth_theory_variations(datacardReader)
@@ -1339,6 +1340,7 @@ if __name__ == '__main__':
     parser.add_argument('-g', '--gen',            help='File containing gen info for matrix', default=None)
     parser.add_argument('-l', '--lepCat',         help='Lepton multiplicity (1 or 2)', default=1, type=int)
     parser.add_argument('-e', '--epochs',         help='Number of epochs', default=100, type=int)
+    parser.add_argument('-y', '--year',           help='Year of data taking', default=2016)
     parser.add_argument('-s', '--splitMode',      help='Split mode (input or random)', default='input')
     parser.add_argument('-v', '--verbose',        help='Verbose printing of the L-curve scan', action='store_true')
     parser.add_argument('-r', '--responseAsPdf',  help='Print response matrix as pdf', action='store_true') 
