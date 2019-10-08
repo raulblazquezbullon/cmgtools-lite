@@ -605,12 +605,21 @@ class Unfolder(object):
 
     def get_total_bkg_as_hist(self, file_handle, action):
         totbkg = []
-        totbkg.append(copy.deepcopy(file_handle.Get('x_prompt_ZZH')))
-        totbkg.append(copy.deepcopy(file_handle.Get('x_fakes_appldata')))
+
+        totbkg.append(copy.deepcopy(file_handle.Get('x_prompt_hZZ')))
+        totbkg.append(copy.deepcopy(file_handle.Get('x_prompt_ZZ')))
+        totbkg.append(copy.deepcopy(file_handle.Get('x_prompt_ggZZ')))
+        totbkg.append(copy.deepcopy(file_handle.Get('x_prompt_TTX')))
+        totbkg.append(copy.deepcopy(file_handle.Get('x_prompt_TZQ')))
+        totbkg.append(copy.deepcopy(file_handle.Get('x_prompt_VH')))
+        totbkg.append(copy.deepcopy(file_handle.Get('x_prompt_VVV')))
+        totbkg.append(copy.deepcopy(file_handle.Get('x_prompt_TTXX')))
         totbkg.append(copy.deepcopy(file_handle.Get('x_convs')))
-        totbkg.append(copy.deepcopy(file_handle.Get('x_rares_ttX')))
-        totbkg.append(copy.deepcopy(file_handle.Get('x_rares_VVV')))
-        totbkg.append(copy.deepcopy(file_handle.Get('x_rares_tZq')))
+        totbkg.append(copy.deepcopy(file_handle.Get('x_fakes_DY')))
+        totbkg.append(copy.deepcopy(file_handle.Get('x_fakes_TT')))
+        totbkg.append(copy.deepcopy(file_handle.Get('x_fakes_T')))
+        totbkg.append(copy.deepcopy(file_handle.Get('x_fakes_VV')))
+
         if 'sum' in action:
             for i in range(1,len(totbkg)):
                 totbkg[0].Add(totbkg[i])
