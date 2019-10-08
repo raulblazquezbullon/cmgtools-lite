@@ -606,19 +606,22 @@ class Unfolder(object):
     def get_total_bkg_as_hist(self, file_handle, action):
         totbkg = []
 
-        totbkg.append(copy.deepcopy(file_handle.Get('x_prompt_hZZ')))
-        totbkg.append(copy.deepcopy(file_handle.Get('x_prompt_ZZ')))
-        totbkg.append(copy.deepcopy(file_handle.Get('x_prompt_ggZZ')))
-        totbkg.append(copy.deepcopy(file_handle.Get('x_prompt_TTX')))
-        totbkg.append(copy.deepcopy(file_handle.Get('x_prompt_TZQ')))
-        totbkg.append(copy.deepcopy(file_handle.Get('x_prompt_VH')))
-        totbkg.append(copy.deepcopy(file_handle.Get('x_prompt_VVV')))
-        totbkg.append(copy.deepcopy(file_handle.Get('x_prompt_TTXX')))
-        totbkg.append(copy.deepcopy(file_handle.Get('x_convs')))
-        totbkg.append(copy.deepcopy(file_handle.Get('x_fakes_DY')))
-        totbkg.append(copy.deepcopy(file_handle.Get('x_fakes_TT')))
-        totbkg.append(copy.deepcopy(file_handle.Get('x_fakes_T')))
-        totbkg.append(copy.deepcopy(file_handle.Get('x_fakes_VV')))
+        # 2016
+        print('WARNING: you will want to check this for 2017 and 20180')
+
+        if file_handle.Get('x_prompt_hZZ') :        totbkg.append(copy.deepcopy(file_handle.Get('x_prompt_hZZ')  ))
+        if file_handle.Get('x_prompt_ZZ')  :        totbkg.append(copy.deepcopy(file_handle.Get('x_prompt_ZZ')   ))
+        if file_handle.Get('x_prompt_ggZZ'):        totbkg.append(copy.deepcopy(file_handle.Get('x_prompt_ggZZ') ))
+        if file_handle.Get('x_prompt_TTX') :        totbkg.append(copy.deepcopy(file_handle.Get('x_prompt_TTX')  ))
+        if file_handle.Get('x_prompt_TZQ') :        totbkg.append(copy.deepcopy(file_handle.Get('x_prompt_TZQ')  ))
+        if file_handle.Get('x_prompt_VH')  :        totbkg.append(copy.deepcopy(file_handle.Get('x_prompt_VH')   ))
+        if file_handle.Get('x_prompt_VVV') :        totbkg.append(copy.deepcopy(file_handle.Get('x_prompt_VVV')  ))
+        if file_handle.Get('x_prompt_TTXX'):        totbkg.append(copy.deepcopy(file_handle.Get('x_prompt_TTXX') ))
+        if file_handle.Get('x_convs')      :        totbkg.append(copy.deepcopy(file_handle.Get('x_convs')       ))
+        if file_handle.Get('x_fakes_DY')   :        totbkg.append(copy.deepcopy(file_handle.Get('x_fakes_DY')    ))
+        if file_handle.Get('x_fakes_TT')   :        totbkg.append(copy.deepcopy(file_handle.Get('x_fakes_TT')    ))
+        if file_handle.Get('x_fakes_T')    :        totbkg.append(copy.deepcopy(file_handle.Get('x_fakes_T')     ))
+        if file_handle.Get('x_fakes_VV')   :        totbkg.append(copy.deepcopy(file_handle.Get('x_fakes_VV')    ))
 
         if 'sum' in action:
             for i in range(1,len(totbkg)):
