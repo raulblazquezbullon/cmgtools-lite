@@ -9,15 +9,16 @@ lumi_dbeta_ML      : prompt_.*|convs   : .*                : 1.005
 lumi_ghosts_ML     : prompt_.*|convs   : .*                : 1.001
 lumi_calib_ML      : prompt_.*|convs   : .*                : 1.003
 
-
-
-
+#Trigger efficiency measurements performed by ourselves
+#Bias comes from ref trigger which follows the same strat, so correlated:
 trigeffbias_ML    : prompt_.*|convs   : .*                : 0.997/1.003
-trigeffstat_2017_ML    : prompt_.*|convs   : .*                : 0.985/1.009
+#Uncertainty from statistics our own measurement, so decorrelated:
+trigeffstat_2017_ML    : prompt_.*|convs   : .*                : 0.986/1.008
 
+
+#All background uncertainties are correlated for obvious reasons
 fakes_ML      : fakes_.*                          : .*                : 1.5 
 convs_ML      : convs                             : .*                : 1.2
-
 normZZ_ML     : prompt_.*ZZ                       : .*                : 1.07
 normVVV_ML    : prompt_VVV                         : .*                : 1.5
 normVH_ML     : prompt_VH                          : .*                : 1.25
