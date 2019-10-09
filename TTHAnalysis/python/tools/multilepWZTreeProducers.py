@@ -188,6 +188,35 @@ MODULES.append( ('leptonPhotonJetReCleanerWZSM_2018', lambda : LeptonPhotonJetRe
                    bAlgo = "DeepCSV"
                    )))
 
+
+
+MODULES.append( ('leptonPhotonJetReCleanerWZSM_2017', lambda : LeptonPhotonJetReCleaner("Mini",
+                   lambda lep : lep.miniPFRelIso_all < 0.4 and _looseID_ExtraCuts_2017(lep) and _lepId_IPcuts(lep), #Loose selection 
+                   lambda lep,jetlist: lep.pt>10 and conept(lep)>10 and (_FOID_2017(lep, jetlist)), #We clean on the FO
+                   lambda lep,jetlist: lep.pt>10 and conept(lep)>10 and (_FOID_2017(lep, jetlist)), #FO selection
+                   lambda lep,jetlist: lep.pt>10 and conept(lep)>10 and (_Tight_2017(lep, jetlist)), #Tight selection
+                   cleanJet = lambda lep,jet,dr : dr<0.4,
+                   selectJet = lambda jet: abs(jet.eta)<4.7 and (jet.jetId & 2), #Jet ID tight as it is already very efficient (>=98%), Take second bit with python "/" def + evaluate it with %
+                   cleanTau = lambda lep,tau,dr: dr<0.4,
+                   looseTau = lambda tau: _tauId_CBloose(tau), # used in cleaning
+                   tightTau = lambda tau: _tauId_CBtight(tau), # on top of loose
+                   cleanPhoton = lambda lep,photon,dr: dr<0.4,
+                   loosePhoton = lambda photon: _phoId_CBloose(photon), # used in cleaning
+                   tightPhoton = lambda photon: _phoId_CBtight(photon), # on top of loose
+                   cleanJetsWithTaus = False,
+                   cleanTausWithLoose = False,
+                   cleanJetsWithPhotons = True,
+                   cleanPhotonsWithLoose = False,
+                   doVetoZ = False,
+                   doVetoLMf = False,
+                   doVetoLMt = True,
+                   jetPt = 30,
+                   bJetPt = 25,
+                   coneptdef = lambda lep: conept(lep),
+                   year = 2017,
+                   bAlgo = "DeepCSV"
+                   )))
+
 ###################################
 ########### lepBuilder ############
 ###################################
@@ -201,6 +230,9 @@ MODULES.append( ('leptonBuilderWZSM_2018', lambda : leptonBuilderWZSM("Mini", me
 
 
 MODULES.append( ('leptonBuilderWZSM_byTag_2016', lambda : leptonBuilderWZSM_byTag("Mini", metbranch="MET")))
+
+MODULES.append( ('leptonBuilderWZSM_byTag_2017', lambda : leptonBuilderWZSM_byTag("Mini", metbranch="METFixEE2017")))
+
 
 ###################################
 ############ MC Match #############
