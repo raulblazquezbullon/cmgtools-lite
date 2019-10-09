@@ -1,6 +1,13 @@
 #Flat uncertainties
 
-lumi_2016_ML       : prompt_.*|convs   : .*                : 1.025
+#Lumi uncertainties as per https://twiki.cern.ch/twiki/bin/view/CMS/TWikiLUM
+lumi_2016_ML       : prompt_.*|convs   : .*                : 1.022
+lumi_XY_ML         : prompt_.*|convs   : .*                : 1.009
+lumi_bbd_ML        : prompt_.*|convs   : .*                : 1.004
+lumi_dbeta_ML      : prompt_.*|convs   : .*                : 1.005
+lumi_ghosts_ML     : prompt_.*|convs   : .*                : 1.004
+
+
 trigeffbias_ML    : prompt_.*|convs   : .*                : 0.997/1.003
 trigeffstat_2016_ML    : prompt_.*|convs   : .*                : 0.985/1.009
 
