@@ -1,6 +1,6 @@
 alwaystrue : 1
 #Have 3 gen lep, Z ones need to be from hard scat
-3GenLep : (ngenLep ) >= 3 &&  abs(genLepZ1_pdgId[0]) < 14 && abs(genLepZ2_pdgId[1]) < 14 && abs(genLepW_pdgId[2]) < 14 && (genLepZ1_motherId != -9999) && (genLepZ2_motherId != -9999)
+3GenLep : (nLepGen_gen ) >= 3 &&  abs(genLepZ1_pdgId[0]) < 14 && abs(genLepZ2_pdgId[1]) < 14 && abs(genLepW_pdgId[2]) < 14 && (genLepZ1_motherId != -9999) && (genLepZ2_motherId != -9999)
 
 eeeGEN: abs(genLep_pdgId[0])+abs(genLep_pdgId[1])+abs(genLep_pdgId[2])==33; Disable=True
 eemGEN: abs(genLep_pdgId[0])+abs(genLep_pdgId[1])+abs(genLep_pdgId[2])==35; Disable=True
