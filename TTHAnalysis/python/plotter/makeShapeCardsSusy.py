@@ -25,6 +25,10 @@ parser.add_option("--frMap"   ,dest="frMap"   , type="string", default=None, hel
 parser.add_option("--mpfr"    ,dest="mpfr"    , type="string", default=None, help="Region in the mpfr file to extract most probable FR bin")
 parser.add_option("--poisson" ,dest="poisson" , action="store_true", default=False, help="Put poisson errors in the histogram (not recommended)")
 parser.add_option("--extraText" ,dest="extraText" , type="string", default=[], action="append", help="Add extra text lines at the end of the datacard") 
+parser.add_option('--XTitle', dest='XTitle', type='string', default='', help='X axis title for the histograms')
+parser.add_option('--YTitle', dest='YTitle', type='string', default='', help='Y axis title for the histograms')
+parser.add_option('--noPrefix', dest='noPrefix', action='store_true', help='Do not add the x_ prefix to the histograms saved in the shapes rootfile')
+parser.add_option('--bb', '--autoMCStats', dest='autoMCStats', action='store_true', help='Use automatic MC stats with Barlow-Beeston approximation')
 
 (options, args) = parser.parse_args()
 options.weight = True
@@ -226,6 +230,7 @@ for sysfile in args[4:]:
             systsEnv[name].append((re.compile(procmap+"$"),amount,field[4]))
         elif field[4] in ["lnN_in_shape_bins","stat_foreach_shape_bins"]:
             (name, procmap, binmap, amount) = field[:4]
+            if options.autoMCStats: continue
             if re.match(binmap+"$",binname) == None: continue
             if name not in systsEnv: systsEnv[name] = []
             systsEnv[name].append((re.compile(procmap+"$"),amount,field[4],field[5].split(',')))
@@ -349,6 +354,7 @@ for name in systsEnv.keys():
                     mca._projection.scaleSystTemplate(name,nominal,p0Up)
                     mca._projection.scaleSystTemplate(name,nominal,p0Dn)
             elif mode in ["stat_foreach_shape_bins"]:
+                if options.autoMCStats: break
                 nominal = report[p]
                 for bin in xrange(1,nominal.GetNbinsX()+1):
                     for binmatch in morefields[0]:
@@ -421,7 +427,10 @@ for signal in mca.listSignals():
     datacard.write("## Event selection: \n")
     for cutline in str(cuts).split("\n"):  datacard.write("##   %s\n" % cutline)
     if signal not in signals: datacard.write("## NOTE: no signal contribution found with this event selection.\n")
-    datacard.write("shapes *        * ../common/%s.input.root x_$PROCESS x_$PROCESS_$SYSTEMATIC\n" % filename)
+    if options.noPrefix:
+            datacard.write("shapes *        * ../common/%s.input.root $PROCESS $PROCESS_$SYSTEMATIC\n" % filename)
+    else: 
+            datacard.write("shapes *        * ../common/%s.input.root x_$PROCESS x_$PROCESS_$SYSTEMATIC\n" % filename)
     datacard.write('##----------------------------------\n')
     datacard.write('bin         %s\n' % binname)
     datacard.write('observation %s\n' % myyields['data_obs'])
@@ -458,7 +467,8 @@ for signal in mca.listSignals():
     if len(options.extraText) > 0:
       for line in options.extraText:
         datacard.write(line + "\n")
-
+    if options.autoMCStats:
+            datacard.write('* autoMCStats 0 \n')
     if options.verbose > -1:
         print "Wrote to ",myout+filename+".card.txt"
     if options.verbose > 0:
@@ -470,6 +480,8 @@ myout = outdir+"/common/";
 if not os.path.exists(myout): os.system("mkdir -p "+myout)
 workspace = ROOT.TFile.Open(myout+filename+".input.root", "RECREATE")
 for n,h in report.iteritems():
+    if options.XTitle: h.GetXaxis().SetTitle(options.XTitle)
+    if options.YTitle: h.GetYaxis().SetTitle(options.YTitle)
     if options.verbose > 0: print "\t%s (%8.3f events)" % (h.GetName(),h.Integral())
     workspace.WriteTObject(h,h.GetName())
 workspace.Close()
