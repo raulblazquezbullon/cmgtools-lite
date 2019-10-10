@@ -10,7 +10,7 @@ mmmGEN: abs(genLepZ1_pdgId)+abs(genLepZ2_pdgId)+abs(genLepW_pdgId)==39; Disable=
 #Request mass window
 onZ30Gen : mll_3l_gen > 60 && mll_3l_gen < 120 && nOSSF_3l_gen > 0
 
-SR : (Triggers_ee || Triggers_mm || Triggers_em) && abs(LepSel1_pdgId)<14 && abs(LepSel2_pdgId)<14 && abs(LepSel3_pdgId)<14 && nLepSel == 3  && LepSel1_isTight && LepSel2_isTight && LepSel3_isTight  && LepZ1_pt>25 && LepZ2_pt>10 && LepW_pt>25 && nOSSF_3l > 0 && minMllAFAS > 4 && met_pt > 30  && abs(91.1876-mll_3l)<15 && m3L > 100   &&  nBJetMedium30 == 0 &&  ((LepSel_mcUCSX[0]==0 || LepSel_mcUCSX[0]==1) && (LepSel_mcUCSX[1]==0 || LepSel_mcUCSX[1]==1) && (LepSel_mcUCSX[2]==0 || LepSel_mcUCSX[2]==1))
+SR : (Triggers_3l_2017) && abs(LepSel1_pdgId)<14 && abs(LepSel2_pdgId)<14 && abs(LepSel3_pdgId)<14 && nLepSel == 3  && LepSel1_isTight && LepSel2_isTight && LepSel3_isTight  && LepZ1_pt>25 && LepZ2_pt>10 && LepW_pt>25 && nOSSF_3l > 0 && minMllAFAS > 4 && met_pt > 30  && abs(91.1876-mll_3l)<15 && m3L > 100   &&  nBJetMedium30 == 0 &&  ((LepSel_mcUCSX[0]==0 || LepSel_mcUCSX[0]==1) && (LepSel_mcUCSX[1]==0 || LepSel_mcUCSX[1]==1) && (LepSel_mcUCSX[2]==0 || LepSel_mcUCSX[2]==1))
 
 
 
