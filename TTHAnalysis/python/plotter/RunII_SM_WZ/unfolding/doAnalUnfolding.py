@@ -298,7 +298,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-w', '--what',           help='Action to be taken [inputs, responses, unfolding, all]', default='all')
     parser.add_argument('-o', '--outputDir',      help='Output directory', default='./temp')
-    parser.add_argument('-y', '--year',           help='Year', default=2016)
+    parser.add_argument('-y', '--year',           help='Year', default=2016, type=int)
     parser.add_argument('-n', '--nthreads',       help='Number of multiprocessing threads (only for -w unfolding)', default=1, type=int)
     parser.add_argument('-b', '--base',           help='Run only on base (the one to put in the paper) parameter set (only for -w unfolding)', action='store_true')
     parser.add_argument('-d', '--dryrun',         help='Only print commands and exit (only for -w unfolding, because of legacy structure)', action='store_true')
