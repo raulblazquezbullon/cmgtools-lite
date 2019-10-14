@@ -1339,7 +1339,9 @@ def main(args):
         'Zpt'       : ['p_{T}^{Z} [GeV]'          , 'p_{T}^{Z}'          ],
         #'LeadJetPt' : ['Leading jet p_{T} [GeV]', 'p_{T}^{jet}'        ],
         'MWZ'       : ['M(WZ) [GeV]'             , 'M_{WZ}'             ],
-        'Wpt'       : ['p_{T}^{W} [GeV]'          , 'p_{T}^{W}'          ] 
+        'Wpt'       : ['p_{T}^{W} [GeV]'          , 'p_{T}^{W}'          ],
+        'Wpol'      : ['cos(#theta_{W}^{Dn})'     , 'cos(#theta_{W}^{Dn})' ],
+        'Zpol'      : ['cos(#theta_{Z}^{Dn})'     , 'cos(#theta_{Z}^{Dn})' ],
         }
     
     for var, fancy in vardict.items():

@@ -21,6 +21,11 @@ lepZ1_eta         : LepZ1_eta         : 10,-2.5,2.5 ; YTitle="Leptons", XTitle="
 lepZ2_eta         : LepZ2_eta         : 10,-2.5,2.5 ; YTitle="Leptons", XTitle="#eta(Z2 lep.)", LegendCutoff=1e-4, YMin=1, YMax=50000, Logy
 lepW_eta         : LepW_eta         : 10,-2.5,2.5 ; YTitle="Leptons", XTitle="#eta(W lep.)"     , LegendCutoff=1e-4, YMin=1, YMax=50000, Logy
 
+## further further lepton observables
+## ------------------------------------------------------------
+
+cosWfromFT_Dn : cos_ThetaWDn_HE :  10,-1,1  ; XTitle="cos(#theta_{W}^{Dn})", Legend='TL', LegendCutoff=1e-5, MoreY=2.0
+
 ## event observables
 ## ----------------------------------------------------------
 
