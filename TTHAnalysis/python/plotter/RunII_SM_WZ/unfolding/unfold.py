@@ -952,7 +952,10 @@ class Unfolder(object):
         leg_1 = ROOT.TLegend(0.4,0.7,0.9,0.9)
         leg_1.SetTextSize(0.04)
         leg_1.SetBorderSize(0)
-        leg_1.AddEntry(self.data, 'Data', 'p')
+        if self.closure:
+            leg_1.AddEntry(self.data, 'Asimov data', 'p')
+        else:
+            leg_1.AddEntry(self.data, 'Data', 'p')
         leg_1.AddEntry(self.mc, 'Exp. signal', 'lf')
         leg_1.AddEntry(bkgStacked, 'Exp. signal+background', 'l')
         leg_1.Draw()
@@ -1002,7 +1005,10 @@ class Unfolder(object):
         leg_2 = ROOT.TLegend(0.4,0.7,0.9,0.9)
         leg_2.SetTextSize(0.04)
         leg_2.SetBorderSize(0)
-        leg_2.AddEntry(histUnfoldTotal, 'Unfolded data', 'pel')
+        if self.closure:
+            leg_2.AddEntry(histUnfoldTotal, 'Unfolded Asimov data', 'pel')
+        else:
+            leg_2.AddEntry(histUnfoldTotal, 'Unfolded data', 'pel')
         leg_2.AddEntry(self.dataTruth_nom, 'POWHEG prediction', 'la')
         leg_2.AddEntry(histUnfoldStat, '#frac{#chi^{2}}{NDOF}=%0.3f' % histUnfoldTotal.Chi2Test(self.dataTruth_nom, 'CHI2/NDF WW'), '')
         leg_2.Draw()
@@ -1041,7 +1047,10 @@ class Unfolder(object):
         leg_3.SetTextSize(0.04)
         leg_3.SetBorderSize(0)
         #leg_3.AddEntry(self.data, 'Data', 'pe')
-        leg_3.AddEntry(subdata, 'Data-bkg', 'pe')
+        if self.closure:
+            leg_3.AddEntry(subdata, 'AsimovData-bkg', 'pe')
+        else:
+            leg_3.AddEntry(subdata, 'Data-bkg', 'pe')
         leg_3.AddEntry(histMdetFold, 'MC folded back', 'l')
         #leg_3.AddEntry(bkgStacked, 'Exp. signal+background', 'l')
         leg_3.AddEntry(self.mc, 'Exp. signal', 'l')
@@ -1067,7 +1076,10 @@ class Unfolder(object):
         leg_4.SetTextSize(0.04)
         leg_4.SetBorderSize(0)
         leg_4.AddEntry(self.mc, 'Exp. signal', 'lf')
-        leg_4.AddEntry(subdata, 'Data-bkg by hand', 'pe')
+        if self.closure:
+            leg_4.AddEntry(subdata, 'AsimovData-bkg by hand', 'pe')
+        else:
+            leg_4.AddEntry(subdata, 'Data-bkg by hand', 'pe')
         #leg_4.AddEntry(histInput, 'Data-bkg by tool', 'la')
         leg_4.Draw()
         CMS_lumi.CMS_lumi(output, 4, 0, aLittleExtra=0.08)
@@ -1195,7 +1207,7 @@ class Unfolder(object):
         dt.SetMaximum(1.2*dt.GetMaximum())
         if self.logx:
             ROOT.gPad.SetLogx()
-        if 'MWZ' in self.var:
+        if ('MWZ' in self.var) or ('Njets' in self.var):
             ROOT.gPad.SetLogy()
             dt.SetMaximum(100*dt.GetMaximum())
         dt.GetXaxis().SetTitleSize(0.045)
@@ -1278,11 +1290,14 @@ class Unfolder(object):
         ###histDensityGenData.SetLineColor(kRed)
         ##histDensityGenData.Draw("SAME")
         ##histDensityGenMC.Draw("SAME HIST")
-        leg_money = ROOT.TLegend(0.4,0.6,0.9,0.9)
+        leg_money = ROOT.TLegend(0.4,0.6,0.9,0.9) if (not 'Njets' in self.var) else ROOT.TLegend(0.2,0.6,0.7,0.9)
         leg_money.SetTextSize(0.025)
         leg_money.SetBorderSize(0)
         leg_money.SetEntrySeparation(0.25)
-        leg_money.AddEntry(hus, 'Unfolded data (stat.unc.)', 'pel')
+        if self.closure:
+            leg_money.AddEntry(hus, 'Unfolded Asimov data (stat.unc.)', 'pel')
+        else:
+            leg_money.AddEntry(hus, 'Unfolded data (stat.unc.)', 'pel')
         leg_money.AddEntry(dt, 'POWHEG prediction: #chi^{2}/NDOF=%0.3f'% dt.Chi2Test(hus, 'CHI2/NDF WW'), 'la')
         leg_money.AddEntry(dt_alt, 'aMC@NLO prediction: #chi^{2}/NDOF=%0.3f'% dt_alt.Chi2Test(hus, 'CHI2/NDF WW'), 'la')
         ###leg_money.AddEntry(dt_inc, 'PYTHIA #chi^{2}/NDOF=%0.3f'% dt_inc.Chi2Test(hus, 'CHI2/NDF WW'), 'la')
@@ -1336,12 +1351,14 @@ def main(args):
 
     # Should move it to be specifiable from command line, probably
     vardict = {
-        'Zpt'       : ['p_{T}^{Z} [GeV]'          , 'p_{T}^{Z}'          ],
+        #'Zpt'       : ['p_{T}^{Z} [GeV]'          , 'p_{T}^{Z}'          ],
         #'LeadJetPt' : ['Leading jet p_{T} [GeV]', 'p_{T}^{jet}'        ],
-        'MWZ'       : ['M(WZ) [GeV]'             , 'M_{WZ}'             ],
-        'Wpt'       : ['p_{T}^{W} [GeV]'          , 'p_{T}^{W}'          ],
+        #'MWZ'       : ['M(WZ) [GeV]'             , 'M_{WZ}'             ],
+        #'Wpt'       : ['p_{T}^{W} [GeV]'          , 'p_{T}^{W}'          ],
+        #'Njets'      : ['N_{jets}'                 , 'N_{jets}^{gen}'    ],
         'Wpol'      : ['cos(#theta_{W}^{Dn})'     , 'cos(#theta_{W}^{Dn})' ],
         'Zpol'      : ['cos(#theta_{Z}^{Dn})'     , 'cos(#theta_{Z}^{Dn})' ],
+        
         }
     
     for var, fancy in vardict.items():
