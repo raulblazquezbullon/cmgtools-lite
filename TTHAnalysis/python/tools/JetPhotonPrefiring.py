@@ -18,7 +18,7 @@ class JetPhotonPrefiring:
         self.allret["is_Prefiring"] = 0
         self.allret["weight_PrefiringJets"] = 1.
         self.allret["weight_PrefiringPhotons"] = 1.
-        self.jets      = [j             for j  in Collection(event, "Jet", "nJet")        ]
+        self.jets      = [j             for j  in Collection(event, "Jet", "nJet")        ] + [j             for j  in Collection(event, "SoftActivityJet", "nSoftActivityJet")        ] 
         self.photons   = [p             for p  in Collection(event, "Photon", "nPhoton")  ]
         self.catchFire()
         self.weightFire()
