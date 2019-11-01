@@ -1,0 +1,19 @@
+alwaystrue : 1
+trigger : HLT_IsoMu24 
+1mu1pho : nLepTight_Mini == 1 && nPhotonSel_Mini == 1 && nLepGood == 1
+truegoodphoton : !Photon_pixelSeed[iT_Mini[0]]
+pt2540 : abs(LepGood_pdgId[iT_Mini[0]]) == 13 && LepGood_pt[iT_Mini[0]] > 25 && PhotonSel_Mini_pt[0] >= 40
+met50 : MET_pt > 50
+dR03 : deltaR(LepGood_eta[iT_Mini[0]], LepGood_phi[iT_Mini[0]], PhotonSel_Mini_eta[0], PhotonSel_Mini_phi[0]) > 0.3
+mtW40 : mt_2(LepGood_pt[iT_Mini[0]],LepGood_phi[iT_Mini[0]], MET_pt,  MET_phi)  > 40
+#0bjet : nBJetLoose25_Mini == 0
+
+0bjet : nBJetTight25_Mini == 0
+
+met50100: MET_pt > 50 && MET_pt < 100 ; Disable=True
+met100150: MET_pt > 100 && MET_pt < 200 ; Disable=True
+met150200: MET_pt > 200 && MET_pt < 300 ; Disable=True
+met200300: MET_pt > 200 ; Disable=True
+mtW40100: mt_2(LepGood_pt[iT_Mini[0]],LepGood_phi[iT_Mini[0]], MET_pt,  MET_phi) > 40 && mt_2(LepGood_pt[iT_Mini[0]],LepGood_phi[iT_Mini[0]], MET_pt,  MET_phi) < 100 ; Disable=True
+mtW100160: mt_2(LepGood_pt[iT_Mini[0]],LepGood_phi[iT_Mini[0]], MET_pt,  MET_phi) > 100 && mt_2(LepGood_pt[iT_Mini[0]],LepGood_phi[iT_Mini[0]], MET_pt,  MET_phi) < 160 ; Disable=True
+mtW160200: mt_2(LepGood_pt[iT_Mini[0]],LepGood_phi[iT_Mini[0]], MET_pt,  MET_phi) >160 ; Disable=True

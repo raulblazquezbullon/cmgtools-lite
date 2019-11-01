@@ -1,0 +1,22 @@
+data : SingleMuon_Run2016B 
+data : SingleMuon_Run2016C 
+data : SingleMuon_Run2016D 
+data : SingleMuon_Run2016E 
+data : SingleMuon_Run2016F 
+data : SingleMuon_Run2016G 
+data : SingleMuon_Run2016H 
+
+mc: + ; IncludeMca="WGamma/prompts_2016.txt"
+
+#mc_jecUp: + ; IncludeMca="WGamma/prompts_2016.txt", FakeRate="WGamma/frJecUp.txt", SkipMe=True, PostFix="_jec_Up"
+#mc_jecDown: + ; IncludeMca="WGamma/prompts_2016.txt", FakeRate="WGamma/frJecDown.txt", SkipMe=True, PostFix="_jec_Dn"
+
+mc_puwUp: + ; IncludeMca="WGamma/prompts_2016.txt", AddWeight="puWeightDown_auto/puWeight_auto", SkipMe=True, PostFix="_puw_Dn"
+mc_puwDown: + ; IncludeMca="WGamma/prompts_2016.txt", AddWeight="puWeightUp_auto/puWeight_auto", SkipMe=True, PostFix="_puw_Up"
+
+mc_bTagHFUp: + ; IncludeMca="WGamma/prompts_2016.txt", AddWeight="bTagWeightDeepCSVT_HF_Up/bTagWeightDeepCSVT", SkipMe=True, PostFix="_bTagHF_Up"
+mc_btagHFDown: + ; IncludeMca="WGamma/prompts_2016.txt", AddWeight="bTagWeightDeepCSVT_HF_Dn/bTagWeightDeepCSVT", SkipMe=True, PostFix="_bTagHF_Dn"
+
+mc_bTagLFUp: + ; IncludeMca="WGamma/prompts_2016.txt", AddWeight="bTagWeightDeepCSVT_LF_Up/bTagWeightDeepCSVT", SkipMe=True, PostFix="_bTagLF_Up"
+mc_btagLFDown: + ; IncludeMca="WGamma/prompts_2016.txt", AddWeight="bTagWeightDeepCSVT_LF_Dn/bTagWeightDeepCSVT", SkipMe=True, PostFix="_bTagLF_Dn"
+
