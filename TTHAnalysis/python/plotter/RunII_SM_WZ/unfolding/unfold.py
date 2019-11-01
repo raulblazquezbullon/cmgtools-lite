@@ -170,6 +170,7 @@ class Unfolder(object):
         self.var=var
         self.fancyvar=fancyvar
         self.diffvar=diffvar
+        self.checkLO=args.checkLO
         self.logx = False if self.var is not 'MWZ' else True
         self.unfold=None
         self.year=args.year
@@ -288,17 +289,19 @@ class Unfolder(object):
             self.bkg[i].Rebin(n/2)
         self.response_nom.RebinX(n/2)
         self.response_alt.RebinX(n/2)
-        self.response_inc.RebinX(n/2)
+        if self.checkLO: self.response_inc.RebinX(n/2)
         self.response_nom.RebinY(n/2)
         self.response_alt.RebinY(n/2)
-        self.response_inc.RebinY(n/2)
+        if self.checkLO: self.response_inc.RebinY(n/2)
         self.dataTruth_nom.RebinY(n/2)
         self.dataTruth_alt.RebinY(n/2)
-        self.dataTruth_inc.RebinY(n/2)
+        if self.checkLO: self.dataTruth_inc.RebinY(n/2)
 
     def study_responses(self):
         self.compute_stability_and_purity()
-        for matrix in [self.response_nom, self.response_alt, self.response_inc]:
+        thematrices = [self.response_nom, self.response_alt]
+        if self.checkLO: thematrices.append(self.response_inc)
+        for matrix in thematrices:
             # Errors are the standard deviation of the Y values
             profX=matrix.ProfileX('%s_profX'%matrix.GetName(), 0, matrix.GetNbinsY(),'s')
             profY=matrix.ProfileY('%s_profY'%matrix.GetName(), 0, matrix.GetNbinsX(),'s')
@@ -338,7 +341,7 @@ class Unfolder(object):
         #self.dataTruth_nom_up, self.dataTruth_nom_dn = ... datacardReader.getTheoUncsOnNom()
         
         self.unsymNormSystsDn, self.unsymNormSystsUp = datacardReader.getUnsymNormSysts()
-        
+        print('HEY', self.unsymNormSystsDn, self.unsymNormSystsUp)
         self.dataTruth_nom_up = copy.deepcopy(ROOT.TH1D(self.dataTruth_nom))
         self.dataTruth_nom_dn = copy.deepcopy(ROOT.TH1D(self.dataTruth_nom))
         factorUp=0.0
@@ -346,37 +349,40 @@ class Unfolder(object):
         for [sysName, sysValue] in self.unsymNormSystsUp:
             sysValue=float(sysValue)
             if ('scaleNorm' in sysName) or ('pdfNorm' in sysName):
+                print('UP: adding ', sysValue*sysValue, 'to total unc because of ', sysName)
                 factorUp += sysValue*sysValue
         for [sysName, sysValue] in self.unsymNormSystsDn:
             sysValue=float(sysValue)
             if ('scaleNorm' in sysName) or ('pdfNorm' in sysName):
+                print('DN: adding ', sysValue*sysValue, 'to total unc because of ', sysName)
                 factorDn += sysValue*sysValue
 
         factorUp=ROOT.TMath.Sqrt(factorUp)
         factorDn=ROOT.TMath.Sqrt(factorDn)
         print("PORCHODIO")
-        print(factorUp, factorDn)
-        print(self.dataTruth_nom_up.Integral(), self.dataTruth_nom_dn.Integral())
-        self.dataTruth_nom_up.Scale(factorUp)
-        self.dataTruth_nom_dn.Scale(factorDn)
-        print(self.dataTruth_nom_up.Integral(), self.dataTruth_nom_dn.Integral())
+        print('Factorup', factorUp, '; FactorDn', factorDn)
+        print('nomup integral', self.dataTruth_nom_up.Integral(), 'nomdn integral', self.dataTruth_nom_dn.Integral())
+        # They will be present once we include them in the nano
+        if factorUp != 0: self.dataTruth_nom_up.Scale(factorUp)
+        if factorDn != 0: self.dataTruth_nom_dn.Scale(factorDn)
+        print('AFTER SCALING: nomup integral', self.dataTruth_nom_up.Integral(), 'nomdn integral', self.dataTruth_nom_dn.Integral())
 
     def get_responses(self):
         print('Acquiring response matrices.')
         folder=os.path.join(self.inputDir, 'responses/%s_%s_fitWZonly_%s%s/common/' % (self.year,self.finalState, self.var, self.charge) )        
 
+        print('Opening file: %sWZSR_%s.input.root' % (folder, self.year))
         file_handle = ROOT.TFile.Open('%sWZSR_%s.input.root' % (folder, self.year))
-        print('Opening file: %s' % file_handle.GetName())
         #file_handle_alt = ROOT.TFile.Open('%sWZSR_%s.input.root' % (folder, self.year))
         #file_handle_inc = ROOT.TFile.Open('%sWZSR_%s.input.root' % (folder, self.year))
         
         self.response_nom = copy.deepcopy(ROOT.TH2D(file_handle.Get('x_prompt_altWZ_%s' % 'Pow')))
         self.response_alt = copy.deepcopy(ROOT.TH2D(file_handle.Get('x_prompt_altWZ_%s' % 'aMC')))
-        self.response_inc = copy.deepcopy(ROOT.TH2D(file_handle.Get('x_prompt_altWZ_%s' % 'Inc')))
+        if self.checkLO: self.response_inc = copy.deepcopy(ROOT.TH2D(file_handle.Get('x_prompt_altWZ_%s' % 'Inc')))
 
         self.dataTruth_nom = copy.deepcopy(ROOT.TH1D(self.response_nom.ProjectionY('dataTruth_nom', 0, self.response_nom.GetNbinsX())))
         self.dataTruth_alt = copy.deepcopy(ROOT.TH1D(self.response_alt.ProjectionY('dataTruth_alt', 0, self.response_alt.GetNbinsX())))
-        self.dataTruth_inc = copy.deepcopy(ROOT.TH1D(self.response_inc.ProjectionY('dataTruth_inc', 0, self.response_inc.GetNbinsX())))
+        if self.checkLO: self.dataTruth_inc = copy.deepcopy(ROOT.TH1D(self.response_inc.ProjectionY('dataTruth_inc', 0, self.response_inc.GetNbinsX())))
 
         print('Response binsX %d, binsY %d' % (self.response_nom.GetNbinsX(), self.response_nom.GetNbinsY()))
         
@@ -385,12 +391,12 @@ class Unfolder(object):
                 if ibin==0 or jbin==0 or ibin>self.response_nom.GetNbinsX() or jbin>self.response_nom.GetNbinsY():
                     self.response_nom.SetBinContent(ibin, jbin, 0)
                     self.response_alt.SetBinContent(ibin, jbin, 0)
-                    self.response_inc.SetBinContent(ibin, jbin, 0)
+                    if self.checkLO: self.response_inc.SetBinContent(ibin, jbin, 0)
                     self.response_nom.SetBinError(ibin, jbin, 0)
                     self.response_alt.SetBinError(ibin, jbin, 0)
-                    self.response_inc.SetBinError(ibin, jbin, 0)
+                    if self.checkLO: self.response_inc.SetBinError(ibin, jbin, 0)
                     
-        datacardReader = DatacardReader(os.path.join(self.inputDir, 'responses/%s_%s_fitWZonly_%s%s/prompt_altWZ_Pow/WZSR.card.txt' % (self.year, self.finalState, self.var,self.charge)), 'prompt_altWZ_Pow')
+        datacardReader = DatacardReader(os.path.join(self.inputDir, 'responses/{year}_{finalState}_fitWZonly_{var}{charge}/prompt_altWZ_Pow/WZSR_{year}.card.txt'.format(year=self.year, finalState=self.finalState, var=self.var,charge=self.charge)), 'prompt_altWZ_Pow')
         self.normSystsList, self.shapeSystsList = datacardReader.getNormAndShapeSysts()
         # Get theory variations
         self.get_truth_theory_variations(datacardReader)
@@ -409,13 +415,13 @@ class Unfolder(object):
         #ROOT.gStyle.SetOptStat('uo')
         self.response_nom.GetXaxis().SetTitle('Reco %s' % self.fancyvar)
         self.response_alt.GetXaxis().SetTitle('Reco %s' % self.fancyvar)
-        self.response_inc.GetXaxis().SetTitle('Reco %s' % self.fancyvar)
+        if self.checkLO: self.response_inc.GetXaxis().SetTitle('Reco %s' % self.fancyvar)
         self.response_nom.GetYaxis().SetTitle('Gen %s' % self.fancyvar)
         self.response_alt.GetYaxis().SetTitle('Gen %s' % self.fancyvar)
-        self.response_inc.GetYaxis().SetTitle('Gen %s' % self.fancyvar)
+        if self.checkLO: self.response_inc.GetYaxis().SetTitle('Gen %s' % self.fancyvar)
         self.response_nom.GetYaxis().SetTitleOffset(1.7)
         self.response_alt.GetYaxis().SetTitleOffset(1.7)
-        self.response_inc.GetYaxis().SetTitleOffset(1.7)
+        if self.checkLO: self.response_inc.GetYaxis().SetTitleOffset(1.7)
 
         tdr.setTDRStyle()
         self.response_nom.Draw('COLZ')
@@ -429,24 +435,25 @@ class Unfolder(object):
         utils.saveCanva(c, os.path.join(self.outputDir, '1_responseMatrix_%s_Alt' % self.var))
         c.Clear()
         tdr.setTDRStyle()
-        self.response_inc.Draw('COLZ')
-        CMS_lumi.CMS_lumi(c, 4, 0, aLittleExtra=0.08)
-        utils.saveCanva(c, os.path.join(self.outputDir, '1_responseMatrix_%s_Inc' % self.var))
+        if self.checkLO: 
+            self.response_inc.Draw('COLZ')
+            CMS_lumi.CMS_lumi(c, 4, 0, aLittleExtra=0.08)
+            utils.saveCanva(c, os.path.join(self.outputDir, '1_responseMatrix_%s_Inc' % self.var))
 
         if self.responseAsPdf:
             resp_nom=copy.deepcopy(ROOT.TH2D(self.response_nom))
             resp_alt=copy.deepcopy(ROOT.TH2D(self.response_alt))
-            resp_inc=copy.deepcopy(ROOT.TH2D(self.response_inc))
+            resp_inc=copy.deepcopy(ROOT.TH2D(self.response_inc))if self.checkLO else None
 
             resp_nom.Scale(1./resp_nom.Integral())
             resp_alt.Scale(1./resp_alt.Integral())
-            resp_inc.Scale(1./resp_inc.Integral())
+            if self.checkLO: resp_inc.Scale(1./resp_inc.Integral())
             resp_nom.GetXaxis().SetTitle('Reco %s' % self.fancyvar)
             resp_alt.GetXaxis().SetTitle('Reco %s' % self.fancyvar)
-            resp_inc.GetXaxis().SetTitle('Reco %s' % self.fancyvar)
+            if self.checkLO: resp_inc.GetXaxis().SetTitle('Reco %s' % self.fancyvar)
             resp_nom.GetYaxis().SetTitle('Gen %s' % self.fancyvar)
             resp_alt.GetYaxis().SetTitle('Gen %s' % self.fancyvar)
-            resp_inc.GetYaxis().SetTitle('Gen %s' % self.fancyvar)
+            if self.checkLO: resp_inc.GetYaxis().SetTitle('Gen %s' % self.fancyvar)
 
             # Compute stability
             diagonalSum_nom=0
@@ -460,32 +467,34 @@ class Unfolder(object):
                 # must use FindBin, but I need the maximum first
                 diagonalSum_nom+= resp_nom.GetBinContent(ibin, ibin)
                 diagonalSum_alt+= resp_alt.GetBinContent(ibin, ibin)
-                diagonalSum_inc+= resp_inc.GetBinContent(ibin, ibin)
+                if self.checkLO: diagonalSum_inc+= resp_inc.GetBinContent(ibin, ibin)
                 
                 for jbin in range(0, resp_nom.GetNbinsY()+2):
                     if ibin != jbin:
                         if resp_nom.GetBinContent(ibin, jbin) != 0: odbN_nom+=1
                         if resp_alt.GetBinContent(ibin, jbin) != 0: odbN_alt+=1
-                        if resp_inc.GetBinContent(ibin, jbin) != 0: odbN_inc+=1
+                        if self.checkLO: 
+                            if resp_inc.GetBinContent(ibin, jbin) != 0: odbN_inc+=1
 
             oodFraction_nom=(1-diagonalSum_nom) 
             oodFraction_alt=(1-diagonalSum_alt)
             oodFraction_inc=(1-diagonalSum_inc)
             odbFraction_nom = odbN_nom/(resp_nom.GetNbinsX()*resp_nom.GetNbinsY())
             odbFraction_alt = odbN_alt/(resp_alt.GetNbinsX()*resp_alt.GetNbinsY())
-            odbFraction_inc = odbN_inc/(resp_inc.GetNbinsX()*resp_inc.GetNbinsY())
+            if self.checkLO: odbFraction_inc = odbN_inc/(resp_inc.GetNbinsX()*resp_inc.GetNbinsY())
             print('Overall fraction of out-of-diagonal events | Fraction of out-of-diagonal filled bins:')
             print('\t nom: %0.3f | %0.3f = %d/%d' % (oodFraction_nom, odbFraction_nom, odbN_nom, (resp_nom.GetNbinsX()*resp_nom.GetNbinsY())))
             print('\t alt: %0.3f | %0.3f = %d/%d' % (oodFraction_alt, odbFraction_alt, odbN_alt, (resp_alt.GetNbinsX()*resp_alt.GetNbinsY())))
-            print('\t inc: %0.3f | %0.3f = %d/%d' % (oodFraction_inc, odbFraction_inc, odbN_inc, (resp_inc.GetNbinsX()*resp_inc.GetNbinsY())))
+            if self.checkLO: print('\t inc: %0.3f | %0.3f = %d/%d' % (oodFraction_inc, odbFraction_inc, odbN_inc, (resp_inc.GetNbinsX()*resp_inc.GetNbinsY())))
             resp_nom.Draw('COLZ')
             utils.saveCanva(c, os.path.join(self.outputDir, '1_responseMatrixAsPdf_%s_Nom' % self.var))
             c.Clear()
             resp_alt.Draw('COLZ')
             utils.saveCanva(c, os.path.join(self.outputDir, '1_responseMatrixAsPdf_%s_Alt' % self.var))
-            c.Clear()
-            resp_inc.Draw('COLZ')
-            utils.saveCanva(c, os.path.join(self.outputDir, '1_responseMatrixAsPdf_%s_Inc' % self.var))
+            if self.checkLO: 
+                c.Clear()
+                resp_inc.Draw('COLZ')
+                utils.saveCanva(c, os.path.join(self.outputDir, '1_responseMatrixAsPdf_%s_Inc' % self.var))
 
 
         c.IsA().Destructor(c)
@@ -494,24 +503,24 @@ class Unfolder(object):
 
         purity_nom=self.response_nom.ProjectionX('%s_purity'%self.response_nom.GetName(), 0, self.response_nom.GetNbinsY())
         purity_alt=self.response_alt.ProjectionX('%s_purity'%self.response_alt.GetName(), 0, self.response_alt.GetNbinsY())
-        purity_inc=self.response_inc.ProjectionX('%s_purity'%self.response_inc.GetName(), 0, self.response_inc.GetNbinsY())
+        purity_inc= self.response_inc.ProjectionX('%s_purity'%self.response_inc.GetName(), 0, self.response_inc.GetNbinsY()) if self.checkLO else None
         stability_nom=self.response_nom.ProjectionY('%s_stability'%self.response_nom.GetName(), 0, self.response_nom.GetNbinsX())
         stability_alt=self.response_alt.ProjectionY('%s_stability'%self.response_alt.GetName(), 0, self.response_alt.GetNbinsX())
-        stability_inc=self.response_inc.ProjectionY('%s_stability'%self.response_inc.GetName(), 0, self.response_inc.GetNbinsX())
+        stability_inc=self.response_inc.ProjectionY('%s_stability'%self.response_inc.GetName(), 0, self.response_inc.GetNbinsX()) if self.checkLO else None
         
         purity_nom.Reset("ICE")
         purity_alt.Reset("ICE")
-        purity_inc.Reset("ICE")
+        if self.checkLO: purity_inc.Reset("ICE")
         stability_nom.Reset("ICE")
         stability_alt.Reset("ICE")
-        stability_inc.Reset("ICE")
+        if self.checkLO: stability_inc.Reset("ICE")
 
         puritydenom_nom=copy.deepcopy(ROOT.TH1D(purity_nom))
         puritydenom_alt=copy.deepcopy(ROOT.TH1D(purity_alt))
-        puritydenom_inc=copy.deepcopy(ROOT.TH1D(purity_inc))
+        if self.checkLO: puritydenom_inc=copy.deepcopy(ROOT.TH1D(purity_inc))
         stabilitydenom_nom=copy.deepcopy(ROOT.TH1D(stability_nom))
         stabilitydenom_alt=copy.deepcopy(ROOT.TH1D(stability_alt))
-        stabilitydenom_inc=copy.deepcopy(ROOT.TH1D(stability_inc))
+        if self.checkLO: stabilitydenom_inc=copy.deepcopy(ROOT.TH1D(stability_inc))
 
         # Fill purity
         for xbin in range(0, self.response_nom.GetNbinsX()+2):
@@ -521,15 +530,15 @@ class Unfolder(object):
             for ybin in range(0, self.response_nom.GetNbinsY()+2):
                 recobinevts_nom += self.response_nom.GetBinContent(xbin, ybin)
                 recobinevts_alt += self.response_alt.GetBinContent(xbin, ybin)
-                recobinevts_inc += self.response_inc.GetBinContent(xbin, ybin)
+                if self.checkLO: recobinevts_inc += self.response_inc.GetBinContent(xbin, ybin)
 
 
             purity_nom.SetBinContent(xbin, self.response_nom.GetBinContent(xbin,xbin))
             purity_alt.SetBinContent(xbin, self.response_alt.GetBinContent(xbin,xbin))
-            purity_inc.SetBinContent(xbin, self.response_inc.GetBinContent(xbin,xbin))
+            if self.checkLO: purity_inc.SetBinContent(xbin, self.response_inc.GetBinContent(xbin,xbin))
             puritydenom_nom.SetBinContent(xbin, recobinevts_nom)
             puritydenom_alt.SetBinContent(xbin, recobinevts_alt)
-            puritydenom_inc.SetBinContent(xbin, recobinevts_inc)
+            if self.checkLO: puritydenom_inc.SetBinContent(xbin, recobinevts_inc)
 
         # Fill stability
         for ybin in range(0, self.response_nom.GetNbinsY()+2):
@@ -539,23 +548,23 @@ class Unfolder(object):
             for xbin in range(0, self.response_nom.GetNbinsX()+2):
                 recobinevts_nom += self.response_nom.GetBinContent(xbin, ybin)
                 recobinevts_alt += self.response_alt.GetBinContent(xbin, ybin)
-                recobinevts_inc += self.response_inc.GetBinContent(xbin, ybin)
+                if self.checkLO: recobinevts_inc += self.response_inc.GetBinContent(xbin, ybin)
 
                     
             stability_nom.SetBinContent(ybin, self.response_nom.GetBinContent(ybin,ybin))
             stability_alt.SetBinContent(ybin, self.response_alt.GetBinContent(ybin,ybin))
-            stability_inc.SetBinContent(ybin, self.response_inc.GetBinContent(ybin,ybin))
+            if self.checkLO: stability_inc.SetBinContent(ybin, self.response_inc.GetBinContent(ybin,ybin))
             stabilitydenom_nom.SetBinContent(ybin, recobinevts_nom)
             stabilitydenom_alt.SetBinContent(ybin, recobinevts_alt)
-            stabilitydenom_inc.SetBinContent(ybin, recobinevts_inc)
+            if self.checkLO: stabilitydenom_inc.SetBinContent(ybin, recobinevts_inc)
 
 
         purity_nom.Divide(puritydenom_nom)
         purity_alt.Divide(puritydenom_alt)
-        purity_inc.Divide(puritydenom_inc)
+        if self.checkLO: purity_inc.Divide(puritydenom_inc)
         stability_nom.Divide(stabilitydenom_nom)
         stability_alt.Divide(stabilitydenom_alt)
-        stability_inc.Divide(stabilitydenom_inc)
+        if self.checkLO: stability_inc.Divide(stabilitydenom_inc)
 
         # Paint them
         print(purity_nom)
@@ -592,13 +601,14 @@ class Unfolder(object):
         stability_alt.Draw("PESAME")
         leg_1.Draw()
         c.cd(3)
-        purity_inc.SetMarkerColor(ROOT.kRed)
-        purity_inc.SetMarkerStyle(ROOT.kFullSquare)
-        stability_inc.SetMarkerColor(ROOT.kBlue)
-        stability_inc.SetMarkerStyle(ROOT.kFullCircle)
-        purity_inc.Draw("PE")
-        stability_inc.Draw("PESAME")
-        leg_1.Draw()
+        if self.checkLO: 
+            purity_inc.SetMarkerColor(ROOT.kRed)
+            purity_inc.SetMarkerStyle(ROOT.kFullSquare)
+            stability_inc.SetMarkerColor(ROOT.kBlue)
+            stability_inc.SetMarkerStyle(ROOT.kFullCircle)
+            purity_inc.Draw("PE")
+            stability_inc.Draw("PESAME")
+            leg_1.Draw()
         CMS_lumi.CMS_lumi(c, 4, 0, aLittleExtra=0.08)
         utils.saveCanva(c, os.path.join(self.outputDir, '1_checkBinning_%s' % self.var))
         c.IsA().Destructor(c)
@@ -662,7 +672,7 @@ class Unfolder(object):
         else:
             self.constraint=ROOT.TUnfold.kEConstraintNone
         # kEConstraintNone (no extra constraint), kEConstraintArea (enforce preservation of area)
-        self.densitymode= ROOT.TUnfoldDensity.kDensityModeeNone
+        self.densitymode= ROOT.TUnfoldDensity.kDensityModeNone
         # kDensityModeNone (no scale factors, matrix L is similar to unity matrix), kDensityModeBinWidth (scale factors from multidimensional bin width), kDensityModeUser (scale factors from user function in TUnfoldBinning), kDensityModeBinWidthAndUser (scale factors from multidimensional bin width and user function)
 
 
@@ -701,7 +711,7 @@ class Unfolder(object):
         elif key == 'alt':
             self.unfold = ROOT.TUnfoldDensity(self.response_alt, self.histmap, self.regmode, self.constraint, self.densitymode)
         elif key == 'inc':
-            self.unfold = ROOT.TUnfoldDensity(self.response_inc, self.histmap, self.regmode, self.constraint, self.densitymode)
+            if self.checkLO: self.unfold = ROOT.TUnfoldDensity(self.response_inc, self.histmap, self.regmode, self.constraint, self.densitymode)
         else:
             print('ERROR: the response matrix you asked for (%s) does not exist' % key)
         # Check if the input data points are enough to constrain the unfolding process
@@ -745,7 +755,7 @@ class Unfolder(object):
         elif key == 'alt':
             self.unfold.AddSysError(self.response_nom, 'pow response', self.histmap, ROOT.TUnfoldDensity.kSysErrModeMatrix)
         elif key == 'inc':
-            self.unfold.AddSysError(self.response_nom, 'pow response', self.histmap, ROOT.TUnfoldDensity.kSysErrModeMatrix)
+            if self.checkLO: self.unfold.AddSysError(self.response_nom, 'pow response', self.histmap, ROOT.TUnfoldDensity.kSysErrModeMatrix)
         else:
             print('ERROR: the response matrix you asked for (%s) does not exist' % key)
         
@@ -942,7 +952,10 @@ class Unfolder(object):
         leg_1 = ROOT.TLegend(0.4,0.7,0.9,0.9)
         leg_1.SetTextSize(0.04)
         leg_1.SetBorderSize(0)
-        leg_1.AddEntry(self.data, 'Data', 'p')
+        if self.closure:
+            leg_1.AddEntry(self.data, 'Asimov data', 'p')
+        else:
+            leg_1.AddEntry(self.data, 'Data', 'p')
         leg_1.AddEntry(self.mc, 'Exp. signal', 'lf')
         leg_1.AddEntry(bkgStacked, 'Exp. signal+background', 'l')
         leg_1.Draw()
@@ -992,7 +1005,10 @@ class Unfolder(object):
         leg_2 = ROOT.TLegend(0.4,0.7,0.9,0.9)
         leg_2.SetTextSize(0.04)
         leg_2.SetBorderSize(0)
-        leg_2.AddEntry(histUnfoldTotal, 'Unfolded data', 'pel')
+        if self.closure:
+            leg_2.AddEntry(histUnfoldTotal, 'Unfolded Asimov data', 'pel')
+        else:
+            leg_2.AddEntry(histUnfoldTotal, 'Unfolded data', 'pel')
         leg_2.AddEntry(self.dataTruth_nom, 'POWHEG prediction', 'la')
         leg_2.AddEntry(histUnfoldStat, '#frac{#chi^{2}}{NDOF}=%0.3f' % histUnfoldTotal.Chi2Test(self.dataTruth_nom, 'CHI2/NDF WW'), '')
         leg_2.Draw()
@@ -1031,7 +1047,10 @@ class Unfolder(object):
         leg_3.SetTextSize(0.04)
         leg_3.SetBorderSize(0)
         #leg_3.AddEntry(self.data, 'Data', 'pe')
-        leg_3.AddEntry(subdata, 'Data-bkg', 'pe')
+        if self.closure:
+            leg_3.AddEntry(subdata, 'AsimovData-bkg', 'pe')
+        else:
+            leg_3.AddEntry(subdata, 'Data-bkg', 'pe')
         leg_3.AddEntry(histMdetFold, 'MC folded back', 'l')
         #leg_3.AddEntry(bkgStacked, 'Exp. signal+background', 'l')
         leg_3.AddEntry(self.mc, 'Exp. signal', 'l')
@@ -1057,7 +1076,10 @@ class Unfolder(object):
         leg_4.SetTextSize(0.04)
         leg_4.SetBorderSize(0)
         leg_4.AddEntry(self.mc, 'Exp. signal', 'lf')
-        leg_4.AddEntry(subdata, 'Data-bkg by hand', 'pe')
+        if self.closure:
+            leg_4.AddEntry(subdata, 'AsimovData-bkg by hand', 'pe')
+        else:
+            leg_4.AddEntry(subdata, 'Data-bkg by hand', 'pe')
         #leg_4.AddEntry(histInput, 'Data-bkg by tool', 'la')
         leg_4.Draw()
         CMS_lumi.CMS_lumi(output, 4, 0, aLittleExtra=0.08)
@@ -1116,9 +1138,10 @@ class Unfolder(object):
             self.response_alt.SetTitle('Response Matrix (amcatnlo)')
             self.response_alt.Draw('colz')
         elif 'inc' in key:
-            self.response_inc.Scale(1./self.response_inc.Integral())
-            self.response_inc.SetTitle('Response Matrix (pythia)')
-            self.response_inc.Draw('colz')
+            if self.checkLO: 
+                self.response_inc.Scale(1./self.response_inc.Integral())
+                self.response_inc.SetTitle('Response Matrix (pythia)')
+                self.response_inc.Draw('colz')
         CMS_lumi.CMS_lumi(output, 4, 0, aLittleExtra=0.08)
         ROOT.gPad.Update()
         output.SaveAs(os.path.join(self.outputDir, '2_p7_unfold_%s_%s_%s.pdf' % (label, key, self.var)))
@@ -1144,7 +1167,7 @@ class Unfolder(object):
         # Data truth
         dt=copy.deepcopy(self.dataTruth_nom)
         dt_alt=copy.deepcopy(self.dataTruth_alt)
-        dt_inc=copy.deepcopy(self.dataTruth_inc)
+        dt_inc=copy.deepcopy(self.dataTruth_inc)if self.checkLO else None
         # # Rewrite the nom_up and dn
         # self.dataTruth_nom_up=copy.deepcopy(dt)
         # self.dataTruth_nom_dn=copy.deepcopy(dt)
@@ -1166,8 +1189,9 @@ class Unfolder(object):
             #self.dataTruth_nom_dn.SetBinContent(ibin,dt.GetBinContent(ibin)/dt.GetBinWidth(ibin))
             dt_alt.SetBinContent(ibin,dt_alt.GetBinContent(ibin)/dt_alt.GetBinWidth(ibin))
             dt_alt.SetBinError(  ibin,dt_alt.GetBinError(ibin)  /dt_alt.GetBinWidth(ibin))
-            dt_inc.SetBinContent(ibin,dt_inc.GetBinContent(ibin)/dt_inc.GetBinWidth(ibin))
-            dt_inc.SetBinError(  ibin,dt_inc.GetBinError(ibin)  /dt_inc.GetBinWidth(ibin))
+            if self.checkLO: 
+                dt_inc.SetBinContent(ibin,dt_inc.GetBinContent(ibin)/dt_inc.GetBinWidth(ibin))
+                dt_inc.SetBinError(  ibin,dt_inc.GetBinError(ibin)  /dt_inc.GetBinWidth(ibin))
 
 
 
@@ -1177,13 +1201,13 @@ class Unfolder(object):
 
         print('YADDA2 ', dt.Integral(), dt_nom_dn.Integral(), dt_nom_up.Integral()) 
         dt_alt.Scale(1./dt_alt.Integral())
-        dt_inc.Scale(1./dt_inc.Integral())
+        if self.checkLO: dt_inc.Scale(1./dt_inc.Integral())
         dt.GetXaxis().SetTitle('%s' % self.fancyvar)
         dt.GetYaxis().SetTitle('(d#sigma/d%s)/#sigma' % self.diffvar)
         dt.SetMaximum(1.2*dt.GetMaximum())
         if self.logx:
             ROOT.gPad.SetLogx()
-        if 'MWZ' in self.var:
+        if ('MWZ' in self.var) or ('Njets' in self.var):
             ROOT.gPad.SetLogy()
             dt.SetMaximum(100*dt.GetMaximum())
         dt.GetXaxis().SetTitleSize(0.045)
@@ -1235,8 +1259,9 @@ class Unfolder(object):
         dt_alt.SetLineWidth(2)
         dt_alt.SetLineColor(ROOT.kBlue)
         dt_alt.Draw('SAME E HIST')
-        dt_inc.SetLineWidth(2)
-        dt_inc.SetLineColor(ROOT.kMagenta)
+        if self.checkLO: 
+            dt_inc.SetLineWidth(2)
+            dt_inc.SetLineColor(ROOT.kMagenta)
         ###dt_inc.Draw('SAME E HIST')
         # Add theoretical uncertainties on the nominal prediction
         # HERE HERE HERE
@@ -1265,11 +1290,14 @@ class Unfolder(object):
         ###histDensityGenData.SetLineColor(kRed)
         ##histDensityGenData.Draw("SAME")
         ##histDensityGenMC.Draw("SAME HIST")
-        leg_money = ROOT.TLegend(0.4,0.6,0.9,0.9)
+        leg_money = ROOT.TLegend(0.4,0.6,0.9,0.9) if (not 'Njets' in self.var) else ROOT.TLegend(0.2,0.6,0.7,0.9)
         leg_money.SetTextSize(0.025)
         leg_money.SetBorderSize(0)
         leg_money.SetEntrySeparation(0.25)
-        leg_money.AddEntry(hus, 'Unfolded data (stat.unc.)', 'pel')
+        if self.closure:
+            leg_money.AddEntry(hus, 'Unfolded Asimov data (stat.unc.)', 'pel')
+        else:
+            leg_money.AddEntry(hus, 'Unfolded data (stat.unc.)', 'pel')
         leg_money.AddEntry(dt, 'POWHEG prediction: #chi^{2}/NDOF=%0.3f'% dt.Chi2Test(hus, 'CHI2/NDF WW'), 'la')
         leg_money.AddEntry(dt_alt, 'aMC@NLO prediction: #chi^{2}/NDOF=%0.3f'% dt_alt.Chi2Test(hus, 'CHI2/NDF WW'), 'la')
         ###leg_money.AddEntry(dt_inc, 'PYTHIA #chi^{2}/NDOF=%0.3f'% dt_inc.Chi2Test(hus, 'CHI2/NDF WW'), 'la')
@@ -1323,10 +1351,14 @@ def main(args):
 
     # Should move it to be specifiable from command line, probably
     vardict = {
-        'Zpt'       : ['p_{T}^{Z} [GeV]'          , 'p_{T}^{Z}'          ],
-        'LeadJetPt' : ['Leading jet p_{T} [GeV]', 'p_{T}^{jet}'        ],
-        'MWZ'       : ['M(WZ) [GeV]'             , 'M_{WZ}'             ],
-        'Wpt'       : ['p_{T}^{W} [GeV]'          , 'p_{T}^{W}'          ] 
+        #'Zpt'       : ['p_{T}^{Z} [GeV]'          , 'p_{T}^{Z}'          ],
+        #'LeadJetPt' : ['Leading jet p_{T} [GeV]', 'p_{T}^{jet}'        ],
+        #'MWZ'       : ['M(WZ) [GeV]'             , 'M_{WZ}'             ],
+        #'Wpt'       : ['p_{T}^{W} [GeV]'          , 'p_{T}^{W}'          ],
+        #'Njets'      : ['N_{jets}'                 , 'N_{jets}^{gen}'    ],
+        'Wpol'      : ['cos(#theta_{W}^{Dn})'     , 'cos(#theta_{W}^{Dn})' ],
+        'Zpol'      : ['cos(#theta_{Z}^{Dn})'     , 'cos(#theta_{Z}^{Dn})' ],
+        
         }
     
     for var, fancy in vardict.items():
@@ -1337,7 +1369,7 @@ def main(args):
         u.study_responses()
         u.do_unfolding('nom')
         u.do_unfolding('alt')
-        u.do_unfolding('inc')
+        if args.checkLO: u.do_unfolding('inc')
 
 ### End main
 
@@ -1360,6 +1392,7 @@ if __name__ == '__main__':
     parser.add_argument('--charge',               help='Charge of the W', default='')
     parser.add_argument('-b', '--bias',           help='Scale bias (0 deactivates bias vector)', default=None, type=float)
     parser.add_argument('-a', '--areaConstraint', help='Area constraint', action='store_true')
+    parser.add_argument('--checkLO',        help='Compare also with LO inclusive MC', action='store_true')
     args = parser.parse_args()
     # execute only if run as a script
     ROOT.gROOT.SetBatch()

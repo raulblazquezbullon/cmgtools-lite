@@ -15,8 +15,9 @@ def saveCanva(c, fname):
 """
 
 def get_file_from_glob(f):                                                    
-        files = glob.glob(f)                                                      
-        if len(files) != 1:                                                       
+        files = glob.glob(f)
+        if len(files) != 1:
+                print(files)
                 raise Exception('Only one input file is supported per glob pattern: %\
 s -> %s' % (f, files))                                                        
         

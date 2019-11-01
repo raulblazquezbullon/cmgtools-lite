@@ -30,6 +30,7 @@ pileupWeights = {
 }
 triggerTrees = {
     2016: '--Fs {P}/trigger_2016/',
-    2017: '',
-    2018: '',
+    2017: '--mcc RunII_SM_WZ/2017/mcc_triggerdefs.txt',
+    2018: '--mcc RunII_SM_WZ/2018/mcc_triggerdefs.txt',
 }
+
