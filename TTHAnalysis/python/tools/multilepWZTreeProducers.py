@@ -59,6 +59,80 @@ MODULES.append( ('leptonEnergyCorrections_2018', lambda: leptonEnergyCorrections
 ###################################
 
 from CMGTools.TTHAnalysis.tools.leptonJetReCleaner import LeptonJetReCleaner
+from CMGTools.TTHAnalysis.tools.functionsWZ_v5 import _loose_muon, _loose_electron, _loose_lepton, _fO_muon, _fO_electron, _fO_lepton,_tight_muon,_tight_electron,_tight_lepton,conept
+
+
+
+MODULES.append( ('leptonJetReCleanerWZSM_2016_v5', lambda : LeptonJetReCleaner("Mini", 
+                   lambda lep :        _loose_lepton(lep, 0.3093, 0.0614), #Loose selection 
+                   lambda lep,jetlist: _fO_lepton(lep, 0.3093, 0.0614,jetlist), #Clean on FO
+                   lambda lep,jetlist: _fO_lepton(lep, 0.3093, 0.0614,jetlist), #FO selection
+                   lambda lep,jetlist: _tight_lepton(lep, 0.3093, 0.0614,jetlist), #Tight selection
+                   cleanJet = lambda lep,jet,dr : dr<0.4,
+                   selectJet = lambda jet: abs(jet.eta)<4.7 and (jet.jetId & 2), #Jet ID tight as it is already very efficient (>=98%), Take second bit with python "/" def + evaluate it with %
+                   cleanTau = lambda lep,tau,dr: dr<0.4,
+                   looseTau = lambda tau: _tauId_CBloose(tau), # used in cleaning
+                   tightTau = lambda tau: _tauId_CBtight(tau), # on top of loose
+                   cleanJetsWithTaus = False,
+                   cleanTausWithLoose = False,
+                   doVetoZ = False,
+                   doVetoLMf = False,
+                   doVetoLMt = True,
+                   jetPt = 30,
+                   bJetPt = 25,
+                   coneptdef = lambda lep: conept(lep),
+                   year = 2016,
+                   bAlgo = "DeepCSV"
+                   )))
+
+
+MODULES.append( ('leptonJetReCleanerWZSM_2017_v5', lambda : LeptonJetReCleaner("Mini",
+                   lambda lep :        _loose_lepton(lep, 0.0521, 0.3033), #Loose selection 
+                   lambda lep,jetlist: _fO_lepton(lep, 0.0521, 0.3033,jetlist), #Clean on FO
+                   lambda lep,jetlist: _fO_lepton(lep, 0.0521, 0.3033,jetlist), #FO selection
+                   lambda lep,jetlist: _tight_lepton(lep, 0.0521, 0.3033,jetlist), #Tight selection
+                   cleanJet = lambda lep,jet,dr : dr<0.4,
+                   selectJet = lambda jet: abs(jet.eta)<4.7 and (jet.jetId & 2), #Jet ID tight as it is already very efficient (>=98%), Take second bit with python "/" def + evaluate it with %
+                   cleanTau = lambda lep,tau,dr: dr<0.4,
+                   looseTau = lambda tau: _tauId_CBloose(tau), # used in cleaning
+                   tightTau = lambda tau: _tauId_CBtight(tau), # on top of loose
+                   cleanJetsWithTaus = False,
+                   cleanTausWithLoose = False,
+                   doVetoZ = False,
+                   doVetoLMf = False,
+                   doVetoLMt = True,
+                   jetPt = 30,
+                   bJetPt = 25,
+                   coneptdef = lambda lep: conept(lep),
+                   year = 2017,
+                   bAlgo = "DeepCSV"
+                   )))
+
+
+MODULES.append( ('leptonJetReCleanerWZSM_2018_v5', lambda : LeptonJetReCleaner("Mini",
+                   lambda lep :        _loose_lepton(lep, 0.0494, 0.2770), #Loose selection 
+                   lambda lep,jetlist: _fO_lepton(lep, 0.0494, 0.2770,jetlist), #Clean on FO
+                   lambda lep,jetlist: _fO_lepton(lep, 0.0494, 0.2770,jetlist), #FO selection
+                   lambda lep,jetlist: _tight_lepton(lep, 0.0494, 0.2770,jetlist), #Tight selection
+                   cleanJet = lambda lep,jet,dr : dr<0.4,
+                   selectJet = lambda jet: abs(jet.eta)<4.7 and (jet.jetId & 2), #Jet ID tight as it is already very efficient (>=98%), Take second bit with python "/" def + evaluate it with %
+                   cleanTau = lambda lep,tau,dr: dr<0.4,
+                   looseTau = lambda tau: _tauId_CBloose(tau), # used in cleaning
+                   tightTau = lambda tau: _tauId_CBtight(tau), # on top of loose
+                   cleanJetsWithTaus = False,
+                   cleanTausWithLoose = False,
+                   doVetoZ = False,
+                   doVetoLMf = False,
+                   doVetoLMt = True,
+                   jetPt = 30,
+                   bJetPt = 25,
+                   coneptdef = lambda lep: conept(lep),
+                   year = 2018,
+                   bAlgo = "DeepCSV"
+                   )))
+
+
+
 from CMGTools.TTHAnalysis.tools.leptonphotonJetReCleaner import LeptonPhotonJetReCleaner
 from CMGTools.TTHAnalysis.tools.functionsWZ import _lepId_IPcuts, conept, _looseID_ExtraCuts_2016, _elidEmu_cuts_2016, _FOID_2016, _Tight_2016,  _looseID_ExtraCuts_2017, _elidEmu_cuts_2017, _FOID_2017, _Tight_2017,  _looseID_ExtraCuts_2018, _elidEmu_cuts_2018, _FOID_2018, _Tight_2018, _tauId_CBloose, _tauId_CBtight, _phoId_CBloose, _phoId_CBtight
 
