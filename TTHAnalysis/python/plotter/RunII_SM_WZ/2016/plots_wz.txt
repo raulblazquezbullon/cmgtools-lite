@@ -32,8 +32,8 @@ cosWfromFT_Dn : cos_ThetaWDn_HE :  10,-1,1  ; XTitle="cos(#theta_{W}^{Dn})", Leg
 #nInt       : nTrueInt       : 50,0,50     ; XTitle="N(TrueInt)"                  , LegendCutoff=1e-4
 #nVert      : nVert          : 50,0,50     ; XTitle="N(PV)"                       , LegendCutoff=1e-4
 
-met        : $DATA{MET_pt} $MC{MET_pt_nom}    : 20,0,400   ; XTitle="p_{T}^{miss}  (GeV)"         , LegendCutoff=1e-4, Logy, YMin=1, YMax=100000, Legend="TR"
-metCRWZ    : $DATA{MET_pt} $MC{MET_pt_nom}    : 5,0,200   ; XTitle="p_{T}^{miss}  (GeV)"         , LegendCutoff=1e-4, Logy, YMin=1, YMax=100000, Legend="TR"
+met        : MET_pt_central    : 20,0,400   ; XTitle="p_{T}^{miss}  (GeV)"         , LegendCutoff=1e-4, Logy, YMin=1, YMax=100000, Legend="TR"
+metCRWZ    : MET_pt_central    : 5,0,200   ; XTitle="p_{T}^{miss}  (GeV)"         , LegendCutoff=1e-4, Logy, YMin=1, YMax=100000, Legend="TR"
 htJet30j   : htJet30j       : 20,0,200    ; XTitle="H_{T}(jet p_{T} > 30) [GeV]" , LegendCutoff=1e-4, Logy, YMax=50000, YMin=1e-1
 nJet30     : nJet30_Mini         : 10,-0.5,9.5 ; XTitle="N(jet\, p_{T} > 30)"         , LegendCutoff=1e-4, Logy, YMax=50000, YMin=1e-1
 nBJet25    : nBJetTight25_Mini  : 1,-1,1  ; XTitle="N(b-jet\, p_{T} > 25\, DCSVT)", LegendCutoff=1e-4, Logy, YMax=100000, YMin=1
