@@ -1,0 +1,11 @@
+## Data
+## -----------------------------------------------------------
+incl_data      : + ; IncludeMca="RunII_SM_WZ/2016/includes/mca_data_2016_nanoAODv5.txt"
+
+## Backgrounds
+## -----------------------------------------------------------
+incl_signal         : + ; IncludeMca="RunII_SM_WZ/2016/includes/mca_WZ_nanoAODv5_polZm.txt"
+incl_prompts        : + ; IncludeMca="RunII_SM_WZ/2016/includes/mca_prompts_nanoAODv5.txt"
+incl_convs          : + ; IncludeMca="RunII_SM_WZ/2016/includes/mca_convs_nanoAODv5.txt"
+incl_fakes          : + ; IncludeMca="RunII_SM_WZ/2016/includes/mca_mcfakes_nanoAODv5.txt"
+

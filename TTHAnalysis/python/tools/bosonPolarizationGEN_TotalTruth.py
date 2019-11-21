@@ -33,7 +33,7 @@ class bosonPolarizationGEN_TotalTruth:
             elif self.lenW < 1: self.ret["status"] = 2
             elif self.lenZ > 2: self.ret["status"] = 3 
             elif self.lenW > 1: self.ret["status"] = 4
-            print "statused"
+            #print "statused"
             return self.ret
         self.ret["status"] = -1
         self.collectObjects(event)
@@ -125,22 +125,22 @@ class bosonPolarizationGEN_TotalTruth:
         self.pWDn = self.pl3.Clone()
         self.pZ   = self.pl3.Clone()
         genColl = [t             for t  in Collection(event, "GenPart" , "nGenPart" )]
-        """for p in genColl:
-            if abs(p.pdgId) == 24:
+        for p in genColl:
+            if abs(p.pdgId) == 24 and p.status == 22:
                 self.pWUp.SetPtEtaPhiM(p.pt, p.eta, p.phi, 80.385)
                 self.pWDn.SetPtEtaPhiM(p.pt, p.eta, p.phi, 80.385)
-            if abs(p.pdgId) == 23:
+            if abs(p.pdgId) == 23 and p.status == 22:
                 self.pZ.SetPtEtaPhiM(p.pt, p.eta, p.phi, 91.16)
-        """
+
         self.plneu = self.pl3.Clone()
         for p in genColl:
             if (abs(p.pdgId) - abs(self.wID) == 1): 
                 #print "found!"
                 self.plneu.SetPtEtaPhiM(getattr(p, "pt"), getattr(p, "eta"),getattr(p, "phi"), getattr(p, "mass")) 
-        self.pWUp = self.pl3 + self.plneu
+        """self.pWUp = self.pl3 + self.plneu
         #print self.pWUp.M()
         self.pWDn = self.pWUp
-        self.pZ = self.pl1 + self.pl2
+        self.pZ = self.pl1 + self.pl2"""
         self.pWZUp = self.pZ + self.pWUp
         self.pWZDn = self.pZ + self.pWDn
         for part in ["Z", "WUp", "WDn", "WZUp", "WZDn"]:
