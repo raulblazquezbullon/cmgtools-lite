@@ -137,6 +137,7 @@ class bosonPolarizationGEN_TotalTruth:
             if (abs(p.pdgId) - abs(self.wID) == 1): 
                 #print "found!"
                 self.plneu.SetPtEtaPhiM(getattr(p, "pt"), getattr(p, "eta"),getattr(p, "phi"), getattr(p, "mass")) 
+                print "Gen level: ", self.plneu.Pz()
         """self.pWUp = self.pl3 + self.plneu
         #print self.pWUp.M()
         self.pWDn = self.pWUp

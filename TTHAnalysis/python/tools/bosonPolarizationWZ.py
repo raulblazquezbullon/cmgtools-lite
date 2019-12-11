@@ -46,6 +46,7 @@ class bosonPolarizationWZ:
     ## analyzeTopology
     ## _______________________________________________________________
     def analyzeTopology(self):
+        print "New event!"
         #Fill up the ret
         self.getNeuEta()
         self.buildBosonP_Lab()
@@ -55,18 +56,19 @@ class bosonPolarizationWZ:
         self.LorToZ   = self.getPartRestFrameLor( self.pZ  )
         #Lorentz's transformation from LAB to WZ system, i.e. as in ATLAS-CONF-18-034
         self.LorToWZUp   = self.getPartRestFrameLor(self.pWZUp)
-        self.LorToWUp_CM = self.LorToWZUp*self.getPartRestFrameLor(self.LorToWZUp*self.pWUp)
-        self.LorToZUp_CM = self.LorToWZUp*self.getPartRestFrameLor(self.LorToWZUp*self.pZ)
+        self.LorToWUp_CM = self.getPartRestFrameLor(self.LorToWZUp*self.pWUp)*self.LorToWZUp
+        self.LorToZUp_CM = self.getPartRestFrameLor(self.LorToWZUp*self.pZ)*self.LorToWZUp
         self.LorToWZDn   = self.getPartRestFrameLor(self.pWZDn)
-        self.LorToWDn_CM = self.LorToWZUp*self.getPartRestFrameLor(self.LorToWZDn*self.pWDn)
-        self.LorToZDn_CM = self.LorToWZUp*self.getPartRestFrameLor(self.LorToWZDn*self.pZ)
+        self.LorToWDn_CM = self.getPartRestFrameLor(self.LorToWZDn*self.pWDn)*self.LorToWZDn
+        self.LorToZDn_CM = self.getPartRestFrameLor(self.LorToWZDn*self.pZ)*self.LorToWZDn
+
         #Now get the interesting angles
         self.ret["ThetaWUp_HE"] = (self.LorToWUp*self.pl3).Theta()
         self.ret["ThetaWDn_HE"] = (self.LorToWDn*self.pl3).Theta()
         self.ret["ThetaZUp_HE"] = (self.LorToZ*self.lepforZ).Theta()
         self.ret["ThetaZDn_HE"] = (self.LorToZ*self.lepforZ).Theta() #Not a bug, there is just one solution in this case
-        self.ret["cos_ThetaWDn_HE"] = math.cos((self.LorToWUp*self.pl3).Theta())*self.charge
-        self.ret["cos_ThetaZDn_HE"] = math.cos((self.LorToWUp*self.pl3).Theta())
+        self.ret["cos_ThetaWDn_HE"] = math.cos((self.LorToWDn*self.pl3).Theta())*self.charge
+        self.ret["cos_ThetaZDn_HE"] = math.cos((self.LorToZ*self.lepforZ).Theta())
         #Now get the other interesting angles
         self.ret["ThetaWUp_HE_CM"] = (self.LorToWUp_CM*self.pl3).Theta()
         self.ret["ThetaWDn_HE_CM"] = (self.LorToWDn_CM*self.pl3).Theta()
@@ -90,30 +92,33 @@ class bosonPolarizationWZ:
         self.pl3.SetPtEtaPhiM(getattr(event, "LepW_pt"+self.lSyst) , getattr(event, "LepW_eta"+self.lSyst) ,getattr(event, "LepW_phi"+self.lSyst) , getattr(event, "LepW_mass") )
 
         if self.lSyst == "" and self.jSyst=="":
-            self.metUp.SetPtEtaPhiM(getattr(event, "MET_pt_central"+self.lSyst)  , 0  ,getattr(event, "MET_phi_central" +self.lSyst)                          , 0                           )
+            self.met.SetPtEtaPhiM(getattr(event, "MET_pt_central"+self.lSyst)  , 0  ,getattr(event, "MET_phi_central" +self.lSyst)                          , 0                           )
             self.metUp.SetPtEtaPhiM(getattr(event, "MET_pt_central" + self.lSyst)  , 0  ,getattr(event, "MET_phi_central" +self.lSyst)                          , 0                           )
             self.metDn.SetPtEtaPhiM(getattr(event, "MET_pt_central" + self.lSyst)  , 0  ,getattr(event, "MET_phi_central" +self.lSyst)                          , 0                           )
 
         elif self.jSyst == "":
-            self.metUp.SetPtEtaPhiM(getattr(event, "MET_pt" + self.lSyst)  , 0  ,getattr(event, "MET_phi" +self.lSyst)                          , 0                           )
+            self.met.SetPtEtaPhiM(getattr(event, "MET_pt" + self.lSyst)  , 0  ,getattr(event, "MET_phi" +self.lSyst)                          , 0                           )
             self.metUp.SetPtEtaPhiM(getattr(event, "MET_pt" + self.lSyst)  , 0  ,getattr(event, "MET_phi" +self.lSyst)                          , 0                           )
             self.metDn.SetPtEtaPhiM(getattr(event, "MET_pt" + self.lSyst)  , 0  ,getattr(event, "MET_phi" +self.lSyst)                          , 0                           )
 
         else:
-            self.metUp.SetPtEtaPhiM(getattr(event, self.metbranch + "_pt" + self.lSyst)  , 0  ,getattr(event, self.metbranch + "_phi" +self.lSyst)                          , 0                           )
+            self.met.SetPtEtaPhiM(getattr(event, self.metbranch + "_pt" + self.lSyst)  , 0  ,getattr(event, self.metbranch + "_phi" +self.lSyst)                          , 0                           )
             self.metUp.SetPtEtaPhiM(getattr(event, self.metbranch + "_pt" + self.lSyst)  , 0  ,getattr(event, self.metbranch + "_phi" +self.lSyst)                          , 0                           )
             self.metDn.SetPtEtaPhiM(getattr(event, self.metbranch + "_pt" + self.lSyst)  , 0  ,getattr(event, self.metbranch + "_phi" +self.lSyst)                          , 0                           )
        
         
     def getNeuEta(self):
         #Solve for W mass
+        #print "Next event!"
         phil = self.pl3.Phi()
         etal = self.pl3.Eta()
         ptl = self.pl3.Pt()
         phinu = self.met.Phi()
+
         etanuUp = 0
         etanuDn = 0
         ptnu  = self.met.Pt()
+
         muVal = (80.385)**2/2. + ptl*ptnu*cos(phil-phinu)
         disc  = (muVal**2*ptl**2*sinh(etal)**2/ptl**4 - ((ptl**2*cosh(etal)**2)*ptnu**2 - muVal**2)/ptl**2)        
         #print disc
@@ -125,12 +130,16 @@ class bosonPolarizationWZ:
              self.metUp.SetXYZM(ptnu*cos(phinu), ptnu*sin(phinu),muVal*ptl*sinh(etal)/ptl**2 + sqrt(disc),0)
              self.metDn.SetXYZM(ptnu*cos(phinu), ptnu*sin(phinu),muVal*ptl*sinh(etal)/ptl**2 - sqrt(disc),0)
 
+
     def buildBosonP_Lab(self):
         self.pZ = self.pl1 + self.pl2
+        print self.pl3.Px(), self.pl3.Py(), self.pl3.Pz()
+
         self.pWUp = self.pl3 + self.metUp
         self.pWDn = self.pl3 + self.metDn
         self.pWZUp = self.pZ + self.pWUp
         self.pWZDn = self.pZ + self.pWDn
+
         for part in ["Z", "WUp", "WDn", "WZUp", "WZDn"]:
             self.ret[part+"_pt_Lab"] = getattr(self, "p" + part).Pt()
             self.ret[part+"_eta_Lab"] = getattr(self, "p" + part).Eta()
