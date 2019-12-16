@@ -1,6 +1,4 @@
 #Flat uncertainties
-
-
 #Lumi uncertainties as per https://twiki.cern.ch/twiki/bin/view/CMS/TWikiLUM
 lumi_2018_ML       : prompt_.*|convs   : .*                : 1.015
 lumi_XY_ML         : prompt_.*|convs   : .*                : 1.020
@@ -12,86 +10,34 @@ lumi_calib_ML      : prompt_.*|convs   : .*                : 1.002
 
 #Trigger efficiency measurements performed by ourselves
 #Bias comes from ref trigger which follows the same strat, so correlated:
-trigeffbias_ML    : prompt_.*|convs   : .*                : 0.997/1.003
+trigeffbias_ML    : prompt_.*|convs   : .*                : 1.005
 #Uncertainty from statistics our own measurement, so decorrelated:
-trigeffstat_2018_ML    : prompt_.*|convs   : .*                : 0.989/1.007
-
-#Templates#
-
-LepSFMu_ML            : prompt_.*|convs          : .* : lepSFMu : templates
-LepSFEl_ML            : prompt_.*|convs          : .* : lepSFEl : templates
-LepSFMuStat2018_ML            : prompt_.*|convs          : .* : lepSFMuStat2018 : templates
-LepSFElStat2018_ML            : prompt_.*|convs          : .* : lepSFElStat2018 : templates
+trigeffstat_2018_ML    : prompt_.*|convs   : .*                : 0.992/1.004
 
 
-#All background uncertainties correlated for obvious reasons
-fakes_ML      : fakes_.*                           : .*                : 1.3 
-convs_ML      : convs                              : .*                : 1.2
-normZZ_ML     : prompt_.*ZZ                        : .*                : 1.07
+############## NORMALIZATION
+normfakes_ML      : fakes_.*                           : .*                : 1.3
+normconvs_ML      : convs                              : .*                : 1.2
+normZZ_ML     : prompt_.*ZZ                        : .*                : 1.1
 normVVV_ML    : prompt_VVV                         : .*                : 1.5
 normVH_ML     : prompt_VH                          : .*                : 1.25
 normtZq_ML    : prompt_TZQ                         : .*                : 1.35
 normTTX_ML    : prompt_TT.*                        : .*                : 1.15
 
-#A minitest in hessian set PDF uncertainties
-#CT_set001 : prompt_WZ_plus   : .* : 0.9991/1.0008
-#CT_set001 : prompt_WZ_minus  : .* : 1.0012/0.9988
-#CT_set002 : prompt_WZ_plus   : .* : 1.0006/0.9994
-#CT_set002 : prompt_WZ_minus  : .* : 0.9992/1.0009
-#CT_set003 : prompt_WZ_plus   : .* : 0.9992/1.0006
-#CT_set003 : prompt_WZ_minus  : .* : 1.0011/0.9991
-#CT_set004 : prompt_WZ_plus   : .* : 1.0004/0.9995
-#CT_set004 : prompt_WZ_minus  : .* : 0.9994/1.0007
-#CT_set005 : prompt_WZ_plus   : .* : 0.9998/1.0003
-#CT_set005 : prompt_WZ_minus  : .* : 1.0003/0.9995
-#CT_set006 : prompt_WZ_plus   : .* : 0.9988/1.0008
-#CT_set006 : prompt_WZ_minus  : .* : 1.0017/0.9988
-#CT_set007 : prompt_WZ_plus   : .* : 1.0001/1.0000
-#CT_set007 : prompt_WZ_minus  : .* : 0.9998/1.0001
-#CT_set008 : prompt_WZ_plus   : .* : 1.0012/0.9989
-#CT_set008 : prompt_WZ_minus  : .* : 0.9983/1.0016
-#CT_set009 : prompt_WZ_plus   : .* : 1.0024/0.9988
-#CT_set009 : prompt_WZ_minus  : .* : 0.9966/1.0017
-#CT_set010 : prompt_WZ_plus   : .* : 1.0001/1.0001
-#CT_set010 : prompt_WZ_minus  : .* : 0.9999/0.9999
-#CT_set011 : prompt_WZ_plus   : .* : 1.0016/0.9985
-#CT_set011 : prompt_WZ_minus  : .* : 0.9977/1.0022
-#CT_set012 : prompt_WZ_plus   : .* : 1.0013/0.9989
-#CT_set012 : prompt_WZ_minus  : .* : 0.9981/1.0016
-#CT_set013 : prompt_WZ_plus   : .* : 0.9981/1.0037
-#CT_set013 : prompt_WZ_minus  : .* : 1.0027/0.9948
-#CT_set014 : prompt_WZ_plus   : .* : 1.0006/0.9995
-#CT_set014 : prompt_WZ_minus  : .* : 0.9992/1.0008
-#CT_set015 : prompt_WZ_plus   : .* : 0.9980/1.0017
-#CT_set015 : prompt_WZ_minus  : .* : 1.0029/0.9975
-#CT_set016 : prompt_WZ_plus   : .* : 0.9981/1.0024
-#CT_set016 : prompt_WZ_minus  : .* : 1.0028/0.9965
-#CT_set017 : prompt_WZ_plus   : .* : 0.9977/1.0014
-#CT_set017 : prompt_WZ_minus  : .* : 1.0034/0.9980
-#CT_set018 : prompt_WZ_plus   : .* : 1.0041/0.9975
-#CT_set018 : prompt_WZ_minus  : .* : 0.9941/1.0037
-#CT_set019 : prompt_WZ_plus   : .* : 0.9957/1.0043
-#CT_set019 : prompt_WZ_minus  : .* : 1.0062/0.9939
-#CT_set020 : prompt_WZ_plus   : .* : 0.9951/1.0055
-#CT_set020 : prompt_WZ_minus  : .* : 1.0072/0.9922
-#CT_set021 : prompt_WZ_plus   : .* : 1.0014/0.9991
-#CT_set021 : prompt_WZ_minus  : .* : 0.9980/1.0013
-#CT_set022 : prompt_WZ_plus   : .* : 0.9977/1.0029
-#CT_set022 : prompt_WZ_minus  : .* : 1.0033/0.9959
-#CT_set023 : prompt_WZ_plus   : .* : 1.0014/0.9984
-#CT_set023 : prompt_WZ_minus  : .* : 0.9980/1.0023
-#CT_set024 : prompt_WZ_plus   : .* : 1.0008/0.9994
-#CT_set024 : prompt_WZ_minus  : .* : 0.9989/1.0008
-#CT_set025 : prompt_WZ_plus   : .* : 0.9998/0.9995
-#CT_set025 : prompt_WZ_minus  : .* : 1.0004/1.0008
-#CT_set026 : prompt_WZ_plus   : .* : 0.9987/0.9996
-#CT_set026 : prompt_WZ_minus  : .* : 1.0019/1.0006
 
+############## SHAPES
+# Follow JES recommendations as per https://docs.google.com/spreadsheets/d/1JZfk78_9SD225bcUuTWVo4i02vwI5FfeVKH-dwzUdhM/edit#gid=1345121349
+JESCORR_ML           : prompt_.*|convs          : .* : jescorr        : templates
+JES2018_ML           : prompt_.*|convs          : .* : jesuncorr        : templates
 
-#Templates#
-JES_ML           : prompt_.*|convs          : .* : jec        : templates
 MuScale_ML       : prompt_.*|convs          : .* : muscale    : templates
 ElScale_ML       : prompt_.*|convs          : .* : elscale    : templates
-PUW_ML           : prompt_.*|convs          : .* : puw        : templates
+
+PUW_ML           : prompt_.*|convs|sig_.*   : .* : puw        : templates
 btag_HF_ML       : prompt_.*|convs          : .* : bTagHF     : templates
 btag_LF_ML       : prompt_.*|convs          : .* : bTagLF     : templates
+
+LepSFMu_ML            : prompt_.*|convs          : .* : lepSFMu : templates
+LepSFEl_ML            : prompt_.*|convs          : .* : lepSFEl : templates
+LepSFMuStat2018_ML    : prompt_.*|convs          : .* : lepSFMuStat2018 : templates
+LepSFElStat2018_ML    : prompt_.*|convs          : .* : lepSFElStat2018 : templates

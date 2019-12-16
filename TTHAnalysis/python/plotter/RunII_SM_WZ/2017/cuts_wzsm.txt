@@ -28,6 +28,10 @@ CRZZ   : m3L >= 100 && nBJetTight25_Mini == 0  && abs(mll_3l - 91.16) < 15 && nL
 CRTT   : m3L >= 100 && nBJetTight25_Mini > 0   && nLepGood < 4; Disable=True
 CRconv : m3L < 100 && nBJetTight25_Mini == 0  && MET_pt  < 30 && nLepGood < 4; Disable=True
 
+
+chargeplus  : LepW_pdgId < 0 ; Disable=True
+chargeminus : LepW_pdgId > 0 ; Disable=True
+
 cIn : abs(cos_ThetaWDn_HE) < 0.9; Disable=True
 
 flav_eee : (abs(LepZ1_pdgId)+abs(LepZ2_pdgId)+abs(LepW_pdgId)-33)/2 == 0; Disable=True

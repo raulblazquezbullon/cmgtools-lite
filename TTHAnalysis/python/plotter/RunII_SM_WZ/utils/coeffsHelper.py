@@ -9,9 +9,10 @@ alpha = 0.213
 
 class coeffs(object):
 
-    def __init__(self, histoc,histoc2, isZ, tag, lumi):
+    def __init__(self, histoc,histoc2,histofid, isZ, tag, lumi):
         self.histoc = histoc
         self.histoc2 = histoc2
+        self.histofid = histofid
         self.isZ = isZ
         self.tag = tag
         self.lumi = lumi
@@ -94,7 +95,7 @@ class coeffs(object):
         c.SetBottomMargin(0.14)        
         ROOT.gROOT.SetBatch(True)
 
-        self.histoc.GetXaxis().SetTitle("cos(#theta_{X})")
+        self.histoc.GetXaxis().SetTitle("cos(#theta_{Z})" if self.isZ else "cos(#theta_{W})")
         self.histoc.GetYaxis().SetTitle("Events (generated)")
       
         self.histoc.GetXaxis().SetNdivisions(205)
@@ -115,6 +116,10 @@ class coeffs(object):
         self.histoc.SetMinimum(0)
         self.histoc.Draw("pE0")
         self.quadF.Draw("same")
+        self.histofid.SetLineColor(ROOT.kBlack)
+        self.histofid.SetLineWidth(3)
+        self.histofid.Draw("same")
+
         CMS_lumi.writeExtraText = True
         CMS_lumi.lumi_13TeV = self.lumi
         CMS_lumi.extraText  = "Simulation"
@@ -124,7 +129,7 @@ class coeffs(object):
         theL.AddEntry(self.histoc, "Generated", "L")
         theL.AddEntry(self.quadF, "Fit", "L")
         theL.AddEntry(0, "P-value = %1.3f"%(self.prob), "")
-
+        theL.AddEntry(self.histoc, "Fiducial","L")
         self.f0.SetParameter(0,self.fitTot*self.coefFit[0])
         self.f0.SetLineStyle(4)
         self.f0.SetLineColor(ROOT.kBlue)
