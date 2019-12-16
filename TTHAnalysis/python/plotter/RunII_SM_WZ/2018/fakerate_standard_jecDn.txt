@@ -1,6 +1,0 @@
-weight: 1.0
-
-change: MET_pt\b: MET_pt_jecDown
-change: MET_pt_nom\b: MET_pt_jecDown
-change: MET_phi\b: MET_phi_jecDown
-
