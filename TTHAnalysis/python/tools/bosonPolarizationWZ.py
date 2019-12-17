@@ -99,14 +99,14 @@ class bosonPolarizationWZ:
         self.pl3.SetPtEtaPhiM(getattr(event, "LepW_pt"+self.lSyst) , getattr(event, "LepW_eta"+self.lSyst) ,getattr(event, "LepW_phi"+self.lSyst) , getattr(event, "LepW_mass") )
 
         if self.lSyst == "" and self.jSyst=="":
-            self.met.SetPtEtaPhiM(getattr(event, "MET_pt_nom"+self.lSyst)  , 0  ,getattr(event, "MET_phi_nom" +self.lSyst)                          , 0                           )
-            self.metUp.SetPtEtaPhiM(getattr(event, "MET_pt_nom" + self.lSyst)  , 0  ,getattr(event, "MET_phi_nom" +self.lSyst)                          , 0                           )
-            self.metDn.SetPtEtaPhiM(getattr(event, "MET_pt_nom" + self.lSyst)  , 0  ,getattr(event, "MET_phi_nom" +self.lSyst)                          , 0                           )
+            self.met.SetPtEtaPhiM(getattr(event, self.metbranch +"_pt_nom"+self.lSyst)  , 0  ,getattr(event, self.metbranch +"_phi_nom" +self.lSyst)                          , 0                           )
+            self.metUp.SetPtEtaPhiM(getattr(event, self.metbranch +"_pt_nom" + self.lSyst)  , 0  ,getattr(event, self.metbranch +"_phi_nom" +self.lSyst)                          , 0                           )
+            self.metDn.SetPtEtaPhiM(getattr(event, self.metbranch +"_pt_nom" + self.lSyst)  , 0  ,getattr(event, self.metbranch +"_phi_nom" +self.lSyst)                          , 0                           )
 
         elif self.jSyst == "":
-            self.met.SetPtEtaPhiM(getattr(event, "MET_pt" + self.lSyst)  , 0  ,getattr(event, "MET_phi" +self.lSyst)                          , 0                           )
-            self.metUp.SetPtEtaPhiM(getattr(event, "MET_pt" + self.lSyst)  , 0  ,getattr(event, "MET_phi" +self.lSyst)                          , 0                           )
-            self.metDn.SetPtEtaPhiM(getattr(event, "MET_pt" + self.lSyst)  , 0  ,getattr(event, "MET_phi" +self.lSyst)                          , 0                           )
+            self.met.SetPtEtaPhiM(getattr(event, self.metbranch +"_pt" + self.lSyst)  , 0  ,getattr(event, self.metbranch +"_phi" +self.lSyst)                          , 0                           )
+            self.metUp.SetPtEtaPhiM(getattr(event, self.metbranch +"_pt" + self.lSyst)  , 0  ,getattr(event, self.metbranch +"_phi" +self.lSyst)                          , 0                           )
+            self.metDn.SetPtEtaPhiM(getattr(event, self.metbranch +"_pt" + self.lSyst)  , 0  ,getattr(event, self.metbranch +"_phi" +self.lSyst)                          , 0                           )
 
         else:
             self.met.SetPtEtaPhiM(getattr(event, self.metbranch + "_pt" + self.lSyst)  , 0  ,getattr(event, self.metbranch + "_phi" +self.lSyst)                          , 0                           )
