@@ -1,0 +1,20 @@
+lep_pt          : LepGood_correctedpt[iT_Mini[0]]      : 15,25,150   ; YTitle="Events", XTitle="p_{T\,cone}(lep)"   , LegendCutoff=1e-4, MoreY=2.0
+lep_eta          : LepGood_correctedeta[iT_Mini[0]]      : 10,-2.4,2.4   ; YTitle="Events", XTitle="#eta(lep)"   , LegendCutoff=1e-4, MoreY=2.0
+lep_phi          : LepGood_correctedphi[iT_Mini[0]]      : 10,-3.1415,3.1415   ; YTitle="Events", XTitle="#phi(lep)"   , LegendCutoff=1e-4, MoreY=2.0
+
+pho_pt           : PhotonSel_Mini_pt      : 20,0,400   ; YTitle="Events", XTitle="p_{T}(#gamma)"   , LegendCutoff=1e-4, MoreY=2.0
+pho_eta          : PhotonSel_Mini_eta     : 10,-2.4,2.4   ; YTitle="Events", XTitle="#eta(#gamma)"   , LegendCutoff=1e-4, MoreY=2.0
+pho_phi          : PhotonSel_Mini_phi     : 10,-3.1415,3.1415   ; YTitle="Events", XTitle="#phi(#gamma)"   , LegendCutoff=1e-4, MoreY=2.0
+
+detalg : abs(LepGood_correctedeta[iT_Mini[0]] - PhotonSel_Mini_eta) : 20,0,5; XTitle="#Delta#eta(l#gamma)", MoreY=2.0
+
+dphilg : deltaPhi(LepGood_correctedphi[iT_Mini[0]], PhotonSel_Mini_phi) : 20,-3.1415,3.1415; XTitle="#Delta#phi(l#gamma)", MoreY=2.0
+
+dRlg   : deltaR(LepGood_correctedeta[iT_Mini[0]], LepGood_correctedphi[iT_Mini[0]], PhotonSel_Mini_eta, PhotonSel_Mini_phi) ; 20, 0,4; XTitle="#Delta R(l#gamma)", MoreY=2.0
+
+
+mtW  : mt_2(LepGood_correctedpt[iT_Mini[0]],LepGood_correctedphi[iT_Mini[0]], MET_pt,  MET_phi) : 20,0,200; XTitle="m_{T}^{W}", MoreY=2.0
+met  : MET_pt  : 20,50,450 ; XTitle="p_{T}^{miss} [GeV]", MoreY=2.0
+
+nJet : nJet25_Mini : 10,-0.5,9.5 ; XTitle="N_{jet} (p_{T} > 25 GeV)", MoreY=2.0
+nBJet: nBJetTight25_Mini : 5,-0.5,4.5 ; XTitle="N_{bjet} (p_{T} > 25 GeV\, DCSV T)", MoreY=2.0 

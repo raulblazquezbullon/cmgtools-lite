@@ -1,5 +1,0 @@
-Triggers_ee\b : Alt$(HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ,0) || Alt$(HLT_Ele32_WPTight_Gsf,0); AlsoData
-Triggers_mm\b : (run<280919 && (Alt$(HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL,0) || Alt$(HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL,0) || Alt$(HLT_IsoMu24,0))) || (run>=280919 && (Alt$(HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ,0) || Alt$(HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ,0) || Alt$(HLT_IsoMu24,0))) ; AlsoData
-Triggers_em\b : (run<280919 && (Alt$(HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL,0) || Alt$(HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL,0))) || (run>=280919 && (Alt$(HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ,0) || Alt$(HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ,0))) ; AlsoData
-Triggers_lt\b : Alt$(HLT_Ele32_WPTight_Gsf,0) || Alt$(HLT_IsoMu24,0) || Alt$(HLT_IsoMu19_eta2p1_LooseIsoPFTau20,0) || (run<277772 && (Alt$(HLT_Ele32_eta2p1_WPLoose_Gsf_LooseIsoPFTau20_SingleL1,0))) || (run>=277772 && (Alt$(HLT_Ele24_eta2p1_WPLoose_Gsf_LooseIsoPFTau30,0))) ; AlsoData
-

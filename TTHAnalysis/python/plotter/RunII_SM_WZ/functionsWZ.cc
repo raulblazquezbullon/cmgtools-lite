@@ -101,24 +101,97 @@ Int_t getWZRegion(Float_t met_pt, Float_t mll_3l, Float_t m3L, Int_t nBJetMedium
 
 
 
-Float_t WZ_weight_W(Float_t c, Int_t mode)
+Float_t WZ_weight_W16(Float_t c, Int_t mode)
 {
-    Float_t fLSM = 0.54863; Float_t fRSM = 0.29125; Float_t fOSM = 0.16012;
+    Float_t fLSM = 0.482; Float_t fRSM = 0.272; Float_t fOSM = 0.246;
     Float_t den = 3./8. *( (1 -c)*(1-c)*fLSM + (1+c)*(1+c)*fRSM + 2*(1-c*c)*fOSM);
     if (mode ==  0) return 3./4.*(1-c*c)*fOSM/den;
     if (mode == -1) return 3./8.*(1-c)*(1-c)*fLSM/den;
     if (mode ==  1) return 3./8.*(1+c)*(1+c)*fRSM/den;
 }
 
-Float_t WZ_weight_Z(Float_t c, Int_t mode)
+Float_t WZ_weight_Wp16(Float_t c, Int_t mode)
 {
-    Float_t fLSM = 0.55498; Float_t fRSM = 0.28587; Float_t fOSM = 0.16012;
+    Float_t fLSM = 0.538; Float_t fRSM = 0.233; Float_t fOSM = 0.229;
+    Float_t den = 3./8. *( (1 -c)*(1-c)*fLSM + (1+c)*(1+c)*fRSM + 2*(1-c*c)*fOSM);
+    if (mode ==  0) return 3./4.*(1-c*c)*fOSM/den;
+    if (mode == -1) return 3./8.*(1-c)*(1-c)*fLSM/den;
+    if (mode ==  1) return 3./8.*(1+c)*(1+c)*fRSM/den;
+}
+
+
+Float_t WZ_weight_Wm16(Float_t c, Int_t mode)
+{
+    Float_t fLSM = 0.392; Float_t fRSM = 0.331; Float_t fOSM = 0.277;
+    Float_t den = 3./8. *( (1 -c)*(1-c)*fLSM + (1+c)*(1+c)*fRSM + 2*(1-c*c)*fOSM);
+    if (mode ==  0) return 3./4.*(1-c*c)*fOSM/den;
+    if (mode == -1) return 3./8.*(1-c)*(1-c)*fLSM/den;
+    if (mode ==  1) return 3./8.*(1+c)*(1+c)*fRSM/den;
+}
+
+
+Float_t WZ_weight_Z16(Float_t c, Int_t mode)
+{
+    Float_t fLSM = 0.314; Float_t fRSM = 0.426; Float_t fOSM = 0.260;
     Float_t alpha = 0.213;
     Float_t den = 3./8. *( (1 -2*c*alpha + c*c)*fLSM + (1 +2*c*alpha + c*c)*fRSM + 2*(1-c*c)*fOSM);
     if (mode ==  0) return 3./4.*(1-c*c)*fOSM/den;
     if (mode == -1) return 3./8.*(1 -2*c*alpha + c*c)*fLSM/den;
     if (mode ==  1) return 3./8.*(1 +2*c*alpha + c*c)*fRSM/den;
 }
+
+Float_t WZ_weight_Zm16(Float_t c, Int_t mode)
+{
+    Float_t fLSM = 0.288; Float_t fRSM = 0.466; Float_t fOSM = 0.246;
+    Float_t alpha = 0.213;
+    Float_t den = 3./8. *( (1 -2*c*alpha + c*c)*fLSM + (1 +2*c*alpha + c*c)*fRSM + 2*(1-c*c)*fOSM);
+    if (mode ==  0) return 3./4.*(1-c*c)*fOSM/den;
+    if (mode == -1) return 3./8.*(1 -2*c*alpha + c*c)*fLSM/den;
+    if (mode ==  1) return 3./8.*(1 +2*c*alpha + c*c)*fRSM/den;
+}
+
+Float_t WZ_weight_Zp16(Float_t c, Int_t mode)
+{
+    Float_t fLSM = 0.331; Float_t fRSM = 0.401; Float_t fOSM = 0.269;
+    Float_t alpha = 0.213;
+    Float_t den = 3./8. *( (1 -2*c*alpha + c*c)*fLSM + (1 +2*c*alpha + c*c)*fRSM + 2*(1-c*c)*fOSM);
+    if (mode ==  0) return 3./4.*(1-c*c)*fOSM/den;
+    if (mode == -1) return 3./8.*(1 -2*c*alpha + c*c)*fLSM/den;
+    if (mode ==  1) return 3./8.*(1 +2*c*alpha + c*c)*fRSM/den;
+}
+
+
+Float_t WZ_weight_Z(Float_t c, Int_t mode)
+{
+    Float_t fLSM = 0.314; Float_t fRSM = 0.424; Float_t fOSM = 0.262;
+    Float_t alpha = 0.213;
+    Float_t den = 3./8. *( (1 -2*c*alpha + c*c)*fLSM + (1 +2*c*alpha + c*c)*fRSM + 2*(1-c*c)*fOSM);
+    if (mode ==  0) return 3./4.*(1-c*c)*fOSM/den;
+    if (mode == -1) return 3./8.*(1 -2*c*alpha + c*c)*fLSM/den;
+    if (mode ==  1) return 3./8.*(1 +2*c*alpha + c*c)*fRSM/den;
+}
+
+Float_t WZ_weight_ZP(Float_t c, Int_t mode)
+{
+    Float_t fLSM = 0.335; Float_t fRSM = 0.389; Float_t fOSM = 0.275;
+    Float_t alpha = 0.213;
+    Float_t den = 3./8. *( (1 -2*c*alpha + c*c)*fLSM + (1 +2*c*alpha + c*c)*fRSM + 2*(1-c*c)*fOSM);
+    if (mode ==  0) return 3./4.*(1-c*c)*fOSM/den;
+    if (mode == -1) return 3./8.*(1 -2*c*alpha + c*c)*fLSM/den;
+    if (mode ==  1) return 3./8.*(1 +2*c*alpha + c*c)*fRSM/den;
+}
+
+
+Float_t WZ_weight_ZM(Float_t c, Int_t mode)
+{
+    Float_t fLSM = 0.278; Float_t fRSM = 0.481; Float_t fOSM = 0.242;
+    Float_t alpha = 0.213;
+    Float_t den = 3./8. *( (1 -2*c*alpha + c*c)*fLSM + (1 +2*c*alpha + c*c)*fRSM + 2*(1-c*c)*fOSM);
+    if (mode ==  0) return 3./4.*(1-c*c)*fOSM/den;
+    if (mode == -1) return 3./8.*(1 -2*c*alpha + c*c)*fLSM/den;
+    if (mode ==  1) return 3./8.*(1 +2*c*alpha + c*c)*fRSM/den;
+}
+
 
 float unrealnessW(Float_t ptl, Float_t etal, Float_t phil, Float_t ptnu, Float_t phinu){
    Float_t muVal = (80.385)*(80.385)/2. + ptl*ptnu*TMath::Cos(phil-phinu);

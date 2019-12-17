@@ -1,6 +1,7 @@
 from CMGTools.TTHAnalysis.treeReAnalyzer import *
 from PhysicsTools.HeppyCore.utils.deltar import matchObjectCollection3
 import ROOT
+from copy import copy
 
 class MyVarProxy:
     def __init__(self,lep):
@@ -38,7 +39,9 @@ class LeptonJetReCleaner:
         self.bJetPt = bJetPt
         self.strJetPt = str(int(jetPt))
         self.strBJetPt = str(int(bJetPt))
-        self.systsJEC = {0:"", 1:"_jecUp", -1:"_jecDown"}
+        self.systsJEC = {0:"", 1:"_jesTotalCorrUp", -1:"_jesTotalCorrDown",2:"_jesTotalUnCorrUp", -2:"_jesTotalUnCorrDown"}
+        self.systsLepScale = {0:"", 1:"_elScaleUp", 2:"_elScaleDown", 3:"_muScaleUp",4:"_muScaleDown"}
+
         self.debugprinted = False
         self.storeJetVariables = storeJetVariables
         self.year = year
@@ -46,25 +49,26 @@ class LeptonJetReCleaner:
 
     def listBranches(self):
         label = self.label
+        biglist = []
+        for key in self.systsLepScale: 
+          biglist.extend([
+            ("nLepGood"+self.systsLepScale[key],"I"), ("LepGood_conePt"+self.systsLepScale[key],"F",20,"nLepGood"+self.systsLepScale[key]),
+            ("nLepLoose"+self.systsLepScale[key]+label, "I"), ("iL"+self.systsLepScale[key]+label,"I",20), # passing loose
+            ("nLepLooseVeto"+self.systsLepScale[key]+label, "I"), ("iLV"+self.systsLepScale[key]+label,"I",20), # passing loose + veto
+            ("nLepCleaning"+self.systsLepScale[key]+label, "I"), ("iC"+self.systsLepScale[key]+label,"I",20), # passing cleaning
+            ("nLepCleaningVeto"+self.systsLepScale[key]+label, "I"), ("iCV"+self.systsLepScale[key]+label,"I",20), # passing cleaning + veto
+            ("nLepFO"+self.systsLepScale[key]+label, "I"), ("iF"+self.systsLepScale[key]+label,"I",20), # passing FO, sorted by conept
+            ("nLepFOVeto"+self.systsLepScale[key]+label, "I"), ("iFV"+self.systsLepScale[key]+label,"I",20), # passing FO + veto, sorted by conept
+            ("nLepTight"+self.systsLepScale[key]+label, "I"), ("iT"+self.systsLepScale[key]+label,"I",20), # passing tight, sorted by conept
+            ("nLepTightVeto"+self.systsLepScale[key]+label, "I"), ("iTV"+self.systsLepScale[key]+label,"I",20), # passing tight + veto, sorted by conept
+            ("LepGood_isLoose"+self.systsLepScale[key]+label,"I",20,"nLepGood"+self.systsLepScale[key]),("LepGood_isLooseVeto"+self.systsLepScale[key]+label,"I",20,"nLepGood"+self.systsLepScale[key]),
+            ("LepGood_isCleaning"+self.systsLepScale[key]+label,"I",20,"nLepGood"+self.systsLepScale[key]),("LepGood_isCleaningVeto"+self.systsLepScale[key]+label,"I",20,"nLepGood"+self.systsLepScale[key]),
+            ("LepGood_isFO"+self.systsLepScale[key]+label,"I",20,"nLepGood"+self.systsLepScale[key]),("LepGood_isFOVeto"+self.systsLepScale[key]+label,"I",20,"nLepGood"+self.systsLepScale[key]),
+            ("LepGood_isTight"+self.systsLepScale[key]+label,"I",20,"nLepGood"+self.systsLepScale[key]),("LepGood_isTightVeto"+self.systsLepScale[key]+label,"I",20,"nLepGood"+self.systsLepScale[key]),
+            ])
 
-        biglist = [
-            ("nLepGood","I"), ("LepGood_conePt","F",20,"nLepGood"),
-            ("nLepLoose"+label, "I"), ("iL"+label,"I",20), # passing loose
-            ("nLepLooseVeto"+label, "I"), ("iLV"+label,"I",20), # passing loose + veto
-            ("nLepCleaning"+label, "I"), ("iC"+label,"I",20), # passing cleaning
-            ("nLepCleaningVeto"+label, "I"), ("iCV"+label,"I",20), # passing cleaning + veto
-            ("nLepFO"+label, "I"), ("iF"+label,"I",20), # passing FO, sorted by conept
-            ("nLepFOVeto"+label, "I"), ("iFV"+label,"I",20), # passing FO + veto, sorted by conept
-            ("nLepTight"+label, "I"), ("iT"+label,"I",20), # passing tight, sorted by conept
-            ("nLepTightVeto"+label, "I"), ("iTV"+label,"I",20), # passing tight + veto, sorted by conept
-            ("LepGood_isLoose"+label,"I",20,"nLepGood"),("LepGood_isLooseVeto"+label,"I",20,"nLepGood"),
-            ("LepGood_isCleaning"+label,"I",20,"nLepGood"),("LepGood_isCleaningVeto"+label,"I",20,"nLepGood"),
-            ("LepGood_isFO"+label,"I",20,"nLepGood"),("LepGood_isFOVeto"+label,"I",20,"nLepGood"),
-            ("LepGood_isTight"+label,"I",20,"nLepGood"),("LepGood_isTightVeto"+label,"I",20,"nLepGood"),
-            ]
-
-        biglist.extend([
-                ("mZ1"+label,"F"), ("minMllAFAS"+label,"F"), ("minMllAFOS"+label,"F"), ("minMllAFSS"+label,"F"), ("minMllSFOS"+label,"F")
+          biglist.extend([
+                ("mZ1"+self.systsLepScale[key]+label,"F"), ("minMllAFAS"+self.systsLepScale[key]+label,"F"), ("minMllAFOS"+self.systsLepScale[key]+label,"F"), ("minMllAFSS"+self.systsLepScale[key]+label,"F"), ("minMllSFOS"+self.systsLepScale[key]+label,"F")
                 ])
 
         biglist.extend([
@@ -94,27 +98,27 @@ class LeptonJetReCleaner:
 
         return biglist
 
-    def fillCollWithVeto(self,ret,refcollection,leps,lab,labext,selection,lepsforveto,doVetoZ,doVetoLM,sortby,ht=-1,pad_zeros_up_to=20):
-        ret['i'+lab] = [];
-        ret['i'+lab+'V'] = [];
+    def fillCollWithVeto(self,ret,refcollection,leps,lab,labext,selection,lepsforveto,doVetoZ,doVetoLM,sortby,ht=-1,pad_zeros_up_to=20,extraTag=""):
+        ret['i'+lab+extraTag] = [];
+        ret['i'+lab+'V'+extraTag] = [];
         for lep in leps:
             if (selection(lep) if ht<0 else selection(lep,self.jetColl)):
-                ret['i'+lab].append(refcollection.index(lep))
-        ret['i'+lab] = self.sortIndexListByFunction(ret['i'+lab],refcollection,sortby)
-        ret['nLep'+labext] = len(ret['i'+lab])
-        ret['LepGood_is'+labext] = [(1 if i in ret['i'+lab] else 0) for i in xrange(len(refcollection))]
-        lepspass = [ refcollection[il] for il in ret['i'+lab]  ]
+                ret['i'+lab+extraTag].append(refcollection.index(lep))
+        ret['i'+lab+extraTag] = self.sortIndexListByFunction(ret['i'+lab+extraTag],refcollection,sortby)
+        ret['nLep'+labext+extraTag] = len(ret['i'+lab+extraTag])
+        ret['LepGood_is'+labext+extraTag] = [(1 if i in ret['i'+lab+extraTag] else 0) for i in xrange(len(refcollection))]
+        lepspass = [ refcollection[il] for il in ret['i'+lab+extraTag]  ]
         if lepsforveto==None: lepsforveto = lepspass # if lepsforveto==None, veto selected leptons among themselves
         for lep in lepspass:
             if (not doVetoZ  or passMllTLVeto(lep, lepsforveto, 76, 106, True)) and \
                (not doVetoLM or passMllTLVeto(lep, lepsforveto,  0,  12, True)):
-                ret['i'+lab+'V'].append(refcollection.index(lep))
-        ret['i'+lab+'V'] = self.sortIndexListByFunction(ret['i'+lab+'V'],refcollection,sortby)
-        ret['nLep'+labext+'Veto'] = len(ret['i'+lab+'V'])
-        ret['LepGood_is'+labext+'Veto'] = [(1 if i in ret['i'+lab+'V'] else 0) for i in xrange(len(refcollection))]
-        lepspassveto = [ refcollection[il] for il in ret['i'+lab+'V']  ]
-        ret['i'+lab] = ret['i'+lab] + [0]*(pad_zeros_up_to-len(ret['i'+lab]))
-        ret['i'+lab+'V'] = ret['i'+lab+'V'] + [0]*(pad_zeros_up_to-len(ret['i'+lab+'V']))
+                ret['i'+lab+'V'+extraTag].append(refcollection.index(lep))
+        ret['i'+lab+'V'+extraTag] = self.sortIndexListByFunction(ret['i'+lab+'V'+extraTag],refcollection,sortby)
+        ret['nLep'+labext+'Veto'+extraTag] = len(ret['i'+lab+'V'+extraTag])
+        ret['LepGood_is'+labext+'Veto'+extraTag] = [(1 if i in ret['i'+lab+'V'+extraTag] else 0) for i in xrange(len(refcollection))]
+        lepspassveto = [ refcollection[il] for il in ret['i'+lab+'V'+extraTag]  ]
+        ret['i'+lab+extraTag] = ret['i'+lab+extraTag] + [0]*(pad_zeros_up_to-len(ret['i'+lab+extraTag]))
+        ret['i'+lab+'V'+extraTag] = ret['i'+lab+'V'+extraTag] + [0]*(pad_zeros_up_to-len(ret['i'+lab+'V'+extraTag]))
         return (ret,lepspass,lepspassveto)
 
     def sortIndexListByFunction(self,indexlist,parentcollection,func):
@@ -339,11 +343,38 @@ class LeptonJetReCleaner:
     def __call__(self, event):
         self.ev = event
         fullret = {}
-        leps = [l for l in Collection(event,"LepGood","nLepGood")]
-        for l in leps:
+        leps = {}
+        leps[0] = [l for l in Collection(event,"LepGood","nLepGood")]
+        for l in leps[0]:
             if hasattr(l, "correctedpt"): l.pt = l.correctedpt
+        for key in [1,2,3,4]:
+            leps[key] = []
+            for l in leps[0]:
+                leps[key].append(copy(l))
+        # Now set the wonderful lepton energy scale variations
+        # 1==ElScaleUp
+        for l in leps[1]:
+          if abs(l.pdgId) == 11:
+            l.pt = l.correctedptUp 
+
+        # 2==ElScaleDown
+        for l in leps[2]:
+          if abs(l.pdgId) == 11:
+            l.pt = l.correctedptDown  
+
+        # 3==MuScaleUp
+        for l in leps[3]:
+          if abs(l.pdgId) == 13:
+            l.pt = l.correctedptUp
+
+        # 4==MuScaleDown
+        for l in leps[4]:
+          if abs(l.pdgId) == 13:
+            l.pt = l.correctedptDown
+
         if not self.coneptdef: raise RuntimeError, 'Choose the definition to be used for cone pt'
-        for lep in leps: lep.conept = self.coneptdef(lep)
+        for key in leps:
+          for lep in leps[key]: lep.conept = self.coneptdef(lep)
         tausc = [t for t in Collection(event,"TauGood","nTauGood")]
         for t in tausc:
             if hasattr(t, "correctedpt"): t.pt = t.correctedpt
@@ -354,7 +385,7 @@ class LeptonJetReCleaner:
         jetsc[0] = [j for j in Collection(event,"Jet"    ,"nJet"    )]
 
         jetsd[0] = [] 
-        for var in [-1,1]:
+        for var in [-1,1,-2,2]:
             if hasattr(event,"nJet"+self.systsJEC[var]):
                 jetsc[var] = [j for j in Collection(event,"Jet"+self.systsJEC[var],"nJet"+self.systsJEC[var])]
             else:
@@ -367,60 +398,54 @@ class LeptonJetReCleaner:
         for jet in jetsc:
             if hasattr(jet, "pt_nom"): jet.pt = getattr(jet, "pt_nom")
         self.jetColl = jetsc
+        lepsld = {}; lepslvd = {}
+        lepscd = {}; lepscvd = {}
+        for key in self.systsLepScale:
         
-        #print "Jets def"
-        ## below: old way of dealing with JEC
-        #jetsc={}
-        #jetsd={}
-        #for var in self.systsJEC:
-        #    _var = var
-        #    if not hasattr(event,"nJet"+self.systsJEC[var]):
-        #        _var = 0
-        #        if not self.debugprinted:
-        #            print '-'*15
-        #            print 'WARNING: jet energy scale variation %s not found, will set it to central value'%self.systsJEC[var]
-        #            print '-'*15
-        #    jetsc[var] = [j for j in Collection(event,"Jet"+self.systsJEC[_var],"nJet"+self.systsJEC[_var])]
-        #    jetsd[var] = [j for j in Collection(event,"DiscJet"+self.systsJEC[_var],"nDiscJet"+self.systsJEC[_var])
-        self.debugprinted = True
-        ret = {}; retwlabel = {}; jetret = {}; discjetret = {};
-        lepsl = []; lepslv = [];
-        ret, lepsl, lepslv = self.fillCollWithVeto(ret,leps,leps,'L','Loose',self.looseLeptonSel, lepsforveto=None, doVetoZ=self.doVetoZ, doVetoLM=self.doVetoLMf, sortby=None, ht=-1)
-        lepsc = []; lepscv = [];
-        ret, lepsc, lepscv = self.fillCollWithVeto(ret,leps,lepsl,'C','Cleaning',self.cleaningLeptonSel, lepsforveto=lepsl, doVetoZ=self.doVetoZ, doVetoLM=self.doVetoLMf, sortby=None, ht = 1)
-        #print "Light leps def"
-        ret['mZ1'] = bestZ1TL(lepsl, lepsl)
-        ret['minMllAFAS'] = minMllTL(lepsl, lepsl) 
-        ret['minMllAFOS'] = minMllTL(lepsl, lepsl, paircut = lambda l1,l2 : l1.charge !=  l2.charge) 
-        ret['minMllAFSS'] = minMllTL(lepsl, lepsl, paircut = lambda l1,l2 : l1.charge ==  l2.charge) 
-        ret['minMllSFOS'] = minMllTL(lepsl, lepsl, paircut = lambda l1,l2 : l1.pdgId  == -l2.pdgId) 
-        #print "All the masses"
-        loosetaus=[]; rettlabel = {}; tauret = {}; 
-        loosetaus = self.recleanTaus(tausc, tausd, lepsl if self.cleanTausWithLoose else lepsc, self.label, rettlabel, tauret, event)
-        #print "Taus def"
-        cleanjets={}
-        for var in self.systsJEC:
-            cleanjets[var] = self.recleanJets(jetsc[var],jetsd[var],lepsc+loosetaus if self.cleanJetsWithTaus else lepsc,self.label+self.systsJEC[var],retwlabel,jetret,discjetret)
-        #print "Jets def"
-        # calculate FOs and tight leptons using the cleaned HT, sorted by conept
-        lepsf = []; lepsfv = [];
-        ret, lepsf, lepsfv = self.fillCollWithVeto(ret,leps,lepsl,'F','FO',self.FOLeptonSel,lepsforveto=lepsl, ht=1, sortby = lambda x: x.conept, doVetoZ=self.doVetoZ, doVetoLM=self.doVetoLMf)
-        lepst = []; lepstv = [];
-        ret, lepst, lepstv = self.fillCollWithVeto(ret,leps,lepsl,'T','Tight',self.tightLeptonSel,lepsforveto=lepsl, ht=1, sortby = lambda x: x.conept, doVetoZ=self.doVetoZ, doVetoLM=self.doVetoLMt)
+          self.debugprinted = True
+          ret = {}; retwlabel = {}; jetret = {}; discjetret = {};
+          lepsl = []; lepslv = [];
+          lepsld[key] = lepsl; lepslvd[key] = lepslv
+          ret, lepsl, lepslv = self.fillCollWithVeto(ret,leps[key],leps[key],'L','Loose',self.looseLeptonSel, lepsforveto=None, doVetoZ=self.doVetoZ, doVetoLM=self.doVetoLMf, sortby=None, ht=-1, extraTag = self.systsLepScale[key])
+          lepsc = []; lepscv = [];
+          lepscd[key] = lepsc; lepscvd[key] = lepscv
+          ret, lepsc, lepscv = self.fillCollWithVeto(ret,leps[key],lepsl,'C','Cleaning',self.cleaningLeptonSel, lepsforveto=lepsl, doVetoZ=self.doVetoZ, doVetoLM=self.doVetoLMf, sortby=None, ht = 1, extraTag = self.systsLepScale[key])
+          #print "Light leps def"
+          ret['mZ1'+self.systsLepScale[key]] = bestZ1TL(lepsl, lepsl)
+          #print ret['mZ1'+self.systsLepScale[key]], 'mZ1'+self.systsLepScale[key]
+          ret['minMllAFAS'+self.systsLepScale[key]] = minMllTL(lepsl, lepsl) 
+          ret['minMllAFOS'+self.systsLepScale[key]] = minMllTL(lepsl, lepsl, paircut = lambda l1,l2 : l1.charge !=  l2.charge) 
+          ret['minMllAFSS'+self.systsLepScale[key]] = minMllTL(lepsl, lepsl, paircut = lambda l1,l2 : l1.charge ==  l2.charge) 
+          ret['minMllSFOS'+self.systsLepScale[key]] = minMllTL(lepsl, lepsl, paircut = lambda l1,l2 : l1.pdgId  == -l2.pdgId) 
+          #print "All the masses"
+          if key == 0:
+            loosetaus=[]; rettlabel = {}; tauret = {}; 
+            loosetaus = self.recleanTaus(tausc, tausd, lepsl if self.cleanTausWithLoose else lepsc, self.label, rettlabel, tauret, event)
+          #print "Taus def"
+          if key == 0:
+            cleanjets={}
+            for var in self.systsJEC:
+              cleanjets[var] = self.recleanJets(jetsc[var],jetsd[var],lepsc+loosetaus if self.cleanJetsWithTaus else lepsc,self.label+self.systsJEC[var],retwlabel,jetret,discjetret)
+            #print "Jets def"
+            # calculate FOs and tight leptons using the cleaned HT, sorted by conept
+          lepsf = []; lepsfv = [];
+          ret, lepsf, lepsfv = self.fillCollWithVeto(ret,leps[key],lepsl,'F','FO',self.FOLeptonSel,lepsforveto=lepsl, ht=1, sortby = lambda x: x.conept, doVetoZ=self.doVetoZ, doVetoLM=self.doVetoLMf, extraTag = self.systsLepScale[key])
+          lepst = []; lepstv = [];
+          ret, lepst, lepstv = self.fillCollWithVeto(ret,leps[key],lepsl,'T','Tight',self.tightLeptonSel,lepsforveto=lepsl, ht=1, sortby = lambda x: x.conept, doVetoZ=self.doVetoZ, doVetoLM=self.doVetoLMt, extraTag = self.systsLepScale[key])
 
-        #print "Tight leps def"
-        ### attach labels and return
-        fullret["nLepGood"]=len(leps)
-        fullret["LepGood_conePt"] = [lep.conept for lep in leps]
-        for k,v in ret.iteritems(): 
+          #print "Tight leps def"
+          ### attach labels and return
+          fullret["nLepGood"+self.systsLepScale[key]]=len(leps[key])
+          fullret["LepGood_conePt"+self.systsLepScale[key]] = [lep.conept for lep in leps[key]]
+          for k,v in ret.iteritems(): 
             fullret[k+self.label] = v
-        fullret.update(retwlabel)
-        fullret.update(rettlabel)
-        for k,v in tauret.iteritems(): 
-            fullret["TauSel%s_%s" % (self.label,k)] = v
-        for k,v in jetret.iteritems(): 
-            fullret["JetSel%s_%s" % (self.label,k)] = v
-        #print "All done"
+          if key == 0:
+            fullret.update(retwlabel)
+            fullret.update(rettlabel)
+            for k,v in tauret.iteritems(): 
+              fullret["TauSel%s_%s" % (self.label,k)] = v
+            for k,v in jetret.iteritems(): 
+              fullret["JetSel%s_%s" % (self.label,k)] = v
         return fullret
 
 

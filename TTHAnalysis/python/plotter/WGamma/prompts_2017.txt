@@ -1,0 +1,53 @@
+#VV : HZZ : 0.01212 ; FillColor=ROOT.kOrange, Label="VV", NormSystematic=0.10
+VV : GluGluToContinToZZTo2e2mu : 0.00319 ; FillColor=ROOT.kOrange, Label="VV", NormSystematic=0.10
+VV : GluGluToContinToZZTo2e2nu : 0.00319 ; FillColor=ROOT.kOrange, Label="VV", NormSystematic=0.10
+#VV : GluGluToContinToZZTo2e2tau : 0.00319 ; FillColor=ROOT.kOrange, Label="VV", NormSystematic=0.10
+VV : GluGluToContinToZZTo2mu2nu : 0.00319 ; FillColor=ROOT.kOrange, Label="VV", NormSystematic=0.10
+VV : GluGluToContinToZZTo2mu2tau : 0.00319 ; FillColor=ROOT.kOrange, Label="VV", NormSystematic=0.10
+VV : GluGluToContinToZZTo4e : 0.00159 ; FillColor=ROOT.kOrange, Label="VV", NormSystematic=0.10
+VV : GluGluToContinToZZTo4mu : 0.00159 ; FillColor=ROOT.kOrange, Label="VV", NormSystematic=0.10
+#VV : GluGluToContinToZZTo4tau : 0.00159 ; FillColor=ROOT.kOrange, Label="VV", NormSystematic=0.10
+
+ST : Tbar_tch : 80.95 ; FillColor=ROOT.kViolet, Label="Single Top", NormSystematic=0.30
+ST : T_tch : 136.02 ; FillColor=ROOT.kViolet, Label="Single Top", NormSystematic=0.30
+ST : TbarW : 35.6 ; FillColor=ROOT.kViolet, Label="Single Top", NormSystematic=0.30
+ST : TW : 35.6 ; FillColor=ROOT.kViolet, Label="Single Top", NormSystematic=0.30
+
+TTX : TTGJets_part0 + TTGJets_part1 : 3.697 ; FillColor=ROOT.kWhite, Label="tt+X", NormSystematic=0.15
+
+TT : TTTo2L2Nu_part0 + TTTo2L2Nu_part1  : 831.76*((3*0.108)**2) ; FillColor=ROOT.kRed, Label="tt", NormSystematic=0.30
+TT : TTToSemiLeptonic : 2*831.76*(3*0.108)*(1-3*0.108) ; FillColor=ROOT.kRed, Label="tt", NormSystematic=0.30
+#TT : TTJets_SingleLeptFromTbar : 831.76*(3*0.108)*(1-3*0.108) ; FillColor=ROOT.kRed, Label="tt", NormSystematic=0.30
+
+
+TTX : TTWToLNu : 0.2043 ; FillColor=ROOT.kWhite, Label="tt+X", NormSystematic=0.15
+TTX : TTZToLLNuNu : 0.2529 ; FillColor=ROOT.kWhite, Label="tt+X", NormSystematic=0.15
+#TTX : TTZToQQ : 0.5297 ; FillColor=ROOT.kWhite, Label="tt+X", NormSystematic=0.15
+
+VV : VHToNonbb : 0.9561 ; FillColor=ROOT.kOrange, Label="VV", NormSystematic=0.25
+
+WG+ : WGToLNuG_part0 + WGToLNuG_part1 :  191.6 ; FillColor=ROOT.kCyan, Label="W+g", NormSystematic=0.20
+
+WJets : WJetsToLNu : 3* 20508.9 : PhoGood_genPartFlav == 0 && mt_2(LepGood_pt[iT_Mini[0]],LepGood_phi[iT_Mini[0]], MET_pt,  MET_phi)  < 110; FillColor=ROOT.kGreen, Label="W+jets", NormSystematic=0.30
+
+VV : WWTo2L2Nu : 10.481 ; FillColor=ROOT.kOrange, Label="VV", NormSystematic=0.10
+VV : WW_DPS : 1.921 ; FillColor=ROOT.kOrange, Label="VV", NormSystematic=0.10
+
+VVV : WWW : 0.2086 ; FillColor=ROOT.kRed+5, Label="VVV", NormSystematic=0.50
+VVV : WWZ : 0.1651 ; FillColor=ROOT.kRed+5, Label="VVV", NormSystematic=0.50
+VVV : WZG : 0.0412 ; FillColor=ROOT.kRed+5, Label="VVV", NormSystematic=0.50
+
+VV : WZTo2L2Q : 5.60 ; FillColor=ROOT.kOrange, Label="VV", NormSystematic=0.10
+#VV : WZTo3LNu_mll01 : 4.452 ; FillColor=ROOT.kOrange, Label="VV", NormSystematic=0.10
+
+VVV : WZZ : 0.05565 ; FillColor=ROOT.kRed+5, Label="VVV", NormSystematic=0.50
+
+ZG : ZGTo2LG_part0 + ZGTo2LG_part1 : 131.3 ; FillColor=ROOT.kGreen+4, Label="Z+g", NormSystematic=0.20
+VV : ZZTo2L2Nu : 0.564 ; FillColor=ROOT.kOrange, Label="VV", NormSystematic=0.10
+VV : ZZTo2L2Q : 3.28 ; FillColor=ROOT.kOrange, Label="VV", NormSystematic=0.10
+VV : ZZTo2Q2Nu : 4.04 ; FillColor=ROOT.kOrange, Label="VV", NormSystematic=0.10
+VV : ZZTo4L : 1.256 ; FillColor=ROOT.kOrange, Label="VV", NormSystematic=0.10
+VVV : ZZZ : 0.01398 ; FillColor=ROOT.kOrange, Label="VVV", NormSystematic=0.50
+
+TTX : tZq_ll : 0.0758 ; FillColor=ROOT.kWhite, Label="TTX", NormSystematic=0.35
+#TTX : TTHnonbb : 0.5085*(1-0.577) ; FillColor=ROOT.kWhite, Label="TTX", NormSystematic=0.15

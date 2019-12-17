@@ -56,6 +56,23 @@ class bosonPolarizationGEN:
         self.ret["ThetaZUp_HE_CM"] = (self.LorToZUp_CM*self.lepforZ).Theta()
         self.ret["ThetaZDn_HE_CM"] = (self.LorToZDn_CM*self.lepforZ).Theta() #In this case they are different
 
+        self.ret["ThetaWUp_CS"] = self.pWUp.Pz()/abs(self.pWUp.Pz())/(80.385*(80.385**2 + self.pWUp.Pt()**2)**0.5)*((self.pl3.E()+self.pl3.Pz())*(self.metUp.E()-self.metUp.Pz()) - (self.pl3.E()-self.pl3.Pz())*(self.metUp.E()+self.metUp.Pz()))
+        self.ret["ThetaWDn_CS"] = self.pWDn.Pz()/abs(self.pWDn.Pz())/(80.385*(80.385**2 + self.pWDn.Pt()**2)**0.5)*((self.pl3.E()+self.pl3.Pz())*(self.metDn.E()-self.metDn.Pz()) - (self.pl3.E()-self.pl3.Pz())*(self.metDn.E()+self.metDn.Pz()))
+        self.ret["ThetaZ_CS"] = self.pZ.Pz()/abs(self.pZ.Pz())/(80.385*(80.385**2 + self.pZ.Pt()**2)**0.5)*((self.pl1.E()+self.pl1.Pz())*(self.pl2.E()-self.pl2.Pz()) - (self.pl1.E()-self.pl1.Pz())*(self.pl2.E()+self.pl2.Pz()))*self.islZ1
+
+
+        """self.proton1 =  ROOT.TLorentzVector()
+        self.proton1.SetXYZM(0,0,6500,0.938)
+        self.proton2 =  ROOT.TLorentzVector()
+        self.proton2.SetXYZM(0,0,-6500,0.938)
+        pr1WDnfr = (self.LorToWDn*self.proton1).Vect()
+        pr2WDnfr = (self.LorToWDn*self.proton2).Vect()
+        zpaxis = (pr1WDnfr/pr1WDnfr.Mag() +  pr2WDnfr/pr2WDnfr.Mag())
+        zpaxis = zpaxis/zpaxis.Mag() 
+        xpaxis = (pr1WDnfr/pr1WDnfr.Mag() -  pr2WDnfr/pr2WDnfr.Mag())
+        xpaxis = xpaxis/xpaxis.Mag() """
+
+
         #print "________________________________________________________"
         #print " EVENT DONE "
         #print "________________________________________________________"
@@ -66,9 +83,10 @@ class bosonPolarizationGEN:
         self.pl2.SetPtEtaPhiM(getattr(event, "LepZ2_pt"), getattr(event, "LepZ2_eta"),getattr(event, "LepZ2_phi"), getattr(event, "LepZ2_mass"))
         if getattr(event, "LepZ1_pdgId") > 0:
             self.lepforZ = self.pl1
+            self.islZ1 = 1
         else:
             self.lepforZ = self.pl2
-
+            self.islZ1 = -1
         self.pl3.SetPtEtaPhiM(getattr(event, "LepW_pt") , getattr(event, "LepW_eta") ,getattr(event, "LepW_phi") , getattr(event, "LepW_mass") )
         self.metUp.SetPtEtaPhiM(getattr(event, "met_pt")  , getattr(event, "met_phi")  ,0                          , 0                           )
         self.metDn.SetPtEtaPhiM(getattr(event, "met_pt")  , getattr(event, "met_phi")  ,0                          , 0                           )
@@ -131,6 +149,9 @@ class bosonPolarizationGEN:
             ("ThetaWDn_HE"               , "F"),
             ("ThetaZUp_HE"               , "F"),
             ("ThetaZDn_HE"               , "F"),
+            ("ThetaWUp_CS"               , "F"),
+            ("ThetaWDn_CS"               , "F"),
+            ("ThetaZ_CS"                 , "F"),
             ("ThetaWUp_HE_CM"            , "F"),
             ("ThetaWDn_HE_CM"            , "F"),
             ("ThetaZUp_HE_CM"            , "F"),

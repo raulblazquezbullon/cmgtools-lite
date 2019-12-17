@@ -161,7 +161,7 @@ class leptonEnergyCorrections:
     def getGenMatch(self, dR = 0.4):
       if not self.isData:
           for i in range(len(self.lepCorr)):
-            if hasattr(self.lepCorr[i],"genPartIdx"):
+            if hasattr(self.lepCorr[i],"genPartIdx") and getattr(self.lepCorr[i], "genPartIdx", 100000) < len(self.genPart) :
               self.lepCorr[i].isMatched = True
               self.lepCorr[i].match = self.genPart[getattr(self.lepCorr[i],"genPartIdx")]
             else:

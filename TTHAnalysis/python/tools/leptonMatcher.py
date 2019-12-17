@@ -41,7 +41,7 @@ class leptonMatcher:
     ## listBranches
     ## _______________________________________________________________
     def listBranches(self):
-        biglist = [("LepGood_mcUCSX_v2", "I", 4)]
+        biglist = [("LepGood_mcUCSX_v2", "I", 4), ("LepGood_motherId", "I",4), ("LepGood_motherIdx","I",4), ("LepGood_grandmotherId","I",4), ("LepGood_grandmotherIdx","I",4)]
         return biglist
 
 
@@ -80,9 +80,18 @@ class leptonMatcher:
 
                   #Find heaviest mother
                   mother = match
+                  idx = self.lepSelFO[i].genPartIdx
                   sumTau = 0
                   nParents = 0
                   while nParents < 1000:
+                      if self.ret["LepGood_motherId"] == -999: 
+                          self.ret["LepGood_motherId"] = mother.pdgId
+                          self.ret["LepGood_motherId"] = idx
+
+                      if self.ret["LepGood_grandmotherId"] == -999 and self.ret["LepGood_motherId"] != -999: 
+                          self.ret["LepGood_grandmotherId"]  = mother.pdgId
+                          self.ret["LepGood_grandmotherIdx"] = idx
+
                       if mother.pdgId == 22:
                           self.lepSelFO[i].mcUCSX = 4 + sumTau
                           break
@@ -99,12 +108,14 @@ class leptonMatcher:
                       if abs(mother.pdgId) == 15:
                           sumTau = 10
                           mother = self.genparts[mother.genPartIdxMother]
+                          idx = mother.genPartIdxMother
                       else:            
                           if not(mother.genPartIdxMother) >= 0:
                               self.lepSelFO[i].mcUCSX = 5 + sumTau
                               break
                           else:
                               mother = self.genparts[mother.genPartIdxMother]
+                              idx = mother.genPartIdxMother
                       self.lepSelFO[i].mcUCSX = sumTau
 
                       nParents += 1
@@ -115,6 +126,10 @@ class leptonMatcher:
     def resetMemory(self):
         self.ret = {};
         self.ret["LepGood_mcUCSX_v2"] = [0]*20
+        self.ret["LepGood_motherId"]  = [-999]*20
+        self.ret["LepGood_grandmotherId"]  = [-999]*20
+        self.ret["LepGood_motherIdx"]  = [-999]*20
+        self.ret["LepGood_grandmotherIdx"]  = [-999]*20
 
 
 ## deltaPhi

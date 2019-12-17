@@ -33,10 +33,11 @@ class bosonPolarizationGEN_TotalTruth:
             elif self.lenW < 1: self.ret["status"] = 2
             elif self.lenZ > 2: self.ret["status"] = 3 
             elif self.lenW > 1: self.ret["status"] = 4
-            print "statused"
+            #print "statused"
             return self.ret
         self.ret["status"] = -1
         self.collectObjects(event)
+        if self.ret["status"] == 5: return self.ret
         self.analyzeTopology()
         return self.ret
 
@@ -71,7 +72,7 @@ class bosonPolarizationGEN_TotalTruth:
         self.ret["genThetaZDn_HE_CM"] = (self.LorToZDn_CM*self.lepforZ).Theta() #In this case they are different
 
         #Now the CS frame angles
-        self.LorToRotX = self.getRotatedFrame(self.pWUp, 1) #First rotate so the W pT is along the X axis
+        """self.LorToRotX = self.getRotatedFrame(self.pWUp, 1) #First rotate so the W pT is along the X axis
         tempP = (self.LorToRotX*self.pWUp).Clone()
         self.LorToRotWXRest = ROOT.TLorentzRotation()
         self.LorToRotWXRest.Boost(0, 0 , tempP.BoostVector().Z())
@@ -94,7 +95,7 @@ class bosonPolarizationGEN_TotalTruth:
 
         self.ret["mW_genrec"] = self.pWUp.M()
         self.ret["cos_genThetaWDn_CS"] = self.charge*sqrt(1- min(4*self.pl3CS.Pt()**2/( self.pWUp.M()**2),1))
-        
+        """
         #print pexCS, pexAlt, self.pl3CS.X()
         #print sqrt(pexCS**2 + peyCS**2)*2/80.385, sqrt(pexAlt**2 + peyCS**2)*2/80.385 , sqrt(self.pl3CS.X()**2 + self.pl3CS.Y()**2)*2/80.385
         #if sqrt(self.pl3CS.X()**2 + self.pl3CS.Y()**2)*2/80.385 > 1: print sqrt(self.pl3CS.X()**2 + self.pl3CS.Y()**2)*2/80.385 #, sqrt(self.metCS.X()**2 + self.metCS.Y()**2)*2/80.385, sqrt(self.pl3CS.X()**2 + self.pl3CS.Y()**2)*2/80.385 + sqrt(self.metCS.X()**2 + self.metCS.Y()**2)*2/80.385
@@ -108,13 +109,24 @@ class bosonPolarizationGEN_TotalTruth:
         #print " EVENT DONE "
         #print "________________________________________________________"
 
+        self.pZ = self.pl1 + self.pl2
+        self.pWUp = self.pl3 + self.met
+        #self.pWDn = self.pl3 + self.metDn
+
+        self.ret["genThetaW_CS"] = self.pWUp.Pz()/abs(self.pWUp.Pz())/(self.pWUp.M()*(self.pWUp.M()**2 + self.pWUp.Pt()**2)**0.5)*((self.pl3.E()+self.pl3.Pz())*(self.met.E()-self.met.Pz()) - (self.pl3.E()-self.pl3.Pz())*(self.met.E()+self.met.Pz()))
+        #self.ret["genThetaWDn_CS"] = self.pWDn.Pz()/abs(self.pWDn.Pz())/(80.35*(80.35**2 + self.pWDn.Pt()**2)**0.5)*((self.pl3.E()+self.pl3.Pz())*(self.metDn.E()-self.metDn.Pz()) - (self.pl3.E()-self.pl3.Pz())*(self.metDn.E()+self.metDn.Pz()))
+        self.ret["genThetaZ_CS"] = self.pZ.Pz()/abs(self.pZ.Pz())/(self.pZ.M()*(self.pZ.M()**2 + self.pZ.Pt()**2)**0.5)*((self.pl1.E()+self.pl1.Pz())*(self.pl2.E()-self.pl2.Pz()) - (self.pl1.E()-self.pl1.Pz())*(self.pl2.E()+self.pl2.Pz()))*self.islZ1
+
+
     def defineLeptons(self,event):
         self.pl1.SetPtEtaPhiM(getattr(event, "genLepZ1_pt"), getattr(event, "genLepZ1_eta"),getattr(event, "genLepZ1_phi"), getattr(event, "genLepZ1_mass"))
         self.pl2.SetPtEtaPhiM(getattr(event, "genLepZ2_pt"), getattr(event, "genLepZ2_eta"),getattr(event, "genLepZ2_phi"), getattr(event, "genLepZ2_mass"))
         if getattr(event, "genLepZ1_pdgId") > 0:
             self.lepforZ = self.pl1
+            self.islZ1 = 1
         else:
             self.lepforZ = self.pl2
+            self.islZ1 = -1
         self.charge = (getattr(event, "genLepW_pdgId")< 0)*2 - 1
         self.pl3.SetPtEtaPhiM(getattr(event, "genLepW_pt"), getattr(event, "genLepW_eta"),getattr(event, "genLepW_phi"), getattr(event, "genLepW_mass"))
         self.wID = getattr(event, "genLepW_pdgId")
@@ -125,22 +137,28 @@ class bosonPolarizationGEN_TotalTruth:
         self.pWDn = self.pl3.Clone()
         self.pZ   = self.pl3.Clone()
         genColl = [t             for t  in Collection(event, "GenPart" , "nGenPart" )]
-        """for p in genColl:
-            if abs(p.pdgId) == 24:
+        for p in genColl:
+            if abs(p.pdgId) == 24 and p.status == 22:
                 self.pWUp.SetPtEtaPhiM(p.pt, p.eta, p.phi, 80.385)
                 self.pWDn.SetPtEtaPhiM(p.pt, p.eta, p.phi, 80.385)
-            if abs(p.pdgId) == 23:
+            if abs(p.pdgId) == 23 and p.status == 22:
                 self.pZ.SetPtEtaPhiM(p.pt, p.eta, p.phi, 91.16)
-        """
-        self.plneu = self.pl3.Clone()
+
+        #self.plneu = self.pl3.Clone()
+        self.ret["status"] = 5
         for p in genColl:
-            if (abs(p.pdgId) - abs(self.wID) == 1): 
-                #print "found!"
-                self.plneu.SetPtEtaPhiM(getattr(p, "pt"), getattr(p, "eta"),getattr(p, "phi"), getattr(p, "mass")) 
-        self.pWUp = self.pl3 + self.plneu
+            if (abs(p.pdgId) - abs(self.wID) == 1):
+                if p.genPartIdxMother >= 0:
+                     if abs(genColl[p.genPartIdxMother].pdgId) == 24:
+                         #print "found!"
+                         self.met.SetPtEtaPhiM(getattr(p, "pt"), getattr(p, "eta"),getattr(p, "phi"), getattr(p, "mass")) 
+                         #print "Gen level: ", self.plneu.Pz()
+                         self.ret["status"] = -1
+ 
+        """self.pWUp = self.pl3 + self.plneu
         #print self.pWUp.M()
         self.pWDn = self.pWUp
-        self.pZ = self.pl1 + self.pl2
+        self.pZ = self.pl1 + self.pl2"""
         self.pWZUp = self.pZ + self.pWUp
         self.pWZDn = self.pZ + self.pWDn
         for part in ["Z", "WUp", "WDn", "WZUp", "WZDn"]:
@@ -207,6 +225,9 @@ class bosonPolarizationGEN_TotalTruth:
             ("genThetaWDn_HE"               , "F"),
             ("genThetaZUp_HE"               , "F"),
             ("genThetaZDn_HE"               , "F"),
+            ("genThetaW_CS"                 , "F"),
+            ("genThetaZ_CS"                 , "F"),
+
             ("genThetaWUp_HE_CM"            , "F"),
             ("genThetaWDn_HE_CM"            , "F"),
             ("genThetaZUp_HE_CM"            , "F"),
