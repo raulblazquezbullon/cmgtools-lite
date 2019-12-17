@@ -38,7 +38,7 @@ if options.datatype == "nano":
     treeName     = "Events"
     moduleFolder = "multilepWZTreeProducers"
     if options.inname == "NONE":
-        options.inname = "/pool/ciencias/HeppyTrees/RA7/nanoAODv4_%s_estructure%s/"%(str(options.year), "_skim_3lepgood" if options.skim else "")
+        options.inname = "/pool/ciencias/HeppyTrees/RA7/nanoAODv5_%s_estructure/"%(str(options.year)) if not(options.skim) else "/pool/ciencias/HeppyTrees/RA7/nanoAODv5_%s_skimWZ/"%(str(options.year))
 
 elif options.datatype == "heppy":
     treeName = "tree"
@@ -79,7 +79,7 @@ if "friend_" in doWhat:
         ### Standard 3l btag Weights
         print "----------------------------------------------------"
         print "The script runs all trees in %s by default unless a specific dataset is given by -d"%options.inname
-        print baseCommand.replace("[INTREES]", options.inname).replace("[OUTTREES]", options.inname+ "/bTagWeights/").replace("[MODULES]", " -m eventBTagWeightDeepCSVT_%s"%str(options.year)).replace("[EXTRAARGS]", options.extra + " --onlyMC " + "-F sf/t %s/leptonPtCorrections/evVarFriend_{cname}.root --onlyMC -F sf/t %s/leptonJetReCleanerWZSM/evVarFriend_{cname}.root"%(options.inname, options.inname))
+        print baseCommand.replace("[INTREES]", options.inname).replace("[OUTTREES]", options.inname+ "/bTagEventWeights/").replace("[MODULES]", " -m eventBTagWeightDeepCSVT_%s"%str(options.year)).replace("[EXTRAARGS]", options.extra + " --onlyMC " + "-F sf/t %s/leptonPtCorrections/evVarFriend_{cname}.root --onlyMC -F sf/t %s/leptonJetReCleanerWZSM/evVarFriend_{cname}.root"%(options.inname, options.inname))
         print "----------------------------------------------------"
 
     if "Matcher" in doWhat or "Ma" in doWhat or "all" in doWhat:
@@ -120,14 +120,14 @@ if "friend_" in doWhat:
 
 if "plot" in doWhat:
 
-    print "python mcPlots.py RunII_SM_WZ/{year}/mca_wz.txt RunII_SM_WZ/{year}/cuts_wzsm.txt RunII_SM_WZ/{year}/plots_wz.txt --tree treeProducerSusyMultilepton -P /pool/ciencias/HeppyTrees/RA7/nanoAODv4_{year}_skimWZ/ {accidenteCofCof} --Fs {{P}}/leptonPtCorrections/ {prefiringTrees} {pileupTrees} --Fs {{P}}/leptonJetReCleanerWZSM/ --Fs {{P}}/leptonBuilderWZSM_v2/ {triggerTrees} --FMCs {{P}}/leptonMatcher/ --FMCs {{P}}/bTagWeights/ -L RunII_SM_WZ/functionsSF.cc -L RunII_SM_WZ/functionsMCMatch.cc  --mcc RunII_SM_WZ/{year}/mcc_triggerdefs.txt --maxRatioRange 0.5 2.0 --fixRatioRange --print C,pdf,png,txt --legendWidth 0.23 --legendFontSize 0.036 --showMCError --showRatio --perBin -W 'getLeptonSF_v4(0,0,{year},LepSel_pt[0],LepSel_eta[0],LepSel_pdgId[0])*getLeptonSF_v4(0,0,{year},LepSel_pt[1],LepSel_eta[1],LepSel_pdgId[1])*getLeptonSF_v4(0,0,{year},LepSel_pt[2],LepSel_eta[2],LepSel_pdgId[2])*{pileupWeights}*bTagWeightDeepCSVT{prefiringWeights}' --obj Events -j 32 -l {lumi} -f --pdir ./plots/ --showRatio -E SRWZ ".format(year=options.year,accidenteCofCof=accidenteCofCof[options.year],prefiringTrees=prefiringTrees[options.year],prefiringWeights=prefiringWeights[options.year],triggerTrees=triggerTrees[options.year],lumi=lumi[options.year],pileupTrees=pileupTrees[options.year],pileupWeights=pileupWeights[options.year])
+    print "python mcPlots.py RunII_SM_WZ/{year}/mca_wz.txt RunII_SM_WZ/{year}/cuts_wzsm.txt RunII_SM_WZ/2016/plots_wz.txt --tree treeProducerSusyMultilepton -P /pool/ciencias/HeppyTrees/RA7/nanoAODv5_{year}_skimWZ/  --Fs {{P}}/leptonPtCorrections/ {prefiringTrees} --Fs {{P}}/leptonJetReCleanerWZSM/ --Fs {{P}}/leptonBuilderWZSM/ {triggerTrees} --FMCs {{P}}/leptonMatcher/ --FMCs {{P}}/bTagEventWeights/ -L RunII_SM_WZ/functionsSF.cc -L RunII_SM_WZ/functionsMCMatch.cc  --mcc RunII_SM_WZ/{year}/mcc_triggerdefs.txt --maxRatioRange 0.5 2.0 --fixRatioRange --print C,pdf,png,txt --legendWidth 0.23 --legendFontSize 0.036 --showMCError --showRatio --perBin -W 'getLeptonSF_v4(0,0,{year},LepSel_pt[0],LepSel_eta[0],LepSel_pdgId[0])*getLeptonSF_v4(0,0,{year},LepSel_pt[1],LepSel_eta[1],LepSel_pdgId[1])*getLeptonSF_v4(0,0,{year},LepSel_pt[2],LepSel_eta[2],LepSel_pdgId[2])*puWeight*bTagWeightDeepCSVT_nom{prefiringWeights}' --obj Events -j 32 -l {lumi} -f --pdir ./plots/ --showRatio -E SRWZ ".format(year=options.year,prefiringTrees=prefiringTrees[options.year],prefiringWeights=prefiringWeights[options.year],triggerTrees=triggerTrees[options.year],lumi=lumi[options.year])
 
 if "cards" in doWhat:
 
     var = "\"4*(LepW_pdgId < 0) + (abs(LepZ1_pdgId)+abs(LepZ2_pdgId)+abs(LepW_pdgId)-33)/2\""
     binning = "\"8,-0.5,7.5\""
 
-    print "python makeShapeCardsSusy.py RunII_SM_WZ/{year}/mca_wz.txt RunII_SM_WZ/{year}/cuts_wzsm.txt {var} {binning} RunII_SM_WZ/{year}/systs_wz.txt  --tree treeProducerSusyMultilepton -P /pool/ciencias/HeppyTrees/RA7/nanoAODv4_{year}_skimWZ/ {accidenteCofCof}  --Fs {{P}}/leptonPtCorrections/ {prefiringTrees} {pileupTrees} --Fs {{P}}/leptonJetReCleanerWZSM/ --Fs {{P}}/leptonBuilderWZSM_v2/ {triggerTrees} --FMCs {{P}}/leptonMatcher/ --FMCs {{P}}/bTagWeights/  -L RunII_SM_WZ/functionsSF.cc -L RunII_SM_WZ/functionsMCMatch.cc -L RunII_SM_WZ/functionsWZ.cc -W 'getLeptonSF_v4(0,0,{year},LepSel_pt[0],LepSel_eta[0],LepSel_pdgId[0])*getLeptonSF_v4(0,0,{year},LepSel_pt[1],LepSel_eta[1],LepSel_pdgId[1])*getLeptonSF_v4(0,0,{year},LepSel_pt[2],LepSel_eta[2],LepSel_pdgId[2])*{pileupWeights}*bTagWeightDeepCSVT{prefiringWeights}' --obj Events -j 32 -l {lumi} -f  -E SRWZ -o {year} --od ./cards/ --ms".format(var=var,binning=binning,year=options.year,accidenteCofCof=accidenteCofCof[options.year],prefiringTrees=prefiringTrees[options.year],prefiringWeights=prefiringWeights[options.year],triggerTrees=triggerTrees[options.year],lumi=lumi[options.year],pileupTrees=pileupTrees[options.year],pileupWeights=pileupWeights[options.year])
+    print "python makeShapeCardsSusy.py RunII_SM_WZ/{year}/mca_wz.txt RunII_SM_WZ/{year}/cuts_wzsm.txt {var} {binning} RunII_SM_WZ/{year}/systs_wz.txt  --tree treeProducerSusyMultilepton -P /pool/ciencias/HeppyTrees/RA7/nanoAODv5_{year}_skimWZ/ --Fs {{P}}/leptonPtCorrections/ {prefiringTrees} {pileupTrees} --Fs {{P}}/leptonJetReCleanerWZSM/ --Fs {{P}}/leptonBuilderWZSM/ {triggerTrees} --FMCs {{P}}/leptonMatcher/ --FMCs {{P}}/bTagEventWeights/  -L RunII_SM_WZ/functionsSF.cc -L RunII_SM_WZ/functionsMCMatch.cc -L RunII_SM_WZ/functionsWZ.cc -W 'getLeptonSF_v4(0,0,{year},LepSel_pt[0],LepSel_eta[0],LepSel_pdgId[0])*getLeptonSF_v4(0,0,{year},LepSel_pt[1],LepSel_eta[1],LepSel_pdgId[1])*getLeptonSF_v4(0,0,{year},LepSel_pt[2],LepSel_eta[2],LepSel_pdgId[2])*puWeight*bTagWeightDeepCSVT_nom{prefiringWeights}' --obj Events -j 32 -l {lumi} -f  -E SRWZ -o {year} --od ./cards/ --ms".format(var=var,binning=binning,year=options.year,prefiringTrees=prefiringTrees[options.year],prefiringWeights=prefiringWeights[options.year],triggerTrees=triggerTrees[options.year],lumi=lumi[options.year])
     
 
 
