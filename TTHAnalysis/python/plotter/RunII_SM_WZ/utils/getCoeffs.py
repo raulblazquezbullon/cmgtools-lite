@@ -3,9 +3,9 @@ import ROOT
 from coeffsHelper import*
 
 #Config options, likely not worth to add a proper parser
-fileName = ["/pool/ciencias/HeppyTrees/RA7/nanoAODv5_2016_unSkimmed_estructure/bosonPolarizationGEN/*pow*root"]
-varTags   = ["Pol_Z_16", "Pol_W_16" , "Pol_ZP_16", "Pol_ZM_16" , "Pol_WP_16", "Pol_WM_16"]
-lumi = "35.9 fb^{-1}"
+fileName = ["/pool/ciencias/HeppyTrees/RA7/nanoAODv5_2017_unSkimmed_estructure/bosonPolarizationGEN/*pow*root"]
+varTags   = ["Pol_Z_17", "Pol_W_17" , "Pol_ZP_17", "Pol_ZM_17" , "Pol_WP_17", "Pol_WM_17"]
+lumi = "41.3 fb^{-1}"
 
 treeName = "sf/t"
 treeVars  = ["genThetaZ_CS","charge*genThetaW_CS", "genThetaZ_CS","genThetaZ_CS","charge*genThetaW_CS", "charge*genThetaW_CS"]#,"charge*cos(genThetaWDn_HE_CM)","cos(genThetaZDn_HE_CM)","cos(genThetaZDn_HE_CM)"]
