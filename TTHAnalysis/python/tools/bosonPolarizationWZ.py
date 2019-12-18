@@ -18,19 +18,35 @@ class bosonPolarizationWZ:
         self.metUp = ROOT.TLorentzVector()
         self.metDn = ROOT.TLorentzVector()
         self.metbranch = metbranch
+        self.systsJEC = {0: "", 1: "_jesTotalCorrUp"   , -1: "_jesTotalCorrDown",  2: "_jesTotalUnCorrUp"   , -2: "_jesTotalUnCorrDown"}
+        self.lepScaleSysts = {0:""}#self.lepScaleSysts = {1:"_elScaleUp", -1:"_elScaleDown",2:"_muScaleUp",-2:"_muScaleDown",0:""}
+
     ## __call__
     ## _______________________________________________________________
     def __call__(self, event):
-        self.resetMemory()
-        if getattr(event, "nLepSel") < 3 or getattr(event, "nOSSF_3l") < 1: return self.ret
-        self.collectObjects(event)
-        self.analyzeTopology()
-        return self.ret
+        self.allret = {}
+        self.isData = not(hasattr(event, "genWeight"))
+        if self.isData: 
+           self.systsJEC = {0: ""}
+           self.lepScaleSysts = {0:""}
+        for var in self.lepScaleSysts:
+          for jes in (self.systsJEC if var == 0 else [0]):
+            self.lSyst = self.lepScaleSysts[var] 
+            self.jSyst = self.systsJEC[jes] 
+            self.resetMemory()
+            if getattr(event, "nLepSel"+self.lepScaleSysts[var]) < 3 or getattr(event, "nOSSF_3l" + self.lepScaleSysts[var]) < 1: continue
+            self.collectObjects(event)
+            self.analyzeTopology()
+            for branch in self.ret:
+              self.allret[branch + self.lSyst + self.jSyst] = self.ret[branch]
+
+        return self.allret
 
 
     ## analyzeTopology
     ## _______________________________________________________________
     def analyzeTopology(self):
+
         #Fill up the ret
         self.getNeuEta()
         self.buildBosonP_Lab()
@@ -40,18 +56,19 @@ class bosonPolarizationWZ:
         self.LorToZ   = self.getPartRestFrameLor( self.pZ  )
         #Lorentz's transformation from LAB to WZ system, i.e. as in ATLAS-CONF-18-034
         self.LorToWZUp   = self.getPartRestFrameLor(self.pWZUp)
-        self.LorToWUp_CM = self.LorToWZUp*self.getPartRestFrameLor(self.LorToWZUp*self.pWUp)
-        self.LorToZUp_CM = self.LorToWZUp*self.getPartRestFrameLor(self.LorToWZUp*self.pZ)
+        self.LorToWUp_CM = self.getPartRestFrameLor(self.LorToWZUp*self.pWUp)*self.LorToWZUp
+        self.LorToZUp_CM = self.getPartRestFrameLor(self.LorToWZUp*self.pZ)*self.LorToWZUp
         self.LorToWZDn   = self.getPartRestFrameLor(self.pWZDn)
-        self.LorToWDn_CM = self.LorToWZUp*self.getPartRestFrameLor(self.LorToWZDn*self.pWDn)
-        self.LorToZDn_CM = self.LorToWZUp*self.getPartRestFrameLor(self.LorToWZDn*self.pZ)
+        self.LorToWDn_CM = self.getPartRestFrameLor(self.LorToWZDn*self.pWDn)*self.LorToWZDn
+        self.LorToZDn_CM = self.getPartRestFrameLor(self.LorToWZDn*self.pZ)*self.LorToWZDn
+
         #Now get the interesting angles
         self.ret["ThetaWUp_HE"] = (self.LorToWUp*self.pl3).Theta()
         self.ret["ThetaWDn_HE"] = (self.LorToWDn*self.pl3).Theta()
         self.ret["ThetaZUp_HE"] = (self.LorToZ*self.lepforZ).Theta()
         self.ret["ThetaZDn_HE"] = (self.LorToZ*self.lepforZ).Theta() #Not a bug, there is just one solution in this case
-        self.ret["cos_ThetaWDn_HE"] = math.cos((self.LorToWUp*self.pl3).Theta())*self.charge
-        self.ret["cos_ThetaZDn_HE"] = math.cos((self.LorToWUp*self.pl3).Theta())
+        self.ret["cos_ThetaWDn_HE"] = math.cos((self.LorToWDn*self.pl3).Theta())*self.charge
+        self.ret["cos_ThetaZDn_HE"] = math.cos((self.LorToZ*self.lepforZ).Theta())
         #Now get the other interesting angles
         self.ret["ThetaWUp_HE_CM"] = (self.LorToWUp_CM*self.pl3).Theta()
         self.ret["ThetaWDn_HE_CM"] = (self.LorToWDn_CM*self.pl3).Theta()
@@ -59,51 +76,76 @@ class bosonPolarizationWZ:
         self.ret["ThetaZDn_HE_CM"] = (self.LorToZDn_CM*self.lepforZ).Theta() #In this case they are different
 
 
+        self.ret["cos_ThetaWDn_CS"] = self.pWDn.Pz()/abs(self.pWDn.Pz())/(self.pWDn.M()*(self.pWDn.M()**2 + self.pWDn.Pt()**2)**0.5)*((self.pl3.E()+self.pl3.Pz())*(self.metDn.E()-self.metDn.Pz()) - (self.pl3.E()-self.pl3.Pz())*(self.metDn.E()+self.metDn.Pz()))
+        self.ret["cos_ThetaWUp_CS"] = self.pWUp.Pz()/abs(self.pWUp.Pz())/(self.pWUp.M()*(self.pWUp.M()**2 + self.pWUp.Pt()**2)**0.5)*((self.pl3.E()+self.pl3.Pz())*(self.metUp.E()-self.metUp.Pz()) - (self.pl3.E()-self.pl3.Pz())*(self.metUp.E()+self.metUp.Pz()))
+        #self.ret["genThetaWDn_CS"] = self.pWDn.Pz()/abs(self.pWDn.Pz())/(80.35*(80.35**2 + self.pWDn.Pt()**2)**0.5)*((self.pl3.E()+self.pl3.Pz())*(self.metDn.E()-self.metDn.Pz()) - (self.pl3.E()-self.pl3.Pz())*(self.metDn.E()+self.metDn.Pz()))
+        self.ret["cos_ThetaZ_CS"] = self.pZ.Pz()/abs(self.pZ.Pz())/(self.pZ.M()*(self.pZ.M()**2 + self.pZ.Pt()**2)**0.5)*((self.pl1.E()+self.pl1.Pz())*(self.pl2.E()-self.pl2.Pz()) - (self.pl1.E()-self.pl1.Pz())*(self.pl2.E()+self.pl2.Pz()))*self.islZ1
         #print "________________________________________________________"
         #print " EVENT DONE "
         #print "________________________________________________________"
     ## collectObjects
     ## _______________________________________________________________
     def collectObjects(self, event):
-        self.pl1.SetPtEtaPhiM(getattr(event, "LepZ1_pt"), getattr(event, "LepZ1_eta"),getattr(event, "LepZ1_phi"), getattr(event, "LepZ1_mass"))
-        self.pl2.SetPtEtaPhiM(getattr(event, "LepZ2_pt"), getattr(event, "LepZ2_eta"),getattr(event, "LepZ2_phi"), getattr(event, "LepZ2_mass"))
-        if getattr(event, "LepZ1_pdgId") > 0:
+        self.pl1.SetPtEtaPhiM(getattr(event, "LepZ1_pt"+self.lSyst), getattr(event, "LepZ1_eta"+self.lSyst),getattr(event, "LepZ1_phi"+self.lSyst), getattr(event, "LepZ1_mass"+self.lSyst))
+        self.pl2.SetPtEtaPhiM(getattr(event, "LepZ2_pt"+self.lSyst), getattr(event, "LepZ2_eta"+self.lSyst),getattr(event, "LepZ2_phi"+self.lSyst), getattr(event, "LepZ2_mass"+self.lSyst))
+        if getattr(event, "LepZ1_pdgId"+self.lSyst) > 0:
             self.lepforZ = self.pl1
+            self.islZ1 = 1
         else:
             self.lepforZ = self.pl2
-        self.charge = (getattr(event, "LepW_pdgId") < 0)*2 - 1
-        self.pl3.SetPtEtaPhiM(getattr(event, "LepW_pt") , getattr(event, "LepW_eta") ,getattr(event, "LepW_phi") , getattr(event, "LepW_mass") )
-        self.metUp.SetPtEtaPhiM(getattr(event, self.metbranch + "_pt")  , 0  ,getattr(event, self.metbranch + "_phi")                          , 0                           )
-        self.metUp.SetPtEtaPhiM(getattr(event, self.metbranch + "_pt")  , 0  ,getattr(event, self.metbranch + "_phi")                          , 0                           )
-        self.metDn.SetPtEtaPhiM(getattr(event, self.metbranch + "_pt")  , 0  ,getattr(event, self.metbranch + "_phi")                          , 0                           )
+            self.islZ1 = -1
+
+        self.charge = (getattr(event, "LepW_pdgId"+self.lSyst) < 0)*2 - 1
+        self.pl3.SetPtEtaPhiM(getattr(event, "LepW_pt"+self.lSyst) , getattr(event, "LepW_eta"+self.lSyst) ,getattr(event, "LepW_phi"+self.lSyst) , getattr(event, "LepW_mass") )
+
+        if self.lSyst == "" and self.jSyst=="":
+            self.met.SetPtEtaPhiM(getattr(event, self.metbranch +"_pt_nom"+self.lSyst)  , 0  ,getattr(event, self.metbranch +"_phi_nom" +self.lSyst)                          , 0                           )
+            self.metUp.SetPtEtaPhiM(getattr(event, self.metbranch +"_pt_nom" + self.lSyst)  , 0  ,getattr(event, self.metbranch +"_phi_nom" +self.lSyst)                          , 0                           )
+            self.metDn.SetPtEtaPhiM(getattr(event, self.metbranch +"_pt_nom" + self.lSyst)  , 0  ,getattr(event, self.metbranch +"_phi_nom" +self.lSyst)                          , 0                           )
+
+        elif self.jSyst == "":
+            self.met.SetPtEtaPhiM(getattr(event, self.metbranch +"_pt" + self.lSyst)  , 0  ,getattr(event, self.metbranch +"_phi" +self.lSyst)                          , 0                           )
+            self.metUp.SetPtEtaPhiM(getattr(event, self.metbranch +"_pt" + self.lSyst)  , 0  ,getattr(event, self.metbranch +"_phi" +self.lSyst)                          , 0                           )
+            self.metDn.SetPtEtaPhiM(getattr(event, self.metbranch +"_pt" + self.lSyst)  , 0  ,getattr(event, self.metbranch +"_phi" +self.lSyst)                          , 0                           )
+
+        else:
+            self.met.SetPtEtaPhiM(getattr(event, self.metbranch + "_pt" + self.lSyst)  , 0  ,getattr(event, self.metbranch + "_phi" +self.lSyst)                          , 0                           )
+            self.metUp.SetPtEtaPhiM(getattr(event, self.metbranch + "_pt" + self.lSyst)  , 0  ,getattr(event, self.metbranch + "_phi" +self.lSyst)                          , 0                           )
+            self.metDn.SetPtEtaPhiM(getattr(event, self.metbranch + "_pt" + self.lSyst)  , 0  ,getattr(event, self.metbranch + "_phi" +self.lSyst)                          , 0                           )
        
         
     def getNeuEta(self):
         #Solve for W mass
+        #print "Next event!"
         phil = self.pl3.Phi()
         etal = self.pl3.Eta()
         ptl = self.pl3.Pt()
         phinu = self.met.Phi()
+
         etanuUp = 0
         etanuDn = 0
         ptnu  = self.met.Pt()
+
         muVal = (80.385)**2/2. + ptl*ptnu*cos(phil-phinu)
         disc  = (muVal**2*ptl**2*sinh(etal)**2/ptl**4 - ((ptl**2*cosh(etal)**2)*ptnu**2 - muVal**2)/ptl**2)        
         #print disc
         if disc < 0:
-             print "IMAGINARY!!!"
+             #print "IMAGINARY!!!"
              self.metUp.SetXYZM(ptnu*cos(phinu), ptnu*sin(phinu),muVal*ptl*sinh(etal)/ptl**2,0)
              self.metDn.SetXYZM(ptnu*cos(phinu), ptnu*sin(phinu),muVal*ptl*sinh(etal)/ptl**2,0)
         else:
              self.metUp.SetXYZM(ptnu*cos(phinu), ptnu*sin(phinu),muVal*ptl*sinh(etal)/ptl**2 + sqrt(disc),0)
              self.metDn.SetXYZM(ptnu*cos(phinu), ptnu*sin(phinu),muVal*ptl*sinh(etal)/ptl**2 - sqrt(disc),0)
 
+
     def buildBosonP_Lab(self):
         self.pZ = self.pl1 + self.pl2
+
         self.pWUp = self.pl3 + self.metUp
         self.pWDn = self.pl3 + self.metDn
         self.pWZUp = self.pZ + self.pWUp
         self.pWZDn = self.pZ + self.pWDn
+
         for part in ["Z", "WUp", "WDn", "WZUp", "WZDn"]:
             self.ret[part+"_pt_Lab"] = getattr(self, "p" + part).Pt()
             self.ret[part+"_eta_Lab"] = getattr(self, "p" + part).Eta()
@@ -130,20 +172,44 @@ class bosonPolarizationWZ:
     ## _______________________________________________________________
     def listBranches(self):
 
-        biglist = [
-            ("ThetaWUp_HE"               , "F"),
-            ("ThetaWDn_HE"               , "F"),
-            ("ThetaZUp_HE"               , "F"),
-            ("ThetaZDn_HE"               , "F"),
-            ("ThetaWUp_HE_CM"            , "F"),
-            ("ThetaWDn_HE_CM"            , "F"),
-            ("ThetaZUp_HE_CM"            , "F"),
-            ("ThetaZDn_HE_CM"            , "F"),
-            ("cos_ThetaWDn_HE"           , "F"),
-            ("cos_ThetaZDn_HE"           , "F")]
-        for part in ["Z", "WUp", "WDn", "WZUp", "WZDn"]:
+        biglist = []
+        for l in self.lepScaleSysts:
+          biglist += [
+            ("ThetaWUp_HE"+self.lepScaleSysts[l]               , "F"),
+            ("ThetaWDn_HE"+self.lepScaleSysts[l]               , "F"),
+            ("ThetaZUp_HE"+self.lepScaleSysts[l]               , "F"),
+            ("ThetaZDn_HE"+self.lepScaleSysts[l]               , "F"),
+            ("ThetaWUp_HE_CM"+self.lepScaleSysts[l]            , "F"),
+            ("ThetaWDn_HE_CM"+self.lepScaleSysts[l]            , "F"),
+            ("ThetaZUp_HE_CM"+self.lepScaleSysts[l]            , "F"),
+            ("ThetaZDn_HE_CM"+self.lepScaleSysts[l]            , "F"),
+            ("cos_ThetaWDn_HE"+self.lepScaleSysts[l]           , "F"),
+            ("cos_ThetaZDn_HE"+self.lepScaleSysts[l]           , "F"),
+            ("cos_ThetaZ_CS"+self.lepScaleSysts[l]             , "F"),
+            ("cos_ThetaWUp_CS"+self.lepScaleSysts[l]           , "F"),
+            ("cos_ThetaWDn_CS"+self.lepScaleSysts[l]           , "F"),]
+          for part in ["Z", "WUp", "WDn", "WZUp", "WZDn"]:
             for var in ["pt", "eta", "phi", "mass"]:
-                biglist.append((part+"_" + var +"_Lab", "F"))
+                biglist.append((part+"_" + var +"_Lab" +self.lepScaleSysts[l], "F"))
+        for l in self.systsJEC:
+          if l == 0: continue
+          biglist += [
+            ("ThetaWUp_HE"+self.systsJEC[l]               , "F"),
+            ("ThetaWDn_HE"+self.systsJEC[l]               , "F"),
+            ("ThetaZUp_HE"+self.systsJEC[l]               , "F"),
+            ("ThetaZDn_HE"+self.systsJEC[l]               , "F"),
+            ("ThetaWUp_HE_CM"+self.systsJEC[l]            , "F"),
+            ("ThetaWDn_HE_CM"+self.systsJEC[l]            , "F"),
+            ("ThetaZUp_HE_CM"+self.systsJEC[l]            , "F"),
+            ("ThetaZDn_HE_CM"+self.systsJEC[l]            , "F"),
+            ("cos_ThetaWDn_HE"+self.systsJEC[l]           , "F"),
+            ("cos_ThetaZDn_HE"+self.systsJEC[l]           , "F"),
+            ("cos_ThetaZ_CS"+self.systsJEC[l]             , "F"),
+            ("cos_ThetaWUp_CS"+self.systsJEC[l]           , "F"),
+            ("cos_ThetaWDn_CS"+self.systsJEC[l]           , "F")]
+          for part in ["Z", "WUp", "WDn", "WZUp", "WZDn"]:
+            for var in ["pt", "eta", "phi", "mass"]:
+                biglist.append((part+"_" + var +"_Lab" +self.systsJEC[l], "F"))
         return biglist
 
 
@@ -159,6 +225,7 @@ class bosonPolarizationWZ:
         self.ret = {};
         #Set everything to 0
         for l in self.listBranches():
+            if ("Scale" in l[0]) or ("jes" in l[0]): continue
             self.ret[l[0]] = -99
 
 if __name__ == '__main__':

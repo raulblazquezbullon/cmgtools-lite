@@ -59,6 +59,148 @@ MODULES.append( ('leptonEnergyCorrections_2018', lambda: leptonEnergyCorrections
 ###################################
 
 from CMGTools.TTHAnalysis.tools.leptonJetReCleaner import LeptonJetReCleaner
+from CMGTools.TTHAnalysis.tools.functionsWZ_v5 import _loose_muon, _loose_electron, _loose_lepton, _fO_muon, _fO_electron, _fO_lepton,_tight_muon,_tight_electron,_tight_lepton,conept
+
+
+
+MODULES.append( ('leptonJetReCleanerWZSM_2016_v5', lambda : LeptonJetReCleaner("Mini", 
+                   lambda lep :        _loose_lepton(lep, 0.3093, 0.0614), #Loose selection 
+                   lambda lep,jetlist: _fO_lepton(lep, 0.3093, 0.0614,jetlist), #Clean on FO
+                   lambda lep,jetlist: _fO_lepton(lep, 0.3093, 0.0614,jetlist), #FO selection
+                   lambda lep,jetlist: _tight_lepton(lep, 0.3093, 0.0614,jetlist), #Tight selection
+                   cleanJet = lambda lep,jet,dr : dr<0.4,
+                   selectJet = lambda jet: abs(jet.eta)<4.7 and (jet.jetId & 2), #Jet ID tight as it is already very efficient (>=98%), Take second bit with python "/" def + evaluate it with %
+                   cleanTau = lambda lep,tau,dr: dr<0.4,
+                   looseTau = lambda tau: _tauId_CBloose(tau), # used in cleaning
+                   tightTau = lambda tau: _tauId_CBtight(tau), # on top of loose
+                   cleanJetsWithTaus = False,
+                   cleanTausWithLoose = False,
+                   doVetoZ = False,
+                   doVetoLMf = False,
+                   doVetoLMt = True,
+                   jetPt = 30,
+                   bJetPt = 25,
+                   coneptdef = lambda lep: conept(lep),
+                   year = 2016,
+                   bAlgo = "DeepCSV"
+                   )))
+
+
+MODULES.append( ('leptonJetReCleanerWZSM_2017_v5', lambda : LeptonJetReCleaner("Mini",
+                   lambda lep :        _loose_lepton(lep, 0.0521, 0.3033), #Loose selection 
+                   lambda lep,jetlist: _fO_lepton(lep, 0.0521, 0.3033,jetlist), #Clean on FO
+                   lambda lep,jetlist: _fO_lepton(lep, 0.0521, 0.3033,jetlist), #FO selection
+                   lambda lep,jetlist: _tight_lepton(lep, 0.0521, 0.3033,jetlist), #Tight selection
+                   cleanJet = lambda lep,jet,dr : dr<0.4,
+                   selectJet = lambda jet: abs(jet.eta)<4.7 and (jet.jetId & 2), #Jet ID tight as it is already very efficient (>=98%), Take second bit with python "/" def + evaluate it with %
+                   cleanTau = lambda lep,tau,dr: dr<0.4,
+                   looseTau = lambda tau: _tauId_CBloose(tau), # used in cleaning
+                   tightTau = lambda tau: _tauId_CBtight(tau), # on top of loose
+                   cleanJetsWithTaus = False,
+                   cleanTausWithLoose = False,
+                   doVetoZ = False,
+                   doVetoLMf = False,
+                   doVetoLMt = True,
+                   jetPt = 30,
+                   bJetPt = 25,
+                   coneptdef = lambda lep: conept(lep),
+                   year = 2017,
+                   bAlgo = "DeepCSV"
+                   )))     
+
+
+MODULES.append( ('leptonJetReCleanerWZSM_2018_v5', lambda : LeptonJetReCleaner("Mini",
+                   lambda lep :        _loose_lepton(lep, 0.0494, 0.2770), #Loose selection 
+                   lambda lep,jetlist: _fO_lepton(lep, 0.0494, 0.2770,jetlist), #Clean on FO
+                   lambda lep,jetlist: _fO_lepton(lep, 0.0494, 0.2770,jetlist), #FO selection
+                   lambda lep,jetlist: _tight_lepton(lep, 0.0494, 0.2770,jetlist), #Tight selection
+                   cleanJet = lambda lep,jet,dr : dr<0.4,
+                   selectJet = lambda jet: abs(jet.eta)<4.7 and (jet.jetId & 2), #Jet ID tight as it is already very efficient (>=98%), Take second bit with python "/" def + evaluate it with %
+                   cleanTau = lambda lep,tau,dr: dr<0.4,
+                   looseTau = lambda tau: _tauId_CBloose(tau), # used in cleaning
+                   tightTau = lambda tau: _tauId_CBtight(tau), # on top of loose
+                   cleanJetsWithTaus = False,
+                   cleanTausWithLoose = False,
+                   doVetoZ = False,
+                   doVetoLMf = False,
+                   doVetoLMt = True,
+                   jetPt = 30,
+                   bJetPt = 25,
+                   coneptdef = lambda lep: conept(lep),
+                   year = 2018,
+                   bAlgo = "DeepCSV"
+                   )))
+
+from CMGTools.TTHAnalysis.tools.leptonJetReCleanerFastSim import LeptonJetReCleanerFastSim
+
+MODULES.append( ('leptonJetReCleanerWZSMFastSim_2016_v5', lambda : LeptonJetReCleanerFastSim("Mini",
+                   lambda lep :        _loose_lepton(lep, 0.3093, 0.0614), #Loose selection 
+                   lambda lep,jetlist: _fO_lepton(lep, 0.3093, 0.0614,jetlist), #Clean on FO
+                   lambda lep,jetlist: _fO_lepton(lep, 0.3093, 0.0614,jetlist), #FO selection
+                   lambda lep,jetlist: _tight_lepton(lep, 0.3093, 0.0614,jetlist), #Tight selection
+                   cleanJet = lambda lep,jet,dr : dr<0.4,
+                   selectJet = lambda jet: abs(jet.eta)<4.7 and (jet.jetId & 2), #Jet ID tight as it is already very efficient (>=98%), Take second bit with python "/" def + evaluate it with %
+                   cleanTau = lambda lep,tau,dr: dr<0.4,
+                   looseTau = lambda tau: _tauId_CBloose(tau), # used in cleaning
+                   tightTau = lambda tau: _tauId_CBtight(tau), # on top of loose
+                   cleanJetsWithTaus = False,
+                   cleanTausWithLoose = False,
+                   doVetoZ = False,
+                   doVetoLMf = False,
+                   doVetoLMt = True,
+                   jetPt = 30,
+                   bJetPt = 25,
+                   coneptdef = lambda lep: conept(lep),
+                   year = 2016,
+                   bAlgo = "DeepCSV"
+                   )))
+
+
+MODULES.append( ('leptonJetReCleanerWZSMFastSim_2017_v5', lambda : LeptonJetReCleanerFastSim("Mini",
+                   lambda lep :        _loose_lepton(lep, 0.0521, 0.3033), #Loose selection 
+                   lambda lep,jetlist: _fO_lepton(lep, 0.0521, 0.3033,jetlist), #Clean on FO
+                   lambda lep,jetlist: _fO_lepton(lep, 0.0521, 0.3033,jetlist), #FO selection
+                   lambda lep,jetlist: _tight_lepton(lep, 0.0521, 0.3033,jetlist), #Tight selection
+                   cleanJet = lambda lep,jet,dr : dr<0.4,
+                   selectJet = lambda jet: abs(jet.eta)<4.7 and (jet.jetId & 2), #Jet ID tight as it is already very efficient (>=98%), Take second bit with python "/" def + evaluate it with %
+                   cleanTau = lambda lep,tau,dr: dr<0.4,
+                   looseTau = lambda tau: _tauId_CBloose(tau), # used in cleaning
+                   tightTau = lambda tau: _tauId_CBtight(tau), # on top of loose
+                   cleanJetsWithTaus = False,
+                   cleanTausWithLoose = False,
+                   doVetoZ = False,
+                   doVetoLMf = False,
+                   doVetoLMt = True,
+                   jetPt = 30,
+                   bJetPt = 25,
+                   coneptdef = lambda lep: conept(lep),
+                   year = 2017,
+                   bAlgo = "DeepCSV"
+                   )))
+
+MODULES.append( ('leptonJetReCleanerWZSMFastSim_2018_v5', lambda : LeptonJetReCleanerFastSim("Mini",
+                   lambda lep :        _loose_lepton(lep, 0.0494, 0.2770), #Loose selection 
+                   lambda lep,jetlist: _fO_lepton(lep, 0.0494, 0.2770,jetlist), #Clean on FO
+                   lambda lep,jetlist: _fO_lepton(lep, 0.0494, 0.2770,jetlist), #FO selection
+                   lambda lep,jetlist: _tight_lepton(lep, 0.0494, 0.2770,jetlist), #Tight selection
+                   cleanJet = lambda lep,jet,dr : dr<0.4,
+                   selectJet = lambda jet: abs(jet.eta)<4.7 and (jet.jetId & 2), #Jet ID tight as it is already very efficient (>=98%), Take second bit with python "/" def + evaluate it with %
+                   cleanTau = lambda lep,tau,dr: dr<0.4,
+                   looseTau = lambda tau: _tauId_CBloose(tau), # used in cleaning
+                   tightTau = lambda tau: _tauId_CBtight(tau), # on top of loose
+                   cleanJetsWithTaus = False,
+                   cleanTausWithLoose = False,
+                   doVetoZ = False,
+                   doVetoLMf = False,
+                   doVetoLMt = True,
+                   jetPt = 30,
+                   bJetPt = 25,
+                   coneptdef = lambda lep: conept(lep),
+                   year = 2018,
+                   bAlgo = "DeepCSV"
+                   )))
+
+
 from CMGTools.TTHAnalysis.tools.leptonphotonJetReCleaner import LeptonPhotonJetReCleaner
 from CMGTools.TTHAnalysis.tools.functionsWZ import _lepId_IPcuts, conept, _looseID_ExtraCuts_2016, _elidEmu_cuts_2016, _FOID_2016, _Tight_2016,  _looseID_ExtraCuts_2017, _elidEmu_cuts_2017, _FOID_2017, _Tight_2017,  _looseID_ExtraCuts_2018, _elidEmu_cuts_2018, _FOID_2018, _Tight_2018, _tauId_CBloose, _tauId_CBtight, _phoId_CBloose, _phoId_CBtight
 
@@ -188,6 +330,35 @@ MODULES.append( ('leptonPhotonJetReCleanerWZSM_2018', lambda : LeptonPhotonJetRe
                    bAlgo = "DeepCSV"
                    )))
 
+
+
+MODULES.append( ('leptonPhotonJetReCleanerWZSM_2017', lambda : LeptonPhotonJetReCleaner("Mini",
+                   lambda lep : lep.miniPFRelIso_all < 0.4 and _looseID_ExtraCuts_2017(lep) and _lepId_IPcuts(lep), #Loose selection 
+                   lambda lep,jetlist: lep.pt>10 and conept(lep)>10 and (_FOID_2017(lep, jetlist)), #We clean on the FO
+                   lambda lep,jetlist: lep.pt>10 and conept(lep)>10 and (_FOID_2017(lep, jetlist)), #FO selection
+                   lambda lep,jetlist: lep.pt>10 and conept(lep)>10 and (_Tight_2017(lep, jetlist)), #Tight selection
+                   cleanJet = lambda lep,jet,dr : dr<0.4,
+                   selectJet = lambda jet: abs(jet.eta)<4.7 and (jet.jetId & 2), #Jet ID tight as it is already very efficient (>=98%), Take second bit with python "/" def + evaluate it with %
+                   cleanTau = lambda lep,tau,dr: dr<0.4,
+                   looseTau = lambda tau: _tauId_CBloose(tau), # used in cleaning
+                   tightTau = lambda tau: _tauId_CBtight(tau), # on top of loose
+                   cleanPhoton = lambda lep,photon,dr: dr<0.4,
+                   loosePhoton = lambda photon: _phoId_CBloose(photon), # used in cleaning
+                   tightPhoton = lambda photon: _phoId_CBtight(photon), # on top of loose
+                   cleanJetsWithTaus = False,
+                   cleanTausWithLoose = False,
+                   cleanJetsWithPhotons = True,
+                   cleanPhotonsWithLoose = False,
+                   doVetoZ = False,
+                   doVetoLMf = False,
+                   doVetoLMt = True,
+                   jetPt = 30,
+                   bJetPt = 25,
+                   coneptdef = lambda lep: conept(lep),
+                   year = 2017,
+                   bAlgo = "DeepCSV"
+                   )))
+
 ###################################
 ########### lepBuilder ############
 ###################################
@@ -201,6 +372,19 @@ MODULES.append( ('leptonBuilderWZSM_2018', lambda : leptonBuilderWZSM("Mini", me
 
 
 MODULES.append( ('leptonBuilderWZSM_byTag_2016', lambda : leptonBuilderWZSM_byTag("Mini", metbranch="MET")))
+MODULES.append( ('leptonBuilderWZSM_byTag_2017', lambda : leptonBuilderWZSM_byTag("Mini", metbranch="METFixEE2017")))
+
+from CMGTools.TTHAnalysis.tools.leptonBuilderEWK_nanoAOD import LeptonBuilderEWK_nanoAOD
+MODULES.append( ('leptonBuilderEWK_2016', lambda : LeptonBuilderEWK_nanoAOD("Mini", metbranch="MET")))
+MODULES.append( ('leptonBuilderEWK_2017', lambda : LeptonBuilderEWK_nanoAOD("Mini", metbranch="METFixEE2017")))
+MODULES.append( ('leptonBuilderEWK_2018', lambda : LeptonBuilderEWK_nanoAOD("Mini", metbranch="MET")))
+
+MODULES.append( ('leptonBuilderEWK_FastSim_2016', lambda : LeptonBuilderEWK_nanoAOD("Mini", metbranch="MET", isFastSim=True)))
+MODULES.append( ('leptonBuilderEWK_FastSim_2017', lambda : LeptonBuilderEWK_nanoAOD("Mini", metbranch="METFixEE2017", isFastSim=True)))
+MODULES.append( ('leptonBuilderEWK_FastSim_2018', lambda : LeptonBuilderEWK_nanoAOD("Mini", metbranch="MET", isFastSim=True)))
+
+
+
 
 ###################################
 ############ MC Match #############
@@ -217,6 +401,71 @@ from CMGTools.TTHAnalysis.tools.trigTagger_nano import trigTagger
 MODULES.append( ('Trigger_2016', lambda : trigTagger("Trigger_3l_2016",[
                     ["HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",0,1000000],
                     ["HLT_Ele27_WPTight_Gsf",0,1000000],
+                    ["HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL",0,280919],
+                    ["HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL",0,280919],
+                    ["HLT_IsoMu24",0,1000000],
+                    ["HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ",280919,1000000],
+                    ["HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ",280919,1000000],
+                    ["HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL",0,280919],
+                    ["HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL",0,280919],
+                    ["HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ",280919,1000000],
+                    ["HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ",280919,1000000]
+                    ],[] )))
+
+
+MODULES.append( ('Trigger_2016_mm', lambda : trigTagger("Trigger_3l_2016",[
+                    ["HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL",0,280919],
+                    ["HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL",0,280919],
+                    ["HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ",280919,1000000],
+                    ["HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ",280919,1000000],
+                    ],[] )))
+
+
+MODULES.append( ('Trigger_2016_em', lambda : trigTagger("Trigger_3l_2016",[
+                    ["HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL",0,280919],
+                    ["HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL",0,280919],
+                    ["HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ",280919,1000000],
+                    ["HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ",280919,1000000]
+                    ],[
+                    ["HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL",0,280919],
+                    ["HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL",0,280919],
+                    ["HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ",280919,1000000],
+                    ["HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ",280919,1000000],
+                    ] )))
+
+
+MODULES.append( ('Trigger_2016_ee', lambda : trigTagger("Trigger_3l_2016",[
+                    ["HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",0,1000000],
+                    ],[
+                    ["HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL",0,280919],
+                    ["HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL",0,280919],
+                    ["HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ",280919,1000000],
+                    ["HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ",280919,1000000],
+                    ["HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL",0,280919],
+                    ["HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL",0,280919],
+                    ["HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ",280919,1000000],
+                    ["HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ",280919,1000000],
+                    ] )))
+
+MODULES.append( ('Trigger_2016_sm', lambda : trigTagger("Trigger_3l_2016",[
+                    ["HLT_IsoMu24",0,1000000],
+                    ],[
+                    ["HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",0,1000000],
+                    ["HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL",0,280919],
+                    ["HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL",0,280919],
+                    ["HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ",280919,1000000],
+                    ["HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL",0,280919],
+                    ["HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL",0,280919],
+                    ["HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ",280919,1000000],
+                    ["HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ",280919,1000000],
+                    ["HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ",280919,1000000]
+                    ] )))
+
+
+MODULES.append( ('Trigger_2016_se', lambda : trigTagger("Trigger_3l_2016",[
+                    ["HLT_Ele27_WPTight_Gsf",0,1000000],
+                    ],[
+                    ["HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",0,1000000],
                     ["HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL",0,280919],
                     ["HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL",0,280919],
                     ["HLT_IsoMu24",0,1000000],
@@ -320,6 +569,8 @@ MODULES.append( ('lepgenVarsWZSM_2016', lambda : lepgenVarsWZSM("Mini")))
 MODULES.append( ('lepgenVarsWZSM_2017', lambda : lepgenVarsWZSM("Mini")))
 MODULES.append( ('lepgenVarsWZSM_2018', lambda : lepgenVarsWZSM("Mini")))
 
+from  CMGTools.TTHAnalysis.tools.lepgenVarsWZSM_nondressed import lepgenVarsWZSM_nondressed
+MODULES.append( ('lepgenVarsWZSM_nondressed', lambda : lepgenVarsWZSM_nondressed("Mini")))
 
 from  CMGTools.TTHAnalysis.tools.bosonPolarizationGEN_TotalTruth import bosonPolarizationGEN_TotalTruth
 

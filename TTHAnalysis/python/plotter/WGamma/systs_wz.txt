@@ -1,0 +1,22 @@
+#Flat uncertainties
+
+lumi_2016_ML  : .*   : .*                : 1.025
+trigeff_ML    : .*   : .*                : 0.97/1.03
+
+VV_WG         : VV                          : .*                : 1.10 
+convs_WG      : ZG                          : .*                : 1.20
+ST_WG         : ST                          : .*                : 1.20
+TT_WG         : TT                          : .*                : 1.10
+TTX_WG        : TT                          : .*                : 1.15
+VVV_WG        : TT                          : .*                : 1.50
+
+
+
+#Templates#
+#JES_ML          : .*          : .* : jec        : templates
+
+PUW_ML           : .*          : .* : puw        : templates
+MuSF_ML          : .*          : .* : 1.01
+PhoSF_ML         : .*          : .* : 1.01
+btag_HF_ML       : .*          : .* : bTagHF     : templates
+btag_LF_ML       : .*          : .* : bTagLF     : templates
