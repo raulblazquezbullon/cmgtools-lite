@@ -1,8 +1,3 @@
-accidenteCofCof = {
-    2016: '',
-    2017: '-P /pool/cienciasrw/HeppyTrees/RA7/nanoAODv4_2017_unSkimmed_estructure/',
-    2018: '',
-}
 lumi = {
     2016: 35.9,
     2017: 41.2,
@@ -19,9 +14,12 @@ prefiringWeights = {
     2018: '',
 }
 pileupTrees = {
-    2016: '--FMCs {P}/pileUpWeight/',
-    2017: '--FMCs {P}/pileUpWeights/',
-    2018: '--FMCs {P}/pileUpWeight/',
+    2016: '',
+    2017: '',
+    2018: '',
+#    2016: '--FMCs {P}/pileUpWeight/',
+#    2017: '--FMCs {P}/pileUpWeight/',
+#    2018: '--FMCs {P}/pileUpWeight/',
 }
 pileupWeights = {
     2016: 'puWeight',
