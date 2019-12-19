@@ -24,7 +24,7 @@ pileupTrees = {
 pileupWeights = {
     2016: 'puWeight',
     2017: 'puWeight',
-    2018: 'vtxWeight2018Nominal',
+    2018: 'puWeight',
 }
 triggerTrees = {
     2016: '--Fs {P}/trigger_2016/',
