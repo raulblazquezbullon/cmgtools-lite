@@ -213,7 +213,7 @@ int hashBasedRunPeriod2017(int isData, int run, int lumi, int event, int year){
 bool init=false;
 std::map<std::string,float> rmue_map2016,rmue_map2017,rmue_map2018;
 
-float rmuecorrection(float pt1,float pt2,float eta1,float eta2,float pdgId1,float pdgId2, int year, int var)
+float rmuecorrection(float pt1,float pt2,float eta1,float eta2,float pdgId1,float pdgId2, int year, int var=0)
 {
 
   // var code 
@@ -270,20 +270,20 @@ float rmuecorrection(float pt1,float pt2,float eta1,float eta2,float pdgId1,floa
     rmue2/=1.05;
   }
   else if (var == 2){
-    rmue1 *= 1.05*(pt1-65)/90;
-    rmue2 *= 1.05*(pt2-65)/90;
+    rmue1 *= 1 + (0.05*(pt1-110)/90);
+    rmue2 *= 1 + (0.05*(pt2-110)/90);
   }
   else if (var == -2){
-    rmue1 /= 1.05*(pt1-110)/90;
-    rmue2 /= 1.05*(pt2-110)/90;
+    rmue1 /= 1 + (0.05*(pt1-110)/90);
+    rmue2 /= 1 + (0.05*(pt2-110)/90);
   }
   else if (var == 3){
-    rmue1 *= 1.05*(eta1)/90;
-    rmue2 *= 1.05*(eta2)/90;
+    rmue1 *= 1+ (0.05*(eta1)/2.4);
+    rmue2 *= 1+ (0.05*(eta2)/2.4);
   }
   else if (var == -3){
-    rmue1 /= 1.05*(eta1)/90;
-    rmue2 /= 1.05*(eta2)/90;
+    rmue1 /= 1+ (0.05*(eta1)/2.4);
+    rmue2 /= 1+ (0.05*(eta2)/2.4);
   }
 
 
@@ -296,8 +296,6 @@ float rmuecorrection(float pt1,float pt2,float eta1,float eta2,float pdgId1,floa
     rt = 1.066;
   
   
-  
-
   if (abs(pdgId1) == 11){
     return rt*0.5*( rmue2 + 1/rmue1);
   }
