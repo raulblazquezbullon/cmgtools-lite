@@ -26,6 +26,7 @@ class Uncertainty:
         self.normUnc=[None,None]
         self._postProcess = None
         self._nontrivialSelectionChange = False
+        self._year = None
         lnU_byname = name.endswith("_lnU")
         lnU_byextra = extra != None and ('lnU' in extra) and bool(extra['lnU'])
         if lnU_byname != lnU_byextra: raise RuntimeError("Inconsistent declaration of %s: is it a lnU or not? by name %r, by options %r" % (name,lnU_byname,lnU_byextra))
@@ -67,6 +68,8 @@ class Uncertainty:
             self.trivialFunc = ['apply_norm_up','apply_norm_dn']
             self.normUnc[0] = float(self.args[0])
             self.normUnc[1] = 1.0/self.normUnc[0]
+        elif self.unc_type=="gmN":
+            pass
         elif self.unc_type=='none':
             pass
         else: raise RuntimeError, 'Uncertainty type "%s" not recognised' % self.unc_type
@@ -77,17 +80,38 @@ class Uncertainty:
                 self._postProcess = "Normalize"
         if 'DoesNotChangeEventSelection' in self.extra and self.extra['DoesNotChangeEventSelection']:
             self._nontrivialSelectionChange = False
+        if 'year' in self.extra: 
+            self._year = self.extra['year']
     def isDummy(self):
-        return  self.unc_type == 'none'
+        return  ( self.unc_type == 'none' )
     def isTrivial(self,sign):
         return (self.getFR(sign)==None)
+    def isGamma(self):
+        return (self.unc_type == "gmN")
     def changesSelection(self,sign):
         if self.isTrivial(sign): return False
         return self._nontrivialSelectionChange
     def getTrivial(self,sign,results):
         idx = 0 if sign=='up' else 1
-        if self.getFR(sign) or (self.trivialFunc[idx]==None): raise RuntimeError
+        if self.getFR(sign) or (self.trivialFunc[idx]==None): 
+            raise RuntimeError
         return getattr(self,self.trivialFunc[idx])(results)
+    def GetGamma(self, nominal):
+        if nominal.GetNbinsX() != 1: 
+            print "Gamma functions are not (easily) implemented in combine"
+            raise RuntimeError("Gamma functions are not supported for shapes")
+        n = nominal.Clone('')
+
+        sub_sum = nominal.GetBinContent(1)
+        sub_err = nominal.GetBinError(1)
+        if not sub_err: 
+            n_val = 0
+        else: 
+            n_val = int(0.5 + ((sub_sum * sub_sum) / (sub_err * sub_err)))
+        n.SetBinContent( 1, n_val)
+        return n
+        
+
     def postProcess(self,central,up,down):
         if self._postProcess == None:
             return
@@ -133,6 +157,8 @@ class Uncertainty:
         return self._binmatch
     def unc_type(self):
         return self.unc_type
+    def year(self):
+        return self._year
     def getFR(self,sign):
         FR = self.fakerate[0 if sign=='up' else 1]
         if FR: FR.loadFiles()

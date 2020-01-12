@@ -195,21 +195,28 @@ def doDataNorm(pspec,pmap):
     return sig
 
 def doStackSignalNorm(pspec,pmap,individuals,extrascale=1.0,norm=True):
+    print 'WE ARE HERE!'
     total = sum([v.Integral() for k,v in pmap.iteritems() if k != 'data' and not hasattr(v,'summary')])
     if options.noStackSig:
         total = sum([v.Integral() for k,v in pmap.iteritems() if not hasattr(v,'summary') and mca.isBackground(k) ])
     if individuals:
+        print 'is individuals', mca.listSignals()
         sigs = []
+        for x in mca.listSignals():
+            print x, pmap.has_key(x), pmap[x].Integral()
         for sig in [pmap[x] for x in mca.listSignals() if pmap.has_key(x) and pmap[x].Integral() > 0]:
             sig = sig.Clone(sig.GetName()+"_norm")
             sig.SetFillStyle(0)
             sig.SetLineColor(sig.GetFillColor())
             sig.SetLineWidth(4)
             if norm: sig.Scale(total*extrascale/sig.Integral())
+            print 'drawing here sig', sig
+
             sig.Draw("HIST SAME")
             sigs.append(sig)
         return sigs
     else:
+        print 'is not individual'
         sig = None
         if "signal" in pmap: sig = pmap["signal"].Clone(pspec.name+"_signal_norm")
         else: 
@@ -220,6 +227,7 @@ def doStackSignalNorm(pspec,pmap,individuals,extrascale=1.0,norm=True):
         sig.SetLineWidth(4)
         if norm and sig.Integral() > 0:
             sig.Scale(total*extrascale/sig.Integral())
+        print 'drawing here sig, 2', sig
         sig.Draw("HIST SAME")
         return [sig]
 
@@ -373,10 +381,10 @@ def doNormFit(pspec,pmap,mca,saveScales=False):
     ROOT.RooMsgService.instance().setGlobalKillBelow(gKill)
     return postfit
 
-def doRatioHists(pspec,pmap,total,maxRange,fixRange=False,fitRatio=None,errorsOnRef=True,ratioNums="signal",ratioDen="background",ylabel="Data/pred.",yndiv=505,doWide=False,showStatTotLegend=False,textSize=0.035):
+def doRatioHists(pspec,pmap,total,maxRange,fixRange=False,fitRatio=None,errorsOnRef=True,ratioNums="signal",ratioDen="background",ylabel="Data/pred.",yndiv=505,doWide=False,showStatTotLegend=False,textSize=0.035,ratioDensNums=[]):
     numkeys = [ "data" ]
-    if "data" not in pmap: 
-        if len(pmap) >= 2 and ratioDen in pmap:
+    if "data" not in pmap or len(ratioDensNums): 
+        if len(pmap) >= 2 and ( ratioDen in pmap  ) and not len(ratioDensNums):
             numkeys = []
             for p in pmap.iterkeys():
                 for s in ratioNums.split(","):
@@ -395,11 +403,28 @@ def doRatioHists(pspec,pmap,total,maxRange,fixRange=False,fitRatio=None,errorsOn
             # then we can overwrite total with background
             numkey = 'signal'
             total     = pmap[ratioDen]
+        elif  len(ratioDensNums): 
+            numkeys = [ ]
+            # do this first
+            total.GetXaxis().SetLabelOffset(999) ## send them away
+            total.GetXaxis().SetTitleOffset(999) ## in outer space
+            total.GetYaxis().SetTitleSize(0.06)
+            total.GetYaxis().SetTitleOffset(0.75 if doWide else 1.48)
+            total.GetYaxis().SetLabelSize(0.05)
+            total.GetYaxis().SetLabelOffset(0.007)
+            # then we can overwrite total with background
+            for rat in ratioDensNums:
+                numkeys.append( rat ) 
         else:    
             return (None,None,None,None)
+        
     ratios = [] #None
     for numkey in numkeys:
-        if hasattr(pmap[numkey], 'poissonGraph'):
+        if ',' in numkey: 
+            ratio = pmap[numkey.split(',')[0]].Clone("data_div"); 
+            ratio.Divide(pmap[numkey.split(',')[1]].raw())
+            
+        elif hasattr(pmap[numkey], 'poissonGraph'):
             ratio = pmap[numkey].poissonGraph.Clone("data_div"); 
             for i in xrange(ratio.GetN()):
                 x    = ratio.GetX()[i]
@@ -989,8 +1014,11 @@ class PlotMaker:
                 if options.showSigShape or options.showIndivSigShapes or options.showIndivSigs: 
                     signorms = doStackSignalNorm(pspec,pmap,options.showIndivSigShapes or options.showIndivSigs,extrascale=options.signalPlotScale, norm=not options.showIndivSigs)
                     for signorm in signorms:
-                        if outputDir: 
-                            signorm.SetDirectory(outputDir); outputDir.WriteTObject(signorm)
+                        #if outputDir: 
+                        #    print signorms
+                        #    #signorm.SetDirectory(outputDir);
+                        #    print signorms
+                        #    outputDir.WriteTObject(signorm)
                         reMax(total,signorm,islog,doWide=doWide)
                 if options.showDatShape: 
                     datnorm = doDataNorm(pspec,pmap)
@@ -1016,11 +1044,13 @@ class PlotMaker:
                                 break
                 if makeCanvas and outputDir: outputDir.WriteTObject(c1)
                 rdata,rnorm,rnorm2,rline = (None,None,None,None)
+                print 'we are here' , doRatio
                 if doRatio:
                     p2.cd(); 
+                    print 'we are gonna make ratio'
                     rdata,rnorm,rnorm2,rline = doRatioHists(pspec,pmap,total, maxRange=options.maxRatioRange, fixRange=options.fixRatioRange,
                                                             fitRatio=options.fitRatio, errorsOnRef=options.errorBandOnRatio, 
-                                                            ratioNums=options.ratioNums, ratioDen=options.ratioDen, ylabel=options.ratioYLabel, yndiv=options.ratioYNDiv, doWide=doWide, showStatTotLegend=options.showStatTotLegend, textSize=options.legendFontSize)
+                                                            ratioNums=options.ratioNums, ratioDen=options.ratioDen, ylabel=options.ratioYLabel, yndiv=options.ratioYNDiv, doWide=doWide, showStatTotLegend=options.showStatTotLegend, textSize=options.legendFontSize, ratioDensNums=options.ratioDensNums)
                 if self._options.printPlots:
                     for ext in self._options.printPlots.split(","):
                         fdir = printDir;
@@ -1156,6 +1186,7 @@ def addPlotMakerOptions(parser, addAlsoMCAnalysis=True):
     parser.add_option("--showRatio", dest="showRatio", action="store_true", default=False, help="Add a data/sim ratio plot at the bottom")
     parser.add_option("--ratioDen", dest="ratioDen", type="string", default="background", help="Denominator of the ratio, when comparing MCs")
     parser.add_option("--ratioNums", dest="ratioNums", type="string", default="signal", help="Numerator(s) of the ratio, when comparing MCs (comma separated list of regexps)")
+    parser.add_option("--ratioDensNums", dest="ratioDensNums", default=[], action="append", help="Pairs of numerator and denominator separated by commas")
     parser.add_option("--ratioYLabel", dest="ratioYLabel", type="string", default="Data/pred.", help="Y axis label of the ratio histogram.")
     parser.add_option("--ratioYNDiv", dest="ratioYNDiv", type="int", default=505, help="Y axis divisions in the ratio histogram.")
     parser.add_option("--noErrorBandOnRatio", dest="errorBandOnRatio", action="store_false", default=True, help="Do not show the error band on the reference in the ratio plots")

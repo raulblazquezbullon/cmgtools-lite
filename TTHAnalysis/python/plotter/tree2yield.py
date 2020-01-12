@@ -135,7 +135,7 @@ def makeHistFromBinsAndSpec(name,expr,bins,plotspec):
         return histo
 
 class TreeToYield:
-    def __init__(self,root,basepath,options,scaleFactor='1.0',name=None,cname=None,settings={},objname=None,variation_inputs=[],nanoAOD=False):
+    def __init__(self,root,basepath,options,scaleFactor='1.0',name=None,cname=None,settings={},objname=None,variation_inputs=[],nanoAOD=False, isFromFile=False):
         self._name  = name  if name != None else root
         self._cname = cname if cname != None else self._name
         self._fname = root
@@ -156,6 +156,7 @@ class TreeToYield:
         self._maintty = None
         self._variations = []
         self._ttyVariations = None
+        self.isFromFile = isFromFile
         loadMCCorrections(options)            ## make sure this is loaded
         self._mcCorrSourceList = []
         self._FRSourceList = []
@@ -302,15 +303,18 @@ class TreeToYield:
         else:
             self._tfile = ROOT.TFile.Open(self._fname)
         if not self._tfile: raise RuntimeError, "Cannot open %s\n" % self._fname
-        t = self._tfile.Get(self._objname)
-        if not t: raise RuntimeError, "Cannot find tree %s in file %s\n" % (self._objname, self._fname)
-        self._tree  = t
-        #self._tree.SetCacheSize(10*1000*1000)
-        if "root://" in self._fname: self._tree.SetCacheSize()
-        self._friends = []
-        for tf_tree, tf_filename in self._listFriendTrees():
-            tf = self._tree.AddFriend(tf_tree, tf_filename),
-            self._friends.append(tf)
+        if not self.isFromFile:
+            t = self._tfile.Get(self._objname)
+            if not t: raise RuntimeError, "Cannot find tree %s in file %s\n" % (self._objname, self._fname)
+            self._tree  = t
+            #self._tree.SetCacheSize(10*1000*1000)
+            if "root://" in self._fname: self._tree.SetCacheSize()
+            self._friends = []
+            for tf_tree, tf_filename in self._listFriendTrees():
+                if not os.path.exists( tf_filename): 
+                    tf_filename = tf_filename.replace('/pool/ciencias/', '/pool/cienciasrw/')
+                tf = self._tree.AddFriend(tf_tree, tf_filename),
+                self._friends.append(tf)
         self._isInit = True
     def _close(self):
         self._isInit = False
@@ -360,12 +364,12 @@ class TreeToYield:
                     if "root://" in self._fname: ROOT.gEnv.SetValue("XNet.Debug", -1); # suppress output about opening connections
                     tfile = ROOT.TFile.Open(self._fname)
                     if not tfile: raise RuntimeError, "Cannot open %s\n" % self._fname
-                    t = tfile.Get("Runs")
+                    t = tfile.Get("Runs" if 'NormalizeFrom' not in self._settings else self._settings['NormalizeFrom'])
                     if not t: raise RuntimeError, "Cannot find tree %s in file %s\n" % ("LuminosityBlocks", self._fname)
                     self._sumweights[expr] = _treeSum(t, expr)
                     tfile.Close()
                 else:
-                    self._sumweights[expr] = _treeSum(self.getTree("Runs"), expr)
+                    self._sumweights[expr] = _treeSum(self.getTree("Runs" if 'NormalizeFrom' not in self._settings else self._settings['NormalizeFrom']), expr)
             else:
                 raise RuntimeError, "getSumW implemented only for NanoAOD for now"
         return self._sumweights[expr]
@@ -493,19 +497,27 @@ class TreeToYield:
             for var,sign,tty2 in self.getTTYVariations():
                 if var.name not in variations: variations[var.name] = [var,None,None]
                 isign = (1 if sign == "up" else 2)
-                if not var.isTrivial(sign):
+                if not var.isTrivial(sign) and not var.isGamma():
                     tty2._isInit = True; tty2._tree = self.getTree()
                     variations[var.name][isign] = tty2.getPlot(plotspec,cut,fsplit=fsplit,closeTreeAfter=False,noUncertainties=True)
                     tty2._isInit = False; tty2._tree = None
             for (var,up,down) in variations.itervalues():
-                if up   == None: up   = var.getTrivial("up",  [nominal,None,None])
-                if down == None: down = var.getTrivial("down",[nominal,up,  None])
-                var.postProcess(nominal, up, down)
-                ret.addVariation(var.name, "up",   up)
-                ret.addVariation(var.name, "down", down)
+                if var.isGamma(): 
+                    n = var.GetGamma(nominal)
+                    ret.addVariation(var.name + 'gmN', "up", n)
+                    ret.addVariation(var.name + 'gmN', "down", n)
+                else:
+                    if up   == None: up   = var.getTrivial("up",  [nominal,None,None])
+                    if down == None: down = var.getTrivial("down",[nominal,up,  None])
+                    var.postProcess(nominal, up, down)
+                    ret.addVariation(var.name, "up",   up)
+                    ret.addVariation(var.name, "down", down)
             if closeTreeAfter and _wasclosed: self._close()
             return ret
-        ret = self.getPlotRaw(plotspec.name, plotspec.expr, plotspec.bins, cut, plotspec, fsplit=fsplit, closeTreeAfter=closeTreeAfter)
+        if self.isFromFile:
+            ret = self.getPlotRawFromFile( self._cname, plotspec.bins, plotspec)
+        else:
+            ret = self.getPlotRaw(plotspec.name, plotspec.expr, plotspec.bins, cut, plotspec, fsplit=fsplit, closeTreeAfter=closeTreeAfter)
         # fold overflow
         if ret.ClassName() in [ "TH1F", "TH1D" ] :
             n = ret.GetNbinsX()
@@ -548,6 +560,28 @@ class TreeToYield:
         if self._weightStringAll != "1":
             cut = "(%s)*(%s)" % (self._weightStringAll, cut)
         return cut
+
+    def getPlotRawFromFile(self, name, bins, plotspec):
+        if not self._isInit: self._init()
+        histo = makeHistFromBinsAndSpec("dummy","1",bins,plotspec)
+        tf = ROOT.TFile.Open(self._fname)
+        inhisto = tf.Get(name)
+        # now check that bins make sense and filling them
+        if not inhisto:
+            raise RuntimeError("No histogram %s:%s has been found"%(self._fname, name))
+        if histo.GetNbinsX() != inhisto.GetNbinsX(): 
+            raise RuntimeError("Trying to add histo with %d bins, while plot should have %d"%(histo.GetNbinsX(),inhisto.GetNbinsX()))
+        for bin in range(1,histo.GetNbinsX()+1):
+            if histo.GetBinLowEdge(bin) != inhisto.GetBinLowEdge(bin): 
+                raise RuntimeError("Bin %d has different low bin edge in input (%f,%f)"%(bin, histo.GetBinLowEdge(bin), inhisto.GetBinLowEdge(bin)))
+            histo.SetBinContent(bin, inhisto.GetBinContent(bin))
+        self.negativeCheck( histo ) 
+        histo = histo.Clone( name ) 
+        histo.SetDirectory(None)
+        tf.Close() 
+        print 'done'
+        return histo
+
     def getPlotRaw(self,name,expr,bins,cut,plotspec,fsplit=None,closeTreeAfter=False):
         unbinnedData2D = plotspec.getOption('UnbinnedData2D',False) if plotspec != None else False
         perPlotCut = plotspec.getOption('CutString',None) if plotspec != None else None

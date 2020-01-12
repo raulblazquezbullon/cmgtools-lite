@@ -65,8 +65,7 @@ class MCAnalysis:
                 suboptions = deepcopy(options)
                 suboptions.year = year
                 suboptions.lumi = options.lumi.split(',')[ options.year.split(',').index(year)]
-                suboptions.path = [ path  + '/' + year for path in options.path ]
-                self._subMcas.append( MCAnalysis(samples, suboptions))
+                self._subMcas.append( MCAnalysis(samples.format(year=year), suboptions))
                 for pname,tty in self._subMcas[-1]._allData.iteritems():
                     if pname in self._allData:
                         self._allData[pname].extend( tty )
@@ -141,7 +140,6 @@ class MCAnalysis:
                 for k,v in self.init_defaults.iteritems():
                     if k not in extra: extra[k] = v
             if len(field) <= 1: continue
-            if "SkipMe" in extra and extra["SkipMe"] == True and not options.allProcesses: continue
             if "years"  in extra and options.year and options.year not in extra['years'].split(','): continue
             if 'PostFix' in extra:
                 hasPlus = (field[0][-1]=='+')
@@ -163,6 +161,7 @@ class MCAnalysis:
             if pname[-1] == "+": 
                 signal = True
                 pname = pname[:-1]
+            if "SkipMe" in extra and extra["SkipMe"] == True and not options.allProcesses and pname not in options.processesToAdd : continue
             ## if we remap process names, do it
             for x,newname in self._premap:
                 if re.match(x,pname):
@@ -210,13 +209,12 @@ class MCAnalysis:
                 skipMe = True
                 for p in selectProcesses.split(","):
                     if re.match(p+"$", pnameOriginal): skipMe = False
-            if skipMe: continue
-
+            if skipMe and pname not in options.processesToAdd: continue
             # Load variations if matching this process name
             variations={}
             if self.variationsFile:
                 for var in self.variationsFile.uncertainty():
-                    if var.procmatch().match(pname) and var.binmatch().match(options.binname): 
+                    if var.procmatch().match(pname) and var.binmatch().match(options.binname) and ( var.year() == None or options.year in var.year().split(',')) :
                         #if var.name in variations:
                         #    print "Variation %s overriden for process %s, new process pattern %r, bin %r (old had %r, %r)" % (
                         #            var.name, pname, var.procpattern(), var.binpattern(), variations[var.name].procpattern(), variations[var.name].binpattern())
@@ -251,52 +249,63 @@ class MCAnalysis:
                 objname  = extra["ObjName"]  if "ObjName"  in extra else options.obj
 
                 basepath = None
-                for treepath in options.path:
-                    if os.path.exists(treepath+"/"+cname) or (treename == "NanoAOD" and os.path.isfile(treepath+"/"+cname+".root")):
-                        basepath = treepath
-                        break
-                if not basepath:
-                    raise RuntimeError("%s -- ERROR: %s process not found in paths (%s)" % (__name__, cname, repr(options.path)))
-
-                rootfile = "%s/%s/%s/%s_tree.root" % (basepath, cname, treename, treename)
-                if options.remotePath:
+                if "FromFile" not in extra: 
+                    for treepath in options.path:
+                        if os.path.exists(treepath+"/"+cname) or (treename == "NanoAOD" and os.path.isfile(treepath+"/"+cname+".root")):
+                            basepath = treepath
+                            break
+                    if not basepath:
+                        raise RuntimeError("%s -- ERROR: %s process not found in paths (%s)" % (__name__, cname, repr(options.path)))
+                    
+                    rootfile = "%s/%s/%s/%s_tree.root" % (basepath, cname, treename, treename)
+                    if options.remotePath:
+                        if treename == "NanoAOD":
+                            rootfile = "root:%s/%s.root" % (options.remotePath, cname)
+                        else:
+                            rootfile = "root:%s/%s/%s_tree.root" % (options.remotePath, cname, treename)
+                    elif os.path.exists(rootfile+".url"): #(not os.path.exists(rootfile)) and :
+                        rootfile = open(rootfile+".url","r").readline().strip()
+                    elif (not os.path.exists(rootfile)) and os.path.exists("%s/%s/%s/tree.root" % (basepath, cname, treename)):
+                        # Heppy calls the tree just 'tree.root'
+                        rootfile = "%s/%s/%s/tree.root" % (basepath, cname, treename)
+                    elif (not os.path.exists(rootfile)) and os.path.exists("%s/%s/%s/Events.root" % (basepath, cname, treename)):
+                        rootfile = "%s/%s/%s/Events.root" % (basepath, cname, treename)
+                    elif (not os.path.exists(rootfile)) and os.path.exists("%s/%s/%s/tree.root.url" % (basepath, cname, treename)):
+                        # Heppy calls the tree just 'tree.root'
+                        rootfile = "%s/%s/%s/tree.root" % (basepath, cname, treename)
+                        rootfile = open(rootfile+".url","r").readline().strip()
+                    pckfile = basepath+"/%s/skimAnalyzerCount/SkimReport.pck" % cname
                     if treename == "NanoAOD":
-                        rootfile = "root:%s/%s.root" % (options.remotePath, cname)
+                        objname = "Events"
+                        pckfile = None
+                        rootfile = "%s/%s" % (basepath, cname)
+                        if os.path.isdir(rootfile):
+                            rootfiles = glob("%s/%s/*.root" % (basepath, cname))
+                        elif os.path.isfile(rootfile):
+                            rootfiles = [ rootfile ]
+                        elif os.path.isfile(rootfile+".root"):
+                            rootfiles = [ rootfile+".root" ]
+                        else:
+                            raise RuntimeError("%s -- ERROR: cannot find NanoAOD file for %s process in paths (%s)" % (__name__, cname, repr(options.path)))
                     else:
-                        rootfile = "root:%s/%s/%s_tree.root" % (options.remotePath, cname, treename)
-                elif os.path.exists(rootfile+".url"): #(not os.path.exists(rootfile)) and :
-                    rootfile = open(rootfile+".url","r").readline().strip()
-                elif (not os.path.exists(rootfile)) and os.path.exists("%s/%s/%s/tree.root" % (basepath, cname, treename)):
-                    # Heppy calls the tree just 'tree.root'
-                    rootfile = "%s/%s/%s/tree.root" % (basepath, cname, treename)
-                elif (not os.path.exists(rootfile)) and os.path.exists("%s/%s/%s/Events.root" % (basepath, cname, treename)):
-                    rootfile = "%s/%s/%s/Events.root" % (basepath, cname, treename)
-                elif (not os.path.exists(rootfile)) and os.path.exists("%s/%s/%s/tree.root.url" % (basepath, cname, treename)):
-                    # Heppy calls the tree just 'tree.root'
-                    rootfile = "%s/%s/%s/tree.root" % (basepath, cname, treename)
-                    rootfile = open(rootfile+".url","r").readline().strip()
-                pckfile = basepath+"/%s/skimAnalyzerCount/SkimReport.pck" % cname
-                if treename == "NanoAOD":
-                    objname = "Events"
-                    pckfile = None
-                    rootfile = "%s/%s" % (basepath, cname)
-                    if os.path.isdir(rootfile):
-                        rootfiles = glob("%s/%s/*.root" % (basepath, cname))
-                    elif os.path.isfile(rootfile):
                         rootfiles = [ rootfile ]
-                    elif os.path.isfile(rootfile+".root"):
-                        rootfiles = [ rootfile+".root" ]
-                    else:
-                        raise RuntimeError("%s -- ERROR: cannot find NanoAOD file for %s process in paths (%s)" % (__name__, cname, repr(options.path)))
-                else:
-                    rootfiles = [ rootfile ]
-                
-                for rootfile in rootfiles:
-                    mycname = cname if len(rootfiles) == 1 else cname + "-" + os.path.basename(rootfile).replace(".root","") 
-                    tty = TreeToYield(rootfile, basepath, options, settings=extra, name=pname, cname=mycname, objname=objname, variation_inputs=variations.values(), nanoAOD=(treename == "NanoAOD" or 'nano' in treename)); 
-                    tty.pckfile = pckfile
-                    ttys.append(tty)
 
+                    for rootfile in rootfiles:
+                        mycname = cname if len(rootfiles) == 1 else cname + "-" + os.path.basename(rootfile).replace(".root","") 
+                        tty = TreeToYield(rootfile, basepath, options, settings=extra, name=pname, cname=mycname, objname=objname, variation_inputs=variations.values(), nanoAOD=(treename == "NanoAOD" or 'nano' in treename)); 
+                        tty.pckfile = pckfile
+                        ttys.append(tty)
+
+                else: 
+                    for treepath in options.path:
+                        if os.path.exists(treepath+"/"+extra['FromFile']):
+                            basepath = treepath
+                            break
+                    if not basepath:
+                        raise RuntimeError("%s -- ERROR: %s process not found in paths (%s)" % (__name__, cname, repr(options.path)))
+
+                    tty = TreeToYield( basepath+"/"+extra['FromFile'], basepath, options, settings=extra, name=pname, cname=cname, variation_inputs=variations.values(), isFromFile=True)
+                    ttys.append(tty)
             for tty in ttys:
                 if signal: 
                     self._signals.append(tty)
@@ -308,7 +317,7 @@ class MCAnalysis:
                     self._backgrounds.append(tty)
                 if pname in self._allData: self._allData[pname].append(tty)
                 else                     : self._allData[pname] =     [tty]
-                if "data" not in pname:
+                if "data" not in pname and "FromFile" not in extra:
                     if treename != "NanoAOD" and os.path.isfile(tty.pckfile):
                         pckobj  = pickle.load(open(tty.pckfile,'r'))
                         counters = dict(pckobj)
@@ -387,11 +396,11 @@ class MCAnalysis:
     def isSignal(self,process):
         return self._isSignal[process]
     def listSignals(self,allProcs=False):
-        ret = [ p for p in self._allData.keys() if p != 'data' and self._isSignal[p] and (self.getProcessOption(p, 'SkipMe') != True or allProcs) ]
+        ret = [ p for p in self._allData.keys() if p != 'data' and self._isSignal[p] and (self.getProcessOption(p, 'SkipMe') != True or allProcs or p in self._options.processesToAdd) ]
         ret.sort(key = lambda n : self._rank[n])
         return ret
     def listBackgrounds(self,allProcs=False):
-        ret = [ p for p in self._allData.keys() if p != 'data' and not self._isSignal[p] and (self.getProcessOption(p, 'SkipMe') != True or allProcs) ]
+        ret = [ p for p in self._allData.keys() if p != 'data' and not self._isSignal[p] and (self.getProcessOption(p, 'SkipMe') != True or allProcs  or p in self._options.processesToAdd ) ]
         ret.sort(key = lambda n : self._rank[n])
         return ret
     def hasProcess(self,process):
@@ -603,6 +612,7 @@ class MCAnalysis:
         fname2entries = {}
         for key,ttys in self._allData.iteritems():
             for tty in ttys:
+                if tty.isFromFile: continue
                 if not tty.hasEntries(useEList=False):
                     #print "For tty %s/%s, I don't have the number of entries" % (tty._name, tty._cname)
                     fname2tty[tty.fname()].append(tty)
@@ -825,7 +835,7 @@ class MCAnalysis:
             stylePlot(plot, pspec, lambda key,default : opts[key] if key in opts else default)
         elif not mayBeMissing:
             raise KeyError, "Process %r not found" % process
-    def _processTasks(self,func,tasks,name=None,chunkTasks=200,verbose=False):
+    def _processTasks(self,func,tasks,name=None,chunkTasks=100000,verbose=False):
         if verbose:
             timer = ROOT.TStopwatch()
             print "Starting job %s with %d tasks, %d threads" % (name,len(tasks),self._options.jobs)
@@ -836,7 +846,11 @@ class MCAnalysis:
             retlist = []
             for i in xrange(0,len(tasks),chunkTasks):
                 pool = Pool(min(self._options.jobs,cpu_count()))
-                retlist += pool.map(func, tasks[i:(i+chunkTasks)], 1)
+                ret_temp = pool.map_async(func, tasks[i:(i+chunkTasks)], 1)
+                while not ret_temp.ready():
+                    print "Jobs left: %d out of %d"%(ret_temp._number_left, len(tasks[i:(i+chunkTasks)]))
+                    time.sleep(10)
+                retlist += ret_temp.get()
                 pool.close()
                 pool.join()
                 del pool
@@ -855,16 +869,23 @@ class MCAnalysis:
         else:
             self.prepareForSplit() 
             #print "Original task list has %d entries; split factor %d." % (len(tasks), nsplit)
-            maxent = max( task[1].getEntries() for task in tasks )
+            maxent = max( task[1].getEntries() for task in tasks if not task[1].isFromFile)
             grain  = maxent / nsplit # may be optimized
             #print "Largest task has %d entries. Will use %d as grain " % (maxent, grain)
             if grain < 10000: grain = 10000 # avoid splitting too finely
             newtasks_wsize = []
             if self._options.splitSort:
-                tasks.sort(key = lambda task: task[1].getEntries(), reverse = True)
+                tmp_tasks = [ t for t in tasks if not t[1].isFromFile ] 
+                tmp_tasks_2 = [ t for t in tasks if  t[1].isFromFile ] 
+
+                tmp_tasks.sort(key = lambda task: task[1].getEntries(), reverse = True)
+                tasks = tmp_tasks + tmp_tasks_2
                 #for s,t in newtasks_wsize: print "\t%9d %s/%s %s" % (s,t[1]._name, t[1]._cname, t[-1])
             for task in tasks:
                 tty = task[1]; 
+                if tty.isFromFile: 
+                    newtasks.append( task ) 
+                    continue
                 entries = tty.getEntries()
                 chunks  = min(max(1, int(round(entries/grain))), nsplit)
                 fsplits = [ (i,chunks) for i in xrange(chunks) ]
@@ -900,6 +921,7 @@ def addMCAnalysisOptions(parser,addTreeToYieldOnesToo=True):
     parser.add_option("--pg", "--pgroup", dest="premap", type="string", default=[], action="append", help="Group proceses into one. Syntax is '<newname> := (comma-separated list of regexp)', can specify multiple times. Note tahat it is applied _before_ -p, --sp and --xp");
     parser.add_option("--xf", "--exclude-files", dest="filesToExclude", type="string", default=[], action="append", help="Files to exclude (comma-separated list of regexp, can specify multiple ones)");
     parser.add_option("--xp", "--exclude-process", dest="processesToExclude", type="string", default=[], action="append", help="Processes to exclude (comma-separated list of regexp, can specify multiple ones)");
+    parser.add_option("--ap", "--add-process", dest="processesToAdd", type="string", default=[], action="append", help="Processes to print even if they have been marked with skipMe");
     parser.add_option("--sf", "--swap-files", dest="filesToSwap", type="string", default=[], nargs=2, action="append", help="--swap-files X Y uses file Y instead of X in the MCA");
     parser.add_option("--sp", "--signal-process", dest="processesAsSignal", type="string", default=[], action="append", help="Processes to set as signal (overriding the '+' in the text file)");
     parser.add_option("--float-process", "--flp", dest="processesToFloat", type="string", default=[], action="append", help="Processes to set as freely floating (overriding the 'FreeFloat' in the text file; affects e.g. mcPlots with --fitData)");

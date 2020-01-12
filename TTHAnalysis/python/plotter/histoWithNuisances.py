@@ -459,6 +459,8 @@ class HistoWithNuisances:
             print "WARNING: addBinByBinn on an object that already has roofit/postfit info"
             self._rooFit  = None
             self._postFit = None
+    def isGammaVariation(self, name):
+        return len(self.variations['name']) > 2 
     def isShapeVariation(self,name,tolerance=1e-5,debug=False):
         """return true if the specified variation alters the shape of the histogram.
            this is tested by checking if the ratio between non-empty bins of the 

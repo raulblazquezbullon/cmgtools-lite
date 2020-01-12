@@ -9,6 +9,11 @@
 #include <algorithm>
 #include <numeric>
 #include "TMath.h"
+#include "TVector2.h"
+#include "RooWorkspace.h"
+#include "RooAbsPdf.h"
+#include "RooRealVar.h"
+
 using namespace std;
 
 std::map<int,vector<TH2*>> hElec;
@@ -16,7 +21,7 @@ std::map<int,vector<TH2*>> hMuon;
 
 
 
-TFile *elFile_2016_1, *elFile_2016_2, *elFile_2017_1, *elFile_2017_2, *elFile_2018_1, *elFile_2018_2, *muFile_2016_1, *muFile_2016_2, *muFile_2016_3, *muFile_2016_4, *muFile_2017_1, *muFile_2017_2, *muFile_2018_1;
+TFile *elFile_2016_1, *elFile_2016_2, *elFile_2017_1, *elFile_2017_2, *elFile_2018_1, *elFile_2018_2, *muFile_2016_1, *muFile_2016_2, *muFile_2016_3, *muFile_2016_4, *muFile_2017_1, *muFile_2017_2, *muFile_2018_1, *muFile_2018_2;
 
 bool setup = false;
 
@@ -73,6 +78,8 @@ void loadLeptonSF()
   // 2018
   muFile_2018_1 = TFile::Open("../../data/2018/RunABCD_SF_ID.root");
   hMuon[2018].push_back( (TH2*)  muFile_2018_1->Get("NUM_MediumPromptID_DEN_TrackerMuons_pt_abseta"));
+  muFile_2018_2 = TFile::Open("../../data/2017/leptonSF/SF_num_miniiso_denmediumprompt.root");
+  hMuon[2018].push_back( (TH2*)  muFile_2018_2->Get("TnP_MC_NUM_MiniIso02Cut_DEN_MediumCutidPromptCut_PAR_pt_eta"));
   
 
   
@@ -112,19 +119,19 @@ Double_t LepSF(Double_t pt, Double_t eta, Int_t pdgId, int year, TString sys="")
 Double_t TriggerSF(int pdgid1, int pdgid2, int year)
 {
   if (year == 2016){
-    if (fabs(pdgid1*pdgid2) == 121) return 1;
-    if (fabs(pdgid1*pdgid2) == 143) return 1;
-    if (fabs(pdgid1*pdgid2) == 169) return 1;
+    if (fabs(pdgid1*pdgid2) == 121) return 0.916/0.933;
+    if (fabs(pdgid1*pdgid2) == 143) return 0.890/0.917;
+    if (fabs(pdgid1*pdgid2) == 169) return 0.949/0.980;
   }
   if (year == 2017){
-    if (fabs(pdgid1*pdgid2) == 121) return 0.900/0.953;
-    if (fabs(pdgid1*pdgid2) == 143) return 0.844/0.905;
-    if (fabs(pdgid1*pdgid2) == 169) return 0.878/0.947;
+    if (fabs(pdgid1*pdgid2) == 121) return 0.906/0.955;
+    if (fabs(pdgid1*pdgid2) == 143) return 0.858/0.928;
+    if (fabs(pdgid1*pdgid2) == 169) return 0.873/0.947;
   }
   if (year == 2018){
-    if (fabs(pdgid1*pdgid2) == 121) return 0.924/0.946;
-    if (fabs(pdgid1*pdgid2) == 143) return 0.925/0.953;
-    if (fabs(pdgid1*pdgid2) == 169) return 0.925/0.926;
+    if (fabs(pdgid1*pdgid2) == 121) return 0.923/0.949;
+    if (fabs(pdgid1*pdgid2) == 143) return 0.898/0.926;
+    if (fabs(pdgid1*pdgid2) == 169) return 0.925/0.953;
   }
 
 }
@@ -278,12 +285,12 @@ float rmuecorrection(float pt1,float pt2,float eta1,float eta2,float pdgId1,floa
     rmue2 /= 1 + (0.05*(pt2-110)/90);
   }
   else if (var == 3){
-    rmue1 *= 1+ (0.05*(eta1)/2.4);
-    rmue2 *= 1+ (0.05*(eta2)/2.4);
+    rmue1 *= 1+ (0.05*(abs(eta1)-1.2)/1.2);
+    rmue2 *= 1+ (0.05*(abs(eta2)-1.2)/1.2);
   }
   else if (var == -3){
-    rmue1 /= 1+ (0.05*(eta1)/2.4);
-    rmue2 /= 1+ (0.05*(eta2)/2.4);
+    rmue1 /= 1+ (0.05*(abs(eta1)-1.2)/1.2);
+    rmue2 /= 1+ (0.05*(abs(eta2)-1.2)/1.2);
   }
 
 
@@ -305,3 +312,40 @@ float rmuecorrection(float pt1,float pt2,float eta1,float eta2,float pdgId1,floa
 
 }
 
+float met_4l(float MET_pt_Edge, float  MET_phi_Edge,float  ptZ1_loose_Edge, float  phiZ1_loose_Edge){
+  TVector2 met, z1;
+  met.SetMagPhi( MET_pt_Edge, MET_phi_Edge);
+  z1 .SetMagPhi( ptZ1_loose_Edge, phiZ1_loose_Edge);
+  
+  return (met+z1).Mod();
+}
+
+TFile* f_pdfs = 0; 
+RooWorkspace*  f_w = 0;
+RooAbsPdf* zptpdf = 0;
+RooAbsPdf* metpdf = 0;
+RooAbsPdf* ldppdf = 0;
+RooAbsPdf* mlbpdf = 0;
+
+float nll(float met, float zpt, float mlb, float ldp)
+{
+  if (!f_pdfs){
+    f_pdfs = TFile::Open("../../data/pdfs_v4.root","READ");
+    f_w = (RooWorkspace*) f_pdfs->Get("w");
+  }
+
+  f_w->var("lepsZPt_Edge")->setVal(zpt);
+  float zptPdfVal = f_w->pdf("zpt_analyticalPDF_DA")->getVal(RooArgSet(*f_w->var("lepsZPt_Edge")));
+  
+  f_w->var("met_Edge")->setVal(met);
+  float metPdfVal = f_w->pdf("met_analyticalPDF_DA")->getVal(RooArgSet(*f_w->var("met_Edge")));
+  
+  f_w->var("lepsDPhi_Edge")->setVal(ldp);
+  float ldpPdfVal = f_w->pdf("ldp_analyticalPDF_DA")->getVal(RooArgSet(*f_w->var("lepsDPhi_Edge")));
+
+  f_w->var("sum_mlb_Edge")->setVal(mlb);
+  float mlbPdfVal = f_w->pdf("mlb_analyticalPDF_DA")->getVal(RooArgSet(*f_w->var("sum_mlb_Edge")));
+
+  return -1.*TMath::Log(zptPdfVal*metPdfVal*ldpPdfVal*mlbPdfVal);
+  
+}

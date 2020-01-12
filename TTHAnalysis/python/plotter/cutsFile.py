@@ -43,6 +43,10 @@ class CutsFile:
                             extra[key] = eval(val)
                         else: extra[setting] = True
                 (name,cut) = [x.strip().replace(";",":") for x in line.replace("\:",";").split(":")]
+                if name == '+include_cuts': 
+                    subcuts = CutsFile( cut, options=options, ignoreEmptyOptionsEnforcement=ignoreEmptyOptionsEnforcement)
+                    for c in subcuts.cuts(): self._cuts.append( c ) 
+                    continue
                 if name == "entry point" and cut == "1": continue
                 if options:
                     for cn in options.cutsToEnable:
