@@ -1,0 +1,3 @@
+cut-replace:Flag_goodVertices && Flag_globalSuperTightHalo2016Filter && Flag_HBHENoiseFilter && Flag_HBHENoiseIsoFilter && Flag_EcalDeadCellTriggerPrimitiveFilter && Flag_BadPFMuonFilter && (Flag_ecalBadCalibFilter || (year == 2016)):1
+cut-replace:(Trigger_2m && (abs(Lep1_pdgId_Edge * Lep2_pdgId_Edge) == 169)) || (Trigger_2e && (abs(Lep1_pdgId_Edge * Lep2_pdgId_Edge) == 121)) || (Trigger_em && (abs(Lep1_pdgId_Edge * Lep2_pdgId_Edge) == 143)):1
+weight:btagSFfastsim

@@ -1,0 +1,8 @@
++include_cuts : susy-edge/regions/dilep.txt
+onz : lepsMll_Edge > 86 && lepsMll_Edge < 96
+SF: abs(Lep1_pdgId_Edge)==abs(Lep2_pdgId_Edge)
+isotrackveto : nLepSelLoose_Edge<3 && nPFHad10==0 && nPFLep5<3
+nj2 : nJet35_Edge >= 2
+bveto : nBJetMedium25_Edge==0
+mjj : dphiMjj_Edge<110
+mt2_80 : mt2_Edge>80

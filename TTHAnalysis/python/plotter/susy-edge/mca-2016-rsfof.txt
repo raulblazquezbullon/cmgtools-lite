@@ -1,0 +1,6 @@
+incl_data_SF : + ; IncludeMca="susy-edge/mca-includes/mca-2016-data.txt", FakeRate="susy-edge/fr/fr-sf.txt", PostFix='_SF', LineColor=ROOT.kRed,  FillColor:=ROOT.kRed,  LineStyle=2
+incl_data_OF : + ; IncludeMca="susy-edge/mca-includes/mca-2016-data.txt", FakeRate="susy-edge/fr/fr-of.txt", PostFix='_OF', LineColor=ROOT.kBlue, FillColor:=ROOT.kBlue, LineStyle=2
+incl_mc_SF   : + ; IncludeMca="susy-edge/mca-includes/mca-2016-mc.txt"  , FakeRate="susy-edge/fr/fr-sf.txt", PostFix='_SF', LineColor=ROOT.kRed,  FillColor:=ROOT.kRed,  MarkerStyle=ROOT.kFullSquare
+incl_mc_OF   : + ; IncludeMca="susy-edge/mca-includes/mca-2016-mc.txt"  , FakeRate="susy-edge/fr/fr-of.txt", PostFix='_OF', LineColor=ROOT.kBlue, FillColor:=ROOT.kBlue, MarkerStyle=ROOT.kFullSquare
+
+

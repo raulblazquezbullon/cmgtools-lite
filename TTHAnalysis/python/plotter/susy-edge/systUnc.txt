@@ -1,0 +1,35 @@
+### Alias definitions. Careful to avoid trailing '.*' to avoid matching _promptsub
+$alias : MCall : TTZ|WZ|VVV|ZZ|DY|TSlepslep_.*
+$alias : MCfastsim : TSlepslep_.*
+
+flav_sym : data_flavsym : .* : gmN
+
+flav_sym_rmue_norm : data_flavsym : .* : templateAsymm ; AddWeights=['rmuecorrection(Lep1_pt_Edge\,Lep2_pt_Edge\,Lep1_eta_Edge\,Lep2_eta_Edge\,Lep1_pdgId_Edge\,Lep2_pdgId_Edge\,year\,1)/rmuecorrection(Lep1_pt_Edge\,Lep2_pt_Edge\,Lep1_eta_Edge\,Lep2_eta_Edge\,Lep1_pdgId_Edge\,Lep2_pdgId_Edge\,year)'\,'rmuecorrection(Lep1_pt_Edge\,Lep2_pt_Edge\,Lep1_eta_Edge\,Lep2_eta_Edge\,Lep1_pdgId_Edge\,Lep2_pdgId_Edge\,year\,-1)/rmuecorrection(Lep1_pt_Edge\,Lep2_pt_Edge\,Lep1_eta_Edge\,Lep2_eta_Edge\,Lep1_pdgId_Edge\,Lep2_pdgId_Edge\,year)'], DoesNotChangeEventSelection=True
+flav_sym_rmue_pt_2016_2017 : data_flavsym : .* : templateAsymm ; AddWeights=['rmuecorrection(Lep1_pt_Edge\,Lep2_pt_Edge\,Lep1_eta_Edge\,Lep2_eta_Edge\,Lep1_pdgId_Edge\,Lep2_pdgId_Edge\,year\,2)/rmuecorrection(Lep1_pt_Edge\,Lep2_pt_Edge\,Lep1_eta_Edge\,Lep2_eta_Edge\,Lep1_pdgId_Edge\,Lep2_pdgId_Edge\,year)'\,'rmuecorrection(Lep1_pt_Edge\,Lep2_pt_Edge\,Lep1_eta_Edge\,Lep2_eta_Edge\,Lep1_pdgId_Edge\,Lep2_pdgId_Edge\,year\,-2)/rmuecorrection(Lep1_pt_Edge\,Lep2_pt_Edge\,Lep1_eta_Edge\,Lep2_eta_Edge\,Lep1_pdgId_Edge\,Lep2_pdgId_Edge\,year)'], DoesNotChangeEventSelection=True, year="2016\,2017"
+flav_sym_rmue_pt_2016_2018 : data_flavsym : .* : templateAsymm ; AddWeights=['rmuecorrection(Lep1_pt_Edge\,Lep2_pt_Edge\,Lep1_eta_Edge\,Lep2_eta_Edge\,Lep1_pdgId_Edge\,Lep2_pdgId_Edge\,year\,2)/rmuecorrection(Lep1_pt_Edge\,Lep2_pt_Edge\,Lep1_eta_Edge\,Lep2_eta_Edge\,Lep1_pdgId_Edge\,Lep2_pdgId_Edge\,year)'\,'rmuecorrection(Lep1_pt_Edge\,Lep2_pt_Edge\,Lep1_eta_Edge\,Lep2_eta_Edge\,Lep1_pdgId_Edge\,Lep2_pdgId_Edge\,year\,-2)/rmuecorrection(Lep1_pt_Edge\,Lep2_pt_Edge\,Lep1_eta_Edge\,Lep2_eta_Edge\,Lep1_pdgId_Edge\,Lep2_pdgId_Edge\,year)'], DoesNotChangeEventSelection=True, year="2018"
+flav_sym_rmue_eta_2016 : data_flavsym : .* : templateAsymm ; AddWeights=['rmuecorrection(Lep1_pt_Edge\,Lep2_pt_Edge\,Lep1_eta_Edge\,Lep2_eta_Edge\,Lep1_pdgId_Edge\,Lep2_pdgId_Edge\,year\,3)/rmuecorrection(Lep1_pt_Edge\,Lep2_pt_Edge\,Lep1_eta_Edge\,Lep2_eta_Edge\,Lep1_pdgId_Edge\,Lep2_pdgId_Edge\,year)'\,'rmuecorrection(Lep1_pt_Edge\,Lep2_pt_Edge\,Lep1_eta_Edge\,Lep2_eta_Edge\,Lep1_pdgId_Edge\,Lep2_pdgId_Edge\,year\,-3)/rmuecorrection(Lep1_pt_Edge\,Lep2_pt_Edge\,Lep1_eta_Edge\,Lep2_eta_Edge\,Lep1_pdgId_Edge\,Lep2_pdgId_Edge\,year)'], DoesNotChangeEventSelection=True, year="2016"
+flav_sym_rmue_eta_2017 : data_flavsym : .* : templateAsymm ; AddWeights=['rmuecorrection(Lep1_pt_Edge\,Lep2_pt_Edge\,Lep1_eta_Edge\,Lep2_eta_Edge\,Lep1_pdgId_Edge\,Lep2_pdgId_Edge\,year\,3)/rmuecorrection(Lep1_pt_Edge\,Lep2_pt_Edge\,Lep1_eta_Edge\,Lep2_eta_Edge\,Lep1_pdgId_Edge\,Lep2_pdgId_Edge\,year)'\,'rmuecorrection(Lep1_pt_Edge\,Lep2_pt_Edge\,Lep1_eta_Edge\,Lep2_eta_Edge\,Lep1_pdgId_Edge\,Lep2_pdgId_Edge\,year\,-3)/rmuecorrection(Lep1_pt_Edge\,Lep2_pt_Edge\,Lep1_eta_Edge\,Lep2_eta_Edge\,Lep1_pdgId_Edge\,Lep2_pdgId_Edge\,year)'], DoesNotChangeEventSelection=True, year="2017"
+flav_sym_rmue_eta_2018 : data_flavsym : .* : templateAsymm ; AddWeights=['rmuecorrection(Lep1_pt_Edge\,Lep2_pt_Edge\,Lep1_eta_Edge\,Lep2_eta_Edge\,Lep1_pdgId_Edge\,Lep2_pdgId_Edge\,year\,3)/rmuecorrection(Lep1_pt_Edge\,Lep2_pt_Edge\,Lep1_eta_Edge\,Lep2_eta_Edge\,Lep1_pdgId_Edge\,Lep2_pdgId_Edge\,year)'\,'rmuecorrection(Lep1_pt_Edge\,Lep2_pt_Edge\,Lep1_eta_Edge\,Lep2_eta_Edge\,Lep1_pdgId_Edge\,Lep2_pdgId_Edge\,year\,-3)/rmuecorrection(Lep1_pt_Edge\,Lep2_pt_Edge\,Lep1_eta_Edge\,Lep2_eta_Edge\,Lep1_pdgId_Edge\,Lep2_pdgId_Edge\,year)'], DoesNotChangeEventSelection=True, year="2018"
+flav_sym_rt : data_flavsym : .* : normSymm : 1.04 ;
+
+CMS_scale_j : $MCall : .* : templateAsymm ; \
+        FakeRates=['susy-edge/fr/fr-jecUp.txt'\,'susy-edge/fr/fr-jecDn.txt']
+CMS_EdgeZ_btag_h : $MCall : .* : templateAsymm; AddWeights=['btagSF_heavyUp/btagSF'\,'btagSF_heavyDown/btagSF'], DoesNotChangeEventSelection=True
+CMS_EdgeZ_btag_l : $MCall : .* : templateAsymm; AddWeights=['btagSF_lightUp/btagSF'\,'btagSF_lightDown/btagSF'], DoesNotChangeEventSelection=True
+CMS_EdgeZ_btag_h_fastsim : $MCfastsim : .* : templateAsymm; AddWeights=['btagSFfastsim_heavyUp/btagSFfastsim'\,'btagSFfastsim_heavyDown/btagSFfastsim'], DoesNotChangeEventSelection=True
+CMS_EdgeZ_btag_l_fastsim : $MCfastsim : .* : templateAsymm; AddWeights=['btagSFfastsim_lightUp/btagSFfastsim'\,'btagSFfastsim_lightDown/btagSFfastsim'], DoesNotChangeEventSelection=True
+CMS_EdgeZ_fastsim_met : $MCfastsim : .* : templateAsymm; FakeRates=['susy-edge/fr/fr-fastsim-met-Dn.txt'\,'susy-edge/fr/fr-fastsim-met-Dn.txt']
+
+CMS_EdgeZ_triggerEff : $MCall : .* : normSymm : 1.02
+CMS_EdgeZ_mueff : $MCall : .* : normSymm : 1.02
+CMS_EdgeZ_eleff : $MCall : .* : normSymm : 1.02
+
+lumi_2016		: $MCall : .* : normSymm : 1.022; year="2016"
+lumi_2017		: $MCall : .* : normSymm : 1.020; year="2017"
+lumi_2018		: $MCall : .* : normSymm : 1.015; year="2018"
+lumi_corr		: $MCall : .* : normSymm : 1.014; year="2016"
+lumi_corr		: $MCall : .* : normSymm : 1.013; year="2017"
+lumi_corr		: $MCall : .* : normSymm : 1.021; year="2018"
+
+wz_normalization        : WZ : .* : normSymm : 1.08
+zz_normalization        : ZZ : .* : normSymm : 1.07

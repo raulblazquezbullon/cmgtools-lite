@@ -1,0 +1,7 @@
++include_cuts : susy-edge/regions/dilep.txt
+zveto : lepsMll_Edge<86 || lepsMll_Edge>96
+met150: MET_pt_Edge > 150
+nj2 : nJet25_Edge>1
+mt2 : mt2_Edge>80
+dphi : abs(deltaPhi(JetSel_Edge_phi[0], MET_phi_Edge)) > 0.4 && abs(deltaPhi(JetSel_Edge_phi[1], MET_phi_Edge)) > 0.4
+

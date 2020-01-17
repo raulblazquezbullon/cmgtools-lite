@@ -1,0 +1,12 @@
++include_cuts : susy-edge/dilep.txt
+2j : nJetSel_Edge == 2
+MET_100_150 : MET_pt_Edge > 100 && MET_pt_Edge < 150
+mll_70_110 : lepsMll_Edge > 110. || lepsMll_Edge < 70
+
+
+ee: abs(Lep1_pdgId_Edge * Lep2_pdgId_Edge) == 121; Disable=True
+mm: abs(Lep1_pdgId_Edge * Lep2_pdgId_Edge) == 169; Disable=True
+em: abs(Lep1_pdgId_Edge * Lep2_pdgId_Edge) == 143; Disable=True
+
+SF: abs(Lep1_pdgId_Edge)==abs(Lep2_pdgId_Edge); Disable=True
+OF: abs(Lep1_pdgId_Edge)!=abs(Lep2_pdgId_Edge); Disable=True

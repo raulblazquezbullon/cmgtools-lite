@@ -1,0 +1,12 @@
++include_cuts : susy-edge/regions/dilep.txt
+onz : lepsMll_Edge > 86 && lepsMll_Edge < 96
+SF: abs(Lep1_pdgId_Edge)==abs(Lep2_pdgId_Edge)
+isotrackveto : nLepSelLoose_Edge<3 && nPFHad10==0 && nPFLep5<3
+strong_onz_category : strong_onz_category(nJet35_Edge, nBJetMedium35_Edge, htJet35j_Edge, mt2_Edge, MET_pt_Edge) > 0
+dphijet : (abs(j1MetDPhi_Edge)>= 0.4)&& (abs(j2MetDPhi_Edge)>= 0.4)
+SRA_btag  : strong_onz_category(nJet35_Edge, nBJetMedium35_Edge, htJet35j_Edge, mt2_Edge, MET_pt_Edge)==2; Disable=True
+SRA_bveto : strong_onz_category(nJet35_Edge, nBJetMedium35_Edge, htJet35j_Edge, mt2_Edge, MET_pt_Edge)==1; Disable=True
+SRB_btag  : strong_onz_category(nJet35_Edge, nBJetMedium35_Edge, htJet35j_Edge, mt2_Edge, MET_pt_Edge)==4; Disable=True
+SRB_bveto : strong_onz_category(nJet35_Edge, nBJetMedium35_Edge, htJet35j_Edge, mt2_Edge, MET_pt_Edge)==3; Disable=True
+SRC_btag  : strong_onz_category(nJet35_Edge, nBJetMedium35_Edge, htJet35j_Edge, mt2_Edge, MET_pt_Edge)==6; Disable=True
+SRC_bveto : strong_onz_category(nJet35_Edge, nBJetMedium35_Edge, htJet35j_Edge, mt2_Edge, MET_pt_Edge)==5; Disable=True

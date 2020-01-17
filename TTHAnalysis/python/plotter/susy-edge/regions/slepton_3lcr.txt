@@ -1,0 +1,9 @@
+alwaystrue : 1 
+twoLeptons : nPairLep_Edge > 0
+l3: nLepTight_Edge>2
+mZ1: mZ1_tight_3l<106 && mZ1_tight_3l>76
+met70: MET_pt_Edge > 70
+jetveto: nJet25_Edge == 0
+m3l: m3l_WZ>110
+bestMT: bestMT>50
+leppt : Lep1_pt_Edge > 25 && Lep2_pt_Edge > 20 && Lep3_pt_Edge > 20
