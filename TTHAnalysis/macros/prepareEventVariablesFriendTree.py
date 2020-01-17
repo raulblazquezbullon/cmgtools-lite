@@ -259,20 +259,23 @@ if options.checkaliens:
             continue
 jobs = []
 for D in sorted(glob(args[0]+"/*")):
+    print D
     if isNano:
         treename = "Events"
         if os.path.isfile(D) and D.endswith(".root"):
             fname = D
         elif os.path.isdir(D) and os.path.isfile("%s/%s.root" % (D, os.path.basename(D))):
             fname = "%s/%s.root" % (D, os.path.basename(D))
+        elif os.path.isdir(D) and os.path.isfile("%s/nanoAODskim/Events.root" %D):
+            fname = "%s/nanoAODskim/Events.root" % D
         else:
             continue
     else:
         treename = options.tree
         fname    = "%s/%s/%s_tree.root" % (D,options.tree,options.tree)
-        if (not os.path.exists(fname)) and (os.path.exists("%s/%s/tree.root" % (D,options.tree)) ):
-            treename = "tree"
-            fname    = "%s/%s/tree.root" % (D,options.tree)
+        if (not os.path.exists(fname)) and (os.path.exists("%s/%s/Events.root" % (D,options.tree)) ):
+            treename = "Events"
+            fname    = "%s/%s/Events.root" % (D,options.tree)
         if (not os.path.exists(fname)) and (os.path.exists("%s/%s/tree.root.url" % (D,options.tree)) ):
             treename = "tree"
             fname    = "%s/%s/tree.root" % (D,options.tree)
@@ -397,7 +400,7 @@ if options.queue:
     elif options.env == "oviedo":
         if options.queue != "":
             options.queue = "batch" 
-        super  = "qsub -q {queue} -N happyTreeFriend".format(queue = options.queue)
+        super  = "qsub -q batch -N happyTreeFriend".format(queue = options.queue)
         runner = "lxbatch_runner.sh"
         theoutput = theoutput.replace('/pool/ciencias/','/pool/cienciasrw/')
     else: # Use lxbatch by default
@@ -512,14 +515,12 @@ def _runIt(myargs):
         os.environ["DebugLevel"]="0"
     else:
         fb = ROOT.TFile.Open(fin)
-        print fb
 
-    print "getting tree.."
+
     tb = fb.Get(options.tree)
 
-    if not tb: tb = fb.Get("tree") # new trees
+    if not tb: tb = fb.Get("Events") # new trees
     tb.vectorTree = True
-
     friends = options.friendTrees[:]
     friends += (options.friendTreesData if data else options.friendTreesMC)
     friends_ = [] # to make sure pyroot does not delete them
@@ -533,6 +534,7 @@ def _runIt(myargs):
     print "==== %s starting (%d entries) ====" % (name, nev)
     booker = Booker(fout)
     modulesToRun = MODULES
+    print 'mimimi'
     if options.modules != []:
         toRun = {}
         for m,v in MODULES:
@@ -541,7 +543,7 @@ def _runIt(myargs):
                     toRun[m] = True
         modulesToRun = [ (m,v) for (m,v) in MODULES if m in toRun ]
     el = EventLoop([ VariableProducer(options.treeDir,booker,modulesToRun), ])
-    el.loop([tb], eventRange=xrange(range))
+    el.loop([tb], eventRange=xrange(range[0],range[1]))
     booker.done()
     fb.Close()
     time = timer.RealTime()
@@ -561,8 +563,15 @@ def _runIt(myargs):
 def _runItNano(myargs):
     (name,fin,ofout,data,range,chunk,fineSplit) = myargs
     timer = ROOT.TStopwatch()
-    command = ["nano_postproc.py", "--friend", os.path.dirname(ofout), "--postfix", os.path.basename(ofout)[len(name):-len(".root")] ]
-    for i in options.imports:  command += [ "-I", i[0], i[1] ]
+    command = ["nano_postproc.py", "--friend", os.path.dirname(ofout), "--postfix", os.path.basename(ofout).replace('.root','') ]
+    year = 0 
+    if '2016' in name: year = 2016
+    elif '2017' in name: year = 2017
+    elif '2018' in name: year = 2018
+    else: 
+        raise RuntimeError("No year in dataset %s"%name)
+
+    for i in options.imports:  command += [ "-I", i[0], i[1] if "{year}" not in i[1] else i[1].format(year=year) ]
     command += [ "-z", options.compression ]
     fin = fin
     friends = options.friendTrees[:] + (options.friendTreesData if data else options.friendTreesMC)

@@ -6,22 +6,24 @@ from CMGTools.TTHAnalysis.tools.nanoAOD.friendVariableProducerTools import decla
 
 
 class ObjTagger(Module):
-    def __init__(self,label,coll,sel,sizelimit=10,linkColl='', linkVar=''):
+    def __init__(self,label,coll,sel,sizelimit=10,linkColl='', linkVar='', makelinks=False):
         self.label = "" if (label in ["",None]) else (label)
         self.coll = coll
         self.sel = sel
         self.sizelimit = sizelimit
         self.linkColl  = linkColl
         self.linkVar   = linkVar
-
+        self.makelinks = makelinks
     def listBranches(self):
         biglist = [ ("n"+self.coll,"I"), ("n"+self.coll+"_"+self.label, "I"), (self.coll+"_"+self.label,"I",100,"n"+self.coll) ]
+        if self.makelinks: 
+            biglist.append(  ('i' + self.coll+"_"+self.label,"I",100,"n" + self.coll+"_"+self.label) )
         return biglist
     def __call__(self,event):
         return self.runIt(event,CMGCollection)
 
     def beginFile(self, inputFile, outputFile, inputTree, wrappedOutputTree):
-        declareOutput(self, wrappedOutputTree, [ ("n"+self.coll,"I"), ("n"+self.coll+"_"+self.label, "I"), (self.coll+"_"+self.label,"I",100,"n"+self.coll) ])
+        declareOutput(self, wrappedOutputTree, self.listBranches()) #  [ ("n"+self.coll,"I"), ("n"+self.coll+"_"+self.label, "I"), (self.coll+"_"+self.label,"I",100,"n"+self.coll) ]
     def analyze(self, event):
         writeOutput(self, self.runIt(event,NanoAODCollection))
         return True
@@ -37,6 +39,7 @@ class ObjTagger(Module):
         ret = {"n"+self.coll : getattr(event,"n"+self.coll) }
         ret["n"+self.coll+"_"+self.label]=0
         ret[self.coll+"_"+self.label]=[0] * getattr(event,"n"+self.coll)
+        links = [] 
         for i,ob in enumerate(objs):
             ispassing = True
             for selector in self.sel:
@@ -51,6 +54,9 @@ class ObjTagger(Module):
             if ispassing:
                 ret["n"+self.coll+"_"+self.label] += 1
                 ret[self.coll+"_"+self.label][i] = 1
+                links.append( i ) 
+        if self.makelinks: 
+            ret['i' + self.coll+"_"+self.label]  = links
         return ret
 
 if __name__ == '__main__':

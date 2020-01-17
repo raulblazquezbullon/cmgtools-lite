@@ -1,0 +1,18 @@
+# AVAILABLE COLORS:
+# kMagenta
+# kBlue
+# kOrange
+# kRed
+#####################################################
+#FORMAT: input root histo-name line-color area-color  
+#####################################################
+HISTOGRAM config/SUS20001/slepton.root xsec
+EXPECTED config/SUS20001/slepton.root expected_nom expected_nom expected_nom kRed kOrange
+OBSERVED config/SUS20001/slepton.root expected_nom expected_nom expected_nom kRed kOrange
+# Preliminary Simulation or leave empty
+PRELIMINARY Preliminary
+# Lumi in fb 
+LUMI 137.0
+# Beam energy in TeV
+ENERGY 13
+#

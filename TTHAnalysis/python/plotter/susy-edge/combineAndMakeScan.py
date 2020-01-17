@@ -1,8 +1,8 @@
 import os, re
-cardRegex = "slepton_.*_m1_(?P<m1>.*)_m2_(?P<m2>.*).card.txt"
+cardRegex = "slepton.*_m1_(?P<m1>.*)_m2_(?P<m2>.*).card.txt"
 scanName  = "slepton"
-cardDirectory="jan06"
-outputDirectory="scan_slepton_jan06"
+cardDirectory="jan11"
+outputDirectory="scan_slepton_jan11"
 
 os.system('mkdir -p ' + outputDirectory ) 
 def runIt(command, debug=True, batch=True):

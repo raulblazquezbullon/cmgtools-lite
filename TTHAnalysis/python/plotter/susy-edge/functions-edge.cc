@@ -44,6 +44,7 @@ void loadLeptonSF()
 
   elFile_2017_1 = TFile::Open("../../data/2017/leptonSF/ElectronScaleFactors_Run2017.root");
   hElec[2017].push_back( (TH2*)  elFile_2017_1->Get("Run2017_MVATightTightIP2D3D"));
+  hElec[2017].push_back( (TH2*)  elFile_2017_1->Get("Run2017_MVAVLooseTightIP2DMini"));
   hElec[2017].push_back( (TH2*)  elFile_2017_1->Get("Run2017_ConvIHit0"));
 
   elFile_2017_2 = TFile::Open("../../data/2017/leptonSF/egammaEffi.txt_EGM2D_runBCDEF_passingRECO.root");
@@ -55,7 +56,7 @@ void loadLeptonSF()
   
   elFile_2018_2 = TFile::Open("../../data/2018/ElectronScaleFactors_Run2018.root");
   hElec[2018].push_back( (TH2*)  elFile_2018_2->Get("Run2018_MVATightTightIP2D3D"));
-  hElec[2018].push_back( (TH2*)  elFile_2018_2->Get("Run2018_Mini4"));
+  hElec[2018].push_back( (TH2*)  elFile_2018_2->Get("Run2018_Mini"));
   hElec[2018].push_back( (TH2*)  elFile_2018_2->Get("Run2018_ConvIHit0"));
 
   // Muons
@@ -349,3 +350,51 @@ float nll(float met, float zpt, float mlb, float ldp)
   return -1.*TMath::Log(zptPdfVal*metPdfVal*ldpPdfVal*mlbPdfVal);
   
 }
+
+
+int strong_onz_category(int nJet25_Edge, int nBJetMedium25_Edge, float htJet25j, float mt2_Edge, float MET_pt_Edge)
+{
+  if (nJet25_Edge == 2 || nJet25_Edge == 3){
+    if (nBJetMedium25_Edge == 0){ // SRA b-veto
+      if (htJet25j < 500) return -1;
+      if (mt2_Edge < 80) return -1;
+      if (MET_pt_Edge < 50) return -1;
+      return 1;
+    }
+    else{ // SRA b-tag
+      if (htJet25j < 200) return -1;
+      if (mt2_Edge < 100) return -1;
+      if (MET_pt_Edge < 50) return -1;
+      return 2;
+    }
+  }
+  else if ( nJet25_Edge == 4 || nJet25_Edge == 5){
+    if (nBJetMedium25_Edge == 0){ // SRB b-veto
+      if (htJet25j < 500) return -1;
+      if (mt2_Edge < 80) return -1;
+      if (MET_pt_Edge < 50) return -1;
+      return 3;
+    }
+    else{ // SRB b-tag
+      if (htJet25j < 200) return -1;
+      if (mt2_Edge < 100) return -1;
+      if (MET_pt_Edge < 50) return -1;
+      return 4;
+    }
+  }
+  if (nJet25_Edge > 5){
+    if (nBJetMedium25_Edge == 0){ // SRC b-veto
+      if (mt2_Edge < 80) return -1;
+      if (MET_pt_Edge < 50) return -1;
+      return 5;
+    }
+    else{ // SRC b-tag
+      if (mt2_Edge < 100) return -1;
+      if (MET_pt_Edge < 50) return -1;
+      return 6;
+    }
+  }
+  return -1;
+}
+    
+

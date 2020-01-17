@@ -1,6 +1,11 @@
 import ROOT as r
 import os, re
 import copy
+cardRegex = "slepton_.*_m1_(?P<m1>.*)_m2_(?P<m2>.*).card.txt"
+scanName  = "slepton"
+cardDirectory="jan11"
+outputDirectory="scan_slepton_jan11"
+
 
 #r.gROOT.SetBatch(True)
 r.gStyle.SetPaintTextFormat('4.1f')
@@ -19,11 +24,6 @@ class Scan:
             self.xbins = binning(100,2100,1)
             self.ybins = binning(0,2100,1)
         else: raise RuntimeError('wrong scan name')
-
-cardRegex = "slepton_.*_m1_(?P<m1>.*)_m2_(?P<m2>.*).card.txt"
-scanName  = "slepton"
-cardDirectory="jan06"
-outputDirectory="scan_slepton_jan06"
 
 pattern = "higgsCombine%s_(?P<m1>.*)_(?P<m2>.*).AsymptoticLimits.mH120.root"%scanName
 pattern = re.compile( pattern )

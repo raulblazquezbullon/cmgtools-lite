@@ -1,6 +1,7 @@
-from CMGTools.TTHAnalysis.treeReAnalyzer2 import *
+from PhysicsTools.NanoAODTools.postprocessing.framework.eventloop import Module
+from PhysicsTools.NanoAODTools.postprocessing.framework.datamodel import Collection 
 
-class Triggers:
+class Triggers( Module ):
     def __init__(self, label, filters):
         self.label = label 
         self.filters = filters
@@ -128,21 +129,13 @@ class Triggers:
                 ]
             }
         }
-        self.filterList =   [
-            'Flag_goodVertices',
-            'Flag_globalSuperTightHalo2016Filter',
-            'Flag_HBHENoiseFilter',
-            'Flag_HBHENoiseIsoFilter',
-            'Flag_EcalDeadCellTriggerPrimitiveFilter',
-            'Flag_BadPFMuonFilter',
-            'Flag_ecalBadCalibFilter',
-            # 'Flag_eeBadScFilter' # data only (hardcoded below) 
-        ]
 
-    def listBranches(self):
-        return [ '%s_'%self.label + k for k in self.triggers ]# + [self.filters]
+    def beginFile(self, inputFile, outputFile, inputTree, wrappedOutputTree):
+        self.out = wrappedOutputTree
+        for k in self.triggers: 
+            self.out.branch('%s_'%self.label + k,'I')
 
-    def __call__(self, event):
+    def analyze(self, event):
         ret = {} 
         for chan in self.triggers:
             fires = False
@@ -150,14 +143,6 @@ class Triggers:
                 if hasattr(event, path) and getattr(event,path): 
                     fires = True
                     break
-            ret['%s_%s'%(self.label, chan)] = fires
-        # filters = True
-        # for filt in self.filterList:
-        #     if not getattr(event, filt): 
-        #         filters = False
-        # if event.isData: 
-        #     ret[self.filters] = filters and event.Flag_eeBadScFilter
-        # else :
-        #     ret[self.filters] = filters
-        return ret
+            self.out.fillBranch( '%s_%s'%(self.label, chan), fires )
+        return True
         
