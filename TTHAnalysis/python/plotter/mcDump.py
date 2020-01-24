@@ -3,7 +3,7 @@
 from CMGTools.TTHAnalysis.plotter.tree2yield import *
 from CMGTools.TTHAnalysis.plotter.projections import *
 from CMGTools.TTHAnalysis.plotter.mcAnalysis import *
-from CMGTools.TTHAnalysis.treeReAnalyzer import *
+from CMGTools.TTHAnalysis.treeReAnalyzer2 import *
 import string
 
 if "/fakeRate_cc.so" not in ROOT.gSystem.GetLibraries(): 
