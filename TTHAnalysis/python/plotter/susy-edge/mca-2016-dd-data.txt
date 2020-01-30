@@ -1,5 +1,5 @@
 # template_SRWZ_boosted  : SRVZBoostedtype1MET_widebin  ;FillColor=ROOT.kYellow-9, FromFile="Templates.root", SkipMe=True, Label="Templates"
-# template_SRWZ_resolved : SRVZResolvedtype1MET_widebin ;FillColor=ROOT.kYellow-9, FromFile="Templates.root", SkipMe=True, Label="Templates"
+template_SRWZ_resolved : SRVZResolved_prediction_bin ;FillColor=ROOT.kYellow-9, FromFile="Templates.root", SkipMe=True, Label="Templates"
 # template_SRA_btag  : SRAb_prediction_bin ;FillColor=ROOT.kYellow-9, FromFile="Templates.root", SkipMe=True, Label="Templates"
 # template_SRA_bveto : SRA_prediction_bin  ;FillColor=ROOT.kYellow-9, FromFile="Templates.root", SkipMe=True, Label="Templates"
 # template_SRB_btag  : SRBb_prediction_bin ;FillColor=ROOT.kYellow-9, FromFile="Templates.root", SkipMe=True, Label="Templates"
