@@ -191,7 +191,7 @@ if __name__ == '__main__':
             if '_notrigger' in torun: x = add(x,'-X ^trigger ' )
 
         if '_unc' in torun:
-            x = add(x,"--unc ttH-multilepton/systsUnc.txt")
+            x = add(x,"--unc ttH-multilepton/systsUnc.txt --xu CMS_ttHl_TTZ_lnU,CMS_ttHl_TTW_lnU")
 
         if '_varsFR' in torun:
             x = x.replace('mca-2lss-mc.txt','mca-2lss-data-frdata-vars.txt')
@@ -215,8 +215,9 @@ if __name__ == '__main__':
         if '_mio' in torun:  
             x = add(x, "-E 1B")
             x = add(x, "-E 4j")
+            x = add(x, "-X 2b1B")
             x = x.replace('mca-2lss-mc.txt','mca-2lss-mcdata.txt')
-            x = add(x,"--unc ttH-multilepton/systsUnc.txt")
+            x = add(x,"--unc ttH-multilepton/systsUnc.txt --xu CMS_ttHl_TTZ_lnU,CMS_ttHl_TTW_lnU")
             x = add(x,"--sP 'met' --sP 'nJet25_from0' --sP 'nBJetMedium25' --sP 'lep1_pt' --sP 'lep2_pt' --sP 'SVA_2lss_mll' --sP 'mZ1' --sP 'mhtJet25' --sP 'htJet25j' --perBin --sP 'tot_weight'")
 			#x = x.replace('--pdir 2lss_mio/all/2lss_mio','--pdir 2lss_mio/all/2lss_mio2')
 
@@ -291,7 +292,7 @@ if __name__ == '__main__':
             if '_notrigger' in torun: x = add(x,'-X ^trigger ')
 
         if '_unc' in torun:
-            x = add(x,"--unc ttH-multilepton/systsUnc.txt")
+            x = add(x,"--unc ttH-multilepton/systsUnc.txt --xu CMS_ttHl_TTZ_lnU,CMS_ttHl_TTW_lnU")
 
 
         if '_varsFR' in torun:
@@ -326,7 +327,7 @@ if __name__ == '__main__':
             x = promptsub(x)
             raise RuntimeError, 'Fakes estimation not implemented for 4l'
         if '_unc' in torun:
-            x = add(x,"--unc ttH-multilepton/systsUnc.txt")
+            x = add(x,"--unc ttH-multilepton/systsUnc.txt --xu CMS_ttHl_TTZ_lnU,CMS_ttHl_TTW_lnU")
         runIt(x,'%s'%torun)
 
     if 'cr_3j' in torun:
@@ -339,7 +340,7 @@ if __name__ == '__main__':
             x = x.replace('mca-2lss-mcdata.txt','mca-2lss-mcdata-frdata.txt')
         x = add(x,"-R ^4j 3j 'nJet25+nFwdJet==3'")
         if '_unc' in torun:
-            x = add(x,"--unc ttH-multilepton/systsUnc.txt")
+            x = add(x,"--unc ttH-multilepton/systsUnc.txt --xu CMS_ttHl_TTZ_lnU,CMS_ttHl_TTW_lnU")
 
         plots = ['2lep_.*','nJet25','nBJetLoose25','nBJetMedium25','met','metLD','htJet25j','mhtJet25','mtWmin','htllv','kinMVA_2lss_ttbar.*','kinMVA_2lss_ttV.*','kinMVA_2lss_bins7','kinMVA_2lss_input.*','era']
         runIt(x,'%s'%torun,plots)
@@ -361,7 +362,7 @@ if __name__ == '__main__':
         if '_highMetNoBCut' in torun: x = add(x,"-A 'entry point' highMET 'met_pt>60'")
         else: x = add(x,"-E ^1B ")
         if '_unc' in torun:
-            x = add(x,"--unc ttH-multilepton/systsUnc.txt")
+            x = add(x,"--unc ttH-multilepton/systsUnc.txt --xu CMS_ttHl_TTZ_lnU,CMS_ttHl_TTW_lnU")
         plots = ['2lep_.*','met','metLD','nVert','nJet25','nBJetMedium25','nBJetLoose25','nBJetLoose40','nBJetMedium40','era']
         runIt(x,'%s'%torun)#,plots)
 
@@ -395,7 +396,7 @@ if __name__ == '__main__':
         if '_data' not in torun: x = add(x,'--xp data')
         x = add(x,"-X ^2b1B -X ^Zee_veto -A alwaystrue mllonZ 'mass_2(LepGood1_conePt,LepGood1_eta,LepGood1_phi,LepGood1_mass,LepGood2_conePt,LepGood2_eta,LepGood2_phi,LepGood2_mass)>60 && mass_2(LepGood1_conePt,LepGood1_eta,LepGood1_phi,LepGood1_mass,LepGood2_conePt,LepGood2_eta,LepGood2_phi,LepGood2_mass)<120'")
         if '_unc' in torun:
-            x = add(x,"--unc ttH-multilepton/systsUnc.txt")
+            x = add(x,"--unc ttH-multilepton/systsUnc.txt --xu CMS_ttHl_TTZ_lnU,CMS_ttHl_TTW_lnU")
         for flav in ['mm','ee','em']:
             plots = ['nJet25_from0','nJet40_from0'] # 'lep1_.*','lep2_.*']# ,'2lep_.*','tot_weight','era']
             runIt(add(x,'-E ^%s -X ^4j'%flav),'%s/%s'%(torun,flav),plots)
@@ -413,7 +414,7 @@ if __name__ == '__main__':
         else: 
             print "ERROR: cr_wz with MC backgrounds does not work."
         if '_unc' in torun:
-            x = add(x,"--unc ttH-multilepton/systsUnc.txt")
+            x = add(x,"--unc ttH-multilepton/systsUnc.txt --xu CMS_ttHl_TTZ_lnU,CMS_ttHl_TTW_lnU")
         if '_fit' in torun:
             if not '_data' in torun: raise RuntimeError
             x = add(x,"--sP tot_weight --preFitData tot_weight --sp WZ ")
@@ -438,7 +439,7 @@ if __name__ == '__main__':
         plots += ['3lep_.*','nJet25','nBJetLoose25','nBJetMedium25','met','metLD','htJet25j','mhtJet25','mtWmin','htllv','kinMVA_3l_ttbar','kinMVA_3l_ttV','kinMVA_3l_ttV_withMEM','era','kinMVA_3l.*']
         x = add(x,"-I 'Zveto' -X ^2b1B -E ^gt2b -E ^1B ")
         if '_unc' in torun:
-            x = add(x,"--unc ttH-multilepton/systsUnc.txt")
+            x = add(x,"--unc ttH-multilepton/systsUnc.txt --xu CMS_ttHl_TTZ_lnU,CMS_ttHl_TTW_lnU")
         if '_4j' in torun:
             x = add(x,"-E ^4j ")
             runIt(x,'%s/4j'%torun,plots)
@@ -451,7 +452,7 @@ if __name__ == '__main__':
             x = promptsub(x)
             raise RuntimeError, 'Fakes estimation not implemented for 4l'
         if '_unc' in torun:
-            x = add(x,"--unc ttH-multilepton/systsUnc.txt")
+            x = add(x,"--unc ttH-multilepton/systsUnc.txt --xu CMS_ttHl_TTZ_lnU,CMS_ttHl_TTW_lnU")
         x = add(x,"-I ^Zveto")
         plots = ['lep4_pt','met','mZ1','4lep_m4l_noRecl','4lep_mZ2_noRecl','minMllAFAS','tot_weight','4lep_nJet25','nBJetMedium25']
         runIt(x,'%s'%torun,plots)
@@ -465,7 +466,7 @@ if __name__ == '__main__':
             x = promptsub(x)
             raise RuntimeError, 'Fakes estimation not implemented for 4l'
         if '_unc' in torun:
-            x = add(x,"--unc ttH-multilepton/systsUnc.txt")
+            x = add(x,"--unc ttH-multilepton/systsUnc.txt --xu CMS_ttHl_TTZ_lnU,CMS_ttHl_TTW_lnU")
         if '_fit' in torun:
             if not '_data' in torun: raise RuntimeError
             x = add(x,"--sP tot_weight --preFitData tot_weight --sp ZZ ")
@@ -487,7 +488,7 @@ if __name__ == '__main__':
             x = x.replace('mca-3l-mcdata.txt','mca-3l-mcdata-frdata.txt')
         plots = ['cr_3l']
         if '_unc' in torun:
-            x = add(x,"--unc ttH-multilepton/systsUnc.txt")
+            x = add(x,"--unc ttH-multilepton/systsUnc.txt --xu CMS_ttHl_TTZ_lnU,CMS_ttHl_TTW_lnU")
         runIt(x,'%s'%torun,plots)
     if 'cr_4l' in torun:
         x = base('4l')
@@ -498,7 +499,7 @@ if __name__ == '__main__':
             x = promptsub(x)
             raise RuntimeError, 'Fakes estimation not implemented for 4l'
         if '_unc' in torun:
-            x = add(x,"--unc ttH-multilepton/systsUnc.txt")
+            x = add(x,"--unc ttH-multilepton/systsUnc.txt --xu CMS_ttHl_TTZ_lnU,CMS_ttHl_TTW_lnU")
         plots = ['cr_4l']
         runIt(x,'%s'%torun,plots)
        
