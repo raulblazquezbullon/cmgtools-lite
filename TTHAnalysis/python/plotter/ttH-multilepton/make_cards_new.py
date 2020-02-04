@@ -50,7 +50,7 @@ if "scan" in OTHER:
 
 print "We are using the asimov dataset"
 #---mio---
-OPTIONS2="{OPTIONS} -L ttH-multilepton/functionsTTH.cc --mcc ttH-multilepton/lepchoice-ttH-FO.txt --mcc ttH-multilepton/mcc-METFixEE2017.txt --asimov {ASIMOV}".format(OPTIONS=OPTIONS,ASIMOV=ASIMOV)
+OPTIONS2="{OPTIONS} -L ttH-multilepton/functionsTTH.cc --mcc ttH-multilepton/lepchoice-ttH-FO.txt --mcc ttH-multilepton/mcc-METFixEE2017.txt --asimov {ASIMOV} --threshold 0.01".format(OPTIONS=OPTIONS,ASIMOV=ASIMOV)
 #---mio---
 OPTIONS="{OPTIONS} -L ttH-multilepton/functionsTTH.cc --mcc ttH-multilepton/lepchoice-ttH-FO.txt --mcc ttH-multilepton/mcc-METFixEE2017.txt {PROMPTSUB} --neg --asimov {ASIMOV} --threshold 0.01 ".format(OPTIONS=OPTIONS,PROMPTSUB=PROMPTSUB,ASIMOV=ASIMOV) # neg necessary for subsequent rebin #  
 CATPOSTFIX=""
