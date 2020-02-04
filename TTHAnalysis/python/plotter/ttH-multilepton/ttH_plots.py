@@ -422,7 +422,7 @@ if __name__ == '__main__':
             if '_unc' not in torun:
                 print "Will just float WZ freely"
                 x = add(x,"--flp WZ")
-        plots = ['3lep_mtW','3lep_nJet25','tot_weight','met','metLD','htJet25j','nBJetLoose25']
+        plots = ['kinMVA_3l_input_leadFwdJet_eta']
         if '_more' in torun:
             plots += ['lep3_pt','metLD','nBJetLoose25','3lep_worseIso','minMllAFAS','3lep_worseMVA','3lep_mtW','kinMVA.*','htJet25j','nJet25','era']
             plots += ['3lep_.*','nJet25','nBJetLoose25','nBJetMedium25','met','metLD','htJet25j','mhtJet25','mtWmin','htllv','kinMVA_3l_ttbar','kinMVA_3l_ttV','kinMVA_3l_ttV_withMEM','kinMVA_3l.*']
@@ -435,8 +435,9 @@ if __name__ == '__main__':
             x = promptsub(x)
             if not '_data' in torun: raise RuntimeError
             x = x.replace('mca-3l-mcdata.txt','mca-3l-mcdata-frdata.txt')
-        plots = ['lep2_pt','met','nJet25','mZ1']
-        plots += ['3lep_.*','nJet25','nBJetLoose25','nBJetMedium25','met','metLD','htJet25j','mhtJet25','mtWmin','htllv','kinMVA_3l_ttbar','kinMVA_3l_ttV','kinMVA_3l_ttV_withMEM','era','kinMVA_3l.*']
+        #plots = ['lep2_pt','met','nJet25','mZ1']
+        #plots += ['3lep_.*','nJet25','nBJetLoose25','nBJetMedium25','met','metLD','htJet25j','mhtJet25','mtWmin','htllv','kinMVA_3l_ttbar','kinMVA_3l_ttV','kinMVA_3l_ttV_withMEM','era','kinMVA_3l.*']
+        plots=['kinMVA_3l_input_leadFwdJet_eta']
         x = add(x,"-I 'Zveto' -X ^2b1B -E ^gt2b -E ^1B ")
         if '_unc' in torun:
             x = add(x,"--unc ttH-multilepton/systsUnc.txt --xu CMS_ttHl_TTZ_lnU,CMS_ttHl_TTW_lnU")
