@@ -8,7 +8,7 @@ import numpy
 
 if "mt2_bisect_cc.so" not in ROOT.gSystem.GetLibraries():
     if os.path.isdir('/pool/ciencias/' ):
-        ROOT.gROOT.LoadMacro("/pool/ciencias/HeppyTrees/RA7/additionalReferenceCode/mt2_bisect.cpp")
+        ROOT.gROOT.LoadMacro("/pool/cienciasrw/HeppyTrees/RA7/additionalReferenceCode/mt2_bisect.cpp")
         print "Loaded from Oviedo"
     elif os.path.isdir('/mnt/t3nfs01/'):
         ROOT.gROOT.LoadMacro("/mnt/t3nfs01/data01/shome/cheidegg/s/mT2code/mt2_bisect.cc")
@@ -30,10 +30,13 @@ class OSpair:
 
     ## __init__
     ## _______________________________________________________________
-    def __init__(self, l1, l2):
+    def __init__(self, l1, l2, l3, metpt, metphi, mlltag, mtWtag):
         self.l1   = l1
         self.l2   = l2
-        self.load()
+        self.l3   = l3
+        self.metpt= metpt
+        self.metphi= metphi
+        self.load(mlltag, mtWtag)
 
     ## debug
     ## _______________________________________________________________
@@ -44,21 +47,25 @@ class OSpair:
 
     ## load
     ## _______________________________________________________________
-    def load(self):
-
+    def load(self, mlltag, mtWtag):
         self.isSF = False
         self.wTau = False
 
         if     self.l1.pdgId  ==          -self.l2.pdgId       : self.isSF = True
         if abs(self.l1.pdgId) == 15 or abs(self.l2.pdgId) == 15: self.wTau = True
 
-        if   self.isSF                                           : self.target = 91
+        if   self.isSF                                           : self.target = 91.1876
         elif abs(self.l1.pdgId) == 15 or abs(self.l2.pdgId) == 15: self.target = 60
         else                                                     : self.target = 50
-  
-        self.mll  = (self.l1.p4(conept(self.l1)) + self.l2.p4(conept(self.l2))).M()
+        #print self.metpt, self.l3.pt 
+        self.mll  = (self.l1.p4(self.l1.conePt) + self.l2.p4(self.l2.conePt)).M()
         self.mllR = (self.l1.p4()               + self.l2.p4()              ).M()
-        self.diff = abs(self.target - self.mll)
+        self.mtW  = sqrt(2*self.metpt*self.l3.pt*(1-cos(self.metphi-self.l3.phi)))
+
+        self.mll = max(min(self.mll, 195), 0)
+        self.mtW = max(min(self.mtW, 195), 0)
+
+        self.diff = 1./(0.0001+mlltag[int(round(self.mll/2.5))]* mtWtag[int(round(self.mtW/2.5))])
 
 
     ## test
@@ -74,26 +81,50 @@ class OSpair:
 ## ___________________________________________________________________
 class LeptonBuilderEWK_nanoAOD:
 
-
     ## __init__
     ## _______________________________________________________________
-    def __init__(self, inputlabel):
-
+    def __init__(self, inputlabel,metbranch,isFastSim=False):
+        self.isFastSim = isFastSim
         self.mt2maker = mt2_bisect.mt2()
         self.inputlabel = '_' + inputlabel
-
-        self.systsJEC = {0: "", 1: "_jecUp"   , -1: "_jecDown"  }
+        self.systsJEC = {0: "", 1: "_jesTotalCorrUp"   , -1: "_jesTotalCorrDown",  2: "_jesTotalUnCorrUp"   , -2: "_jesTotalUnCorrDown"}
+        self.lepScaleSysts = {1:"_elScaleUp", -1:"_elScaleDown",2:"_muScaleUp",-2:"_muScaleDown",0:""}
+        if self.isFastSim:
+             self.systsJEC = {0: "", 1: "_jesTotalUp", -1: "_jesTotalDown"}
+             self.lepScaleSysts = {0:""}
+        self.metbranch = metbranch
+        self.isData = False
+        tagger = ROOT.TFile.Open(os.environ["CMSSW_BASE"]+"/src/CMGTools/TTHAnalysis/data/WZ_MC/WZTagger.root")
+        mll = tagger.Get("mll3l_total")
+        self.mllTag = [ mll.GetBinContent(i) for i in xrange(1,mll.GetNbinsX()+1) ]
+        mtW = tagger.Get("mtW3l_total")
+        self.mtWTag = [ mtW.GetBinContent(i) for i in xrange(1,mtW.GetNbinsX()+1) ]
 
 
     ## __call__
     ## _______________________________________________________________
     def __call__(self, event):
         self.isData = not(hasattr(event, "GenMET_pt")) #Placeholder
-        self.resetMemory()
-        self.collectObjects(event)
-        self.analyzeTopology()
-        self.writeLepSel()
-        return self.ret
+        if self.isData: 
+           self.systsJEC = {0: ""}
+           self.lepScaleSysts = {0:""}
+        self.totalret = {}
+        #print "SYSTS"
+        for lepVar in ([-2,-1,1,2,0] if not(self.isData or self.isFastSim) else [0]):
+           if lepVar== 0 and not (self.isFastSim):
+             self.systsJEC = {0: "", 1: "_jesTotalCorrUp"   , -1: "_jesTotalCorrDown",  2: "_jesTotalUnCorrUp"   , -2: "_jesTotalUnCorrDown"}
+           if lepVar== 0 and self.isFastSim:
+             self.systsJEC = {0: "", 1: "_jesTotalUp", -1: "_jesTotalDown"}
+           else:
+             self.systsJEC = {0: ""}
+           self.lepVar = lepVar
+           self.resetMemory()
+           self.collectObjects(event)
+           self.analyzeTopology()
+           self.writeLepSel()
+           for branch in self.ret:
+             self.totalret[branch + self.lepScaleSysts[lepVar]] = self.ret[branch]
+        return self.totalret
 
 
     ## analyzeTopology
@@ -129,6 +160,24 @@ class LeptonBuilderEWK_nanoAOD:
         self.findBestOSpair(4, "mllT", False, True )
         self.findMtMin(4, "T")
 
+    def correctTheLeptons(self, event, leps):
+        correctedLeps = []
+        #LeptonScaleCorrections()
+        for l in leps:
+            if self.isFastSim: 
+                setattr(l,"uncorrpt",l.pt)
+                correctedLeps.append(l)
+                continue
+            if not(self.isData):
+                if l.genPartIdx < 0: continue
+            setattr(l,"uncorrpt",l.correctedpt)
+            l.pt = l.correctedpt
+            if self.lepVar == 1 and abs(l.pdgId) == 11: l.pt = l.correctedptUp
+            if self.lepVar == -1 and abs(l.pdgId) == 11: l.pt = l.correctedptDown
+            if self.lepVar == 2 and abs(l.pdgId) == 13: l.pt = l.correctedptUp
+            if self.lepVar == -2 and abs(l.pdgId) == 13: l.pt = l.correctedptDown
+            correctedLeps.append(l) 
+        return correctedLeps
 
     ## collectObjects
     ## _______________________________________________________________
@@ -138,26 +187,43 @@ class LeptonBuilderEWK_nanoAOD:
         self.leps       = [l             for l  in Collection(event, "LepGood", "nLepGood")  ]
         self.lepsFO     = [self.leps[il] for il in list(getattr   (event, "iF" + self.inputlabel))[0:int(getattr(event,"nLepFO"+self.inputlabel))]]
         self.lepsT      = [self.leps[il] for il in list(getattr   (event, "iT" + self.inputlabel))[0:int(getattr(event,"nLepTight"+self.inputlabel))]]
+        self.OS = []
 
+        for i in range(len(self.lepsT)):
+            self.lepsT[i].idx = i
+        for i in range(len(self.lepsFO)):
+            self.lepsFO[i].idx = i
+        correctedLeps = self.correctTheLeptons(event, self.leps)
+        self.leps = correctedLeps
+
+
+        correctedLepsFO = self.correctTheLeptons(event, self.lepsFO)
+        self.lepsFO = correctedLepsFO
+        correctedLepsT = self.correctTheLeptons(event, self.lepsT)
+        self.lepsT = correctedLepsT
+       
 
         ## taus
         self.goodtaus   = [t             for t  in Collection(event, "TauGood" , "nTauGood" )]
-        self.disctaus   = [] #[t             for t  in Collection(event, "TauOther", "nTauOther")] #No disc collection for nanoAOD
+        for t in self.goodtaus:
+            if hasattr(t, "correctedpt"): t.pt = getattr(t, "correctedpt")
+
+        self.disctaus   = [] #[t             for t  in Collection(event, "TauOther", "nTauOther")]
         self.taus       = [t             for t  in Collection(event, "TauSel" + self.inputlabel , "nTauSel" + self.inputlabel )]
+        for t in self.taus:
+            if hasattr(t, "correctedpt"): t.pt = getattr(t, "correctedpt")
 
-        for l in (self.leps + self.lepsFO + self.lepsT + self.goodtaus + self.taus):
-            if hasattr(l, "correctedpt"): l.pt = l.correctedpt
-
-        for t in self.taus: 
-            t.conePt = t.pt
-            #t.pdgId  = -t.charge*15
+        for t in self.taus: t.conePt = t.pt
         self.tausFO     = self.taus
+
 
         ## FO, both flavors
         self.lepSelFO   = self.lepsFO  + self.tausFO
 
+
         self.setAttributes(event, self.lepSelFO, self.isData)
         self.lepSelFO.sort(key = lambda x: conept(x), reverse=True)
+
 
         ## tight leptons, both flavors
         self.lepsTT = []
@@ -165,33 +231,57 @@ class LeptonBuilderEWK_nanoAOD:
             if not t.isTight: continue
             self.lepsTT.append(t)
 
+
         self.met        = {}
-        self.met[0]     = getattr(event, "MET_pt_nom", event.MET_pt)
         self.metphi     = {}
-        self.metphi[0]  = event.MET_phi
-
-        if not(self.isData):
-          self.met[1]     = getattr(event, "MET_pt_jesTotalUp"  , event.MET_pt) 
-          self.met[-1]    = getattr(event, "MET_pt_jesTotalDown", event.MET_pt) 
-          self.metphi[1]  = getattr(event, "MET_phi_jesTotalUp"  , event.MET_phi)
-          self.metphi[-1] = getattr(event, "MET_phi_jesTotalDown", event.MET_phi)
-
-          self.metgen        = {}
-          self.metgen[0]     = event.GenMET_pt if not self.isData else event.MET_pt
-          self.metgen[1]     = event.met_jecUp_genPt   if hasattr(event, "met_jecUp_genPt"  ) else event.GenMET_pt if not self.isData else event.MET_pt
-          self.metgen[-1]    = event.met_jecDown_genPt if hasattr(event, "met_jecDown_genPt") else event.GenMET_pt if not self.isData else event.MET_pt
-
-          self.metgenphi     = {}
-          self.metgenphi[0]  = event.GenMET_phi if not self.isData else event.MET_phi
-          self.metgenphi[1]  = event.met_jecUp_genPhi   if hasattr(event, "met_jecUp_genPhi"  ) else event.GenMET_phi if not self.isData else event.MET_phi
-          self.metgenphi[-1] = event.met_jecDown_genPhi if hasattr(event, "met_jecDown_genPhi") else event.GenMET_phi if not self.isData else event.MET_phi
-  
+        if hasattr(event, self.metbranch + "_pt_nom"):
+          self.met[0]     = getattr(event, self.metbranch + "_pt_nom")
+          self.metphi[0]  = getattr(event, self.metbranch + "_phi_nom")
         else:
-            self.met[1] = self.met[0]; self.met[-1] = self.met[0]; self.metphi[1] = self.metphi[0]; self.metphi[-1] = self.metphi[0] 
-            self.metgen = self.met; self.metgenphi = self.metphi
+          self.met[0]     = getattr(event, self.metbranch + "_pt")
+          self.metphi[0]  = getattr(event, self.metbranch + "_phi")
 
-        self.OS = []
 
+        if not self.isData and len(self.systsJEC) > 1:
+         #print "HERE!", self.metbranch + "_pt" + self.systsJEC[1]
+         if hasattr(event, self.metbranch + "_pt" + self.systsJEC[1]):
+          for var in self.systsJEC:
+            #print "Adding variation ",  var
+            if var == 0: continue
+            self.met[var]     = getattr(event, self.metbranch + "_pt" + self.systsJEC[var])
+            self.metphi[var]  = getattr(event, self.metbranch + "_phi" + self.systsJEC[var])
+            #print "Added variation ",  var
+
+        #Recorrect MET based on lepton corrections
+
+
+        for l in self.leps:
+            oldlep = ROOT.TLorentzVector()
+            newlep = ROOT.TLorentzVector()
+            oldmet = ROOT.TLorentzVector()
+            newmet = ROOT.TLorentzVector()
+            oldlep.SetPtEtaPhiM(l.uncorrpt, l.eta,l.phi,l.mass)
+            newlep.SetPtEtaPhiM(l.pt, l.eta, l.phi, l.mass)
+            oldmet.SetPtEtaPhiM(self.met[0], 0, self.metphi[0], 0)
+            newmet = oldmet + oldlep - newlep
+            self.met[0] = newmet.Pt()
+            self.metphi[0] = newmet.Phi()
+
+        #Only for data
+        self.metgen        = copy.deepcopy(self.met)
+        self.metgenphi     = copy.deepcopy(self.metphi)
+
+        if not self.isData:
+            self.metgen[0]     = event.GenMET_pt
+            self.metgen[1]     = self.metgen[0]
+            self.metgen[-1]    = self.metgen[0]
+            self.metgenphi[0]  = event.GenMET_phi
+            self.metgenphi[1]  = self.metgenphi[0]
+            self.metgenphi[-1] = self.metgenphi[0]
+            self.metgen[2]     = self.metgen[0]
+            self.metgen[-2]    = self.metgen[0]
+            self.metgenphi[2]  = self.metgenphi[0]
+            self.metgenphi[-2] = self.metgenphi[0]
             
     ## collectOSpairs
     ## _______________________________________________________________
@@ -202,10 +292,14 @@ class LeptonBuilderEWK_nanoAOD:
         self.OS = []
         for i in range(min(max, len(self.lepSelFO))):
             for j in range(i+1,min(max, len(self.lepSelFO))):
-                ##if not withTaus and abs(self.lepSelFO[i].pdgId) == 15 and abs(self.lepSelFO[j].pdgId) == 15: continue # no SF tautau
-                if useBuffer and abs(self.lepSelFO[i].pdgId) != abs(self.lepSelFO[j].pdgId): continue # if buffer then SF
-                if self.lepSelFO[i].pdgId * self.lepSelFO[j].pdgId < 0: 
-                    self.OS.append(OSpair(self.lepSelFO[i], self.lepSelFO[j]))
+                for k in range(min(max, len(self.lepSelFO))):
+                    if k == i or k == j: continue
+                    if abs(self.lepSelFO[i].pdgId) == 15 and abs(self.lepSelFO[j].pdgId) == 15: continue # no SF tautau pairs
+                    if useBuffer and abs(self.lepSelFO[i].pdgId) != abs(self.lepSelFO[j].pdgId): continue # if buffer then SF
+                    if self.lepSelFO[i].pdgId * self.lepSelFO[j].pdgId < 0: 
+                        self.OS.append(OSpair(self.lepSelFO[i], self.lepSelFO[j], self.lepSelFO[k], self.met[0], self.metphi[0], self.mllTag, self.mtWTag))
+
+
 
         ## loop over all pairs, only keep the best OSSF ones, and make sure that they do not overlap
         if useBuffer:
@@ -282,7 +376,7 @@ class LeptonBuilderEWK_nanoAOD:
             if self.lepSelFO[i] in used: continue
             leps.append(self.lepSelFO[i])
 
-        for var in self.systsJEC:
+        for var in (self.systsJEC if self.lepVar== 0 else [0]):
             bufferPF  = [] 
             bufferGEN = [] 
             for l in leps:
@@ -294,7 +388,7 @@ class LeptonBuilderEWK_nanoAOD:
                 self.ret["mT"+ name+"_" + str(max) + "l" + self.systsJEC[var]] = bufferPF[0][0]
                 self.ret["imT"+name+"_" + str(max) + "l" + self.systsJEC[var]] = self.lepSelFO.index(bufferPF[0][1])
 
-            if len(bufferGEN):
+            if len(bufferGEN) and var == 0:
                 bufferGEN.sort()
                 self.ret["mT" +name+"_" + str(max) + "l_gen" + self.systsJEC[var]] = bufferGEN[0][0]
                 self.ret["imT"+name+"_" + str(max) + "l_gen" + self.systsJEC[var]] = self.lepSelFO.index(bufferGEN[0][1])
@@ -329,86 +423,90 @@ class LeptonBuilderEWK_nanoAOD:
     ## listBranches
     ## _______________________________________________________________
     def listBranches(self):
+      biglist = []
+      for var in self.lepScaleSysts:
 
-        biglist = [
-            ("passPtMll"        , "I"),
-            ("is_3l"            , "I"),
-            ("is_4l"            , "I"),
-            ("is_5l"            , "I"),
-            ("nOSSF_3l"         , "I"),
-            ("nOSSFL_3l"        , "I"),
-            ("nOSSFT_3l"        , "I"),
-            ("nOSLF_3l"         , "I"),
-            ("nOSTF_3l"         , "I"),
-            ("mll_3l"           , "F"),
-            ("mllL_3l"          , "F"),
-            ("mllT_3l"          , "F"),
-            ("m3L"              , "F"),
-            ("nOSSF_4l"         , "I"),
-            ("nOSSFL_4l"        , "I"),
-            ("nOSSFT_4l"        , "I"),
-            ("nOSLF_4l"         , "I"),
-            ("nOSTF_4l"         , "I"),
-            ("mll_4l"           , "F"),
-            ("mllL_4l"          , "F"),
-            ("mllT_4l"          , "F"),
-            ("m4L"              , "F"),
-            ("minDeltaR_3l"     , "F"),
-            ("minDeltaR_4l"     , "F"),
-            ("minDeltaR_3l_mumu", "F"),
-            ("minDeltaR_4l_mumu", "F")]
+        tag = self.lepScaleSysts[var]
+        biglist += [
+            ("passPtMll"+tag        , "I"),
+            ("is_3l"    +tag        , "I"),
+            ("is_4l"    +tag        , "I"),
+            ("is_5l"    +tag        , "I"),
+            ("nOSSF_3l" +tag        , "I"),
+            ("nOSSFL_3l"+tag        , "I"),
+            ("nOSSFT_3l"+tag        , "I"),
+            ("nOSLF_3l" +tag        , "I"),
+            ("nOSTF_3l" +tag        , "I"),
+            ("mll_3l"   +tag        , "F"),
+            ("mllL_3l"  +tag        , "F"),
+            ("mllT_3l"  +tag        , "F"),
+            ("m3L"      +tag        , "F"),
+            ("nOSSF_4l" +tag        , "I"),
+            ("nOSSFL_4l"+tag        , "I"),
+            ("nOSSFT_4l"+tag        , "I"),
+            ("nOSLF_4l" +tag        , "I"),
+            ("nOSTF_4l" +tag        , "I"),
+            ("mll_4l"   +tag        , "F"),
+            ("mllL_4l"  +tag        , "F"),
+            ("mllT_4l"  +tag        , "F"),
+            ("m4L"      +tag        , "F"),
+            ("minDeltaR_3l"+tag     , "F"),
+            ("minDeltaR_4l"+tag     , "F"),
+            ("minDeltaR_3l_mumu"+tag, "F"),
+            ("minDeltaR_4l_mumu"+tag, "F")]
 
-        biglist.append(("nOS"   , "I"))
-        biglist.append(("mll"   , "F", 20, "nOS"))
-        biglist.append(("mll_fl", "I", 20, "nOS"))
-        biglist.append(("mll_i1", "I", 20, "nOS"))
-        biglist.append(("mll_i2", "I", 20, "nOS"))
+        biglist.append(("nOS"+tag   , "I"))
+        biglist.append(("mll"+tag   , "F", 20, "nOS"+tag))
+        biglist.append(("mll_fl"+tag, "I", 20, "nOS"+tag))
+        biglist.append(("mll_i1"+tag, "I", 20, "nOS"+tag))
+        biglist.append(("mll_i2"+tag, "I", 20, "nOS"+tag))
 
-        biglist.append(("nLepSel"   , "I"))
-        for var in ["pt", "eta", "phi", "mass", "conePt", "dxy", "dz", "sip3d", "miniPFRelIso_all", "pfRelIso04_all"]:
-            biglist.append(("LepSel_" + var, "F", 4))
-        for var in ["pdgId", "isTight", "tightCharge", "genPartFlav", "genPartIdx"]:
-            biglist.append(("LepSel_" + var, "I", 4))
-  
-        for var in self.systsJEC:
-            biglist.append(("imT_3l"       + self.systsJEC[var], "I"))
-            biglist.append(("imTL_3l"      + self.systsJEC[var], "I"))
-            biglist.append(("imTT_3l"      + self.systsJEC[var], "I"))
-            biglist.append(("mT_3l"        + self.systsJEC[var], "F"))
-            biglist.append(("mTL_3l"       + self.systsJEC[var], "F"))
-            biglist.append(("mTT_3l"       + self.systsJEC[var], "F"))
-            biglist.append(("mT2L_3l"      + self.systsJEC[var], "F"))
-            biglist.append(("mT2T_3l"      + self.systsJEC[var], "F"))
-            biglist.append(("mT2WZ_3l"     + self.systsJEC[var], "F"))
-            biglist.append(("imT_4l"       + self.systsJEC[var], "I"))
-            biglist.append(("imTL_4l"      + self.systsJEC[var], "I"))
-            biglist.append(("imTT_4l"      + self.systsJEC[var], "I"))
-            biglist.append(("mT_4l"        + self.systsJEC[var], "F"))
-            biglist.append(("mTL_4l"       + self.systsJEC[var], "F"))
-            biglist.append(("mTT_4l"       + self.systsJEC[var], "F"))
-            biglist.append(("mT2L_4l"      + self.systsJEC[var], "F"))
-            biglist.append(("mT2T_4l"      + self.systsJEC[var], "F"))
-            biglist.append(("mT2WZ_4l"     + self.systsJEC[var], "F"))
-            biglist.append(("imT_3l_gen"   + self.systsJEC[var], "I"))
-            biglist.append(("imTL_3l_gen"  + self.systsJEC[var], "I"))
-            biglist.append(("imTT_3l_gen"  + self.systsJEC[var], "I"))
-            biglist.append(("mT_3l_gen"    + self.systsJEC[var], "F"))
-            biglist.append(("mTL_3l_gen"   + self.systsJEC[var], "F"))
-            biglist.append(("mTT_3l_gen"   + self.systsJEC[var], "F"))
-            biglist.append(("mT2L_3l_gen"  + self.systsJEC[var], "F"))
-            biglist.append(("mT2WZ_3l_gen" + self.systsJEC[var], "F"))
-            biglist.append(("mT2T_3l_gen"  + self.systsJEC[var], "F"))
-            biglist.append(("imT_4l_gen"   + self.systsJEC[var], "I"))
-            biglist.append(("imTL_4l_gen"  + self.systsJEC[var], "I"))
-            biglist.append(("imTT_4l_gen"  + self.systsJEC[var], "I"))
-            biglist.append(("mT_4l_gen"    + self.systsJEC[var], "F"))
-            biglist.append(("mTL_4l_gen"   + self.systsJEC[var], "F"))
-            biglist.append(("mTT_4l_gen"   + self.systsJEC[var], "F"))
-            biglist.append(("mT2L_4l_gen"  + self.systsJEC[var], "F"))
-            biglist.append(("mT2T_4l_gen"  + self.systsJEC[var], "F"))
-            biglist.append(("mT2WZ_4l_gen" + self.systsJEC[var], "F"))
+        biglist.append(("nLepSel"+tag   , "I"))
+        for vvar in ["pt", "eta", "phi", "mass", "conePt", "dxy", "dz", "sip3d", "miniPFRelIso_all", "pfRelIso04_all"]:
+            biglist.append(("LepSel_" + vvar + tag, "F", 4))
+        for vvar in ["pdgId", "isTight", "tightCharge", "genPartFlav", "genPartIdx"]:
+            biglist.append(("LepSel_" + vvar + tag, "I", 4))
 
-        return biglist
+        for vvar in (self.systsJEC if var == 0 else [0]):
+            biglist.append(("imT_3l"       + self.systsJEC[vvar]+tag, "I"))
+            biglist.append(("imTL_3l"      + self.systsJEC[vvar]+tag, "I"))
+            biglist.append(("imTT_3l"      + self.systsJEC[vvar]+tag, "I"))
+            biglist.append(("mT_3l"        + self.systsJEC[vvar]+tag, "F"))
+            biglist.append(("mTL_3l"       + self.systsJEC[vvar]+tag, "F"))
+            biglist.append(("mTT_3l"       + self.systsJEC[vvar]+tag, "F"))
+            biglist.append(("mT2L_3l"      + self.systsJEC[vvar]+tag, "F"))
+            biglist.append(("mT2T_3l"      + self.systsJEC[vvar]+tag, "F"))
+            biglist.append(("mT2WZ_3l"     + self.systsJEC[vvar]+tag, "F"))
+            biglist.append(("imT_4l"       + self.systsJEC[vvar]+tag, "I"))
+            biglist.append(("imTL_4l"      + self.systsJEC[vvar]+tag, "I"))
+            biglist.append(("imTT_4l"      + self.systsJEC[vvar]+tag, "I"))
+            biglist.append(("mT_4l"        + self.systsJEC[vvar]+tag, "F"))
+            biglist.append(("mTL_4l"       + self.systsJEC[vvar]+tag, "F"))
+            biglist.append(("mTT_4l"       + self.systsJEC[vvar]+tag, "F"))
+            biglist.append(("mT2L_4l"      + self.systsJEC[vvar]+tag, "F"))
+            biglist.append(("mT2T_4l"      + self.systsJEC[vvar]+tag, "F"))
+            biglist.append(("mT2WZ_4l"     + self.systsJEC[vvar]+tag, "F"))
+      vvar = 0 
+      tag = ""
+      biglist.append(("imT_3l_gen"   + self.systsJEC[vvar]+tag, "I"))
+      biglist.append(("imTL_3l_gen"  + self.systsJEC[vvar]+tag, "I"))
+      biglist.append(("imTT_3l_gen"  + self.systsJEC[vvar]+tag, "I"))
+      biglist.append(("mT_3l_gen"    + self.systsJEC[vvar]+tag, "F"))
+      biglist.append(("mTL_3l_gen"   + self.systsJEC[vvar]+tag, "F"))
+      biglist.append(("mTT_3l_gen"   + self.systsJEC[vvar]+tag, "F"))
+      biglist.append(("mT2L_3l_gen"  + self.systsJEC[vvar]+tag, "F"))
+      biglist.append(("mT2WZ_3l_gen" + self.systsJEC[vvar]+tag, "F"))
+      biglist.append(("mT2T_3l_gen"  + self.systsJEC[vvar]+tag, "F"))
+      biglist.append(("imT_4l_gen"   + self.systsJEC[vvar]+tag, "I"))
+      biglist.append(("imTL_4l_gen"  + self.systsJEC[vvar]+tag, "I"))
+      biglist.append(("imTT_4l_gen"  + self.systsJEC[vvar]+tag, "I"))
+      biglist.append(("mT_4l_gen"    + self.systsJEC[vvar]+tag, "F"))
+      biglist.append(("mTL_4l_gen"   + self.systsJEC[vvar]+tag, "F"))
+      biglist.append(("mTT_4l_gen"   + self.systsJEC[vvar]+tag, "F"))
+      biglist.append(("mT2L_4l_gen"  + self.systsJEC[vvar]+tag, "F"))
+      biglist.append(("mT2T_4l_gen"  + self.systsJEC[vvar]+tag, "F"))
+      biglist.append(("mT2WZ_4l_gen" + self.systsJEC[vvar]+tag, "F"))
+      return biglist
 
 
     ## makeMass
@@ -448,7 +546,7 @@ class LeptonBuilderEWK_nanoAOD:
         mt2l.sort(reverse=True) # we want the hardest leptons here! 
 
         if len(self.lepSelFO) == 3:
-            for var in self.systsJEC:
+            for var in (self.systsJEC if self.lepVar == 0 else [0]):
               lZ1, lZ2, lW, cont = self.assignWZleptons()
               if not (cont): continue
               p4Z = lZ1.p4() + lZ2.p4()
@@ -459,17 +557,17 @@ class LeptonBuilderEWK_nanoAOD:
               self.mt2maker.set_momenta(vector_obj1, vector_obj2, vector_met)
               self.mt2maker.set_mn(0)
               self.ret["mT2WZ_" + str(max) + "l"     + self.systsJEC[var]] = self.mt2maker.get_mt2()
-              self.mt2maker.set_momenta(vector_obj1, vector_obj2, vector_metgen)
-              self.mt2maker.set_mn(0)
-              self.ret["mT2WZ_" + str(max) + "l_gen"     + self.systsJEC[var]] = self.mt2maker.get_mt2()           
+              if var==0: self.mt2maker.set_momenta(vector_obj1, vector_obj2, vector_metgen)
+              if var==0: self.mt2maker.set_mn(0)
+              if var==0: self.ret["mT2WZ_" + str(max) + "l_gen"     + self.systsJEC[var]] = self.mt2maker.get_mt2()           
 
-        for var in self.systsJEC:
+        for var in (self.systsJEC if self.lepVar == 0 else [0]):
             if len(mt2t)>0: 
                 self.ret["mT2T_" + str(max) + "l"     + self.systsJEC[var]] = self.mt2(mt2t[0][1].l1, mt2t[0][1].l2, var)
-                self.ret["mT2T_" + str(max) + "l_gen" + self.systsJEC[var]] = self.mt2(mt2t[0][1].l1, mt2t[0][1].l2, var, True)
+                if var == 0: self.ret["mT2T_" + str(max) + "l_gen" + self.systsJEC[var]] = self.mt2(mt2t[0][1].l1, mt2t[0][1].l2, var, True)
             if len(mt2l)>0: 
                 self.ret["mT2L_" + str(max) + "l"     + self.systsJEC[var]] = self.mt2(mt2l[0][1].l1, mt2l[0][1].l2, var)
-                self.ret["mT2L_" + str(max) + "l_gen" + self.systsJEC[var]] = self.mt2(mt2l[0][1].l1, mt2l[0][1].l2, var, True)
+                if var == 0: self.ret["mT2L_" + str(max) + "l_gen" + self.systsJEC[var]] = self.mt2(mt2l[0][1].l1, mt2l[0][1].l2, var, True)
             if self.isData: return
 
 
@@ -607,7 +705,7 @@ class LeptonBuilderEWK_nanoAOD:
         for var in ["pdgId", "isTight", "tightCharge", "genPartFlav", "genPartIdx"]:
             self.ret["LepSel_" + var] = [0 ]*20
 
-        for var in self.systsJEC:
+        for var in (self.systsJEC if self.lepVar == 0 else [0]):
             self.ret["imT_3l"       + self.systsJEC[var]] = -1 
             self.ret["imTL_3l"      + self.systsJEC[var]] = -1 
             self.ret["imTT_3l"      + self.systsJEC[var]] = -1 
@@ -625,25 +723,26 @@ class LeptonBuilderEWK_nanoAOD:
             self.ret["mTT_4l"       + self.systsJEC[var]] = -1 
             self.ret["mT2L_4l"      + self.systsJEC[var]] = -1   
             self.ret["mT2T_4l"      + self.systsJEC[var]] = -1  
-            self.ret["mT2WZ_4l"     + self.systsJEC[var]] = -1  
-            self.ret["imT_3l_gen"   + self.systsJEC[var]] = -1 
-            self.ret["imTL_3l_gen"  + self.systsJEC[var]] = -1 
-            self.ret["imTT_3l_gen"  + self.systsJEC[var]] = -1 
-            self.ret["mT_3l_gen"    + self.systsJEC[var]] = -1 
-            self.ret["mTL_3l_gen"   + self.systsJEC[var]] = -1 
-            self.ret["mTT_3l_gen"   + self.systsJEC[var]] = -1 
-            self.ret["mT2L_3l_gen"  + self.systsJEC[var]] = -1   
-            self.ret["mT2T_3l_gen"  + self.systsJEC[var]] = -1  
-            self.ret["mT2WZ_3l_gen" + self.systsJEC[var]] = -1  
-            self.ret["imT_4l_gen"   + self.systsJEC[var]] = -1 
-            self.ret["imTL_4l_gen"  + self.systsJEC[var]] = -1 
-            self.ret["imTT_4l_gen"  + self.systsJEC[var]] = -1 
-            self.ret["mT_4l_gen"    + self.systsJEC[var]] = -1 
-            self.ret["mTL_4l_gen"   + self.systsJEC[var]] = -1 
-            self.ret["mTT_4l_gen"   + self.systsJEC[var]] = -1 
-            self.ret["mT2L_4l_gen"  + self.systsJEC[var]] = -1   
-            self.ret["mT2T_4l_gen"  + self.systsJEC[var]] = -1  
-            self.ret["mT2WZ_4l_gen" + self.systsJEC[var]] = -1
+            self.ret["mT2WZ_4l"     + self.systsJEC[var]] = -1 
+        var = 0 
+        self.ret["imT_3l_gen"   + self.systsJEC[var]] = -1 
+        self.ret["imTL_3l_gen"  + self.systsJEC[var]] = -1 
+        self.ret["imTT_3l_gen"  + self.systsJEC[var]] = -1 
+        self.ret["mT_3l_gen"    + self.systsJEC[var]] = -1 
+        self.ret["mTL_3l_gen"   + self.systsJEC[var]] = -1 
+        self.ret["mTT_3l_gen"   + self.systsJEC[var]] = -1 
+        self.ret["mT2L_3l_gen"  + self.systsJEC[var]] = -1   
+        self.ret["mT2T_3l_gen"  + self.systsJEC[var]] = -1  
+        self.ret["mT2WZ_3l_gen" + self.systsJEC[var]] = -1  
+        self.ret["imT_4l_gen"   + self.systsJEC[var]] = -1 
+        self.ret["imTL_4l_gen"  + self.systsJEC[var]] = -1 
+        self.ret["imTT_4l_gen"  + self.systsJEC[var]] = -1 
+        self.ret["mT_4l_gen"    + self.systsJEC[var]] = -1 
+        self.ret["mTL_4l_gen"   + self.systsJEC[var]] = -1 
+        self.ret["mTT_4l_gen"   + self.systsJEC[var]] = -1 
+        self.ret["mT2L_4l_gen"  + self.systsJEC[var]] = -1   
+        self.ret["mT2T_4l_gen"  + self.systsJEC[var]] = -1  
+        self.ret["mT2WZ_4l_gen" + self.systsJEC[var]] = -1
 
     ## setAttributes 
     ## _______________________________________________________________
@@ -651,14 +750,14 @@ class LeptonBuilderEWK_nanoAOD:
         for i, l in enumerate(lepSel): 
             #print "loop", i
             if l in self.tausFO:
-                tau = self.findTau(event, l)
-                setattr(l, "pdgId"        , -1*15*tau.charge                      )
+                tau = l
+                setattr(l, "pdgId"        , tau.pdgId                       )
                 setattr(l, "isTight"      , (l.reclTauId == 2)                    )
                 setattr(l, "tightCharge"  , 1                                     )
-                setattr(l, "genPartFlav"  , getattr(tau, "genPartFlav", -1)    if not self.isData else 1)
-                setattr(l, "genPartIdx"   , getattr(tau, "genPartIdx", -1)     if not self.isData else 1)
-                setattr(l, "dxy"          , tau.dxy if not tau is None else 0     )
-                setattr(l, "dz"           , tau.dz  if not tau is None else 0     )
+                setattr(l, "genPartFlav"  , 0)
+                setattr(l, "genPartIdx"   , 0)
+                setattr(l, "dxy"          , 0     )
+                setattr(l, "dz"           , 0     )
                 setattr(l, "sip3d"        , 0                                     )
                 setattr(l, "miniPFRelIso_all"   , 0                                     )
                 setattr(l, "pfRelIso04_all"       , 0                                     )
@@ -764,14 +863,20 @@ def passPtCutTriple(l1, l2, l3):
 if __name__ == '__main__':
     from sys import argv
     file = ROOT.TFile(argv[1])
-    tree = file.Get("tree")
+    file2 = ROOT.TFile(argv[2])
+    file3 = ROOT.TFile(argv[3])
+    tree = file.Get("Events")
+    ftree1 = file2.Get("sf/t")
+    ftree2 = file3.Get("sf/t")
+    tree.AddFriend(ftree1)
+    tree.AddFriend(ftree2)
+
     tree.vectorTree = True
     class Tester(Module):
         def __init__(self, name):
             Module.__init__(self,name,None)
-            self.sf1 =  LeptonBuilderEWK_nanoAOD("Mini")
+            self.sf1 =  LeptonBuilderEWK_nanoAOD("Mini","MET")
         def analyze(self,ev):
-            print "\nrun %6d lumi %4d event %d: leps %d" % (ev.run, ev.lumi, ev.evt, ev.nLepGood)
             print self.sf1(ev)
     el = EventLoop([ Tester("tester") ])
     el.loop([tree], maxEvents = 50)
