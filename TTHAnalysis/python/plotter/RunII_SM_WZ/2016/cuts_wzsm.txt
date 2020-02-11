@@ -9,7 +9,7 @@ AllTight  : LepSel_isTight[0] &&  LepSel_isTight[1] && LepSel_isTight[2]
 
 ########### START OPTIONAL CUTS ###########
 #Signal region
-SRWZ      : m3L >= 100 && MET_pt_central  > 30 && abs(mll_3l - 91.16) < 15 && nLepGood < 4 && nBJetTight25_Mini == 0; Disable=True
+SRWZ      : m3L >= 100 && MET_pt_central  > 30 && abs(mll_3l - 91.16) < 15 && nLepGood < 4 && nBJetTight25_Mini == 0;Disable=True
 
 #Charge splitting
 SRwzPL      : m3L >= 100 && nBJetTight25_Mini == 0 && MET_pt_central > 30  && abs(mll_3l - 91.16) < 15 && nLepGood < 4 && LepW_pdgId < 0; Disable=True
@@ -17,8 +17,9 @@ SRWzMn      : m3L >= 100 && nBJetTight25_Mini == 0 && MET_pt_central > 30  && ab
 
 #Control regions
 CRZZ   : m3L >= 100 && nBJetTight25_Mini == 0  && abs(mll_3l - 91.16) < 15 && nLepSel == 4 && LepSel_pt[3] > 10 && MET_pt_central  > 30; Disable=True
-CRTT   : m3L >= 100 && nBJetTight25_Mini > 0   && nLepGood < 4; Disable=True
+CRTT   : m3L >= 100 && nBJetTight25_Mini > 0   && nLepGood < 4 && MET_pt_central  > 30 && abs(mll_3l - 91.16) < 15; Disable=True
 CRconv : m3L < 100 && nBJetTight25_Mini == 0  && MET_pt_central < 30 && nLepGood < 4; Disable=True
+#CRZZnomet   : m3L >= 100 && nBJetTight25_Mini == 0 &&  nLepSel == 4 && LepSel_pt[3] > 10
 
 
 #Extra additional cuts
