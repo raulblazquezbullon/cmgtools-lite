@@ -171,7 +171,10 @@ class TreeToYield:
             # apply MC corrections to the scale factor
             self._scaleFactor = self.adaptExpr(self._scaleFactor, cut=True)
         if 'FakeRate' in settings:
-            self._FR = FakeRate(settings['FakeRate'],self._options.lumi)
+            if not 'ExtraFakeRate' in settings:
+                self._FR = FakeRate(settings['FakeRate'],self._options.lumi)
+            else:
+                self._FR = FakeRate(settings['FakeRate'] + ","+settings['ExtraFakeRate'] ,self._options.lumi)
             ## add additional weight correction.
             ## note that the weight receives the other mcCorrections, but not itself
             frweight = self.adaptExpr(self._FR.weight(), cut=True)
