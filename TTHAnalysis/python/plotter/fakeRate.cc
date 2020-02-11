@@ -1042,8 +1042,9 @@ float ttHl_ptFO_ab(int LepGood_pdgId, float LepGood_pt, float LepGood_jetPtRatio
     return std::max(LepGood_pt, a*(LepGood_pt/LepGood_jetPtRatio - b));
 }
 
-float EWK3L_fakeRate(float pt, float eta, int pdgId, int var = 1) {
+float EWK3L_fakeRate(float pt, float eta, int pdgId, int var = 1, float cap = 10000) {
     TH2 *hist = FR_el;
+    if(pt > cap) return 0;
     if(abs(pdgId)==13) hist=FR_mu;
     if(abs(pdgId)==15) hist=FR_tau;
     if(var == 2){
