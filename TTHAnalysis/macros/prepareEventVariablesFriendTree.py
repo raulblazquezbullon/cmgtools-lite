@@ -80,6 +80,7 @@ parser.add_option("--bk",   dest="bookkeeping",  action="store_true", default=Fa
 parser.add_option("--tra2",  dest="useTRAv2", action="store_true", default=False, help="Use the new experimental version of treeReAnalyzer");
 parser.add_option("--onlyMC",  dest="onlyMC", action="store_true", default=False, help="Only run over MC, i.e. some event weights related variables");
 parser.add_option("--onlyData",  dest="onlyData", action="store_true", default=False, help="Only run over Data");
+parser.add_option("--strictCheck", dest="strictcheck", action="store_true", default=False, help="Also check number of entries matching original")
 
 (options, args) = parser.parse_args()
 

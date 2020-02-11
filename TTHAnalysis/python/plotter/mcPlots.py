@@ -1075,15 +1075,20 @@ class PlotMaker:
                     rd = "total" if plotmode in ["closure"] else options.ratioDen
                     rdata,rnorm,rnorm2,rline = doRatioHists(pspec,pmap,total,totalSyst, maxRange=options.maxRatioRange, fixRange=options.fixRatioRange,
                                                             fitRatio=options.fitRatio, errorsOnRef=options.errorBandOnRatio, 
-                                                            ratioNums=rn, ratioDen=rd, ylabel=options.ratioYLabel, doWide=doWide, showStatTotLegend=True, cumulative=self._options.cumulative)
+                                                            ratioNums=rn, ratioDen=rd, ylabel=options.ratioYLabel, doWide=doWide, showStatTotLegend=options.showStatTotLegend, cumulative=self._options.cumulative)
                 if makeCanvas and outputDir: outputDir.WriteTObject(c1) # should be here to include ratio pad in saved canvas
                 if self._options.printPlots:
                     for ext in self._options.printPlots.split(","):
                         fdir = printDir;
                         if not os.path.exists(fdir): 
-                            os.makedirs(fdir); 
-                            if os.path.exists("/afs/cern.ch"): os.system("cp /afs/cern.ch/user/g/gpetrucc/php/index.php "+fdir)
-                            elif os.path.exists("/pool/ciencias/"): os.system("cp /pool/ciencias/HeppyTrees/RA7/additionalReferenceCode/index.php "+fdir)
+                            os.makedirs(fdir);
+                            print "Will create the output for you" 
+                            if os.path.exists("/afs/cern.ch"):
+                                print "...as well as copy Petrucciani's index" 
+                                os.system("cp /afs/cern.ch/user/g/gpetrucc/php/index.php "+fdir)
+                            elif os.path.exists("/pool/ciencias/"):
+                                print "...as well as copy Oviedo's index" 
+                                os.system("cp /pool/ciencias/HeppyTrees/RA7/additionalReferenceCode/index.php "+fdir)
                         if ext == "txt" and self._options.perBin:
                             dump = open("%s/%s_perBin.%s" % (fdir, outputName, ext), "w")
                             maxlen = max([len(mca.getProcessOption(p,'Label',p)) for p in mca.listSignals(allProcs=True) + mca.listBackgrounds(allProcs=True)]+[7])
@@ -1254,6 +1259,7 @@ def addPlotMakerOptions(parser, addAlsoMCAnalysis=True):
     parser.add_option('--env',      dest='env'         , type='string', default="", help='Set environment (currently supported: "oviedo")')
     parser.add_option('--add-histos', dest='addHistos' , type='string', action="append", nargs=2, default=[], help='File path to load and add histograms from to the ones that are newly made.')
     parser.add_option('--cumulative', dest='cumulative', action="store_true", default=False, help="Draw the cumulative distribution for the given histogram")
+    parser.add_option('--notShowStatTotLegend', dest='showStatTotLegend', action="store_false", default=True, help="Do not draw legend in the ratio plot")
 
 if __name__ == "__main__":
     from optparse import OptionParser
@@ -1272,7 +1278,7 @@ if __name__ == "__main__":
     if os.path.dirname(outname) and not os.path.exists(os.path.dirname(outname)):
         os.system("mkdir -p "+os.path.dirname(outname))
         if os.path.exists("/afs/cern.ch"): os.system("cp /afs/cern.ch/user/g/gpetrucc/php/index.php "+os.path.dirname(outname))
-        elif 'oviedo' in options.env: os.system("cp /pool/ciencias/HeppyTrees/RA7/additionalReferenceCode/index.php "+os.path.dirname(outname))
+        elif os.path.exists("/pool/ciencias"): os.system("cp /pool/ciencias/HeppyTrees/RA7/additionalReferenceCode/index.php "+os.path.dirname(outname))
     print "Will save plots to ",outname
     fcmd = open(re.sub("\.root$","",outname)+"_command.txt","w")
     fcmd.write("%s\n\n" % " ".join(sys.argv))
