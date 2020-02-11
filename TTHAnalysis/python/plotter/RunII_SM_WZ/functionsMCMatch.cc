@@ -62,6 +62,14 @@ bool atLeastOneConv(int idl1, int idl2, int idl3, int idl4, int idt1, int idt2, 
   }
 }
 
+bool atLeastOneConv2(int idl1, int idl2, int idl3, int idl4, int idt1, int idt2, int nTaus) {
+  if (atLeastOneFake(idl1, idl2, idl3, idl4, idt1, idt2, nTaus)) return false;
+  if (true){
+    return isConv(idl1) || isConv(idl2);
+  }
+}
+
+
 bool atLeastOneConv4(int idl1, int idl2, int idl3, int idl4, int idt1, int idt2, int nTaus) {
   if (atLeastOneFake(idl1, idl2, idl3, idl4, idt1, idt2, nTaus)) return false;
   if (nTaus == 0){
@@ -82,6 +90,13 @@ bool isPromptL(int id){
 bool isPromptT(int id){
   return (id == 5);
 }
+
+bool allPrompt2(int idl1, int idl2, int idl3, int idl4, int idt1, int idt2, int nTaus) {
+  if (true){
+    return isPromptL(idl1) || isPromptL(idl2);
+  }
+}
+
 
 bool allPrompt4(int idl1, int idl2, int idl3, int idl4, int idt1, int idt2, int nTaus) {
   if (nTaus == 0){
