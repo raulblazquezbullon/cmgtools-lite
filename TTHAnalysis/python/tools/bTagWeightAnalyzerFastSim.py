@@ -40,10 +40,11 @@ class bTagWeightAnalyzerFastSim():
         self.reader_l.load(self.calib, 2, "fastsim" if not isFastSim else "fastsim")
 
         f_eff        = ROOT.TFile.Open(eff, "read")
-        self.h_eff_b = f_eff.Get("eff_TT_%s_b"%(["L", "M", "T"][wp])   ); self.h_eff_b.SetDirectory(0)
-        self.h_eff_c = f_eff.Get("eff_TT_%s_c"%(["L", "M", "T"][wp])   ); self.h_eff_c.SetDirectory(0)
-        self.h_eff_l = f_eff.Get("eff_TT_%s_udsg"%(["L", "M", "T"][wp])); self.h_eff_l.SetDirectory(0)
+        self.h_eff_b = f_eff.Get("eff_TT_%s_B"%(["L", "M", "T"][wp])   ); self.h_eff_b.SetDirectory(0)
+        self.h_eff_c = f_eff.Get("eff_TT_%s_C"%(["L", "M", "T"][wp])   ); self.h_eff_c.SetDirectory(0)
+        self.h_eff_l = f_eff.Get("eff_TT_%s_L"%(["L", "M", "T"][wp])); self.h_eff_l.SetDirectory(0)
         f_eff.Close()
+
 
 
 	## __call__
@@ -80,10 +81,10 @@ class bTagWeightAnalyzerFastSim():
         mcNoTag   = 1.
         dataTag   = 1.
         dataNoTag = 1.
-        sysHFup   = 0
-        sysHFdn   = 0
-        sysLFup   = 0
-        sysLFdn   = 0
+        sysHFup   = 1.
+        sysHFdn   = 1.
+        sysLFup   = 1.
+        sysLFdn   = 1.
         
         for jet in self.jets:
         
@@ -108,28 +109,37 @@ class bTagWeightAnalyzerFastSim():
                  mcTag   *= eff
                  dataTag *= eff*SF[0]
                  if flavor in [4, 5]:
-                     sysHFup += (SF[1] - SF[0])/SF[0]
-                     sysHFdn += (SF[0] - SF[2])/SF[0]
+                     sysHFup *= eff*SF[1]
+                     sysHFdn *= eff*SF[2]
+                     sysLFup *= eff*SF[0]
+                     sysLFdn *= eff*SF[0]
+
                  else:
-                     sysLFup += (SF[1] - SF[0])/SF[0]
-                     sysLFdn += (SF[0] - SF[2])/SF[0]
+                     sysHFup *= eff*SF[0]
+                     sysHFdn *= eff*SF[0]
+                     sysLFup *= eff*SF[1]
+                     sysLFdn *= eff*SF[2]
             else: 
                  mcNoTag   *= (1 - eff      )
                  dataNoTag *= (1 - eff*SF[0])
                  if flavor in [4, 5]:
-                     sysHFup += -eff*(SF[1] - SF[0])/(1 - SF[0])
-                     sysHFdn += -eff*(SF[0] - SF[2])/(1 - SF[0])
+                     sysHFup *= (1 - eff*SF[1])
+                     sysHFdn *= (1 - eff*SF[2])
+                     sysLFup *= (1 - eff*SF[0])
+                     sysLFdn *= (1 - eff*SF[0])
+
                  else: 
-                     sysLFup += -eff*(SF[1] - SF[0])/(1 - SF[0])
-                     sysLFdn += -eff*(SF[0] - SF[2])/(1 - SF[0])
+                     sysHFup *= (1 - eff*SF[0])
+                     sysHFdn *= (1 - eff*SF[0])
+                     sysLFup *= (1 - eff*SF[1])
+                     sysLFdn *= (1 - eff*SF[2])
+
         central = (dataNoTag * dataTag ) / ( mcNoTag * mcTag )
-
         self.ret["bTagWeight"+self.label         ] = central
-        self.ret["bTagWeight"+self.label+"_HF_Up"] = central * ( 1 - sysHFup )
-        self.ret["bTagWeight"+self.label+"_HF_Dn"] = central * ( 1 + sysHFdn )
-        self.ret["bTagWeight"+self.label+"_LF_Up"] = central * ( 1 - sysLFup )
-        self.ret["bTagWeight"+self.label+"_LF_Dn"] = central * ( 1 + sysLFdn )
-
+        self.ret["bTagWeight"+self.label+"_HF_Up"] = sysHFup / ( mcNoTag * mcTag )
+        self.ret["bTagWeight"+self.label+"_HF_Dn"] = sysHFdn / ( mcNoTag * mcTag )
+        self.ret["bTagWeight"+self.label+"_LF_Up"] = sysLFup / ( mcNoTag * mcTag )
+        self.ret["bTagWeight"+self.label+"_LF_Dn"] = sysLFdn / ( mcNoTag * mcTag )
 
     ## getCutVal
     ## _______________________________________________________________

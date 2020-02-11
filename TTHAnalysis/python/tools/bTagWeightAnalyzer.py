@@ -40,9 +40,9 @@ class bTagWeightAnalyzer():
         self.reader_l.load(self.calib, 2, "incl" if not isFastSim else "fastsim")
 
         f_eff        = ROOT.TFile.Open(eff, "read")
-        self.h_eff_b = f_eff.Get("eff_TT_%s_b"%(["L", "M", "T"][wp])   ); self.h_eff_b.SetDirectory(0)
-        self.h_eff_c = f_eff.Get("eff_TT_%s_c"%(["L", "M", "T"][wp])   ); self.h_eff_c.SetDirectory(0)
-        self.h_eff_l = f_eff.Get("eff_TT_%s_udsg"%(["L", "M", "T"][wp])); self.h_eff_l.SetDirectory(0)
+        self.h_eff_b = f_eff.Get("eff_TT_%s_B"%(["L", "M", "T"][wp])   ); self.h_eff_b.SetDirectory(0)
+        self.h_eff_c = f_eff.Get("eff_TT_%s_C"%(["L", "M", "T"][wp])   ); self.h_eff_c.SetDirectory(0)
+        self.h_eff_l = f_eff.Get("eff_TT_%s_L"%(["L", "M", "T"][wp])); self.h_eff_l.SetDirectory(0)
         f_eff.Close()
 
 
@@ -75,16 +75,16 @@ class bTagWeightAnalyzer():
     ## computeWeights
     ## _______________________________________________________________
     def computeWeights(self):
-      for jesVar in ["nom","jesTotalCorrUp","jesTotalCorrDown","jesTotalUnCorrUp","jesTotalUnCorrDown"]:
+      for jesVar in ["nom", "jesTotalCorrUp","jesTotalCorrDown","jesTotalUnCorrUp","jesTotalUnCorrDown"]:
        
         mcTag     = 1.
         mcNoTag   = 1.
         dataTag   = 1.
         dataNoTag = 1.
-        sysHFup   = 0
-        sysHFdn   = 0
-        sysLFup   = 0
-        sysLFdn   = 0
+        sysHFup   = 1.
+        sysHFdn   = 1.
+        sysLFup   = 1.
+        sysLFdn   = 1.
         
         for jet in self.jets:
         
@@ -98,39 +98,48 @@ class bTagWeightAnalyzer():
             if getattr(jet, self.branchbtag) > self.ret["maxBTag" + self.label+"_"+jesVar]: self.ret["maxBTag" + self.label+"_"+jesVar] = getattr(jet, self.branchbtag)
             if getattr(jet, self.branchbtag) > self.ret["maxBTag25" + self.label+"_"+jesVar] and jet.pt > 25: self.ret["maxBTag25" + self.label+"_"+jesVar] = getattr(jet, self.branchbtag)
             if getattr(jet, self.branchbtag) > self.ret["maxBTag30" + self.label+"_"+jesVar] and jet.pt > 30: self.ret["maxBTag30" + self.label+"_"+jesVar] = getattr(jet, self.branchbtag)
-            if getattr(jet, self.branchbtag) > self.ret["maxBTag40" + self.label+"_"+jesVar] and jet.pt > 40: self.ret["maxBTag40" + self.label+"_"+jesVar] = getattr(jet, self.branchbtag)
 
             istag = getattr(jet, self.branchbtag) > self.cutVal and abs(jet.eta) < 2.5 and jet.pt > 20
             if istag and jet.pt > 25: self.ret["nBJet25" +self.label+"_"+jesVar]              += 1
             if istag and jet.pt > 30: self.ret["nBJet30" +self.label+"_"+jesVar]              += 1
-            if istag and jet.pt > 40: self.ret["nBJet40" +self.label+"_"+jesVar]              += 1
+            if jesVar == "nom": print jet.pt, jet.eta, getattr(jet, self.branchbtag), eff, SF
             if (eff == 0): eff = 1e-5 #Regularize
             if(istag):
                  mcTag   *= eff
                  dataTag *= eff*SF[0]
                  if flavor in [4, 5] and jesVar == "nom":
-                     sysHFup += (SF[1] - SF[0])/SF[0]
-                     sysHFdn += (SF[0] - SF[2])/SF[0]
+                     sysHFup *= eff*SF[1]
+                     sysHFdn *= eff*SF[2]
+                     sysLFup *= eff*SF[0]
+                     sysLFdn *= eff*SF[0]
+
                  elif jesVar == "nom":
-                     sysLFup += (SF[1] - SF[0])/SF[0]
-                     sysLFdn += (SF[0] - SF[2])/SF[0]
+                     sysHFup *= eff*SF[0]
+                     sysHFdn *= eff*SF[0]
+                     sysLFup *= eff*SF[1]
+                     sysLFdn *= eff*SF[2]
             else: 
                  mcNoTag   *= (1 - eff      )
                  dataNoTag *= (1 - eff*SF[0])
                  if flavor in [4, 5] and jesVar == "nom":
-                     sysHFup += -eff*(SF[1] - SF[0])/(1 - SF[0])
-                     sysHFdn += -eff*(SF[0] - SF[2])/(1 - SF[0])
+                     sysHFup *= (1 - eff*SF[1])
+                     sysHFdn *= (1 - eff*SF[2])
+                     sysLFup *= (1 - eff*SF[0])
+                     sysLFdn *= (1 - eff*SF[0])
+
                  elif jesVar == "nom": 
-                     sysLFup += -eff*(SF[1] - SF[0])/(1 - SF[0])
-                     sysLFdn += -eff*(SF[0] - SF[2])/(1 - SF[0])
+                     sysHFup *= (1 - eff*SF[0])
+                     sysHFdn *= (1 - eff*SF[0])
+                     sysLFup *= (1 - eff*SF[1])
+                     sysLFdn *= (1 - eff*SF[2])
         central = (dataNoTag * dataTag ) / ( mcNoTag * mcTag )
 
         self.ret["bTagWeight"+self.label+"_"+jesVar] = central
         if jesVar == "nom":
-          self.ret["bTagWeight"+self.label+"_HF_Up"] = central * ( 1 - sysHFup )
-          self.ret["bTagWeight"+self.label+"_HF_Dn"] = central * ( 1 + sysHFdn )
-          self.ret["bTagWeight"+self.label+"_LF_Up"] = central * ( 1 - sysLFup )
-          self.ret["bTagWeight"+self.label+"_LF_Dn"] = central * ( 1 + sysLFdn )
+          self.ret["bTagWeight"+self.label+"_HF_Up"] = sysHFup / ( mcNoTag * mcTag )
+          self.ret["bTagWeight"+self.label+"_HF_Dn"] = sysHFdn / ( mcNoTag * mcTag )
+          self.ret["bTagWeight"+self.label+"_LF_Up"] = sysLFup / ( mcNoTag * mcTag )
+          self.ret["bTagWeight"+self.label+"_LF_Dn"] = sysLFdn / ( mcNoTag * mcTag )
 
 
     ## getCutVal
@@ -166,7 +175,7 @@ class bTagWeightAnalyzer():
         	
        flavor     = self.pogFlavor(mcFlavor) 
        pt_cutoff  = max(20. , min(999., pt))
-       eta_cutoff = min(2.39, abs(eta))
+       eta_cutoff = min(2.49, abs(eta))
 
        theReader   = [self.reader_b, self.reader_c, self.reader_l][flavor]
     
@@ -189,11 +198,10 @@ class bTagWeightAnalyzer():
         for jesVar in ["nom","jesTotalCorrUp","jesTotalCorrDown","jesTotalUnCorrUp","jesTotalUnCorrDown"]:
             biglist += [ ("bTagWeight"+self.label + "_" + jesVar , "F"),         ("nBJet25" +self.label+ "_" + jesVar , "I"),
             ("nBJet30" +self.label+ "_" + jesVar , "I"),
-            ("nBJet40" +self.label+ "_" + jesVar , "I"),
             ("maxBTag" + self.label+ "_" + jesVar , "F"),
             ("maxBTag25" + self.label+ "_" + jesVar , "F"),
-            ("maxBTag30" + self.label+ "_" + jesVar , "F"),
-            ("maxBTag40" + self.label+ "_" + jesVar , "F")]
+            ("maxBTag30" + self.label+ "_" + jesVar , "F")]
+
   
         return biglist
 

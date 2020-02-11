@@ -495,15 +495,15 @@ btagsf_DeepCSV_102X    = os.path.join(utility_files_dir, "btag", "DeepCSV_102XSF
 btagsf_DeepFlavor_102X = os.path.join(utility_files_dir, "btag", "DeepJet_102XSF_V1.csv")
 
 btag_efficiency_fullsimCSV_2016        = os.path.join(utility_files_dir, "btag", "btagEffCSV_2016.root")
-btag_efficiency_fullsimDeepCSV_2016    = os.path.join(utility_files_dir, "btag", "btagEffDeepCSV_2016.root")
+btag_efficiency_fullsimDeepCSV_2016    = os.path.join(utility_files_dir, "btag", "btagEffDeepCSV2016.root")
 btag_efficiency_fullsimDeepFlavor_2016 = os.path.join(utility_files_dir, "btag", "btagEffDeepFlavor_2016.root")
 
 btag_efficiency_fullsimCSV_2017        = os.path.join(utility_files_dir, "btag", "btagEffCSV_2017.root")
-btag_efficiency_fullsimDeepCSV_2017    = os.path.join(utility_files_dir, "btag", "btagEffDeepCSV_2017.root")
+btag_efficiency_fullsimDeepCSV_2017    = os.path.join(utility_files_dir, "btag", "btagEffDeepCSV2017.root")
 btag_efficiency_fullsimDeepFlavor_2017 = os.path.join(utility_files_dir, "btag", "btagEffDeepFlavor_2017.root")
 
 btag_efficiency_fullsimCSV_2018        = os.path.join(utility_files_dir, "btag", "btagEffCSV.root")
-btag_efficiency_fullsimDeepCSV_2018    = os.path.join(utility_files_dir, "btag", "btagEffDeepCSV.root")
+btag_efficiency_fullsimDeepCSV_2018    = os.path.join(utility_files_dir, "btag", "btagEffDeepCSV2018.root")
 btag_efficiency_fullsimDeepFlavor_2018 = os.path.join(utility_files_dir, "btag", "btagEffDeepFlavor.root")
 
 
@@ -575,4 +575,7 @@ MODULES.append( ('lepgenVarsWZSM_nondressed', lambda : lepgenVarsWZSM_nondressed
 from  CMGTools.TTHAnalysis.tools.bosonPolarizationGEN_TotalTruth import bosonPolarizationGEN_TotalTruth
 
 MODULES.append( ('bosonPolarizationGEN', lambda : bosonPolarizationGEN_TotalTruth()))
-
+from CMGTools.TTHAnalysis.tools.bTagEffCount import bTagEffCount
+MODULES.append( ('bTagEffCount2016', lambda : bTagEffCount(label = "btagDeepB" , WPs={'L': 0.2217, 'M': 0.6321, 'T': 0.8953})))
+MODULES.append( ('bTagEffCount2017', lambda : bTagEffCount(label = "btagDeepB" , WPs={'L': 0.1522, 'M': 0.4941, 'T': 0.8001})))
+MODULES.append( ('bTagEffCount2018', lambda : bTagEffCount(label = "btagDeepB" , WPs={'L': 0.1241, 'M': 0.4184, 'T': 0.7527})))
