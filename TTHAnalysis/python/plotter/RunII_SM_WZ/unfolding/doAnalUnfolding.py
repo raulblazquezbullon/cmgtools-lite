@@ -44,7 +44,7 @@ class Steer:
                 #os.mkdir('%s_%s'.format(self.outputDir,ch))
                 print('mkdir -p {outputDir}_{ch}'.format(outputDir=self.outputDir,ch=ch))
             
-        print('Folders with base %s have been created'.format(self.outputDir))
+        print('echo "Folders with base {outdir} have been created"'.format(outdir=self.outputDir))
 
         self.chanCuts ={ 'incl':'',
                          'eee':'-E eee',
@@ -84,9 +84,9 @@ class Steer:
 
         # Preliminary cleanup
         for ch in self.channels:
-            print('rm -r {outputDir}_{ch}/inputs/*'.format(outputDir=self.outputDir, ch=ch))
+            pass #print('rm -r {outputDir}_{ch}/inputs/*'.format(outputDir=self.outputDir, ch=ch))
             
-        doSignSplit=False
+        doSignSplit=True
 
         if not doSignSplit: 
             for iShape, iPack in self.inputPairs.items():
@@ -106,39 +106,39 @@ class Steer:
                     #print('rm -r /nfs/fanae/user/vischia/workarea/cmssw/combine/CMSSW_8_1_0/src/wz_unfolding/incl_fitWZonly_%s/' % iOut)
                     #print('mv /nfs/fanae/user/vischia/workarea/cmssw/combine/CMSSW_8_1_0/src/wz_unfolding/incl_fitWZonly/ /nfs/fanae/user/vischia/workarea/cmssw/combine/CMSSW_8_1_0/src/wz_unfolding/incl_fitWZonly_%s/' % iOut)
     
-            else:
+        else: # doSignSplit
 
-                enabler={
-                    'plus' : ' -E pmp ',
-                    'minus' : ' -E pmm',
-                }
+            enabler={
+                'plus' : ' -E pmp ',
+                'minus' : ' -E pmm',
+            }
 
-                for iWhat, iCut in enabler.items():
+            for iWhat, iCut in enabler.items():
         
-                    # Preliminary cleanup
-                    print('rm -r /nfs/fanae/user/vischia/workarea/cmssw/combine/CMSSW_8_1_0/src/wz_unfolding/incl_fitWZonly/')
-                    print('rm -r /nfs/fanae/user/vischia/workarea/cmssw/combine/CMSSW_8_1_0/src/wz_unfolding/eee_fitWZonly/ ')
-                    print('rm -r /nfs/fanae/user/vischia/workarea/cmssw/combine/CMSSW_8_1_0/src/wz_unfolding/eem_fitWZonly/ ')
-                    print('rm -r /nfs/fanae/user/vischia/workarea/cmssw/combine/CMSSW_8_1_0/src/wz_unfolding/mme_fitWZonly/ ')
-                    print('rm -r /nfs/fanae/user/vischia/workarea/cmssw/combine/CMSSW_8_1_0/src/wz_unfolding/mmm_fitWZonly/ ')
+                ## Preliminary cleanup
+                #print('rm -r /nfs/fanae/user/vischia/workarea/cmssw/combine/CMSSW_8_1_0/src/wz_unfolding/incl_fitWZonly/')
+                #print('rm -r /nfs/fanae/user/vischia/workarea/cmssw/combine/CMSSW_8_1_0/src/wz_unfolding/eee_fitWZonly/ ')
+                #print('rm -r /nfs/fanae/user/vischia/workarea/cmssw/combine/CMSSW_8_1_0/src/wz_unfolding/eem_fitWZonly/ ')
+                #print('rm -r /nfs/fanae/user/vischia/workarea/cmssw/combine/CMSSW_8_1_0/src/wz_unfolding/mme_fitWZonly/ ')
+                #print('rm -r /nfs/fanae/user/vischia/workarea/cmssw/combine/CMSSW_8_1_0/src/wz_unfolding/mmm_fitWZonly/ ')
+                
+                # WZ exclusive
+                for iShape, iPack in self.inputPairs.items():
+                    iRange=iPack[0]
+                    iXTitle=iPack[1]
+                    iOut=iPack[2]
+                    iYTitle='Events'
                     
-                    # WZ exclusive
-                    for iShape, iPack in self.inputPairs.items():
-                        iRange=iPack[0]
-                        iXTitle=iPack[1]
-                        iOut=iPack[2]
-                        iYTitle='Events'
-                        
-                        for iChan, iChanCut in self.chanCuts.items():
-                            print('mkdir -p {outdir}/{year}_{chan}_fitWZonly_{thevar}_{iWhat}/'.format(outdir=self.outputDir, year=self.year,chan=iChan, cut=iChanCut,thevar=iOut, iWhat=iWhat) )
-                            perchan = ' --od {outdir}/{year}_{chan}_fitWZonly_{thevar}_{iWhat}/ --bin {chan} -E SRWZ {cut} '.format(outdir=self.outputDir, year=self.year,chan=iChan, cut=iChanCut, thevar=iOut, iWhat=iWhat)
+                    for iChan, iChanCut in self.chanCuts.items():
+                        print('mkdir -p {outdir}/{year}_{chan}_fitWZonly_{thevar}_{iWhat}/'.format(outdir=self.outputDir, year=self.year,chan=iChan, cut=iChanCut,thevar=iOut, iWhat=iWhat) )
+                        perchan = ' --od {outdir}/{year}_{chan}_fitWZonly_{thevar}_{iWhat}/ --bin {chan} -E SRWZ {cut} '.format(outdir=self.outputDir, year=self.year,chan=iChan, cut=iChanCut, thevar=iOut, iWhat=iWhat)
                     
-                            print('sbatch -p short -c {nthreads} --wrap "python makeShapeCardsSusy.py RunII_SM_WZ/{year}/mca_wz_v5.txt RunII_SM_WZ/{year}/cuts_wzsm.txt \'{iShape}\' \'{iRange}\' RunII_SM_WZ/{year}/systs_wz.txt  --tree treeProducerSusyMultilepton -P /pool/cienciasrw/HeppyTrees/RA7/nanoAODv5_{year}_skimWZ/   --Fs {{P}}/leptonPtCorrections/ {prefiringTrees} {pileupTrees} --Fs {{P}}/leptonJetReCleanerWZSM/ --Fs {{P}}/leptonBuilderWZSM/ {triggerTrees} --FMCs {{P}}/leptonMatcher/ --FMCs {{P}}/bTagEventWeights/ --FMCs {{P}}/lepgenVarsWZSM/ --Fs {{P}}/bosonPolarization/ -L RunII_SM_WZ/functionsSF.cc -L RunII_SM_WZ/functionsMCMatch.cc -L RunII_SM_WZ/functionsWZ.cc -W \'getLeptonSF_v4(0,0,{year},LepSel_pt[0],LepSel_eta[0],LepSel_pdgId[0])*getLeptonSF_v4(0,0,{year},LepSel_pt[1],LepSel_eta[1],LepSel_pdgId[1])*getLeptonSF_v4(0,0,{year},LepSel_pt[2],LepSel_eta[2],LepSel_pdgId[2])*{pileupWeights}*bTagWeightDeepCSVT_nom{prefiringWeights}\' --obj Events -j {nthreads} -l {lumi} -f  -E SRWZ {perchan} {chargecut} --neglist promptsub --autoMCStats  --XTitle \\"{iXTitle}\\" --YTitle \\"{iYTitle}\\" -o WZSR_{year}" '.format(year=self.year,prefiringTrees=prefiringTrees[self.year],prefiringWeights=prefiringWeights[self.year],triggerTrees=triggerTrees[self.year],lumi=lumi[self.year],pileupTrees=pileupTrees[self.year],pileupWeights=pileupWeights[self.year], perchan=perchan, nthreads=self.nthreads, iShape=iShape, iRange=iRange, iXTitle=iXTitle, iYTitle=iYTitle, chargecut=iCut) )
+                        print('sbatch -p short -c {nthreads} --wrap "python makeShapeCardsSusy.py RunII_SM_WZ/{year}/mca_wz_v5.txt RunII_SM_WZ/{year}/cuts_wzsm.txt \'{iShape}\' \'{iRange}\' RunII_SM_WZ/{year}/systs_wz.txt  --tree treeProducerSusyMultilepton -P /pool/cienciasrw/HeppyTrees/RA7/nanoAODv5_{year}_skimWZ/   --Fs {{P}}/leptonPtCorrections/ {prefiringTrees} {pileupTrees} --Fs {{P}}/leptonJetReCleanerWZSM/ --Fs {{P}}/leptonBuilderWZSM/ {triggerTrees} --FMCs {{P}}/leptonMatcher/ --FMCs {{P}}/bTagEventWeights/ --FMCs {{P}}/lepgenVarsWZSM/ --Fs {{P}}/bosonPolarization/ -L RunII_SM_WZ/functionsSF.cc -L RunII_SM_WZ/functionsMCMatch.cc -L RunII_SM_WZ/functionsWZ.cc -W \'getLeptonSF_v4(0,0,{year},LepSel_pt[0],LepSel_eta[0],LepSel_pdgId[0])*getLeptonSF_v4(0,0,{year},LepSel_pt[1],LepSel_eta[1],LepSel_pdgId[1])*getLeptonSF_v4(0,0,{year},LepSel_pt[2],LepSel_eta[2],LepSel_pdgId[2])*{pileupWeights}*bTagWeightDeepCSVT_nom{prefiringWeights}\' --obj Events -j {nthreads} -l {lumi} -f  -E SRWZ {perchan} {chargecut} --neglist promptsub --autoMCStats  --XTitle \\"{iXTitle}\\" --YTitle \\"{iYTitle}\\" -o WZSR_{year}" '.format(year=self.year,prefiringTrees=prefiringTrees[self.year],prefiringWeights=prefiringWeights[self.year],triggerTrees=triggerTrees[self.year],lumi=lumi[self.year],pileupTrees=pileupTrees[self.year],pileupWeights=pileupWeights[self.year], perchan=perchan, nthreads=self.nthreads, iShape=iShape, iRange=iRange, iXTitle=iXTitle, iYTitle=iYTitle, chargecut=iCut) )
 
-                            # Must configure for cleanup or stuff like that
-                            #print('rm -r /nfs/fanae/user/vischia/workarea/cmssw/combine/CMSSW_8_1_0/src/wz_unfolding/incl_fitWZonly_%s_%s/' % (iOut, iWhat))
-                            #print('mv /nfs/fanae/user/vischia/workarea/cmssw/combine/CMSSW_8_1_0/src/wz_unfolding/incl_fitWZonly/ /nfs/fanae/user/vischia/workarea/cmssw/combine/CMSSW_8_1_0/src/wz_unfolding/incl_fitWZonly_%s_%s/' % (iOut, iWhat))
-                        print('echo Done inputs preparation!')
+                        # Must configure for cleanup or stuff like that
+                        #print('rm -r /nfs/fanae/user/vischia/workarea/cmssw/combine/CMSSW_8_1_0/src/wz_unfolding/incl_fitWZonly_%s_%s/' % (iOut, iWhat))
+                        #print('mv /nfs/fanae/user/vischia/workarea/cmssw/combine/CMSSW_8_1_0/src/wz_unfolding/incl_fitWZonly/ /nfs/fanae/user/vischia/workarea/cmssw/combine/CMSSW_8_1_0/src/wz_unfolding/incl_fitWZonly_%s_%s/' % (iOut, iWhat))
+                    print('echo Done inputs preparation!')
 
     # End of prepareInputs()
 
@@ -166,7 +166,7 @@ class Steer:
         #echo "rm -r ${baseoutputdir}mme_fitWZonly/ "
         #echo "rm -r ${baseoutputdir}mmm_fitWZonly/ "
         
-        doSignSplit=False
+        doSignSplit=True
 
         if not doSignSplit:
             for iShape, iPack in self.responsePairs.items():
@@ -278,6 +278,7 @@ def bad(what):
 
 def main(args):
 
+    print('echo "Args what: %s"'% args.what)
     if bad(args.what):
         print("I don't recognize this action. Why don't you do it yourself with pen and paper?")
         return 1
