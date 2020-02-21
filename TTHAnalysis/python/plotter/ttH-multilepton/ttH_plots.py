@@ -213,13 +213,12 @@ if __name__ == '__main__':
             x = add(x,"--sP kinMVA_input_BDTv8_eventReco_X_mass --sP kinMVA_2lss_ttbar_withBDTv8 --sP kinMVA_input_BDTv8_eventReco_MT_HadLepTop_MET")
 
         if '_mio' in torun:  
-            x = add(x, "-E 1B")
-            x = add(x, "-E 4j")
-            x = add(x, "-X 2b1B")
             x = x.replace('mca-2lss-mc.txt','mca-2lss-mcdata.txt')
             x = add(x,"--unc ttH-multilepton/systsUnc.txt --xu CMS_ttHl_TTZ_lnU,CMS_ttHl_TTW_lnU")
             x = add(x,"--sP 'met' --sP 'nJet25_from0' --sP 'nBJetMedium25' --sP 'lep1_pt' --sP 'lep2_pt' --sP 'SVA_2lss_mll' --sP 'mZ1' --sP 'mhtJet25' --sP 'htJet25j' --perBin --sP 'tot_weight'")
-			#x = x.replace('--pdir 2lss_mio/all/2lss_mio','--pdir 2lss_mio/all/2lss_mio2')
+            x = add(x, "-E 1B")
+            x = add(x, "-E 4j")
+            x = add(x, "-X 2b1B")
 
         runIt(x,'%s'%torun)
         if '_flav' in torun:

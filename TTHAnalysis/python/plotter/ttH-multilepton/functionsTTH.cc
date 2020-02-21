@@ -729,3 +729,39 @@ float triggerSF_ttH(int pdgid1, float pt1, int pdgid2, float pt2, int nlep, int 
   }
   else return 1.;
 }
+
+
+float soto_clasifier(float nJet25,float nBJetMedium25){
+
+  if ((nJet25 == 0)*(nBJetMedium25 == 0)) return 1;
+  if ((nJet25 == 1)*(nBJetMedium25 == 0)) return 2;
+  if ((nJet25 == 1)*(nBJetMedium25 == 1)) return 3;
+  if ((nJet25 == 2)*(nBJetMedium25 == 0)) return 4;
+  if ((nJet25 == 2)*(nBJetMedium25 == 1)) return 5;
+  if ((nJet25 == 2)*(nBJetMedium25 == 2)) return 6;
+  if ((nJet25 == 3)*(nBJetMedium25 == 0)) return 7;
+  if ((nJet25 == 3)*(nBJetMedium25 == 1)) return 8;
+  if ((nJet25 == 3)*(nBJetMedium25 >= 2)) return 9;
+  if ((nJet25 == 4)*(nBJetMedium25 == 0)) return 10;
+  if ((nJet25 == 4)*(nBJetMedium25 == 1)) return 11;
+  if ((nJet25 == 4)*(nBJetMedium25 >= 2)) return 12;
+  if ((nJet25 == 5)*(nBJetMedium25 == 0)) return 13;
+  if ((nJet25 == 5)*(nBJetMedium25 == 1)) return 14;
+  if ((nJet25 == 5)*(nBJetMedium25 >= 2)) return 15;
+  if ((nJet25 >= 6)*(nBJetMedium25 == 0)) return 16;
+  if ((nJet25 >= 6)*(nBJetMedium25 == 1)) return 17;
+  if ((nJet25 >= 6)*(nBJetMedium25 >= 2)) return 18;
+  else return -1;
+}
+
+
+
+
+
+
+
+
+
+
+
+

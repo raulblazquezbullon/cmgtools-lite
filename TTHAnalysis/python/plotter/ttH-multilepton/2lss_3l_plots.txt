@@ -158,6 +158,9 @@ kinMVA_2lss_input_jet3_phi       : if3( nJet25_Recl >= 3, JetSel_Recl_phi[2] , -
 kinMVA_2lss_input_maxeta         : max(abs(LepGood_eta[int(iLepFO_Recl[0])]), abs(LepGood_eta[int(iLepFO_Recl[1])]))          : 40,0,2.4	                ; XTitle="maxeta"          
 kinMVA_2lss_input_jet1_eta       : if3(nJet25_Recl > 0, abs(JetSel_Recl_eta[0]),  -9)				                : 40,0,2.4                      ; XTitle="jet1_eta"        
 
+jet1_phi : JetSel_Recl_phi[0] : 40,-3.14,3.14	; XTitle="jet1_phi"
+jet2_phi : JetSel_Recl_phi[1] : 40,-3.14,3.14	; XTitle="jet2_phi"
+jet3_phi : JetSel_Recl_phi[2] : 40,-3.14,3.14	; XTitle="jet3_phi"
 
 kinMVA_3l_score_ttH  : DNN_3l_predictions_ttH  : 40,0,1; XTitle="3l DNN score (ttH node)"
 kinMVA_3l_score_tH   : DNN_3l_predictions_tH   : 40,0,1; XTitle="3l DNN score (tH node)"
@@ -351,4 +354,10 @@ met_phi : MET_phi : 40,-3.14,3.14; XTitle="MET #phi"
 #Control regions
 cr_3l: ttH_3l_clasifier(nJet25, nBJetMedium25): [0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5,10.5,11.5,12.5]; XTitle="nJet nBJet clasification",Logy, YMin=0.1 , YMax=5.0e3,  XNDdiv=505, IncludeOverflows=False, xBinLabels="1j\,2j\,3j\,>3j\,2j\,3j\,4j\,>4j\,2j\,3j\,4j\,>4j"
 cr_4l: ttH_4l_clasifier(nJet25, nBJetMedium25,mZ2): [0.5,1.5,2.5,3.5,4.5]; XTitle="4l Control Region", Logy, YMin=0.1 ,  XNDdiv=505, IncludeOverflows=False, xBinLabels="1\,2\,3\,4"
-mu_fake_origin : (abs(LepGood1_pdgId)==13 && LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==0 )*LepGood1_genPartFlav + (abs(LepGood2_pdgId)==13 && LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==0 )*LepGood2_genPartFlav : [ -0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5]; XTitle="Fake muon genPartFlav" 
+mu_fake_origin : (abs(LepGood1_pdgId)==13 && LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==0 )*LepGood1_genPartFlav + (abs(LepGood2_pdgId)==13 && LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==0 )*LepGood2_genPartFlav : [ -0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5]; XTitle="Fake muon genPartFlav"
+
+
+
+#Njets clasifier
+N_Jets: soto_clasifier(nJet25, nBJetMedium25): [0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5,10.5,11.5,12.5,13.5,14.5,15.5,16.5,17.5,18.5]; XTitle="nJet nBJet clasification",Logy, IncludeOverflows=False, xBinLabels="0j0B\,1j0B\,1j1B\,2j0B\,2j1B\,2j2B\,3j0B\,3j1B\,3j>2B\,4j0B\,4j1B\,4j>2B\,5j0B\,5j1B\,5j>2B\,6j0B\,6j1B\,6j>2B"
+ 

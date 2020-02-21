@@ -33,6 +33,11 @@ BTight: nBJetMedium25 >= 2 ; Disable=True
 4j: nJet25>=4 ; Disable=True
 5j: nJet25>=5 ; Disable=True
 6j: nJet25>=6 ; Disable=True
+3j_only: nJet25==3 ; Disable=True
+4j_only: nJet25==4 ; Disable=True
+
+plus_plus: LepGood1_charge>0 && LepGood2_charge>0 ; Disable=True
+minus_minus: LepGood1_charge<0 && LepGood2_charge<0 ; Disable=True
 
 
 ee: abs(LepGood1_pdgId)==11 && abs(LepGood2_pdgId)==11; Disable=True
