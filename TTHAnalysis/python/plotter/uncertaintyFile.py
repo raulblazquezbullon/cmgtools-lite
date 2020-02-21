@@ -6,7 +6,7 @@ from array import array
 from copy import deepcopy
 
 from CMGTools.TTHAnalysis.plotter.fakeRate import *
-
+from CMGTools.TTHAnalysis.plotter.histoWithNuisances import _cloneNoDir
 class Uncertainty:
     def __init__(self,name,procmatch,binmatch,unc_type,more_args=None,extra=None,options=None):
         self.name = name
@@ -68,6 +68,12 @@ class Uncertainty:
             self.trivialFunc = ['apply_norm_up','apply_norm_dn']
             self.normUnc[0] = float(self.args[0])
             self.normUnc[1] = 1.0/self.normUnc[0]
+        elif self.unc_type=='envelope':
+            if 'FakeRates' not in self.extra: 
+                raise RuntimeError("A set of FakeRates are needed for envelope")
+            self.fakerate = [ FakeRate( fr, loadFilesNow=False, year=self._options.year) for fr in self.extra['FakeRates'] ]
+
+
         elif self.unc_type=='none':
             pass
         else: raise RuntimeError, 'Uncertainty type "%s" not recognised' % self.unc_type
@@ -89,7 +95,9 @@ class Uncertainty:
         return self._nontrivialSelectionChange
     def getTrivial(self,sign,results):
         idx = 0 if sign=='up' else 1
-        if self.getFR(sign) or (self.trivialFunc[idx]==None): raise RuntimeError
+        if self.getFR(sign) or (self.trivialFunc[idx]==None):
+            print self.name
+            raise RuntimeError("Trying to get trivial from a non trivial variation")
         return getattr(self,self.trivialFunc[idx])(results)
     def postProcess(self,central,up,down):
         if self._postProcess == None:
@@ -107,6 +115,8 @@ class Uncertainty:
                     down.Reset(); down.Add(h0) 
             else:
                 up.Scale(0); down.Scale(0);
+                
+
     def isNorm(self):
         return (self.normUnc!=[None,None])
 
@@ -139,7 +149,10 @@ class Uncertainty:
     def year(self):
         return self._year
     def getFR(self,sign):
-        FR = self.fakerate[0 if sign=='up' else 1]
+        if self.unc_type == 'envelope':
+            FR = self.fakerate[int('%s'%(sign.replace('var','')))]
+        else:
+            FR = self.fakerate[0 if sign=='up' else 1]
         if FR: FR.loadFiles()
         return FR
     def getFRToRemove(self):

@@ -57,7 +57,7 @@ else:
        report = mca.getPlotsRaw("x", cexpr+":"+args[2], makeBinningProductString(args[3],cbins), cuts.allCuts(), nodata=options.asimov) 
     else:
        report = mca.getPlotsRaw("x", args[2], args[3], cuts.allCuts(), nodata=options.asimov) 
-    for p,h in report.iteritems(): h.cropNegativeBins()
+    for p,h in report.iteritems(): h.cropNegativeBins(threshold=1e-5)
 
 if options.savefile:
     savefile = ROOT.TFile(outdir+binname+".bare.root","recreate")
@@ -128,7 +128,7 @@ for scanpoint in scanpoints:
             procs.append(s); iproc[s] = i-len(listSignals)+1
         for i,b in enumerate(mca.listBackgrounds()):
             if b not in allyields: continue
-            if allyields[s] <= options.threshold: continue
+            if allyields[b] <= options.threshold: continue
             procs.append(b); iproc[b] = i+1
             #for p in procs: print "%-10s %10.4f" % (p, allyields[p]) 
         systs = {}
@@ -154,6 +154,16 @@ for scanpoint in scanpoints:
                             hv.Add(h.raw()); hv.Scale(0.5)
                         elif k < 0.2 or k > 5:
                             print "Warning: big shift in template for %s %s %s %s: kappa = %g " % (binname, p, name, d, k)
+                    # prevent variations from going to zero by symmetrizing
+                    for bin in range(1,h.GetXaxis().GetNbins()+1):
+                        for d in range(2):
+                            if variants[d].GetBinContent( bin ) == 0: 
+                                shift = variants[1-d].GetBinContent(bin); shift = max(5e-6, shift)
+                                variants[d].SetBinContent( bin, h.raw().GetBinContent( bin )**2/shift)
+                            if variants[d].GetBinContent( bin )/h.raw().GetBinContent(bin) > 100: 
+                                print "Warning: big shift in template for %s %s %s %s in bin %d: variation = %g"%( binname, p, name, d, bin, variants[d].GetBinContent( bin )/h.raw().GetBinContent(bin))
+                                variants[d].SetBinContent( bin, 10*h.raw().GetBinContent(bin) )
+                            
                     effshape[p] = variants 
             if isShape:
                 if options.regularize: 
@@ -180,11 +190,11 @@ for scanpoint in scanpoints:
                         systs[name] = ("lnN", effyield, {})
         # make a new list with only the ones that have an effect
         nuisances = sorted(systs.keys())
-        if '-' in pointname: 
-           pointname = pointname.replace('-','m')
         pointname2 = pointname.replace('kt','ct')
         pointname2 = pointname2.replace('kv','cv')
-        
+        if '-' in pointname: 
+           pointname = pointname.replace('-','m')
+        pointname2=pointname2.replace('m','-') #for sanity
         datacard = open(outdir+binname+'_'+pointname+".txt", "w"); 
         datacard.write("## Datacard for cut file %s and scan point %s\n"%(args[1],pointname))
         datacard.write("shapes *        * %s.root x_$PROCESS x_$PROCESS_$SYSTEMATIC\n" % (binname +'_'+pointname))
@@ -217,5 +227,5 @@ for scanpoint in scanpoints:
             workspace.WriteTObject(h,h.GetName().replace(pointname2+'_',''))
         workspace.Close()
     
-        print "Wrote to {0}.card.txt and {0}.input.root ".format(outdir+binname+'_'+pointname)
+        print "Wrote to {0}.txt and {0}.root ".format(outdir+binname+'_'+pointname)
     
