@@ -366,7 +366,7 @@ mu_fake_origin : (abs(LepGood1_pdgId)==13 && LepGood1_mcMatchId==0 && LepGood1_m
 
 
 #Njets clasifier
-N_Jets: soto_clasifier(nJet25, nBJetMedium25): [0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5,10.5,11.5,12.5,13.5,14.5,15.5,16.5,17.5,18.5]; XTitle="nJet nBJet clasification",Logy, IncludeOverflows=False, xBinLabels="0j0B\,1j0B\,1j1B\,2j0B\,2j1B\,2j2B\,3j0B\,3j1B\,3j>2B\,4j0B\,4j1B\,4j>2B\,5j0B\,5j1B\,5j>2B\,6j0B\,6j1B\,6j>2B"
+N_Jets: soto_clasifier(nJet25, nBJetMedium25): [0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5,10.5,11.5,12.5,13.5,14.5,15.5]; XTitle="nJet nBJet clasification",Logy, IncludeOverflows=False, xBinLabels="#splitline{0j}{0b}\,#splitline{1j}{0b}\,#splitline{1j}{1b}\,#splitline{2j}{0b}\,#splitline{2j}{1b}\,#splitline{2j}{2b}\,#splitline{3j}{0b}\,#splitline{3j}{1b}\,#splitline{3j}{>2b}\,#splitline{4j}{0b}\,#splitline{4j}{1b}\,#splitline{4j}{>2b}\,#splitline{5j}{0b}\,#splitline{5j}{1b}\,#splitline{5j}{>2b}"
  
  
 

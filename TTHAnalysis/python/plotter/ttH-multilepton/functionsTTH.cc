@@ -771,9 +771,6 @@ float soto_clasifier(float nJet25,float nBJetMedium25){
   if ((nJet25 == 5)*(nBJetMedium25 == 0)) return 13;
   if ((nJet25 == 5)*(nBJetMedium25 == 1)) return 14;
   if ((nJet25 == 5)*(nBJetMedium25 >= 2)) return 15;
-  if ((nJet25 >= 6)*(nBJetMedium25 == 0)) return 16;
-  if ((nJet25 >= 6)*(nBJetMedium25 == 1)) return 17;
-  if ((nJet25 >= 6)*(nBJetMedium25 >= 2)) return 18;
   else return -1;
 }
 
