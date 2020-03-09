@@ -223,7 +223,7 @@ class Steer:
                 if not base:
                     # No bias, area constraint     
                     ret.append('sbatch -p short -c {nthreads} --wrap "python {executable} -i {outputdir} -y {year} -f {fs} --charge {charge}  -b 0 -a -o {year}/unfold_nobias/{fs}{charge}/data -c common/WZSR_{year}.input.root -r >& logs/{year}_nobias_data_{fs}.log"'.format(outputdir=self.outputDir,year=self.year,executable=executable,fs=fs,nthreads=self.nthreads,charge=charge))
-                    ret.append('python {executable} -i {outputdir} -y {year} -f {fs} --charge {charge}  -b 0 -a -o {year}/unfold_nobias/{fs}{charge}/mcclosure -c common/WZSR_{year}.input.root -r --closure >& logs/{year}_nobias_mcclosure_{fs}.log"'.format(outputdir=self.outputDir,year=self.year,executable=executable,fs=fs,nthreads=self.nthreads,charge=charge))
+                    ret.append('sbatch -p short -c {nthreads} --wrap "python {executable} -i {outputdir} -y {year} -f {fs} --charge {charge}  -b 0 -a -o {year}/unfold_nobias/{fs}{charge}/mcclosure -c common/WZSR_{year}.input.root -r --closure >& logs/{year}_nobias_mcclosure_{fs}.log"'.format(outputdir=self.outputDir,year=self.year,executable=executable,fs=fs,nthreads=self.nthreads,charge=charge))
 
                     # No bias, no area constraint
                     ret.append('sbatch -p short -c {nthreads} --wrap "python {executable} -i {outputdir} -y {year} -f {fs} --charge {charge}  -b 0 -o {year}/unfold_nobias_noconstraintarea/{fs}{charge}/data -c common/WZSR_{year}.input.root -r >& logs/{year}_nobias_noconstraintarea_data_{fs}.log"'.format(outputdir=self.outputDir,year=self.year,executable=executable,fs=fs,nthreads=self.nthreads,charge=charge))
@@ -251,7 +251,7 @@ class Steer:
 
     def doTheUnfolding(self):
         # Finally call runUnfold and unfold.py 
-        print("python runUnfold.py -n 1")
+        print("I am calling runUnfold using the batch system")
         
         jobs = self.get_list_of_jobs(args.base)
         
