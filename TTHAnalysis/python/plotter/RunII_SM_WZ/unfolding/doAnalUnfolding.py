@@ -152,10 +152,11 @@ class Steer:
 
         mca='./wzsm/mca_unfolding.txt'
         #inputdir='/pool/ciencias/HeppyTrees/RA7/estructura/wzSkimmed/'
-        inputdir='/pool/cienciasrw/HeppyTrees/RA7/wz/wzUnskimmed/'
+        #inputdir='/pool/cienciasrw/HeppyTrees/RA7/wz/wzUnskimmed/'
+        inputdir = "/pool/cienciasrw/HeppyTrees/RA7/nanoAODv5_%s_unSkimmed_estructure/"%(str(self.year))
         baseoutputdir='/nfs/fanae/user/vischia/workarea/cmssw/combine/CMSSW_8_1_0/src/wz_unfolding/responses/'
         #baseoutputdir="tempo/"
-        fts='--Fs {P}/lepgenVarsWZSM --Fs {P}/leptonJetReCleanerWZSM --Fs {P}/leptonBuilderWZSM --FMCs {P}/bTagEventWeightFullSimWZ30 '
+        fts='--Fs {P}/leptonMatcher --Fs {P}/lepgenVarsWZSM --Fs {P}/leptonJetReCleanerWZSM --Fs {P}/leptonBuilderWZSM --FMCs {P}/bTagEventWeightFullSimWZ30 '
         #processes="-p data -p prompt_.* -p convs.* -p rares.* -p fakes_appldata.* --plotgroup fakes_appldata+=promptsub "
         processes=' -p prompt_altWZ.* '
         

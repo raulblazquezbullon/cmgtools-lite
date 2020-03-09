@@ -6,11 +6,11 @@ incl_signal : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2017_signal.tx
 ## Systematics
 ## -----------------------------------------------------------
 ## bTag ##
-incl_prompts_bTag_HF_Up        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2017_signal.txt", AddWeight="bTagWeightDeepCSVT_HF_Up/bTagWeightDeepCSVT", SkipMe=True, PostFix="_bTagHF_Up"
-incl_prompts_bTag_HF_Dn        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2017_signal.txt", AddWeight="bTagWeightDeepCSVT_HF_Dn/bTagWeightDeepCSVT", SkipMe=True, PostFix="_bTagHF_Dn"
+incl_prompts_bTag_HF_Up        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2017_signal.txt", AddWeight="bTagWeightDeepCSVT_HF_Up/bTagWeightDeepCSVT_nom", SkipMe=True, PostFix="_bTagHF_Up"
+incl_prompts_bTag_HF_Dn        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2017_signal.txt", AddWeight="bTagWeightDeepCSVT_HF_Dn/bTagWeightDeepCSVT_nom", SkipMe=True, PostFix="_bTagHF_Dn"
 
-incl_prompts_bTag_LF_Up        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2017_signal.txt", AddWeight="bTagWeightDeepCSVT_LF_Up/bTagWeightDeepCSVT", SkipMe=True, PostFix="_bTagLF_Up"
-incl_prompts_bTag_LF_Dn        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2017_signal.txt", AddWeight="bTagWeightDeepCSVT_LF_Dn/bTagWeightDeepCSVT", SkipMe=True, PostFix="_bTagLF_Dn"
+incl_prompts_bTag_LF_Up        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2017_signal.txt", AddWeight="bTagWeightDeepCSVT_LF_Up/bTagWeightDeepCSVT_nom", SkipMe=True, PostFix="_bTagLF_Up"
+incl_prompts_bTag_LF_Dn        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2017_signal.txt", AddWeight="bTagWeightDeepCSVT_LF_Dn/bTagWeightDeepCSVT_nom", SkipMe=True, PostFix="_bTagLF_Dn"
 
 ## PU Weight ##
 incl_prompts_puw_Up        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2017_signal.txt", AddWeight="puWeightUp/puWeight", SkipMe=True, PostFix="_puw_Up"
