@@ -1,8 +1,15 @@
 alwaystrue: 1
 trilep: nLepFO>=3
-exclusive: nLepTight <= 3
 cleanup: minMllAFAS > 12
-trigger: Trigger_3l
+OSSF3l:  hasOSSF3l
+trigger: Trigger_5TeV_1e || Trigger_5TeV_1m || Trigger_5TeV_2e || Trigger_5TeV_2m
+Zveto: abs(mZ-91.2) < 30
 pt251515: LepGood1_conePt>25 && LepGood2_conePt>15 && LepGood3_conePt>10
-TTT: LepGood1_isLepTight && LepGood2_isLepTight && LepGood3_isLepTight
-Zveto: abs(mZ1-91.2) > 10
+TT: LepGoodW_isLepTight && LepGoodZ1_isLepTight
+m3l: m3l > 100 
+
+###########   
+DYCR: m3l < 100; Disable=True
+
+
+

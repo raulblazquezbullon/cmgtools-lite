@@ -19,7 +19,7 @@ class CombinedObjectTaggerForCleaning(Module):
 
         self.lepSelYearDependent = False
         for func in [looseLeptonSel,cleaningLeptonSel,FOLeptonSel,tightLeptonSel]:
-            if len(inspect.getargspec(func)[0])>1: self.lepSelYearDependent=True
+            if len(inspect.getargspec(func)[0])>1: self.lepSelYearDependent=False
         self.looseLeptonSel = (lambda lep,year: looseLeptonSel(lep)) if len(inspect.getargspec(looseLeptonSel)[0])==1 else looseLeptonSel
         self.cleanLeptonSel = (lambda lep,year: cleaningLeptonSel(lep)) if len(inspect.getargspec(cleaningLeptonSel)[0])==1 else cleaningLeptonSel # applied on top of looseLeptonSel
         self.fkbleLeptonSel = (lambda lep,year: FOLeptonSel(lep)) if len(inspect.getargspec(FOLeptonSel)[0])==1 else FOLeptonSel # applied on top of looseLeptonSel

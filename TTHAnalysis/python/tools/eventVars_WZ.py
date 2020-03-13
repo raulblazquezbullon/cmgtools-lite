@@ -19,6 +19,7 @@ class EventVarsWZ(Module):
                               "MT_met_lep1",
                               "MT_met_lep2",
                               "MT_met_lep3",
+                              "mTlW",
                               'mbb_loose',
                               'mbb_medium',
                               'min_Deta_leadfwdJet_jet',
@@ -42,8 +43,10 @@ class EventVarsWZ(Module):
         if len(self.systsJEC) > 1: 
             self.branches.extend([br+self.label+'_unclustEnUp' for br in self.namebranches if 'met' in br])
             self.branches.extend([br+self.label+'_unclustEnDown' for br in self.namebranches if 'met' in br])
+            self.branches.extend([br+self.label+'_unclustEnUp' for br in self.namebranches if 'mTlW' in br])
+            self.branches.extend([br+self.label+'_unclustEnDown' for br in self.namebranches if 'mTlW' in br])
         self.branches.extend( ['drlep12','drlep13','drlep23', 'hasOSSF4l','hasOSSF3l','m4l'])
-        self.branches.extend( ['mZ', 'm3l', 'lZ1pt', 'lZ2pt', 'lWpt','lZ1ind', 'lZ2ind', 'lWind', 'mTW'])
+        self.branches.extend( ['mZ', 'm3l', 'lZ1pt', 'lZ2pt', 'lWpt','idx_lZ1', 'idx_lZ2', 'idx_lW'])
 
     # old interface (CMG)
     def listBranches(self):
@@ -58,32 +61,6 @@ class EventVarsWZ(Module):
         writeOutput(self, self.run(event, NanoAODCollection))
         return True   
     
-    def defineLepsFromWandZ(self, leps3):        
-
-        lZ1=-1
-        lZ2=-1
-        lW =-1
-        minmll = 999
-        for l1 in leps3:
-            for l2 in leps3: 
-                if l1 == l2: continue
-                if l1.pdgId * l2.pdgId > 0: continue
-                if abs(l1.pdgId) != abs(l2.pdgId): continue
-                
-                mll = (l1.p4()+l2.p4()).M()
-                if (minmll > abs(mll-91.1876)): 
-                    minmll = mll
-                    lZ1 = leps3.index(l1)
-                    lZ2 = leps3.index(l2) 
-
-        for l3 in leps3: 
-            if (l3==leps3[lZ1]): continue
-            if (l3==leps3[lZ2]): continue
-            lW = leps3.index(l3)
-        
-        ## now get the W lepton and return:
-        return lW, lZ1, lZ2
-
     # logic of the algorithm
     def run(self,event,Collection):
         allret = {}
@@ -116,7 +93,6 @@ class EventVarsWZ(Module):
         allret['idx_lZ1']   = -1
         allret['idx_lZ2']   = -1
         allret['idx_lW']    = -1
-        allret['mTW']       = -99
         
         idxlW  = -1 
         idxlZ1 = -1
@@ -125,15 +101,10 @@ class EventVarsWZ(Module):
             leps3 = [leps[0], leps[1], leps[2]]
             allret['m3l'] = (leps[0].p4()+leps[1].p4()+leps[2].p4()).M()
             
-            [idxlW, idxlZ1, idxlZ2] = defineLepsFromWandZ(leps3)             
-            allret['mZ' ]       = (leps[lZ1].p4()+leps[lZ2].p4()).M()
-            allret['lZ1pt']     = leps[lZ1].pt
-            allret['lZ2pt']     = leps[lZ2].pt
-            allret['lWpt']      = leps[lW].pt
-            allret['idx_lZ1']   = idxlZ1
-            allret['idx_lZ2']   = idxlZ2
-            allret['idx_lW']    = idxlW
-            
+            minmll = 9999.
+            idxlZ1=-1
+            idxlZ2=-1
+            idxlW=-1
             for l1 in leps3:
                 for l2 in leps3: 
                     if l1 == l2: continue
@@ -141,6 +112,24 @@ class EventVarsWZ(Module):
                     if abs(l1.pdgId) != abs(l2.pdgId): continue
                     allret['hasOSSF3l'] = True
                     
+                    mll = (l1.p4()+l2.p4()).M()
+                    if (minmll > abs(mll-91.1876)): 
+                        minmll = mll
+                        lZ1 = leps3.index(l1)
+                        lZ2 = leps3.index(l2) 
+            
+            for l3 in leps3: 
+                if (l3==leps3[idxlZ1]): continue
+                if (l3==leps3[idxlZ2]): continue
+                idxlW = leps3.index(l3)
+  
+            allret['mZ' ]       = (leps[idxlZ1].p4()+leps[idxlZ2].p4()).M()
+            allret['lZ1pt']     = leps[idxlZ1].pt
+            allret['lZ2pt']     = leps[idxlZ2].pt
+            allret['lWpt']      = leps[idxlW].pt
+            allret['idx_lZ1']   = idxlZ1
+            allret['idx_lZ2']   = idxlZ2
+            allret['idx_lW']    = idxlW
             
         if nFO >= 4:
             allret['m4l'] = (leps[0].p4()+leps[1].p4()+leps[2].p4()+leps[3].p4()).M()
@@ -168,8 +157,8 @@ class EventVarsWZ(Module):
             else: 
                 ret['min_Deta_leadfwdJet_jet'] = 0
                 
-            bmedium = filter(lambda x : x.btagDeepFlavB > _btagWPs["DeepFlav_%d_%s"%(event.year,"M")][1], jets)
-            bloose  = filter(lambda x : x.btagDeepFlavB > _btagWPs["DeepFlav_%d_%s"%(event.year,"L")][1], jets)
+            bmedium = filter(lambda x : x.btagDeepB > _btagWPs["DeepCSVM"][1], jets)
+            bloose  = filter(lambda x : x.btagDeepB > _btagWPs["DeepCSVL"][1], jets)
             if len(bmedium) >1: 
                 bmedium.sort(key = lambda x : getattr(x,'pt%s'%self.systsJEC[_var]), reverse = True)
                 b1 = bmedium[0].p4()
@@ -201,7 +190,7 @@ class EventVarsWZ(Module):
                         sumdr += deltaR(j,j2)
                 ret["avg_dr_jet"] = sumdr/ndr if ndr else 0;
 
-            metName = 'METFixEE2017' if event.year == 2017 else 'MET'
+            metName = 'MET' 
 
             met = getattr(event,metName+"_pt"+self.systsJEC[_var])
             metphi = getattr(event,metName+"_phi"+self.systsJEC[_var])
@@ -212,7 +201,7 @@ class EventVarsWZ(Module):
                 ret["MT_met_lep2"] = sqrt( 2*leps[1].conePt*met*(1-cos(leps[1].phi-metphi)) )
             if nlep > 2:
                 ret["MT_met_lep3"] = sqrt( 2*leps[2].conePt*met*(1-cos(leps[2].phi-metphi)) )
-                allret["mTW"]      = sqrt( 2*leps[idxlW].conePt*met*(1-cos(leps[idxlW].phi-metphi)) )
+                allret["mTlW"]     = sqrt( 2*leps[idxlW].conePt*met*(1-cos(leps[idxlW].phi-metphi)) )
             
             if not _var and hasattr(event, '%s_pt_unclustEnUp'%metName):
                 met_up = getattr(event,metName+"_pt_unclustEnUp")
@@ -228,8 +217,8 @@ class EventVarsWZ(Module):
                 if nlep > 2:
                     allret["MT_met_lep3" + self.label + '_unclustEnUp'] = sqrt( 2*leps[2].conePt*met_up*(1-cos(leps[2].phi-metphi_up)) )
                     allret["MT_met_lep3" + self.label + '_unclustEnDown'] = sqrt( 2*leps[2].conePt*met_down*(1-cos(leps[2].phi-metphi_down)) )
-                    allret["mTW" + self.label + '_unclustEnUp'] = sqrt( 2*leps[idxlW].conePt*met_up*(1-cos(leps[idxlW].phi-metphi_up)) )
-                    allret["mTW" + self.label + '_unclustEnDown'] = sqrt( 2*leps[idxlW].conePt*met_down*(1-cos(leps[idxlW].phi-metphi_down)) )
+                    allret["mTlW" + self.label + '_unclustEnUp'] = sqrt( 2*leps[idxlW].conePt*met_up*(1-cos(leps[idxlW].phi-metphi_up)) )
+                    allret["mTlW" + self.label + '_unclustEnDown'] = sqrt( 2*leps[idxlW].conePt*met_down*(1-cos(leps[idxlW].phi-metphi_down)) )
 
 
             for br in self.namebranches:
