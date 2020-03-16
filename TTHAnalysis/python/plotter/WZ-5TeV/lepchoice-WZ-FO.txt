@@ -1,7 +1,13 @@
+LepGoodW_(\w+) : LepGood_\1[idx_lW]; AlsoData
+LepGoodZ1_(\w+) : LepGood_\1[idx_lZ1]; AlsoData
+LepGoodZ2_(\w+) : LepGood_\1[idx_lZ2]; AlsoData
+LepGoodW_isLepTight\b : LepGood_isLepTight_Recl[idx_lW]; AlsoData
+LepGoodZ1_isLepTight\b : LepGood_isLepTight_Recl[idx_lZ1]; AlsoData
+LepGoodZ2_isLepTight\b : LepGood_isLepTight_Recl[idx_lZ2]; AlsoData
 LepGood1_isLepTight\b : LepGood_isLepTight_Recl[iLepFO_Recl[0]]; AlsoData
 LepGood2_isLepTight\b : LepGood_isLepTight_Recl[iLepFO_Recl[1]]; AlsoData
 LepGood3_isLepTight\b : LepGood_isLepTight_Recl[iLepFO_Recl[2]]; AlsoData
-LepGood4_isLepTight\b : LepGood_isLepTight_Recl[iLepFO_Recl[3]]; AlsoDa
+LepGood4_isLepTight\b : LepGood_isLepTight_Recl[iLepFO_Recl[3]]; AlsoData
 LepGood1_(\w+) : LepGood_\1[iLepFO_Recl[0]]; AlsoData
 LepGood2_(\w+) : LepGood_\1[iLepFO_Recl[1]]; AlsoData
 LepGood3_(\w+) : LepGood_\1[iLepFO_Recl[2]]; AlsoData
@@ -29,18 +35,3 @@ minMllAFAS\b: minMllAFAS_Recl; AlsoData
 minMllAFOS\b: minMllAFOS_Recl; AlsoData
 minMllAFSS\b: minMllAFSS_Recl; AlsoData
 minMllSFOS\b: minMllSFOS_Recl; AlsoData
-## SPECIFIC WZ: 
-hasOSSF3l\b: hasOSSF3l_Recl; AlsoData
-mZ\b: mZ_Recl; AlsoData
-m3l\b: m3l_Recl; AlsoData
-lZ1ptl\b: lZ1pt_Recl; AlsoData
-lZ2ptl\b: lZ2pt_Recl; AlsoData
-lWptl\b: lWpt_Recl; AlsoData
-LepGoodW_(\w+) : LepGood_\1[idx_lW_Recl]; AlsoData
-LepGoodZ1_(\w+) : LepGood_\1[idx_lZ1_Recl]; AlsoData
-LepGoodZ2_(\w+) : LepGood_\1[idx_lZ2_Recl]]; AlsoData
-LepGoodW_isLepTight\b : LepGood_isLepTight_Recl[idx_lW_Recl]; AlsoData
-LepGoodZ1_isLepTight\b : LepGood_isLepTight_Recl[idx_lZ1_Recl]; AlsoData
-LepGoodZ2_isLepTight\b : LepGood_isLepTight_Recl[idx_lZ2_Recl]; AlsoData
-
-

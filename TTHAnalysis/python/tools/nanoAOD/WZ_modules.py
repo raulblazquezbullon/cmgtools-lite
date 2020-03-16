@@ -10,7 +10,7 @@ conf = dict(
         eleId = "mvaFall17V2noIso_WPL",
 )
 
-ttH_skim_cut = ("nMuon + nElectron >= 2 &&" + 
+WZ_skim_cut = ("nMuon + nElectron >= 2 &&" + 
        "Sum$(Muon_pt > {muPt} && Muon_miniPFRelIso_all < {miniRelIso} && Muon_sip3d < {sip3d}) +"
        "Sum$(Electron_pt > {muPt} && Electron_miniPFRelIso_all < {miniRelIso} && Electron_sip3d < {sip3d} && Electron_{eleId}) >= 2").format(**conf)
 
@@ -38,7 +38,7 @@ from CMGTools.TTHAnalysis.tools.nanoAOD.yearTagger import yearTag
 from CMGTools.TTHAnalysis.tools.nanoAOD.xsecTagger import xsecTag
 from CMGTools.TTHAnalysis.tools.nanoAOD.lepJetBTagAdder import lepJetBTagCSV, lepJetBTagDeepCSV, lepJetBTagDeepFlav, lepJetBTagDeepFlavC
 
-ttH_sequence_step1 = [lepSkim, lepMerge, autoPuWeight, yearTag, xsecTag, lepJetBTagCSV, lepJetBTagDeepCSV, lepJetBTagDeepFlav, lepMasses]
+WZ_sequence_step1 = [lepSkim, lepMerge, autoPuWeight, yearTag, xsecTag, lepJetBTagCSV, lepJetBTagDeepCSV, lepJetBTagDeepFlav, lepMasses]
 
 #==== 
 from PhysicsTools.NanoAODTools.postprocessing.tools import deltaR

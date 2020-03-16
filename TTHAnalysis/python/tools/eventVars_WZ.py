@@ -122,7 +122,13 @@ class EventVarsWZ(Module):
                 if (l3==leps3[idxlZ1]): continue
                 if (l3==leps3[idxlZ2]): continue
                 idxlW = leps3.index(l3)
-  
+            
+            # ensure that the lW and lZ1 has same-sign: 
+            if leps3[idxlW].pdgId * leps3[idxlZ2].pdgId > 0: 
+                tmpidx = idxlZ1
+                idxlZ1 = idxlZ2
+                idxlZ2 = tmpidx
+                
             allret['mZ' ]       = (leps[idxlZ1].p4()+leps[idxlZ2].p4()).M()
             allret['lZ1pt']     = leps[idxlZ1].pt
             allret['lZ2pt']     = leps[idxlZ2].pt
