@@ -24,7 +24,7 @@ P0="/eos/cms/store/cmst3/group/tthlep/peruzzi/"
 nCores = 8
 if 'fanae' in os.environ['HOSTNAME']:
     nCores = 32
-    submit = 'sbatch -c %d -p short  --wrap "{command}"'%nCores
+    submit = 'sbatch -c %d  --wrap "{command}"'%nCores
     P0     = "/pool/ciencias/HeppyTrees/EdgeZ/TTH/"
 if 'gae' in os.environ['HOSTNAME']: 
     P0     = "/pool/ciencias/HeppyTrees/EdgeZ/TTH/"
@@ -35,7 +35,7 @@ if 'cism.ucl.ac.be' in os.environ['HOSTNAME']:
 TREESALL = "--xf THQ_LHE,THW_LHE,TTTW,TTWH --FMCs {P}/0_jmeUnc_v1 --Fs {P}/1_recl --FMCs {P}/2_scalefactors_jecSum --FMCs {P}/2_scalefactors_lep --Fs {P}/3_tauCount  --Fs {P}/6_mva2lss --Fs {P}/6_mva3l_updated/ --Fs {P}/6_mva4l --Fs {P}/4_evtVars --Fs {P}/5_BDThtt_reco "  #_new
 YEARDIR=YEAR if YEAR != 'all' else ''
 TREESONLYFULL     = "-P "+P0+"/NanoTrees_TTH_090120_v6_triggerFix/%s "%(YEARDIR,)            + "-P "+P0+"/NanoTrees_TTH_091019_v6pre/%s "%(YEARDIR,)
-TREESONLYSKIM     = "-P "+P0+"/NanoTrees_TTH_090120_v6_triggerFix_skim2lss/%s "%(YEARDIR,)  + "-P "+P0+"/NanoTrees_TTH_091019_v6pre_skim2lss/%s "%(YEARDIR,)
+TREESONLYSKIM     = "-P "+P0+"/NanoTrees_TTH_090120_v6_triggerFix_skim2lss/%s "%(YEARDIR,)  + "-P "+P0+"/NanoTrees_TTH_090120_091019_v6_skim2lss/%s "%(YEARDIR,)
 TREESONLYMEMZVETO = "-P "+P0+"/NanoTrees_TTH_090120_v6_triggerFix/%s "%(YEARDIR,)           + "-P "+P0+"/NanoTrees_TTH_091019_v6pre/%s "%(YEARDIR,)
 TREESONLYMEMZPEAK = "-P "+P0+"/NanoTrees_TTH_090120_v6_triggerFix/%s "%(YEARDIR,)           + "-P "+P0+"/NanoTrees_TTH_091019_v6pre/%s "%(YEARDIR,)            
 
@@ -214,14 +214,16 @@ if __name__ == '__main__':
 
         if '_mio' in torun:  
             x = x.replace('mca-2lss-mc.txt','mca-2lss-mcdata.txt')
+            x = x.replace('--Fs {P}/6_mva2lss','') #Removing friend trees
             x = add(x,"--unc ttH-multilepton/systsUnc.txt --xu CMS_ttHl_TTZ_lnU,CMS_ttHl_TTW_lnU")
             #--Plots antiguos-----
             #x = add(x,"--sP 'met' --sP 'nJet25_from0' --sP 'nBJetMedium25' --sP 'lep1_pt' --sP 'lep2_pt' --sP 'SVA_2lss_mll' --sP 'mZ1' --sP 'mhtJet25' --sP 'htJet25j' --perBin --sP 'tot_weight'")
             #--Plots nuevos-----
-            x = add(x,"--sP 'met' --sP 'nJet25_from0' --sP 'nBJetMedium25' --sP 'lep1_pt' --sP 'lep2_pt' --sP 'mZ1' --sP 'N_Jets' --perBin --sP 'tot_weight'")
+            #x = add(x,"--sP 'met' --sP 'nJet25_from0' --sP 'nBJetMedium25' --sP 'lep1_pt' --sP 'lep2_pt' --sP 'mZ1' --sP 'N_Jets' --perBin --sP 'tot_weight'")
+            x = add(x,"--sP 'met' --sP 'nJet25_from0' --sP 'nBJetMedium25' --sP 'lep1_pt' --sP 'lep2_pt' --sP 'N_Jets' --sP 'tot_weight' --sP '2lep_mll' --sP '2lep_flav' --sP 'lep1_eta' --sP 'lep1_phi' --sP 'lep1_charge' --sP 'lep2_phi' --sP 'lep2_eta' --sP 'lep2_charge'")
             #x = add(x, "-E 1B")
             #x = add(x, "-E 4j")
-            x = add(x, "-X 2b1B")
+            x = add(x, "-X ^2b1B")
          
         if '_mio_driven' in torun: #For data-driven
             x = promptsub(x)
