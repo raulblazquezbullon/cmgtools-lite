@@ -1,6 +1,5 @@
 import re, os, sys
 from CMGTools.RootTools.samples.configTools import printSummary, mergeExtensions, doTestN, configureSplittingFromTime, cropToLumi
-from CMGTools.RootTools.samples.autoAAAconfig import autoAAA
 from PhysicsTools.HeppyCore.framework.heppy_loop import getHeppyOption
 
 from CMGTools.RootTools.samples.ComponentCreator import ComponentCreator
@@ -8,7 +7,7 @@ kreator = ComponentCreator()
 def byCompName(components, regexps):
     return [ c for c in components if any(re.match(r, c.name) for r in regexps) ]
 
-year = int(getHeppyOption("year", "2018"))
+year = int(getHeppyOption("year", "2017"))
 analysis = getHeppyOption("analysis", "main")
 preprocessor = getHeppyOption("nanoPreProcessor")
 
@@ -17,7 +16,6 @@ from CMGTools.RootTools.samples.samples_5TeV_RunIIpp5Spring18MiniAODv1 import sa
 from CMGTools.RootTools.samples.samples_5TeV_DATA2017_NanoAOD import dataSamples_25Oct2019 as allData
 
 mcSamples_=[]
-autoAAA(mcSamples_+allData, quiet=not(getHeppyOption("verboseAAA",False)), redirectorAAA="xrootd-cms.infn.it") # must be done before mergeExtensions
 mcSamples_, _ = mergeExtensions(mcSamples_)
 
 from CMGTools.TTHAnalysis.tools.nanoAOD.WZ_modules import triggerGroups_dict
@@ -26,43 +24,17 @@ DatasetsAndTriggers = []
 if analysis == "main":
     mcSamples = byCompName(mcSamples_, ["%s(|_PS)$"%dset for dset in [
         # single boson
-        "WJetsToLNu_LO", "DYJetsToLL_M10to50_LO", "DYJetsToLL_M50",
+        "WJetsToLNu", "W0JetsToLNu", "W1JetsToLNu", "W2JetsToLNu", "W3JetsToLNu", 
+        "DYJetsToLL_M10to50", "DYJetsToLL_M50", "DY0JetsToLL_M50", "DY1JetsToLL_M50", "DY2JetsToLL_M50", "DY3JetsToLL_M50" 
         # ttbar + single top + tW
-        "TTJets_SingleLeptonFromT", "TTJets_SingleLeptonFromTbar", "TTJets_DiLepton",
-        "T_sch_lep", "T_tch", "TBar_tch", "T_tWch_noFullyHad", "TBar_tWch_noFullyHad",
-        # conversions
-        "TTGJets", "TGJets_lep", "WGToLNuG", "ZGTo2LG",
-        # ttV
-        "TTWToLNu_fxfx", "TTZToLLNuNu_amc", "TTZToLLNuNu_m1to10",
-        # ttH + tHq/tHW
-        "TTHnobb_fxfx", "THQ_ctcvcp", "THW_ctcvcp", "TTH_ctcvcp",
-        # top + V rare processes
-        "TZQToLL", "tWll", "TTTT", "TTWW",
+        "TT", "TT_PS", "TT_hdampDown", "TT_hdampUp","TT_mtop166p5", "TT_mtop178p5", "TT_TuneCP5Up", "TT_TuneCP5Down",
+        "T_tWch_noFullyHad", "TBar_tWch_noFullyHad","T_tWch_noFullyHad_PS", "TBar_tWch_noFullyHad_PS",
         # diboson + DPS + WWss
-        "WWTo2L2Nu", "WZTo3LNu_pow", "WZTo3LNu_fxfx", "ZZTo4L", "WW_DPS", "WWTo2L2Nu_DPS", "WpWpJJ",
-        # triboson
-        "WWW", "WWW_ll", "WWZ", "WZG", "WZZ", "ZZZ",
-        # other Higgs processes
-        "GGHZZ4L", "VHToNonbb", "VHToNonbb_ll", "ZHTobb_ll", "ZHToTauTau", "TTWH", "TTZH",
+        "WWTo2L2Nu", "WZTo3LNu", "ZZTo4L", "ZZTo2L2Nu",
     ]])
-    DatasetsAndTriggers.append( ("DoubleMuon", triggerGroups_dict["Trigger_2m"][year] + triggerGroups_dict["Trigger_3m"][year]) )
-    DatasetsAndTriggers.append( ("EGamma",     triggerGroups_dict["Trigger_2e"][year] + triggerGroups_dict["Trigger_3e"][year] + triggerGroups_dict["Trigger_1e"][year]) if year == 2018 else
-                                ("DoubleEG",   triggerGroups_dict["Trigger_2e"][year] + triggerGroups_dict["Trigger_3e"][year]) )
-    DatasetsAndTriggers.append( ("MuonEG",     triggerGroups_dict["Trigger_em"][year] + triggerGroups_dict["Trigger_mee"][year] + triggerGroups_dict["Trigger_mme"][year]) )
-    DatasetsAndTriggers.append( ("SingleMuon", triggerGroups_dict["Trigger_1m"][year]) )
-    DatasetsAndTriggers.append( ("SingleElectron", triggerGroups_dict["Trigger_1e"][year]) if year != 2018 else (None,None) )
-elif analysis == "frqcd":
-    mcSamples = byCompName(mcSamples_, [
-        "QCD_Mu15", "QCD_Pt(20|30|50|80|120|170)to.*_Mu5", 
-        "QCD_Pt(20|30|50|80|120|170)to.*_EMEn.*", 
-      (r"QCD_Pt(20|30|50|80|120|170)to\d+$"       if year == 2018 else  
-        "QCD_Pt(20|30|50|80|120|170)to.*_bcToE.*" ),        
-        "WJetsToLNu_LO", "DYJetsToLL_M50_LO", "DYJetsToLL_M10to50_LO", "TT(Lep|Semi)_pow"
-    ])
-    egfrpd = {2016:"DoubleEG", 2017:"SingleElectron", 2018:"EGamma"}[year]
-    DatasetsAndTriggers.append( ("DoubleMuon", triggers["FR_1mu_noiso"] + triggers["FR_1mu_iso"]) )
-    DatasetsAndTriggers.append( (egfrpd,       triggers["FR_1e_noiso"] + triggers["FR_1e_iso"]) )
-    DatasetsAndTriggers.append( ("SingleMuon", triggers["FR_1mu_noiso_smpd"]) )
+    DatasetsAndTriggers.append( ("DoubleMuon", triggerGroups_dict["Trigger_5TeV_2m"][year] ) )
+    DatasetsAndTriggers.append( ("SingleMuon", triggerGroups_dict["Trigger_5TeV_1m"][year]) )
+    DatasetsAndTriggers.append( ("SingleElectron", triggerGroups_dict["Trigger_5TeV_1e"][year] + triggerGroups_dict["Trigger_5TeV_2e"][year]) )
 
 # make MC
 mcTriggers = sum((trigs for (pd,trigs) in DatasetsAndTriggers if trigs), [])
@@ -88,7 +60,6 @@ if getHeppyOption('selectComponents'):
         selectedComponents = dataSamples
     else:
         selectedComponents = byCompName(selectedComponents, getHeppyOption('selectComponents').split(","))
-autoAAA(selectedComponents, quiet=not(getHeppyOption("verboseAAA",False)), redirectorAAA="xrootd-cms.infn.it")
 if year==2018:
     configureSplittingFromTime(byCompName(mcSamples,['^(?!(TTJets_Single|T_|TBar_)).*']),150 if preprocessor else 10,12)
     configureSplittingFromTime(byCompName(mcSamples,['^(TTJets_Single|T_|TBar_).*']),70 if preprocessor else 10,12)
@@ -172,19 +143,6 @@ process.skim1El = cms.EDFilter("PATElectronRefSelector",
 )
 process.nanoAOD_step.insert(0, process.skim1El)
 """)
-if analysis == "main":
-    cropToLumi(byCompName(selectedComponents,["^(?!.*(TTH|TTW|TTZ)).*"]),1000.)
-    cropToLumi(byCompName(selectedComponents,["T_","TBar_"]),100.)
-    cropToLumi(byCompName(selectedComponents,["DYJetsToLL"]),2.)
-if analysis == "frqcd":
-    cropToLumi(selectedComponents, 1.0)
-    cropToLumi(byCompName(selectedComponents,["QCD"]), 0.3)
-    cropToLumi(byCompName(selectedComponents,["QCD_Pt\d+to\d+$"]), 0.1)
-    configureSplittingFromTime(selectedComponents, 20, 3, maxFiles=8)
-    configureSplittingFromTime(byCompName(selectedComponents, ["EGamma","Single.*Run2017.*","SingleMuon_Run2018.*"]), 10, 4, maxFiles=12) 
-    configureSplittingFromTime(byCompName(selectedComponents, ["WJ","TT","DY","QCD_Mu15"]), 60, 3, maxFiles=6) 
-    configureSplittingFromTime(byCompName(selectedComponents, [r"QCD_Pt\d+to\d+$","QCD.*EME"]), 60, 3, maxFiles=6) 
-
 
 # print summary of components to process
 if getHeppyOption("justSummary"): 

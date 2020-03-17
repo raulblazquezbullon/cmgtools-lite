@@ -2,165 +2,71 @@ from CMGTools.RootTools.samples.ComponentCreator import ComponentCreator
 kreator = ComponentCreator()
 
 # TTbar cross section: NNLO, https://twiki.cern.ch/twiki/bin/view/LHCPhysics/TtbarNNLO (172.5)
-TTJets = kreator.makeMCComponent("TTJets", "/TTJets_TuneCUETP8M2T4_13TeV-amcatnloFXFX-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6-v1/NANOAODSIM", "CMS", ".*root", 831.76, fracNegWeights=0.319)
-
-TT_pow = kreator.makeMCComponent("TT_pow", "/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6-v1/NANOAODSIM", "CMS", ".*root", 831.762)
-
-TTJets_SingleLeptonFromTbar     = kreator.makeMCComponent("TTJets_SingleLeptonFromTbar"    , "/TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6-v1/NANOAODSIM", "CMS", ".*root", 831.76*(3*0.108)*(1-3*0.108) )
-TTJets_SingleLeptonFromTbar_ext = kreator.makeMCComponent("TTJets_SingleLeptonFromTbar_ext", "/TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6_ext1-v1/NANOAODSIM", "CMS", ".*root", 831.76*(3*0.108)*(1-3*0.108) )
-TTJets_SingleLeptonFromT        = kreator.makeMCComponent("TTJets_SingleLeptonFromT"       , "/TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6-v1/NANOAODSIM", "CMS", ".*root", 831.76*(3*0.108)*(1-3*0.108))
-TTJets_SingleLeptonFromT_ext    = kreator.makeMCComponent("TTJets_SingleLeptonFromT_ext"   , "/TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6_ext1-v1/NANOAODSIM", "CMS", ".*root", 831.76*(3*0.108)*(1-3*0.108))
-TTJets_DiLepton                 = kreator.makeMCComponent("TTJets_DiLepton"                , "/TTJets_DiLept_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6-v1/NANOAODSIM"     , "CMS", ".*root", 831.76*((3*0.108)**2) )
-TTJets_DiLepton_ext             = kreator.makeMCComponent("TTJets_DiLepton_ext"            , "/TTJets_DiLept_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6_ext1-v1/NANOAODSIM", "CMS", ".*root", 831.76*((3*0.108)**2) )
-
-TTLep_pow = kreator.makeMCComponent("TTLep_pow", "/TTTo2L2Nu_TuneCUETP8M2_ttHtranche3_13TeV-powheg-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6-v1/NANOAODSIM", "CMS", ".*root", 831.76*((3*0.108)**2) )
-TTSemi_pow = kreator.makeMCComponent("TTSemi_pow", "/TTToSemilepton_TuneCUETP8M2_ttHtranche3_13TeV-powheg-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6-v1/NANOAODSIM", "CMS", ".*root", 2*831.76*(3*0.108)*(1-3*0.108) )
-
-TTJets_LO_HT600to800   = kreator.makeMCComponent("TTJets_LO_HT600to800", "/TTJets_HT-600to800_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6_ext1-v1/NANOAODSIM", "CMS", ".*root", 1.610*831.76/502.2)
-TTJets_LO_HT800to1200  = kreator.makeMCComponent("TTJets_LO_HT800to1200", "/TTJets_HT-800to1200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6_ext1-v1/NANOAODSIM",  "CMS", ".*root", 0.663*831.76/502.2)
-TTJets_LO_HT1200to2500 = kreator.makeMCComponent("TTJets_LO_HT1200to2500", "/TTJets_HT-1200to2500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6_ext1-v1/NANOAODSIM", "CMS", ".*root", 0.12*831.76/502.2)
-TTJets_LO_HT2500toInf  = kreator.makeMCComponent("TTJets_LO_HT2500toInf", "/TTJets_HT-2500toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6_ext1-v1/NANOAODSIM",  "CMS", ".*root", 0.001430*831.76/502.2)
-
+TT = kreator.makeMCComponentFromLocal("TT", "/TT_TuneCP5_5p02TeV-powheg-pythia8/jrgonzal-mc5TeV_28ago2019_TT_TuneCP5_5p02TeV-powheg-pythia8-d681e878124a74a1531ec8c4915a5c4d/USER", "/pool/ciencias/nanoAODv4/5TeV/TT_TuneCP5_5p02TeV-powheg-pythia8/", ".*root", 68.9)
+TT_PS = kreator.makeMCComponentFromLocal("TT_PS", "/TT_TuneCP5_PSweights_5p02TeV-powheg-pythia8/jrgonzal-mc5TeV_28ago2019_TT_TuneCP5_PSweights_5p02TeV-powheg-pythia8-d681e878124a74a1531ec8c4915a5c4d/USER", "/pool/ciencias/nanoAODv4/5TeV/TT_TuneCP5_PSweights_5p02TeV-powheg-pythia8/", ".*root", 68.9)
+TT_hdampUp = kreator.makeMCComponentFromLocal("TT_hdampUp", "/TT_hdampUP_TuneCP5_5p02TeV-powheg-pythia8/jrgonzal-mc5TeV_28ago2019_TT_hdampUP_TuneCP5_5p02TeV-powheg-pythia8-d681e878124a74a1531ec8c4915a5c4d/USER", "/pool/ciencias/nanoAODv4/5TeV/TT_hdampUP_TuneCP5_5p02TeV-powheg-pythia8/", ".*root", 68.9)
+TT_hdampDown = kreator.makeMCComponentFromLocal("TT_hdampDown", "/TT_hdampDOWN_TuneCP5_5p02TeV-powheg-pythia8/jrgonzal-mc5TeV_28ago2019_TT_hdampDOWN_TuneCP5_5p02TeV-powheg-pythia8-d681e878124a74a1531ec8c4915a5c4d/USER", "/pool/ciencias/nanoAODv4/5TeV/TT_hdampDOWN_TuneCP5_5p02TeV-powheg-pythia8/", ".*root", 68.9)
+TT_mtop178p5 = kreator.makeMCComponentFromLocal("TT_mtop178p5", "/TT_mtop178p5_TuneCP5_5p02TeV-powheg-pythia8/jrgonzal-mc5TeV_28ago2019_TT_mtop178p5_TuneCP5_5p02TeV-powheg-pythia8-d681e878124a74a1531ec8c4915a5c4d/USER", "/pool/ciencias/nanoAODv4/5TeV/TT_mtop178p5_TuneCP5_5p02TeV-powheg-pythia8/", ".*root", 68.9)
+TT_mtop166p5 = kreator.makeMCComponentFromLocal("TT_mtop166p5", "/TT_mtop166p5_TuneCP5_5p02TeV-powheg-pythia8/jrgonzal-mc5TeV_28ago2019_TT_mtop166p5_TuneCP5_5p02TeV-powheg-pythia8-d681e878124a74a1531ec8c4915a5c4d/USER", "/pool/ciencias/nanoAODv4/5TeV/TT_mtop166p5_TuneCP5_5p02TeV-powheg-pythia8/", ".*root", 68.9)
+TT_TuneCP5Up = kreator.makeMCComponentFromLocal("TT_TuneCP5up", "/TT_TuneCP5up_5p02TeV-powheg-pythia8/jrgonzal-mc5TeV_28ago2019_TT_TuneCP5up_5p02TeV-powheg-pythia8-d681e878124a74a1531ec8c4915a5c4d/USER", "/pool/ciencias/nanoAODv4/5TeV/TT_TuneCP5up_5p02TeV-powheg-pythia8/", ".*root", 68.9)
+TT_TuneCP5Down = kreator.makeMCComponentFromLocal("TT_TuneCP5Down", "/TT_TuneCP5down_5p02TeV-powheg-pythia8/jrgonzal-mc5TeV_28ago2019_TT_TuneCP5down_5p02TeV-powheg-pythia8-d681e878124a74a1531ec8c4915a5c4d/USER", "/pool/ciencias/nanoAODv4/5TeV/TT_TuneCP5up_5p02TeV-powheg-pythia8/", ".*root", 68.9)
 
 TTs = [
-TTJets,
-TT_pow,
-TTJets_SingleLeptonFromTbar,
-TTJets_SingleLeptonFromTbar_ext,
-TTJets_SingleLeptonFromT,
-TTJets_SingleLeptonFromT_ext,
-TTJets_DiLepton,
-TTJets_DiLepton_ext,
-TTLep_pow,
-TTSemi_pow,
-TTJets_LO_HT600to800,
-TTJets_LO_HT800to1200,
-TTJets_LO_HT1200to2500,
-TTJets_LO_HT2500toInf
+TT,
+TT_PS,
+TT_hdampUp,
+TT_hdampDown,
+TT_mtop178p5,
+TT_mtop166p5,
+TT_TuneCP5Up,
+TT_TuneCP5Down,
 ]
 
-
-
-# Higgs
-# TTH cross section from LHC Higgs XS WG: https://twiki.cern.ch/twiki/bin/view/LHCPhysics/CERNYellowReportPageAt1314TeV?rev=15
-TTHnobb_pow = kreator.makeMCComponent("TTHnobb_pow", "/ttHToNonbb_M125_TuneCUETP8M2_ttHtranche3_13TeV-powheg-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6-v1/NANOAODSIM", "CMS", ".*root",0.5085*(1-0.577))
-
-
-# GGH cross section from LHC Higgs XS WG: https://twiki.cern.ch/twiki/bin/view/LHCPhysics/CERNYellowReportPageAt1314TeV?rev=15
-GGHZZ4L = kreator.makeMCComponent("GGHZZ4L", "/GluGluHToZZTo4L_M125_13TeV_powheg2_JHUgenV6_pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6-v1/NANOAODSIM", "CMS", ".*root", 0.01212) #43.92*2.76E-04)
-
-VHToNonbb = kreator.makeMCComponent("VHToNonbb", "/VHToNonbb_M125_13TeV_amcatnloFXFX_madspin_pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6-v1/NANOAODSIM", "CMS", ".*root", 0.9561, fracNegWeights=0.26)
-
-Higgs = [
-TTHnobb_pow,
-GGHZZ4L,
-VHToNonbb,
-]
-
-
-# These are the SM cross sections, i.e. cf = cv = 1.0 (see https://twiki.cern.ch/twiki/bin/viewauth/CMS/SingleTopHiggsGeneration13TeV)
-THQ = kreator.makeMCComponent("THQ", "/THQ_Hincl_13TeV-madgraph-pythia8_TuneCUETP8M1/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6-v1/NANOAODSIM", "CMS", ".*root",  0.7927)
-THW = kreator.makeMCComponent("THW", "/THW_Hincl_13TeV-madgraph-pythia8_TuneCUETP8M1/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6-v1/NANOAODSIM", "CMS", ".*root",  0.1472)
-
-Higgs += [
-THQ,
-THW,
-]
 
 # Single top cross sections: https://twiki.cern.ch/twiki/bin/viewauth/CMS/SingleTopSigma
+T_tWch_noFullyHad =  kreator.makeMCComponentFromLocal("T_tWch_noFullyHad", "/ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_5p02TeV-powheg-pythia8/jrgonzal-mc5TeV_28ago2019_ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_5p02TeV-powheg-pythia8-d681e878124a74a1531ec8c4915a5c4d/USER", "/pool/ciencias/nanoAODv4/5TeV/ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_5p02TeV-powheg-pythia8/", ".*root", 68.9)
+TBar_tWch_noFullyHad = kreator.makeMCComponentFromLocal("TBar_tWch_noFullyHad", "/ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_5p02TeV-powheg-pythia8/jrgonzal-mc5TeV_28ago2019_ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_5p02TeV-powheg-pythia8-d681e878124a74a1531ec8c4915a5c4d/USER", "/pool/ciencias/nanoAODv4/5TeV/ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_5p02TeV-powheg-pythia8/", ".*root", 68.9)
+T_tWch_noFullyHad_PS = kreator.makeMCComponentFromLocal("T_tWch_noFullyHad_PS", "/ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_PSweights_5p02TeV-powheg-pythia8/jrgonzal-mc5TeV_28ago2019_ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_PSweights_5p02TeV-powheg-pythia8-d681e878124a74a1531ec8c4915a5c4d/USER", "/pool/ciencias/nanoAODv4/5TeV/ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_PSweights_5p02TeV-powheg-pythia8/", ".*root", 68.9)
+TBar_tWch_noFullyHad_PS = kreator.makeMCComponentFromLocal("TBar_tWch_noFullyHad_PS", "/ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_PSweights_5p02TeV-powheg-pythia8/jrgonzal-mc5TeV_28ago2019_ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_PSweights_5p02TeV-powheg-pythia8-d681e878124a74a1531ec8c4915a5c4d/USER", "/pool/ciencias/nanoAODv4/5TeV/ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_PSweights_5p02TeV-powheg-pythia8/", ".*root", 68.9)
 
-T_sch_lep = kreator.makeMCComponent("T_sch_lep", "/ST_s-channel_4f_leptonDecays_13TeV-amcatnlo-pythia8_TuneCUETP8M1/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6-v1/NANOAODSIM", "CMS", ".*root", (7.20+4.16)*0.108*3, fracNegWeights=0.188)
-T_sch = kreator.makeMCComponent("T_sch", "/ST_s-channel_4f_InclusiveDecays_13TeV-amcatnlo-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6-v1/NANOAODSIM", "CMS", ".*root", (7.20+4.16), fracNegWeights=0.188)
-
-T_tch = kreator.makeMCComponent("T_tch", "/ST_t-channel_top_4f_inclusiveDecays_13TeV-powhegV2-madspin-pythia8_TuneCUETP8M1/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6-v1/NANOAODSIM", "CMS", ".*root", 136.02) # inclusive sample
-TBar_tch = kreator.makeMCComponent("TBar_tch", "/ST_t-channel_antitop_4f_inclusiveDecays_13TeV-powhegV2-madspin-pythia8_TuneCUETP8M1/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6-v1/NANOAODSIM", "CMS", ".*root", 80.95) # inclusive sample
-
-T_tWch_noFullyHad = kreator.makeMCComponent("T_tWch_noFullyHad", "/ST_tW_top_5f_NoFullyHadronicDecays_13TeV-powheg_TuneCUETP8M1/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6-v1/NANOAODSIM", "CMS", ".*root",19.55)
-T_tWch_noFullyHad_ext = kreator.makeMCComponent("T_tWch_noFullyHad_ext", "/ST_tW_top_5f_NoFullyHadronicDecays_13TeV-powheg_TuneCUETP8M1/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6_ext1-v2/NANOAODSIM", "CMS", ".*root",19.55)
-T_tWch_noFullyHad_ext2 = kreator.makeMCComponent("T_tWch_noFullyHad_ext2", "/ST_tW_top_5f_NoFullyHadronicDecays_13TeV-powheg_TuneCUETP8M1/RunIISummer16NanoAODv4-Nano14Dec2018_102X_mcRun2_asymptotic_v6_ext2-v1/NANOAODSIM", "CMS", ".*root",19.55)
-
-TBar_tWch_noFullyHad      = kreator.makeMCComponent("TBar_tWch_noFullyHad"     , "/ST_tW_antitop_5f_NoFullyHadronicDecays_13TeV-powheg_TuneCUETP8M1/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6-v1/NANOAODSIM", "CMS", ".*root",19.55)
-TBar_tWch_noFullyHad_ext  = kreator.makeMCComponent("TBar_tWch_noFullyHad_ext" , "/ST_tW_antitop_5f_NoFullyHadronicDecays_13TeV-powheg_TuneCUETP8M1/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6_ext1-v1/NANOAODSIM", "CMS", ".*root",19.55)
-TBar_tWch_noFullyHad_ext2 = kreator.makeMCComponent("TBar_tWch_noFullyHad_ext2", "/ST_tW_antitop_5f_NoFullyHadronicDecays_13TeV-powheg_TuneCUETP8M1/RunIISummer16NanoAODv4-Nano14Dec2018_102X_mcRun2_asymptotic_v6_ext2-v1/NANOAODSIM", "CMS", ".*root",19.55)
-
-T_tWch = kreator.makeMCComponent("T_tWch", "/ST_tW_top_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6_ext1-v1/NANOAODSIM", "CMS", ".*root",35.6)
-TBar_tWch = kreator.makeMCComponent("TBar_tWch", "/ST_tW_antitop_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6_ext1-v1/NANOAODSIM", "CMS", ".*root",35.6)
-
-
-TGJets_lep = kreator.makeMCComponent("TGJets_lep", "/TGJets_leptonDecays_13TeV_amcatnlo_madspin_pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6-v1/NANOAODSIM", "CMS", ".*root", 1.018, fracNegWeights=0.4)
-tZq_ll = kreator.makeMCComponent("tZq_ll", "/tZq_ll_4f_13TeV-amcatnlo-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6_ext1-v1/NANOAODSIM", "CMS", ".*root", 0.0758, fracNegWeights=0.367 )
-tWll = kreator.makeMCComponent("tWll", "/ST_tWll_5f_LO_13TeV-MadGraph-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6-v1/NANOAODSIM", "CMS", ".*root", 0.01123)
-tWnunu = kreator.makeMCComponent("tWnunu", "/ST_tWnunu_5f_LO_13TeV-MadGraph-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6-v1/NANOAODSIM", "CMS", ".*root", 0.01123*1.9822 )
 
 SingleTop = [
-T_sch_lep,
-T_sch,
-
-T_tch,
-TBar_tch,
-
 T_tWch_noFullyHad,
-T_tWch_noFullyHad_ext,
-T_tWch_noFullyHad_ext2,
+T_tWch_noFullyHad_PS,
 TBar_tWch_noFullyHad,
-TBar_tWch_noFullyHad_ext,
-TBar_tWch_noFullyHad_ext2,
-
-T_tWch,
-TBar_tWch,
-
-TGJets_lep,
-tZq_ll,
-tWll,
-tWnunu
+TBar_tWch_noFullyHad_PS,
 ]
 
 ### V+jets inclusive (from https://twiki.cern.ch/twiki/bin/viewauth/CMS/StandardModelCrossSectionsat13TeV)
-WJetsToLNu = kreator.makeMCComponent("WJetsToLNu","/WJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6-v1/NANOAODSIM", "CMS", ".*root", 3* 20508.9, fracNegWeights=0.16)
-WJetsToLNu_ext = kreator.makeMCComponent("WJetsToLNu_ext","/WJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6_ext2-v1/NANOAODSIM", "CMS", ".*root", 3* 20508.9, fracNegWeights=0.16)
-WJetsToLNu_LO = kreator.makeMCComponent("WJetsToLNu_LO","/WJetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6-v1/NANOAODSIM", "CMS", ".*root", 3* 20508.9)
-WJetsToLNu_LO_ext =  kreator.makeMCComponent("WJetsToLNu_LO_ext", "/WJetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6_ext2-v1/NANOAODSIM", "CMS", ".*root", 61526.7)
-
-DYJetsToLL_M10to50 = kreator.makeMCComponent("DYJetsToLL_M10to50", "/DYJetsToLL_M-10to50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6-v1/NANOAODSIM", "CMS", ".*root", 18610, fracNegWeights=0.135)
-DYJetsToLL_M10to50_ext = kreator.makeMCComponent("DYJetsToLL_M10to50_ext", "/DYJetsToLL_M-10to50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6_ext1-v1/NANOAODSIM", "CMS", ".*root", 18610, fracNegWeights=0.135)
-DYJetsToLL_M10to50_LO = kreator.makeMCComponent("DYJetsToLL_M10to50_LO", "/DYJetsToLL_M-10to50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6-v1/NANOAODSIM", "CMS", ".*root", 18610)
-DYJetsToLL_M50 = kreator.makeMCComponent("DYJetsToLL_M50", "/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6_ext2-v1/NANOAODSIM", "CMS", ".*root", 2008.*3, fracNegWeights=0.16)
-DYJetsToLL_M50_LO =  kreator.makeMCComponent("DYJetsToLL_M50_LO", "/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6_ext1-v1/NANOAODSIM", "CMS", ".*root", 2008.*3)
-DYJetsToLL_M50_LO_ext =  kreator.makeMCComponent("DYJetsToLL_M50_LO_ext", "/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6_ext2-v1/NANOAODSIM", "CMS", ".*root", 2008.*3)
-
+WJetsToLNu = kreator.makeMCComponentFromLocal("WJetsToLNu","/WJetsToLNu_TuneCP5_5020GeV-amcatnloFXFX-pythia8/jrgonzal-mc5TeV_28ago2019_WJetsToLNu_TuneCP5_5020GeV-amcatnloFXFX-pythia8-d681e878124a74a1531ec8c4915a5c4d/USER", "/pool/ciencias/nanoAODv4/5TeV/nanoAODnoSkim/WJetsToLNu_TuneCP5_5020GeV-amcatnloFXFX-pythia8/", ".*root", 21159)
+DYJetsToLL_M10to50 = kreator.makeMCComponentFromLocal("DYJetsToLL_M10to50", "/DYJetsToLL_M-10to50_TuneCP5_5020GeV-amcatnloFXFX-pythia8/jrgonzal-mc5TeV_28ago2019_DYJetsToLL_M-10to50_TuneCP5_5020GeV-amcatnloFXFX-pythia8-d681e878124a74a1531ec8c4915a5c4d/USER", "/pool/ciencias/nanoAODv4/5TeV/nanoAODnoSkim/DYJetsToLL_M-10to50_TuneCP5_5020GeV-amcatnloFXFX-pythia8/", ".*root", 1506)
+DYJetsToLL_M50 = kreator.makeMCComponentFromLocal("DYJetsToLL_M50", "/DYJetsToLL_MLL-50_TuneCP5_5020GeV-amcatnloFXFX-pythia8/jrgonzal-mc5TeV_28ago2019_DYJetsToLL_MLL-50_TuneCP5_5020GeV-amcatnloFXFX-pythia8-d681e878124a74a1531ec8c4915a5c4d/USER", "/pool/ciencias/nanoAODv4/5TeV/nanoAODnoSkim/DYJetsToLL_MLL-50_TuneCP5_5020GeV-amcatnloFXFX-pythia8/", ".*root", 2055)
 
 VJets = [
 WJetsToLNu,
-WJetsToLNu_ext,
-WJetsToLNu_LO,
-WJetsToLNu_LO_ext,
 DYJetsToLL_M10to50,
-DYJetsToLL_M10to50_ext,
-DYJetsToLL_M10to50_LO,
 DYJetsToLL_M50,
-DYJetsToLL_M50_LO,
-DYJetsToLL_M50_LO_ext,
 ]
 
 # DY njet bins
-DY1JetsToLL_M50_LO =  kreator.makeMCComponent("DY1JetsToLL_M50_LO", "/DY1JetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6-v1/NANOAODSIM", "CMS", ".*root", 1012.5)
-DY2JetsToLL_M50_LO =  kreator.makeMCComponent("DY2JetsToLL_M50_LO", "/DY2JetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6-v1/NANOAODSIM", "CMS", ".*root", 332.8)
-DY3JetsToLL_M50_LO =  kreator.makeMCComponent("DY3JetsToLL_M50_LO", "/DY3JetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6-v1/NANOAODSIM", "CMS", ".*root", 101.8)
-DY4JetsToLL_M50_LO =  kreator.makeMCComponent("DY4JetsToLL_M50_LO", "/DY4JetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6-v1/NANOAODSIM", "CMS", ".*root", 54.8)
+DY1JetsToLL_M50 =  kreator.makeMCComponent("DY1JetsToLL_M50_LO", "/DY1JetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6-v1/NANOAODSIM", "CMS", ".*root", 1012.5)
+DY2JetsToLL_M50 =  kreator.makeMCComponent("DY2JetsToLL_M50_LO", "/DY2JetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6-v1/NANOAODSIM", "CMS", ".*root", 332.8)
+DY3JetsToLL_M50 =  kreator.makeMCComponent("DY3JetsToLL_M50_LO", "/DY3JetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6-v1/NANOAODSIM", "CMS", ".*root", 101.8)
+DY4JetsToLL_M50 =  kreator.makeMCComponent("DY4JetsToLL_M50_LO", "/DY4JetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6-v1/NANOAODSIM", "CMS", ".*root", 54.8)
 
 DYNJets = [ 
-DY1JetsToLL_M50_LO,
-DY2JetsToLL_M50_LO,
-DY3JetsToLL_M50_LO,
-DY4JetsToLL_M50_LO,
+DY1JetsToLL_M50,
+DY2JetsToLL_M50,
+DY3JetsToLL_M50,
+DY4JetsToLL_M50,
 ]
 
 # W njet bins
-W1JetsToLNu_LO =  kreator.makeMCComponent("W1JetsToLNu_LO", "/W1JetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6-v1/NANOAODSIM", "CMS", ".*root", 9644.5)
-W2JetsToLNu_LO =  kreator.makeMCComponent("W2JetsToLNu_LO", "/W2JetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6_ext1-v1/NANOAODSIM", "CMS", ".*root", 3144.5)
-W3JetsToLNu_LO =  kreator.makeMCComponent("W3JetsToLNu_LO", "/W3JetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6_ext1-v1/NANOAODSIM", "CMS", ".*root", 954.8)
-W4JetsToLNu_LO =  kreator.makeMCComponent("W4JetsToLNu_LO", "/W4JetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6_ext1-v1/NANOAODSIM", "CMS", ".*root", 485.6)
-W4JetsToLNu_LO_ext =  kreator.makeMCComponent("W4JetsToLNu_LO_ext", "/W4JetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6_ext2-v1/NANOAODSIM", "CMS", ".*root", 485.6)
+W1JetsToLNu =  kreator.makeMCComponent("W1JetsToLNu_LO", "/W1JetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6-v1/NANOAODSIM", "CMS", ".*root", 9644.5)
+W2JetsToLNu =  kreator.makeMCComponent("W2JetsToLNu_LO", "/W2JetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6_ext1-v1/NANOAODSIM", "CMS", ".*root", 3144.5)
+W3JetsToLNu =  kreator.makeMCComponent("W3JetsToLNu_LO", "/W3JetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6_ext1-v1/NANOAODSIM", "CMS", ".*root", 954.8)
+W4JetsToLNu =  kreator.makeMCComponent("W4JetsToLNu_LO", "/W4JetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6_ext1-v1/NANOAODSIM", "CMS", ".*root", 485.6)
+
 
 WNJets = [
 W1JetsToLNu_LO,

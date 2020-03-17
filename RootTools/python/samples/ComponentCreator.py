@@ -120,6 +120,31 @@ class ComponentCreator(object):
         component.splitFactor = 100
         return component
 
+    def getFilesFromPSI(self,name,dataset,path,pattern=".*root"):
+        from CMGTools.Production.dataset import getDatasetFromCache, writeDatasetToCache
+        if "%" in path: path = path % dataset;
+        try:
+            files = getDatasetFromCache('OVD%{path}%{pattern}.pck'.format(path = path.replace('/','_'), pattern = pattern))
+        except IOError:
+            files = [ 'root://t3se01.psi.ch//'+x.replace("/pnfs/psi.ch/cms/trivcat/","") for x in eostools.listFiles('/pnfs/psi.ch/cms/trivcat/'+path) if re.match(pattern,x) ] 
+            if len(files) == 0:
+                raise RuntimeError, "ERROR making component %s: no files found under %s matching '%s'" % (name,path,pattern)
+            writeDatasetToCache('OVD%{path}%{pattern}.pck'.format(path = path.replace('/','_'), pattern = pattern), files)
+        return files
+
+    def makeMCComponentFromLocal(self,name,dataset,path,pattern=".*root",xSec=1):
+        component = cfg.MCComponent(
+            dataset=dataset,
+            name = name,
+            files = self.getFilesFromLocal(name,dataset,path,pattern),
+            xSection = xSec,
+            nGenEvents = 1,
+            triggers = [],
+            effCorrFactor = 1,
+        )  
+        component.splitFactor = 100
+        return component
+        
     def getFilesFromIC(self, dataset, user, pattern):
         # print 'getting files for', dataset,user,pattern
         ds = datasetToSource( user, dataset, pattern, True )
@@ -182,11 +207,11 @@ class ComponentCreator(object):
         component.splitFactor = 100
         return component
 
-    def makeDataComponentFromLocal(self,name,dataset,user,pattern,json=None,run_range=None,triggers=[],vetoTriggers=[],useAAA=False,jsonFilter=False):
+    def makeDataComponentFromLocal(self,name,dataset,path,pattern,json=None,run_range=None,triggers=[],vetoTriggers=[],useAAA=False,jsonFilter=False):
         component = cfg.DataComponent(
             #dataset = dataset,
             name = name,
-            files = self.getFilesFromLocal(dataset,user,pattern,run_range=run_range,useAAA=useAAA,json=(json if jsonFilter else None)),
+            files = self.getFilesFromLocal(name,dataset,path,pattern),
             intLumi = 1,
             triggers = triggers,
             json = (json if jsonFilter else None)

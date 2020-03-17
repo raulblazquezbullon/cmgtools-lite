@@ -57,7 +57,7 @@ class fastCombinedObjectRecleaner:
         self.initWorkers()
 
     def setOutputTree(self,pytree):
-wp        for x in self._helpers: x.initOutputTree(pytree);
+        for x in self._helpers: x.initOutputTree(pytree);
 
     def initReaders(self,tree):
         for coll in ["LepGood","TauGood",self.jc]:

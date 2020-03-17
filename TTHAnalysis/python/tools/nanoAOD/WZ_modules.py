@@ -25,6 +25,7 @@ lepSkim = ttHPrescalingLepSkimmer(5,
                 minLeptons = 2, requireSameSignPair = False,
                 jetSel = lambda j : j.pt > 25 and abs(j.eta) < 2.4 and j.jetId > 0, 
                 minJets = 4, minMET = 70)
+
 from PhysicsTools.NanoAODTools.postprocessing.modules.common.collectionMerger import collectionMerger
 lepMerge = lambda : collectionMerger(input = ["Electron","Muon"], 
                                      output = "LepGood", 
@@ -167,16 +168,16 @@ def _fires(ev, path):
 
 triggerGroups=dict(
     Trigger_5TeV_1e={
-        20175 : lambda ev : _fires(ev,'HLT_HIEle20_WPLoose_Gsf') or _fires(ev,'HLT_HIEle17_WPLoose_Gsf')
+        2017 : lambda ev : _fires(ev,'HLT_HIEle20_WPLoose_Gsf') or _fires(ev,'HLT_HIEle17_WPLoose_Gsf')
     },
     Trigger_5TeV_1m={
-        20175 : lambda ev : _fires(ev,'HLT_HIL3Mu20') or _fires(ev,'HLT_HIL3Mu17') or _fires(ev,'HLT_HIL3Mu12') 
+        2017 : lambda ev : _fires(ev,'HLT_HIL3Mu20') or _fires(ev,'HLT_HIL3Mu17') or _fires(ev,'HLT_HIL3Mu12') 
     },
     Trigger_5TeV_2e={
-        20175 : lambda ev : _fires(ev,'HLT_HIEle20_Ele12_CaloIdL_TrackIdL_IsoVL_DZ') or _fires(ev,'HLT_HIEle15_Ele8_CaloIdL_TrackIdL_IsoVL')
+        2017 : lambda ev : _fires(ev,'HLT_HIEle20_Ele12_CaloIdL_TrackIdL_IsoVL_DZ') or _fires(ev,'HLT_HIEle15_Ele8_CaloIdL_TrackIdL_IsoVL')
     },
     Trigger_5TeV_2m={
-        20175 : lambda ev : _fires(ev,'HLT_HIL3DoubleMu10') 
+        2017 : lambda ev : _fires(ev,'HLT_HIL3DoubleMu10') 
     },
     Trigger_1e={
         2016 : lambda ev : _fires(ev,'HLT_Ele27_WPTight_Gsf') or _fires(ev,'HLT_Ele25_eta2p1_WPTight_Gsf') or _fires(ev,'HLT_Ele27_eta2p1_WPLoose_Gsf'),
@@ -309,10 +310,10 @@ triggerGroups_dict=dict(
 
 
 from CMGTools.TTHAnalysis.tools.evtTagger import EvtTagger
-Trigger_5TeV_1e = lambda : EvtTagger('Trigger_5TeV_1e',[ lambda ev : triggerGroups['Trigger_5TeV_1e'][20175](ev) ])
-Trigger_5TeV_1m = lambda : EvtTagger('Trigger_5TeV_1m',[ lambda ev : triggerGroups['Trigger_5TeV_1m'][20175](ev) ])
-Trigger_5TeV_2e = lambda : EvtTagger('Trigger_5TeV_2e',[ lambda ev : triggerGroups['Trigger_5TeV_2e'][20175](ev) ])
-Trigger_5TeV_2m = lambda : EvtTagger('Trigger_5TeV_2m',[ lambda ev : triggerGroups['Trigger_5TeV_2m'][20175](ev) ])
+Trigger_5TeV_1e = lambda : EvtTagger('Trigger_5TeV_1e',[ lambda ev : triggerGroups['Trigger_5TeV_1e'][2017](ev) ])
+Trigger_5TeV_1m = lambda : EvtTagger('Trigger_5TeV_1m',[ lambda ev : triggerGroups['Trigger_5TeV_1m'][2017](ev) ])
+Trigger_5TeV_2e = lambda : EvtTagger('Trigger_5TeV_2e',[ lambda ev : triggerGroups['Trigger_5TeV_2e'][2017](ev) ])
+Trigger_5TeV_2m = lambda : EvtTagger('Trigger_5TeV_2m',[ lambda ev : triggerGroups['Trigger_5TeV_2m'][2017](ev) ])
 
 Trigger_1e   = lambda : EvtTagger('Trigger_1e',[ lambda ev : triggerGroups['Trigger_1e'][ev.year](ev) ])
 Trigger_1m   = lambda : EvtTagger('Trigger_1m',[ lambda ev : triggerGroups['Trigger_1m'][ev.year](ev) ])
