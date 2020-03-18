@@ -207,6 +207,23 @@ class ComponentCreator(object):
         component.splitFactor = 100
         return component
 
+    def makeMyPrivateDataComponent(self,name,dataset,user,pattern,dbsInstance,json=None,run_range=None,triggers=[],vetoTriggers=[],useAAA=False,jsonFilter=False):
+        component = cfg.DataComponent(
+            #dataset = dataset,
+            name = name,
+            files = self.getMyFiles(dataset,user,pattern,dbsInstance,useAAA=useAAA),
+            intLumi = 1,
+            triggers = triggers,
+            json = (json if jsonFilter else None)
+            )
+        component.json = json
+        component.vetoTriggers = vetoTriggers
+        #        component.dataset_entries = self.getPrimaryDatasetEntries(dataset,user,pattern,run_range=run_range)
+        component.dataset = dataset
+        component.run_range = run_range
+        component.splitFactor = 100
+        return component
+
     def makeDataComponentFromLocal(self,name,dataset,path,pattern,json=None,run_range=None,triggers=[],vetoTriggers=[],useAAA=False,jsonFilter=False):
         component = cfg.DataComponent(
             #dataset = dataset,

@@ -13,7 +13,7 @@ preprocessor = getHeppyOption("nanoPreProcessor")
 
 # Samples
 from CMGTools.RootTools.samples.samples_5TeV_RunIIpp5Spring18MiniAODv1 import samples as mcSamples_
-from CMGTools.RootTools.samples.samples_5TeV_DATA2017_NanoAOD import dataSamples_25Oct2019 as allData
+from CMGTools.RootTools.samples.samples_5TeV_DATA2017_NanoAOD import dataSamples_Run2017G as allData
 
 mcSamples_=[]
 mcSamples_, _ = mergeExtensions(mcSamples_)
@@ -32,9 +32,9 @@ if analysis == "main":
         # diboson + DPS + WWss
         "WWTo2L2Nu", "WZTo3LNu", "ZZTo4L", "ZZTo2L2Nu",
     ]])
-    DatasetsAndTriggers.append( ("DoubleMuon", triggerGroups_dict["Trigger_5TeV_2m"][year] ) )
+    DatasetsAndTriggers.append( ("DoubleMuon", triggerGroups_dict["Trigger_5TeV_2m"][year]) )
     DatasetsAndTriggers.append( ("SingleMuon", triggerGroups_dict["Trigger_5TeV_1m"][year]) )
-    DatasetsAndTriggers.append( ("SingleElectron", triggerGroups_dict["Trigger_5TeV_1e"][year] + triggerGroups_dict["Trigger_5TeV_2e"][year]) )
+    DatasetsAndTriggers.append( ("HighEGJet", triggerGroups_dict["Trigger_5TeV_1e"][year] + triggerGroups_dict["Trigger_5TeV_2e"][year]) )
 
 # make MC
 mcTriggers = sum((trigs for (pd,trigs) in DatasetsAndTriggers if trigs), [])
@@ -53,6 +53,7 @@ for pd, trigs in DatasetsAndTriggers:
     vetoTriggers += trigs[:]
 
 selectedComponents = mcSamples + dataSamples
+print selectedComponents
 if getHeppyOption('selectComponents'):
     if getHeppyOption('selectComponents')=='MC':
         selectedComponents = mcSamples
@@ -159,12 +160,6 @@ cut = WZ_skim_cut
 compression = "ZLIB:3" #"LZ4:4" #"LZMA:9"
 branchsel_in = os.environ['CMSSW_BASE']+"/src/CMGTools/TTHAnalysis/python/tools/nanoAOD/branchsel_in.txt"
 branchsel_out = None
-
-if analysis == "frqcd":
-    modules = ttH_sequence_step1_FR
-    cut = ttH_skim_cut_FR
-    compression = "LZMA:9"
-    branchsel_out = os.environ['CMSSW_BASE']+"/src/CMGTools/TTHAnalysis/python/plotter/ttH-multilepton/qcd1l-skim-ec.txt"
 
 POSTPROCESSOR = PostProcessor(None, [], modules = modules,
         cut = cut, prefetch = True, longTermCache = False,
