@@ -100,8 +100,9 @@ recleaner_step2_mc_allvariations = lambda : fastCombinedObjectRecleaner(label="R
                                                                         btagL_thr=99, # they are set at runtime 
                                                                         btagM_thr=99,
                                                                         isMC = True,
-                                                                        variations= [ 'jes%s'%v for v in jecGroups] + ['jer'] 
+                                                                        variations= ['jes%s'%v for v in jecGroups] + ['jer'] 
 )
+
 recleaner_step2_mc = lambda : fastCombinedObjectRecleaner(label="Recl", inlabel="_InternalRecl",
                                                           cleanTausWithLooseLeptons=False,
                                                           cleanJetsWithFOTaus=False,
@@ -111,9 +112,9 @@ recleaner_step2_mc = lambda : fastCombinedObjectRecleaner(label="Recl", inlabel=
                                                           btagL_thr=99, # they are set at runtime 
                                                           btagM_thr=99,
                                                           isMC = True,
-                                                          variations=["jesTotal","jer"]
-                                                          
+                                                          variations=['jesTotal'] + ["jer"]                                                       
 )
+
 recleaner_step2_data = lambda : fastCombinedObjectRecleaner(label="Recl", inlabel="_InternalRecl",
                                          cleanTausWithLooseLeptons=False,
                                          cleanJetsWithFOTaus=False,
@@ -124,7 +125,6 @@ recleaner_step2_data = lambda : fastCombinedObjectRecleaner(label="Recl", inlabe
                                          btagM_thr=-99., # they are set at runtime  
                                          isMC = False,
                                          variations = []
-
 )
 
 
@@ -141,7 +141,9 @@ mcMatch_seq   = [ isMatchRightCharge, mcMatchId ,mcPromptGamma]
 
 #countTaus = lambda : ObjTagger('Tight','TauSel_Recl', [lambda t : t.idDeepTau2017v2p1VSjet&4])
 
-from PhysicsTools.NanoAODTools.postprocessing.modules.jme.jetmetUncertainties import jetmetUncertainties2016All,jetmetUncertainties2017All,jetmetUncertainties2018All
+from PhysicsTools.NanoAODTools.postprocessing.modules.jme.jetmetUncertainties import jetmetUncertainties2016All,jetmetUncertainties2017All,jetmetUncertainties2018All,jetmetUncertainties20175TeV
+from PhysicsTools.NanoAODTools.postprocessing.modules.jme.jetmetHelperRun2 import * 
+
 from CMGTools.TTHAnalysis.tools.nanoAOD.jetmetGrouper import jetMetCorrelate2016, jetMetCorrelate2017, jetMetCorrelate2018
 from CMGTools.TTHAnalysis.tools.nanoAOD.jetMetCorrelator import jetMetCorrelations2016, jetMetCorrelations2017, jetMetCorrelations2018
 
@@ -152,6 +154,8 @@ jme2018_allvariations = [jetmetUncertainties2018All,jetMetCorrelate2018]
 jme2016 = [jetmetUncertainties2016All,jetMetCorrelations2016] 
 jme2017 = [jetmetUncertainties2017All,jetMetCorrelations2017]
 jme2018 = [jetmetUncertainties2018All,jetMetCorrelations2018]
+
+jme2017_5TeV = createJMECorrector(True, "2017", "G", "Total", False, "AK4PFchs", False)
 
 def _fires(ev, path):
     if "/hasfiredtriggers_cc.so" not in ROOT.gSystem.GetLibraries():

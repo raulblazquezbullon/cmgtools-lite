@@ -112,7 +112,7 @@ recleaner_step2_mc_allvariations = lambda : fastCombinedObjectRecleaner(label="R
                                                                         btagL_thr=99, # they are set at runtime 
                                                                         btagM_thr=99,
                                                                         isMC = True,
-                                                                        variations= [ 'jes%s'%v for v in jecGroups] + ['jer'] 
+                                                                        variations= [ 'jes%s'%v for v in jecGroups] + ['jer']
 )
 recleaner_step2_mc = lambda : fastCombinedObjectRecleaner(label="Recl", inlabel="_InternalRecl",
                                                           cleanTausWithLooseLeptons=True,
