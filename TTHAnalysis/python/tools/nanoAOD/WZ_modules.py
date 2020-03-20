@@ -7,15 +7,14 @@ conf = dict(
         sip3d = 8, 
         dxy =  0.05, 
         dz = 0.1, 
-        eleId = "mvaFall17V2noIso_WPL",
 )
 
 WZ_skim_cut = ("nMuon + nElectron >= 2 &&" + 
                "Sum$(Muon_pt > {muPt} && Muon_miniPFRelIso_all < {miniRelIso} && Muon_sip3d < {sip3d}) +"
-               "Sum$(Electron_pt > {muPt} && Electron_miniPFRelIso_all < {miniRelIso} && Electron_sip3d < {sip3d} && Electron_{eleId}) >= 2").format(**conf)
+               "Sum$(Electron_pt > {muPt} && Electron_miniPFRelIso_all < {miniRelIso} && Electron_sip3d < {sip3d}").format(**conf)
 
 muonSelection     = lambda l : abs(l.eta) < 2.4 and l.pt > conf["muPt" ] and l.miniPFRelIso_all < conf["miniRelIso"] and l.sip3d < conf["sip3d"] and abs(l.dxy) < conf["dxy"] and abs(l.dz) < conf["dz"]
-electronSelection = lambda l : abs(l.eta) < 2.5 and l.pt > conf["elePt"] and l.miniPFRelIso_all < conf["miniRelIso"] and l.sip3d < conf["sip3d"] and abs(l.dxy) < conf["dxy"] and abs(l.dz) < conf["dz"] and getattr(l, conf["eleId"])
+electronSelection = lambda l : abs(l.eta) < 2.5 and l.pt > conf["elePt"] and l.miniPFRelIso_all < conf["miniRelIso"] and l.sip3d < conf["sip3d"] and abs(l.dxy) < conf["dxy"] and abs(l.dz) < conf["dz"] 
 
 from CMGTools.TTHAnalysis.tools.nanoAOD.ttHPrescalingLepSkimmer import ttHPrescalingLepSkimmer
 # NB: do not wrap lepSkim a lambda, as we modify the configuration in the cfg itself 
@@ -56,7 +55,7 @@ nBJetDeepFlav25NoRecl = lambda : nBJetCounter("DeepFlav25", "btagDeepFlavB", cen
 WZ_sequence_step1_FR = [m for m in WZ_sequence_step1 if m != lepSkim] + [ lepFR, nBJetDeepCSV25NoRecl, nBJetDeepFlav25NoRecl ]
 WZ_skim_cut_FR = ("nMuon + nElectron >= 1 && nJet >= 1 && Sum$(Jet_pt > 25 && abs(Jet_eta)<2.4) >= 1 &&" + 
        "Sum$(Muon_pt > {muPt} && Muon_miniPFRelIso_all < {miniRelIso} && Muon_sip3d < {sip3d}) +"
-       "Sum$(Electron_pt > {muPt} && Electron_miniPFRelIso_all < {miniRelIso} && Electron_sip3d < {sip3d} && Electron_{eleId}) >= 1").format(**conf)
+       "Sum$(Electron_pt > {muPt} && Electron_miniPFRelIso_all < {miniRelIso} && Electron_sip3d < {sip3d}").format(**conf)
 
 
 #==== items below are normally run as friends ====
@@ -64,7 +63,8 @@ def clean_and_FO_selection_WZ5TeV(lep):
     if (lep.pt < 8): return False
     if (abs(lep.eta) > (2.4 if abs(lep.pdgId)==13 else 2.5)): return False 
     if (abs(lep.dxy)>0.05 or abs(lep.dz)>0.1): return False   
-    return (abs(lep.pdgId)!=11 or (lep.convVeto and lep.lostHits==0 and lep.mvaFall17V2Iso_WPL)) and (abs(lep.pdgId)!=13 or lep.mediumId>0)
+    if (lep.sip3d > 8): return False
+    return (abs(lep.pdgId)!=11 or (lep.convVeto and lep.lostHits==0 and lep.mvaFall17V2Iso_WPL)) and (abs(lep.pdgId)!=13 or lep.mediumPromptId>0)
                                                         
 def tight_selection_WZ5TeV(lep): 
     if not clean_and_FO_selection_WZ5TeV(lep): return False 
@@ -130,7 +130,7 @@ recleaner_step2_data = lambda : fastCombinedObjectRecleaner(label="Recl", inlabe
 
 
 from CMGTools.TTHAnalysis.tools.eventVars_WZ import EventVarsWZ
-eventVars = lambda : EventVarsWZ('3l','Recl')
+eventVars = lambda : EventVarsWZ('','Recl')
 
 
 from CMGTools.TTHAnalysis.tools.objTagger import ObjTagger

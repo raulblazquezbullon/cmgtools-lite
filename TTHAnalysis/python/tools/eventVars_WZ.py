@@ -37,8 +37,9 @@ class EventVarsWZ(Module):
             self.branches.extend([br+self.label+'_unclustEnDown' for br in self.namebranches if 'met' in br])
             self.branches.extend([br+self.label+'_unclustEnUp' for br in self.namebranches if 'mTlW' in br])
             self.branches.extend([br+self.label+'_unclustEnDown' for br in self.namebranches if 'mTlW' in br])
-        self.branches.extend( ['hasOSSF4l','hasOSSF3l','m3l','m2l','m4l'])
-        self.branches.extend( ['lZ1pt', 'lZ2pt', 'lWpt','idx_lZ1', 'idx_lZ2', 'idx_lW'])
+            
+        self.branches.extend(["hasOSSF4l","hasOSSF3l","m3l","m4l","mZ_3l"])
+        self.branches.extend(["lZ1pt", "lZ2pt", "lWpt","idx_lZ1", "idx_lZ2", "idx_lW"])
 
     # old interface (CMG)
     def listBranches(self):
@@ -62,31 +63,27 @@ class EventVarsWZ(Module):
         chosen = getattr(event,"iLepFO"+self.inputlabel)
         leps = [all_leps[chosen[i]] for i in xrange(nFO)]
         
-        if nFO <= 2: return allret
-        
         allret['hasOSSF3l'] = False
         allret['hasOSSF4l'] = False
         allret['m4l']       = -99
         allret['m3l']       = -99
-        allret['mZ' ]       = -99
+        allret['mZ_3l' ]    = -99
         allret['lZ1pt']     = -99
         allret['lZ2pt']     = -99
         allret['lWpt']      = -99
         allret['idx_lZ1']   = -1
         allret['idx_lZ2']   = -1
         allret['idx_lW']    = -1
-        
+
+
         idxlW  = -1 
         idxlZ1 = -1
-        idxlZ2 = -1
+        idxlZ2 = -1        
         if nFO >= 3:
             leps3 = [leps[0], leps[1], leps[2]]
             allret['m3l'] = (leps[0].p4()+leps[1].p4()+leps[2].p4()).M()
             
             minmll = 9999.
-            idxlZ1=-1
-            idxlZ2=-1
-            idxlW=-1
             for l1 in leps3:
                 for l2 in leps3: 
                     if l1 == l2: continue
@@ -111,7 +108,7 @@ class EventVarsWZ(Module):
                 idxlZ1 = idxlZ2
                 idxlZ2 = tmpidx
                 
-            allret['mZ' ]       = (leps[idxlZ1].p4()+leps[idxlZ2].p4()).M()
+            allret['mZ_3l' ]    = (leps[idxlZ1].p4()+leps[idxlZ2].p4()).M()
             allret['lZ1pt']     = leps[idxlZ1].pt
             allret['lZ2pt']     = leps[idxlZ2].pt
             allret['lWpt']      = leps[idxlW].pt
@@ -133,50 +130,13 @@ class EventVarsWZ(Module):
             # prepare output
             ret = dict([(name,0.0) for name in self.namebranches])
             _var = var
-            if not hasattr(event,"nJet25"+self.systsJEC[var]+self.inputlabel): 
-                _var = 0; 
-            jets = [j for j in Collection(event,"JetSel"+self.inputlabel)]
-            jetptcut = 25
-            jets = filter(lambda x : getattr(x,'pt%s'%self.systsJEC[_var]) > jetptcut, jets)
-                
-            bmedium = filter(lambda x : x.btagDeepB > _btagWPs["DeepCSVM"][1], jets)
-            bloose  = filter(lambda x : x.btagDeepB > _btagWPs["DeepCSVL"][1], jets)
-            if len(bmedium) >1: 
-                bmedium.sort(key = lambda x : getattr(x,'pt%s'%self.systsJEC[_var]), reverse = True)
-                b1 = bmedium[0].p4()
-                b2 = bmedium[1].p4()
-                b1.SetPtEtaPhiM(getattr(bmedium[0],'pt%s'%self.systsJEC[_var]),bmedium[0].eta,bmedium[0].phi,bmedium[0].mass)
-                b2.SetPtEtaPhiM(getattr(bmedium[1],'pt%s'%self.systsJEC[_var]),bmedium[1].eta,bmedium[1].phi,bmedium[1].mass)
-                ret['mbb_medium'] = (b1+b2).M()
-            if len(bloose) >1: 
-                bloose.sort(key = lambda x : getattr(x,'pt%s'%self.systsJEC[_var]), reverse = True)
-                b1 = bloose[0].p4()
-                b2 = bloose[1].p4()
-                b1.SetPtEtaPhiM(getattr(bloose[0],'pt%s'%self.systsJEC[_var]),bloose[0].eta,bloose[0].phi,bloose[0].mass)
-                b2.SetPtEtaPhiM(getattr(bloose[1],'pt%s'%self.systsJEC[_var]),bloose[1].eta,bloose[1].phi,bloose[1].mass)
-                ret['mbb_loose'] = (b1+b2).M()
-
-            ### USE ONLY ANGULAR JET VARIABLES IN THE FOLLOWING!!!
-
-            njet = len(jets); nlep = len(leps)
-            # fill output
-            if njet >= 1:
-                ret["mindr_lep1_jet"] = min([deltaR(j,leps[0]) for j in jets]) if nlep >= 1 else 0;
-                ret["mindr_lep2_jet"] = min([deltaR(j,leps[1]) for j in jets]) if nlep >= 2 else 0;
-                ret["mindr_lep3_jet"] = min([deltaR(j,leps[2]) for j in jets]) if nlep >= 3 else 0;
-            if njet >= 2:
-                sumdr, ndr = 0, 0
-                for i,j in enumerate(jets):
-                    for i2,j2 in enumerate(jets[i+1:]):
-                        ndr   += 1
-                        sumdr += deltaR(j,j2)
-                ret["avg_dr_jet"] = sumdr/ndr if ndr else 0;
 
             metName = 'MET' 
 
             met = getattr(event,metName+"_pt"+self.systsJEC[_var])
             metphi = getattr(event,metName+"_phi"+self.systsJEC[_var])
-
+            
+            nlep = len(leps)
             if nlep > 0:
                 ret["MT_met_lep1"] = sqrt( 2*leps[0].conePt*met*(1-cos(leps[0].phi-metphi)) )
             if nlep > 1:
