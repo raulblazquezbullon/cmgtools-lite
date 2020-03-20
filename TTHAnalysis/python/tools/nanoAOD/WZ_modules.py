@@ -130,7 +130,7 @@ recleaner_step2_data = lambda : fastCombinedObjectRecleaner(label="Recl", inlabe
 
 
 from CMGTools.TTHAnalysis.tools.eventVars_WZ import EventVarsWZ
-eventVars = lambda : EventVarsWZ('','Recl')
+eventVars = lambda : EventVarsWZ('3l','Recl')
 
 
 from CMGTools.TTHAnalysis.tools.objTagger import ObjTagger

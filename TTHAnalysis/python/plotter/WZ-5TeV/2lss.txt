@@ -1,0 +1,17 @@
+alwaystrue: 1
+dilep: nLepFO==2
+cleanup: minMllAFAS > 12
+trigger: Trigger_5TeV_1e || Trigger_5TeV_1m || Trigger_5TeV_2e || Trigger_5TeV_2m
+meeecut: if() abs(mZ-91.2) < 30
+pt1510: LepGood1_conePt>15 && LepGood2_conePt>10
+meecut  = False if (totId==22 and abs(InvMass(tleps[0],tleps[1])-91.1876)<20) else True 
+
+2lss: LepGood1_charge*LepGood2_charge>0
+TT: LepGood1_isLepTight && LepGood2_isLepTight
+
+
+###########   
+#DYCR: m3l < 100; Disable=True
+
+
+

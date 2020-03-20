@@ -12,23 +12,15 @@ from PhysicsTools.Heppy.physicsobjects.Jet import _btagWPs
 
 class EventVarsWZ(Module):
     def __init__(self, label="", recllabel='Recl', doSystJEC=True, variations=[]):
-        self.namebranches = [ "mindr_lep1_jet",
-                              "mindr_lep2_jet",
-                              "mindr_lep3_jet",
-                              "avg_dr_jet",
-                              "MT_met_lep1",
+        self.namebranches = [ "MT_met_lep1",
                               "MT_met_lep2",
                               "MT_met_lep3",
                               "mTlW",
-                              'mbb_loose',
-                              'mbb_medium',
-                              'min_Deta_leadfwdJet_jet',
                               ]
         self.label = "" if (label in ["",None]) else ("_"+label)
         self.systsJEC = {0:"",\
-                         1:"_jesTotalCorrUp"  , -1:"_jesTotalCorrDown",\
-                         2:"_jesTotalUnCorrUp", -2: "_jesTotalUnCorrDown",\
-                         3:"_jerUp", -3: "_jerDown",\
+                         1:"_jesTotalUp"  , -1:"_jesTotalDown",\
+                         2:"_jerUp", -2: "_jerDown",\
                      } if doSystJEC else {0:""}
         if len(variations): 
             self.systsJEC = {0:""}
@@ -45,8 +37,8 @@ class EventVarsWZ(Module):
             self.branches.extend([br+self.label+'_unclustEnDown' for br in self.namebranches if 'met' in br])
             self.branches.extend([br+self.label+'_unclustEnUp' for br in self.namebranches if 'mTlW' in br])
             self.branches.extend([br+self.label+'_unclustEnDown' for br in self.namebranches if 'mTlW' in br])
-        self.branches.extend( ['drlep12','drlep13','drlep23', 'hasOSSF4l','hasOSSF3l','m4l'])
-        self.branches.extend( ['mZ', 'm3l', 'lZ1pt', 'lZ2pt', 'lWpt','idx_lZ1', 'idx_lZ2', 'idx_lW'])
+        self.branches.extend( ['hasOSSF4l','hasOSSF3l','m3l','m2l','m4l'])
+        self.branches.extend( ['lZ1pt', 'lZ2pt', 'lWpt','idx_lZ1', 'idx_lZ2', 'idx_lW'])
 
     # old interface (CMG)
     def listBranches(self):
@@ -70,22 +62,12 @@ class EventVarsWZ(Module):
         chosen = getattr(event,"iLepFO"+self.inputlabel)
         leps = [all_leps[chosen[i]] for i in xrange(nFO)]
         
-        if nFO >= 2: 
-            allret['drlep12'] = deltaR(leps[0],leps[1])
-        else: 
-            allret['drlep12'] = 0 
-        if nFO >= 3: 
-            allret['drlep13'] = deltaR(leps[0],leps[2])
-            allret['drlep23'] = deltaR(leps[1],leps[2])
-        else:
-            allret['drlep13'] = 0 
-            allret['drlep23'] = 0 
+        if nFO <= 2: return allret
         
         allret['hasOSSF3l'] = False
         allret['hasOSSF4l'] = False
         allret['m4l']       = -99
         allret['m3l']       = -99
-        
         allret['mZ' ]       = -99
         allret['lZ1pt']     = -99
         allret['lZ2pt']     = -99
@@ -115,8 +97,8 @@ class EventVarsWZ(Module):
                     mll = (l1.p4()+l2.p4()).M()
                     if (minmll > abs(mll-91.1876)): 
                         minmll = mll
-                        lZ1 = leps3.index(l1)
-                        lZ2 = leps3.index(l2) 
+                        idxlZ1 = leps3.index(l1)
+                        idxlZ2 = leps3.index(l2) 
             
             for l3 in leps3: 
                 if (l3==leps3[idxlZ1]): continue
@@ -156,12 +138,6 @@ class EventVarsWZ(Module):
             jets = [j for j in Collection(event,"JetSel"+self.inputlabel)]
             jetptcut = 25
             jets = filter(lambda x : getattr(x,'pt%s'%self.systsJEC[_var]) > jetptcut, jets)
-
-
-            if getattr(event, 'nFwdJet%s_Recl'%self.systsJEC[_var]) > 0 and len(jets):
-                ret['min_Deta_leadfwdJet_jet'] = min( [ abs( getattr(event, 'FwdJet1_eta%s_Recl'%self.systsJEC[_var]) - j.eta) for j in jets])
-            else: 
-                ret['min_Deta_leadfwdJet_jet'] = 0
                 
             bmedium = filter(lambda x : x.btagDeepB > _btagWPs["DeepCSVM"][1], jets)
             bloose  = filter(lambda x : x.btagDeepB > _btagWPs["DeepCSVL"][1], jets)
@@ -207,7 +183,7 @@ class EventVarsWZ(Module):
                 ret["MT_met_lep2"] = sqrt( 2*leps[1].conePt*met*(1-cos(leps[1].phi-metphi)) )
             if nlep > 2:
                 ret["MT_met_lep3"] = sqrt( 2*leps[2].conePt*met*(1-cos(leps[2].phi-metphi)) )
-                allret["mTlW"]     = sqrt( 2*leps[idxlW].conePt*met*(1-cos(leps[idxlW].phi-metphi)) )
+                ret["mTlW"]        = sqrt( 2*leps[idxlW].conePt*met*(1-cos(leps[idxlW].phi-metphi)) )
             
             if not _var and hasattr(event, '%s_pt_unclustEnUp'%metName):
                 met_up = getattr(event,metName+"_pt_unclustEnUp")
@@ -242,7 +218,7 @@ if __name__ == '__main__':
     class Tester(Module):
         def __init__(self, name):
             Module.__init__(self,name,None)
-            self.sf = EventVars2LSS('','Recl')
+            self.sf = EventVarsWZ('','Recl')
         def analyze(self,ev):
             print "\nrun %6d lumi %4d event %d: leps %d" % (ev.run, ev.lumi, ev.evt, ev.nLepGood)
             print self.sf(ev)
