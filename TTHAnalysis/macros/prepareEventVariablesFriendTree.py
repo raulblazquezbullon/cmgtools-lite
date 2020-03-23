@@ -165,7 +165,7 @@ for D in glob(args[0]+"/*"):
         if options.newOnly:
             fout = "%s/evVarFriend_%s.root" % (args[1],short)
             if os.path.exists(fout):
-                if os.path.getsize(fout) <= 1000: continue
+                #if os.path.getsize(fout) <= 1000: break
                 f = ROOT.TFile.Open(fout);
                 t = f.Get("sf/t")
                 print fout
@@ -234,8 +234,8 @@ if options.queue:
         super  = "qsub -q {queue} -N friender".format(queue = options.queue)
         runner = "psibatch_runner.sh"
     elif options.env == "oviedo":
-        if options.queue != "":
-            options.queue = "batch" 
+        #if options.queue != "":
+        #    options.queue = "batch" 
         super  = "qsub -q {queue} -N happyTreeFriend".format(queue = options.queue)
         runner = "lxbatch_runner.sh"
         theoutput = theoutput.replace('/pool/ciencias/','/pool/cienciasrw/')
