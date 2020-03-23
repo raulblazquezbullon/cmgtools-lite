@@ -10,7 +10,7 @@ mmmGEN: abs(genLepZ1_pdgId)+abs(genLepZ2_pdgId)+abs(genLepW_pdgId)==39; Disable=
 #Request mass window
 onZ30Gen : mll_3l_gen > 60 && mll_3l_gen < 120 && nOSSF_3l_gen > 0
 
-SR : (Triggers_ee || Triggers_em || Triggers_mm || Triggers_e || Triggers_m) && abs(LepZ1_pdgId)<14 && abs(LepZ2_pdgId)<14 && abs(LepW_pdgId)<14 && nLepSel == 3  && LepZ1_isTight && LepZ2_isTight && LepW_isTight  && LepZ1_pt>25 && LepZ2_pt>10 && LepW_pt>25 && nOSSF_3l > 0 && minMllAFAS_Mini > 4 && MET_pt > 30  && abs(91.1876-mll_3l)<15 && m3L > 100   &&  nBJetTight25_Mini == 0 &&  ((LepSel_mcUCSX[0]==0 || LepSel_mcUCSX[0]==1) && (LepSel_mcUCSX[1]==0 || LepSel_mcUCSX[1]==1) && (LepSel_mcUCSX[2]==0 || LepSel_mcUCSX[2]==1))
+SR : (Triggers_ee || Triggers_em || Triggers_mm || Triggers_e || Triggers_m) && abs(LepZ1_pdgId)<14 && abs(LepZ2_pdgId)<14 && abs(LepW_pdgId)<14 && nLepSel == 3  && LepZ1_isTight && LepZ2_isTight && LepW_isTight  && LepZ1_pt>25 && LepZ2_pt>10 && LepW_pt>25 && nOSSF_3l > 0 && minMllAFAS_Mini > 4 && MET_pt > 30  && abs(91.1876-mll_3l)<15 && m3L > 100   &&  nBJetTight25_Mini == 0 &&  ((LepGood_mcUCSX_v2[iF_Mini[0]]==0 || LepGood_mcUCSX_v2[iF_Mini[0]]==1) && (LepGood_mcUCSX_v2[iF_Mini[1]]==0 || LepGood_mcUCSX_v2[iF_Mini[1]]==1) && (LepGood_mcUCSX_v2[iF_Mini[2]]==0 || LepGood_mcUCSX_v2[iF_Mini[2]]==1))
 
 
 
@@ -35,4 +35,4 @@ SR : (Triggers_ee || Triggers_em || Triggers_mm || Triggers_e || Triggers_m) && 
 #mmmRECO: abs(LepZ1_pdgId)+abs(LepZ2_pdgId)+abs(LepW_pdgId)==39; Disable=True
 
 #Match to gen leptons
-#match: ((LepSel_mcUCSX[0]==0) && (LepSel_mcUCSX[1]==0) && (LepSel_mcUCSX[2]==0 )) && LepZ1_isMatchingWZ && LepZ2_isMatchingWZ
+#match: ((LepGood_mcUCSX_v2[iF_Mini[0]]==0) && (LepGood_mcUCSX_v2[iF_Mini[1]]==0) && (LepGood_mcUCSX_v2[iF_Mini[2]]==0 )) && LepZ1_isMatchingWZ && LepZ2_isMatchingWZ

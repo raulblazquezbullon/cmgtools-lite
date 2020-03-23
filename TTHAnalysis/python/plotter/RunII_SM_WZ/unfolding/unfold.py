@@ -317,7 +317,7 @@ class Unfolder(object):
         thematrices = [self.response_nom, self.response_alt]
         if self.checkLO: thematrices.append(self.response_inc)
         for matrix in thematrices:
-            print('CONDITION MATRIX FOR MATRIX %s is %s'%(matrix.GetName(), get_condition_number(matrix)) )
+            print('CONDITION MATRIX FOR MATRIX %s is %s'%(matrix.GetName(), self.get_condition_number(matrix)) )
             # Errors are the standard deviation of the Y values
             profX=matrix.ProfileX('%s_profX'%matrix.GetName(), 0, matrix.GetNbinsY(),'s')
             profY=matrix.ProfileY('%s_profY'%matrix.GetName(), 0, matrix.GetNbinsX(),'s')

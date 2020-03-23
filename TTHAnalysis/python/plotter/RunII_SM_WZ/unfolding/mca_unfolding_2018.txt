@@ -6,27 +6,73 @@ incl_signal : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2018_signal.tx
 ## Systematics
 ## -----------------------------------------------------------
 
-## Variations
 
-## bTag ##
-incl_prompts_bTag_HF_Up        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2018_signal.txt", AddWeight="bTagWeightDeepCSVT_HF_Up/bTagWeightDeepCSVT_nom", SkipMe=True, PostFix="_bTagHF_Up"
-incl_prompts_bTag_HF_Dn        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2018_signal.txt", AddWeight="bTagWeightDeepCSVT_HF_Dn/bTagWeightDeepCSVT_nom", SkipMe=True, PostFix="_bTagHF_Dn"
+#Pile Up Weights
+incl_signal_puwUp        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2018_signal.txt", AddWeight="puWeightUp/puWeight", SkipMe=True, PostFix="_puw_Up"
+incl_signal_puwDn        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2018_signal.txt", AddWeight="puWeightDown/puWeight", SkipMe=True, PostFix="_puw_Dn"
 
-incl_prompts_bTag_LF_Up        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2018_signal.txt", AddWeight="bTagWeightDeepCSVT_LF_Up/bTagWeightDeepCSVT_nom", SkipMe=True, PostFix="_bTagLF_Up"
-incl_prompts_bTag_LF_Dn        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2018_signal.txt", AddWeight="bTagWeightDeepCSVT_LF_Dn/bTagWeightDeepCSVT_nom", SkipMe=True, PostFix="_bTagLF_Dn"
+#Lepton SF Mu
+incl_signal_lepSFMu_Up        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2018_signal.txt", AddWeight="getLeptonSF_v4(0\,(abs(LepSel_pdgId[0]) == 13)\,2018\,LepSel_pt[0]\,LepSel_eta[0]\,LepSel_pdgId[0])*getLeptonSF_v4(0\,(abs(LepSel_pdgId[1]) == 13)\,2018\,LepSel_pt[1]\,LepSel_eta[1]\,LepSel_pdgId[1])*getLeptonSF_v4(0\,(abs(LepSel_pdgId[2]) == 13)\,2018\,LepSel_pt[2]\,LepSel_eta[2]\,LepSel_pdgId[2])/(getLeptonSF_v4(0\,0\,2018\,LepSel_pt[0]\,LepSel_eta[0]\,LepSel_pdgId[0])*getLeptonSF_v4(0\,0\,2018\,LepSel_pt[1]\,LepSel_eta[1]\,LepSel_pdgId[1])*getLeptonSF_v4(0\,0\,2018\,LepSel_pt[2]\,LepSel_eta[2]\,LepSel_pdgId[2]))", SkipMe=True, PostFix="_lepSFMu_Up"
+incl_signal_lepSFMu_Dn        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2018_signal.txt", AddWeight="getLeptonSF_v4(0\,-(abs(LepSel_pdgId[0]) == 13)\,2018\,LepSel_pt[0]\,LepSel_eta[0]\,LepSel_pdgId[0])*getLeptonSF_v4(0\,-(abs(LepSel_pdgId[1]) == 13)\,2018\,LepSel_pt[1]\,LepSel_eta[1]\,LepSel_pdgId[1])*getLeptonSF_v4(0\,-(abs(LepSel_pdgId[2]) == 13)\,2018\,LepSel_pt[2]\,LepSel_eta[2]\,LepSel_pdgId[2])/(getLeptonSF_v4(0\,0\,2018\,LepSel_pt[0]\,LepSel_eta[0]\,LepSel_pdgId[0])*getLeptonSF_v4(0\,0\,2018\,LepSel_pt[1]\,LepSel_eta[1]\,LepSel_pdgId[1])*getLeptonSF_v4(0\,0\,2018\,LepSel_pt[2]\,LepSel_eta[2]\,LepSel_pdgId[2]))", SkipMe=True, PostFix="_lepSFMu_Dn"
 
-## PU Weight ##
-incl_prompts_puw_Up        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2018_signal.txt", AddWeight="puWeightUp/puWeight", SkipMe=True, PostFix="_puw_Up"
-incl_prompts_puw_Dn        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2018_signal.txt", AddWeight="puWeightDown/puWeight", SkipMe=True, PostFix="_puw_Dn"
+#Lepton SF Elec
+incl_signal_lepSFEl_Up        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2018_signal.txt", AddWeight="getLeptonSF_v4(0\,(abs(LepSel_pdgId[0]) == 11)\,2018\,LepSel_pt[0]\,LepSel_eta[0]\,LepSel_pdgId[0])*getLeptonSF_v4(0\,(abs(LepSel_pdgId[1]) == 11)\,2018\,LepSel_pt[1]\,LepSel_eta[1]\,LepSel_pdgId[1])*getLeptonSF_v4(0\,(abs(LepSel_pdgId[2]) == 11)\,2018\,LepSel_pt[2]\,LepSel_eta[2]\,LepSel_pdgId[2])/(getLeptonSF_v4(0\,0\,2018\,LepSel_pt[0]\,LepSel_eta[0]\,LepSel_pdgId[0])*getLeptonSF_v4(0\,0\,2018\,LepSel_pt[1]\,LepSel_eta[1]\,LepSel_pdgId[1])*getLeptonSF_v4(0\,0\,2018\,LepSel_pt[2]\,LepSel_eta[2]\,LepSel_pdgId[2]))", SkipMe=True, PostFix="_lepSFEl_Up"
+incl_signal_lepSFEl_Dn        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2018_signal.txt", AddWeight="getLeptonSF_v4(0\,-(abs(LepSel_pdgId[0]) == 11)\,2018\,LepSel_pt[0]\,LepSel_eta[0]\,LepSel_pdgId[0])*getLeptonSF_v4(0\,-(abs(LepSel_pdgId[1]) == 11)\,2018\,LepSel_pt[1]\,LepSel_eta[1]\,LepSel_pdgId[1])*getLeptonSF_v4(0\,-(abs(LepSel_pdgId[2]) == 11)\,2018\,LepSel_pt[2]\,LepSel_eta[2]\,LepSel_pdgId[2])/(getLeptonSF_v4(0\,0\,2018\,LepSel_pt[0]\,LepSel_eta[0]\,LepSel_pdgId[0])*getLeptonSF_v4(0\,0\,2018\,LepSel_pt[1]\,LepSel_eta[1]\,LepSel_pdgId[1])*getLeptonSF_v4(0\,0\,2018\,LepSel_pt[2]\,LepSel_eta[2]\,LepSel_pdgId[2]))", SkipMe=True, PostFix="_lepSFEl_Dn"
 
-## Lepton SF ##
+#Lepton SF Mu Stat
+incl_signal_lepSFMu_Up        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2018_signal.txt", AddWeight="getLeptonSF_v4(0\,2*(abs(LepSel_pdgId[0]) == 13)\,2018\,LepSel_pt[0]\,LepSel_eta[0]\,LepSel_pdgId[0])*getLeptonSF_v4(0\,2*(abs(LepSel_pdgId[1]) == 13)\,2018\,LepSel_pt[1]\,LepSel_eta[1]\,LepSel_pdgId[1])*getLeptonSF_v4(0\,2*(abs(LepSel_pdgId[2]) == 13)\,2018\,LepSel_pt[2]\,LepSel_eta[2]\,LepSel_pdgId[2])/(getLeptonSF_v4(0\,0\,2018\,LepSel_pt[0]\,LepSel_eta[0]\,LepSel_pdgId[0])*getLeptonSF_v4(0\,0\,2018\,LepSel_pt[1]\,LepSel_eta[1]\,LepSel_pdgId[1])*getLeptonSF_v4(0\,0\,2018\,LepSel_pt[2]\,LepSel_eta[2]\,LepSel_pdgId[2]))", SkipMe=True, PostFix="_lepSFMuStat2018_Up"
+incl_signal_lepSFMu_Dn        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2018_signal.txt", AddWeight="getLeptonSF_v4(0\,-2*(abs(LepSel_pdgId[0]) == 13)\,2018\,LepSel_pt[0]\,LepSel_eta[0]\,LepSel_pdgId[0])*getLeptonSF_v4(0\,-2*(abs(LepSel_pdgId[1]) == 13)\,2018\,LepSel_pt[1]\,LepSel_eta[1]\,LepSel_pdgId[1])*getLeptonSF_v4(0\,-2*(abs(LepSel_pdgId[2]) == 13)\,2018\,LepSel_pt[2]\,LepSel_eta[2]\,LepSel_pdgId[2])/(getLeptonSF_v4(0\,0\,2018\,LepSel_pt[0]\,LepSel_eta[0]\,LepSel_pdgId[0])*getLeptonSF_v4(0\,0\,2018\,LepSel_pt[1]\,LepSel_eta[1]\,LepSel_pdgId[1])*getLeptonSF_v4(0\,0\,2018\,LepSel_pt[2]\,LepSel_eta[2]\,LepSel_pdgId[2]))", SkipMe=True, PostFix="_lepSFMuStat2018_Dn"
 
-incl_prompts_lepSFMu_Up        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2018_signal.txt", AddWeight="std::pow(1.008\,(abs(LepZ1_pdgId)+abs(LepZ2_pdgId)+abs(LepW_pdgId)-33)/2)", SkipMe=True, PostFix="_lepSFMu_Up"
-incl_prompts_lepSFMu_Dn        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2018_signal.txt", AddWeight="1./std::pow(1.008\,(abs(LepZ1_pdgId)+abs(LepZ2_pdgId)+abs(LepW_pdgId)-33)/2)", SkipMe=True, PostFix="_lepSFMu_Dn"
+#Lepton SF Elec  Stat
+incl_signal_lepSFEl_Up        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2018_signal.txt", AddWeight="getLeptonSF_v4(0\,2*(abs(LepSel_pdgId[0]) == 11)\,2018\,LepSel_pt[0]\,LepSel_eta[0]\,LepSel_pdgId[0])*getLeptonSF_v4(0\,2*(abs(LepSel_pdgId[1]) == 11)\,2018\,LepSel_pt[1]\,LepSel_eta[1]\,LepSel_pdgId[1])*getLeptonSF_v4(0\,2*(abs(LepSel_pdgId[2]) == 11)\,2018\,LepSel_pt[2]\,LepSel_eta[2]\,LepSel_pdgId[2])/(getLeptonSF_v4(0\,0\,2018\,LepSel_pt[0]\,LepSel_eta[0]\,LepSel_pdgId[0])*getLeptonSF_v4(0\,0\,2018\,LepSel_pt[1]\,LepSel_eta[1]\,LepSel_pdgId[1])*getLeptonSF_v4(0\,0\,2018\,LepSel_pt[2]\,LepSel_eta[2]\,LepSel_pdgId[2]))", SkipMe=True, PostFix="_lepSFElStat2018_Up"
+incl_signal_lepSFEl_Dn        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2018_signal.txt", AddWeight="getLeptonSF_v4(0\,-2*(abs(LepSel_pdgId[0]) == 11)\,2018\,LepSel_pt[0]\,LepSel_eta[0]\,LepSel_pdgId[0])*getLeptonSF_v4(0\,-2*(abs(LepSel_pdgId[1]) == 11)\,2018\,LepSel_pt[1]\,LepSel_eta[1]\,LepSel_pdgId[1])*getLeptonSF_v4(0\,-2*(abs(LepSel_pdgId[2]) == 11)\,2018\,LepSel_pt[2]\,LepSel_eta[2]\,LepSel_pdgId[2])/(getLeptonSF_v4(0\,0\,2018\,LepSel_pt[0]\,LepSel_eta[0]\,LepSel_pdgId[0])*getLeptonSF_v4(0\,0\,2018\,LepSel_pt[1]\,LepSel_eta[1]\,LepSel_pdgId[1])*getLeptonSF_v4(0\,0\,2018\,LepSel_pt[2]\,LepSel_eta[2]\,LepSel_pdgId[2]))", SkipMe=True, PostFix="_lepSFElStat2018_Dn"
 
+#B tag Weights HF
+incl_signal_bTag_HF_Up        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2018_signal.txt", AddWeight="bTagWeightDeepCSVT_HF_Up/bTagWeightDeepCSVT_nom", SkipMe=True, PostFix="_bTagHF_Up"
+incl_signal_bTag_HF_Dn        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2018_signal.txt", AddWeight="bTagWeightDeepCSVT_LF_Dn/bTagWeightDeepCSVT_nom", SkipMe=True, PostFix="_bTagHF_Dn"
 
-incl_prompts_lepSFEl_Up        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2018_signal.txt", AddWeight="std::pow(1.018\,3-(abs(LepZ1_pdgId)+abs(LepZ2_pdgId)+abs(LepW_pdgId)-33)/2)", SkipMe=True, PostFix="_lepSFEl_Up"
-incl_prompts_lepSFEl_Dn        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2018_signal.txt", AddWeight="1./std::pow(1.018\,3-(abs(LepZ1_pdgId)+abs(LepZ2_pdgId)+abs(LepW_pdgId)-33)/2)", SkipMe=True, PostFix="_lepSFEl_Dn"
+#B tag Weights LF
+incl_signal_bTag_LF_Up        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2018_signal.txt", AddWeight="bTagWeightDeepCSVT_LF_Up/bTagWeightDeepCSVT_nom", SkipMe=True, PostFix="_bTagLF_Up"
+incl_signal_bTag_LF_Dn        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2018_signal.txt", AddWeight="bTagWeightDeepCSVT_LF_Dn/bTagWeightDeepCSVT_nom", SkipMe=True, PostFix="_bTagLF_Dn"
 
-## Others ##
-incl_others : +; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2018_otheruncs.txt"
+#JEC, correlated
+incl_signal_jeccorr_Up        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2018_signal.txt", ExtraFakeRate="RunII_SM_WZ/common/fakerate_standard_jecCorrUp.txt", SkipMe=True, PostFix="_jescorr_Up"
+incl_signal_jeccorr_Dn        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2018_signal.txt", ExtraFakeRate="RunII_SM_WZ/common/fakerate_standard_jecCorrDn.txt", SkipMe=True, PostFix="_jescorr_Dn"
+
+#JEC, decorrelated
+incl_signal_jecuncorr_Up        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2018_signal.txt", ExtraFakeRate="RunII_SM_WZ/common/fakerate_standard_jecUnCorrUp.txt", SkipMe=True, PostFix="_jesuncorr_Up"
+incl_signal_jecuncorr_Dn        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2018_signal.txt", ExtraFakeRate="RunII_SM_WZ/common/fakerate_standard_jecUnCorrDn.txt", SkipMe=True, PostFix="_jesuncorr_Dn"
+
+#Electron Scale
+incl_signal_elscale_Up        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2018_signal.txt", ExtraFakeRate="RunII_SM_WZ/common/fakerate_standard_elecScaleUp.txt", SkipMe=True, PostFix="_elscale_Up"
+incl_signal_elscale_Dn        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2018_signal.txt", ExtraFakeRate="RunII_SM_WZ/common/fakerate_standard_elecScaleDn.txt", SkipMe=True, PostFix="_elscale_Dn"
+
+#Muon Scale
+incl_signal_muscale_Up        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2018_signal.txt", ExtraFakeRate="RunII_SM_WZ/common/fakerate_standard_muonScaleUp.txt", SkipMe=True, PostFix="_muscale_Up"
+incl_signal_muscale_Dn        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2018_signal.txt", ExtraFakeRate="RunII_SM_WZ/common/fakerate_standard_muonScaleDn.txt", SkipMe=True, PostFix="_muscale_Dn"
+
+###
+##### Variations
+###
+##### bTag ##
+###incl_prompts_bTag_HF_Up        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2018_signal.txt", AddWeight="bTagWeightDeepCSVT_HF_Up/bTagWeightDeepCSVT_nom", SkipMe=True, PostFix="_bTagHF_Up"
+###incl_prompts_bTag_HF_Dn        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2018_signal.txt", AddWeight="bTagWeightDeepCSVT_HF_Dn/bTagWeightDeepCSVT_nom", SkipMe=True, PostFix="_bTagHF_Dn"
+###
+###incl_prompts_bTag_LF_Up        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2018_signal.txt", AddWeight="bTagWeightDeepCSVT_LF_Up/bTagWeightDeepCSVT_nom", SkipMe=True, PostFix="_bTagLF_Up"
+###incl_prompts_bTag_LF_Dn        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2018_signal.txt", AddWeight="bTagWeightDeepCSVT_LF_Dn/bTagWeightDeepCSVT_nom", SkipMe=True, PostFix="_bTagLF_Dn"
+###
+##### PU Weight ##
+###incl_prompts_puw_Up        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2018_signal.txt", AddWeight="puWeightUp/puWeight", SkipMe=True, PostFix="_puw_Up"
+###incl_prompts_puw_Dn        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2018_signal.txt", AddWeight="puWeightDown/puWeight", SkipMe=True, PostFix="_puw_Dn"
+###
+##### Lepton SF ##
+###
+###incl_prompts_lepSFMu_Up        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2018_signal.txt", AddWeight="std::pow(1.008\,(abs(LepZ1_pdgId)+abs(LepZ2_pdgId)+abs(LepW_pdgId)-33)/2)", SkipMe=True, PostFix="_lepSFMu_Up"
+###incl_prompts_lepSFMu_Dn        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2018_signal.txt", AddWeight="1./std::pow(1.008\,(abs(LepZ1_pdgId)+abs(LepZ2_pdgId)+abs(LepW_pdgId)-33)/2)", SkipMe=True, PostFix="_lepSFMu_Dn"
+###
+###
+###incl_prompts_lepSFEl_Up        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2018_signal.txt", AddWeight="std::pow(1.018\,3-(abs(LepZ1_pdgId)+abs(LepZ2_pdgId)+abs(LepW_pdgId)-33)/2)", SkipMe=True, PostFix="_lepSFEl_Up"
+###incl_prompts_lepSFEl_Dn        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2018_signal.txt", AddWeight="1./std::pow(1.018\,3-(abs(LepZ1_pdgId)+abs(LepZ2_pdgId)+abs(LepW_pdgId)-33)/2)", SkipMe=True, PostFix="_lepSFEl_Dn"
+###
+##### Others ##
+###incl_others : +; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2018_otheruncs.txt"
