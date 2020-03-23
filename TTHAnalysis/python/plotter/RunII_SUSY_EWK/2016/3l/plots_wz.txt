@@ -125,17 +125,6 @@ jet_eta  : if3(nJetSel_Mini>0, Jet_eta[iJSel_Mini], -99) : 20,-2.4,2.4 ; XTitle=
 #DeltaRPL: sqrt((deltaPhi(sump4(2, LepW_pt, LepW_eta, LepW_phi, LepW_mass, MET_pt_central, 0, MET_phi, 0),LepW_phi))^2 +abs(sump4(1, LepW_pt, LepW_eta, LepW_phi, LepW_mass, $DATA{MET_pt} $MC{MET_pt_nom} , 0, MET_phi, 0)-LepW_eta)^2) : [0.0, 0.3105, 0.45899999999999996, 0.5984999999999999, 0.738, 0.8909999999999999, 1.071, 1.3005, 1.638, 2.2455, 4.5]; XTitle="#DeltaR^{+}", Legend='TL', LegendCutoff=1e-5, MoreY=2.5 
 #DeltaRMn: sqrt((deltaPhi(sump4(2, LepW_pt, LepW_eta, LepW_phi, LepW_mass, $DATA{MET_pt} $MC{MET_pt_central} , 0, MET_phi, 0),LepW_phi))^2 +abs(sump4(1, LepW_pt, LepW_eta, LepW_phi, LepW_mass, $DATA{MET_pt} $MC{MET_pt_nom} , 0, MET_phi, 0)-LepW_eta)^2) : [0.0, 0.3105, 0.45899999999999996, 0.5984999999999999, 0.738, 0.8909999999999999, 1.071, 1.3005, 1.638, 2.2455, 4.5]; XTitle="#DeltaR^{-}", Legend='TL', LegendCutoff=1e-5, MoreY=2.5 
 
-susyMVA_dM90: TChiWZMVA_90 : 20,0,1 ; XTitle="SUSY MVA dM 90 GeV", LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=5000000, Logy
-
-#susyMVA_dM100: TChiWZMVA_100 : 20,0,1 ; XTitle="SUSY MVA dM 100 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=5000000, Logy
-
-susyMVA_dM50: TChiWZMVA_50 : 20,0,1 ; XTitle="SUSY MVA dM 50 GeV", LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
-
-#susyMVA_dM40: TChiWZMVA_40 : 20,0,1 ; XTitle="SUSY MVA dM 40 GeV", LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
-
-susyMVA_dM500: TChiWZMVA_500 : 20,0,1 ; XTitle="SUSY MVA dM 500 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
-
-susyMVA_dM300: TChiWZMVA_300 : 20,0,1 ; XTitle="SUSY MVA dM 300 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
 
 SR3lB : minDeltaR_3l : [0.,0.4, 1., 2.]; XTitle="SR 3lB (min #Delta R(l l))",  LegendCutoff=1e-5, MoreY=2.5 , YMin=0.1, YMax=1000, Logy
 
@@ -149,3 +138,70 @@ MVA_LTpMET : LTpMET      : 20,100,500.; XTitle="L_{T} + p_{T}^{miss} [GeV]", Leg
 MVA_HT   : htJet25j_Mini : 20,0,400.; XTitle="H_{T} [GeV]", LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=5000000, Logy
 MVA_m3L  : m3L           : 20,100,500.; XTitle="m_{3L} [GeV]", LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=5000000, Logy
 MVA_mT3L : mT3L          : 20,0,400.; XTitle="m_{T3L} [GeV]", LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=5000000, Logy
+
+
+susyMVA_dM6: TChiWZMVA_6 : 20,0,1 ; XTitle="SUSY MVA dM 6 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM7: TChiWZMVA_7 : 20,0,1 ; XTitle="SUSY MVA dM 7 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM8: TChiWZMVA_8 : 20,0,1 ; XTitle="SUSY MVA dM 8 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM10: TChiWZMVA_10 : 20,0,1 ; XTitle="SUSY MVA dM 10 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM14: TChiWZMVA_14 : 20,0,1 ; XTitle="SUSY MVA dM 14 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM15: TChiWZMVA_15 : 20,0,1 ; XTitle="SUSY MVA dM 15 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM16: TChiWZMVA_16 : 20,0,1 ; XTitle="SUSY MVA dM 16 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM20: TChiWZMVA_20 : 20,0,1 ; XTitle="SUSY MVA dM 20 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM30: TChiWZMVA_30 : 20,0,1 ; XTitle="SUSY MVA dM 30 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM40: TChiWZMVA_40 : 20,0,1 ; XTitle="SUSY MVA dM 40 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM50: TChiWZMVA_50 : 20,0,1 ; XTitle="SUSY MVA dM 50 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM60: TChiWZMVA_60 : 20,0,1 ; XTitle="SUSY MVA dM 60 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM70: TChiWZMVA_70 : 20,0,1 ; XTitle="SUSY MVA dM 70 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM80: TChiWZMVA_80 : 20,0,1 ; XTitle="SUSY MVA dM 80 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM90: TChiWZMVA_90 : 20,0,1 ; XTitle="SUSY MVA dM 90 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+#susyMVA_dM91: TChiWZMVA_91 : 20,0,1 ; XTitle="SUSY MVA dM 91 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+#susyMVA_dM92: TChiWZMVA_92 : 20,0,1 ; XTitle="SUSY MVA dM 92 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+#susyMVA_dM93: TChiWZMVA_93 : 20,0,1 ; XTitle="SUSY MVA dM 93 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+#susyMVA_dM94: TChiWZMVA_94 : 20,0,1 ; XTitle="SUSY MVA dM 94 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+#susyMVA_dM95: TChiWZMVA_95 : 20,0,1 ; XTitle="SUSY MVA dM 95 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+#susyMVA_dM96: TChiWZMVA_96 : 20,0,1 ; XTitle="SUSY MVA dM 96 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+#susyMVA_dM97: TChiWZMVA_97 : 20,0,1 ; XTitle="SUSY MVA dM 97 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+#susyMVA_dM98: TChiWZMVA_98 : 20,0,1 ; XTitle="SUSY MVA dM 98 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+#susyMVA_dM99: TChiWZMVA_99 : 20,0,1 ; XTitle="SUSY MVA dM 99 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM100: TChiWZMVA_100 : 20,0,1 ; XTitle="SUSY MVA dM 100 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM110: TChiWZMVA_110 : 20,0,1 ; XTitle="SUSY MVA dM 110 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM120: TChiWZMVA_120 : 20,0,1 ; XTitle="SUSY MVA dM 120 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM125: TChiWZMVA_125 : 20,0,1 ; XTitle="SUSY MVA dM 125 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM130: TChiWZMVA_130 : 20,0,1 ; XTitle="SUSY MVA dM 130 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM140: TChiWZMVA_140 : 20,0,1 ; XTitle="SUSY MVA dM 140 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM150: TChiWZMVA_150 : 20,0,1 ; XTitle="SUSY MVA dM 150 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM175: TChiWZMVA_175 : 20,0,1 ; XTitle="SUSY MVA dM 175 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM200: TChiWZMVA_200 : 20,0,1 ; XTitle="SUSY MVA dM 200 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM225: TChiWZMVA_225 : 20,0,1 ; XTitle="SUSY MVA dM 225 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM250: TChiWZMVA_250 : 20,0,1 ; XTitle="SUSY MVA dM 250 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM275: TChiWZMVA_275 : 20,0,1 ; XTitle="SUSY MVA dM 275 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM300: TChiWZMVA_300 : 20,0,1 ; XTitle="SUSY MVA dM 300 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM325: TChiWZMVA_325 : 20,0,1 ; XTitle="SUSY MVA dM 325 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM350: TChiWZMVA_350 : 20,0,1 ; XTitle="SUSY MVA dM 350 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM375: TChiWZMVA_375 : 20,0,1 ; XTitle="SUSY MVA dM 375 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM400: TChiWZMVA_400 : 20,0,1 ; XTitle="SUSY MVA dM 400 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM425: TChiWZMVA_425 : 20,0,1 ; XTitle="SUSY MVA dM 425 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM450: TChiWZMVA_450 : 20,0,1 ; XTitle="SUSY MVA dM 450 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM475: TChiWZMVA_475 : 20,0,1 ; XTitle="SUSY MVA dM 475 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM500: TChiWZMVA_500 : 20,0,1 ; XTitle="SUSY MVA dM 500 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM525: TChiWZMVA_525 : 20,0,1 ; XTitle="SUSY MVA dM 525 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM550: TChiWZMVA_550 : 20,0,1 ; XTitle="SUSY MVA dM 550 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM575: TChiWZMVA_575 : 20,0,1 ; XTitle="SUSY MVA dM 575 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM600: TChiWZMVA_600 : 20,0,1 ; XTitle="SUSY MVA dM 600 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM625: TChiWZMVA_625 : 20,0,1 ; XTitle="SUSY MVA dM 625 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM650: TChiWZMVA_650 : 20,0,1 ; XTitle="SUSY MVA dM 650 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM675: TChiWZMVA_675 : 20,0,1 ; XTitle="SUSY MVA dM 675 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM700: TChiWZMVA_700 : 20,0,1 ; XTitle="SUSY MVA dM 700 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM725: TChiWZMVA_725 : 20,0,1 ; XTitle="SUSY MVA dM 725 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM750: TChiWZMVA_750 : 20,0,1 ; XTitle="SUSY MVA dM 750 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM775: TChiWZMVA_775 : 20,0,1 ; XTitle="SUSY MVA dM 775 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM800: TChiWZMVA_800 : 20,0,1 ; XTitle="SUSY MVA dM 800 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM825: TChiWZMVA_825 : 20,0,1 ; XTitle="SUSY MVA dM 825 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM850: TChiWZMVA_850 : 20,0,1 ; XTitle="SUSY MVA dM 850 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM875: TChiWZMVA_875 : 20,0,1 ; XTitle="SUSY MVA dM 875 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM900: TChiWZMVA_900 : 20,0,1 ; XTitle="SUSY MVA dM 900 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM925: TChiWZMVA_925 : 20,0,1 ; XTitle="SUSY MVA dM 925 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM950: TChiWZMVA_950 : 20,0,1 ; XTitle="SUSY MVA dM 950 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM975: TChiWZMVA_975 : 20,0,1 ; XTitle="SUSY MVA dM 975 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
+susyMVA_dM1000: TChiWZMVA_1000 : 20,0,1 ; XTitle="SUSY MVA dM 1000 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy

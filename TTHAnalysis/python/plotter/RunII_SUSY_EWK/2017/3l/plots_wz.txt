@@ -141,3 +141,15 @@ MVA_HT   : htJet25j_Mini : 20,0,400.; XTitle="H_{T} [GeV]", LegendCutoff=1e-5, M
 MVA_m3L  : m3L           : 20,100,500.; XTitle="m_{3L} [GeV]", LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=5000000, Logy
 MVA_mT3L : mT3L          : 20,0,400.; XTitle="m_{T3L} [GeV]", LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=5000000, Logy
 
+
+pVTx_good : PV_npvsGood : 60,0,60; XTitle="Number of good PV", LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=5000000, Logy
+pVTx_noPU : PV_npvsGood : 60,0,60; XTitle="Number of good PV", LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=5000000, Logy
+
+pVTx_good_lin : PV_npvsGood : 60,0,60; XTitle="Number of good PV", LegendCutoff=1e-5, MoreY=2.5
+pVTx_noPU_lin : PV_npvsGood : 60,0,60; XTitle="Number of good PV", LegendCutoff=1e-5, MoreY=2.5
+
+pVTx_good_lin_up : PV_npvsGood : 60,0,60; XTitle="Number of good PV", LegendCutoff=1e-5, MoreY=2.5
+
+pVTx_good_lin_dn : PV_npvsGood : 60,0,60; XTitle="Number of good PV", LegendCutoff=1e-5, MoreY=2.5
+
+

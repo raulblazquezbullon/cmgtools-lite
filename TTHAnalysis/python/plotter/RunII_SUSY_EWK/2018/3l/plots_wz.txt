@@ -135,3 +135,14 @@ susyMVA_dM500: TChiWZMVA_500 : 20,0,1 ; XTitle="SUSY MVA dM 500 GeV",  LegendCut
 susyMVA_dM300: TChiWZMVA_300 : 20,0,1 ; XTitle="SUSY MVA dM 300 GeV",  LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=50000, Logy
 
 #SR_3lA : SRcorr(mll_3l, mT_3l, MET_pt_central, htJet30j, 0) : 59,-0.5,58.5 ; XTitle="SR 3lA", LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=5000000, Logy
+
+pVTx_good : PV_npvsGood : 60,0,60; XTitle="Number of good PV", LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=5000000, Logy
+pVTx_noPU : PV_npvsGood : 60,0,60; XTitle="Number of good PV", LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=5000000, Logy
+
+pVTx_good_lin : PV_npvsGood : 60,0,60; XTitle="Number of good PV", LegendCutoff=1e-5, MoreY=2.5
+pVTx_noPU_lin : PV_npvsGood : 60,0,60; XTitle="Number of good PV", LegendCutoff=1e-5, MoreY=2.5
+
+pVTx_good_lin_up : PV_npvsGood : 60,0,60; XTitle="Number of good PV", LegendCutoff=1e-5, MoreY=2.5
+
+pVTx_good_lin_dn : PV_npvsGood : 60,0,60; XTitle="Number of good PV", LegendCutoff=1e-5, MoreY=2.5
+
