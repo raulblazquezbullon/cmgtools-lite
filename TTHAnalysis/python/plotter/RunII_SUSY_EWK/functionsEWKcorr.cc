@@ -1061,4 +1061,64 @@ Bool_t allTight(float mva1, float mva2, float mva3, int pdg1, int pdg2, int pdg3
     return true;
 }
 
+
+int encodepdg(int pdg1, int pdg2, int pdg3){
+  int code1; int code2; int code3;
+  if (pdg1 == 11) code1 = 0;
+  if (pdg1 == -11) code1 = 1;
+  if (pdg1 == 13) code1 = 2;
+  if (pdg1 == -13) code1 = 3;
+  if (pdg2 == 11) code2 = 0;
+  if (pdg2 == -11) code2 = 1;
+  if (pdg2 == 13) code2 = 2;
+  if (pdg2 == -13) code2 = 3;
+  if (pdg3 == 11) code3 = 0;
+  if (pdg3 == -11) code3 = 1;
+  if (pdg3 == 13) code3 = 2;
+  if (pdg3 == -13) code3 = 3;
+  return 16*code1+4*code2+code3;
+}
+
+int decodepdg(int enc, int pos){
+  int rest;
+  if (pos == 1) rest = (enc - enc%16)/16;
+  if (pos == 2) rest = ((enc - enc%4)/4)%4;
+  if (pos == 3) rest = enc%4;
+  if (rest == 0) return 11;
+  if (rest == 1) return -11;
+  if (rest == 2) return 13;
+  if (rest == 3) return -13;
+}
+
+
+float SR3lAfromlepgood(float metpt, float m12, float m13, float m23, float mt1, float mt2, float mt3, int encodedpdg){
+  int pdg1 = decodepdg(encodedpdg,1);
+  int pdg2 = decodepdg(encodedpdg,2);
+  int pdg3 = decodepdg(encodedpdg,3);
+
+  if (pdg1 == -pdg2){
+    if (pdg1 != pdg3 && pdg2 != pdg3){
+      return SR3lA(-1,-1,m12,mt3,metpt);
+    }
+    else if (pdg2 == pdg3){
+      if (abs(m12 - 91.16) < abs(m13-91.16)) return  SR3lA(-1,-1,m12,mt3,metpt);
+      else return SR3lA(-1,-1,m13,mt2,metpt);
+    }
+    else{
+      if (abs(m12 - 91.16) < abs(m23-91.16)) return  SR3lA(-1,-1,m12,mt3,metpt);
+      else return SR3lA(-1,-1,m23,mt1,metpt);
+    }
+  }
+  else if (pdg1 == pdg2){
+    if (pdg3 == -pdg1){
+      if (abs(m13 - 91.16) < abs(m23-91.16)) return  SR3lA(-1,-1,m13,mt2,metpt);
+      else return SR3lA(-1,-1,m23,mt1,metpt);
+    }
+    else return -1;
+  }
+  else if (pdg1 == -pdg3) return  SR3lA(-1,-1,m13,mt2,metpt);
+  else if (pdg2 == -pdg3) return  SR3lA(-1,-1,m23,mt1,metpt);
+  return -1;
+}
+
 void functionsEWKcorr() {}
