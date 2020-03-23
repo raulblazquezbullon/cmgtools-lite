@@ -59,20 +59,21 @@ MODULES.append( ('leptonEnergyCorrections_2018', lambda: leptonEnergyCorrections
 ###################################
 
 from CMGTools.TTHAnalysis.tools.leptonJetReCleaner import LeptonJetReCleaner
-from CMGTools.TTHAnalysis.tools.functionsEWK_v5 import _loose_muon, _loose_electron, _loose_lepton, _fO_muon, _fO_electron, _fO_lepton,_tight_muon,_tight_electron,_tight_lepton,conept
+from CMGTools.TTHAnalysis.tools.functionsEWK_v5 import _loose_muon, _loose_electron, _loose_lepton, _fO_muon_16, _fO_electron_16,_fO_muon_17, _fO_electron_17,_fO_muon_18, _fO_electron_18, _fO_lepton,_tight_muon,_tight_electron,_tight_lepton,conept
+#from CMGTools.TTHAnalysis.tools.functionsEWK_v5 import *
+from CMGTools.TTHAnalysis.tools.functionsWZ import  _tauId_CBloose, _tauId_CBtight
 
 
-
-MODULES.append( ('leptonJetReCleanerWZSM_2016_v5', lambda : LeptonJetReCleaner("Mini", 
-                   lambda lep :        _loose_lepton(lep, 0.3093, 0.0614), #Loose selection 
-                   lambda lep,jetlist: _fO_lepton(lep, 0.3093, 0.0614,jetlist), #Clean on FO
-                   lambda lep,jetlist: _fO_lepton(lep, 0.3093, 0.0614,jetlist), #FO selection
-                   lambda lep,jetlist: _tight_lepton(lep, 0.3093, 0.0614,jetlist), #Tight selection
+MODULES.append( ('leptonJetReCleanerEWK_2016_v5', lambda : LeptonJetReCleaner("Mini", 
+                   lambda lep :        _loose_lepton(lep, 0.7221, 0.3093, 0.0614), #Loose selection 
+                   lambda lep,jetlist: _fO_lepton(lep,0.7221,  0.3093, 0.0614,jetlist,2016), #Clean on FO
+                   lambda lep,jetlist: _fO_lepton(lep,0.7221,  0.3093, 0.0614,jetlist,2016), #FO selection
+                   lambda lep,jetlist: _tight_lepton(lep,0.7221,  0.3093, 0.0614,jetlist), #Tight selection
                    cleanJet = lambda lep,jet,dr : dr<0.4,
                    selectJet = lambda jet: abs(jet.eta)<4.7 and (jet.jetId & 2), #Jet ID tight as it is already very efficient (>=98%), Take second bit with python "/" def + evaluate it with %
                    cleanTau = lambda lep,tau,dr: dr<0.4,
-                   looseTau = lambda tau: _tauId_CBloose(tau), # used in cleaning
-                   tightTau = lambda tau: _tauId_CBtight(tau), # on top of loose
+                   looseTau = lambda tau: _tauId_CBloose(tau), # Loose in loose to tight
+                   tightTau = lambda tau: _tauId_CBtight(tau), # Tight in loose to tight
                    cleanJetsWithTaus = False,
                    cleanTausWithLoose = False,
                    doVetoZ = False,
@@ -86,11 +87,11 @@ MODULES.append( ('leptonJetReCleanerWZSM_2016_v5', lambda : LeptonJetReCleaner("
                    )))
 
 
-MODULES.append( ('leptonJetReCleanerWZSM_2017_v5', lambda : LeptonJetReCleaner("Mini",
-                   lambda lep :        _loose_lepton(lep, 0.0521, 0.3033), #Loose selection 
-                   lambda lep,jetlist: _fO_lepton(lep, 0.0521, 0.3033,jetlist), #Clean on FO
-                   lambda lep,jetlist: _fO_lepton(lep, 0.0521, 0.3033,jetlist), #FO selection
-                   lambda lep,jetlist: _tight_lepton(lep, 0.0521, 0.3033,jetlist), #Tight selection
+MODULES.append( ('leptonJetReCleanerEWK_2017_v5', lambda : LeptonJetReCleaner("Mini",
+                   lambda lep :        _loose_lepton(lep, 0.7489, 0.3033, 0.0521), #Loose selection 
+                   lambda lep,jetlist: _fO_lepton(lep, 0.7489, 0.3033, 0.0521,jetlist,2017), #Clean on FO
+                   lambda lep,jetlist: _fO_lepton(lep, 0.7489, 0.3033, 0.0521,jetlist,2017), #FO selection
+                   lambda lep,jetlist: _tight_lepton(lep, 0.7489, 0.3033, 0.0521,jetlist), #Tight selection
                    cleanJet = lambda lep,jet,dr : dr<0.4,
                    selectJet = lambda jet: abs(jet.eta)<4.7 and (jet.jetId & 2), #Jet ID tight as it is already very efficient (>=98%), Take second bit with python "/" def + evaluate it with %
                    cleanTau = lambda lep,tau,dr: dr<0.4,
@@ -109,11 +110,11 @@ MODULES.append( ('leptonJetReCleanerWZSM_2017_v5', lambda : LeptonJetReCleaner("
                    )))     
 
 
-MODULES.append( ('leptonJetReCleanerWZSM_2018_v5', lambda : LeptonJetReCleaner("Mini",
-                   lambda lep :        _loose_lepton(lep, 0.0494, 0.2770), #Loose selection 
-                   lambda lep,jetlist: _fO_lepton(lep, 0.0494, 0.2770,jetlist), #Clean on FO
-                   lambda lep,jetlist: _fO_lepton(lep, 0.0494, 0.2770,jetlist), #FO selection
-                   lambda lep,jetlist: _tight_lepton(lep, 0.0494, 0.2770,jetlist), #Tight selection
+MODULES.append( ('leptonJetReCleanerEWK_2018_v5', lambda : LeptonJetReCleaner("Mini",
+                   lambda lep :        _loose_lepton(lep, 0.7264, 0.2770, 0.0494), #Loose selection 
+                   lambda lep,jetlist: _fO_lepton(lep, 0.7264, 0.2770, 0.0494, jetlist,2018), #Clean on FO
+                   lambda lep,jetlist: _fO_lepton(lep, 0.7264, 0.2770, 0.0494, jetlist,2018), #FO selection
+                   lambda lep,jetlist: _tight_lepton(lep, 0.7264, 0.2770, 0.0494, jetlist), #Tight selection
                    cleanJet = lambda lep,jet,dr : dr<0.4,
                    selectJet = lambda jet: abs(jet.eta)<4.7 and (jet.jetId & 2), #Jet ID tight as it is already very efficient (>=98%), Take second bit with python "/" def + evaluate it with %
                    cleanTau = lambda lep,tau,dr: dr<0.4,
@@ -133,11 +134,11 @@ MODULES.append( ('leptonJetReCleanerWZSM_2018_v5', lambda : LeptonJetReCleaner("
 
 from CMGTools.TTHAnalysis.tools.leptonJetReCleanerFastSim import LeptonJetReCleanerFastSim
 
-MODULES.append( ('leptonJetReCleanerWZSMFastSim_2016_v5', lambda : LeptonJetReCleanerFastSim("Mini",
-                   lambda lep :        _loose_lepton(lep, 0.3093, 0.0614), #Loose selection 
-                   lambda lep,jetlist: _fO_lepton(lep, 0.3093, 0.0614,jetlist), #Clean on FO
-                   lambda lep,jetlist: _fO_lepton(lep, 0.3093, 0.0614,jetlist), #FO selection
-                   lambda lep,jetlist: _tight_lepton(lep, 0.3093, 0.0614,jetlist), #Tight selection
+MODULES.append( ('leptonJetReCleanerEWKFastSim_2016_v5', lambda : LeptonJetReCleanerFastSim("Mini",
+                   lambda lep :        _loose_lepton(lep, 0.7221, 0.3093, 0.0614), #Loose selection 
+                   lambda lep,jetlist: _fO_lepton(lep,0.7221,  0.3093, 0.0614,jetlist,2016), #Clean on FO
+                   lambda lep,jetlist: _fO_lepton(lep,0.7221,  0.3093, 0.0614,jetlist,2016), #FO selection
+                   lambda lep,jetlist: _tight_lepton(lep,0.7221,  0.3093, 0.0614,jetlist), #Tight selection
                    cleanJet = lambda lep,jet,dr : dr<0.4,
                    selectJet = lambda jet: abs(jet.eta)<4.7 and (jet.jetId & 2), #Jet ID tight as it is already very efficient (>=98%), Take second bit with python "/" def + evaluate it with %
                    cleanTau = lambda lep,tau,dr: dr<0.4,
@@ -156,11 +157,11 @@ MODULES.append( ('leptonJetReCleanerWZSMFastSim_2016_v5', lambda : LeptonJetReCl
                    )))
 
 
-MODULES.append( ('leptonJetReCleanerWZSMFastSim_2017_v5', lambda : LeptonJetReCleanerFastSim("Mini",
-                   lambda lep :        _loose_lepton(lep, 0.0521, 0.3033), #Loose selection 
-                   lambda lep,jetlist: _fO_lepton(lep, 0.0521, 0.3033,jetlist), #Clean on FO
-                   lambda lep,jetlist: _fO_lepton(lep, 0.0521, 0.3033,jetlist), #FO selection
-                   lambda lep,jetlist: _tight_lepton(lep, 0.0521, 0.3033,jetlist), #Tight selection
+MODULES.append( ('leptonJetReCleanerEWKFastSim_2017_v5', lambda : LeptonJetReCleanerFastSim("Mini",
+                   lambda lep :        _loose_lepton(lep, 0.7489, 0.3033, 0.0521), #Loose selection 
+                   lambda lep,jetlist: _fO_lepton(lep, 0.7489, 0.3033, 0.0521,jetlist,2017), #Clean on FO
+                   lambda lep,jetlist: _fO_lepton(lep, 0.7489, 0.3033, 0.0521,jetlist,2017), #FO selection
+                   lambda lep,jetlist: _tight_lepton(lep, 0.7489, 0.3033, 0.0521,jetlist), #Tight selection
                    cleanJet = lambda lep,jet,dr : dr<0.4,
                    selectJet = lambda jet: abs(jet.eta)<4.7 and (jet.jetId & 2), #Jet ID tight as it is already very efficient (>=98%), Take second bit with python "/" def + evaluate it with %
                    cleanTau = lambda lep,tau,dr: dr<0.4,
@@ -178,11 +179,11 @@ MODULES.append( ('leptonJetReCleanerWZSMFastSim_2017_v5', lambda : LeptonJetReCl
                    bAlgo = "DeepCSV"
                    )))
 
-MODULES.append( ('leptonJetReCleanerWZSMFastSim_2018_v5', lambda : LeptonJetReCleanerFastSim("Mini",
-                   lambda lep :        _loose_lepton(lep, 0.0494, 0.2770), #Loose selection 
-                   lambda lep,jetlist: _fO_lepton(lep, 0.0494, 0.2770,jetlist), #Clean on FO
-                   lambda lep,jetlist: _fO_lepton(lep, 0.0494, 0.2770,jetlist), #FO selection
-                   lambda lep,jetlist: _tight_lepton(lep, 0.0494, 0.2770,jetlist), #Tight selection
+MODULES.append( ('leptonJetReCleanerEWKFastSim_2018_v5', lambda : LeptonJetReCleanerFastSim("Mini",
+                   lambda lep :        _loose_lepton(lep, 0.7264, 0.2770, 0.0494), #Loose selection 
+                   lambda lep,jetlist: _fO_lepton(lep, 0.7264, 0.2770, 0.0494, jetlist,2018), #Clean on FO
+                   lambda lep,jetlist: _fO_lepton(lep, 0.7264, 0.2770, 0.0494, jetlist,2018), #FO selection
+                   lambda lep,jetlist: _tight_lepton(lep, 0.7264, 0.2770, 0.0494, jetlist), #Tight selection
                    cleanJet = lambda lep,jet,dr : dr<0.4,
                    selectJet = lambda jet: abs(jet.eta)<4.7 and (jet.jetId & 2), #Jet ID tight as it is already very efficient (>=98%), Take second bit with python "/" def + evaluate it with %
                    cleanTau = lambda lep,tau,dr: dr<0.4,
@@ -200,12 +201,12 @@ MODULES.append( ('leptonJetReCleanerWZSMFastSim_2018_v5', lambda : LeptonJetReCl
                    bAlgo = "DeepCSV"
                    )))
 
-
+"""
 from CMGTools.TTHAnalysis.tools.leptonphotonJetReCleaner import LeptonPhotonJetReCleaner
 from CMGTools.TTHAnalysis.tools.functionsWZ import _lepId_IPcuts, conept, _looseID_ExtraCuts_2016, _elidEmu_cuts_2016, _FOID_2016, _Tight_2016,  _looseID_ExtraCuts_2017, _elidEmu_cuts_2017, _FOID_2017, _Tight_2017,  _looseID_ExtraCuts_2018, _elidEmu_cuts_2018, _FOID_2018, _Tight_2018, _tauId_CBloose, _tauId_CBtight, _phoId_CBloose, _phoId_CBtight
 
 
-MODULES.append( ('leptonJetReCleanerWZSM_2016', lambda : LeptonJetReCleaner("Mini", 
+MODULES.append( ('leptonJetReCleanerEWK_2016', lambda : LeptonJetReCleaner("Mini", 
                    lambda lep : lep.miniPFRelIso_all < 0.4 and _looseID_ExtraCuts_2016(lep) and _lepId_IPcuts(lep), #Loose selection 
                    lambda lep,jetlist: lep.pt>10 and conept(lep)>10 and (_FOID_2016(lep, jetlist)), #We clean on the FO
                    lambda lep,jetlist: lep.pt>10 and conept(lep)>10 and (_FOID_2016(lep, jetlist)), #FO selection
@@ -228,7 +229,7 @@ MODULES.append( ('leptonJetReCleanerWZSM_2016', lambda : LeptonJetReCleaner("Min
                    )))
 
 
-MODULES.append( ('leptonJetReCleanerWZSM_2017', lambda : LeptonJetReCleaner("Mini", 
+MODULES.append( ('leptonJetReCleanerEWK_2017', lambda : LeptonJetReCleaner("Mini", 
                    lambda lep : lep.miniPFRelIso_all < 0.4 and _looseID_ExtraCuts_2017(lep) and _lepId_IPcuts(lep), #Loose selection 
                    lambda lep,jetlist: lep.pt>10 and conept(lep)>10 and (_FOID_2017(lep, jetlist)), #We clean on the FO
                    lambda lep,jetlist: lep.pt>10 and conept(lep)>10 and (_FOID_2017(lep, jetlist)), #FO selection
@@ -251,7 +252,7 @@ MODULES.append( ('leptonJetReCleanerWZSM_2017', lambda : LeptonJetReCleaner("Min
                    )))
 
 
-MODULES.append( ('leptonJetReCleanerWZSM_2018', lambda : LeptonJetReCleaner("Mini", 
+MODULES.append( ('leptonJetReCleanerEWK_2018', lambda : LeptonJetReCleaner("Mini", 
                    lambda lep : lep.miniPFRelIso_all < 0.4 and _looseID_ExtraCuts_2018(lep) and _lepId_IPcuts(lep), #Loose selection 
                    lambda lep,jetlist: lep.pt>10 and conept(lep)>10 and (_FOID_2018(lep, jetlist)), #We clean on the FO
                    lambda lep,jetlist: lep.pt>10 and conept(lep)>10 and (_FOID_2018(lep, jetlist)), #FO selection
@@ -274,7 +275,7 @@ MODULES.append( ('leptonJetReCleanerWZSM_2018', lambda : LeptonJetReCleaner("Min
                    )))
 
 
-MODULES.append( ('leptonPhotonJetReCleanerWZSM_2016', lambda : LeptonPhotonJetReCleaner("Mini", 
+MODULES.append( ('leptonPhotonJetReCleanerEWK_2016', lambda : LeptonPhotonJetReCleaner("Mini", 
                    lambda lep : lep.miniPFRelIso_all < 0.4 and _looseID_ExtraCuts_2016(lep) and _lepId_IPcuts(lep), #Loose selection 
                    lambda lep,jetlist: lep.pt>10 and conept(lep)>10 and (_FOID_2016(lep, jetlist)), #We clean on the FO
                    lambda lep,jetlist: lep.pt>10 and conept(lep)>10 and (_FOID_2016(lep, jetlist)), #FO selection
@@ -303,7 +304,7 @@ MODULES.append( ('leptonPhotonJetReCleanerWZSM_2016', lambda : LeptonPhotonJetRe
 
 
 
-MODULES.append( ('leptonPhotonJetReCleanerWZSM_2018', lambda : LeptonPhotonJetReCleaner("Mini",
+MODULES.append( ('leptonPhotonJetReCleanerEWK_2018', lambda : LeptonPhotonJetReCleaner("Mini",
                    lambda lep : lep.miniPFRelIso_all < 0.4 and _looseID_ExtraCuts_2018(lep) and _lepId_IPcuts(lep), #Loose selection 
                    lambda lep,jetlist: lep.pt>10 and conept(lep)>10 and (_FOID_2018(lep, jetlist)), #We clean on the FO
                    lambda lep,jetlist: lep.pt>10 and conept(lep)>10 and (_FOID_2018(lep, jetlist)), #FO selection
@@ -332,7 +333,7 @@ MODULES.append( ('leptonPhotonJetReCleanerWZSM_2018', lambda : LeptonPhotonJetRe
 
 
 
-MODULES.append( ('leptonPhotonJetReCleanerWZSM_2017', lambda : LeptonPhotonJetReCleaner("Mini",
+MODULES.append( ('leptonPhotonJetReCleanerEWK_2017', lambda : LeptonPhotonJetReCleaner("Mini",
                    lambda lep : lep.miniPFRelIso_all < 0.4 and _looseID_ExtraCuts_2017(lep) and _lepId_IPcuts(lep), #Loose selection 
                    lambda lep,jetlist: lep.pt>10 and conept(lep)>10 and (_FOID_2017(lep, jetlist)), #We clean on the FO
                    lambda lep,jetlist: lep.pt>10 and conept(lep)>10 and (_FOID_2017(lep, jetlist)), #FO selection
@@ -358,7 +359,7 @@ MODULES.append( ('leptonPhotonJetReCleanerWZSM_2017', lambda : LeptonPhotonJetRe
                    year = 2017,
                    bAlgo = "DeepCSV"
                    )))
-
+"""
 ###################################
 ########### lepBuilder ############
 ###################################
@@ -383,10 +384,10 @@ MODULES.append( ('leptonBuilderEWK_FastSim_2016', lambda : LeptonBuilderEWK_nano
 MODULES.append( ('leptonBuilderEWK_FastSim_2017', lambda : LeptonBuilderEWK_nanoAOD("Mini", metbranch="METFixEE2017", isFastSim=True)))
 MODULES.append( ('leptonBuilderEWK_FastSim_2018', lambda : LeptonBuilderEWK_nanoAOD("Mini", metbranch="MET", isFastSim=True)))
 
-from CMGTools.TTHAnalysis.tools.leptonBuilderEWK_falsemistag import LeptonBuilderEWK_nanoAOD
-MODULES.append( ('leptonBuilderEWKMisTag_2016', lambda : LeptonBuilderEWK_nanoAOD("Mini", metbranch="MET")))
-MODULES.append( ('leptonBuilderEWKMisTag_2017', lambda : LeptonBuilderEWK_nanoAOD("Mini", metbranch="METFixEE2017")))
-MODULES.append( ('leptonBuilderEWKMisTag_2018', lambda : LeptonBuilderEWK_nanoAOD("Mini", metbranch="MET")))
+#from CMGTools.TTHAnalysis.tools.leptonBuilderEWK_falsemistag import LeptonBuilderEWK_nanoAOD
+#MODULES.append( ('leptonBuilderEWKMisTag_2016', lambda : LeptonBuilderEWK_nanoAOD("Mini", metbranch="MET")))
+#MODULES.append( ('leptonBuilderEWKMisTag_2017', lambda : LeptonBuilderEWK_nanoAOD("Mini", metbranch="METFixEE2017")))
+#MODULES.append( ('leptonBuilderEWKMisTag_2018', lambda : LeptonBuilderEWK_nanoAOD("Mini", metbranch="MET")))
 
 from CMGTools.TTHAnalysis.tools.leptonBuilderWZSM_falseMistag import leptonBuilderWZSM
 
@@ -588,3 +589,8 @@ from CMGTools.TTHAnalysis.tools.bTagEffCount import bTagEffCount
 MODULES.append( ('bTagEffCount2016', lambda : bTagEffCount(label = "btagDeepB" , WPs={'L': 0.2217, 'M': 0.6321, 'T': 0.8953})))
 MODULES.append( ('bTagEffCount2017', lambda : bTagEffCount(label = "btagDeepB" , WPs={'L': 0.1522, 'M': 0.4941, 'T': 0.8001})))
 MODULES.append( ('bTagEffCount2018', lambda : bTagEffCount(label = "btagDeepB" , WPs={'L': 0.1241, 'M': 0.4184, 'T': 0.7527})))
+
+
+from CMGTools.TTHAnalysis.tools.eventWeighter import eventWeighter
+MODULES.append( ('eventWeighter', lambda : eventWeighter(1000,123456)))
+
