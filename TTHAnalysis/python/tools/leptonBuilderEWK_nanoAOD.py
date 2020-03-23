@@ -30,10 +30,10 @@ class OSpair:
 
     ## __init__
     ## _______________________________________________________________
-    def __init__(self, l1, l2, l3, metpt, metphi, mlltag, mtWtag):
+    def __init__(self, l1, l2, l3 = 0, metpt = 0, metphi = 0, mlltag = 0, mtWtag = 0):
         self.l1   = l1
         self.l2   = l2
-        self.l3   = l3
+        self.l3   = l3 if l3 != 0 else l1 
         self.metpt= metpt
         self.metphi= metphi
         self.load(mlltag, mtWtag)
@@ -62,10 +62,10 @@ class OSpair:
         self.mllR = (self.l1.p4()               + self.l2.p4()              ).M()
         self.mtW  = sqrt(2*self.metpt*self.l3.pt*(1-cos(self.metphi-self.l3.phi)))
 
-        self.mll = max(min(self.mll, 195), 0)
-        self.mtW = max(min(self.mtW, 195), 0)
+        #self.mll = max(min(self.mll, 195), 0)
+        #self.mtW = max(min(self.mtW, 195), 0)
 
-        self.diff = 1./(0.0001+mlltag[int(round(self.mll/2.5))]* mtWtag[int(round(self.mtW/2.5))])
+        self.diff = abs(self.mll - self.target) #1./(0.0001+mlltag[int(round(self.mll/2.5))]* mtWtag[int(round(self.mtW/2.5))])
 
 
     ## test
@@ -113,7 +113,7 @@ class LeptonBuilderEWK_nanoAOD:
         for lepVar in ([-2,-1,1,2,0] if not(self.isData or self.isFastSim) else [0]):
            if lepVar== 0 and not (self.isFastSim):
              self.systsJEC = {0: "", 1: "_jesTotalCorrUp"   , -1: "_jesTotalCorrDown",  2: "_jesTotalUnCorrUp"   , -2: "_jesTotalUnCorrDown"}
-           if lepVar== 0 and self.isFastSim:
+           elif lepVar==0 and self.isFastSim:
              self.systsJEC = {0: "", 1: "_jesTotalUp", -1: "_jesTotalDown"}
            else:
              self.systsJEC = {0: ""}
@@ -123,6 +123,7 @@ class LeptonBuilderEWK_nanoAOD:
            self.analyzeTopology()
            self.writeLepSel()
            for branch in self.ret:
+             if "gen" in branch and (lepVar != 0): continue
              self.totalret[branch + self.lepScaleSysts[lepVar]] = self.ret[branch]
         return self.totalret
 
@@ -376,7 +377,7 @@ class LeptonBuilderEWK_nanoAOD:
             if self.lepSelFO[i] in used: continue
             leps.append(self.lepSelFO[i])
 
-        for var in (self.systsJEC if self.lepVar== 0 else [0]):
+        for var in (self.systsJEC if (self.lepVar==0) else [0]):
             bufferPF  = [] 
             bufferGEN = [] 
             for l in leps:
@@ -387,11 +388,10 @@ class LeptonBuilderEWK_nanoAOD:
                 bufferPF.sort()
                 self.ret["mT"+ name+"_" + str(max) + "l" + self.systsJEC[var]] = bufferPF[0][0]
                 self.ret["imT"+name+"_" + str(max) + "l" + self.systsJEC[var]] = self.lepSelFO.index(bufferPF[0][1])
-
             if len(bufferGEN) and var == 0:
                 bufferGEN.sort()
-                self.ret["mT" +name+"_" + str(max) + "l_gen" + self.systsJEC[var]] = bufferGEN[0][0]
-                self.ret["imT"+name+"_" + str(max) + "l_gen" + self.systsJEC[var]] = self.lepSelFO.index(bufferGEN[0][1])
+                if self.lepVar == 0: self.ret["mT" +name+"_" + str(max) + "l_gen" + self.systsJEC[var]] = bufferGEN[0][0]
+                if self.lepVar == 0: self.ret["imT"+name+"_" + str(max) + "l_gen" + self.systsJEC[var]] = self.lepSelFO.index(bufferGEN[0][1])
             if self.isData: return
 
 
@@ -546,7 +546,7 @@ class LeptonBuilderEWK_nanoAOD:
         mt2l.sort(reverse=True) # we want the hardest leptons here! 
 
         if len(self.lepSelFO) == 3:
-            for var in (self.systsJEC if self.lepVar == 0 else [0]):
+            for var in ([0] if self.isData  else (self.systsJEC if self.lepVar == 0 else [0])):
               lZ1, lZ2, lW, cont = self.assignWZleptons()
               if not (cont): continue
               p4Z = lZ1.p4() + lZ2.p4()
@@ -751,8 +751,8 @@ class LeptonBuilderEWK_nanoAOD:
             #print "loop", i
             if l in self.tausFO:
                 tau = l
-                setattr(l, "pdgId"        , tau.pdgId                       )
-                setattr(l, "isTight"      , (l.reclTauId == 2)                    )
+                setattr(l, "pdgId"        , 15                       )
+                setattr(l, "isTight"      , (l.reclTauId >= 2)                    )
                 setattr(l, "tightCharge"  , 1                                     )
                 setattr(l, "genPartFlav"  , 0)
                 setattr(l, "genPartIdx"   , 0)
