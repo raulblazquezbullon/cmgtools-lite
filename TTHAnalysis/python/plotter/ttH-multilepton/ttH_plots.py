@@ -35,7 +35,7 @@ if 'cism.ucl.ac.be' in os.environ['HOSTNAME']:
 TREESALL = "--xf THQ_LHE,THW_LHE,TTTW,TTWH --FMCs {P}/0_jmeUnc_v1 --Fs {P}/1_recl --FMCs {P}/2_scalefactors_jecSum --FMCs {P}/2_scalefactors_lep --Fs {P}/3_tauCount  --Fs {P}/6_mva2lss --Fs {P}/6_mva3l_updated/ --Fs {P}/6_mva4l --Fs {P}/4_evtVars --Fs {P}/5_BDThtt_reco "  #_new
 YEARDIR=YEAR if YEAR != 'all' else ''
 TREESONLYFULL     = "-P "+P0+"/NanoTrees_TTH_090120_v6_triggerFix/%s "%(YEARDIR,)            + "-P "+P0+"/NanoTrees_TTH_091019_v6pre/%s "%(YEARDIR,)
-TREESONLYSKIM     = "-P "+P0+"/NanoTrees_TTH_090120_v6_triggerFix_skim2lss/%s "%(YEARDIR,)  + "-P "+P0+"/NanoTrees_TTH_090120_091019_v6_skim2lss/%s "%(YEARDIR,)
+TREESONLYSKIM     = "-P "+P0+"/NanoTrees_TTH_090120_091019_v6_skim2lss/%s "%(YEARDIR,)
 TREESONLYMEMZVETO = "-P "+P0+"/NanoTrees_TTH_090120_v6_triggerFix/%s "%(YEARDIR,)           + "-P "+P0+"/NanoTrees_TTH_091019_v6pre/%s "%(YEARDIR,)
 TREESONLYMEMZPEAK = "-P "+P0+"/NanoTrees_TTH_090120_v6_triggerFix/%s "%(YEARDIR,)           + "-P "+P0+"/NanoTrees_TTH_091019_v6pre/%s "%(YEARDIR,)            
 
@@ -214,7 +214,7 @@ if __name__ == '__main__':
 
         if '_mio' in torun:  
             x = x.replace('mca-2lss-mc.txt','mca-2lss-mcdata.txt')
-            x = x.replace('--Fs {P}/6_mva2lss','') #Removing friend trees
+            x = x.replace('--FMCs {P}/0_jmeUnc_v1_sources --FMCs {P}/1_recl_sources --FDs {P}/1_recl --FMCs {P}/2_scalefactors_jecAllVars --FMCs {P}/2_scalefactors_lep --Fs {P}/3_tauCount  --Fs {P}/6_mva2lss --Fs {P}/6_mva3l_updated/ --Fs {P}/6_mva4l --FMCs {P}/4_evtVars_allVars --FDs {P}/4_evtVars --FDs {P}/5_BDThtt_reco --FMCs {P}/5_BDThtt_reco_allVars','--FMCs {P}/0_jmeUnc_v1 --FDs {P}/1_recl --FMCs {P}/1_recl_allvars --FMCs {P}/2_btag_SFs --FMCs {P}/2_scalefactors_lep_fixed --Fs {P}/3_tauCount --Fs {P}/4_evtVars') #Removing friend trees
             x = add(x,"--unc ttH-multilepton/systsUnc.txt --xu CMS_ttHl_TTZ_lnU,CMS_ttHl_TTW_lnU")
             #--Plots antiguos-----
             #x = add(x,"--sP 'met' --sP 'nJet25_from0' --sP 'nBJetMedium25' --sP 'lep1_pt' --sP 'lep2_pt' --sP 'SVA_2lss_mll' --sP 'mZ1' --sP 'mhtJet25' --sP 'htJet25j' --perBin --sP 'tot_weight'")
