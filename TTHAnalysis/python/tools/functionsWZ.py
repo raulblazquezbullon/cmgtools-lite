@@ -190,11 +190,11 @@ def _Tight_2018(lep, jetlist):
 
 ###############################################################################################################################
 def _tauId_CBloose(tau):
-    return (tau.pt > 20 and abs(tau.eta)<2.3 and abs(tau.dxy)<1000 and abs(tau.dz)<0.2 and (ord(tau.idMVAoldDMdR032017v2) & 2)) 
+    return (tau.pt > 20 and abs(tau.eta)<2.3 and abs(tau.dxy)<1000 and abs(tau.dz)<0.2 and (ord(tau.idMVAoldDMdR032017v2) > 2)) 
 
 def _tauId_CBtight(tau):
     if not _tauId_CBloose(tau): return False
-    return (ord(tau.idMVAoldDMdR032017v2) & 16) and (ord(tau.idAntiMu) & 1) and (ord(tau.idAntiEle) & 2)
+    return (ord(tau.idMVAoldDMdR032017v2) >= 16) and (ord(tau.idAntiMu) >= 1) and (ord(tau.idAntiEle) >= 2)
 
 ###############################################################################################################################
 def _phoId_CBloose(photon):
