@@ -311,7 +311,7 @@ if __name__ == '__main__':
     parser.add_argument('-n', '--nthreads',       help='Number of multiprocessing threads (only for -w unfolding)', default=4, type=int)
     parser.add_argument('-b', '--base',           help='Run only on base (the one to put in the paper) parameter set (only for -w unfolding)', action='store_true')
     parser.add_argument('-d', '--dryrun',         help='Only print commands and exit (only for -w unfolding, because of legacy structure)', action='store_true')
-    parser.add_argument('-q', '--queue',          help='Batch queue [default is batch]', default='batch')
+    parser.add_argument('-q', '--queue',          help='Batch queue [default is short]', default='short')
     args = parser.parse_args()
     # execute only if run as a script
     ROOT.gROOT.SetBatch()
