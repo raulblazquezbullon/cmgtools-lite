@@ -170,48 +170,43 @@ class Steer:
         #echo "rm -r ${baseoutputdir}mme_fitWZonly/ "
         #echo "rm -r ${baseoutputdir}mmm_fitWZonly/ "
         
-        doSignSplit=True
+        for iShape, iPack in self.responsePairs.items():
+            iRange=iPack[0]
+            iXTitle=iPack[1]
+            iYTitle=iPack[2]
+            iOut=iPack[3]
+            print('echo \"{iShape}, range {iRange}\"'.format(iShape=iShape,iRange=iRange))
+            
+            for iChan, iChanCut in self.chanCuts.items():
+                print('mkdir -p {outdir}/responses/{year}_{chan}_fitWZonly_{iOut}/'.format(outdir=self.outputDir, year=self.year,chan=iChan, cut=iChanCut, iOut=iOut))
+                perchan = ' --od {outdir}/responses/{year}_{chan}_fitWZonly_{iOut}/ --bin {chan} -E SRWZ {cut} '.format(outdir=self.outputDir, year=self.year,chan=iChan, cut=iChanCut, iOut=iOut)
+                print('sbatch -p {queue} -c {nthreads} --wrap "python makeShapeCardsSusy.py RunII_SM_WZ/unfolding/mca_unfolding_{year}.txt RunII_SM_WZ/{year}/cuts_fiducial.txt \'{iShape}\' \'{iRange}\' RunII_SM_WZ/{year}/systs_wz.txt  --tree treeProducerSusyMultilepton -P /pool/cienciasrw/HeppyTrees/RA7/nanoAODv5_{year}_unSkimmed_estructure/ --FMCs {{P}}/leptonMatcher   --Fs {{P}}/leptonPtCorrections/ {prefiringTrees} {pileupTrees} --Fs {{P}}/leptonJetReCleanerWZSM/ --Fs {{P}}/leptonBuilderWZSM/ {triggerTrees} --FMCs {{P}}/bTagEventWeights/ --FMCs {{P}}/lepgenVarsWZSM/ --Fs {{P}}/bosonPolarization/ -L RunII_SM_WZ/functionsSF.cc -L RunII_SM_WZ/functionsMCMatch.cc -L RunII_SM_WZ/functionsWZ.cc -W \'getLeptonSF_v4(0,0,{year},LepSel_pt[0],LepSel_eta[0],LepSel_pdgId[0])*getLeptonSF_v4(0,0,{year},LepSel_pt[1],LepSel_eta[1],LepSel_pdgId[1])*getLeptonSF_v4(0,0,{year},LepSel_pt[2],LepSel_eta[2],LepSel_pdgId[2])*{pileupWeights}*bTagWeightDeepCSVT_nom{prefiringWeights}\' --obj Events -j {nthreads} -l {lumi} -f  -E SRWZ {perchan} {chargecut} --neglist promptsub --asimov --autoMCStats  --XTitle \\"{iXTitle}\\" --YTitle \\"{iYTitle}\\" -o WZSR_{year}" '.format(queue=self.queue,year=self.year,prefiringTrees=prefiringTrees[self.year],prefiringWeights=prefiringWeights[self.year],triggerTrees=triggerTrees[self.year],lumi=lumi[self.year],pileupTrees=pileupTrees[self.year],pileupWeights=pileupWeights[self.year], perchan=perchan, nthreads=self.nthreads,iShape=iShape, iRange=iRange, iXTitle=iXTitle, iYTitle=iYTitle, chargecut=iChanCut) )
 
-        if not doSignSplit:
+                #print('rm -r {baseoutputdir}incl_fitWZonly_{iout}/'.format(baseoutputdir=baseoutputdir,iout=iOut))
+                #print('mv {baseoutputdir}incl_fitWZonly/ {baseoutputdir}incl_fitWZonly_{iout}/'.format(baseoutputdir=baseoutputdir,iout=iOut))
+        enabler={
+            'plus' : ' -E pmp ',
+            'minus' : ' -E pmm',
+        }
+
+        for iWhat, iCut in enabler.items():
+
             for iShape, iPack in self.responsePairs.items():
                 iRange=iPack[0]
                 iXTitle=iPack[1]
                 iYTitle=iPack[2]
                 iOut=iPack[3]
+                
                 print('echo \"{iShape}, range {iRange}\"'.format(iShape=iShape,iRange=iRange))
 
                 for iChan, iChanCut in self.chanCuts.items():
-                    print('mkdir -p {outdir}/responses/{year}_{chan}_fitWZonly_{iOut}/'.format(outdir=self.outputDir, year=self.year,chan=iChan, cut=iChanCut, iOut=iOut))
-                    perchan = ' --od {outdir}/responses/{year}_{chan}_fitWZonly_{iOut}/ --bin {chan} -E SRWZ {cut} '.format(outdir=self.outputDir, year=self.year,chan=iChan, cut=iChanCut, iOut=iOut)
-                    print('sbatch -p {queue} -c {nthreads} --wrap "python makeShapeCardsSusy.py RunII_SM_WZ/unfolding/mca_unfolding_{year}.txt RunII_SM_WZ/{year}/cuts_fiducial.txt \'{iShape}\' \'{iRange}\' RunII_SM_WZ/{year}/systs_wz.txt  --tree treeProducerSusyMultilepton -P /pool/cienciasrw/HeppyTrees/RA7/nanoAODv5_{year}_unSkimmed_estructure/ --FMCs {{P}}/leptonMatcher   --Fs {{P}}/leptonPtCorrections/ {prefiringTrees} {pileupTrees} --Fs {{P}}/leptonJetReCleanerWZSM/ --Fs {{P}}/leptonBuilderWZSM/ {triggerTrees} --FMCs {{P}}/bTagEventWeights/ --FMCs {{P}}/lepgenVarsWZSM/ --Fs {{P}}/bosonPolarization/ -L RunII_SM_WZ/functionsSF.cc -L RunII_SM_WZ/functionsMCMatch.cc -L RunII_SM_WZ/functionsWZ.cc -W \'getLeptonSF_v4(0,0,{year},LepSel_pt[0],LepSel_eta[0],LepSel_pdgId[0])*getLeptonSF_v4(0,0,{year},LepSel_pt[1],LepSel_eta[1],LepSel_pdgId[1])*getLeptonSF_v4(0,0,{year},LepSel_pt[2],LepSel_eta[2],LepSel_pdgId[2])*{pileupWeights}*bTagWeightDeepCSVT_nom{prefiringWeights}\' --obj Events -j {nthreads} -l {lumi} -f  -E SRWZ {perchan} {chargecut} --neglist promptsub --asimov --autoMCStats  --XTitle \\"{iXTitle}\\" --YTitle \\"{iYTitle}\\" -o WZSR_{year}" '.format(queue=self.queue,year=self.year,prefiringTrees=prefiringTrees[self.year],prefiringWeights=prefiringWeights[self.year],triggerTrees=triggerTrees[self.year],lumi=lumi[self.year],pileupTrees=pileupTrees[self.year],pileupWeights=pileupWeights[self.year], perchan=perchan, nthreads=self.nthreads,iShape=iShape, iRange=iRange, iXTitle=iXTitle, iYTitle=iYTitle, chargecut=iChanCut) )
-
-                    #print('rm -r {baseoutputdir}incl_fitWZonly_{iout}/'.format(baseoutputdir=baseoutputdir,iout=iOut))
-                    #print('mv {baseoutputdir}incl_fitWZonly/ {baseoutputdir}incl_fitWZonly_{iout}/'.format(baseoutputdir=baseoutputdir,iout=iOut))
-        else:         
-
-            enabler={
-                'plus' : ' -E pmp ',
-                'minus' : ' -E pmm',
-            }
-
-            for iWhat, iCut in enabler.items():
-
-                for iShape, iPack in self.responsePairs.items():
-                    iRange=iPack[0]
-                    iXTitle=iPack[1]
-                    iYTitle=iPack[2]
-                    iOut=iPack[3]
-
-                    print('echo \"{iShape}, range {iRange}\"'.format(iShape=iShape,iRange=iRange))
-
-                    for iChan, iChanCut in self.chanCuts.items():
-                        print('mkdir -p {outdir}/responses/{year}_{chan}_fitWZonly_{iout}_{chargeinfo}/'.format(outdir=self.outputDir, year=self.year,chan=iChan, cut=iChanCut, iout=iOut,chargeinfo=iWhat))
-                        perchan = ' --od {outdir}/responses/{year}_{chan}_fitWZonly_{iout}_{chargeinfo}/ --bin {chan} -E SRWZ {cut} '.format(outdir=self.outputDir, year=self.year,chan=iChan, cut=iChanCut, iout=iOut,chargeinfo=iWhat)
+                    print('mkdir -p {outdir}/responses/{year}_{chan}_fitWZonly_{iout}_{chargeinfo}/'.format(outdir=self.outputDir, year=self.year,chan=iChan, cut=iChanCut, iout=iOut,chargeinfo=iWhat))
+                    perchan = ' --od {outdir}/responses/{year}_{chan}_fitWZonly_{iout}_{chargeinfo}/ --bin {chan} -E SRWZ {cut} '.format(outdir=self.outputDir, year=self.year,chan=iChan, cut=iChanCut, iout=iOut,chargeinfo=iWhat)
                     
-                        print('sbatch -p {queue} -c {nthreads} --wrap "python makeShapeCardsSusy.py RunII_SM_WZ/unfolding/mca_unfolding_{year}.txt RunII_SM_WZ/{year}/cuts_fiducial.txt \'{iShape}\' \'{iRange}\' RunII_SM_WZ/{year}/systs_wz.txt  --tree treeProducerSusyMultilepton -P /pool/cienciasrw/HeppyTrees/RA7/nanoAODv5_{year}_unSkimmed_estructure/ --FMCs {{P}}/leptonMatcher/ --Fs {{P}}/leptonPtCorrections/ {prefiringTrees} {pileupTrees} --Fs {{P}}/leptonJetReCleanerWZSM/ --Fs {{P}}/leptonBuilderWZSM/ {triggerTrees} --FMCs {{P}}/bTagEventWeights/ --FMCs {{P}}/lepgenVarsWZSM/ --Fs {{P}}/bosonPolarization/ -L RunII_SM_WZ/functionsSF.cc -L RunII_SM_WZ/functionsMCMatch.cc -L RunII_SM_WZ/functionsWZ.cc -W \'getLeptonSF_v4(0,0,{year},LepSel_pt[0],LepSel_eta[0],LepSel_pdgId[0])*getLeptonSF_v4(0,0,{year},LepSel_pt[1],LepSel_eta[1],LepSel_pdgId[1])*getLeptonSF_v4(0,0,{year},LepSel_pt[2],LepSel_eta[2],LepSel_pdgId[2])*{pileupWeights}*bTagWeightDeepCSVT_nom{prefiringWeights}\' --obj Events -j {nthreads} -l {lumi} -f  -E SRWZ {perchan} {chargecut} --neglist promptsub --autoMCStats --asimov  --XTitle \\"{iXTitle}\\" --YTitle \\"{iYTitle}\\" -o WZSR_{year}" '.format(queue=self.queue,year=self.year,prefiringTrees=prefiringTrees[self.year],prefiringWeights=prefiringWeights[self.year],triggerTrees=triggerTrees[self.year],lumi=lumi[self.year],pileupTrees=pileupTrees[self.year],pileupWeights=pileupWeights[self.year], perchan=perchan, nthreads=self.nthreads, iShape=iShape, iRange=iRange, iXTitle=iXTitle, iYTitle=iYTitle, chargecut=iCut) )
+                    print('sbatch -p {queue} -c {nthreads} --wrap "python makeShapeCardsSusy.py RunII_SM_WZ/unfolding/mca_unfolding_{year}.txt RunII_SM_WZ/{year}/cuts_fiducial.txt \'{iShape}\' \'{iRange}\' RunII_SM_WZ/{year}/systs_wz.txt  --tree treeProducerSusyMultilepton -P /pool/cienciasrw/HeppyTrees/RA7/nanoAODv5_{year}_unSkimmed_estructure/ --FMCs {{P}}/leptonMatcher/ --Fs {{P}}/leptonPtCorrections/ {prefiringTrees} {pileupTrees} --Fs {{P}}/leptonJetReCleanerWZSM/ --Fs {{P}}/leptonBuilderWZSM/ {triggerTrees} --FMCs {{P}}/bTagEventWeights/ --FMCs {{P}}/lepgenVarsWZSM/ --Fs {{P}}/bosonPolarization/ -L RunII_SM_WZ/functionsSF.cc -L RunII_SM_WZ/functionsMCMatch.cc -L RunII_SM_WZ/functionsWZ.cc -W \'getLeptonSF_v4(0,0,{year},LepSel_pt[0],LepSel_eta[0],LepSel_pdgId[0])*getLeptonSF_v4(0,0,{year},LepSel_pt[1],LepSel_eta[1],LepSel_pdgId[1])*getLeptonSF_v4(0,0,{year},LepSel_pt[2],LepSel_eta[2],LepSel_pdgId[2])*{pileupWeights}*bTagWeightDeepCSVT_nom{prefiringWeights}\' --obj Events -j {nthreads} -l {lumi} -f  -E SRWZ {perchan} {chargecut} --neglist promptsub --autoMCStats --asimov  --XTitle \\"{iXTitle}\\" --YTitle \\"{iYTitle}\\" -o WZSR_{year}" '.format(queue=self.queue,year=self.year,prefiringTrees=prefiringTrees[self.year],prefiringWeights=prefiringWeights[self.year],triggerTrees=triggerTrees[self.year],lumi=lumi[self.year],pileupTrees=pileupTrees[self.year],pileupWeights=pileupWeights[self.year], perchan=perchan, nthreads=self.nthreads, iShape=iShape, iRange=iRange, iXTitle=iXTitle, iYTitle=iYTitle, chargecut=iCut) )
 
-                        #print('rm -r {baseoutputdir}incl_fitWZonly_{iout}_{chargeinfo}/'.format(baseoutputdir=baseoutputdir,iout=iOut,chargeinfo=iWhat))
-                        #print('mv {baseoutputdir}incl_fitWZonly/ {baseoutputdir}incl_fitWZonly_{iout}_{chargeinfo}/'.format(baseoutputdir=baseoutputdir,iout=iOut,chargeinfo=iWhat))
+                    #print('rm -r {baseoutputdir}incl_fitWZonly_{iout}_{chargeinfo}/'.format(baseoutputdir=baseoutputdir,iout=iOut,chargeinfo=iWhat))
+                    #print('mv {baseoutputdir}incl_fitWZonly/ {baseoutputdir}incl_fitWZonly_{iout}_{chargeinfo}/'.format(baseoutputdir=baseoutputdir,iout=iOut,chargeinfo=iWhat))
             
 
 
