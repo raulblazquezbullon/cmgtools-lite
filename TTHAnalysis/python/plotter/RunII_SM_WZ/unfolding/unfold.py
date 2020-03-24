@@ -17,6 +17,8 @@ import CMS_lumi
 from scipy import linalg
 import numpy as np
 
+import root_numpy
+
 CMS_lumi.lumi_13TeV = "35.9 fb^{-1}"
 # PAS: CMS_lumi.extraText = "Preliminary"
 CMS_lumi.extraText = ""
@@ -306,7 +308,7 @@ class Unfolder(object):
         #cond(K) = sigma_max / max (0, sigma_min), where sigma_max and sigma_min are the largest and smaller singular values of K. Use TDecompSVD, but not the method Condition(). If the condition number is small (~10), then the problem is well-conditioned and can most likely be solved using the unregularized maximum likelihood estimate (MLE). This happens when the resolution effects are small and $\bm{K}$ is almost diagonal. If, on the other hand, the condition number is large (~10^5) then the problem is ill-conditioned and the unfolded estimator needs to be regularized.
 
         # convert th2 to matrix
-        matrix = None
+        matrix = root_numpy.hist2array(th2)
         U, s, Vh = linalg.svd(matrix)
 
         condition_number = max(s) / max([0, min(s)])
