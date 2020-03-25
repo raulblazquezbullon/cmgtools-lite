@@ -80,10 +80,10 @@ class EventVarsWZ(Module):
         idxlZ1 = -1
         idxlZ2 = -1        
         if nFO >= 3:
-            leps3 = [leps[0], leps[1], leps[2]]
             allret['m3l'] = (leps[0].p4()+leps[1].p4()+leps[2].p4()).M()
             
-            minmll = 9999.
+            bestmZ = 9999.
+            leps3 = [leps[0], leps[1], leps[2]]
             for l1 in leps3:
                 for l2 in leps3: 
                     if l1 == l2: continue
@@ -92,18 +92,19 @@ class EventVarsWZ(Module):
                     allret['hasOSSF3l'] = True
                     
                     mll = (l1.p4()+l2.p4()).M()
-                    if (minmll > abs(mll-91.1876)): 
-                        minmll = mll
-                        idxlZ1 = leps3.index(l1)
-                        idxlZ2 = leps3.index(l2) 
+                    if (abs(bestmZ-91.1876) > abs(mll-91.1876)): 
+                        bestmZ = mll
+                        idxlZ1 = leps.index(l1)
+                        idxlZ2 = leps.index(l2) 
+                        
             
             for l3 in leps3: 
                 if (l3==leps3[idxlZ1]): continue
                 if (l3==leps3[idxlZ2]): continue
-                idxlW = leps3.index(l3)
+                idxlW = leps.index(l3)
             
             # ensure that the lW and lZ1 has same-sign: 
-            if leps3[idxlW].pdgId * leps3[idxlZ2].pdgId > 0: 
+            if leps[idxlW].pdgId * leps[idxlZ2].pdgId > 0: 
                 tmpidx = idxlZ1
                 idxlZ1 = idxlZ2
                 idxlZ2 = tmpidx
@@ -130,6 +131,8 @@ class EventVarsWZ(Module):
             # prepare output
             ret = dict([(name,0.0) for name in self.namebranches])
             _var = var
+            if not hasattr(event,"nJet25"+self.systsJEC[var]+self.inputlabel): 
+                _var = 0; 
 
             metName = 'MET' 
 

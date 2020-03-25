@@ -22,17 +22,17 @@ from CMGTools.TTHAnalysis.tools.nanoAOD.WZ_modules import triggerGroups_dict
 
 DatasetsAndTriggers = []
 if analysis == "main":
-    mcSamples = mcSamples_ #byCompName(mcSamples_) 
-#, [for dset in [
-##        # single boson
-##        "WJetsToLNu", "W0JetsToLNu", "W1JetsToLNu", "W2JetsToLNu", "W3JetsToLNu", 
-##        "DYJetsToLL_M10to50", "DYJetsToLL_M50", "DY0JetsToLL_M50", "DY1JetsToLL_M50", "DY2JetsToLL_M50", "DY3JetsToLL_M50" 
-##        # ttbar + single top + tW
-##        "TT", "TT_PS", "TT_hdampDown", "TT_hdampUp","TT_mtop166p5", "TT_mtop178p5", "TT_TuneCP5Up", "TT_TuneCP5Down",
-##        "T_tWch_noFullyHad", "TBar_tWch_noFullyHad","T_tWch_noFullyHad_PS", "TBar_tWch_noFullyHad_PS",
-##        # diboson + DPS + WWss
-##        "WWTo2L2Nu", "WZTo3LNu", "ZZTo4L", "ZZTo2L2Nu",
-##    ]])
+    mcSamples = byCompName(mcSamples_, ["%s"%dset for dset in [
+        "WZTo3LNu"
+##SF        # single boson
+##SF        "WJetsToLNu", "W0JetsToLNu", "W1JetsToLNu", "W2JetsToLNu", "W3JetsToLNu", 
+##SF        "DYJetsToLL_M10to50", "DYJetsToLL_M50", "DY0JetsToLL_M50", "DY1JetsToLL_M50", "DY2JetsToLL_M50", "DY3JetsToLL_M50" 
+##SF        # ttbar + single top + tW
+##SF        "TT", "TT_PS", "TT_hdampDown", "TT_hdampUp","TT_mtop166p5", "TT_mtop178p5", "TT_TuneCP5Up", "TT_TuneCP5Down",
+##SF        "T_tWch_noFullyHad", "TBar_tWch_noFullyHad","T_tWch_noFullyHad_PS", "TBar_tWch_noFullyHad_PS",
+##SF        # diboson + DPS + WWss
+##SF        "WWTo2L2Nu", "WZTo3LNu", "ZZTo4L", "ZZTo2L2Nu",
+    ]])
 #    DatasetsAndTriggers.append( ("DoubleMuon", triggerGroups_dict["Trigger_5TeV_2m"][year]) )
 #    DatasetsAndTriggers.append( ("SingleMuon", triggerGroups_dict["Trigger_5TeV_1m"][year]) )
 #    DatasetsAndTriggers.append( ("HighEGJet", triggerGroups_dict["Trigger_5TeV_1e"][year] + triggerGroups_dict["Trigger_5TeV_2e"][year]) )

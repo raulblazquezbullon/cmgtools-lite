@@ -16,7 +16,7 @@ from CMGTools.RootTools.samples.samples_5TeV_RunIIpp5Spring18MiniAODv1 import sa
 from CMGTools.RootTools.samples.samples_5TeV_DATA2017_NanoAOD import dataSamples_Run2017G as allData
 
 mcSamples_=[]
-mcSamples_, _ = mergeExtensions(mcSamples_)
+##mcSamples_, _ = mergeExtensions(mcSamples_)
 
 from CMGTools.TTHAnalysis.tools.nanoAOD.WZ_modules import triggerGroups_dict
 
@@ -53,7 +53,7 @@ for pd, trigs in DatasetsAndTriggers:
         dataSamples.append(comp)
     vetoTriggers += trigs[:]
 
-selectedComponents = mcSamples + dataSamples
+selectedComponents = dataSamples
 print selectedComponents
 if getHeppyOption('selectComponents'):
     if getHeppyOption('selectComponents')=='MC':

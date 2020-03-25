@@ -92,8 +92,7 @@ WZTo3LNu
 
 ### ----------------------------- summary ----------------------------------------
 
-#mcSamples = TTs + SingleTop + VJets + DYNJets  + WNJets  +  DiBosons
-mcSamples = DYNJets
+mcSamples = TTs + SingleTop + VJets + WNJets  +  DiBosons + DYNJets  
 samples = mcSamples
 
 if __name__ == "__main__":

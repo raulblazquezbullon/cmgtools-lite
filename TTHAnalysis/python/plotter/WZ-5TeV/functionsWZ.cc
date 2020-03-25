@@ -82,9 +82,9 @@ Bool_t passPtCuts(Float_t pt1, Int_t pdgId1, Float_t pt2, Int_t pdgId2, Float_t 
   Int_t chan = getChannel(pdgId1,pdgId2,pdgId3);
   
   if      (chan==1) { if (pt1>=15 && pt2>=10 && pt3>=8 ) return true; } //eee
-  else if (chan==2) { if (pt1>=15 && pt2>=10 && pt3>=8 ) return true; } //eem
+  else if (chan==2) { if (pt1>=12 && pt2>=10 && pt3>=8 ) return true; } //eem
   else if (chan==3) { if (pt1>=12 && pt2>=12 && pt3>=8 ) return true; } //emm
-  else if (chan==4) { if (pt1>=12 && pt2>=10 && pt3>=10) return true; } //emm
+  else if (chan==4) { if (pt1>=12 && pt2>=10 && pt3>=10) return true; } //mmm
 
   return false;
 }
