@@ -1,6 +1,6 @@
 from CMGTools.TTHAnalysis.treeReAnalyzer import *
 from CMGTools.TTHAnalysis.tools.leptonJetReCleaner import passMllTLVeto, passTripleMllVeto
-from CMGTools.TTHAnalysis.tools.functionsEWKino_nano import conept
+from CMGTools.TTHAnalysis.tools.functionsEWK_v5 import conept
 from ROOT import TFile,TH1F
 import ROOT, copy, os
 import array, math
@@ -220,10 +220,14 @@ class LeptonBuilderEWK_nanoAOD:
 
         ## FO, both flavors
         self.lepSelFO   = self.lepsFO  + self.tausFO
-
+        #isprint = False
+        #if len(self.lepsFO) >= 2:
+        #    isprint = self.lepSelFO[0].pt < self.lepSelFO[1].pt
+        #if self.lepVar == 0 and isprint: print [(i.pt, i.conePt) for i in self.lepSelFO]
 
         self.setAttributes(event, self.lepSelFO, self.isData)
         self.lepSelFO.sort(key = lambda x: conept(x), reverse=True)
+        #if self.lepVar == 0 and isprint: print [(i.pt, i.conePt) for i in self.lepSelFO]
 
 
         ## tight leptons, both flavors
