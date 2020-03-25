@@ -14,7 +14,8 @@ change    : nBJetMedium25\b: nBJetMedium25_Mini
 change    : nBJetTight25\b : nBJetTight25_Mini
 change    : nBJetLoose25\b : nBJetLoose25_Mini
 
+load-histo     : FR3_el        : $DATA/EWKino/fakeRateMaps_3l/fakeRateMap_MC_electron_2018.root        : fakeRate_electron_2018
+#load-histo     : FR3_mu        : $DATA/EWKino/fakeRateMaps_3l/fakeRateMap_data_muon_2018_mT.root            : fakeRate_muon_2018
+load-histo     : FR3_mu        : $DATA/EWKino/fakeRateMaps_3l/fakeRateMap_MC_muon_2018.root            : fakeRate_muon_2018
+load-histo     : FR3_tau       : $DATA/fakeRateMaps/DATA2018/fakeRateTau_2018.root                : fakeRateTau
 
-load-histo     : FR3_el        : $DATA/fakeRateMaps/fakeRateMap_data_electron_2018_mT.root             : fakeRate_electron_2018
-load-histo     : FR3_mu        : $DATA/fakeRateMaps/fakeRateMap_data_muon_2018_mT.root            : fakeRate_muon_2018
-#load-histo     : FR3_tau       : $DATA/fakerate/fakerate_tau_EWKino_Moriond2017_36p5fb_Final.root : data_ratio

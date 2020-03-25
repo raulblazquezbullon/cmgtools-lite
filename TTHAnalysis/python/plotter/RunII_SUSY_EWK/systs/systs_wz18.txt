@@ -44,10 +44,10 @@ btag_LF_ML       : prompt_.*|convs          : .* : bTagLF     : templates
 
 LepSFMu_ML            : prompt_.*|convs|sig.*          : .* : lepSFMu : templates
 LepSFEl_ML            : prompt_.*|convs|sig.*          : .* : lepSFEl : templates
-LepSFMuStat2018_ML    : prompt_.*|convs|sig.*          : .* : lepSFMuStat2018 : templates
-LepSFElStat2018_ML    : prompt_.*|convs|sig.*          : .* : lepSFElStat2018 : templates
-#LepSFFSMu_ML            : sig.*          : .* : lepSFFSMu : templates
-#LepSFFSEl_ML            : sig.*          : .* : lepSFFSEl : templates
+#LepSFMuStat2018_ML    : prompt_.*|convs|sig.*          : .* : lepSFMuStat2018 : templates
+#LepSFElStat2018_ML    : prompt_.*|convs|sig.*          : .* : lepSFElStat2018 : templates
+LepSFFSMu_ML            : sig.*          : .* : lepSFFSMu : templates
+LepSFFSEl_ML            : sig.*          : .* : lepSFFSEl : templates
 #LepSFFSMuStat2018_ML    : sig.*          : .* : lepSFFSMuStat2018 : templates
 #LepSFFSElStat2018_ML    : sig.*          : .* : lepSFFSElStat2018 : templates
 

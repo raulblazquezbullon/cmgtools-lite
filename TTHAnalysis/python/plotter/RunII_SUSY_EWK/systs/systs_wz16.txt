@@ -39,8 +39,8 @@ btag_LF_ML       : prompt_.*|convs          : .* : bTagLF     : templates
 
 LepSFMu_ML            : prompt_.*|convs|sig.*          : .* : lepSFMu : templates
 LepSFEl_ML            : prompt_.*|convs|sig.*          : .* : lepSFEl : templates
-LepSFMuStat2016_ML    : prompt_.*|convs|sig.*          : .* : lepSFMuStat2016 : templates
-LepSFElStat2016_ML    : prompt_.*|convs|sig.*          : .* : lepSFElStat2016 : templates
+#LepSFMuStat2016_ML    : prompt_.*|convs|sig.*          : .* : lepSFMuStat2016 : templates
+#LepSFElStat2016_ML    : prompt_.*|convs|sig.*          : .* : lepSFElStat2016 : templates
 
 sigISR_ML : sig.* : .* : isr : templates
 sigMET_ML : sig.* : .* : met : templates

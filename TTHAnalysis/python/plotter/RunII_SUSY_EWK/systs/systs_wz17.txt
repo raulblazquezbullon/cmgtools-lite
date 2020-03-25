@@ -44,14 +44,14 @@ btag_LF_ML       : prompt_.*|convs          : .* : bTagLF     : templates
 
 LepSFMu_ML            : prompt_.*|convs|sig.*          : .* : lepSFMu : templates
 LepSFEl_ML            : prompt_.*|convs|sig.*          : .* : lepSFEl : templates
-LepSFMuStat2017_ML    : prompt_.*|convs|sig.*          : .* : lepSFMuStat2017 : templates
-LepSFElStat2017_ML    : prompt_.*|convs|sig.*           : .* : lepSFElStat2017 : templates
+#LepSFMuStat2017_ML    : prompt_.*|convs|sig.*          : .* : lepSFMuStat2017 : templates
+#LepSFElStat2017_ML    : prompt_.*|convs|sig.*           : .* : lepSFElStat2017 : templates
 
 #FastSim shapes
 
 ## PUW goes correlated
-#LepSFFSMu_ML            : sig.*          : .* : lepSFFSMu : templates
-#LepSFFSEl_ML            : sig.*          : .* : lepSFFSEl : templates
+LepSFFSMu_ML            : sig.*          : .* : lepSFFSMu : templates
+LepSFFSEl_ML            : sig.*          : .* : lepSFFSEl : templates
 #LepSFFSMuStat2017_ML    : sig.*          : .* : lepSFFSMuStat2017 : templates
 #LepSFFSElStat2017_ML    : sig.*          : .* : lepSFFSElStat2017 : templates
 btag_HFFS_ML       : sig.*          : .* : bTagHFFS     : templates

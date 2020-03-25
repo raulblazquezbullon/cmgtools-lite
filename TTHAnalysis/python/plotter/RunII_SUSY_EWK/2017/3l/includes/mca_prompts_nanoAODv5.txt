@@ -1,4 +1,4 @@
-prompt_WZ : WZTo3LNu_powv2 : xsec*1.145 ; FillColor=ROOT.kOrange , FakeRate="RunII_SUSY_EWK/common/fakerate_standard_central.txt\,RunII_SUSY_EWK/common/fakerate_load_isprompt.txt", Label="WZ", NormSystematic=0.12
+prompt_WZ : WZTo3LNu_powv2 : xsec*1.18 ; FillColor=ROOT.kOrange , FakeRate="RunII_SUSY_EWK/common/fakerate_standard_central.txt\,RunII_SUSY_EWK/common/fakerate_load_isprompt.txt", Label="WZ", NormSystematic=0.12
 
 #prompt_hZZ : HZZ : xsec ; FillColor=ROOT.kGreen-1, FakeRate="RunII_SUSY_EWK/common/fakerate_standard_central.txt\,RunII_SUSY_EWK/common/fakerate_load_isprompt.txt", Label="hZZ", NormSystematic=0.07
 prompt_ZZ : ZZTo4Lv2_part0 + ZZTo4Lv2_part1 + ZZTo4Lv2_part2 + ZZTo4Lv2_part3: xsec ; FillColor=ROOT.kGreen+1, FakeRate="RunII_SUSY_EWK/common/fakerate_standard_central.txt\,RunII_SUSY_EWK/common/fakerate_load_isprompt.txt", Label="qqZZ", NormSystematic=0.07

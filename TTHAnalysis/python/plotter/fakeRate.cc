@@ -1044,7 +1044,7 @@ float ttHl_ptFO_ab(int LepGood_pdgId, float LepGood_pt, float LepGood_jetPtRatio
 
 float EWK3L_fakeRate(float pt, float eta, int pdgId, int var = 1, float cap = 10000) {
     TH2 *hist = FR_el;
-    if(pt > cap) return 0;
+    if(pt >= cap) pt = cap;
     if(abs(pdgId)==13) hist=FR_mu;
     if(abs(pdgId)==15) hist=FR_tau;
     if(var == 2){
@@ -1060,6 +1060,7 @@ float EWK3L_fakeRate(float pt, float eta, int pdgId, int var = 1, float cap = 10
     int ptbin  = std::max(1, std::min(hist->GetNbinsX(), hist->GetXaxis()->FindBin(pt)));
     int etabin = std::max(1, std::min(hist->GetNbinsY(), hist->GetYaxis()->FindBin(abs(eta))));
     double fr = hist->GetBinContent(ptbin,etabin);
+    //std::cout <<  fr << " , " << pt << " , " << eta << " , " << pdgId << std::endl;
     if (fr <= 0)  { std::cerr << "WARNING, FR is " << fr << " for " << hist->GetName() << ", pt " << pt << " eta " << eta << std::endl; if (fr<0) std::abort(); }
     return fr/(1-fr);
 }
