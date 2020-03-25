@@ -1,0 +1,5 @@
+WZ+	: WZTo3LNu   : xsec  : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0; FillColor=ROOT.kOrange
+
+VV	: WWTo2L2Nu  : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0; FillColor=ROOT.kGreen+2
+VV	: ZZTo2L2Nu   : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0; FillColor=ROOT.kGreen+2
+VV	: ZZTo4L     : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0; FillColor=ROOT.kGreen+2

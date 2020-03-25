@@ -33,4 +33,14 @@ Int_t getnJetnBJet(Int_t nJ, Int_t nBJ){
 
 }
 
+Int_t getChannel(Int_t pdgId1, Int_t pdgId2) {
+  // 1->eee,  2->em,  3->mm
+  Int_t totId = abs(pdgId1)+abs(pdgId2);
+  if      (totId == 22) return 1;
+  else if (totId == 24) return 2;
+  else if (totId == 26) return 3;
+
+  return -1; 
+}
+
 void functions_ttbar() {}

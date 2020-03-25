@@ -1,8 +1,9 @@
 alwaystrue: 1
-dilep: nLepFO==2 && (LepGood1_charge*LepGood2_charge<0)
+dilep: nLepFO>=2 && (LepGood1_charge*LepGood2_charge<0)
 cleanup: minMllAFAS > 20
 trigger: Trigger_5TeV_1e || Trigger_5TeV_1m || Trigger_5TeV_2e || Trigger_5TeV_2m
 pt2010: LepGood1_conePt>20 && LepGood2_conePt>10
+TT: LepGood1_isLepTight && LepGood2_isLepTight
 ZVeto:  if3(abs(LepGood1_pdgId)==abs(LepGood2_pdgId), abs(mZ1-91.2)>15, 1)
 MET:    if3(abs(LepGood1_pdgId)==abs(LepGood2_pdgId), MET_pt>30, 1)
 2jets:  nJet25>=2
@@ -11,7 +12,7 @@ MET:    if3(abs(LepGood1_pdgId)==abs(LepGood2_pdgId), MET_pt>30, 1)
 ee: abs(LepGood1_pdgId)==11 && abs(LepGood2_pdgId)==11; Disable=True
 em: abs(LepGood1_pdgId) != abs(LepGood2_pdgId);         Disable=True
 mm: abs(LepGood1_pdgId)==13 && abs(LepGood2_pdgId)==13; Disable=True
-TT: LepGood1_isLepTight && LepGood2_isLepTight; 	Disable=True
+
 
 
 

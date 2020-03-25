@@ -1,17 +1,20 @@
 alwaystrue: 1
 dilep: nLepFO==2
+ss: (LepGood1_pdgId*LepGood2_pdgId)>0
 cleanup: minMllAFAS > 12
 trigger: Trigger_5TeV_1e || Trigger_5TeV_1m || Trigger_5TeV_2e || Trigger_5TeV_2m
-meeecut: if() abs(mZ-91.2) < 30
-pt1510: LepGood1_conePt>15 && LepGood2_conePt>10
-meecut  = False if (totId==22 and abs(InvMass(tleps[0],tleps[1])-91.1876)<20) else True 
-
-2lss: LepGood1_charge*LepGood2_charge>0
+ptcuts: LepGood1_pt>20 && LepGood2_pt>10
 TT: LepGood1_isLepTight && LepGood2_isLepTight
-
+meeVeto:  if3((abs(LepGood1_pdgId)+abs(LepGood2_pdgId))==22, abs(mZ1-91.2)>20, 1)
 
 ###########   
 #DYCR: m3l < 100; Disable=True
+
+##### channels
+ee : (abs(LepGood1_pdgId) + abs(LepGood2_pdgId)) == 22 ; Disable=True
+em : (abs(LepGood1_pdgId) + abs(LepGood2_pdgId)) == 24 ; Disable=True
+mm : (abs(LepGood1_pdgId) + abs(LepGood2_pdgId)) == 26 ; Disable=True
+
 
 
 
