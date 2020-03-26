@@ -383,7 +383,8 @@ Error      = {logdir}/err.$(cluster).$(Dataset).$({chunk})
 Output     = {logdir}/out.$(cluster).$(Dataset).$({chunk})
 Log        = {logdir}/log.$(cluster).$(Dataset).$({chunk})
 
-use_x509userproxy = $ENV(X509_USER_PROXY)
+x509userproxy = $ENV(X509_USER_PROXY)
+use_x509userproxy = True
 getenv = True
 request_memory = 2000
 +MaxRuntime = {maxruntime}
@@ -468,7 +469,8 @@ if options.queue:
       subfile.close()
       print "Saved condor submit file to %s" % options.subfile
       if not options.pretend:
-         os.system("condor_submit "+options.subfile)
+          print "I'm here"
+          os.system("condor_submit "+options.subfile)
     else:
       for (name,fin,fout,data,range,chunk,fs) in jobs:
         if chunk != -1:

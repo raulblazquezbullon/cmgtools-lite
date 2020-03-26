@@ -37,7 +37,7 @@ class fastCombinedObjectRecleaner(Module):
         self.vars_leptons = ["pdgId",'jetIdx','pt']
         self.vars_taus = ["pt"]
         self.vars_taus_int = ['jetIdx']
-        self.vars_taus_uchar = ['idMVAoldDMdR032017v2','idDeepTau2017v2p1VSjet']
+        self.vars_taus_uchar = [] #'idMVAoldDMdR032017v2','idDeepTau2017v2p1VSjet']
         self.vars_jets = [("pt","pt_nom") if self.isMC else 'pt',"btagDeepB","qgl",'btagDeepFlavB'] + [ 'pt_%s%s'%(x,y) for x in self.variations for y in ["Up","Down"]] #"btagCSVV2",,"btagDeepC"]#"btagCSV","btagDeepCSV",,"btagDeepCSVCvsL","btagDeepCSVCvsB","ptd","axis1"] # FIXME recover
         self.vars_jets_int = (["hadronFlavour"] if self.isMC else [])
         self.vars_jets_nooutput = []
@@ -119,8 +119,13 @@ class fastCombinedObjectRecleaner(Module):
 
     def analyze(self, event):
         # Init
-        wpL = _btagWPs["DeepFlav_%d_%s"%(event.year,"L")][1]
-        wpM = _btagWPs["DeepFlav_%d_%s"%(event.year,"M")][1]
+        if hasattr(event, "year") :
+            wpL = _btagWPs["DeepFlav_%d_%s"%(event.year,"L")][1]
+            wpM = _btagWPs["DeepFlav_%d_%s"%(event.year,"M")][1]
+        else:
+            wpL = _btagWPs["DeepCSVL"][1]
+            wpM = _btagWPs["DeepCSVM"][1]
+            
         if self._ttreereaderversion != event._tree._ttreereaderversion:
             for x in self._helpers: x.initInputTree(event._tree)
             self.initReaders(event._tree)

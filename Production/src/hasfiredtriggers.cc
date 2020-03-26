@@ -892,3 +892,91 @@ bool fires_HLT_Mu8_DiEle12_CaloIdL_TrackIdL_2018( int run, bool trigger){
     }
     return false;
 }
+vector<unsigned int> HLT_HIEle20_WPLoose_Gsf_runlist_2017 { 306546,306548,306549,306550,306553,306563,306572,306580,306584,306595,306598,306604,306629,306630,306631,306636,306645,306646,306647,306651,306652,306653,306654,306656,306657,306705,306709,306772,306773,306776,306777,306793,306794,306801,306826 };
+vector<unsigned int> HLT_HIEle17_WPLoose_Gsf_runlist_2017 { 306546,306548,306549,306550,306553,306563,306572,306580,306584,306595,306598,306604,306629,306630,306631,306636,306645,306646,306647,306651,306652,306653,306654,306656,306657,306705,306709,306772,306773,306776,306777,306793,306794,306801,306826 };
+vector<unsigned int> HLT_HIL3Mu20_runlist_2017 { 306546,306548,306549,306550,306553,306563,306572,306580,306584,306595,306598,306604,306629,306630,306631,306636,306645,306646,306647,306651,306652,306653,306654,306656,306657,306705,306709,306772,306773,306776,306777,306793,306794,306801,306826 };
+vector<unsigned int> HLT_HIMu17_runlist_2017 { 306563,306572,306580,306584,306595,306598,306604,306629,306630,306631,306636,306645,306646,306647,306651,306652,306653,306654,306656,306657,306705,306709,306772,306773,306776,306777,306793,306794,306801,306826 };
+vector<unsigned int> HLT_HIL3Mu12_runlist_2017 { 306546,306548,306549,306550,306553,306563,306572,306580,306584,306595,306598,306604,306629,306630,306631,306636,306645,306646,306647,306651,306652,306653,306654,306656,306657,306705,306709,306772,306773,306776,306777,306793,306794,306801,306826 };
+vector<unsigned int> HLT_HIEle20_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_runlist_2017 { 306546,306548,306549,306550,306553,306563,306572,306580,306584,306595,306598,306604,306629,306630,306631,306636,306645,306646,306647,306651,306652,306653,306654,306656,306657,306705,306709,306772,306773,306776,306777,306793,306794,306801,306826 };
+vector<unsigned int> HLT_HIEle15_Ele8_CaloIdL_TrackIdL_IsoVL_runlist_2017 { 306546,306548,306549,306550,306553,306563,306572,306580,306584,306595,306598,306604,306629,306630,306631,306636,306645,306646,306647,306651,306652,306653,306654,306656,306657,306705,306709,306772,306773,306776,306777,306793,306794,306801,306826 };
+vector<unsigned int> HLT_HIL3DoubleMu10_runlist_2017 { 306546,306548,306549,306550,306553,306563,306572,306580,306584,306595,306598,306604,306629,306630,306631,306636,306645,306646,306647,306651,306652,306653,306654,306656,306657,306705,306709,306772,306773,306776,306777,306793,306794,306801,306826 };
+bool fires_HLT_HIEle20_WPLoose_Gsf_2017( int run, bool trigger){                                                                                         
+  if (!trigger) return false;                                                                                                                          
+  if (std::find( HLT_HIEle20_WPLoose_Gsf_runlist_2017.begin(), HLT_HIEle20_WPLoose_Gsf_runlist_2017.end(), run ) != HLT_HIEle20_WPLoose_Gsf_runlist_2017.end()){
+    return trigger;                                                                                                                                  
+  }                                                                                                                                                    
+  else{                                                                                                                                                
+    return false;                                                                                                                                    
+  }                                                                                                                                                    
+  return false;                                                                                                                                        
+}
+bool fires_HLT_HIEle17_WPLoose_Gsf_2017( int run, bool trigger){                                                                                         
+  if (!trigger) return false;                                                                                                                          
+  if (std::find( HLT_HIEle17_WPLoose_Gsf_runlist_2017.begin(), HLT_HIEle17_WPLoose_Gsf_runlist_2017.end(), run ) != HLT_HIEle17_WPLoose_Gsf_runlist_2017.end()){
+    return trigger;                                                                                                                                  
+  }                                                                                                                                                    
+  else{                                                                                                                                                
+    return false;                                                                                                                                    
+  }                                                                                                                                                    
+  return false;                                                                                                                                        
+}
+bool fires_HLT_HIL3Mu20_2017( int run, bool trigger){                                                                                                    
+  if (!trigger) return false;                                                                                                                          
+  if (std::find( HLT_HIL3Mu20_runlist_2017.begin(), HLT_HIL3Mu20_runlist_2017.end(), run ) != HLT_HIL3Mu20_runlist_2017.end()){                        
+    return trigger;                                                                                                                                  
+  }                                                                                                                                                    
+  else{                                                                                                                                                
+    return false;                                                                                                                                    
+  }                                                                                                                                                    
+  return false;                                                                                                                                        
+}
+bool fires_HLT_HIMu17_2017( int run, bool trigger){                                                                                                      
+  if (!trigger) return false;                                                                                                                          
+  if (std::find( HLT_HIMu17_runlist_2017.begin(), HLT_HIMu17_runlist_2017.end(), run ) != HLT_HIMu17_runlist_2017.end()){                              
+    return trigger;                                                                                                                                  
+  }                                                                                                                                                    
+  else{                                                                                                                                                
+    return false;                                                                                                                                    
+  }                                                                                                                                                    
+  return false;                                                                                                                                        
+}
+bool fires_HLT_HIL3Mu12_2017( int run, bool trigger){                                                                                                    
+  if (!trigger) return false;                                                                                                                          
+  if (std::find( HLT_HIL3Mu12_runlist_2017.begin(), HLT_HIL3Mu12_runlist_2017.end(), run ) != HLT_HIL3Mu12_runlist_2017.end()){                        
+    return trigger;                                                                                                                                  
+  }                                                                                                                                                    
+  else{                                                                                                                                                
+    return false;                                                                                                                                    
+  }                                                                                                                                                    
+  return false;                                                                                                                                        
+}
+bool fires_HLT_HIEle20_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_2017( int run, bool trigger){                                                                     
+  if (!trigger) return false;                                                                                                                          
+  if (std::find( HLT_HIEle20_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_runlist_2017.begin(), HLT_HIEle20_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_runlist_2017.end(), run ) != HLT_HIEle20_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_runlist_2017.end()){                                                                                    
+    return trigger;                                                                                                                                  
+  }                                                                                                                                                    
+  else{                                                                                                                                                
+    return false;                                                                                                                                    
+  }                                                                                                                                                    
+  return false;                                                                                                                                        
+}
+bool fires_HLT_HIEle15_Ele8_CaloIdL_TrackIdL_IsoVL_2017( int run, bool trigger){                                                                         
+  if (!trigger) return false;                                                                                                                          
+  if (std::find( HLT_HIEle15_Ele8_CaloIdL_TrackIdL_IsoVL_runlist_2017.begin(), HLT_HIEle15_Ele8_CaloIdL_TrackIdL_IsoVL_runlist_2017.end(), run ) != HLT_HIEle15_Ele8_CaloIdL_TrackIdL_IsoVL_runlist_2017.end()){                                                                                                
+    return trigger;                                                                                                                                  
+  }                                                                                                                                                    
+  else{                                                                                                                                                
+    return false;                                                                                                                                    
+  }                                                                                                                                                    
+  return false;                                                                                                                                        
+}
+bool fires_HLT_HIL3DoubleMu10_2017( int run, bool trigger){                                                                                              
+  if (!trigger) return false;                                                                                                                          
+  if (std::find( HLT_HIL3DoubleMu10_runlist_2017.begin(), HLT_HIL3DoubleMu10_runlist_2017.end(), run ) != HLT_HIL3DoubleMu10_runlist_2017.end()){      
+    return trigger;                                                                                                                                  
+  }                                                                                                                                                    
+  else{                                                                                                                                                
+    return false;                                                                                                                                    
+  }                                                                                                                                                    
+  return false;                                                                                                                                        
+}

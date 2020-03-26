@@ -1,0 +1,149 @@
+tot_weight: 1 : 1,0.5,1.5; XTitle = "Selected events", Legend='TR', MoreY=2.0
+
+met: 		MET_pt					: 40,0,400 ; XTitle="E_{T}^{miss} (GeV)"
+met_phi: 	MET_phi 				: 40,-3.14,3.14; XTitle="MET #phi"
+minMllAFAS:	minMllAFAS				: 20,0,200; XTitle="min M_{ll} (GeV)", Legend='TR'
+minMllAFOS:     minMllAFOS                              : 20,0,200; XTitle="min M_{ll} (GeV)", Legend='TR'
+minMllSFOS:     minMllSFOS                              : 20,0,200; XTitle="min M_{ll} (GeV)", Legend='TR'
+mZ1:		mZ1					: 80,50,130; XTitle="Best Z candidate mass (GeV)"
+nVert:		PV_npvsGood				: 80,0.5,20.5; XTitle="N_{vtx}"
+mZ:		mZ_3l					: 80,50,130; XTitle="Z candidate mass (GeV)"
+m3l:		m3l					: 24,50.,350; XTitle="M_{lll} (GeV)"
+channel:	getChannel(LepGood1_pdgId,LepGood2_pdgId,LepGood3_pdgId):  [0.5,1.5,2.5,3.5,4.5]; XTitle="", xBinLabels="eee\,ee#mu\,e#mu#mu\,#mu#mu#mu", MoreY=2.0, XLabel="final state" 
+
+nLepFO:  nLepFO: [-0.5,0.5,1.5,2.5,3.5,4.5,5.5] ; XTitle="Number of fakeable leptons", XNDdiv=505
+nLepTight:   nLepTight : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5] ; XTitle="Number of tight leptons", XNDdiv=505
+
+lep1_pt: 	 LepGood1_pt					 : 40,0,200; XTitle="Leading lepton p_{T} (GeV)"
+lep1_conePt: 	 LepGood1_conePt				 : 40,0,120; XTitle="Leading lepton cone p_{T} (GeV)"
+lep1_eta: 	 LepGood1_eta					 : 15,-2.5,2.5; XTitle="Leading lepton #eta"
+lep1_phi: 	 LepGood1_phi					 : 20,-3.14,3.14; XTitle="Leading lepton #phi"
+lep1_pdgId:	 0.5*LepGood1_pdgId/abs(LepGood1_pdgId)*(abs(LepGood1_pdgId)-10) : [-2,-1,0,1,2]; XTitle="Leading lepton PDG ID (#mu^{-}/e^{-}/e^{+}/#mu^{+})", XNDdiv=505
+lep1_charge:	 LepGood1_charge				 : 40,0,120; XTitle="Leading lepton charge", XNDdiv=505, Legend='TL', MoreY=2.0
+lep1_mvaTTH:	 LepGood1_mvaTTH				 : 40,-1,1; XTitle="Leading lepton MVA value", Legend='TL', Logy
+lep1_miniIso:	 LepGood1_miniPFRelIso_all			 : 40,0,0.4; XTitle="Leading lepton miniIso", Logy
+lep1_miniIsoCh:	 LepGood1_miniPFRelIso_chg			 : 40,0,0.4; XTitle="Leading lepton charged miniIso", Logy
+lep1_miniIsoNeu: LepGood1_miniPFRelIso_all-LepGood1_miniPFRelIso_chg : 40,0,0.4; XTitle="Leading lepton neutral miniIso", Logy
+lep1_sip3d:	 LepGood1_sip3d					 : 40,0,8; XTitle="Leading lepton S_{IP} 3D"
+lep1_dxy:	 abs(LepGood1_dxy)*10000			 : 40,0.0,100.; XTitle="Leading lepton dxy [#mum]"
+lep1_dz:	 abs(LepGood1_dz)*10000			 	 : 40,0.0,100.; XTitle="Leading lepton dz [#mum]"
+lep1_ptratio:	 LepGood1_jetRelIso				 : 40,0,1.2; XTitle="Leading lepton jetRelIso", Legend='TL'
+lep1_ptrel:	 LepGood1_jetPtRelv2				 : 40,0,40; XTitle="Leading lepton ptRel", Legend='TL'
+lep1_jetBTagDeepFlav: LepGood1_jetBTagDeepFlav				 : 40,0,1; XTitle="Leading lepton deep jet of nearest jet"
+lep1_segcomp:	 if3(abs(LepGood1_pdgId)==13,LepGood1_segmentComp,-99) : 40,0,1; XTitle="Leading lepton segment compat.", Legend='TL', IncludeOverflows=False
+lep1_lostHits:	 LepGood1_lostHits				 : [-0.5,0.5,1.5,2.5,3.5]; XTitle="Leading lepton lost hits", XNDdiv=505, Logy
+lep1_convVeto:	 LepGood1_convVeto				 : [-0.5,0.5,1.5]; XTitle="Leading lepton conv. veto", XNDdiv=505, Legend='TL', Logy
+lep1_tCharge:	 LepGood1_tightCharge				 : [-0.5,0.5,1.5,2.5]; XTitle="Leading lepton tightCharge", XNDdiv=505, Logy, Legend='TL'
+lep1_elIdMVA:	 -0.05*log((1-LepGood1_mvaFall17V2Iso_WPL)/(1+LepGood1_mvaFall17V2Iso_WPL))				 : 40,0,1; XTitle="Leading lepton electron ID MVA", Legend='TL', Logy
+
+lep2_pt: 	 LepGood2_pt					 : 40,0,200; XTitle="Sub-leading lepton p_{T} (GeV)"
+lep2_conePt: 	 LepGood2_conePt				 : 40,0,120; XTitle="Sub-leading lepton cone p_{T} (GeV)"
+lep2_eta: 	 LepGood2_eta					 : 15,-2.5,2.5; XTitle="Sub-leading lepton #eta"
+lep2_phi: 	 LepGood2_phi					 : 20,-3.14,3.14; XTitle="Sub-leading lepton #phi"
+lep2_pdgId:	 0.5*LepGood2_pdgId/abs(LepGood2_pdgId)*(abs(LepGood2_pdgId)-10) : [-2,-1,0,1,2]; XTitle="Sub-leading lepton PDG ID (#mu^{-}/e^{-}/e^{+}/#mu^{+})", XNDdiv=505
+lep2_charge:	 LepGood2_charge				 : [-1.5,-0.5,0.5,1.5]; XTitle="Sub-leading lepton charge", XNDdiv=505, Legend='TL', MoreY=2.0
+lep2_mvaTTH:	 LepGood2_mvaTTH				 : 40,-1,1; XTitle="Sub-leading lepton MVA value", Legend='TL', Logy
+lep2_miniIso:	 LepGood2_miniPFRelIso_all			 : 40,0,0.4; XTitle="Sub-leading lepton miniIso", Logy
+lep2_miniIsoCh:	 LepGood2_miniPFRelIso_chg			 : 40,0,0.4; XTitle="Sub-leading lepton charged miniIso", Logy
+lep2_miniIsoNeu: LepGood2_miniPFRelIso_all-LepGood1_miniPFRelIso_chg : 40,0,0.4; XTitle="Sub-leading lepton neutral miniIso", Logy
+lep2_sip3d:	 LepGood2_sip3d					 : 40,0,8; XTitle="Sub-leading lepton S_{IP} 3D"
+lep2_dxy:	 abs(LepGood2_dxy)*10000			 : 40,0.0,100.; XTitle="Sub-leading lepton dxy [#mum]"
+lep2_dz:	 abs(LepGood2_dz)*10000			 	 : 40,0.0,100.; XTitle="Sub-leading lepton dz [#mum]"
+lep2_ptratio:	 LepGood2_jetRelIso				 : 40,0,1.2; XTitle="Sub-leading lepton jetRelIso", Legend='TL'
+lep2_ptrel:	 LepGood2_jetPtRelv2				 : 40,0,40; XTitle="Sub-leading lepton ptRel", Legend='TL'
+lep2_jetBTagDeepFlav: LepGood2_jetBTagDeepFlav				 : 40,0,1; XTitle="Sub-leading lepton deep jet of nearest jet"
+lep2_segcomp:	 if3(abs(LepGood2_pdgId)==13,LepGood2_segmentComp,-99) : 40,0,1; XTitle="Sub-leading lepton segment compat.", Legend='TL', IncludeOverflows=False
+lep2_lostHits:	 LepGood2_lostHits				 : [-0.5,0.5,1.5,2.5,3.5]; XTitle="Sub-leading lepton lost hits", XNDdiv=505, Logy
+lep2_convVeto:	 LepGood2_convVeto				 : [-0.5,0.5,1.5]; XTitle="Sub-leading lepton conv. veto", XNDdiv=505, Legend='TL', Logy
+lep2_tCharge:	 LepGood2_tightCharge				 : [-0.5,0.5,1.5,2.5]; XTitle="Sub-leading lepton tightCharge", XNDdiv=505, Logy, Legend='TL'
+lep2_elIdMVA:	 -0.05*log((1-LepGood2_mvaFall17V2Iso_WPL)/(1+LepGood2_mvaFall17V2Iso_WPL))				 : 40,0,1; XTitle="Sub-leading lepton electron ID MVA", Legend='TL', Logy
+
+lep3_pt: 	 LepGood3_pt					 : 40,0,200; XTitle="Third lepton p_{T} (GeV)"
+lep3_conePt: 	 LepGood3_conePt				 : 40,0,120; XTitle="Third lepton cone p_{T} (GeV)"
+lep3_eta: 	 LepGood3_eta					 : 40,-2.5,2.5; XTitle="Third lepton #eta"
+lep3_phi: 	 LepGood3_phi					 : 20,-3.14,3.14; XTitle="Third lepton #phi"
+lep3_pdgId:	 0.5*LepGood3_pdgId/abs(LepGood3_pdgId)*(abs(LepGood3_pdgId)-10) : [-2,-1,0,1,2]; XTitle="Third lepton PDG ID (#mu^{-}/e^{-}/e^{+}/#mu^{+})", XNDdiv=505
+lep3_charge:	 LepGood3_charge				 : [-1.5,-0.5,0.5,1.5]; XTitle="Third lepton charge", XNDdiv=505, Legend='TL', MoreY=2.0
+lep3_mvaTTH:	 LepGood3_mvaTTH				 : 40,-1,1; XTitle="Third lepton MVA value", Legend='TL', Logy
+lep3_miniIso:	 LepGood3_miniPFRelIso_all			 : 40,0,0.4; XTitle="Third lepton miniIso", Logy
+lep3_miniIsoCh:	 LepGood3_miniPFRelIso_chg			 : 40,0,0.4; XTitle="Third lepton charged miniIso", Logy
+lep3_miniIsoNeu: LepGood3_miniPFRelIso_all-LepGood1_miniPFRelIso_chg : 40,0,0.4; XTitle="Third lepton neutral miniIso", Logy
+lep3_sip3d:	 LepGood3_sip3d					 : 40,0,8; XTitle="Third lepton S_{IP} 3D"
+lep3_dxy:	 abs(LepGood3_dxy)*10000			 : 40,0.0,100.; XTitle="Third lepton dxy [#mum]"
+lep3_dz:	 abs(LepGood3_dz)*10000			 	 : 40,0.0,100.; XTitle="Third lepton dz [#mum]"
+lep3_ptratio:	 LepGood3_jetRelIso				 : 40,0,1.2; XTitle="Third lepton jetRelIso", Legend='TL'
+lep3_ptrel:	 LepGood3_jetPtRelv2				 : 40,0,40; XTitle="Third lepton ptRel", Legend='TL'
+lep3_jetBTagDeepFlav: LepGood3_jetBTagDeepFlav				 : 40,0,1; XTitle="Third lepton deep jet of nearest jet"
+lep3_segcomp:	 if3(abs(LepGood3_pdgId)==13,LepGood3_segmentComp,-99) : 40,0,1; XTitle="Third lepton segment compat.", Legend='TL', IncludeOverflows=False
+lep3_lostHits:	 LepGood3_lostHits				 : [-0.5,0.5,1.5,2.5,3.5]; XTitle="Third lepton lost hits", XNDdiv=505, Logy
+lep3_convVeto:	 LepGood3_convVeto				 : [-0.5,0.5,1.5]; XTitle="Third lepton conv. veto", XNDdiv=505, Legend='TL', Logy
+lep3_tCharge:	 LepGood3_tightCharge				 : [-0.5,0.5,1.5,2.5]; XTitle="Third lepton tightCharge", XNDdiv=505, Logy, Legend='TL'
+lep3_elIdMVA:	 -0.5*log((1-LepGood3_mvaFall17V2Iso_WPL)/(1+LepGood3_mvaFall17V2Iso_WPL))				 : 40,0,1; XTitle="Third lepton electron ID MVA", Legend='TR', Logy
+
+
+lepW_pt: 	 LepGoodW_pt					 : 40,0,200; XTitle="W lepton p_{T} (GeV)"
+lepW_conePt: 	 LepGoodW_conePt				 : 40,0,120; XTitle="W lepton cone p_{T} (GeV)"
+lepW_eta: 	 LepGoodW_eta					 : 15,-2.5,2.5; XTitle="W lepton #eta"
+lepW_phi: 	 LepGoodW_phi					 : 20,-3.14,3.14; XTitle="W lepton #phi"
+lepW_pdgId:	 0.5*LepGoodW_pdgId/abs(LepGoodW_pdgId)*(abs(LepGoodW_pdgId)-10) : [-2,-1,0,1,2]; XTitle="W lepton PDG ID (#mu^{-}/e^{-}/e^{+}/#mu^{+})", XNDdiv=505
+lepW_charge:	 LepGoodW_charge				 : 40,0,120; XTitle="W lepton charge", XNDdiv=505, Legend='TL', MoreY=2.0
+lepW_mvaTTH:	 LepGoodW_mvaTTH				 : 40,-1,1; XTitle="W lepton MVA value", Legend='TL', Logy
+lepW_miniIso:	 LepGoodW_miniPFRelIso_all			 : 40,0,0.4; XTitle="W lepton miniIso", Logy
+lepW_miniIsoCh:	 LepGoodW_miniPFRelIso_chg			 : 40,0,0.4; XTitle="W lepton charged miniIso", Logy
+lepW_miniIsoNeu: LepGoodW_miniPFRelIso_all-LepGoodW_miniPFRelIso_chg : 40,0,0.4; XTitle="W lepton neutral miniIso", Logy
+lepW_sip3d:	 LepGoodW_sip3d					 : 40,0,8; XTitle="W lepton S_{IP} 3D"
+lepW_dxy:	 abs(LepGoodW_dxy)*10000			 : 40,0.0,100.; XTitle="W lepton dxy [#mum]"
+lepW_dz:	 abs(LepGoodW_dz)*10000			 	 : 40,0.0,100.; XTitle="W lepton dz [#mum]"
+lepW_ptratio:	 LepGoodW_jetRelIso				 : 40,0,1.2; XTitle="W lepton jetRelIso", Legend='TL'
+lepW_ptrel:	 LepGoodW_jetPtRelv2				 : 40,0,40; XTitle="W lepton ptRel", Legend='TL'
+lepW_jetBTagDeepFlav: LepGoodW_jetBTagDeepFlav				 : 40,0,1; XTitle="W lepton deep jet of nearest jet"
+lepW_segcomp:	 if3(abs(LepGoodW_pdgId)==13,LepGoodW_segmentComp,-99) : 40,0,1; XTitle="W lepton segment compat.", Legend='TL', IncludeOverflows=False
+lepW_lostHits:	 LepGoodW_lostHits				 : [-0.5,0.5,1.5,2.5,3.5]; XTitle="W lepton lost hits", XNDdiv=505, Logy
+lepW_convVeto:	 LepGoodW_convVeto				 : [-0.5,0.5,1.5]; XTitle="W lepton conv. veto", XNDdiv=505, Legend='TL', Logy
+lepW_tCharge:	 LepGoodW_tightCharge				 : [-0.5,0.5,1.5,2.5]; XTitle="W lepton tightCharge", XNDdiv=505, Logy, Legend='TL'
+lepW_elIdMVA:	 -0.05*log((1-LepGoodW_mvaFall17V2Iso_WPL)/(1+LepGoodW_mvaFall17V2Iso_WPL))				 : 40,0,1; XTitle="W lepton electron ID MVA", Legend='TL', Logy
+
+
+lepZ2_pt: 	 LepGoodZ2_pt					 : 40,0,200; XTitle="Subleading Z lepton p_{T} (GeV)"
+lepZ2_conePt: 	 LepGoodZ2_conePt				 : 40,0,120; XTitle="Subleading Z lepton cone p_{T} (GeV)"
+lepZ2_eta: 	 LepGoodZ2_eta					 : 15,-2.5,2.5; XTitle="Subleading Z lepton #eta"
+lepZ2_phi: 	 LepGoodZ2_phi					 : 20,-3.14,3.14; XTitle="Subleading Z lepton #phi"
+lepZ2_pdgId:	 0.5*LepGoodZ2_pdgId/abs(LepGoodZ2_pdgId)*(abs(LepGoodZ2_pdgId)-10) : [-2,-1,0,1,2]; XTitle="Subleading Z lepton PDG ID (#mu^{-}/e^{-}/e^{+}/#mu^{+})", XNDdiv=505
+lepZ2_charge:	 LepGoodZ2_charge				 : 40,0,120; XTitle="Subleading Z lepton charge", XNDdiv=505, Legend='TL', MoreY=2.0
+lepZ2_mvaTTH:	 LepGoodZ2_mvaTTH				 : 40,-1,1; XTitle="Subleading Z lepton MVA value", Legend='TL', Logy
+lepZ2_miniIso:	 LepGoodZ2_miniPFRelIso_all			 : 40,0,0.4; XTitle="Subleading Z lepton miniIso", Logy
+lepZ2_miniIsoCh:	 LepGoodZ2_miniPFRelIso_chg			 : 40,0,0.4; XTitle="Subleading Z lepton charged miniIso", Logy
+lepZ2_miniIsoNeu: LepGoodZ2_miniPFRelIso_all-LepGoodZ2_miniPFRelIso_chg : 40,0,0.4; XTitle="Subleading Z lepton neutral miniIso", Logy
+lepZ2_sip3d:	 LepGoodZ2_sip3d					 : 40,0,8; XTitle="Subleading Z lepton S_{IP} 3D"
+lepZ2_dxy:	 abs(LepGoodZ2_dxy)*10000			 : 40,0.0,100.; XTitle="Subleading Z lepton dxy [#mum]"
+lepZ2_dz:	 abs(LepGoodZ2_dz)*10000			 	 : 40,0.0,100.; XTitle="Subleading Z lepton dz [#mum]"
+lepZ2_ptratio:	 LepGoodZ2_jetRelIso				 : 40,0,1.2; XTitle="Subleading Z lepton jetRelIso", Legend='TL'
+lepZ2_ptrel:	 LepGoodZ2_jetPtRelv2				 : 40,0,40; XTitle="Subleading Z lepton ptRel", Legend='TL'
+lepZ2_jetBTagDeepFlav: LepGoodZ2_jetBTagDeepFlav				 : 40,0,1; XTitle="Subleading Z lepton deep jet of nearest jet"
+lepZ2_segcomp:	 if3(abs(LepGoodZ2_pdgId)==13,LepGoodZ2_segmentComp,-99) : 40,0,1; XTitle="Subleading Z lepton segment compat.", Legend='TL', IncludeOverflows=False
+lepZ2_lostHits:	 LepGoodZ2_lostHits				 : [-0.5,0.5,1.5,2.5,3.5]; XTitle="Subleading Z lepton lost hits", XNDdiv=505, Logy
+lepZ2_convVeto:	 LepGoodZ2_convVeto				 : [-0.5,0.5,1.5]; XTitle="Subleading Z lepton conv. veto", XNDdiv=505, Legend='TL', Logy
+lepZ2_tCharge:	 LepGoodZ2_tightCharge				 : [-0.5,0.5,1.5,2.5]; XTitle="Subleading Z lepton tightCharge", XNDdiv=505, Logy, Legend='TL'
+lepZ2_elIdMVA:	 -0.05*log((1-LepGoodZ2_mvaFall17V2Iso_WPL)/(1+LepGoodZ2_mvaFall17V2Iso_WPL))				 : 40,0,1; XTitle="Subleading Z lepton electron ID MVA", Legend='TL', Logy
+
+lepZ1_pt: 	 LepGoodZ1_pt					 : 40,0,200; XTitle="Leading Z lepton p_{T} (GeV)"
+lepZ1_conePt: 	 LepGoodZ1_conePt				 : 40,0,120; XTitle="Leading Z lepton cone p_{T} (GeV)"
+lepZ1_eta: 	 LepGoodZ1_eta					 : 15,-2.5,2.5; XTitle="Leading Z lepton #eta"
+lepZ1_phi: 	 LepGoodZ1_phi					 : 20,-3.14,3.14; XTitle="Leading Z lepton #phi"
+lepZ1_pdgId:	 0.5*LepGoodZ1_pdgId/abs(LepGoodZ1_pdgId)*(abs(LepGoodZ1_pdgId)-10) : [-2,-1,0,1,2]; XTitle="Leading Z lepton PDG ID (#mu^{-}/e^{-}/e^{+}/#mu^{+})", XNDdiv=505
+lepZ1_charge:	 LepGoodZ1_charge				 : 40,0,120; XTitle="Leading Z lepton charge", XNDdiv=505, Legend='TL', MoreY=2.0
+lepZ1_mvaTTH:	 LepGoodZ1_mvaTTH				 : 40,-1,1; XTitle="Leading Z lepton MVA value", Legend='TL', Logy
+lepZ1_miniIso:	 LepGoodZ1_miniPFRelIso_all			 : 40,0,0.4; XTitle="Leading Z lepton miniIso", Logy
+lepZ1_miniIsoCh:	 LepGoodZ1_miniPFRelIso_chg			 : 40,0,0.4; XTitle="Leading Z lepton charged miniIso", Logy
+lepZ1_miniIsoNeu: LepGoodZ1_miniPFRelIso_all-LepGoodZ1_miniPFRelIso_chg : 40,0,0.4; XTitle="Leading Z lepton neutral miniIso", Logy
+lepZ1_sip3d:	 LepGoodZ1_sip3d					 : 40,0,8; XTitle="Leading Z lepton S_{IP} 3D"
+lepZ1_dxy:	 abs(LepGoodZ1_dxy)*10000			 : 40,0.0,100.; XTitle="Leading Z lepton dxy [#mum]"
+lepZ1_dz:	 abs(LepGoodZ1_dz)*10000			 	 : 40,0.0,100.; XTitle="Leading Z lepton dz [#mum]"
+lepZ1_ptratio:	 LepGoodZ1_jetRelIso				 : 40,0,1.2; XTitle="Leading Z lepton jetRelIso", Legend='TL'
+lepZ1_ptrel:	 LepGoodZ1_jetPtRelv2				 : 40,0,40; XTitle="Leading Z lepton ptRel", Legend='TL'
+lepZ1_jetBTagDeepFlav: LepGoodZ1_jetBTagDeepFlav				 : 40,0,1; XTitle="Leading Z lepton deep jet of nearest jet"
+lepZ1_segcomp:	 if3(abs(LepGoodZ1_pdgId)==13,LepGoodZ1_segmentComp,-99) : 40,0,1; XTitle="Leading Z lepton segment compat.", Legend='TL', IncludeOverflows=False
+lepZ1_lostHits:	 LepGoodZ1_lostHits				 : [-0.5,0.5,1.5,2.5,3.5]; XTitle="Leading Z lepton lost hits", XNDdiv=505, Logy
+lepZ1_convVeto:	 LepGoodZ1_convVeto				 : [-0.5,0.5,1.5]; XTitle="Leading Z lepton conv. veto", XNDdiv=505, Legend='TL', Logy
+lepZ1_tCharge:	 LepGoodZ1_tightCharge				 : [-0.5,0.5,1.5,2.5]; XTitle="Leading Z lepton tightCharge", XNDdiv=505, Logy, Legend='TL'
+lepZ1_elIdMVA:	 -0.05*log((1-LepGoodZ1_mvaFall17V2Iso_WPL)/(1+LepGoodZ1_mvaFall17V2Iso_WPL))				 : 40,0,1; XTitle="Leading Z lepton electron ID MVA", Legend='TL', Logy

@@ -6,40 +6,40 @@ conf = dict(
         miniRelIso = 0.4, 
         sip3d = 8, 
         dxy =  0.05, 
-        dz = 0.1, 
-        eleId = "mvaFall17V2noIso_WPL",
+        dz = 0.1
 )
 
-ttH_skim_cut = ("nMuon + nElectron >= 2 &&" + 
-       "Sum$(Muon_pt > {muPt} && Muon_miniPFRelIso_all < {miniRelIso} && Muon_sip3d < {sip3d}) +"
-       "Sum$(Electron_pt > {muPt} && Electron_miniPFRelIso_all < {miniRelIso} && Electron_sip3d < {sip3d} && Electron_{eleId}) >= 2").format(**conf)
-
+WZ_skim_cut = ("nMuon + nElectron >= 2 &&" + 
+               "Sum$(Muon_pt > {muPt} && Muon_miniPFRelIso_all < {miniRelIso} && Muon_sip3d < {sip3d}) +"
+               "Sum$(Electron_pt > {muPt} && Electron_miniPFRelIso_all < {miniRelIso} && Electron_sip3d < {sip3d})").format(**conf)
 
 muonSelection     = lambda l : abs(l.eta) < 2.4 and l.pt > conf["muPt" ] and l.miniPFRelIso_all < conf["miniRelIso"] and l.sip3d < conf["sip3d"] and abs(l.dxy) < conf["dxy"] and abs(l.dz) < conf["dz"]
-electronSelection = lambda l : abs(l.eta) < 2.5 and l.pt > conf["elePt"] and l.miniPFRelIso_all < conf["miniRelIso"] and l.sip3d < conf["sip3d"] and abs(l.dxy) < conf["dxy"] and abs(l.dz) < conf["dz"] and getattr(l, conf["eleId"])
+electronSelection = lambda l : abs(l.eta) < 2.5 and l.pt > conf["elePt"] and l.miniPFRelIso_all < conf["miniRelIso"] and l.sip3d < conf["sip3d"] and abs(l.dxy) < conf["dxy"] and abs(l.dz) < conf["dz"] 
 
 from CMGTools.TTHAnalysis.tools.nanoAOD.ttHPrescalingLepSkimmer import ttHPrescalingLepSkimmer
 # NB: do not wrap lepSkim a lambda, as we modify the configuration in the cfg itself 
-lepSkim = ttHPrescalingLepSkimmer(5, 
+lepSkim = ttHPrescalingLepSkimmer(1,  ## this is the prescale factor (OS events are prescaled otherwise)
                 muonSel = muonSelection, electronSel = electronSelection,
                 minLeptonsNoPrescale = 2, # things with less than 2 leptons are rejected irrespectively of the prescale
-                minLeptons = 2, requireSameSignPair = True,
+                minLeptons = 2, requireSameSignPair = False,
                 jetSel = lambda j : j.pt > 25 and abs(j.eta) < 2.4 and j.jetId > 0, 
-                minJets = 4, minMET = 70)
+                minJets = 0, minMET = 0)
+
 from PhysicsTools.NanoAODTools.postprocessing.modules.common.collectionMerger import collectionMerger
-lepMerge = collectionMerger(input = ["Electron","Muon"], 
-                            output = "LepGood", 
-                            selector = dict(Muon = muonSelection, Electron = electronSelection))
+lepMerge = lambda : collectionMerger(input = ["Electron","Muon"], 
+                                     output = "LepGood", 
+                                     selector = dict(Muon = muonSelection, Electron = electronSelection))
 
 from CMGTools.TTHAnalysis.tools.nanoAOD.ttHLeptonCombMasses import ttHLeptonCombMasses
-lepMasses = ttHLeptonCombMasses( [ ("Muon",muonSelection), ("Electron",electronSelection) ], maxLeps = 4)
+lepMasses = lambda : ttHLeptonCombMasses( [ ("Muon",muonSelection), ("Electron",electronSelection) ], maxLeps = 4)
 
 from CMGTools.TTHAnalysis.tools.nanoAOD.autoPuWeight import autoPuWeight
 from CMGTools.TTHAnalysis.tools.nanoAOD.yearTagger import yearTag
 from CMGTools.TTHAnalysis.tools.nanoAOD.xsecTagger import xsecTag
 from CMGTools.TTHAnalysis.tools.nanoAOD.lepJetBTagAdder import lepJetBTagCSV, lepJetBTagDeepCSV, lepJetBTagDeepFlav, lepJetBTagDeepFlavC
 
-ttH_sequence_step1 = [lepSkim, lepMerge, autoPuWeight, yearTag, xsecTag, lepJetBTagCSV, lepJetBTagDeepCSV, lepJetBTagDeepFlav, lepMasses]
+#WZ_sequence_step1 = [lepSkim, lepMerge, autoPuWeight, yearTag, xsecTag, lepJetBTagCSV, lepJetBTagDeepCSV, lepJetBTagDeepFlav, lepMasses]
+WZ_sequence_step1 = [lepSkim, lepMerge, yearTag, xsecTag, lepJetBTagCSV, lepJetBTagDeepCSV, lepJetBTagDeepFlav, lepMasses]
 
 #==== 
 from PhysicsTools.NanoAODTools.postprocessing.tools import deltaR
@@ -52,56 +52,44 @@ from CMGTools.TTHAnalysis.tools.nanoAOD.nBJetCounter import nBJetCounter
 nBJetDeepCSV25NoRecl = lambda : nBJetCounter("DeepCSV25", "btagDeepB", centralJetSel)
 nBJetDeepFlav25NoRecl = lambda : nBJetCounter("DeepFlav25", "btagDeepFlavB", centralJetSel)
 
-ttH_sequence_step1_FR = [m for m in ttH_sequence_step1 if m != lepSkim] + [ lepFR, nBJetDeepCSV25NoRecl, nBJetDeepFlav25NoRecl ]
-ttH_skim_cut_FR = ("nMuon + nElectron >= 1 && nJet >= 1 && Sum$(Jet_pt > 25 && abs(Jet_eta)<2.4) >= 1 &&" + 
+WZ_sequence_step1_FR = [m for m in WZ_sequence_step1 if m != lepSkim] + [ lepFR, nBJetDeepCSV25NoRecl, nBJetDeepFlav25NoRecl ]
+WZ_skim_cut_FR = ("nMuon + nElectron >= 1 && nJet >= 1 && Sum$(Jet_pt > 25 && abs(Jet_eta)<2.4) >= 1 &&" + 
        "Sum$(Muon_pt > {muPt} && Muon_miniPFRelIso_all < {miniRelIso} && Muon_sip3d < {sip3d}) +"
-       "Sum$(Electron_pt > {muPt} && Electron_miniPFRelIso_all < {miniRelIso} && Electron_sip3d < {sip3d} && Electron_{eleId}) >= 1").format(**conf)
+       "Sum$(Electron_pt > {muPt} && Electron_miniPFRelIso_all < {miniRelIso} && Electron_sip3d < {sip3d}").format(**conf)
 
 
 #==== items below are normally run as friends ====
+def clean_and_FO_selection_WZ5TeV(lep):
+    if (lep.pt < 8): return False
+    if (abs(lep.eta) > (2.4 if abs(lep.pdgId)==13 else 2.5)): return False 
+    if (abs(lep.dxy)>0.05 or abs(lep.dz)>0.1): return False   
+    if (lep.sip3d > 8): return False
+    return (abs(lep.pdgId)!=11 or (lep.convVeto and lep.lostHits==0 and lep.mvaFall17V2Iso_WPL)) and (abs(lep.pdgId)!=13 or lep.mediumPromptId>0)
+                                                        
+def tight_selection_WZ5TeV(lep): 
+    if not clean_and_FO_selection_WZ5TeV(lep): return False 
+    if not lep.mvaTTH > (0.55 if abs(lep.pdgId)==13 else 0.125): return False
+    if not lep.miniPFRelIso_all < (0.325 if abs(lep.pdgId)==13 else 0.085): return False
+    if lep.jetBTagDeepCSV>0.1522: return False
 
-def ttH_idEmu_cuts_E3(lep):
-    if (abs(lep.pdgId)!=11): return True
-    if (lep.hoe>=(0.10-0.00*(abs(lep.eta+lep.deltaEtaSC)>1.479))): return False
-    if (lep.eInvMinusPInv<=-0.04): return False
-    if (lep.sieie>=(0.011+0.019*(abs(lep.eta+lep.deltaEtaSC)>1.479))): return False
     return True
+    
+tightLeptonSel = lambda lep,jet : clean_and_FO_selection_WZ5TeV(lep) and lep.mvaTTH > (0.55 if abs(lep.pdgId)==13 else 0.125) and lep.miniPFRelIso_all < (0.325 if abs(lep.pdgId)==13 else 0.085) and lep.jetBTagDeepCSV<0.1522
 
-def conept_TTH(lep):
-    if (abs(lep.pdgId)!=11 and abs(lep.pdgId)!=13): return lep.pt
-    if (abs(lep.pdgId)!=13 or lep.mediumId>0) and lep.mvaTTH > 0.90: return lep.pt
-    else: return 0.90 * lep.pt * (1 + lep.jetRelIso)
-
-def smoothBFlav(jetpt,ptmin,ptmax,year,scale_loose=1.0):
-    wploose = (0.0614, 0.0521, 0.0494)
-    wpmedium = (0.3093, 0.3033, 0.2770)
-    x = min(max(0.0, jetpt - ptmin)/(ptmax-ptmin), 1.0)
-    return x*wploose[year-2016]*scale_loose + (1-x)*wpmedium[year-2016]
-
-def clean_and_FO_selection_TTH(lep,year):
-    bTagCut = 0.3093 if year==2016 else 0.3033 if year==2017 else 0.2770
-    return lep.conept>10 and lep.jetBTagDeepFlav<bTagCut and (abs(lep.pdgId)!=11 or (ttH_idEmu_cuts_E3(lep) and lep.convVeto and lep.lostHits == 0)) \
-        and (lep.mvaTTH>(0.85 if abs(lep.pdgId)==13 else 0.80) or \
-             (abs(lep.pdgId)==13 and lep.jetBTagDeepFlav< smoothBFlav(0.9*lep.pt*(1+lep.jetRelIso), 20, 45, year) and lep.jetRelIso < 0.50) or \
-             (abs(lep.pdgId)==11 and lep.mvaFall17V2noIso_WP80 and lep.jetRelIso < 0.70))
-
-tightLeptonSel = lambda lep,year : clean_and_FO_selection_TTH(lep,year) and (abs(lep.pdgId)!=13 or lep.mediumId>0) and lep.mvaTTH > (0.85 if abs(lep.pdgId)==13 else 0.80)
-
-foTauSel = lambda tau: tau.pt > 20 and abs(tau.eta)<2.3 and abs(tau.dxy) < 1000 and abs(tau.dz) < 0.2 and tau.idDecayModeNewDMs and (int(tau.idDeepTau2017v2p1VSjet)>>1 & 1) # VVLoose WP
-tightTauSel = lambda tau: (int(tau.idDeepTau2017v2p1VSjet)>>2 & 1) # VLoose WP
 
 from CMGTools.TTHAnalysis.tools.nanoAOD.jetmetGrouper import groups as jecGroups
 from CMGTools.TTHAnalysis.tools.combinedObjectTaggerForCleaning import CombinedObjectTaggerForCleaning
 from CMGTools.TTHAnalysis.tools.nanoAOD.fastCombinedObjectRecleaner import fastCombinedObjectRecleaner
+
 recleaner_step1 = lambda : CombinedObjectTaggerForCleaning("InternalRecl",
                                                            looseLeptonSel = lambda lep : lep.miniPFRelIso_all < 0.4 and lep.sip3d < 8 and (abs(lep.pdgId)!=11 or lep.lostHits<=1) and (abs(lep.pdgId)!=13 or lep.looseId),
-                                                           cleaningLeptonSel = clean_and_FO_selection_TTH,
-                                                           FOLeptonSel = clean_and_FO_selection_TTH,
+                                                           cleaningLeptonSel = clean_and_FO_selection_WZ5TeV,
+                                                           FOLeptonSel = clean_and_FO_selection_WZ5TeV,
                                                            tightLeptonSel = tightLeptonSel,
-                                                           FOTauSel = foTauSel,
-                                                           tightTauSel = tightTauSel,
-                                                           selectJet = lambda jet: jet.jetId > 0, # pt and eta cuts are (hard)coded in the step2 
-                                                           coneptdef = lambda lep: conept_TTH(lep),
+                                                           FOTauSel = lambda tau : False,
+                                                           tightTauSel = lambda tau : False,
+                                                           selectJet = lambda jet: jet.jetId > 0 and abs(jet.eta)<2.4  # pt and eta cuts are (hard)coded in the step2 
+
 )
 recleaner_step2_mc_allvariations = lambda : fastCombinedObjectRecleaner(label="Recl", inlabel="_InternalRecl",
                                                                         cleanTausWithLooseLeptons=True,
@@ -112,22 +100,24 @@ recleaner_step2_mc_allvariations = lambda : fastCombinedObjectRecleaner(label="R
                                                                         btagL_thr=99, # they are set at runtime 
                                                                         btagM_thr=99,
                                                                         isMC = True,
-                                                                        variations= [ 'jes%s'%v for v in jecGroups] + ['jer']
+                                                                        variations= ['jes%s'%v for v in jecGroups] + ['jer'] 
 )
+
 recleaner_step2_mc = lambda : fastCombinedObjectRecleaner(label="Recl", inlabel="_InternalRecl",
-                                                          cleanTausWithLooseLeptons=True,
-                                                          cleanJetsWithFOTaus=True,
+                                                          cleanTausWithLooseLeptons=False,
+                                                          cleanJetsWithFOTaus=False,
                                                           doVetoZ=False, doVetoLMf=False, doVetoLMt=False,
                                                           jetPts=[25,40],
                                                           jetPtsFwd=[25,60], # second number for 2.7 < abseta < 3, the first for the rest
                                                           btagL_thr=99, # they are set at runtime 
                                                           btagM_thr=99,
                                                           isMC = True,
-                                                          
+                                                          variations=['jesTotal'] + ["jer"]                                                       
 )
+
 recleaner_step2_data = lambda : fastCombinedObjectRecleaner(label="Recl", inlabel="_InternalRecl",
-                                         cleanTausWithLooseLeptons=True,
-                                         cleanJetsWithFOTaus=True,
+                                         cleanTausWithLooseLeptons=False,
+                                         cleanJetsWithFOTaus=False,
                                          doVetoZ=False, doVetoLMf=False, doVetoLMt=False,
                                          jetPts=[25,40],
                                          jetPtsFwd=[25,60], # second number for 2.7 < abseta < 3, the first for the rest
@@ -135,14 +125,12 @@ recleaner_step2_data = lambda : fastCombinedObjectRecleaner(label="Recl", inlabe
                                          btagM_thr=-99., # they are set at runtime  
                                          isMC = False,
                                          variations = []
-
 )
 
 
 
-from CMGTools.TTHAnalysis.tools.eventVars_2lss import EventVars2LSS
-eventVars = lambda : EventVars2LSS('','Recl')
-eventVars_allvariations = lambda : EventVars2LSS('','Recl',variations = [ 'jes%s'%v for v in jecGroups] + ['jer'])
+from CMGTools.TTHAnalysis.tools.eventVars_WZ import EventVarsWZ
+eventVars = lambda : EventVarsWZ('','Recl')
 
 
 from CMGTools.TTHAnalysis.tools.objTagger import ObjTagger
@@ -151,9 +139,11 @@ mcMatchId     = lambda : ObjTagger('mcMatchId','LepGood', [lambda l : (l.genPart
 mcPromptGamma = lambda : ObjTagger('mcPromptGamma','LepGood', [lambda l : (l.genPartFlav==22)])
 mcMatch_seq   = [ isMatchRightCharge, mcMatchId ,mcPromptGamma]
 
-countTaus = lambda : ObjTagger('Tight','TauSel_Recl', [lambda t : t.idDeepTau2017v2p1VSjet&4])
+#countTaus = lambda : ObjTagger('Tight','TauSel_Recl', [lambda t : t.idDeepTau2017v2p1VSjet&4])
 
-from PhysicsTools.NanoAODTools.postprocessing.modules.jme.jetmetUncertainties import jetmetUncertainties2016All,jetmetUncertainties2017All,jetmetUncertainties2018All
+from PhysicsTools.NanoAODTools.postprocessing.modules.jme.jetmetUncertainties import jetmetUncertainties2016All,jetmetUncertainties2017All,jetmetUncertainties2018All,jetmetUncertainties20175TeV
+from PhysicsTools.NanoAODTools.postprocessing.modules.jme.jetmetHelperRun2 import * 
+
 from CMGTools.TTHAnalysis.tools.nanoAOD.jetmetGrouper import jetMetCorrelate2016, jetMetCorrelate2017, jetMetCorrelate2018
 from CMGTools.TTHAnalysis.tools.nanoAOD.jetMetCorrelator import jetMetCorrelations2016, jetMetCorrelations2017, jetMetCorrelations2018
 
@@ -165,15 +155,34 @@ jme2016 = [jetmetUncertainties2016All,jetMetCorrelations2016]
 jme2017 = [jetmetUncertainties2017All,jetMetCorrelations2017]
 jme2018 = [jetmetUncertainties2018All,jetMetCorrelations2018]
 
+jme2017_5TeV = createJMECorrector(True, "2017", "G", "Total", False, "AK4PFchs", False)
+
 def _fires(ev, path):
     if "/hasfiredtriggers_cc.so" not in ROOT.gSystem.GetLibraries():
-        ROOT.gROOT.ProcessLine(".L %s/src/CMGTools/Production/src/hasfiredtriggers.cc+O" % os.environ['CMSSW_BASE'])
+        ROOT.gROOT.ProcessLine(".L %s/src/CMGTools/Production/src/hasfiredtriggers.cc+" % os.environ['CMSSW_BASE'])
     if not hasattr(ev,path): return False 
+
     if ev.run == 1:  # is MC
         return getattr( ev,path ) 
-    return getattr(ROOT, 'fires_%s_%d'%(path,ev.year))( ev.run, getattr(ev,path))
+    else : #if hasattr(ev,"year"): 
+        return getattr(ROOT, 'fires_%s_%d'%(path,ev.year))( ev.run, getattr(ev,path))
+##    else:
+##        return getattr(ROOT, 'fires_%s'%(path))( ev.run, getattr(ev,path))
+
 
 triggerGroups=dict(
+    Trigger_5TeV_1e={
+        2017 : lambda ev : _fires(ev,'HLT_HIEle20_WPLoose_Gsf') or _fires(ev,'HLT_HIEle17_WPLoose_Gsf')
+    },
+    Trigger_5TeV_1m={
+        2017 : lambda ev : _fires(ev,'HLT_HIL3Mu20') or _fires(ev,'HLT_HIMu17') or _fires(ev,'HLT_HIL3Mu12') 
+    },
+    Trigger_5TeV_2e={
+        2017 : lambda ev : _fires(ev,'HLT_HIEle20_Ele12_CaloIdL_TrackIdL_IsoVL_DZ') or _fires(ev,'HLT_HIEle15_Ele8_CaloIdL_TrackIdL_IsoVL')
+    },
+    Trigger_5TeV_2m={
+        2017 : lambda ev : _fires(ev,'HLT_HIL3DoubleMu10') 
+    },
     Trigger_1e={
         2016 : lambda ev : _fires(ev,'HLT_Ele27_WPTight_Gsf') or _fires(ev,'HLT_Ele25_eta2p1_WPTight_Gsf') or _fires(ev,'HLT_Ele27_eta2p1_WPLoose_Gsf'),
         2017 : lambda ev : _fires(ev,'HLT_Ele32_WPTight_Gsf') or _fires(ev,'HLT_Ele35_WPTight_Gsf'),
@@ -244,6 +253,18 @@ triggerGroups=dict(
 
 
 triggerGroups_dict=dict(
+    Trigger_5TeV_1e={
+        2017 : ['HLT_HIEle20_WPLoose_Gsf','HLT_HIEle17_WPLoose_Gsf']
+    },
+    Trigger_5TeV_1m={
+        2017 : ['HLT_HIL3Mu20','HLT_HIMu17','HLT_HIL3Mu12'] 
+    },
+    Trigger_5TeV_2e={
+        2017 : ['HLT_HIEle20_Ele12_CaloIdL_TrackIdL_IsoVL_DZ','HLT_HIEle15_Ele8_CaloIdL_TrackIdL_IsoVL']
+    },
+    Trigger_5TeV_2m={
+        2017 : ['HLT_HIL3DoubleMu10'] 
+    },
     Trigger_1e={
         2016 :  ['HLT_Ele27_WPTight_Gsf' , 'HLT_Ele25_eta2p1_WPTight_Gsf' , 'HLT_Ele27_eta2p1_WPLoose_Gsf'],
         2017 :  ['HLT_Ele32_WPTight_Gsf' , 'HLT_Ele35_WPTight_Gsf'],
@@ -293,6 +314,10 @@ triggerGroups_dict=dict(
 
 
 from CMGTools.TTHAnalysis.tools.evtTagger import EvtTagger
+Trigger_5TeV_1e = lambda : EvtTagger('Trigger_5TeV_1e',[ lambda ev : triggerGroups['Trigger_5TeV_1e'][2017](ev) ])
+Trigger_5TeV_1m = lambda : EvtTagger('Trigger_5TeV_1m',[ lambda ev : triggerGroups['Trigger_5TeV_1m'][2017](ev) ])
+Trigger_5TeV_2e = lambda : EvtTagger('Trigger_5TeV_2e',[ lambda ev : triggerGroups['Trigger_5TeV_2e'][2017](ev) ])
+Trigger_5TeV_2m = lambda : EvtTagger('Trigger_5TeV_2m',[ lambda ev : triggerGroups['Trigger_5TeV_2m'][2017](ev) ])
 
 Trigger_1e   = lambda : EvtTagger('Trigger_1e',[ lambda ev : triggerGroups['Trigger_1e'][ev.year](ev) ])
 Trigger_1m   = lambda : EvtTagger('Trigger_1m',[ lambda ev : triggerGroups['Trigger_1m'][ev.year](ev) ])
@@ -307,7 +332,7 @@ Trigger_2lss = lambda : EvtTagger('Trigger_2lss',[ lambda ev : triggerGroups['Tr
 Trigger_3l   = lambda : EvtTagger('Trigger_3l',[ lambda ev : triggerGroups['Trigger_3l'][ev.year](ev) ])
 Trigger_MET  = lambda : EvtTagger('Trigger_MET',[ lambda ev : triggerGroups['Trigger_MET'][ev.year](ev) ])
 
-triggerSequence = [Trigger_1e,Trigger_1m,Trigger_2e,Trigger_2m,Trigger_em,Trigger_3e,Trigger_3m,Trigger_mee,Trigger_mme,Trigger_2lss,Trigger_3l ,Trigger_MET]
+triggerSequence = [Trigger_5TeV_1e,Trigger_5TeV_1m,Trigger_5TeV_2e,Trigger_5TeV_2m] #,Trigger_em,Trigger_3e,Trigger_3m,Trigger_mee,Trigger_mme,Trigger_2lss,Trigger_3l ,Trigger_MET]
 
 
 from CMGTools.TTHAnalysis.tools.BDT_eventReco_cpp import BDT_eventReco

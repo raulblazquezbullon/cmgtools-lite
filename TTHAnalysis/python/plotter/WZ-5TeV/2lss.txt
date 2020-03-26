@@ -1,0 +1,21 @@
+alwaystrue: 1
+dilep: nLepFO==2
+ss: (LepGood1_pdgId*LepGood2_pdgId)>0
+cleanup: minMllAFAS > 12
+trigger: Trigger_5TeV_1e || Trigger_5TeV_1m || Trigger_5TeV_2e || Trigger_5TeV_2m
+ptcuts: LepGood1_pt>20 && LepGood2_pt>10
+TT: LepGood1_isLepTight && LepGood2_isLepTight
+meeVeto:  if3((abs(LepGood1_pdgId)+abs(LepGood2_pdgId))==22, abs(mZ1-91.2)>20, 1)
+met25: MET_pt>25
+
+###########   
+#DYCR: m3l < 100; Disable=True
+
+##### channels
+ee : (abs(LepGood1_pdgId) + abs(LepGood2_pdgId)) == 22 ; Disable=True
+em : (abs(LepGood1_pdgId) + abs(LepGood2_pdgId)) == 24 ; Disable=True
+mm : (abs(LepGood1_pdgId) + abs(LepGood2_pdgId)) == 26 ; Disable=True
+
+
+
+
