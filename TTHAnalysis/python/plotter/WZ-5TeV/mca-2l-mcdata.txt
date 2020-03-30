@@ -1,5 +1,0 @@
-incl_sigprompt : + ; IncludeMca="WZ-5TeV/mca-includes/mca-2l-sigprompt.txt"
-incl_convs     : + ; IncludeMca="WZ-5TeV/mca-includes/mca-2l-convs.txt"
-incl_mcfakes   : + ; IncludeMca="WZ-5TeV/mca-includes/mca-2l-mcfakes.txt"
-
-incl_data : + ; IncludeMca="WZ-5TeV/mca-includes/mca-data.txt"
