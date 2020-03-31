@@ -1,6 +1,6 @@
-incl_sigprompt : + ; IncludeMca="WZ-5TeV/mca-includes/mca-2l-sigprompt.txt"
-incl_convs     : + ; IncludeMca="WZ-5TeV/mca-includes/mca-2l-convs.txt"
-incl_mcfakes   : + ; IncludeMca="WZ-5TeV/mca-includes/mca-2l-mcfakes.txt"
-incl_mcflips   : + ; IncludeMca="WZ-5TeV/mca-includes/mca-2l-mcflips.txt"
+incl_sigprompt : + ; IncludeMca="5TeV/mca-includes/mca-wz-2lss-sigprompt.txt"
+incl_convs     : + ; IncludeMca="5TeV/mca-includes/mca-wz-2lss-convs.txt"
+incl_mcfakes   : + ; IncludeMca="5TeV/mca-includes/mca-wz-2lss-mcfakes.txt"
+incl_mcflips   : + ; IncludeMca="5TeV/mca-includes/mca-wz-2lss-mcflips.txt"
 
-incl_data : + ; IncludeMca="WZ-5TeV/mca-includes/mca-data.txt"
+incl_data : + ; IncludeMca="5TeV/mca-includes/mca-data.txt"

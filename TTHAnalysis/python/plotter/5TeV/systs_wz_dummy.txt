@@ -4,43 +4,40 @@ $alias : PromptFromMC : WZ|ZZ|Convs|Nonprompt
 # luminosity
 lumi_5TeV		: $PromptFromMC : .* : normSymm : 1.013
 
-## flat uncertainties
-Fakes   : Nonprompt                                    : .* : 1.3
-Convs   : Convs                                        : .* : 1.25
-
 ## JES/JER
-jes	: $PromptFromMC : .* : templateAsymm; FakeRates=['WZ-5TeV/fr-jesUp'\,'WZ-5TeV/fr-jesDn']
-jer	: $PromptFromMC : .* : templateAsymm; FakeRates=['WZ-5TeV/fr-jerUp'\,'WZ-5TeV/fr-jerDn']
+jes		: $PromptFromMC : .* : templateAsymm; FakeRates=['5TeV/frs-jecs/fr-jesUp.txt'\, '5TeV/frs-jecs/fr-jesDn.txt']
+jer	  	: $PromptFromMC : .* : templateAsymm; FakeRates=['5TeV/frs-jecs/fr-jerUp.txt'\, '5TeV/frs-jecs/fr-jerDn.txt']
+unclusteredEn	: $PromptFromMC : .* : templateAsymm; FakeRates=['5TeV/frs-jecs/fr-unclUp.txt'\,'5TeV/frs-jecs/fr-unclDn.txt']
 
 ## weights: 
-pileup 	    : $PromptFromMC : .* : templateAsymm; AddWeights=['puWeightUp/puWeight'\,'puWeightDown/puWeight']
-L1PreFiring : $PromptFromMC : .* : templateAsymm; AddWeights=['L1PreFiringWeight_Up/L1PreFiringWeight_Nom'\,'L1PreFiringWeight_Dn/L1PreFiringWeight_Nom'], year="2016"
+pileup 	    : $PromptFromMC : .* : templateAsymm; AddWeights=['puWeightUp/puWeight'\,'puWeightDown/puWeight'], DoesNotChangeEventSelection=True
 
-## lepton efficiencies
+## L1 ECAL prefire
+L1PreFiring : $PromptFromMC : .* : templateAsymm; AddWeights=['PrefireWeight_Up/PrefireWeight'\,'PrefireWeight_Down/PrefireWeight'], DoesNotChangeEventSelection=True
+
+## lepton and trigger efficiencies
+#eff_el   : $PromptFromMC	: .*2lss.* : templateAsymm; AddWeights=['leptonSF_2lss_el_up/leptonSF_2lss'\,'leptonSF_2lss_el_dn/leptonSF_2lss'], DoesNotChangeEventSelection=True
+#eff_el   : $PromptFromMC	: .*3l.*   : templateAsymm; AddWeights=['leptonSF_3l_el_up/leptonSF_2lss'\,'leptonSF_3l_el_dn/leptonSF_3l'], DoesNotChangeEventSelection=True
+#eff_mu   : $PromptFromMC	: .*2lss.* : templateAsymm; AddWeights=['leptonSF_2lss_mu_up/leptonSF_2lss'\,'leptonSF_2lss_mu_dn/leptonSF_2lss'], DoesNotChangeEventSmuection=True
+#eff_mu   : $PromptFromMC	: .*3l.*   : templateAsymm; AddWeights=['leptonSF_3l_mu_up/leptonSF_2lss'\,'leptonSF_3l_mu_dn/leptonSF_3l'], DoesNotChangeEventSelection=True
+
+trigger_3l   :	      $PromptFromMC 	: .*3l.*	: normSymm : 1.02 
+trigger_2l   :	      $PromptFromMC 	: .*2lss.* 	: normSymm : 1.05 
 
 ## lepton scale
+#el_scale   : $PromptFromMC	: .* : templateAsymm; AddWeights=['leptonSF_2lss_el_up/leptonSF_2lss'\,'leptonSF_2lss_el_dn/leptonSF_2lss']
+#el_smear   : $PromptFromMC	: .* : templateAsymm; AddWeights=['leptonSF_3l_el_up/leptonSF_2lss'\,'leptonSF_3l_el_dn/leptonSF_3l']
+#mu_scale   : $PromptFromMC	: .* : templateAsymm; AddWeights=['leptonSF_2lss_mu_up/leptonSF_2lss'\,'leptonSF_2lss_mu_dn/leptonSF_2lss']
 
-## statistical uncertainties
-stat2lsssig   : sig_.*          : .*2lss.* : 1.0 : stat_foreach_shape_bins : .*
-stat2lssWZ    : prompt_WZ       : .*2lss.* : 1.0 : stat_foreach_shape_bins : .*
-stat2lssZZH   : prompt_ZZH      : .*2lss.* : 1.0 : stat_foreach_shape_bins : .*
-stat2lssttW   : rares_ttW       : .*2lss.* : 1.0 : stat_foreach_shape_bins : .*
-stat2lssttZ   : rares_ttZ       : .*2lss.* : 1.0 : stat_foreach_shape_bins : .*
-stat2lssttX   : rares_ttX       : .*2lss.* : 1.0 : stat_foreach_shape_bins : .*
-stat2lssVVV   : rares_VVV       : .*2lss.* : 1.0 : stat_foreach_shape_bins : .*
-stat2lssconvs : convs           : .*2lss.* : 1.0 : stat_foreach_shape_bins : .*
-stat2lssfakes : fakes_.*        : .*2lss.* : 1.0 : stat_foreach_shape_bins : .*
-stat2lssflips : flips_.*        : .*2lss.* : 1.0 : stat_foreach_shape_bins : .*
+## normalization uncertainties
+ZZ	: ZZ					       : .* : normSymm : 1.2
+Fakes   : Nonprompt                                    : .* : normSymm : 1.3
+Convs   : Convs                                        : .* : normSymm : 1.3
+Flips	: Flips					       : .* : normSymm : 1.3
 
-stat3lA1sig   : sig_.*          : .*3lA1.* : 1.0 : stat_foreach_shape_bins : .*
-stat3lA1WZ    : prompt_WZ       : .*3lA1.* : 1.0 : stat_foreach_shape_bins : .*
-stat3lA1ZZH   : prompt_ZZH      : .*3lA1.* : 1.0 : stat_foreach_shape_bins : .*
-stat3lA1ttW   : rares_ttW       : .*3lA1.* : 1.0 : stat_foreach_shape_bins : .*
-stat3lA1ttZ   : rares_ttZ       : .*3lA1.* : 1.0 : stat_foreach_shape_bins : .*
-stat3lA1ttX   : rares_ttX       : .*3lA1.* : 1.0 : stat_foreach_shape_bins : .*
-stat3lA1VVV   : rares_VVV       : .*3lA1.* : 1.0 : stat_foreach_shape_bins : .*
-stat3lA1convs : convs           : .*3lA1.* : 1.0 : stat_foreach_shape_bins : .*
-stat3lA1fakes : fakes_appldata  : .*3lA1.* : 1.0 : stat_foreach_shape_bins : .*
+## theoretical uncertainties (fully correlated everywhere): 
+
+## statistical uncertainties (taken into account with --amc of the makeShapeCards)
 
 
 

@@ -1,0 +1,45 @@
+### Alias definitions. Careful to avoid trailing '.*' to avoid matching _promptsub
+$alias : PromptFromMC : WZ|ZZ|Convs|Nonprompt
+
+# luminosity
+lumi_5TeV		: $PromptFromMC : .* : normSymm : 1.013
+
+## JES/JER
+jes		: $PromptFromMC : .* : templateAsymm; FakeRates=['5TeV/frs-jecs/fr-jesUp'\, '5TeV/frs-jecs/fr-jesDn']
+jer	  	: $PromptFromMC : .* : templateAsymm; FakeRates=['5TeV/frs-jecs/fr-jerUp'\, '5TeV/frs-jecs/fr-jerDn']
+unclusteredEn	: $PromptFromMC : .* : templateAsymm; FakeRates=['5TeV/frs-jecs/fr-unclUp'\,'5TeV/frs-jecs/fr-unclDn']
+
+## weights: 
+pileup 	    : $PromptFromMC : .* : templateAsymm; AddWeights=['puWeightUp/puWeight'\,'puWeightDown/puWeight']
+
+## L1 ECAL prefire
+L1PreFiring : $PromptFromMC : .* : templateAsymm; AddWeights=['L1PreFiringWeight_Up/L1PreFiringWeight_Nom'\,'L1PreFiringWeight_Dn/L1PreFiringWeight_Nom']
+
+## lepton and trigger efficiencies
+trigger_3l   :	      $PromptFromMC : .*3l.*	: normSymm : 1.02 
+trigger_2l   :	      $PromptFromMC : .*2lss.* 	: normSymm : 1.05 
+
+## lepton scale
+
+
+## background uncertainties
+tW	: tW  					       : .* : normSymm : 1.3
+DY	: DY					       : .* : normSymm : 1.3
+Fakes   : Nonprompt                                    : .* : normSymm : 1.3
+Diboson : Diboson                                      : .* : normSymm : 1.2
+
+
+## theoretical uncertainties (fully correlated everywhere): 
+tt_UE 	  : TT : .* : templateAsymm
+tt_hdamp  : TT : .* : templateAsymm
+tt_isr	  : TT : .* : templateAsymm
+tt_fsr	  : TT : .* : templateAsymm
+tt_scale  : TT : .* : templateAsymm
+tt_PDF	  : TT : .* : templateAsymm
+tt_alphas : TT : .* : templateAsymm 
+tt_mtop	  : TT : .* : templateAsymm
+
+## statistical uncertainties (taken into account with --amc of the makeShapeCards)
+
+
+

@@ -10,7 +10,8 @@ m3l: m3l > 100
 lWpt20: lWpt > 20
 
 ###########   
-DYCR: m3l < 100; Disable=True
+cr_mTlW30: mTlW < 30; Disable=True
+cr_4leps: nLepFO==4; Disable=True
 
 ##### channels
 eee : (abs(LepGood1_pdgId) + abs(LepGood2_pdgId) + abs(LepGood3_pdgId)) == 33 ; Disable=True

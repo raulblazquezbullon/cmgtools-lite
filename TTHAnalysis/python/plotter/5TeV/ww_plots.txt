@@ -7,7 +7,7 @@ minMllAFOS:     minMllAFOS                              : 20,0,200; XTitle="min 
 minMllSFOS:     minMllSFOS                              : 20,0,200; XTitle="min M_{ll} (GeV)", Legend='TR'
 mZ1:		mZ1					: 80,50,130; XTitle="Best Z candidate mass (GeV)"
 nVert:		PV_npvsGood				: 80,0.5,20.5; XTitle="N_{vtx}"
-channel: 	getChannel(LepGood1_pdgId,LepGood2_pdgId) : [0.5,1.5,2.5,3.5] ; XTitle='Channel', xBinLabels="ee\,e#mu\,#mu#mu"
+channel: 	getChannel2l(LepGood1_pdgId,LepGood2_pdgId) : [0.5,1.5,2.5,3.5] ; XTitle='Channel', xBinLabels="ee\,e#mu\,#mu#mu"
 nLepFO:  nLepFO: [-0.5,0.5,1.5,2.5,3.5,4.5,5.5] ; XTitle="Number of fakeable leptons", XNDdiv=505
 nLepTight:   nLepTight : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5] ; XTitle="Number of tight leptons", XNDdiv=505
 nJet25:	    	nJet25					: [-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5] ; XTitle='N(jet\, p_{T} > 25 GeV)', XNDiv=5, xBinLabels="2\,3\,4\,5\,6\,#geq 7"
