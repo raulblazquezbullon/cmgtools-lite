@@ -1,5 +1,5 @@
 ### Alias definitions. Careful to avoid trailing '.*' to avoid matching _promptsub
-$alias : PromptFromMC : WZ|ZZ|Convs|Nonprompt
+$alias : PromptFromMC : WZ|ZZ|WW|Convs|Nonprompt|Flips
 
 # luminosity
 lumi_5TeV		: $PromptFromMC : .* : normSymm : 1.013
@@ -30,12 +30,17 @@ trigger_2l   :	      $PromptFromMC 	: .*2lss.* 	: normSymm : 1.05
 #mu_scale   : $PromptFromMC	: .* : templateAsymm; AddWeights=['leptonSF_2lss_mu_up/leptonSF_2lss'\,'leptonSF_2lss_mu_dn/leptonSF_2lss']
 
 ## normalization uncertainties
-ZZ	: ZZ					       : .* : normSymm : 1.2
-Fakes   : Nonprompt                                    : .* : normSymm : 1.3
-Convs   : Convs                                        : .* : normSymm : 1.3
-Flips	: Flips					       : .* : normSymm : 1.3
+norm_ZZ		 : ZZ					        : .*       : normSymm : 1.15
+norm_WW		 : WW					        : .*       : normSymm : 1.15
+norm_Fakes   	 : Nonprompt                                    : .*       : normSymm : 1.3
+norm_Convs   	 : Convs                                        : .*   	   : normSymm : 1.3
+norm_Flips	 : Flips					: .*2lss.* : normSymm : 1.2
 
 ## theoretical uncertainties (fully correlated everywhere): 
+ZZ_scales      :   ZZ	     :  .*	: envelope; FakeRates=['5TeV/frs-scales/fr-muR_0p5_muF_0p5.txt'\,'5TeV/frs-scales/fr-muR_0p5_muF_2p0.txt'\,'5TeV/frs-scales/fr-muR_1p0_muF_2p0.txt'\,'5TeV/frs-scales/fr-muR_2p0_muF_1p0.txt'\,'5TeV/frs-scales/fr-muR_0p5_muF_1p0.txt'\,'5TeV/frs-scales/fr-muR_1p0_muF_0p5.txt'\,'5TeV/frs-scales/fr-muR_2p0_muF_0p5.txt'\,'5TeV/frs-scales/fr-muR_2p0_muF_2p0.txt'], DoesNotChangeEventSelection=True
+WW_scales      :   WW	     :  .*	: envelope; FakeRates=['5TeV/frs-scales/fr-muR_0p5_muF_0p5.txt'\,'5TeV/frs-scales/fr-muR_0p5_muF_2p0.txt'\,'5TeV/frs-scales/fr-muR_1p0_muF_2p0.txt'\,'5TeV/frs-scales/fr-muR_2p0_muF_1p0.txt'\,'5TeV/frs-scales/fr-muR_0p5_muF_1p0.txt'\,'5TeV/frs-scales/fr-muR_1p0_muF_0p5.txt'\,'5TeV/frs-scales/fr-muR_2p0_muF_0p5.txt'\,'5TeV/frs-scales/fr-muR_2p0_muF_2p0.txt'], DoesNotChangeEventSelection=True
+WZ_scales      :   WZ	     :  .*	: envelope; FakeRates=['5TeV/frs-scales/fr-muR_0p5_muF_0p5.txt'\,'5TeV/frs-scales/fr-muR_0p5_muF_2p0.txt'\,'5TeV/frs-scales/fr-muR_1p0_muF_2p0.txt'\,'5TeV/frs-scales/fr-muR_2p0_muF_1p0.txt'\,'5TeV/frs-scales/fr-muR_0p5_muF_1p0.txt'\,'5TeV/frs-scales/fr-muR_1p0_muF_0p5.txt'\,'5TeV/frs-scales/fr-muR_2p0_muF_0p5.txt'\,'5TeV/frs-scales/fr-muR_2p0_muF_2p0.txt'], DoesNotChangeEventSelection=True
+
 
 ## statistical uncertainties (taken into account with --amc of the makeShapeCards)
 

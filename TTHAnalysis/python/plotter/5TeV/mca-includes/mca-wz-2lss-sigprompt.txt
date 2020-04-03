@@ -7,8 +7,8 @@ WZ+     : W1JetsToLNu : xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRi
 WZ+     : W2JetsToLNu : xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FillColor=ROOT.kOrange
 WZ+     : W3JetsToLNu : xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge ; FillColor=ROOT.kOrange
 
-VV	: WWTo2L2Nu  : xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge; FillColor=ROOT.kGreen+2
-VV	: ZZTo2L2Nu  : xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge; FillColor=ROOT.kGreen+2
-VV	: ZZTo4L     : xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge; FillColor=ROOT.kGreen+2
+WW	: WWTo2L2Nu  : xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge; FillColor=ROOT.kGreen+2, Label="VV"
+ZZ	: ZZTo2L2Nu  : xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge; FillColor=ROOT.kGreen+2, Label="VV"
+ZZ	: ZZTo4L     : xsec : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge; FillColor=ROOT.kGreen+2, Label="VV"
 
 

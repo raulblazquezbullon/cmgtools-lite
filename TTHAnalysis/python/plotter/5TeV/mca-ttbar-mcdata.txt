@@ -1,5 +1,4 @@
 incl_sigprompt : + ; IncludeMca="5TeV/mca-includes/mca-ttbar-sigprompt.txt"
-incl_diboson   : + ; IncludeMca="5TeV/mca-includes/mca-ttbar-diboson.txt"
 incl_dy        : + ; IncludeMca="5TeV/mca-includes/mca-ttbar-mcdy.txt"
 incl_mcfakes   : + ; IncludeMca="5TeV/mca-includes/mca-ttbar-mcfakes.txt"
 

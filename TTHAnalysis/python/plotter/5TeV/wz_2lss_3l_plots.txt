@@ -27,7 +27,7 @@ mhtJet25:   	mhtJet25 				: 40,0,100 ; XTitle="H_{T}^{miss}(p_{T} > 25) (GeV)"
 #3lep_nPrompt:   if3(nLepFO>2,(LepGood1_mcMatchId!=0)+(LepGood2_mcMatchId!=0)+(LepGood3_mcMatchId!=0),-99) : [-0.5,0.5,1.5,2.5,3.5]; XTitle="Number of prompt leptons (gen level)", XNDiv=4, Legend='TL', IncludeOverflows=False, Blinded=True
 
 2l_lep_pt:	pt_2(LepGood1_conePt,LepGood1_phi,LepGood2_conePt,LepGood2_phi): 40,0.,150.; XTitle="p_{T}^{lll} (GeV)"
-2l_channel:	getChannel3l(LepGood1_pdgId,LepGood2_pdgId,LepGood3_pdgId):  [0.5,1.5,2.5,3.5,4.5]; XTitle="", xBinLabels="eee\,ee#mu\,e#mu#mu\,#mu#mu#mu", MoreY=2.0, XLabel="final state" 
+2l_channel:	getChannel3l(LepGood1_pdgId,LepGood2_pdgId,LepGood3_pdgId):  [0.5,1.5,2.5,3.5]; XTitle="", xBinLabels="ee\,e#mu\,#mu#mu", MoreY=2.0, XLabel="final state" 
 2l_mt_lep1:	MT_met_lep1	: 60,0.,150.; XTitle="M_{T} (leading lepton) (GeV)"
 2l_mt_lep2:	MT_met_lep2	: 60,0.,150.; XTitle="M_{T} (sub-leading lepton) (GeV)"
    

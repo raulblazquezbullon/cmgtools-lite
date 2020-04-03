@@ -1,19 +1,33 @@
 tot_weight: 1 : 1,0.5,1.5; XTitle = "Selected events", Legend='TR', MoreY=2.0
 
-met: 		MET_pt					: 40,0,400 ; XTitle="E_{T}^{miss} (GeV)"
+met: 		MET_pt					: 28,0,210 ; XTitle="E_{T}^{miss} (GeV)"
+met_log:	MET_pt					: 28,0,210 ; XTitle="E_{T}^{miss} (GeV)",  Logy
 met_phi: 	MET_phi 				: 40,-3.14,3.14; XTitle="MET #phi"
 minMllAFAS:	minMllAFAS				: 20,0,200; XTitle="min M_{ll} (GeV)", Legend='TR'
 minMllAFOS:     minMllAFOS                              : 20,0,200; XTitle="min M_{ll} (GeV)", Legend='TR'
 minMllSFOS:     minMllSFOS                              : 20,0,200; XTitle="min M_{ll} (GeV)", Legend='TR'
 mZ1:		mZ1					: 80,50,130; XTitle="Best Z candidate mass (GeV)"
+mZ1_zoom:	mZ1 							    								: 40,75,105; XTitle="m_{ll} (GeV)"
+mtWmin: 	min(mt_2(LepGood1_conePt,LepGood1_phi,MET_pt,MET_phi),mt_2(LepGood2_conePt,LepGood2_phi,MET_pt,MET_phi))  	  	: 40,0,200; XTitle="min M_{T}(l_{i}\,E_{T}^{miss}) (GeV)"
+
+
 nVert:		PV_npvsGood				: 80,0.5,20.5; XTitle="N_{vtx}"
 channel: 	getChannel2l(LepGood1_pdgId,LepGood2_pdgId) : [0.5,1.5,2.5,3.5] ; XTitle='Channel', xBinLabels="ee\,e#mu\,#mu#mu"
-nLepFO:  nLepFO: [-0.5,0.5,1.5,2.5,3.5,4.5,5.5] ; XTitle="Number of fakeable leptons", XNDdiv=505
-nLepTight:   nLepTight : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5] ; XTitle="Number of tight leptons", XNDdiv=505
-nJet25:	    	nJet25					: [-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5] ; XTitle='N(jet\, p_{T} > 25 GeV)', XNDiv=5, xBinLabels="2\,3\,4\,5\,6\,#geq 7"
-nBJetLoose25:	nBJetLoose25				: [-0.5,0.5,1.5,2.5,3.5,4.5] ; XTitle='N(jet\, p_{T} > 25 GeV\, CSVL)', XNDiv=5, xBinLabels="0\,1\,2\,3\,#geq 4", MoreY=1.7
-nBJetMedium25:	nBJetMedium25				: [-0.5,0.5,1.5,2.5,3.5,4.5] ; XTitle='N(jet\, p_{T} > 25 GeV\, CSVM)', XNDiv=5, xBinLabels="0\,1\,2\,3\,#geq 4", MoreY=1.7
-nJetnBJet:	getnJetnBJet(nJet25,nBJetMedium25)      : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5] ; XTitle='N(jet\, p_{T} > 25 GeV\, CSVM)', XNDiv=5, xBinLabels="[0-0]\,[1-0]\,[1-1]\,[2-0]\,[2-1]\,[2-2]\,[#geq 3-#geq 0]", MoreY=1.7
+nLepFO: 	nLepFO: [-0.5,0.5,1.5,2.5,3.5,4.5,5.5] ; XTitle="Number of fakeable leptons", XNDdiv=505
+nLepTight:    	nLepTight : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5] ; XTitle="Number of tight leptons", XNDdiv=505
+
+nJet25_from0:		  nJet25	: [-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5] ; XTitle='N(jet\, p_{T} > 25 GeV)', XNDiv=7, xBinLabels="0\,1\,2\,3\,4\,5\,6\,#geq 7"
+nJet25_from0_log:	  nJet25	: [-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5] ; XTitle='N(jet\, p_{T} > 25 GeV)', XNDiv=7, xBinLabels="0\,1\,2\,3\,4\,5\,6\,#geq 7", Logy
+htJet25:	htJet25j				: 60,0,300 ; XTitle="H_{T}(jet p_{T} > 25) (GeV)"
+mhtJet25:   	mhtJet25 				: 60,0,300 ; XTitle="H_{T}^{miss}(p_{T} > 25) (GeV)"
+
+dilep_pt   :	pt_2(LepGood1_conePt,LepGood1_phi,LepGood2_conePt,LepGood2_phi)	: 40,0.,150.; XTitle="p_{T}^{ll} (GeV)"
+dilep_dphi :	abs(deltaPhi(LepGood1_phi,LepGood2_phi)) 			: 40,0.,3.14; XTitle="#Delta#phi_{ll}" 
+ 
+
+#nBJetLoose25:	nBJetLoose25				: [-0.5,0.5,1.5,2.5,3.5,4.5] ; XTitle='N(jet\, p_{T} > 25 GeV\, CSVL)', XNDiv=5, xBinLabels="0\,1\,2\,3\,#geq 4", MoreY=1.7
+#nBJetMedium25:	nBJetMedium25				: [-0.5,0.5,1.5,2.5,3.5,4.5] ; XTitle='N(jet\, p_{T} > 25 GeV\, CSVM)', XNDiv=5, xBinLabels="0\,1\,2\,3\,#geq 4", MoreY=1.7
+#nJetnBJet:	getnJetnBJet(nJet25,nBJetMedium25)      : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5] ; XTitle='N(jet\, p_{T} > 25 GeV\, CSVM)', XNDiv=5, xBinLabels="[0-0]\,[1-0]\,[1-1]\,[2-0]\,[2-1]\,[2-2]\,[#geq 3-#geq 0]", MoreY=1.7
 
 lep1_pt: 	 LepGood1_pt					 : 40,0,200; XTitle="Leading lepton p_{T} (GeV)"
 lep1_conePt: 	 LepGood1_conePt				 : 40,0,120; XTitle="Leading lepton cone p_{T} (GeV)"

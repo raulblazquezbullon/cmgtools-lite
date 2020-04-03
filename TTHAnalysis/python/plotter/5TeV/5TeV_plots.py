@@ -55,6 +55,7 @@ def base(selection):
         GO="%s -W 'PrefireWeight*puWeight'"%GO
         if dowhat in ["plots","ntuple"]: GO+=" 5TeV/ttbar_plots.txt  " 
         if dowhat == "plots": GO=GO.replace(LEGEND, " --legendColumns 3 --legendWidth 0.42 ")
+        GO=GO.replace("--Fs {P}/2_eventVars_v2"," ")
         GO += " --binname ttbar "        
     else:
         raise RuntimeError, 'Unknown selection'
@@ -76,6 +77,33 @@ def runIt(GO,name,plots=[],noplots=[]):
     elif dowhat == "yields": print 'echo %s; python mcAnalysis.py'%name,GO,' '.join(sys.argv[4:])
     elif dowhat == "dumps":  print 'echo %s; python mcDump.py'%name,GO,' '.join(sys.argv[4:])
     elif dowhat == "ntuple": print 'echo %s; python mcNtuple.py'%name,GO,' '.join(sys.argv[4:])
+
+
+##    if dowhat == "submit_plots":
+##    subfile = open(options.subfile, "w")
+##    logdir = (options.logdir if options.logdir else args[1]+"/logs").replace("{P}", args[0]).replace("{O}", args[1])
+##    os.system("mkdir -p "+logdir)
+##    chunk = "Step"
+##    if options.checkchunks:
+##        chunk = "Chunk"
+##        if options.fineSplit:
+##            chunk = "Chunk).$(Step"
+##    subfile.write("""##### BEGIN condor submit file
+##Executable = {runner}
+##Universe   = vanilla
+##Error      = {logdir}/err.$(cluster).$(Dataset).$({chunk})
+##Output     = {logdir}/out.$(cluster).$(Dataset).$({chunk})
+##Log        = {logdir}/log.$(cluster).$(Dataset).$({chunk})
+##
+##x509userproxy = $ENV(X509_USER_PROXY)
+##use_x509userproxy = True
+##getenv = True
+##request_memory = 2000
+##+MaxRuntime = {maxruntime}
+##{accounting_group}
+##""".format(runner = options.runner, logdir = logdir, maxruntime = options.maxruntime * 60, chunk = chunk,
+##           accounting_group = '+AccountingGroup = "%s"'%options.accounting_group if options.accounting_group else ''))
+
 def add(GO,opt):
     return '%s %s'%(GO,opt)
 def setwide(x):
@@ -129,6 +157,10 @@ if __name__ == '__main__':
         if '_appl' in torun: x = add(x,'-I ^TT ')
         if '_relax' in torun: x = add(x,'-X ^TT ')
         if '_ss' in torun: x = add(x, '-I ^os')
+        if '_dycr' in torun: 
+            x=add(x, '-E ^sf -X ^ZVeto -E ^onZ') 
+            if '_nojet' in torun: x=add(x, ' -X ^2jets') 
+            if '_nomet' in torun: x=add(x, ' -X ^MET') 
         if '_tight' in torun: 
             x=x.replace('1_recleaner_v1','1_recleaner_vtight')
             x=x.replace('lepchoice-FO','lepchoice-tight-FO')
@@ -142,6 +174,7 @@ if __name__ == '__main__':
             x = add(x, '-E ^ee')
             torun = torun.replace('_ee','/ee')                    
         if '_data' in torun: x = x.replace('mca-ttbar-mc.txt','mca-ttbar-mcdata.txt')
+        
         runIt(x,'%s'%torun)
 
         
