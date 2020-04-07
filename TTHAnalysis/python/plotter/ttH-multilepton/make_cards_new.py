@@ -34,7 +34,7 @@ OPTIONS="{OPTIONS} --od cards/{OUTNAME} ".format(OPTIONS=OPTIONS, OUTNAME=OUTNAM
 
 #T2L="-P {ORIGIN}/NanoTrees_TTH_090120_v6_triggerFix_skim2lss/{YEAR} -P {ORIGIN}/NanoTrees_TTH_091019_v6pre_skim2lss/{YEAR} --FMCs {{P}}/0_jmeUnc_v1_sources  --FMCs {{P}}/1_recl_sources --FDs {{P}}/1_recl --FMCs {{P}}/2_scalefactors_jecAllVars --FMCs {{P}}/2_scalefactors_lep --Fs {{P}}/3_tauCount --Fs {{P}}/6_mva3l_updated/ --FMCs {{P}}/6_mva2lss_allVars/ --FDs {{P}}/6_mva2lss  --Fs {{P}}/6_mva4l --xf TTTW --xf TTWH".format(ORIGIN=ORIGIN, YEAR=YEAR)
 
-T2L="-P {ORIGIN}/NanoTrees_TTH_090120_091019_v6_skim2lss/{YEAR} --FMCs {{P}}/0_jmeUnc_v1 --FDs {{P}}/1_recl --FMCs {{P}}/1_recl_allvars --FMCs {{P}}/2_btag_SFs --FMCs {{P}}/2_scalefactors_lep_fixed --Fs {{P}}/3_tauCount --Fs {{P}}/4_evtVars --Fs {{P}}/5_BDThtt_reco_new_blah --Fs {{P}}/6_mva2lss --Fs {{P}}/6_mva3l --Fs {{P}}/6_mva4l  --xf TTTW --xf TTWH".format(ORIGIN=ORIGIN, YEAR=YEAR)
+T2L="-P {ORIGIN}/NanoTrees_TTH_090120_091019_v6_skim2lss/{YEAR} --FMCs {{P}}/0_jmeUnc_v1 --FDs {{P}}/1_recl --FMCs {{P}}/1_recl_allvars --FMCs {{P}}/2_btag_SFs --FMCs {{P}}/2_scalefactors_lep_fixed --Fs {{P}}/3_tauCount --Fs {{P}}/4_evtVars --Fs {{P}}/6_mva2lss --Fs {{P}}/6_mva3l --Fs {{P}}/6_mva4l  --xf TTTW --xf TTWH".format(ORIGIN=ORIGIN, YEAR=YEAR)
 
 T3L=T2L
 T4L=T2L
