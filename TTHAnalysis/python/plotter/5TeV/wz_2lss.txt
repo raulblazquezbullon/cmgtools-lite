@@ -1,0 +1,23 @@
+alwaystrue: 1
+dilep: nLepFO==2
+cleanup: minMllAFAS > 12
+trigger: Trigger_5TeV_1e || Trigger_5TeV_1m || Trigger_5TeV_2e || Trigger_5TeV_2m
+pt2010: LepGood1_pt>20 && LepGood2_pt>10
+pt2020: LepGood1_pt>20 && LepGood2_pt>20; Disable=True
+TT: LepGood1_isLepTight && LepGood2_isLepTight
+exclusive: nLepTight<=2
+same-sign: (LepGood1_pdgId*LepGood2_pdgId)>0
+Zee_veto: abs(LepGood1_pdgId)!=11 || abs(LepGood2_pdgId) != 11 || abs(mass_2(LepGood1_pt,LepGood1_eta,LepGood1_phi,LepGood1_mass,LepGood2_pt,LepGood2_eta,LepGood2_phi,LepGood2_mass)-91.2) > 20
+met25: MET_pt>25
+eleID: (abs(LepGood1_pdgId)!=11 || (LepGood1_convVeto && LepGood1_lostHits==0 && LepGood1_tightCharge>=2)) && (abs(LepGood2_pdgId)!=11 || (LepGood2_convVeto && LepGood2_lostHits==0 && LepGood2_tightCharge>=2))
+#muTightCharge: (abs(LepGood1_pdgId)!=13 || LepGood1_tightCharge>=1) && (abs(LepGood2_pdgId)!=13 || LepGood2_tightCharge>=1)
+
+
+##### channels
+ee : (abs(LepGood1_pdgId) + abs(LepGood2_pdgId)) == 22 ; Disable=True
+em : (abs(LepGood1_pdgId) + abs(LepGood2_pdgId)) == 24 ; Disable=True
+mm : (abs(LepGood1_pdgId) + abs(LepGood2_pdgId)) == 26 ; Disable=True
+
+
+
+

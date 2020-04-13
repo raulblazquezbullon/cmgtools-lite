@@ -1,0 +1,13 @@
+WZ+	: WZTo3LNu   : xsec  ; FillColor=ROOT.kOrange
+
+VV	: WWTo2L2Nu  : xsec  ; FillColor=ROOT.kGreen+2
+VV	: ZZTo2L2Nu  : xsec  ; FillColor=ROOT.kGreen+2
+VV	: ZZTo4L     : xsec  ; FillColor=ROOT.kGreen+2
+
+top	: TT	: xsec ; FillColor=ROOT.kRed+1
+top 	: T_tWch_noFullyHad : xsec ; FillColor=ROOT.kRed+1
+top 	: TBar_tWch_noFullyHad : xsec ; FillColor=ROOT.kRed+1
+
+DY      : DYJetsToLL_M10to50 : xsec ; FillColor=ROOT.kCyan+1
+DY      : DYJetsToLL_M50 : xsec ; FillColor=ROOT.kCyan+1
+
