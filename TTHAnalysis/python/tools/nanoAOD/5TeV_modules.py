@@ -158,8 +158,8 @@ recleaner_step2_tight_data = lambda : fastCombinedObjectRecleaner(label="ReclT",
 
 
 
-from CMGTools.TTHAnalysis.tools.eventVars_WZ import EventVarsWZ
-eventVars = lambda : EventVarsWZ('','Recl')
+from CMGTools.TTHAnalysis.tools.eventVars_5TeV import EventVars_5TeV
+eventVars = lambda : EventVars_5TeV('','Recl')
 
 
 from CMGTools.TTHAnalysis.tools.objTagger import ObjTagger

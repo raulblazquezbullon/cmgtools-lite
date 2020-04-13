@@ -32,7 +32,8 @@ trigger_2l   :	      $PromptFromMC 	: .*2lss.* 	: normSymm : 1.05
 ## normalization uncertainties
 norm_ZZ		 : ZZ					        : .*       : normSymm : 1.15
 norm_WW		 : WW					        : .*       : normSymm : 1.15
-norm_Fakes   	 : Nonprompt                                    : .*       : normSymm : 1.3
+norm_Fakes_2lss	 : Nonprompt                                    : .*2lss.* : normSymm : 1.5
+norm_Fakes_3l    : Nonprompt                                    : .*3l.*   : normSymm : 1.2
 norm_Convs   	 : Convs                                        : .*   	   : normSymm : 1.3
 norm_Flips	 : Flips					: .*2lss.* : normSymm : 1.2
 

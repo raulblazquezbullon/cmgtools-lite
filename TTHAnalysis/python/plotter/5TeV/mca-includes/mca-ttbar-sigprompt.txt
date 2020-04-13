@@ -8,9 +8,3 @@ VV	: WWTo2L2Nu  : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; FillCo
 VV	: ZZTo2L2Nu  : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; FillColor=ROOT.kTeal+5
 VV	: ZZTo4L     : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; FillColor=ROOT.kTeal+5
 
-
-#### samples for systematic uncertainties
-TT+  	: TT_hdampUp	    : 68.9 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; FillColor=ROOT.kRed+1, SkipMe=True
-TT+  	: TT_hdampDown	    : 68.9 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; FillColor=ROOT.kRed+1, SkipMe=True
-TT+  	: TT_TuneCP5Down    : 68.9 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; FillColor=ROOT.kRed+1, SkipMe=True
-TT+  	: TT_TuneCP5up	    : 68.9 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; FillColor=ROOT.kRed+1, SkipMe=True
