@@ -1,0 +1,19 @@
+alwaystrue: 1
+
+dilepGEN: (nGenDressedLepton) >= 2 
+osGEN: GenDressedLepton_pdgId[0]*GenDressedLepton_pdgId[1]<0
+cleanupGEN: mass_2(GenDressedLepton_pt[0],GenDressedLepton_eta[0],GenDressedLepton_phi[0],GenDressedLepton_mass[0],GenDressedLepton_pt[1],GenDressedLepton_eta[1],GenDressedLepton_phi[1],GenDressedLepton_mass[1]) > 20
+pt2010GEN: GenDressedLepton_pt[0]>20 && GenDressedLepton_pt[1]>10
+ZVetoGEN:  if3(abs(GenDressedLepton_pdgId[0])==abs(GenDressedLepton_pdgId[1]), abs(mass_2(GenDressedLepton_pt[0],GenDressedLepton_eta[0],GenDressedLepton_phi[0],GenDressedLepton_mass[0],GenDressedLepton_pt[1],GenDressedLepton_eta[1],GenDressedLepton_phi[1],GenDressedLepton_mass[1])-91.2)>15, 1)
+METGEN:    if3(abs(GenDressedLepton_pdgId[0])==abs(GenDressedLepton_pdgId[1]), GenMET_pt>30, 1)
+2jetsGEN:  has2GenJets25(nGenJet,GenJet_pt[0],GenJet_eta[0],GenJet_pt[1],GenJet_eta[1])
+
+
+eeGEN: abs(GenDressedLepton_pdgId[0])==11 && abs(GenDressedLepton_pdgId[1])==11; Disable=True
+emGEN: abs(GenDressedLepton_pdgId[0]) != abs(GenDressedLepton_pdgId[1]);         Disable=True
+mmGEN: abs(GenDressedLepton_pdgId[0])==13 && abs(GenDressedLepton_pdgId[1])==13; Disable=True
+sfGEN: abs(GenDressedLepton_pdgId[0]) == abs(GenDressedLepton_pdgId[1]);         Disable=True
+onZ: abs(mZ1-91.2)<15;	   				Disable=True
+
+
+

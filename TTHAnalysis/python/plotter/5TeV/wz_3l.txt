@@ -1,0 +1,24 @@
+alwaystrue: 1
+trilep: nLepFO==3
+cleanup: minMllAFAS > 12
+OSSF3l:  hasOSSF3l
+trigger: Trigger_5TeV_1e || Trigger_5TeV_1m || Trigger_5TeV_2e || Trigger_5TeV_2m
+ptcuts: passPtCuts(LepGood1_pt,LepGood1_pdgId,LepGood2_pt,LepGood2_pdgId,LepGood3_pt,LepGood3_pdgId)
+Zmass: abs(mZ_3l-91.2) < 30
+TT: LepGoodW_isLepTight && LepGoodZ1_isLepTight
+m3l: m3l > 100 
+lWpt20: lWpt > 20
+
+###########   
+cr_mTlW30: mTlW < 30; Disable=True
+cr_4leps: nLepFO==4; Disable=True
+
+##### channels
+eee : (abs(LepGood1_pdgId) + abs(LepGood2_pdgId) + abs(LepGood3_pdgId)) == 33 ; Disable=True
+eem : (abs(LepGood1_pdgId) + abs(LepGood2_pdgId) + abs(LepGood3_pdgId)) == 35 ; Disable=True
+emm : (abs(LepGood1_pdgId) + abs(LepGood2_pdgId) + abs(LepGood3_pdgId)) == 37 ; Disable=True
+mmm : (abs(LepGood1_pdgId) + abs(LepGood2_pdgId) + abs(LepGood3_pdgId)) == 39 ; Disable=True
+
+
+
+

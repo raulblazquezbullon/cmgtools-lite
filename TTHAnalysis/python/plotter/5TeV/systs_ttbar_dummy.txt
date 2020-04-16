@@ -1,0 +1,54 @@
+### Alias definitions. Careful to avoid trailing '.*' to avoid matching _promptsub
+$alias : PromptFromMC : TT|tW|VV|DY|Nonprompt
+$alias : top 	      : TT|tW
+
+# luminosity
+lumi_5TeV		: $PromptFromMC : .* : normSymm : 1.013
+
+## JES/JER
+jes		: $PromptFromMC : .* : templateAsymm; FakeRates=['5TeV/frs-jecs/fr-jesUp.txt'\,'5TeV/frs-jecs/fr-jesDn.txt']
+jer	  	: $PromptFromMC : .* : templateAsymm; FakeRates=['5TeV/frs-jecs/fr-jerUp.txt'\,'5TeV/frs-jecs/fr-jerDn.txt']
+unclusteredEn	: $PromptFromMC : .* : templateAsymm; FakeRates=['5TeV/frs-jecs/fr-unclUp.txt'\,'5TeV/frs-jecs/fr-unclDn.txt']
+
+## weights: 
+pileup 	    : $PromptFromMC : .* : templateAsymm; AddWeights=['puWeightUp/puWeight'\,'puWeightDown/puWeight'], DoesNotChangeEventSelection=True
+
+## L1 ECAL prefire
+L1PreFiring : $PromptFromMC : .* : templateAsymm; AddWeights=['PrefireWeight_Up/PrefireWeight'\,'PrefireWeight_Down/PrefireWeight'], DoesNotChangeEventSelection=True
+
+## lepton and trigger efficiencies
+trigger_2l   :	      $PromptFromMC : .* 	: normSymm : 1.02
+
+## lepton scale
+
+## background uncertainties
+norm_tW	      : tW  			: .* : normSymm : 1.2
+norm_DY	      : DY			: .* : normSymm : 1.2
+norm_Fakes    : Nonprompt               : .* : normSymm : 1.3
+norm_VV       : VV                 	: .* : normSymm : 1.2
+
+## theoretical uncertainties on signal:
+tt_isr	       :   TT	     :  .*	: templateAsymm; AddWeights=['PSWeight[2]'\,'PSWeight[0]'], DoesNotChangeEventSelection=True
+tt_fsr	       :   TT	     :  .*	: templateAsymm; AddWeights=['PSWeight[3]'\,'PSWeight[1]'], DoesNotChangeEventSelection=True
+
+tW_isr	       :   tW	     :  .*	: templateAsymm; AddWeights=['PSWeight[2]'\,'PSWeight[0]'], DoesNotChangeEventSelection=True
+tW_fsr	       :   tW	     :  .*	: templateAsymm; AddWeights=['PSWeight[3]'\,'PSWeight[1]'], DoesNotChangeEventSelection=True
+
+tt_scales      :   TT	     :  .*	: envelope; FakeRates=['5TeV/frs-scales/fr-muR_0p5_muF_0p5.txt'\,'5TeV/frs-scales/fr-muR_0p5_muF_2p0.txt'\,'5TeV/frs-scales/fr-muR_1p0_muF_2p0.txt'\,'5TeV/frs-scales/fr-muR_2p0_muF_1p0.txt'\,'5TeV/frs-scales/fr-muR_0p5_muF_1p0.txt'\,'5TeV/frs-scales/fr-muR_1p0_muF_0p5.txt'\,'5TeV/frs-scales/fr-muR_2p0_muF_0p5.txt'\,'5TeV/frs-scales/fr-muR_2p0_muF_2p0.txt'], DoesNotChangeEventSelection=True
+tW_scales      :   tW	     :  .*	: envelope; FakeRates=['5TeV/frs-scales/fr-muR_0p5_muF_0p5.txt'\,'5TeV/frs-scales/fr-muR_0p5_muF_2p0.txt'\,'5TeV/frs-scales/fr-muR_1p0_muF_2p0.txt'\,'5TeV/frs-scales/fr-muR_2p0_muF_1p0.txt'\,'5TeV/frs-scales/fr-muR_0p5_muF_1p0.txt'\,'5TeV/frs-scales/fr-muR_1p0_muF_0p5.txt'\,'5TeV/frs-scales/fr-muR_2p0_muF_0p5.txt'\,'5TeV/frs-scales/fr-muR_2p0_muF_2p0.txt'], DoesNotChangeEventSelection=True
+VV_scales      :   VV	     :  .*	: envelope; FakeRates=['5TeV/frs-scales/fr-muR_0p5_muF_0p5.txt'\,'5TeV/frs-scales/fr-muR_0p5_muF_2p0.txt'\,'5TeV/frs-scales/fr-muR_1p0_muF_2p0.txt'\,'5TeV/frs-scales/fr-muR_2p0_muF_1p0.txt'\,'5TeV/frs-scales/fr-muR_0p5_muF_1p0.txt'\,'5TeV/frs-scales/fr-muR_1p0_muF_0p5.txt'\,'5TeV/frs-scales/fr-muR_2p0_muF_0p5.txt'\,'5TeV/frs-scales/fr-muR_2p0_muF_2p0.txt'], DoesNotChangeEventSelection=True
+DY_scales      :   DY	     :  .*	: envelope; FakeRates=['5TeV/frs-scales/fr-muR_0p5_muF_0p5.txt'\,'5TeV/frs-scales/fr-muR_0p5_muF_2p0.txt'\,'5TeV/frs-scales/fr-muR_1p0_muF_2p0.txt'\,'5TeV/frs-scales/fr-muR_2p0_muF_1p0.txt'\,'5TeV/frs-scales/fr-muR_0p5_muF_1p0.txt'\,'5TeV/frs-scales/fr-muR_1p0_muF_0p5.txt'\,'5TeV/frs-scales/fr-muR_2p0_muF_0p5.txt'\,'5TeV/frs-scales/fr-muR_2p0_muF_2p0.txt'], DoesNotChangeEventSelection=True
+Nonprompt_scales      :   Nonprompt :  .*	: envelope; FakeRates=['5TeV/frs-scales/fr-muR_0p5_muF_0p5.txt'\,'5TeV/frs-scales/fr-muR_0p5_muF_2p0.txt'\,'5TeV/frs-scales/fr-muR_1p0_muF_2p0.txt'\,'5TeV/frs-scales/fr-muR_2p0_muF_1p0.txt'\,'5TeV/frs-scales/fr-muR_0p5_muF_1p0.txt'\,'5TeV/frs-scales/fr-muR_1p0_muF_0p5.txt'\,'5TeV/frs-scales/fr-muR_2p0_muF_0p5.txt'\,'5TeV/frs-scales/fr-muR_2p0_muF_2p0.txt'], DoesNotChangeEventSelection=True
+
+
+## PDF uncertainties
+tt_pdf :  TT  : .* : envelopeRMS; FakeRates=['5TeV/frs-pdfs/fr-pdf_0.txt'\,'5TeV/frs-pdfs/fr-pdf_1.txt'\,'5TeV/frs-pdfs/fr-pdf_2.txt'\,'5TeV/frs-pdfs/fr-pdf_3.txt'\,'5TeV/frs-pdfs/fr-pdf_4.txt'\,'5TeV/frs-pdfs/fr-pdf_5.txt'\,'5TeV/frs-pdfs/fr-pdf_6.txt'\,'5TeV/frs-pdfs/fr-pdf_7.txt'\,'5TeV/frs-pdfs/fr-pdf_8.txt'\,'5TeV/frs-pdfs/fr-pdf_9.txt'\,'5TeV/frs-pdfs/fr-pdf_10.txt'\,'5TeV/frs-pdfs/fr-pdf_11.txt'\,'5TeV/frs-pdfs/fr-pdf_12.txt'\,'5TeV/frs-pdfs/fr-pdf_13.txt'\,'5TeV/frs-pdfs/fr-pdf_14.txt'\,'5TeV/frs-pdfs/fr-pdf_15.txt'\,'5TeV/frs-pdfs/fr-pdf_16.txt'\,'5TeV/frs-pdfs/fr-pdf_17.txt'\,'5TeV/frs-pdfs/fr-pdf_18.txt'\,'5TeV/frs-pdfs/fr-pdf_19.txt'\,'5TeV/frs-pdfs/fr-pdf_20.txt'\,'5TeV/frs-pdfs/fr-pdf_21.txt'\,'5TeV/frs-pdfs/fr-pdf_22.txt'\,'5TeV/frs-pdfs/fr-pdf_23.txt'\,'5TeV/frs-pdfs/fr-pdf_24.txt'\,'5TeV/frs-pdfs/fr-pdf_25.txt'\,'5TeV/frs-pdfs/fr-pdf_26.txt'\,'5TeV/frs-pdfs/fr-pdf_27.txt'\,'5TeV/frs-pdfs/fr-pdf_28.txt'\,'5TeV/frs-pdfs/fr-pdf_29.txt'\,'5TeV/frs-pdfs/fr-pdf_30.txt'\,'5TeV/frs-pdfs/fr-pdf_31.txt'\,'5TeV/frs-pdfs/fr-pdf_32.txt'], DoesNotChangeEventSelection=True
+tW_pdf :  tW  : .* : envelopeRMS; FakeRates=['5TeV/frs-pdfs/fr-pdf_0.txt'\,'5TeV/frs-pdfs/fr-pdf_1.txt'\,'5TeV/frs-pdfs/fr-pdf_2.txt'\,'5TeV/frs-pdfs/fr-pdf_3.txt'\,'5TeV/frs-pdfs/fr-pdf_4.txt'\,'5TeV/frs-pdfs/fr-pdf_5.txt'\,'5TeV/frs-pdfs/fr-pdf_6.txt'\,'5TeV/frs-pdfs/fr-pdf_7.txt'\,'5TeV/frs-pdfs/fr-pdf_8.txt'\,'5TeV/frs-pdfs/fr-pdf_9.txt'\,'5TeV/frs-pdfs/fr-pdf_10.txt'\,'5TeV/frs-pdfs/fr-pdf_11.txt'\,'5TeV/frs-pdfs/fr-pdf_12.txt'\,'5TeV/frs-pdfs/fr-pdf_13.txt'\,'5TeV/frs-pdfs/fr-pdf_14.txt'\,'5TeV/frs-pdfs/fr-pdf_15.txt'\,'5TeV/frs-pdfs/fr-pdf_16.txt'\,'5TeV/frs-pdfs/fr-pdf_17.txt'\,'5TeV/frs-pdfs/fr-pdf_18.txt'\,'5TeV/frs-pdfs/fr-pdf_19.txt'\,'5TeV/frs-pdfs/fr-pdf_20.txt'\,'5TeV/frs-pdfs/fr-pdf_21.txt'\,'5TeV/frs-pdfs/fr-pdf_22.txt'\,'5TeV/frs-pdfs/fr-pdf_23.txt'\,'5TeV/frs-pdfs/fr-pdf_24.txt'\,'5TeV/frs-pdfs/fr-pdf_25.txt'\,'5TeV/frs-pdfs/fr-pdf_26.txt'\,'5TeV/frs-pdfs/fr-pdf_27.txt'\,'5TeV/frs-pdfs/fr-pdf_28.txt'\,'5TeV/frs-pdfs/fr-pdf_29.txt'\,'5TeV/frs-pdfs/fr-pdf_30.txt'\,'5TeV/frs-pdfs/fr-pdf_31.txt'\,'5TeV/frs-pdfs/fr-pdf_32.txt'], DoesNotChangeEventSelection=True
+VV_pdf :  VV  : .* : envelopeRMS; FakeRates=['5TeV/frs-pdfs/fr-pdf_0.txt'\,'5TeV/frs-pdfs/fr-pdf_1.txt'\,'5TeV/frs-pdfs/fr-pdf_2.txt'\,'5TeV/frs-pdfs/fr-pdf_3.txt'\,'5TeV/frs-pdfs/fr-pdf_4.txt'\,'5TeV/frs-pdfs/fr-pdf_5.txt'\,'5TeV/frs-pdfs/fr-pdf_6.txt'\,'5TeV/frs-pdfs/fr-pdf_7.txt'\,'5TeV/frs-pdfs/fr-pdf_8.txt'\,'5TeV/frs-pdfs/fr-pdf_9.txt'\,'5TeV/frs-pdfs/fr-pdf_10.txt'\,'5TeV/frs-pdfs/fr-pdf_11.txt'\,'5TeV/frs-pdfs/fr-pdf_12.txt'\,'5TeV/frs-pdfs/fr-pdf_13.txt'\,'5TeV/frs-pdfs/fr-pdf_14.txt'\,'5TeV/frs-pdfs/fr-pdf_15.txt'\,'5TeV/frs-pdfs/fr-pdf_16.txt'\,'5TeV/frs-pdfs/fr-pdf_17.txt'\,'5TeV/frs-pdfs/fr-pdf_18.txt'\,'5TeV/frs-pdfs/fr-pdf_19.txt'\,'5TeV/frs-pdfs/fr-pdf_20.txt'\,'5TeV/frs-pdfs/fr-pdf_21.txt'\,'5TeV/frs-pdfs/fr-pdf_22.txt'\,'5TeV/frs-pdfs/fr-pdf_23.txt'\,'5TeV/frs-pdfs/fr-pdf_24.txt'\,'5TeV/frs-pdfs/fr-pdf_25.txt'\,'5TeV/frs-pdfs/fr-pdf_26.txt'\,'5TeV/frs-pdfs/fr-pdf_27.txt'\,'5TeV/frs-pdfs/fr-pdf_28.txt'\,'5TeV/frs-pdfs/fr-pdf_29.txt'\,'5TeV/frs-pdfs/fr-pdf_30.txt'\,'5TeV/frs-pdfs/fr-pdf_31.txt'\,'5TeV/frs-pdfs/fr-pdf_32.txt'], DoesNotChangeEventSelection=True
+DY_pdf :  DY  : .* : envelopeRMS; FakeRates=['5TeV/frs-pdfs/fr-pdf_0.txt'\,'5TeV/frs-pdfs/fr-pdf_1.txt'\,'5TeV/frs-pdfs/fr-pdf_2.txt'\,'5TeV/frs-pdfs/fr-pdf_3.txt'\,'5TeV/frs-pdfs/fr-pdf_4.txt'\,'5TeV/frs-pdfs/fr-pdf_5.txt'\,'5TeV/frs-pdfs/fr-pdf_6.txt'\,'5TeV/frs-pdfs/fr-pdf_7.txt'\,'5TeV/frs-pdfs/fr-pdf_8.txt'\,'5TeV/frs-pdfs/fr-pdf_9.txt'\,'5TeV/frs-pdfs/fr-pdf_10.txt'\,'5TeV/frs-pdfs/fr-pdf_11.txt'\,'5TeV/frs-pdfs/fr-pdf_12.txt'\,'5TeV/frs-pdfs/fr-pdf_13.txt'\,'5TeV/frs-pdfs/fr-pdf_14.txt'\,'5TeV/frs-pdfs/fr-pdf_15.txt'\,'5TeV/frs-pdfs/fr-pdf_16.txt'\,'5TeV/frs-pdfs/fr-pdf_17.txt'\,'5TeV/frs-pdfs/fr-pdf_18.txt'\,'5TeV/frs-pdfs/fr-pdf_19.txt'\,'5TeV/frs-pdfs/fr-pdf_20.txt'\,'5TeV/frs-pdfs/fr-pdf_21.txt'\,'5TeV/frs-pdfs/fr-pdf_22.txt'\,'5TeV/frs-pdfs/fr-pdf_23.txt'\,'5TeV/frs-pdfs/fr-pdf_24.txt'\,'5TeV/frs-pdfs/fr-pdf_25.txt'\,'5TeV/frs-pdfs/fr-pdf_26.txt'\,'5TeV/frs-pdfs/fr-pdf_27.txt'\,'5TeV/frs-pdfs/fr-pdf_28.txt'\,'5TeV/frs-pdfs/fr-pdf_29.txt'\,'5TeV/frs-pdfs/fr-pdf_30.txt'\,'5TeV/frs-pdfs/fr-pdf_31.txt'\,'5TeV/frs-pdfs/fr-pdf_32.txt'], DoesNotChangeEventSelection=True
+Nonprompt_pdf :  Nonprompt  : .* : envelopeRMS; FakeRates=['5TeV/frs-pdfs/fr-pdf_0.txt'\,'5TeV/frs-pdfs/fr-pdf_1.txt'\,'5TeV/frs-pdfs/fr-pdf_2.txt'\,'5TeV/frs-pdfs/fr-pdf_3.txt'\,'5TeV/frs-pdfs/fr-pdf_4.txt'\,'5TeV/frs-pdfs/fr-pdf_5.txt'\,'5TeV/frs-pdfs/fr-pdf_6.txt'\,'5TeV/frs-pdfs/fr-pdf_7.txt'\,'5TeV/frs-pdfs/fr-pdf_8.txt'\,'5TeV/frs-pdfs/fr-pdf_9.txt'\,'5TeV/frs-pdfs/fr-pdf_10.txt'\,'5TeV/frs-pdfs/fr-pdf_11.txt'\,'5TeV/frs-pdfs/fr-pdf_12.txt'\,'5TeV/frs-pdfs/fr-pdf_13.txt'\,'5TeV/frs-pdfs/fr-pdf_14.txt'\,'5TeV/frs-pdfs/fr-pdf_15.txt'\,'5TeV/frs-pdfs/fr-pdf_16.txt'\,'5TeV/frs-pdfs/fr-pdf_17.txt'\,'5TeV/frs-pdfs/fr-pdf_18.txt'\,'5TeV/frs-pdfs/fr-pdf_19.txt'\,'5TeV/frs-pdfs/fr-pdf_20.txt'\,'5TeV/frs-pdfs/fr-pdf_21.txt'\,'5TeV/frs-pdfs/fr-pdf_22.txt'\,'5TeV/frs-pdfs/fr-pdf_23.txt'\,'5TeV/frs-pdfs/fr-pdf_24.txt'\,'5TeV/frs-pdfs/fr-pdf_25.txt'\,'5TeV/frs-pdfs/fr-pdf_26.txt'\,'5TeV/frs-pdfs/fr-pdf_27.txt'\,'5TeV/frs-pdfs/fr-pdf_28.txt'\,'5TeV/frs-pdfs/fr-pdf_29.txt'\,'5TeV/frs-pdfs/fr-pdf_30.txt'\,'5TeV/frs-pdfs/fr-pdf_31.txt'\,'5TeV/frs-pdfs/fr-pdf_32.txt'], DoesNotChangeEventSelection=True
+
+## statistical uncertainties (taken into account with --amc of the makeShapeCards)
+
+
+

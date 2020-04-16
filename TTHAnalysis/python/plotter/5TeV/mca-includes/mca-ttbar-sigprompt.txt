@@ -1,0 +1,10 @@
+TT+	: TT_PS   : xsec  : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; FillColor=ROOT.kRed+1
+
+tW	: T_tWch_noFullyHad_PS     : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; FillColor=ROOT.kOrange+1
+tW	: TBar_tWch_noFullyHad_PS  : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; FillColor=ROOT.kOrange+1
+
+VV	: WZTo3LNu   : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; FillColor=ROOT.kTeal+5
+VV	: WWTo2L2Nu  : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; FillColor=ROOT.kTeal+5
+VV	: ZZTo2L2Nu  : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; FillColor=ROOT.kTeal+5
+VV	: ZZTo4L     : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; FillColor=ROOT.kTeal+5
+

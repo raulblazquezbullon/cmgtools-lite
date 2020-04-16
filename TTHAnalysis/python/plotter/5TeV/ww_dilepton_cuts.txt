@@ -1,0 +1,21 @@
+alwaystrue: 1
+dilep: nLepFO==2
+os: (LepGood1_charge*LepGood2_charge<0)
+em: abs(LepGood1_pdgId) != abs(LepGood2_pdgId)
+cleanup: minMllAFAS > 20
+trigger: Trigger_5TeV_1e || Trigger_5TeV_1m || Trigger_5TeV_2e || Trigger_5TeV_2m
+pt2010: LepGood1_conePt>20 && LepGood2_conePt>10
+TT: LepGood1_isLepTight && LepGood2_isLepTight
+dilpt:   pt_2(LepGood1_conePt,LepGood1_phi,LepGood2_conePt,LepGood2_phi)>20; Disable=True
+dphill:  abs(deltaPhi(LepGood1_phi,LepGood2_phi)) < 2.7; Disable=True
+0jet: nJet25==0 
+#met25: MET_pt>25
+
+ee: abs(LepGood1_pdgId)==11 && abs(LepGood2_pdgId)==11; Disable=True
+em: abs(LepGood1_pdgId) != abs(LepGood2_pdgId);         Disable=True
+mm: abs(LepGood1_pdgId)==13 && abs(LepGood2_pdgId)==13; Disable=True
+
+
+
+
+
