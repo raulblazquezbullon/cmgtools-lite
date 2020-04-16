@@ -287,11 +287,17 @@ LeptonDict["elecs"] = {
 }
 
 muonID = lambda l : ( abs(l.eta) < LeptonDict["muons"]["eta"] and l.pt > LeptonDict["muons"]["pt"] and l.pfRelIso04_all < LeptonDict["muons"]["isorelpf"]
-                     and l.tightId == 1 )
+                      and l.tightId == 1 )
 
 elecID = lambda l : ( (abs(l.eta) < LeptonDict["elecs"]["eta2"] and (abs(l.eta) < LeptonDict["elecs"]["eta0"] or abs(l.eta) > LeptonDict["elecs"]["eta1"]) )
-                     and l.pt > LeptonDict["elecs"]["pt"] and l.tightId >= 4 and l.lostHits <= 1 and abs(l.dxy) < LeptonDict["elecs"]["dxy"]
-                     and abs(l.dz) < LeptonDict["elecs"]["dz"] )
+                       and l.pt > LeptonDict["elecs"]["pt"] and l.tightId >= 4 and l.lostHits <= 1 and abs(l.dxy) < LeptonDict["elecs"]["dxy"]
+                       and abs(l.dz) < LeptonDict["elecs"]["dz"] )
+
+partmuonID = lambda l : ( abs(l.eta) < LeptonDict["muons"]["eta"] and l.pt > LeptonDict["muons"]["pt"])
+partelecID = lambda l : ( (abs(l.eta) < LeptonDict["elecs"]["eta2"] and (abs(l.eta) < LeptonDict["elecs"]["eta0"] or abs(l.eta) > LeptonDict["elecs"]["eta1"]) ) and l.pt > LeptonDict["elecs"]["pt"] )
+
+#### IMPLEMENTAR SELECCION NIVEL PARTICULA
+
 
 from PhysicsTools.NanoAODTools.postprocessing.modules.common.collectionMerger import collectionMerger
 lepMerge = lambda : collectionMerger(input = ["Electron","Muon"],
@@ -301,20 +307,28 @@ lepMerge = lambda : collectionMerger(input = ["Electron","Muon"],
 # Jet treatments
 from PhysicsTools.NanoAODTools.postprocessing.tools import deltaR
 
-centralJetSel = lambda j : j.pt > 25 and abs(j.eta) < 2.4 and j.jetId > 0
+ctrJetSel = lambda j : j.pt > 30 and abs(j.eta) <  2.4 and j.jetId > 1
+fwdJetSel = lambda j : j.pt > 30 and abs(j.eta) >= 2.4 and j.jetId > 1
+
+loosectrJetSel = lambda j : j.pt > 20 and j.pt <= 30 and abs(j.eta) <  2.4 and j.jetId > 1
+loosefwdJetSel = lambda j : j.pt > 20 and j.pt <= 30 and abs(j.eta) >= 2.4 and j.jetId > 1
 
 from CMGTools.TTHAnalysis.tools.nanoAOD.nBJetCounter import nBJetCounter
-nBJetDeepCSV25NoRecl  = lambda : nBJetCounter("DeepCSV25",  "btagDeepB",     centralJetSel)
-nBJetDeepFlav25NoRecl = lambda : nBJetCounter("DeepFlav25", "btagDeepFlavB", centralJetSel)
+#nBJetDeepCSVNoRecl  = lambda : nBJetCounter("DeepCSV",  "btagDeepB",     ctrJetSel)
 
-from CMGTools.TTHAnalysis.tools.eventVars_tWRun2 import EventVarstWRun2
+nBJetDeepFlavNoRecl = lambda : nBJetCounter("DeepFlav", "btagDeepFlavB", ctrJetSel)
+nBJetDeepFlavNoRecl = lambda : nBJetCounter("DeepFlav", "btagDeepFlavB", loosectrJetSel)
+
+
+from CMGTools.TTHAnalysis.tools.eventVars_tWRun2 import EventVars_tWRun2
 eventVars = lambda : EventVarstWRun2('', 'Recl')
 
+
 from CMGTools.TTHAnalysis.tools.objTagger import ObjTagger
-isMatchRightCharge = lambda : ObjTagger('isMatchRightCharge','LepGood', [lambda l,g : (l.genPartFlav==1 or l.genPartFlav == 15) and (g.pdgId*l.pdgId > 0) ], linkColl='GenPart',linkVar='genPartIdx')
-mcMatchId     = lambda : ObjTagger('mcMatchId','LepGood', [lambda l : (l.genPartFlav==1 or l.genPartFlav == 15) ])
-mcPromptGamma = lambda : ObjTagger('mcPromptGamma','LepGood', [lambda l : (l.genPartFlav==22)])
-mcMatch_seq   = [ isMatchRightCharge, mcMatchId ,mcPromptGamma]
+isMatchRightCharge = lambda : ObjTagger('isMatchRightCharge', 'LepGood', [lambda l,g : (l.genPartFlav==1 or l.genPartFlav == 15) and (g.pdgId*l.pdgId > 0) ], linkColl='GenPart',linkVar='genPartIdx')
+mcMatchId          = lambda : ObjTagger('mcMatchId',          'LepGood', [lambda l : (l.genPartFlav==1 or l.genPartFlav == 15) ])
+mcPromptGamma      = lambda : ObjTagger('mcPromptGamma',      'LepGood', [lambda l : (l.genPartFlav==22)])
+mcMatch_seq        = [ isMatchRightCharge, mcMatchId ,mcPromptGamma]
 
 # %%%%%%%%%%%%%%%%%%%%%%%%%% WWbb
 # TODO
