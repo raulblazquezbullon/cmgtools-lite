@@ -12,7 +12,7 @@ from CMGTools.TTHAnalysis.tools.nanoAOD.friendVariableProducerTools import decla
 
 
 
-class EventVars_5TeV(Module):
+class EventVars_tWRun2(Module):
     def __init__(self, label = "", recllabel = 'Recl', doSystJEC = True, variations = []):
         self.namebranches = [ "MT_met_lep1",
                             "MT_met_lep2",
@@ -41,19 +41,22 @@ class EventVars_5TeV(Module):
             
         self.branches.extend(['drlep12','drlep13','drlep23','dphilep12','dphilep13','dphilep23','ptlep12'])
 
+
     # old interface (CMG)
     def listBranches(self):
         return self.branches[:]
     def __call__(self,event):
         return self.run(event, CMGCollection, "met")
 
+
     # new interface (nanoAOD-tools)
     def beginFile(self, inputFile, outputFile, inputTree, wrappedOutputTree):
         declareOutput(self, wrappedOutputTree, self.branches)
     def analyze(self, event):
         writeOutput(self, self.run(event, NanoAODCollection))
-        return True   
+        return True
     
+
     # logic of the algorithm
     def run(self,event,Collection):
         allret = {}
@@ -68,7 +71,7 @@ class EventVars_5TeV(Module):
             allret['dphilep12'] = deltaPhi(leps[0],leps[1])
             allret['ptlep12'] = (leps[0].p4()+leps[1].p4()).Pt()
         else: 
-            allret['drlep12'] = 0 
+            allret['drlep12'] = 0
             allret['dphilep12'] = 0
             allret['ptlep12'] = 0
 
@@ -78,8 +81,8 @@ class EventVars_5TeV(Module):
             allret['dphilep13'] = deltaPhi(leps[0],leps[2])
             allret['dphilep23'] = deltaPhi(leps[1],leps[2])
         else:
-            allret['drlep13'] = 0 
-            allret['drlep23'] = 0 
+            allret['drlep13'] = 0
+            allret['drlep23'] = 0
             allret['dphilep13'] = 0
             allret['dphilep23'] = 0
 
@@ -97,9 +100,9 @@ class EventVars_5TeV(Module):
         allret['idx_lW']    = -1
 
 
-        idxlW  = -1 
+        idxlW  = -1
         idxlZ1 = -1
-        idxlZ2 = -1        
+        idxlZ2 = -1
         if nFO >= 3:
             allret['m3l'] = (leps[0].p4()+leps[1].p4()+leps[2].p4()).M()
             
@@ -201,6 +204,7 @@ class EventVars_5TeV(Module):
                 allret[br+self.label+self.systsJEC[_var]] = ret[br]
 
     return allret
+
 
 
 if __name__ == '__main__':
