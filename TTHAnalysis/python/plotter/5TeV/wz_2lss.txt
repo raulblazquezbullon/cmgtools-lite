@@ -12,6 +12,8 @@ met25: MET_pt>25
 eleID: (abs(LepGood1_pdgId)!=11 || (LepGood1_convVeto && LepGood1_lostHits==0 && LepGood1_tightCharge>=2)) && (abs(LepGood2_pdgId)!=11 || (LepGood2_convVeto && LepGood2_lostHits==0 && LepGood2_tightCharge>=2))
 #muTightCharge: (abs(LepGood1_pdgId)!=13 || LepGood1_tightCharge>=1) && (abs(LepGood2_pdgId)!=13 || LepGood2_tightCharge>=1)
 
+##### CR
+crwjets: nLepTight==1; Disable=True
 
 ##### channels
 ee : (abs(LepGood1_pdgId) + abs(LepGood2_pdgId)) == 22 ; Disable=True

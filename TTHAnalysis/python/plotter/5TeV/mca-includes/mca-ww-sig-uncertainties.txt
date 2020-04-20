@@ -1,0 +1,51 @@
+WW	: WWTo2L2Nu   : xsec  : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; FillColor=ROOT.kRed+1
+
+
+WW_scales_0  : WWTo2L2Nu :  xsec : (LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0)*LHEScaleWeight[0]; genSumWeightName="LHEScaleSumw[0]/LHEScaleSumw[4]*genEventSumw", 
+WW_scales_1  : WWTo2L2Nu :  xsec : (LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0)*LHEScaleWeight[1]; genSumWeightName="LHEScaleSumw[1]/LHEScaleSumw[4]*genEventSumw", 
+WW_scales_2  : WWTo2L2Nu :  xsec : (LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0)*LHEScaleWeight[2]; genSumWeightName="LHEScaleSumw[2]/LHEScaleSumw[4]*genEventSumw", 
+WW_scales_3  : WWTo2L2Nu :  xsec : (LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0)*LHEScaleWeight[3]; genSumWeightName="LHEScaleSumw[3]/LHEScaleSumw[4]*genEventSumw", 
+WW_scales_5  : WWTo2L2Nu :  xsec : (LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0)*LHEScaleWeight[5]; genSumWeightName="LHEScaleSumw[5]/LHEScaleSumw[4]*genEventSumw", 
+WW_scales_6  : WWTo2L2Nu :  xsec : (LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0)*LHEScaleWeight[6]; genSumWeightName="LHEScaleSumw[6]/LHEScaleSumw[4]*genEventSumw", 
+WW_scales_7  : WWTo2L2Nu :  xsec : (LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0)*LHEScaleWeight[7]; genSumWeightName="LHEScaleSumw[7]/LHEScaleSumw[4]*genEventSumw", 
+WW_scales_8  : WWTo2L2Nu :  xsec : (LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0)*LHEScaleWeight[8]; genSumWeightName="LHEScaleSumw[8]/LHEScaleSumw[4]*genEventSumw", 
+
+
+## pdf uncertainties:
+WW_pdf_0  : WWTo2L2Nu  : xsec : LHEPdfWeight[0] *(LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0) ; genSumWeightName="LHEPdfSumw[0]/LHEScaleSumw[4]*genEventSumw",  
+WW_pdf_1  : WWTo2L2Nu  : xsec : LHEPdfWeight[1] *(LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0) ; genSumWeightName="LHEPdfSumw[1]/LHEScaleSumw[4]*genEventSumw",  
+WW_pdf_2  : WWTo2L2Nu  : xsec : LHEPdfWeight[2] *(LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0) ; genSumWeightName="LHEPdfSumw[2]/LHEScaleSumw[4]*genEventSumw",  
+WW_pdf_3  : WWTo2L2Nu  : xsec : LHEPdfWeight[3] *(LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0) ; genSumWeightName="LHEPdfSumw[3]/LHEScaleSumw[4]*genEventSumw",  
+WW_pdf_4  : WWTo2L2Nu  : xsec : LHEPdfWeight[4] *(LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0) ; genSumWeightName="LHEPdfSumw[4]/LHEScaleSumw[4]*genEventSumw",  
+WW_pdf_5  : WWTo2L2Nu  : xsec : LHEPdfWeight[5] *(LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0) ; genSumWeightName="LHEPdfSumw[5]/LHEScaleSumw[4]*genEventSumw",  
+WW_pdf_6  : WWTo2L2Nu  : xsec : LHEPdfWeight[6] *(LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0) ; genSumWeightName="LHEPdfSumw[6]/LHEScaleSumw[4]*genEventSumw",  
+WW_pdf_7  : WWTo2L2Nu  : xsec : LHEPdfWeight[7] *(LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0) ; genSumWeightName="LHEPdfSumw[7]/LHEScaleSumw[4]*genEventSumw",  
+WW_pdf_8  : WWTo2L2Nu  : xsec : LHEPdfWeight[8] *(LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0) ; genSumWeightName="LHEPdfSumw[8]/LHEScaleSumw[4]*genEventSumw",  
+WW_pdf_9  : WWTo2L2Nu  : xsec : LHEPdfWeight[9] *(LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0) ; genSumWeightName="LHEPdfSumw[9]/LHEScaleSumw[4]*genEventSumw",  
+WW_pdf_10 : WWTo2L2Nu  : xsec : LHEPdfWeight[10]*(LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0) ; genSumWeightName="LHEPdfSumw[10]/LHEScaleSumw[4]*genEventSumw",  
+WW_pdf_11 : WWTo2L2Nu  : xsec : LHEPdfWeight[11]*(LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0) ; genSumWeightName="LHEPdfSumw[11]/LHEScaleSumw[4]*genEventSumw",  
+WW_pdf_12 : WWTo2L2Nu  : xsec : LHEPdfWeight[12]*(LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0) ; genSumWeightName="LHEPdfSumw[12]/LHEScaleSumw[4]*genEventSumw",  
+WW_pdf_13 : WWTo2L2Nu  : xsec : LHEPdfWeight[13]*(LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0) ; genSumWeightName="LHEPdfSumw[13]/LHEScaleSumw[4]*genEventSumw",  
+WW_pdf_14 : WWTo2L2Nu  : xsec : LHEPdfWeight[14]*(LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0) ; genSumWeightName="LHEPdfSumw[14]/LHEScaleSumw[4]*genEventSumw",  
+WW_pdf_15 : WWTo2L2Nu  : xsec : LHEPdfWeight[15]*(LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0) ; genSumWeightName="LHEPdfSumw[15]/LHEScaleSumw[4]*genEventSumw",  
+WW_pdf_16 : WWTo2L2Nu  : xsec : LHEPdfWeight[16]*(LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0) ; genSumWeightName="LHEPdfSumw[16]/LHEScaleSumw[4]*genEventSumw",  
+WW_pdf_17 : WWTo2L2Nu  : xsec : LHEPdfWeight[17]*(LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0) ; genSumWeightName="LHEPdfSumw[17]/LHEScaleSumw[4]*genEventSumw",  
+WW_pdf_18 : WWTo2L2Nu  : xsec : LHEPdfWeight[18]*(LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0) ; genSumWeightName="LHEPdfSumw[18]/LHEScaleSumw[4]*genEventSumw",  
+WW_pdf_19 : WWTo2L2Nu  : xsec : LHEPdfWeight[19]*(LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0) ; genSumWeightName="LHEPdfSumw[19]/LHEScaleSumw[4]*genEventSumw",  
+WW_pdf_20 : WWTo2L2Nu  : xsec : LHEPdfWeight[20]*(LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0) ; genSumWeightName="LHEPdfSumw[20]/LHEScaleSumw[4]*genEventSumw",  
+WW_pdf_21 : WWTo2L2Nu  : xsec : LHEPdfWeight[21]*(LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0) ; genSumWeightName="LHEPdfSumw[21]/LHEScaleSumw[4]*genEventSumw",  
+WW_pdf_22 : WWTo2L2Nu  : xsec : LHEPdfWeight[22]*(LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0) ; genSumWeightName="LHEPdfSumw[22]/LHEScaleSumw[4]*genEventSumw",  
+WW_pdf_23 : WWTo2L2Nu  : xsec : LHEPdfWeight[23]*(LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0) ; genSumWeightName="LHEPdfSumw[23]/LHEScaleSumw[4]*genEventSumw",  
+WW_pdf_24 : WWTo2L2Nu  : xsec : LHEPdfWeight[24]*(LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0) ; genSumWeightName="LHEPdfSumw[24]/LHEScaleSumw[4]*genEventSumw",  
+WW_pdf_25 : WWTo2L2Nu  : xsec : LHEPdfWeight[25]*(LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0) ; genSumWeightName="LHEPdfSumw[25]/LHEScaleSumw[4]*genEventSumw",  
+WW_pdf_26 : WWTo2L2Nu  : xsec : LHEPdfWeight[26]*(LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0) ; genSumWeightName="LHEPdfSumw[26]/LHEScaleSumw[4]*genEventSumw",  
+WW_pdf_27 : WWTo2L2Nu  : xsec : LHEPdfWeight[27]*(LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0) ; genSumWeightName="LHEPdfSumw[27]/LHEScaleSumw[4]*genEventSumw",  
+WW_pdf_28 : WWTo2L2Nu  : xsec : LHEPdfWeight[28]*(LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0) ; genSumWeightName="LHEPdfSumw[28]/LHEScaleSumw[4]*genEventSumw",  
+WW_pdf_29 : WWTo2L2Nu  : xsec : LHEPdfWeight[29]*(LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0) ; genSumWeightName="LHEPdfSumw[29]/LHEScaleSumw[4]*genEventSumw",  
+WW_pdf_30 : WWTo2L2Nu  : xsec : LHEPdfWeight[30]*(LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0) ; genSumWeightName="LHEPdfSumw[30]/LHEScaleSumw[4]*genEventSumw",  
+
+### alphaS
+WW_alphaS_down   : WWTo2L2Nu  : xsec : LHEPdfWeight[31]*(LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0) ; genSumWeightName="LHEPdfSumw[31]/LHEScaleSumw[4]*genEventSumw",  
+WW_alphaS_up     : WWTo2L2Nu  : xsec : LHEPdfWeight[32]*(LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0) ; genSumWeightName="LHEPdfSumw[32]/LHEScaleSumw[4]*genEventSumw",  
+
+
