@@ -50,7 +50,7 @@ public:
   typedef math::PtEtaPhiMLorentzVectorD ptvec;
   typedef math::XYZTLorentzVectorD crvec;
   
-  fastCombinedObjectRecleanerMassVetoCalculator(CollectionSkimmer &skim_lepsF, CollectionSkimmer &skim_lepsT, bool doVetoZ, bool doVetoLMf, bool doVetoLMt) : skim_lepsF_(skim_lepsF), skim_lepsT_(skim_lepsT), doVetoZ_(doVetoZ), doVetoLMf_(doVetoLMf), doVetoLMt_(doVetoLMt), cleanElectrons_(0.3){}
+  fastCombinedObjectRecleanerMassVetoCalculator(CollectionSkimmer &skim_lepsF, CollectionSkimmer &skim_lepsT, bool doVetoZ, bool doVetoLMf, bool doVetoLMt, float cleanElectrons = 0.3) : skim_lepsF_(skim_lepsF), skim_lepsT_(skim_lepsT), doVetoZ_(doVetoZ), doVetoLMf_(doVetoLMf), doVetoLMt_(doVetoLMt), cleanElectrons_(cleanElectrons){}
   
   void setLeptons(rint *nLep, rfloats *lepPt, rfloats *lepEta, rfloats *lepPhi, rfloats *lepMass, rints *lepPdgId) {
     nLep_ = nLep; Lep_pt_ = lepPt; Lep_eta_ = lepEta; Lep_phi_ = lepPhi; Lep_mass_ = lepMass; Lep_pdgid_ = lepPdgId;

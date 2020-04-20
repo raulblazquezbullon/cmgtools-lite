@@ -7,8 +7,9 @@ import ROOT, os
 from PhysicsTools.Heppy.physicsobjects.Jet import _btagWPs
 
 class fastCombinedObjectRecleaner(Module):
-    def __init__(self,label,inlabel,cleanTausWithLooseLeptons,cleanJetsWithFOTaus,doVetoZ,doVetoLMf,doVetoLMt,jetPts,jetPtsFwd,btagL_thr,btagM_thr,jetCollection='Jet',jetBTag='btagDeepFlavB',tauCollection='Tau',isMC=None, 
-                 variations=["jesTotalCorr","jesTotalUnCorr","jer"]):
+    def __init__(self, label, inlabel, cleanTausWithLooseLeptons, cleanJetsWithFOTaus, doVetoZ, doVetoLMf, doVetoLMt,
+                 jetPts, jetPtsFwd, btagL_thr, btagM_thr, jetCollection = 'Jet', jetBTag = 'btagDeepFlavB', tauCollection = 'Tau',
+                 isMC = None, variations = ["jesTotalCorr", "jesTotalUnCorr", "jer"], cleanElectrons = 0.3):
 
         self.label = "" if (label in ["",None]) else ("_"+label)
         self.inlabel = inlabel
@@ -28,6 +29,7 @@ class fastCombinedObjectRecleaner(Module):
         if isMC is not None: 
             self.isMC = isMC
         self.variations = variations
+        self.cleanElectrons = cleanElectrons
 
     def initComponent(self, component):
         self.isMC = component.isMC
@@ -75,7 +77,8 @@ class fastCombinedObjectRecleaner(Module):
         if "/fastCombinedObjectRecleanerMassVetoCalculator_cxx.so" not in ROOT.gSystem.GetLibraries():
             print "Load C++ recleaner mass and veto calculator module"
             ROOT.gROOT.ProcessLine(".L %s/src/CMGTools/TTHAnalysis/python/tools/fastCombinedObjectRecleanerMassVetoCalculator.cxx+O" % os.environ['CMSSW_BASE'])
-        self._workerMV = ROOT.fastCombinedObjectRecleanerMassVetoCalculator(self._helper_lepsF.cppImpl(),self._helper_lepsT.cppImpl(),self.doVetoZ,self.doVetoLMf,self.doVetoLMt)
+        self._workerMV = ROOT.fastCombinedObjectRecleanerMassVetoCalculator(self._helper_lepsF.cppImpl(), self._helper_lepsT.cppImpl(),
+                                                                            self.doVetoZ, self.doVetoLMf, self.doVetoLMt, self.cleanElectrons)
 
     def beginFile(self, inputFile, outputFile, inputTree, wrappedOutputTree):
         for x in self._helpers:
