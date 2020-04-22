@@ -1,0 +1,21 @@
+TT+       : TT                   : xsec ; FillColor=ROOT.kRed+1
+
+tW        : T_tWch_noFullyHad    : xsec ; FillColor=ROOT.kOrange+1
+tW        : TBar_tWch_noFullyHad : xsec ; FillColor=ROOT.kOrange+1
+
+DY        : DYJetsToLL_M10to50   : xsec ; FillColor=ROOT.kCyan+1
+DY        : DY0JetsToLL_M50      : xsec ; FillColor=ROOT.kCyan+1
+DY        : DY1JetsToLL_M50      : xsec ; FillColor=ROOT.kCyan+1
+DY        : DY2JetsToLL_M50      : xsec ; FillColor=ROOT.kCyan+1
+DY        : DY3JetsToLL_M50      : xsec ; FillColor=ROOT.kCyan+1
+
+Nonprompt : TT                   : 68.9     : ((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==0) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==0) ) ; FillColor=ROOT.kGray+2
+
+Nonprompt : T_tWch_noFullyHad    : 1.629072 : ((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==0) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==0) ) ; FillColor=ROOT.kGray+2
+Nonprompt : TBar_tWch_noFullyHad : 1.629072 : ((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==0) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==0) ) ; FillColor=ROOT.kGray+2
+
+Nonprompt : DYJetsToLL_M10to50   : xsec     : ((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==0) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==0) ) ; FillColor=ROOT.kGray+2
+Nonprompt : DY0JetsToLL_M50      : xsec     : ((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==0) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==0) ) ; FillColor=ROOT.kGray+2
+Nonprompt : DY1JetsToLL_M50      : xsec     : ((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==0) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==0) ) ; FillColor=ROOT.kGray+2
+Nonprompt : DY2JetsToLL_M50      : xsec     : ((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==0) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==0) ) ; FillColor=ROOT.kGray+2
+Nonprompt : DY3JetsToLL_M50      : xsec     : ((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==0) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==0) ) ; FillColor=ROOT.kGray+2

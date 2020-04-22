@@ -1,0 +1,3 @@
+data : SingleMuon_Run2017G;  years="2017-5TeV"
+data : DoubleMuon_Run2017G;  years="2017-5TeV"
+data : HighEGJet_Run2017G;   years="2017-5TeV"
