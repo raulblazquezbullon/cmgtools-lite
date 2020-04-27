@@ -30,6 +30,9 @@ flav_mmm : (abs(LepZ1_pdgId)+abs(LepZ2_pdgId)+abs(LepW_pdgId)-33)/2 == 3; Disabl
 flav_xxx : (abs(LepZ1_pdgId)+abs(LepZ2_pdgId)+abs(LepW_pdgId)-33)/2 == 0 || (abs(LepZ1_pdgId)+abs(LepZ2_pdgId)+abs(LepW_pdgId)-33)/2 == 3; Disable=True
 flav_xxy : (abs(LepZ1_pdgId)+abs(LepZ2_pdgId)+abs(LepW_pdgId)-33)/2 == 1 || (abs(LepZ1_pdgId)+abs(LepZ2_pdgId)+abs(LepW_pdgId)-33)/2 == 2; Disable=True
 
+#OneJet
+onejet : nJetSel_Mini>0
+
 m3lmetblind : $DATA{m3Lmet <= 400} $MC{1} $FASTSIM{1}; Disable=True
 NOallTight  : !(LepSel_isTight[0] &&  LepSel_isTight[1] && LepSel_isTight[2]); Disable= True
 Cha_Tight  : LepGood_tightCharge[0]==2 &&   LepGood_tightCharge[1]==2 &&  LepGood_tightCharge[2]==2; Disable= True

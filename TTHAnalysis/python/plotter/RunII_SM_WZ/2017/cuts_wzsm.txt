@@ -28,6 +28,8 @@ CRZZ   : m3L >= 100 && nBJetTight25_Mini == 0  && abs(mll_3l - 91.16) < 15 && nL
 CRTT   : m3L >= 100 && nBJetTight25_Mini > 0   && nLepGood < 4; Disable=True
 CRconv : m3L < 100 && nBJetTight25_Mini == 0  && MET_pt_central  < 30 && nLepGood < 4; Disable=True
 
+#OneJet
+onejet : nJetSel_Mini>0
 
 chargeplus  : LepW_pdgId < 0 ; Disable=True
 chargeminus : LepW_pdgId > 0 ; Disable=True
