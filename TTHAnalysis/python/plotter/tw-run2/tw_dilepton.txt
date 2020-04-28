@@ -1,14 +1,9 @@
 alwaystrue: 1
-dilep: nLepFO>=2 && (LepGood1_charge*LepGood2_charge<0)
-cleanup: minMllAFAS > 20
-trigger: Trigger_5TeV_1e || Trigger_5TeV_1m || Trigger_5TeV_2e || Trigger_5TeV_2m
-pt2010: LepGood1_conePt>20 && LepGood2_conePt>10
-TT: LepGood1_isLepTight && LepGood2_isLepTight
-ZVeto:  if3(abs(LepGood1_pdgId)==abs(LepGood2_pdgId), abs(mZ1-91.2)>15, 1)
-MET:    if3(abs(LepGood1_pdgId)==abs(LepGood2_pdgId), MET_pt>30, 1)
-2jets:  nJet25>=2
-
-1btag:  nBJetMedium25>=1;				Disable=True
-ee: abs(LepGood1_pdgId)==11 && abs(LepGood2_pdgId)==11; Disable=True
-em: abs(LepGood1_pdgId) != abs(LepGood2_pdgId);         Disable=True
-mm: abs(LepGood1_pdgId)==13 && abs(LepGood2_pdgId)==13; Disable=True
+trigger:    pass_trigger
+metfilters: Flag_goodVertices && Flag_globalSuperTightHalo2016Filter && Flag_HBHENoiseFilter && Flag_HBHENoiseIsoFilter && Flag_EcalDeadCellTriggerPrimitiveFilter && Flag_BadPFMuonFilter
+emu:        channel == 1
+dilep:      (nLepGood >= 2) && (LepGood_pt[0] > 25) && (LepGood_pt[1] > 20) && !isSS && (Mll > 20)
+zveto:      (channel == 1) || (abs(Mll - 91) > 15)
+met:        (channel == 1) || (MET_pt_nom > 40)
+njets:      nJet30_Recl >= 2
+nbtags:     nBJetMedium30_Recl >= 1

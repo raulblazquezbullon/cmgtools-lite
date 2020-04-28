@@ -1,3 +1,1 @@
-incl_sigprompt : + ; IncludeMca="WZ-5TeV/mca-includes/mca-3l-sigprompt.txt"
-incl_convs     : + ; IncludeMca="WZ-5TeV/mca-includes/mca-3l-convs.txt"
-incl_mcfakes   : + ; IncludeMca="WZ-5TeV/mca-includes/mca-3l-mcfakes.txt"
+ttbar : Tree_TTTo2L2Nu_TuneCP5_PSweights_0 : 88.28769753 ; genSumWeightName="genEventSumw_"
