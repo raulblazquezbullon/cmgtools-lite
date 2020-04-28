@@ -32,9 +32,9 @@ pileupWeights = {
     "runII" : 'puWeight',
 }
 triggerTrees = {
-    2016    : '--Fs {P}/trigger/',
-    2017    : '--Fs {P}/trigger/',
-    2018    : '--Fs {P}/trigger/',
+    2016    : '--Fs {P}/trigger_2016/',
+    2017    : '--Fs {P}/trigger_2017/',
+    2018    : '--Fs {P}/trigger_2018/',
     "runII" : '--Fs {P}/trigger/',
 }
 
