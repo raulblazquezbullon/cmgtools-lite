@@ -1,15 +1,14 @@
-from PhysicsTools.NanoAODTools.postprocessing.framework.eventloop import Module 
-
-
+from PhysicsTools.NanoAODTools.postprocessing.framework.eventloop import Module
 from CMGTools.TTHAnalysis.tools.collectionSkimmer import CollectionSkimmer
 from CMGTools.TTHAnalysis.tools.nanoAOD.friendVariableProducerTools import declareOutput
-import ROOT, os
 from PhysicsTools.Heppy.physicsobjects.Jet import _btagWPs
+import ROOT, os
+import warnings as wr
 
 class fastCombinedObjectRecleaner(Module):
     def __init__(self, label, inlabel, cleanTausWithLooseLeptons, cleanJetsWithFOTaus, doVetoZ, doVetoLMf, doVetoLMt,
                  jetPts, jetPtsFwd, btagL_thr, btagM_thr, jetCollection = 'Jet', jetBTag = 'btagDeepFlavB', tauCollection = 'Tau',
-                 isMC = None, variations = ["jesTotalCorr", "jesTotalUnCorr", "jer"], cleanElectrons = 0.3):
+                 isMC = None, variations = ["jesTotalCorr", "jesTotalUnCorr", "jer"], cleanElectrons = 0.3, year_ = None):
 
         self.label = "" if (label in ["",None]) else ("_"+label)
         self.inlabel = inlabel
@@ -30,6 +29,13 @@ class fastCombinedObjectRecleaner(Module):
             self.isMC = isMC
         self.variations = variations
         self.cleanElectrons = cleanElectrons
+        self.year = year_
+
+        if self.jetBTag != "btagDeepFlavB":
+            wr.warn("WARNING: although there is an argument to choose b-tagging algorithm in the constructor of this class, actually, it is hardcoded so that it will always be deep flavour :).")
+
+        return
+
 
     def initComponent(self, component):
         self.isMC = component.isMC
@@ -122,10 +128,14 @@ class fastCombinedObjectRecleaner(Module):
 
     def analyze(self, event):
         # Init
-        if hasattr(event, "year") :
-            wpL = _btagWPs["DeepFlav_%d_%s"%(event.year,"L")][1]
-            wpM = _btagWPs["DeepFlav_%d_%s"%(event.year,"M")][1]
+        if   hasattr(event, "year"):
+            wpL = _btagWPs["DeepFlav_%d_%s"%(event.year, "L")][1]
+            wpM = _btagWPs["DeepFlav_%d_%s"%(event.year, "M")][1]
+        elif self.year != "None":
+            wpL = _btagWPs["DeepFlav_%d_%s"%(self.year, "L")][1]
+            wpM = _btagWPs["DeepFlav_%d_%s"%(self.year, "M")][1]
         else:
+            wr.warn("WARNING: as you did not choose year, we will use deepcsv as algotihm with random values for the working points.")
             wpL = _btagWPs["DeepCSVL"][1]
             wpM = _btagWPs["DeepCSVM"][1]
             
