@@ -74,7 +74,7 @@ class EventVars_tWRun2(Module):
 
         if event.nLepGood >= 2:
             #allret["isSS"] = st.pack("_Bool", leps[0].charge * leps[1].charge)
-            allret["isSS"] = leps[0].charge * leps[1].charge
+            allret["isSS"] = int(leps[0].charge == leps[1].charge)
             if   ((abs(leps[0].pdgId) == 13 and abs(leps[1].pdgId) == 11) or
                  (abs(leps[0].pdgId) == 11 and abs(leps[1].pdgId) == 13)):
                 #allret["channel"] = st.pack("b", ch.ElMu)
