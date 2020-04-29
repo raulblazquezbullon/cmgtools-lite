@@ -182,9 +182,9 @@ class Unfolder(object):
         self.year=args.year
         lumi_per_year={
             "2016" : '35.9 fb^{-1}',
-            "2017" : '41.2 fb^{-1}',
-            "2018" : '58.9 fb^{-1}',
-            "runII": '136.0 fb^{-1}',
+            "2017" : '41.5 fb^{-1}',
+            "2018" : '59.8 fb^{-1}',
+            "runII": '137.1 fb^{-1}',
             }
         CMS_lumi.lumi_13TeV = lumi_per_year[self.year]
         self.response_nom=None

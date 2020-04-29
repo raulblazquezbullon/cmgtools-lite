@@ -1,8 +1,8 @@
 lumi = {
     2016: 35.9,
-    2017: 41.2,
-    2018: 58.9,
-    "runII": 136.0,
+    2017: 41.5,
+    2018: 59.8,
+    "runII": 137.1,
 }
 prefiringTrees = {
     2016    : '--FMCs {P}/trigger_prefiring/',
