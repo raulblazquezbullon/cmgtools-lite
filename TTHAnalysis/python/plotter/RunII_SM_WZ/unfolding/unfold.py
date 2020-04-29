@@ -49,9 +49,10 @@ class ResponseComputation:
         
 class DatacardReader:
 
-    def __init__(self, inputCard, signalString=None):
+    def __init__(self, inputCard, year, signalString=None):
         print('Initialization for card %s' % inputCard)
         self.inputCard=inputCard
+        self.year=year
         self.signalString=signalString
         self.systs = [] #Systematics, ordered by appearance
         self.normSysts = [] # Normalization-only uncertainties
@@ -100,12 +101,12 @@ class DatacardReader:
                 if 'shape' in tempLine[1]:
                     print('Line is %s' % tempLine)
                     print('\t\t Accessing syst %s for process %s ' % (self.systs[self.systsLines.index(line)], self.signalString) )
-                    print(os.path.join(os.path.dirname(self.inputCard), self.shapeFiles[0]))
+                    print(os.path.join(os.path.dirname(self.inputCard), self.shapeFiles[0].replace('2016', self.year)))
                     print('x_%s_%sUp' %( self.signalString, self.systs[self.systsLines.index(line)]))
                     print('x_%s_%sDown' %( self.signalString, self.systs[self.systsLines.index(line)] )) 
-                    handle_No=ROOT.TFile.Open(os.path.join(os.path.dirname(self.inputCard), self.shapeFiles[0]))
-                    handle_Up=ROOT.TFile.Open(os.path.join(os.path.dirname(self.inputCard), self.shapeFiles[0]))
-                    handle_Dn=ROOT.TFile.Open(os.path.join(os.path.dirname(self.inputCard), self.shapeFiles[0]))
+                    handle_No=ROOT.TFile.Open(os.path.join(os.path.dirname(self.inputCard), self.shapeFiles[0].replace('2016', self.year)))
+                    handle_Up=ROOT.TFile.Open(os.path.join(os.path.dirname(self.inputCard), self.shapeFiles[0].replace('2016', self.year)))
+                    handle_Dn=ROOT.TFile.Open(os.path.join(os.path.dirname(self.inputCard), self.shapeFiles[0].replace('2016', self.year)))
                     myshapeNo=copy.deepcopy(handle_No.Get('x_%s' %( self.signalString ) ))
                     myshapeUp=copy.deepcopy(handle_Up.Get('x_%s_%sUp' %( self.signalString, self.systs[self.systsLines.index(line)] ) ))
                     myshapeDn=copy.deepcopy(handle_Dn.Get('x_%s_%sDown' %( self.signalString, self.systs[self.systsLines.index(line)] ) ))
@@ -179,6 +180,13 @@ class Unfolder(object):
         self.logx = False if self.var is not 'MWZ' else True
         self.unfold=None
         self.year=args.year
+        lumi_per_year={
+            "2016" : '35.9 fb^{-1}',
+            "2017" : '41.2 fb^{-1}',
+            "2018" : '58.9 fb^{-1}',
+            "runII": '136.0 fb^{-1}',
+            }
+        CMS_lumi.lumi_13TeV = lumi_per_year[self.year]
         self.response_nom=None
         self.response_alt=None
         self.response_inc=None
@@ -414,7 +422,7 @@ class Unfolder(object):
                     self.response_alt.SetBinError(ibin, jbin, 0)
                     if self.checkLO: self.response_inc.SetBinError(ibin, jbin, 0)
                     
-        datacardReader = DatacardReader(os.path.join(self.inputDir, 'responses/{year}_{finalState}_fitWZonly_{var}{charge}/prompt_altWZ_Pow/WZSR_{year}.card.txt'.format(year=self.year, finalState=self.finalState, var=self.var,charge=self.charge)), 'prompt_altWZ_Pow')
+        datacardReader = DatacardReader(os.path.join(self.inputDir, 'responses/{year}_{finalState}_fitWZonly_{var}{charge}/prompt_altWZ_Pow/WZSR_{year}.card.txt'.format(year=self.year, finalState=self.finalState, var=self.var,charge=self.charge)), self.year, 'prompt_altWZ_Pow')
         self.normSystsList, self.shapeSystsList = datacardReader.getNormAndShapeSysts()
         # Get theory variations
         self.get_truth_theory_variations(datacardReader)
@@ -983,7 +991,7 @@ class Unfolder(object):
         print(histDetNormBgrTotal.GetNbinsX())
         CMS_lumi.CMS_lumi(output, 4, 0, aLittleExtra=0.08)
         output.SaveAs(os.path.join(self.outputDir, '2_p1_unfold_%s_%s_%s.pdf' % (label, key, self.var)))
-        #output.SaveAs(os.path.join(self.outputDir, '2_p1_unfold_%s_%s_%s.png' % (label, key, self.var)))
+        output.SaveAs(os.path.join(self.outputDir, '2_p1_unfold_%s_%s_%s.png' % (label, key, self.var)))
         output.SaveAs(os.path.join(self.outputDir, '2_p1_unfold_%s_%s_%s.C' % (label, key, self.var)))
         output.Clear()
         # draw generator-level distribution:
@@ -1032,7 +1040,7 @@ class Unfolder(object):
         leg_2.Draw()
         CMS_lumi.CMS_lumi(output, 4, 0, aLittleExtra=0.08)
         output.SaveAs(os.path.join(self.outputDir, '2_p2_unfold_%s_%s_%s.pdf' % (label, key, self.var)))
-        #output.SaveAs(os.path.join(self.outputDir, '2_p2_unfold_%s_%s_%s.png' % (label, key, self.var)))
+        output.SaveAs(os.path.join(self.outputDir, '2_p2_unfold_%s_%s_%s.png' % (label, key, self.var)))
         output.SaveAs(os.path.join(self.outputDir, '2_p2_unfold_%s_%s_%s.C' % (label, key, self.var)))
         output.Clear()
         # show detector level distributions
@@ -1077,7 +1085,7 @@ class Unfolder(object):
         leg_3.Draw()
         CMS_lumi.CMS_lumi(output, 4, 0, aLittleExtra=0.08)
         output.SaveAs(os.path.join(self.outputDir, '2_p3_unfold_%s_%s_%s.pdf' % (label, key, self.var)))
-        #output.SaveAs(os.path.join(self.outputDir, '2_p3_unfold_%s_%s_%s.png' % (label, key, self.var)))
+        output.SaveAs(os.path.join(self.outputDir, '2_p3_unfold_%s_%s_%s.png' % (label, key, self.var)))
         output.SaveAs(os.path.join(self.outputDir, '2_p3_unfold_%s_%s_%s.C' % (label, key, self.var)))
         output.Clear()
         #output.cd(4) 
@@ -1102,7 +1110,7 @@ class Unfolder(object):
         leg_4.Draw()
         CMS_lumi.CMS_lumi(output, 4, 0, aLittleExtra=0.08)
         output.SaveAs(os.path.join(self.outputDir, '2_p4_unfold_%s_%s_%s.pdf' % (label, key, self.var)))
-        #output.SaveAs(os.path.join(self.outputDir, '2_p4_unfold_%s_%s_%s.png' % (label, key, self.var)))
+        output.SaveAs(os.path.join(self.outputDir, '2_p4_unfold_%s_%s_%s.png' % (label, key, self.var)))
         output.SaveAs(os.path.join(self.outputDir, '2_p4_unfold_%s_%s_%s.C' % (label, key, self.var)))
         output.Clear()
         if self.regmode is not ROOT.TUnfold.kRegModeNone:
@@ -1122,7 +1130,7 @@ class Unfolder(object):
             # show the L curve
             CMS_lumi.CMS_lumi(output, 4, 0, aLittleExtra=0.08)
             output.SaveAs(os.path.join(self.outputDir, '2_p5_unfold_%s_%s_%s.pdf' % (label, key, self.var)))
-            #output.SaveAs(os.path.join(self.outputDir, '2_p5_unfold_%s_%s_%s.png' % (label, key, self.var)))
+            output.SaveAs(os.path.join(self.outputDir, '2_p5_unfold_%s_%s_%s.png' % (label, key, self.var)))
             output.SaveAs(os.path.join(self.outputDir, '2_p5_unfold_%s_%s_%s.C' % (label, key, self.var)))
             output.Clear()
             #output.cd(6)
@@ -1136,7 +1144,7 @@ class Unfolder(object):
             bestLcurve.Draw("P")
             CMS_lumi.CMS_lumi(output, 4, 0, aLittleExtra=0.08)
             output.SaveAs(os.path.join(self.outputDir, '2_p6_unfold_%s_%s_%s.pdf' % (label, key, self.var)))
-            #output.SaveAs(os.path.join(self.outputDir, '2_p6_unfold_%s_%s_%s.png' % (label, key, self.var)))
+            output.SaveAs(os.path.join(self.outputDir, '2_p6_unfold_%s_%s_%s.png' % (label, key, self.var)))
             output.SaveAs(os.path.join(self.outputDir, '2_p6_unfold_%s_%s_%s.C' % (label, key, self.var)))
             output.Clear()
        
@@ -1163,7 +1171,7 @@ class Unfolder(object):
         CMS_lumi.CMS_lumi(output, 4, 0, aLittleExtra=0.08)
         ROOT.gPad.Update()
         output.SaveAs(os.path.join(self.outputDir, '2_p7_unfold_%s_%s_%s.pdf' % (label, key, self.var)))
-        #output.SaveAs(os.path.join(self.outputDir, '2_p7_unfold_%s_%s_%s.png' % (label, key, self.var)))
+        output.SaveAs(os.path.join(self.outputDir, '2_p7_unfold_%s_%s_%s.png' % (label, key, self.var)))
         #outputti.SaveAs(os.path.join(self.outputDir, '2_p7_unfold_%s_%s_%s.C' % (label, key, self.var)))
         output.Clear()
         #output.cd(8)
@@ -1171,7 +1179,7 @@ class Unfolder(object):
         histCorr.Draw('COLZ')
         CMS_lumi.CMS_lumi(output, 4, 0, aLittleExtra=0.08)
         output.SaveAs(os.path.join(self.outputDir, '2_p8_unfold_%s_%s_%s.pdf' % (label, key, self.var)))
-        #output.SaveAs(os.path.join(self.outputDir, '2_p8_unfold_%s_%s_%s.png' % (label, key, self.var)))
+        output.SaveAs(os.path.join(self.outputDir, '2_p8_unfold_%s_%s_%s.png' % (label, key, self.var)))
         output.SaveAs(os.path.join(self.outputDir, '2_p8_unfold_%s_%s_%s.C' % (label, key, self.var)))
         #output.SaveAs(os.path.join(self.outputDir, '2_unfold_%s_%s_%s.png' % (label, key, self.var)))
  
@@ -1328,7 +1336,7 @@ class Unfolder(object):
         tdr.setTDRStyle()
         CMS_lumi.CMS_lumi(moneyplot, 4, 0, aLittleExtra=0.08)
         moneyplot.SaveAs(os.path.join(self.outputDir, '3_differentialXsec_%s_%s_%s.pdf' % (label, key, self.var)))
-        #moneyplot.SaveAs(os.path.join(self.outputDir, '3_differentialXsec_%s_%s_%s.png' % (label, key, self.var)))
+        moneyplot.SaveAs(os.path.join(self.outputDir, '3_differentialXsec_%s_%s_%s.png' % (label, key, self.var)))
         moneyplot.SaveAs(os.path.join(self.outputDir, '3_differentialXsec_%s_%s_%s.C' % (label, key, self.var)))
         # Dump to txt
         with open(os.path.join(self.outputDir, '3_differentialXsec_%s_%s_%s.txt' % (label, key, self.var)), 'w') as text_dumper:
@@ -1370,7 +1378,7 @@ def main(args):
     # Should move it to be specifiable from command line, probably
     vardict = {
         'Zpt'       : ['p_{T}^{Z} [GeV]'          , 'p_{T}^{Z}'          ],
-        #'LeadJetPt' : ['Leading jet p_{T} [GeV]', 'p_{T}^{jet}'        ],
+        'LeadJetPt' : ['Leading jet p_{T} [GeV]', 'p_{T}^{jet}'        ],
         'MWZ'       : ['M(WZ) [GeV]'             , 'M_{WZ}'             ],
         'Wpt'       : ['p_{T}^{W} [GeV]'          , 'p_{T}^{W}'          ],
         'Njets'      : ['N_{jets}'                 , 'N_{jets}^{gen}'    ],
