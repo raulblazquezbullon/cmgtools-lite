@@ -70,36 +70,32 @@ class EventVars_tWRun2(Module):
         allret = {}
 
         # ============================ Variables not susceptible to JEC
-        leps = [l for l in Collection(event, "LepGood")]
+        leps    = [l for l in Collection(event, "LepGood")]
+        leps_4m = [l.p4() for l in leps]
+        for i in range(len(leps_4m)):
+            leps_4m[i].SetPtEtaPhiM(leps[i].pt_corrAll, leps_4m[i].Eta(), leps_4m[i].Phi(), leps_4m[i].M())
 
         if event.nLepGood >= 2:
-            #allret["isSS"] = st.pack("_Bool", leps[0].charge * leps[1].charge)
             allret["isSS"] = int(leps[0].charge == leps[1].charge)
             if   ((abs(leps[0].pdgId) == 13 and abs(leps[1].pdgId) == 11) or
                  (abs(leps[0].pdgId) == 11 and abs(leps[1].pdgId) == 13)):
-                #allret["channel"] = st.pack("b", ch.ElMu)
                 allret["channel"] = ch.ElMu
             elif (abs(leps[0].pdgId) == 13 and abs(leps[1].pdgId) == 13):
-                #allret["channel"] = st.pack("b", ch.Muon)
                 allret["channel"] = ch.Muon
             elif (abs(leps[0].pdgId) == 11 and abs(leps[1].pdgId) == 11):
-                #allret["channel"] = st.pack("b", ch.Elec)
                 allret["channel"] = ch.Elec
             else:
-                #allret["channel"] = st.pack("b", ch.NoChan)
                 allret["channel"] = ch.NoChan
 
-            allret["Lep1Lep2_Pt"]   = (leps[0].p4() + leps[1].p4()).Pt()
+            allret["Lep1Lep2_Pt"]   = (leps_4m[0] + leps_4m[1]).Pt()
             allret["Lep1Lep2_DPhi"] = deltaPhi(leps[0], leps[1])
-            allret["Mll"]           = (leps[0].p4() + leps[1].p4()).M()
+            allret["Mll"]           = (leps_4m[0] + leps_4m[1]).M()
 
         else:
-            #allret["isSS"]          = st.pack("_Bool", 0)
             allret["isSS"]          = 0
             allret["Lep1Lep2_Pt"]   = 0
             allret["Lep1Lep2_DPhi"] = 0
             allret["Mll"]           = 0
-            #allret["channel"]       = st.pack("b", ch.NoChan)
             allret["channel"]       = ch.NoChan
 
 

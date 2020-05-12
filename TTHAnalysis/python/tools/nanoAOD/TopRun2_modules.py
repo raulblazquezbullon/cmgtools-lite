@@ -22,57 +22,75 @@ def _fires(ev, path):
 
 triggerGroups = dict(
     Trigger_1e = {
-        2016 : lambda ev : _fires(ev,'HLT_Ele27_WPTight_Gsf'),
-        2017 : lambda ev : _fires(ev,'HLT_Ele35_WPTight_Gsf'),
-        2018 : lambda ev : _fires(ev,'HLT_Ele32_WPTight_Gsf'),
+        2016 : lambda ev : _fires(ev, 'HLT_Ele27_WPTight_Gsf'),
+        2017 : lambda ev : _fires(ev, 'HLT_Ele35_WPTight_Gsf'),
+        2018 : lambda ev : _fires(ev, 'HLT_Ele32_WPTight_Gsf'),
     },
     Trigger_1m = {
-        2016 : lambda ev : _fires(ev,'HLT_IsoMu24')        or _fires(ev,'HLT_IsoTkMu24'),
-        2017 : lambda ev : _fires(ev,'HLT_IsoMu24_eta2p1') or _fires(ev,'HLT_IsoMu27'),
-        2018 : lambda ev : _fires(ev,'HLT_IsoMu24'),
+        2016 : lambda ev : (   _fires(ev, 'HLT_IsoMu24')
+                            or _fires(ev, 'HLT_IsoTkMu24')),
+        2017 : lambda ev : (   _fires(ev, 'HLT_IsoMu24_eta2p1')
+                            or _fires(ev, 'HLT_IsoMu27')),
+        2018 : lambda ev :     _fires(ev, 'HLT_IsoMu24'),
     },
     Trigger_2e = {
-        2016 : lambda ev : _fires(ev,'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ'),
-        2017 : lambda ev : _fires(ev,'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ') or _fires(ev,'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL'),
-        2018 : lambda ev : _fires(ev,'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ') or _fires(ev,'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL'),
+        2016 : lambda ev :    _fires(ev,'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ'),
+        2017 : lambda ev : (  _fires(ev,'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ')
+                           or _fires(ev,'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL')),
+        2018 : lambda ev : (   _fires(ev,'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ')
+                            or _fires(ev,'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL')),
     },
     Trigger_2m = {
-        2016 : lambda ev : (_fires(ev,'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL')    or _fires(ev, 'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL') or
-                            _fires(ev,'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ') or _fires(ev,'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ')),
-        2017 : lambda ev : (_fires(ev,'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ') or _fires(ev,'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8') or
-                            _fires(ev,'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8')),
-        2018 : lambda ev : _fires(ev,'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8'),
+        2016 : lambda ev : (   _fires(ev, 'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL')
+                            or _fires(ev, 'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL')
+                            or _fires(ev, 'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ')
+                            or _fires(ev, 'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ')),
+        2017 : lambda ev : (   _fires(ev,'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ')
+                            or _fires(ev,'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8')
+                            or _fires(ev,'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8')),
+        2018 : lambda ev :     _fires(ev,'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8'),
     },
     Trigger_em = {
-        2016 : lambda ev : (_fires(ev, 'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL')   or _fires(ev,"HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL") or
-                             _fires(ev,'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ') or _fires(ev, "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ")),
-        2017 :  lambda ev : (_fires(ev,'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL')    or _fires(ev,'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ') or
-                             _fires(ev,'HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ') or _fires(ev,'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ')),
-        2018 :  lambda ev : (_fires(ev,'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL')    or _fires(ev,'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ') or
-                             _fires(ev,'HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ') or _fires(ev,'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ')),
+        2016 : lambda ev : (   _fires(ev, 'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL')
+                            or _fires(ev, "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL")
+                            or _fires(ev, 'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ')
+                            or _fires(ev, "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ")),
+        2017 : lambda ev : (   _fires(ev,'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL')
+                            or _fires(ev,'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ')
+                            or _fires(ev,'HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ')
+                            or _fires(ev,'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ')),
+        2018 : lambda ev : (   _fires(ev,'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL')
+                            or _fires(ev,'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ')
+                            or _fires(ev,'HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ')
+                            or _fires(ev,'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ')),
+    },
+    Trigger_em_mc = {
+        2016 : lambda ev : (   _fires(ev, 'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL')
+                            or _fires(ev, "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL")),
+        2017 : lambda ev : (   _fires(ev,'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL')
+                            or _fires(ev,'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ')
+                            or _fires(ev,'HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ')
+                            or _fires(ev,'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ')),
+        2018 : lambda ev : (   _fires(ev,'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL')
+                            or _fires(ev,'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ')
+                            or _fires(ev,'HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ')
+                            or _fires(ev,'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ')),
     },
 )
 
 
 from CMGTools.TTHAnalysis.tools.evtTagger import EvtTagger
-Trigger_1e_2016  = lambda : EvtTagger('Trigger_1e',  [ lambda ev : triggerGroups['Trigger_1e'][2016](ev) ])
-Trigger_1m_2016  = lambda : EvtTagger('Trigger_1m',  [ lambda ev : triggerGroups['Trigger_1m'][2016](ev) ])
-Trigger_2e_2016  = lambda : EvtTagger('Trigger_2e',  [ lambda ev : triggerGroups['Trigger_2e'][2016](ev) ])
-Trigger_2m_2016  = lambda : EvtTagger('Trigger_2m',  [ lambda ev : triggerGroups['Trigger_2m'][2016](ev) ])
-Trigger_em_2016  = lambda : EvtTagger('Trigger_em',  [ lambda ev : triggerGroups['Trigger_em'][2016](ev) ])
+#Trigger_1e = lambda : EvtTagger('Trigger_1e',  [ lambda ev : triggerGroups['Trigger_1e'][ev.year](ev) ])
+#Trigger_1m = lambda : EvtTagger('Trigger_1m',  [ lambda ev : triggerGroups['Trigger_1m'][ev.year](ev) ])
+#Trigger_2e = lambda : EvtTagger('Trigger_2e',  [ lambda ev : triggerGroups['Trigger_2e'][ev.year](ev) ])
+#Trigger_2m = lambda : EvtTagger('Trigger_2m',  [ lambda ev : triggerGroups['Trigger_2m'][ev.year](ev) ])
+#Trigger_em = lambda : EvtTagger('Trigger_em',  [ lambda ev : triggerGroups['Trigger_em'][ev.year](ev) ])
 
-Trigger_1e_2017  = lambda : EvtTagger('Trigger_1e',  [ lambda ev : triggerGroups['Trigger_1e'][2017](ev) ])
-Trigger_1m_2017  = lambda : EvtTagger('Trigger_1m',  [ lambda ev : triggerGroups['Trigger_1m'][2017](ev) ])
-Trigger_2e_2017  = lambda : EvtTagger('Trigger_2e',  [ lambda ev : triggerGroups['Trigger_2e'][2017](ev) ])
-Trigger_2m_2017  = lambda : EvtTagger('Trigger_2m',  [ lambda ev : triggerGroups['Trigger_2m'][2017](ev) ])
-Trigger_em_2017  = lambda : EvtTagger('Trigger_em',  [ lambda ev : triggerGroups['Trigger_em'][2017](ev) ])
-
-Trigger_1e_2018  = lambda : EvtTagger('Trigger_1e',  [ lambda ev : triggerGroups['Trigger_1e'][2018](ev) ])
-Trigger_1m_2018  = lambda : EvtTagger('Trigger_1m',  [ lambda ev : triggerGroups['Trigger_1m'][2018](ev) ])
-Trigger_2e_2018  = lambda : EvtTagger('Trigger_2e',  [ lambda ev : triggerGroups['Trigger_2e'][2018](ev) ])
-Trigger_2m_2018  = lambda : EvtTagger('Trigger_2m',  [ lambda ev : triggerGroups['Trigger_2m'][2018](ev) ])
-Trigger_em_2018  = lambda : EvtTagger('Trigger_em',  [ lambda ev : triggerGroups['Trigger_em'][2018](ev) ])
-
+Trigger_1e = lambda : EvtTagger('Trigger_1e',  [ lambda ev : (ev.HLT_Ele27_WPTight_Gsf == 1) ])
+Trigger_1m = lambda : EvtTagger('Trigger_1m',  [ lambda ev : (ev.HLT_IsoTkMu24 == 1 or ev.HLT_IsoMu24 == 1) ])
+Trigger_2e = lambda : EvtTagger('Trigger_2e',  [ lambda ev : (ev.HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ == 1) ])
+Trigger_2m = lambda : EvtTagger('Trigger_2m',  [ lambda ev : (ev.HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL == 1 or ev.HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL == 1) ])
+Trigger_em = lambda : EvtTagger('Trigger_em',  [ lambda ev : (ev.HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL == 1 or ev.HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL == 1) ])
 
 
 
@@ -84,9 +102,10 @@ cond_singleelec = [ lambda ev : ((   ev.channel == ch.ElMu and (not ev.Trigger_e
 cond_doublemuon = [ lambda ev : (    ev.channel == ch.Muon and ev.Trigger_2m) ]
 cond_doubleeg   = [ lambda ev : (    ev.channel == ch.Elec and ev.Trigger_2e) ]
 cond_muoneg     = [ lambda ev : (    ev.channel == ch.ElMu and ev.Trigger_em) ]
+
 cond_mc         = [ lambda ev : (   (ev.channel == ch.ElMu and (ev.Trigger_em or ev.Trigger_1m or ev.Trigger_1e))
-                                  or (ev.channel == ch.Muon and (ev.Trigger_1m or ev.Trigger_2m))
-                                  or (ev.channel == ch.Elec and (ev.Trigger_1e or ev.Trigger_2e)) )]
+                                 or (ev.channel == ch.Muon and (ev.Trigger_1m or ev.Trigger_2m))
+                                 or (ev.channel == ch.Elec and (ev.Trigger_1e or ev.Trigger_2e)) )]
 
 remove_overlap_singlemuon = lambda : EvtTagger('pass_trigger', cond_singlemuon)
 remove_overlap_singleelec = lambda : EvtTagger('pass_trigger', cond_singleelec)
@@ -95,9 +114,7 @@ remove_overlap_doubleeg   = lambda : EvtTagger('pass_trigger', cond_doubleeg)
 remove_overlap_muoneg     = lambda : EvtTagger('pass_trigger', cond_muoneg)
 remove_overlap_mc         = lambda : EvtTagger('pass_trigger', cond_mc)
 
-triggerSeq_2016 = [Trigger_1e_2016, Trigger_1m_2016, Trigger_2e_2016, Trigger_2m_2016, Trigger_em_2016]
-triggerSeq_2017 = [Trigger_1e_2017, Trigger_1m_2017, Trigger_2e_2017, Trigger_2m_2017, Trigger_em_2017]
-triggerSeq_2018 = [Trigger_1e_2018, Trigger_1m_2018, Trigger_2e_2018, Trigger_2m_2018, Trigger_em_2018]
+triggerSeq = [Trigger_1e, Trigger_1m, Trigger_2e, Trigger_2m, Trigger_em]
 
 # =========================================================================================================================
 # ============================================================================================ OTHER GENERAL MODULES
@@ -143,15 +160,19 @@ IDDict["jets"] = {
     "jetid_2018" : 1,  # > X
 }
 
-muonID = lambda l : ( abs(l.eta) < IDDict["muons"]["eta"] and l.pt > IDDict["muons"]["pt"] and l.pfRelIso04_all < IDDict["muons"]["isorelpf"]
+#muonID = lambda l : ( abs(l.eta) < IDDict["muons"]["eta"] and l.pt > IDDict["muons"]["pt"] and l.pfRelIso04_all < IDDict["muons"]["isorelpf"]
+                      #and l.tightId == 1 )
+muonID = lambda l : ( abs(l.eta) < IDDict["muons"]["eta"] and l.corrected_pt > IDDict["muons"]["pt"] and l.pfRelIso04_all < IDDict["muons"]["isorelpf"]
                       and l.tightId == 1 )
 
 elecID = lambda l : ( (abs(l.eta) < IDDict["elecs"]["eta2"] and (abs(l.eta) < IDDict["elecs"]["eta0"] or abs(l.eta) > IDDict["elecs"]["eta1"]) )
                        and l.pt > IDDict["elecs"]["pt"] and l.cutBased >= 4 and l.lostHits <= 1
-                       and ( ((abs(l.dxy) < IDDict["elecs"]["dxy_b"] and abs(l.dz) < IDDict["elecs"]["dz_b"]) and (abs(l.eta) <  IDDict["elecs"]["etasc_be"]))
-                       or    ((abs(l.dxy) < IDDict["elecs"]["dxy_e"] and abs(l.dz) < IDDict["elecs"]["dz_e"]) and (abs(l.eta) >= IDDict["elecs"]["etasc_be"]))) )
-                       #and ( ((abs(l.dxy) < IDDict["elecs"]["dxy_b"] and abs(l.dz) < IDDict["elecs"]["dz_b"]) and (abs(l.deltaEtaSC - l.eta) <  IDDict["elecs"]["etasc_be"]))
-                       #or    ((abs(l.dxy) < IDDict["elecs"]["dxy_e"] and abs(l.dz) < IDDict["elecs"]["dz_e"]) and (abs(l.deltaEtaSC - l.eta) >= IDDict["elecs"]["etasc_be"]))) )
+                       and ((abs(l.dxy) < IDDict["elecs"]["dxy_b"] and abs(l.dz) < IDDict["elecs"]["dz_b"]) if (l.eta <= IDDict["elecs"]["etasc_be"])   #### COMOL STOP
+                       else (abs(l.dxy) < IDDict["elecs"]["dxy_e"] and abs(l.dz) < IDDict["elecs"]["dz_e"])) )
+                       #and ((abs(l.dxy) < IDDict["elecs"]["dxy_b"] and abs(l.dz) < IDDict["elecs"]["dz_b"]) if (abs(l.eta) <= IDDict["elecs"]["etasc_be"])     ### COMO CREIA QUE ERA
+                       #else (abs(l.dxy) < IDDict["elecs"]["dxy_e"] and abs(l.dz) < IDDict["elecs"]["dz_e"])) )
+                       #and ((abs(l.dxy) < IDDict["elecs"]["dxy_b"] and abs(l.dz) < IDDict["elecs"]["dz_b"]) if (abs(l.deltaEtaSC - l.eta) <= IDDict["elecs"]["etasc_be"]) ### COMO IGUAL ES
+                       #else (abs(l.dxy) < IDDict["elecs"]["dxy_e"] and abs(l.dz) < IDDict["elecs"]["dz_e"])) )
 
 partmuonID = lambda l : ( abs(l.eta) < IDDict["muons"]["eta"] and l.pt > IDDict["muons"]["pt"])
 partelecID = lambda l : ( (abs(l.eta) < IDDict["elecs"]["eta2"] and (abs(l.eta) < IDDict["elecs"]["eta0"] or abs(l.eta) > IDDict["elecs"]["eta1"]) ) and l.pt > IDDict["elecs"]["pt"] )
@@ -164,10 +185,11 @@ lepMerge = lambda : collectionMerger(input = ["Electron", "Muon"],
                                      output = "LepGood",
                                      selector = dict(Muon = muonID, Electron = elecID))
 
-# Lepton SF
-from CMGTools.TTHAnalysis.tools.nanoAOD.lepScaleFactors import lepScaleFactors
-leptonSFs = lambda : lepScaleFactors()
+# Lepton & trigger SF
+from CMGTools.TTHAnalysis.tools.nanoAOD.lepScaleFactors_TopRun2 import lepScaleFactors_TopRun2
+leptrigSFs = lambda : lepScaleFactors_TopRun2()
 
+sfSeq = [leptrigSFs]
 
 #### JET TREATMENTS ###
 #from CMGTools.TTHAnalysis.tools.nanoAOD.nBJetCounter  import nBJetCounter
@@ -245,130 +267,72 @@ recleaner_step1_2018 = lambda : CombinedObjectTaggerForCleaning("InternalRecl",
                                                                 tauCollection     = 'LepGood',
 )
 
-recleaner_step2_mc_2016 = lambda : fastCombinedObjectRecleaner(label = "Recl", inlabel = "_InternalRecl",
-                                                               cleanTausWithLooseLeptons = False,
-                                                               cleanJetsWithFOTaus       = False,
-                                                               doVetoZ = False, doVetoLMf = False, doVetoLMt = False,
-                                                               jetPts     = [IDDict["jets"]["pt"], IDDict["jets"]["pt2"]], # this creates two collections
-                                                               jetPtsFwd  = [IDDict["jets"]["pt"], IDDict["jets"]["pt"]],  # second number for 2.7 < abseta < 3, the first for the rest
-                                                               btagL_thr  = 99, # they are set at runtime
-                                                               btagM_thr  = 99,
-                                                               tauCollection = 'LepGood',
-                                                               isMC       = True,
-                                                               #variations = ['jesTotal'] + ['jes%s'%v for v in jecGroups] + ['jer'],
-                                                               variations = ['jesTotal'] + ['jer'],
-                                                               cleanElectrons = -1,
-                                                               year_ = 2016,
+
+recleaner_step2_mc = lambda : fastCombinedObjectRecleaner(label = "Recl", inlabel = "_InternalRecl",
+                                                          cleanTausWithLooseLeptons = False,
+                                                          cleanJetsWithFOTaus       = False,
+                                                          doVetoZ = False, doVetoLMf = False, doVetoLMt = False,
+                                                          jetPts     = [IDDict["jets"]["pt"], IDDict["jets"]["pt2"]], # this creates two collections
+                                                          jetPtsFwd  = [IDDict["jets"]["pt"], IDDict["jets"]["pt"]],  # second number for 2.7 < abseta < 3, the first for the rest
+                                                          btagL_thr  = 99, # they are set at runtime
+                                                          btagM_thr  = 99,
+                                                          tauCollection = 'LepGood',
+                                                          isMC       = True,
+                                                          #variations = ['jesTotal'] + ['jes%s'%v for v in jecGroups] + ['jer'],
+                                                          variations = ['jesTotal'] + ['jer'],
+                                                          cleanElectrons = -1,
 )
 
-recleaner_step2_mc_2017 = lambda : fastCombinedObjectRecleaner(label = "Recl", inlabel = "_InternalRecl",
-                                                               cleanTausWithLooseLeptons = False,
-                                                               cleanJetsWithFOTaus       = False,
-                                                               doVetoZ = False, doVetoLMf = False, doVetoLMt = False,
-                                                               jetPts     = [IDDict["jets"]["pt"], IDDict["jets"]["pt2"]], # this creates two collections
-                                                               jetPtsFwd  = [IDDict["jets"]["pt"], IDDict["jets"]["pt"]],  # second number for 2.7 < abseta < 3, the first for the rest
-                                                               btagL_thr  = 99, # they are set at runtime
-                                                               btagM_thr  = 99,
-                                                               tauCollection = 'LepGood',
-                                                               isMC       = True,
-                                                               #variations = ['jesTotal'] + ['jes%s'%v for v in jecGroups] + ['jer'],
-                                                               variations = ['jesTotal'] + ['jer'],
-                                                               cleanElectrons = -1,
-                                                               year_ = 2017,
+recleaner_step2_data = lambda : fastCombinedObjectRecleaner(label = "Recl", inlabel = "_InternalRecl",
+                                                            cleanTausWithLooseLeptons = False,
+                                                            cleanJetsWithFOTaus       = False,
+                                                            doVetoZ = False, doVetoLMf = False, doVetoLMt = False,
+                                                            jetPts     = [IDDict["jets"]["pt"], IDDict["jets"]["pt2"]], # this creates two collections
+                                                            jetPtsFwd  = [IDDict["jets"]["pt"], IDDict["jets"]["pt"]],  # second number for 2.7 < abseta < 3, the first for the rest
+                                                            btagL_thr  = -99., # they are set at runtime
+                                                            btagM_thr  = -99., # they are set at runtime
+                                                            tauCollection = 'LepGood',
+                                                            isMC       = False,
+                                                            variations = [],
+                                                            cleanElectrons = -1,
 )
 
-recleaner_step2_mc_2018 = lambda : fastCombinedObjectRecleaner(label = "Recl", inlabel = "_InternalRecl",
-                                                               cleanTausWithLooseLeptons = False,
-                                                               cleanJetsWithFOTaus       = False,
-                                                               doVetoZ = False, doVetoLMf = False, doVetoLMt = False,
-                                                               jetPts     = [IDDict["jets"]["pt"], IDDict["jets"]["pt2"]], # this creates two collections
-                                                               jetPtsFwd  = [IDDict["jets"]["pt"], IDDict["jets"]["pt"]],  # second number for 2.7 < abseta < 3, the first for the rest
-                                                               btagL_thr  = 99, # they are set at runtime
-                                                               btagM_thr  = 99,
-                                                               tauCollection = 'LepGood',
-                                                               isMC       = True,
-                                                               #variations = ['jesTotal'] + ['jes%s'%v for v in jecGroups] + ['jer'],
-                                                               variations = ['jesTotal'] + ['jer'],
-                                                               cleanElectrons = -1,
-                                                               year_ = 2018,
-)
-
-recleaner_step2_data_2016 = lambda : fastCombinedObjectRecleaner(label = "Recl", inlabel = "_InternalRecl",
-                                                                 cleanTausWithLooseLeptons = False,
-                                                                 cleanJetsWithFOTaus       = False,
-                                                                 doVetoZ = False, doVetoLMf = False, doVetoLMt = False,
-                                                                 jetPts     = [IDDict["jets"]["pt"], IDDict["jets"]["pt2"]], # this creates two collections
-                                                                 jetPtsFwd  = [IDDict["jets"]["pt"], IDDict["jets"]["pt"]],  # second number for 2.7 < abseta < 3, the first for the rest
-                                                                 btagL_thr  = -99., # they are set at runtime
-                                                                 btagM_thr  = -99., # they are set at runtime
-                                                                 tauCollection = 'LepGood',
-                                                                 isMC       = False,
-                                                                 variations = [],
-                                                                 cleanElectrons = -1,
-                                                                 year_ = 2016,
-)
-
-recleaner_step2_data_2017 = lambda : fastCombinedObjectRecleaner(label = "Recl", inlabel = "_InternalRecl",
-                                                                 cleanTausWithLooseLeptons = False,
-                                                                 cleanJetsWithFOTaus       = False,
-                                                                 doVetoZ = False, doVetoLMf = False, doVetoLMt = False,
-                                                                 jetPts     = [IDDict["jets"]["pt"], IDDict["jets"]["pt2"]], # this creates two collections
-                                                                 jetPtsFwd  = [IDDict["jets"]["pt"], IDDict["jets"]["pt"]],  # second number for 2.7 < abseta < 3, the first for the rest
-                                                                 btagL_thr  = -99., # they are set at runtime
-                                                                 btagM_thr  = -99., # they are set at runtime
-                                                                 tauCollection = 'LepGood',
-                                                                 isMC       = False,
-                                                                 variations = [],
-                                                                 cleanElectrons = -1,
-                                                                 year_ = 2017,
-)
-
-recleaner_step2_data_2018 = lambda : fastCombinedObjectRecleaner(label = "Recl", inlabel = "_InternalRecl",
-                                                                 cleanTausWithLooseLeptons = False,
-                                                                 cleanJetsWithFOTaus       = False,
-                                                                 doVetoZ = False, doVetoLMf = False, doVetoLMt = False,
-                                                                 jetPts     = [IDDict["jets"]["pt"], IDDict["jets"]["pt2"]], # this creates two collections
-                                                                 jetPtsFwd  = [IDDict["jets"]["pt"], IDDict["jets"]["pt"]],  # second number for 2.7 < abseta < 3, the first for the rest
-                                                                 btagL_thr  = -99., # they are set at runtime
-                                                                 btagM_thr  = -99., # they are set at runtime
-                                                                 tauCollection = 'LepGood',
-                                                                 isMC       = False,
-                                                                 variations = [],
-                                                                 cleanElectrons = -1,
-                                                                 year_ = 2018,
-)
-
-cleaning_mc_2016   = [recleaner_step1_2016, recleaner_step2_mc_2016]
-cleaning_mc_2017   = [recleaner_step1_2017, recleaner_step2_mc_2017]
-cleaning_mc_2018   = [recleaner_step1_2018, recleaner_step2_mc_2018]
-cleaning_data_2016 = [recleaner_step1_2016, recleaner_step2_data_2016]
-cleaning_data_2017 = [recleaner_step1_2017, recleaner_step2_data_2017]
-cleaning_data_2018 = [recleaner_step1_2018, recleaner_step2_data_2018]
+cleaning_mc_2016   = [recleaner_step1_2016, recleaner_step2_mc]
+cleaning_mc_2017   = [recleaner_step1_2017, recleaner_step2_mc]
+cleaning_mc_2018   = [recleaner_step1_2018, recleaner_step2_mc]
+cleaning_data_2016 = [recleaner_step1_2016, recleaner_step2_data]
+cleaning_data_2017 = [recleaner_step1_2017, recleaner_step2_data]
+cleaning_data_2018 = [recleaner_step1_2018, recleaner_step2_data]
 
 #### EVENT VARIABLES ###
 from CMGTools.TTHAnalysis.tools.eventVars_tWRun2 import EventVars_tWRun2
 eventVars = lambda : EventVars_tWRun2('', 'Recl')
 
-varstrigger_2016_singlemuon = [eventVars] + triggerSeq_2016 + [remove_overlap_singlemuon]
-varstrigger_2016_singleelec = [eventVars] + triggerSeq_2016 + [remove_overlap_singleelec]
-varstrigger_2016_doublemuon = [eventVars] + triggerSeq_2016 + [remove_overlap_doublemuon]
-varstrigger_2016_doubleeg   = [eventVars] + triggerSeq_2016 + [remove_overlap_doubleeg]
-varstrigger_2016_muoneg     = [eventVars] + triggerSeq_2016 + [remove_overlap_muoneg]
-varstrigger_2016_mc         = [eventVars] + triggerSeq_2016 + [remove_overlap_mc]
 
-varstrigger_2017_singlemuon = [eventVars] + triggerSeq_2017 + [remove_overlap_singlemuon]
-varstrigger_2017_singleelec = [eventVars] + triggerSeq_2017 + [remove_overlap_singleelec]
-varstrigger_2017_doublemuon = [eventVars] + triggerSeq_2017 + [remove_overlap_doublemuon]
-varstrigger_2017_doubleeg   = [eventVars] + triggerSeq_2017 + [remove_overlap_doubleeg]
-varstrigger_2017_muoneg     = [eventVars] + triggerSeq_2017 + [remove_overlap_muoneg]
-varstrigger_2017_mc         = [eventVars] + triggerSeq_2017 + [remove_overlap_mc]
+#### Add year
+from CMGTools.TTHAnalysis.tools.addYear import addYear
+addYear_2016 = lambda : addYear(2016)
+addYear_2016 = lambda : addYear(2017)
+addYear_2016 = lambda : addYear(2018)
 
-varstrigger_2018_singlemuon = [eventVars] + triggerSeq_2018 + [remove_overlap_singlemuon]
-varstrigger_2018_singleelec = [eventVars] + triggerSeq_2018 + [remove_overlap_singleelec]
-varstrigger_2018_doublemuon = [eventVars] + triggerSeq_2018 + [remove_overlap_doublemuon]
-varstrigger_2018_doubleeg   = [eventVars] + triggerSeq_2018 + [remove_overlap_doubleeg]
-varstrigger_2018_muoneg     = [eventVars] + triggerSeq_2018 + [remove_overlap_muoneg]
-varstrigger_2018_mc         = [eventVars] + triggerSeq_2018 + [remove_overlap_mc]
+#### Add Rochester
+from CMGTools.TTHAnalysis.tools.addRochester import addRochester
+addRoch = lambda : addRochester()
+
+lepMerge_roch = [lepMerge, addRoch]
+
+#### BDT
+from CMGTools.TTHAnalysis.tools.nanoAOD.MVA_tWRun2 import MVA_tWRun2
+SergioBDT = lambda : MVA_tWRun2()
+
+mvas = [SergioBDT]
+
+varstrigger_singlemuon = [eventVars] + triggerSeq + [remove_overlap_singlemuon] + sfSeq
+varstrigger_singleelec = [eventVars] + triggerSeq + [remove_overlap_singleelec] + sfSeq
+varstrigger_doublemuon = [eventVars] + triggerSeq + [remove_overlap_doublemuon] + sfSeq
+varstrigger_doubleeg   = [eventVars] + triggerSeq + [remove_overlap_doubleeg]   + sfSeq
+varstrigger_muoneg     = [eventVars] + triggerSeq + [remove_overlap_muoneg]     + sfSeq
+varstrigger_mc         = [eventVars] + triggerSeq + [remove_overlap_mc]         + sfSeq
 # %%%%%%%%%%%%%%%%%%%%%%%%%% WWbb
 # TODO
 

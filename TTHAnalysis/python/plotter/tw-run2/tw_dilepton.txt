@@ -1,8 +1,14 @@
 alwaystrue: 1
+
+andreaevs1:  event == 11833004 || event == 12167009 || event == 13041662 || event == 13757838 || event == 14575127 || event == 17447878 || event == 19806344; Disable=True
+andreaevs2:  event == 10034593 || event == 10104848 || event == 10147006 || event == 10200844 || event == 10240229 || event == 10258288; Disable=True
+andreaevs3:  event == 20984321 || event == 40347625 || event == 40430498 || event == 47066882; Disable=True
+
 trigger:    pass_trigger
 metfilters: Flag_goodVertices && Flag_globalSuperTightHalo2016Filter && Flag_HBHENoiseFilter && Flag_HBHENoiseIsoFilter && Flag_EcalDeadCellTriggerPrimitiveFilter && Flag_BadPFMuonFilter
 emu:        channel == 1
-dilep:      (nLepGood >= 2) && (LepGood_pt[0] > 25) && (LepGood_pt[1] > 20) && !isSS && (Mll > 20)
+
+dilep:      (nLepGood >= 2) && (LepGood_pt_corrAll[0] > 25) && (LepGood_pt_corrAll[1] > 20) && !isSS && (Mll > 20)
 zveto:      (channel == 1) || (abs(Mll - 91) > 15)
 met:        (channel == 1) || (MET_pt_nom > 40)
 njets:      nJet30_Recl >= 2
