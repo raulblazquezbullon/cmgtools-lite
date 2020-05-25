@@ -179,6 +179,7 @@ class Unfolder(object):
         self.checkLO=args.checkLO
         self.logx = False if self.var is not 'MWZ' else True
         self.unfold=None
+        self.matrix = args.matrix # Location of MATRIX histogram predictions
         self.year=args.year
         lumi_per_year={
             "2016" : '35.9 fb^{-1}',
@@ -1221,7 +1222,7 @@ class Unfolder(object):
 
 
 
-        dt.Scale(1./dt.Integral())
+        dt.Scale(1./dt.Integral()) # Normalize to 1
         dt_nom_up.Scale(factorUp/dt_nom_up.Integral())
         dt_nom_dn.Scale(factorDn/dt_nom_dn.Integral())
 
@@ -1303,7 +1304,7 @@ class Unfolder(object):
             #dterr.SetPointEYlow (ipoint, 0.94*dt.GetBinContent(ipoint))
             #print(dt.GetBinContent(ipoint), 0.94*dt.GetBinContent(ipoint), 1.06*dt.GetBinContent(ipoint))
             print(dt.GetBinContent(ipoint), dt_nom_up.GetBinContent(ipoint), dt_nom_dn.GetBinContent(ipoint))
-
+            
         for ipoint in range(0, dterr.GetN()):
             print(ipoint, dt.GetBinContent(ipoint), dterr.GetY()[ipoint], dterr.GetErrorYlow(ipoint), dterr.GetErrorYhigh(ipoint))
 
@@ -1312,6 +1313,124 @@ class Unfolder(object):
         dterr.SetFillStyle(3001)
         hus.Draw('SAME PE')
         dterr.Draw('2 SAME')
+        
+        # Draw predictions from MATRIX
+        if self.matrix:
+            # Open the files and access the histograms with the proper naming scheme
+            
+            myvar = self.var
+            myvar = myvar.replace('Zpt'      , 'pTZ')
+            myvar = myvar.replace('LeadJetPt', 'pTjet1')
+            myvar = myvar.replace('MWZ'      , 'mWZ')
+            myvar = myvar.replace('Wpt'      , 'pTW')
+            myvar = myvar.replace('Njets'    , 'nJet')
+            myvar = myvar.replace('Wpol'     , 'costhetaW')
+            myvar = myvar.replace('Zpol'     , 'costhetaZ')
+
+            # MATRIX is flavour-symmetric, so I need to manipulate the final state to open the files
+            myfinalstate = self.finalState
+            mpred         = None
+            mpredStatUp   = None
+            mpredStatDn = None
+            mpredSystUp   = None
+            mpredSystDn = None
+
+            if 'incl' in myfinalstate:
+                mfile_sf = ROOT.TFile.Open('%s/%s%s_hists/%s.root'%(self.matrix,'eee',self.charge, myvar), 'read')
+                mpred_sf = copy.deepcopy(mfile_sf.Get('MATRIX_NNLO'))
+                mpred_sf.SetName('matrix_nnlo_sf_pred_%s_%s_%s'%(self.finalState,self.charge,self.var)) # Just to be extra careful
+                # Uncs
+                mpredStatUp_sf = copy.deepcopy(mfile_sf.Get('MATRIX_NNLO_StatUp'))
+                mpredStatUp_sf.SetName('matrix_nnlo_sf_StatUp_pred_%s_%s_%s'%(self.finalState,self.charge,self.var)) # Just to be extra careful
+                mpredStatDn_sf = copy.deepcopy(mfile_sf.Get('MATRIX_NNLO_StatDown'))
+                mpredStatDn_sf.SetName('matrix_nnlo_sf_StatDn_pred_%s_%s_%s'%(self.finalState,self.charge,self.var)) # Just to be extra careful
+                mpredSystUp_sf = copy.deepcopy(mfile_sf.Get('MATRIX_NNLO_SystUp'))
+                mpredSystUp_sf.SetName('matrix_nnlo_sf_SystUp_pred_%s_%s_%s'%(self.finalState,self.charge,self.var)) # Just to be extra careful
+                mpredSystDn_sf = copy.deepcopy(mfile_sf.Get('MATRIX_NNLO_SystDown'))
+                mpredSystDn_sf.SetName('matrix_nnlo_sf_SystDn_pred_%s_%s_%s'%(self.finalState,self.charge,self.var)) # Just to be extra careful
+                mfile_df = ROOT.TFile.Open('%s/%s%s_hists/%s.root'%(self.matrix,'eem',self.charge, myvar), 'read')
+                mpred_df = copy.deepcopy(mfile_df.Get('MATRIX_NNLO'))
+                mpred_df.SetName('matrix_nnlo_df_pred_%s_%s_%s'%(self.finalState,self.charge,self.var)) # Just to be extra careful
+                # Uncs
+                mpredStatUp_df = copy.deepcopy(mfile_df.Get('MATRIX_NNLO_StatUp'))
+                mpredStatUp_df.SetName('matrix_nnlo_df_StatUp_pred_%s_%s_%s'%(self.finalState,self.charge,self.var)) # Just to be extra careful
+                mpredStatDn_df = copy.deepcopy(mfile_df.Get('MATRIX_NNLO_StatDown'))
+                mpredStatDn_df.SetName('matrix_nnlo_df_StatDn_pred_%s_%s_%s'%(self.finalState,self.charge,self.var)) # Just to be extra careful
+                mpredSystUp_df = copy.deepcopy(mfile_df.Get('MATRIX_NNLO_SystUp'))
+                mpredSystUp_df.SetName('matrix_nnlo_df_SystUp_pred_%s_%s_%s'%(self.finalState,self.charge,self.var)) # Just to be extra careful
+                mpredSystDn_df = copy.deepcopy(mfile_df.Get('MATRIX_NNLO_SystDown'))
+                mpredSystDn_df.SetName('matrix_nnlo_df_SystDn_pred_%s_%s_%s'%(self.finalState,self.charge,self.var)) # Just to be extra careful
+
+                # Sum up 2*eee and 2*eem
+                mpred=copy.deepcopy(mpred_sf)
+                mpred.SetName('matrix_nnlo_pred_%s_%s_%s'%('incl',self.charge,self.var))
+                mpred.Add(mpred_sf)
+                mpred.Add(mpred_df)
+                mpred.Add(mpred_df)
+
+                mpredStatUp=copy.deepcopy(mpredStatUp_sf)
+                mpredStatUp.SetName('matrix_nnlo_StatUp_pred_%s_%s_%s'%('incl',self.charge,self.var))
+                mpredStatUp.Add(mpredStatUp_sf)
+                mpredStatUp.Add(mpredStatUp_df)
+                mpredStatUp.Add(mpredStatUp_df)
+
+                mpredStatDn=copy.deepcopy(mpredStatDn_sf)
+                mpredStatDn.SetName('matrix_nnlo_StatDn_pred_%s_%s_%s'%('incl',self.charge,self.var))
+                mpredStatDn.Add(mpredStatDn_sf)
+                mpredStatDn.Add(mpredStatDn_df)
+                mpredStatDn.Add(mpredStatDn_df)
+
+                mpredSystUp=copy.deepcopy(mpredSystUp_sf)
+                mpredSystUp.SetName('matrix_nnlo_SystUp_pred_%s_%s_%s'%('incl',self.charge,self.var))
+                mpredSystUp.Add(mpredSystUp_sf)
+                mpredSystUp.Add(mpredSystUp_df)
+                mpredSystUp.Add(mpredSystUp_df)
+
+                mpredSystDn=copy.deepcopy(mpredSystDn_sf)
+                mpredSystDn.SetName('matrix_nnlo_SystDn_pred_%s_%s_%s'%('incl',self.charge,self.var))
+                mpredSystDn.Add(mpredSystDn_sf)
+                mpredSystDn.Add(mpredSystDn_df)
+                mpredSystDn.Add(mpredSystDn_df)
+
+            else:
+                myfinalstate=myfinalstate.replace('mme','eem')
+                myfinalstate=myfinalstate.replace('mmm','eee')
+                mfile = ROOT.TFile.Open('%s/%s%s_hists/%s.root'%(self.matrix,myfinalstate,self.charge, myvar), 'read')
+                mpred = copy.deepcopy(mfile.Get('MATRIX_NNLO'))
+                mpred.SetName('matrix_nnlo_pred_%s_%s_%s'%(self.finalState,self.charge,self.var)) # Just to be extra careful
+                # Uncs
+                mpredStatUp = copy.deepcopy(mfile.Get('MATRIX_NNLO_StatUp'))
+                mpredStatUp.SetName('matrix_nnlo_StatUp_pred_%s_%s_%s'%(self.finalState,self.charge,self.var)) # Just to be extra careful
+                mpredStatDn = copy.deepcopy(mfile.Get('MATRIX_NNLO_StatDown'))
+                mpredStatDn.SetName('matrix_nnlo_StatDown_pred_%s_%s_%s'%(self.finalState,self.charge,self.var)) # Just to be extra careful
+                mpredSystUp = copy.deepcopy(mfile.Get('MATRIX_NNLO_SystUp'))
+                mpredSystUp.SetName('matrix_nnlo_SystUp_pred_%s_%s_%s'%(self.finalState,self.charge,self.var)) # Just to be extra careful
+                mpredSystDn = copy.deepcopy(mfile.Get('MATRIX_NNLO_SystDown'))
+                mpredSystDn.SetName('matrix_nnlo_SystDown_pred_%s_%s_%s'%(self.finalState,self.charge,self.var)) # Just to be extra careful
+            
+            
+            # Rebin the histograms to match the correct binning
+            thebinning = dt.GetXaxis().GetXbins()
+            mfinalbinning = copy.deepcopy(mpred)
+            mfinalbinning.SetName('%s_fb'%mpred.GetName())
+            mpred.Rebin(dt.GetXaxis().GetNbins(),mfinalbinning.GetName(),thebinning)
+
+            # Convert to TGraphAsymErrors to then add the error bars
+            enterTheMatrix=ROOT.TGraphAsymmErrors(mpred)
+            for ipoint in range(0, enterTheMatrix.GetN()+1):
+                print(mpred.GetBinCenter(ipoint), mpred.GetBinLowEdge(ipoint), mpred.GetBinLowEdge(ipoint+1))
+                enterTheMatrix.SetPoint(ipoint, mpred.GetBinCenter(ipoint), mpred.GetBinContent(ipoint)) 
+                eup = ROOT.TMath.Sqrt(mpredStatUp.GetBinContent(ipoint)*mpredStatUp.GetBinContent(ipoint)+ mpredSystUp.GetBinContent(ipoint)*mpredSystUp.GetBinContent(ipoint))
+                edn = ROOT.TMath.Sqrt(mpredStatDn.GetBinContent(ipoint)*mpredStatDn.GetBinContent(ipoint)+ mpredSystDn.GetBinContent(ipoint)*mpredSystDn.GetBinContent(ipoint))
+                enterTheMatrix.SetPointEYhigh(ipoint,eup)
+                enterTheMatrix.SetPointEYlow (ipoint,edn)
+                enterTheMatrix.SetPointEXhigh(ipoint, 0.) # I don't want to crowd too much the plot
+                enterTheMatrix.SetPointEXlow(ipoint,  0.) # I don't want to crowd too much the plot
+                
+            enterTheMatrix.SetMarker(ROOT.kFullFourTrianglesPlus)
+            # Finally plot
+            enterTheMatrix.Draw("SAME PE>")
+
         #theunf.Draw('SAME PE')
         ###histDensityGenData.SetLineColor(kRed)
         ##histDensityGenData.Draw("SAME")
@@ -1418,7 +1537,8 @@ if __name__ == '__main__':
     parser.add_argument('--charge',               help='Charge of the W', default='')
     parser.add_argument('-b', '--bias',           help='Scale bias (0 deactivates bias vector)', default=None, type=float)
     parser.add_argument('-a', '--areaConstraint', help='Area constraint', action='store_true')
-    parser.add_argument('--checkLO',        help='Compare also with LO inclusive MC', action='store_true')
+    parser.add_argument('--checkLO',              help='Compare also with LO inclusive MC', action='store_true')
+    parser.add_argument('--matrix',               help='Compare with results from MATRIX (must provide directory)', default=None)
     args = parser.parse_args()
     # execute only if run as a script
     ROOT.gROOT.SetBatch()
