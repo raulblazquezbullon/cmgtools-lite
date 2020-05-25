@@ -1315,6 +1315,7 @@ class Unfolder(object):
         dterr.Draw('2 SAME')
         
         # Draw predictions from MATRIX
+        enterTheMatrix=None
         if self.matrix:
             # Open the files and access the histograms with the proper naming scheme
             
@@ -1336,6 +1337,7 @@ class Unfolder(object):
             mpredSystDn = None
 
             if 'incl' in myfinalstate:
+                print('CHARGE', self.charge)
                 mfile_sf = ROOT.TFile.Open('%s/%s%s_hists/%s.root'%(self.matrix,'eee',self.charge, myvar), 'read')
                 mpred_sf = copy.deepcopy(mfile_sf.Get('MATRIX_NNLO'))
                 mpred_sf.SetName('matrix_nnlo_sf_pred_%s_%s_%s'%(self.finalState,self.charge,self.var)) # Just to be extra careful
@@ -1392,6 +1394,7 @@ class Unfolder(object):
                 mpredSystDn.Add(mpredSystDn_df)
                 mpredSystDn.Add(mpredSystDn_df)
 
+
             else:
                 myfinalstate=myfinalstate.replace('mme','eem')
                 myfinalstate=myfinalstate.replace('mmm','eee')
@@ -1402,32 +1405,70 @@ class Unfolder(object):
                 mpredStatUp = copy.deepcopy(mfile.Get('MATRIX_NNLO_StatUp'))
                 mpredStatUp.SetName('matrix_nnlo_StatUp_pred_%s_%s_%s'%(self.finalState,self.charge,self.var)) # Just to be extra careful
                 mpredStatDn = copy.deepcopy(mfile.Get('MATRIX_NNLO_StatDown'))
-                mpredStatDn.SetName('matrix_nnlo_StatDown_pred_%s_%s_%s'%(self.finalState,self.charge,self.var)) # Just to be extra careful
+                mpredStatDn.SetName('matrix_nnlo_StatDn_pred_%s_%s_%s'%(self.finalState,self.charge,self.var)) # Just to be extra careful
                 mpredSystUp = copy.deepcopy(mfile.Get('MATRIX_NNLO_SystUp'))
                 mpredSystUp.SetName('matrix_nnlo_SystUp_pred_%s_%s_%s'%(self.finalState,self.charge,self.var)) # Just to be extra careful
                 mpredSystDn = copy.deepcopy(mfile.Get('MATRIX_NNLO_SystDown'))
-                mpredSystDn.SetName('matrix_nnlo_SystDown_pred_%s_%s_%s'%(self.finalState,self.charge,self.var)) # Just to be extra careful
+                mpredSystDn.SetName('matrix_nnlo_SystDn_pred_%s_%s_%s'%(self.finalState,self.charge,self.var)) # Just to be extra careful
             
+
+            #mpred       .Scale(1./      mpred.Integral())
+            #mpredStatUp .Scale(1./mpred.Integral())
+            #mpredStatDn .Scale(1./mpred.Integral())
+            #mpredSystUp .Scale(1./mpred.Integral())
+            #mpredSystDn .Scale(1./mpred.Integral())
             
             # Rebin the histograms to match the correct binning
-            thebinning = dt.GetXaxis().GetXbins()
-            mfinalbinning = copy.deepcopy(mpred)
-            mfinalbinning.SetName('%s_fb'%mpred.GetName())
-            mpred.Rebin(dt.GetXaxis().GetNbins(),mfinalbinning.GetName(),thebinning)
+            thebee = dt.GetXaxis().GetXbins()
+            thebinsize = thebee.GetSize()-1
+            thebinning = thebee.GetArray()
+            thebinning.SetSize(thebinsize)
+            print('THEBINNING', thebinsize, thebinning)
+            for i in range(thebinsize): print('THEBINNING', i, thebinning[i])
+        
+            mfb = copy.deepcopy(mpred)
+            mfb.SetName('%s_fb'%mpred.GetName())
+            if 'nJet' not in myvar: mfb=mpred.Rebin(thebinsize,mfb.GetName(),thebinning)
+
+            mfbStatUp = copy.deepcopy(mpredStatUp)
+            mfbStatUp.SetName('%s_fb'%mpredStatUp.GetName())
+            if 'nJet' not in myvar: mfbStatUp=mpredStatUp.Rebin(thebinsize,mfbStatUp.GetName(),thebinning)
+
+            mfbStatDn = copy.deepcopy(mpredStatDn)
+            mfbStatDn.SetName('%s_fb'%mpredStatDn.GetName())
+            if 'nJet' not in myvar: mfbStatDn=mpredStatDn.Rebin(thebinsize,mfbStatDn.GetName(),thebinning)
+
+            mfbSystUp = copy.deepcopy(mpredSystUp)
+            mfbSystUp.SetName('%s_fb'%mpredSystUp.GetName())
+            if 'nJet' not in myvar: mfbSystUp=mpredSystUp.Rebin(thebinsize,mfbSystUp.GetName(),thebinning)
+
+            mfbSystDn = copy.deepcopy(mpredSystDn)
+            mfbSystDn.SetName('%s_fb'%mpredSystDn.GetName())
+            if 'nJet' not in myvar: mfbSystDn=mpredSystDn.Rebin(thebinsize,mfbSystDn.GetName(),thebinning)
+
+            # Do total
 
             # Convert to TGraphAsymErrors to then add the error bars
-            enterTheMatrix=ROOT.TGraphAsymmErrors(mpred)
+            enterTheMatrix=ROOT.TGraphAsymmErrors(mfb)
+            mfbInt=mfb.Integral()
             for ipoint in range(0, enterTheMatrix.GetN()+1):
-                print(mpred.GetBinCenter(ipoint), mpred.GetBinLowEdge(ipoint), mpred.GetBinLowEdge(ipoint+1))
-                enterTheMatrix.SetPoint(ipoint, mpred.GetBinCenter(ipoint), mpred.GetBinContent(ipoint)) 
-                eup = ROOT.TMath.Sqrt(mpredStatUp.GetBinContent(ipoint)*mpredStatUp.GetBinContent(ipoint)+ mpredSystUp.GetBinContent(ipoint)*mpredSystUp.GetBinContent(ipoint))
-                edn = ROOT.TMath.Sqrt(mpredStatDn.GetBinContent(ipoint)*mpredStatDn.GetBinContent(ipoint)+ mpredSystDn.GetBinContent(ipoint)*mpredSystDn.GetBinContent(ipoint))
+                print(mfb.GetBinCenter(ipoint), mfb.GetBinLowEdge(ipoint), mfb.GetBinLowEdge(ipoint+1))
+                enterTheMatrix.SetPoint(ipoint, mfb.GetBinCenter(ipoint), mfb.GetBinContent(ipoint)/mfbInt) 
+                estatup = (mfbStatUp.GetBinContent(ipoint) - mfb.GetBinContent(ipoint))/mfbInt
+                estatdn = (mfbStatDn.GetBinContent(ipoint) - mfb.GetBinContent(ipoint))/mfbInt
+                esystup = (mfbSystUp.GetBinContent(ipoint) - mfb.GetBinContent(ipoint))/mfbInt
+                esystdn = (mfbSystDn.GetBinContent(ipoint) - mfb.GetBinContent(ipoint))/mfbInt
+                eup = ROOT.TMath.Sqrt(estatup*estatup + esystup*esystup)
+                edn = ROOT.TMath.Sqrt(estatdn*estatdn + esystdn*esystdn)
                 enterTheMatrix.SetPointEYhigh(ipoint,eup)
                 enterTheMatrix.SetPointEYlow (ipoint,edn)
                 enterTheMatrix.SetPointEXhigh(ipoint, 0.) # I don't want to crowd too much the plot
                 enterTheMatrix.SetPointEXlow(ipoint,  0.) # I don't want to crowd too much the plot
                 
-            enterTheMatrix.SetMarker(ROOT.kFullFourTrianglesPlus)
+            enterTheMatrix.SetMarkerStyle(ROOT.kFullFourTrianglesPlus)
+            enterTheMatrix.SetMarkerSize(3)
+            enterTheMatrix.SetLineColor(ROOT.kMagenta)
+            enterTheMatrix.SetMarkerColor(ROOT.kMagenta)
             # Finally plot
             enterTheMatrix.Draw("SAME PE>")
 
@@ -1450,6 +1491,8 @@ class Unfolder(object):
         leg_money.AddEntry(hmu, 'Stat.+bgr. unc.', 'f')
         leg_money.AddEntry(hut, 'Total unc.', 'f')
         leg_money.AddEntry(dterr, 'Theory unc. on POWHEG prediction', 'f')
+        if self.matrix:
+            leg_money.AddEntry(enterTheMatrix, 'MATRIX prediction (stat+scale)','pel')
         #leg_money.AddEntry(histUnfoldTotal, '#frac{#chi^{2}}{NDOF}=%0.3f' % histUnfoldTotal.Chi2Test(self.dataTruth_nom, 'CHI2/NDF WW'), '')
         leg_money.Draw()
         tdr.setTDRStyle()
