@@ -1452,7 +1452,7 @@ class Unfolder(object):
             enterTheMatrix=ROOT.TGraphAsymmErrors(mfb)
             mfbInt=mfb.Integral()
             for ipoint in range(0, enterTheMatrix.GetN()+1):
-                print(mfb.GetBinCenter(ipoint), mfb.GetBinLowEdge(ipoint), mfb.GetBinLowEdge(ipoint+1))
+                print(mfb.GetBinCenter(ipoint), mfb.GetBinLowEdge(ipoint), mfb.GetBinLowEdge(ipoint+1), mfb.GetBinContent(ipoint), mfb.GetBinContent(ipoint)/mfbInt)
                 enterTheMatrix.SetPoint(ipoint, mfb.GetBinCenter(ipoint), mfb.GetBinContent(ipoint)/mfbInt) 
                 estatup = (mfbStatUp.GetBinContent(ipoint) - mfb.GetBinContent(ipoint))/mfbInt
                 estatdn = (mfbStatDn.GetBinContent(ipoint) - mfb.GetBinContent(ipoint))/mfbInt
