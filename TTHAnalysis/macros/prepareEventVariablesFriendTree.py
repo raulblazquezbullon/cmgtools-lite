@@ -165,7 +165,8 @@ if not os.path.isdir(args[0]):
     print "Error. Input directory {input} does not exist".format(input=args[0])
     exit()
 if not os.path.isdir(args[1]):
-    tempOut = args[1].replace('/pool/ciencias/','/pool/cienciasrw/')
+    tempOut = args[1].replace('/pool/ciencias/', '/pool/cienciasrw/')
+    tempOut = args[1].replace('/pool/phedex/',   '/pool/phedexrw/')
     os.system("mkdir -p "+tempOut)
     if not os.path.isdir(args[1]):
         print "Could not create output directory"
@@ -310,7 +311,7 @@ for D in sorted(glob(args[0]+"/*")):
                 f2 = ROOT.TFile.Open(fout)
                 if (not f2) or f2.IsZombie() or f2.TestBit(ROOT.TFile.kRecovered): 
                     if f2: f2.Close()
-                    if not options.quiet: print "Component %s has to be remade, output tree is invalid or corrupted" % (short, entries, t2.GetEntries())
+                    if not options.quiet: print "Component %s has to be remade, output tree is invalid or corrupted" % (short)
                 else:
                     t2 = f2.Get("Friends" if isNano else (options.treeDir+"/t"))
                     if t2.GetEntries() != entries:
@@ -399,9 +400,16 @@ if options.queue:
         super  = "qsub -q {queue} -N friender".format(queue = options.queue)
         runner = "psibatch_runner.sh"
     elif options.env == "oviedo":
-        super  = "qsub -q {queue} -N {name}".format(queue = options.queue, name=options.name)
-        runner = "lxbatch_runner.sh"
+        super  = "sbatch -p {queue} -J {name} -e {logpath}/log.%j.%x.err -o {logpath}/log.%j.%x.out".format(queue = options.queue,
+                                                                                                            name = options.name,
+                                                                                                            logpath = options.logdir if options.logdir else "./")
+        #super  = "qsub -q {queue} -N {name} -e {logpath}/log.%j.%J.err -o {logpath}/log.%j.%J.out".format(queue = options.queue,
+                                                                                                          #name = options.name,
+                                                                                                          #logpath = options.logdir if options.logdir else "./")
+        #runner = "lxbatch_runner.sh"
+        runner = "oviedo_runner.sh"
         theoutput = theoutput.replace('/pool/ciencias/','/pool/cienciasrw/')
+        theoutput = theoutput.replace('/pool/phedex/','/pool/phedexrw/')
     elif options.env == "uclouvain":
         options.subfile="slurm_submitter_of_stuff_"
         super = "sbatch --partition cp3 "
@@ -474,12 +482,13 @@ if options.queue:
     else:
       for (name,fin,fout,data,range,chunk,fs) in jobs:
         if chunk != -1:
-            if options.logdir: writelog = "-o {logdir}/{data}_{chunk}.out -e {logdir}/{data}_{chunk}.err".format(logdir=logdir, data=name, chunk=chunk)
+            if options.logdir and options.env != "oviedo": writelog = "-o {logdir}/{data}_{chunk}.out -e {logdir}/{data}_{chunk}.err".format(logdir=logdir, data=name, chunk=chunk)
             cmd = "{super} {writelog} {base} -d {data} -c {chunk} {post}".format(super=super, writelog=writelog, base=basecmd, data=name, chunk=chunk, post=friendPost)
             if options.queue == "batch" and options.env != "oviedo":
                 cmd = "echo \"{base} -d {data} -c {chunk} {post}\" | {super} {writelog}".format(super=super, writelog=writelog, base=basecmd, data=name, chunk=chunk, post=friendPost)
             elif options.env == "oviedo":
-                cmd = "{super} {writelog} {base} -d {data} -c {chunk} {post} ".format(super=super, writelog=writelog, base=basecmd, data=name, chunk=chunk, post=friendPost)
+                #cmd = "{super} {writelog} {base} -d {data} -c {chunk} {post} ".format(super=super, writelog=writelog, base=basecmd, data=name, chunk=chunk, post=friendPost)
+                cmd = "{super} --export==ALL,command=\"{base} -d {data} -c {chunk} {post}\",workpath=\"{workpath}\" {execf}".format(super=super, base=" ".join(basecmd.split(" ")[3:]), data=name, chunk=chunk, post=friendPost, execf = basecmd.split(" ")[0], workpath = basecmd.split(" ")[1]).replace("'", "")
             if options.queue == "cp3" and options.env == "uclouvain":
                 full_subfile = "{subfile}{data}_{chunk}.sh".format(subfile=options.subfile, data=name, chunk=chunk)
                 subfile = open(full_subfile, "w")
@@ -499,13 +508,14 @@ wait
             if fs:
                 cmd += " --fineSplit %d --subChunk %d" % (fs[1], fs[0])
         else:
-            if options.logdir: writelog = "-o {logdir}/{data}.out -e {logdir}/{data}.err".format(logdir=logdir, data=name)
+            if options.logdir and options.env != "oviedo": writelog = "-o {logdir}/{data}.out -e {logdir}/{data}.err".format(logdir=logdir, data=name)
             cmd = "{super} {writelog} {base} -d {data} {post}".format(super=super, writelog=writelog, base=basecmd, data=name, chunk=chunk, post=friendPost)
 
             if options.queue == "batch" and options.env != "oviedo":
                 cmd = "echo \"{base} -d {data} {post}\" | {super} {writelog}".format(super=super, writelog=writelog, base=basecmd, data=name, chunk=chunk, post=friendPost)
             elif options.env == "oviedo":
-                cmd = "{super} {base} -d {data} {post} {writelog}".format(super=super, writelog=writelog, base=basecmd, data=name, chunk=chunk, post=friendPost)
+                #cmd = "{super} {base} -d {data} {post} {writelog}".format(super=super, writelog=writelog, base=basecmd, data=name, chunk=chunk, post=friendPost)
+                cmd = "{super} --export==ALL,command=\"{base} -d {data} {post}\",workpath=\"{workpath}\" {execf}".format(super=super, writelog=writelog, base=" ".join(basecmd.split(" ")[3:]), data=name, chunk=chunk, post=friendPost, execf = basecmd.split(" ")[0], workpath = basecmd.split(" ")[1]).replace("'", "")
             if options.queue == "cp3" and options.env == "uclouvain":
                 full_subfile = "{subfile}{data}_{chunk}.sh".format(subfile=options.subfile, data=name, chunk=chunk)
                 subfile = open(full_subfile, "w")
@@ -534,6 +544,7 @@ def _runIt(myargs):
     fetchedfile = None
 
     fout = ofout.replace('/pool/ciencias/', '/pool/cienciasrw/')
+    fout = ofout.replace('/pool/phedex/',   '/pool/phedexrw/')
     
     if 'LSB_JOBID' in os.environ or 'LSF_JOBID' in os.environ:
         if fin.startswith("root://"):
