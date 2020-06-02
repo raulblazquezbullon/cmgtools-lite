@@ -1,3 +1,8 @@
-data : SingleMuon_Run2017G;  years="2017-5TeV"
-data : DoubleMuon_Run2017G;  years="2017-5TeV"
-data : HighEGJet_Run2017G;   years="2017-5TeV"
+data : Tree_MuonEG_Run2016B_ver2_Nano25Oct2019_ver2_v1_0 ;
+data : Tree_MuonEG_Run2016C_Nano25Oct2019_v1_0 ;
+data : Tree_MuonEG_Run2016D_Nano25Oct2019_v1_0 ;
+data : Tree_MuonEG_Run2016E_Nano25Oct2019_v1_0 ;
+data : Tree_MuonEG_Run2016F_Nano25Oct2019_v1_0 ;
+data : Tree_MuonEG_Run2016G_Nano25Oct2019_v1_0 ;
+data : Tree_MuonEG_Run2016H_Nano25Oct2019_v1_0 ;
+

@@ -4,12 +4,25 @@ andreaevs1:  event == 11833004 || event == 12167009 || event == 13041662 || even
 andreaevs2:  event == 10034593 || event == 10104848 || event == 10147006 || event == 10200844 || event == 10240229 || event == 10258288; Disable=True
 andreaevs3:  event == 20984321 || event == 40347625 || event == 40430498 || event == 47066882; Disable=True
 
+andreaevs4:  event == 486099 || event == 467503; Disable=True
+
+
+andreaevs5:  event == 132104255 || event == 1667931512 || event == 1865982857 || event == 2281698241 || event == 3817404823 || event == 417560047 || event == 48533809 || event == 742388497 || event == 779186868 || event == 9011096; Disable=True
+
+endreaevs6: event == 1099678568 || event == 1169354299 || event == 1359493188 || event == 1427929642 || event == 1914525448 || event == 2296247787 || event == 251388928 || event == 3105062086 || event == 444463720 || event == 515363607 || event == 697781766 || event == 7282857 || event == 743290824 || event == 82197292; Disable=True
+
+endreaevs7: event == 120342479 || event == 498882900; Disable=True
+
+genleps: nGenDressedLepton >= 2; Disable=True
+
 trigger:    pass_trigger
 metfilters: Flag_goodVertices && Flag_globalSuperTightHalo2016Filter && Flag_HBHENoiseFilter && Flag_HBHENoiseIsoFilter && Flag_EcalDeadCellTriggerPrimitiveFilter && Flag_BadPFMuonFilter
 emu:        channel == 1
 
-dilep:      (nLepGood >= 2) && (LepGood_pt_corrAll[0] > 25) && (LepGood_pt_corrAll[1] > 20) && !isSS && (Mll > 20)
+dilep:      (nLepGood >= 2) && (LepGood_pt_corrAll[0] > 25) && (LepGood_pt_corrAll[1] > 20) && !isSS && (minMllAFAS_Recl > 20);
+dilepold:      (nLepGood >= 2) && (LepGood_pt_corrAll[0] > 25) && (LepGood_pt_corrAll[1] > 20) && !isSS && (Mll > 20); Disable=True
 zveto:      (channel == 1) || (abs(Mll - 91) > 15)
-met:        (channel == 1) || (MET_pt_nom > 40)
+met:        (channel == 1) || (MET_pt_nom > 40); Disable=True
+met:        (channel == 1) || (MET_pt > 40)
 njets:      nJet30_Recl >= 2
 nbtags:     nBJetMedium30_Recl >= 1

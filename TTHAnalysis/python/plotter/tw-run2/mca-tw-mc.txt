@@ -1,3 +1,5 @@
 ttbar : Tree_TTTo2L2Nu_TuneCP5_PSweights_0 : 88.28769753 ; genSumWeightName="genEventSumw_"
 
+ttbar2 : Tree_TT_TuneCUETP8M2T4_PSweights_0 + Tree_TT_TuneCUETP8M2T4_PSweights_1 + Tree_TT_TuneCUETP8M2T4_PSweights_2 + Tree_TT_TuneCUETP8M2T4_PSweights_3 : 831.76 ; genSumWeightName="genEventSumw_"
+
 ttztoqq : Tree_TTZToQQ_TuneCUETP8M1_amcatnlo_0 : 0.5297 ; genSumWeightName="genEventSumw_"
