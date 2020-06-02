@@ -89,31 +89,31 @@ class lepScaleFactors_TopRun2(Module):
         for var in ["", "_Up", "_Dn"]:
             muonsf = 1; elecsf = 1
 
-            #### HAY QUE CAMBIAR LA ETA POR LA DEL SUPERCLUSTER
-
+            #### NOTE: electron SF are in terms of the eta of the associated supercluster and
+            # the pT of the electron. Take also into account that deltaEtaSC = etaSC - eta, as
+            # indicated in PhysicsTools/NanoAOD/python/electrons_cff.py.
             if   chan == ch.ElMu:
                 if abs(leps[0].pdgId) == 11: # electron
-                    elecsf *= self.getLepSF(leps[0].pt, leps[0].eta, var, "e", year, run)
-                    muonsf *= self.getLepSF(leps[1].pt, leps[1].eta, var, "m", year, run)
+                    elecsf *= self.getLepSF(leps[0].pt_corrAll, leps[0].eta + leps[0].deltaEtaSC, var, "e", year, event)
+                    muonsf *= self.getLepSF(leps[1].pt_corrAll, leps[1].eta, var, "m", year, event)
                 else:
-                    muonsf *= self.getLepSF(leps[0].pt, leps[0].eta, var, "m", year, run)
-                    elecsf *= self.getLepSF(leps[1].pt, leps[1].eta, var, "e", year, run)
+                    muonsf *= self.getLepSF(leps[0].pt_corrAll, leps[0].eta, var, "m", year, event)
+                    elecsf *= self.getLepSF(leps[1].pt_corrAll, leps[1].eta + leps[1].deltaEtaSC, var, "e", year, event)
             elif chan == ch.Elec:
-                elecsf *= self.getLepSF(leps[0].pt, leps[0].eta, var, "e", year, run)
-                elecsf *= self.getLepSF(leps[1].pt, leps[1].eta, var, "e", year, run)
+                elecsf *= self.getLepSF(leps[0].pt_corrAll, leps[0].eta + leps[0].deltaEtaSC, var, "e", year, event)
+                elecsf *= self.getLepSF(leps[1].pt_corrAll, leps[1].eta + leps[1].deltaEtaSC, var, "e", year, event)
             elif chan == ch.Muon:
-                muonsf *= self.getLepSF(leps[0].pt, leps[0].eta, var, "m", year, run)
-                muonsf *= self.getLepSF(leps[0].pt, leps[0].eta, var, "m", year, run)
+                muonsf *= self.getLepSF(leps[0].pt_corrAll, leps[0].eta, var, "m", year, event)
+                muonsf *= self.getLepSF(leps[0].pt_corrAll, leps[0].eta, var, "m", year, event)
 
             self.out.fillBranch('MuonSF' + var, muonsf)
             self.out.fillBranch('ElecSF' + var, elecsf)
 
         # triggers
-
         for var in ["", "_Up", "_Dn"]:
             trigsf = 1
             if len(leps) >= 2:
-                trigsf *= self.getTrigSF(leps[0].pt, leps[1].pt, var, chan, year)
+                trigsf *= self.getTrigSF(leps[0].pt_corrAll, leps[1].pt_corrAll, var, chan, year, ev = event)
 
             self.out.fillBranch('TrigSF' + var, trigsf)
 
@@ -131,10 +131,24 @@ class lepScaleFactors_TopRun2(Module):
         return ret
 
 
-    def getTrigSF(self, pt1, pt2, var, fl, yr):
+    def getTrigSF(self, pt1, pt2, var, fl, yr, ev = None):
+        # NOTE: it will always use as the first lepton the one with largest pt
         hist = self.triggerSF[fl][yr]
-        pt1bin = max(1, min(hist.GetNbinsX(), hist.GetXaxis().FindBin(pt1)))
-        pt2bin = max(1, min(hist.GetNbinsY(), hist.GetYaxis().FindBin(pt2)))
+        tmppt1 = max([pt1, pt2]); tmppt2 = min([pt1, pt2])
+        pt1bin = max(1, min(hist.GetNbinsX(), hist.GetXaxis().FindBin(tmppt1)))
+        pt2bin = max(1, min(hist.GetNbinsY(), hist.GetYaxis().FindBin(tmppt2)))
+
+        #if ev.event == 467503 or ev.event == 486099:
+            #print "\n======================================"
+
+            #print "pt1:", pt1,       "pt2:", pt2
+            #print "tmppt1:", tmppt1, "tmppt2:", tmppt2
+            #print "pt1bin:", pt1bin, "pt2bin:", pt2bin
+            #print "histname:", hist.GetName()
+            #print "yr:", yr
+            #print "dict:", self.triggerSF
+
+            #print "======================================\n"
 
         out = hist.GetBinContent(pt1bin, pt2bin)
         if   "up" in var.lower():
@@ -146,28 +160,66 @@ class lepScaleFactors_TopRun2(Module):
 
 
     def getFromHisto(self, pt, eta, histo, err = False):
+        #### NOTE: this method obtains the information for a given pt and eta. In the
+        # case, like e.g. electron SF, where the histogram is in terms of the supercluster
+        # pseudorapidity rather than the final pseudorapidity, this script will not
+        # automatically change it.
         normal = True # normal := {x: pt, y: eta}
-        if ((histo.GetXaxis()).GetBinUpEdge(histo.GetNbinsX())) < 10: normal = False
+        if (histo.GetXaxis().GetBinUpEdge(histo.GetNbinsX())) < 10: normal = False
+
+        tmpeta = eta
+        #tmpeta = abs(eta)
+
+        if    ((normal     and histo.GetYaxis().GetBinLowEdge(1) >= 0)
+            or (not normal and histo.GetXaxis().GetBinLowEdge(1) >= 0)):
+            tmpeta = abs(tmpeta)
 
         if normal:
-            xbin = max(1, min(histo.GetNbinsX(), histo.GetXaxis().FindBin(abs(pt))))
-            ybin = max(1, min(histo.GetNbinsY(), histo.GetYaxis().FindBin(abs(eta))))
+            xbin = max(1, min(histo.GetNbinsX(), histo.GetXaxis().FindBin(pt)))
+            ybin = max(1, min(histo.GetNbinsY(), histo.GetYaxis().FindBin(tmpeta)))
         else:
-            xbin = max(1, min(histo.GetNbinsX(), histo.GetXaxis().FindBin(abs(eta))))
-            ybin = max(1, min(histo.GetNbinsY(), histo.GetYaxis().FindBin(abs(pt))))
+            xbin = max(1, min(histo.GetNbinsX(), histo.GetXaxis().FindBin(tmpeta)))
+            ybin = max(1, min(histo.GetNbinsY(), histo.GetYaxis().FindBin(pt)))
 
         if err: return histo.GetBinError(xbin, ybin)
         else:   return histo.GetBinContent(xbin, ybin)
         return
 
 
-    def getLepSF(self, pt, eta, var, fl, yr, rn):
+    def getFromHistoNoAbs(self, pt, eta, histo, err = False): #### Pal stop
+        normal = True # normal := {x: pt, y: eta}
+        if (histo.GetXaxis().GetBinUpEdge(histo.GetNbinsX())) < 10: normal = False
+
+        tmpeta = eta
+
+        #if    ((normal     and histo.GetYaxis().GetBinLowEdge(1) >= 0)
+            #or (not normal and histo.GetXaxis().GetBinLowEdge(1) >= 0)):
+            #tmpeta = abs(tmpeta)
+
+        if normal:
+            xbin = max(1, min(histo.GetNbinsX(), histo.GetXaxis().FindBin(pt)))
+            ybin = max(1, min(histo.GetNbinsY(), histo.GetYaxis().FindBin(tmpeta)))
+        else:
+            xbin = max(1, min(histo.GetNbinsX(), histo.GetXaxis().FindBin(tmpeta)))
+            ybin = max(1, min(histo.GetNbinsY(), histo.GetYaxis().FindBin(pt)))
+
+        if err: return histo.GetBinError(xbin, ybin)
+        else:   return histo.GetBinContent(xbin, ybin)
+        return
+
+
+    def getFromHistoAbs(self, pt, eta, histo, err = False): #### Pal stop
+        return self.getFromHisto(pt, abs(eta), histo, err)
+
+
+    def getLepSF(self, pt, eta, var, fl, yr, ev = None):
         out = 1
         doneSFtype = []
 
         for sf in self.leptonSF[fl][yr]:
             #tmpls = self.leptonSF[fl][yr][sf].split(",")
             tmpls = sf.split(",")
+            #print sf, doneSFtype
             if (len(tmpls) > 1) and (tmpls[0] not in doneSFtype):
                 doneSFtype.append(tmpls[0])
 
@@ -175,21 +227,30 @@ class lepScaleFactors_TopRun2(Module):
                 for sf2 in self.leptonSF[fl][yr]:
                     if   sf2 == sf: continue
                     else:
-                        tmpls2 = self.leptonSF[fl][yr][sf2].split(",")
-                        if (len(tmpls) > 1) and (tmpls2[0] == tmpls[0]):
-                            sftorescale.append(sf2)
+                        tmpls2 = sf2.split(",")
+                        if (len(tmpls) > 1):
+                            if tmpls2[0] == tmpls[0]:
+                                sftorescale.append(sf2)
                 tmpout  = 0
                 tmplumi = []
 
                 for i in sftorescale:
-                    tmplumi.append(lumidict[yr][i.split(",")[1]])
-                    tmpout += self.getFromHisto(pt, eta, histo = self.leptonSF[fl][yr][i]) * tmplumi[-1]
+                    tmplumi.append(self.lumidict[yr][i.split(",")[1]])
+                    tmpout += self.getFromHisto(pt, eta, self.leptonSF[fl][yr][i]) * tmplumi[-1]
+                    #tmpout += self.getFromHistoAbs(pt, eta, self.leptonSF[fl][yr][i]) * tmplumi[-1] ### Como'l stop
 
                 tmpout /= sum(tmplumi)
+                #if ev.event == 467503 or ev.event == 486099: print(var, fl, ev.event, tmpls[0], tmpout)
                 out *= tmpout
 
-            else:
-                out  *= self.getFromHisto(pt, eta, histo = self.leptonSF[fl][yr][sf])
+            elif tmpls[0] not in doneSFtype:
+                #if fl == "e": out  *= self.getFromHistoNoAbs(pt, eta, self.leptonSF[fl][yr][sf]) ### Como'l stop
+                #else:         out  *= self.getFromHistoAbs(  pt, eta, self.leptonSF[fl][yr][sf]) ### Como'l stop
+                out  *= self.getFromHisto(pt, eta, self.leptonSF[fl][yr][sf])
+                #if ev.event == 467503 or ev.event == 486099:
+                    #print(var, fl, ev.event, tmpls[0], out)
+                    #print(var, fl, ev.event, tmpls[0], self.getFromHistoAbs(  pt, eta, self.leptonSF[fl][yr][sf]))
+                doneSFtype.append(sf)
         if var != "":
             doneSFtype = []
             tmpsum = 0
@@ -203,23 +264,25 @@ class lepScaleFactors_TopRun2(Module):
                     for sf2 in self.leptonSF[fl][yr]:
                         if   sf2 == sf: continue
                         else:
-                            tmpls2 = self.leptonSF[fl][yr][sf2].split(",")
-                            if (len(tmpls) > 1) and (tmpls2[0] == tmpls[0]):
-                                sftorescale.append(sf2)
+                            tmpls2 = sf2.split(",")
+                            if (len(tmpls) > 1):
+                                if tmpls2[0] == tmpls[0]:
+                                    sftorescale.append(sf2)
                     tmpout  = 0
                     tmplumi = []
 
                     for i in sftorescale:
-                        tmplumi.append(lumidict[yr][i.split(",")[1]])
-                        tmpout += self.getFromHisto(pt, eta, histo = self.leptonSF[fl][yr][i], err = True) * tmplumi[-1]
+                        tmplumi.append(self.lumidict[yr][i.split(",")[1]])
+                        tmpout += self.getFromHisto(pt, eta, self.leptonSF[fl][yr][i], err = True) * tmplumi[-1]
 
                     tmpout /= sum(tmplumi)
                     tmpsum += tmpout**2
 
-                else:
-                    tmpsum += (self.getFromHisto(pt, eta, histo = self.leptonSF[fl][yr][sf], err = True))**2
+                elif tmpls[0] not in doneSFtype:
+                    tmpsum += (self.getFromHisto(pt, eta, self.leptonSF[fl][yr][sf], err = True))**2
+                    doneSFtype.append(sf)
 
-            if fl == "m": tmpsum += (out * 0.005)**2 # Extrapolation to top-like from DY-like phase space (CMS-AN-2018-210)
+            if fl == "m": tmpsum += (out * 0.005)**2 # Extrapolation to top-like from DY-like phase space (CMS-AN-2018-210). Only for muons.
             tmpsum = r.TMath.Sqrt(tmpsum)
 
             if "up" in var.lower(): out += tmpsum
