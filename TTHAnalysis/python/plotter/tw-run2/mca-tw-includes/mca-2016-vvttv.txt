@@ -1,0 +1,17 @@
+vvttv : Tree_WWTo2L2Nu_0 : 12.178 ; genSumWeightName="genEventSumw_"
+#vvttv : Tree_WWToLNuQQ_0 + Tree_WWToLNuQQ_ext1_0 :
+
+#vvttv : Tree_WZTo1L1Nu2Q_amcatnloFXFX_madspin_0 :
+vvttv : Tree_WZTo2L2Q_amcatnloFXFX_madspin_0 + Tree_WZTo2L2Q_amcatnloFXFX_madspin_1 + Tree_WZTo2L2Q_amcatnloFXFX_madspin_2 + Tree_WZTo2L2Q_amcatnloFXFX_madspin_3 + Tree_WZTo2L2Q_amcatnloFXFX_madspin_4 : 5.595 ; genSumWeightName="genEventSumw_"
+vvttv : Tree_WZTo3LNu_TuneCUETP8M1_0 + Tree_WZTo3LNu_TuneCUETP8M1_ext1_0 + Tree_WZTo3LNu_TuneCUETP8M1_ext1_1 : 4.42965 ; genSumWeightName="genEventSumw_"
+
+vvttv : Tree_ZZTo2L2Nu_0 + Tree_ZZTo2L2Nu_1 + Tree_ZZTo2L2Nu_ext1_0 + Tree_ZZTo2L2Nu_ext1_1 + Tree_ZZTo2L2Nu_ext1_10 + Tree_ZZTo2L2Nu_ext1_2 + Tree_ZZTo2L2Nu_ext1_3 + Tree_ZZTo2L2Nu_ext1_4 + Tree_ZZTo2L2Nu_ext1_5 + Tree_ZZTo2L2Nu_ext1_6 + Tree_ZZTo2L2Nu_ext1_7 + Tree_ZZTo2L2Nu_ext1_8 + Tree_ZZTo2L2Nu_ext1_9 : 0.564 ; genSumWeightName="genEventSumw_"
+vvttv : Tree_ZZTo2L2Q_0 : 3.28 ; genSumWeightName="genEventSumw_"
+vvttv : Tree_ZZTo4L_0 + Tree_ZZTo4L_ext1_0 + Tree_ZZTo4L_ext1_1 + Tree_ZZTo4L_ext1_10 + Tree_ZZTo4L_ext1_11 + Tree_ZZTo4L_ext1_12 + Tree_ZZTo4L_ext1_2 + Tree_ZZTo4L_ext1_3 + Tree_ZZTo4L_ext1_4 + Tree_ZZTo4L_ext1_5 + Tree_ZZTo4L_ext1_6 + Tree_ZZTo4L_ext1_7 + Tree_ZZTo4L_ext1_8 + Tree_ZZTo4L_ext1_9 : 1.256 ; genSumWeightName="genEventSumw_"
+
+vvttv : Tree_TTWJetsToLNu_TuneCUETP8M1_amcatnloFXFX_madspin_ext1_0 + Tree_TTWJetsToLNu_TuneCUETP8M1_amcatnloFXFX_madspin_ext2_0 : 0.2043 ; genSumWeightName="genEventSumw_"
+vvttv : Tree_TTWJetsToQQ_TuneCUETP8M1_amcatnloFXFX_madspin_0 : 0.4062 ; genSumWeightName="genEventSumw_"
+
+vvttv : Tree_TTZToLL_M_1to10_TuneCUETP8M1_MLM_0 : 0.0493 ; genSumWeightName="genEventSumw_"
+vvttv : Tree_TTZToLLNuNu_M_10_TuneCUETP8M1_amcatnlo_ext1_0 + Tree_TTZToLLNuNu_M_10_TuneCUETP8M1_amcatnlo_ext2_0 + Tree_TTZToLLNuNu_M_10_TuneCUETP8M1_amcatnlo_ext2_1 + Tree_TTZToLLNuNu_M_10_TuneCUETP8M1_amcatnlo_ext3_0 + Tree_TTZToLLNuNu_M_10_TuneCUETP8M1_amcatnlo_ext3_1 : 0.2529 ; genSumWeightName="genEventSumw_"
+vvttv : Tree_TTZToQQ_TuneCUETP8M1_amcatnlo_0 : 0.5297 ; genSumWeightName="genEventSumw_"
