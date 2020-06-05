@@ -75,7 +75,7 @@ class EventVars_tWRun2(Module):
         for i in range(len(leps_4m)):
             leps_4m[i].SetPtEtaPhiM(leps[i].pt_corrAll, leps_4m[i].Eta(), leps_4m[i].Phi(), leps_4m[i].M())
 
-        if event.nLepGood >= 2:
+        if len(leps) >= 2:
             allret["isSS"] = int(leps[0].charge == leps[1].charge)
             if   ((abs(leps[0].pdgId) == 13 and abs(leps[1].pdgId) == 11) or
                  (abs(leps[0].pdgId) == 11 and abs(leps[1].pdgId) == 13)):

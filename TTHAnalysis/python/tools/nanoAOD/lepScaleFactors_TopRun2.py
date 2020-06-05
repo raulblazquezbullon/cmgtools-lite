@@ -92,19 +92,20 @@ class lepScaleFactors_TopRun2(Module):
             #### NOTE: electron SF are in terms of the eta of the associated supercluster and
             # the pT of the electron. Take also into account that deltaEtaSC = etaSC - eta, as
             # indicated in PhysicsTools/NanoAOD/python/electrons_cff.py.
-            if   chan == ch.ElMu:
-                if abs(leps[0].pdgId) == 11: # electron
+            if len(leps) > 0:
+                if   chan == ch.ElMu:
+                    if abs(leps[0].pdgId) == 11: # electron
+                        elecsf *= self.getLepSF(leps[0].pt_corrAll, leps[0].eta + leps[0].deltaEtaSC, var, "e", year, event)
+                        if len(leps) > 1: muonsf *= self.getLepSF(leps[1].pt_corrAll, leps[1].eta, var, "m", year, event)
+                    else:
+                        muonsf *= self.getLepSF(leps[0].pt_corrAll, leps[0].eta, var, "m", year, event)
+                        if len(leps) > 1: elecsf *= self.getLepSF(leps[1].pt_corrAll, leps[1].eta + leps[1].deltaEtaSC, var, "e", year, event)
+                elif chan == ch.Elec:
                     elecsf *= self.getLepSF(leps[0].pt_corrAll, leps[0].eta + leps[0].deltaEtaSC, var, "e", year, event)
-                    muonsf *= self.getLepSF(leps[1].pt_corrAll, leps[1].eta, var, "m", year, event)
-                else:
+                    if len(leps) > 1: elecsf *= self.getLepSF(leps[1].pt_corrAll, leps[1].eta + leps[1].deltaEtaSC, var, "e", year, event)
+                elif chan == ch.Muon:
                     muonsf *= self.getLepSF(leps[0].pt_corrAll, leps[0].eta, var, "m", year, event)
-                    elecsf *= self.getLepSF(leps[1].pt_corrAll, leps[1].eta + leps[1].deltaEtaSC, var, "e", year, event)
-            elif chan == ch.Elec:
-                elecsf *= self.getLepSF(leps[0].pt_corrAll, leps[0].eta + leps[0].deltaEtaSC, var, "e", year, event)
-                elecsf *= self.getLepSF(leps[1].pt_corrAll, leps[1].eta + leps[1].deltaEtaSC, var, "e", year, event)
-            elif chan == ch.Muon:
-                muonsf *= self.getLepSF(leps[0].pt_corrAll, leps[0].eta, var, "m", year, event)
-                muonsf *= self.getLepSF(leps[0].pt_corrAll, leps[0].eta, var, "m", year, event)
+                    if len(leps) > 1: muonsf *= self.getLepSF(leps[1].pt_corrAll, leps[1].eta, var, "m", year, event)
 
             self.out.fillBranch('MuonSF' + var, muonsf)
             self.out.fillBranch('ElecSF' + var, elecsf)
@@ -112,7 +113,7 @@ class lepScaleFactors_TopRun2(Module):
         # triggers
         for var in ["", "_Up", "_Dn"]:
             trigsf = 1
-            if len(leps) >= 2:
+            if len(leps) > 1 and chan != ch.NoChan:
                 trigsf *= self.getTrigSF(leps[0].pt_corrAll, leps[1].pt_corrAll, var, chan, year, ev = event)
 
             self.out.fillBranch('TrigSF' + var, trigsf)
