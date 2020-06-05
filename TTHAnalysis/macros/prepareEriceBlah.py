@@ -19,8 +19,9 @@ logpath      = friendspath + "/" + prodname + "/{y}/{step_prefix}/logs"
 utilspath    = "/nfs/fanae/user/vrbouza/Proyectos/tw_run2/desarrollo/susyMaintenanceScripts/friendsWithBenefits"
 commandscaff = "python prepareEventVariablesFriendTree.py -t NanoAOD {inpath} {outpath} -I CMGTools.TTHAnalysis.tools.nanoAOD.TopRun2_modules {module} {friends} {dataset} --log {logdir} -N {chunksize} --name {jobname} -q {queue} --env oviedo {ex}"
 friendfolders = ["0_yeartag", "1_lepmerge_roch", "2_cleaning", "3_varstrigger", "4_scalefactors"]
-chunksizes    = [5000000, 100000, 500000, 100000, 250000] # veyos
-#chunksizes    = [5000000, 250000, 500000, 250000, 250000] # novos
+#chunksizes    = [5000000, 100000, 500000, 100000, 250000] # veyos
+chunksizes    = [5000000, 250000, 500000, 250000, 250000] # novos
+#chunksizes    = [5000000, 250000, 250000, 250000, 250000] # máis novos inda
 minchunkbytes = 1000
 
 class errs(enum.IntEnum):
@@ -39,10 +40,10 @@ sampledict[2016] = {
     # ttbar
     "TTTo2L2Nu"        : "Tree_TTTo2L2Nu_TuneCP5_PSweights",
     "TTToSemiLeptonic" : "Tree_TTToSemiLeptonic_TuneCP5_PSweights",
-    #"TT_CUETP8M2T4"    : "TT_TuneCUETP8M2T4_nobackup, TT_TuneCUETP8M2T4_PSweights, TT_TuneCUETP8M2T4",
+    "TT_CUETP8M2T4"    : ["TT_TuneCUETP8M2T4_nobackup_*", "TT_TuneCUETP8M2T4_PSweights*", "TT_TuneCUETP8M2T4_0", "TT_TuneCUETP8M2T4_1", "TT_TuneCUETP8M2T4_2", "TT_TuneCUETP8M2T4_3"],
 
     # tW
-    "tW_noFullHad"    : "Tree_tW_5f_noFullHad_TuneCUETP8M1",
+    "tW_noFullHad"    : "Tree_tW_5f_noFullHad_",
     "tbarW_noFullHad" : "Tree_tbarW_5f_noFullHad_",
 
     # WJets
@@ -322,11 +323,11 @@ def getFriendsFolder(dataset, basepath, step_friends):
         myfibrefriends = [f for f in os.listdir(rofolder) if (".root" in f and dataset in f and "chunk" not in f and "Friend" in f)]
         if len(myfibrefriends) > 0: doihavefibrefriends = True
 
-    #if doihavefibrefriends:
-        #wr.warn("====== WARNING! Friends detected in RO folder for this production. Using them for dataset {d} and step (of the friends) {s}".format(d = dataset, s = step_friends))
-        #return rofolder
-    #else:
-        #return rwfolder
+    if doihavefibrefriends:
+        wr.warn("====== WARNING! Friends detected in RO folder for this production. Using them for dataset {d} and step (of the friends) {s}".format(d = dataset, s = step_friends))
+        return rofolder
+    else:
+        return rwfolder
     return rwfolder
 
 
@@ -490,7 +491,7 @@ def CheckChunksByDataset(task):
                 fch = r.TFile.Open(chkpath, "READ")
                 if not fch:                                                 #### 3rd: ROOT access (corruption)
                     print "# Chunk {chk} cannot be accessed: it is corrupted.".format(chk = ch)
-                    pendingdict[dat][ch] = errs.corrupted
+                    pendingdict[dat][ch] = errs.corrupt
                 else:
                     tmpentries = fch.Get("Friends").GetEntries()
                     #print tmpentries
@@ -528,9 +529,10 @@ def MergeThoseChunks(year, step, queue, extra):
     if len(chunklist) == 0:
         print "> No chunks found in the search folder! ({f})".format(f = basefolder)
     else:
-        print "> Chunks found in {b}. Please, take into account that no check upon the chunks will be done here. In addition, remember that the actual hadd command uses a regexp to select the chunks to be merged.".format(b = basefolder)
+        allRfileslist  = [f for f in os.listdir(basefolder) if (".root" in f)]
+        print "> Chunks found in {b}. Please, take into account that no check upon the chunks will be done here.".format(b = basefolder)
         dictofmerges = {}
-        for chk in chunklist:
+        for chk in allRfileslist:
             tmplex = chk.split("Friend")[0]
             tmpsuf = chk.split("Friend")[1]
             if tmplex in dictofmerges:
@@ -539,23 +541,27 @@ def MergeThoseChunks(year, step, queue, extra):
                 dictofmerges[tmplex] = [tmpsuf]
 
         nsuscept = len(list(dictofmerges.keys()))
-        nmerged  = len( [f for f in list(dictofmerges.keys()) if ".root" not in dictofmerges[f]] )
+        nmerged  = len( [f for f in list(dictofmerges.keys()) if ".root" in dictofmerges[f]] )
 
         print "\n> {n1} datasets found susceptible to be merged, of which {n2} have already merged files and will be ignored.".format(n1 = nsuscept, n2 = nmerged )
 
+
         if nsuscept != nmerged:
             print "    - The ones without merged files are the following."
-            for d in dictofmerges:
-                print "# Dataset: {dat}".format(dat = d)
+            for dat in dictofmerges:
+                if ".root" not in dictofmerges[dat]:
+                    print "# Dataset: {d}".format(d = dat)
 
-            if confirm("> Do you want to merge the chunks of those datasets?"):
+            if confirm("\n> Do you want to merge the chunks of those datasets?"):
                 print "\n> Beginning merge."
                 for dat in dictofmerges:
                     if ".root" not in dictofmerges[dat]:
-                        print "    - Merging {nch} of dataset {d}.".format(nch = len(dictofmerges[dat]), d = dat)
-                        comm = "hadd -f3 " + basefolder + "/" + dat + "Friend.root " + basefolder + "/" + dat + "Friend.chunk*.root"
+                        print "\n    - Merging the {nch} chunks of dataset {d}.".format(nch = len(dictofmerges[dat]), d = dat)
+                        comm = "hadd -f3 " + basefolder + "/" + dat + "Friend.root "
+                        for chk in dictofmerges[dat]: comm += " " + basefolder + "/" + dat + "Friend" + chk
                         print "Command: " + comm
-                        os.system()
+                        #sys.exit()
+                        os.system(comm)
 
     return
 
@@ -667,7 +673,7 @@ def CheckLotsOfChunks(dataset, year, step, queue, extra, ncores):
                 for ch in fullpendingdict[d][part]:
                     print "# Dataset: {dat} - chunk: {c}".format(dat = part, c = ch)
 
-        if confirm("> Do you want to send these jobs?"):
+        if confirm("\n> Do you want to send these jobs?"):
             if not os.path.isdir(logpath.format(step_prefix = friendfolders[step], y = year)):
                 os.system("mkdir -p " + logpath.format(step_prefix = friendfolders[step], y = year))
 
@@ -741,12 +747,15 @@ if __name__=="__main__":
         else:
             tasks = []
             for dat in sampledict[year]: tasks.append( (dat, year, step, queue, extra) )
+            print "> A total of {n} commands (that might send one, or more jobs) are going to be executed for year {y}, step {s} in the queue {q} and parallelised with {j} cores.".format(n = len(tasks), y = year, s = step, q = queue, j = ncores)
 
-            if ncores > 1:
-                pool = Pool(ncores)
-                pool.map(GeneralSubmitter, tasks)
-                pool.close()
-                pool.join()
-                del pool
-            else:
-                for tsk in tasks: GeneralSubmitter(tsk)
+            if confirm("\n> Do you want to send these jobs?"):
+                print "> Beginning submission."
+                if ncores > 1:
+                    pool = Pool(ncores)
+                    pool.map(GeneralSubmitter, tasks)
+                    pool.close()
+                    pool.join()
+                    del pool
+                else:
+                    for tsk in tasks: GeneralSubmitter(tsk)
