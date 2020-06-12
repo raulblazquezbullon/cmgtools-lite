@@ -4,4 +4,4 @@ incl_dy      : + ; IncludeMca="tw-run2/mca-tw-includes/mca-2016-dy.txt"
 incl_vvttv   : + ; IncludeMca="tw-run2/mca-tw-includes/mca-2016-vvttv.txt"
 incl_nonworz : + ; IncludeMca="tw-run2/mca-tw-includes/mca-2016-nonworz.txt"
 
-#incl_data    : + ; IncludeMca="ttbar-5TeV/mca-includes/mca-2016-data.txt"
+incl_data    : + ; IncludeMca="tw-run2/mca-tw-includes/mca-2016-data.txt"

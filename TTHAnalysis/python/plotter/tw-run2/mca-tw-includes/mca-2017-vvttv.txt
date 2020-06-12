@@ -1,0 +1,21 @@
+vvttv : Tree_WWTo2L2Nu_NNPDF31_TuneCP5_0 : 12.178 ; genSumWeightName="genEventSumw_",FillColor=390
+#vvttv : Tree_WWToLNuQQ_0 + Tree_WWToLNuQQ_ext1_0 :
+
+
+#vvttv : Tree_WZTo1L1Nu2Q_amcatnloFXFX_madspin_0 :
+vvttv : Tree_WZTo2L2Q_amcatnloFXFX_madspin_0 + Tree_WZTo2L2Q_amcatnloFXFX_madspin_1 + Tree_WZTo2L2Q_amcatnloFXFX_madspin_2 + Tree_WZTo2L2Q_amcatnloFXFX_madspin_3 : 5.595 ; genSumWeightName="genEventSumw_",FillColor=390
+vvttv : Tree_WZTo3LNu_0 : 4.42965 ; genSumWeightName="genEventSumw_",FillColor=390
+
+
+vvttv : Tree_ZZTo2L2Nu_0 + Tree_ZZTo2L2Nu_1 : 0.564 ; genSumWeightName="genEventSumw_",FillColor=390
+vvttv : Tree_ZZTo2L2Q_amcatnloFXFX_madspin_0 + Tree_ZZTo2L2Q_amcatnloFXFX_madspin_1 + Tree_ZZTo2L2Q_amcatnloFXFX_madspin_2 + Tree_ZZTo2L2Q_amcatnloFXFX_madspin_3 + Tree_ZZTo2L2Q_amcatnloFXFX_madspin_4 : 3.28 ; genSumWeightName="genEventSumw_",FillColor=390
+vvttv : Tree_ZZTo4L_0 + Tree_ZZTo4L_1 + Tree_ZZTo4L_2 + Tree_ZZTo4L_ext1_0 + Tree_ZZTo4L_ext1_1 + Tree_ZZTo4L_ext1_10 + Tree_ZZTo4L_ext1_11 + Tree_ZZTo4L_ext1_12 + Tree_ZZTo4L_ext1_2 + Tree_ZZTo4L_ext1_3 + Tree_ZZTo4L_ext1_4 + Tree_ZZTo4L_ext1_5 + Tree_ZZTo4L_ext1_6 + Tree_ZZTo4L_ext1_7 + Tree_ZZTo4L_ext1_8 + Tree_ZZTo4L_ext1_9 + Tree_ZZTo4L_ext1_13 + Tree_ZZTo4L_ext1_14 + Tree_ZZTo4L_ext1_15 : 1.256 ; genSumWeightName="genEventSumw_",FillColor=390
+
+
+vvttv : Tree_TTWJetsToLNu_TuneCP5_PSweights_amcatnloFXFX_madspin_0 + Tree_TTWJetsToLNu_TuneCP5_PSweights_amcatnloFXFX_madspin_1 + Tree_TTWJetsToLNu_TuneCP5_amcatnloFXFX_madspin_0 + Tree_TTWJetsToLNu_TuneCP5_amcatnloFXFX_madspin_1 : 0.2043 ; genSumWeightName="genEventSumw_",FillColor=390
+vvttv : Tree_TTWJetsToQQ_TuneCP5_amcatnloFXFX_madspin_0 : 0.4062 ; genSumWeightName="genEventSumw_",FillColor=390
+
+
+vvttv : Tree_TTZToLL_M_1to10_TuneCP5_amcatnlo_0 : 0.0493 ; genSumWeightName="genEventSumw_",FillColor=390
+vvttv : Tree_TTZToLLNuNu_M_10_TuneCP5_amcatnlo_0 + Tree_TTZToLLNuNu_M_10_TuneCP5_amcatnlo_1 : 0.2529 ; genSumWeightName="genEventSumw_",FillColor=390
+vvttv : Tree_TTZToQQ_TuneCP5_amcatnlo_0 : 0.5297 ; genSumWeightName="genEventSumw_",FillColor=390
