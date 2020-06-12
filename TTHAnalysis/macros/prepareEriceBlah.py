@@ -12,7 +12,7 @@ friendspath = "/pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions"
 prodname    = "2020-06-01"
 
 
-datasamples  = ["SingleMuon", "SingleElec", "DoubleMuon", "DoubleEG", "MuonEG", "LowEGJet", "HighEGJet"]
+datasamples  = ["SingleMuon", "SingleElec", "DoubleMuon", "DoubleEG", "MuonEG", "LowEGJet", "HighEGJet", "EGamma"]
 mcpath       = "/pool/ciencias/nanoAODv6/29jan2020_MC"
 datapath     = "/pool/ciencias/nanoAODv6/13jan2020"
 logpath      = friendspath + "/" + prodname + "/{y}/{step_prefix}/logs"
@@ -20,8 +20,8 @@ utilspath    = "/nfs/fanae/user/vrbouza/Proyectos/tw_run2/desarrollo/susyMainten
 commandscaff = "python prepareEventVariablesFriendTree.py -t NanoAOD {inpath} {outpath} -I CMGTools.TTHAnalysis.tools.nanoAOD.TopRun2_modules {module} {friends} {dataset} --log {logdir} -N {chunksize} --name {jobname} -q {queue} --env oviedo {ex}"
 friendfolders = ["0_yeartag", "1_lepmerge_roch", "2_cleaning", "3_varstrigger", "4_scalefactors"]
 #chunksizes    = [5000000, 100000, 500000, 100000, 250000] # veyos
-chunksizes    = [5000000, 250000, 500000, 250000, 250000] # novos
-#chunksizes    = [5000000, 250000, 250000, 250000, 250000] # máis novos inda
+#chunksizes    = [5000000, 250000, 500000, 250000, 250000] # novos
+chunksizes    = [5000000, 250000, 250000, 250000, 250000] # mais novos inda
 minchunkbytes = 1000
 
 class errs(enum.IntEnum):
@@ -261,11 +261,10 @@ sampledict[2018] = {
 
 
     #### Datos
-    "SingleMuon"     : "Tree_SingleMuon_Run2017",
-    "SingleElectron" : "Tree_SingleElectron_Run2017",
-    "DoubleMuon"     : "Tree_DoubleMuon_Run2017",
-    "DoubleEG"       : "Tree_DoubleEG_Run2017",
-    "MuonEG"         : "Tree_MuonEG_Run2017",
+    "SingleMuon" : "Tree_SingleMuon_Run2018",
+    "EGamma"     : "Tree_EGamma_Run2018",
+    "DoubleMuon" : "Tree_DoubleMuon_Run2018",
+    "MuonEG"     : "Tree_MuonEG_Run2018",
 }
 
 
@@ -323,11 +322,11 @@ def getFriendsFolder(dataset, basepath, step_friends):
         myfibrefriends = [f for f in os.listdir(rofolder) if (".root" in f and dataset in f and "chunk" not in f and "Friend" in f)]
         if len(myfibrefriends) > 0: doihavefibrefriends = True
 
-    if doihavefibrefriends:
-        wr.warn("====== WARNING! Friends detected in RO folder for this production. Using them for dataset {d} and step (of the friends) {s}".format(d = dataset, s = step_friends))
-        return rofolder
-    else:
-        return rwfolder
+    #if doihavefibrefriends:
+        #wr.warn("====== WARNING! Friends detected in RO folder for this production. Using them for dataset {d} and step (of the friends) {s}".format(d = dataset, s = step_friends))
+        #return rofolder
+    #else:
+        #return rwfolder
     return rwfolder
 
 
@@ -350,7 +349,7 @@ def SendDatasetJobs(task):
                                                           "singlemuon"
                                                           if "singlemuon" in dataset.lower() else
                                                           "singleelec"
-                                                          if "singleelec" in dataset.lower() else
+                                                          if "singleelec" in dataset.lower() or "egamma" in dataset.lower() else
                                                           "doublemuon"
                                                           if "doublemuon" in dataset.lower() else
                                                           "doubleeg"
