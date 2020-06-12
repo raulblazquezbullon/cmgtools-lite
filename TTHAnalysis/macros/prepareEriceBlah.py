@@ -20,8 +20,8 @@ utilspath    = "/nfs/fanae/user/vrbouza/Proyectos/tw_run2/desarrollo/susyMainten
 commandscaff = "python prepareEventVariablesFriendTree.py -t NanoAOD {inpath} {outpath} -I CMGTools.TTHAnalysis.tools.nanoAOD.TopRun2_modules {module} {friends} {dataset} --log {logdir} -N {chunksize} --name {jobname} -q {queue} --env oviedo {ex}"
 friendfolders = ["0_yeartag", "1_lepmerge_roch", "2_cleaning", "3_varstrigger", "4_scalefactors"]
 #chunksizes    = [5000000, 100000, 500000, 100000, 250000] # veyos
-#chunksizes    = [5000000, 250000, 500000, 250000, 250000] # novos
-chunksizes    = [5000000, 250000, 250000, 250000, 250000] # mais novos inda
+chunksizes    = [5000000, 250000, 500000, 250000, 250000] # novos
+#chunksizes    = [5000000, 250000, 250000, 250000, 250000] # mais novos inda
 minchunkbytes = 1000
 
 class errs(enum.IntEnum):
@@ -509,6 +509,60 @@ def CheckChunksByDataset(task):
     return pendingdict, dataset
 
 
+def CheckMergedDataset(task):
+    dataset, year, step = task
+    isData     = any(ext in dataset for ext in datasamples)
+
+    inputpath_ = (datapath if isData else mcpath) + "/" + str(year) + "/"
+    basefolder = friendspath + "/" + prodname + "/" + str(year) + "/" + friendfolders[step]
+
+
+    if isinstance(sampledict[year][dataset], list):
+        filelist = [f for f in os.listdir(inputpath_) if any(ext.replace("*", "") in f for ext in sampledict[year][dataset])]
+    else:
+        filelist = [f for f in os.listdir(inputpath_) if (sampledict[year][dataset] in f)]
+
+
+    pendingdict = {}
+
+    for dat in filelist:
+        pendingdict[dat] = errs.NoErr
+        nchks = 0; totEnt = 0
+        try:
+            nchks, totEnt = getNchunks(dat, year, step)
+        except:
+            raise RuntimeError("FATAL: could not access {d} to obtain the number of entries.".format(d = dat))
+        print "    - Checking dataset", dat, "(expected entries: {ent})".format(ent = totEnt)
+
+        friendname = dat.replace(".root", "") + "_Friend.root"
+        filepath   = basefolder + "/" + friendname
+        #print "opening", filepath
+
+        if not os.path.isfile(filepath):                  #### 1st: existance
+            print "# Merged friendtree {chk} has not been found.".format(chk = friendname)
+            pendingdict[dat] = errs.exist
+        elif os.path.getsize(filepath) <= minchunkbytes:  #### 2nd: size
+            print "# Merged friendtree {chk} has less size than the minimum.".format(chk = friendname)
+            pendingdict[dat] = errs.size
+        else:
+            fch = r.TFile.Open(filepath, "READ")
+            if not fch:                                   #### 3rd: ROOT access (corruption)
+                print "# Merged friendtree {chk} cannot be accessed: it is corrupted.".format(chk = friendname)
+                pendingdict[dat] = errs.corrupt
+            else:
+                tmpentries = fch.Get("Friends").GetEntries()
+                #print tmpentries
+                fch.Close()
+                if int(tmpentries) != int(totEnt):        #### 4th: number of entries
+                    print "# Merged friendtree {chk} does not have the expected entries ({ent}), it has {realent}.".format(chk = friendname, ent = totEnt, realent = tmpentries)
+                    pendingdict[dat] = errs.entries
+
+            del fch
+
+    return pendingdict, dataset
+
+
+#### NOTE: for completeness, here lies the old MergeThoseChunks function.
 #def MergeThoseChunks(year, step, queue, extra):
     #basefolder = friendspath + "/" + prodname + "/" + str(year) + "/" + friendfolders[step]
     #chunklist  = [f for f in os.listdir(basefolder) if (".root" in f and "chunk" in f)]
@@ -522,7 +576,8 @@ def CheckChunksByDataset(task):
     #return
 
 
-def MergeThoseChunks(year, step, queue, extra):
+
+def MergeThoseChunks(year, step, queue, extra, noconf = False):
     basefolder = friendspath + "/" + prodname + "/" + str(year) + "/" + friendfolders[step]
     chunklist  = [f for f in os.listdir(basefolder) if (".root" in f and "chunk" in f)]
     if len(chunklist) == 0:
@@ -551,7 +606,13 @@ def MergeThoseChunks(year, step, queue, extra):
                 if ".root" not in dictofmerges[dat]:
                     print "# Dataset: {d}".format(d = dat)
 
-            if confirm("\n> Do you want to merge the chunks of those datasets?"):
+            cont = False
+            if noconf:
+                cont = True
+            elif confirm("\n> Do you want to merge the chunks of those datasets?"):
+                cont = True
+
+            if cont:
                 print "\n> Beginning merge."
                 for dat in dictofmerges:
                     if ".root" not in dictofmerges[dat]:
@@ -561,75 +622,57 @@ def MergeThoseChunks(year, step, queue, extra):
                         print "Command: " + comm
                         #sys.exit()
                         os.system(comm)
-
     return
 
 
-#def CheckMergedChunks(dataset, year, step, queue, extra, ncores):
-    #fullpendingdict = {}
-    #totalcount = 0
-    #if dataset.lower() != "all":
-        #tmpdict, dat = CheckChunksByDataset( (dataset, year, step) )
-        #tmpcount = sum([len(list(tmpdict[td].keys())) for td in tmpdict])
-        #totalcount += tmpcount
-        #if tmpcount != 0: fullpendingdict[dat] = tmpdict
-    #else:
-        #tasks = []
-        #for dat in sampledict[year]:
-            #isData = any(ext in dat for ext in datasamples)
-            #if not isData or (isData and step < 4):
-                #tasks.append( (dat, year, step) )
-        #if ncores > 1:
-            #pool = Pool(ncores)
-            #listofdicts = pool.map(CheckChunksByDataset, tasks)
-            #pool.close()
-            #pool.join()
-            #del pool
-            #for tmptupl in listofdicts:
-                #tmpcount = sum([len(list(tmptupl[0][td].keys())) for td in tmptupl[0]])
-                #totalcount += tmpcount
-                #if tmpcount != 0: fullpendingdict[tmptupl[1]] = tmptupl[0]
-        #else:
-            #for task in tasks:
-                #tmpdict, dat = CheckChunksByDataset(task)
-                #tmpcount = sum([len(list(tmpdict[td].keys())) for td in tmpdict])
-                #totalcount += tmpcount
-                #if tmpcount != 0: fullpendingdict[dat] = tmpdict
+def CheckLotsOfMergedDatasets(dataset, year, step, queue, extra, ncores):
+    fullpendingdict = {}
+    totalcount = 0
+    if dataset.lower() != "all":
+        tmpdict, dat = CheckMergedDataset( (dataset, year, step) )
+        tmpcount = sum([1 for td in tmpdict if tmpdict[td] != 0])
+        totalcount += tmpcount
+        if tmpcount != 0: fullpendingdict[dat] = tmpdict
+    else:
+        tasks = []
+        for dat in sampledict[year]:
+            isData = any(ext in dat for ext in datasamples)
+            if not isData or (isData and step < 4):
+                tasks.append( (dat, year, step) )
+        if ncores > 1:
+            pool = Pool(ncores)
+            listofdicts = pool.map(CheckMergedDataset, tasks)
+            pool.close()
+            pool.join()
+            del pool
+            for tmptupl in listofdicts:
+                tmpcount = sum([1 for td in tmptupl[0] if tmptupl[0][td] != 0])
+                totalcount += tmpcount
+                if tmpcount != 0: fullpendingdict[tmptupl[1]] = tmptupl[0]
+        else:
+            for task in tasks:
+                tmpdict, dat = CheckChunksByDataset(task)
+                tmpcount = sum([1 for td in tmpdict if tmpdict[td] != 0])
+                totalcount += tmpcount
+                if tmpcount != 0: fullpendingdict[dat] = tmpdict
 
-    ##print fullpendingdict
-    #print "\n> Finished checks."
-    #if len(list(fullpendingdict.keys())) != 0:
-        #print "    - {nch} chunks should be reprocessed. These are:".format(nch = totalcount)
-        #for d in fullpendingdict:
-            #for part in fullpendingdict[d]:
-                #for ch in fullpendingdict[d][part]:
-                    #print "# Dataset: {dat} - chunk: {c}".format(dat = part, c = ch)
 
-        #if confirm("> Do you want to send these jobs?"):
-            #if not os.path.isdir(logpath.format(step_prefix = friendfolders[step], y = year)):
-                #os.system("mkdir -p " + logpath.format(step_prefix = friendfolders[step], y = year))
+    #print fullpendingdict
+    print "\n> Finished checks."
+    if len(list(fullpendingdict.keys())) != 0:
+        print "    - {nch} merged datasets should be remerged. These are:".format(nch = totalcount)
+        for d in fullpendingdict:
+            for part in fullpendingdict[d]:
+                print "# Dataset: {dat}".format(dat = part)
 
-            #tasks = []
-            #for d in fullpendingdict:
-                #for part in fullpendingdict[d]:
-                    #for ch in fullpendingdict[d][part]:
-                        #isData     = any(ext in part for ext in datasamples)
-                        #inputpath_ = (datapath if isData else mcpath) + "/" + str(year) + "/"
-                        #tasks.append( (part.replace(".root", ""), year, step, inputpath_, isData, queue, "-c {chk} ".format(chk = ch) + extra, False) )
-                        ##sys.exit()
-
-            #if ncores > 1:
-                #pool = Pool(ncores)
-                #pool.map(SendDatasetJobs, tasks)
-                #pool.close()
-                #pool.join()
-                #del pool
-            #else:
-                #for task in tasks:
-                    #SendDatasetJobs(task)
-            #return
-        #else:
-            #return
+        if confirm("> Do you want to remerge these datasets? The current merged files will be deleted and afterwards, they will be reproduced (please note that all non-merged chunks in the folder will be merged!)"):
+            for d in fullpendingdict:
+                for part in fullpendingdict[d]:
+                    print "   - Erasing file {f}"
+                    #os.system("rm " + friendspath + "/" + prodname + "/" + str(year) + "/" + friendfolders[step] + "/" + part.replace(".root", "") + "_Friend.root")
+            MergeThoseChunks(year, step, queue, extra, noconf = True)
+        else:
+            return
 
 
 def CheckLotsOfChunks(dataset, year, step, queue, extra, ncores):
@@ -735,11 +778,13 @@ if __name__=="__main__":
     merge   = args.merge
 
 
-    if check:
+    if check and not merge:
         print "\n> Beginning checks of all chunks for the production of year {y}, of the friend trees of step {s} for {d} dataset(s).".format(y = year, s = step, d = dataset)
         CheckLotsOfChunks(dataset, year, step, queue, extra, ncores)
-    elif merge:
+    elif merge and not check:
         MergeThoseChunks(year, step, queue, extra)
+    elif merge and check:
+        CheckLotsOfMergedDatasets(dataset, year, step, queue, extra, ncores)
     else:
         if dataset.lower() != "all":
             GeneralSubmitter( (dataset, year, step, queue, extra) )
