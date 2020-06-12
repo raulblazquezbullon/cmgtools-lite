@@ -13,3 +13,5 @@ __init__.py
 LSFJOB*/
 slurm-*.out
 happyTreeFriend.*
+TTHAnalysis/macros/temp/*
+TTHAnalysis/python/plotter/temp/*
