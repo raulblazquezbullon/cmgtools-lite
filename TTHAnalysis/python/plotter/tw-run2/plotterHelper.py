@@ -16,7 +16,7 @@ logpath      = friendspath + "/{p}/{y}/logs/plots"
 
 friendsscaff = "--Fs {fpath}/{p}/{y}/0_yeartag --Fs {fpath}/{p}/{y}/1_lepmerge_roch --Fs {fpath}/{p}/{y}/2_cleaning --Fs {fpath}/{p}/{y}/3_varstrigger --FMCs {fpath}/{p}/{y}/4_scalefactors"
 
-commandscaff = "python mcPlots.py --tree NanoAOD --pdir {outpath} {friends} {samplespaths} -f -l {lumi} {nth} --year {year} --maxRatioRange 0.6 1.99 --ratioYNDiv 210 --showRatio --attachRatioPanel --fixRatioRange --legendColumns 3 --legendWidth 0.52 --legendFontSize 0.042 --noCms --topSpamSize 1.1 --lspam '#scale[1.1]{{#bf{{CMS}}}} #scale[0.9]{{#it{{Preliminary}}}}' --showMCError -W 'MuonSF * ElecSF * TrigSF * puWeight * bTagWeight * PrefireWeight' {selplot} {mcafile} {cutsfile} {plotsfile} {extra}"
+commandscaff = "python mcPlots.py --tree NanoAOD --pdir {outpath} {friends} {samplespaths} -f -l {lumi} {nth} --year {year} --maxRatioRange 0.6 1.99 --ratioYNDiv 210 --showRatio --attachRatioPanel --fixRatioRange --legendColumns 3 --legendWidth 0.52 --legendFontSize 0.042 --noCms --topSpamSize 1.1 --lspam '#scale[1.1]{{#bf{{CMS}}}} #scale[0.9]{{#it{{Preliminary}}}}' --showMCError -W 'MuonSF * ElecSF * TrigSF * puWeight * bTagWeight{extraweights}' -L tw-run2/functions_tw.cc {selplot} {mcafile} {cutsfile} {plotsfile} {extra}"
 
 slurmscaff   = "sbatch -c {nth} -p {queue} -J {jobname} -e {logpath}/log.%j.%x.err -o {logpath}/log.%j.%x.out --wrap '{command}'"
 
@@ -30,7 +30,7 @@ def GeneralExecutioner(task):
     if not os.path.isdir(outpath + "/" + str(year)) and not pretend:
         os.system("mkdir -p " + outpath + "/" + str(year))
 
-    if nthreads != 0:
+    if queue != "":
         if not os.path.isdir(logpath.format(y = year, p = prod)) and not pretend:
             os.system("mkdir -p " + logpath.format(y = year, p = prod))
 
@@ -56,6 +56,9 @@ def PlottingCommand(prod, year, nthreads, outpath, selplot, extra):
     cutsfile_  = "tw-run2/cuts-tw-{y}.txt".format(y = year)
     plotsfile_ = "tw-run2/plots-tw-2016.txt"
 
+    samplespaths_ = "-P " + mcpath + "/" + str(year) + " -P " + datapath + "/" + str(year)
+    extraweights_ = "" if year == 2018 else " * PrefireWeight"
+
     nth_       = "" if nthreads == 0 else ("--split-factor=-1 -j " + str(nthreads))
     friends_   = friendsscaff.format(fpath = friendspath,
                                      p     = prod,
@@ -63,10 +66,11 @@ def PlottingCommand(prod, year, nthreads, outpath, selplot, extra):
 
     comm = commandscaff.format(outpath      = outpath + "/" + str(year),
                                friends      = friends_,
-                               samplespaths = "-P " + mcpath + " -P " + datapath,
+                               samplespaths = samplespaths_,
                                lumi      = lumidict[year],
                                nth       = nth_,
                                year      = year,
+                               extraweights = extraweights_,
                                selplot   = "" if selplot == "" else ("-sP " + selplot),
                                mcafile   = mcafile_,
                                cutsfile  = cutsfile_,
