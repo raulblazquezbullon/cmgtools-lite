@@ -210,7 +210,7 @@ sampledict[2018] = {
     "WZTo1L3Nu"         : "Tree_WZTo1L3Nu_amcatnloFXFX_madspin",
     "WZTo2L2Q"          : "Tree_WZTo2L2Q_amcatnloFXFX_madspin",
     "WZTo3LNu"          : "Tree_WZTo3LNu_TuneCP5_ext1_0",
-    #"WZTo3LNu_aMCatNLO" : "Tree_WZTo3LNu_TuneCP5_amcatnloFXFX",
+    "WZTo3LNu_aMCatNLO" : "Tree_WZTo3LNu_TuneCP5_amcatnloFXFX",
 
     # ZZ
     "ZZTo2L2Nu"      : "Tree_ZZTo2L2Nu_TuneCP5",
