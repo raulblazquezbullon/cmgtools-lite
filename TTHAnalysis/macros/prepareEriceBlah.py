@@ -19,8 +19,8 @@ logpath      = friendspath + "/" + prodname + "/{y}/{step_prefix}/logs"
 utilspath    = "/nfs/fanae/user/vrbouza/Proyectos/tw_run2/desarrollo/susyMaintenanceScripts/friendsWithBenefits"
 commandscaff = "python prepareEventVariablesFriendTree.py -t NanoAOD {inpath} {outpath} -I CMGTools.TTHAnalysis.tools.nanoAOD.TopRun2_modules {module} {friends} {dataset} --log {logdir} -N {chunksize} --name {jobname} -q {queue} --env oviedo {ex}"
 friendfolders = ["0_yeartag", "1_lepmerge_roch", "2_cleaning", "3_varstrigger", "4_scalefactors"]
-#chunksizes    = [5000000, 100000, 500000, 100000, 250000] # veyos
-chunksizes    = [5000000, 250000, 500000, 250000, 250000] # novos
+chunksizes    = [5000000, 100000, 500000, 100000, 250000] # veyos
+#chunksizes    = [5000000, 250000, 500000, 250000, 250000] # novos
 #chunksizes    = [5000000, 250000, 250000, 250000, 250000] # mais novos inda
 minchunkbytes = 1000
 
@@ -40,8 +40,8 @@ sampledict[2016] = {
     # ttbar
     "TTTo2L2Nu"        : "Tree_TTTo2L2Nu_TuneCP5_PSweights",
     "TTToSemiLeptonic" : "Tree_TTToSemiLeptonic_TuneCP5_PSweights",
-    #"TT_CUETP8M2T4"    : ["TT_TuneCUETP8M2T4_nobackup_*", "TT_TuneCUETP8M2T4_PSweights*", "TT_TuneCUETP8M2T4_0", "TT_TuneCUETP8M2T4_1", "TT_TuneCUETP8M2T4_2", "TT_TuneCUETP8M2T4_3"],
-    "TT_CUETP8M2T4"    : "TT_TuneCUETP8M2T4_PSweights",
+    #"TT_CUETP8M2T4"    : ["Tree_TT_TuneCUETP8M2T4_nobackup_*", "Tree_TT_TuneCUETP8M2T4_PSweights*", "Tree_TT_TuneCUETP8M2T4_0", "Tree_TT_TuneCUETP8M2T4_1", "Tree_TT_TuneCUETP8M2T4_2", "TT_TuneCUETP8M2T4_3"],
+    "TT_CUETP8M2T4"    : "Tree_TT_TuneCUETP8M2T4_PSweights",
 
     # tW
     "tW_noFullHad"    : "Tree_tW_5f_noFullHad_",
@@ -723,7 +723,7 @@ def CheckLotsOfChunks(dataset, year, step, queue, extra, ncores):
                     for ch in fullpendingdict[d][part]:
                         isData     = any(ext in part for ext in datasamples)
                         inputpath_ = (datapath if isData else mcpath) + "/" + str(year) + "/"
-                        tasks.append( (part.replace(".root", ""), year, step, inputpath_, isData, queue, "-c {chk} ".format(chk = ch) + extra, False) )
+                        tasks.append( (part.replace(".root", ""), year, step, inputpath_, isData, queue, "-c {chk} ".format(chk = ch) + extra, False, False) )
                         #sys.exit()
 
             if ncores > 1:
