@@ -180,6 +180,7 @@ IDDict["jets"] = {
     "pt"      : 30,
     "pt2"     : 20,
     "ptloose" : 20,
+    "ptmin"   : 15,
     "eta"     : 2.4,
     "jetid_2016" : 0,  # > X
     #"jetid_2016" : 1,  # > X Lo del stop
@@ -303,12 +304,44 @@ recleaner_step2_data = lambda : fastCombinedObjectRecleaner(label = "Recl", inla
                                                             cleanElectrons = -1,
 )
 
-cleaning_mc_2016   = [recleaner_step1_2016, recleaner_step2_mc]
-cleaning_mc_2017   = [recleaner_step1_2017, recleaner_step2_mc]
-cleaning_mc_2018   = [recleaner_step1_2018, recleaner_step2_mc]
-cleaning_data_2016 = [recleaner_step1_2016, recleaner_step2_data]
-cleaning_data_2017 = [recleaner_step1_2017, recleaner_step2_data]
-cleaning_data_2018 = [recleaner_step1_2018, recleaner_step2_data]
+recleanerLoose_step2_mc = lambda : fastCombinedObjectRecleaner(label = "ReclLoose",
+                                                               inlabel = "_InternalRecl",
+                                                               cleanTausWithLooseLeptons = False,
+                                                               cleanJetsWithFOTaus       = False,
+                                                               doVetoZ = False, doVetoLMf = False, doVetoLMt = False,
+                                                               jetPts     = [IDDict["jets"]["pt2"], IDDict["jets"]["ptmin"]], # this creates two collections
+                                                               jetPtsFwd  = [IDDict["jets"]["pt2"], IDDict["jets"]["pt2"]],  # second number for 2.7 < abseta < 3, the first for the rest
+                                                               btagL_thr  = 99, # they are set at runtime
+                                                               btagM_thr  = 99,
+                                                               tauCollection = 'LepGood',
+                                                               isMC       = True,
+                                                               #variations = ['jesTotal'] + ['jes%s'%v for v in jecGroups] + ['jer'],
+                                                               variations = ['jesTotal'] + ['jer'],
+                                                               cleanElectrons = -1,
+)
+
+recleanerLoose_step2_data = lambda : fastCombinedObjectRecleaner(label = "ReclLoose",
+                                                                 inlabel = "_InternalRecl",
+                                                                 cleanTausWithLooseLeptons = False,
+                                                                 cleanJetsWithFOTaus       = False,
+                                                                 doVetoZ = False, doVetoLMf = False, doVetoLMt = False,
+                                                                 jetPts     = [IDDict["jets"]["pt2"], IDDict["jets"]["ptmin"]], # this creates two collections
+                                                                 jetPtsFwd  = [IDDict["jets"]["pt2"], IDDict["jets"]["pt2"]],  # second number for 2.7 < abseta < 3, the first for the rest
+                                                                 btagL_thr  = -99., # they are set at runtime
+                                                                 btagM_thr  = -99., # they are set at runtime
+                                                                 tauCollection = 'LepGood',
+                                                                 isMC       = False,
+                                                                 variations = [],
+                                                                 cleanElectrons = -1,
+)
+
+
+cleaning_mc_2016   = [recleaner_step1_2016, recleaner_step2_mc,   recleanerLoose_step2_mc]
+cleaning_mc_2017   = [recleaner_step1_2017, recleaner_step2_mc,   recleanerLoose_step2_mc]
+cleaning_mc_2018   = [recleaner_step1_2018, recleaner_step2_mc,   recleanerLoose_step2_mc]
+cleaning_data_2016 = [recleaner_step1_2016, recleaner_step2_data, recleanerLoose_step2_data]
+cleaning_data_2017 = [recleaner_step1_2017, recleaner_step2_data, recleanerLoose_step2_data]
+cleaning_data_2018 = [recleaner_step1_2018, recleaner_step2_data, recleanerLoose_step2_data]
 
 #### EVENT VARIABLES ###
 from CMGTools.TTHAnalysis.tools.eventVars_tWRun2 import EventVars_tWRun2
