@@ -1,14 +1,41 @@
-tot_weight: 1 : 1,0.5,1.5; XTitle = "Selected events", Legend='TR', MoreY=2.0
+channel   : channel                : [0.5,1.5,2.5,3.5]                      ; XTitle='Channel', xBinLabels="e#mu\,#mu#mu\,ee"
 
-met           : MET_pt                             : 40,0,400                               ; XTitle="p_{T}^{miss} (GeV)"
-met_phi       : MET_phi                            : 40,-3.14,3.14                          ; XTitle="#phi^{miss} (rad)"
-channel       : channel                            : [0.5,1.5,2.5,3.5]                      ; XTitle='Channel', xBinLabels="e#mu\,#mu#mu\,ee"
-nJet25        : nJet25                             : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5] ; XTitle='N(jet\, p_{T} > 25 GeV)', XNDiv=5, xBinLabels="2\,3\,4\,5\,6\,#geq 7"
-nBJetMedium25 : nBJetMedium25                      : [-0.5,0.5,1.5,2.5,3.5,4.5]             ; XTitle='N(jet\, p_{T} > 25 GeV\, CSVM)', XNDiv=5, xBinLabels="0\,1\,2\,3\,#geq 4", MoreY=1.7
-nJetnBJet     : getnJetnBJet(nJet25,nBJetMedium25) : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5]     ; XTitle='N(jet\, p_{T} > 25 GeV\, CSVM)', XNDiv=5, xBinLabels="[0-0]\,[1-0]\,[1-1]\,[2-0]\,[2-1]\,[2-2]\,[#geq 3-#geq 0]", MoreY=1.7
 
-lep1_pt       : LepGood_pt_corrAll[0]              : 14,10,150                              ; XTitle="Leading lepton p_{T} (GeV)"
-lep1_eta      : LepGood1_eta                       : 15,-2.5,2.5                            ; XTitle="Leading lepton #eta"
+njets     : nJet30_Recl            : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5] ; XTitle='N(jet)', XNDiv=5, xBinLabels="2\,3\,4\,5\,6\,#geq 7"
+nbjets    : nBJetMedium30_Recl     : [-0.5,0.5,1.5,2.5,3.5,4.5]             ; XTitle='N(b-jet)', XNDiv=5, xBinLabels="0\,1\,2\,3\,#geq 4", MoreY=1.7
+nJetnBJet : getnJetnBJet(nJet30_Recl, nBJetMedium30_Recl) : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5] ; XTitle='N(jet\, b-tag)', XNDiv=5, xBinLabels="[0-0]\,[1-0]\,[1-1]\,[2-0]\,[2-1]\,[2-2]\,[#geq 3-#geq 0]", MoreY=1.7
 
-lep2_pt       : LepGood2_pt                        : 40,0,200                               ; XTitle="Subleading lepton p_{T} (GeV)"
-lep2_eta      : LepGood2_eta                       : 15,-2.5,2.5                            ; XTitle="Subleading lepton #eta"
+nloosejets: getnLooseJets(nJet20_Recl, nJet30_Recl) : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5] ; XTitle='N(loose jet)', XNDiv=5, xBinLabels="2\,3\,4\,5\,6\,#geq 7"
+
+nfwdjets  : nFwdJet_Recl           : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5] ; XTitle='N(jet)', XNDiv=5, xBinLabels="2\,3\,4\,5\,6\,#geq 7"
+
+
+jet1_pt   : JetSel_Recl_pt[0]      : 14,10,150                              ; XTitle="Jet p_{T} (GeV)"
+jet1_eta  : JetSel_Recl_eta[0]     : 15,-2.4,2.4                            ; XTitle="Jet #eta"
+jet1_m    : JetSel_Recl_mass[0]    : 14,10,150                              ; XTitle="Jet mass (GeV)"
+
+jet2_pt   : JetSel_Recl_pt[1]      : 14,10,150                              ; XTitle="Subleading jet p_{T} (GeV)"
+jet2_eta  : JetSel_Recl_eta[1]     : 15,-2.4,2.4                            ; XTitle="Subleading jet #eta"
+jet2_m    : JetSel_Recl_mass[1]    : 14,10,150                              ; XTitle="Subleading jet mass (GeV)"
+
+jetfwd1_pt   : FwdJet1_pt_Recl[0]  : 14,10,150                             ; XTitle="Leading forward jet p_{T} (GeV)"
+jetfwd1_eta  : FwdJet1_eta_Recl[0] : 15,-2.4,2.4                           ; XTitle="Leading forward jet #eta"
+
+jetfwd2_pt   : FwdJet1_pt_Recl[1]  : 14,10,150                            ; XTitle="Subleading forward jet p_{T} (GeV)"
+jetfwd2_eta  : FwdJet1_eta_Recl[1] : 15,-2.4,2.4                          ; XTitle="Subleading forward jet #eta"
+
+
+
+
+lep1_pt   : LepGood_pt_corrAll[0]  : 14,10,150                              ; XTitle="Leading lepton p_{T} (GeV)"
+lep1_eta  : LepGood_eta[0]         : 15,-2.4,2.4                            ; XTitle="Leading lepton #eta"
+
+lep2_pt   : LepGood_pt[1]          : 14,10,150                              ; XTitle="Subleading lepton p_{T} (GeV)"
+lep2_eta  : LepGood_eta[1]         : 15,-2.4,2.4                            ; XTitle="Subleading lepton #eta"
+
+#met       : MET_pt                : 40,0,400                               ; XTitle="p_{T}^{miss} (GeV)"
+#met_phi   : MET_phi               : 40,-3.14,3.14                          ; XTitle="#phi^{miss} (rad)"
+
+lep1lep2_dphi : Lep1Lep2_DPhi      : 10,0,1   ; XTitle="#Delta#it{#varphi}(#it{e}^{#pm}\, #it{#mu}^{#mp})/#it{#pi} (adim.)"
+lep1lep2_pt   : Lep1Lep2_Pt        : 15,0,150 ; XTitle="p_{T}(\\ell_{1}\, \\ell_{2}) (GeV)"
+lep1lep2_m    : Mll                : 20,0,200 ; XTitle="m(\\ell_{1}\, \\ell_{2}) (GeV)"
