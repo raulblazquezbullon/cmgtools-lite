@@ -40,7 +40,8 @@ sampledict[2016] = {
     # ttbar
     "TTTo2L2Nu"        : "Tree_TTTo2L2Nu_TuneCP5_PSweights",
     "TTToSemiLeptonic" : "Tree_TTToSemiLeptonic_TuneCP5_PSweights",
-    "TT_CUETP8M2T4"    : ["TT_TuneCUETP8M2T4_nobackup_*", "TT_TuneCUETP8M2T4_PSweights*", "TT_TuneCUETP8M2T4_0", "TT_TuneCUETP8M2T4_1", "TT_TuneCUETP8M2T4_2", "TT_TuneCUETP8M2T4_3"],
+    #"TT_CUETP8M2T4"    : ["TT_TuneCUETP8M2T4_nobackup_*", "TT_TuneCUETP8M2T4_PSweights*", "TT_TuneCUETP8M2T4_0", "TT_TuneCUETP8M2T4_1", "TT_TuneCUETP8M2T4_2", "TT_TuneCUETP8M2T4_3"],
+    "TT_CUETP8M2T4"    : "TT_TuneCUETP8M2T4_PSweights",
 
     # tW
     "tW_noFullHad"    : "Tree_tW_5f_noFullHad_",
@@ -331,7 +332,7 @@ def getFriendsFolder(dataset, basepath, step_friends):
 
 
 def SendDatasetJobs(task):
-    dataset, year, step, inputpath_, isData, queue, extra, regexp = task
+    dataset, year, step, inputpath_, isData, queue, extra, regexp, pretend = task
     outpath_ = friendspath + "/" + prodname + "/" + str(year) + "/" + friendfolders[step]
     dataset_ = ("--dm " if regexp else "-d ") + dataset
     jobname_ = "happyTF_{y}_{d}_{s}".format(y = year, d = dataset, s = step)
@@ -344,17 +345,14 @@ def SendDatasetJobs(task):
     comm = ""; module_ = ""; friends_ = ""
 
     if   step == 0:
-        module_ = "addYearTag_{y}_{ty}".format(y = year,
-                                                    ty = ("mc" if not isData else
-                                                          "singlemuon"
-                                                          if "singlemuon" in dataset.lower() else
-                                                          "singleelec"
-                                                          if "singleelec" in dataset.lower() or "egamma" in dataset.lower() else
-                                                          "doublemuon"
-                                                          if "doublemuon" in dataset.lower() else
-                                                          "doubleeg"
-                                                          if "doubleeg"   in dataset.lower() else
-                                                          "muoneg")
+        module_ = "addYearTag_{y}_{ty}".format(y  = year,
+                                               ty = ("mc"         if not isData else
+                                                     "singlemuon" if "singlemuon" in dataset.lower() else
+                                                     "singleelec"
+                                                     if ("singleelec" in dataset.lower() or "egamma" in dataset.lower()) else
+                                                     "doublemuon" if "doublemuon" in dataset.lower() else
+                                                     "doubleeg"   if "doubleeg"   in dataset.lower() else
+                                                     "muoneg")
                                                     )
         friends_ = ""
 
@@ -394,13 +392,13 @@ def SendDatasetJobs(task):
                                    ex      = extra
         )
         print "Command: ", comm
-        os.system(comm)
+        if not pretend: os.system(comm)
 
     return
 
 
 def GeneralSubmitter(task):
-    dataset, year, step, queue, extra = task
+    dataset, year, step, queue, extra, pretend = task
     isData     = any(ext in dataset for ext in datasamples)
     inputpath_ = (datapath if isData else mcpath) + "/" + str(year) + "/"
     if not os.path.isdir(logpath.format(step_prefix = friendfolders[step], y = year)):
@@ -412,11 +410,11 @@ def GeneralSubmitter(task):
         #    is the only allowed regular expression). If it has not an asterisk, we will assume that it
         #    should not have a regular expression.
         for el in sampledict[year][dataset]:
-            SendDatasetJobs( (el, year, step, inputpath_, isData, queue, extra, (el[-1] == "*") ) )
+            SendDatasetJobs( (el, year, step, inputpath_, isData, queue, extra, (el[-1] == "*"), pretend ) )
 
     else:
         #### 2) There is only one element in the sample dict.. We assume it to have a regular expression.
-        SendDatasetJobs( (sampledict[year][dataset], year, step, inputpath_, isData, queue, extra, True) )
+        SendDatasetJobs( (sampledict[year][dataset], year, step, inputpath_, isData, queue, extra, True, pretend) )
     return
 
 
@@ -757,15 +755,15 @@ def confirm(message = "Do you wish to continue?"):
 
 if __name__=="__main__":
     parser = argparse.ArgumentParser(usage = "python nanoAOD_checker.py [options]", description = "Checker tool for the outputs of nanoAOD production (NOT postprocessing)", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument('--year',    '-y', metavar = 'year',    dest = "year",    required = False, default = 2016, type = int)
-    parser.add_argument('--dataset', '-d', metavar = 'dataset', dest = "dataset", required = False, default = "TTTo2L2Nu")
-    parser.add_argument('--step',    '-s', metavar = 'step',    dest = "step",    required = False, default = 0, type = int)
-    parser.add_argument('--check',   '-c', action = "store_true", dest = "check", required = False, default = False)
-    parser.add_argument('--queue',   '-q', metavar = 'queue',   dest = "queue",   required = False, default = "batch")
-    parser.add_argument('--extraArgs','-e', metavar = 'extra',  dest = "extra",   required = False, default = "")
-    parser.add_argument('--ncores',  '-n', metavar = 'ncores',  dest = "ncores",  required = False, default = 1, type = int)
-    parser.add_argument('--merge',  '-m', action = "store_true", dest = "merge",  required = False, default = False)
-    #parser.add_argument('--pretend',  '-p', metavar = 'extra',  dest = "extra",   required = False, default = "")
+    parser.add_argument('--year',    '-y', metavar = 'year',     dest = "year",    required = False, default = 2016, type = int)
+    parser.add_argument('--dataset', '-d', metavar = 'dataset',  dest = "dataset", required = False, default = "TTTo2L2Nu")
+    parser.add_argument('--step',    '-s', metavar = 'step',     dest = "step",    required = False, default = 0, type = int)
+    parser.add_argument('--check',   '-c', action = "store_true",dest = "check",   required = False, default = False)
+    parser.add_argument('--queue',   '-q', metavar = 'queue',    dest = "queue",   required = False, default = "batch")
+    parser.add_argument('--extraArgs','-e', metavar = 'extra',   dest = "extra",   required = False, default = "")
+    parser.add_argument('--ncores',  '-n', metavar = 'ncores',   dest = "ncores",  required = False, default = 1, type = int)
+    parser.add_argument('--merge',   '-m', action = "store_true",dest = "merge",   required = False, default = False)
+    parser.add_argument('--pretend', '-p', action = "store_true",dest = "pretend", required = False, default = False)
 
     args    = parser.parse_args()
     year    = args.year
@@ -776,6 +774,7 @@ if __name__=="__main__":
     extra   = args.extra
     ncores  = args.ncores
     merge   = args.merge
+    pretend = args.pretend
 
 
     if check and not merge:
@@ -787,10 +786,10 @@ if __name__=="__main__":
         CheckLotsOfMergedDatasets(dataset, year, step, queue, extra, ncores)
     else:
         if dataset.lower() != "all":
-            GeneralSubmitter( (dataset, year, step, queue, extra) )
+            GeneralSubmitter( (dataset, year, step, queue, extra, pretend) )
         else:
             tasks = []
-            for dat in sampledict[year]: tasks.append( (dat, year, step, queue, extra) )
+            for dat in sampledict[year]: tasks.append( (dat, year, step, queue, extra, pretend) )
             print "> A total of {n} commands (that might send one, or more jobs) are going to be executed for year {y}, step {s} in the queue {q} and parallelised with {j} cores.".format(n = len(tasks), y = year, s = step, q = queue, j = ncores)
 
             if confirm("\n> Do you want to send these jobs?"):
