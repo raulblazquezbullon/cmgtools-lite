@@ -181,21 +181,3 @@ class EventVars_tWRun2(Module):
                 allret["HTtot"]              = leps_4m[0].Pt() + leps_4m[1].Pt() + jets_4m[0].Pt() + met_4m.Pt()
 
         return allret
-
-
-
-if __name__ == '__main__':
-    from sys import argv
-    file = ROOT.TFile(argv[1])
-    tree = file.Get("tree")
-    tree.vectorTree = True
-    tree.AddFriend("sf/t",argv[2])
-    class Tester(Module):
-        def __init__(self, name):
-            Module.__init__(self,name,None)
-            self.sf = EventVarsWZ('','Recl')
-        def analyze(self,ev):
-            print "\nrun %6d lumi %4d event %d: leps %d" % (ev.run, ev.lumi, ev.evt, ev.nLepGood)
-            print self.sf(ev)
-    el = EventLoop([ Tester("tester") ])
-    el.loop([tree], maxEvents = 50)
