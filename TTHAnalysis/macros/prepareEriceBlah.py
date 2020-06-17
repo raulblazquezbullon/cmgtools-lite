@@ -616,7 +616,13 @@ def MergeThoseChunks(year, step, queue, extra, noconf = False):
                     if ".root" not in dictofmerges[dat]:
                         print "\n    - Merging the {nch} chunks of dataset {d}.".format(nch = len(dictofmerges[dat]), d = dat)
                         comm = "hadd -f3 " + basefolder + "/" + dat + "Friend.root "
-                        for chk in dictofmerges[dat]: comm += " " + basefolder + "/" + dat + "Friend" + chk
+
+
+                        #### NOTE: this step of ordering is EXTREMELY IMPORTANT. PLEASE DO NOT MERGE FTREES W/O FIRST ORDERING THE CHUNKS!!!! In addition, please note THAT HERE NO ATTENTION IS PAYED TO WHETHER ALL THE INTERMEDIATE CHUNKS EXIST OR IF SOME EXTRA CHUNK SHOULD BE INCLUDED. You should CHECK the chunks before MERGING.
+
+                        tmpnchks = 1 + max( [ int(el.replace(".chunk", "").replace(".root", "")) for el in dictofmerges[dat] ] )
+
+                        for ichk in range(tmpnchks): comm += " " + basefolder + "/" + dat + "Friend.chunk{i}.root".format(i = ichk)
                         print "Command: " + comm
                         #sys.exit()
                         os.system(comm)
