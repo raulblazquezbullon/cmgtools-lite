@@ -27,6 +27,7 @@ class EventVars_tWRun2(Module):
                               "METgood_phi",
                               "Lep1Lep2_Pt",
                               "Lep1Lep2_DPhi",
+                              "Mll",
 
                               "Lep1Lep2Jet1MET_Pz",
                               "Lep1Lep2Jet1MET_Pt",
@@ -39,7 +40,6 @@ class EventVars_tWRun2(Module):
                               "Lep1Jet1_M",
                               "Lep2Jet1_Pt",
                               "Lep2Jet1_M",
-                              "minimax",
                               "Jet1_E",
 
                               "Lep1Jet1_DR",
@@ -48,7 +48,10 @@ class EventVars_tWRun2(Module):
                               "Lep1Lep2Jet1_C",
                               "HTtot",
 
-                              "Mll"]
+                              "minimax",
+                              "Lep1Jet2_M",
+                              "Lep2Jet2_M",
+                             ]
 
         self.label    = "" if (label in ["", None]) else ("_" + label)
 
@@ -107,7 +110,8 @@ class EventVars_tWRun2(Module):
                 allret["METgood_pt"]  = event.MET_pt_nom
                 allret["METgood_phi"] = event.MET_phi_nom
 
-        met_4m = r.Math.PtEtaPhiMVector(allret["METgood_pt"], 0, allret["METgood_phi"], 0)
+        met_4m = r.TLorentzVector()
+        met_4m.SetPtEtaPhiM(allret["METgood_pt"], 0, allret["METgood_phi"], 0)
 
         # ============================ Variables not susceptible to JEC
         leps    = [l for l in Collection(event, "LepGood")]
@@ -116,7 +120,7 @@ class EventVars_tWRun2(Module):
             leps_4m[i].SetPtEtaPhiM(leps[i].pt_corrAll, leps_4m[i].Eta(), leps_4m[i].Phi(), leps_4m[i].M())
 
         jets    = [j for j in Collection(event, "JetSel_Recl")]
-        jets_4m = [j.p4() for j in j]
+        jets_4m = [j.p4() for j in jets]
 
 
         if len(leps) != event.nLepGood: wr.warn("WARNING: different collection size from nLepGood!!!!!!!")
@@ -142,6 +146,9 @@ class EventVars_tWRun2(Module):
         allret["Lep12Jet12MET_DR"]   = -99
         allret["Lep1Lep2Jet1_C"]     = -99
         allret["HTtot"]              = -99
+        allret["Lep1Jet2_M"]         = -99
+        allret["Lep2Jet2_M"]         = -99
+        allret["minimax"]            = -99
 
 
         if event.nLepGood >= 2:
@@ -175,9 +182,14 @@ class EventVars_tWRun2(Module):
                 allret["Lep2Jet1_M"]         = (leps_4m[1] + jets_4m[0]).M()
                 allret["Jet1_E"]             = jets_4m[0].E()
                 allret["Lep1Jet1_DR"]        = leps_4m[0].DeltaR(jets_4m[0])
-                allret["Lep12Jet12_DR"]      = (leps_4m[0] + leps_4m[1]).DeltaR(jets_4m[0] + jets_4m[1])
-                allret["Lep12Jet12MET_DR"]   = (leps_4m[0] + leps_4m[1]).DeltaR(jets_4m[0] + jets_4m[1] + met_4m)
                 allret["Lep1Lep2Jet1_C"]     = (leps_4m[0] + leps_4m[1] + jets_4m[0]).Et() / (leps_4m[0] + leps_4m[1] + jets_4m[0]).E()
                 allret["HTtot"]              = leps_4m[0].Pt() + leps_4m[1].Pt() + jets_4m[0].Pt() + met_4m.Pt()
+                if event.nJet30_Recl > 1:
+                    allret["Lep12Jet12_DR"]    = (leps_4m[0] + leps_4m[1]).DeltaR(jets_4m[0] + jets_4m[1])
+                    allret["Lep12Jet12MET_DR"] = (leps_4m[0] + leps_4m[1]).DeltaR(jets_4m[0] + jets_4m[1] + met_4m)
+                    allret["Lep1Jet2_M"]       = (leps_4m[0] + jets_4m[1]).M()
+                    allret["Lep2Jet2_M"]       = (leps_4m[1] + jets_4m[1]).M()
+                    #### WARNING: this minimax variable is only equal to that of ATLAS' PRL when the signal region is njets == 2, nbjets == 2.
+                    allret["minimax"] = min([max([allret["Lep1Jet1_M"], allret["Lep2Jet2_M"]]), max(allret["Lep2Jet1_M"], allret["Lep1Jet2_M"])])
 
         return allret
