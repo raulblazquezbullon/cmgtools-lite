@@ -30,6 +30,7 @@ def _fires(ev, path):
     else :
         return getattr(r, 'fires_%s_%d'%(path, ev.year))( ev.run, getattr(ev, path) )
 
+
 triggerGroups = dict(
     Trigger_1e = {
         2016 : lambda ev : _fires(ev, 'HLT_Ele27_WPTight_Gsf'),
@@ -79,29 +80,6 @@ Trigger_2e = lambda : EvtTagger('Trigger_2e',  [ lambda ev : triggerGroups['Trig
 Trigger_2m = lambda : EvtTagger('Trigger_2m',  [ lambda ev : triggerGroups['Trigger_2m'][ev.year](ev) ])
 Trigger_em = lambda : EvtTagger('Trigger_em',  [ lambda ev : triggerGroups['Trigger_em'][ev.year](ev) ])
 
-#Trigger_1e = lambda : EvtTagger('Trigger_1e',  [ lambda ev : (ev.HLT_Ele27_WPTight_Gsf == 1) ])
-#Trigger_1m = lambda : EvtTagger('Trigger_1m',  [ lambda ev : (ev.HLT_IsoTkMu24 == 1 or ev.HLT_IsoMu24 == 1) ])
-#Trigger_2e = lambda : EvtTagger('Trigger_2e',  [ lambda ev : (ev.HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ == 1) ])
-#Trigger_2m = lambda : EvtTagger('Trigger_2m',  [ lambda ev : (ev.HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL == 1 or ev.HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL == 1) ])
-#Trigger_em = lambda : EvtTagger('Trigger_em',  [ lambda ev : (ev.HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL == 1 or ev.HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL == 1) ])
-#Trigger_em_data = lambda : EvtTagger('Trigger_em_data',  [ lambda ev : ((ev.HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL == 1 or ev.HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL == 1) if (ev.run <= 280385) else (ev.HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ == 1 or ev.HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ == 1)) ])
-
-
-
-cond_singlemuon = [ lambda ev : (  (ev.channel == ch.ElMu and (not ev.Trigger_em) and ev.Trigger_1m)
-                                or (ev.channel == ch.Muon and (not ev.Trigger_2m) and ev.Trigger_1m)) ]
-
-cond_singleelec = [ lambda ev : ((   ev.channel == ch.ElMu and (not ev.Trigger_em) and (not ev.Trigger_1m) and ev.Trigger_1e)
-                                 or (ev.channel == ch.Elec and (not ev.Trigger_2e) and ev.Trigger_1e)) ]
-cond_doublemuon = [ lambda ev : (    ev.channel == ch.Muon and ev.Trigger_2m) ]
-cond_doubleeg   = [ lambda ev : (    ev.channel == ch.Elec and ev.Trigger_2e) ]
-cond_muoneg     = [ lambda ev : (    ev.channel == ch.ElMu and ev.Trigger_em) ]
-#cond_muoneg     = [ lambda ev : (    ev.channel == ch.ElMu and ev.Trigger_em_data) ]
-
-cond_mc         = [ lambda ev : (   (ev.channel == ch.ElMu and (ev.Trigger_em or ev.Trigger_1m or ev.Trigger_1e))
-                                 or (ev.channel == ch.Muon and (ev.Trigger_1m or ev.Trigger_2m))
-                                 or (ev.channel == ch.Elec and (ev.Trigger_1e or ev.Trigger_2e)) )]
-
 remove_overlap_booleans = [ lambda ev : (
                             (  (ev.channel == ch.ElMu and (ev.Trigger_em or ev.Trigger_1m or ev.Trigger_1e))
                             or (ev.channel == ch.Muon and (ev.Trigger_1m or ev.Trigger_2m))
@@ -128,19 +106,8 @@ remove_overlap_booleans = [ lambda ev : (
                             (False)
                         )]
 
-
-#remove_overlap_singlemuon = lambda : EvtTagger('pass_trigger', cond_singlemuon)
-#remove_overlap_singleelec = lambda : EvtTagger('pass_trigger', cond_singleelec)
-#remove_overlap_doublemuon = lambda : EvtTagger('pass_trigger', cond_doublemuon)
-#remove_overlap_doubleeg   = lambda : EvtTagger('pass_trigger', cond_doubleeg)
-#remove_overlap_muoneg     = lambda : EvtTagger('pass_trigger', cond_muoneg)
-#remove_overlap_mc         = lambda : EvtTagger('pass_trigger', cond_mc)
-
-
 remove_overlap = lambda : EvtTagger('pass_trigger', remove_overlap_booleans)
 
-
-#triggerSeq = [Trigger_1e, Trigger_1m, Trigger_2e, Trigger_2m, Trigger_em, Trigger_em_data]
 triggerSeq = [Trigger_1e, Trigger_1m, Trigger_2e, Trigger_2m, Trigger_em, remove_overlap]
 
 # =========================================================================================================================
