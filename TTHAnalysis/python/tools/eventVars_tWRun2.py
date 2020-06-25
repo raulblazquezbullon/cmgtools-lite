@@ -41,6 +41,9 @@ class EventVars_tWRun2(Module):
                               "Lep2Jet1_Pt",
                               "Lep2Jet1_M",
                               "Jet1_E",
+                              "Jet1_Pt",
+                              "Jet2_Pt",
+                              "JetLoose1_Pt",
 
                               "Lep1Jet1_DR",
                               "Lep12Jet12_DR",
@@ -119,9 +122,27 @@ class EventVars_tWRun2(Module):
         for i in range(len(leps_4m)):
             leps_4m[i].SetPtEtaPhiM(leps[i].pt_corrAll, leps_4m[i].Eta(), leps_4m[i].Phi(), leps_4m[i].M())
 
-        jets    = [j for j in Collection(event, "JetSel_Recl")]
-        jets_4m = [j.p4() for j in jets]
+        #chosenjets = getattr(event, "iJetSel30_Recl")
+        #nJets      = getattr(event, "nJetSel30_Recl")
+        all_jets   = [j for j in Collection(event, "Jet")]
+        jets    = []
+        jets_4m = []
 
+        #print "ijet30", chosenjets
+        #print "njetsel30", event.nJetSel30_Recl
+
+        #### VEYO
+        #if event.nJetSel30_Recl >= 5:
+            ##jets    = [all_jets[chosenjets[j]] for j in xrange(5)]
+            #jets    = [all_jets[event.iJetSel30_Recl[j]] for j in xrange(5)]
+        #else:
+            ##jets    = [all_jets[chosenjets[j]] for j in xrange(nJets)]
+            #jets    = [all_jets[event.iJetSel30_Recl[j]] for j in xrange(event.nJetSel30_Recl)]
+
+        #### NOVO
+        jets    = [all_jets[event.iJetSel30_Recl[j]] for j in xrange(min([event.nJetSel30_Recl, 5]))]
+
+        jets_4m = [j.p4() for j in jets]
 
         if len(leps) != event.nLepGood: wr.warn("WARNING: different collection size from nLepGood!!!!!!!")
 
@@ -140,7 +161,10 @@ class EventVars_tWRun2(Module):
         allret["Lep1Jet1_M"]         = -99
         allret["Lep2Jet1_Pt"]        = -99
         allret["Lep2Jet1_M"]         = -99
+        allret["Jet1_Pt"]            = -99
         allret["Jet1_E"]             = -99
+        allret["Jet2_Pt"]            = -99
+        allret["JetLoose1_Pt"]       = -99
         allret["Lep1Jet1_DR"]        = -99
         allret["Lep12Jet12_DR"]      = -99
         allret["Lep12Jet12MET_DR"]   = -99
@@ -164,11 +188,15 @@ class EventVars_tWRun2(Module):
                 allret["channel"] = ch.NoChan
 
             allret["Lep1Lep2_Pt"]   = (leps_4m[0] + leps_4m[1]).Pt()
-            allret["Lep1Lep2_DPhi"] = deltaPhi(leps[0], leps[1])
+            allret["Lep1Lep2_DPhi"] = abs(deltaPhi(leps[0], leps[1]))/r.TMath.Pi()
             allret["Mll"]           = (leps_4m[0] + leps_4m[1]).M()
 
             # ============================ Variables susceptible to JEC (except MET)
-            if event.nJet30_Recl > 0:
+            if event.nJetSel20_Recl > 0:
+                allret["JetLoose1_Pt"]       = all_jets[event.iJetSel20_Recl[0]].p4().Pt()
+
+
+            if event.nJetSel30_Recl > 0:
                 allret["Lep1Lep2Jet1MET_Pz"] = (leps_4m[0] + leps_4m[1] + jets_4m[0] + met_4m).Pz()
                 allret["Lep1Lep2Jet1MET_Pt"] = (leps_4m[0] + leps_4m[1] + jets_4m[0] + met_4m).Pt()
                 allret["Lep1Lep2Jet1MET_M"]  = (leps_4m[0] + leps_4m[1] + jets_4m[0] + met_4m).M()
@@ -180,15 +208,17 @@ class EventVars_tWRun2(Module):
                 allret["Lep1Jet1_M"]         = (leps_4m[0] + jets_4m[0]).M()
                 allret["Lep2Jet1_Pt"]        = (leps_4m[1] + jets_4m[0]).Pt()
                 allret["Lep2Jet1_M"]         = (leps_4m[1] + jets_4m[0]).M()
+                allret["Jet1_Pt"]            = jets_4m[0].Pt()
                 allret["Jet1_E"]             = jets_4m[0].E()
                 allret["Lep1Jet1_DR"]        = leps_4m[0].DeltaR(jets_4m[0])
                 allret["Lep1Lep2Jet1_C"]     = (leps_4m[0] + leps_4m[1] + jets_4m[0]).Et() / (leps_4m[0] + leps_4m[1] + jets_4m[0]).E()
                 allret["HTtot"]              = leps_4m[0].Pt() + leps_4m[1].Pt() + jets_4m[0].Pt() + met_4m.Pt()
-                if event.nJet30_Recl > 1:
+                if event.nJetSel30_Recl > 1:
                     allret["Lep12Jet12_DR"]    = (leps_4m[0] + leps_4m[1]).DeltaR(jets_4m[0] + jets_4m[1])
                     allret["Lep12Jet12MET_DR"] = (leps_4m[0] + leps_4m[1]).DeltaR(jets_4m[0] + jets_4m[1] + met_4m)
                     allret["Lep1Jet2_M"]       = (leps_4m[0] + jets_4m[1]).M()
                     allret["Lep2Jet2_M"]       = (leps_4m[1] + jets_4m[1]).M()
+                    allret["Jet2_Pt"]          = jets_4m[1].Pt()
                     #### WARNING: this minimax variable is only equal to that of ATLAS' PRL when the signal region is njets == 2, nbjets == 2.
                     allret["minimax"] = min([max([allret["Lep1Jet1_M"], allret["Lep2Jet2_M"]]), max(allret["Lep2Jet1_M"], allret["Lep1Jet2_M"])])
 

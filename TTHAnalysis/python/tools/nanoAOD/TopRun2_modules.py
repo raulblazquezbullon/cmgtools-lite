@@ -146,8 +146,8 @@ IDDict["elecs"] = {
 IDDict["jets"] = {
     "pt"      : 30,
     "pt2"     : 20,
-    "ptloose" : 20,
     "ptmin"   : 15,
+    "ptfwdnoise" : 60,
     "eta"     : 2.4,
     "jetid_2016" : 0,  # > X
     #"jetid_2016" : 1,  # > X Lo del stop
@@ -188,15 +188,9 @@ leptrigSFs = lambda : lepScaleFactors_TopRun2()
 #### JET TREATMENTS ###
 from CMGTools.TTHAnalysis.tools.nanoAOD.btag_weighter               import btag_weighter
 from CMGTools.TTHAnalysis.tools.nanoAOD.jetmetGrouper               import groups as jecGroups
-from CMGTools.TTHAnalysis.tools.combinedObjectTaggerForCleaning     import CombinedObjectTaggerForCleaning
-from CMGTools.TTHAnalysis.tools.nanoAOD.fastCombinedObjectRecleaner import fastCombinedObjectRecleaner
+#from CMGTools.TTHAnalysis.tools.combinedObjectTaggerForCleaning     import CombinedObjectTaggerForCleaning
+#from CMGTools.TTHAnalysis.tools.nanoAOD.fastCombinedObjectRecleaner import fastCombinedObjectRecleaner
 
-#ctrJetSel_2016      = lambda j : j.pt > IDDict["jets"]["pt"]                                       and abs(j.eta) <  IDDict["jets"]["eta"] and j.jetid > IDDict["jets"]["jetid_2016"]
-#loosectrJetSel_2016 = lambda j : j.pt > IDDict["jets"]["ptloose"] and j.pt <= IDDict["jets"]["pt"] and abs(j.eta) <  IDDict["jets"]["eta"] and j.jetid > IDDict["jets"]["jetid_2016"]
-#ctrJetSel_2017      = lambda j : j.pt > IDDict["jets"]["pt"]                                       and abs(j.eta) <  IDDict["jets"]["eta"] and j.jetid > IDDict["jets"]["jetid_2017"]
-#loosectrJetSel_2017 = lambda j : j.pt > IDDict["jets"]["ptloose"] and j.pt <= IDDict["jets"]["pt"] and abs(j.eta) <  IDDict["jets"]["eta"] and j.jetid > IDDict["jets"]["jetid_2017"]
-#ctrJetSel_2018      = lambda j : j.pt > IDDict["jets"]["pt"]                                       and abs(j.eta) <  IDDict["jets"]["eta"] and j.jetid > IDDict["jets"]["jetid_2018"]
-#loosectrJetSel_2018 = lambda j : j.pt > IDDict["jets"]["ptloose"] and j.pt <= IDDict["jets"]["pt"] and abs(j.eta) <  IDDict["jets"]["eta"] and j.jetid > IDDict["jets"]["jetid_2018"]
 
 ## b-tagging
 btagEffpath = os.environ['CMSSW_BASE'] + "/src/CMGTools/TTHAnalysis/data/TopRun2/btagging/"
@@ -208,107 +202,144 @@ btagWeights_2018 = lambda : btag_weighter(btagSFpath + "DeepJet_102XSF_V1.csv", 
 
 
 # Cleaning
-recleaner_step1_2016 = lambda : CombinedObjectTaggerForCleaning("InternalRecl",
-                                                                looseLeptonSel    = lambda lep : True,
-                                                                cleaningLeptonSel = lambda lep : True,
-                                                                FOLeptonSel       = lambda lep : True,
-                                                                tightLeptonSel    = lambda lep : True,
-                                                                FOTauSel          = lambda tau : False,
-                                                                tightTauSel       = lambda tau : False,
-                                                                selectJet         = lambda jet: jet.jetId > IDDict["jets"]["jetid_2016"],  # pt and eta cuts are (hard)coded in the step2
-                                                                tauCollection     = 'LepGood',
+from CMGTools.TTHAnalysis.tools.combinedObjectTaggerForCleaningTopRun2     import CombinedObjectTaggerForCleaningTopRun2
+from CMGTools.TTHAnalysis.tools.nanoAOD.fastCombinedObjectRecleanerTopRun2 import fastCombinedObjectRecleanerTopRun2
+from CMGTools.TTHAnalysis.tools.nanoAOD.cleaningTopRun2 import cleaningTopRun2
+
+cleaning_mc = lambda : cleaningTopRun2(label = "Recl",
+                                       jetPts = [IDDict["jets"]["pt"], IDDict["jets"]["pt2"]],
+                                       jetPtNoisyFwd = IDDict["jets"]["ptfwdnoise"], isMC = True,
+                                       #variations = ['jesTotal'] + ['jes%s'%v for v in jecGroups] + ['jer'],
+                                       variations = ['jesTotal'] + ['jer']
 )
 
-recleaner_step1_2017 = lambda : CombinedObjectTaggerForCleaning("InternalRecl",
-                                                                looseLeptonSel    = lambda lep : True,
-                                                                cleaningLeptonSel = lambda lep : True,
-                                                                FOLeptonSel       = lambda lep : True,
-                                                                tightLeptonSel    = lambda lep : True,
-                                                                FOTauSel          = lambda tau : False,
-                                                                tightTauSel       = lambda tau : False,
-                                                                selectJet         = lambda jet: jet.jetId > IDDict["jets"]["jetid_2017"],
-                                                                tauCollection     = 'LepGood',
-)
-
-recleaner_step1_2018 = lambda : CombinedObjectTaggerForCleaning("InternalRecl",
-                                                                looseLeptonSel    = lambda lep : True,
-                                                                cleaningLeptonSel = lambda lep : True,
-                                                                FOLeptonSel       = lambda lep : True,
-                                                                tightLeptonSel    = lambda lep : True,
-                                                                FOTauSel          = lambda tau : False,
-                                                                tightTauSel       = lambda tau : False,
-                                                                selectJet         = lambda jet: jet.jetId > IDDict["jets"]["jetid_2018"],
-                                                                tauCollection     = 'LepGood',
+cleaning_data = lambda : cleaningTopRun2(label = "Recl",
+                                         jetPts = [IDDict["jets"]["pt"], IDDict["jets"]["pt2"]],
+                                         jetPtNoisyFwd = IDDict["jets"]["ptfwdnoise"], isMC = False,
+                                         variations = []
 )
 
 
-recleaner_step2_mc = lambda : fastCombinedObjectRecleaner(label = "Recl", inlabel = "_InternalRecl",
-                                                          cleanTausWithLooseLeptons = False,
-                                                          cleanJetsWithFOTaus       = False,
-                                                          doVetoZ = False, doVetoLMf = False, doVetoLMt = False,
-                                                          jetPts     = [IDDict["jets"]["pt"], IDDict["jets"]["pt2"]], # this creates two collections
-                                                          jetPtsFwd  = [IDDict["jets"]["pt"], IDDict["jets"]["pt"]],  # second number for 2.7 < abseta < 3, the first for the rest
-                                                          btagL_thr  = 99, # they are set at runtime
-                                                          btagM_thr  = 99,
-                                                          tauCollection = 'LepGood',
-                                                          isMC       = True,
-                                                          #variations = ['jesTotal'] + ['jes%s'%v for v in jecGroups] + ['jer'],
-                                                          variations = ['jesTotal'] + ['jer'],
-                                                          cleanElectrons = -1,
-)
+#recleaner_step1 = lambda : CombinedObjectTaggerForCleaningTopRun2("InternalRecl")
+#recleaner_step2_mc = lambda : fastCombinedObjectRecleanerTopRun2(label = "Recl", inlabel = "_InternalRecl",
+                                                                 #jetPts = [IDDict["jets"]["pt"], IDDict["jets"]["pt2"]], # this creates two collections
+                                                                 #jetPtNoisyFwd = IDDict["jets"]["ptfwdnoise"],  # second number for 2.7 < abseta < 3, the first for the rest
+                                                                 #isMC = True,
+                                                                 ##variations = ['jesTotal'] + ['jes%s'%v for v in jecGroups] + ['jer'],
+                                                                 #variations = ['jesTotal'] + ['jer']
+#)
+#recleaner_step2_data = lambda : fastCombinedObjectRecleanerTopRun2(label = "Recl", inlabel = "_InternalRecl",
+                                                                   #jetPts = [IDDict["jets"]["pt"], IDDict["jets"]["pt2"]], # this creates two collections
+                                                                   #jetPtNoisyFwd = IDDict["jets"]["ptfwdnoise"],  # second number for 2.7 < abseta < 3, the first for the rest
+                                                                   #isMC = False,
+                                                                   ##variations = ['jesTotal'] + ['jes%s'%v for v in jecGroups] + ['jer'],
+                                                                   #variations = []
+#)
 
-recleaner_step2_data = lambda : fastCombinedObjectRecleaner(label = "Recl", inlabel = "_InternalRecl",
-                                                            cleanTausWithLooseLeptons = False,
-                                                            cleanJetsWithFOTaus       = False,
-                                                            doVetoZ = False, doVetoLMf = False, doVetoLMt = False,
-                                                            jetPts     = [IDDict["jets"]["pt"], IDDict["jets"]["pt2"]], # this creates two collections
-                                                            jetPtsFwd  = [IDDict["jets"]["pt"], IDDict["jets"]["pt"]],  # second number for 2.7 < abseta < 3, the first for the rest
-                                                            btagL_thr  = -99., # they are set at runtime
-                                                            btagM_thr  = -99., # they are set at runtime
-                                                            tauCollection = 'LepGood',
-                                                            isMC       = False,
-                                                            variations = [],
-                                                            cleanElectrons = -1,
-)
+#recleaner_step1_2016 = lambda : CombinedObjectTaggerForCleaning("InternalRecl",
+                                                                #looseLeptonSel    = lambda lep : True,
+                                                                #cleaningLeptonSel = lambda lep : True,
+                                                                #FOLeptonSel       = lambda lep : True,
+                                                                #tightLeptonSel    = lambda lep : True,
+                                                                #FOTauSel          = lambda tau : False,
+                                                                #tightTauSel       = lambda tau : False,
+                                                                #selectJet         = lambda jet: jet.jetId > IDDict["jets"]["jetid_2016"],  # pt and eta cuts are (hard)coded in the step2
+                                                                #tauCollection     = 'LepGood',
+#)
 
-recleanerLoose_step2_mc = lambda : fastCombinedObjectRecleaner(label = "ReclLoose",
-                                                               inlabel = "_InternalRecl",
-                                                               cleanTausWithLooseLeptons = False,
-                                                               cleanJetsWithFOTaus       = False,
-                                                               doVetoZ = False, doVetoLMf = False, doVetoLMt = False,
-                                                               jetPts     = [IDDict["jets"]["pt2"], IDDict["jets"]["ptmin"]], # this creates two collections
-                                                               jetPtsFwd  = [IDDict["jets"]["pt2"], IDDict["jets"]["pt2"]],  # second number for 2.7 < abseta < 3, the first for the rest
-                                                               btagL_thr  = 99, # they are set at runtime
-                                                               btagM_thr  = 99,
-                                                               tauCollection = 'LepGood',
-                                                               isMC       = True,
-                                                               #variations = ['jesTotal'] + ['jes%s'%v for v in jecGroups] + ['jer'],
-                                                               variations = ['jesTotal'] + ['jer'],
-                                                               cleanElectrons = -1,
-)
+#recleaner_step1_2017 = lambda : CombinedObjectTaggerForCleaning("InternalRecl",
+                                                                #looseLeptonSel    = lambda lep : True,
+                                                                #cleaningLeptonSel = lambda lep : True,
+                                                                #FOLeptonSel       = lambda lep : True,
+                                                                #tightLeptonSel    = lambda lep : True,
+                                                                #FOTauSel          = lambda tau : False,
+                                                                #tightTauSel       = lambda tau : False,
+                                                                #selectJet         = lambda jet: jet.jetId > IDDict["jets"]["jetid_2017"],
+                                                                #tauCollection     = 'LepGood',
+#)
 
-recleanerLoose_step2_data = lambda : fastCombinedObjectRecleaner(label = "ReclLoose",
-                                                                 inlabel = "_InternalRecl",
-                                                                 cleanTausWithLooseLeptons = False,
-                                                                 cleanJetsWithFOTaus       = False,
-                                                                 doVetoZ = False, doVetoLMf = False, doVetoLMt = False,
-                                                                 jetPts     = [IDDict["jets"]["pt2"], IDDict["jets"]["ptmin"]], # this creates two collections
-                                                                 jetPtsFwd  = [IDDict["jets"]["pt2"], IDDict["jets"]["pt2"]],  # second number for 2.7 < abseta < 3, the first for the rest
-                                                                 btagL_thr  = -99., # they are set at runtime
-                                                                 btagM_thr  = -99., # they are set at runtime
-                                                                 tauCollection = 'LepGood',
-                                                                 isMC       = False,
-                                                                 variations = [],
-                                                                 cleanElectrons = -1,
-)
+#recleaner_step1_2018 = lambda : CombinedObjectTaggerForCleaning("InternalRecl",
+                                                                #looseLeptonSel    = lambda lep : True,
+                                                                #cleaningLeptonSel = lambda lep : True,
+                                                                #FOLeptonSel       = lambda lep : True,
+                                                                #tightLeptonSel    = lambda lep : True,
+                                                                #FOTauSel          = lambda tau : False,
+                                                                #tightTauSel       = lambda tau : False,
+                                                                #selectJet         = lambda jet: jet.jetId > IDDict["jets"]["jetid_2018"],
+                                                                #tauCollection     = 'LepGood',
+#)
 
 
-cleaning_mc_2016   = [recleaner_step1_2016, recleaner_step2_mc,   recleanerLoose_step2_mc]
-cleaning_mc_2017   = [recleaner_step1_2017, recleaner_step2_mc,   recleanerLoose_step2_mc]
-cleaning_mc_2018   = [recleaner_step1_2018, recleaner_step2_mc,   recleanerLoose_step2_mc]
-cleaning_data_2016 = [recleaner_step1_2016, recleaner_step2_data, recleanerLoose_step2_data]
-cleaning_data_2017 = [recleaner_step1_2017, recleaner_step2_data, recleanerLoose_step2_data]
-cleaning_data_2018 = [recleaner_step1_2018, recleaner_step2_data, recleanerLoose_step2_data]
+#recleaner_step2_mc = lambda : fastCombinedObjectRecleaner(label = "Recl", inlabel = "_InternalRecl",
+                                                          #cleanTausWithLooseLeptons = False,
+                                                          #cleanJetsWithFOTaus       = False,
+                                                          #doVetoZ = False, doVetoLMf = False, doVetoLMt = False,
+                                                          #jetPts     = [IDDict["jets"]["pt"], IDDict["jets"]["pt2"]], # this creates two collections
+                                                          #jetPtsFwd  = [IDDict["jets"]["pt"], IDDict["jets"]["ptfwdnoise"]],  # second number for 2.7 < abseta < 3, the first for the rest
+                                                          #btagL_thr  = 99, # they are set at runtime
+                                                          #btagM_thr  = 99,
+                                                          #tauCollection = 'LepGood',
+                                                          #isMC       = True,
+                                                          ##variations = ['jesTotal'] + ['jes%s'%v for v in jecGroups] + ['jer'],
+                                                          #variations = ['jesTotal'] + ['jer'],
+                                                          #cleanElectrons = -1,
+#)
+
+#recleaner_step2_data = lambda : fastCombinedObjectRecleaner(label = "Recl", inlabel = "_InternalRecl",
+                                                            #cleanTausWithLooseLeptons = False,
+                                                            #cleanJetsWithFOTaus       = False,
+                                                            #doVetoZ = False, doVetoLMf = False, doVetoLMt = False,
+                                                            #jetPts     = [IDDict["jets"]["pt"], IDDict["jets"]["pt2"]], # this creates two collections
+                                                            #jetPtsFwd  = [IDDict["jets"]["pt"], IDDict["jets"]["ptfwdnoise"]],  # second number for 2.7 < abseta < 3, the first for the rest
+                                                            #btagL_thr  = -99., # they are set at runtime
+                                                            #btagM_thr  = -99., # they are set at runtime
+                                                            #tauCollection = 'LepGood',
+                                                            #isMC       = False,
+                                                            #variations = [],
+                                                            #cleanElectrons = -1,
+#)
+
+#recleanerLoose_step2_mc = lambda : fastCombinedObjectRecleaner(label = "ReclLoose",
+                                                               #inlabel = "_InternalRecl",
+                                                               #cleanTausWithLooseLeptons = False,
+                                                               #cleanJetsWithFOTaus       = False,
+                                                               #doVetoZ = False, doVetoLMf = False, doVetoLMt = False,
+                                                               #jetPts     = [IDDict["jets"]["pt2"], IDDict["jets"]["ptmin"]], # this creates two collections
+                                                               #jetPtsFwd  = [IDDict["jets"]["pt2"], IDDict["jets"]["ptfwdnoise"]],  # second number for 2.7 < abseta < 3, the first for the rest
+                                                               #btagL_thr  = 99, # they are set at runtime
+                                                               #btagM_thr  = 99,
+                                                               #tauCollection = 'LepGood',
+                                                               #isMC       = True,
+                                                               ##variations = ['jesTotal'] + ['jes%s'%v for v in jecGroups] + ['jer'],
+                                                               #variations = ['jesTotal'] + ['jer'],
+                                                               #cleanElectrons = -1,
+#)
+
+#recleanerLoose_step2_data = lambda : fastCombinedObjectRecleaner(label = "ReclLoose",
+                                                                 #inlabel = "_InternalRecl",
+                                                                 #cleanTausWithLooseLeptons = False,
+                                                                 #cleanJetsWithFOTaus       = False,
+                                                                 #doVetoZ = False, doVetoLMf = False, doVetoLMt = False,
+                                                                 #jetPts     = [IDDict["jets"]["pt2"], IDDict["jets"]["ptmin"]], # this creates two collections
+                                                                 #jetPtsFwd  = [IDDict["jets"]["pt2"], IDDict["jets"]["ptfwdnoise"]],  # second number for 2.7 < abseta < 3, the first for the rest
+                                                                 #btagL_thr  = -99., # they are set at runtime
+                                                                 #btagM_thr  = -99., # they are set at runtime
+                                                                 #tauCollection = 'LepGood',
+                                                                 #isMC       = False,
+                                                                 #variations = [],
+                                                                 #cleanElectrons = -1,
+#)
+
+
+#cleaning_mc_2016   = [recleaner_step1_2016, recleaner_step2_mc,   recleanerLoose_step2_mc]
+#cleaning_mc_2017   = [recleaner_step1_2017, recleaner_step2_mc,   recleanerLoose_step2_mc]
+#cleaning_mc_2018   = [recleaner_step1_2018, recleaner_step2_mc,   recleanerLoose_step2_mc]
+#cleaning_data_2016 = [recleaner_step1_2016, recleaner_step2_data, recleanerLoose_step2_data]
+#cleaning_data_2017 = [recleaner_step1_2017, recleaner_step2_data, recleanerLoose_step2_data]
+#cleaning_data_2018 = [recleaner_step1_2018, recleaner_step2_data, recleanerLoose_step2_data]
+
+#cleaning_mc   = [recleaner_step1, recleaner_step2_mc]
+#cleaning_data = [recleaner_step1, recleaner_step2_data]
 
 #### EVENT VARIABLES ###
 from CMGTools.TTHAnalysis.tools.eventVars_tWRun2 import EventVars_tWRun2

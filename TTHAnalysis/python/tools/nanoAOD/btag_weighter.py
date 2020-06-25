@@ -8,9 +8,8 @@ from copy import deepcopy
 
 
 class btag_weighter(Module):
-    def __init__(self, csv, eff, algo = 'deepjet', wp = 1, branchbtag = 'btagDeepFlavB', branchflavour = 'hadronFlavour', jetcol = 'JetSel_Recl', label = "", isFastSim = False, year = 2017, SFmeasReg = "mujets", minptlow = 20, minpthigh = 30, maxeta = 2.4, debug = False):
+    def __init__(self, csv, eff, algo = 'deepjet', wp = 1, branchbtag = 'btagDeepFlavB', branchflavour = 'hadronFlavour', label = "", isFastSim = False, year = 2017, SFmeasReg = "mujets", minptlow = 20, minpthigh = 30, maxeta = 2.4, debug = False):
 
-        self.jetcol    = jetcol
         self.algo      = algo
         self.wp        = wp
         self.isFastSim = isFastSim
@@ -84,7 +83,12 @@ class btag_weighter(Module):
     def analyze(self, event):
         self.event = event
         self.ret.clear()
-        self.jets = [j for j in Collection(self.event, self.jetcol)]
+        all_jets  = [j for j in Collection(event, "Jet")]
+        self.jets = []
+        if event.nJetSel30_Recl >= 5:
+            self.jets    = [all_jets[event.iJetSel30_Recl[j]] for j in xrange(5)]
+        else:
+            self.jets    = [all_jets[event.iJetSel30_Recl[j]] for j in xrange(event.nJetSel30_Recl)]
 
         self.computeWeights()
 
