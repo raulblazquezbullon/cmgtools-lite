@@ -9,7 +9,8 @@ r.gROOT.SetBatch(True)
 
 #### Settings
 friendspath = "/pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions"
-prodname    = "2020-06-01"
+#prodname    = "2020-06-01" # veya
+prodname    = "2020-06-17" # nova
 
 
 datasamples  = ["SingleMuon", "SingleElec", "DoubleMuon", "DoubleEG", "MuonEG", "LowEGJet", "HighEGJet", "EGamma"]
@@ -17,11 +18,13 @@ mcpath       = "/pool/ciencias/nanoAODv6/29jan2020_MC"
 datapath     = "/pool/ciencias/nanoAODv6/13jan2020"
 logpath      = friendspath + "/" + prodname + "/{y}/{step_prefix}/logs"
 utilspath    = "/nfs/fanae/user/vrbouza/Proyectos/tw_run2/desarrollo/susyMaintenanceScripts/friendsWithBenefits"
-commandscaff = "python prepareEventVariablesFriendTree.py -t NanoAOD {inpath} {outpath} -I CMGTools.TTHAnalysis.tools.nanoAOD.TopRun2_modules {module} {friends} {dataset} --log {logdir} -N {chunksize} --name {jobname} -q {queue} --env oviedo {ex}"
-friendfolders = ["0_yeartag", "1_lepmerge_roch", "2_cleaning", "3_varstrigger", "4_scalefactors"]
-chunksizes    = [5000000, 100000, 500000, 100000, 250000] # veyos
+commandscaff = "python prepareEventVariablesFriendTree.py -t NanoAOD {inpath} {outpath} -I CMGTools.TTHAnalysis.tools.nanoAOD.TopRun2_modules {module} {friends} {dataset} -N {chunksize} {cluster} {ex}"
+clusterscaff = "--log {logdir} --name {jobname} -q {queue} --env oviedo"
+friendfolders = ["0_yeartag", "1_lepmerge_roch", "2_cleaning", "3_varstrigger", "4_scalefactors", "5_mvas"]
+#chunksizes    = [5000000, 100000, 500000, 100000, 250000] # veyos
 #chunksizes    = [5000000, 250000, 500000, 250000, 250000] # novos
-#chunksizes    = [5000000, 250000, 250000, 250000, 250000] # mais novos inda
+chunksizes    = [5000000, 250000, 5000000, 250000, 250000, 250000] # mais novos inda
+#chunksizes    = [5000000, 250000, 5000000, 500000, 500000, 250000] # pa la futura
 minchunkbytes = 1000
 
 class errs(enum.IntEnum):
@@ -40,8 +43,8 @@ sampledict[2016] = {
     # ttbar
     "TTTo2L2Nu"        : "Tree_TTTo2L2Nu_TuneCP5_PSweights",
     "TTToSemiLeptonic" : "Tree_TTToSemiLeptonic_TuneCP5_PSweights",
-    #"TT_CUETP8M2T4"    : ["Tree_TT_TuneCUETP8M2T4_nobackup_*", "Tree_TT_TuneCUETP8M2T4_PSweights*", "Tree_TT_TuneCUETP8M2T4_0", "Tree_TT_TuneCUETP8M2T4_1", "Tree_TT_TuneCUETP8M2T4_2", "TT_TuneCUETP8M2T4_3"],
-    "TT_CUETP8M2T4"    : "Tree_TT_TuneCUETP8M2T4_PSweights",
+    "TT_CUETP8M2T4"    : ["Tree_TT_TuneCUETP8M2T4_nobackup_*", "Tree_TT_TuneCUETP8M2T4_PSweights*", "Tree_TT_TuneCUETP8M2T4_0", "Tree_TT_TuneCUETP8M2T4_1", "Tree_TT_TuneCUETP8M2T4_2", "Tree_TT_TuneCUETP8M2T4_3"],
+    #"TT_CUETP8M2T4"    : "Tree_TT_TuneCUETP8M2T4_PSweights",
 
     # tW
     "tW_noFullHad"    : "Tree_tW_5f_noFullHad_",
@@ -324,7 +327,7 @@ def getFriendsFolder(dataset, basepath, step_friends):
         if len(myfibrefriends) > 0: doihavefibrefriends = True
 
     #if doihavefibrefriends:
-        #wr.warn("====== WARNING! Friends detected in RO folder for this production. Using them for dataset {d} and step (of the friends) {s}".format(d = dataset, s = step_friends))
+        #wr.warn("\n====== WARNING! Friends detected in RO folder for this production. Using them for dataset {d} and step (of the friends) {s}".format(d = dataset, s = step_friends))
         #return rofolder
     #else:
         #return rwfolder
@@ -332,7 +335,7 @@ def getFriendsFolder(dataset, basepath, step_friends):
 
 
 def SendDatasetJobs(task):
-    dataset, year, step, inputpath_, isData, queue, extra, regexp, pretend = task
+    dataset, year, step, inputpath_, isData, queue, extra, regexp, pretend, nthreads = task
     outpath_ = friendspath + "/" + prodname + "/" + str(year) + "/" + friendfolders[step]
     dataset_ = ("--dm " if regexp else "-d ") + dataset
     jobname_ = "happyTF_{y}_{d}_{s}".format(y = year, d = dataset, s = step)
@@ -361,7 +364,8 @@ def SendDatasetJobs(task):
         friends_ += friendpref + getFriendsFolder(dataset, friendsbasepath, 0) + friendsuff
 
     elif step == 2:
-        module_  = "cleaning_{ty}_{y}".format(y = year, ty = "data" if isData else "mc")
+        #module_  = "cleaning_{ty}_{y}".format(y = year, ty = "data" if isData else "mc")
+        module_  = "cleaning_{ty}".format(ty = "data" if isData else "mc")
         friends_ += friendpref + getFriendsFolder(dataset, friendsbasepath, 0) + friendsuff
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 1) + friendsuff
 
@@ -378,6 +382,12 @@ def SendDatasetJobs(task):
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 2) + friendsuff
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 3) + friendsuff
 
+    elif step == 5:
+        module_  = "mvas"
+        friends_ +=       friendpref + getFriendsFolder(dataset, friendsbasepath, 0) + friendsuff
+        friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 1) + friendsuff
+        friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 2) + friendsuff
+        friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 3) + friendsuff
 
     if module_ != "":
         comm = commandscaff.format(inpath  = inputpath_,
@@ -385,20 +395,24 @@ def SendDatasetJobs(task):
                                    module  = module_,
                                    friends = friends_,
                                    dataset = dataset_,
-                                   jobname = jobname_,
-                                   logdir  = logdir_,
                                    chunksize = chunksizes[step],
-                                   queue   = queue,
+                                   cluster = (clusterscaff.format(jobname = jobname_, logdir = logdir_, queue = queue)
+                                              if (queue != "") else
+                                              #("--split-factor=-1 -j " + str(nthreads))
+                                              ("-j " + str(nthreads))
+                                              if nthreads != 1 else
+                                              ""),
                                    ex      = extra
         )
-        print "Command: ", comm
+
+        print "\nCommand: ", comm
         if not pretend: os.system(comm)
 
     return
 
 
 def GeneralSubmitter(task):
-    dataset, year, step, queue, extra, pretend = task
+    dataset, year, step, queue, extra, pretend, nthreads = task
     isData     = any(ext in dataset for ext in datasamples)
     inputpath_ = (datapath if isData else mcpath) + "/" + str(year) + "/"
     if not os.path.isdir(logpath.format(step_prefix = friendfolders[step], y = year)):
@@ -410,11 +424,11 @@ def GeneralSubmitter(task):
         #    is the only allowed regular expression). If it has not an asterisk, we will assume that it
         #    should not have a regular expression.
         for el in sampledict[year][dataset]:
-            SendDatasetJobs( (el, year, step, inputpath_, isData, queue, extra, (el[-1] == "*"), pretend ) )
+            SendDatasetJobs( (el, year, step, inputpath_, isData, queue, extra, (el[-1] == "*"), pretend, nthreads ) )
 
     else:
         #### 2) There is only one element in the sample dict.. We assume it to have a regular expression.
-        SendDatasetJobs( (sampledict[year][dataset], year, step, inputpath_, isData, queue, extra, True, pretend) )
+        SendDatasetJobs( (sampledict[year][dataset], year, step, inputpath_, isData, queue, extra, True, pretend, nthreads) )
     return
 
 
@@ -679,7 +693,7 @@ def CheckLotsOfMergedDatasets(dataset, year, step, queue, extra, ncores):
             return
 
 
-def CheckLotsOfChunks(dataset, year, step, queue, extra, ncores):
+def CheckLotsOfChunks(dataset, year, step, queue, extra, ncores, nthreads):
     fullpendingdict = {}
     totalcount = 0
     if dataset.lower() != "all":
@@ -729,7 +743,7 @@ def CheckLotsOfChunks(dataset, year, step, queue, extra, ncores):
                     for ch in fullpendingdict[d][part]:
                         isData     = any(ext in part for ext in datasamples)
                         inputpath_ = (datapath if isData else mcpath) + "/" + str(year) + "/"
-                        tasks.append( (part.replace(".root", ""), year, step, inputpath_, isData, queue, "-c {chk} ".format(chk = ch) + extra, False, False) )
+                        tasks.append( (part.replace(".root", ""), year, step, inputpath_, isData, queue, "-c {chk} ".format(chk = ch) + extra, False, False, nthreads) )
                         #sys.exit()
 
             if ncores > 1:
@@ -765,37 +779,39 @@ if __name__=="__main__":
     parser.add_argument('--dataset', '-d', metavar = 'dataset',  dest = "dataset", required = False, default = "TTTo2L2Nu")
     parser.add_argument('--step',    '-s', metavar = 'step',     dest = "step",    required = False, default = 0, type = int)
     parser.add_argument('--check',   '-c', action = "store_true",dest = "check",   required = False, default = False)
-    parser.add_argument('--queue',   '-q', metavar = 'queue',    dest = "queue",   required = False, default = "batch")
+    parser.add_argument('--queue',   '-q', metavar = 'queue',    dest = "queue",   required = False, default = "")
+    parser.add_argument('--threads', '-j', metavar = 'nthreads', dest = "nthreads",required = False, default = 1, type = int)
     parser.add_argument('--extraArgs','-e', metavar = 'extra',   dest = "extra",   required = False, default = "")
     parser.add_argument('--ncores',  '-n', metavar = 'ncores',   dest = "ncores",  required = False, default = 1, type = int)
     parser.add_argument('--merge',   '-m', action = "store_true",dest = "merge",   required = False, default = False)
     parser.add_argument('--pretend', '-p', action = "store_true",dest = "pretend", required = False, default = False)
 
-    args    = parser.parse_args()
-    year    = args.year
-    dataset = args.dataset
-    check   = args.check
-    step    = args.step
-    queue   = args.queue
-    extra   = args.extra
-    ncores  = args.ncores
-    merge   = args.merge
-    pretend = args.pretend
+    args     = parser.parse_args()
+    year     = args.year
+    dataset  = args.dataset
+    check    = args.check
+    step     = args.step
+    queue    = args.queue
+    extra    = args.extra
+    ncores   = args.ncores
+    nthreads = args.nthreads
+    merge    = args.merge
+    pretend  = args.pretend
 
 
     if check and not merge:
         print "\n> Beginning checks of all chunks for the production of year {y}, of the friend trees of step {s} for {d} dataset(s).".format(y = year, s = step, d = dataset)
-        CheckLotsOfChunks(dataset, year, step, queue, extra, ncores)
+        CheckLotsOfChunks(dataset, year, step, queue, extra, ncores, nthreads)
     elif merge and not check:
         MergeThoseChunks(year, step, queue, extra)
     elif merge and check:
         CheckLotsOfMergedDatasets(dataset, year, step, queue, extra, ncores)
     else:
         if dataset.lower() != "all":
-            GeneralSubmitter( (dataset, year, step, queue, extra, pretend) )
+            GeneralSubmitter( (dataset, year, step, queue, extra, pretend, nthreads) )
         else:
             tasks = []
-            for dat in sampledict[year]: tasks.append( (dat, year, step, queue, extra, pretend) )
+            for dat in sampledict[year]: tasks.append( (dat, year, step, queue, extra, pretend, nthreads) )
             print "> A total of {n} commands (that might send one, or more jobs) are going to be executed for year {y}, step {s} in the queue {q} and parallelised with {j} cores.".format(n = len(tasks), y = year, s = step, q = queue, j = ncores)
 
             if confirm("\n> Do you want to send these jobs?"):
