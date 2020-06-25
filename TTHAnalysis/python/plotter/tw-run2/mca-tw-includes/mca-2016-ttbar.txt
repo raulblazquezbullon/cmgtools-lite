@@ -9,8 +9,17 @@
 
 #ttbar : Tree_TT_TuneCUETP8M2T4_nobackup_0 + Tree_TT_TuneCUETP8M2T4_nobackup_1 + Tree_TT_TuneCUETP8M2T4_nobackup_2 + Tree_TT_TuneCUETP8M2T4_nobackup_3 + Tree_TT_TuneCUETP8M2T4_nobackup_4 + Tree_TT_TuneCUETP8M2T4_nobackup_5 : 831.76 : nGenDressedLepton >= 2 ; genSumWeightName="genEventSumw_",FillColor=633
 
-#ttbar : Tree_TT_TuneCUETP8M2T4_PSweights_0 + Tree_TT_TuneCUETP8M2T4_PSweights_1 + Tree_TT_TuneCUETP8M2T4_PSweights_2 + Tree_TT_TuneCUETP8M2T4_PSweights_3 : 831.76 : nGenDressedLepton >= 2 ; genSumWeightName="genEventSumw_",FillColor=633
 
-ttbar : Tree_TT_TuneCUETP8M2T4_0 + Tree_TT_TuneCUETP8M2T4_1 + Tree_TT_TuneCUETP8M2T4_2 + Tree_TT_TuneCUETP8M2T4_3 + Tree_TT_TuneCUETP8M2T4_PSweights_0 + Tree_TT_TuneCUETP8M2T4_PSweights_1 + Tree_TT_TuneCUETP8M2T4_PSweights_2 + Tree_TT_TuneCUETP8M2T4_PSweights_3 + Tree_TT_TuneCUETP8M2T4_nobackup_0  + Tree_TT_TuneCUETP8M2T4_nobackup_1 + Tree_TT_TuneCUETP8M2T4_nobackup_2  + Tree_TT_TuneCUETP8M2T4_nobackup_3 + Tree_TT_TuneCUETP8M2T4_nobackup_4  + Tree_TT_TuneCUETP8M2T4_nobackup_5 : 831.76 : nGenDressedLepton >= 2; genSumWeightName="genEventSumw_",FillColor=633
+#### SIN CORTE
+#ttbar : Tree_TT_TuneCUETP8M2T4_PSweights_0 + Tree_TT_TuneCUETP8M2T4_PSweights_1 + Tree_TT_TuneCUETP8M2T4_PSweights_2 + Tree_TT_TuneCUETP8M2T4_PSweights_3 : 831.76 ; genSumWeightName="genEventSumw_",FillColor=633
+
+
+ttbar : Tree_TT_TuneCUETP8M2T4_PSweights_0 + Tree_TT_TuneCUETP8M2T4_PSweights_1 + Tree_TT_TuneCUETP8M2T4_PSweights_2 + Tree_TT_TuneCUETP8M2T4_PSweights_3 : 831.76 : nGenDressedLepton >= 2 ; genSumWeightName="genEventSumw_",FillColor=633
+
+
+#### TEMPORAL
+#ttbar : Tree_TT_TuneCUETP8M2T4_PSweights_3: 831.76 : nGenDressedLepton >= 2 ; genSumWeightName="genEventSumw_",FillColor=633
+
+#ttbar : Tree_TT_TuneCUETP8M2T4_0 + Tree_TT_TuneCUETP8M2T4_1 + Tree_TT_TuneCUETP8M2T4_2 + Tree_TT_TuneCUETP8M2T4_3 + Tree_TT_TuneCUETP8M2T4_PSweights_0 + Tree_TT_TuneCUETP8M2T4_PSweights_1 + Tree_TT_TuneCUETP8M2T4_PSweights_2 + Tree_TT_TuneCUETP8M2T4_PSweights_3 + Tree_TT_TuneCUETP8M2T4_nobackup_0  + Tree_TT_TuneCUETP8M2T4_nobackup_1 + Tree_TT_TuneCUETP8M2T4_nobackup_2  + Tree_TT_TuneCUETP8M2T4_nobackup_3 + Tree_TT_TuneCUETP8M2T4_nobackup_4  + Tree_TT_TuneCUETP8M2T4_nobackup_5 : 831.76 : nGenDressedLepton >= 2; genSumWeightName="genEventSumw_",FillColor=633
 
 # : nGenDressedLepton >= 2

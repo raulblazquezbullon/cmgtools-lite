@@ -1,0 +1,54 @@
+channel   : channel                : [0.5,1.5,2.5,3.5]                      ; XTitle='Channel', xBinLabels="e#mu\,#mu#mu\,ee"
+
+nloosejets: nJetSel20_Recl : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5] ; XTitle='N(loose jet)', XNDiv=5, xBinLabels="2\,3\,4\,5\,6\,#geq 7"
+
+nfwdjets  : nFwdJetSel30_Recl           : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5] ; XTitle='N(forward jet)', XNDiv=5, xBinLabels="2\,3\,4\,#geq 5"
+nfwdloosejets  : nFwdJetSel20_Recl      : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5] ; XTitle='N(forward loose jet)', XNDiv=5, xBinLabels="2\,3\,4\,#geq 5"
+
+
+jet1_pt   : Jet_pt[iJetSel30_Recl[0]]      : 18,20,200                              ; XTitle="Jet p_{T} (GeV)"
+jet1_eta  : Jet_eta[iJetSel30_Recl[0]]     : 15,-2.4,2.4                            ; XTitle="Jet #eta"
+jet1_m    : Jet_mass[iJetSel30_Recl[0]]    : 12,0,60                                ; XTitle="Jet mass (GeV)"
+jet1_e    : Jet1_E                 : 14,10,150                              ; XTitle="Jet energy (GeV)"
+
+jetfwd1_pt   : Jet_pt[iFwdJetSel30_Recl[0]]  : 13,20,150                              ; XTitle="Leading forward jet p_{T} (GeV)"
+jetfwd1_eta  : Jet_eta[iFwdJetSel30_Recl[0]] : 15,-5.0,5.0                            ; XTitle="Leading forward jet #eta"
+
+jetfwd2_pt   : Jet_pt[iFwdJetSel30_Recl[1]]  : 13,20,150                              ; XTitle="Subleading forward jet p_{T} (GeV)"
+jetfwd2_eta  : Jet_eta[iFwdJetSel30_Recl[1]] : 15,-5.0,5.0                            ; XTitle="Subleading forward jet #eta"
+
+lep1_pt   : LepGood_pt_corrAll[0]  : 14,10,150                              ; XTitle="Leading lepton p_{T} (GeV)"
+lep1_eta  : LepGood_eta[0]         : 15,-2.4,2.4                            ; XTitle="Leading lepton #eta"
+
+lep2_pt   : LepGood_pt_corrAll[1]  : 14,10,150                              ; XTitle="Subleading lepton p_{T} (GeV)"
+lep2_eta  : LepGood_eta[1]         : 15,-2.4,2.4                            ; XTitle="Subleading lepton #eta"
+
+
+met       : METgood_pt            : 30,0,300                               ; XTitle="p_{T}^{miss} (GeV)"
+met_phi   : METgood_phi           : 40,-3.14,3.14                          ; XTitle="#phi^{miss} (rad)"
+
+
+lep1lep2_dphi : Lep1Lep2_DPhi      : 10,0,1   ; XTitle="#Delta#it{#varphi}(#it{e}^{#pm}\, #it{#mu}^{#mp})/#it{#pi} (adim.)"
+lep1lep2_pt   : Lep1Lep2_Pt        : 20,0,200 ; XTitle="p_{T}(\\ell_{1}\, \\ell_{2}) (GeV)"
+lep1lep2_m    : Mll                : 20,0,200 ; XTitle="m(\\ell_{1}\, \\ell_{2}) (GeV)"
+
+
+lep1lep2jet1met_pz : Lep1Lep2Jet1MET_Pz  : 18,0,450 ; XTitle="#it{p}_{Z} (#it{e}^{#pm}\, #it{#mu}^{#mp}\, #it{j}) (GeV)"
+lep1lep2jet1met_pt : Lep1Lep2Jet1MET_Pt  : 20,0,200 ; XTitle="#it{p}_{T} (#it{e}^{#pm}\, #it{#mu}^{#mp}\, #it{j}\, p_{T}^{miss}) (GeV)"
+lep1lep2jet1met_m  : Lep1Lep2Jet1MET_M   : 20,0,200 ; XTitle="m (#it{e}^{#pm}\, #it{#mu}^{#mp}\, #it{j}\, #it{p}_{T}^{miss}) (GeV)"
+lep1lep2jet1met_mt : Lep1Lep2Jet1MET_Mt  : 20,0,200 ; XTitle="m_{T} (#it{e}^{#pm}\, #it{#mu}^{#mp}\, #it{j}\, #it{p}_{T}^{miss}) (GeV)"
+lep1lep2jet1_pt    : Lep1Lep2Jet1_Pt     : 20,0,200 ; XTitle="#it{p}_{T} (#it{e}^{#pm}\, #it{#mu}^{#mp}\, #it{j}) (GeV)"
+lep1lep2jet1_m     : Lep1Lep2Jet1_M      : 20,0,200 ; XTitle="m (#it{e}^{#pm}\, #it{#mu}^{#mp}\, #it{j}) (GeV)"
+lep1lep2jet1_e     : Lep1Lep2Jet1_E      : 20,0,200 ; XTitle="E (#it{e}^{#pm}\, #it{#mu}^{#mp}\, #it{j}) (GeV)"
+lep1jet1_pt        : Lep1Jet1_Pt         : 20,0,200 ; XTitle="//it{p}_{T} (\\ell_{1}\, \\it{j}) (GeV)"
+lep1jet1_m         : Lep1Jet1_M          : 20,0,200 ; XTitle="m (\\ell_{1}\, \\it{j}) (GeV)"
+lep2jet1_pt        : Lep2Jet1_Pt         : 20,0,200 ; XTitle="//it{p}_{T} (\\ell_{2}\, \\it{j}) (GeV)"
+lep2jet1_m         : Lep2Jet1_M          : 20,0,200 ; XTitle="m (\\ell_{2}\, \\it{j}) (GeV)"
+
+
+lep1jet1_dr        : Lep1Jet1_DR         : 20,0,200 ; XTitle="\\Delta R (\\ell_{1}\, jet) (adim.)"
+lep1lep2jet1_c     : Lep1Lep2Jet1_C      : 20,0,1   ; XTitle="C (#it{e}^{#pm}\, #it{#mu}^{#mp}\, #it{j}) (adim.)"
+httot              : HTtot               : 20,0,200 ; XTitle="H_{T} (GeV)"
+
+### MVAs
+#SergioBDT_1j1b     : SergioBDT_1j1b      : 10,-1,1  ; XTitle="BDT discriminant (adim.)"
