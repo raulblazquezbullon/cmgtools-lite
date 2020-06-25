@@ -980,7 +980,7 @@ class Unfolder(object):
         leg_1.SetTextSize(0.04)
         leg_1.SetBorderSize(0)
         if self.closure:
-            leg_1.AddEntry(self.data, 'Asimov data', 'p')
+            leg_1.AddEntry(self.data, 'Pseudo data', 'p')
         else:
             leg_1.AddEntry(self.data, 'Data', 'p')
         leg_1.AddEntry(self.mc, 'Exp. signal', 'lf')
@@ -1033,7 +1033,7 @@ class Unfolder(object):
         leg_2.SetTextSize(0.04)
         leg_2.SetBorderSize(0)
         if self.closure:
-            leg_2.AddEntry(histUnfoldTotal, 'Unfolded Asimov data', 'pel')
+            leg_2.AddEntry(histUnfoldTotal, 'Unfolded Pseudo data', 'pel')
         else:
             leg_2.AddEntry(histUnfoldTotal, 'Unfolded data', 'pel')
         leg_2.AddEntry(self.dataTruth_nom, 'POWHEG prediction', 'la')
@@ -1075,7 +1075,7 @@ class Unfolder(object):
         leg_3.SetBorderSize(0)
         #leg_3.AddEntry(self.data, 'Data', 'pe')
         if self.closure:
-            leg_3.AddEntry(subdata, 'AsimovData-bkg', 'pe')
+            leg_3.AddEntry(subdata, 'PseudoData-bkg', 'pe')
         else:
             leg_3.AddEntry(subdata, 'Data-bkg', 'pe')
         leg_3.AddEntry(histMdetFold, 'MC folded back', 'l')
@@ -1104,7 +1104,7 @@ class Unfolder(object):
         leg_4.SetBorderSize(0)
         leg_4.AddEntry(self.mc, 'Exp. signal', 'lf')
         if self.closure:
-            leg_4.AddEntry(subdata, 'AsimovData-bkg by hand', 'pe')
+            leg_4.AddEntry(subdata, 'PseudoData-bkg by hand', 'pe')
         else:
             leg_4.AddEntry(subdata, 'Data-bkg by hand', 'pe')
         #leg_4.AddEntry(histInput, 'Data-bkg by tool', 'la')
@@ -1234,7 +1234,7 @@ class Unfolder(object):
         dt.SetMaximum(1.2*dt.GetMaximum())
         if self.logx:
             ROOT.gPad.SetLogx()
-        if ('MWZ' in self.var) or ('Njets' in self.var):
+        if ('MWZ' in self.var) or ('Njets' in self.var) or ('pol' in self.var):
             ROOT.gPad.SetLogy()
             dt.SetMaximum(100*dt.GetMaximum())
         dt.GetXaxis().SetTitleSize(0.045)
@@ -1250,7 +1250,7 @@ class Unfolder(object):
             hut.SetBinError(ibin,hut.GetBinError(ibin)/hut.GetBinWidth(ibin))
             print('after: bin content %f, bin error %f' % (hut.GetBinContent(ibin), hut.GetBinError(ibin)))
         print('hut integral before: %f' % hut.Integral())
-        hut.Scale(1/hut.Integral())
+        hut.Scale(1./hut.Integral())
         print('hut integral after: %f' % hut.Integral())
         theunf=copy.deepcopy(hut)
         # Outer error: total error
@@ -1263,17 +1263,17 @@ class Unfolder(object):
         for ibin in range(1, hmu.GetNbinsX()+1):
             hmu.SetBinContent(ibin,hmu.GetBinContent(ibin)/hmu.GetBinWidth(ibin))
             hmu.SetBinError(ibin,hmu.GetBinError(ibin)/hmu.GetBinWidth(ibin))
-        hmu.Scale(1/hmu.Integral())
+        hmu.Scale(1./hmu.Integral())
         hmu.SetFillStyle(2001)
         hmu.SetFillColor(ROOT.kAzure-9)
         hmu.SetLineWidth(0)
         hmu.Draw('SAME E2')
         # Inner error: stat only
         hus=copy.deepcopy(histUnfoldStat)
-        for ibin in range(1, hus.GetNbinsX()+1):
+        for ibin in range(0, hus.GetNbinsX()+1):
             hus.SetBinContent(ibin,hus.GetBinContent(ibin)/hus.GetBinWidth(ibin))
             hus.SetBinError(ibin,hus.GetBinError(ibin)/hus.GetBinWidth(ibin))
-        hus.Scale(1/hus.Integral())
+        hus.Scale(1./hus.Integral())
         #hus.SetFillStyle(2001)
         #hus.SetFillColor(ROOT.kAzure-4)
         hus.SetLineColor(ROOT.kBlack)
@@ -1320,11 +1320,11 @@ class Unfolder(object):
             # Open the files and access the histograms with the proper naming scheme
             
             myvar = self.var
-            myvar = myvar.replace('Zpt'      , 'pTZ')
-            myvar = myvar.replace('LeadJetPt', 'pTjet1')
-            myvar = myvar.replace('MWZ'      , 'mWZ')
-            myvar = myvar.replace('Wpt'      , 'pTW')
-            myvar = myvar.replace('Njets'    , 'nJet')
+            myvar = myvar.replace('Zpt'      , 'pT_Z')
+            myvar = myvar.replace('LeadJetPt', 'pT_leadingjet')
+            myvar = myvar.replace('MWZ'      , 'm_WZ')
+            myvar = myvar.replace('Wpt'      , 'pT_lepW')
+            myvar = myvar.replace('Njets'    , 'n_jets')
             myvar = myvar.replace('Wpol'     , 'costhetaW')
             myvar = myvar.replace('Zpol'     , 'costhetaZ')
 
@@ -1338,7 +1338,9 @@ class Unfolder(object):
 
             if 'incl' in myfinalstate:
                 print('CHARGE', self.charge)
-                mfile_sf = ROOT.TFile.Open('%s/%s%s_hists/%s.root'%(self.matrix,'eee',self.charge, myvar), 'read')
+                mfile_sf = ROOT.TFile.Open('%s/%s%s_hists/%s.root'%(self.matrix,'eee',self.charge.replace('_',''), myvar), 'read')
+                print('CONCHUNDA')
+                print('%s/%s%s_hists/%s.root'%(self.matrix,'eee',self.charge.replace('_',''), myvar))
                 mpred_sf = copy.deepcopy(mfile_sf.Get('MATRIX_NNLO'))
                 mpred_sf.SetName('matrix_nnlo_sf_pred_%s_%s_%s'%(self.finalState,self.charge,self.var)) # Just to be extra careful
                 # Uncs
@@ -1350,7 +1352,7 @@ class Unfolder(object):
                 mpredSystUp_sf.SetName('matrix_nnlo_sf_SystUp_pred_%s_%s_%s'%(self.finalState,self.charge,self.var)) # Just to be extra careful
                 mpredSystDn_sf = copy.deepcopy(mfile_sf.Get('MATRIX_NNLO_SystDown'))
                 mpredSystDn_sf.SetName('matrix_nnlo_sf_SystDn_pred_%s_%s_%s'%(self.finalState,self.charge,self.var)) # Just to be extra careful
-                mfile_df = ROOT.TFile.Open('%s/%s%s_hists/%s.root'%(self.matrix,'eem',self.charge, myvar), 'read')
+                mfile_df = ROOT.TFile.Open('%s/%s%s_hists/%s.root'%(self.matrix,'eem',self.charge.replace('_',''), myvar), 'read')
                 mpred_df = copy.deepcopy(mfile_df.Get('MATRIX_NNLO'))
                 mpred_df.SetName('matrix_nnlo_df_pred_%s_%s_%s'%(self.finalState,self.charge,self.var)) # Just to be extra careful
                 # Uncs
@@ -1398,7 +1400,7 @@ class Unfolder(object):
             else:
                 myfinalstate=myfinalstate.replace('mme','eem')
                 myfinalstate=myfinalstate.replace('mmm','eee')
-                mfile = ROOT.TFile.Open('%s/%s%s_hists/%s.root'%(self.matrix,myfinalstate,self.charge, myvar), 'read')
+                mfile = ROOT.TFile.Open('%s/%s%s_hists/%s.root'%(self.matrix,myfinalstate,self.charge.replace('_',''), myvar), 'read')
                 mpred = copy.deepcopy(mfile.Get('MATRIX_NNLO'))
                 mpred.SetName('matrix_nnlo_pred_%s_%s_%s'%(self.finalState,self.charge,self.var)) # Just to be extra careful
                 # Uncs
@@ -1423,41 +1425,69 @@ class Unfolder(object):
             thebinsize = thebee.GetSize()-1
             thebinning = thebee.GetArray()
             thebinning.SetSize(thebinsize)
-            print('THEBINNING', thebinsize, thebinning)
+            print('THEBINNING', thebinsize, thebinning, ' FOR HISTOGRAM ', dt.GetName())
             for i in range(thebinsize): print('THEBINNING', i, thebinning[i])
         
             mfb = copy.deepcopy(mpred)
             mfb.SetName('%s_fb'%mpred.GetName())
-            if 'nJet' not in myvar: mfb=mpred.Rebin(thebinsize,mfb.GetName(),thebinning)
+            if 'n_jets' not in myvar: mfb=mpred.Rebin(thebinsize,mfb.GetName(),thebinning)
 
             mfbStatUp = copy.deepcopy(mpredStatUp)
             mfbStatUp.SetName('%s_fb'%mpredStatUp.GetName())
-            if 'nJet' not in myvar: mfbStatUp=mpredStatUp.Rebin(thebinsize,mfbStatUp.GetName(),thebinning)
+            if 'n_jets' not in myvar: mfbStatUp=mpredStatUp.Rebin(thebinsize,mfbStatUp.GetName(),thebinning)
 
             mfbStatDn = copy.deepcopy(mpredStatDn)
             mfbStatDn.SetName('%s_fb'%mpredStatDn.GetName())
-            if 'nJet' not in myvar: mfbStatDn=mpredStatDn.Rebin(thebinsize,mfbStatDn.GetName(),thebinning)
+            if 'n_jets' not in myvar: mfbStatDn=mpredStatDn.Rebin(thebinsize,mfbStatDn.GetName(),thebinning)
 
             mfbSystUp = copy.deepcopy(mpredSystUp)
             mfbSystUp.SetName('%s_fb'%mpredSystUp.GetName())
-            if 'nJet' not in myvar: mfbSystUp=mpredSystUp.Rebin(thebinsize,mfbSystUp.GetName(),thebinning)
+            if 'n_jets' not in myvar: mfbSystUp=mpredSystUp.Rebin(thebinsize,mfbSystUp.GetName(),thebinning)
 
             mfbSystDn = copy.deepcopy(mpredSystDn)
             mfbSystDn.SetName('%s_fb'%mpredSystDn.GetName())
-            if 'nJet' not in myvar: mfbSystDn=mpredSystDn.Rebin(thebinsize,mfbSystDn.GetName(),thebinning)
+            if 'n_jets' not in myvar: mfbSystDn=mpredSystDn.Rebin(thebinsize,mfbSystDn.GetName(),thebinning)
 
             # Do total
+            
+            # Divide by bin width and scale
+            for ibin in range(0, mfb.GetNbinsX()+1):
+                mfb.SetBinContent(ibin,mfb.GetBinContent(ibin)/mfb.GetBinWidth(ibin))
+                mfb.SetBinError(ibin,mfb.GetBinError(ibin)/mfb.GetBinWidth(ibin))
+
+                mfbStatUp.SetBinContent(ibin,mfbStatUp.GetBinContent(ibin)/mfbStatUp.GetBinWidth(ibin))
+                mfbStatUp.SetBinError(ibin,mfbStatUp.GetBinError(ibin)/mfbStatUp.GetBinWidth(ibin))
+
+                mfbStatDn.SetBinContent(ibin,mfbStatDn.GetBinContent(ibin)/mfbStatDn.GetBinWidth(ibin))
+                mfbStatDn.SetBinError(ibin,mfbStatDn.GetBinError(ibin)/mfbStatDn.GetBinWidth(ibin))
+
+                mfbSystUp.SetBinContent(ibin,mfbSystUp.GetBinContent(ibin)/mfbSystUp.GetBinWidth(ibin))
+                mfbSystUp.SetBinError(ibin,mfbSystUp.GetBinError(ibin)/mfbSystUp.GetBinWidth(ibin))
+
+                mfbSystDn.SetBinContent(ibin,mfbSystDn.GetBinContent(ibin)/mfbSystDn.GetBinWidth(ibin))
+                mfbSystDn.SetBinError(ibin,mfbSystDn.GetBinError(ibin)/mfbSystDn.GetBinWidth(ibin))
+            
+            #mfb.Scale(1./mfb.Integral())
+            #mfbStatUp.Scale(1./mfbStatUp.Integral())
+            #mfbStatDn.Scale(1./mfbStatDn.Integral())
+            #mfbSystUp.Scale(1./mfbSystUp.Integral())
+            #mfbSystDn.Scale(1./mfbSystDn.Integral())
 
             # Convert to TGraphAsymErrors to then add the error bars
             enterTheMatrix=ROOT.TGraphAsymmErrors(mfb)
             mfbInt=mfb.Integral()
             for ipoint in range(0, enterTheMatrix.GetN()+1):
-                print(mfb.GetBinCenter(ipoint), mfb.GetBinLowEdge(ipoint), mfb.GetBinLowEdge(ipoint+1), mfb.GetBinContent(ipoint), mfb.GetBinContent(ipoint)/mfbInt)
+                #print(mfb.GetBinCenter(ipoint), mfb.GetBinLowEdge(ipoint), mfb.GetBinLowEdge(ipoint+1), mfb.GetBinContent(ipoint), mfb.GetBinContent(ipoint)/mfbInt)
                 enterTheMatrix.SetPoint(ipoint, mfb.GetBinCenter(ipoint), mfb.GetBinContent(ipoint)/mfbInt) 
                 estatup = (mfbStatUp.GetBinContent(ipoint) - mfb.GetBinContent(ipoint))/mfbInt
                 estatdn = (mfbStatDn.GetBinContent(ipoint) - mfb.GetBinContent(ipoint))/mfbInt
                 esystup = (mfbSystUp.GetBinContent(ipoint) - mfb.GetBinContent(ipoint))/mfbInt
                 esystdn = (mfbSystDn.GetBinContent(ipoint) - mfb.GetBinContent(ipoint))/mfbInt
+                #enterTheMatrix.SetPoint(ipoint, mfb.GetBinCenter(ipoint), mfb.GetBinContent(ipoint)) 
+                #estatup = (mfbStatUp.GetBinContent(ipoint) - mfb.GetBinContent(ipoint))
+                #estatdn = (mfbStatDn.GetBinContent(ipoint) - mfb.GetBinContent(ipoint))
+                #esystup = (mfbSystUp.GetBinContent(ipoint) - mfb.GetBinContent(ipoint))
+                #esystdn = (mfbSystDn.GetBinContent(ipoint) - mfb.GetBinContent(ipoint))
                 eup = ROOT.TMath.Sqrt(estatup*estatup + esystup*esystup)
                 edn = ROOT.TMath.Sqrt(estatdn*estatdn + esystdn*esystdn)
                 enterTheMatrix.SetPointEYhigh(ipoint,eup)
@@ -1481,7 +1511,7 @@ class Unfolder(object):
         leg_money.SetBorderSize(0)
         leg_money.SetEntrySeparation(0.25)
         if self.closure:
-            leg_money.AddEntry(hus, 'Unfolded Asimov data (stat.unc.)', 'pel')
+            leg_money.AddEntry(hus, 'Unfolded Pseudo data (stat.unc.)', 'pel')
         else:
             leg_money.AddEntry(hus, 'Unfolded data (stat.unc.)', 'pel')
         leg_money.AddEntry(dt, 'POWHEG prediction: #chi^{2}/NDOF=%0.3f'% dt.Chi2Test(hus, 'CHI2/NDF WW'), 'la')
