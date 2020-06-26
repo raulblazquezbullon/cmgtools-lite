@@ -40,37 +40,37 @@ sampledict  = {}
 sampledict[2016] = {}; sampledict[2017] = {}; sampledict[2018] = {}
 sampledict[2016] = {
     #### Nominales
-    # ttbar
+    ### ttbar
     "TTTo2L2Nu"        : "Tree_TTTo2L2Nu_TuneCP5_PSweights",
-    "TTToSemiLeptonic" : "Tree_TTToSemiLeptonic_TuneCP5_PSweights",
+    "TTToSemiLeptonic" : "Tree_TTToSemiLeptonic_TuneCP5_PSweights_",
     "TT_CUETP8M2T4"    : ["Tree_TT_TuneCUETP8M2T4_nobackup_*", "Tree_TT_TuneCUETP8M2T4_PSweights*", "Tree_TT_TuneCUETP8M2T4_0", "Tree_TT_TuneCUETP8M2T4_1", "Tree_TT_TuneCUETP8M2T4_2", "Tree_TT_TuneCUETP8M2T4_3"],
-    #"TT_CUETP8M2T4"    : "Tree_TT_TuneCUETP8M2T4_PSweights",
 
-    # tW
+    ### tW
     "tW_noFullHad"    : "Tree_tW_5f_noFullHad_",
     "tbarW_noFullHad" : "Tree_tbarW_5f_noFullHad_",
 
-    # WJets
+    ### WJets
     "WJetsToLNu_MLM": "Tree_WJetsToLNu_TuneCUETP8M1_MLM",
 
-    # DY
+    ### DY
     "DYJetsToLL_M_10to50" : "Tree_DYJetsToLL_M_10to50_TuneCUETP8M1_amcatnloFXFX",
     "DYJetsToLL_M_50"     : "Tree_DYJetsToLL_M_50_TuneCUETP8M1_amcatnloFXFX",
 
-    # WW
+    ### WW
     "WWTo2L2Nu" : "Tree_WWTo2L2Nu",
     "WWToLNuQQ" : "Tree_WWToLNuQQ",
 
     ### WZ
-    "WZTo2L2Q"    : "Tree_WZTo2L2Q_amcatnloFXFX_madspin",
-    "WZTo3LNu"    : "Tree_WZTo3LNu_TuneCUETP8M1",
-    "WZTo1L1Nu2Q" : "Tree_WZTo1L1Nu2Q_amcatnloFXFX_madspin",  ### WARNING: duda hay amcatnlo y powheg
+    "WZTo2L2Q"             : "Tree_WZTo2L2Q_amcatnloFXFX_madspin",
+    "WZTo3LNu"             : "Tree_WZTo3LNu_TuneCUETP8M1",
+    "WZTo1L1Nu2Q_aMCatNLO" : "Tree_WZTo1L1Nu2Q_amcatnloFXFX_madspin",
+    "WZTo1L1Nu2Q"          : "Tree_WZToLNu2Q_0",
 
     ### ZZ
-    "ZZTo2L2Nu" : "Tree_ZZTo2L2Nu",
-    #"ZZTo2L2Q"  : "ZZTo2L2Q_amcatnloFXFX_madspin",  ### WARNING: duda aqui con zz, hay amcatnlo y powheg
-    "ZZTo2L2Q"  : "Tree_ZZTo2L2Q_0",
-    "ZZTo4L"    : "Tree_ZZTo4L",
+    "ZZTo2L2Nu"         : "Tree_ZZTo2L2Nu",
+    "ZZTo2L2Q_aMCatNLO" : "ZZTo2L2Q_amcatnloFXFX_madspin",
+    "ZZTo2L2Q"          : "Tree_ZZTo2L2Q_0",
+    "ZZTo4L"            : "Tree_ZZTo4L",
 
     ### ttW
     "TTWJetsToLNu" : "Tree_TTWJetsToLNu_TuneCUETP8M1_amcatnloFXFX_madspin",
@@ -82,31 +82,23 @@ sampledict[2016] = {
     "TTZToQQ"             : "Tree_TTZToQQ_TuneCUETP8M1_amcatnlo",
 
     #### Incertidumbres
-    # tW
-    #"tW_noFullHad_DS"     : "tW_5f_DS_noFullHad_TuneCUETP8M",
-    #"tbarW_noFullHad_DS"  : "tbarW_5f_DS_noFullHad",
+    ### tW
+    "tW_noFullHad_DS"    : "Tree_tW_5f_DS_noFullHad_TuneCUETP8M",
+    "tbarW_noFullHad_DS" : "Tree_tbarW_5f_DS_noFullHad",
 
-    # tt syst: TODO
-    #TT_hdampDown   : TT_hdampDOWN_TuneCUETP8M2T4, TT_hdampDOWN_TuneCUETP8M2T4_ext1
-    #TT_hdampUp     : TT_hdampUP_TuneCUETP8M2T4_ext1, TT_hdampUP_TuneCUETP8M2T4
-    #TT_colourFlip  : TT_TuneCUETP8M2T4_colourFlip
-    #TT_TuneCUETP8M2T4down : TT_TuneCUETP8M2T4down, TT_TuneCUETP8M2T4down_ext1
-    #TT_TuneCUETP8M2T4up : TT_TuneCUETP8M2T4up, TT_TuneCUETP8M2T4up_ext1
-    #TT_erdON: TT_TuneCUETP8M2T4_erdON, TT_TuneCUETP8M2T4_erdON_ext1
-    #TT_fsrUp  : TT_TuneCUETP8M2T4_fsrup, TT_TuneCUETP8M2T4_fsrup_ext1
-    #TT_fsrDown: TT_TuneCUETP8M2T4_fsrdown, TT_TuneCUETP8M2T4_fsrdown_ext1
-    #TT_isrUp  : TT_TuneCUETP8M2T4_isrup_ext1
-    #TT_isrDown: TT_TuneCUETP8M2T4_isrdown, TT_TuneCUETP8M2T4_isrdown_ext1
-    #TT_mtop1665:  TT_TuneCUETP8M2T4_mtop1665
-    #TT_mtop1695: TT_TuneCUETP8M2T4_mtop1695, TT_TuneCUETP8M2T4_mtop1695_ext1, TT_TuneCUETP8M2T4_mtop1695_ext2
-    #TT_mtop1735: TT_TuneCUETP8M2T4_mtop1735
-    #TT_mtop1715: TT_TuneCUETP8M2T4_mtop1715
-    #TT_mtop1755 : TT_TuneCUETP8M2T4_mtop1755, TT_TuneCUETP8M2T4_mtop1755_ext1, TT_TuneCUETP8M2T4_mtop1755_ext2
-    #TT_mtop1785 : TT_TuneCUETP8M2T4_mtop1785
-    #TT_QCDbasedCRTune_erdON : TT_TuneCUETP8M2T4_QCDbasedCRTune_erdON
-    #TT_GluonMoveCRTune : TT_TuneCUETP8M2T4_GluonMoveCRTune_ext1
-    #TT_TuneEE5C_herwigpp: TT_TuneEE5C_herwigpp_ext3
+    ### ttbar
+    "TT_hdampUp"     : "Tree_TT_hdampUP_TuneCUETP8M2T4",
+    "TT_hdampDown"   : "Tree_TT_hdampDOWN_TuneCUETP8M2T4",
 
+    "TT_GluonMoveCRTune"      : "Tree_TT_TuneCUETP8M2T4_GluonMoveCRTune_ext1",
+    "TT_QCDbasedCRTune_erdON" : "Tree_TT_TuneCUETP8M2T4_QCDbasedCRTune_erdON",
+    "TT_erdON"                : "Tree_TT_TuneCUETP8M2T4_erdON",
+
+    "TT_UEUp"   : "TT_TuneCUETP8M2T4up",
+    "TT_UEDown" : "TT_TuneCUETP8M2T4down",
+
+    "TT_mtop1735" : "TT_TuneCUETP8M2T4_mtop1735",
+    "TT_mtop1715" : "TT_TuneCUETP8M2T4_mtop1715",
 
     #### Datos
     "SingleMuon"     : "Tree_SingleMuon_Run2016",
@@ -140,8 +132,8 @@ sampledict[2017] = {
 
     # WZ
     "WZTo2L2Q" : "Tree_WZTo2L2Q_amcatnloFXFX_madspin",
-    "WZTo3LNu" : "Tree_WZTo3LNu_0", ### WARNING: aquí se están mezclando/duplicando muestras nel stop
-    #"WZTo3LNu_aMCatNLO" : "Tree_WZTo3LNu_TuneCP5_amcatnloFXFX",
+    "WZTo3LNu_aMCatNLO" : "Tree_WZTo3LNu_TuneCP5_amcatnloFXFX",
+    "WZTo3LNu" : "Tree_WZTo3LNu_0",
 
     # ZZ
     "ZZTo2L2Nu" : "Tree_ZZTo2L2Nu",
@@ -159,20 +151,18 @@ sampledict[2017] = {
 
 
     #### Incertidumbres
-    # ttbar
-    #TTTo2L2Nu_hdampDown   : TTTo2L2Nu_hdampDOWN_TuneCP5_PSweights
-    #TTTo2L2Nu_hdampUp     : TTTo2L2Nu_hdampUP_TuneCP5_PSweights
-    #TTTo2L2Nu_TuneCP5Down : TTTo2L2Nu_TuneCP5down_PSweights
-    #TTTo2L2Nu_TuneCP5Up   : TTTo2L2Nu_TuneCP5up_PSweights
-    #TTTo2L2Nu_mtop166p5   : TTTo2L2Nu_mtop166p5_TuneCP5, TTTo2L2Nu_mtop166p5_TuneCP5_PSweights
-    #TTTo2L2Nu_mtop175p5   : TTTo2L2Nu_mtop175p5_TuneCP5_PSweights
-    #TTTo2L2Nu_mtop178p5   : TTTo2L2Nu_mtop178p5_TuneCP5, TTTo2L2Nu_mtop178p5_TuneCP5_PSweights
-    #TTTo2L2Nu_mtop169p5   : TTTo2L2Nu_mtop169p5_TuneCP5_PSweights
-    #TTTo2L2Nu_mtop171p5   : TTTo2L2Nu_mtop171p5_TuneCP5_PSweights
-    #TTTo2L2Nu_mtop173p5   : TTTo2L2Nu_mtop173p5_TuneCP5_PSweights
+    ### tW
 
-    # tW
-    # WARNING: faltan DS, UE
+    ### ttbar
+    "TTTo2L2Nu_hdampUp"     : "Tree_TTTo2L2Nu_hdampUP_TuneCP5_PSweights",
+    "TTTo2L2Nu_hdampDown"   : "Tree_TTTo2L2Nu_hdampDOWN_TuneCP5_PSweights",
+
+    "TTTo2L2Nu_TuneCP5Up"   : "Tree_TTTo2L2Nu_TuneCP5up_PSweights",
+    "TTTo2L2Nu_TuneCP5Down" : "Tree_TTTo2L2Nu_TuneCP5down_PSweights",
+
+    "TTTo2L2Nu_mtop173p5"   : "Tree_TTTo2L2Nu_mtop173p5_TuneCP5_PSweights",
+    "TTTo2L2Nu_mtop171p5"   : "Tree_TTTo2L2Nu_mtop171p5_TuneCP5_PSweights",
+
 
     #### Datos
     "SingleMuon"     : "Tree_SingleMuon_Run2017",
@@ -213,8 +203,8 @@ sampledict[2018] = {
     # WZ
     "WZTo1L3Nu"         : "Tree_WZTo1L3Nu_amcatnloFXFX_madspin",
     "WZTo2L2Q"          : "Tree_WZTo2L2Q_amcatnloFXFX_madspin",
-    "WZTo3LNu"          : "Tree_WZTo3LNu_TuneCP5_ext1_0",
     "WZTo3LNu_aMCatNLO" : "Tree_WZTo3LNu_TuneCP5_amcatnloFXFX",
+    "WZTo3LNu"          : "Tree_WZTo3LNu_TuneCP5_ext1_0",
 
     # ZZ
     "ZZTo2L2Nu"      : "Tree_ZZTo2L2Nu_TuneCP5",
@@ -248,20 +238,17 @@ sampledict[2018] = {
 
 
     #### Incertidumbres
-    # ttbar
-    #TTTo2L2Nu_hdampDown   : TTTo2L2Nu_hdampDOWN_TuneCP5_PSweights
-    #TTTo2L2Nu_hdampUp     : TTTo2L2Nu_hdampUP_TuneCP5_PSweights
-    #TTTo2L2Nu_TuneCP5Down : TTTo2L2Nu_TuneCP5down_PSweights
-    #TTTo2L2Nu_TuneCP5Up   : TTTo2L2Nu_TuneCP5up_PSweights
-    #TTTo2L2Nu_mtop166p5   : TTTo2L2Nu_mtop166p5_TuneCP5, TTTo2L2Nu_mtop166p5_TuneCP5_PSweights
-    #TTTo2L2Nu_mtop175p5   : TTTo2L2Nu_mtop175p5_TuneCP5_PSweights
-    #TTTo2L2Nu_mtop178p5   : TTTo2L2Nu_mtop178p5_TuneCP5, TTTo2L2Nu_mtop178p5_TuneCP5_PSweights
-    #TTTo2L2Nu_mtop169p5   : TTTo2L2Nu_mtop169p5_TuneCP5_PSweights
-    #TTTo2L2Nu_mtop171p5   : TTTo2L2Nu_mtop171p5_TuneCP5_PSweights
-    #TTTo2L2Nu_mtop173p5   : TTTo2L2Nu_mtop173p5_TuneCP5_PSweights
+    ### tW
 
-    # tW
-    # WARNING: faltan DS, UE
+    ### ttbar
+    "TTTo2L2Nu_hdampUp"     : "Tree_TTTo2L2Nu_hdampUP_TuneCP5_PSweights",
+    "TTTo2L2Nu_hdampDown"   : "Tree_TTTo2L2Nu_hdampDOWN_TuneCP5_PSweights",
+
+    "TTTo2L2Nu_TuneCP5Up"   : "Tree_TTTo2L2Nu_TuneCP5up",
+    "TTTo2L2Nu_TuneCP5Down" : "Tree_TTTo2L2Nu_TuneCP5down",
+
+    "TTTo2L2Nu_mtop173p5"   : "Tree_TTTo2L2Nu_mtop173p5_TuneCP5",
+    "TTTo2L2Nu_mtop171p5"   : "Tree_TTTo2L2Nu_mtop171p5_TuneCP5",
 
 
     #### Datos
@@ -413,22 +400,23 @@ def SendDatasetJobs(task):
 
 def GeneralSubmitter(task):
     dataset, year, step, queue, extra, pretend, nthreads = task
-    isData     = any(ext in dataset for ext in datasamples)
-    inputpath_ = (datapath if isData else mcpath) + "/" + str(year) + "/"
-    if not os.path.isdir(logpath.format(step_prefix = friendfolders[step], y = year)):
-        os.system("mkdir -p " + logpath.format(step_prefix = friendfolders[step], y = year))
+    for dataset_ in dataset.split(","):
+        isData     = any(ext in dataset_ for ext in datasamples)
+        inputpath_ = (datapath if isData else mcpath) + "/" + str(year) + "/"
+        if not os.path.isdir(logpath.format(step_prefix = friendfolders[step], y = year)):
+            os.system("mkdir -p " + logpath.format(step_prefix = friendfolders[step], y = year))
 
-    if isinstance(sampledict[year][dataset], list):
-        #### 1) There are multiple elements in the sample dict, that may or not have regular expressions.
-        #    We will have to check each element to find whether it has or not an asterisk at the end (this
-        #    is the only allowed regular expression). If it has not an asterisk, we will assume that it
-        #    should not have a regular expression.
-        for el in sampledict[year][dataset]:
-            SendDatasetJobs( (el, year, step, inputpath_, isData, queue, extra, (el[-1] == "*"), pretend, nthreads ) )
+        if isinstance(sampledict[year][dataset_], list):
+            #### 1) There are multiple elements in the sample dict, that may or not have regular expressions.
+            #    We will have to check each element to find whether it has or not an asterisk at the end (this
+            #    is the only allowed regular expression). If it has not an asterisk, we will assume that it
+            #    should not have a regular expression.
+            for el in sampledict[year][dataset_]:
+                SendDatasetJobs( (el, year, step, inputpath_, isData, queue, extra, (el[-1] == "*"), pretend, nthreads ) )
 
-    else:
-        #### 2) There is only one element in the sample dict.. We assume it to have a regular expression.
-        SendDatasetJobs( (sampledict[year][dataset], year, step, inputpath_, isData, queue, extra, True, pretend, nthreads) )
+        else:
+            #### 2) There is only one element in the sample dict.. We assume it to have a regular expression.
+            SendDatasetJobs( (sampledict[year][dataset_], year, step, inputpath_, isData, queue, extra, True, pretend, nthreads) )
     return
 
 
@@ -504,17 +492,23 @@ def CheckChunksByDataset(task):
                     print "# Chunk {chk} cannot be accessed: it is corrupted.".format(chk = ch)
                     pendingdict[dat][ch] = errs.corrupt
                 else:
-                    tmpentries = fch.Get("Friends").GetEntries()
-                    #print tmpentries
-                    fch.Close()
-                    if ch == (nchks - 1):                                   #### 4th: number of entries
-                        expEnt = totEnt - chunksizes[step] * (nchks - 1)
-                        if int(tmpentries) != int(expEnt):
-                            print "# Chunk {chk} does not have the expected entries ({ent}), it has {realent}.".format(chk = ch, ent = expEnt, realent = tmpentries)
+                    tmpentries = 0
+                    try:
+                        tmpentries = fch.Get("Friends").GetEntries()
+                    except:
+                        print "# Chunk {chk} can be opened, but the TTree cannot be accessed: it is corrupted.".format(chk = ch)
+                        pendingdict[dat][ch] = errs.corrupt
+                    else:
+                        #print tmpentries
+                        fch.Close()
+                        if ch == (nchks - 1):                                   #### 4th: number of entries
+                            expEnt = totEnt - chunksizes[step] * (nchks - 1)
+                            if int(tmpentries) != int(expEnt):
+                                print "# Chunk {chk} does not have the expected entries ({ent}), it has {realent}.".format(chk = ch, ent = expEnt, realent = tmpentries)
+                                pendingdict[dat][ch] = errs.entries
+                        elif tmpentries != chunksizes[step]:
+                            print "# Chunk {chk} does not have the expected entries ({ent}), it has {realent}.".format(chk = ch, ent = chunksizes[step], realent = tmpentries)
                             pendingdict[dat][ch] = errs.entries
-                    elif tmpentries != chunksizes[step]:
-                        print "# Chunk {chk} does not have the expected entries ({ent}), it has {realent}.".format(chk = ch, ent = chunksizes[step], realent = tmpentries)
-                        pendingdict[dat][ch] = errs.entries
 
                 del fch
 
