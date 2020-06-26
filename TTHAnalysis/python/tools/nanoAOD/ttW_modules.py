@@ -38,7 +38,7 @@ lepMasses = ttHLeptonCombMasses( [ ("Muon",muonSelection), ("Electron",electronS
 from CMGTools.TTHAnalysis.tools.nanoAOD.autoPuWeight import autoPuWeight
 from CMGTools.TTHAnalysis.tools.nanoAOD.yearTagger import yearTag
 from CMGTools.TTHAnalysis.tools.nanoAOD.xsecTagger import xsecTag
-from CMGTools.TTHAnalysis.tools.nanoAOD.lepJetBTagAdder import lepJetBTagCSV, lepJetBTagDeepCSV, lepJetBTagDeepFlav, lepJetBTagDeepFlavC,lepJetCons
+from CMGTools.TTHAnalysis.tools.nanoAOD.lepJetBTagAdder import lepJetBTagCSV, lepJetBTagDeepCSV, lepJetBTagDeepFlav, lepJetBTagDeepFlavC
 
 ttH_sequence_step1 = [lepSkim, lepMerge, autoPuWeight, yearTag, xsecTag, lepJetBTagCSV, lepJetBTagDeepCSV, lepJetBTagDeepFlav, lepMasses]
 
@@ -167,7 +167,6 @@ jetmetUncertainties2018All = createJMECorrector(dataYear=2016, jesUncert="All")
 jme2016_allvariations = [jetmetUncertainties2016All,jetMetCorrelate2016] 
 jme2017_allvariations = [jetmetUncertainties2017All,jetMetCorrelate2017]
 jme2018_allvariations = [jetmetUncertainties2018All,jetMetCorrelate2018]
-
 def _fires(ev, path):
     if "/hasfiredtriggers_cc.so" not in ROOT.gSystem.GetLibraries():
         ROOT.gROOT.ProcessLine(".L %s/src/CMGTools/Production/src/hasfiredtriggers.cc+O" % os.environ['CMSSW_BASE'])
@@ -361,9 +360,9 @@ finalMVA3L_allVars = lambda : finalMVA_DNN_3l(variations = [ 'jes%s'%v for v in 
 from CMGTools.TTHAnalysis.tools.nanoAOD.finalMVA_4l import FinalMVA_4L
 finalMVA_4l = lambda : FinalMVA_4L()
 
-from CMGTools.TTHAnalysis.tools.LepMVAFriend import LepMVAFriend
-lepMVA_mu_2016 = lambda : LepMVAFriend((os.environ["CMSSW_BASE"]+"/src/CMGTools/TTHAnalysis/data/leptonMVA/ttw/TMVA_BDTG_TOP%s.weights.xml",
-                                                   os.environ["CMSSW_BASE"]+"/src/CMGTools/TTHAnalysis/data/leptonMVA/ttw/TMVA_BDTG_TOP%s.weights.xml"),"2016",training="Ghent_MVA_2016", label="FriendTTW")
+#from CMGTools.TTHAnalysis.tools.LepMVAFriend import LepMVAFriend
+#lepMVA_mu_2016 = lambda : LepMVAFriend((os.environ["CMSSW_BASE"]+"/src/CMGTools/TTHAnalysis/data/leptonMVA/ttw/TMVA_BDTG_TOP%s.weights.xml",
+#                                                   os.environ["CMSSW_BASE"]+"/src/CMGTools/TTHAnalysis/data/leptonMVA/ttw/TMVA_BDTG_TOP%s.weights.xml"),"2016",training="Ghent_MVA_2016", label="FriendTTW")
 
 from PhysicsTools.NanoAODTools.postprocessing.modules.btv.btagSFProducer import btagSFProducer
 

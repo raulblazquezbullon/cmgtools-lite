@@ -31,10 +31,9 @@ else:
         from CMGTools.RootTools.samples.samples_13TeV_RunIIFall17NanoAODv4 import samples as mcSamples_
         from CMGTools.RootTools.samples.samples_13TeV_DATA2017_NanoAOD import dataSamples_25Oct2019 as allData
     elif year == 2016:
-        from CMGTools.RootTools.samples.samples_13TeV_RunIISummer16NanoAODv4 import samples as mcSamples_
+        from CMGTools.RootTools.samples.samples_13TeV_2016_TopNanoAODv6 import samples as mcSamples_
         from CMGTools.RootTools.samples.samples_13TeV_DATA2016_NanoAOD import dataSamples_25Oct2019 as allData
-mcSamples_=[]
-autoAAA(mcSamples_+allData, quiet=not(getHeppyOption("verboseAAA",False)), redirectorAAA="xrootd-cms.infn.it") # must be done before mergeExtensions
+autoAAA(mcSamples_+allData, quiet=not(getHeppyOption("verboseAAA",False)), redirectorAAA="xrootd-cms.infn.it",node='T2_ES_IFCA') # must be done before mergeExtensions
 mcSamples_, _ = mergeExtensions(mcSamples_)
 
 # Triggers
@@ -199,6 +198,7 @@ process.skim1El = cms.EDFilter("PATElectronRefSelector",
 )
 process.nanoAOD_step.insert(0, process.skim1El)
 """)
+
 if analysis == "main":
     cropToLumi(byCompName(selectedComponents,["^(?!.*(TTH|TTW|TTZ)).*"]),1000.)
     cropToLumi(byCompName(selectedComponents,["T_","TBar_"]),100.)
@@ -218,7 +218,7 @@ if getHeppyOption("justSummary"):
     printSummary(selectedComponents)
     sys.exit(0)
 
-from CMGTools.TTHAnalysis.tools.nanoAOD.ttH_modules import *
+from CMGTools.TTHAnalysis.tools.nanoAOD.ttW_modules import *
 
 from PhysicsTools.NanoAODTools.postprocessing.framework.postprocessor import PostProcessor
 
