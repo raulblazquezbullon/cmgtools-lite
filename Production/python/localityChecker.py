@@ -16,6 +16,7 @@ class LocalityChecker:
         self.cacheTime = cacheTime 
         self.verbose = verbose
     def available(self,dataset):
+        return False
         if self.data == None: self.data = self.initData()
         return dataset in self.data
     def initData(self):
