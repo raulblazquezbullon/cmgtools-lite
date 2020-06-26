@@ -2,7 +2,6 @@ import re, os, sys
 from CMGTools.RootTools.samples.configTools import printSummary, mergeExtensions, doTestN, configureSplittingFromTime, cropToLumi
 from CMGTools.RootTools.samples.autoAAAconfig import autoAAA
 from PhysicsTools.HeppyCore.framework.heppy_loop import getHeppyOption
-
 from CMGTools.RootTools.samples.ComponentCreator import ComponentCreator
 kreator = ComponentCreator()
 def byCompName(components, regexps):
@@ -13,6 +12,7 @@ analysis = getHeppyOption("analysis", "main")
 preprocessor = getHeppyOption("nanoPreProcessor")
 
 # Samples
+'''
 if preprocessor:
     if year == 2018:
         from CMGTools.RootTools.samples.samples_13TeV_RunIIAutumn18MiniAOD import samples as mcSamples_
@@ -22,7 +22,7 @@ if preprocessor:
         from CMGTools.RootTools.samples.samples_13TeV_DATA2017 import dataSamples_31Mar2018 as allData
     elif year == 2016:
         from CMGTools.RootTools.samples.samples_13TeV_RunIISummer16MiniAODv3 import samples as mcSamples_
-        from CMGTools.RootTools.samples.samples_13TeV_DATA2016 import dataSamples_17Jul2018 as allData
+        from CMGTools.RootTools.samples.samples_13TeV_DATA2016 import dataSamples_17Jul2018 as allDatas
 else:
     if year == 2018:
         from CMGTools.RootTools.samples.samples_13TeV_RunIIAutumn18NanoAODv4 import samples as mcSamples_
@@ -33,7 +33,9 @@ else:
     elif year == 2016:
         from CMGTools.RootTools.samples.samples_13TeV_RunIISummer16NanoAODv4 import samples as mcSamples_
         from CMGTools.RootTools.samples.samples_13TeV_DATA2016_NanoAOD import dataSamples_25Oct2019 as allData
+'''
 mcSamples_=[]
+allData=[]
 autoAAA(mcSamples_+allData, quiet=not(getHeppyOption("verboseAAA",False)), redirectorAAA="xrootd-cms.infn.it") # must be done before mergeExtensions
 mcSamples_, _ = mergeExtensions(mcSamples_)
 
@@ -47,7 +49,7 @@ mcSamples_, _ = mergeExtensions(mcSamples_)
 #     from CMGTools.RootTools.samples.triggers_13TeV_DATA2016 import all_triggers as triggers
 #     triggers["FR_1mu_noiso_smpd"] = [] 
 
-from CMGTools.TTHAnalysis.tools.nanoAOD.ttH_modules import triggerGroups_dict
+from CMGTools.TTHAnalysis.tools.nanoAOD.ttW_modules import triggerGroups_dict
 
 DatasetsAndTriggers = []
 if analysis == "main":
@@ -218,7 +220,7 @@ if getHeppyOption("justSummary"):
     printSummary(selectedComponents)
     sys.exit(0)
 
-from CMGTools.TTHAnalysis.tools.nanoAOD.ttH_modules import *
+from CMGTools.TTHAnalysis.tools.nanoAOD.ttW_modules import *
 
 from PhysicsTools.NanoAODTools.postprocessing.framework.postprocessor import PostProcessor
 
@@ -248,6 +250,33 @@ if test == "94X-MC":
     lepSkim.minMET = 0
     lepSkim.prescaleFactor = 0
     selectedComponents = [TTLep_pow]
+elif test=="ttW_sync":
+    #TTJets_dilep= kreator.makeMCComponent("TTJets_dilep", "/TTJets_DiLept_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/MINIAODSIM", "CMS", ".*root", 831.76*((3*0.108)**2) )
+    TTWToLNu_fxfx     = kreator.makeMCComponent("TTWToLNu_fxfx", "/TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8/RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3_ext2-v1/MINIAODSIM", "CMS", ".*root", 0.2043, fracNegWeights=0.227)
+    #TTJets_dilep.files = ["/pool/phedex/userstorage/clara/00D134FC-FBE9-E811-AF6C-1C6A7A26C53B.root"]
+    TTWToLNu_fxfx.files =["/pool/phedex/userstorage/clara/sync_ttW/Top_nano/ttW/5AB18CAE-06D2-E811-B286-EC0D9A8221FE.root"]
+    from CMGTools.Production.nanoAODPreprocessor import nanoAODPreprocessor
+    #TTJets_dilep.preprocessor = nanoAODPreprocessor(cfg="/nfs/fanae/user/clara/ttW/CMSSW_10_2_22/src/NANO_NANO.py",cmsswArea = "/mnt_pool/ciencias_users/user/clara/ttW/CMSSW_10_2_22",keepOutput=True)
+    #TTJets_dilep.preprocessor = nanoAODPreprocessor(cfg="/nfs/fanae/user/clara/CMSSW_10_2_18/src/PhysicsTools/NanoAOD/test/topNano_v6p1_2016_cfg.py",cmsswArea = "/nfs/fanae/user/clara/CMSSW_10_2_18/src/",keepOutput=True)
+    TTWToLNu_fxfx.preprocessor = nanoAODPreprocessor(cfg="/nfs/fanae/user/clara/CMSSW_10_2_18/src/PhysicsTools/NanoAOD/test/topNano_v6p1_2016_cfg.py",cmsswArea = "/nfs/fanae/user/clara/CMSSW_10_2_18/src/",keepOutput=True)
+    POSTPROCESSOR.modules.remove(lepSkim)
+    POSTPROCESSOR.cut='1'
+    selectedComponents = [TTWToLNu_fxfx]
+elif test=="ttj_sync":
+    TTJets_dilep= kreator.makeMCComponent("TTJets_dilep", "/TTJets_DiLept_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/MINIAODSIM", "CMS", ".*root", 831.76*((3*0.108)**2) )
+    TTJets_dilep.files = ["/pool/phedex/userstorage/clara/1A77724A-73EA-E811-A80E-0CC47A6C06C2.root"]
+    from CMGTools.Production.nanoAODPreprocessor import nanoAODPreprocessor
+    #TTJets_dilep.preprocessor = nanoAODPreprocessor(cfg="/nfs/fanae/user/clara/ttW/CMSSW_10_2_22/src/NANO_NANO.py",cmsswArea = "/mnt_pool/ciencias_users/user/clara/ttW/CMSSW_10_2_22",keepOutput=True)
+    TTJets_dilep.preprocessor = nanoAODPreprocessor(cfg="/nfs/fanae/user/clara/CMSSW_10_2_18/src/PhysicsTools/NanoAOD/test/topNano_v6p1_2016_cfg.py",cmsswArea = "/nfs/fanae/user/clara/CMSSW_10_2_18/src/",keepOutput=True)
+    POSTPROCESSOR.modules.remove(lepSkim)
+    POSTPROCESSOR.cut='1'
+    selectedComponents = [TTJets_dilep]
+elif test=="ttW_post":
+    TTWToLNu_fxfx     = kreator.makeMCComponent("TTWToLNu_fxfx", "/TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8/RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3_ext2-v1/MINIAODSIM", "CMS", ".*root", 0.2043, fracNegWeights=0.227)
+    TTWToLNu_fxfx.files =["/nfs/fanae/user/clara/ttW/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/cfg/ttW_newloose_2/TTWToLNu_fxfx_Chunk0/cmsswPreProcessing.root"]
+    POSTPROCESSOR.modules.remove(lepSkim)
+    POSTPROCESSOR.cut='1'
+    selectedComponents = [TTWToLNu_fxfx]
 elif test == "94X-MC-miniAOD":
     TTLep_pow = kreator.makeMCComponent("TTLep_pow", "/TTTo2L2Nu_mtop166p5_TuneCP5_PSweights_13TeV-powheg-pythia8/RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1/MINIAODSIM", "CMS", ".*root", 831.76*((3*0.108)**2) )
     TTLep_pow.files = [ 'root://cms-xrd-global.cern.ch//store/mc/RunIIFall17MiniAOD/TTTo2L2Nu_mtop166p5_TuneCP5_PSweights_13TeV-powheg-pythia8/MINIAODSIM/94X_mc2017_realistic_v10-v1/70000/3CC234EB-44E0-E711-904F-FA163E0DF774.root' ]
