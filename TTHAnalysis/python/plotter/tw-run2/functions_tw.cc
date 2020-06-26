@@ -8,8 +8,8 @@
 #include "TLorentzVector.h"
 #include "TGraphAsymmErrors.h"
 
-Int_t getnJetnBJet(Int_t nJ, Int_t nBJ) {
-  Int_t bin = -1;
+int getnJetnBJet(int nJ, int nBJ) {
+  int bin = -1;
 
   if      (nJ == 0)             bin = 0;
   else if (nJ == 1 && nBJ == 0) bin = 1;
@@ -22,11 +22,26 @@ Int_t getnJetnBJet(Int_t nJ, Int_t nBJ) {
 }
 
 
-Int_t getnLooseJets(Int_t nlj, Int_t nj) {
-  Int_t bin = -1;
+int getnLooseJets(int nlj, int nj) {
+  int bin = -1;
   bin = nlj - nj;
 
   return bin;
+}
+
+
+float getBDtW(double BDT) {
+  if      (BDT < -0.531448  ) return 1;
+  else if (BDT < -0.396646  ) return 2;
+  else if (BDT < -0.282771  ) return 3;
+  else if (BDT < -0.184872  ) return 4;
+  else if (BDT < -0.0977834 ) return 5;
+  else if (BDT < -0.0118005 ) return 6;
+  else if (BDT < 0.0867415  ) return 7;
+  else if (BDT < 0.207723   ) return 8;
+  else if (BDT < 0.332052   ) return 9;
+  else                        return 10;
+
 }
 
 
