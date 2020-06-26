@@ -16,7 +16,7 @@ logpath      = friendspath + "/{p}/{y}/logs/plots"
 
 friendsscaff = "--Fs {fpath}/{p}/{y}/0_yeartag --Fs {fpath}/{p}/{y}/1_lepmerge_roch --Fs {fpath}/{p}/{y}/2_cleaning --Fs {fpath}/{p}/{y}/3_varstrigger --FMCs {fpath}/{p}/{y}/4_scalefactors"
 
-commandscaff = "python mcPlots.py --tree NanoAOD --pdir {outpath} {friends} {samplespaths} -f -l {lumi} {nth} --year {year} --maxRatioRange 0.6 1.99 --ratioYNDiv 210 --showRatio --attachRatioPanel --fixRatioRange --legendColumns 3 --legendWidth 0.52 --legendFontSize 0.042 --noCms --topSpamSize 1.1 --lspam '#scale[1.1]{{#bf{{CMS}}}} #scale[0.9]{{#it{{Preliminary}}}}' --showMCError -W 'MuonSF * ElecSF * TrigSF * puWeight * bTagWeight{extraweights}' -L tw-run2/functions_tw.cc {selplot} {mcafile} {cutsfile} {plotsfile} {extra}"
+commandscaff = "python mcPlots.py --tree NanoAOD --pdir {outpath} {friends} {samplespaths} -f -l {lumi} {nth} --year {year} --maxRatioRange 0.8 1.2 --ratioYNDiv 210 --showRatio --attachRatioPanel --fixRatioRange --legendColumns 3 --legendWidth 0.52 --legendFontSize 0.042 --noCms --topSpamSize 1.1 --lspam '#scale[1.1]{{#bf{{CMS}}}} #scale[0.9]{{#it{{Preliminary}}}}' --showMCError -W 'MuonSF * ElecSF * TrigSF * puWeight * bTagWeight{extraweights}' -L tw-run2/functions_tw.cc {selplot} {mcafile} {cutsfile} {plotsfile} {extra}"
 
 slurmscaff   = "sbatch -c {nth} -p {queue} -J {jobname} -e {logpath}/log.%j.%x.err -o {logpath}/log.%j.%x.out --wrap '{command}'"
 
@@ -34,18 +34,20 @@ def GeneralExecutioner(task):
         if not os.path.isdir(logpath.format(y = year, p = prod)) and not pretend:
             os.system("mkdir -p " + logpath.format(y = year, p = prod))
 
-        jobname_   = "CMGTplotter_{y}_{p}_{s}".format(y = year, p = prod, s = "all" if selplot == "" else selplot)
-        submitcomm = slurmscaff.format(nth     = nthreads,
-                                       queue   = queue,
-                                       jobname = jobname_,
-                                       logpath = logpath.format(y = year, p = prod),
-                                       command = PlottingCommand(prod, year, nthreads, outpath, selplot, region, extra))
-        print "Command:", submitcomm
-        if not pretend: os.system(submitcomm)
+        for reg in region.split(","):
+            jobname_   = "CMGTplotter_{y}_{p}_{s}".format(y = year, p = prod, s = "all" if selplot == "" else selplot)
+            submitcomm = slurmscaff.format(nth     = nthreads,
+                                        queue   = queue,
+                                        jobname = jobname_,
+                                        logpath = logpath.format(y = year, p = prod),
+                                        command = PlottingCommand(prod, year, nthreads, outpath, selplot, reg, extra))
+            print "Command:", submitcomm
+            if not pretend: os.system(submitcomm)
     else:
-        execcomm = PlottingCommand(prod, year, nthreads, outpath, selplot, region, extra)
-        print "Command:", execcomm
-        if not pretend: os.system(execcomm)
+        for reg in region.split(","):
+            execcomm = PlottingCommand(prod, year, nthreads, outpath, selplot, reg, extra)
+            print "Command:", execcomm
+            if not pretend: os.system(execcomm)
 
 
     return
