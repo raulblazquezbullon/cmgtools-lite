@@ -68,7 +68,7 @@ sampledict[2016] = {
 
     ### ZZ
     "ZZTo2L2Nu"         : "Tree_ZZTo2L2Nu",
-    "ZZTo2L2Q_aMCatNLO" : "ZZTo2L2Q_amcatnloFXFX_madspin",
+    "ZZTo2L2Q_aMCatNLO" : "Tree_ZZTo2L2Q_amcatnloFXFX_madspin",
     "ZZTo2L2Q"          : "Tree_ZZTo2L2Q_0",
     "ZZTo4L"            : "Tree_ZZTo4L",
 
@@ -81,24 +81,26 @@ sampledict[2016] = {
     "TTZToLLNuNu_M_10"    : "Tree_TTZToLLNuNu_M_10_TuneCUETP8M1_amcatnlo",
     "TTZToQQ"             : "Tree_TTZToQQ_TuneCUETP8M1_amcatnlo",
 
-    #### Incertidumbres
-    ### tW
-    "tW_noFullHad_DS"    : "Tree_tW_5f_DS_noFullHad_TuneCUETP8M",
-    "tbarW_noFullHad_DS" : "Tree_tbarW_5f_DS_noFullHad",
 
-    ### ttbar
-    "TT_hdampUp"     : "Tree_TT_hdampUP_TuneCUETP8M2T4",
-    "TT_hdampDown"   : "Tree_TT_hdampDOWN_TuneCUETP8M2T4",
+    ##### Incertidumbres
+    #### tW
+    #"tW_noFullHad_DS"    : "Tree_tW_5f_DS_noFullHad_TuneCUETP8M",
+    #"tbarW_noFullHad_DS" : "Tree_tbarW_5f_DS_noFullHad",
 
-    "TT_GluonMoveCRTune"      : "Tree_TT_TuneCUETP8M2T4_GluonMoveCRTune_ext1",
-    "TT_QCDbasedCRTune_erdON" : "Tree_TT_TuneCUETP8M2T4_QCDbasedCRTune_erdON",
-    "TT_erdON"                : "Tree_TT_TuneCUETP8M2T4_erdON",
+    #### ttbar
+    #"TT_hdampUp"     : "Tree_TT_hdampUP_TuneCUETP8M2T4",
+    #"TT_hdampDown"   : "Tree_TT_hdampDOWN_TuneCUETP8M2T4",
 
-    "TT_UEUp"   : "TT_TuneCUETP8M2T4up",
-    "TT_UEDown" : "TT_TuneCUETP8M2T4down",
+    #"TT_GluonMoveCRTune"      : "Tree_TT_TuneCUETP8M2T4_GluonMoveCRTune_ext1",
+    #"TT_QCDbasedCRTune_erdON" : "Tree_TT_TuneCUETP8M2T4_QCDbasedCRTune_erdON",
+    #"TT_erdON"                : "Tree_TT_TuneCUETP8M2T4_erdON",
 
-    "TT_mtop1735" : "TT_TuneCUETP8M2T4_mtop1735",
-    "TT_mtop1715" : "TT_TuneCUETP8M2T4_mtop1715",
+    #"TT_UEUp"   : "Tree_TT_TuneCUETP8M2T4up",
+    #"TT_UEDown" : "Tree_TT_TuneCUETP8M2T4down",
+
+    #"TT_mtop1735" : "Tree_TT_TuneCUETP8M2T4_mtop1735",
+    #"TT_mtop1715" : "Tree_TT_TuneCUETP8M2T4_mtop1715",
+
 
     #### Datos
     "SingleMuon"     : "Tree_SingleMuon_Run2016",
@@ -150,18 +152,18 @@ sampledict[2017] = {
     "TTZToQQ"          : "Tree_TTZToQQ_TuneCP5_amcatnlo",
 
 
-    #### Incertidumbres
-    ### tW
+    ##### Incertidumbres
+    #### tW
 
-    ### ttbar
-    "TTTo2L2Nu_hdampUp"     : "Tree_TTTo2L2Nu_hdampUP_TuneCP5_PSweights",
-    "TTTo2L2Nu_hdampDown"   : "Tree_TTTo2L2Nu_hdampDOWN_TuneCP5_PSweights",
+    #### ttbar
+    #"TTTo2L2Nu_hdampUp"     : "Tree_TTTo2L2Nu_hdampUP_TuneCP5_PSweights",
+    #"TTTo2L2Nu_hdampDown"   : "Tree_TTTo2L2Nu_hdampDOWN_TuneCP5_PSweights",
 
-    "TTTo2L2Nu_TuneCP5Up"   : "Tree_TTTo2L2Nu_TuneCP5up_PSweights",
-    "TTTo2L2Nu_TuneCP5Down" : "Tree_TTTo2L2Nu_TuneCP5down_PSweights",
+    #"TTTo2L2Nu_TuneCP5Up"   : "Tree_TTTo2L2Nu_TuneCP5up_PSweights",
+    #"TTTo2L2Nu_TuneCP5Down" : "Tree_TTTo2L2Nu_TuneCP5down_PSweights",
 
-    "TTTo2L2Nu_mtop173p5"   : "Tree_TTTo2L2Nu_mtop173p5_TuneCP5_PSweights",
-    "TTTo2L2Nu_mtop171p5"   : "Tree_TTTo2L2Nu_mtop171p5_TuneCP5_PSweights",
+    #"TTTo2L2Nu_mtop173p5"   : "Tree_TTTo2L2Nu_mtop173p5_TuneCP5_PSweights",
+    #"TTTo2L2Nu_mtop171p5"   : "Tree_TTTo2L2Nu_mtop171p5_TuneCP5_PSweights",
 
 
     #### Datos
@@ -237,18 +239,18 @@ sampledict[2018] = {
     "TTZToQQ"          : "Tree_TTZToQQ_TuneCP5_amcatnlo",
 
 
-    #### Incertidumbres
-    ### tW
+    ##### Incertidumbres
+    #### tW
 
-    ### ttbar
-    "TTTo2L2Nu_hdampUp"     : "Tree_TTTo2L2Nu_hdampUP_TuneCP5_PSweights",
-    "TTTo2L2Nu_hdampDown"   : "Tree_TTTo2L2Nu_hdampDOWN_TuneCP5_PSweights",
+    #### ttbar
+    #"TTTo2L2Nu_hdampUp"     : "Tree_TTTo2L2Nu_hdampUP_TuneCP5",
+    #"TTTo2L2Nu_hdampDown"   : "Tree_TTTo2L2Nu_hdampDOWN_TuneCP5",
 
-    "TTTo2L2Nu_TuneCP5Up"   : "Tree_TTTo2L2Nu_TuneCP5up",
-    "TTTo2L2Nu_TuneCP5Down" : "Tree_TTTo2L2Nu_TuneCP5down",
+    #"TTTo2L2Nu_TuneCP5Up"   : "Tree_TTTo2L2Nu_TuneCP5up",
+    #"TTTo2L2Nu_TuneCP5Down" : "Tree_TTTo2L2Nu_TuneCP5down",
 
-    "TTTo2L2Nu_mtop173p5"   : "Tree_TTTo2L2Nu_mtop173p5_TuneCP5",
-    "TTTo2L2Nu_mtop171p5"   : "Tree_TTTo2L2Nu_mtop171p5_TuneCP5",
+    #"TTTo2L2Nu_mtop173p5"   : "Tree_TTTo2L2Nu_mtop173p5_TuneCP5",
+    #"TTTo2L2Nu_mtop171p5"   : "Tree_TTTo2L2Nu_mtop171p5_TuneCP5",
 
 
     #### Datos
