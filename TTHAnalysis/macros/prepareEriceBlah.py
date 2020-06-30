@@ -43,7 +43,8 @@ sampledict[2016] = {
     ### ttbar
     "TTTo2L2Nu"        : "Tree_TTTo2L2Nu_TuneCP5_PSweights",
     "TTToSemiLeptonic" : "Tree_TTToSemiLeptonic_TuneCP5_PSweights_",
-    "TT_CUETP8M2T4"    : ["Tree_TT_TuneCUETP8M2T4_nobackup_*", "Tree_TT_TuneCUETP8M2T4_PSweights*", "Tree_TT_TuneCUETP8M2T4_0", "Tree_TT_TuneCUETP8M2T4_1", "Tree_TT_TuneCUETP8M2T4_2", "Tree_TT_TuneCUETP8M2T4_3"],
+    #"TT_CUETP8M2T4"    : ["Tree_TT_TuneCUETP8M2T4_nobackup_*", "Tree_TT_TuneCUETP8M2T4_PSweights*", "Tree_TT_TuneCUETP8M2T4_0", "Tree_TT_TuneCUETP8M2T4_1", "Tree_TT_TuneCUETP8M2T4_2", "Tree_TT_TuneCUETP8M2T4_3"],
+    "TT_CUETP8M2T4"    : ["Tree_TT_TuneCUETP8M2T4_PSweights*", "Tree_TT_TuneCUETP8M2T4_0", "Tree_TT_TuneCUETP8M2T4_1", "Tree_TT_TuneCUETP8M2T4_2", "Tree_TT_TuneCUETP8M2T4_3"], # Nobackup ta mal
 
     ### tW
     "tW_noFullHad"    : "Tree_tW_5f_noFullHad_",
@@ -651,7 +652,7 @@ def CheckLotsOfMergedDatasets(dataset, year, step, queue, extra, ncores):
         tasks = []
         for dat in sampledict[year]:
             isData = any(ext in dat for ext in datasamples)
-            if not isData or (isData and step < 4):
+            if not isData or (isData and step != 4):
                 tasks.append( (dat, year, step) )
         if ncores > 1:
             pool = Pool(ncores)
@@ -682,8 +683,9 @@ def CheckLotsOfMergedDatasets(dataset, year, step, queue, extra, ncores):
         if confirm("> Do you want to remerge these datasets? The current merged files will be deleted and afterwards, they will be reproduced (please note that all non-merged chunks in the folder will be merged!)"):
             for d in fullpendingdict:
                 for part in fullpendingdict[d]:
-                    print "   - Erasing file {f}"
-                    #os.system("rm " + friendspath + "/" + prodname + "/" + str(year) + "/" + friendfolders[step] + "/" + part.replace(".root", "") + "_Friend.root")
+                    tmpfile = friendspath + "/" + prodname + "/" + str(year) + "/" + friendfolders[step] + "/" + part.replace(".root", "") + "_Friend.root"
+                    print "   - Erasing file {f}".format(f = tmpfile)
+                    os.system("rm " + tmpfile)
             MergeThoseChunks(year, step, queue, extra, noconf = True)
         else:
             return
@@ -701,7 +703,7 @@ def CheckLotsOfChunks(dataset, year, step, queue, extra, ncores, nthreads):
         tasks = []
         for dat in sampledict[year]:
             isData = any(ext in dat for ext in datasamples)
-            if not isData or (isData and step < 4):
+            if not isData or (isData and step != 4):
                 tasks.append( (dat, year, step) )
         if ncores > 1:
             pool = Pool(ncores)
