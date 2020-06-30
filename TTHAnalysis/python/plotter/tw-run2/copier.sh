@@ -11,7 +11,14 @@ indexpath="/nfs/fanae/user/vrbouza/www/index.php"
 savepath=""
 storagepath="/pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/results"
 webpath="/nfs/fanae/user/vrbouza/www/Proyectos/tw_run2/results/"
-sourcepath="./temp/*"
+
+
+if [ "$3" != "" ]; then
+  sourcepath=$3
+else
+  sourcepath="./temp/*"
+fi
+
 
 if [ "$1" == "w" ] || [ "$1" == "web" ]; then
   echo "===> Copying results to the web!"

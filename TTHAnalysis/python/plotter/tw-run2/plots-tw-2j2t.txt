@@ -56,7 +56,3 @@ lep12jet12_dr      : Lep12Jet12_DR       : 10,0,1   ; IncludeUnderflow=False, XT
 lep12jet12met_dr   : Lep12Jet12MET_DR    : 10,0,1   ; IncludeUnderflow=False, XTitle="\\Delta R (\\ell_{12}\, jet_{12} \\it{p}_{T}^{miss}) (adim.)"
 lep1lep2jet1_c     : Lep1Lep2Jet1_C      : 20,0,1   ; IncludeUnderflow=False, XTitle="C (#it{e}^{#pm}\, #it{#mu}^{#mp}\, #it{j}) (adim.)"
 httot              : HTtot               : 20,0,600 ; IncludeUnderflow=False, XTitle="H_{T} (GeV)"
-
-
-### MVAs
-#SergioBDT_2j1b     : SergioBDT_2j1b      : 10,-1,1  ; IncludeUnderflow=False, XTitle="BDT discriminant (adim.)"
