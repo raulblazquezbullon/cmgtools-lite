@@ -350,7 +350,7 @@ eventVars = lambda : EventVars_tWRun2('', 'Recl')
 from CMGTools.TTHAnalysis.tools.addYear import addYear
 addYear_2016 = lambda : addYear(2016)
 addYear_2017 = lambda : addYear(2017)
-addYear_2018 = lambda : addYear(2018)
+addYear_2018 = lambda : addYear(2018)  #### NOTE: this also adds the PrefireWeight as a branch for this year
 
 #### Add data tag
 from CMGTools.TTHAnalysis.tools.addDataTag import addDataTag

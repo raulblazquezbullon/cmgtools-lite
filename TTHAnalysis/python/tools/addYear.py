@@ -8,6 +8,9 @@ class addYear(Module):
         self.label    = label
         self.year     = year
         self.branches = [(self.label, "I")]
+
+        if self.year == 2018: self.branches.append( ("PrefireWeight", "F") )
+
         return
 
 
@@ -33,4 +36,5 @@ class addYear(Module):
     # Common processing
     def run(self, event, Collection):
         allret = {self.label : self.year}
+        if self.year == 2018: allret["PrefireWeight"] = 1.0
         return allret
