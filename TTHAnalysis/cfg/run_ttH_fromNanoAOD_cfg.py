@@ -12,7 +12,7 @@ analysis = getHeppyOption("analysis", "main")
 preprocessor = getHeppyOption("nanoPreProcessor")
 
 # Samples
-'''
+
 if preprocessor:
     if year == 2018:
         from CMGTools.RootTools.samples.samples_13TeV_RunIIAutumn18MiniAOD import samples as mcSamples_
@@ -25,18 +25,17 @@ if preprocessor:
         from CMGTools.RootTools.samples.samples_13TeV_DATA2016 import dataSamples_17Jul2018 as allDatas
 else:
     if year == 2018:
-        from CMGTools.RootTools.samples.samples_13TeV_RunIIAutumn18NanoAODv4 import samples as mcSamples_
+        from CMGTools.RootTools.samples.samples_13TeV_2018_TopNanoAODv6 import samples as mcSamples_
         from CMGTools.RootTools.samples.samples_13TeV_DATA2018_NanoAOD import dataSamples_25Oct2019 as allData
     elif year == 2017:
-        from CMGTools.RootTools.samples.samples_13TeV_RunIIFall17NanoAODv4 import samples as mcSamples_
+        from CMGTools.RootTools.samples.samples_13TeV_2017_TopNanoAODv6 import samples as mcSamples_
         from CMGTools.RootTools.samples.samples_13TeV_DATA2017_NanoAOD import dataSamples_25Oct2019 as allData
     elif year == 2016:
-        from CMGTools.RootTools.samples.samples_13TeV_RunIISummer16NanoAODv4 import samples as mcSamples_
+        from CMGTools.RootTools.samples.samples_13TeV_2016_TopNanoAODv6 import samples as mcSamples_
         from CMGTools.RootTools.samples.samples_13TeV_DATA2016_NanoAOD import dataSamples_25Oct2019 as allData
-'''
 mcSamples_=[]
 allData=[]
-autoAAA(mcSamples_+allData, quiet=not(getHeppyOption("verboseAAA",False)), redirectorAAA="xrootd-cms.infn.it") # must be done before mergeExtensions
+autoAAA(mcSamples_+allData, quiet=not(getHeppyOption("verboseAAA",False)), redirectorAAA="xrootd-cms.infn.it",node='T2_ES_IFCA') # must be done before mergeExtensions
 mcSamples_, _ = mergeExtensions(mcSamples_)
 
 # Triggers
@@ -201,6 +200,7 @@ process.skim1El = cms.EDFilter("PATElectronRefSelector",
 )
 process.nanoAOD_step.insert(0, process.skim1El)
 """)
+
 if analysis == "main":
     cropToLumi(byCompName(selectedComponents,["^(?!.*(TTH|TTW|TTZ)).*"]),1000.)
     cropToLumi(byCompName(selectedComponents,["T_","TBar_"]),100.)
