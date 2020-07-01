@@ -341,7 +341,7 @@ ZZTo2L2Nu = kreator.makeMyPrivateMCComponent("ZZTo2L2Nu", "/ZZTo2L2Nu_13TeV_powh
 #ZZTo2L2Q = kreator.makeMyPrivateMCComponent("ZZTo2L2Q", "/ZZTo2L2Q_13TeV_amcatnloFXFX_madspin_pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6-v1/NANOAODSIM", "PRIVATE", ".*root",'phys03',  3.28, fracNegWeights=0.18, useAAA=True)
 ZZTo2Q2Nu = kreator.makeMyPrivateMCComponent("ZZTo2Q2Nu", "/ZZTo2Q2Nu_13TeV_amcatnloFXFX_madspin_pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03',  4.04, fracNegWeights=0.19, useAAA=True)
 ZZTo4L = kreator.makeMyPrivateMCComponent("ZZTo4L", "/ZZTo4L_13TeV_powheg_pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 1.256, useAAA=True)
-
+WWDoubleTo2L = kreator.makeMCComponent("WWDoubleTo2L", "/WWTo2L2Nu_DoubleScattering_13TeV-pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "CMS", ".*root", 0.1729)
 
 #WZJToLLLNu =  kreator.makeMyPrivateMCComponent("WZJToLLLNu"  , "/WZJToLLLNu_TuneCUETP8M1_13TeV-amcnlo-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6-v1/NANOAODSIM"  , "PRIVATE", ".*root",'phys03', 4.708 , useAAA=True)
 #WZTo1L3Nu   = kreator.makeMyPrivateMCComponent("WZTo1L3Nu"  , "/WZTo1L3Nu_13TeV_amcatnloFXFX_madspin_pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6-v1/NANOAODSIM"  , "PRIVATE", ".*root",'phys03', (47.13)*(3*0.108)*(0.2), fracNegWeights=0.22 , useAAA=True)
@@ -395,7 +395,7 @@ VVTo2L2Nu,
 #ZNuNuGJets_40130,
 #ZGTo2NuG,
 ZGTo2LG,
-#WWDoubleTo2L,
+WWDoubleTo2L,
 #WpWpJJ,
 WW,
 #WW_ext,
