@@ -359,7 +359,7 @@ TTXXs = [ TTTT, #TTWH, TTZH,
 # cross section from https://twiki.cern.ch/twiki/bin/view/CMS/SummaryTable1G25ns#Diboson
 WW = kreator.makeMyPrivateMCComponent("WW", "/WW_TuneCP5_13TeV-pythia8/balvarez-TopNanoAODv6-1-1_2018-0d1d4920f08f56d048ece029b873a2cc/USER",  "PRIVATE", ".*root", 'phys03', 63.21 * 1.82, useAAA=True)
 WZ = kreator.makeMyPrivateMCComponent("WZ", "/WZ_TuneCP5_13TeV-pythia8/balvarez-TopNanoAODv6-1-1_2018-0d1d4920f08f56d048ece029b873a2cc/USER",  "PRIVATE", ".*root", 'phys03', 47.13, useAAA=True)
-ZZ = kreator.makeMyPrivateMCComponent("ZZ", "/ZZ_TuneCP5_13TeV-pythia8/balvarez-TopNanoAODv6-1-1_2018-0d1d4920f08f56d048ece029b873a2cc/USER,  "PRIVATE", ".*root", 'phys03', 16.523, useAAA=True)
+ZZ = kreator.makeMyPrivateMCComponent("ZZ", "/ZZ_TuneCP5_13TeV-pythia8/balvarez-TopNanoAODv6-1-1_2018-0d1d4920f08f56d048ece029b873a2cc/USER",  "PRIVATE", ".*root", 'phys03', 16.523, useAAA=True)
 
 WWTo2L2Nu = kreator.makeMyPrivateMCComponent("WWTo2L2Nu", "/WWTo2L2Nu_NNPDF31_TuneCP5_13TeV-powheg-pythia8/balvarez-TopNanoAODv6-1-1_2018-0d1d4920f08f56d048ece029b873a2cc/USER",  "PRIVATE", ".*root", 'phys03', 10.481 , useAAA=True)
 WWToLNuQQ = kreator.makeMyPrivateMCComponent("WWToLNuQQ", "/WWToLNuQQ_NNPDF31_TuneCP5_13TeV-powheg-pythia8/balvarez-TopNanoAODv6-1-1_2018-0d1d4920f08f56d048ece029b873a2cc/USER",  "PRIVATE", ".*root", 'phys03', 43.53 , useAAA=True)
