@@ -32,8 +32,7 @@ else:
         from CMGTools.RootTools.samples.samples_13TeV_DATA2017_NanoAOD import dataSamples_25Oct2019 as allData
     elif year == 2016:
         from CMGTools.RootTools.samples.samples_13TeV_2016_TopNanoAODv6 import samples as mcSamples_
-        from CMGTools.RootTools.samples.samples_13TeV_DATA2016_NanoAOD import dataSamples_25Oct2019 as allData
-mcSamples_=[]
+        #from CMGTools.RootTools.samples.samples_13TeV_DATA2016_NanoAOD import dataSamples_25Oct2019 as allData
 allData=[]
 autoAAA(mcSamples_+allData, quiet=not(getHeppyOption("verboseAAA",False)), redirectorAAA="xrootd-cms.infn.it",node='T2_ES_IFCA') # must be done before mergeExtensions
 mcSamples_, _ = mergeExtensions(mcSamples_)
@@ -54,20 +53,21 @@ DatasetsAndTriggers = []
 if analysis == "main":
     mcSamples = byCompName(mcSamples_, ["%s(|_PS)$"%dset for dset in [
         # single boson
-        "WJetsToLNu_LO", "DYJetsToLL_M10to50_LO", "DYJetsToLL_M50",
+        "WJetsToLNu_LO_ext","WJetsToLNu_LO", "DYJetsToLL_M10to50_LO", "DYJetsToLL_M50",
         # ttbar + single top + tW
-        "TTJets_SingleLeptonFromT", "TTJets_SingleLeptonFromTbar", "TTJets_DiLepton",
+        'TT_pow',
+        #"TTJets_SingleLeptonFromT", "TTJets_SingleLeptonFromTbar", "TTJets_DiLepton",
         "T_sch_lep", "T_tch", "TBar_tch", "T_tWch_noFullyHad", "TBar_tWch_noFullyHad",
         # conversions
-        "TTGJets", "TGJets_lep", "WGToLNuG", "ZGTo2LG",
+        "TTGJets", "TGJets_lep", "WGToLNuG", "ZGTo2LG",'TTGJets_ext'
         # ttV
-        "TTWToLNu_fxfx", "TTZToLLNuNu_amc", "TTZToLLNuNu_m1to10",
+        "TTWToLNu_fxfx", "TTZToLLNuNu_amc", "TTZToLLNuNu_m1to10",'TTWToLNu', 'TTZToLLNuNu',
         # ttH + tHq/tHW
-        "TTHnobb_fxfx", "THQ_ctcvcp", "THW_ctcvcp", "TTH_ctcvcp",
+        "TTHnobb_fxfx", "THQ_ctcvcp", "THW_ctcvcp", "TTH_ctcvcp",'TTH_pow',
         # top + V rare processes
-        "TZQToLL", "tWll", "TTTT", "TTWW",
+        "TZQToLL", "tWll", "TTTT", "TTWW",'tZq_ll_1','tZq_ll_2','TTWW_LO'
         # diboson + DPS + WWss
-        "WWTo2L2Nu", "WZTo3LNu_pow", "WZTo3LNu_fxfx", "ZZTo4L", "WW_DPS", "WWTo2L2Nu_DPS", "WpWpJJ",
+        "WWTo2L2Nu", "WZTo3LNu_pow", "WZTo3LNu_fxfx", "ZZTo4L", "WW_DPS", "WWTo2L2Nu_DPS", "WpWpJJ",'TTTT_P8M2T4'
         # triboson
         "WWW", "WWW_ll", "WWZ", "WZG", "WZZ", "ZZZ",
         # other Higgs processes
