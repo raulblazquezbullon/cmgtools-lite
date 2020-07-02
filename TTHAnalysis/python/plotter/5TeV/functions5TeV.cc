@@ -1,12 +1,17 @@
-#include "TMath.h"
-#include <assert.h>
+#include <cmath>
+#include <map>
 #include <iostream>
-#include "TH2F.h"
+#include "Math/GenVector/LorentzVector.h"
+#include "Math/GenVector/PtEtaPhiM4D.h"
+#include "Math/GenVector/PxPyPzM4D.h"
+#include "Math/GenVector/Boost.h"
+#include "TLorentzVector.h"
+#include "TH2Poly.h"
+#include "TGraphAsymmErrors.h"
 #include "TH1F.h"
 #include "TFile.h"
+#include "PhysicsTools/Heppy/interface/Davismt2.h"
 #include "TSystem.h"
-#include "TLorentzVector.h"
-#include "TGraphAsymmErrors.h"
 
 ////  JET - NBJETs
 int nJB(int nJ, float nBJ) {
@@ -78,5 +83,55 @@ Bool_t passPtCuts(Float_t pt1, Int_t pdgId1, Float_t pt2, Int_t pdgId2, Float_t 
   return false;
 }
 
+float mll_2(float pt1, float eta1, float phi1, float m1, float pt2, float eta2, float phi2, float m2) {
+    typedef ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double> > PtEtaPhiMVector;
+    PtEtaPhiMVector p41(pt1,eta1,phi1,m1);
+    PtEtaPhiMVector p42(pt2,eta2,phi2,m2);
+    return (p41+p42).M();
+}
+
+
+Bool_t hasOSSF3lGEN(Int_t pdg1, Int_t pdg2, Int_t pdg3){
+  return ((abs(pdg1)==abs(pdg2) && pdg1*pdg2<0) || (abs(pdg1)==abs(pdg3) && pdg1*pdg3<0) || (abs(pdg3)==abs(pdg2) && pdg3*pdg2<0) ); 
+}
+
+float mZ3l_Gen(float pt1, float eta1, float phi1, float mass1, int pdg1, float pt2, float eta2, float phi2, float mass2, int pdg2, float pt3, float eta3, float phi3, float mass3, int pdg3) {
+  
+  float mZ(9999.),mll(9999.); 
+  if (abs(pdg1)==abs(pdg2) && pdg1*pdg2<0)  mZ  = mll_2(pt1,eta1,phi1,mass1,pt2,eta2,phi2,mass2);
+  if (abs(pdg1)==abs(pdg3) && pdg1*pdg3<0)  mll = mll_2(pt1,eta1,phi1,mass1,pt3,eta3,phi3,mass3);
+  if (abs(mZ-91.2) > abs(mll-91.2)) mZ = mll;  // mll(1,3) is closer to mZ
+  if (abs(pdg2)==abs(pdg3) && pdg2*pdg3<0)  mll = mll_2(pt2,eta2,phi2,mass2,pt3,eta3,phi3,mass3);
+  if (abs(mZ-91.2) > abs(mll-91.2)) mZ = mll;  // mll(2,3) is closer to mZ
+  std::cout << mZ << std::endl;  
+  return mZ;
+}
+
+int lWpt_Gen(float pt1, float eta1, float phi1, float mass1, int pdg1, float pt2, float eta2, float phi2, float mass2, int pdg2, float pt3, float eta3, float phi3, float mass3, int pdg3) {
+
+  float mZ(9999.),mll(9999.),ptlW(0.),ptl(0.);
+  if (abs(pdg1)==abs(pdg2) && pdg1*pdg2<0) {
+    mZ   = mll_2(pt1,eta1,phi1,mass1,pt2,eta2,phi2,mass2);
+    ptlW = pt3;
+  }
+  if (abs(pdg1)==abs(pdg3) && pdg1*pdg3<0)  {
+    mll = mll_2(pt1,eta1,phi1,mass1,pt3,eta3,phi3,mass3);
+    ptl = pt2;
+  }
+  if (abs(mZ-91.2) > abs(mll-91.2)) {
+    mZ   = mll;  // mll(1,3) is closer to mZ
+    ptlW = ptl; 
+  }
+  if (abs(pdg2)==abs(pdg3) && pdg2*pdg3<0)  { 
+    mll = mll_2(pt2,eta2,phi2,mass2,pt3,eta3,phi3,mass3);
+    ptl = pt1; 
+  }
+  if (abs(mZ-91.2) > abs(mll-91.2)) {
+    mZ   = mll;  // mll(2,3) is closer to mZ
+    ptlW = ptl; 
+  }
+  
+  return ptlW;
+}
 
 void functions5TeV() {}

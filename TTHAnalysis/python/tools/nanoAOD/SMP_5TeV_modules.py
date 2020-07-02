@@ -39,8 +39,9 @@ from CMGTools.TTHAnalysis.tools.nanoAOD.xsecTagger import xsecTag
 from CMGTools.TTHAnalysis.tools.nanoAOD.lepJetBTagAdder import lepJetBTagCSV, lepJetBTagDeepCSV, lepJetBTagDeepFlav, lepJetBTagDeepFlavC
 from PhysicsTools.NanoAODTools.postprocessing.modules.common.puWeightProducer import puWeight_2017G, puAutoWeight_2017G
 from PhysicsTools.NanoAODTools.postprocessing.modules.common.PrefireCorr import prefCorr_2017G
+from PhysicsTools.NanoAODTools.postprocessing.modules.common.muonScaleResProducer import muonScaleRes2017G
 
-WZ5TeV_sequence_step1 = [lepSkim, lepMerge, yearTag, xsecTag, lepJetBTagCSV, lepJetBTagDeepCSV, lepJetBTagDeepFlav, lepMasses]
+WZ5TeV_sequence_step1 = [lepSkim, lepMerge, yearTag, xsecTag, lepJetBTagCSV, lepJetBTagDeepCSV, lepJetBTagDeepFlav, lepMasses, puWeight_2017G, prefCorr_2017G, muonScaleRes2017G]
 
 ##add weights
 
@@ -105,56 +106,61 @@ recleaner_step2_mc = lambda : fastCombinedObjectRecleaner(label="Recl", inlabel=
                                                           jetPtsFwd=[25,60], # second number for 2.7 < abseta < 3, the first for the rest
                                                           btagL_thr=99, # they are set at runtime 
                                                           btagM_thr=99,
+                                                          jetBTag='btagDeepB',
                                                           isMC = True,
                                                           variations=['jesTotal'] + ["jer"]                                                       
 )
 
 recleaner_step2_data = lambda : fastCombinedObjectRecleaner(label="Recl", inlabel="_InternalRecl",
-                                         cleanTausWithLooseLeptons=False,
-                                         cleanJetsWithFOTaus=False,
-                                         doVetoZ=False, doVetoLMf=False, doVetoLMt=False,
-                                         jetPts=[25,40],
-                                         jetPtsFwd=[25,60], # second number for 2.7 < abseta < 3, the first for the rest
-                                         btagL_thr=-99., # they are set at runtime  
-                                         btagM_thr=-99., # they are set at runtime  
-                                         isMC = False,
-                                         variations = []
+                                                            cleanTausWithLooseLeptons=False,
+                                                            cleanJetsWithFOTaus=False,
+                                                            doVetoZ=False, doVetoLMf=False, doVetoLMt=False,
+                                                            jetPts=[25,40],
+                                                            jetPtsFwd=[25,60], # second number for 2.7 < abseta < 3, the first for the rest
+                                                            btagL_thr=-99., # they are set at runtime  
+                                                            btagM_thr=-99., # they are set at runtime  
+                                                            jetBTag='btagDeepB',
+                                                            isMC = False,
+                                                            variations = []
 )
 
 
-recleaner_step1_tight = lambda : CombinedObjectTaggerForCleaning("InternalReclT",
+recleaner_step1_tight = lambda : CombinedObjectTaggerForCleaning("InternalRecl",
                                                            looseLeptonSel = lambda lep : lep.miniPFRelIso_all < 0.4 and lep.sip3d < 8 and (abs(lep.pdgId)!=11 or lep.lostHits<=1) and (abs(lep.pdgId)!=13 or lep.looseId),
                                                            cleaningLeptonSel = tight_selection_5TeV,
-                                                           FOLeptonSel = clean_and_FO_selection_5TeV,
+                                                           FOLeptonSel = tight_selection_5TeV,
                                                            tightLeptonSel = tight_selection_5TeV,
                                                            FOTauSel = lambda tau : False,
                                                            tightTauSel = lambda tau : False,
                                                            selectJet = lambda jet: jet.jetId > 0 and abs(jet.eta)<2.4  # pt and eta cuts are (hard)coded in the step2 
+                                                                 
 )
 
-recleaner_step2_tight_mc = lambda : fastCombinedObjectRecleaner(label="ReclT", inlabel="_InternalReclT",
-                                                          cleanTausWithLooseLeptons=False,
-                                                          cleanJetsWithFOTaus=False,
-                                                          doVetoZ=False, doVetoLMf=False, doVetoLMt=False,
-                                                          jetPts=[25,40],
-                                                          jetPtsFwd=[25,60], # second number for 2.7 < abseta < 3, the first for the rest
-                                                          btagL_thr=99, # they are set at runtime 
-                                                          btagM_thr=99,
-                                                          isMC = True,
-                                                          variations=['jesTotal'] + ["jer"]                                                       
+recleaner_step2_tight_mc = lambda : fastCombinedObjectRecleaner(label="Recl", inlabel="_InternalRecl",
+                                                                cleanTausWithLooseLeptons=False,
+                                                                cleanJetsWithFOTaus=False,
+                                                                doVetoZ=False, doVetoLMf=False, doVetoLMt=False,
+                                                                jetPts=[25,40],
+                                                                jetPtsFwd=[25,60], # second number for 2.7 < abseta < 3, the first for the rest
+                                                                btagL_thr=99, # they are set at runtime 
+                                                                btagM_thr=99,
+                                                                jetBTag='btagDeepB',
+                                                                isMC = True,
+                                                                variations=['jesTotal'] + ["jer"]                                                       
 )
 
-recleaner_step2_tight_data = lambda : fastCombinedObjectRecleaner(label="ReclT", inlabel="_InternalReclT",
-                                         cleanTausWithLooseLeptons=False,
-                                         cleanJetsWithFOTaus=False,
-                                         doVetoZ=False, doVetoLMf=False, doVetoLMt=False,
-                                         jetPts=[25,40],
-                                         jetPtsFwd=[25,60], # second number for 2.7 < abseta < 3, the first for the rest
-                                         btagL_thr=-99., # they are set at runtime  
-                                         btagM_thr=-99., # they are set at runtime  
-                                         isMC = False,
-                                         variations = []
-)
+recleaner_step2_tight_data = lambda : fastCombinedObjectRecleaner(label="Recl", inlabel="_InternalRecl",
+                                                                  cleanTausWithLooseLeptons=False,
+                                                                  cleanJetsWithFOTaus=False,
+                                                                  doVetoZ=False, doVetoLMf=False, doVetoLMt=False,
+                                                                  jetPts=[25,40],
+                                                                  jetPtsFwd=[25,60], # second number for 2.7 < abseta < 3, the first for the rest
+                                                                  btagL_thr=-99., # they are set at runtime  
+                                                                  btagM_thr=-99., # they are set at runtime
+                                                                  jetBTag='btagDeepB',  
+                                                                  isMC = False,
+                                                                  variations = []
+                                                              )
 
 
 
@@ -428,7 +434,7 @@ bTagSFs_allvars = lambda : BtagSFs("JetSel_Recl",
                                    corrs=jecGroups,
                        )
 
-from CMGTools.TTHAnalysis.tools.nanoAOD.lepScaleFactors import lepScaleFactors
+from CMGTools.TTHAnalysis.tools.nanoAOD.lepScaleFactors_5TeV import lepScaleFactors
 leptonSFs = lambda : lepScaleFactors()
 
 scaleFactorSequence_2016 = [btagSF2016_dj,bTagSFs] 

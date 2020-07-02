@@ -15,11 +15,11 @@ TT_scales_6  : TT_PS :  xsec : (LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0)*
 TT_scales_7  : TT_PS :  xsec : (LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0)*LHEScaleWeight[7]; genSumWeightName="LHEScaleSumw[7]/LHEScaleSumw[4]*genEventSumw", 
 TT_scales_8  : TT_PS :  xsec : (LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0)*LHEScaleWeight[8]; genSumWeightName="LHEScaleSumw[8]/LHEScaleSumw[4]*genEventSumw", 
 
-####
-TT_hdamp_up  	: TT_hdampUp	    : 68.9 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; 
-TT_hdamp_down  	: TT_hdampDown	    : 68.9 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; 
-TT_TuneCP5_down : TT_TuneCP5Down    : 68.9 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; 
-TT_TuneCP5_up  	: TT_TuneCP5up	    : 68.9 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; 
+#####
+#TT_hdamp_up  	: TT_hdampUp	    : 68.9 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; 
+#TT_hdamp_down  	: TT_hdampDown	    : 68.9 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; 
+#TT_TuneCP5_down : TT_TuneCP5Down    : 68.9 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; 
+#TT_TuneCP5_up  	: TT_TuneCP5up	    : 68.9 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; 
 
 ## pdf uncertainties:
 TT_pdf_0  : TT_PS  : xsec : LHEPdfWeight[0] *(LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0) ; genSumWeightName="LHEPdfSumw[0]/LHEScaleSumw[4]*genEventSumw",  
