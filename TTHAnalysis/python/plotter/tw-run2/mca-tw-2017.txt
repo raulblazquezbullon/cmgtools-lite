@@ -1,7 +1,0 @@
-incl_tw      : + ; IncludeMca="tw-run2/mca-tw-includes/mca-2017-tw.txt"
-incl_ttbar   : + ; IncludeMca="tw-run2/mca-tw-includes/mca-2017-ttbar.txt"
-incl_dy      : + ; IncludeMca="tw-run2/mca-tw-includes/mca-2017-dy.txt"
-incl_vvttv   : + ; IncludeMca="tw-run2/mca-tw-includes/mca-2017-vvttv.txt"
-incl_nonworz : + ; IncludeMca="tw-run2/mca-tw-includes/mca-2017-nonworz.txt"
-
-incl_data    : + ; IncludeMca="tw-run2/mca-tw-includes/mca-2017-data.txt"
