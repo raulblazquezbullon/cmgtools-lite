@@ -149,6 +149,9 @@ IDDict["jets"] = {
     "ptmin"   : 15,
     "ptfwdnoise" : 60,
     "eta"     : 2.4,
+    "etafwd"  : 5.0,
+    "etafwdnoise0" : 2.7,
+    "etafwdnoise1" : 3.0,
     "jetid_2016" : 0,  # > X
     #"jetid_2016" : 1,  # > X Lo del stop
     "jetid_2017" : 1,  # > X
@@ -169,10 +172,17 @@ elecID = lambda l : ( (abs(l.eta) < IDDict["elecs"]["eta2"] and (abs(l.eta) < ID
                        #and ((abs(l.dxy) < IDDict["elecs"]["dxy_b"] and abs(l.dz) < IDDict["elecs"]["dz_b"]) if (abs(l.deltaEtaSC - l.eta) <= IDDict["elecs"]["etasc_be"]) ### COMO IGUAL ES
                        #else (abs(l.dxy) < IDDict["elecs"]["dxy_e"] and abs(l.dz) < IDDict["elecs"]["dz_e"])) )
 
-partmuonID = lambda l : ( abs(l.eta) < IDDict["muons"]["eta"] and l.pt > IDDict["muons"]["pt"])
-partelecID = lambda l : ( (abs(l.eta) < IDDict["elecs"]["eta2"] and (abs(l.eta) < IDDict["elecs"]["eta0"] or abs(l.eta) > IDDict["elecs"]["eta1"]) ) and l.pt > IDDict["elecs"]["pt"] )
 
-# TODO: IMPLEMENTAR ID DE OBJETOS A NIVEL DE PARTICULA
+dresslepID         = lambda l : ( (abs(l.eta) < IDDict["muons"]["eta"] and l.pt > IDDict["muons"]["pt"]) if (abs(l.pdgId) == 13) else
+                                  (abs(l.eta) < IDDict["elecs"]["eta2"] and (abs(l.eta) < IDDict["elecs"]["eta0"] or abs(l.eta) > IDDict["elecs"]["eta1"])
+                                   and l.pt > IDDict["elecs"]["pt"]) if (abs(l.pdgId) == 11) )
+dressjetID         = lambda j : ( abs(j.eta) < 2.4 and j.pt > IDDict["jets"]["pt"] )
+dressloosejetID    = lambda j : ( abs(j.eta) < 2.4 and j.pt > IDDict["jets"]["pt2"] and j.pt < IDDict["jets"]["pt"] )
+dressfwdjetID      = lambda j : ( abs(j.eta) >= 2.4 and abs(j.eta) < 5.0 and
+                                  ( ((abs(j.eta) < 2.7 or abs(j.eta) >= 3.0) and j.pt > IDDict["jets"]["pt"]) or
+                                    ((abs(j.eta) >= 2.7 or abs(j.eta) < 3.0) and j.pt > IDDict["jets"]["ptfwdnoise"]) ) )
+dressfwdloosejetID = lambda j : ( abs(j.eta) >= 2.4 and abs(j.eta) < 5.0 and (abs(j.eta) < 2.7 or abs(j.eta) >= 3.0) and j.pt > IDDict["jets"]["pt2"] )
+
 
 
 from PhysicsTools.NanoAODTools.postprocessing.modules.common.collectionMerger import collectionMerger
@@ -386,7 +396,14 @@ addYearTag_2018_muoneg     = [addYear_2018, addMuonEG]
 from CMGTools.TTHAnalysis.tools.addRochester import addRochester
 addRoch = lambda : addRochester()
 
-lepMerge_roch = [lepMerge, addRoch]
+from CMGTools.TTHAnalysis.tools.nanoAOD.selectParticleAndPartonInfo import selectParticleAndPartonInfo
+theDressAndPartInfo = lambda : selectParticleAndPartonInfo(dresslepSel_         = lambda l: dresslepID,
+                                                           dressjetSel_         = lambda j: dressjetID,
+                                                           dressloosejetSel_    = lambda j: dressloosejetID,
+                                                           dressfwdjetSel_      = lambda j: dressfwdjetID,
+                                                           dressfwdloosejetSel_ = lambda j: dressfwdloosejetID)
+
+lepMerge_roch = [lepMerge, addRoch, theDressAndPartInfo]
 
 
 #### BDT
@@ -397,9 +414,14 @@ mvas = [SergioBDT]
 
 varstrigger = [eventVars] + triggerSeq
 
-sfSeq_2016 = [leptrigSFs, btagWeights_2016]
-sfSeq_2017 = [leptrigSFs, btagWeights_2017]
-sfSeq_2018 = [leptrigSFs, btagWeights_2018]
+
+from CMGTools.TTHAnalysis.tools.nanoAOD.TopPtWeight import TopPtWeight
+
+addTopPtWeight = lambda : TopPtWeight()
+
+sfSeq_2016 = [leptrigSFs, btagWeights_2016, addTopPtWeight]
+sfSeq_2017 = [leptrigSFs, btagWeights_2017, addTopPtWeight]
+sfSeq_2018 = [leptrigSFs, btagWeights_2018, addTopPtWeight]
 
 
 # %%%%%%%%%%%%%%%%%%%%%%%%%% WWbb
