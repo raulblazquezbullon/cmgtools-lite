@@ -56,6 +56,60 @@ def _isNullHistogram(h):
         return (h.GetN() == 0)
     return False
 
+
+def buildVariationsFromAlternativesWithEnvelope(uncfile, ret):
+    for var in uncfile.uncertainty():
+        if var.unc_type != 'altSampleEnv': continue # now only adding the alternative samples
+
+        hasBeenApplied = False
+        toremove = []
+        for k, p in ret.iteritems():
+            if not var.procmatch().match(k): continue
+
+            if hasBeenApplied:
+                raise RuntimeError("FATAL: variation %s is being applied to at least two processes"%var.name)
+
+            if not isinstance(var.args[0], list):
+                raise RuntimeError("FATAL: the argument given for the envelope uncertainty calculation with alternative samples for the variation {var} is not a list of samples.".format(var = var.name))
+
+            if len(var.args) != 2:
+                raise RuntimeError("FATAL: more arguments than two provided for the envelope uncertainty calculation with alternative samples for the variation {var}.".format(var = var.name))
+
+            up   = _cloneNoDir( p.central, var.name + 'Up' )
+            down = _cloneNoDir( p.central, var.name + 'Down' )
+
+            for ibin in range(1, p.central.GetNbinsX() + 1):
+                maxUp = p.central.GetBinContent( ibin )
+                minDn = p.central.GetBinContent( ibin )
+                for samp in var.args[0]:
+                    cont = ret[samp].raw().GetBinContent(ibin)
+                    if (cont - maxUp > 0): maxUp = cont
+                    if (cont - minDn < 0): minDn = cont
+                    up.SetBinContent( ibin, maxUp )
+                    down.SetBinContent( ibin, minDn )
+
+            if var.args[1].lower() == "symm":
+                for ibin in range(1, p.central.GetNbinsX() + 1):
+                    if   up.GetBinContent(ibin) == p.central.GetBinContent(ibin):
+                        up.SetBinContent(ibin, 2 * p.central.GetBinContent(ibin) - dn.GetBinContent(ibin))
+                    elif dn.GetBinContent(ibin) == p.central.GetBinContent(ibin):
+                        dn.SetBinContent(ibin, 2 * p.central.GetBinContent(ibin) - up.GetBinContent(ibin))
+                    else:
+                        tmpvar = (up.GetBinContent(ibin) + dn.GetBinContent(ibin)) / 2
+                        up.SetBinContent(ibin, p.central.GetBinContent(ibin) + tmpvar)
+                        dn.SetBinContent(ibin, p.central.GetBinContent(ibin) - tmpvar)
+
+            p.addVariation(var.name, 'up'  , up)
+            p.addVariation(var.name, 'down', down)
+
+            toremove.extend( [el for el in var.args[0]])
+            hasBeenApplied = True
+
+        for rem in toremove:
+            if rem in ret: ret.pop(rem)
+
+
+
 class RooFitContext:
     def __init__(self,workspace):
         self.workspace = workspace
