@@ -4,10 +4,11 @@ from CMGTools.TTHAnalysis.treeReAnalyzer import Collection as CMGCollection
 from CMGTools.TTHAnalysis.tools.nanoAOD.friendVariableProducerTools import declareOutput, writeOutput
 
 class addDataTag(Module):
-    def __init__(self, tag, label = "datatag"):
+    def __init__(self, tag, label = "datatag", isTop = False):
         self.label    = label
         self.tag      = tag
-        self.branches = [(self.label, "I")]
+        self.isTop    = isTop
+        self.branches = [(self.label, "I"), ("isTop", "I")]
         return
 
 
@@ -32,5 +33,6 @@ class addDataTag(Module):
 
     # Common processing
     def run(self, event, Collection):
-        allret = {self.label : self.tag}
+        allret = {self.label : self.tag,
+                  "isTop"    : int(self.isTop)}
         return allret
