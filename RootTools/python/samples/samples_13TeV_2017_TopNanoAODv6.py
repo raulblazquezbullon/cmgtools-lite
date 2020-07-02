@@ -124,9 +124,9 @@ QCD_Pt120to170_EMEnriched = kreator.makeMyPrivateMCComponent("QCD_Pt120to170_EME
 QCD_Pt300toInf_EMEnriched = kreator.makeMyPrivateMCComponent("QCD_Pt300toInf_EMEnriched","/QCD_Pt-300toInf_EMEnriched_TuneCP5_13TeV_pythia8/piedavid-TopNanoAODv6-1-1_2017-a11761155c05d04d6fed5a2401fa93e8/USER", "PRIVATE", ".*root", 'phys03',  1101, useAAA=True)
 
 QCD_EMs = [
-    QCD_Pt15to20_EMEnriched,
+    #QCD_Pt15to20_EMEnriched,
     QCD_Pt20to30_EMEnriched,
-    QCD_Pt30to50_EMEnriched,
+    #QCD_Pt30to50_EMEnriched,
     QCD_Pt50to80_EMEnriched,
     QCD_Pt80to120_EMEnriched,
     QCD_Pt120to170_EMEnriched,
@@ -238,7 +238,7 @@ DYNJetsToLL = [
 #DYJetsToLL_M4to50_HT70to100       = kreator.makeMyPrivateMCComponent("DYJetsToLL_M4to50_HT70to100",      "/DYJetsToLL_M-4to50_HT-70to100_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/balvarez-TopNanoAODv6-1-1_2018-0d1d4920f08f56d048ece029b873a2cc/USER /DYJetsToLL_M-4to50_HT-70to100_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1/MINIAODSIM",        "PRIVATE", ".*root", 'phys03', 145.4, useAAA=True)
 #DYJetsToLL_M4to50_HT70to100_ext1  = kreator.makeMyPrivateMCComponent("DYJetsToLL_M4to50_HT70to100_ext1", "/DYJetsToLL_M-4to50_HT-70to100_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIFall17MiniAOD-94X_mc2017_realistic_v10_ext1-v1/MINIAODSIM",   "PRIVATE", ".*root", 'phys03', 145.4, useAAA=True)
 DYJetsToLL_M4to50_HT100to200      = kreator.makeMyPrivateMCComponent("DYJetsToLL_M4to50_HT100to200",      "/DYJetsToLL_M-4to50_HT-100to200_TuneCP5_13TeV-madgraphMLM-pythia8/piedavid-TopNanoAODv6-1-1_2017-a11761155c05d04d6fed5a2401fa93e8/USER",      "PRIVATE", ".*root", 'phys03', 202.8, useAAA=True)
-DYJetsToLL_M4to50_HT100to200_ext1 = kreator.makeMyPrivateMCComponent("DYJetsToLL_M4to50_HT100to200_ext1", "/DYJetsToLL_M-4to50_HT-100to200_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIFall17NanoAODv4-PU2017_12Apr2018_Nano14Dec2018_102X_mc2017_realistic_v6_ext1-v1/NANOAODSIM", "PRIVATE", ".*root", 'phys03', 202.8, useAAA=True)
+#DYJetsToLL_M4to50_HT100to200_ext1 = kreator.makeMyPrivateMCComponent("DYJetsToLL_M4to50_HT100to200_ext1", "/DYJetsToLL_M-4to50_HT-100to200_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIFall17NanoAODv4-PU2017_12Apr2018_Nano14Dec2018_102X_mc2017_realistic_v6_ext1-v1/NANOAODSIM", "PRIVATE", ".*root", 'phys03', 202.8, useAAA=True)
 DYJetsToLL_M4to50_HT200to400      = kreator.makeMyPrivateMCComponent("DYJetsToLL_M4to50_HT200to400",      "/DYJetsToLL_M-4to50_HT-200to400_TuneCP5_13TeV-madgraphMLM-pythia8/piedavid-TopNanoAODv6-1-1_2017-a11761155c05d04d6fed5a2401fa93e8/USER",      "PRIVATE", ".*root", 'phys03', 53.7, useAAA=True)
 #DYJetsToLL_M4to50_HT200to400_ext1 = kreator.makeMyPrivateMCComponent("DYJetsToLL_M4to50_HT200to400_ext1", "/DYJetsToLL_M-4to50_HT-200to400_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIFall17NanoAODv4-PU2017_12Apr2018_Nano14Dec2018_102X_mc2017_realistic_v6_ext1-v1/NANOAODSIM", "PRIVATE", ".*root", 'phys03', 53.7, useAAA=True)
 DYJetsToLL_M4to50_HT400to600      = kreator.makeMyPrivateMCComponent("DYJetsToLL_M4to50_HT400to600",      "/DYJetsToLL_M-4to50_HT-400to600_TuneCP5_13TeV-madgraphMLM-pythia8/piedavid-TopNanoAODv6-1-1_2017-a11761155c05d04d6fed5a2401fa93e8/USER",      "PRIVATE", ".*root", 'phys03', 5.66, useAAA=True)
@@ -276,7 +276,7 @@ DYJetsToLLM50HT = [
     #DYJetsToLL_M50_HT2500toInf,
 ]
 
-DYs = DYJets + DYNJetsToLL + DYJetsToLLM4to50HT + DYJetsToLLM50HT
+DYs = DYJets +  DYJetsToLLM4to50HT + DYJetsToLLM50HT# DYNJetsToLL +
 
 
 # VJetsQQ HT-binned: new samples (_qc19). Cross sections form genXSAnalyzer (on the corresponding 2018 miniAOD)
@@ -383,14 +383,15 @@ TTXs = [ TTGJets, #TTGJets_ext,
          TTZ_LO, #TTZ_LO_ext1, TTZToLLNuNu_m1to10, 
          TZQToLL, tWll, THQ, THW,
          #TTH_pow, TTHnobb_fxfx, 
-         TTHnobb_pow,# TTHtautau_pow,  ]
+         TTHnobb_pow]# TTHtautau_pow,  ]
 
 # ====== TT + DIBOSON, 4-top =====
 
 #TTTT = kreator.makeMyPrivateMCComponent("TTTT", "/TTTT_TuneCP5_13TeV-amcatnlo-pythia8/RunIIFall17NanoAODv4-PU2017_12Apr2018_Nano14Dec2018_102X_mc2017_realistic_v6-v1/NANOAODSIM", "PRIVATE", ".*root", 'phys03', 0.009103, fracNegWeights=0.311, useAAA=True)
 #TTWH = kreator.makeMyPrivateMCComponent("TTWH", "/TTWH_TuneCP5_13TeV-madgraph-pythia8/RunIIFall17NanoAODv4-PU2017_12Apr2018_Nano14Dec2018_new_pmx_102X_mc2017_realistic_v6-v1/NANOAODSIM", "PRIVATE", ".*root", 'phys03', 0.00114, useAAA=True)
 #TTZH = kreator.makeMyPrivateMCComponent("TTZH", "/TTZH_TuneCP5_13TeV-madgraph-pythia8/RunIIFall17NanoAODv4-PU2017_12Apr2018_Nano14Dec2018_new_pmx_102X_mc2017_realistic_v6-v1/NANOAODSIM", "PRIVATE", ".*root", 'phys03', 0.001138, useAAA=True)
-TTWW = kreator.makeMyPrivateMCComponent("TTWW", "/TTWW_TuneCP5_13TeV-madgraph-pythia8/piedavid-TopNanoAODv6-1-1_2017-a11761155c05d04d6fed5a2401fa93e8/USER", "PRIVATE", ".*root", 'phys03', 0.011500, useAAA=True) # NLO xsec from YR4
+TTWW = kreator.makeMyPrivateMCComponent("TTWW", "/TTWW_TuneCP5_13TeV-madgraph-pythia8/piedavid-TopNanoAODv6-1-1_2017-a11761155c05d04d6fed5a2401fa93e8/USER", "PRIVATE", ".*root", 'phys03', 0.011500, useAAA=True)
+# NLO xsec from YR4
 #TTHH = kreator.makeMyPrivateMCComponent("TTHH", "/TTHH_TuneCP5_13TeV-madgraph-pythia8/RunIIFall17NanoAODv4-PU2017_12Apr2018_Nano14Dec2018_new_pmx_102X_mc2017_realistic_v6-v1/NANOAODSIM", "PRIVATE", ".*root", 'phys03', 0.0006666, useAAA=True)
 
 #TTTJ = kreator.makeMyPrivateMCComponent("TTTJ", "/TTTJ_TuneCP5_13TeV-madgraph-pythia8/RunIIFall17NanoAODv4-PU2017_12Apr2018_Nano14Dec2018_new_pmx_102X_mc2017_realistic_v6-v1/NANOAODSIM", "PRIVATE", ".*root", 'phys03', 0.0003987, useAAA=True)
@@ -398,7 +399,7 @@ TTWW = kreator.makeMyPrivateMCComponent("TTWW", "/TTWW_TuneCP5_13TeV-madgraph-py
 
 TTXXs = [ #TTTT, TTWH, TTZH, 
      TTWW,# TTHH, TTTJ, TTTW ]
-
+]
 # ===  DI-BOSONS
 
 # cross section from https://twiki.cern.ch/twiki/bin/view/CMS/SummaryTable1G25ns#Diboson
@@ -472,7 +473,7 @@ GGHZZ4L,
 # ----------------------------- summary ----------------------------------------
 
 
-mcSamples = QCDPtFlat + QCDPt + QCDHT + QCD_Mus + QCD_EMs + QCD_bcToE + Ws + DYs + VJetsQQHT + TTs + Ts + TTXs + TTXXs + DiBosons + TriBosons + Higgs
+mcSamples =    QCD_Mus + QCD_EMs + Ws + DYs + VJetsQQHT + TTs + Ts + TTXs + TTXXs + DiBosons + TriBosons + Higgs # QCDPtFlat +QCDPt QCDHT +   + QCD_bcToE
 
 
 samples = mcSamples

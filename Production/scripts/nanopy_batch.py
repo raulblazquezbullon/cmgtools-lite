@@ -34,6 +34,24 @@ if [ $? -ne 0 ]; then
 else
    echo 'job directory copy succeeded'
 fi"""
+
+   elif runningMode == 'OVD':
+       init = """
+pushd $CMSSW_BASE/src
+echo '==== copying job dir to worker ===='
+eval $(scram runtime -sh)
+popd
+echo
+mkdir cache
+export TMPDIR=/tmp/sscruz/`shuf -zer -n20  {A..Z} {a..z} {0..9}`/
+mkdir job
+cd job
+echo '==== copying job dir to worker ===='
+cp ../* . 
+"""
+       dirCopy = """
+mv Loop/* ../.
+"""
       
    else: # shared filesystem
        init = """
@@ -145,7 +163,7 @@ class MyBatchManager( BatchManager ):
        scriptFile = open(scriptFileName,'w')
        storeDir = self.remoteOutputDir_.replace('/castor/cern.ch/cms','')
        self.mode = self.RunningMode(options.batch)
-       if self.mode in ('LXPLUS-LSF', 'LXPLUS-CONDOR-SIMPLE', 'LXPLUS-CONDOR-TRANSFER','IFCA'):
+       if self.mode in ('LXPLUS-LSF', 'LXPLUS-CONDOR-SIMPLE', 'LXPLUS-CONDOR-TRANSFER','IFCA','OVD'):
            scriptFile.write( batchScriptCERN( self.mode, jobDir, storeDir ) )
        else: raise RuntimeError("Unsupported mode %s" % self.mode)
        scriptFile.close()
