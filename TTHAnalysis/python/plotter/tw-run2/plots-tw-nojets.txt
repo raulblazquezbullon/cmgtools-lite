@@ -11,31 +11,35 @@ nfwdjets  : nFwdJetSel30_Recl           : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5] ; Inclu
 nfwdloosejets  : nFwdJetSel20_Recl      : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5] ; IncludeUnderflow=False, XTitle='N(forward loose jet)', XNDiv=5, xBinLabels="2\,3\,4\,#geq 5"
 
 
-jet1_pt   : Jet_pt[iJetSel30_Recl[0]]   : 18,20,200                              ; IncludeUnderflow=False, XTitle="Jet p_{T} (GeV)"
-jet1_eta  : Jet_eta[iJetSel30_Recl[0]]  : 15,-2.4,2.4                            ; IncludeUnderflow=False, XTitle="Jet #eta"
-jet1_m    : Jet_mass[iJetSel30_Recl[0]] : 12,0,60                                ; IncludeUnderflow=False, XTitle="Jet mass (GeV)"
-jet1_e    : Jet1_E                      : 23,20,250                              ; IncludeUnderflow=False, XTitle="Jet energy (GeV)"
+jet1_pt   : Jet_pt[iJetSel30_Recl[0]]   : 18,20,200        ; IncludeUnderflow=False, XTitle="Leading jet p_{T} (GeV)"
+jet1_eta  : Jet_eta[iJetSel30_Recl[0]]  : 15,-2.4,2.4      ; IncludeUnderflow=False, XTitle="Leading jet #eta"
+jet1_m    : Jet_mass[iJetSel30_Recl[0]] : 12,0,60          ; IncludeUnderflow=False, XTitle="Leading jet mass (GeV)"
+jet1_e    : Jet1_E                      : 23,20,250        ; IncludeUnderflow=False, XTitle="Leading jet energy (GeV)"
+jet1_btag : Jet_btagDeepFlavB[iJetSel30_Recl[0]] : 20,0,1  ; IncludeUnderflow=False, XTitle="Leading jet DeepFlavour b-tagging discr. (adim.)"
 
-jet2_pt   : Jet_pt[iJetSel30_Recl[1]]   : 14,10,150                              ; IncludeUnderflow=False, XTitle="Subleading jet p_{T} (GeV)"
-jet2_eta  : Jet_eta[iJetSel30_Recl[1]]  : 15,-2.4,2.4                            ; IncludeUnderflow=False, XTitle="Subleading jet #eta"
-jet2_m    : Jet_mass[iJetSel30_Recl[1]] : 12,0,60                                ; IncludeUnderflow=False, XTitle="Subleading jet mass (GeV)"
+jet2_pt   : Jet_pt[iJetSel30_Recl[1]]   : 14,10,150        ; IncludeUnderflow=False, XTitle="Subleading jet p_{T} (GeV)"
+jet2_eta  : Jet_eta[iJetSel30_Recl[1]]  : 15,-2.4,2.4      ; IncludeUnderflow=False, XTitle="Subleading jet #eta"
+jet2_m    : Jet_mass[iJetSel30_Recl[1]] : 12,0,60          ; IncludeUnderflow=False, XTitle="Subleading jet mass (GeV)"
+jet2_btag : Jet_btagDeepFlavB[iJetSel30_Recl[1]] : 20,0,1  ; IncludeUnderflow=False, XTitle="Subleading jet DeepFlavour b-tagging discr. (adim.)"
 
-jetfwd1_pt   : Jet_pt[iFwdJetSel30_Recl[0]]  : 13,20,150                              ; IncludeUnderflow=False, XTitle="Leading forward jet p_{T} (GeV)"
-jetfwd1_eta  : Jet_eta[iFwdJetSel30_Recl[0]] : 15,-5.0,5.0                            ; IncludeUnderflow=False, XTitle="Leading forward jet #eta"
+jetfwd1_pt   : Jet_pt[iFwdJetSel30_Recl[0]]  : 13,20,150   ; IncludeUnderflow=False, XTitle="Leading forward jet p_{T} (GeV)"
+jetfwd1_eta  : Jet_eta[iFwdJetSel30_Recl[0]] : 15,-5.0,5.0 ; IncludeUnderflow=False, XTitle="Leading forward jet #eta"
 
-jetfwd2_pt   : Jet_pt[iFwdJetSel30_Recl[1]]  : 13,20,150                              ; IncludeUnderflow=False, XTitle="Subleading forward jet p_{T} (GeV)"
-jetfwd2_eta  : Jet_eta[iFwdJetSel30_Recl[1]] : 15,-5.0,5.0                            ; IncludeUnderflow=False, XTitle="Subleading forward jet #eta"
-
-
-lep1_pt   : LepGood_pt_corrAll[0]  : 14,10,150                              ; IncludeUnderflow=False, XTitle="Leading lepton p_{T} (GeV)"
-lep1_eta  : LepGood_eta[0]         : 15,-2.4,2.4                            ; IncludeUnderflow=False, XTitle="Leading lepton #eta"
-
-lep2_pt   : LepGood_pt_corrAll[1]  : 14,10,150                              ; IncludeUnderflow=False, XTitle="Subleading lepton p_{T} (GeV)"
-lep2_eta  : LepGood_eta[1]         : 15,-2.4,2.4                            ; IncludeUnderflow=False, XTitle="Subleading lepton #eta"
+jetfwd2_pt   : Jet_pt[iFwdJetSel30_Recl[1]]  : 13,20,150   ; IncludeUnderflow=False, XTitle="Subleading forward jet p_{T} (GeV)"
+jetfwd2_eta  : Jet_eta[iFwdJetSel30_Recl[1]] : 15,-5.0,5.0 ; IncludeUnderflow=False, XTitle="Subleading forward jet #eta"
 
 
-met       : METgood_pt            : 30,0,300                               ; IncludeUnderflow=False, XTitle="p_{T}^{miss} (GeV)"
-met_phi   : METgood_phi           : 40,-3.14,3.14                          ; IncludeUnderflow=False, XTitle="#phi^{miss} (rad)"
+lep1_pt   : LepGood_pt_corrAll[0]  : 14,10,150             ; IncludeUnderflow=False, XTitle="Leading lepton p_{T} (GeV)"
+lep1_eta  : LepGood_eta[0]         : 15,-2.4,2.4           ; IncludeUnderflow=False, XTitle="Leading lepton #eta"
+
+lep2_pt   : LepGood_pt_corrAll[1]  : 14,10,150             ; IncludeUnderflow=False, XTitle="Subleading lepton p_{T} (GeV)"
+lep2_eta  : LepGood_eta[1]         : 15,-2.4,2.4           ; IncludeUnderflow=False, XTitle="Subleading lepton #eta"
+
+
+met       : METgood_pt            : 30,0,300               ; IncludeUnderflow=False, XTitle="p_{T}^{miss} (GeV)"
+met_phi   : METgood_phi           : 40,-3.14,3.14          ; IncludeUnderflow=False, XTitle="#phi^{miss} (rad)"
+puppimet     : PuppiMET_pt         : 30,0,300              ; IncludeUnderflow=False, XTitle="p_{T}^{miss}_{puppi} (GeV)"
+puppimet_phi : PuppiMET_phi        : 40,-3.14,3.14         ; IncludeUnderflow=False, XTitle="#phi^{miss}_{puppi} (rad)"
 
 
 lep1lep2_dphi : Lep1Lep2_DPhi      : 10,0,1   ; IncludeUnderflow=False, XTitle="#Delta#it{#varphi}(#it{e}^{#pm}\, #it{#mu}^{#mp})/#it{#pi} (adim.)"
