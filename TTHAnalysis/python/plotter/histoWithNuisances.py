@@ -109,6 +109,23 @@ def buildVariationsFromAlternativesWithEnvelope(uncfile, ret):
             if rem in ret: ret.pop(rem)
 
 
+def buildVariationsFromAlternative( uncfile, ret):
+    for var in uncfile.uncertainty():
+        if var.unc_type != 'altSample': continue # now only adding the alternative samples
+        hasBeenApplied=False
+        toremove=[]
+        for k,p in ret.iteritems(): 
+            if not var.procmatch().match(k): continue
+            if hasBeenApplied:
+                raise RuntimeError("variation %s is being applied to at least two processes"%var.name)
+            if var.args[0] not in ret or var.args[1] not in ret:
+                raise RuntimeError("Alternative sample (%s,%s) has not been processed, available samples are %s"%(var.args[0], var.args[1], ','.join(k for k in ret)))
+            p.addVariation( var.name, 'up'  , ret[var.args[0]].raw())
+            p.addVariation( var.name, 'down', ret[var.args[1]].raw())
+            toremove.extend( [var.args[0], var.args[1]])
+            hasBeenApplied=True
+        for rem in toremove: 
+            if rem in ret: ret.pop(rem)
 
 class RooFitContext:
     def __init__(self,workspace):
@@ -697,6 +714,23 @@ class HistoWithNuisances:
                         if cont-minDn < 0: minDn = cont
                     up.SetBinContent( ibin, maxUp ) 
                     down.SetBinContent( ibin, minDn ) 
+            del self.variations[var]
+            self.addVariation( var, 'up', up)
+            self.addVariation( var, 'down', down)
+
+    def buildEnvelopesRMS(self):
+        for var in self.getVariationList():
+            if len( self.getVariation(var) ) < 30: continue #this is probably wrong here, but should prevent for computing this for nothing else but PDF....
+            up   = _cloneNoDir( self.central, self.central.GetName() + 'envUp' )
+            down = _cloneNoDir( self.central, self.central.GetName() + 'envDown' )
+            for x in range(1, self.central.GetNbinsX()+1):
+                for y in range(1,self.central.GetNbinsY()+1):
+                    ibin  = self.central.GetBin(x,y)
+                    delta   = 0
+                    for hvar in self.getVariation(var):
+                        delta = delta+hvar.GetBinContent(ibin)*hvar.GetBinContent(ibin)
+                    up.SetBinContent( ibin, sqrt(delta)) 
+                    down.SetBinContent( ibin, sqrt(delta)) 
             del self.variations[var]
             self.addVariation( var, 'up', up)
             self.addVariation( var, 'down', down)

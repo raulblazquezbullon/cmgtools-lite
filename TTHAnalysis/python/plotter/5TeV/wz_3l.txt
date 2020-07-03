@@ -1,6 +1,7 @@
 alwaystrue: 1
 trilep: nLepFO==3
 cleanup: minMllAFAS > 12
+exclusive: nLepTight<=3
 OSSF3l:  hasOSSF3l
 trigger: Trigger_5TeV_1e || Trigger_5TeV_1m || Trigger_5TeV_2e || Trigger_5TeV_2m
 ptcuts: passPtCuts(LepGood1_pt,LepGood1_pdgId,LepGood2_pt,LepGood2_pdgId,LepGood3_pt,LepGood3_pdgId)
@@ -8,6 +9,12 @@ Zmass: abs(mZ_3l-91.2) < 30
 TT: LepGoodW_isLepTight && LepGoodZ1_isLepTight
 m3l: m3l > 100 
 lWpt20: lWpt > 20
+
+###  
+TTT: LepGoodW_isLepTight && LepGoodZ1_isLepTight && LepGoodZ2_isLepTight; Disable=True
+TLL: LepGoodW_isLepTight ; Disable=True
+TML: LepGoodW_isLepTight && (LepGoodZ1_miniPFRelIso_all<0.1 || LepGoodZ2_miniPFRelIso_all<0.1); Disable=True
+TTLnT: LepGoodW_isLepTight && LepGoodZ1_isLepTight && !LepGoodZ2_isLepTight; Disable=True
 
 ###########   
 cr_mTlW30: mTlW < 30; Disable=True
