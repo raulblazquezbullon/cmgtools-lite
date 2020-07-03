@@ -8,8 +8,6 @@ from PhysicsTools.NanoAODTools.postprocessing.framework.eventloop import Module
 from PhysicsTools.NanoAODTools.postprocessing.framework.datamodel import Collection as NanoAODCollection 
 from PhysicsTools.NanoAODTools.postprocessing.tools import deltaR,deltaPhi
 
-from PhysicsTools.Heppy.physicsobjects.Jet import _btagWPs
-
 from CMGTools.TTHAnalysis.treeReAnalyzer import Collection as CMGCollection
 from CMGTools.TTHAnalysis.tools.nanoAOD.friendVariableProducerTools import declareOutput, writeOutput
 from CMGTools.TTHAnalysis.tools.nanoAOD.TopRun2_modules import ch, tags
@@ -17,43 +15,42 @@ from CMGTools.TTHAnalysis.tools.nanoAOD.TopRun2_modules import ch, tags
 
 class EventVars_tWRun2(Module):
     def __init__(self, label = "", recllabel = 'Recl', doSystJEC = True, variations = []):
-        self.jecbranches = []
+        self.jecbranches = ["Lep1Lep2Jet1MET_Pz",
+                            "Lep1Lep2Jet1MET_Pt",
+                            "Lep1Lep2Jet1MET_M",
+                            "Lep1Lep2Jet1MET_Mt",
+                            "Lep1Lep2Jet1_Pt",
+                            "Lep1Lep2Jet1_M",
+                            "Lep1Lep2Jet1_E",
+                            "Lep1Jet1_Pt",
+                            "Lep1Jet1_M",
+                            "Lep2Jet1_Pt",
+                            "Lep2Jet1_M",
+                            "Jet1_E",
+                            "Jet1_Pt",
+                            "Jet2_Pt",
+                            "JetLoose1_Pt",
+
+                            "Lep1Jet1_DR",
+                            "Lep12Jet12_DR",
+                            "Lep12Jet12MET_DR",
+                            "Lep1Lep2Jet1_C",
+                            "HTtot",
+
+                            "minimax",
+                            "Lep1Jet2_M",
+                            "Lep2Jet2_M",
+
+                            "METgood_pt",
+                            "METgood_phi",]
 
         self.otherbranches = [("isSS", "I"),
                               #("isSS", "O"),
                               #("channel", "B"),
                               ("channel", "I"),
-                              "METgood_pt",
-                              "METgood_phi",
                               "Lep1Lep2_Pt",
                               "Lep1Lep2_DPhi",
                               "Mll",
-
-                              "Lep1Lep2Jet1MET_Pz",
-                              "Lep1Lep2Jet1MET_Pt",
-                              "Lep1Lep2Jet1MET_M",
-                              "Lep1Lep2Jet1MET_Mt",
-                              "Lep1Lep2Jet1_Pt",
-                              "Lep1Lep2Jet1_M",
-                              "Lep1Lep2Jet1_E",
-                              "Lep1Jet1_Pt",
-                              "Lep1Jet1_M",
-                              "Lep2Jet1_Pt",
-                              "Lep2Jet1_M",
-                              "Jet1_E",
-                              "Jet1_Pt",
-                              "Jet2_Pt",
-                              "JetLoose1_Pt",
-
-                              "Lep1Jet1_DR",
-                              "Lep12Jet12_DR",
-                              "Lep12Jet12MET_DR",
-                              "Lep1Lep2Jet1_C",
-                              "HTtot",
-
-                              "minimax",
-                              "Lep1Jet2_M",
-                              "Lep2Jet2_M",
                              ]
 
         self.label    = "" if (label in ["", None]) else ("_" + label)
@@ -100,22 +97,6 @@ class EventVars_tWRun2(Module):
     def run(self, event, Collection):
         allret = {}
 
-        allret["METgood_pt"]  = -99
-        allret["METgood_phi"] = -99
-        if event.datatag != tags.mc:
-            allret["METgood_pt"]  = event.MET_pt
-            allret["METgood_phi"] = event.MET_phi
-        elif event.datatag != tags.NoTag:
-            if event.year == 2017:
-                allret["METgood_pt"]  = event.METFixEE2017_pt_nom
-                allret["METgood_phi"] = event.METFixEE2017_phi
-            else:
-                allret["METgood_pt"]  = event.MET_pt_nom
-                allret["METgood_phi"] = event.MET_phi_nom
-
-        met_4m = r.TLorentzVector()
-        met_4m.SetPtEtaPhiM(allret["METgood_pt"], 0, allret["METgood_phi"], 0)
-
         # ============================ Variables not susceptible to JEC
         leps    = [l for l in Collection(event, "LepGood")]
         leps_4m = [l.p4() for l in leps]
@@ -140,9 +121,9 @@ class EventVars_tWRun2(Module):
             #jets    = [all_jets[event.iJetSel30_Recl[j]] for j in xrange(event.nJetSel30_Recl)]
 
         #### NOVO
-        jets    = [all_jets[event.iJetSel30_Recl[j]] for j in xrange(min([event.nJetSel30_Recl, 5]))]
+        #jets    = [all_jets[event.iJetSel30_Recl[j]] for j in xrange(min([event.nJetSel30_Recl, 5]))]
 
-        jets_4m = [j.p4() for j in jets]
+        #jets_4m = [j.p4() for j in jets]
 
         if len(leps) != event.nLepGood: wr.warn("WARNING: different collection size from nLepGood!!!!!!!")
 
@@ -191,35 +172,61 @@ class EventVars_tWRun2(Module):
             allret["Lep1Lep2_DPhi"] = abs(deltaPhi(leps[0], leps[1]))/r.TMath.Pi()
             allret["Mll"]           = (leps_4m[0] + leps_4m[1]).M()
 
-            # ============================ Variables susceptible to JEC (except MET)
-            if event.nJetSel20_Recl > 0:
-                allret["JetLoose1_Pt"]       = all_jets[event.iJetSel20_Recl[0]].p4().Pt()
+
+            # ============================ Variables susceptible to JEC
+            met_4m = r.TLorentzVector()
+            for var in self.systsJEC:
+                allret["METgood_pt" + self.systsJEC[var]]  = -99
+                allret["METgood_phi" + self.systsJEC[var]] = -99
+                if event.datatag != tags.mc:
+                    allret["METgood_pt"  + self.systsJEC[var]] = event.MET_pt
+                    allret["METgood_phi" + self.systsJEC[var]] = event.MET_phi
+                elif event.datatag != tags.NoTag:
+                    if event.year == 2017:
+                        allret["METgood_pt"  + self.systsJEC[var]] = getattr(event, 'METFixEE2017_pt{v}'.format( v = self.systsJEC[var] if self.systsJEC[var] != "" else "_nom"))
+                        allret["METgood_phi" + self.systsJEC[var]] = getattr(event, 'METFixEE2017_phi{v}'.format(v = self.systsJEC[var] if self.systsJEC[var] != "" else "_nom"))
+                    else:
+                        allret["METgood_pt"  + self.systsJEC[var]] = getattr(event, 'MET_pt{v}'.format( v = self.systsJEC[var] if self.systsJEC[var] != "" else "_nom"))
+                        allret["METgood_phi" + self.systsJEC[var]] = getattr(event, 'MET_phi{v}'.format(v = self.systsJEC[var] if self.systsJEC[var] != "" else "_nom"))
+
+                met_4m.SetPtEtaPhiM(allret["METgood_pt" + self.systsJEC[var]], 0, allret["METgood_phi" + self.systsJEC[var]], 0)
+
+                jets    = [all_jets[getattr(event, 'iJetSel30{v}_Recl'.format(v = self.systsJEC[var]))[j]]
+                           for j in xrange(min([getattr(event, 'nJetSel30{v}_Recl'.format(v = self.systsJEC[var])), 5]))]
+                jets_4m = [j.p4() for j in jets]
 
 
-            if event.nJetSel30_Recl > 0:
-                allret["Lep1Lep2Jet1MET_Pz"] = (leps_4m[0] + leps_4m[1] + jets_4m[0] + met_4m).Pz()
-                allret["Lep1Lep2Jet1MET_Pt"] = (leps_4m[0] + leps_4m[1] + jets_4m[0] + met_4m).Pt()
-                allret["Lep1Lep2Jet1MET_M"]  = (leps_4m[0] + leps_4m[1] + jets_4m[0] + met_4m).M()
-                allret["Lep1Lep2Jet1MET_Mt"] = (leps_4m[0] + leps_4m[1] + jets_4m[0] + met_4m).Mt()
-                allret["Lep1Lep2Jet1_Pt"]    = (leps_4m[0] + leps_4m[1] + jets_4m[0]).Pt()
-                allret["Lep1Lep2Jet1_M"]     = (leps_4m[0] + leps_4m[1] + jets_4m[0]).M()
-                allret["Lep1Lep2Jet1_E"]     = (leps_4m[0] + leps_4m[1] + jets_4m[0]).E()
-                allret["Lep1Jet1_Pt"]        = (leps_4m[0] + jets_4m[0]).Pt()
-                allret["Lep1Jet1_M"]         = (leps_4m[0] + jets_4m[0]).M()
-                allret["Lep2Jet1_Pt"]        = (leps_4m[1] + jets_4m[0]).Pt()
-                allret["Lep2Jet1_M"]         = (leps_4m[1] + jets_4m[0]).M()
-                allret["Jet1_Pt"]            = jets_4m[0].Pt()
-                allret["Jet1_E"]             = jets_4m[0].E()
-                allret["Lep1Jet1_DR"]        = leps_4m[0].DeltaR(jets_4m[0])
-                allret["Lep1Lep2Jet1_C"]     = (leps_4m[0] + leps_4m[1] + jets_4m[0]).Et() / (leps_4m[0] + leps_4m[1] + jets_4m[0]).E()
-                allret["HTtot"]              = leps_4m[0].Pt() + leps_4m[1].Pt() + jets_4m[0].Pt() + met_4m.Pt()
-                if event.nJetSel30_Recl > 1:
-                    allret["Lep12Jet12_DR"]    = (leps_4m[0] + leps_4m[1]).DeltaR(jets_4m[0] + jets_4m[1])
-                    allret["Lep12Jet12MET_DR"] = (leps_4m[0] + leps_4m[1]).DeltaR(jets_4m[0] + jets_4m[1] + met_4m)
-                    allret["Lep1Jet2_M"]       = (leps_4m[0] + jets_4m[1]).M()
-                    allret["Lep2Jet2_M"]       = (leps_4m[1] + jets_4m[1]).M()
-                    allret["Jet2_Pt"]          = jets_4m[1].Pt()
-                    #### WARNING: this minimax variable is only equal to that of ATLAS' PRL when the signal region is njets == 2, nbjets == 2.
-                    allret["minimax"] = min([max([allret["Lep1Jet1_M"], allret["Lep2Jet2_M"]]), max(allret["Lep2Jet1_M"], allret["Lep1Jet2_M"])])
+                if getattr(event, 'nJetSel20{v}_Recl'.format(v = self.systsJEC[var])) > 0:
+                    allret["JetLoose1_Pt" + self.systsJEC[var]] = all_jets[event.iJetSel20_Recl[0]].p4().Pt()
+
+
+                if event.nJetSel30_Recl > 0:
+                    allret["Lep1Lep2Jet1MET_Pz" + self.systsJEC[var]] = (leps_4m[0] + leps_4m[1] + jets_4m[0] + met_4m).Pz()
+                    allret["Lep1Lep2Jet1MET_Pt" + self.systsJEC[var]] = (leps_4m[0] + leps_4m[1] + jets_4m[0] + met_4m).Pt()
+                    allret["Lep1Lep2Jet1MET_M" + self.systsJEC[var]]  = (leps_4m[0] + leps_4m[1] + jets_4m[0] + met_4m).M()
+                    allret["Lep1Lep2Jet1MET_Mt" + self.systsJEC[var]] = (leps_4m[0] + leps_4m[1] + jets_4m[0] + met_4m).Mt()
+                    allret["Lep1Lep2Jet1_Pt" + self.systsJEC[var]]    = (leps_4m[0] + leps_4m[1] + jets_4m[0]).Pt()
+                    allret["Lep1Lep2Jet1_M" + self.systsJEC[var]]     = (leps_4m[0] + leps_4m[1] + jets_4m[0]).M()
+                    allret["Lep1Lep2Jet1_E" + self.systsJEC[var]]     = (leps_4m[0] + leps_4m[1] + jets_4m[0]).E()
+                    allret["Lep1Jet1_Pt" + self.systsJEC[var]]        = (leps_4m[0] + jets_4m[0]).Pt()
+                    allret["Lep1Jet1_M" + self.systsJEC[var]]         = (leps_4m[0] + jets_4m[0]).M()
+                    allret["Lep2Jet1_Pt" + self.systsJEC[var]]        = (leps_4m[1] + jets_4m[0]).Pt()
+                    allret["Lep2Jet1_M" + self.systsJEC[var]]         = (leps_4m[1] + jets_4m[0]).M()
+                    allret["Jet1_Pt" + self.systsJEC[var]]            = jets_4m[0].Pt()
+                    allret["Jet1_E" + self.systsJEC[var]]             = jets_4m[0].E()
+                    allret["Lep1Jet1_DR" + self.systsJEC[var]]        = leps_4m[0].DeltaR(jets_4m[0])
+                    allret["Lep1Lep2Jet1_C" + self.systsJEC[var]]     = (leps_4m[0] + leps_4m[1] + jets_4m[0]).Et() / (leps_4m[0] + leps_4m[1] + jets_4m[0]).E()
+                    allret["HTtot" + self.systsJEC[var]]              = leps_4m[0].Pt() + leps_4m[1].Pt() + jets_4m[0].Pt() + met_4m.Pt()
+                    if event.nJetSel30_Recl > 1:
+                        allret["Lep12Jet12_DR" + self.systsJEC[var]]    = (leps_4m[0] + leps_4m[1]).DeltaR(jets_4m[0] + jets_4m[1])
+                        allret["Lep12Jet12MET_DR" + self.systsJEC[var]] = (leps_4m[0] + leps_4m[1]).DeltaR(jets_4m[0] + jets_4m[1] + met_4m)
+                        allret["Lep1Jet2_M" + self.systsJEC[var]]       = (leps_4m[0] + jets_4m[1]).M()
+                        allret["Lep2Jet2_M" + self.systsJEC[var]]       = (leps_4m[1] + jets_4m[1]).M()
+                        allret["Jet2_Pt" + self.systsJEC[var]]          = jets_4m[1].Pt()
+                        #### WARNING: this minimax variable is only equal to that of ATLAS' PRL when the signal region is njets == 2, nbjets == 2.
+                        allret["minimax" + self.systsJEC[var]] = min([max([allret["Lep1Jet1_M" + self.systsJEC[var]],
+                                                                           allret["Lep2Jet2_M" + self.systsJEC[var]]]),
+                                                                      max(allret["Lep2Jet1_M" + self.systsJEC[var]],
+                                                                          allret["Lep1Jet2_M" + self.systsJEC[var]])])
 
         return allret
