@@ -215,4 +215,4 @@ if __name__=="__main__":
             for y in ["2016", "2017", "2018", "run2"]:
                 GeneralExecutioner( (prod, y, nthreads, outpath, selplot, region, queue, extra, pretend, useFibre) )
         else:
-            GeneralExecutioner( (prod, y, nthreads, outpath, selplot, region, queue, extra, pretend, useFibre) )
+            GeneralExecutioner( (prod, year, nthreads, outpath, selplot, region, queue, extra, pretend, useFibre) )
