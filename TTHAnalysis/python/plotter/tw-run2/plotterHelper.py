@@ -42,7 +42,7 @@ def GeneralExecutioner(task):
             os.system("mkdir -p " + logpath.format(y = year, p = prod))
 
         for reg in region.split(","):
-            jobname_   = "CMGTplotter_{y}_{p}_{s}".format(y = year, p = prod, s = "all" if selplot == "" else selplot)
+            jobname_   = "CMGTplotter_{y}_{p}_{s}".format(y = year, p = prod, s = "all" if not len(selplot) else ".".join(selplot))
             submitcomm = slurmscaff.format(nth     = nthreads,
                                         queue   = queue,
                                         jobname = jobname_,
@@ -98,13 +98,13 @@ def PlottingCommand(prod, year, nthreads, outpath, selplot, region, extra, useFi
     cutsfile_  = "tw-run2/cuts-tw-{reg}.txt".format(reg = region)
     plotsfile_ = "tw-run2/plots-tw-{reg}.txt".format(reg = region)
 
-    samplespaths_ = "-P " + friendspath + "/" + prod
+    samplespaths_ = "-P " + friendspath + "/" + prod + ("/" + year) * (year != "run2")
     if useFibre: samplespaths_ = samplespaths_.replace("phedexrw", "phedex").replace("cienciasrw", "ciencias")
 
     nth_       = "" if nthreads == 0 else ("--split-factor=-1 -j " + str(nthreads))
     friends_   = friendsscaff
     outpath_   = outpath + "/" + year + "/" + region
-
+    selplot_   = " ".join( [ "--sP {p}".format(p = sp) for sp in selplot ] ) if len(selplot) else ""
 
     comm = commandscaff.format(outpath      = outpath_,
                                friends      = friends_,
@@ -112,7 +112,7 @@ def PlottingCommand(prod, year, nthreads, outpath, selplot, region, extra, useFi
                                lumi      = lumidict[int(year)] if year != "run2" else str(lumidict[2016]) + "," + str(lumidict[2017]) + "," + str(lumidict[2018]),
                                nth       = nth_,
                                year      = year if year != "run2" else "2016,2017,2018",
-                               selplot   = "" if selplot == "" else ("--sP " + selplot),
+                               selplot   = selplot_,
                                mcafile   = mcafile_,
                                cutsfile  = cutsfile_,
                                plotsfile = plotsfile_,
@@ -141,7 +141,7 @@ if __name__=="__main__":
     parser.add_argument('--queue',     '-q', metavar = 'queue',     dest = "queue",   required = False, default = "")
     parser.add_argument('--extraArgs', '-e', metavar = 'extra',     dest = "extra",   required = False, default = "")
     parser.add_argument('--nthreads',  '-j', metavar = 'nthreads',  dest = "nthreads",required = False, default = 0, type = int)
-    parser.add_argument('--select-plot','-sP',metavar = 'selplot',  dest = "selplot", required = False, default = "")
+    parser.add_argument('--select-plot','--sP',action = "append",   dest = "selplot", required = False, default = [])
     parser.add_argument('--pretend',   '-p', action = "store_true", dest = "pretend", required = False, default = False)
     parser.add_argument('--outpath',   '-o', metavar = 'outpath',   dest = "outpath", required = False, default = "./temp/varplots")
     parser.add_argument('--region',    '-r', metavar = 'region',    dest = "region",  required = False, default = "1j1t")
@@ -189,11 +189,11 @@ if __name__=="__main__":
     elif queue != "":
         print "> Plotting jobs will be sent to the cluster."
         if year == "all":
-            print "   - All three years will be plotted."
+            print "   - All three years and the combination will be plotted."
             cont = False
             if   pretend:
                 cont = True
-            elif confirm("Four jobs per requested region will be sent to queue {q} with {j} requested threads to plot in each year and in the combination {pls}. Do you want to continue?".format(q = queue, j = nthreads, pls = "all the plots" if selplot == "" else selplot)):
+            elif confirm("Four jobs per requested region will be sent to queue {q} with {j} requested threads to plot in each year and in the combination {pls}. Do you want to continue?".format(q = queue, j = nthreads, pls = "all the plots" if not len(selplot) else " and ".join(selplot))):
                 cont = True
 
             if cont:
@@ -203,11 +203,16 @@ if __name__=="__main__":
             cont = False
             if   pretend:
                 cont = True
-            elif confirm("One job per requested region will be sent to queue {q} with {j} requested threads to plot in year {y} {pls}. Do you want to continue?".format(q = queue, j = nthreads, y = year, pls = "all the plots" if selplot == "" else selplot)):
+            elif confirm("One job per requested region will be sent to queue {q} with {j} requested threads to plot in year {y} {pls}. Do you want to continue?".format(q = queue, j = nthreads, y = year, pls = "all the plots" if not len(selplot) else " and ".join(selplot))):
                 cont = True
 
             if cont:
                 GeneralExecutioner( (prod, year, nthreads, outpath, selplot, region, queue, extra, pretend, useFibre) )
     else:
         print "> Local execution chosen."
-        GeneralExecutioner( (prod, year, nthreads, outpath, selplot, region, queue, extra, pretend, useFibre) )
+        if year == "all":
+            print "   - All three years and the combination will be plotted."
+            for y in ["2016", "2017", "2018", "run2"]:
+                GeneralExecutioner( (prod, y, nthreads, outpath, selplot, region, queue, extra, pretend, useFibre) )
+        else:
+            GeneralExecutioner( (prod, y, nthreads, outpath, selplot, region, queue, extra, pretend, useFibre) )
