@@ -665,6 +665,23 @@ class HistoWithNuisances:
             self.addVariation( var, 'up', up)
             self.addVariation( var, 'down', down)
 
+    def buildEnvelopesRMS(self):
+        for var in self.getVariationList():
+            if len( self.getVariation(var) ) < 30: continue #this is probably wrong here, but should prevent for computing this for nothing else but PDF....
+            up   = _cloneNoDir( self.central, self.central.GetName() + 'envUp' )
+            down = _cloneNoDir( self.central, self.central.GetName() + 'envDown' )
+            for x in range(1, self.central.GetNbinsX()+1):
+                for y in range(1,self.central.GetNbinsY()+1):
+                    ibin  = self.central.GetBin(x,y)
+                    delta   = 0
+                    for hvar in self.getVariation(var):
+                        delta = delta+hvar.GetBinContent(ibin)*hvar.GetBinContent(ibin)
+                    up.SetBinContent( ibin, sqrt(delta)) 
+                    down.SetBinContent( ibin, sqrt(delta)) 
+            del self.variations[var]
+            self.addVariation( var, 'up', up)
+            self.addVariation( var, 'down', down)
+
 
     def _dropPdfAndNorm(self):
         if self._rooFit:

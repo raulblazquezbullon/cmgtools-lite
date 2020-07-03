@@ -1,0 +1,50 @@
+WZ	: WZTo3LNu   : xsec  ; FillColor=ROOT.kRed+1
+
+WZ_scales_0  : WZTo3LNu :  xsec : LHEScaleWeight[0]; genSumWeightName="LHEScaleSumw[0]/LHEScaleSumw[4]*genEventSumw", 
+WZ_scales_1  : WZTo3LNu :  xsec : LHEScaleWeight[1]; genSumWeightName="LHEScaleSumw[1]/LHEScaleSumw[4]*genEventSumw", 
+WZ_scales_2  : WZTo3LNu :  xsec : LHEScaleWeight[2]; genSumWeightName="LHEScaleSumw[2]/LHEScaleSumw[4]*genEventSumw", 
+WZ_scales_3  : WZTo3LNu :  xsec : LHEScaleWeight[3]; genSumWeightName="LHEScaleSumw[3]/LHEScaleSumw[4]*genEventSumw", 
+WZ_scales_5  : WZTo3LNu :  xsec : LHEScaleWeight[5]; genSumWeightName="LHEScaleSumw[5]/LHEScaleSumw[4]*genEventSumw", 
+WZ_scales_6  : WZTo3LNu :  xsec : LHEScaleWeight[6]; genSumWeightName="LHEScaleSumw[6]/LHEScaleSumw[4]*genEventSumw", 
+WZ_scales_7  : WZTo3LNu :  xsec : LHEScaleWeight[7]; genSumWeightName="LHEScaleSumw[7]/LHEScaleSumw[4]*genEventSumw", 
+WZ_scales_8  : WZTo3LNu :  xsec : LHEScaleWeight[8]; genSumWeightName="LHEScaleSumw[8]/LHEScaleSumw[4]*genEventSumw", 
+
+
+## pdf uncertainties:
+WZ_pdf_0  : WZTo3LNu  : xsec : LHEPdfWeight[0]  ; genSumWeightName="LHEPdfSumw[0]/LHEScaleSumw[4]*genEventSumw",  
+WZ_pdf_1  : WZTo3LNu  : xsec : LHEPdfWeight[1]  ; genSumWeightName="LHEPdfSumw[1]/LHEScaleSumw[4]*genEventSumw",  
+WZ_pdf_2  : WZTo3LNu  : xsec : LHEPdfWeight[2]  ; genSumWeightName="LHEPdfSumw[2]/LHEScaleSumw[4]*genEventSumw",  
+WZ_pdf_3  : WZTo3LNu  : xsec : LHEPdfWeight[3]  ; genSumWeightName="LHEPdfSumw[3]/LHEScaleSumw[4]*genEventSumw",  
+WZ_pdf_4  : WZTo3LNu  : xsec : LHEPdfWeight[4]  ; genSumWeightName="LHEPdfSumw[4]/LHEScaleSumw[4]*genEventSumw",  
+WZ_pdf_5  : WZTo3LNu  : xsec : LHEPdfWeight[5]  ; genSumWeightName="LHEPdfSumw[5]/LHEScaleSumw[4]*genEventSumw",  
+WZ_pdf_6  : WZTo3LNu  : xsec : LHEPdfWeight[6]  ; genSumWeightName="LHEPdfSumw[6]/LHEScaleSumw[4]*genEventSumw",  
+WZ_pdf_7  : WZTo3LNu  : xsec : LHEPdfWeight[7]  ; genSumWeightName="LHEPdfSumw[7]/LHEScaleSumw[4]*genEventSumw",  
+WZ_pdf_8  : WZTo3LNu  : xsec : LHEPdfWeight[8]  ; genSumWeightName="LHEPdfSumw[8]/LHEScaleSumw[4]*genEventSumw",  
+WZ_pdf_9  : WZTo3LNu  : xsec : LHEPdfWeight[9]  ; genSumWeightName="LHEPdfSumw[9]/LHEScaleSumw[4]*genEventSumw",  
+WZ_pdf_10 : WZTo3LNu  : xsec : LHEPdfWeight[10] ; genSumWeightName="LHEPdfSumw[10]/LHEScaleSumw[4]*genEventSumw",  
+WZ_pdf_11 : WZTo3LNu  : xsec : LHEPdfWeight[11] ; genSumWeightName="LHEPdfSumw[11]/LHEScaleSumw[4]*genEventSumw",  
+WZ_pdf_12 : WZTo3LNu  : xsec : LHEPdfWeight[12] ; genSumWeightName="LHEPdfSumw[12]/LHEScaleSumw[4]*genEventSumw",  
+WZ_pdf_13 : WZTo3LNu  : xsec : LHEPdfWeight[13] ; genSumWeightName="LHEPdfSumw[13]/LHEScaleSumw[4]*genEventSumw",  
+WZ_pdf_14 : WZTo3LNu  : xsec : LHEPdfWeight[14] ; genSumWeightName="LHEPdfSumw[14]/LHEScaleSumw[4]*genEventSumw",  
+WZ_pdf_15 : WZTo3LNu  : xsec : LHEPdfWeight[15] ; genSumWeightName="LHEPdfSumw[15]/LHEScaleSumw[4]*genEventSumw",  
+WZ_pdf_16 : WZTo3LNu  : xsec : LHEPdfWeight[16] ; genSumWeightName="LHEPdfSumw[16]/LHEScaleSumw[4]*genEventSumw",  
+WZ_pdf_17 : WZTo3LNu  : xsec : LHEPdfWeight[17] ; genSumWeightName="LHEPdfSumw[17]/LHEScaleSumw[4]*genEventSumw",  
+WZ_pdf_18 : WZTo3LNu  : xsec : LHEPdfWeight[18] ; genSumWeightName="LHEPdfSumw[18]/LHEScaleSumw[4]*genEventSumw",  
+WZ_pdf_19 : WZTo3LNu  : xsec : LHEPdfWeight[19] ; genSumWeightName="LHEPdfSumw[19]/LHEScaleSumw[4]*genEventSumw",  
+WZ_pdf_20 : WZTo3LNu  : xsec : LHEPdfWeight[20] ; genSumWeightName="LHEPdfSumw[20]/LHEScaleSumw[4]*genEventSumw",  
+WZ_pdf_21 : WZTo3LNu  : xsec : LHEPdfWeight[21] ; genSumWeightName="LHEPdfSumw[21]/LHEScaleSumw[4]*genEventSumw",  
+WZ_pdf_22 : WZTo3LNu  : xsec : LHEPdfWeight[22] ; genSumWeightName="LHEPdfSumw[22]/LHEScaleSumw[4]*genEventSumw",  
+WZ_pdf_23 : WZTo3LNu  : xsec : LHEPdfWeight[23] ; genSumWeightName="LHEPdfSumw[23]/LHEScaleSumw[4]*genEventSumw",  
+WZ_pdf_24 : WZTo3LNu  : xsec : LHEPdfWeight[24] ; genSumWeightName="LHEPdfSumw[24]/LHEScaleSumw[4]*genEventSumw",  
+WZ_pdf_25 : WZTo3LNu  : xsec : LHEPdfWeight[25] ; genSumWeightName="LHEPdfSumw[25]/LHEScaleSumw[4]*genEventSumw",  
+WZ_pdf_26 : WZTo3LNu  : xsec : LHEPdfWeight[26] ; genSumWeightName="LHEPdfSumw[26]/LHEScaleSumw[4]*genEventSumw",  
+WZ_pdf_27 : WZTo3LNu  : xsec : LHEPdfWeight[27] ; genSumWeightName="LHEPdfSumw[27]/LHEScaleSumw[4]*genEventSumw",  
+WZ_pdf_28 : WZTo3LNu  : xsec : LHEPdfWeight[28] ; genSumWeightName="LHEPdfSumw[28]/LHEScaleSumw[4]*genEventSumw",  
+WZ_pdf_29 : WZTo3LNu  : xsec : LHEPdfWeight[29] ; genSumWeightName="LHEPdfSumw[29]/LHEScaleSumw[4]*genEventSumw",  
+WZ_pdf_30 : WZTo3LNu  : xsec : LHEPdfWeight[30] ; genSumWeightName="LHEPdfSumw[30]/LHEScaleSumw[4]*genEventSumw",  
+
+### alphaS
+WZ_alphaS_down   : WZTo3LNu  : xsec : LHEPdfWeight[31] ; genSumWeightName="LHEPdfSumw[31]/LHEScaleSumw[4]*genEventSumw",  
+WZ_alphaS_up     : WZTo3LNu  : xsec : LHEPdfWeight[32] ; genSumWeightName="LHEPdfSumw[32]/LHEScaleSumw[4]*genEventSumw",  
+
+

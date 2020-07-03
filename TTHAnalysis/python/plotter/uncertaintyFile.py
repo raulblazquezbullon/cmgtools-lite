@@ -78,7 +78,6 @@ class Uncertainty:
                 raise RuntimeError("altSample requires exactly two arguments")
             if self.binmatchstr != ".*":
                 raise RuntimeError("altSample affects all bins by construction")
-
         elif self.unc_type=='none':
             pass
         else: raise RuntimeError, 'Uncertainty type "%s" not recognised' % self.unc_type
@@ -152,9 +151,9 @@ class Uncertainty:
     def year(self):
         return self._year
     def getFR(self,sign):
-        if self.unc_type == 'envelope':
+        if self.unc_type == 'envelope' or self.unc_type == 'envelopeRMS':
             FR = self.fakerate[int('%s'%(sign.replace('var','')))]
-        else:
+        else: 
             FR = self.fakerate[0 if sign=='up' else 1]
         if FR: FR.loadFiles()
         return FR

@@ -1,0 +1,27 @@
+alwaystrue: 1
+dilepGEN: nGenDressedLepton==3
+
+cleanup12GEN: mass_2(GenDressedLepton_pt[0],GenDressedLepton_eta[0],GenDressedLepton_phi[0],GenDressedLepton_mass[0],GenDressedLepton_pt[1],GenDressedLepton_eta[1],GenDressedLepton_phi[1],GenDressedLepton_mass[1]) > 12
+cleanup13GEN: mass_2(GenDressedLepton_pt[0],GenDressedLepton_eta[0],GenDressedLepton_phi[0],GenDressedLepton_mass[0],GenDressedLepton_pt[2],GenDressedLepton_eta[2],GenDressedLepton_phi[2],GenDressedLepton_mass[2]) > 12
+cleanup23GEN: mass_2(GenDressedLepton_pt[2],GenDressedLepton_eta[2],GenDressedLepton_phi[2],GenDressedLepton_mass[2],GenDressedLepton_pt[1],GenDressedLepton_eta[1],GenDressedLepton_phi[1],GenDressedLepton_mass[1]) > 12
+
+OSSF3lGEN: hasOSSF3lGEN(GenDressedLepton_pdgId[0],GenDressedLepton_pdgId[1],GenDressedLepton_pdgId[2])
+ptcutsGEN: passPtCuts(GenDressedLepton_pt[0],GenDressedLepton_pdgId[0],GenDressedLepton_pt[1],GenDressedLepton_pdgId[1],GenDressedLepton_pt[2],GenDressedLepton_pdgId[2])
+
+ZmassGEN: (if3((GenDressedLepton_pdgId[0]+GenDressedLepton_pdgId[1])==0,abs(mass_2(GenDressedLepton_pt[0],GenDressedLepton_eta[0],GenDressedLepton_phi[0],GenDressedLepton_mass[0],GenDressedLepton_pt[1],GenDressedLepton_eta[1],GenDressedLepton_phi[1],GenDressedLepton_mass[1])-91.2)<30,0) || if3((GenDressedLepton_pdgId[0]+GenDressedLepton_pdgId[2])==0,abs(mass_2(GenDressedLepton_pt[0],GenDressedLepton_eta[0],GenDressedLepton_phi[0],GenDressedLepton_mass[0],GenDressedLepton_pt[2],GenDressedLepton_eta[2],GenDressedLepton_phi[2],GenDressedLepton_mass[2])-91.2)<30,0) || if3((GenDressedLepton_pdgId[1]+GenDressedLepton_pdgId[2])==0,abs(mass_2(GenDressedLepton_pt[2],GenDressedLepton_eta[2],GenDressedLepton_phi[2],GenDressedLepton_mass[2],GenDressedLepton_pt[1],GenDressedLepton_eta[1],GenDressedLepton_phi[1],GenDressedLepton_mass[1])-91.2)<30,0))
+
+
+#massGEN:  abs(mZ3l_Gen(GenDressedLepton_pt[0],GenDressedLepton_eta[0],GenDressedLepton_phi[0],GenDressedLepton_pdgId[0],GenDressedLepton_mass[0],GenDressedLepton_pt[1],GenDressedLepton_eta[1],GenDressedLepton_phi[1],GenDressedLepton_mass[1],GenDressedLepton_pdgId[1],GenDressedLepton_pt[2],GenDressedLepton_eta[2],GenDressedLepton_phi[2],GenDressedLepton_mass[2],GenDressedLepton_pdgId[2])-91.2) < 30
+
+m3lGEN: mass_3_cheap(GenDressedLepton_pt[0],GenDressedLepton_eta[0],GenDressedLepton_pt[1],GenDressedLepton_eta[1],GenDressedLepton_phi[1],GenDressedLepton_pt[2],GenDressedLepton_eta[2],GenDressedLepton_phi[2]) > 100
+
+#lWpt20GEN: lWpt_Gen(GenDressedLepton_pt[0],GenDressedLepton_eta[0],GenDressedLepton_phi[0],GenDressedLepton_mass[0],GenDressedLepton_pdgId[0],GenDressedLepton_pt[1],GenDressedLepton_eta[1],GenDressedLepton_phi[1],GenDressedLepton_mass[1],GenDressedLepton_pdgId[1],GenDressedLepton_pt[2],GenDressedLepton_eta[2],GenDressedLepton_phi[2],GenDressedLepton_mass[2],GenDressedLepton_pdgId[2]) > 20
+
+lWpt20GEN: (if3((GenDressedLepton_pdgId[0]+GenDressedLepton_pdgId[1])==0,GenDressedLepton_pt[2]>20,0) || if3((GenDressedLepton_pdgId[0]+GenDressedLepton_pdgId[2])==0,GenDressedLepton_pt[1]>20,0) || if3((GenDressedLepton_pdgId[2]+GenDressedLepton_pdgId[1])==0,GenDressedLepton_pt[0]>20,0) )
+
+
+##### channels
+eee : (abs(GenDressedLepton_pdgId[0]) + abs(GenDressedLepton_pdgId[1]) + abs(GenDressedLepton_pdgId[2])) == 33 ; Disable=True
+eem : (abs(GenDressedLepton_pdgId[0]) + abs(GenDressedLepton_pdgId[1]) + abs(GenDressedLepton_pdgId[2])) == 35 ; Disable=True
+emm : (abs(GenDressedLepton_pdgId[0]) + abs(GenDressedLepton_pdgId[1]) + abs(GenDressedLepton_pdgId[2])) == 37 ; Disable=True
+mmm : (abs(GenDressedLepton_pdgId[0]) + abs(GenDressedLepton_pdgId[1]) + abs(GenDressedLepton_pdgId[2])) == 39 ; Disable=True
