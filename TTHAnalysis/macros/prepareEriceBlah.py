@@ -10,7 +10,8 @@ r.gROOT.SetBatch(True)
 #### Settings
 friendspath = "/pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions"
 #prodname    = "2020-06-01" # veya
-prodname    = "2020-06-17" # nova
+#prodname    = "2020-06-17" # nova
+prodname    = "2020-07-03" # con sistematicos, en 2016 col tuning veyo
 
 
 datasamples  = ["SingleMuon", "SingleElec", "DoubleMuon", "DoubleEG", "MuonEG", "LowEGJet", "HighEGJet", "EGamma"]
@@ -23,8 +24,8 @@ clusterscaff = "--log {logdir} --name {jobname} -q {queue} --env oviedo"
 friendfolders = ["0_yeartag", "1_lepmerge_roch", "2_cleaning", "3_varstrigger", "4_scalefactors", "5_mvas"]
 #chunksizes    = [5000000, 100000, 500000, 100000, 250000] # veyos
 #chunksizes    = [5000000, 250000, 500000, 250000, 250000] # novos
-chunksizes    = [5000000, 250000, 5000000, 250000, 250000, 250000] # mais novos inda
-#chunksizes    = [5000000, 250000, 5000000, 500000, 500000, 250000] # pa la futura
+#chunksizes    = [5000000, 250000, 5000000, 250000, 250000, 250000] # mais novos inda
+chunksizes    = [5000000, 250000, 5000000, 500000, 500000, 250000] # pa la futura
 minchunkbytes = 1000
 
 class errs(enum.IntEnum):
@@ -85,22 +86,22 @@ sampledict[2016] = {
 
     ##### Incertidumbres
     #### tW
-    #"tW_noFullHad_DS"    : "Tree_tW_5f_DS_noFullHad_TuneCUETP8M",
-    #"tbarW_noFullHad_DS" : "Tree_tbarW_5f_DS_noFullHad",
+    "tW_noFullHad_DS"    : "Tree_tW_5f_DS_noFullHad_TuneCUETP8M",
+    "tbarW_noFullHad_DS" : "Tree_tbarW_5f_DS_noFullHad",
 
     #### ttbar
-    #"TT_hdampUp"     : "Tree_TT_hdampUP_TuneCUETP8M2T4",
-    #"TT_hdampDown"   : "Tree_TT_hdampDOWN_TuneCUETP8M2T4",
+    "TT_hdampUp"     : "Tree_TT_hdampUP_TuneCUETP8M2T4",
+    "TT_hdampDown"   : "Tree_TT_hdampDOWN_TuneCUETP8M2T4",
 
-    #"TT_GluonMoveCRTune"      : "Tree_TT_TuneCUETP8M2T4_GluonMoveCRTune_ext1",
-    #"TT_QCDbasedCRTune_erdON" : "Tree_TT_TuneCUETP8M2T4_QCDbasedCRTune_erdON",
-    #"TT_erdON"                : "Tree_TT_TuneCUETP8M2T4_erdON",
+    "TT_GluonMoveCRTune"      : "Tree_TT_TuneCUETP8M2T4_GluonMoveCRTune_ext1",
+    "TT_QCDbasedCRTune_erdON" : "Tree_TT_TuneCUETP8M2T4_QCDbasedCRTune_erdON",
+    "TT_erdON"                : "Tree_TT_TuneCUETP8M2T4_erdON",
 
-    #"TT_UEUp"   : "Tree_TT_TuneCUETP8M2T4up",
-    #"TT_UEDown" : "Tree_TT_TuneCUETP8M2T4down",
+    "TT_UEUp"   : "Tree_TT_TuneCUETP8M2T4up",
+    "TT_UEDown" : "Tree_TT_TuneCUETP8M2T4down",
 
-    #"TT_mtop1735" : "Tree_TT_TuneCUETP8M2T4_mtop1735",
-    #"TT_mtop1715" : "Tree_TT_TuneCUETP8M2T4_mtop1715",
+    "TT_mtop1735" : "Tree_TT_TuneCUETP8M2T4_mtop1735",
+    "TT_mtop1715" : "Tree_TT_TuneCUETP8M2T4_mtop1715",
 
 
     #### Datos
@@ -157,14 +158,14 @@ sampledict[2017] = {
     #### tW
 
     #### ttbar
-    #"TTTo2L2Nu_hdampUp"     : "Tree_TTTo2L2Nu_hdampUP_TuneCP5_PSweights",
-    #"TTTo2L2Nu_hdampDown"   : "Tree_TTTo2L2Nu_hdampDOWN_TuneCP5_PSweights",
+    "TTTo2L2Nu_hdampUp"     : "Tree_TTTo2L2Nu_hdampUP_TuneCP5_PSweights",
+    "TTTo2L2Nu_hdampDown"   : "Tree_TTTo2L2Nu_hdampDOWN_TuneCP5_PSweights",
 
-    #"TTTo2L2Nu_TuneCP5Up"   : "Tree_TTTo2L2Nu_TuneCP5up_PSweights",
-    #"TTTo2L2Nu_TuneCP5Down" : "Tree_TTTo2L2Nu_TuneCP5down_PSweights",
+    "TTTo2L2Nu_TuneCP5Up"   : "Tree_TTTo2L2Nu_TuneCP5up_PSweights",
+    "TTTo2L2Nu_TuneCP5Down" : "Tree_TTTo2L2Nu_TuneCP5down_PSweights",
 
-    #"TTTo2L2Nu_mtop173p5"   : "Tree_TTTo2L2Nu_mtop173p5_TuneCP5_PSweights",
-    #"TTTo2L2Nu_mtop171p5"   : "Tree_TTTo2L2Nu_mtop171p5_TuneCP5_PSweights",
+    "TTTo2L2Nu_mtop173p5"   : "Tree_TTTo2L2Nu_mtop173p5_TuneCP5_PSweights",
+    "TTTo2L2Nu_mtop171p5"   : "Tree_TTTo2L2Nu_mtop171p5_TuneCP5_PSweights",
 
 
     #### Datos
@@ -199,7 +200,7 @@ sampledict[2018] = {
 
     # WW
     "WWTo2L2Nu"            : "Tree_WWTo2L2Nu_NNPDF31_TuneCP5",
-    #"WWTo1L1Nu2Q_aMCatNLO" : "Tree_WWTo1L1Nu2Q_amcatnloFXFX_madspin",
+    "WWTo1L1Nu2Q_aMCatNLO" : "Tree_WWTo1L1Nu2Q_amcatnloFXFX_madspin",
     "WWTo1L1Nu2Q"          : "Tree_WWToLNuQQ_NNPDF31_TuneCP5",
     "WWTo4Q"               : "Tree_WWTo4Q_NNPDF31_TuneCP5",
 
@@ -217,14 +218,14 @@ sampledict[2018] = {
     #"ZZGJetsTo4L2Nu" : "Tree_ZZGJetsTo4L2Nu_4f_TuneCP5_amcatnloFXFX",
 
     # WWW
-    "WWW_dilepton"   : "Tree_WWW_4F_DiLeptonFilter_TuneCP5_amcatnlo",
+    #"WWW_dilepton"   : "Tree_WWW_4F_DiLeptonFilter_TuneCP5_amcatnlo",
 
     # WWZ
-    "WWZ"            : "Tree_WWZ_TuneCP5_amcatnlo",
+    #"WWZ"            : "Tree_WWZ_TuneCP5_amcatnlo",
     #"WWZJetsTo4L2Nu" : "Tree_WWZJetsTo4L2Nu_4f_TuneCP5_amcatnloFXFX",
 
     # WZZ
-    "WZZ"            : "Tree_WZZ_TuneCP5_amcatnlo",
+    #"WZZ"            : "Tree_WZZ_TuneCP5_amcatnlo",
     #"WZZJetsTo4L2Nu" : "Tree_WZZJetsTo4L2Nu_4f_TuneCP5_amcatnloFXFX",
 
     # ZZZ
@@ -244,14 +245,14 @@ sampledict[2018] = {
     #### tW
 
     #### ttbar
-    #"TTTo2L2Nu_hdampUp"     : "Tree_TTTo2L2Nu_hdampUP_TuneCP5",
-    #"TTTo2L2Nu_hdampDown"   : "Tree_TTTo2L2Nu_hdampDOWN_TuneCP5",
+    "TTTo2L2Nu_hdampUp"     : "Tree_TTTo2L2Nu_hdampUP_TuneCP5",
+    "TTTo2L2Nu_hdampDown"   : "Tree_TTTo2L2Nu_hdampDOWN_TuneCP5",
 
-    #"TTTo2L2Nu_TuneCP5Up"   : "Tree_TTTo2L2Nu_TuneCP5up",
-    #"TTTo2L2Nu_TuneCP5Down" : "Tree_TTTo2L2Nu_TuneCP5down",
+    "TTTo2L2Nu_TuneCP5Up"   : "Tree_TTTo2L2Nu_TuneCP5up",
+    "TTTo2L2Nu_TuneCP5Down" : "Tree_TTTo2L2Nu_TuneCP5down",
 
-    #"TTTo2L2Nu_mtop173p5"   : "Tree_TTTo2L2Nu_mtop173p5_TuneCP5",
-    #"TTTo2L2Nu_mtop171p5"   : "Tree_TTTo2L2Nu_mtop171p5_TuneCP5",
+    "TTTo2L2Nu_mtop173p5"   : "Tree_TTTo2L2Nu_mtop173p5_TuneCP5",
+    "TTTo2L2Nu_mtop171p5"   : "Tree_TTTo2L2Nu_mtop171p5_TuneCP5",
 
 
     #### Datos
@@ -316,11 +317,11 @@ def getFriendsFolder(dataset, basepath, step_friends):
         myfibrefriends = [f for f in os.listdir(rofolder) if (".root" in f and dataset in f and "chunk" not in f and "Friend" in f)]
         if len(myfibrefriends) > 0: doihavefibrefriends = True
 
-    #if doihavefibrefriends:
-        #wr.warn("\n====== WARNING! Friends detected in RO folder for this production. Using them for dataset {d} and step (of the friends) {s}".format(d = dataset, s = step_friends))
-        #return rofolder
-    #else:
-        #return rwfolder
+    if doihavefibrefriends:
+        wr.warn("\n====== WARNING! Friends detected in RO folder for this production. Using them for dataset {d} and step (of the friends) {s}".format(d = dataset, s = step_friends))
+        return rofolder
+    else:
+        return rwfolder
     return rwfolder
 
 
@@ -350,7 +351,7 @@ def SendDatasetJobs(task):
         friends_ = ""
 
     elif step == 1:
-        module_  = "lepMerge_roch"
+        module_  = "lepMerge_roch_" + ("mc" if not isData else "data")
         friends_ += friendpref + getFriendsFolder(dataset, friendsbasepath, 0) + friendsuff
 
     elif step == 2:
@@ -360,7 +361,7 @@ def SendDatasetJobs(task):
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 1) + friendsuff
 
     elif step == 3:
-        module_  = "varstrigger"
+        module_  = "varstrigger_" + ("mc" if not isData else "data")
         friends_ += friendpref + getFriendsFolder(dataset, friendsbasepath, 0) + friendsuff
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 1) + friendsuff
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 2) + friendsuff
