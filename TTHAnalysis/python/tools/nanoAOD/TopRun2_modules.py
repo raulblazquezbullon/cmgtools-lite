@@ -175,7 +175,7 @@ elecID = lambda l : ( (abs(l.eta) < IDDict["elecs"]["eta2"] and (abs(l.eta) < ID
 
 dresslepID         = lambda l : ( (abs(l.eta) < IDDict["muons"]["eta"] and l.pt > IDDict["muons"]["pt"]) if (abs(l.pdgId) == 13) else
                                   (abs(l.eta) < IDDict["elecs"]["eta2"] and (abs(l.eta) < IDDict["elecs"]["eta0"] or abs(l.eta) > IDDict["elecs"]["eta1"])
-                                   and l.pt > IDDict["elecs"]["pt"]) if (abs(l.pdgId) == 11) )
+                                   and l.pt > IDDict["elecs"]["pt"]) if (abs(l.pdgId) == 11) else False )
 dressjetID         = lambda j : ( abs(j.eta) < 2.4 and j.pt > IDDict["jets"]["pt"] )
 dressloosejetID    = lambda j : ( abs(j.eta) < 2.4 and j.pt > IDDict["jets"]["pt2"] and j.pt < IDDict["jets"]["pt"] )
 dressfwdjetID      = lambda j : ( abs(j.eta) >= 2.4 and abs(j.eta) < 5.0 and
@@ -283,7 +283,8 @@ theDressAndPartInfo = lambda : selectParticleAndPartonInfo(dresslepSel_         
                                                            dressfwdjetSel_      = lambda j: dressfwdjetID,
                                                            dressfwdloosejetSel_ = lambda j: dressfwdloosejetID)
 
-lepMerge_roch = [lepMerge, addRoch, theDressAndPartInfo]
+lepMerge_roch_mc   = [lepMerge, addRoch, theDressAndPartInfo]
+lepMerge_roch_data = [lepMerge, addRoch]
 
 
 #### BDT
@@ -292,7 +293,12 @@ SergioBDT = lambda : MVA_tWRun2()
 
 mvas = [SergioBDT]
 
-varstrigger = [eventVars] + triggerSeq
+
+from CMGTools.TTHAnalysis.tools.nanoAOD.particleAndPartonVars_tWRun2 import particleAndPartonVars_tWRun2
+theDressAndPartVars = lambda : particleAndPartonVars_tWRun2()
+
+varstrigger_mc   = [eventVars, theDressAndPartVars] + triggerSeq
+varstrigger_data = [eventVars] + triggerSeq
 
 
 from CMGTools.TTHAnalysis.tools.nanoAOD.TopPtWeight import TopPtWeight
