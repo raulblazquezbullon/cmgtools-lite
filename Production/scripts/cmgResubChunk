@@ -29,7 +29,10 @@ rename condor_job OLD_condor_job *;
 
 test -f submission_failed && rm submission_failed
 
-if [ "$Q" != "HTCondor" ]; then
+if [ "$Q" == "slurm" ]; then
+    echo "Resubmitting in slurm batch system"
+    sbatch -J $LAB batchScript.sh
+elif [ "$Q" != "HTCondor" ]; then
     echo "Resubmitting using LXBatch on queue $Q"
     bsub -q $Q -J $LAB < batchScript.sh
 else 
