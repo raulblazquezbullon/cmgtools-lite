@@ -7,11 +7,12 @@ import ROOT as r
 from PhysicsTools.NanoAODTools.postprocessing.framework.eventloop import Module
 from PhysicsTools.NanoAODTools.postprocessing.framework.datamodel import Collection as NanoAODCollection 
 from PhysicsTools.NanoAODTools.postprocessing.tools import deltaR,deltaPhi
+from CMGTools.TTHAnalysis.tools.collectionSkimmer import CollectionSkimmer
 
 from CMGTools.TTHAnalysis.treeReAnalyzer import Collection as CMGCollection
 from CMGTools.TTHAnalysis.tools.nanoAOD.friendVariableProducerTools import declareOutput, writeOutput
 from CMGTools.TTHAnalysis.tools.nanoAOD.TopRun2_modules import ch, tags
-
+from array import array
 
 class selectParticleAndPartonInfo(Module):
     def __init__(self, dresslepSel_         = lambda l: True,
@@ -82,23 +83,35 @@ class selectParticleAndPartonInfo(Module):
 
         for i, jet in enumerate(dressjets):
             if   self.dressjetSel(jet):
-                if self.isClean(jet): self.listdressjet.append(i)
+                if self.isClean(event, jet): self.listdressjet.append(i)
             elif self.dressloosejetSel(jet):
-                if self.isClean(jet): self.listdressloosejet.append(i)
+                if self.isClean(event, jet): self.listdressloosejet.append(i)
             elif self.dressfwdjetSel(jet):
-                if self.isClean(jet): self.listdressfwdjet.append(i)
+                if self.isClean(event, jet): self.listdressfwdjet.append(i)
             elif self.dressfwdloosejetSel(jet):
-                if self.isClean(jet): self.listdressfwdloosejet.append(i)
+                if self.isClean(event, jet): self.listdressfwdloosejet.append(i)
+
+
+        if self._ttreereaderversion != event._tree._ttreereaderversion:
+            for col in self.colls: self.colls[col].initInputTree(event._tree)
+            self.initReaders(event._tree)
+
+        for col in self.colls: self.colls[col].clear()
 
         self.colls["DressSelLep"].push_back_all(self.listdresslep)
         self.colls["DressSelJet"].push_back_all(self.listdressjet)
         self.colls["DressSelLooseJet"].push_back_all(self.listdressloosejet)
-        self.colls["dressfwdjetSel"].push_back_all(self.dressfwdjetSel)
-        self.colls["dressfwdloosejetSel"].push_back_all(self.listdressfwdloosejet)
+        self.colls["DressSelFwdJet"].push_back_all(self.listdressfwdjet)
+        self.colls["DressSelFwdLooseJet"].push_back_all(self.listdressfwdloosejet)
+
 
         #### Obtain information about the generated tops
         topdict = {};
-        for b in self.branches: topdict[b] = -99.0
+        for b in self.branches:
+            if not isinstance(b, tuple):
+                topdict[b] = -99
+            else:
+                topdict[b[0]] = -99
 
         partobjs = [p for p in Collection(event, "GenPart")]
         candtops = []
@@ -115,28 +128,25 @@ class selectParticleAndPartonInfo(Module):
                 highptind = 1
                 lowptind  = 0
 
-        if len(candstops) > 0:
+        if len(candtops) > 0:
             topdict["Top1_pt"]     = partobjs[candtops[highptind]].pt
             topdict["Top1_eta"]    = partobjs[candtops[highptind]].eta
             topdict["Top1_phi"]    = partobjs[candtops[highptind]].phi
             topdict["Top1_charge"] = 1 if (partobjs[candtops[highptind]].pdgId > 0) else -1
 
-            if len(candstops) > 1:
+            if len(candtops) > 1:
                 topdict["Top2_pt"]     = partobjs[candtops[lowptind]].pt
                 topdict["Top2_eta"]    = partobjs[candtops[lowptind]].eta
                 topdict["Top2_phi"]    = partobjs[candtops[lowptind]].phi
                 topdict["Top2_charge"] = 1 if (partobjs[candtops[lowptind]].pdgId > 1) else -1
 
-        #### Reset properly
-        if self._ttreereaderversion != event._tree._ttreereaderversion:
-            for col in self.colls: self.colls[col].initInputTree(event._tree)
-            self.initReaders(event._tree)
-
-        for col in self.colls: self.colls[col].clear()
 
         #### Write branches not in colls (and their counts).
         for b in self.branches:
-            self.wrappedOutputTree.fillBranch(b, topdict[b])
+            if not isinstance(b, tuple):
+                self.wrappedOutputTree.fillBranch(b, topdict[b])
+            else:
+                self.wrappedOutputTree.fillBranch(b[0], topdict[b[0]])
 
         return True
 
@@ -158,9 +168,10 @@ class selectParticleAndPartonInfo(Module):
 
 
     def isClean(self, ev, j, dR = 0.04):
+        from PhysicsTools.NanoAODTools.postprocessing.framework.datamodel import Collection
         tmpleps = [l for l in Collection(ev, "GenDressedLepton")]
 
         for iL in self.listdresslep:
-            if j.p4().DeltaR(tmpleps[iL]) < dR:
+            if j.p4().DeltaR(tmpleps[iL].p4()) < dR:
                 return False
         return True
