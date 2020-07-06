@@ -32,8 +32,8 @@ else:
         from CMGTools.RootTools.samples.samples_13TeV_DATA2017_NanoAOD import dataSamples_25Oct2019 as allData
     elif year == 2016:
         from CMGTools.RootTools.samples.samples_13TeV_2016_TopNanoAODv6 import samples as mcSamples_
-        #from CMGTools.RootTools.samples.samples_13TeV_DATA2016_NanoAOD import dataSamples_25Oct2019 as allData
-allData=[]
+        from CMGTools.RootTools.samples.samples_13TeV_DATA2016_TopNanoAOD import samples as allData
+#allData=[]
 autoAAA(mcSamples_+allData, quiet=not(getHeppyOption("verboseAAA",False)), redirectorAAA="xrootd-cms.infn.it",node='T2_ES_IFCA') # must be done before mergeExtensions
 mcSamples_, _ = mergeExtensions(mcSamples_)
 
@@ -48,7 +48,7 @@ mcSamples_, _ = mergeExtensions(mcSamples_)
 #     triggers["FR_1mu_noiso_smpd"] = [] 
 
 from CMGTools.TTHAnalysis.tools.nanoAOD.ttW_modules import triggerGroups_dict
-
+print(analysis)
 DatasetsAndTriggers = []
 if analysis == "main":
     mcSamples = byCompName(mcSamples_, ["%s(|_PS)$"%dset for dset in [
@@ -99,10 +99,13 @@ if getHeppyOption('applyTriggersInMC'):
         comp.triggers = mcTriggers
 
 # make data
+print(DatasetsAndTriggers)
 dataSamples = []; vetoTriggers = []
 for pd, trigs in DatasetsAndTriggers:
     if not trigs: continue
-    for comp in byCompName(allData, [pd]):
+    print([pd])
+    for comp in byCompName(allData, [pd+'.*']):
+        print(comp)
         comp.triggers = trigs[:]
         comp.vetoTriggers = vetoTriggers[:]
         dataSamples.append(comp)
