@@ -22,4 +22,6 @@ change: Lep1Jet2_M\b: Lep1Jet2_M_jesTotalDn
 change: Lep2Jet2_M\b: Lep2Jet2_M_jesTotalDn
 change: METgood_pt\b: METgood_pt_jesTotalDn
 change: METgood_phi\b: METgood_phi_jesTotalDn
+change: SergioBDT_1j1b\b: SergioBDT_1j1b_JESDn
+change: SergioBDT_2j1b\b: SergioBDT_2j1b_JESDn
 weight: 1
