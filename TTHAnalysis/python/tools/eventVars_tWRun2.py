@@ -44,6 +44,28 @@ class EventVars_tWRun2(Module):
                             "METgood_pt",
                             "METgood_phi",]
 
+        self.lepenergyvars = ["Lep1Lep2_Pt",
+                              "Mll",
+                              "Lep1Lep2Jet1MET_Pz",
+                              "Lep1Lep2Jet1MET_Pt",
+                              "Lep1Lep2Jet1MET_M",
+                              "Lep1Lep2Jet1MET_Mt",
+                              "Lep1Lep2Jet1_Pt",
+                              "Lep1Lep2Jet1_M",
+                              "Lep1Jet1_Pt",
+                              "Lep1Jet1_M",
+                              "Lep2Jet1_Pt",
+                              "Lep2Jet1_M",
+
+                              "HTtot",
+
+                              "minimax",
+                              "Lep1Jet2_M",
+                              "Lep2Jet2_M",
+
+                              "METgood_pt",
+                              "METgood_phi",]
+
         self.otherbranches = [("isSS", "I"),
                               #("isSS", "O"),
                               #("channel", "B"),
@@ -71,6 +93,8 @@ class EventVars_tWRun2(Module):
 
         for var in self.systsJEC: self.branches.extend([br + self.label + self.systsJEC[var] for br in self.jecbranches])
         self.branches.extend(self.otherbranches)
+        self.branches.extend([el + "_MuonEnUp" for el in self.lepenergyvars] +
+                             [el + "_MuonEnDn" for el in self.lepenergyvars])
         return
 
 
@@ -100,30 +124,16 @@ class EventVars_tWRun2(Module):
         # ============================ Variables not susceptible to JEC
         leps    = [l for l in Collection(event, "LepGood")]
         leps_4m = [l.p4() for l in leps]
-        for i in range(len(leps_4m)):
+        leps_4mMuonEnUp = deepcopy(leps_4m)
+        leps_4mMuonEnDn = deepcopy(leps_4m)
+        for i in range(len(leps_4m)):        #### FIXME this is wrong
             leps_4m[i].SetPtEtaPhiM(leps[i].pt_corrAll, leps_4m[i].Eta(), leps_4m[i].Phi(), leps_4m[i].M())
+            leps_4mMuonEnUp[i].SetPtEtaPhiM(leps[i].pt_corrAllUp, leps_4m[i].Eta(), leps_4m[i].Phi(), leps_4m[i].M())
+            leps_4mMuonEnDn[i].SetPtEtaPhiM(leps[i].pt_corrAllDn, leps_4m[i].Eta(), leps_4m[i].Phi(), leps_4m[i].M())
 
-        #chosenjets = getattr(event, "iJetSel30_Recl")
-        #nJets      = getattr(event, "nJetSel30_Recl")
-        all_jets   = [j for j in Collection(event, "Jet")]
-        jets    = []
-        jets_4m = []
-
-        #print "ijet30", chosenjets
-        #print "njetsel30", event.nJetSel30_Recl
-
-        #### VEYO
-        #if event.nJetSel30_Recl >= 5:
-            ##jets    = [all_jets[chosenjets[j]] for j in xrange(5)]
-            #jets    = [all_jets[event.iJetSel30_Recl[j]] for j in xrange(5)]
-        #else:
-            ##jets    = [all_jets[chosenjets[j]] for j in xrange(nJets)]
-            #jets    = [all_jets[event.iJetSel30_Recl[j]] for j in xrange(event.nJetSel30_Recl)]
-
-        #### NOVO
-        #jets    = [all_jets[event.iJetSel30_Recl[j]] for j in xrange(min([event.nJetSel30_Recl, 5]))]
-
-        #jets_4m = [j.p4() for j in jets]
+        all_jets = [j for j in Collection(event, "Jet")]
+        jets     = []
+        jets_4m  = []
 
         if len(leps) != event.nLepGood: wr.warn("WARNING: different collection size from nLepGood!!!!!!!")
 
@@ -155,6 +165,10 @@ class EventVars_tWRun2(Module):
         allret["Lep2Jet2_M"]         = -99
         allret["minimax"]            = -99
 
+        for var in self.lepenergyvars:
+            allret[var + "_MuonEnUp"] = -99
+            allret[var + "_MuonEnDn"] = -99
+
 
         if event.nLepGood >= 2:
             allret["isSS"] = int(leps[0].charge == leps[1].charge)
@@ -172,9 +186,16 @@ class EventVars_tWRun2(Module):
             allret["Lep1Lep2_DPhi"] = abs(deltaPhi(leps[0], leps[1]))/r.TMath.Pi()
             allret["Mll"]           = (leps_4m[0] + leps_4m[1]).M()
 
+            allret["Lep1Lep2_Pt_MuonEnUp"]   = (leps_4mMuonEnUp[0] + leps_4mMuonEnUp[1]).Pt()
+            allret["Mll_MuonEnUp"]           = (leps_4mMuonEnUp[0] + leps_4mMuonEnUp[1]).M()
+
+            allret["Lep1Lep2_Pt_MuonEnDn"]   = (leps_4mMuonEnDn[0] + leps_4mMuonEnDn[1]).Pt()
+            allret["Mll_MuonEnDn"]           = (leps_4mMuonEnDn[0] + leps_4mMuonEnDn[1]).M()
 
             # ============================ Variables susceptible to JEC
             met_4m = r.TLorentzVector()
+            met_4mMuonEnUp = r.TLorentzVector()
+            met_4mMuonEnDn = r.TLorentzVector()
             for var in self.systsJEC:
                 allret["METgood_pt" + self.systsJEC[var]]  = -99
                 allret["METgood_phi" + self.systsJEC[var]] = -99
@@ -190,43 +211,91 @@ class EventVars_tWRun2(Module):
                         allret["METgood_phi" + self.systsJEC[var]] = getattr(event, 'MET_phi{v}'.format(v = self.systsJEC[var] if self.systsJEC[var] != "" else "_nom"))
 
                 met_4m.SetPtEtaPhiM(allret["METgood_pt" + self.systsJEC[var]], 0, allret["METgood_phi" + self.systsJEC[var]], 0)
+                met_4mMuonEnUp.SetPtEtaPhiM(allret["METgood_pt"], 0, allret["METgood_phi"], 0)
+                met_4mMuonEnDn.SetPtEtaPhiM(allret["METgood_pt"], 0, allret["METgood_phi"], 0)
 
-                jets    = [all_jets[getattr(event, 'iJetSel30{v}_Recl'.format(v = self.systsJEC[var]))[j]]
-                           for j in xrange(min([getattr(event, 'nJetSel30{v}_Recl'.format(v = self.systsJEC[var])), 5]))]
+
+                #### FIXME: this is WRONG also the variables
+                #jets    = [all_jets[getattr(event, 'iJetSel30{v}_Recl'.format(v = self.systsJEC[var]))[j]]
+                           #for j in xrange(min([getattr(event, 'nJetSel30{v}_Recl'.format(v = self.systsJEC[var])), 5]))]
+                jets    = [all_jets[getattr(event, 'iJetSel30_Recl')[j]]
+                           for j in xrange(min([getattr(event, 'nJetSel30_Recl'), 5]))]
                 jets_4m = [j.p4() for j in jets]
 
 
-                if getattr(event, 'nJetSel20{v}_Recl'.format(v = self.systsJEC[var])) > 0:
+                #### FIXME: this is WRONG also the variables
+                #if getattr(event, 'nJetSel20{v}_Recl'.format(v = self.systsJEC[var])) > 0:
+                if getattr(event, 'nJetSel20_Recl') > 0:
                     allret["JetLoose1_Pt" + self.systsJEC[var]] = all_jets[event.iJetSel20_Recl[0]].p4().Pt()
 
 
                 if event.nJetSel30_Recl > 0:
                     allret["Lep1Lep2Jet1MET_Pz" + self.systsJEC[var]] = (leps_4m[0] + leps_4m[1] + jets_4m[0] + met_4m).Pz()
                     allret["Lep1Lep2Jet1MET_Pt" + self.systsJEC[var]] = (leps_4m[0] + leps_4m[1] + jets_4m[0] + met_4m).Pt()
-                    allret["Lep1Lep2Jet1MET_M" + self.systsJEC[var]]  = (leps_4m[0] + leps_4m[1] + jets_4m[0] + met_4m).M()
+                    allret["Lep1Lep2Jet1MET_M"  + self.systsJEC[var]] = (leps_4m[0] + leps_4m[1] + jets_4m[0] + met_4m).M()
                     allret["Lep1Lep2Jet1MET_Mt" + self.systsJEC[var]] = (leps_4m[0] + leps_4m[1] + jets_4m[0] + met_4m).Mt()
-                    allret["Lep1Lep2Jet1_Pt" + self.systsJEC[var]]    = (leps_4m[0] + leps_4m[1] + jets_4m[0]).Pt()
-                    allret["Lep1Lep2Jet1_M" + self.systsJEC[var]]     = (leps_4m[0] + leps_4m[1] + jets_4m[0]).M()
-                    allret["Lep1Lep2Jet1_E" + self.systsJEC[var]]     = (leps_4m[0] + leps_4m[1] + jets_4m[0]).E()
-                    allret["Lep1Jet1_Pt" + self.systsJEC[var]]        = (leps_4m[0] + jets_4m[0]).Pt()
-                    allret["Lep1Jet1_M" + self.systsJEC[var]]         = (leps_4m[0] + jets_4m[0]).M()
-                    allret["Lep2Jet1_Pt" + self.systsJEC[var]]        = (leps_4m[1] + jets_4m[0]).Pt()
-                    allret["Lep2Jet1_M" + self.systsJEC[var]]         = (leps_4m[1] + jets_4m[0]).M()
-                    allret["Jet1_Pt" + self.systsJEC[var]]            = jets_4m[0].Pt()
-                    allret["Jet1_E" + self.systsJEC[var]]             = jets_4m[0].E()
-                    allret["Lep1Jet1_DR" + self.systsJEC[var]]        = leps_4m[0].DeltaR(jets_4m[0])
-                    allret["Lep1Lep2Jet1_C" + self.systsJEC[var]]     = (leps_4m[0] + leps_4m[1] + jets_4m[0]).Et() / (leps_4m[0] + leps_4m[1] + jets_4m[0]).E()
-                    allret["HTtot" + self.systsJEC[var]]              = leps_4m[0].Pt() + leps_4m[1].Pt() + jets_4m[0].Pt() + met_4m.Pt()
-                    if event.nJetSel30_Recl > 1:
-                        allret["Lep12Jet12_DR" + self.systsJEC[var]]    = (leps_4m[0] + leps_4m[1]).DeltaR(jets_4m[0] + jets_4m[1])
-                        allret["Lep12Jet12MET_DR" + self.systsJEC[var]] = (leps_4m[0] + leps_4m[1]).DeltaR(jets_4m[0] + jets_4m[1] + met_4m)
-                        allret["Lep1Jet2_M" + self.systsJEC[var]]       = (leps_4m[0] + jets_4m[1]).M()
-                        allret["Lep2Jet2_M" + self.systsJEC[var]]       = (leps_4m[1] + jets_4m[1]).M()
-                        allret["Jet2_Pt" + self.systsJEC[var]]          = jets_4m[1].Pt()
-                        #### WARNING: this minimax variable is only equal to that of ATLAS' PRL when the signal region is njets == 2, nbjets == 2.
-                        allret["minimax" + self.systsJEC[var]] = min([max([allret["Lep1Jet1_M" + self.systsJEC[var]],
-                                                                           allret["Lep2Jet2_M" + self.systsJEC[var]]]),
-                                                                      max(allret["Lep2Jet1_M" + self.systsJEC[var]],
-                                                                          allret["Lep1Jet2_M" + self.systsJEC[var]])])
+                    allret["Lep1Lep2Jet1_Pt"    + self.systsJEC[var]] = (leps_4m[0] + leps_4m[1] + jets_4m[0]).Pt()
+                    allret["Lep1Lep2Jet1_M"     + self.systsJEC[var]] = (leps_4m[0] + leps_4m[1] + jets_4m[0]).M()
+                    allret["Lep1Lep2Jet1_E"     + self.systsJEC[var]] = (leps_4m[0] + leps_4m[1] + jets_4m[0]).E()
+                    allret["Lep1Jet1_Pt"        + self.systsJEC[var]] = (leps_4m[0] + jets_4m[0]).Pt()
+                    allret["Lep1Jet1_M"         + self.systsJEC[var]] = (leps_4m[0] + jets_4m[0]).M()
+                    allret["Lep2Jet1_Pt"        + self.systsJEC[var]] = (leps_4m[1] + jets_4m[0]).Pt()
+                    allret["Lep2Jet1_M"         + self.systsJEC[var]] = (leps_4m[1] + jets_4m[0]).M()
+                    allret["Jet1_Pt"            + self.systsJEC[var]] = jets_4m[0].Pt()
+                    allret["Jet1_E"             + self.systsJEC[var]] = jets_4m[0].E()
+                    allret["Lep1Jet1_DR"        + self.systsJEC[var]] = leps_4m[0].DeltaR(jets_4m[0])
+                    allret["Lep1Lep2Jet1_C"     + self.systsJEC[var]] = (leps_4m[0] + leps_4m[1] + jets_4m[0]).Et() / (leps_4m[0] + leps_4m[1] + jets_4m[0]).E()
+                    allret["HTtot"              + self.systsJEC[var]] = leps_4m[0].Pt() + leps_4m[1].Pt() + jets_4m[0].Pt() + met_4m.Pt()
 
+                    if self.systsJEC[var] == "":
+                        allret["Lep1Lep2Jet1MET_Pz" + "_MuonEnUp"] = (leps_4mMuonEnUp[0] + leps_4mMuonEnUp[1] + jets_4m[0] + met_4mMuonEnUp).Pz()
+                        allret["Lep1Lep2Jet1MET_Pt" + "_MuonEnUp"] = (leps_4mMuonEnUp[0] + leps_4mMuonEnUp[1] + jets_4m[0] + met_4mMuonEnUp).Pt()
+                        allret["Lep1Lep2Jet1MET_M"  + "_MuonEnUp"] = (leps_4mMuonEnUp[0] + leps_4mMuonEnUp[1] + jets_4m[0] + met_4mMuonEnUp).M()
+                        allret["Lep1Lep2Jet1MET_Mt" + "_MuonEnUp"] = (leps_4mMuonEnUp[0] + leps_4mMuonEnUp[1] + jets_4m[0] + met_4mMuonEnUp).Mt()
+                        allret["Lep1Lep2Jet1_Pt"    + "_MuonEnUp"] = (leps_4mMuonEnUp[0] + leps_4mMuonEnUp[1] + jets_4m[0]).Pt()
+                        allret["Lep1Lep2Jet1_M"     + "_MuonEnUp"] = (leps_4mMuonEnUp[0] + leps_4mMuonEnUp[1] + jets_4m[0]).M()
+                        allret["Lep1Jet1_Pt"        + "_MuonEnUp"] = (leps_4mMuonEnUp[0] + jets_4m[0]).Pt()
+                        allret["Lep1Jet1_M"         + "_MuonEnUp"] = (leps_4mMuonEnUp[0] + jets_4m[0]).M()
+                        allret["Lep2Jet1_Pt"        + "_MuonEnUp"] = (leps_4mMuonEnUp[1] + jets_4m[0]).Pt()
+                        allret["Lep2Jet1_M"         + "_MuonEnUp"] = (leps_4mMuonEnUp[1] + jets_4m[0]).M()
+                        allret["HTtot"              + "_MuonEnUp"] = leps_4mMuonEnUp[0].Pt() + leps_4mMuonEnUp[1].Pt() + jets_4m[0].Pt() + met_4mMuonEnUp.Pt()
+
+                        allret["Lep1Lep2Jet1MET_Pz" + "_MuonEnDn"] = (leps_4mMuonEnDn[0] + leps_4mMuonEnDn[1] + jets_4m[0] + met_4mMuonEnDn).Pz()
+                        allret["Lep1Lep2Jet1MET_Pt" + "_MuonEnDn"] = (leps_4mMuonEnDn[0] + leps_4mMuonEnDn[1] + jets_4m[0] + met_4mMuonEnDn).Pt()
+                        allret["Lep1Lep2Jet1MET_M"  + "_MuonEnDn"] = (leps_4mMuonEnDn[0] + leps_4mMuonEnDn[1] + jets_4m[0] + met_4mMuonEnDn).M()
+                        allret["Lep1Lep2Jet1MET_Mt" + "_MuonEnDn"] = (leps_4mMuonEnDn[0] + leps_4mMuonEnDn[1] + jets_4m[0] + met_4mMuonEnDn).Mt()
+                        allret["Lep1Lep2Jet1_Pt"    + "_MuonEnDn"] = (leps_4mMuonEnDn[0] + leps_4mMuonEnDn[1] + jets_4m[0]).Pt()
+                        allret["Lep1Lep2Jet1_M"     + "_MuonEnDn"] = (leps_4mMuonEnDn[0] + leps_4mMuonEnDn[1] + jets_4m[0]).M()
+                        allret["Lep1Jet1_Pt"        + "_MuonEnDn"] = (leps_4mMuonEnDn[0] + jets_4m[0]).Pt()
+                        allret["Lep1Jet1_M"         + "_MuonEnDn"] = (leps_4mMuonEnDn[0] + jets_4m[0]).M()
+                        allret["Lep2Jet1_Pt"        + "_MuonEnDn"] = (leps_4mMuonEnDn[1] + jets_4m[0]).Pt()
+                        allret["Lep2Jet1_M"         + "_MuonEnDn"] = (leps_4mMuonEnDn[1] + jets_4m[0]).M()
+                        allret["HTtot"              + "_MuonEnDn"] = leps_4mMuonEnDn[0].Pt() + leps_4mMuonEnDn[1].Pt() + jets_4m[0].Pt() + met_4mMuonEnDn.Pt()
+
+                    if event.nJetSel30_Recl > 1:
+                        allret["Lep12Jet12_DR"    + self.systsJEC[var]] = (leps_4m[0] + leps_4m[1]).DeltaR(jets_4m[0] + jets_4m[1])
+                        allret["Lep12Jet12MET_DR" + self.systsJEC[var]] = (leps_4m[0] + leps_4m[1]).DeltaR(jets_4m[0] + jets_4m[1] + met_4m)
+                        allret["Lep1Jet2_M"       + self.systsJEC[var]] = (leps_4m[0] + jets_4m[1]).M()
+                        allret["Lep2Jet2_M"       + self.systsJEC[var]] = (leps_4m[1] + jets_4m[1]).M()
+                        allret["Jet2_Pt"          + self.systsJEC[var]] = jets_4m[1].Pt()
+                        #### WARNING: this minimax variable is only equal to that of ATLAS' PRL when the signal region is njets == 2, nbjets == 2.
+                        allret["minimax"          + self.systsJEC[var]] = min([max([allret["Lep1Jet1_M" + self.systsJEC[var]],
+                                                                           allret["Lep2Jet2_M" + self.systsJEC[var]]]),
+                                                                      max( allret["Lep2Jet1_M" + self.systsJEC[var]],
+                                                                           allret["Lep1Jet2_M" + self.systsJEC[var]])])
+
+                        if self.systsJEC[var] == "":
+                            allret["Lep1Jet2_M" + "_MuonEnUp"] = (leps_4mMuonEnUp[0] + jets_4m[1]).M()
+                            allret["Lep2Jet2_M" + "_MuonEnUp"] = (leps_4mMuonEnUp[1] + jets_4m[1]).M()
+                            allret["minimax"    + "_MuonEnUp"] = min([max([allret["Lep1Jet1_M" + "_MuonEnUp"],
+                                                                           allret["Lep2Jet2_M" + "_MuonEnUp"]]),
+                                                                      max( allret["Lep2Jet1_M" + "_MuonEnUp"],
+                                                                           allret["Lep1Jet2_M" + "_MuonEnUp"])])
+
+                            allret["Lep1Jet2_M" + "_MuonEnDn"] = (leps_4mMuonEnDn[0] + jets_4m[1]).M()
+                            allret["Lep2Jet2_M" + "_MuonEnDn"] = (leps_4mMuonEnDn[1] + jets_4m[1]).M()
+                            allret["minimax"    + "_MuonEnDn"] = min([max([allret["Lep1Jet1_M" + "_MuonEnDn"],
+                                                                           allret["Lep2Jet2_M" + "_MuonEnDn"]]),
+                                                                      max( allret["Lep2Jet1_M" + "_MuonEnDn"],
+                                                                           allret["Lep1Jet2_M" + "_MuonEnDn"])])
         return allret

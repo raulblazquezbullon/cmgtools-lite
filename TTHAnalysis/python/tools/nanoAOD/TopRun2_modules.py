@@ -294,7 +294,7 @@ SergioBDT = lambda : MVA_tWRun2()
 mvas = [SergioBDT]
 
 
-from CMGTools.TTHAnalysis.tools.nanoAOD.particleAndPartonVars_tWRun2 import particleAndPartonVars_tWRun2
+from CMGTools.TTHAnalysis.tools.particleAndPartonVars_tWRun2 import particleAndPartonVars_tWRun2
 theDressAndPartVars = lambda : particleAndPartonVars_tWRun2()
 
 varstrigger_mc   = [eventVars, theDressAndPartVars] + triggerSeq

@@ -73,7 +73,7 @@ class particleAndPartonVars_tWRun2(Module):
         leps_4m  = [l.p4() for l in leps]
 
         met_4m = r.TLorentzVector()
-        met_4m.SetPtEtaPhiM(allret["MET_fiducialGenPt", 0, "MET_fiducialGenPhi", 0)
+        met_4m.SetPtEtaPhiM(event.MET_fiducialGenPt, 0, event.MET_fiducialGenPhi, 0)
 
 
         all_jets = [j for j in Collection(event, "GenJet")]
@@ -117,7 +117,7 @@ class particleAndPartonVars_tWRun2(Module):
 
 
         if event.nDressSelLep >= 2:
-            allret["DressisSS"] = int(leps[0].charge == leps[1].charge)
+            allret["DressisSS"] = int((leps[0].pdgId > 0 and leps[1].pdgId > 0) or (leps[0].pdgId < 0 and leps[1].pdgId < 0))
             if   ((abs(leps[0].pdgId) == 13 and abs(leps[1].pdgId) == 11) or
                  (abs(leps[0].pdgId) == 11 and abs(leps[1].pdgId) == 13)):
                 allret["Dresschannel"] = ch.ElMu
