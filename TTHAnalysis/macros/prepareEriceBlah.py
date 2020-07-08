@@ -42,7 +42,7 @@ sampledict[2016] = {}; sampledict[2017] = {}; sampledict[2018] = {}
 sampledict[2016] = {
     #### Nominales
     ### ttbar
-    "TTTo2L2Nu"        : "Tree_TTTo2L2Nu_TuneCP5_PSweights",
+    "TTTo2L2Nu"        : ['Tree_TTTo2L2Nu_TuneCP5_PSweights_0','Tree_TTTo2L2Nu_TuneCP5_PSweights_1','Tree_TTTo2L2Nu_TuneCP5_PSweights_2','Tree_TTTo2L2Nu_TuneCP5_PSweights_3','Tree_TTTo2L2Nu_TuneCP5_PSweights_4','Tree_TTTo2L2Nu_TuneCP5_PSweights_5','Tree_TTTo2L2Nu_TuneCP5_PSweights_6','Tree_TTTo2L2Nu_TuneCP5_PSweights_7','Tree_TTTo2L2Nu_TuneCP5_PSweights_8','Tree_TTTo2L2Nu_TuneCP5_PSweights_9','Tree_TTTo2L2Nu_TuneCP5_PSweights_10','Tree_TTTo2L2Nu_TuneCP5_PSweights_11','Tree_TTTo2L2Nu_TuneCP5_PSweights_12'],
     "TTToSemiLeptonic" : "Tree_TTToSemiLeptonic_TuneCP5_PSweights_",
     #"TT_CUETP8M2T4"    : ["Tree_TT_TuneCUETP8M2T4_nobackup_*", "Tree_TT_TuneCUETP8M2T4_PSweights*", "Tree_TT_TuneCUETP8M2T4_0", "Tree_TT_TuneCUETP8M2T4_1", "Tree_TT_TuneCUETP8M2T4_2", "Tree_TT_TuneCUETP8M2T4_3"],
     "TT_CUETP8M2T4"    : ["Tree_TT_TuneCUETP8M2T4_PSweights*", "Tree_TT_TuneCUETP8M2T4_0", "Tree_TT_TuneCUETP8M2T4_1", "Tree_TT_TuneCUETP8M2T4_2", "Tree_TT_TuneCUETP8M2T4_3"], # Nobackup ta mal
@@ -121,8 +121,8 @@ sampledict[2017] = {
     "TTToSemiLeptonic" : "Tree_TTToSemiLeptonic_TuneCP5_",
 
     # tW
-    "tbarW_noFullHad" : "Tree_tbarW_5f_noFullHad_TuneCP5",
-    "tW_noFullHad"    : "Tree_tW_5f_noFullHad_TuneCP5",
+    "tbarW_noFullHad" : "Tree_tbarW_5f_noFullHad_TuneCP5_",
+    "tW_noFullHad"    : "Tree_tW_5f_noFullHad_TuneCP5_",
 
     # W Jets
     "WJetsToLNu_MLM" : "Tree_WJetsToLNu_TuneCP5_MLM",
@@ -181,12 +181,13 @@ sampledict[2017] = {
 sampledict[2018] = {
     #### Nominales
     # ttbar
-    "TTTo2L2Nu"        : "Tree_TTTo2L2Nu_TuneCP5_",
+    "TTTo2L2Nu"        : ['Tree_TTTo2L2Nu_TuneCP5_0','Tree_TTTo2L2Nu_TuneCP5_1','Tree_TTTo2L2Nu_TuneCP5_2','Tree_TTTo2L2Nu_TuneCP5_3','Tree_TTTo2L2Nu_TuneCP5_4','Tree_TTTo2L2Nu_TuneCP5_5','Tree_TTTo2L2Nu_TuneCP5_6','Tree_TTTo2L2Nu_TuneCP5_7','Tree_TTTo2L2Nu_TuneCP5_8','Tree_TTTo2L2Nu_TuneCP5_9','Tree_TTTo2L2Nu_TuneCP5_10','Tree_TTTo2L2Nu_TuneCP5_11','Tree_TTTo2L2Nu_TuneCP5_12','Tree_TTTo2L2Nu_TuneCP5_13','Tree_TTTo2L2Nu_TuneCP5_14','Tree_TTTo2L2Nu_TuneCP5_15','Tree_TTTo2L2Nu_TuneCP5_16','Tree_TTTo2L2Nu_TuneCP5_17','Tree_TTTo2L2Nu_TuneCP5_18','Tree_TTTo2L2Nu_TuneCP5_19','Tree_TTTo2L2Nu_TuneCP5_20','Tree_TTTo2L2Nu_TuneCP5_21','Tree_TTTo2L2Nu_TuneCP5_22','Tree_TTTo2L2Nu_TuneCP5_23','Tree_TTTo2L2Nu_TuneCP5_24','Tree_TTTo2L2Nu_TuneCP5_25','Tree_TTTo2L2Nu_TuneCP5_26','Tree_TTTo2L2Nu_TuneCP5_27','Tree_TTTo2L2Nu_TuneCP5_28','Tree_TTTo2L2Nu_TuneCP5_29','Tree_TTTo2L2Nu_TuneCP5_30','Tree_TTTo2L2Nu_TuneCP5_31','Tree_TTTo2L2Nu_TuneCP5_32','Tree_TTTo2L2Nu_TuneCP5_33','Tree_TTTo2L2Nu_TuneCP5_34','Tree_TTTo2L2Nu_TuneCP5_35','Tree_TTTo2L2Nu_TuneCP5_36','Tree_TTTo2L2Nu_TuneCP5_37','Tree_TTTo2L2Nu_TuneCP5_38','Tree_TTTo2L2Nu_TuneCP5_39','Tree_TTTo2L2Nu_TuneCP5_40','Tree_TTTo2L2Nu_TuneCP5_41','Tree_TTTo2L2Nu_TuneCP5_42','Tree_TTTo2L2Nu_TuneCP5_43','Tree_TTTo2L2Nu_TuneCP5_44'],
+    #"TTTo2L2Nu"        : "Tree_TTTo2L2Nu_TuneCP5_",
     "TTToSemiLeptonic" : "Tree_TTToSemiLeptonic_TuneCP5_",
 
     # tW
-    "tW_noFullHad"    : "Tree_tW_5f_noFullHad_TuneCP5",
-    "tbarW_noFullHad" : "Tree_tbarW_5f_noFullHad_TuneCP5",
+    "tW_noFullHad"    : ["Tree_tW_5f_noFullHad_TuneCP5_ext1_0"],
+    "tbarW_noFullHad" : ["Tree_tbarW_5f_noFullHad_TuneCP5_ext_0"],
 
     # WWbb
     "WWbb" : "Tree_b_bbar_4l_TuneCP5_ext1",
@@ -475,7 +476,7 @@ def CheckChunksByDataset(task):
         try:
             nchks, totEnt = getNchunks(dat, year, step)
         except:
-            raise RuntimeError("FATAL: could not access {d} to obtain the number of chunks.".format(d = dat))
+            raise RuntimeError("FATAL: could not access {d} to obtain the number of chunks from dataset group {dg}.".format(d = dat, dg = dataset))
         print "    - Checking dataset", dat, "(expected chunks: {nch})".format(nch = nchks)
 
         for ch in range(nchks):
