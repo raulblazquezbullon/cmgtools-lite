@@ -1,0 +1,13 @@
+jet1_pt   : Jet_pt[iJetSel30_Recl[0]]      : 18,20,200      ; IncludeUnderflow=False, XTitle="Jet p_{T} (GeV)"
+
+lep1_pt   : LepGood_pt_corrAll[0]  : 14,10,150              ; IncludeUnderflow=False, XTitle="Leading lepton p_{T} (GeV)"
+
+lep1lep2_dphi : Lep1Lep2_DPhi      : 10,0,1   ; IncludeUnderflow=False, XTitle="#Delta#it{#varphi}(#it{e}^{#pm}\, #it{#mu}^{#mp})/#it{#pi} (adim.)"
+
+lep1lep2_pt   : Lep1Lep2_Pt        : 20,0,200 ; IncludeUnderflow=False, XTitle="p_{T}(\\ell_{1}\, \\ell_{2}) (GeV)"
+
+lep1lep2jet1met_pz : Lep1Lep2Jet1MET_Pz  : 18,0,450 ; IncludeUnderflow=False, XTitle="#it{p}_{Z} (#it{e}^{#pm}\, #it{#mu}^{#mp}\, #it{j}) (GeV)"
+
+lep1lep2jet1met_m  : Lep1Lep2Jet1MET_M   : 20,0,600 ; IncludeUnderflow=False, XTitle="m (#it{e}^{#pm}\, #it{#mu}^{#mp}\, #it{j}\, #it{p}_{T}^{miss}) (GeV)"
+
+lep1lep2jet1met_mt : Lep1Lep2Jet1MET_Mt  : 20,0,600 ; IncludeUnderflow=False, XTitle="m_{T} (#it{e}^{#pm}\, #it{#mu}^{#mp}\, #it{j}\, #it{p}_{T}^{miss}) (GeV)"

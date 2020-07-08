@@ -43,15 +43,10 @@ lep1lep2jet1met_mt : Lep1Lep2Jet1MET_Mt  : 20,0,600 ; IncludeUnderflow=False, XT
 lep1lep2jet1_pt    : Lep1Lep2Jet1_Pt     : 20,0,200 ; IncludeUnderflow=False, XTitle="#it{p}_{T} (#it{e}^{#pm}\, #it{#mu}^{#mp}\, #it{j}) (GeV)"
 lep1lep2jet1_m     : Lep1Lep2Jet1_M      : 20,0,600 ; IncludeUnderflow=False, XTitle="m (#it{e}^{#pm}\, #it{#mu}^{#mp}\, #it{j}) (GeV)"
 lep1lep2jet1_e     : Lep1Lep2Jet1_E      : 20,0,600 ; IncludeUnderflow=False, XTitle="E (#it{e}^{#pm}\, #it{#mu}^{#mp}\, #it{j}) (GeV)"
-lep1jet1_pt        : Lep1Jet1_Pt         : 20,0,200 ; IncludeUnderflow=False, XTitle="//it{p}_{T} (\\ell_{1}\, \\it{j}) (GeV)"
+lep1jet1_pt        : Lep1Jet1_Pt         : 20,0,200 ; IncludeUnderflow=False, XTitle="\\it{p}_{T} (\\ell_{1}\, \\it{j}) (GeV)"
 lep1jet1_m         : Lep1Jet1_M          : 20,0,200 ; IncludeUnderflow=False, XTitle="m (\\ell_{1}\, \\it{j}) (GeV)"
-lep2jet1_pt        : Lep2Jet1_Pt         : 20,0,200 ; IncludeUnderflow=False, XTitle="//it{p}_{T} (\\ell_{2}\, \\it{j}) (GeV)"
+lep2jet1_pt        : Lep2Jet1_Pt         : 20,0,200 ; IncludeUnderflow=False, XTitle="\\it{p}_{T} (\\ell_{2}\, \\it{j}) (GeV)"
 lep2jet1_m         : Lep2Jet1_M          : 20,0,200 ; IncludeUnderflow=False, XTitle="m (\\ell_{2}\, \\it{j}) (GeV)"
-
-
-lep1jet1_dr        : Lep1Jet1_DR         : 10,0,1   ; IncludeUnderflow=False, XTitle="\\Delta R (\\ell_{1}\, jet) (adim.)"
-lep1lep2jet1_c     : Lep1Lep2Jet1_C      : 20,0,1   ; IncludeUnderflow=False, XTitle="C (#it{e}^{#pm}\, #it{#mu}^{#mp}\, #it{j}) (adim.)"
-httot              : HTtot               : 20,0,600 ; IncludeUnderflow=False, XTitle="H_{T} (GeV)"
 
 ### MVAs
 SergioBDT_1j1b        : SergioBDT_1j1b   : 10,-1,1  ; IncludeUnderflow=False, XTitle="BDT discriminant (adim.)"

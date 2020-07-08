@@ -103,7 +103,7 @@ def PlottingCommand(prod, year, nthreads, outpath, selplot, region, ratio, extra
 
     nth_       = "" if nthreads == 0 else ("--split-factor=-1 -j " + str(nthreads))
     friends_   = friendsscaff
-    outpath_   = outpath + "/" + year + "/" + region
+    outpath_   = outpath + "/" + year + "/" + (region if "_" not in region else (region.split("_")[0] + "/" + region.split("_")[1]))
     selplot_   = " ".join( [ "--sP {p}".format(p = sp) for sp in selplot ] ) if len(selplot) else ""
     ratio_     = "--maxRatioRange " + ratio
 

@@ -1,0 +1,12 @@
+jet2_pt   : Jet_pt[iJetSel30_Recl[1]]    : 20,30,200     ; IncludeUnderflow=False, XTitle="Subleading jet p_{T} (GeV)"
+
+lep1jet1_dr        : Lep1Jet1_DR         : 20,0,5   ; IncludeUnderflow=False, XTitle="\\Delta R (\\ell_{1}\, jet) (adim.)"
+
+lep12jet12_dr      : Lep12Jet12_DR       : 20,0,5   ; IncludeUnderflow=False, XTitle="\\Delta R (\\ell_{12}\, jet_{12}) (adim.)"
+
+lep12jet12met_dr   : Lep12Jet12MET_DR    : 20,0,5   ; IncludeUnderflow=False, XTitle="\\Delta R (\\ell_{12}\, jet_{12} \\it{p}_{T}^{miss}) (adim.)"
+
+### MVAs
+SergioBDT_2j1b     : SergioBDT_2j1b      : 10,-1,1  ; IncludeUnderflow=False, XTitle="BDT discriminant (adim.)"
+SergioBDT_2j1b_smallb : SergioBDT_2j1b   : 1000,-1,1; IncludeUnderflow=False, XTitle="BDT discriminant (adim.)"
+SergioBDT_2j1b_rebin : getBDtWOther(SergioBDT_2j1b) : [0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5] ; IncludeUnderflow=False, XTitle="BDT discriminant (adim.)"
