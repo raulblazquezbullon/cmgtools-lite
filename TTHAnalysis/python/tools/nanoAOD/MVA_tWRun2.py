@@ -15,11 +15,11 @@ class MVA_tWRun2(Module):
         self.MVAs = {}
         self.vars_1j1t = [
             MVAVar("TnLooseCentral",        func = lambda ev : ev.nJetSel20_Recl),
-            MVAVar("TnBTotal",              func = lambda ev : ev.nBJetSelMedium30_Recl),
+            MVAVar("TnBTotal",              func = lambda ev : ev.nBJetSelMedium20_Recl),
             MVAVar("TDilepMETJetPt",        func = lambda ev : ev.Lep1Lep2Jet1MET_Pt),
             MVAVar("TTHTtot",               func = lambda ev : ev.HTtot),
             MVAVar("TTJet1_pt",             func = lambda ev : ev.Jet1_Pt),
-            MVAVar("TTJetLooseCentralpt",   func = lambda ev : ev.JetLoose1_Pt),
+            MVAVar("TTJetLooseCentralpt",   func = lambda ev : ev.JetLoose1_Pt if ev.nJetSel20_Recl else 0.0),
             MVAVar("TDilepMETJetPt_THTtot", func = lambda ev : ev.Lep1Lep2Jet1MET_Pt / ev.HTtot),
             MVAVar("TMSys",                 func = lambda ev : ev.Lep1Lep2Jet1MET_M),
             MVAVar("TC_jll_v2",             func = lambda ev : ev.Lep1Lep2Jet1_C),
@@ -28,11 +28,11 @@ class MVA_tWRun2(Module):
         ]
         self.vars_1j1t_jesup = [
             MVAVar("TnLooseCentral",        func = lambda ev : ev.nJetSel20_jesTotalUp_Recl),
-            MVAVar("TnBTotal",              func = lambda ev : ev.nBJetSelMedium30_jesTotalUp_Recl),
+            MVAVar("TnBTotal",              func = lambda ev : ev.nBJetSelMedium20_jesTotalUp_Recl),
             MVAVar("TDilepMETJetPt",        func = lambda ev : ev.Lep1Lep2Jet1MET_Pt_jesTotalUp),
             MVAVar("TTHTtot",               func = lambda ev : ev.HTtot_jesTotalUp),
             MVAVar("TTJet1_pt",             func = lambda ev : ev.Jet1_Pt_jesTotalUp),
-            MVAVar("TTJetLooseCentralpt",   func = lambda ev : ev.JetLoose1_Pt_jesTotalUp),
+            MVAVar("TTJetLooseCentralpt",   func = lambda ev : ev.JetLoose1_Pt_jesTotalUp if ev.nJetSel20_jesTotalUp_Recl else 0.0),
             MVAVar("TDilepMETJetPt_THTtot", func = lambda ev : ev.Lep1Lep2Jet1MET_Pt_jesTotalUp / ev.HTtot_jesTotalUp),
             MVAVar("TMSys",                 func = lambda ev : ev.Lep1Lep2Jet1MET_M_jesTotalUp),
             MVAVar("TC_jll_v2",             func = lambda ev : ev.Lep1Lep2Jet1_C_jesTotalUp),
@@ -41,11 +41,11 @@ class MVA_tWRun2(Module):
         ]
         self.vars_1j1t_jesdn = [
             MVAVar("TnLooseCentral",        func = lambda ev : ev.nJetSel20_jesTotalDown_Recl),
-            MVAVar("TnBTotal",              func = lambda ev : ev.nBJetSelMedium30_jesTotalDown_Recl),
+            MVAVar("TnBTotal",              func = lambda ev : ev.nBJetSelMedium20_jesTotalDown_Recl),
             MVAVar("TDilepMETJetPt",        func = lambda ev : ev.Lep1Lep2Jet1MET_Pt_jesTotalDown),
             MVAVar("TTHTtot",               func = lambda ev : ev.HTtot_jesTotalDown),
             MVAVar("TTJet1_pt",             func = lambda ev : ev.Jet1_Pt_jesTotalDown),
-            MVAVar("TTJetLooseCentralpt",   func = lambda ev : ev.JetLoose1_Pt_jesTotalDown),
+            MVAVar("TTJetLooseCentralpt",   func = lambda ev : ev.JetLoose1_Pt_jesTotalDown if ev.nJetSel20_jesTotalDown_Recl else 0.0),
             MVAVar("TDilepMETJetPt_THTtot", func = lambda ev : ev.Lep1Lep2Jet1MET_Pt_jesTotalDown / ev.HTtot_jesTotalDown),
             MVAVar("TMSys",                 func = lambda ev : ev.Lep1Lep2Jet1MET_M_jesTotalDown),
             MVAVar("TC_jll_v2",             func = lambda ev : ev.Lep1Lep2Jet1_C_jesTotalDown),
@@ -54,11 +54,11 @@ class MVA_tWRun2(Module):
         ]
         self.vars_1j1t_jerup = [
             MVAVar("TnLooseCentral",        func = lambda ev : ev.nJetSel20_jerUp_Recl),
-            MVAVar("TnBTotal",              func = lambda ev : ev.nBJetSelMedium30_jerUp_Recl),
+            MVAVar("TnBTotal",              func = lambda ev : ev.nBJetSelMedium20_jerUp_Recl),
             MVAVar("TDilepMETJetPt",        func = lambda ev : ev.Lep1Lep2Jet1MET_Pt_jerUp),
             MVAVar("TTHTtot",               func = lambda ev : ev.HTtot_jerUp),
             MVAVar("TTJet1_pt",             func = lambda ev : ev.Jet1_Pt_jerUp),
-            MVAVar("TTJetLooseCentralpt",   func = lambda ev : ev.JetLoose1_Pt_jerUp),
+            MVAVar("TTJetLooseCentralpt",   func = lambda ev : ev.JetLoose1_Pt_jerUp if ev.nJetSel20_jerUp_Recl else 0.0),
             MVAVar("TDilepMETJetPt_THTtot", func = lambda ev : ev.Lep1Lep2Jet1MET_Pt_jerUp / ev.HTtot_jerUp),
             MVAVar("TMSys",                 func = lambda ev : ev.Lep1Lep2Jet1MET_M_jerUp),
             MVAVar("TC_jll_v2",             func = lambda ev : ev.Lep1Lep2Jet1_C_jerUp),
@@ -67,11 +67,11 @@ class MVA_tWRun2(Module):
         ]
         self.vars_1j1t_jerdn = [
             MVAVar("TnLooseCentral",        func = lambda ev : ev.nJetSel20_jerDown_Recl),
-            MVAVar("TnBTotal",              func = lambda ev : ev.nBJetSelMedium30_jerDown_Recl),
+            MVAVar("TnBTotal",              func = lambda ev : ev.nBJetSelMedium20_jerDown_Recl),
             MVAVar("TDilepMETJetPt",        func = lambda ev : ev.Lep1Lep2Jet1MET_Pt_jerDown),
             MVAVar("TTHTtot",               func = lambda ev : ev.HTtot_jerDown),
             MVAVar("TTJet1_pt",             func = lambda ev : ev.Jet1_Pt_jerDown),
-            MVAVar("TTJetLooseCentralpt",   func = lambda ev : ev.JetLoose1_Pt_jerDown),
+            MVAVar("TTJetLooseCentralpt",   func = lambda ev : ev.JetLoose1_Pt_jerDown if ev.nJetSel20_jerDown_Recl else 0.0),
             MVAVar("TDilepMETJetPt_THTtot", func = lambda ev : ev.Lep1Lep2Jet1MET_Pt_jerDown / ev.HTtot_jerDown),
             MVAVar("TMSys",                 func = lambda ev : ev.Lep1Lep2Jet1MET_M_jerDown),
             MVAVar("TC_jll_v2",             func = lambda ev : ev.Lep1Lep2Jet1_C_jerDown),
