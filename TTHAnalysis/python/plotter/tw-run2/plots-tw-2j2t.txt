@@ -12,7 +12,7 @@ jet1_m    : Jet_mass[iJetSel30_Recl[0]]    : 12,0,60       ; IncludeUnderflow=Fa
 jet1_e    : Jet1_E                 : 14,10,250             ; IncludeUnderflow=False, XTitle="Leading jet energy (GeV)"
 jet1_btag : Jet_btagDeepFlavB[iJetSel30_Recl[0]] : 20,0,1  ; IncludeUnderflow=False, XTitle="Leading jet DeepFlavour b-tagging discr. (adim.)"
 
-jet2_pt   : Jet_pt[iJetSel30_Recl[1]]      : 14,10,150     ; IncludeUnderflow=False, XTitle="Subleading jet p_{T} (GeV)"
+jet2_pt   : Jet_pt[iJetSel30_Recl[1]]      : 8,30,190     ; IncludeUnderflow=False, XTitle="Subleading jet p_{T} (GeV)"
 jet2_eta  : Jet_eta[iJetSel30_Recl[1]]     : 15,-2.4,2.4   ; IncludeUnderflow=False, XTitle="Subleading jet #eta"
 jet2_m    : Jet_mass[iJetSel30_Recl[1]]    : 12,0,60       ; IncludeUnderflow=False, XTitle="Subleading jet mass (GeV)"
 jet2_btag : Jet_btagDeepFlavB[iJetSel30_Recl[1]] : 20,0,1  ; IncludeUnderflow=False, XTitle="Subleading jet DeepFlavour b-tagging discr. (adim.)"
