@@ -43,7 +43,7 @@ eval $(scram runtime -sh)
 popd
 echo
 mkdir cache
-export TMPDIR=/tmp/sscruz/`shuf -zer -n20  {A..Z} {a..z} {0..9}`/
+export TMPDIR=/tmp/$USER/`shuf -zer -n20  {A..Z} {a..z} {0..9}`/
 mkdir job
 cd job
 echo '==== copying job dir to worker ===='
