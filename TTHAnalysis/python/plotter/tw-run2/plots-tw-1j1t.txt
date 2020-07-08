@@ -54,4 +54,6 @@ lep1lep2jet1_c     : Lep1Lep2Jet1_C      : 20,0,1   ; IncludeUnderflow=False, XT
 httot              : HTtot               : 20,0,600 ; IncludeUnderflow=False, XTitle="H_{T} (GeV)"
 
 ### MVAs
-SergioBDT_1j1b     : SergioBDT_1j1b      : 10,-1,1  ; IncludeUnderflow=False, XTitle="BDT discriminant (adim.)"
+SergioBDT_1j1b        : SergioBDT_1j1b   : 10,-1,1  ; IncludeUnderflow=False, XTitle="BDT discriminant (adim.)"
+SergioBDT_1j1b_smallb : SergioBDT_1j1b   : 1000,-1,1; IncludeUnderflow=False, XTitle="BDT discriminant (adim.)"
+SergioBDT_1j1b_rebin  : getBDtW(SergioBDT_1j1b) : [0.5,1.5,2.5,3.5,4.5,5.5, 6.5, 7.5, 8.5, 9.5, 10.5] ; IncludeUnderflow=False, XTitle="BDT discriminant (adim.)"
