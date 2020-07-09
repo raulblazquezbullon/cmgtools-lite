@@ -44,6 +44,7 @@ popd
 echo
 mkdir cache
 export TMPDIR=/tmp/$USER/`shuf -zer -n20  {A..Z} {a..z} {0..9}`/
+mkdir -p $TMPDIR
 mkdir job
 cd job
 echo '==== copying job dir to worker ===='
@@ -51,6 +52,8 @@ cp ../* .
 """
        dirCopy = """
 mv Loop/* ../.
+# cleanup
+rm -r $TMPDIR
 """
       
    else: # shared filesystem
