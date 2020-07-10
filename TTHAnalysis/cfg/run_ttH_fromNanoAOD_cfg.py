@@ -59,11 +59,11 @@ if analysis == "main":
         #"TTJets_SingleLeptonFromT", "TTJets_SingleLeptonFromTbar", "TTJets_DiLepton",
         "T_sch_lep", "T_tch", "TBar_tch", "T_tWch_noFullyHad", "TBar_tWch_noFullyHad",
         # conversions
-        "TTGJets", "TGJets_lep", "WGToLNuG", "ZGTo2LG",'TTGJets_ext'
+        "TTGJets", "TGJets_lep", "WGToLNuG", "ZGTo2LG","WGToLNuG_01J",'TTGJets_ext'
         # ttV
         "TTWToLNu_fxfx", "TTZToLLNuNu_amc", "TTZToLLNuNu_m1to10",'TTWToLNu', 'TTZToLLNuNu',
         # ttH + tHq/tHW
-        "TTHnobb_fxfx", "THQ_ctcvcp", "THW_ctcvcp", "TTH_ctcvcp",'TTH_pow',
+        "TTHnobb_pow", "THQ", "THW", "TTH_ctcvcp",'TTH_pow',
         # top + V rare processes
         "TZQToLL", "tWll", "TTTT", "TTWW",'tZq_ll_1','tZq_ll_2','TTWW_LO'
         # diboson + DPS + WWss
@@ -99,13 +99,13 @@ if getHeppyOption('applyTriggersInMC'):
         comp.triggers = mcTriggers
 
 # make data
-print(DatasetsAndTriggers)
+#print(DatasetsAndTriggers)
 dataSamples = []; vetoTriggers = []
 for pd, trigs in DatasetsAndTriggers:
     if not trigs: continue
-    print([pd])
+    #print([pd])
     for comp in byCompName(allData, [pd+'.*']):
-        print(comp)
+        #print(comp)
         comp.triggers = trigs[:]
         comp.vetoTriggers = vetoTriggers[:]
         dataSamples.append(comp)
