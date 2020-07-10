@@ -72,6 +72,22 @@ class ComponentCreator(object):
 
         return component
 
+    def makeMyPrivateDataComponent(self,name,dataset,user,pattern,dbsInstance,json=None,run_range=None,triggers=[],vetoTriggers=[],useAAA=False,jsonFilter=False):
+         component = cfg.DataComponent(
+            #dataset = dataset,
+            name = name,
+            files = self.getMyFiles(dataset,user,pattern,dbsInstance,useAAA=useAAA),
+            intLumi = 1,
+            triggers = triggers,
+            json = (json if jsonFilter else None)
+            )
+         component.json = json
+         component.vetoTriggers = vetoTriggers
+         #component.dataset_entries = self.getPrimaryDatasetEntries(dataset,user,pattern,run_range=run_range,useAAA=useAAA)
+         component.dataset = dataset
+         component.run_range = run_range
+         component.splitFactor = 100
+         return component
     def getFilesFromEOS(self,name,dataset,path,pattern=".*root"):
         from CMGTools.Production.dataset import getDatasetFromCache, writeDatasetToCache
         if "%" in path: path = path % dataset;
@@ -175,6 +191,7 @@ class ComponentCreator(object):
             triggers = triggers,
             json = (json if jsonFilter else None)
             )
+        if useAAA==True: print('aa2' )
         component.json = json
         component.vetoTriggers = vetoTriggers
         component.dataset_entries = self.getPrimaryDatasetEntries(dataset,user,pattern,run_range=run_range)
@@ -188,7 +205,9 @@ class ComponentCreator(object):
         ds = createDataset( user, dataset, pattern, readcache=True, run_range=run_range, json=json, unsafe = unsafe )
         files = ds.listOfGoodFiles()
         mapping = 'root://eoscms.cern.ch//eos/cms%s'
-        if useAAA: mapping = 'root://cms-xrd-global.cern.ch/%s'
+        if useAAA:
+           print('aaa') 
+           mapping = 'root://cms-xrd-global.cern.ch/%s'
         return [ mapping % f for f in files]
 
     def getPrimaryDatasetEntries(self, dataset, user, pattern, useAAA=False, run_range=None):
