@@ -68,31 +68,31 @@ THW,
 ]
 
 
-T_sch_lep = kreator.makeMCComponent("T_sch_lep", "/ST_s-channel_4f_leptonDecays_TuneCP5_PSweights_13TeV-amcatnlo-pythia8/schoef-TopNanoAODv6-1-2-2_2016-88146d75cb10601530484643de5f7795/USER", "CMS", ".*root", (7.20+4.16)*0.108*3, fracNegWeights=0.188)
-T_sch_lep_2 = kreator.makeMCComponent("T_sch", "/ST_s-channel_4f_leptonDecays_TuneCP5_PSweights_13TeV-amcatnlo-pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "CMS", ".*root", (7.20+4.16)*0.108*3, fracNegWeights=0.188)
+T_sch_lep = kreator.makeMyPrivateMCComponent("T_sch_lep", "/ST_s-channel_4f_leptonDecays_TuneCP5_PSweights_13TeV-amcatnlo-pythia8/schoef-TopNanoAODv6-1-2-2_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', (7.20+4.16)*0.108*3, fracNegWeights=0.188, useAAA=True)
+T_sch_lep_2 = kreator.makeMyPrivateMCComponent("T_sch", "/ST_s-channel_4f_leptonDecays_TuneCP5_PSweights_13TeV-amcatnlo-pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', (7.20+4.16)*0.108*3, fracNegWeights=0.188, useAAA=True)
 
-T_tch = kreator.makeMCComponent("T_tch", "/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8/schoef-TopNanoAODv6-1-2-2_2016-88146d75cb10601530484643de5f7795/USER", "CMS", ".*root", 136.02) # inclusive sample
-T_tch_ext = kreator.makeMCComponent("T_tch_ext", "/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "CMS", ".*root", 136.02) # inclusive sample
+T_tch = kreator.makeMyPrivateMCComponent("T_tch", "/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8/schoef-TopNanoAODv6-1-2-2_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 136.02, useAAA=True) # inclusive sample
+T_tch_ext = kreator.makeMyPrivateMCComponent("T_tch_ext", "/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 136.02, useAAA=True) # inclusive sample
 #TBar_tch = kreator.makeMCComponent("TBar_tch", "/ST_t-channel_antitop_4f_inclusiveDecays_13TeV-powhegV2-madspin-pythia8_TuneCUETP8M1/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6-v1/NANOAODSIM", "CMS", ".*root", 80.95) # inclusive sample
 
 
 
 
-T_tWch_noFullyHad = kreator.makeMCComponent("T_tWch_noFullyHad", "/ST_tW_top_5f_NoFullyHadronicDecays_13TeV-powheg_TuneCUETP8M1/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "CMS", ".*root",19.55)
+T_tWch_noFullyHad = kreator.makeMyPrivateMCComponent("T_tWch_noFullyHad", "/ST_tW_top_5f_NoFullyHadronicDecays_13TeV-powheg_TuneCUETP8M1/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03',19.55, useAAA=True)
 #T_tWch_noFullyHad_ext = kreator.makeMCComponent("T_tWch_noFullyHad_ext", "/ST_tW_top_5f_NoFullyHadronicDecays_13TeV-powheg_TuneCUETP8M1/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6_ext1-v2/NANOAODSIM", "CMS", ".*root",19.55)
 #T_tWch_noFullyHad_ext2 = kreator.makeMCComponent("T_tWch_noFullyHad_ext2", "/ST_tW_top_5f_NoFullyHadronicDecays_13TeV-powheg_TuneCUETP8M1/RunIISummer16NanoAODv4-Nano14Dec2018_102X_mcRun2_asymptotic_v6_ext2-v1/NANOAODSIM", "CMS", ".*root",19.55)
 
-TBar_tWch_noFullyHad      = kreator.makeMCComponent("TBar_tWch_noFullyHad"     , "/ST_tW_antitop_5f_NoFullyHadronicDecays_13TeV-powheg_TuneCUETP8M1/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "CMS", ".*root",19.55)
-TBar_tWch_noFullyHad_ext  = kreator.makeMCComponent("TBar_tWch_noFullyHad_ext" , "/ST_tW_antitop_5f_NoFullyHadronicDecays_13TeV-powheg_TuneCUETP8M1/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "CMS", ".*root",19.55)
+TBar_tWch_noFullyHad      = kreator.makeMyPrivateMCComponent("TBar_tWch_noFullyHad"     , "/ST_tW_antitop_5f_NoFullyHadronicDecays_13TeV-powheg_TuneCUETP8M1/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03',19.55, useAAA=True)
+TBar_tWch_noFullyHad_ext  = kreator.makeMyPrivateMCComponent("TBar_tWch_noFullyHad_ext" , "/ST_tW_antitop_5f_NoFullyHadronicDecays_13TeV-powheg_TuneCUETP8M1/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03',19.55, useAAA=True)
 #TBar_tWch_noFullyHad_ext2 = kreator.makeMCComponent("TBar_tWch_noFullyHad_ext2", "/ST_tW_antitop_5f_NoFullyHadronicDecays_13TeV-powheg_TuneCUETP8M1/RunIISummer16NanoAODv4-Nano14Dec2018_102X_mcRun2_asymptotic_v6_ext2-v1/NANOAODSIM", "CMS", ".*root",19.55)
 
 
-T_tWch = kreator.makeMCComponent("T_tWch", "/ST_tW_top_5f_inclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8/schoef-TopNanoAODv6-1-2-2_2016-88146d75cb10601530484643de5f7795/USER", "CMS", ".*root",35.6)
-T_tWch_ext = kreator.makeMCComponent("T_tWch_ext", "/ST_tW_top_5f_inclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "CMS", ".*root",35.6)
+T_tWch = kreator.makeMyPrivateMCComponent("T_tWch", "/ST_tW_top_5f_inclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8/schoef-TopNanoAODv6-1-2-2_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03',35.6, useAAA=True)
+T_tWch_ext = kreator.makeMyPrivateMCComponent("T_tWch_ext", "/ST_tW_top_5f_inclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03',35.6, useAAA=True)
 
 
 
-TBar_tWch = kreator.makeMCComponent("TBar_tWch", "//ST_tW_antitop_5f_inclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "CMS", ".*root",35.6)
+TBar_tWch = kreator.makeMyPrivateMCComponent("TBar_tWch", "/ST_tW_antitop_5f_inclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03',35.6, useAAA=True)
 
 
 TGJets_lep = kreator.makeMyPrivateMCComponent("TGJets_lep", "/TGJets_leptonDecays_13TeV_amcatnlo_madspin_pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 1.018, fracNegWeights=0.4, useAAA=True)
@@ -430,7 +430,7 @@ VVTo2L2Nu,
 ZGTo2LG,
 WWDoubleTo2L,
 #WpWpJJ,
-WW_DPS
+WW_DPS,
 WW,
 #WW_ext,
 #WZ,
