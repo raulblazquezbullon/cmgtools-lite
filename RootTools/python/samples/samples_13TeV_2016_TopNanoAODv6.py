@@ -110,7 +110,7 @@ T_sch_lep_2,
 #T_sch,
 
 T_tch,
-T_tch_ext
+T_tch_ext,
 #TBar_tch,
 
 T_tWch_noFullyHad,
