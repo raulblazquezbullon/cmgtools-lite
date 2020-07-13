@@ -1,14 +1,19 @@
 ttbar_matching_up : Tree_TTTo2L2Nu_hdampUP_TuneCP5_0 + Tree_TTTo2L2Nu_hdampUP_TuneCP5_1 + Tree_TTTo2L2Nu_hdampUP_TuneCP5_2 + Tree_TTTo2L2Nu_hdampUP_TuneCP5_3 + Tree_TTTo2L2Nu_hdampUP_TuneCP5_4 + Tree_TTTo2L2Nu_hdampUP_TuneCP5_ext1_0 + Tree_TTTo2L2Nu_hdampUP_TuneCP5_ext1_1 + Tree_TTTo2L2Nu_hdampUP_TuneCP5_ext1_2 + Tree_TTTo2L2Nu_hdampUP_TuneCP5_ext1_3 + Tree_TTTo2L2Nu_hdampUP_TuneCP5_ext1_4 + Tree_TTTo2L2Nu_hdampUP_TuneCP5_ext1_5 + Tree_TTTo2L2Nu_hdampUP_TuneCP5_ext1_6 + Tree_TTTo2L2Nu_hdampUP_TuneCP5_ext1_7 : 88.28769753; genSumWeightName="genEventSumw_"
+
 ttbar_matching_dn : Tree_TTTo2L2Nu_hdampDOWN_TuneCP5_0 + Tree_TTTo2L2Nu_hdampDOWN_TuneCP5_1 + Tree_TTTo2L2Nu_hdampDOWN_TuneCP5_2 + Tree_TTTo2L2Nu_hdampDOWN_TuneCP5_3 + Tree_TTTo2L2Nu_hdampDOWN_TuneCP5_4 + Tree_TTTo2L2Nu_hdampDOWN_TuneCP5_5 + Tree_TTTo2L2Nu_hdampDOWN_TuneCP5_6 + Tree_TTTo2L2Nu_hdampDOWN_TuneCP5_ext1_0 + Tree_TTTo2L2Nu_hdampDOWN_TuneCP5_ext1_1 + Tree_TTTo2L2Nu_hdampDOWN_TuneCP5_ext1_2 + Tree_TTTo2L2Nu_hdampDOWN_TuneCP5_ext1_3 + Tree_TTTo2L2Nu_hdampDOWN_TuneCP5_ext1_4 + Tree_TTTo2L2Nu_hdampDOWN_TuneCP5_ext1_5 + Tree_TTTo2L2Nu_hdampDOWN_TuneCP5_ext1_6 + Tree_TTTo2L2Nu_hdampDOWN_TuneCP5_ext1_7 + Tree_TTTo2L2Nu_hdampDOWN_TuneCP5_ext1_8 : 88.28769753; genSumWeightName="genEventSumw_"
 
-colour_erdon      :  : 88.28769753; genSumWeightName="genEventSumw_"
-colour_qcd        :  : 88.28769753; genSumWeightName="genEventSumw_"
-colour_gluonmove  :  : 88.28769753; genSumWeightName="genEventSumw_"
+#colour_erdon      :  : 88.28769753; genSumWeightName="genEventSumw_"
+
+#colour_qcd        :  : 88.28769753; genSumWeightName="genEventSumw_"
+
+#colour_gluonmove  :  : 88.28769753; genSumWeightName="genEventSumw_"
 
 ue_up             : Tree_TTTo2L2Nu_TuneCP5up_0 + Tree_TTTo2L2Nu_TuneCP5up_1 + Tree_TTTo2L2Nu_TuneCP5up_2 + Tree_TTTo2L2Nu_TuneCP5up_3 + Tree_TTTo2L2Nu_TuneCP5up_4 + Tree_TTTo2L2Nu_TuneCP5up_5 + Tree_TTTo2L2Nu_TuneCP5up_ext1_0 + Tree_TTTo2L2Nu_TuneCP5up_ext1_1 + Tree_TTTo2L2Nu_TuneCP5up_ext1_2 + Tree_TTTo2L2Nu_TuneCP5up_ext1_3 + Tree_TTTo2L2Nu_TuneCP5up_ext1_4 + Tree_TTTo2L2Nu_TuneCP5up_ext1_5 + Tree_TTTo2L2Nu_TuneCP5up_ext1_6 + Tree_TTTo2L2Nu_TuneCP5up_ext1_7 : 88.28769753; genSumWeightName="genEventSumw_"
+
 ue_dn             : Tree_TTTo2L2Nu_TuneCP5down_0 + Tree_TTTo2L2Nu_TuneCP5down_1 + Tree_TTTo2L2Nu_TuneCP5down_2 + Tree_TTTo2L2Nu_TuneCP5down_3 + Tree_TTTo2L2Nu_TuneCP5down_4 + Tree_TTTo2L2Nu_TuneCP5down_ext1_0 + Tree_TTTo2L2Nu_TuneCP5down_ext1_1 + Tree_TTTo2L2Nu_TuneCP5down_ext1_2 + Tree_TTTo2L2Nu_TuneCP5down_ext1_3 + Tree_TTTo2L2Nu_TuneCP5down_ext1_4 + Tree_TTTo2L2Nu_TuneCP5down_ext1_5 + Tree_TTTo2L2Nu_TuneCP5down_ext1_6 + Tree_TTTo2L2Nu_TuneCP5down_ext1_7 : 88.28769753; genSumWeightName="genEventSumw_"
 
 mtop_up           : Tree_TTTo2L2Nu_mtop173p5_TuneCP5_0.root + Tree_TTTo2L2Nu_mtop173p5_TuneCP5_1.root : 88.28769753; genSumWeightName="genEventSumw_"
+
 mtop_dn           : Tree_TTTo2L2Nu_mtop171p5_TuneCP5_0 + Tree_TTTo2L2Nu_mtop171p5_TuneCP5_1 + Tree_TTTo2L2Nu_mtop171p5_TuneCP5_2 + Tree_TTTo2L2Nu_mtop171p5_TuneCP5_3 + Tree_TTTo2L2Nu_mtop171p5_TuneCP5_4 + Tree_TTTo2L2Nu_mtop171p5_TuneCP5_5 : 88.28769753; genSumWeightName="genEventSumw_"
 
 
