@@ -21,11 +21,28 @@ logpath      = friendspath + "/" + prodname + "/{y}/{step_prefix}/logs"
 utilspath    = "/nfs/fanae/user/vrbouza/Proyectos/tw_run2/desarrollo/susyMaintenanceScripts/friendsWithBenefits"
 commandscaff = "python prepareEventVariablesFriendTree.py -t NanoAOD {inpath} {outpath} -I CMGTools.TTHAnalysis.tools.nanoAOD.TopRun2_modules {module} {friends} {dataset} -N {chunksize} {cluster} {ex}"
 clusterscaff = "--log {logdir} --name {jobname} -q {queue} --env oviedo"
-friendfolders = ["0_yeartag", "1_lepmerge_roch", "2_cleaning", "3_varstrigger", "4_scalefactors", "5_mvas"]
+#friendfolders = ["0_yeartag", "1_lepmerge_roch", "2_cleaning", "3_varstrigger", "4_scalefactors", "5_mvas"]
+friendfolders = {0 : "0_yeartag",
+                 1 : "1_lepmerge_roch",
+                 2 : "2_cleaning",
+                 3 : "3_varstrigger",
+                 4 : "4_scalefactors",
+                 5 : "5_mvas",
+                 "mvatrain" : "x_mvatrain"
+                }
 #chunksizes    = [5000000, 100000, 500000, 100000, 250000] # veyos
 #chunksizes    = [5000000, 250000, 500000, 250000, 250000] # novos
 #chunksizes    = [5000000, 250000, 5000000, 250000, 250000, 250000] # mais novos inda
-chunksizes    = [5000000, 250000, 5000000, 500000, 500000, 250000] # pa la futura
+#chunksizes    = [5000000, 250000, 5000000, 500000, 500000, 250000] # pa la futura
+chunksizes    = {0 : 5000000,
+                 1 : 250000,
+                 2 : 5000000,
+                 3 : 500000,
+                 4 : 500000,
+                 5 : 250000,
+                 "mvatrain" : 250000,
+                 #"mvatrain" : 500000,
+                 } # pa la futura
 minchunkbytes = 1000
 
 class errs(enum.IntEnum):
@@ -35,6 +52,12 @@ class errs(enum.IntEnum):
     entries = 3
     corrupt = 4
 
+
+minitnamedict = {
+    "ttbar" : ["TTTo2L2Nu"],
+    "tw"    : ["tW", "tW_noFullHad"],
+    "tbarw" : ["tbarW", "tbarW_noFullHad"],
+    }
 
 
 sampledict  = {}
@@ -48,8 +71,11 @@ sampledict[2016] = {
     "TT_CUETP8M2T4"    : ["Tree_TT_TuneCUETP8M2T4_PSweights*", "Tree_TT_TuneCUETP8M2T4_0", "Tree_TT_TuneCUETP8M2T4_1", "Tree_TT_TuneCUETP8M2T4_2", "Tree_TT_TuneCUETP8M2T4_3"], # Nobackup ta mal
 
     ### tW
-    "tW_noFullHad"    : "Tree_tW_5f_noFullHad_",
-    "tbarW_noFullHad" : "Tree_tbarW_5f_noFullHad_",
+    "tW_noFullHad_CUETP8M2T4"    : "Tree_tW_5f_noFullHad_",
+    "tbarW_noFullHad_CUETP8M2T4" : "Tree_tbarW_5f_noFullHad_",
+
+    "tW"    : "Tree_tW_5f_inclusiveDecays_TuneCP5_PSweights_",
+    "tbarW" : "Tree_tbarW_5f_inclusiveDecays_TuneCP5_PSweights_",
 
     ### WJets
     "WJetsToLNu_MLM": "Tree_WJetsToLNu_TuneCUETP8M1_MLM",
@@ -86,22 +112,33 @@ sampledict[2016] = {
 
     ##### Incertidumbres
     #### tW
-    "tW_noFullHad_DS"    : "Tree_tW_5f_DS_noFullHad_TuneCUETP8M",
-    "tbarW_noFullHad_DS" : "Tree_tbarW_5f_DS_noFullHad",
+    "tW_noFullHad_DS_CUETP8M2T4"    : "Tree_tW_5f_DS_noFullHad_TuneCUETP8M",
+    "tbarW_noFullHad_DS_CUETP8M2T4" : "Tree_tbarW_5f_DS_noFullHad",
 
     #### ttbar
-    "TT_hdampUp"     : "Tree_TT_hdampUP_TuneCUETP8M2T4",
-    "TT_hdampDown"   : "Tree_TT_hdampDOWN_TuneCUETP8M2T4",
+    "TT_hdampUp_CUETP8M2T4"     : "Tree_TT_hdampUP_TuneCUETP8M2T4",
+    "TT_hdampDown_CUETP8M2T4"   : "Tree_TT_hdampDOWN_TuneCUETP8M2T4",
 
-    "TT_GluonMoveCRTune"      : "Tree_TT_TuneCUETP8M2T4_GluonMoveCRTune_ext1",
-    "TT_QCDbasedCRTune_erdON" : "Tree_TT_TuneCUETP8M2T4_QCDbasedCRTune_erdON",
-    "TT_erdON"                : "Tree_TT_TuneCUETP8M2T4_erdON",
+    "TT_GluonMoveCRTune_CUETP8M2T4"      : "Tree_TT_TuneCUETP8M2T4_GluonMoveCRTune_ext1",
+    "TT_QCDbasedCRTune_erdON_CUETP8M2T4" : "Tree_TT_TuneCUETP8M2T4_QCDbasedCRTune_erdON",
+    "TT_erdON_CUETP8M2T4"                : "Tree_TT_TuneCUETP8M2T4_erdON",
 
-    "TT_UEUp"   : "Tree_TT_TuneCUETP8M2T4up",
-    "TT_UEDown" : "Tree_TT_TuneCUETP8M2T4down",
+    "TT_UEUp_CUETP8M2T4"   : "Tree_TT_TuneCUETP8M2T4up",
+    "TT_UEDown_CUETP8M2T4" : "Tree_TT_TuneCUETP8M2T4down",
 
-    "TT_mtop1735" : "Tree_TT_TuneCUETP8M2T4_mtop1735",
-    "TT_mtop1715" : "Tree_TT_TuneCUETP8M2T4_mtop1715",
+    "TT_mtop1735_CUETP8M2T4" : "Tree_TT_TuneCUETP8M2T4_mtop1735",
+    "TT_mtop1715_CUETP8M2T4" : "Tree_TT_TuneCUETP8M2T4_mtop1715",
+
+
+    "TTTo2L2Nu_hdampUp"     : "Tree_TTTo2L2Nu_hdampUP_TuneCP5_PSweights_",
+    "TTTo2L2Nu_hdampDown"   : "Tree_TTTo2L2Nu_hdampDOWN_TuneCP5_PSweights_",
+
+    "TTTo2L2Nu_GluonMoveCRTune"      : "Tree_TTTo2L2Nu_TuneCP5CR2_GluonMove_PSweights_",
+    "TTTo2L2Nu_QCDbasedCRTune_erdON" : "Tree_TTTo2L2Nu_TuneCP5CR1_QCDbased_PSweights_",
+    "TTTo2L2Nu_erdON"                : "Tree_TTTo2L2Nu_TuneCP5_PSweights_erdON_",
+
+    #"TTTo2L2Nu_UEUp"   : "Tree_TTTo2L2Nu_TuneCP5up_PSweights_",# CORRUPTO
+    "TTTo2L2Nu_UEDown" : "Tree_TTTo2L2Nu_TuneCP5down_PSweights_",
 
 
     #### Datos
@@ -121,8 +158,11 @@ sampledict[2017] = {
     "TTToSemiLeptonic" : "Tree_TTToSemiLeptonic_TuneCP5_",
 
     # tW
-    "tbarW_noFullHad" : "Tree_tbarW_5f_noFullHad_TuneCP5_",
+    #"tW"              : "Tree_tW_5f_inclusiveDecays_TuneCP5_PSweights_pythia8new_",# CORRUPTO
+    #"tbarW"           : "",   # NUN TA
+
     "tW_noFullHad"    : "Tree_tW_5f_noFullHad_TuneCP5_",
+    "tbarW_noFullHad" : "Tree_tbarW_5f_noFullHad_TuneCP5_",
 
     # W Jets
     "WJetsToLNu_MLM" : "Tree_WJetsToLNu_TuneCP5_MLM",
@@ -154,8 +194,26 @@ sampledict[2017] = {
     "TTZToQQ"          : "Tree_TTZToQQ_TuneCP5_amcatnlo",
 
 
-    ##### Incertidumbres
-    #### tW
+    #### Incertidumbres
+    ### tW
+    "tW_DS"             : "Tree_tW_5f_DS_inclusiveDecays_TuneCP5_PSweights_",
+    #"tbarW_DS"          : "",                               # NUN TA
+
+    "tW_TuneCP5Up"      : "Tree_tW_5f_inclusiveDecays_TuneCP5up_PSweights_",
+    "tbarW_TuneCP5Up"   : "Tree_tbarW_5f_inclusiveDecays_TuneCP5up_PSweights_pyth_",
+    #"tW_TuneCP5Down"    : "",                            # NUN TA
+    #"tbarW_TuneCP5Down" : "",                            # NUN TA
+
+
+    #"tW_noFullHad_TuneCP5Up"      : "", # NUN TA
+    #"tbarW_noFullHad_TuneCP5Up"   : "", # NUN TA
+    "tW_noFullHad_TuneCP5Down"    : "Tree_tW_5f_noFullHad_TuneCP5down_PSweights_",
+    "tbarW_noFullHad_TuneCP5Down" : "Tree_tbarW_5f_noFullHad_TuneCP5down_PSweights_pow_",
+
+    #"tW_mtop173p5"      : "",                                   # NUN TA
+    "tbarW_mtop173p5"   : "Tree_tbarW_5f_inclusiveDecays_mtop1735_TuneCP5_PSweights_powh_",
+    "tW_mtop171p5"      : "Tree_tW_5f_inclusiveDecays_mtop1715_TuneCP5_PSweights_p_",
+    "tbarW_mtop171p5"   : "Tree_tbarW_5f_inclusiveDecays_mtop1715_TuneCP5_PSweights_powh_",
 
     #### ttbar
     "TTTo2L2Nu_hdampUp"     : "Tree_TTTo2L2Nu_hdampUP_TuneCP5_PSweights",
@@ -167,6 +225,9 @@ sampledict[2017] = {
     "TTTo2L2Nu_mtop173p5"   : "Tree_TTTo2L2Nu_mtop173p5_TuneCP5_PSweights",
     "TTTo2L2Nu_mtop171p5"   : "Tree_TTTo2L2Nu_mtop171p5_TuneCP5_PSweights",
 
+    "TTTo2L2Nu_GluonMoveCRTune"      : "Tree_TTTo2L2Nu_TuneCP5CR2_GluonMove_PSweights_",
+    #"TTTo2L2Nu_QCDbasedCRTune_erdON" : "Tree_TTTo2L2Nu_TuneCP5CR1_QCDbased_PSweights_",# CORRUPTO
+    "TTTo2L2Nu_erdON"                : "Tree_TTTo2L2Nu_TuneCP5_erdON_",
 
     #### Datos
     "SingleMuon"     : "Tree_SingleMuon_Run2017",
@@ -186,6 +247,9 @@ sampledict[2018] = {
     "TTToSemiLeptonic" : "Tree_TTToSemiLeptonic_TuneCP5_",
 
     # tW
+    "tW"              : "Tree_tW_5f_inclusiveDecays_TuneCP5_ext1_",
+    "tbarW"           : "Tree_tbarW_5f_inclusiveDecays_TuneCP5_ext1_",
+
     "tW_noFullHad"    : ["Tree_tW_5f_noFullHad_TuneCP5_ext1_0"],
     "tbarW_noFullHad" : ["Tree_tbarW_5f_noFullHad_TuneCP5_ext_0"],
 
@@ -242,8 +306,21 @@ sampledict[2018] = {
     "TTZToQQ"          : "Tree_TTZToQQ_TuneCP5_amcatnlo",
 
 
-    ##### Incertidumbres
+    #### Incertidumbres
     #### tW
+    #"tW_DS"             : "", # NUN TA
+    #"tbarW_DS"          : "", # NUN TA
+
+    "tW_TuneCP5Up"      : "Tree_tW_5f_inclusiveDecays_TuneCP5up_PSweights_",
+    "tbarW_TuneCP5Up"   : "Tree_tbarW_5f_inclusiveDecays_TuneCP5up_",
+    "tW_TuneCP5Down"    : "Tree_tW_5f_inclusiveDecays_TuneCP5down_PSweights_pythia_",
+    "tbarW_TuneCP5Down" : "Tree_tbarW_5f_inclusiveDecays_TuneCP5down_",
+
+    "tW_noFullHad_TuneCP5Up"      : "Tree_tW_5f_noFullHad_TuneCP5up_",
+    "tbarW_noFullHad_TuneCP5Up"   : "Tree_tbarW_5f_noFullHad_TuneCP5up_",
+    "tW_noFullHad_TuneCP5Down"    : "Tree_tW_5f_noFullHad_TuneCP5down_",
+    "tbarW_noFullHad_TuneCP5Down" : "Tree_tbarW_5f_noFullHad_TuneCP5down_pythia_",
+
 
     #### ttbar
     "TTTo2L2Nu_hdampUp"     : "Tree_TTTo2L2Nu_hdampUP_TuneCP5",
@@ -255,12 +332,47 @@ sampledict[2018] = {
     "TTTo2L2Nu_mtop173p5"   : "Tree_TTTo2L2Nu_mtop173p5_TuneCP5",
     "TTTo2L2Nu_mtop171p5"   : "Tree_TTTo2L2Nu_mtop171p5_TuneCP5",
 
+    "TTTo2L2Nu_GluonMoveCRTune"      : "Tree_TTTo2L2Nu_TuneCP5CR2_GluonMove_PSweights_",
+    "TTTo2L2Nu_QCDbasedCRTune_erdON" : "Tree_TTTo2L2Nu_TuneCP5CR1_QCDbased_PSweights_",
+    #"TTTo2L2Nu_erdON"                : "Tree_TTTo2L2Nu_TuneCP5_erdON_",                 # CORRUPTO
 
     #### Datos
     "SingleMuon" : "Tree_SingleMuon_Run2018",
     "EGamma"     : "Tree_EGamma_Run2018",
     "DoubleMuon" : "Tree_DoubleMuon_Run2018",
     "MuonEG"     : "Tree_MuonEG_Run2018",
+}
+
+trainsampledict = {}; trainsampledict[2016] = {}; trainsampledict[2017] = {}; trainsampledict[2018] = {}
+trainsampledict[2016] = {
+    ### ttbar
+    "TTTo2L2Nu" : ['Tree_TTTo2L2Nu_TuneCP5_PSweights_0', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_1', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_2', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_3', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_4', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_5', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_6', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_7', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_8', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_9', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_10', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_11', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_12'],
+
+    ### tW
+
+    "tW"    : "Tree_tW_5f_inclusiveDecays_TuneCP5_PSweights_",
+    "tbarW" : "Tree_tbarW_5f_inclusiveDecays_TuneCP5_PSweights_",
+}
+
+
+trainsampledict[2017] = {
+    "TTTo2L2Nu"           : ["Tree_TTTo2L2Nu_TuneCP5_PSweights_*", "Tree_TTTo2L2Nu_TuneCP5_*"],
+
+    "tW_noFullHad"    : "Tree_tW_5f_noFullHad_TuneCP5_",
+    "tbarW_noFullHad" : "Tree_tbarW_5f_noFullHad_TuneCP5_",
+}
+
+
+trainsampledict[2018] = {
+    # ttbar
+    "TTTo2L2Nu" : ['Tree_TTTo2L2Nu_TuneCP5_0', 'Tree_TTTo2L2Nu_TuneCP5_1', 'Tree_TTTo2L2Nu_TuneCP5_2', 'Tree_TTTo2L2Nu_TuneCP5_3', 'Tree_TTTo2L2Nu_TuneCP5_4', 'Tree_TTTo2L2Nu_TuneCP5_5', 'Tree_TTTo2L2Nu_TuneCP5_6', 'Tree_TTTo2L2Nu_TuneCP5_7', 'Tree_TTTo2L2Nu_TuneCP5_8', 'Tree_TTTo2L2Nu_TuneCP5_9', 'Tree_TTTo2L2Nu_TuneCP5_10', 'Tree_TTTo2L2Nu_TuneCP5_11', 'Tree_TTTo2L2Nu_TuneCP5_12', 'Tree_TTTo2L2Nu_TuneCP5_13', 'Tree_TTTo2L2Nu_TuneCP5_14', 'Tree_TTTo2L2Nu_TuneCP5_15', 'Tree_TTTo2L2Nu_TuneCP5_16', 'Tree_TTTo2L2Nu_TuneCP5_17', 'Tree_TTTo2L2Nu_TuneCP5_18', 'Tree_TTTo2L2Nu_TuneCP5_19', 'Tree_TTTo2L2Nu_TuneCP5_20', 'Tree_TTTo2L2Nu_TuneCP5_21', 'Tree_TTTo2L2Nu_TuneCP5_22', 'Tree_TTTo2L2Nu_TuneCP5_23', 'Tree_TTTo2L2Nu_TuneCP5_24', 'Tree_TTTo2L2Nu_TuneCP5_25', 'Tree_TTTo2L2Nu_TuneCP5_26', 'Tree_TTTo2L2Nu_TuneCP5_27', 'Tree_TTTo2L2Nu_TuneCP5_28', 'Tree_TTTo2L2Nu_TuneCP5_29', 'Tree_TTTo2L2Nu_TuneCP5_30', 'Tree_TTTo2L2Nu_TuneCP5_31', 'Tree_TTTo2L2Nu_TuneCP5_32', 'Tree_TTTo2L2Nu_TuneCP5_33', 'Tree_TTTo2L2Nu_TuneCP5_34', 'Tree_TTTo2L2Nu_TuneCP5_35', 'Tree_TTTo2L2Nu_TuneCP5_36', 'Tree_TTTo2L2Nu_TuneCP5_37', 'Tree_TTTo2L2Nu_TuneCP5_38', 'Tree_TTTo2L2Nu_TuneCP5_39', 'Tree_TTTo2L2Nu_TuneCP5_40', 'Tree_TTTo2L2Nu_TuneCP5_41', 'Tree_TTTo2L2Nu_TuneCP5_42', 'Tree_TTTo2L2Nu_TuneCP5_43', 'Tree_TTTo2L2Nu_TuneCP5_44'],
+
+    # tW
+    #"tW"              : "Tree_tW_5f_inclusiveDecays_TuneCP5_ext1_",
+    #"tbarW"           : "Tree_tbarW_5f_inclusiveDecays_TuneCP5_ext1_",
+
+    "tW_noFullHad"    : ["Tree_tW_5f_noFullHad_TuneCP5_ext1_0"],
+    "tbarW_noFullHad" : ["Tree_tbarW_5f_noFullHad_TuneCP5_ext_0"],
 }
 
 
@@ -375,11 +487,19 @@ def SendDatasetJobs(task):
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 3) + friendsuff
 
     elif step == 5:
-        module_  = "mvas"
+        module_  = "mvas_" + ("mc" if not isData else "data")
         friends_ +=       friendpref + getFriendsFolder(dataset, friendsbasepath, 0) + friendsuff
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 1) + friendsuff
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 2) + friendsuff
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 3) + friendsuff
+
+    elif step == "mvatrain":
+        module_  = "createMVAMiniTree"
+        friends_ +=       friendpref + getFriendsFolder(dataset, friendsbasepath, 0) + friendsuff
+        friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 1) + friendsuff
+        friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 2) + friendsuff
+        friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 3) + friendsuff
+        friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 4) + friendsuff
 
     if module_ != "":
         comm = commandscaff.format(inpath  = inputpath_,
@@ -631,7 +751,7 @@ def MergeThoseChunks(year, step, queue, extra, noconf = False):
                         comm = "hadd -f3 " + basefolder + "/" + dat + "Friend.root "
 
 
-                        #### NOTE: this step of ordering is EXTREMELY IMPORTANT. PLEASE DO NOT MERGE FTREES W/O FIRST ORDERING THE CHUNKS!!!! In addition, please note THAT HERE NO ATTENTION IS PAYED TO WHETHER ALL THE INTERMEDIATE CHUNKS EXIST OR IF SOME EXTRA CHUNK SHOULD BE INCLUDED. You should CHECK the chunks before MERGING.
+                        #### NOTE: this step of ordering is EXTREMELY IMPORTANT. PLEASE DO NOT MERGE FTREES W/O FIRST ORDERING THE CHUNKS!!!! In addition, please note THAT HERE NO ATTENTION IS PAYED TO WHETHER ALL THE INTERMEDIATE CHUNKS EXIST OR IF SOME EXTRA CHUNK SHOULD BE INCLUDED. You should CHECK the chunks BEFORE merging.
 
                         tmpnchks = 1 + max( [ int(el.replace(".chunk", "").replace(".root", "")) for el in dictofmerges[dat] ] )
 
@@ -639,6 +759,37 @@ def MergeThoseChunks(year, step, queue, extra, noconf = False):
                         print "Command: " + comm
                         #sys.exit()
                         os.system(comm)
+
+    ### EXTRA MERGE FOR MVA TRAINING MINITREES
+    if step == "mvatrain":
+        if confirm("\n> Do you want to merge the minitrees for MVA trainings?"):
+            print "\n> Final merge for training purposes."
+            for finalfile in minitnamedict:
+                listofsamplegs = []
+                for dat in trainsampledict[year]:
+                    if dat in minitnamedict[finalfile]: listofsamplegs.append(dat)
+
+                listoffiles = []
+                mergedlist  = [f for f in os.listdir(basefolder) if ("Friend.root" in f and "chunk" not in f)]
+                for el in listofsamplegs:
+                    if isinstance(trainsampledict[year][el], list):
+                        for cand in trainsampledict[year][el]:
+                            if cand[-1] == "*": listoffiles.extend( [f for f in mergedlist if cand.replace("*", "") in f] )
+                            else:               listoffiles.append( cand + "_Friend.root")
+                    else:
+                        listoffiles.extend( [f for f in mergedlist if (trainsampledict[year][el] in f)] )
+
+
+                print "    - Merging into " + basefolder + "/" + finalfile + ".root these files:"
+                for el in listoffiles: print "# " + el
+
+                print "\n"
+                comm = "hadd -f3 " + basefolder + "/" + finalfile + ".root"
+
+                for ifile in listoffiles: comm += " " + basefolder + "/" + ifile
+                print "Command: " + comm
+                #sys.exit()
+                os.system(comm)
     return
 
 
@@ -693,7 +844,7 @@ def CheckLotsOfMergedDatasets(dataset, year, step, queue, extra, ncores):
             return
 
 
-def CheckLotsOfChunks(dataset, year, step, queue, extra, ncores, nthreads):
+def CheckLotsOfChunks(dataset, year, step, queue, extra, ncores, mva, nthreads):
     fullpendingdict = {}
     totalcount = 0
     if dataset.lower() != "all":
@@ -703,7 +854,8 @@ def CheckLotsOfChunks(dataset, year, step, queue, extra, ncores, nthreads):
         if tmpcount != 0: fullpendingdict[dat] = tmpdict
     else:
         tasks = []
-        for dat in sampledict[year]:
+        thedict = trainsampledict[year] if mva else sampledict[year]
+        for dat in thedict:
             isData = any(ext in dat for ext in datasamples)
             if not isData or (isData and step != 4):
                 tasks.append( (dat, year, step) )
@@ -777,7 +929,7 @@ if __name__=="__main__":
     parser = argparse.ArgumentParser(usage = "python nanoAOD_checker.py [options]", description = "Checker tool for the outputs of nanoAOD production (NOT postprocessing)", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('--year',    '-y', metavar = 'year',     dest = "year",    required = False, default = 2016, type = int)
     parser.add_argument('--dataset', '-d', metavar = 'dataset',  dest = "dataset", required = False, default = "TTTo2L2Nu")
-    parser.add_argument('--step',    '-s', metavar = 'step',     dest = "step",    required = False, default = 0, type = int)
+    parser.add_argument('--step',    '-s', metavar = 'step',     dest = "step",    required = False, default = "0")
     parser.add_argument('--check',   '-c', action = "store_true",dest = "check",   required = False, default = False)
     parser.add_argument('--queue',   '-q', metavar = 'queue',    dest = "queue",   required = False, default = "")
     parser.add_argument('--threads', '-j', metavar = 'nthreads', dest = "nthreads",required = False, default = 1, type = int)
@@ -786,22 +938,23 @@ if __name__=="__main__":
     parser.add_argument('--merge',   '-m', action = "store_true",dest = "merge",   required = False, default = False)
     parser.add_argument('--pretend', '-p', action = "store_true",dest = "pretend", required = False, default = False)
 
+
     args     = parser.parse_args()
     year     = args.year
     dataset  = args.dataset
     check    = args.check
-    step     = args.step
+    step     = args.step if not args.step.isdigit() else int(args.step)
     queue    = args.queue
     extra    = args.extra
     ncores   = args.ncores
     nthreads = args.nthreads
     merge    = args.merge
     pretend  = args.pretend
-
+    mva      = (step == "mvatrain")
 
     if check and not merge:
         print "\n> Beginning checks of all chunks for the production of year {y}, of the friend trees of step {s} for {d} dataset(s).".format(y = year, s = step, d = dataset)
-        CheckLotsOfChunks(dataset, year, step, queue, extra, ncores, nthreads)
+        CheckLotsOfChunks(dataset, year, step, queue, extra, ncores, mva, nthreads)
     elif merge and not check:
         MergeThoseChunks(year, step, queue, extra)
     elif merge and check:
@@ -810,8 +963,9 @@ if __name__=="__main__":
         if dataset.lower() != "all":
             GeneralSubmitter( (dataset, year, step, queue, extra, pretend, nthreads) )
         else:
-            tasks = []
-            for dat in sampledict[year]: tasks.append( (dat, year, step, queue, extra, pretend, nthreads) )
+            tasks   = []
+            thedict = trainsampledict[year] if mva else sampledict[year]
+            for dat in thedict: tasks.append( (dat, year, step, queue, extra, pretend, nthreads) )
             print "> A total of {n} commands (that might send one, or more jobs) are going to be executed for year {y}, step {s} in the queue {q} and parallelised with {j} cores.".format(n = len(tasks), y = year, s = step, q = queue, j = ncores)
 
             if confirm("\n> Do you want to send these jobs?"):
