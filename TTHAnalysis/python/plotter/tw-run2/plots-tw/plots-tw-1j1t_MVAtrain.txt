@@ -1,24 +1,20 @@
-nloosejets: nJetSel20_Recl : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5] ; XTitle='N(loose jet)', XNDiv=5, xBinLabels="2\,3\,4\,5\,6\,#geq 7"
-
-nbloosejets: nBJetSelMedium20_Recl : [-0.5,0.5,1.5,2.5,3.5] ; XTitle='N(loose b-jet)', XNDiv=5, xBinLabels="2\,3\,4\,5\,6\,#geq 7"
-
-jet1_pt   : Jet_pt[iJetSel30_Recl[0]]      : 18,20,200      ; IncludeUnderflow=False, XTitle="Jet p_{T} (GeV)"
-
-loosejet1_pt : ev.JetLoose1_Pt             : 15,0,30        ; IncludeUnderflow=False, XTitle="Leading loose jet p_{T} (GeV)"
-
-lep1lep2jet1_pt : Lep1Lep2Jet1_Pt  : 20,0,250 ; IncludeUnderflow=False, XTitle="#it{p}_{T} (#it{e}^{#pm}\, #it{#mu}^{#mp}\, #it{j}\, p_{T}^{miss}) (GeV)"
-
-lep1lep2jet1met_ptOVERhttot : Lep1Lep2Jet1MET_Pt/HTtot : 20,0,1 ; IncludeUnderflow=False, XTitle="#it{p}_{T} (#it{e}^{#pm}\, #it{#mu}^{#mp}\, #it{j}\, p_{T}^{miss}) (GeV)"
-
-lep1lep2jet1met_m  : Lep1Lep2Jet1MET_M   : 20,0,600 ; IncludeUnderflow=False, XTitle="m (#it{e}^{#pm}\, #it{#mu}^{#mp}\, #it{j}\, #it{p}_{T}^{miss}) (GeV)"
-
-htlepOVERhttot  : (LepGood_pt[0] + LepGood_pt[1])/HTtot   : 20,0,1 ; IncludeUnderflow=False, XTitle="m (#it{e}^{#pm}\, #it{#mu}^{#mp}\, #it{j}\, #it{p}_{T}^{miss}) (GeV)"
-
-lep1lep2jet1_c     : Lep1Lep2Jet1_C      : 20,0,1   ; IncludeUnderflow=False, XTitle="C (#it{e}^{#pm}\, #it{#mu}^{#mp}\, #it{j}) (adim.)"
-
-httot              : HTtot               : 20,0,550 ; IncludeUnderflow=False, XTitle="H_{T} (GeV)"
+nloosejets                  : nJetSel20_Recl              : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5] ; XTitle='N(loose jet)', XNDiv=5, xBinLabels="2\,3\,4\,5\,6\,#geq 7"
+nbloosejets                 : nBJetSelMedium20_Recl       : [-0.5,0.5,1.5,2.5,3.5]                 ; XTitle='N(loose b-jet)', XNDiv=5, xBinLabels="2\,3\,4\,5\,6\,#geq 7"
+jet1_pt                     : Jet1_Pt                     : 18,20,200                              ; IncludeUnderflow=False, XTitle="Jet p_{T} (GeV)"
+loosejet1_pt                : JetLoose1_Pt                : 15,0,30                                ; IncludeUnderflow=False, XTitle="Leading loose jet p_{T} (GeV)"
+lep1lep2jet1_pt             : Lep1Lep2Jet1_Pt             : 20,0,250                               ; IncludeUnderflow=False, XTitle="#it{p}_{T} (#it{e}^{#pm}\, #it{#mu}^{#mp}\, #it{j}\, p_{T}^{miss}) (GeV)"
+lep1lep2jet1met_ptOVERhttot : Lep1Lep2Jet1MET_PtOverHTtot : 20,0,1                                 ; IncludeUnderflow=False, XTitle="#it{p}_{T} (#it{e}^{#pm}\, #it{#mu}^{#mp}\, #it{j}\, p_{T}^{miss}) (GeV)"
+lep1lep2jet1met_m           : Lep1Lep2Jet1MET_M           : 20,0,600                               ; IncludeUnderflow=False, XTitle="m (#it{e}^{#pm}\, #it{#mu}^{#mp}\, #it{j}\, #it{p}_{T}^{miss}) (GeV)"
+htlepOVERhttot              : Lep1_PtLep2_PtOverHTtot     : 20,0,1                                 ; IncludeUnderflow=False, XTitle="(p_{T}(e)^{#pm} + p_{T}(#mu)^{#mp}) / H_{T} (adim.)"
+lep1lep2jet1_c              : Lep1Lep2Jet1_C              : 20,0,1                                 ; IncludeUnderflow=False, XTitle="C (#it{e}^{#pm}\, #it{#mu}^{#mp}\, #it{j}) (adim.)"
+httot                       : HTtot                       : 20,0,550                               ; IncludeUnderflow=False, XTitle="H_{T} (GeV)"
+lep1lep2jet1met_pt          : Lep1Lep2Jet1MET_Pt          : 20,0,200                               ; IncludeUnderflow=False, XTitle="#it{p}_{T} (#it{e}^{#pm}\, #it{#mu}^{#mp}\, #it{j}\, p_{T}^{miss}) (GeV)"
 
 ### MVAs
-SergioBDT_1j1b        : SergioBDT_1j1b   : 10,-1,1  ; IncludeUnderflow=False, XTitle="BDT discriminant (adim.)"
-SergioBDT_1j1b_smallb : SergioBDT_1j1b   : 1000,-1,1; IncludeUnderflow=False, XTitle="BDT discriminant (adim.)"
-SergioBDT_1j1b_rebin  : getBDtW(SergioBDT_1j1b) : [0.5,1.5,2.5,3.5,4.5,5.5, 6.5, 7.5, 8.5, 9.5, 10.5] ; IncludeUnderflow=False, XTitle="BDT discriminant (adim.)"
+SergioBDT_1j1b        : SergioBDT_1j1b                : 10,-1,1   ; IncludeUnderflow=False, XTitle="BDT discriminant (adim.)"
+SergioBDT_1j1b_smallb : SergioBDT_1j1b                : 1000,-1,1 ; IncludeUnderflow=False, XTitle="BDT discriminant (adim.)"
+SergioBDT_1j1b_rebin  : getSergioBDtW(SergioBDT_1j1b) : [0.5,1.5,2.5,3.5,4.5,5.5, 6.5, 7.5, 8.5, 9.5, 10.5] ; IncludeUnderflow=False, XTitle="BDT discriminant (adim.)"
+
+#tmvaBDT_1j1b        : tmvaBDT_1j1b          : 10,-1,1   ; IncludeUnderflow=False, XTitle="BDT discriminant (adim.)"
+#tmvaBDT_1j1b_smallb : tmvaBDT_1j1b          : 1000,-1,1 ; IncludeUnderflow=False, XTitle="BDT discriminant (adim.)"
+#tmvaBDT_1j1b_rebin  : getBDtW(tmvaBDT_1j1b) : [0.5,1.5,2.5,3.5,4.5,5.5, 6.5, 7.5, 8.5, 9.5, 10.5] ; IncludeUnderflow=False, XTitle="BDT discriminant (adim.)"

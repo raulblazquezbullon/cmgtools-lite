@@ -63,6 +63,8 @@ httot              : HTtot               : 20,0,600 ; IncludeUnderflow=False, XT
 
 
 ### MVAs
-SergioBDT_2j1b     : SergioBDT_2j1b      : 10,-1,1  ; IncludeUnderflow=False, XTitle="BDT discriminant (adim.)"
-SergioBDT_2j1b_smallb : SergioBDT_2j1b   : 1000,-1,1; IncludeUnderflow=False, XTitle="BDT discriminant (adim.)"
-SergioBDT_2j1b_rebin : getBDtWOther(SergioBDT_2j1b) : [0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5] ; IncludeUnderflow=False, XTitle="BDT discriminant (adim.)"
+#SergioBDT_2j1b        : SergioBDT_2j1b                     : 10,-1,1  ; IncludeUnderflow=False, XTitle="BDT discriminant (adim.)"
+#SergioBDT_2j1b_smallb : SergioBDT_2j1b                     : 1000,-1,1; IncludeUnderflow=False, XTitle="BDT discriminant (adim.)"
+SergioBDT_2j1b_rebin   : getSergioBDtWOther(SergioBDT_2j1b) : [0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5] ; IncludeUnderflow=False, XTitle="BDT discriminant (adim.)"
+
+tmvaBDT_2j1b_rebin   : getBDtWOther(tmvaBDT_2j1b) : [0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5] ; IncludeUnderflow=False, XTitle="BDT discriminant (adim.)"
