@@ -19,6 +19,8 @@ class EventVars_tWRun2(Module):
                             "Lep1Lep2Jet1MET_Pt",
                             "Lep1Lep2Jet1MET_M",
                             "Lep1Lep2Jet1MET_Mt",
+                            "Lep1Lep2Jet1MET_PtOverHTtot",
+                            "Lep1_PtLep2_PtOverHTtot",
                             "Lep1Lep2Jet1_Pt",
                             "Lep1Lep2Jet1_M",
                             "Lep1Lep2Jet1_E",
@@ -50,6 +52,8 @@ class EventVars_tWRun2(Module):
                               "Lep1Lep2Jet1MET_Pt",
                               "Lep1Lep2Jet1MET_M",
                               "Lep1Lep2Jet1MET_Mt",
+                              "Lep1Lep2Jet1MET_PtOverHTtot",
+                              "Lep1_PtLep2_PtOverHTtot",
                               "Lep1Lep2Jet1_Pt",
                               "Lep1Lep2Jet1_M",
                               "Lep1Jet1_Pt",
@@ -146,6 +150,8 @@ class EventVars_tWRun2(Module):
         allret["Lep1Lep2Jet1MET_Pt"] = -99
         allret["Lep1Lep2Jet1MET_M"]  = -99
         allret["Lep1Lep2Jet1MET_Mt"] = -99
+        allret["Lep1Lep2Jet1MET_PtOverHTtot"] = -99
+        allret["Lep1_PtLep2_PtOverHTtot"] = -99
         allret["Lep1Lep2Jet1_Pt"]    = -99
         allret["Lep1Lep2Jet1_E"]     = -99
         allret["Lep1Jet1_Pt"]        = -99
@@ -246,6 +252,9 @@ class EventVars_tWRun2(Module):
                     allret["Lep1Jet1_DR"        + self.systsJEC[var]] = leps_4m[0].DeltaR(jets_4m[0])
                     allret["Lep1Lep2Jet1_C"     + self.systsJEC[var]] = (leps_4m[0] + leps_4m[1] + jets_4m[0]).Et() / (leps_4m[0] + leps_4m[1] + jets_4m[0]).E()
                     allret["HTtot"              + self.systsJEC[var]] = leps_4m[0].Pt() + leps_4m[1].Pt() + jets_4m[0].Pt() + met_4m.Pt()
+                    allret["Lep1Lep2Jet1MET_PtOverHTtot" + self.systsJEC[var]] = allret["Lep1Lep2Jet1MET_Pt" + self.systsJEC[var]] / allret["HTtot" + self.systsJEC[var]]
+                    allret["Lep1_PtLep2_PtOverHTtot" + self.systsJEC[var]]     = (leps_4m[0].Pt() + leps_4m[1].Pt()) / allret["HTtot" + self.systsJEC[var]]
+
 
                     if self.systsJEC[var] == "":
                         allret["Lep1Lep2Jet1MET_Pz" + "_MuonEnUp"] = (leps_4mMuonEnUp[0] + leps_4mMuonEnUp[1] + jets_4m[0] + met_4mMuonEnUp).Pz()
@@ -259,6 +268,8 @@ class EventVars_tWRun2(Module):
                         allret["Lep2Jet1_Pt"        + "_MuonEnUp"] = (leps_4mMuonEnUp[1] + jets_4m[0]).Pt()
                         allret["Lep2Jet1_M"         + "_MuonEnUp"] = (leps_4mMuonEnUp[1] + jets_4m[0]).M()
                         allret["HTtot"              + "_MuonEnUp"] = leps_4mMuonEnUp[0].Pt() + leps_4mMuonEnUp[1].Pt() + jets_4m[0].Pt() + met_4mMuonEnUp.Pt()
+                        allret["Lep1Lep2Jet1MET_PtOverHTtot" + "_MuonEnUp"] = allret["Lep1Lep2Jet1MET_Pt" + "_MuonEnUp"] / allret["HTtot" + "_MuonEnUp"]
+                        allret["Lep1_PtLep2_PtOverHTtot"     + "_MuonEnUp"] = (leps_4mMuonEnUp[0].Pt() + leps_4mMuonEnUp[1].Pt()) / allret["HTtot" + "_MuonEnUp"]
 
                         allret["Lep1Lep2Jet1MET_Pz" + "_MuonEnDn"] = (leps_4mMuonEnDn[0] + leps_4mMuonEnDn[1] + jets_4m[0] + met_4mMuonEnDn).Pz()
                         allret["Lep1Lep2Jet1MET_Pt" + "_MuonEnDn"] = (leps_4mMuonEnDn[0] + leps_4mMuonEnDn[1] + jets_4m[0] + met_4mMuonEnDn).Pt()
@@ -271,6 +282,8 @@ class EventVars_tWRun2(Module):
                         allret["Lep2Jet1_Pt"        + "_MuonEnDn"] = (leps_4mMuonEnDn[1] + jets_4m[0]).Pt()
                         allret["Lep2Jet1_M"         + "_MuonEnDn"] = (leps_4mMuonEnDn[1] + jets_4m[0]).M()
                         allret["HTtot"              + "_MuonEnDn"] = leps_4mMuonEnDn[0].Pt() + leps_4mMuonEnDn[1].Pt() + jets_4m[0].Pt() + met_4mMuonEnDn.Pt()
+                        allret["Lep1Lep2Jet1MET_PtOverHTtot" + "_MuonEnDn"] = allret["Lep1Lep2Jet1MET_Pt" + "_MuonEnDn"] / allret["HTtot" + "_MuonEnDn"]
+                        allret["Lep1_PtLep2_PtOverHTtot"     + "_MuonEnDn"] = (leps_4mMuonEnDn[0].Pt() + leps_4mMuonEnDn[1].Pt()) / allret["HTtot" + "_MuonEnDn"]
 
                     if event.nJetSel30_Recl > 1:
                         allret["Lep12Jet12_DR"    + self.systsJEC[var]] = (leps_4m[0] + leps_4m[1]).DeltaR(jets_4m[0] + jets_4m[1])
