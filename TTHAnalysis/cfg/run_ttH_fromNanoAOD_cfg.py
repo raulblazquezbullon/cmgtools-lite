@@ -55,7 +55,7 @@ if analysis == "main":
         # single boson
         "WJetsToLNu_LO_ext","WJetsToLNu_LO", "DYJetsToLL_M10to50_LO", "DYJetsToLL_M50",
         # ttbar + single top + tW
-        'TT_pow',
+        'TT_pow','TTLep_pow','TTSemi_pow','TTHad_pow'
         #"TTJets_SingleLeptonFromT", "TTJets_SingleLeptonFromTbar", "TTJets_DiLepton",
         "T_sch_lep", "T_tch", "TBar_tch", "T_tWch_noFullyHad", "TBar_tWch_noFullyHad",
         # conversions
