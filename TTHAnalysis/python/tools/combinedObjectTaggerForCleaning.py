@@ -13,7 +13,8 @@ class CombinedObjectTaggerForCleaning(Module):
                  tightTauSel = lambda t : True,
                  selectJet = lambda j : True,
                  coneptdef = lambda l : l.pt,
-                 debug=False):
+                 debug=False,
+                 tauCollection = 'Tau'):
 
         self.label = "" if (label in ["",None]) else ("_"+label)
 
@@ -32,6 +33,8 @@ class CombinedObjectTaggerForCleaning(Module):
 
         self.coneptdef = coneptdef
         self.debug = debug
+        self.tauc  = tauCollection
+        return
 
     # interface for old code
     def listBranches(self):
@@ -49,7 +52,7 @@ class CombinedObjectTaggerForCleaning(Module):
     def analyze(self, event):
         from PhysicsTools.NanoAODTools.postprocessing.framework.datamodel import Collection 
         leps = [l for l in Collection(event,"LepGood")]
-        taus = [t for t in Collection(event,"Tau")]
+        taus = [t for t in Collection(event, self.tauc)]
         jets = [j for j in Collection(event,"Jet")]
         self.run(event, leps,taus,jets)
         return True

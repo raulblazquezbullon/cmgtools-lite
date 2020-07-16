@@ -4,6 +4,7 @@
 #include "CMGTools/TTHAnalysis/interface/IgProfHook.h"
 #include "CMGTools/TTHAnalysis/interface/CollectionSkimmer.h"
 #include "CMGTools/TTHAnalysis/interface/CombinedObjectTags.h"
+#include "CMGTools/TTHAnalysis/interface/CombinedObjectTagsTopRun2.h"
 #include "CMGTools/TTHAnalysis/interface/TensorFlowInterface.h"
 
 namespace {
