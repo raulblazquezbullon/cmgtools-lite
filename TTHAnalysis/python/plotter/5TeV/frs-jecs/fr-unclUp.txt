@@ -1,3 +1,4 @@
-change: met_pt\b: MET_pt_unclustEnUp
+change: MET_pt\b: MET_pt_unclustEnUp
+change: MET_pt_nom\b: MET_pt_unclustEnUp
 change: mTlW\b: mTlW_unclustEnUp
 weight: 1

@@ -1,0 +1,32 @@
+WJets	:  W1JetsToLNu         : xsec : (LepGood_genPartFlav == 1 || LepGood_genPartFlav == 15) ; Label="W+jets", FillColor=ROOT.kAzure+1
+DYJets	:  DY1JetsToLL_M50     : xsec : (LepGood_genPartFlav == 1 || LepGood_genPartFlav == 15) ; Label="Z+jets", FillColor=ROOT.kAzure+3 
+VJets	:  WJetsToLNu          : xsec : (LepGood_genPartFlav == 1 || LepGood_genPartFlav == 15) ; Label="V+jets", FillColor=ROOT.kAzure+2
+VJets	:  DYJetsToLL_M50      : xsec : (LepGood_genPartFlav == 1 || LepGood_genPartFlav == 15) ; Label="V+jets", FillColor=ROOT.kAzure+2
+Top	:  TT_PS               : xsec : (LepGood_genPartFlav == 1 || LepGood_genPartFlav == 15) ; Label="Top", FillColor=ROOT.kOrange+3
+EWK	:  W1JetsToLNu         : xsec : (LepGood_genPartFlav == 1 || LepGood_genPartFlav == 15) ; Label="Prompt", FillColor=ROOT.kAzure+1
+EWK	:  DY1JetsToLL_M50     : xsec : (LepGood_genPartFlav == 1 || LepGood_genPartFlav == 15) ; Label="Prompt", FillColor=ROOT.kAzure+1
+EWK	:  TT_PS               : xsec : (LepGood_genPartFlav == 1 || LepGood_genPartFlav == 15) ; Label="Prompt", FillColor=ROOT.kAzure+1
+
+## Options only
+data_sub         : - ; FillColor=ROOT.kGray+1, Label="Data - EWK"
+data_sub_prefit  : - ; FillColor=ROOT.kAzure+1, Label="(stat only)"
+data_sub_syst         : - ; FillColor=ROOT.kGray+1, Label="Data - EWK"
+data_sub_syst_prefit  : - ; FillColor=ROOT.kViolet+1, Label="Data - EWK"
+data_prefit      : - ; FillColor=ROOT.kBlack,   Label="Data"
+total            : - ; FillColor=ROOT.kBlue+1,  Label="QCD+EWK fit"
+total_prefit     : - ; FillColor=ROOT.kGreen+2, Label="QCD+EWK MC"
+data_fqcd        : - ; FillColor=ROOT.kGray+2,  Label="Data unfolded"
+data_fit         : - ; FillColor=ROOT.kGreen+2, Label="QCD sim fit"
+data_prefit      : - ; FillColor=ROOT.kBlack,   Label="Data"
+
+EWK_lUp : - ; FillColor=ROOT.kBlue-7, Label="Lin Down"
+EWK_lDn : - ; FillColor=ROOT.kBlue+1, Label="Lin Down"
+
+EWK_qUp : - ; FillColor=ROOT.kRed-7, Label="Quad Down"
+EWK_qDn : - ; FillColor=ROOT.kRed+1, Label="Quad Down"
+
+EWK_sUp : - ; FillColor=ROOT.kGreen-0, Label="Stretch Down"
+EWK_sDn : - ; FillColor=ROOT.kGreen+3, Label="Stretch Down"
+
+EWK_pass : - ; FillColor=ROOT.kGreen+2, Label="Pass"
+EWK_fail : - ; FillColor=ROOT.kRed+0, Label="Fail"

@@ -1,0 +1,5 @@
+cut-change: LepGood_isLepTight_Recl\[iLepFO_Recl\[idx_lW\]\]: 1
+cut-change: LepGood_isLepTight_Recl\[iLepFO_Recl\[idx_lZ1\]\]: 1
+weight: fakeRateWeight_2lss(lW_pt,lW_eta,lW_pdg,lW_isT,lZ1_pt,lZ1_eta,lZ1_pdg,lZ1_isT)
+load-histo: FR_mu : $DATA/fakerate/FR_MC_5TeV_May18.root : FR_wpWZ5TeV_mu_TT_pt
+load-histo: FR_el : $DATA/fakerate/FR_MC_5TeV_May18.root : FR_wpWZ5TeV_el_TT_pt

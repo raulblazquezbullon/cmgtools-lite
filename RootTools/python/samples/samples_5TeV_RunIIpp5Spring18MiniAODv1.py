@@ -8,7 +8,7 @@ TT_hdampUp = kreator.makeMyPrivateMCComponent("TT_hdampUp", "/TT_hdampUP_TuneCP5
 TT_hdampDown = kreator.makeMyPrivateMCComponent("TT_hdampDown", "/TT_hdampDOWN_TuneCP5_5p02TeV-powheg-pythia8/jrgonzal-mc5TeV_28ago2019_TT_hdampDOWN_TuneCP5_5p02TeV-powheg-pythia8-d681e878124a74a1531ec8c4915a5c4d/USER", "PRIVATE", ".*root", "phys03", 68.9, True )
 TT_mtop178p5 = kreator.makeMyPrivateMCComponent("TT_mtop178p5", "/TT_mtop178p5_TuneCP5_5p02TeV-powheg-pythia8/jrgonzal-mc5TeV_28ago2019_TT_mtop178p5_TuneCP5_5p02TeV-powheg-pythia8-d681e878124a74a1531ec8c4915a5c4d/USER", "PRIVATE", ".*root", "phys03", 68.9, True )
 TT_mtop166p5 = kreator.makeMyPrivateMCComponent("TT_mtop166p5", "/TT_mtop166p5_TuneCP5_5p02TeV-powheg-pythia8/jrgonzal-mc5TeV_28ago2019_TT_mtop166p5_TuneCP5_5p02TeV-powheg-pythia8-d681e878124a74a1531ec8c4915a5c4d/USER", "PRIVATE", ".*root", "phys03", 68.9, True )
-TT_TuneCP5Up = kreator.makeMyPrivateMCComponent("TT_TuneCP5up", "/TT_TuneCP5up_5p02TeV-powheg-pythia8/jrgonzal-mc5TeV_28ago2019_TT_TuneCP5up_5p02TeV-powheg-pythia8-d681e878124a74a1531ec8c4915a5c4d/USER", "PRIVATE", ".*root", "phys03", 68.9, True )
+TT_TuneCP5up = kreator.makeMyPrivateMCComponent("TT_TuneCP5up", "/TT_TuneCP5up_5p02TeV-powheg-pythia8/jrgonzal-mc5TeV_28ago2019_TT_TuneCP5up_5p02TeV-powheg-pythia8-d681e878124a74a1531ec8c4915a5c4d/USER", "PRIVATE", ".*root", "phys03", 68.9, True )
 TT_TuneCP5Down = kreator.makeMyPrivateMCComponent("TT_TuneCP5Down", "/TT_TuneCP5down_5p02TeV-powheg-pythia8/jrgonzal-mc5TeV_28ago2019_TT_TuneCP5down_5p02TeV-powheg-pythia8-d681e878124a74a1531ec8c4915a5c4d/USER", "PRIVATE", ".*root", "phys03", 68.9, True )
 
 TTs = [
@@ -18,7 +18,7 @@ TT_hdampUp,
 TT_hdampDown,
 TT_mtop178p5,
 TT_mtop166p5,
-TT_TuneCP5Up,
+TT_TuneCP5up,
 TT_TuneCP5Down,
 ]
 

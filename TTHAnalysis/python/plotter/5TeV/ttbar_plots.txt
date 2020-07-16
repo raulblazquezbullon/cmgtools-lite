@@ -30,9 +30,10 @@ dilep_pt   :	ptlep12	: 40,0.,150.; XTitle="p_{T}^{ll} (GeV)"
 dilep_dphi :	abs(dphilep12) 			: 40,0.,3.14; XTitle="#Delta#phi_{ll}" 
  
 
-#nBJetLoose25:	nBJetLoose25				: [-0.5,0.5,1.5,2.5,3.5,4.5] ; XTitle='N(jet\, p_{T} > 25 GeV\, CSVL)', XNDiv=5, xBinLabels="0\,1\,2\,3\,#geq 4", MoreY=1.7
-#nBJetMedium25:	nBJetMedium25				: [-0.5,0.5,1.5,2.5,3.5,4.5] ; XTitle='N(jet\, p_{T} > 25 GeV\, CSVM)', XNDiv=5, xBinLabels="0\,1\,2\,3\,#geq 4", MoreY=1.7
-#nJetnBJet:	getnJetnBJet(nJet25,nBJetMedium25)      : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5] ; XTitle='N(jet\, p_{T} > 25 GeV\, CSVM)', XNDiv=5, xBinLabels="[0-0]\,[1-0]\,[1-1]\,[2-0]\,[2-1]\,[2-2]\,[#geq 3-#geq 0]", MoreY=1.7
+nBJetLoose25:	nBJetLoose25				: [-0.5,0.5,1.5,2.5,3.5,4.5] ; XTitle='N(jet\, p_{T} > 25 GeV\, CSVL)', XNDiv=5, xBinLabels="0\,1\,2\,3\,#geq 4", MoreY=1.7
+nBJetMedium25:	nBJetMedium25				: [-0.5,0.5,1.5,2.5,3.5,4.5] ; XTitle='N(jet\, p_{T} > 25 GeV\, CSVM)', XNDiv=5, xBinLabels="0\,1\,2\,3\,#geq 4", MoreY=1.7
+nJetnBJetLoose:	getnJetnBJet(nJet25,nBJetLoose25)      : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5] ; XTitle='N(jet\, p_{T} > 25 GeV\, CSVM)', XNDiv=5, xBinLabels="[0-0]\,[1-0]\,[1-1]\,[2-0]\,[2-1]\,[2-2]\,[#geq 3-#geq 0]", MoreY=1.7
+nJetnBJetMedium:	getnJetnBJet(nJet25,nBJetMedium25)      : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5] ; XTitle='N(jet\, p_{T} > 25 GeV\, CSVM)', XNDiv=5, xBinLabels="[0-0]\,[1-0]\,[1-1]\,[2-0]\,[2-1]\,[2-2]\,[#geq 3-#geq 0]", MoreY=1.7
 
 lep1_pt: 	 LepGood1_pt					 : 40,0,200; XTitle="Leading lepton p_{T} (GeV)"
 lep1_conePt: 	 LepGood1_conePt				 : 40,0,120; XTitle="Leading lepton cone p_{T} (GeV)"

@@ -10,7 +10,6 @@
 #include "TGraphAsymmErrors.h"
 #include "TH1F.h"
 #include "TFile.h"
-#include "PhysicsTools/Heppy/interface/Davismt2.h"
 #include "TSystem.h"
 
 ////  JET - NBJETs
@@ -66,7 +65,7 @@ Int_t getChannel3l(Int_t pdgId1, Int_t pdgId2, Int_t pdgId3) {
   else if (totId == 35) return 2;
   else if (totId == 37) return 3;
   else if (totId == 39) return 4;
-
+ 
   return -1; 
 }
 
@@ -82,6 +81,7 @@ Bool_t passPtCuts(Float_t pt1, Int_t pdgId1, Float_t pt2, Int_t pdgId2, Float_t 
 
   return false;
 }
+
 
 float mll_2(float pt1, float eta1, float phi1, float m1, float pt2, float eta2, float phi2, float m2) {
     typedef ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double> > PtEtaPhiMVector;
@@ -133,5 +133,36 @@ int lWpt_Gen(float pt1, float eta1, float phi1, float mass1, int pdg1, float pt2
   
   return ptlW;
 }
+
+float deltaphi2(float phi1, float phi2) {
+    float result = phi1 - phi2;
+    while (result > float(M_PI)) result -= float(2*M_PI);
+    while (result <= -float(M_PI)) result += float(2*M_PI);
+    return result;
+}
+
+float wz_2lss_ifflav(int LepGood1_pdgId, int LepGood2_pdgId, float ret_ee, float ret_em, float ret_mm){
+  if (abs(LepGood1_pdgId)==11 && abs(LepGood2_pdgId)==11) return ret_ee;
+  if ((abs(LepGood1_pdgId) != abs(LepGood2_pdgId)))       return ret_em;
+  if (abs(LepGood1_pdgId)==13 && abs(LepGood2_pdgId)==13) return ret_mm;
+  assert(0);
+  return 0; // avoid warning
+}
+
+float phi_2(float pt1, float eta1, float phi1, float m1, float pt2, float eta2, float phi2, float m2) {
+  typedef ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double> > PtEtaPhiMVector;
+  PtEtaPhiMVector p41(pt1,eta1,phi1,m1);
+  PtEtaPhiMVector p42(pt2,eta2,phi2,m2);
+  return (p41+p42).Phi();
+}
+
+
+float axialMET(float met, float metphi, float phiZ){
+  float dphi = metphi - phiZ;
+  while (dphi > float(M_PI))   dphi -= float(2*M_PI);
+  while (dphi <= -float(M_PI)) dphi += float(2*M_PI);
+  return (-1*met*TMath::Cos(dphi));
+}
+
 
 void functions5TeV() {}

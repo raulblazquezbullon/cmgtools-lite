@@ -1,22 +1,19 @@
-WW+	: WWTo2L2Nu  : xsec  : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; FillColor=ROOT.kTeal+5
+WW+	: WWTo2L2Nu  : xsec*1.1095  : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; FillColor=ROOT.kTeal+5
 
 top	: TT   	       	      	: xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; FillColor=ROOT.kRed+1
 top	: T_tWch_noFullyHad     : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; FillColor=ROOT.kRed+1
 top	: TBar_tWch_noFullyHad  : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; FillColor=ROOT.kRed+1
 
-VV	: WZTo3LNu   : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; FillColor=ROOT.kOrange+1
-VV	: ZZTo2L2Nu  : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; FillColor=ROOT.kOrange+1
-VV	: ZZTo4L     : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; FillColor=ROOT.kOrange+1
-VV   	: W0JetsToLNu : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; FillColor=ROOT.kOrange
-VV      : W1JetsToLNu : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; FillColor=ROOT.kOrange
-VV      : W2JetsToLNu : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; FillColor=ROOT.kOrange
-VV      : W3JetsToLNu : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; FillColor=ROOT.kOrange
+VV	: WZTo3LNu    : xsec*1.065 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; FillColor=ROOT.kOrange+1
+VV	: ZZTo2L2Nu   : xsec  	   : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; FillColor=ROOT.kOrange+1
+VV	: ZZTo4L      : xsec  	   : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; FillColor=ROOT.kOrange+1
+VV   	: W0JetsToLNu : xsec*1.065 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; FillColor=ROOT.kOrange+1
+VV      : W1JetsToLNu : xsec*1.065 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; FillColor=ROOT.kOrange+1
+VV      : W2JetsToLNu : xsec*1.065 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; FillColor=ROOT.kOrange+1
+VV      : W3JetsToLNu : xsec*1.065 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; FillColor=ROOT.kOrange+1
 
 DY	: DYJetsToLL_M10to50 : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; FillColor=ROOT.kAzure+2
-DY 	: DY0JetsToLL_M50    : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; FillColor=ROOT.kAzure+2
-DY 	: DY1JetsToLL_M50    : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; FillColor=ROOT.kAzure+2
-DY 	: DY2JetsToLL_M50    : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; FillColor=ROOT.kAzure+2
-DY 	: DY3JetsToLL_M50    : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; FillColor=ROOT.kAzure+2
+DY	: DYJetsToLL_M50     : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; FillColor=ROOT.kAzure+2
 
 
 

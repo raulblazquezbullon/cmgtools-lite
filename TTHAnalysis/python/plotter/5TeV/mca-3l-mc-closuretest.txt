@@ -1,0 +1,14 @@
+incl_all : + ; IncludeMca="5TeV/mca-includes/mca-tt.txt", AddWeight="(LepGood1_mcMatchId==0 || LepGood2_mcMatchId==0 ||LepGood3_mcMatchId==0)", Label="TT fakes+convs", FillColor=ROOT.kBlack, PostFix="_all"
+
+incl_fake : + ; IncludeMca="5TeV/mca-includes/mca-tt.txt", AddWeight="((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==0) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==0) || (LepGood3_mcMatchId==0 && LepGood3_mcPromptGamma==0))", Label="TT fakes", FillColor=ROOT.kGray+2, PostFix="_fake"
+incl_gamma : + ; IncludeMca="5TeV/mca-includes/mca-tt.txt", AddWeight="((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1) || LepGood3_mcMatchId==0 && LepGood3_mcPromptGamma==0))", Label="Convs", FillColor=ROOT.kOrange, PostFix="_gamma"
+incl_gamma_appl : + ; IncludeMca="5TeV/mca-includes/mca-tt.txt", AddWeight="((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1) || LepGood3_mcMatchId==0 && LepGood3_mcPromptGamma==0))",  Label="Convs in appl.", FillColor=ROOT.kOrange-3, FakeRate="5TeV/fakeRate-2lss-appl.txt", PostFix="_gamma_appl"
+
+incl_fakeW : + ; IncludeMca="5TeV/mca-includes/mca-wjets.txt", AddWeight="((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==0) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==0) || (LepGood3_mcMatchId==0 && LepGood3_mcPromptGamma==0))", Label="WJets fakes", FillColor=ROOT.kGray+2, PostFix="_fake"
+incl_fakeZ : + ; IncludeMca="5TeV/mca-includes/mca-dyjets.txt", AddWeight="((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==0) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==0) || (LepGood3_mcMatchId==0 && LepGood3_mcPromptGamma==0))", Label="DYJets fakes", FillColor=ROOT.kGray+2, PostFix="_fake"
+
+incl_FR_TT    : + ; IncludeMca="5TeV/mca-includes/mca-tt.txt", AddWeight="(LepGood1_mcMatchId==0 || LepGood2_mcMatchId==0 || LepGood3_mcMatchId==0)", FakeRate="5TeV/fakeRate-3l-frmc-tt.txt", Label="FR (TT)", FillColor=ROOT.kBlue, PostFix="_FR_TT"
+incl_FR_WJETS : + ; IncludeMca="5TeV/mca-includes/mca-wjets.txt", AddWeight="(LepGood1_mcMatchId==0 || LepGood2_mcMatchId==0 || LepGood3_mcMatchId==0)", FakeRate="5TeV/fakeRate-3l-frmc-tt.txt", Label="FR (W+jets)", FillColor=ROOT.kBlue, PostFix="_FR_TT"
+incl_FR_DYJETS : + ; IncludeMca="5TeV/mca-includes/mca-dyjets.txt", AddWeight="(LepGood1_mcMatchId==0 || LepGood2_mcMatchId==0 || LepGood3_mcMatchId==0)", FakeRate="5TeV/fakeRate-3l-frmc-tt.txt", Label="FR (DY+jets)", FillColor=ROOT.kBlue, PostFix="_FR_TT"
+
+

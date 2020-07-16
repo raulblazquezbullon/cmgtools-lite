@@ -39,7 +39,9 @@ class EventVars_5TeV(Module):
             
         self.branches.extend(['drlep12','drlep13','drlep23','dphilep12','dphilep13','dphilep23','ptlep12'])
         self.branches.extend(["hasOSSF4l","hasOSSF3l","m3l","m4l","mZ_3l"])
-        self.branches.extend(["lZ1pt", "lZ2pt", "lWpt","idx_lZ1", "idx_lZ2", "idx_lW"])
+        self.branches.extend(["idx_lZ1", "idx_lZ2", "idx_lW"])
+        self.branches.extend(["lZ1_pt","lZ2_pt","lW_pt","lZ1_eta","lZ2_eta", "lW_eta", "lZ1_pdg", "lZ2_pdg", "lW_pdg", "lZ1_isT", "lZ2_isT", "lW_isT"])
+        
 
     # old interface (CMG)
     def listBranches(self):
@@ -89,12 +91,21 @@ class EventVars_5TeV(Module):
         allret['m4l']       = -99
         allret['m3l']       = -99
         allret['mZ_3l' ]    = -99
-        allret['lZ1pt']     = -99
-        allret['lZ2pt']     = -99
-        allret['lWpt']      = -99
         allret['idx_lZ1']   = -1
         allret['idx_lZ2']   = -1
         allret['idx_lW']    = -1
+        allret['lZ1_pt']     = -99
+        allret['lZ2_pt']     = -99
+        allret['lW_eta']      = -99
+        allret['lZ1_eta']     = -99
+        allret['lZ2_eta']     = -99
+        allret['lW_eta']      = -99
+        allret['lZ1_pdg']     = -99
+        allret['lZ2_pdg']     = -99
+        allret['lW_pdg']      = -99
+        allret['lZ1_isT']     = False
+        allret['lZ2_isT']     = False
+        allret['lW_isT']      = False
 
 
         idxlW  = -1 
@@ -131,12 +142,22 @@ class EventVars_5TeV(Module):
                 idxlZ2 = tmpidx
                 
             allret['mZ_3l' ]    = (leps[idxlZ1].p4()+leps[idxlZ2].p4()).M()
-            allret['lZ1pt']     = leps[idxlZ1].pt
-            allret['lZ2pt']     = leps[idxlZ2].pt
-            allret['lWpt']      = leps[idxlW].pt
             allret['idx_lZ1']   = idxlZ1
             allret['idx_lZ2']   = idxlZ2
             allret['idx_lW']    = idxlW
+            allret['lZ1_pt']     = leps[idxlZ1].pt
+            allret['lZ2_pt']     = leps[idxlZ2].pt
+            allret['lW_pt']      = leps[idxlW].pt
+            allret['lZ1_eta']     = leps[idxlZ1].eta
+            allret['lZ2_eta']     = leps[idxlZ2].eta
+            allret['lW_eta']      = leps[idxlW].eta
+            allret['lZ1_pdg']     = leps[idxlZ1].pdgId
+            allret['lZ2_pdg']     = leps[idxlZ2].pdgId
+            allret['lW_pdg']      = leps[idxlW].pdgId
+            allret['lZ1_isT']     = leps[idxlZ1].isLepTight_Recl
+            allret['lZ2_isT']     = leps[idxlZ2].isLepTight_Recl
+            allret['lW_isT']      = leps[idxlW].isLepTight_Recl
+
             
         if nFO >= 4:
             allret['m4l'] = (leps[0].p4()+leps[1].p4()+leps[2].p4()+leps[3].p4()).M()
