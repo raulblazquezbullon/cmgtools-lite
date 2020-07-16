@@ -1,4 +1,4 @@
-WZ	: WZTo3LNu   : xsec  ; FillColor=ROOT.kRed+1
+WZ	: WZTo3LNu   : xsec  ; FillColor=ROOT.kOrange
 
 WZ_scales_0  : WZTo3LNu :  xsec : LHEScaleWeight[0]; genSumWeightName="LHEScaleSumw[0]/LHEScaleSumw[4]*genEventSumw", 
 WZ_scales_1  : WZTo3LNu :  xsec : LHEScaleWeight[1]; genSumWeightName="LHEScaleSumw[1]/LHEScaleSumw[4]*genEventSumw", 

@@ -1,0 +1,10 @@
+alwaystrue: 1
+##minimal: LepGood_awayJet_pt > 30 && LepGood_awayJet_jetId > 0
+##den: nLepGood==1
+pt8:  LepGood_pt > 8
+
+mu : abs(LepGood_pdgId)==13; Disable=True
+el : abs(LepGood_pdgId)==11 && LepGood_convVeto && LepGood_lostHits == 0 && LepGood_mvaFall17V2Iso_WPL; Disable=True
+
+
+

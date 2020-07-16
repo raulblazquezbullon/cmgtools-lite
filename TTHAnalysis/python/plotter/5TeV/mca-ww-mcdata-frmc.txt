@@ -1,0 +1,8 @@
+incl_sigprompt : + ; IncludeMca="5TeV/mca-includes/mca-ww-sigprompt.txt"
+incl_convs   : + ; IncludeMca="5TeV/mca-includes/mca-ww-convs.txt"
+incl_datafakes : + ; IncludeMca="5TeV/mca-includes/mca-data.txt", FakeRate="5TeV/fakeRate-2l-frmc-tt.txt", Label="Nonprompt", FillColor=ROOT.kBlack, FillStyle=3005, PostFix='_fakes'
+incl_promptsub : + ; IncludeMca="5TeV/mca-includes/mca-ww-sigprompt.txt", FakeRate="5TeV/fakeRate-2l-frmc-tt.txt", PostFix='_promptsub', AddWeight="-1"
+incl_convssub : + ; IncludeMca="5TeV/mca-includes/mca-ww-convs.txt", FakeRate="5TeV/fakeRate-2l-frmc-tt.txt", PostFix='_convssub', AddWeight="-1"
+
+
+incl_data : + ; IncludeMca="5TeV/mca-includes/mca-data.txt"

@@ -1,0 +1,93 @@
+### Alias definitions. Careful to avoid trailing '.*' to avoid matching _promptsub
+$alias : PromptFromMC : WZ|ZZ|WW|Convs|Nonprompt|Flips|VV|top|DY|TT
+$alias : BackgroundFromMC : ZZ|Convs|Nonprompt|Flips|VV|top|DY|TT
+$alias : FRData : data_fakes|.*_promptsub|.*_convssub
+$alias : FRAll  : data_fakes|.*_promptsub|.*_convssub|TT_FR
+
+# luminosity
+lumi_5TeV		: $PromptFromMC : .* : normSymm : 1.013
+
+## JES/JER
+jes		: $PromptFromMC : .* : templateAsymm; FakeRates=['5TeV/frs-jecs/fr-jesUp.txt'\, '5TeV/frs-jecs/fr-jesDn.txt']
+jer	  	: $PromptFromMC : .* : templateAsymm; FakeRates=['5TeV/frs-jecs/fr-jerUp.txt'\, '5TeV/frs-jecs/fr-jerDn.txt']
+unclusteredEn	: $PromptFromMC : .* : templateAsymm; FakeRates=['5TeV/frs-jecs/fr-unclUp.txt'\,'5TeV/frs-jecs/fr-unclDn.txt']
+
+jes		: $PromptFromMC : .*2lss.* : templateAsymm; FakeRates=['5TeV/frs-jecs/fr-jesUp.txt'\, '5TeV/frs-jecs/fr-jesDn.txt']
+jer	  	: $PromptFromMC : .*2lss.* : templateAsymm; FakeRates=['5TeV/frs-jecs/fr-jerUp.txt'\, '5TeV/frs-jecs/fr-jerDn.txt']
+unclusteredEn	: $PromptFromMC : .*2lss.* : templateAsymm; FakeRates=['5TeV/frs-jecs/fr-unclUp.txt'\,'5TeV/frs-jecs/fr-unclDn.txt']
+
+## weights: 
+pileup 	    : $PromptFromMC : .* : templateAsymm; AddWeights=['puWeightUp/puWeight'\,'puWeightDown/puWeight'], DoesNotChangeEventSelection=True
+
+## L1 ECAL prefire
+L1PreFiring : $PromptFromMC : .* : templateAsymm; AddWeights=['PrefireWeight_Up/PrefireWeight'\,'PrefireWeight_Down/PrefireWeight'], DoesNotChangeEventSelection=True
+
+## lepton and trigger efficiencies
+eff_el       : $PromptFromMC	: .*2lss.* : templateAsymm; AddWeights=['leptonSF_2l_sr_ele_up/leptonSF_2l_sr'\,'leptonSF_2l_sr_ele_dn/leptonSF_2l_sr'],DoesNotChangeEventSelection=True
+eff_mu       : $PromptFromMC	: .*2lss.* : templateAsymm; AddWeights=['leptonSF_2l_sr_mu_up/leptonSF_2l_sr'\,'leptonSF_2l_sr_mu_dn/leptonSF_2l_sr'],  DoesNotChangeEventSmuection=True
+eff_el       : $PromptFromMC	: .*ww.*   : templateAsymm; AddWeights=['leptonSF_2l_sr_ele_up/leptonSF_2l_sr'\,'leptonSF_2l_sr_ele_dn/leptonSF_2l_sr'],DoesNotChangeEventSelection=True
+eff_mu       : $PromptFromMC	: .*ww.*   : templateAsymm; AddWeights=['leptonSF_2l_sr_mu_up/leptonSF_2l_sr'\,'leptonSF_2l_sr_mu_dn/leptonSF_2l_sr'],  DoesNotChangeEventSmuection=True
+eff_el       : $PromptFromMC	: .*2l2nu.* : templateAsymm; AddWeights=['leptonSF_2l_sr_ele_up/leptonSF_2l_sr'\,'leptonSF_2l_sr_ele_dn/leptonSF_2l_sr'],DoesNotChangeEventSelection=True
+eff_mu       : $PromptFromMC	: .*2l2nu.* : templateAsymm; AddWeights=['leptonSF_2l_sr_mu_up/leptonSF_2l_sr'\,'leptonSF_2l_sr_mu_dn/leptonSF_2l_sr'],  DoesNotChangeEventSmuection=True
+
+eff_el       : $PromptFromMC	: .*3l.* : templateAsymm; AddWeights=['leptonSF_3l_sr_ele_up/leptonSF_3l_sr'\,'leptonSF_3l_sr_ele_dn/leptonSF_3l_sr'], DoesNotChangeEventSelection=True
+eff_mu       : $PromptFromMC	: .*3l.* : templateAsymm; AddWeights=['leptonSF_3l_sr_mu_up/leptonSF_3l_sr'\,'leptonSF_3l_sr_mu_dn/leptonSF_3l_sr'], DoesNotChangeEventSmuection=True
+
+eff_el       : $PromptFromMC	: .*4l.* : templateAsymm; AddWeights=['leptonSF_3l_br_ele_up/leptonSF_3l_br'\,'leptonSF_3l_br_ele_dn/leptonSF_3l_br'], DoesNotChangeEventSelection=True
+eff_mu       : $PromptFromMC	: .*4l.* : templateAsymm; AddWeights=['leptonSF_3l_br_mu_up/leptonSF_3l_br'\,'leptonSF_3l_br_mu_dn/leptonSF_3l_br'], DoesNotChangeEventSmuection=True
+
+
+trigger_4l   :	      $PromptFromMC 	: .*4l.*	: templateSymm; AddWeight='if3(LepGood4_pt<15\,1.015\,1.007)'
+trigger_3l   :	      $PromptFromMC 	: .*3l.*	: templateSymm; AddWeight='if3(LepGood3_pt<15\,1.015\,1.007)'
+trigger_2l   :	      $PromptFromMC 	: .*2lss.* 	: normSymm: 1.03
+trigger_2l   :	      $PromptFromMC 	: .*ww.* 	: templateSymm; AddWeight='if3(LepGood2_pt<15\,1.05\,1.01)'
+trigger_2l   :	      $PromptFromMC 	: .*2l2nu.* 	: templateSymm; AddWeight='if3(LepGood2_pt<15\,1.05\,1.01)'
+
+## normalization uncertainties
+norm_ZZ		: ZZ					: .*wz.*     : normSymm : 1.2
+norm_WW		: WW					: .*wz.*     : normSymm : 1.2
+norm_WW		: WW					: .*2l2nu.*  : normSymm : 1.2
+norm_WZ		: WZ					: .*2l2nu.*  : normSymm : 1.2
+norm_VV		: VV					: .*         : normSymm	: 1.2
+
+norm_mcfakes_2l : Nonprompt                             : .*2lss.*   : normSymm : 1.5
+norm_mcfakes_3l : Nonprompt                             : .*3l.*     : normSymm : 1.2
+norm_mcfakes_4l : Nonprompt                             : .*4l.*     : normSymm : 1.2
+norm_mcfakes   	: Nonprompt                             : .*ww.*     : normSymm : 1.5
+norm_mcfakes   	: Nonprompt                             : .*2l2nu.*  : normSymm : 1.5
+
+norm_convs   	: Convs                                 : .*   	     : normSymm : 1.3
+
+norm_flips	: Flips					: .*2lss.*   : normSymm : 1.2
+
+norm_DY		: DY					: .*ww.*     : normSymm	: 1.1
+norm_top	: top					: .*ww.*     : normSymm	: 1.1
+norm_DY		: DY					: .*2l2nu.*  : normSymm	: 1.1
+norm_top	: top					: .*2l2nu.*  : normSymm	: 1.1
+
+## fake-rate method:
+fake_clos_e_norm : $FRAll : .*2lss.*  : templateSymm; AddWeight='wz_2lss_ifflav(LepGood1_pdgId\,LepGood2_pdgId\,1.60\, 1.30\, 1.0)'
+fake_clos_m_norm : $FRAll : .*2lss.*  : templateSymm; AddWeight='wz_2lss_ifflav(LepGood1_pdgId\,LepGood2_pdgId\,1.00\, 1.15\, 1.3)'
+fake_clos_e_norm : $FRAll : .*3l.*    : templateSymm; AddWeight='wz_2lss_ifflav(lW_pdg\,lZ1_pdg\,1.60\, 1.30\, 1.0)'
+fake_clos_m_norm : $FRAll : .*3l.*    : templateSymm; AddWeight='wz_2lss_ifflav(lW_pdg\,lZ1_pdg\,1.00\, 1.15\, 1.3)'
+fake_clos_e_norm : $FRAll : .*ww.*    : templateSymm; AddWeight='wz_2lss_ifflav(LepGood1_pdgId\,LepGood2_pdgId\,1.60\, 1.30\, 1.0)'
+fake_clos_m_norm : $FRAll : .*ww.*    : templateSymm; AddWeight='wz_2lss_ifflav(LepGood1_pdgId\,LepGood2_pdgId\,1.00\, 1.15\, 1.3)'
+fake_clos_e_norm : $FRAll : .*2l2nu.* : templateSymm; AddWeight='wz_2lss_ifflav(LepGood1_pdgId\,LepGood2_pdgId\,1.60\, 1.30\, 1.0)'
+fake_clos_m_norm : $FRAll : .*2l2nu.* : templateSymm; AddWeight='wz_2lss_ifflav(LepGood1_pdgId\,LepGood2_pdgId\,1.00\, 1.15\, 1.3)'
+
+
+## theoretical uncertainties (fully correlated everywhere): 
+ZZ_scales      :   ZZ	     :  .*	: envelope; FakeRates=['5TeV/frs-scales/fr-muR_0p5_muF_0p5.txt'\,'5TeV/frs-scales/fr-muR_0p5_muF_2p0.txt'\,'5TeV/frs-scales/fr-muR_1p0_muF_2p0.txt'\,'5TeV/frs-scales/fr-muR_2p0_muF_1p0.txt'\,'5TeV/frs-scales/fr-muR_0p5_muF_1p0.txt'\,'5TeV/frs-scales/fr-muR_1p0_muF_0p5.txt'\,'5TeV/frs-scales/fr-muR_2p0_muF_0p5.txt'\,'5TeV/frs-scales/fr-muR_2p0_muF_2p0.txt'], DoesNotChangeEventSelection=True
+WW_scales      :   WW	     :  .*	: envelope; FakeRates=['5TeV/frs-scales/fr-muR_0p5_muF_0p5.txt'\,'5TeV/frs-scales/fr-muR_0p5_muF_2p0.txt'\,'5TeV/frs-scales/fr-muR_1p0_muF_2p0.txt'\,'5TeV/frs-scales/fr-muR_2p0_muF_1p0.txt'\,'5TeV/frs-scales/fr-muR_0p5_muF_1p0.txt'\,'5TeV/frs-scales/fr-muR_1p0_muF_0p5.txt'\,'5TeV/frs-scales/fr-muR_2p0_muF_0p5.txt'\,'5TeV/frs-scales/fr-muR_2p0_muF_2p0.txt'], DoesNotChangeEventSelection=True
+WZ_scales      :   WZ	     :  .*	: envelope; FakeRates=['5TeV/frs-scales/fr-muR_0p5_muF_0p5.txt'\,'5TeV/frs-scales/fr-muR_0p5_muF_2p0.txt'\,'5TeV/frs-scales/fr-muR_1p0_muF_2p0.txt'\,'5TeV/frs-scales/fr-muR_2p0_muF_1p0.txt'\,'5TeV/frs-scales/fr-muR_0p5_muF_1p0.txt'\,'5TeV/frs-scales/fr-muR_1p0_muF_0p5.txt'\,'5TeV/frs-scales/fr-muR_2p0_muF_0p5.txt'\,'5TeV/frs-scales/fr-muR_2p0_muF_2p0.txt'], DoesNotChangeEventSelection=True
+
+WZ_pdf	       :   WZ	     :	.*	: envelope; FakeRates=['5TeV/frs-pdfs/fr-pdf_0.txt'\,'5TeV/frs-pdfs/fr-pdf_1.txt'\,'5TeV/frs-pdfs/fr-pdf_2.txt'\,'5TeV/frs-pdfs/fr-pdf_3.txt'\,'5TeV/frs-pdfs/fr-pdf_4.txt'\,'5TeV/frs-pdfs/fr-pdf_5.txt'\,'5TeV/frs-pdfs/fr-pdf_6.txt'\,'5TeV/frs-pdfs/fr-pdf_7.txt'\,'5TeV/frs-pdfs/fr-pdf_8.txt'\,'5TeV/frs-pdfs/fr-pdf_9.txt'\,'5TeV/frs-pdfs/fr-pdf_10.txt'\,'5TeV/frs-pdfs/fr-pdf_11.txt'\,'5TeV/frs-pdfs/fr-pdf_12.txt'\,'5TeV/frs-pdfs/fr-pdf_13.txt'\,'5TeV/frs-pdfs/fr-pdf_14.txt'\,'5TeV/frs-pdfs/fr-pdf_15.txt'\,'5TeV/frs-pdfs/fr-pdf_16.txt'\,'5TeV/frs-pdfs/fr-pdf_17.txt'\,'5TeV/frs-pdfs/fr-pdf_18.txt'\,'5TeV/frs-pdfs/fr-pdf_19.txt'\,'5TeV/frs-pdfs/fr-pdf_20.txt'\,'5TeV/frs-pdfs/fr-pdf_21.txt'\,'5TeV/frs-pdfs/fr-pdf_22.txt'\,'5TeV/frs-pdfs/fr-pdf_23.txt'\,'5TeV/frs-pdfs/fr-pdf_24.txt'\,'5TeV/frs-pdfs/fr-pdf_25.txt'\,'5TeV/frs-pdfs/fr-pdf_26.txt'\,'5TeV/frs-pdfs/fr-pdf_27.txt'\,'5TeV/frs-pdfs/fr-pdf_28.txt'\,'5TeV/frs-pdfs/fr-pdf_29.txt'\,'5TeV/frs-pdfs/fr-pdf_30.txt'\,'5TeV/frs-pdfs/fr-pdf_31.txt'\,'5TeV/frs-pdfs/fr-pdf_32.txt'], DoesNotChangeEventSelection=True
+
+ZZ_pdf	       :   ZZ	     :	.*	: envelope; FakeRates=['5TeV/frs-pdfs/fr-pdf_0.txt'\,'5TeV/frs-pdfs/fr-pdf_1.txt'\,'5TeV/frs-pdfs/fr-pdf_2.txt'\,'5TeV/frs-pdfs/fr-pdf_3.txt'\,'5TeV/frs-pdfs/fr-pdf_4.txt'\,'5TeV/frs-pdfs/fr-pdf_5.txt'\,'5TeV/frs-pdfs/fr-pdf_6.txt'\,'5TeV/frs-pdfs/fr-pdf_7.txt'\,'5TeV/frs-pdfs/fr-pdf_8.txt'\,'5TeV/frs-pdfs/fr-pdf_9.txt'\,'5TeV/frs-pdfs/fr-pdf_10.txt'\,'5TeV/frs-pdfs/fr-pdf_11.txt'\,'5TeV/frs-pdfs/fr-pdf_12.txt'\,'5TeV/frs-pdfs/fr-pdf_13.txt'\,'5TeV/frs-pdfs/fr-pdf_14.txt'\,'5TeV/frs-pdfs/fr-pdf_15.txt'\,'5TeV/frs-pdfs/fr-pdf_16.txt'\,'5TeV/frs-pdfs/fr-pdf_17.txt'\,'5TeV/frs-pdfs/fr-pdf_18.txt'\,'5TeV/frs-pdfs/fr-pdf_19.txt'\,'5TeV/frs-pdfs/fr-pdf_20.txt'\,'5TeV/frs-pdfs/fr-pdf_21.txt'\,'5TeV/frs-pdfs/fr-pdf_22.txt'\,'5TeV/frs-pdfs/fr-pdf_23.txt'\,'5TeV/frs-pdfs/fr-pdf_24.txt'\,'5TeV/frs-pdfs/fr-pdf_25.txt'\,'5TeV/frs-pdfs/fr-pdf_26.txt'\,'5TeV/frs-pdfs/fr-pdf_27.txt'\,'5TeV/frs-pdfs/fr-pdf_28.txt'\,'5TeV/frs-pdfs/fr-pdf_29.txt'\,'5TeV/frs-pdfs/fr-pdf_30.txt'\,'5TeV/frs-pdfs/fr-pdf_31.txt'\,'5TeV/frs-pdfs/fr-pdf_32.txt'], DoesNotChangeEventSelection=True
+
+WW_pdf	       :   WW	     :	.*	: envelope; FakeRates=['5TeV/frs-pdfs/fr-pdf_0.txt'\,'5TeV/frs-pdfs/fr-pdf_1.txt'\,'5TeV/frs-pdfs/fr-pdf_2.txt'\,'5TeV/frs-pdfs/fr-pdf_3.txt'\,'5TeV/frs-pdfs/fr-pdf_4.txt'\,'5TeV/frs-pdfs/fr-pdf_5.txt'\,'5TeV/frs-pdfs/fr-pdf_6.txt'\,'5TeV/frs-pdfs/fr-pdf_7.txt'\,'5TeV/frs-pdfs/fr-pdf_8.txt'\,'5TeV/frs-pdfs/fr-pdf_9.txt'\,'5TeV/frs-pdfs/fr-pdf_10.txt'\,'5TeV/frs-pdfs/fr-pdf_11.txt'\,'5TeV/frs-pdfs/fr-pdf_12.txt'\,'5TeV/frs-pdfs/fr-pdf_13.txt'\,'5TeV/frs-pdfs/fr-pdf_14.txt'\,'5TeV/frs-pdfs/fr-pdf_15.txt'\,'5TeV/frs-pdfs/fr-pdf_16.txt'\,'5TeV/frs-pdfs/fr-pdf_17.txt'\,'5TeV/frs-pdfs/fr-pdf_18.txt'\,'5TeV/frs-pdfs/fr-pdf_19.txt'\,'5TeV/frs-pdfs/fr-pdf_20.txt'\,'5TeV/frs-pdfs/fr-pdf_21.txt'\,'5TeV/frs-pdfs/fr-pdf_22.txt'\,'5TeV/frs-pdfs/fr-pdf_23.txt'\,'5TeV/frs-pdfs/fr-pdf_24.txt'\,'5TeV/frs-pdfs/fr-pdf_25.txt'\,'5TeV/frs-pdfs/fr-pdf_26.txt'\,'5TeV/frs-pdfs/fr-pdf_27.txt'\,'5TeV/frs-pdfs/fr-pdf_28.txt'\,'5TeV/frs-pdfs/fr-pdf_29.txt'\,'5TeV/frs-pdfs/fr-pdf_30.txt'\,'5TeV/frs-pdfs/fr-pdf_31.txt'\,'5TeV/frs-pdfs/fr-pdf_32.txt'], DoesNotChangeEventSelection=True
+
+## statistical uncertainties (taken into account with --amc of the makeShapeCards)
+
+
+

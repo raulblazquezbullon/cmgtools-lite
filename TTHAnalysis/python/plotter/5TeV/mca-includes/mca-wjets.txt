@@ -1,0 +1,4 @@
+WJETS : W0JetsToLNu : xsec
+WJETS : W1JetsToLNu : xsec
+WJETS : W2JetsToLNu : xsec
+WJETS : W3JetsToLNu : xsec

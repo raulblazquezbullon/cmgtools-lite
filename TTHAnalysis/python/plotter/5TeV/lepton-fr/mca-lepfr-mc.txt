@@ -1,0 +1,32 @@
+# vim: syntax=sh
+TT_red:   TT_PS      : xsec: (LepGood_genPartFlav != 1 && LepGood_genPartFlav != 15); FillColor=ROOT.kGray+2, Label="non-pr (tt)"
+TT_redCharmless:   TT_PS      : xsec: (LepGood_genPartFlav != 1 && LepGood_genPartFlav != 15) && LepGood_genPartFlav != 4; FillColor=ROOT.kPink, Label="non-charm (tt)"
+TT_redNC: TT_PS      : xsec: (LepGood_genPartFlav != 1 && LepGood_genPartFlav != 15 && LepGood_genPartFlav != 22); FillColor=ROOT.kGray+3, Label="non-pr (tt\, w/o \#gamma)"
+TT_bjets: TT_PS      : xsec: LepGood_genPartFlav == 5 ; FillColor=ROOT.kBlue-2, Label="b-jets (tt)"
+TT_cjets: TT_PS      : xsec: LepGood_genPartFlav == 4 ; FillColor=ROOT.kGray+2, Label="c-jets (tt)"
+TT_ljets: TT_PS      : xsec: (LepGood_genPartFlav != 1 && LepGood_genPartFlav != 15  && LepGood_genPartFlav != 5 && LepGood_genPartFlav != 4) ; FillColor=ROOT.kTeal+2, Label="l-jets (tt)"
+TT_ljetsNC: TT_PS    : xsec: (LepGood_genPartFlav != 1 && LepGood_genPartFlav != 15)  && LepGood_genPartFlav != 5 && LepGood_genPartFlav != 4 && LepGood_genPartFlav != 22 ; FillColor=ROOT.kAzure+2, Label="l-jets (tt\, no \#gamma)"
+TT_fake:  TT_PS      : xsec: LepGood_genPartFlav == 0 ; FillColor=ROOT.kGray+3, Label="fakes (tt)"
+TT_conv:  TT_PS      : xsec: LepGood_genPartFlav == 22 ; FillColor=ROOT.kYellow+2, Label="\#gamma (tt)"
+
+
+DY_red:   DY1JetsToLL_M50      : xsec: (LepGood_genPartFlav != 1 && LepGood_genPartFlav != 15); FillColor=ROOT.kGray+2, Label="non-pr (DY)"
+DY_redCharmless:   DY1JetsToLL_M50      : xsec: (LepGood_genPartFlav != 1 && LepGood_genPartFlav != 15) && LepGood_genPartFlav != 4; FillColor=ROOT.kPink, Label="non-charm (DY)"
+DY_redNC: DY1JetsToLL_M50      : xsec: (LepGood_genPartFlav != 1 && LepGood_genPartFlav != 15 && LepGood_genPartFlav != 22); FillColor=ROOT.kGray+3, Label="non-pr (tt\, w/o \#gamma)"
+DY_bjets: DY1JetsToLL_M50      : xsec: LepGood_genPartFlav == 5 ; FillColor=ROOT.kBlue-2, Label="b-jets (DY)"
+DY_cjets: DY1JetsToLL_M50      : xsec: LepGood_genPartFlav == 4 ; FillColor=ROOT.kGray+2, Label="c-jets (DY)"
+DY_ljets: DY1JetsToLL_M50      : xsec: (LepGood_genPartFlav != 1 && LepGood_genPartFlav != 15  && LepGood_genPartFlav != 5 && LepGood_genPartFlav != 4) ; FillColor=ROOT.kTeal+2, Label="l-jets (DY)"
+DY_ljetsNC: DY1JetsToLL_M50    : xsec: (LepGood_genPartFlav != 1 && LepGood_genPartFlav != 15)  && LepGood_genPartFlav != 5 && LepGood_genPartFlav != 4 && LepGood_genPartFlav != 22 ; FillColor=ROOT.kAzure+2, Label="l-jets (tt\, no \#gamma)"
+DY_fake:  DY1JetsToLL_M50      : xsec: LepGood_genPartFlav == 0 ; FillColor=ROOT.kGray+3, Label="fakes (DY)"
+DY_conv:  DY1JetsToLL_M50      : xsec: LepGood_genPartFlav == 22 ; FillColor=ROOT.kYellow+2, Label="\#gamma (DY)"
+
+
+W_red:   W1JetsToLNu      : xsec: (LepGood_genPartFlav != 1 && LepGood_genPartFlav != 15); FillColor=ROOT.kGray+2, Label="non-pr (W)"
+W_redCharmless:   W1JetsToLNu      : xsec: (LepGood_genPartFlav != 1 && LepGood_genPartFlav != 15) && LepGood_genPartFlav != 4; FillColor=ROOT.kPink, Label="non-charm (W)"
+W_redNC: W1JetsToLNu      : xsec: (LepGood_genPartFlav != 1 && LepGood_genPartFlav != 15 && LepGood_genPartFlav != 22); FillColor=ROOT.kGray+3, Label="non-pr (tt\, w/o \#gamma)"
+W_bjets: W1JetsToLNu      : xsec: LepGood_genPartFlav == 5 ; FillColor=ROOT.kBlue-2, Label="b-jets (W)"
+W_cjets: W1JetsToLNu      : xsec: LepGood_genPartFlav == 4 ; FillColor=ROOT.kGray+2, Label="c-jets (W)"
+W_ljets: W1JetsToLNu      : xsec: (LepGood_genPartFlav != 1 && LepGood_genPartFlav != 15  && LepGood_genPartFlav != 5 && LepGood_genPartFlav != 4) ; FillColor=ROOT.kTeal+2, Label="l-jets (W)"
+W_ljetsNC: W1JetsToLNu    : xsec: (LepGood_genPartFlav != 1 && LepGood_genPartFlav != 15)  && LepGood_genPartFlav != 5 && LepGood_genPartFlav != 4 && LepGood_genPartFlav != 22 ; FillColor=ROOT.kAzure+2, Label="l-jets (tt\, no \#gamma)"
+W_fake:  W1JetsToLNu      : xsec: LepGood_genPartFlav == 0 ; FillColor=ROOT.kGray+3, Label="fakes (W)"
+W_conv:  W1JetsToLNu      : xsec: LepGood_genPartFlav == 22 ; FillColor=ROOT.kYellow+2, Label="\#gamma (W)"

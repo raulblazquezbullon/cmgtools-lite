@@ -1,0 +1,48 @@
+# vim: syntax=sh
+TT_red:   TT_PS      : xsec: (LepGood_genPartFlav != 1 && LepGood_genPartFlav != 15); FillColor=ROOT.kGray+2, Label="non-pr (tt)", FakeRate="5TeV/lepton-fr/lepton-mca-frstudies-noJetCutOnTT.txt"
+TT_redCharmless:   TT_PS      : xsec: (LepGood_genPartFlav != 1 && LepGood_genPartFlav != 15) && LepGood_genPartFlav != 4; FillColor=ROOT.kPink, Label="non-charm (tt)", FakeRate="5TeV/lepton-fr/lepton-mca-frstudies-noJetCutOnTT.txt"
+TT_redNC: TT_PS      : xsec: (LepGood_genPartFlav != 1 && LepGood_genPartFlav != 15 && LepGood_genPartFlav != 22); FillColor=ROOT.kGray+3, Label="non-pr (tt\, w/o \#gamma)", FakeRate="5TeV/lepton-fr/lepton-mca-frstudies-noJetCutOnTT.txt"
+TT_bjets: TT_PS      : xsec: LepGood_genPartFlav == 5 ; FillColor=ROOT.kBlue-2, Label="b-jets (tt)", FakeRate="5TeV/lepton-fr/lepton-mca-frstudies-noJetCutOnTT.txt"
+TT_cjets: TT_PS      : xsec: LepGood_genPartFlav == 4 ; FillColor=ROOT.kGray+2, Label="c-jets (tt)", FakeRate="5TeV/lepton-fr/lepton-mca-frstudies-noJetCutOnTT.txt"
+TT_ljets: TT_PS      : xsec: (LepGood_genPartFlav != 1 && LepGood_genPartFlav != 15  && LepGood_genPartFlav != 5 && LepGood_genPartFlav != 4) ; FillColor=ROOT.kTeal+2, Label="l-jets (tt)", FakeRate="5TeV/lepton-fr/lepton-mca-frstudies-noJetCutOnTT.txt"
+TT_ljetsNC: TT_PS    : xsec: (LepGood_genPartFlav != 1 && LepGood_genPartFlav != 15)  && LepGood_genPartFlav != 5 && LepGood_genPartFlav != 4 && LepGood_genPartFlav != 22 ; FillColor=ROOT.kAzure+2, Label="l-jets (tt\, no \#gamma)", FakeRate="5TeV/lepton-fr/lepton-mca-frstudies-noJetCutOnTT.txt"
+TT_fake:  TT_PS      : xsec: LepGood_genPartFlav == 0 ; FillColor=ROOT.kGray+3, Label="fakes (tt)", FakeRate="5TeV/lepton-fr/lepton-mca-frstudies-noJetCutOnTT.txt"
+TT_conv:  TT_PS      : xsec: LepGood_genPartFlav == 22 ; FillColor=ROOT.kYellow+2, Label="\#gamma (tt)", FakeRate="5TeV/lepton-fr/lepton-mca-frstudies-noJetCutOnTT.txt"
+
+TT_SS_red:   TT_PS        : xsec : (LepGood_genPartFlav != 1 && LepGood_genPartFlav != 15) ; FillColor=ROOT.kGreen+2, Label="tt ss", FakeRate="5TeV/lepton-fr/lepton-mca-frstudies-noJetCutOnTT-sameSign.txt"
+TT_SS_red_viol: TT_PS        : xsec : (LepGood_genPartFlav != 1 && LepGood_genPartFlav != 15) ; FillColor=ROOT.kMagenta+2, Label="tt ss", FakeRate="5TeV/lepton-fr/lepton-mca-frstudies-noJetCutOnTT-sameSign.txt"
+TT_SSbl_df_red: TT_PS     : xsec : (LepGood_genPartFlav != 1 && LepGood_genPartFlav != 15) && nBJetDeepFlav25Medium <= 1; FillColor=ROOT.kAzure+1, Label="tt bl", FakeRate="5TeV/lepton-fr/lepton-mca-frstudies-noJetCutOnTT-sameSign.txt"
+TT_SSbt_df_red: TT_PS     : xsec : (LepGood_genPartFlav != 1 && LepGood_genPartFlav != 15) && nBJetDeepFlav25Medium >= 2; FillColor=ROOT.kRed-3,   Label="tt bt", FakeRate="5TeV/lepton-fr/lepton-mca-frstudies-noJetCutOnTT-sameSign.txt"
+TT_SSbt_df_red: dilep_TTSemi_pow                   : xsec : (LepGood_genPartFlav != 1 && LepGood_genPartFlav != 15) && nBJetDeepFlav25Medium >= 2; FillColor=ROOT.kRed-3,   Label="tt bt", FakeRate="5TeV/lepton-fr/lepton-mca-frstudies-noJetCutOnTT-sameSign.txt"
+
+#TT_SSbl_dcvs_red: TT_PS     : xsec : (LepGood_genPartFlav != 1 && LepGood_genPartFlav != 15) && nBJetDeepCSV25Medium <= 1; FillColor=ROOT.kAzure+2,  Label="tt bl (DCSV)", FakeRate="5TeV/lepton-fr/lepton-mca-frstudies-noJetCutOnTT-sameSign.txt"
+#TT_SSbt_dcvs_red: TT_PS     : xsec : (LepGood_genPartFlav != 1 && LepGood_genPartFlav != 15) && nBJetDeepCSV25Medium >= 2; FillColor=ROOT.kMagenta+1,    Label="tt bt (DCSV)", FakeRate="5TeV/lepton-fr/lepton-mca-frstudies-noJetCutOnTT-sameSign.txt"
+#TT_SSbt_dcvs_red: dilep_TTSemi_pow                   : xsec : (LepGood_genPartFlav != 1 && LepGood_genPartFlav != 15) && nBJetDeepCSV25Medium >= 2; FillColor=ROOT.kMagenta+1,    Label="tt bt (DCSV)", FakeRate="5TeV/lepton-fr/lepton-mca-frstudies-noJetCutOnTT-sameSign.txt"
+TT_SSbt_black: TT_PS   : xsec : (LepGood_genPartFlav != 1 && LepGood_genPartFlav != 15) && nBJetDeepFlav25Medium >= 2; FillColor=ROOT.kBlack, Label="tt b-tight", FakeRate="5TeV/lepton-fr/lepton-mca-frstudies-noJetCutOnTT-sameSign.txt"
+
+TT_SS_redNC:   TT_PS         : xsec: (LepGood_genPartFlav != 1 && LepGood_genPartFlav != 15 && LepGood_genPartFlav != 22) ; FillColor=ROOT.kGreen+2, Label="tt ss no\#gamma", FakeRate="5TeV/lepton-fr/lepton-mca-frstudies-noJetCutOnTT-sameSign.txt"
+TT_SS_redNC_pink:   TT_PS         : xsec: (LepGood_genPartFlav != 1 && LepGood_genPartFlav != 15 && LepGood_genPartFlav != 22) ; FillColor=ROOT.kPink+9, Label="tt ss no\#gamma", FakeRate="5TeV/lepton-fr/lepton-mca-frstudies-noJetCutOnTT-sameSign.txt"
+TT_SSbl_redNC: TT_PS         : xsec: (LepGood_genPartFlav != 1 && LepGood_genPartFlav != 15 && LepGood_genPartFlav != 22) && nBJetDeepFlav25Medium <= 1; FillColor=ROOT.kAzure+1, Label="tt ss bl no\#gamma", FakeRate="5TeV/lepton-fr/lepton-mca-frstudies-noJetCutOnTT-sameSign.txt"
+TT_SSbt_redNC: TT_PS   : xsec : (LepGood_genPartFlav != 1 && LepGood_genPartFlav != 15 && LepGood_genPartFlav != 22) && nBJetDeepFlav25Medium >= 2; FillColor=ROOT.kRed-3, Label="tt ss bt no\#gamma", FakeRate="5TeV/lepton-fr/lepton-mca-frstudies-noJetCutOnTT-sameSign.txt"
+
+
+DY_red:   DY1JetsToLL_M50      : xsec: (LepGood_genPartFlav != 1 && LepGood_genPartFlav != 15); FillColor=ROOT.kGray+2, Label="non-pr (DY)", FakeRate="5TeV/lepton-fr/lepton-mca-frstudies-noJetCutOnTT.txt"
+DY_redCharmless:   DY1JetsToLL_M50      : xsec: (LepGood_genPartFlav != 1 && LepGood_genPartFlav != 15) && LepGood_genPartFlav != 4; FillColor=ROOT.kPink, Label="non-charm (DY)", FakeRate="5TeV/lepton-fr/lepton-mca-frstudies-noJetCutOnTT.txt"
+DY_redNC: DY1JetsToLL_M50      : xsec: (LepGood_genPartFlav != 1 && LepGood_genPartFlav != 15 && LepGood_genPartFlav != 22); FillColor=ROOT.kGray+3, Label="non-pr (tt\, w/o \#gamma)", FakeRate="5TeV/lepton-fr/lepton-mca-frstudies-noJetCutOnTT.txt"
+DY_bjets: DY1JetsToLL_M50      : xsec: LepGood_genPartFlav == 5 ; FillColor=ROOT.kBlue-2, Label="b-jets (DY)", FakeRate="5TeV/lepton-fr/lepton-mca-frstudies-noJetCutOnTT.txt"
+DY_cjets: DY1JetsToLL_M50      : xsec: LepGood_genPartFlav == 4 ; FillColor=ROOT.kGray+2, Label="c-jets (DY)", FakeRate="5TeV/lepton-fr/lepton-mca-frstudies-noJetCutOnTT.txt"
+DY_ljets: DY1JetsToLL_M50      : xsec: (LepGood_genPartFlav != 1 && LepGood_genPartFlav != 15  && LepGood_genPartFlav != 5 && LepGood_genPartFlav != 4) ; FillColor=ROOT.kTeal+2, Label="l-jets (DY)", FakeRate="5TeV/lepton-fr/lepton-mca-frstudies-noJetCutOnTT.txt"
+DY_ljetsNC: DY1JetsToLL_M50    : xsec: (LepGood_genPartFlav != 1 && LepGood_genPartFlav != 15)  && LepGood_genPartFlav != 5 && LepGood_genPartFlav != 4 && LepGood_genPartFlav != 22 ; FillColor=ROOT.kAzure+2, Label="l-jets (tt\, no \#gamma)", FakeRate="5TeV/lepton-fr/lepton-mca-frstudies-noJetCutOnTT.txt"
+DY_fake:  DY1JetsToLL_M50      : xsec: LepGood_genPartFlav == 0 ; FillColor=ROOT.kGray+3, Label="fakes (DY)", FakeRate="5TeV/lepton-fr/lepton-mca-frstudies-noJetCutOnTT.txt"
+DY_conv:  DY1JetsToLL_M50      : xsec: LepGood_genPartFlav == 22 ; FillColor=ROOT.kYellow+2, Label="\#gamma (DY)", FakeRate="5TeV/lepton-fr/lepton-mca-frstudies-noJetCutOnTT.txt"
+
+
+W_red:   W1JetsToLNu      : xsec: (LepGood_genPartFlav != 1 && LepGood_genPartFlav != 15); FillColor=ROOT.kGray+2, Label="non-pr (W)", FakeRate="5TeV/lepton-fr/lepton-mca-frstudies-noJetCutOnTT.txt"
+W_redCharmless:   W1JetsToLNu      : xsec: (LepGood_genPartFlav != 1 && LepGood_genPartFlav != 15) && LepGood_genPartFlav != 4; FillColor=ROOT.kPink, Label="non-charm (W)", FakeRate="5TeV/lepton-fr/lepton-mca-frstudies-noJetCutOnTT.txt"
+W_redNC: W1JetsToLNu      : xsec: (LepGood_genPartFlav != 1 && LepGood_genPartFlav != 15 && LepGood_genPartFlav != 22); FillColor=ROOT.kGray+3, Label="non-pr (tt\, w/o \#gamma)", FakeRate="5TeV/lepton-fr/lepton-mca-frstudies-noJetCutOnTT.txt"
+W_bjets: W1JetsToLNu      : xsec: LepGood_genPartFlav == 5 ; FillColor=ROOT.kBlue-2, Label="b-jets (W)", FakeRate="5TeV/lepton-fr/lepton-mca-frstudies-noJetCutOnTT.txt"
+W_cjets: W1JetsToLNu      : xsec: LepGood_genPartFlav == 4 ; FillColor=ROOT.kGray+2, Label="c-jets (W)", FakeRate="5TeV/lepton-fr/lepton-mca-frstudies-noJetCutOnTT.txt"
+W_ljets: W1JetsToLNu      : xsec: (LepGood_genPartFlav != 1 && LepGood_genPartFlav != 15  && LepGood_genPartFlav != 5 && LepGood_genPartFlav != 4) ; FillColor=ROOT.kTeal+2, Label="l-jets (W)", FakeRate="5TeV/lepton-fr/lepton-mca-frstudies-noJetCutOnTT.txt"
+W_ljetsNC: W1JetsToLNu    : xsec: (LepGood_genPartFlav != 1 && LepGood_genPartFlav != 15)  && LepGood_genPartFlav != 5 && LepGood_genPartFlav != 4 && LepGood_genPartFlav != 22 ; FillColor=ROOT.kAzure+2, Label="l-jets (tt\, no \#gamma)", FakeRate="5TeV/lepton-fr/lepton-mca-frstudies-noJetCutOnTT.txt"
+W_fake:  W1JetsToLNu      : xsec: LepGood_genPartFlav == 0 ; FillColor=ROOT.kGray+3, Label="fakes (W)", FakeRate="5TeV/lepton-fr/lepton-mca-frstudies-noJetCutOnTT.txt"
+W_conv:  W1JetsToLNu      : xsec: LepGood_genPartFlav == 22 ; FillColor=ROOT.kYellow+2, Label="\#gamma (W)", FakeRate="5TeV/lepton-fr/lepton-mca-frstudies-noJetCutOnTT.txt"

@@ -1,0 +1,4 @@
+single: (Trigger_5TeV_1e || Trigger_5TeV_1m)  :2,-0.5,1.5; Title="Single trigger"
+MuEle17: (HLT_HIMu17 || HLT_HIEle17_WPLoose_Gsf):  2,-0.5,1.5; Title="Mu17 || Ele17"
+double: (Trigger_5TeV_2e || Trigger_5TeV_2m): 2,-0.5,1.5; Title="Double trigger"
+cocktail: (Trigger_5TeV_1e || Trigger_5TeV_1m || Trigger_5TeV_2e || Trigger_5TeV_2m) :2,-0.5,1.5; Title="Full"
