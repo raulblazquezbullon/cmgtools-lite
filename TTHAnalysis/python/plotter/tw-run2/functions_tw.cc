@@ -31,48 +31,49 @@ int getnLooseJets(int nlj, int nj) {
 
 
 float getSergioBDtW(double BDT) {
-  if      (BDT < -0.425391) return 1;
-  else if (BDT < -0.317214) return 2;
-  else if (BDT < -0.228295) return 3;
-  else if (BDT < -0.149703) return 4;
-  else if (BDT < -0.075527) return 5;
-  else if (BDT < -0.008082) return 6;
-  else if (BDT < 0.070643)  return 7;
-  else if (BDT < 0.161760)  return 8;
-  else if (BDT < 0.272351)  return 9;
+  if      (BDT < -0.536042) return 1;
+  else if (BDT < -0.423882) return 2;
+  else if (BDT < -0.324371) return 3;
+  else if (BDT < -0.237901) return 4;
+  else if (BDT < -0.151821) return 5;
+  else if (BDT < -0.062366) return 6;
+  else if (BDT < 0.027435)  return 7;
+  else if (BDT < 0.137813)  return 8;
+  else if (BDT < 0.260178)  return 9;
   else                      return 10;
 }
 
 
 float getSergioBDtWOther(double BDT) {
-  if      (BDT < -0.165024) return 1;
-  else if (BDT < -0.069230) return 2;
-  else if (BDT < -0.001835) return 3;
-  else if (BDT < 0.047763)  return 4;
-  else if (BDT < 0.111411)  return 5;
+  if      (BDT < -0.165198) return 1;
+  else if (BDT < -0.071037) return 2;
+  else if (BDT < -0.002801) return 3;
+  else if (BDT < 0.047232)  return 4;
+  else if (BDT < 0.111612)  return 5;
   else                      return 6;
 }
 
+
 float getBDtW(double BDT) {
-  if      (BDT < -0.425391) return 1;
-  else if (BDT < -0.317214) return 2;
-  else if (BDT < -0.228295) return 3;
-  else if (BDT < -0.149703) return 4;
-  else if (BDT < -0.075527) return 5;
-  else if (BDT < -0.008082) return 6;
-  else if (BDT < 0.070643)  return 7;
-  else if (BDT < 0.161760)  return 8;
-  else if (BDT < 0.272351)  return 9;
+  if      (BDT < -0.576136) return 1;
+  else if (BDT < -0.456186) return 2;
+  else if (BDT < -0.317302) return 3;
+  else if (BDT < -0.189152) return 4;
+  else if (BDT < -0.084137) return 5;
+  else if (BDT < 0.012613)  return 6;
+  else if (BDT < 0.110381)  return 7;
+  else if (BDT < 0.216965)  return 8;
+  else if (BDT < 0.335691)  return 9;
   else                      return 10;
 }
 
 
 float getBDtWOther(double BDT) {
-  if      (BDT < -0.165024) return 1;
-  else if (BDT < -0.069230) return 2;
-  else if (BDT < -0.001835) return 3;
-  else if (BDT < 0.047763)  return 4;
-  else if (BDT < 0.111411)  return 5;
+  if      (BDT < -0.239698) return 1;
+  else if (BDT < -0.126132) return 2;
+  else if (BDT < -0.029249) return 3;
+  else if (BDT < 0.062478)  return 4;
+  else if (BDT < 0.163814)  return 5;
   else                      return 6;
 }
 
