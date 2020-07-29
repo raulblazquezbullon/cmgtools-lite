@@ -11,7 +11,7 @@ printthings = 1
 
 friendspath = "/pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions"
 mcpath      = "/pool/ciencias/nanoAODv6/29jan2020_MC"
-prodname    = "2020-06-17"
+prodname    = "2020-07-03"
 friendfolders = ["0_yeartag", "1_lepmerge_roch", "2_cleaning", "3_varstrigger", "4_scalefactors", "5_mvas"]
 
 #### 2016
@@ -170,5 +170,8 @@ Float_t theBDT(Double_t BDT){
     print Base
     return
 
-getBinningForThatVariable("./temp/varplots/2016/1j1t/plots-tw-1j1t.root", "SergioBDT_1j1b_smallb_ttbar", 10)
-getBinningForThatVariable("./temp/varplots/2016/2j1t/plots-tw-2j1t.root", "SergioBDT_2j1b_smallb_ttbar", 6)
+#getBinningForThatVariable("./temp/varplots/run2/1j1t/MVAtrain/plots-tw-1j1t_MVAtrain.root", "SergioBDT_1j1b_smallb_ttbar", 10)
+#getBinningForThatVariable("./temp/varplots/run2/2j1t/MVAtrain/plots-tw-2j1t_MVAtrain.root", "SergioBDT_2j1b_smallb_ttbar", 6)
+
+getBinningForThatVariable("./temp/varplots/run2/1j1t/MVAtrain/plots-tw-1j1t_MVAtrain.root", "tmvaBDT_1j1b_smallb_ttbar", 10)
+getBinningForThatVariable("./temp/varplots/run2/2j1t/MVAtrain/plots-tw-2j1t_MVAtrain.root", "tmvaBDT_2j1b_smallb_ttbar", 6)
