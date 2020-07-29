@@ -28,6 +28,7 @@ friendfolders = {0 : "0_yeartag",
                  3 : "3_varstrigger",
                  4 : "4_scalefactors",
                  5 : "5_mvas",
+                 #5 : "5_mvas_new",
                  "mvatrain" : "x_mvatrain"
                 }
 #chunksizes    = [5000000, 100000, 500000, 100000, 250000] # veyos
@@ -430,11 +431,11 @@ def getFriendsFolder(dataset, basepath, step_friends):
         myfibrefriends = [f for f in os.listdir(rofolder) if (".root" in f and dataset in f and "chunk" not in f and "Friend" in f)]
         if len(myfibrefriends) > 0: doihavefibrefriends = True
 
-    if doihavefibrefriends:
-        wr.warn("\n====== WARNING! Friends detected in RO folder for this production. Using them for dataset {d} and step (of the friends) {s}".format(d = dataset, s = step_friends))
-        return rofolder
-    else:
-        return rwfolder
+    #if doihavefibrefriends:
+        #wr.warn("\n====== WARNING! Friends detected in RO folder for this production. Using them for dataset {d} and step (of the friends) {s}".format(d = dataset, s = step_friends))
+        #return rofolder
+    #else:
+        #return rwfolder
     return rwfolder
 
 
