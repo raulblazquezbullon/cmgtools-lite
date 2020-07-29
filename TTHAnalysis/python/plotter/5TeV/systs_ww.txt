@@ -16,10 +16,10 @@ pileup 	    : $PromptFromMC : .* : templateAsymm; AddWeights=['puWeightUp/puWeig
 L1PreFiring : $PromptFromMC : .* : templateAsymm; AddWeights=['PrefireWeight_Up/PrefireWeight'\,'PrefireWeight_Down/PrefireWeight'], DoesNotChangeEventSelection=True
 
 ## lepton and trigger efficiencies
-eff_el   : $PromptFromMC	: .*  : templateAsymm; AddWeights=['leptonSF_2l_el_up/leptonSF_2l'\,'leptonSF_2l_el_dn/leptonSF_2l'], DoesNotChangeEventSelection=True
-eff_mu   : $PromptFromMC	: .*  : templateAsymm; AddWeights=['leptonSF_2l_mu_up/leptonSF_2l'\,'leptonSF_2l_mu_dn/leptonSF_2l'], DoesNotChangeEventSmuection=True
+eff_el       : $PromptFromMC	: .* : templateAsymm; AddWeights=['leptonSF_2l_sr_ele_up/leptonSF_2l_sr'\,'leptonSF_2l_sr_ele_dn/leptonSF_2l_sr'], DoesNotChangeEventSelection=True
+eff_mu       : $PromptFromMC	: .* : templateAsymm; AddWeights=['leptonSF_2l_sr_mu_up/leptonSF_2l_sr'\,'leptonSF_2l_sr_mu_dn/leptonSF_2l_sr'], DoesNotChangeEventSmuection=True
 
-trigger_2l   :	      $PromptFromMC 	: .* 	: normSymm : 1.05 
+trigger_2l   :	      $PromptFromMC 	: .* 	: normSymm : 1.02 
 
 ## lepton scale
 #el_scale   : $PromptFromMC	: .* : templateAsymm; AddWeights=['leptonSF_2lss_el_up/leptonSF_2lss'\,'leptonSF_2lss_el_dn/leptonSF_2lss']

@@ -41,7 +41,7 @@ from PhysicsTools.NanoAODTools.postprocessing.modules.common.puWeightProducer im
 from PhysicsTools.NanoAODTools.postprocessing.modules.common.PrefireCorr import prefCorr_2017G
 from PhysicsTools.NanoAODTools.postprocessing.modules.common.muonScaleResProducer import muonScaleRes2017G
 
-WZ5TeV_sequence_step1 = [lepSkim, lepMerge, yearTag, xsecTag, lepJetBTagCSV, lepJetBTagDeepCSV, lepJetBTagDeepFlav, lepMasses, puWeight_2017G, prefCorr_2017G, muonScaleRes2017G]
+WZ5TeV_sequence_step1 = [lepSkim, lepMerge, yearTag, xsecTag, lepJetBTagCSV, lepJetBTagDeepCSV, lepJetBTagDeepFlav, lepMasses, puWeight_2017G, prefCorr_2017G]
 
 ##add weights
 
@@ -54,34 +54,38 @@ centralJetSel = lambda j : j.pt > 25 and abs(j.eta) < 2.4 and j.jetId > 0
 lepFR = ttHLepQCDFakeRateAnalyzer(jetSel = centralJetSel,
                                   pairSel = lambda pair : deltaR(pair[0].eta, pair[0].phi, pair[1].eta, pair[1].phi) > 0.7,
                                   maxLeptons = 1, requirePair = True)
+
+lepFRVars = lambda : ttHLepQCDFakeRateAnalyzer(jetSel = centralJetSel,
+                                               pairSel = lambda pair : deltaR(pair[0].eta, pair[0].phi, pair[1].eta, pair[1].phi) > 0.7,
+                                               maxLeptons = 1, requirePair = True)
+
 from CMGTools.TTHAnalysis.tools.nanoAOD.nBJetCounter import nBJetCounter
 nBJetDeepCSV25NoRecl = lambda : nBJetCounter("DeepCSV25", "btagDeepB", centralJetSel)
 nBJetDeepFlav25NoRecl = lambda : nBJetCounter("DeepFlav25", "btagDeepFlavB", centralJetSel)
 
-WZ5TeV_sequence_step1_FR = [m for m in WZ5TeV_sequence_step1 if m != lepSkim] + [ lepFR, nBJetDeepCSV25NoRecl, nBJetDeepFlav25NoRecl ]
+WZ5TeV_sequence_step1_FR = [lepMerge, yearTag, xsecTag, lepJetBTagCSV, lepJetBTagDeepCSV, lepJetBTagDeepFlav, lepMasses,lepFR, nBJetDeepCSV25NoRecl, nBJetDeepFlav25NoRecl]
+#WZ5TeV_sequence_step1_FR = [m for m in WZ5TeV_sequence_step1 if (m != lepSkim)] + [ lepFR, nBJetDeepCSV25NoRecl, nBJetDeepFlav25NoRecl ]
 WZ5TeV_skim_cut_FR = ("nMuon + nElectron >= 1 && nJet >= 1 && Sum$(Jet_pt > 25 && abs(Jet_eta)<2.4) >= 1 &&" + 
-       "Sum$(Muon_pt > {muPt} && Muon_miniPFRelIso_all < {miniRelIso} && Muon_sip3d < {sip3d}) +"
-       "Sum$(Electron_pt > {muPt} && Electron_miniPFRelIso_all < {miniRelIso} && Electron_sip3d < {sip3d}").format(**conf)
+                      "Sum$(Muon_pt > {muPt} && Muon_miniPFRelIso_all < {miniRelIso} && Muon_sip3d < {sip3d}) +"
+                      "Sum$(Electron_pt > {muPt} && Electron_miniPFRelIso_all < {miniRelIso} && Electron_sip3d < {sip3d})").format(**conf)
 
 
 #==== items below are normally run as friends ====
+def conept_5TeV(lep): 
+    if (abs(lep.pdgId)!=11 and abs(lep.pdgId)!=13): return lep.pt
+    if ((abs(lep.pdgId)==13 and lep.mvaTTH>0.55 and lep.miniPFRelIso_all < 0.325) or (abs(lep.pgdId)==11 and lep.mvaTTH>0.125 and lep.miniPFRelIso_all < 0.085)) and lep.jetBTagDeepCSV<0.1522:  
+        return lep.pt
+    else: 
+        return 0.90 * lep.pt * (1 + lep.jetRelIso)
+
 def clean_and_FO_selection_5TeV(lep):
     if (lep.pt < 8): return False
     if (abs(lep.eta) > (2.4 if abs(lep.pdgId)==13 else 2.5)): return False 
     if (abs(lep.dxy)>0.05 or abs(lep.dz)>0.1): return False   
     if (lep.sip3d > 8): return False
     return (abs(lep.pdgId)!=11 or (lep.convVeto and lep.lostHits==0 and lep.mvaFall17V2Iso_WPL)) and (abs(lep.pdgId)!=13 or lep.mediumPromptId>0)
-                                                        
-def tight_selection_5TeV(lep): 
-    if not clean_and_FO_selection_5TeV(lep): return False 
-    if not lep.mvaTTH > (0.55 if abs(lep.pdgId)==13 else 0.125): return False
-    if not lep.miniPFRelIso_all < (0.325 if abs(lep.pdgId)==13 else 0.085): return False
-    if lep.jetBTagDeepCSV>0.1522: return False
-
-    return True
-    
+                                                            
 tightLeptonSel = lambda lep,jet : clean_and_FO_selection_5TeV(lep) and lep.mvaTTH > (0.55 if abs(lep.pdgId)==13 else 0.125) and lep.miniPFRelIso_all < (0.325 if abs(lep.pdgId)==13 else 0.085) and lep.jetBTagDeepCSV<0.1522
-
 
 from CMGTools.TTHAnalysis.tools.nanoAOD.jetmetGrouper import groups as jecGroups
 from CMGTools.TTHAnalysis.tools.combinedObjectTaggerForCleaning import CombinedObjectTaggerForCleaning
@@ -94,8 +98,8 @@ recleaner_step1 = lambda : CombinedObjectTaggerForCleaning("InternalRecl",
                                                            tightLeptonSel = tightLeptonSel,
                                                            FOTauSel = lambda tau : False,
                                                            tightTauSel = lambda tau : False,
-                                                           selectJet = lambda jet: jet.jetId > 0 and abs(jet.eta)<2.4  # pt and eta cuts are (hard)coded in the step2 
-
+                                                           selectJet = lambda jet: jet.jetId > 0 and abs(jet.eta)<2.4, # pt and eta cuts are (hard)coded in the step2 
+#                                                          coneptdef = lambda lep: conept_5TeV(lep),
 )
 
 recleaner_step2_mc = lambda : fastCombinedObjectRecleaner(label="Recl", inlabel="_InternalRecl",
@@ -126,10 +130,10 @@ recleaner_step2_data = lambda : fastCombinedObjectRecleaner(label="Recl", inlabe
 
 
 recleaner_step1_tight = lambda : CombinedObjectTaggerForCleaning("InternalRecl",
-                                                           looseLeptonSel = lambda lep : lep.miniPFRelIso_all < 0.4 and lep.sip3d < 8 and (abs(lep.pdgId)!=11 or lep.lostHits<=1) and (abs(lep.pdgId)!=13 or lep.looseId),
-                                                           cleaningLeptonSel = tight_selection_5TeV,
-                                                           FOLeptonSel = tight_selection_5TeV,
-                                                           tightLeptonSel = tight_selection_5TeV,
+                                                           looseLeptonSel = lambda lep : lep.pt > 10 and lep.miniPFRelIso_all < 0.4 and lep.sip3d < 8 and (abs(lep.pdgId)!=11 or lep.lostHits<=1) and (abs(lep.pdgId)!=13 or lep.looseId), ## we need a 10GeV to be consistent with Xuan's analysis
+                                                           cleaningLeptonSel = tightLeptonSel,
+                                                           FOLeptonSel = tightLeptonSel,
+                                                           tightLeptonSel = tightLeptonSel,
                                                            FOTauSel = lambda tau : False,
                                                            tightTauSel = lambda tau : False,
                                                            selectJet = lambda jet: jet.jetId > 0 and abs(jet.eta)<2.4  # pt and eta cuts are (hard)coded in the step2 
@@ -175,7 +179,7 @@ mcPromptGamma = lambda : ObjTagger('mcPromptGamma','LepGood', [lambda l : (l.gen
 mcMatch_seq   = [ isMatchRightCharge, mcMatchId ,mcPromptGamma]
 
 
-from PhysicsTools.NanoAODTools.postprocessing.modules.jme.jetmetUncertainties import jetmetUncertainties2016All,jetmetUncertainties2017All,jetmetUncertainties2018All,jetmetUncertainties20175TeV
+from PhysicsTools.NanoAODTools.postprocessing.modules.jme.jetmetUncertainties import jetmetUncertainties2016All,jetmetUncertainties2017All,jetmetUncertainties2018All,jetmetUncertainties20175TeV,jetmetUncertainties20175TeVData
 from PhysicsTools.NanoAODTools.postprocessing.modules.jme.jetmetHelperRun2 import * 
 
 from CMGTools.TTHAnalysis.tools.nanoAOD.jetmetGrouper import jetMetCorrelate2016, jetMetCorrelate2017, jetMetCorrelate2018
@@ -190,6 +194,7 @@ jme2017 = [jetmetUncertainties2017All,jetMetCorrelations2017]
 jme2018 = [jetmetUncertainties2018All,jetMetCorrelations2018]
 
 jme2017_5TeV = createJMECorrector(True, "2017", "G", "Total", False, "AK4PFchs", False)
+jme2017_5TeV_Data = createJMECorrector(False, "2017", "G", "Total", False, "AK4PFchs", False)
 
 def _fires(ev, path):
     if "/hasfiredtriggers_cc.so" not in ROOT.gSystem.GetLibraries():
@@ -205,6 +210,9 @@ def _fires(ev, path):
 
 
 triggerGroups=dict(
+    Trigger_5TeV_FR={
+        2017 : lambda ev : _fires(ev,'HLT_HIEle15_CaloIdL_TrackIdL_IsoVL_PFJet30') or _fires(ev,'HLT_HIL3Mu7') or _fires(ev,'HLT_HIL3Mu5_AK4PFJet30') or _fires(ev,'HLT_HIAK4PFJet30')
+    },
     Trigger_5TeV_1e={
         2017 : lambda ev : _fires(ev,'HLT_HIEle20_WPLoose_Gsf') or _fires(ev,'HLT_HIEle17_WPLoose_Gsf')
     },
@@ -287,6 +295,9 @@ triggerGroups=dict(
 
 
 triggerGroups_dict=dict(
+    Trigger_5TeV_FR={
+        2017 : ['HLT_HIEle15_CaloIdL_TrackIdL_IsoVL_PFJet30','HLT_HIL3Mu5_AK4PFJet30','HLT_HIL3Mu7','HLT_HIAK4PFJet30']
+    },
     Trigger_5TeV_1e={
         2017 : ['HLT_HIEle20_WPLoose_Gsf','HLT_HIEle17_WPLoose_Gsf']
     },
@@ -348,6 +359,7 @@ triggerGroups_dict=dict(
 
 
 from CMGTools.TTHAnalysis.tools.evtTagger import EvtTagger
+Trigger_5TeV_FR = lambda : EvtTagger('Trigger_5TeV_FR',[ lambda ev : triggerGroups['Trigger_5TeV_FR'][2017](ev) ])
 Trigger_5TeV_1e = lambda : EvtTagger('Trigger_5TeV_1e',[ lambda ev : triggerGroups['Trigger_5TeV_1e'][2017](ev) ])
 Trigger_5TeV_1m = lambda : EvtTagger('Trigger_5TeV_1m',[ lambda ev : triggerGroups['Trigger_5TeV_1m'][2017](ev) ])
 Trigger_5TeV_2e = lambda : EvtTagger('Trigger_5TeV_2e',[ lambda ev : triggerGroups['Trigger_5TeV_2e'][2017](ev) ])
@@ -366,7 +378,7 @@ Trigger_2lss = lambda : EvtTagger('Trigger_2lss',[ lambda ev : triggerGroups['Tr
 Trigger_3l   = lambda : EvtTagger('Trigger_3l',[ lambda ev : triggerGroups['Trigger_3l'][ev.year](ev) ])
 Trigger_MET  = lambda : EvtTagger('Trigger_MET',[ lambda ev : triggerGroups['Trigger_MET'][ev.year](ev) ])
 
-triggerSequence = [Trigger_5TeV_1e,Trigger_5TeV_1m,Trigger_5TeV_2e,Trigger_5TeV_2m] #,Trigger_em,Trigger_3e,Trigger_3m,Trigger_mee,Trigger_mme,Trigger_2lss,Trigger_3l ,Trigger_MET]
+triggerSequence = [Trigger_5TeV_FR,Trigger_5TeV_1e,Trigger_5TeV_1m,Trigger_5TeV_2e,Trigger_5TeV_2m] #,Trigger_em,Trigger_3e,Trigger_3m,Trigger_mee,Trigger_mme,Trigger_2lss,Trigger_3l ,Trigger_MET]
 
 
 from CMGTools.TTHAnalysis.tools.BDT_eventReco_cpp import BDT_eventReco
@@ -434,8 +446,8 @@ bTagSFs_allvars = lambda : BtagSFs("JetSel_Recl",
                                    corrs=jecGroups,
                        )
 
-from CMGTools.TTHAnalysis.tools.nanoAOD.lepScaleFactors_5TeV import lepScaleFactors
-leptonSFs = lambda : lepScaleFactors()
+from CMGTools.TTHAnalysis.tools.nanoAOD.lepScaleFactors_WZ5TeV import lepScaleFactors_WZ5TeV
+leptonSFs = lambda : lepScaleFactors_WZ5TeV()
 
 scaleFactorSequence_2016 = [btagSF2016_dj,bTagSFs] 
 scaleFactorSequence_2017 = [btagSF2017_dj,bTagSFs] 

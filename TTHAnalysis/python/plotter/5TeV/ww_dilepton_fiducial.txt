@@ -1,0 +1,9 @@
+alwaystrue : 1
+dilepGEN: nGenDressedLepton==2 
+osdf: (abs(GenDressedLepton_pdgId[0]) != abs(GenDressedLepton_pdgId[1])) && (GenDressedLepton_pdgId[0]*GenDressedLepton_pdgId[1]<0)
+cleanup12GEN: mass_2(GenDressedLepton_pt[0],GenDressedLepton_eta[0],GenDressedLepton_phi[0],GenDressedLepton_mass[0],GenDressedLepton_pt[1],GenDressedLepton_eta[1],GenDressedLepton_phi[1],GenDressedLepton_mass[1]) > 12
+pt2010: GenDressedLepton_pt[0] > 20 && GenDressedLepton_pt[1] > 10
+mtWmin: min(mt_2(GenDressedLepton_pt[0],GenDressedLepton_phi[0],GenMET_pt,GenMET_phi),mt_2(GenDressedLepton_pt[1],GenDressedLepton_phi[1],GenMET_pt,GenMET_phi))>20
+dilpt: pt_2(GenDressedLepton_pt[0],GenDressedLepton_phi[0],GenDressedLepton_pt[1],GenDressedLepton_phi[1])>20
+dphill: abs(deltaPhi(GenDressedLepton_phi[0],GenDressedLepton_phi[1])) < 2.8
+#0jet: if3(nGenJet>2,GenJet_pt[2]<25,1)

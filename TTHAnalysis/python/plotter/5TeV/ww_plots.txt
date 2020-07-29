@@ -8,8 +8,8 @@ minMllAFOS:     minMllAFOS                              : 20,0,200; XTitle="min 
 minMllSFOS:     minMllSFOS                              : 20,0,200; XTitle="min M_{ll} (GeV)", Legend='TR'
 mZ1:		mZ1					: 80,50,130; XTitle="Best Z candidate mass (GeV)"
 mZ1_zoom:	mZ1 							    								: 40,75,105; XTitle="m_{ll} (GeV)"
-mtWmin: 	MTmin  	  	: 40,0,200; XTitle="min M_{T}(l_{i}\,E_{T}^{miss}) (GeV)"
-
+mtWmin: 	MTmin  	  	: 40,20,200; XTitle="min M_{T}(l_{i}\,E_{T}^{miss}) (GeV)", MoreY=1.4
+nJet25_sig:	nJet25		: [-0.5,0.5,1.5]; XTitle='N(jet\, p_{T} > 25 GeV)', XNDiv=2, xBinLabels="0\,1"  
 
 nVert:		PV_npvsGood				: 80,0.5,20.5; XTitle="N_{vtx}"
 channel: 	getChannel2l(LepGood1_pdgId,LepGood2_pdgId) : [0.5,1.5,2.5,3.5] ; XTitle='Channel', xBinLabels="ee\,e#mu\,#mu#mu"
@@ -21,11 +21,11 @@ nJet25_from0_log:	  nJet25	: [-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5] ; XTitle='N(
 htJet25:	htJet25j				: 60,0,300 ; XTitle="H_{T}(jet p_{T} > 25) (GeV)"
 mhtJet25:   	mhtJet25 				: 60,0,300 ; XTitle="H_{T}^{miss}(p_{T} > 25) (GeV)"
 
-dilep_pt   :	ptlep12	: 40,0.,150.; XTitle="p_{T}^{ll} (GeV)"
-dilep_dphi :	abs(dphilep12) 			: 40,0.,3.14; XTitle="#Delta#phi_{ll}" 
+dilep_pt   :	ptlep12	                        : 40,20.,150.; XTitle="p_{T}^{ll} (GeV)", MoreY=1.4
+dilep_dphi :	abs(dphilep12) 			: 40,0.,2.8; XTitle="#Delta#phi_{ll}", MoreY=1.4
  
 
-#nBJetLoose25:	nBJetLoose25				: [-0.5,0.5,1.5,2.5,3.5,4.5] ; XTitle='N(jet\, p_{T} > 25 GeV\, CSVL)', XNDiv=5, xBinLabels="0\,1\,2\,3\,#geq 4", MoreY=1.7
+nBJetLoose25:	nBJetLoose25				: [-0.5,0.5,1.5,2.5,3.5,4.5] ; XTitle='N(jet\, p_{T} > 25 GeV\, CSVL)', XNDiv=5, xBinLabels="0\,1\,2\,3\,#geq 4", MoreY=1.7
 #nBJetMedium25:	nBJetMedium25				: [-0.5,0.5,1.5,2.5,3.5,4.5] ; XTitle='N(jet\, p_{T} > 25 GeV\, CSVM)', XNDiv=5, xBinLabels="0\,1\,2\,3\,#geq 4", MoreY=1.7
 #nJetnBJet:	getnJetnBJet(nJet25,nBJetMedium25)      : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5] ; XTitle='N(jet\, p_{T} > 25 GeV\, CSVM)', XNDiv=5, xBinLabels="[0-0]\,[1-0]\,[1-1]\,[2-0]\,[2-1]\,[2-2]\,[#geq 3-#geq 0]", MoreY=1.7
 

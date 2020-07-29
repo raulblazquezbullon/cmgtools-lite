@@ -13,33 +13,39 @@ mll:		mass_2(LepGood1_conePt,LepGood1_eta,LepGood1_phi,LepGood1_mass,LepGood2_co
 nLepFO:  	nLepFO: [-0.5,0.5,1.5,2.5,3.5,4.5,5.5] ; XTitle="Number of fakeable leptons", XNDdiv=505
 nLepTight:   	nLepTight : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5] ; XTitle="Number of tight leptons", XNDdiv=505
 nJet25:	  	nJet25  : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5] ; XTitle='N(jet\, p_{T} > 25 GeV)', XNDiv=5, xBinLabels="2\,3\,4\,5\,6\,#geq 7"
+nBJetLoose25:	nBJetLoose25				: [-0.5,0.5,1.5,2.5,3.5,4.5] ; XTitle='N(jet\, p_{T} > 25 GeV\, CSVL)', XNDiv=5, xBinLabels="0\,1\,2\,3\,#geq 4", MoreY=1.7
 htJet25:	htJet25j				: 40,0,200 ; XTitle="H_{T}(jet p_{T} > 25) (GeV)"
 mhtJet25:   	mhtJet25 				: 40,0,100 ; XTitle="H_{T}^{miss}(p_{T} > 25) (GeV)"
 
-3l_lep_pt:	pt_3(LepGood1_conePt,LepGood1_phi,LepGood2_conePt,LepGood2_phi,LepGood3_conePt,LepGood3_phi): 40,0.,150.; XTitle="p_{T}^{lll} (GeV)"
-3l_Zpt:		pt_2(LepGoodZ1_conePt,LepGoodZ1_phi,LepGoodZ2_conePt,LepGoodZ2_phi): 40,0.,150.; XTitle="p_{T}^{Z} (GeV)"
-3l_mtW:		MTlW                                    : 60,0.,150.; XTitle="M_{T}^{W} (GeV)"
-3l_mt_lep1:	MT_met_lep1	: 60,0.,150.; XTitle="M_{T} (leading lepton) (GeV)"
-3l_mt_lep2:	MT_met_lep2	: 60,0.,150.; XTitle="M_{T} (sub-leading lepton) (GeV)"
-3l_mt_lep3:	MT_met_lep3	: 60,0.,150.; XTitle="M_{T} (trailing lepton) (GeV)"
-3l_dphi12:	abs(dphilep12) 	: 40,0.,3.14; XTitle="#Delta#phi_{ll}"    
-3l_dphi13:	abs(dphilep13) 	: 40,0.,3.14; XTitle="#Delta#phi_{ll}"    
-3l_dphi23:	abs(dphilep23) 	: 40,0.,3.14; XTitle="#Delta#phi_{ll}"    
-3l_dr12:	drlep12 	: 40,0.,5.; XTitle="#Delta R_{ll}"    
-3l_dr13:	drlep13 	: 40,0.,5.; XTitle="#Delta R_{ll}"    
-3l_dr23:	drlep23 	: 40,0.,5.; XTitle="#Delta R_{ll}"    
+3l_lep_pt:	pt_3(LepGood1_conePt,LepGood1_phi,LepGood2_conePt,LepGood2_phi,LepGood3_conePt,LepGood3_phi): 40,0.,150.; XTitle="p_{T}^{lll} (GeV)", MoreY=1.3
+3l_Zpt:		pt_2(LepGoodZ1_conePt,LepGoodZ1_phi,LepGoodZ2_conePt,LepGoodZ2_phi): 40,0.,150.; XTitle="p_{T}^{Z} (GeV)", MoreY=1.3
+3l_mtW:		MTlW                                    : 60,0.,150.; XTitle="M_{T}^{W} (GeV)", MoreY=1.3
+3l_mt_lep1:	MT_met_lep1	: 60,0.,150.; XTitle="M_{T} (leading lepton) (GeV)", MoreY=1.3
+3l_mt_lep2:	MT_met_lep2	: 60,0.,150.; XTitle="M_{T} (sub-leading lepton) (GeV)", MoreY=1.3
+3l_mt_lep3:	MT_met_lep3	: 60,0.,150.; XTitle="M_{T} (trailing lepton) (GeV)", MoreY=1.3
+3l_dphi12:	abs(dphilep12) 	: 40,0.,3.14; XTitle="#Delta#phi_{ll}"    , MoreY=1.3
+3l_dphi13:	abs(dphilep13) 	: 40,0.,3.14; XTitle="#Delta#phi_{ll}"    , MoreY=1.3
+3l_dphi23:	abs(dphilep23) 	: 40,0.,3.14; XTitle="#Delta#phi_{ll}"    , MoreY=1.3
+3l_dr12:	drlep12 	: 40,0.,5.; XTitle="#Delta R_{ll}"    , MoreY=1.3
+3l_dr13:	drlep13 	: 40,0.,5.; XTitle="#Delta R_{ll}"    , MoreY=1.3
+3l_dr23:	drlep23 	: 40,0.,5.; XTitle="#Delta R_{ll}"    , MoreY=1.3
+3l_m3l:		m3l					: 24,50.,350; XTitle="M_{lll} (GeV)", MoreY=1.3
+3l_channel:	getChannel3l(LepGood1_pdgId,LepGood2_pdgId,LepGood3_pdgId):  [0.5,1.5,2.5,3.5,4.5]; XTitle="", xBinLabels="eee\,ee#mu\,e#mu#mu\,#mu#mu#mu", MoreY=2.0, XLabel="final state" , MoreY=1.3
+3l_charge: 	LepGoodW_charge: [-1.5,0,1.5]; XTitle="", xBinLabels="W^{-}Z\,W^{+}Z", MoreY=2.0, XLabel="charge", MoreY=1.3
 
-3l_m3l:		m3l					: 24,50.,350; XTitle="M_{lll} (GeV)"
-3l_channel:	getChannel3l(LepGood1_pdgId,LepGood2_pdgId,LepGood3_pdgId):  [0.5,1.5,2.5,3.5,4.5]; XTitle="", xBinLabels="eee\,ee#mu\,e#mu#mu\,#mu#mu#mu", MoreY=2.0, XLabel="final state" 
-#3lep_nPrompt:   if3(nLepFO>2,(LepGood1_mcMatchId!=0)+(LepGood2_mcMatchId!=0)+(LepGood3_mcMatchId!=0),-99) : [-0.5,0.5,1.5,2.5,3.5]; XTitle="Number of prompt leptons (gen level)", XNDiv=4, Legend='TL', IncludeOverflows=False, Blinded=True
+2l_charge: 	LepGood1_charge: [-1.5,0,1.5]; XTitle="", xBinLabels="W^{-}Z\,W^{+}Z", MoreY=2.0, XLabel="charge", MoreY=1.3
+2l_lep_pt:	ptlep12 : 40,0.,150.; XTitle="p_{T}^{lll} (GeV)", MoreY=1.3
+2l_channel:	getChannel2l(LepGood1_pdgId,LepGood2_pdgId):  [0.5,1.5,2.5,3.5]; XTitle="", xBinLabels="ee\,e#mu\,#mu#mu", MoreY=2.0, XLabel="final state" 
+2l_mt_lep1:	MT_met_lep1	: 60,0.,150.; XTitle="M_{T} (leading lepton) (GeV)", MoreY=1.3
+2l_mt_lep2:	MT_met_lep2	: 60,0.,150.; XTitle="M_{T} (sub-leading lepton) (GeV)", MoreY=1.3
+2l_mtmin:	MTmin		: 60,0.,150.;  XTitle="min M_{T}(l_{i}\,E_{T}^{miss}) (GeV)", MoreY=1.3
+2l_dphi12:	abs(dphilep12) 	: 40,0.,3.14; XTitle="#Delta#phi_{ll}", MoreY=1.3    
+2l_dr12:	drlep12		: 40,0.,5.; XTitle="#Delta R_{ll}", MoreY=1.3    
+2l_axialMET:	axialMET(MET_pt,MET_phi,phi_2(LepGood1_conePt,LepGood1_eta,LepGood1_phi,LepGood1_mass,LepGood2_conePt,LepGood2_eta,LepGood2_phi,LepGood2_mass)): 160,-50.,200.; XTitle="-E_{T}^{miss} #times cos(#Delta#Phi(E_{T}^{miss}\,p_{T}^{Z}))", MoreY=1.3
+2l_axialMET_log:	axialMET(MET_pt,MET_phi,phi_2(LepGood1_conePt,LepGood1_eta,LepGood1_phi,LepGood1_mass,LepGood2_conePt,LepGood2_eta,LepGood2_phi,LepGood2_mass)): 160,-50.,200.; XTitle="-E_{T}^{miss} #times cos(#Delta#Phi(E_{T}^{miss}\,p_{T}^{Z}))", MoreY=1.3, Logy
+2l_ptbalance:   abs(MET_pt-ptlep12)/ptlep12 :  40,0.,1.; XTitle="|E_{T}^{miss}-p_{T}^{Z}|/p_{T}^{Z}", MoreY=1.3
+2l_ptbalance_log:   abs(MET_pt-ptlep12)/ptlep12 :  40,0.,1.; XTitle="|E_{T}^{miss}-p_{T}^{Z}|/p_{T}^{Z}", MoreY=1.3, Logy
 
-2l_lep_pt:	ptlep12 : 40,0.,150.; XTitle="p_{T}^{lll} (GeV)"
-2l_channel:	getChannel3l(LepGood1_pdgId,LepGood2_pdgId,LepGood3_pdgId):  [0.5,1.5,2.5,3.5]; XTitle="", xBinLabels="ee\,e#mu\,#mu#mu", MoreY=2.0, XLabel="final state" 
-2l_mt_lep1:	MT_met_lep1	: 60,0.,150.; XTitle="M_{T} (leading lepton) (GeV)"
-2l_mt_lep2:	MT_met_lep2	: 60,0.,150.; XTitle="M_{T} (sub-leading lepton) (GeV)"
-2l_mtmin:	MTmin		: 60,0.,150.;  XTitle="min M_{T}(l_{i}\,E_{T}^{miss}) (GeV)"
-2l_dphi12:	abs(dphilep12) 	: 40,0.,3.14; XTitle="#Delta#phi_{ll}"    
-2l_dr12:	drlep12		: 40,0.,5.; XTitle="#Delta R_{ll}"    
 
 lep1_pt: 	 LepGood1_pt					 : 40,0,200; XTitle="Leading lepton p_{T} (GeV)"
 lep1_conePt: 	 LepGood1_conePt				 : 40,0,120; XTitle="Leading lepton cone p_{T} (GeV)"

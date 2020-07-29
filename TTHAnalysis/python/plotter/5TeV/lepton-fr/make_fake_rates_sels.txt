@@ -1,0 +1,4 @@
+wz_tight: (abs(LepGood_pdgId) == 13 && LepGood_mvaTTH > 0.55 && LepGood_miniPFRelIso_all < 0.325) || (abs(LepGood_pdgId) == 11 && LepGood_mvaTTH > 0.125 && LepGood_miniPFRelIso_all < 0.085 && LepGood_tightCharge>=1) && LepGood_jetBTagDeepCSV<0.1522: 2, -0.5,1.5; Title="IsTight", MarkerColor=ROOT.kViolet+10, MarkerStyle=21, MarkerSize=1.3
+
+#wz_tight: LepGood_isLepTight_Recl: 2, -0.5,1.5; Title="IsTight", MarkerColor=ROOT.kViolet+10, MarkerStyle=21, MarkerSize=1.3
+

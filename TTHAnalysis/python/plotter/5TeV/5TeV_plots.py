@@ -6,7 +6,8 @@ import os
 ODIR=sys.argv[1]
 dowhat=sys.argv[2]
 
-lumi = 0.296
+#lumi = 0.296 #/pb
+lumi = 0.30432  #/pb
 
 submit = '{command}' 
 #dowhat = "plots" 
@@ -17,7 +18,7 @@ submit = '{command}'
 P0="/eos/cms/store/group/phys_muon/folguera/5TeV_Mar23/"
 nCores = 12
 
-TREESALL      = " --FMCs {P}/0_jmeUnc_v1 --FMCs {P}/0_weights_v1 --Fs {P}/1_recleaner_v1 --Fs {P}/2_eventVars_v3 --FMCs {P}/3_leptonSF_v1/"
+TREESALL      = " --FMCs {P}/0_jmeUnc_v1 --FDs {P}/0_jmeUncData_v1 --FMCs {P}/0_weights_v1 --Fs {P}/1_recleaner_v2 --Fs {P}/2_eventVars_v4 --FMCs {P}/3_leptonSF_v2/"
 TREESONLYSKIM = "-P "+P0
 
 def base(selection):
@@ -34,25 +35,37 @@ def base(selection):
 
     if selection=='wz3l':
         GO="%s 5TeV/mca-wz-3l-mc.txt 5TeV/wz_3l.txt "%CORE
-        GO="%s -W '(PrefireWeight*puWeight*leptonSF_3l)'"%GO
+        GO="%s -W '(PrefireWeight*puWeight*leptonSF_3l_sr)'"%GO
         if dowhat in ["plots","ntuple"]: GO+=" 5TeV/wz_2lss_3l_plots.txt --xP '^2l_.*' "
         if dowhat == "plots": GO=GO.replace(LEGEND, " --legendColumns 3 --legendWidth 0.42 ")
         GO += " --binname 3l "
     elif selection=='wz2lss':
         GO="%s 5TeV/mca-wz-2lss-mc.txt 5TeV/wz_2lss.txt "%CORE
-        GO="%s -W 'PrefireWeight*puWeight*leptonSF_2l'"%GO
+        GO="%s -W 'PrefireWeight*puWeight*leptonSF_2l_sr'"%GO
         if dowhat in ["plots","ntuple"]: GO+=" 5TeV/wz_2lss_3l_plots.txt --xP '^lep(3|W|Z1|Z2)_.*' --xP '^3l_.*' " 
         if dowhat == "plots": GO=GO.replace(LEGEND, " --legendColumns 3 --legendWidth 0.42 ")
         GO += " --binname 2lss "
+    elif selection=='zz4l':
+        GO="%s 5TeV/mca-zz-4l-mc.txt 5TeV/zz_4l.txt "%CORE
+        GO="%s -W 'PrefireWeight*puWeight'"%GO
+        if dowhat in ["plots","ntuple"]: GO+=" 5TeV/wz_2lss_3l_plots.txt --xP '^lep(W|Z1|Z2)_.*' --xP '^3l_.*' --xP '^2l_.*' " 
+        if dowhat == "plots": GO=GO.replace(LEGEND, " --legendColumns 3 --legendWidth 0.42 ")
+        GO += " --binname 4l "        
+    elif selection=='zz2l2nu':
+        GO="%s 5TeV/mca-zz-2l2nu-mc.txt 5TeV/zz_2l2nu.txt "%CORE
+        GO="%s -W 'PrefireWeight*puWeight*leptonSF_2l_sr'"%GO
+        if dowhat in ["plots","ntuple"]: GO+=" 5TeV/wz_2lss_3l_plots.txt --xP '^lep(W|Z1|Z2)_.*' --xP '^3l_.*' " 
+        if dowhat == "plots": GO=GO.replace(LEGEND, " --legendColumns 3 --legendWidth 0.42 ")
+        GO += " --binname 2l2nu "        
     elif selection=='ww':
         GO="%s 5TeV/mca-ww-mc.txt 5TeV/ww_dilepton.txt "%CORE
-        GO="%s -W 'PrefireWeight*puWeight*leptonSF_2l'"%GO
+        GO="%s -W 'PrefireWeight*puWeight*leptonSF_2l_sr'"%GO
         if dowhat in ["plots","ntuple"]: GO+=" 5TeV/ww_plots.txt  " 
         if dowhat == "plots": GO=GO.replace(LEGEND, " --legendColumns 3 --legendWidth 0.42 ")
         GO += " --binname ww "
     elif selection=='ttbar':
         GO="%s 5TeV/mca-ttbar-mc.txt 5TeV/ttbar_dilepton.txt "%CORE
-        GO="%s -W 'PrefireWeight*puWeight*leptonSF_2l'"%GO
+        GO="%s -W 'PrefireWeight*puWeight*leptonSF_2l_sr'"%GO
         if dowhat in ["plots","ntuple"]: GO+=" 5TeV/ttbar_plots.txt  " 
         if dowhat == "plots": GO=GO.replace(LEGEND, " --legendColumns 3 --legendWidth 0.42 ")
         GO=GO.replace("--Fs {P}/2_eventVars_v2"," ")
@@ -65,7 +78,7 @@ def base(selection):
 def promptsub(x):
     procs = [ '' ]
     if dowhat == "cards": procs += ['_FRe_norm_Up','_FRe_norm_Dn','_FRe_pt_Up','_FRe_pt_Dn','_FRe_be_Up','_FRe_be_Dn','_FRm_norm_Up','_FRm_norm_Dn','_FRm_pt_Up','_FRm_pt_Dn','_FRm_be_Up','_FRm_be_Dn']
-    return x + ' '.join(["--plotgroup data_fakes%s+='.*_promptsub%s'"%(x,x) for x in procs])+" --neglist '.*_promptsub.*' "
+    return x + ' '.join(["--plotgroup data_fakes%s+='.*sub%s'"%(x,x) for x in procs])+" --neglist '.*sub.*' "
 def procs(GO,mylist):
     return GO+' '+" ".join([ '-p %s'%l for l in mylist ])
 def sigprocs(GO,mylist):
@@ -92,40 +105,131 @@ if __name__ == '__main__':
     torun = sys.argv[3]
 
     if 'wz_3l_' in torun and not('cr') in torun:
+        torun = torun.replace("wz_","wz/")
         x = base('wz3l')
         if '_norebin' in torun: x = x.replace('--rebin 4','')
         if '_appl' in torun: x = add(x,'-I ^TT ')
-        if '_br' in torun: x = add(x,'-U ^Zmass ')
+        if '_br' in torun: 
+            x = add(x,'-U ^Zmass ')
+            x = x.replace('leptonSF_3l_sr','leptonSF_3l_br')
         if '_relax' in torun: x = add(x,'-X ^TT ')
-        if '_unc' in torun: x = add(x, '--unc 5TeV/systs_wz.txt')
+        if '_unc' in torun: x = add(x, '--unc 5TeV/systsUnc.txt')
         if '_noskim' in torun: x = x.replace('5TeV_Mar23','5TeV_Apr14_noSkim') 
+        
         if '_fid' in torun: 
             x = x.replace('mca-wz-3l-mc.txt','mca-includes/mca-wz-3l-sig-uncertainties.txt')
             x = x.replace('wz_3l.txt','wz_3l_fiducial.txt')
-            x = x.replace('--FMCs {P}/3_leptonSF_v1/', '')
             x = x.replace('5TeV_Mar23','5TeV_Apr14_noSkim') 
-            x = add(x,'--sP .*tot_weight.* -u') 
-        if '_data' in torun: x = x.replace('mca-wz-3l-mc.txt','mca-wz-3l-mcdata.txt')
+            x = x.replace('-l %s' %lumi, '-l 1')
+            x = add(x,'--sP .*tot_weight.* --unweight-forced') 
+        
+        if '_data' in torun: 
+            x = x.replace('mca-wz-3l-mc.txt','mca-wz-3l-mcdata.txt')
+            if '_frmc'  in torun: 
+                x = promptsub(x)
+                x = x.replace('mcdata.txt','mcdata-frmc.txt')
+##            if '_frdata' in torun: 
+##                x = promptsub(x)
+##                x = x.replace('mcdata.txt','mcdata-frdata.txt')
+        
+        if '_closure' in torun: 
+            x = x.replace('mca-wz-3l-mc.txt','mca-3l-mc-closuretest.txt')
+            x = add(x,"--AP --plotmode nostack --sP met --sP lep1_pt --sP lep2_pt --sP nJet25")
+            if '_dyjets' in torun: 
+                x = add(x,"-p DYJETS_FR_TT -p DYJETS_fake --ratioDen DYJETS_FR_TT --ratioNums DYJETS_fake,DYJETS_FR_TT --errors ")                
+                torun = torun.replace("_dyjets","/dyjets")
+            else : 
+                x = add(x,"-p TT_FR_TT -p TT_fake --ratioDen TT_FR_TT --ratioNums TT_fake,TT_FR_TT --errors ")
+            x = x.replace('--showMCError','')
+            x = x.replace('--legendWidth 0.42','--legendWidth 0.60')
+            x = x.replace('--maxRatioRange 0.6  1.99','--maxRatioRange 0.001 2.99')
+            if '_norm' in torun:
+                x = x.replace("--plotmode nostack","--plotmode norm")
+                torun = torun.replace("_norm","/norm")                                
+                if 'dyjets' in torun: 
+                    x = x.replace("--ratioNums DYJETS_fake,DYJETS_FR_TT","--ratioNums DYJETS_fake")
+                else :
+                    x = x.replace("--ratioNums TT_fake,TT_FR_TT","--ratioNums TT_fake")
+                x = add(x,"--fitRatio 1")
+
+            if '_mufake' in torun: 
+                x = add(x,"-A alwaystrue mufake '(abs(LepGood1_pdgId)==13 && LepGood1_mcMatchId==0) || (abs(LepGood2_pdgId)==13 && LepGood2_mcMatchId==0) || (abs(LepGood3_pdgId)==13 && LepGood3_mcMatchId==0)'")
+                torun = torun.replace("_mufake","/mufake")
+            if '_elfake' in torun: 
+                x = add(x,"-A alwaystrue elfake '(abs(LepGood1_pdgId)==11 && (LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==0)) || (abs(LepGood2_pdgId)==11 && (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==0)) || (abs(LepGood3_pdgId)==11 && (LepGood3_mcMatchId==0 && LepGood3_mcPromptGamma==0))'")
+                torun = torun.replace("_elfake","/elfake")
+            
         runIt(x,'%s'%torun)
     elif 'wz_2lss' in torun and not('cr') in torun:
+        torun = torun.replace("wz_","wz/")
         x = base('wz2lss')
         if '_norebin' in torun: x = x.replace('--rebin 4','')
         if '_appl' in torun: x = add(x,'-I ^TT ')
         if '_relax' in torun: x = add(x,'-X ^TT ')
-        if '_unc' in torun: x = add(x, '--unc 5TeV/systs_wz.txt')
+        if '_unc' in torun: x = add(x, '--unc 5TeV/systsUnc.txt')
         if '_noskim' in torun: x = x.replace('5TeV_Mar23','5TeV_Apr14_noSkim') 
         if '_fid' in torun: 
-            x = x.replace('mca-wz-2lss-mc.txt','mca-includes/mca-wz-2l-sig-uncertainties.txt')
+            x = x.replace('mca-wz-2lss-mc.txt','mca-includes/mca-wz-2lss-sig-uncertainties.txt')
             x = x.replace('wz_2lss.txt','wz_2lss_fiducial.txt')
             x = x.replace('5TeV_Mar23','5TeV_Apr14_noSkim') 
-            x = add(x,'--sP .*tot_weight.* -u') 
-        if '_data' in torun: x = x.replace('mca-wz-2lss-mc.txt','mca-wz-2lss-mcdata.txt')
+            x = add(x,'--sP .*tot_weight.* --unweight-forced') 
+        if '_data' in torun: 
+            x = x.replace('mca-wz-2lss-mc.txt','mca-wz-2lss-mcdata.txt')
+            if '_frmc' in torun: 
+                x = promptsub(x)
+                x = x.replace('mca-wz-2lss-mcdata.txt','mca-wz-2lss-mcdata-frmc.txt')                
+            if '_frdata' in torun: 
+                x = promptsub(x)
+                x = x.replace('mca-wz-2lss-mcdata.txt','mca-wz-2lss-mcdata-frdata.txt')
+
+        if '_closure' in torun: 
+            x = x.replace('mca-wz-2lss-mc.txt','mca-2l-mc-closuretest.txt')
+            x = add(x,"--AP --plotmode nostack --sP met --sP lep1_pt --sP lep2_pt --sP nJet25")
+            if '_wjets' in torun: 
+                x = add(x,"-p WJETS_FR_TT -p WJETS_fake --ratioDen WJETS_FR_TT --ratioNums WJETS_fake,WJETS_FR_TT --errors ")                
+                torun = torun.replace("_wjets","/wjets")
+            else: 
+                x = add(x,"-p TT_FR_TT -p TT_fake --ratioDen TT_FR_TT --ratioNums TT_fake,TT_FR_TT --errors ")
+            x = x.replace('--showMCError','')
+            x = x.replace('--legendWidth 0.42','--legendWidth 0.60')
+            x = x.replace('--maxRatioRange 0.6  1.99','--maxRatioRange 0.001 2.99')
+            if '_norm' in torun:
+                torun = torun.replace("_norm","/norm")
+                x = x.replace("--plotmode nostack","--plotmode norm")
+                if 'wjets' in torun: 
+                    x = x.replace("--ratioNums WJETS_fake,WJETS_FR_TT","--ratioNums WJETS_fake")                    
+                else: 
+                    x = x.replace("--ratioNums TT_fake,TT_FR_TT","--ratioNums TT_fake")
+                x = add(x,"--fitRatio 1")
+
+            if '_mufake' in torun: 
+                x = add(x,"-A alwaystrue mufake '(abs(LepGood1_pdgId)==13 && LepGood1_mcMatchId==0) || (abs(LepGood2_pdgId)==13 && LepGood2_mcMatchId==0)'")
+                torun = torun.replace("_mufake","/mufake")
+            if '_elfake' in torun: 
+                x = add(x,"-A alwaystrue elfake '(abs(LepGood1_pdgId)==11 && (LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==0)) || (abs(LepGood2_pdgId)==11 && (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==0))'")
+                torun = torun.replace("_elfake","/elfake")
+                
         runIt(x,'%s'%torun)
-    elif 'wz_zzcr' in torun: 
+    elif 'wz_convscr' in torun: 
         x = base('wz3l')
-        x = add(x,'-X ^TT -X ^m3l -X ^lWpt20 -X ^OSSF3l -X ^trilep -E ^cr_4leps')
-        if '_norebin' in torun: x = x.replace('--rebin 4','')        
+        x = add(x,'-I ^Zmass -X ^m3l -X ^lWpt20 -E ^cr_convs -X ^TT ')
+        if '_norebin' in torun: x = x.replace('--rebin 4','')
         if '_data' in torun: x = x.replace('mca-wz-3l-mc.txt','mca-wz-3l-mcdata.txt')
+        runIt(x,'%s'%torun)
+    elif 'zz_4l' in torun: 
+        x = base('zz4l')
+        torun = torun.replace("zz_","zz/")
+        if '_norebin' in torun: x = x.replace('--rebin 4','')        
+        if '_data' in torun: x = x.replace('mca-zz-4l-mc.txt','mca-zz-4l-mcdata.txt')
+        runIt(x,'%s'%torun)        
+    elif 'zz_2l2nu' in torun: 
+        x = base('zz2l2nu')
+        if '_norebin' in torun: x = x.replace('--rebin 4','')        
+        if '_data' in torun: 
+            x = x.replace('mca-zz-2l2nu-mc.txt','mca-zz-2l2nu-mcdata.txt')
+            if '_frmc' in torun: 
+                x = promptsub(x)
+                x = x.replace('mcdata','mcdata-frmc')           
         runIt(x,'%s'%torun)        
     elif 'wz_dycr' in torun: 
         x = base('wz3l')
@@ -139,23 +243,60 @@ if __name__ == '__main__':
         if '_norebin' in torun: x = x.replace('--rebin 4','')        
         if '_data' in torun: x = x.replace('mca-wz-2lss-mc.txt','mca-wz-2lss-mcdata.txt')
         runIt(x,'%s'%torun)
-    elif 'ww' in torun:
+    elif 'ww_2l' in torun:
+        torun = torun.replace("ww_","ww/")
         x = base('ww')
         if '_norebin' in torun: x = x.replace('--rebin 4','')
         if '_appl' in torun: x = add(x,'-I ^TT ')
         if '_relax' in torun: x = add(x,'-X ^TT ')
-        if '_ss' in torun: x=add(x,'-I ^os')
-        if '_ttcr' in torun: x=add(x,'-I ^0jet')
-        if '_dycr' in torun: x=add(x,'-I ^em')
-        if '_unc' in torun: x = add(x, '--unc 5TeV/systs_ww.txt')
+        if '_sscr' in torun: x=add(x,'-I ^os ')
+        if '_ttcr' in torun: x=add(x,'-I ^0jet ')
+        if '_dycr' in torun: x=add(x,'-I ^em ')
+        if '_unc' in torun: x = add(x, '--unc 5TeV/systsUnc.txt ')
         if '_noskim' in torun: x = x.replace('5TeV_Mar23','5TeV_Apr14_noSkim') 
         if '_fid' in torun: 
             x = x.replace('mca-ww-mc.txt','mca-includes/mca-ww-sig-uncertainties.txt')
             x = x.replace('ww_dilepton.txt','ww_dilepton_fiducial.txt')
-            x = x.replace('--FMCs {P}/3_leptonSF_v1/', '')
+            x = x.replace('--FMCs {P}/3_leptonSF_v2/', '')
             x = x.replace('5TeV_Mar23','5TeV_Apr14_noSkim') 
-            x = add(x,'--sP .*tot_weight.* -u ') 
-        if '_data' in torun: x = x.replace('mca-ww-mc.txt','mca-ww-mcdata.txt')
+            x = add(x,'--sP .*tot_weight.* -u -p WW') 
+        if '_data' in torun: 
+            x = x.replace('mca-ww-mc.txt','mca-ww-mcdata.txt')
+            if '_frmc' in torun: 
+                x = promptsub(x)
+                x = x.replace('mca-ww-mcdata.txt','mca-ww-mcdata-frmc.txt')
+            if '_frdata' in torun: 
+                x = promptsub(x)
+                x = x.replace('mca-ww-mcdata.txt','mca-ww-mcdata-frdata.txt')
+
+        if '_closure' in torun: 
+            x = x.replace('mca-ww-mc.txt','mca-2l-mc-closuretest.txt')
+            x = add(x,"--AP --plotmode nostack --sP met --sP lep1_pt --sP lep2_pt --sP nJet25")
+            if '_wjets' in torun: 
+                x = add(x,"-p WJETS_FR_TT -p WJETS_fake --ratioDen WJETS_FR_TT --ratioNums WJETS_fake,WJETS_FR_TT --errors ")                
+                torun = torun.replace("_wjets","/wjets")
+            else: 
+                x = add(x,"-p TT_FR_TT -p TT_fake --ratioDen TT_FR_TT --ratioNums TT_fake,TT_FR_TT --errors ")
+
+            x = x.replace('--showMCError','')
+            x = x.replace('--legendWidth 0.42','--legendWidth 0.60')
+            x = x.replace('--maxRatioRange 0.6  1.99','--maxRatioRange 0.001 2.99')
+            if '_norm' in torun:
+                torun = torun.replace("_norm","/norm")                
+                x = x.replace("--plotmode nostack","--plotmode norm")
+                if "wjets" in torun: 
+                    x = x.replace("--ratioNums WJETS_fake,WJETS_FR_TT","--ratioNums WJETS_fake")
+                else: 
+                    x = x.replace("--ratioNums TT_fake,TT_FR_TT","--ratioNums TT_fake")
+                
+                x = add(x,"--fitRatio 1")
+            if '_mufake' in torun: 
+                x = add(x,"-A alwaystrue mufake '(abs(LepGood1_pdgId)==13 && LepGood1_mcMatchId==0) || (abs(LepGood2_pdgId)==13 && LepGood2_mcMatchId==0)'")
+                torun = torun.replace("_mufake","/mufake")
+            if '_elfake' in torun: 
+                x = add(x,"-A alwaystrue elfake '(abs(LepGood1_pdgId)==11 && (LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==0)) || (abs(LepGood2_pdgId)==11 && (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==0))'")
+                torun = torun.replace("_elfake","/elfake")
+
         runIt(x,'%s'%torun)
     elif 'ttbar' in torun:
         x = base('ttbar')
@@ -168,8 +309,7 @@ if __name__ == '__main__':
             if '_nojet' in torun: x=add(x, ' -X ^2jets') 
             if '_nomet' in torun: x=add(x, ' -X ^MET') 
         if '_tight' in torun: 
-            x=x.replace('1_recleaner_v1','1_recleaner_vtight')
-            x=x.replace('lepchoice-FO','lepchoice-tight-FO')
+            x=x.replace('1_recleaner','1_recleanerTight')
         if '_em' in torun: 
             x = add(x, '-E ^em')
             torun = torun.replace('_em','/em')
@@ -183,7 +323,7 @@ if __name__ == '__main__':
         if '_fid' in torun: 
             x = x.replace('mca-ttbar-mc.txt','mca-includes/mca-ttbar-sig-uncertainties.txt')
             x = x.replace('ttbar_dilepton.txt','ttbar_dilepton_fiducial.txt')
-            x = x.replace('--FMCs {P}/3_leptonSF_v1/', '')
+            x = x.replace('--FMCs {P}/3_leptonSF_v2/', '')
             x = x.replace('5TeV_Mar23','5TeV_Apr14_noSkim') 
             x = add(x,'--sP .*tot_weight.* -u')         
         if '_data' in torun: x = x.replace('mca-ttbar-mc.txt','mca-ttbar-mcdata.txt')
