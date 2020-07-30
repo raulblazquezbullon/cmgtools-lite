@@ -47,7 +47,7 @@ def WriteMCAfile(Samples, mcaName):
 	if s != len(Samples)-1: text+=' + '
     text += ' : {norm}'.format(norm = norm)
     text += ' ; genSumWeightName="genEventSum_W"'
-    text += ',FillColor={color}'.format(color = color)
+    if color!= "": text += ',FillColor={color}'.format(color = color)
     mcaFile.write(text + "\n")
 	
     return 
