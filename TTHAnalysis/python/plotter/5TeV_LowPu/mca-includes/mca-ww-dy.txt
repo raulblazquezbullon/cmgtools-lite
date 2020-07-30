@@ -1,0 +1,1 @@
+VV:Tree_DYJetsToLL_M_50_TuneCP5_amcatnloFXFX_ext1_0 + Tree_DYJetsToLL_M_50_TuneCP5_amcatnloFXFX_ext1_1 + Tree_DYJetsToLL_M_50_TuneCP5_amcatnloFXFX_ext1_2 : 6225.42 ; genSumWeightName="genEventSum_W",FillColor=ROOT.kTeal+1
