@@ -1,2 +1,2 @@
-VV:Tree_WWTo2L2Nu_TuneCP5_ext1_0 : 12.6 ; genSumWeightName="genEventSum_W",FillColor=798
-VV:Tree_WZTo3LNu_TuneCP5_ext1_0 : 4.912 ; genSumWeightName="genEventSum_W",FillColor=798
+VV:Tree_WWTo2L2Nu_TuneCP5_ext1_0 : 12.6 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; FillColor=ROOT.kTeal+5
+VV:Tree_WZTo3LNu_TuneCP5_ext1_0 : 4.912 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; FillColor=ROOT.kTeal+5

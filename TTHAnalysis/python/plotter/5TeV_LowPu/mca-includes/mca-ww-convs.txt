@@ -1,3 +1,5 @@
-WZTo3LNu: : 4.912 ; genSumWeightName="genEventSum_W",FillColor=ROOT.kBlue
-WWTo2L2Nu: : 12.6 ; genSumWeightName="genEventSum_W",FillColor=ROOT.kBlue
-DY: : 6225.42 ; genSumWeightName="genEventSum_W",FillColor=ROOT.kBlue
+Convs : Tree_DYJetsToLL_M_50_TuneCP5_amcatnloFXFX_ext1_0 + Tree_DYJetsToLL_M_50_TuneCP5_amcatnloFXFX_ext1_1 + Tree_DYJetsToLL_M_50_TuneCP5_amcatnloFXFX_ext1_2 : 6225.42 : ((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1) ) ; FillColor=ROOT.kBlue-4
+Convs : Tree_WJetsToLNu_0J_TuneCP5_amcatnloFXFX_ext1_0: 49397 : ((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1) ) ; FillColor=ROOT.kBlue-4
+Convs: Tree_WZTo3LNu_TuneCP5_ext1_0 : 4.912  : ((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1) ) ; FillColor=ROOT.kBlue-4
+Convs: Tree_WWTo2L2Nu_TuneCP5_ext1_0  : 12.6   : ((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1) ) ; FillColor=ROOT.kBlue-4
+
