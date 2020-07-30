@@ -11,7 +11,8 @@ r.gROOT.SetBatch(True)
 friendspath = "/pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions"
 #prodname    = "2020-06-01" # veya
 #prodname    = "2020-06-17" # nova
-prodname    = "2020-07-03" # con sistematicos, en 2016 col tuning veyo
+#prodname    = "2020-07-03" # con sistematicos, en 2016 col tuning veyo
+prodname    = "2020-07-29" # prueba para Sheyla
 
 
 datasamples  = ["SingleMuon", "SingleElec", "DoubleMuon", "DoubleEG", "MuonEG", "LowEGJet", "HighEGJet", "EGamma"]
@@ -256,6 +257,10 @@ sampledict[2018] = {
 
     # WWbb
     "WWbb" : "Tree_b_bbar_4l_TuneCP5_ext1",
+    "WWbb_noskim_4files" : ["8D0A2ECF-09D2-6841-BE66-0BCECFE4942A_Skim",
+                            "C14C273E-2210-DA4E-AE8A-1D283123146B_Skim",
+                            "EE18ACF2-2CB7-214F-93B9-B70E7861F9E7_Skim",
+                            "FF50A220-4B88-A349-B802-28FD77C317EA_Skim"],
 
     # W Jets
     "WJetsToLNu_MLM" : "Tree_WJetsToLNu_TuneCP5_MLM",
