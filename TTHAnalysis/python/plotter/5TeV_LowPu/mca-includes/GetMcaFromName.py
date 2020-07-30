@@ -11,6 +11,7 @@ NameInFile = sys.argv[2]
 mcaName = sys.argv[3]
 key = sys.argv[4]
 norm = sys.argv[5]
+color = sys.argv[6]
 
 submit = "{command}"
 
@@ -46,7 +47,7 @@ def WriteMCAfile(Samples, mcaName):
 	if s != len(Samples)-1: text+=' + '
     text += ' : {norm}'.format(norm = norm)
     text += ' ; genSumWeightName="genEventSum_W"'
-    text += ',FillColor=852'
+    text += ',FillColor={color}'.format(color = color)
     mcaFile.write(text + "\n")
 	
     return 
