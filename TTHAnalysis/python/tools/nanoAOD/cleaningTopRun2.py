@@ -157,9 +157,9 @@ class cleaningTopRun2(Module):
 
             for B in _vars:
                 if type(B) == tuple:
-                    setattr(self,"%s_%s"%(coll, B[0]), tree.arrayReader("%s_%s"%(coll, B[1])))
+                    setattr(self, "%s_%s"%(coll, B[0]), tree.arrayReader("%s_%s"%(coll, B[1])))
                 else:
-                    setattr(self,"%s_%s"%(coll, B), tree.arrayReader("%s_%s"%(coll, B)))
+                    setattr(self, "%s_%s"%(coll, B), tree.arrayReader("%s_%s"%(coll, B)))
         return True
 
 
@@ -177,7 +177,7 @@ class cleaningTopRun2(Module):
                 jecs.push_back( getattr(self, '%s_pt_%sUp'%(self.jc,   var)))
                 jecs.push_back( getattr(self, '%s_pt_%sDown'%(self.jc, var)))
 
-        self._worker.setJets(getattr(self,'n%s'%self.jc),getattr(self,'%s_pt'%self.jc),getattr(self,'%s_eta'%self.jc),getattr(self,'%s_phi'%self.jc),
+        self._worker.setJets(getattr(self,'n%s'%self.jc), getattr(self,'%s_pt'%self.jc), getattr(self,'%s_eta'%self.jc), getattr(self,'%s_phi'%self.jc),
                              getattr(self,'%s_%s'%(self.jc,self.jetBTag)),
                              jecs
                             )
