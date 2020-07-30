@@ -41,7 +41,10 @@ def WriteMCAfile(Samples, mcaName):
     else: mcaFile = openFile(mcaName + ".txt", "w")
     for s in Samples:
 	s = s.replace(s[-5:], "")
-	mcaFile.write("{key}: {s}: {norm} \n".format(key = key, s = s, norm = norm))
+	text = '{key}: {s}: {norm}'.format(key = key, s = s, norm = norm)
+	text += 'genSumWeightName="genEventSum_W"'
+	text += 'FillColor=852'
+	mcaFile.write(text + "\n")
 
     return 
 
