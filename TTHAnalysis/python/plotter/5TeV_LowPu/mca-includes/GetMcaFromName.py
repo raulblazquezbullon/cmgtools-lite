@@ -37,8 +37,12 @@ def WriteMCAfile(Samples, mcaName):
     # Write the mca file
     
     # First we check if it already exists, and if it doesn't then we create a new one
-    if CheckIfExists(mcaName): mcaFile = openFile(mcaName)
-    else: mcaFile = openFile(mcaName, "w")
+    if CheckIfExists(mcaName): mcaFile = openFile(mcaName + ".txt")
+    else: mcaFile = openFile(mcaName + ".txt", "w")
+    for s in Samples:
+	s = s.replace(s[-5:], "")
+	mcaFile.write("{key}: {s}: {norm} \n".format(key = key, s = s, norm = norm))
+
     return 
 
 files = GetListOfTrees(path)
