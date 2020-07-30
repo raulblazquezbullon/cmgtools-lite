@@ -7,8 +7,8 @@ import re
 import sys
 
 path = sys.argv[1]
-#NameInFile = sys.argv[2]
-#mcaName = sys.argv[3]
+NameInFile = sys.argv[2]
+mcaName = sys.argv[3]
 
 submit = "{command}"
 
@@ -22,8 +22,12 @@ def GetKey(files, NameInFile):
     # the key
     samples = [f for f in files if NameInFile in f]
     return samples
+def WriteMCAfile(Samples, mcaName):
+    # Write the mca file
+    if os.path.exists('.{mcaName}'.format(mcaName = mcaName)):mcaFile = open(mcaName, "w") 
+    else: mcaFile = open(mcaName, "a")
 
 files = GetListOfTrees(path)
-Samples = GetKey(files, "DY")
-print(Samples)
+Samples = GetKey(files, NameInFile)
+WriteMCAfile(Samples, mcaName)
 
