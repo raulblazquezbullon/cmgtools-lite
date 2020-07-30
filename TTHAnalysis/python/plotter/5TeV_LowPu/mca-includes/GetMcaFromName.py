@@ -9,6 +9,8 @@ import sys
 path = sys.argv[1]
 NameInFile = sys.argv[2]
 mcaName = sys.argv[3]
+key = sys.argv[4]
+norm = sys.argv[5]
 
 submit = "{command}"
 
@@ -22,10 +24,22 @@ def GetKey(files, NameInFile):
     # the key
     samples = [f for f in files if NameInFile in f]
     return samples
+def CheckIfExists(mcaName):
+    doExists = False
+    if os.path.exists('./{mcaName}.txt'.format(mcaName = mcaName)): doExists = True
+    return doExists
+
+def openFile(mcaName, opt = "a"):
+    mcaFile = open(mcaName, opt)
+    return mcaFile
+
 def WriteMCAfile(Samples, mcaName):
     # Write the mca file
-    if os.path.exists('.{mcaName}'.format(mcaName = mcaName)):mcaFile = open(mcaName, "w") 
-    else: mcaFile = open(mcaName, "a")
+    
+    # First we check if it already exists, and if it doesn't then we create a new one
+    if CheckIfExists(mcaName): mcaFile = openFile(mcaName)
+    else: mcaFile = openFile(mcaName, "w")
+    return 
 
 files = GetListOfTrees(path)
 Samples = GetKey(files, NameInFile)
