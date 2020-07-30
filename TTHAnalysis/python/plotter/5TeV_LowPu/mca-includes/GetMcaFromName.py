@@ -24,5 +24,6 @@ def GetKey(files, NameInFile):
     return samples
 
 files = GetListOfTrees(path)
-print(files)
+Samples = GetKey(files, "DY")
+print(Samples)
 
