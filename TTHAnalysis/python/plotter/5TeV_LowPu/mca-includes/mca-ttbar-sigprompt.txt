@@ -1,0 +1,20 @@
+#TT+	: TT_PS   : xsec  : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; FillColor=ROOT.kRed+1
+
+#TT+	: Tree_TTToSemiLeptonic_TuneCP5_ext1_0 + Tree_TTToSemiLeptonic_TuneCP5_ext1_1 + Tree_TTToSemiLeptonic_TuneCP5_ext1_2 + Tree_TTToSemiLeptonic_TuneCP5_ext1_3 + Tree_TTToSemiLeptonic_TuneCP5_ext1_4 + Tree_TTToSemiLeptonic_TuneCP5_ext1_5 + Tree_TTToSemiLeptonic_TuneCP5_ext1_6 + Tree_TTToSemiLeptonic_TuneCP5_ext1_7  : 365.35 :LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0; genSumWeightName="genEventSumw_",FillColor=ROOT.kRed+1
+
+#TT+	: Tree_TTToHadronic_TuneCP5_ext1_0 + Tree_TTToHadronic_TuneCP5_ext1_1 + Tree_TTToHadronic_TuneCP5_ext1_2 + Tree_TTToHadronic_TuneCP5_ext1_3 : 377.96 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; genSumWeightName="genEventSumw_",FillColor=ROOT.kRed+2
+TT+	: Tree_TTTo2L2Nu_TuneCP5_ext1_0 + Tree_TTTo2L2Nu_TuneCP5_ext1_1 + Tree_TTTo2L2Nu_TuneCP5_ext1_2 : 88.29 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0; genSumWeightName="genEventSumw_",FillColor=ROOT.kRed+1
+
+
+#tW	: T_tWch_noFullyHad_PS     : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; FillColor=ROOT.kOrange+1
+#tW	: TBar_tWch_noFullyHad_PS  : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; FillColor=ROOT.kOrange+1
+
+VV	:  Tree_WZTo3LNu_TuneCP5_ext1_0 : 4.912 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; genSumWeightName="genEventSumw_",FillColor=ROOT.kTeal+5
+VV	: Tree_WWTo2L2Nu_TuneCP5_ext1_0 : 12.6 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; genSumWeightName="genEventSumw_",FillColor=ROOT.kTeal+5
+#VV	: ZZTo2L2Nu  : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; FillColor=ROOT.kTeal+5
+#VV	: ZZTo4L     : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; FillColor=ROOT.kTeal+5
+VV   	: Tree_WJetsToLNu_0J_TuneCP5_amcatnloFXFX_ext1_0: 49397: LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; genSumWeightName="genEventSumw_",FillColor=ROOT.kTeal+5
+#VV      : W1JetsToLNu : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; FillColor=ROOT.kTeal+5
+#VV      : W2JetsToLNu : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; FillColor=ROOT.kTeal+5
+#VV      : W3JetsToLNu : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 ; FillColor=ROOT.kTeal+5
+
