@@ -1,1 +1,1 @@
-WZ+	: Tree_WZTo3LNu_TuneCP5_ext1_0 : 4.912  : (LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0) ; FillColor=ROOT.kOrange
+WZ+	: Tree_WZTo3LNu_TuneCP5_ext1_0 : 1.23  : (LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0) ; genSumWeightName="genEventSumw_",FillColor=ROOT.kOrange

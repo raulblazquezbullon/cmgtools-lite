@@ -1,18 +1,18 @@
-#Flips	: TT	: xsec	:  (LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && !(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge)) ; FillColor=ROOT.kCyan+1
-#Flips	: T_tWch_noFullyHad : xsec : (LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && !(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge)) ; FillColor=ROOT.kCyan+1
-#Flips	: TBar_tWch_noFullyHad : xsec : (LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && !(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge)) ; FillColor=ROOT.kCyan+1
+#Flips	: TT	: xsec	:  (LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && !(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge)) ; genSumWeightName="genEventSumw_",FillColor=ROOT.kCyan+1
+#Flips	: T_tWch_noFullyHad : xsec : (LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && !(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge)) ; genSumWeightName="genEventSumw_",FillColor=ROOT.kCyan+1
+#Flips	: TBar_tWch_noFullyHad : xsec : (LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && !(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge)) ; genSumWeightName="genEventSumw_",FillColor=ROOT.kCyan+1
 
-Flips	: Tree_TTToSemiLeptonic_TuneCP5_ext1_0 + Tree_TTToSemiLeptonic_TuneCP5_ext1_1 + Tree_TTToSemiLeptonic_TuneCP5_ext1_2 + Tree_TTToSemiLeptonic_TuneCP5_ext1_3 + Tree_TTToSemiLeptonic_TuneCP5_ext1_4 + Tree_TTToSemiLeptonic_TuneCP5_ext1_5 + Tree_TTToSemiLeptonic_TuneCP5_ext1_6 + Tree_TTToSemiLeptonic_TuneCP5_ext1_7  : 365.35 : (LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && !(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge)) ; FillColor=ROOT.kCyan+1
-Flips	: Tree_TTToHadronic_TuneCP5_ext1_0 + Tree_TTToHadronic_TuneCP5_ext1_1 + Tree_TTToHadronic_TuneCP5_ext1_2 + Tree_TTToHadronic_TuneCP5_ext1_3 : 377.96 :(LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && !(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge)) ; FillColor=ROOT.kCyan+1
-Flips	: Tree_TTTo2L2Nu_TuneCP5_ext1_0 + Tree_TTTo2L2Nu_TuneCP5_ext1_1 + Tree_TTTo2L2Nu_TuneCP5_ext1_2 : 88.29 : (LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && !(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge)) ; FillColor=ROOT.kCyan+1
-
-
+Flips	: Tree_TTToSemiLeptonic_TuneCP5_ext1_0 + Tree_TTToSemiLeptonic_TuneCP5_ext1_1 + Tree_TTToSemiLeptonic_TuneCP5_ext1_2 + Tree_TTToSemiLeptonic_TuneCP5_ext1_3 + Tree_TTToSemiLeptonic_TuneCP5_ext1_4 + Tree_TTToSemiLeptonic_TuneCP5_ext1_5 + Tree_TTToSemiLeptonic_TuneCP5_ext1_6 + Tree_TTToSemiLeptonic_TuneCP5_ext1_7  : 365.35 : (LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && !(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge)) ; genSumWeightName="genEventSumw_",FillColor=ROOT.kCyan+1
+Flips	: Tree_TTToHadronic_TuneCP5_ext1_0 + Tree_TTToHadronic_TuneCP5_ext1_1 + Tree_TTToHadronic_TuneCP5_ext1_2 + Tree_TTToHadronic_TuneCP5_ext1_3 : 377.96 :(LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && !(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge)) ; genSumWeightName="genEventSumw_",FillColor=ROOT.kCyan+1
+Flips	: Tree_TTTo2L2Nu_TuneCP5_ext1_0 + Tree_TTTo2L2Nu_TuneCP5_ext1_1 + Tree_TTTo2L2Nu_TuneCP5_ext1_2 : 88.29 : (LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && !(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge)) ; genSumWeightName="genEventSumw_",FillColor=ROOT.kCyan+1
 
 
-Flips	: Tree_DYJetsToLL_M_50_TuneCP5_amcatnloFXFX_ext1_0 + Tree_DYJetsToLL_M_50_TuneCP5_amcatnloFXFX_ext1_1 + Tree_DYJetsToLL_M_50_TuneCP5_amcatnloFXFX_ext1_2 : 6225.42 : (LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && !(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge)) ; FillColor=ROOT.kCyan+1
 
-Flips   : Tree_WZTo3LNu_TuneCP5_ext1_0 : 4.912 : (LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && !(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge)) ; FillColor=ROOT.kCyan+1
-Flips	: Tree_WWTo2L2Nu_TuneCP5_ext1_0  : 12.6 : (LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && !(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge)) ; FillColor=ROOT.kCyan+1
 
-Flips      : Tree_WJetsToLNu_0J_TuneCP5_amcatnloFXFX_ext1_0: 49397 : (LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && !(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge)) ; FillColor=ROOT.kCyan+1
+Flips	: Tree_DYJetsToLL_M_50_TuneCP5_amcatnloFXFX_ext1_0 + Tree_DYJetsToLL_M_50_TuneCP5_amcatnloFXFX_ext1_1 + Tree_DYJetsToLL_M_50_TuneCP5_amcatnloFXFX_ext1_2 : 6225.42 : (LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && !(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge)) ; genSumWeightName="genEventSumw_",FillColor=ROOT.kCyan+1
+
+Flips   : Tree_WZTo3LNu_TuneCP5_ext1_0 : 4.912 : (LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && !(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge)) ; genSumWeightName="genEventSumw_",FillColor=ROOT.kCyan+1
+Flips	: Tree_WWTo2L2Nu_TuneCP5_ext1_0  : 12.6 : (LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && !(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge)) ; genSumWeightName="genEventSumw_",FillColor=ROOT.kCyan+1
+
+Flips      : Tree_WJetsToLNu_0J_TuneCP5_amcatnloFXFX_ext1_0: 49397 : (LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && !(LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge)) ; genSumWeightName="genEventSumw_",FillColor=ROOT.kCyan+1
 
