@@ -1,3 +1,0 @@
-incl_sigprompt : + ; IncludeMca="5TeV_LowPu/mca-includes/mca-ww-sigprompt.txt"
-incl_mcfakes   : + ; IncludeMca="5TeV_LowPu/mca-includes/mca-ww-mcfakes.txt"
-
