@@ -25,7 +25,7 @@ parser.add_option("-n", "--norm", dest = "norm", type = float, default = 1.0, he
 parser.add_option("-C", "--color", dest = "color", type = "string", default = "ROOT.kRed", help = "Color for the histogram")
 parser.add_option("-o", "--outfile", dest = "outfile", type = "string", default = "foo.txt", help = "Name for the mca-file")
 parser.add_option("-x", "--cut", dest = "cut_options", type = "string", action = "append", help = "Handle options for the initial cut")
-
+parser.add_option("-d", "--debug", dest = "_debug", action = "store_true", default = False, help = "Enables debug mode")
 (options, args) = parser.parse_args()
 
 def GetListOfTrees(path):
@@ -66,6 +66,13 @@ def WriteMCAfile(Samples, mcaName):
     return 
 
 if __name__ == '__main__':
+	if options.key == "key": raise RuntimeError, 'No key was specified!'
 	# First thing we do is read the files from the path
-	files = GetListOfTrees(options.path)
-	print(files)
+	pathCopy = options.path #Just to be secure about the path that is being read
+	files = GetListOfTrees(pathCopy)
+	
+	# Let's get a list with only the files containing the key
+	keys = GetKey(files, options.key)
+	if options._debug: print("[DEBUG]List of files to be added to the mca-file: \n {list}".format(list = keys))
+	
+	# Now that we have the keys, let's write the mca-file!
