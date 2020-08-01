@@ -5,15 +5,23 @@
 import os
 import re
 import sys
-
-path = sys.argv[1]
-NameInFile = sys.argv[2]
-mcaName = sys.argv[3]
-key = sys.argv[4]
-norm = sys.argv[5]
-color = sys.argv[6]
+from optparse import OptionParser
+#path = sys.argv[1]
+#NameInFile = sys.argv[2]
+#mcaName = sys.argv[3]
+#key = sys.argv[4]
+#norm = sys.argv[5]
+#color = sys.argv[6]
 
 submit = "{command}"
+
+
+parser = OptionParser(usage = "%prog [options]")
+
+parser.add_option("-P", "--path", dest = "path", type = "string", default = ".", help = "Path where to get the name of the samples")
+parser.add_option("-N", "--name", dest = "name", type = "string", default = "DY", help = "Name of the sample to be added to the file")
+(options, args) = parser.parse_args()
+print(options.path)
 
 def GetListOfTrees(path):
     # First we get a list of the files in the given path
@@ -52,7 +60,7 @@ def WriteMCAfile(Samples, mcaName):
 	
     return 
 
-files = GetListOfTrees(path)
-Samples = GetKey(files, NameInFile)
-WriteMCAfile(Samples, mcaName)
+#files = GetListOfTrees(path)
+#Samples = GetKey(files, NameInFile)
+#WriteMCAfile(Samples, mcaName)
 
