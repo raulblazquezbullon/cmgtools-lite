@@ -19,7 +19,12 @@ submit = "{command}"
 parser = OptionParser(usage = "%prog [options]")
 
 parser.add_option("-P", "--path", dest = "path", type = "string", default = ".", help = "Path where to get the name of the samples")
-parser.add_option("-N", "--name", dest = "name", type = "string", default = "DY", help = "Name of the sample to be added to the file")
+parser.add_option("-f", "--filename", dest = "name", type = "string", default = "", help = "Name of the sample to be added to the file. It works if you just give a short but key part of the name")
+parser.add_option("-k", "--key", dest = "key", type = "string", default = "key", help = "Name that will appear in the plots")
+parser.add_option("-n", "--norm", dest = "norm", type = float, default = 1.0, help = "Normalisation for the MC")
+parser.add_option("-C", "--color", dest = "color", type = "string", default = "ROOT.kRed", help = "Color for the histogram")
+parser.add_option("-o", "--outfile", dest = "outfile", type = "string", default = "foo.txt", help = "Name for the mca-file")
+
 (options, args) = parser.parse_args()
 print(options.path)
 
