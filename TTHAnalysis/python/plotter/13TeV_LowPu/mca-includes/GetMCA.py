@@ -46,7 +46,7 @@ def openFile(mcaName, opt = "a"):
 def WriteMCAfile(file):
     # Write the mca file
      
-    text = '{key}:'.format(key = options.key)
+    text = '{key} : '.format(key = options.key)
     for s in range(len(process)):
 	process[s] = process[s].replace(process[s][-5:], "") #Remove the .root extension
         text += '{s}'.format(s = process[s]) 
@@ -57,6 +57,7 @@ def WriteMCAfile(file):
 	    text += ' : {norm}'.format(norm = options.norm)
 	    text += ' ; genSumWeightName="genEventSum_W"'
 	    text += ',FillColor={color}'.format(color = options.color)
+    else: text += ' ; '
     file.write(text + "\n")	
     return 
 
