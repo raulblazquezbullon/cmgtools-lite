@@ -58,9 +58,9 @@ def WriteMCAfile(file):
 	process[s] = process[s].replace(process[s][-5:], "") #Remove the .root extension
         text += '{s}'.format(s = process[s]) 
 	if s != len(process)-1: text+=' + '# Files with the same name but exclusive to each other must go added in the mca-file
-#    text += ' : {norm}'.format(norm = norm)
-#    text += ' ; genSumWeightName="genEventSum_W"'
-#    if color!= "": text += ',FillColor={color}'.format(color = color)
+    text += ' : {norm}'.format(norm = options.norm)
+    text += ' ; genSumWeightName="genEventSum_W"'
+    text += ',FillColor={color}'.format(color = options.color)
     file.write(text + "\n")	
     return 
 
@@ -72,7 +72,7 @@ if __name__ == '__main__':
 	
 	# Let's get a list with only the files containing the key
 	process = GetKey(files, options.key)
-	if options._debug: print("[DEBUG]List of files to be added to the mca-file: \n {list}".format(list = keys))
+	if options._debug: print("[DEBUG]List of files to be added to the mca-file: \n {list}".format(list = process))
 	
 	# Now that we have the keys, let's write the mca-file!
 	if options.outfile == "foo.txt": warnings.warn("You did not specify the output filename, so I'm saving it as foo.txt...")
