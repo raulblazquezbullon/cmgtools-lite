@@ -24,10 +24,10 @@ parser.add_option("-k", "--key", dest = "key", type = "string", default = "key",
 parser.add_option("-n", "--norm", dest = "norm", type = float, default = 1.0, help = "Normalisation for the MC")
 parser.add_option("-C", "--color", dest = "color", type = "string", default = "ROOT.kRed", help = "Color for the histogram")
 parser.add_option("-o", "--outfile", dest = "outfile", type = "string", default = "foo.txt", help = "Name for the mca-file")
-
+parser.add_option("-x", "--cut", dest = "cut_options", type = "string", action = "append", help = "Handle options for the initial cut")
 (options, args) = parser.parse_args()
 print(options.path)
-
+print(options.cut_options)
 def GetListOfTrees(path):
     # First we get a list of the files in the given path
     files = os.listdir(path)
@@ -65,7 +65,4 @@ def WriteMCAfile(Samples, mcaName):
 	
     return 
 
-#files = GetListOfTrees(path)
-#Samples = GetKey(files, NameInFile)
-#WriteMCAfile(Samples, mcaName)
 
