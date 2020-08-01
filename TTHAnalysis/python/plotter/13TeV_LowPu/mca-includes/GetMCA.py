@@ -16,7 +16,7 @@ parser.add_option("-P", "--path", dest = "path", type = "string", default = P0, 
 parser.add_option("-f", "--filename", dest = "filename", type = "string", default = "", help = "Name of the sample to be added to the file. It works if you just give a short but key part of the name, but try to be as clear as possible")
 parser.add_option("-k", "--key", dest = "key", type = "string", default = "key", help = "Name that will appear in the plots")
 parser.add_option("-n", "--norm", dest = "norm", type = float, default = 1.0, help = "Normalisation for the MC")
-parser.add_option("-C", "--color", dest = "color", type = "string", default = "ROOT.kRed", help = "Color for the histogram")
+parser.add_option("-c", "--color", dest = "color", type = "string", default = "ROOT.kRed", help = "Color for the histogram")
 parser.add_option("-o", "--outfile", dest = "outfile", type = "string", default = "foo.txt", help = "Name for the mca-file WITH EXTENSION")
 parser.add_option("-x", "--cut", dest = "cut_options", type = "string", action = "append", help = "Handle options for the initial cut")
 parser.add_option("-d", "--debug", dest = "_debug", action = "store_true", default = False, help = "Enables debug mode")
@@ -55,7 +55,7 @@ def WriteMCAfile(file):
     # mca files for data have different format
     if options.key != "data":
 	    text += ' : {norm}'.format(norm = options.norm)
-	    text += ' ; genSumWeightName="genEventSum_W"'
+	    text += ' ; genSumWeightName="genEventSumw_"'
 	    text += ',FillColor={color}'.format(color = options.color)
     else: text += ' ; '
     file.write(text + "\n")	
