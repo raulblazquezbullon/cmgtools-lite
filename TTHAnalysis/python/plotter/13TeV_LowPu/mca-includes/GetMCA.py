@@ -24,7 +24,7 @@ parser.add_option("-f", "--filename", dest = "name", type = "string", default = 
 parser.add_option("-k", "--key", dest = "key", type = "string", default = "key", help = "Name that will appear in the plots")
 parser.add_option("-n", "--norm", dest = "norm", type = float, default = 1.0, help = "Normalisation for the MC")
 parser.add_option("-C", "--color", dest = "color", type = "string", default = "ROOT.kRed", help = "Color for the histogram")
-parser.add_option("-o", "--outfile", dest = "outfile", type = "string", default = "foo.txt", help = "Name for the mca-file")
+parser.add_option("-o", "--outfile", dest = "outfile", type = "string", default = "foo.txt", help = "Name for the mca-file WITH EXTENSION")
 parser.add_option("-x", "--cut", dest = "cut_options", type = "string", action = "append", help = "Handle options for the initial cut")
 parser.add_option("-d", "--debug", dest = "_debug", action = "store_true", default = False, help = "Enables debug mode")
 (options, args) = parser.parse_args()
@@ -42,8 +42,7 @@ def GetKey(files, NameInFile):
 def CheckIfExists(mcaName):
     doExists = False
     if options._debug: print("[DEBUG] checking the file {mcaName} exists".format(mcaName = mcaName))
-    print(os.path.exists('./%s.txt'%mcaName))
-    if os.path.exists('./{mcaName}.txt'.format(mcaName = mcaName)): doExists = True
+    if os.path.exists('./{mcaName}'.format(mcaName = mcaName)): doExists = True
     if options._debug and doExists: print("[DEBUG] The file {mcaName} does exists.".format(mcaName = mcaName))
     return doExists
 
