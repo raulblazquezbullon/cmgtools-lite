@@ -5,6 +5,7 @@
 import os
 import re
 import sys
+import warnings
 from optparse import OptionParser
 #path = sys.argv[1]
 #NameInFile = sys.argv[2]
@@ -40,7 +41,10 @@ def GetKey(files, NameInFile):
     return samples
 def CheckIfExists(mcaName):
     doExists = False
+    if options._debug: print("[DEBUG] checking the file {mcaName} exists".format(mcaName = mcaName))
+    print(os.path.exists('./%s.txt'%mcaName))
     if os.path.exists('./{mcaName}.txt'.format(mcaName = mcaName)): doExists = True
+    if options._debug and doExists: print("[DEBUG] The file {mcaName} does exists.".format(mcaName = mcaName))
     return doExists
 
 def openFile(mcaName, opt = "a"):
@@ -76,3 +80,11 @@ if __name__ == '__main__':
 	if options._debug: print("[DEBUG]List of files to be added to the mca-file: \n {list}".format(list = keys))
 	
 	# Now that we have the keys, let's write the mca-file!
+	if options.outfile == "foo.txt": warnings.warn("You did not specify the output filename, so I'm saving it as foo.txt...")
+	
+	# First we check if it exists
+	if CheckIfExists(options.outfile) == False: 
+		print("[INFO] The file does not exist->Creating a new one")
+		outfile = openFile(options.outfile, "w")
+	else: outfile = openFile(options.outfile)
+	outfile.close()
