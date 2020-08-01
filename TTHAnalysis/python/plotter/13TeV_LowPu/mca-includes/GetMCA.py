@@ -50,13 +50,10 @@ def openFile(mcaName, opt = "a"):
     mcaFile = open(mcaName, opt)
     return mcaFile
 
-def WriteMCAfile(Samples, mcaName):
+def WriteMCAfile(file):
     # Write the mca file
-    
-    # First we check if it already exists, and if it doesn't then we create a new one
-    if CheckIfExists(mcaName): mcaFile = openFile(mcaName + ".txt")
-    else: mcaFile = openFile(mcaName + ".txt", "w")
-    text = '{key}:'.format(key = key)
+     
+    text = '{key}:'.format(key = options.key)
     for s in range(len(Samples)):
 	Samples[s] = Samples[s].replace(Samples[s][-5:], "")	
         text += '{s}'.format(s = Samples[s])
@@ -80,10 +77,10 @@ if __name__ == '__main__':
 	
 	# Now that we have the keys, let's write the mca-file!
 	if options.outfile == "foo.txt": warnings.warn("You did not specify the output filename, so I'm saving it as foo.txt...")
-	
 	# First we check if it exists
 	if CheckIfExists(options.outfile) == False: 
 		print("[INFO] The file does not exist->Creating a new one")
 		outfile = openFile(options.outfile, "w")
 	else: outfile = openFile(options.outfile)
+	WriteMCAfile(outfile)
 	outfile.close()
