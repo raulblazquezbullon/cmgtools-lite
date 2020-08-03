@@ -1,6 +1,7 @@
 from PhysicsTools.NanoAODTools.postprocessing.framework.eventloop import Module
 
-class yearTagger( Module ):
+class yearTagger( Module, _year="None" ):
+    if _year != "None": self._year = _year
     def __init__(self):
         pass
     def beginFile(self, inputFile, outputFile, inputTree, wrappedOutputTree):
@@ -22,3 +23,4 @@ class yearTagger( Module ):
             raise RuntimeError("Can't detect year scenario for %s, %s" % (component.name, component.dataset))
 
 yearTag = lambda : yearTagger()
+yearTag2017 = lambda : yearTagger(2017)
