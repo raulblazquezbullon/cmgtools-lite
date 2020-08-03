@@ -47,6 +47,7 @@ from PhysicsTools.NanoAODTools.postprocessing.modules.common.muonScaleResProduce
 
 WZ5TeV_sequence_step1 = [lepMerge, xsecTag, lepJetBTagCSV, lepJetBTagDeepCSV, lepJetBTagDeepFlav, lepMasses, puWeight_2017]
 
+WZ13TeV_lowPu_sequence = [lepMerge, lepJetBTagCSV, lepJetBTagDeepCSV, lepJetBTagDeepFlav, lepMasses]
 ##add weights
 
 
