@@ -391,6 +391,11 @@ Trigger_5TeV_2m = lambda : EvtTagger('Trigger_5TeV_2m',[ lambda ev : triggerGrou
 Trigger_1e   = lambda : EvtTagger('Trigger_1e',[ lambda ev : triggerGroups['Trigger_1e'][ev.year](ev) ])
 Trigger_1m   = lambda : EvtTagger('Trigger_1m',[ lambda ev : triggerGroups['Trigger_1m'][ev.year](ev) ])
 Trigger_2e   = lambda : EvtTagger('Trigger_2e',[ lambda ev : triggerGroups['Trigger_2e'][ev.year](ev) ])
+
+Trigger_1e_lowPu = lambda : EvtTagger('Trigger_1e_lowPu',[lambda ev : triggerGroups['Trigger_1e_lowPu'][ev.year](ev) ])
+Trigger_1m_lowPu = lambda : EvtTagger('Trigger_1m_lowPu',[lambda ev : triggerGroups['Trigger_1m_lowPu'][ev.year](ev) ])
+Trigger_2e_lowPu = lambda : EvtTagger('Trigger_2e_lowPu',[lambda ev : triggerGroups['Trigger_2e_lowPu'][ev.year](ev) ])
+
 Trigger_2m   = lambda : EvtTagger('Trigger_2m',[ lambda ev : triggerGroups['Trigger_2m'][ev.year](ev) ])
 Trigger_em   = lambda : EvtTagger('Trigger_em',[ lambda ev : triggerGroups['Trigger_em'][ev.year](ev) ])
 Trigger_3e   = lambda : EvtTagger('Trigger_3e',[ lambda ev : triggerGroups['Trigger_3e'][ev.year](ev) ])
@@ -405,7 +410,7 @@ triggerSequence = [Trigger_5TeV_FR,Trigger_5TeV_1e,Trigger_5TeV_1m,Trigger_5TeV_
 
 WZ13TeV_Vico_mc = [recleaner_step1,recleaner_step2_mc,isMatchRightCharge, mcMatchId ,mcPromptGamma,Trigger_5TeV_FR,Trigger_5TeV_1e,Trigger_5TeV_1m,Trigger_5TeV_2e,Trigger_5TeV_2m]
 WZ13TeV_Vico_data = [yearTag2017,recleaner_step1,recleaner_step2_data,Trigger_5TeV_FR,Trigger_5TeV_1e,Trigger_5TeV_1m,Trigger_5TeV_2e,Trigger_5TeV_2m]
-triggerSequence_Carlos = [yearTag2017, Trigger_1e, Trigger_1m, Trigger_2e, Trigger_2m]
+triggerSequence_Carlos = [yearTag2017, Trigger_1e_lowPu, Trigger_1m_lowPu, Trigger_2e_lowPu]
 from CMGTools.TTHAnalysis.tools.BDT_eventReco_cpp import BDT_eventReco
 
 BDThttTT_Hj = lambda : BDT_eventReco(os.environ["CMSSW_BASE"]+'/src/CMGTools/TTHAnalysis/data/kinMVA/tth/TMVAClassification_bloose_BDTG.weights.xml',
