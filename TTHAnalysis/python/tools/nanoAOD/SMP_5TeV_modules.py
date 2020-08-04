@@ -258,6 +258,16 @@ triggerGroups=dict(
         2017 : lambda ev : _fires(ev,'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8') or _fires(ev,'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8'),
         2018 : lambda ev : _fires(ev,'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8'),
     },
+    Trigger_1e_lowPu = {
+	2017 : lambda ev : bool(getattr(ev, 'HLT_HIEle15_WPLoose_Gsf')) or bool(getattr(ev, 'HLT_HIEle20_WPLoose_Gsf')) or bool(getattr(ev, 'HLT_HIEle40_WPLoose_Gsf'))
+    },
+    
+    Trigger_1m_lowPu = {
+	2017 : lambda ev : bool(getattr(ev, 'HLT_HIMu17')) 
+    },
+    Trigger_2e_lowPu = {
+	2017 : lambda ev : bool(getattr(ev, 'HLT_HIEle20_Ele12_CaloIdL_TrackIdL_IsoVL_DZ')) or bool(getattr(ev, 'HLT_HIEle20_Ele12_CaloIdL_TrackIdL_IsoVL')) or bool(getattr(ev, 'HLT_HIEle15_Ele8_CaloIdL_TrackIdL_IsoVL'))  
+    },
     Trigger_em={
         2016 :  lambda ev : _fires(ev, 'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL') or _fires(ev,'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ') \
         or _fires(ev, 'HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL') or _fires(ev,'HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ'),
