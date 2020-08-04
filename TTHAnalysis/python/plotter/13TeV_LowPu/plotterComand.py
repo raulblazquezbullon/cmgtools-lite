@@ -1,4 +1,9 @@
 #!/usr/bin/env python
+
+# This is a macro made for getting the command used to do
+# the plotting
+
+# ======= IMPORTS
 import sys
 import re
 import os 
@@ -6,12 +11,17 @@ import warnings
 from optparse import OptionParser
 import argparse
 
-# This is a macro made for getting the command used to do
-# the plotting
+# ===============
 
 
+# ====== DEFAULT OPTIONS
 path = "/pool/ciencias/nanoAODv6/lowPu2017/2020_07_21_postProc"
-ftreesPath = "~/Workspace/WZ_LowPu/FriendTrees/13TeV_lowPu/"
+ftreesPath = "~/Workspace/WZ_LowPu/FriendTrees/13TeV_lowPu/ "
+ftrees = (ftreesPath + "--Fs {Friend}".format(Friend = "0_lepGood") 
+        + ftreesPath + "--FMCS {Friend}".format(Friend = "1_recleaning_mc"))
+print(ftrees)
+
+# ====== PARSER OPTIONS
 parser = OptionParser(usage = "%prog [options]")
 
 parser.add_option("-P", "--path", dest = "path", type = "string", default = path, help = "Path where the postproc is storaged")
@@ -30,10 +40,18 @@ def AskUser(msg):
 
 
 def ProcessListOfFTrees(listOfTrees):
-    
+    # ==========================================
+    # STILL WORKING ON THIS
+    # ==========================================
+    text = ""
+    text += "--FDs {Friend}".format(listOfTrees) if "Run" in listOfTrees else "--FMCs {Friend}".format(listOfTrees)  
     print(listOfTrees)
     
 def GetFtreesStuff():
+    # ==========================================
+    # STILL WORKING ON THIS
+    # ==========================================
+    
     # First, get the path
     if options.ftreesPath == ftreesPath: print("No samples path option was given. Searching in {p} by default...".format(p = options.ftreesPath))
     
@@ -56,5 +74,4 @@ if __name__ == '__main__':
     TREES = options.path
     if TREES == path: print("No samples path option was given. Searching in {p} by default...".format(p = options.path))
     command += ' -P {path}'.format(path = options.path)
-    GetFtreesStuff()
     print(command)
