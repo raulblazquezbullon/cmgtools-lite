@@ -24,7 +24,8 @@ ftrees = ("--Fs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "
           "--FDs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "2_eventVars_data ")
           )
 
-
+lumi = 0.23
+ncores = 4
 # ====== PARSER OPTIONS
 parser = OptionParser(usage = "%prog [options]")
 
@@ -68,6 +69,16 @@ def GetFtreesStuff():
     listOfTrees = os.listdir(options.ftreesPath) if useAll else options.ftrees
     
     return 
+def FormatForPlots():
+    RATIO= " --maxRatioRange 0.6  1.99 --ratioYNDiv 505 "
+    RATIO2=" --showRatio --attachRatioPanel --fixRatioRange "
+    LEGEND=" --legendColumns 3 --legendWidth 0.35 "
+    LEGEND2=" --legendFontSize 0.042 "
+    SPAM=" --noCms --topSpamSize 1.1 --lspam '#scale[1.1]{#bf{CMS}} #scale[0.9]{#it{Preliminary}}' --rspam '%(lumi) (13 TeV)' "
+    text = RATIO + RATIO2 + LEGEND + LEGEND2 + SPAM
+    return text
+
+# ======= Main programm
 
 if __name__ == '__main__':
     
@@ -79,4 +90,5 @@ if __name__ == '__main__':
     if TREES == path: print("No samples path option was given. Searching in {p} by default...".format(p = options.path))
     command += ' -P {path}'.format(path = options.path)
     command += ftrees
+    command += FormatForPlots()
     print(command)
