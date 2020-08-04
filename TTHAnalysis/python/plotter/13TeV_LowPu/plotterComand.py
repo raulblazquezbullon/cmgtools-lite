@@ -16,10 +16,14 @@ import argparse
 
 # ====== DEFAULT OPTIONS
 path = "/pool/ciencias/nanoAODv6/lowPu2017/2020_07_21_postProc"
-ftreesPath = "~/Workspace/WZ_LowPu/FriendTrees/13TeV_lowPu/ "
-ftrees = (ftreesPath + "--Fs {Friend}".format(Friend = "0_lepGood") 
-        + ftreesPath + "--FMCS {Friend}".format(Friend = "1_recleaning_mc"))
-print(ftrees)
+ftreesPath = "~/Workspace/WZ_LowPu/FriendTrees/13TeV_lowPu/"
+ftrees = ("--Fs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "0_lepGood ") +
+          "--FDs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "1_recleaning_data ")+
+          "--FMCs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "1_recleaning_mc ")+
+          "--FMCs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "2_eventVars_mc ")+
+          "--FDs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "2_eventVars_data ")
+          )
+
 
 # ====== PARSER OPTIONS
 parser = OptionParser(usage = "%prog [options]")
@@ -27,7 +31,7 @@ parser = OptionParser(usage = "%prog [options]")
 parser.add_option("-P", "--path", dest = "path", type = "string", default = path, help = "Path where the postproc is storaged")
 parser.add_option("-F", "--ftreesPath", dest = "ftreesPath", type = "string", default = ftreesPath, help = "Path where the friend-trees are storaged" )
 parser.add_option("-c", "--ch", dest = "channel", type = "string", default = "ttbar", help = "Channel in which the analisys is based")
-parser.add_option("--ftrees", dest = "ftrees", type = "string", default = "", action = "append", help = "Specify the ftrees that will be used")
+parser.add_option("--ftrees", dest = "ftrees", type = "string", default = ftrees, action = "append", help = "Specify the ftrees that will be used")
 
 (options, args) = parser.parse_args()
 
@@ -74,4 +78,5 @@ if __name__ == '__main__':
     TREES = options.path
     if TREES == path: print("No samples path option was given. Searching in {p} by default...".format(p = options.path))
     command += ' -P {path}'.format(path = options.path)
+    command += ftrees
     print(command)
