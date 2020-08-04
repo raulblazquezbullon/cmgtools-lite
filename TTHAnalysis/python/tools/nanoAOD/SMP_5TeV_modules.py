@@ -393,9 +393,9 @@ Trigger_MET  = lambda : EvtTagger('Trigger_MET',[ lambda ev : triggerGroups['Tri
 
 triggerSequence = [Trigger_5TeV_FR,Trigger_5TeV_1e,Trigger_5TeV_1m,Trigger_5TeV_2e,Trigger_5TeV_2m] #,Trigger_em,Trigger_3e,Trigger_3m,Trigger_mee,Trigger_mme,Trigger_2lss,Trigger_3l ,Trigger_MET]
 
-WZ5TeV_Vico = [recleaner_step1,recleaner_step2_mc,isMatchRightCharge, mcMatchId ,mcPromptGamma,Trigger_5TeV_FR,Trigger_5TeV_1e,Trigger_5TeV_1m,Trigger_5TeV_2e,Trigger_5TeV_2m]
-WZ5TeV_Vico_data = [yearTag2017,recleaner_step1,recleaner_step2_data,Trigger_5TeV_FR,Trigger_5TeV_1e,Trigger_5TeV_1m,Trigger_5TeV_2e,Trigger_5TeV_2m]
-
+WZ13TeV_Vico_mc = [recleaner_step1,recleaner_step2_mc,isMatchRightCharge, mcMatchId ,mcPromptGamma,Trigger_5TeV_FR,Trigger_5TeV_1e,Trigger_5TeV_1m,Trigger_5TeV_2e,Trigger_5TeV_2m]
+WZ13TeV_Vico_data = [yearTag2017,recleaner_step1,recleaner_step2_data,Trigger_5TeV_FR,Trigger_5TeV_1e,Trigger_5TeV_1m,Trigger_5TeV_2e,Trigger_5TeV_2m]
+triggerSequence_Carlos = [yearTag2017, Trigger_1e, Trigger_1m, Trigger_2e, Trigger_2m]
 from CMGTools.TTHAnalysis.tools.BDT_eventReco_cpp import BDT_eventReco
 
 BDThttTT_Hj = lambda : BDT_eventReco(os.environ["CMSSW_BASE"]+'/src/CMGTools/TTHAnalysis/data/kinMVA/tth/TMVAClassification_bloose_BDTG.weights.xml',
