@@ -26,17 +26,28 @@ ftrees = ("--Fs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "
 
 lumi = 0.23
 ncores = 4
+
+# ===============
+
 # ====== PARSER OPTIONS
 parser = OptionParser(usage = "%prog [options]")
 
+
+## === Options regarding paths and files
 parser.add_option("-P", "--path", dest = "path", type = "string", default = path, help = "Path where the postproc is storaged")
 parser.add_option("-F", "--ftreesPath", dest = "ftreesPath", type = "string", default = ftreesPath, help = "Path where the friend-trees are storaged" )
-parser.add_option("-c", "--ch", dest = "channel", type = "string", default = "ttbar", help = "Channel in which the analisys is based")
 parser.add_option("--ftrees", dest = "ftrees", type = "string", default = ftrees, action = "append", help = "Specify the ftrees that will be used")
 
+## == Options regarding channels and stuff
+parser.add_option("-c", "--ch", dest = "channel", type = "string", default = "ttbar", help = "Channel in which the analisys is based")
+
+## == Options regarding processing 
+parser.add_option("-o", "--mcPlotsOpts", dest = "mcPlotsOpts", type = "string", default = "", help = "Any option that you can pass to mcPlots. Must be written between simple apostrophes ('')")
 (options, args) = parser.parse_args()
 
+# ===============
 
+# ======= Functions
 def AskUser(msg):
     ans = ""
     while ans not in ["y", "n", "yes", "no"]:
@@ -78,6 +89,13 @@ def FormatForPlots():
     text = RATIO + RATIO2 + LEGEND + LEGEND2 + SPAM
     return text
 
+def ProcessMcPlotsStuff():
+    text = ""
+    if '_norebin' in options.mcPlotsOpts: print('Esto funsiona jeje')
+    return text
+
+# ===============
+
 # ======= Main programm
 
 if __name__ == '__main__':
@@ -91,4 +109,5 @@ if __name__ == '__main__':
     command += ' -P {path}'.format(path = options.path)
     command += ftrees
     command += FormatForPlots()
+    command += ProcessMcPlotsStuff() if not options.mcPlotsOpts == "" else ""
     print(command)
