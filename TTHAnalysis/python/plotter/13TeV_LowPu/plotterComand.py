@@ -81,17 +81,30 @@ def GetFtreesStuff():
     
     return 
 def FormatForPlots():
-    RATIO= " --maxRatioRange 0.6  1.99 --ratioYNDiv 505 "
-    RATIO2=" --showRatio --attachRatioPanel --fixRatioRange "
-    LEGEND=" --legendColumns 3 --legendWidth 0.35 "
-    LEGEND2=" --legendFontSize 0.042 "
-    SPAM=" --noCms --topSpamSize 1.1 --lspam '#scale[1.1]{#bf{CMS}} #scale[0.9]{#it{Preliminary}}' --rspam '%(lumi) (13 TeV)' "
-    text = RATIO + RATIO2 + LEGEND + LEGEND2 + SPAM
+    CLUSTER = "-f -j {ncores} -l {lumi} -L 13TeV_lowPu/functions13TeV.cc --tree NanoAOD --mcc 13TeV_lowPu/lepchoice-FO.txt --split-factor=-1".format(ncores = ncores, lumi = lumi) 
+    RATIO = " --maxRatioRange 0.6  1.99 --ratioYNDiv 505 "
+    RATIO2 = " --showRatio --attachRatioPanel --fixRatioRange "
+    LEGEND = " --legendColumns 3 --legendWidth 0.35 "
+    LEGEND2 = " --legendFontSize 0.042 "
+    SPAM = " --noCms --topSpamSize 1.1 --lspam '#scale[1.1]{#bf{CMS}} #scale[0.9]{#it{Preliminary}}' --rspam '%(lumi) (13 TeV)' "
+    text = CLUSTER + RATIO + RATIO2 + LEGEND + LEGEND2 + SPAM
     return text
 
-def ProcessMcPlotsStuff():
-    text = ""
-    if '_norebin' in options.mcPlotsOpts: print('Esto funsiona jeje')
+def ProcessMcPlotsStuff(command):
+    text = command
+    if options.channel == "ttbar":
+        if '_norebin' in options.mcPlotsOpts: text.replace('--rebin 4', '')
+        if '_appl' in options.mcPlotsOpts: text += ' -I ^^TT'
+        if '_relax' in options.mcPlotsOpts: text += ' -X ^^TT'
+        if '_ss' in options.mcPlotsOpts: text += ' -I ^os'
+        if '_dycr' in options.mcPlotsOpts:
+            text += ' -E ^sf -X ^ZVeto -E ^onZ'
+            if '_nojet' in options.mcPlotsOpts: ' -X ^2jets'
+            if '_nomet' in options.mcPlotsOpts: ' -X ^MET'
+        if '_tight' in options.mcPlotsOpts: text.replace('1_recleaner','1_recleanerTight')
+        if '_em' in options.mcPlotsOpts: text += ' -E ^em'
+        if '_mm' in options.mcPlotsOpts: text += ' -E ^mm'
+        if '_ee' in options.mcPlotsOpts: text += ' -E ^ee'
     return text
 
 # ===============
@@ -109,5 +122,5 @@ if __name__ == '__main__':
     command += ' -P {path}'.format(path = options.path)
     command += ftrees
     command += FormatForPlots()
-    command += ProcessMcPlotsStuff() if not options.mcPlotsOpts == "" else ""
+    command = ProcessMcPlotsStuff(command) if not options.mcPlotsOpts == "" else command
     print(command)
