@@ -11,7 +11,7 @@ conf = dict(
 
 class ch(enum.IntEnum):
    NoChan = 0
-   ElMu = 1
+   ee = 1
    Muon = 2
    Elec = 3
 
@@ -22,6 +22,18 @@ class tags(enum.IntEnum):
    doublemuon = 3
    highegj = 4
    lowegj = 5
+
+remove_overlap_booleans = [lambda ev : (
+			   (  (ev.channel == ch.ElMu and (ev.Trigger_2e_lowPu_mc or ev.Trigger_1m_lowPu_mc or ev.Trigger_1e_lowPu_mc))
+			   or (ev.channel == ch.Muon and (ev.Trigger_1m_lowPu_mc))
+			   or (ev.channel == ch.Elec and (ev.Trigger_1e_lowPu_mc or ev.Trigger_2e_lowPu_mc)) )
+			   if ev.datatag == tags.mc else  # If it is not mc tagged, then it is data
+			
+			   (False)
+			 )]
+
+			 
+
 
 WZ_skim_cut = ("nMuon + nElectron >= 2 &&" + 
                "Sum$(Muon_pt > {muPt} && Muon_miniPFRelIso_all < {miniRelIso} && Muon_sip3d < {sip3d}) +"
@@ -435,6 +447,7 @@ Trigger_mme  = lambda : EvtTagger('Trigger_mme',[ lambda ev : triggerGroups['Tri
 Trigger_2lss = lambda : EvtTagger('Trigger_2lss',[ lambda ev : triggerGroups['Trigger_2lss'][ev.year](ev) ])
 Trigger_3l   = lambda : EvtTagger('Trigger_3l',[ lambda ev : triggerGroups['Trigger_3l'][ev.year](ev) ])
 Trigger_MET  = lambda : EvtTagger('Trigger_MET',[ lambda ev : triggerGroups['Trigger_MET'][ev.year](ev) ])
+
 
 remove_overlap = lambda : EvtTagger('pass_trigger', remove_overlap_booleans)
 
