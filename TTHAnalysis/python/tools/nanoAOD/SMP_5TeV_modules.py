@@ -12,7 +12,6 @@ conf = dict(
 
 class ch(enum.IntEnum):
    NoChan = 0
-   ee = 1
    ElMu = 2
    Muon = 3
    Elec = 4
@@ -498,13 +497,12 @@ addHighEGJet = lambda : addDataTag(tags.highegjet)
 addLowEGJet = lambda : addDataTag(tags.lowegjet)
 addMC  = lambda : addDataTag(tags.mc)
 
-addChannelEE = lambda : addDataTag(label = "channel", ch.ee)
-addChannelElMu = lambda : addDataTag(label = "channel", ch.ElMu)
-addChannelMuon = lambda : addDataTag(label = "channel", ch.Muon)
-addChannelElec = lambda : addDataTag(label = "channel", ch.Elec)
+addChannelElMu = lambda : addDataTag(label = "channel", tag = ch.ElMu)
+addChannelMuon = lambda : addDataTag(label = "channel", tag = ch.Muon)
+addChannelElec = lambda : addDataTag(label = "channel", tag = ch.Elec)
 
 addTags = [addMC, addDoubleMuon, addSingleMuon, addHighEGJet, addLowEGJet]
-addChannels = [addChannelEE, addChannelElMu, addChannelMuon, addChannelElec]
+addChannels = [addChannelElMu, addChannelMuon, addChannelElec]
 #triggerSequence_improvised = [ yearTag2017, Trigger_1e_lowPu_mc, Trigger_1e_lowPu_data, Trigger_2e_lowPu_mc, Trigger_2e_lowPu_data, Trigger_1m_lowPu_mc, Trigger_1m_lowPu_data, remove_overlap]
 triggerSequence_improvised = [yearTag2017, Trigger_1e_lowPu, Trigger_1m_lowPu, Trigger_2e_lowPu]
 
