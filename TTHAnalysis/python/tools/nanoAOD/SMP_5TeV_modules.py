@@ -1,5 +1,6 @@
 import os
-import ROOT 
+import ROOT
+import enum 
 conf = dict(
         muPt = 5, 
         elePt = 7, 
@@ -22,25 +23,6 @@ class tags(enum.IntEnum):
    doublemuon = 3
    highegjet = 4
    lowegjet = 5
-
-remove_overlap_booleans = [lambda ev : (
-			   (  (ev.channel == ch.ElMu and (ev.Trigger_2e_lowPu_mc or ev.Trigger_1m_lowPu_mc or ev.Trigger_1e_lowPu_mc))
-			   or (ev.channel == ch.Muon and (ev.Trigger_1m_lowPu_mc))
-			   or (ev.channel == ch.Elec and (ev.Trigger_1e_lowPu_mc or ev.Trigger_2e_lowPu_mc)) )
-			   if ev.datatag == tags.mc else  # If it is not mc tagged, then it is data
-		 
-                           (  (ev.channel == ch.Muon and ev.Trigger_1m_lowPu_data)
-			   or (ev.channel == ch.ElMu and (not ev.Trigger_1e_lowPu_data) and ev.Trigger_1m_lowPu_data)    )
-			   if ev.datatag == tags.singlemuon else #If it is not singlemuon, then this will not be executed. This way we remove
-								 #the possibility of one event being on two different channels	
-
-			   (  (ev.channel == ch.Elec  and ev.Trigger_1e_lowPu_data and (not ev.Trigger_2e_lowPu_data) and (not ev.Trigger_1m_lowPu_data )
-		           if ev.datatag == tags.lowegjet else
-
-			   (  (ev.channel == ch.Elec  and ev.Trigger_1e_lowPu_data and (not ev.Trigger_2e_lowPu_data) and (not ev.Trigger_1m_lowPu_data )
-		           if ev.datatag == tags.highegjet else
-			   (False)
-			 )]
 
 			 
 
@@ -298,18 +280,32 @@ triggerGroups=dict(
 #	2017 : lambda ev : bool(getattr(ev, 'HLT_HIEle15_WPLoose_Gsf')) or bool(getattr(ev, 'HLT_HIEle20_WPLoose_Gsf')) or bool(getattr(ev, 'HLT_HIEle40_WPLoose_Gsf'))
  #   },
   
+    Trigger_1e_lowPu = {
+	2017 : lambda ev : bool(getattr(ev, 'HLT_Ele20_WPLoose_Gsf')) or bool(getattr(ev, 'HLT_Ele20_eta2p1_WPLoose_Gsf'))
+			   if (ev.datatag == tags.mc) else
+			   bool(getattr(ev, 'HLT_HIEle20_WPLoose_Gsf')) or bool(getattr(ev, 'HLT_HIEle40_WPLoose_Gsf'))
+    },
+    Trigger_1m_lowPu = {
+	2017 : lambda ev :  bool(getattr(ev, 'HLT_Mu17')) or bool(getattr(ev, 'HLT_Mu17_TrkIsoVVL'))
+       			    if (ev.datatag == tags.mc) else bool(getattr(ev, 'HLT_HIMu17')) 
+    },
+    Trigger_2e_lowPu = {
+	2017 : lambda ev : bool(getattr(ev, 'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ')) or bool(getattr(ev, 'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL'))
+			   if (ev.datatag == tags.mc) else bool(getattr(ev, 'HLT_HIEle20_Ele12_CaloIdL_TrackIdL_IsoVL_DZ')) or bool(getattr(ev, 'HLT_HIEle20_Ele12_CaloIdL_TrackIdL_IsoVL'))  
+    },
+    
     Trigger_1e_lowPu_data = {
-	2017 : lambda ev : bool(getattr(ev, bool(getattr(ev, 'HLT_HIEle20_WPLoose_Gsf')) or bool(getattr(ev, 'HLT_HIEle40_WPLoose_Gsf'))
+	2017 : lambda ev : bool(getattr(ev, 'HLT_HIEle20_WPLoose_Gsf')) or bool(getattr(ev, 'HLT_HIEle40_WPLoose_Gsf'))
     },
     Trigger_1e_lowPu_mc = {
-	2017 : lambda ev : bool(getattr(ev, 'HLT_Ele20_WPLoose_Gsf')) or bool(getattr(ev, 'HLT_HIEle20_eta2p1_WPLoose_Gsf'))
+	2017 : lambda ev : bool(getattr(ev, 'HLT_Ele20_WPLoose_Gsf')) or bool(getattr(ev, 'HLT_Ele20_eta2p1_WPLoose_Gsf'))
     },
 
     Trigger_1m_lowPu_data = {
 	2017 : lambda ev : bool(getattr(ev, 'HLT_HIMu17')) 
     },
     Trigger_1m_lowPu_mc = {
-	2017 : lambda ev : bool(getattr(ev, 'HLT_Mu17') or bool(getattr(ev, 'HLT_Mu17_TrkIsoVVL'))
+	2017 : lambda ev : bool(getattr(ev, 'HLT_Mu17')) or bool(getattr(ev, 'HLT_Mu17_TrkIsoVVL'))
     },
     Trigger_2e_lowPu_data = {
 	2017 : lambda ev : bool(getattr(ev, 'HLT_HIEle20_Ele12_CaloIdL_TrackIdL_IsoVL_DZ')) or bool(getattr(ev, 'HLT_HIEle20_Ele12_CaloIdL_TrackIdL_IsoVL'))  
@@ -318,6 +314,7 @@ triggerGroups=dict(
     Trigger_2e_lowPu_mc = {
 	2017 : lambda ev : bool(getattr(ev, 'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ')) or bool(getattr(ev, 'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL'))   
     },
+
 
 
     Trigger_em={
@@ -447,6 +444,12 @@ Trigger_2e   = lambda : EvtTagger('Trigger_2e',[ lambda ev : triggerGroups['Trig
 Trigger_1e_lowPu = lambda : EvtTagger('Trigger_1e_lowPu',[lambda ev : triggerGroups['Trigger_1e_lowPu'][ev.year](ev) ])
 Trigger_1m_lowPu = lambda : EvtTagger('Trigger_1m_lowPu',[lambda ev : triggerGroups['Trigger_1m_lowPu'][ev.year](ev) ])
 Trigger_2e_lowPu = lambda : EvtTagger('Trigger_2e_lowPu',[lambda ev : triggerGroups['Trigger_2e_lowPu'][ev.year](ev) ])
+Trigger_1e_lowPu_data = lambda : EvtTagger('Trigger_1e_lowPu_data',[lambda ev : triggerGroups['Trigger_1e_lowPu_data'][ev.year](ev) ])
+Trigger_1m_lowPu_data = lambda : EvtTagger('Trigger_1m_lowPu_data',[lambda ev : triggerGroups['Trigger_1m_lowPu_data'][ev.year](ev) ])
+Trigger_2e_lowPu_data = lambda : EvtTagger('Trigger_2e_lowPu_data',[lambda ev : triggerGroups['Trigger_2e_lowPu_data'][ev.year](ev) ])
+Trigger_1e_lowPu_mc = lambda : EvtTagger('Trigger_1e_lowPu_mc',[lambda ev : triggerGroups['Trigger_1e_lowPu_mc'][ev.year](ev) ])
+Trigger_1m_lowPu_mc = lambda : EvtTagger('Trigger_1m_lowPu_mc',[lambda ev : triggerGroups['Trigger_1m_lowPu_mc'][ev.year](ev) ])
+Trigger_2e_lowPu_mc = lambda : EvtTagger('Trigger_2e_lowPu_mc',[lambda ev : triggerGroups['Trigger_2e_lowPu_mc'][ev.year](ev) ])
 
 Trigger_2m   = lambda : EvtTagger('Trigger_2m',[ lambda ev : triggerGroups['Trigger_2m'][ev.year](ev) ])
 Trigger_em   = lambda : EvtTagger('Trigger_em',[ lambda ev : triggerGroups['Trigger_em'][ev.year](ev) ])
@@ -459,13 +462,45 @@ Trigger_3l   = lambda : EvtTagger('Trigger_3l',[ lambda ev : triggerGroups['Trig
 Trigger_MET  = lambda : EvtTagger('Trigger_MET',[ lambda ev : triggerGroups['Trigger_MET'][ev.year](ev) ])
 
 
+remove_overlap_booleans = [lambda ev : (
+			   (  (ev.channel == ch.ElMu and (ev.Trigger_2e_lowPu_mc or ev.Trigger_1m_lowPu_mc or ev.Trigger_1e_lowPu_mc))
+			   or (ev.channel == ch.Muon and (ev.Trigger_1m_lowPu_mc))
+			   or (ev.channel == ch.Elec and (ev.Trigger_1e_lowPu_mc or ev.Trigger_2e_lowPu_mc)) )
+			   if ev.datatag == tags.mc else  # If it is not mc tagged, then it is data
+		 
+                           (  (ev.channel == ch.Muon and ev.Trigger_1m_lowPu_data)
+			   or (ev.channel == ch.ElMu and (not ev.Trigger_1e_lowPu_data) and ev.Trigger_1m_lowPu_data)    )
+			   if ev.datatag == tags.singlemuon else #If it is not singlemuon, then this will not be executed. This way we remove
+								 #the possibility of one event being on two different channels	
+
+			   (  (ev.channel == ch.Elec  and ev.Trigger_1e_lowPu_data and (not ev.Trigger_2e_lowPu_data) and (not ev.Trigger_1m_lowPu_data) ))
+		           if ev.datatag == tags.lowegjet else
+
+			   (  (ev.channel == ch.Elec  and ev.Trigger_1e_lowPu_data and (not ev.Trigger_2e_lowPu_data) and (not ev.Trigger_1m_lowPu_data ) ) )
+		           if ev.datatag == tags.highegjet else
+			   (False)
+			 )]
+
 remove_overlap = lambda : EvtTagger('pass_trigger', remove_overlap_booleans)
 
 triggerSequence = [Trigger_5TeV_FR,Trigger_5TeV_1e,Trigger_5TeV_1m,Trigger_5TeV_2e,Trigger_5TeV_2m] #,Trigger_em,Trigger_3e,Trigger_3m,Trigger_mee,Trigger_mme,Trigger_2lss,Trigger_3l ,Trigger_MET]
 
 WZ13TeV_Vico_mc = [recleaner_step1,recleaner_step2_mc,isMatchRightCharge, mcMatchId ,mcPromptGamma,Trigger_5TeV_FR,Trigger_5TeV_1e,Trigger_5TeV_1m,Trigger_5TeV_2e,Trigger_5TeV_2m]
 WZ13TeV_Vico_data = [yearTag2017,recleaner_step1,recleaner_step2_data,Trigger_5TeV_FR,Trigger_5TeV_1e,Trigger_5TeV_1m,Trigger_5TeV_2e,Trigger_5TeV_2m]
-triggerSequence_Carlos = [yearTag2017, Trigger_1e_lowPu, Trigger_1m_lowPu, Trigger_2e_lowPu]
+#triggerSequence_Carlos = [yearTag2017, Trigger_1e_lowPu, Trigger_1m_lowPu, Trigger_2e_lowPu]
+
+#### Add data tag
+from CMGTools.TTHAnalysis.tools.addDataTag import addDataTag
+addDoubleMuon = lambda : addDataTag(tags.doublemuon)
+addSingleMuon = lambda : addDataTag(tags.singlemuon)
+addHighEGJet = lambda : addDataTag(tags.highegjet)
+addLowEGJet = lambda : addDataTag(tags.lowegjet)
+addMC  = lambda : addDataTag(tags.mc)
+
+addTags = [addMC, addDoubleMuon, addSingleMuon, addHighEGJet, addLowEGJet]
+#triggerSequence_improvised = [ yearTag2017, Trigger_1e_lowPu_mc, Trigger_1e_lowPu_data, Trigger_2e_lowPu_mc, Trigger_2e_lowPu_data, Trigger_1m_lowPu_mc, Trigger_1m_lowPu_data, remove_overlap]
+triggerSequence_improvised = [yearTag2017, Trigger_1e_lowPu, Trigger_1m_lowPu, Trigger_2e_lowPu]
+
 
 from CMGTools.TTHAnalysis.tools.BDT_eventReco_cpp import BDT_eventReco
 
