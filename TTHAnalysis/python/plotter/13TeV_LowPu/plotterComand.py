@@ -27,6 +27,7 @@ ftrees = ("--Fs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "
 lumi = 0.23
 ncores = 4
 
+command = "python mcPlots.py"
 # ===============
 
 # ====== PARSER OPTIONS
@@ -93,6 +94,8 @@ def FormatForPlots():
 def ProcessMcPlotsStuff(command):
     text = command
     if options.channel == "ttbar":
+        # === Check the options given to mc
+        
         if '_norebin' in options.mcPlotsOpts: text.replace('--rebin 4', '')
         if '_appl' in options.mcPlotsOpts: text += ' -I ^^TT'
         if '_relax' in options.mcPlotsOpts: text += ' -X ^^TT'
@@ -105,6 +108,13 @@ def ProcessMcPlotsStuff(command):
         if '_em' in options.mcPlotsOpts: text += ' -E ^em'
         if '_mm' in options.mcPlotsOpts: text += ' -E ^mm'
         if '_ee' in options.mcPlotsOpts: text += ' -E ^ee'
+        
+        # === Main part of the command for ttbar 
+        text += " {mca}".format(mca = "13TeV_lowPu/mca-ttbar-mcdata.txt")
+        text += " {cuts}".format(cuts = "13TeV_lowPu/ttbar_dilepton.txt")
+        text += " {plots}".format(plots = "13TeV_lowPu/ttbar_plots.txt")
+        text += " {weight}".format(weight = "") #still have no weights to add
+        text += " {binname}".format(binname = "--binname ttbar")
     return text
 
 # ===============
@@ -114,8 +124,6 @@ def ProcessMcPlotsStuff(command):
 if __name__ == '__main__':
     
     # Let's start building the command'
-    command = 'python mcPlots.py'
-    
     # Get the trees 
     TREES = options.path
     if TREES == path: print("No samples path option was given. Searching in {p} by default...".format(p = options.path))
