@@ -258,16 +258,32 @@ triggerGroups=dict(
         2017 : lambda ev : _fires(ev,'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8') or _fires(ev,'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8'),
         2018 : lambda ev : _fires(ev,'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8'),
     },
-    Trigger_1e_lowPu = {
-	2017 : lambda ev : bool(getattr(ev, 'HLT_HIEle15_WPLoose_Gsf')) or bool(getattr(ev, 'HLT_HIEle20_WPLoose_Gsf')) or bool(getattr(ev, 'HLT_HIEle40_WPLoose_Gsf'))
+    #Trigger_1e_lowPu = {
+#	2017 : lambda ev : bool(getattr(ev, 'HLT_HIEle15_WPLoose_Gsf')) or bool(getattr(ev, 'HLT_HIEle20_WPLoose_Gsf')) or bool(getattr(ev, 'HLT_HIEle40_WPLoose_Gsf'))
+ #   },
+  
+    Trigger_1e_lowPu_data = {
+	2017 : lambda ev : bool(getattr(ev, bool(getattr(ev, 'HLT_HIEle20_WPLoose_Gsf')) or bool(getattr(ev, 'HLT_HIEle40_WPLoose_Gsf'))
     },
-    
-    Trigger_1m_lowPu = {
+    Trigger_1e_lowPu_mc = {
+	2017 : lambda ev : bool(getattr(ev, 'HLT_Ele20_WPLoose_Gsf')) or bool(getattr(ev, 'HLT_HIEle20_eta2p1_WPLoose_Gsf'))
+    },
+
+    Trigger_1m_lowPu_data = {
 	2017 : lambda ev : bool(getattr(ev, 'HLT_HIMu17')) 
     },
-    Trigger_2e_lowPu = {
-	2017 : lambda ev : bool(getattr(ev, 'HLT_HIEle20_Ele12_CaloIdL_TrackIdL_IsoVL_DZ')) or bool(getattr(ev, 'HLT_HIEle20_Ele12_CaloIdL_TrackIdL_IsoVL')) or bool(getattr(ev, 'HLT_HIEle15_Ele8_CaloIdL_TrackIdL_IsoVL'))  
+    Trigger_1m_lowPu_mc = {
+	2017 : lambda ev : bool(getattr(ev, 'HLT_Mu17') or bool(getattr(ev, 'HLT_Mu17_TrkIsoVVL'))
     },
+    Trigger_2e_lowPu_data = {
+	2017 : lambda ev : bool(getattr(ev, 'HLT_HIEle20_Ele12_CaloIdL_TrackIdL_IsoVL_DZ')) or bool(getattr(ev, 'HLT_HIEle20_Ele12_CaloIdL_TrackIdL_IsoVL'))  
+    },
+    
+    Trigger_2e_lowPu_mc = {
+	2017 : lambda ev : bool(getattr(ev, 'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ')) or bool(getattr(ev, 'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL'))   
+    },
+
+
     Trigger_em={
         2016 :  lambda ev : _fires(ev, 'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL') or _fires(ev,'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ') \
         or _fires(ev, 'HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL') or _fires(ev,'HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ'),
@@ -411,6 +427,7 @@ triggerSequence = [Trigger_5TeV_FR,Trigger_5TeV_1e,Trigger_5TeV_1m,Trigger_5TeV_
 WZ13TeV_Vico_mc = [recleaner_step1,recleaner_step2_mc,isMatchRightCharge, mcMatchId ,mcPromptGamma,Trigger_5TeV_FR,Trigger_5TeV_1e,Trigger_5TeV_1m,Trigger_5TeV_2e,Trigger_5TeV_2m]
 WZ13TeV_Vico_data = [yearTag2017,recleaner_step1,recleaner_step2_data,Trigger_5TeV_FR,Trigger_5TeV_1e,Trigger_5TeV_1m,Trigger_5TeV_2e,Trigger_5TeV_2m]
 triggerSequence_Carlos = [yearTag2017, Trigger_1e_lowPu, Trigger_1m_lowPu, Trigger_2e_lowPu]
+
 from CMGTools.TTHAnalysis.tools.BDT_eventReco_cpp import BDT_eventReco
 
 BDThttTT_Hj = lambda : BDT_eventReco(os.environ["CMSSW_BASE"]+'/src/CMGTools/TTHAnalysis/data/kinMVA/tth/TMVAClassification_bloose_BDTG.weights.xml',
