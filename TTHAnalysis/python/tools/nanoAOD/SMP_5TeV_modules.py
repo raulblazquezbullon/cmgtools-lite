@@ -20,15 +20,23 @@ class tags(enum.IntEnum):
    mc = 1
    singlemuon = 2
    doublemuon = 3
-   highegj = 4
-   lowegj = 5
+   highegjet = 4
+   lowegjet = 5
 
 remove_overlap_booleans = [lambda ev : (
 			   (  (ev.channel == ch.ElMu and (ev.Trigger_2e_lowPu_mc or ev.Trigger_1m_lowPu_mc or ev.Trigger_1e_lowPu_mc))
 			   or (ev.channel == ch.Muon and (ev.Trigger_1m_lowPu_mc))
 			   or (ev.channel == ch.Elec and (ev.Trigger_1e_lowPu_mc or ev.Trigger_2e_lowPu_mc)) )
 			   if ev.datatag == tags.mc else  # If it is not mc tagged, then it is data
-			
+		 
+                           (  (ev.channel == ch.Muon and ev.Trigger_1m_lowPu_data)
+			   or (ev.channel == ch.ElMu and (not ev.Trigger_1e_lowPu_data) and ev.Trigger_1m_lowPu_data)    )
+			   if ev.datatag == tags.singlemuon else #If it is not singlemuon, then this will not be executed. This way we remove
+								 #the possibility of one event being on two different channels	
+
+			   (
+				  
+			   )
 			   (False)
 			 )]
 
