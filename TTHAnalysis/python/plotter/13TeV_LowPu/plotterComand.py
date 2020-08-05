@@ -16,12 +16,13 @@ import argparse
 
 # ====== DEFAULT OPTIONS
 path = "/pool/ciencias/nanoAODv6/lowPu2017/2020_07_21_postProc"
-ftreesPath = "~/Workspace/WZ_LowPu/FriendTrees/13TeV_lowPu/"
+ftreesPath = "~/WorkSpace/WZ_LowPu/FriendTrees/13TeV_Aug3/"
 ftrees = ("--Fs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "0_lepGood ") +
           "--FDs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "1_recleaning_data ")+
           "--FMCs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "1_recleaning_mc ")+
           "--FMCs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "2_eventVars_mc ")+
-          "--FDs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "2_eventVars_data ")
+          "--FDs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "2_eventVars_data ")+
+	  "--FDs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "3_triggers_data_new ")
           )
 
 lumi = 0.23
@@ -83,7 +84,7 @@ def GetFtreesStuff():
     
     return 
 def FormatForPlots():
-    CLUSTER = "-f -j {ncores} -l {lumi} -L 13TeV_lowPu/functions13TeV.cc --tree NanoAOD --mcc 13TeV_lowPu/lepchoice-FO.txt --split-factor=-1".format(ncores = ncores, lumi = lumi) 
+    CLUSTER = "-f -j {ncores} -l {lumi} -L 13TeV_lowPu/functions13TeV_lowPu.cc --tree NanoAOD --mcc 13TeV_lowPu/lepchoice-FO.txt --split-factor=-1".format(ncores = ncores, lumi = lumi) 
     RATIO = " --maxRatioRange 0.6  1.99 --ratioYNDiv 505 "
     RATIO2 = " --showRatio --attachRatioPanel --fixRatioRange "
     LEGEND = " --legendColumns 3 --legendWidth 0.35 "
