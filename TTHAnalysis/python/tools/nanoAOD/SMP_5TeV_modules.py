@@ -9,6 +9,20 @@ conf = dict(
         dz = 0.1
 )
 
+class ch(enum.IntEnum):
+   NoChan = 0
+   ElMu = 1
+   Muon = 2
+   Elec = 3
+
+class tags(enum.IntEnum):
+   NoTag = 0
+   mc = 1
+   singlemuon = 2
+   doublemuon = 3
+   highegj = 4
+   lowegj = 5
+
 WZ_skim_cut = ("nMuon + nElectron >= 2 &&" + 
                "Sum$(Muon_pt > {muPt} && Muon_miniPFRelIso_all < {miniRelIso} && Muon_sip3d < {sip3d}) +"
                "Sum$(Electron_pt > {muPt} && Electron_miniPFRelIso_all < {miniRelIso} && Electron_sip3d < {sip3d})").format(**conf)
@@ -421,6 +435,8 @@ Trigger_mme  = lambda : EvtTagger('Trigger_mme',[ lambda ev : triggerGroups['Tri
 Trigger_2lss = lambda : EvtTagger('Trigger_2lss',[ lambda ev : triggerGroups['Trigger_2lss'][ev.year](ev) ])
 Trigger_3l   = lambda : EvtTagger('Trigger_3l',[ lambda ev : triggerGroups['Trigger_3l'][ev.year](ev) ])
 Trigger_MET  = lambda : EvtTagger('Trigger_MET',[ lambda ev : triggerGroups['Trigger_MET'][ev.year](ev) ])
+
+remove_overlap = lambda : EvtTagger('pass_trigger', remove_overlap_booleans)
 
 triggerSequence = [Trigger_5TeV_FR,Trigger_5TeV_1e,Trigger_5TeV_1m,Trigger_5TeV_2e,Trigger_5TeV_2m] #,Trigger_em,Trigger_3e,Trigger_3m,Trigger_mee,Trigger_mme,Trigger_2lss,Trigger_3l ,Trigger_MET]
 
