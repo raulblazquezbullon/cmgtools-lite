@@ -15,7 +15,7 @@ import argparse
 
 
 # ====== DEFAULT OPTIONS
-path = "/pool/ciencias/nanoAODv6/lowPu2017/2020_07_21_postProc"
+path = "/pool/ciencias/nanoAODv6/lowPU2017/2020_07_21_postProc"
 ftreesPath = "~/WorkSpace/WZ_LowPu/FriendTrees/13TeV_Aug3/"
 ftrees = ("--Fs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "0_lepGood ") +
           "--FDs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "1_recleaning_data ")+
@@ -84,22 +84,22 @@ def GetFtreesStuff():
     
     return 
 def FormatForPlots():
-    CLUSTER = "-f -j {ncores} -l {lumi} -L 13TeV_lowPu/functions13TeV_lowPu.cc --tree NanoAOD --mcc 13TeV_lowPu/lepchoice-FO.txt --split-factor=-1".format(ncores = ncores, lumi = lumi) 
+    CLUSTER = "-f -j {ncores} -l {lumi} -L 13TeV_LowPu/functions13TeV_lowPu.cc --tree NanoAOD --mcc 13TeV_LowPu/lepchoice-FO.txt --split-factor=-1".format(ncores = ncores, lumi = lumi) 
     RATIO = " --maxRatioRange 0.6  1.99 --ratioYNDiv 505 "
     RATIO2 = " --showRatio --attachRatioPanel --fixRatioRange "
     LEGEND = " --legendColumns 3 --legendWidth 0.35 "
     LEGEND2 = " --legendFontSize 0.042 "
     SPAM = " --noCms --topSpamSize 1.1 --lspam '#scale[1.1]{#bf{CMS}} #scale[0.9]{#it{Preliminary}}' --rspam '%(lumi) (13 TeV)'"
-    text = CLUSTER + RATIO + RATIO2 + LEGEND + LEGEND2 + SPAM
+    text = CLUSTER + RATIO + RATIO2 + LEGEND + LEGEND2 + SPAM + " --showMCError --rebin 4 "
     return text
 
 def ChannelStuff(command):
     text = command
     if options.channel == "ttbar":
         # === Main part of the command for ttbar 
-        text += " {mca}".format(mca = "13TeV_lowPu/mca-ttbar-mcdata.txt")
-        text += " {cuts}".format(cuts = "13TeV_lowPu/ttbar_dilepton.txt")
-        text += " {plots}".format(plots = "13TeV_lowPu/ttbar_plots.txt")
+        text += " {mca}".format(mca = "13TeV_LowPu/mca-ttbar-mcdata.txt")
+        text += " {cuts}".format(cuts = "13TeV_LowPu/ttbar_dilepton.txt")
+        text += " {plots}".format(plots = "13TeV_LowPu/ttbar_plots.txt")
         text += " {weight}".format(weight = "") #still have no weights to add
         text += " {binname}".format(binname = "--binname ttbar")
     else: raise RuntimeError, 'Unknown selection'
