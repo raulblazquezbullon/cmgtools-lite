@@ -34,9 +34,11 @@ remove_overlap_booleans = [lambda ev : (
 			   if ev.datatag == tags.singlemuon else #If it is not singlemuon, then this will not be executed. This way we remove
 								 #the possibility of one event being on two different channels	
 
-			   (
-				  
-			   )
+			   (  (ev.channel == ch.Elec  and ev.Trigger_1e_lowPu_data and (not ev.Trigger_2e_lowPu_data) and (not ev.Trigger_1m_lowPu_data )
+		           if ev.datatag == tags.lowegjet else
+
+			   (  (ev.channel == ch.Elec  and ev.Trigger_1e_lowPu_data and (not ev.Trigger_2e_lowPu_data) and (not ev.Trigger_1m_lowPu_data )
+		           if ev.datatag == tags.highegjet else
 			   (False)
 			 )]
 
