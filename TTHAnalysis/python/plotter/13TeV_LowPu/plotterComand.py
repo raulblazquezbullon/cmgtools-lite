@@ -36,6 +36,7 @@ parser = OptionParser(usage = "%prog [options]")
 
 ## === Options regarding paths and files
 parser.add_option("-P", "--path", dest = "path", type = "string", default = path, help = "Path where the postproc is storaged")
+parser.add_option("--pdir", dest = "outpath", type = "string", default = "./Plots", help = "Output path where the plots are going to be saved")
 parser.add_option("-F", "--ftreesPath", dest = "ftreesPath", type = "string", default = ftreesPath, help = "Path where the friend-trees are storaged" )
 parser.add_option("--ftrees", dest = "ftrees", type = "string", default = ftrees, action = "append", help = "Specify the ftrees that will be used")
 
@@ -87,9 +88,22 @@ def FormatForPlots():
     RATIO2 = " --showRatio --attachRatioPanel --fixRatioRange "
     LEGEND = " --legendColumns 3 --legendWidth 0.35 "
     LEGEND2 = " --legendFontSize 0.042 "
-    SPAM = " --noCms --topSpamSize 1.1 --lspam '#scale[1.1]{#bf{CMS}} #scale[0.9]{#it{Preliminary}}' --rspam '%(lumi) (13 TeV)' "
+    SPAM = " --noCms --topSpamSize 1.1 --lspam '#scale[1.1]{#bf{CMS}} #scale[0.9]{#it{Preliminary}}' --rspam '%(lumi) (13 TeV)'"
     text = CLUSTER + RATIO + RATIO2 + LEGEND + LEGEND2 + SPAM
     return text
+
+def ChannelStuff(command):
+    text = command
+    if options.channel == "ttbar":
+        # === Main part of the command for ttbar 
+        text += " {mca}".format(mca = "13TeV_lowPu/mca-ttbar-mcdata.txt")
+        text += " {cuts}".format(cuts = "13TeV_lowPu/ttbar_dilepton.txt")
+        text += " {plots}".format(plots = "13TeV_lowPu/ttbar_plots.txt")
+        text += " {weight}".format(weight = "") #still have no weights to add
+        text += " {binname}".format(binname = "--binname ttbar")
+    else: raise RuntimeError, 'Unknown selection'
+    return text
+
 
 def ProcessMcPlotsStuff(command):
     text = command
@@ -109,12 +123,6 @@ def ProcessMcPlotsStuff(command):
         if '_mm' in options.mcPlotsOpts: text += ' -E ^mm'
         if '_ee' in options.mcPlotsOpts: text += ' -E ^ee'
         
-        # === Main part of the command for ttbar 
-        text += " {mca}".format(mca = "13TeV_lowPu/mca-ttbar-mcdata.txt")
-        text += " {cuts}".format(cuts = "13TeV_lowPu/ttbar_dilepton.txt")
-        text += " {plots}".format(plots = "13TeV_lowPu/ttbar_plots.txt")
-        text += " {weight}".format(weight = "") #still have no weights to add
-        text += " {binname}".format(binname = "--binname ttbar")
     return text
 
 # ===============
@@ -128,7 +136,9 @@ if __name__ == '__main__':
     TREES = options.path
     if TREES == path: print("No samples path option was given. Searching in {p} by default...".format(p = options.path))
     command += ' -P {path}'.format(path = options.path)
+    command += ' --pdir {outpath} '.format(outpath = options.outpath)
     command += ftrees
     command += FormatForPlots()
     command = ProcessMcPlotsStuff(command) if not options.mcPlotsOpts == "" else command
+    command = ChannelStuff(command)
     print(command)
