@@ -18,6 +18,8 @@ import argparse
 path = "/pool/ciencias/nanoAODv6/lowPU2017/2020_07_21_postProc"
 ftreesPath = "~/WorkSpace/WZ_LowPu/FriendTrees/13TeV_Aug3/"
 ftrees = ("--Fs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "0_lepGood ") +
+	  "--Fs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "0_tags") +
+	  "--Fs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "4_triggersNew")+
           "--FDs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "1_recleaning_data ")+
           "--FMCs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "1_recleaning_mc ")+
           "--FMCs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "2_eventVars_mc ")+
