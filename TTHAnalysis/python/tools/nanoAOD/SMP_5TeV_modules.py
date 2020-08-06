@@ -285,7 +285,7 @@ triggerGroups=dict(
  #   },
   
     Trigger_1e_lowPu = {
-	2017 : lambda ev : bool(getattr(ev, 'HLT_Ele20_WPLoose_Gsf')) or bool(getattr(ev, 'HLT_Ele20_eta2p1_WPLoose_Gsf'))
+	2017 : lambda ev : bool(getattr(ev, 'HLT_Ele35_WPTight_Gsf_v')) or bool(getattr(ev, 'HLT_Ele38_WPTight_Gsf_v')) or bool(getattr(ev, 'HLT_Ele40_WPTight_Gsf_v'))
 			   if (ev.datatag == tags.mc) else
 			   bool(getattr(ev, 'HLT_HIEle20_WPLoose_Gsf')) or bool(getattr(ev, 'HLT_HIEle40_WPLoose_Gsf'))
     },
