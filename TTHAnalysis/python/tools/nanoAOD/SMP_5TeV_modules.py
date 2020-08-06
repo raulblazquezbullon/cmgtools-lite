@@ -2,7 +2,9 @@ import os
 import ROOT
 import enum 
 conf = dict(
-        muPt = 5, 
+        muPt_new = 20,
+	elePt_new = 20,
+	muPt = 5, 
         elePt = 7, 
         miniRelIso = 0.4, 
         sip3d = 8, 
@@ -32,8 +34,10 @@ WZ_skim_cut = ("nMuon + nElectron >= 2 &&" +
                "Sum$(Electron_pt > {muPt} && Electron_miniPFRelIso_all < {miniRelIso} && Electron_sip3d < {sip3d})").format(**conf)
 
 
-muonSelection     = lambda l : abs(l.eta) < 2.4 and l.pt > conf["muPt" ] and l.miniPFRelIso_all < conf["miniRelIso"] and l.sip3d < conf["sip3d"] and abs(l.dxy) < conf["dxy"] and abs(l.dz) < conf["dz"]
-electronSelection = lambda l : abs(l.eta) < 2.5 and l.pt > conf["elePt"] and l.miniPFRelIso_all < conf["miniRelIso"] and l.sip3d < conf["sip3d"] and abs(l.dxy) < conf["dxy"] and abs(l.dz) < conf["dz"] 
+#muonSelection     = lambda l : abs(l.eta) < 2.4 and l.pt > conf["muPt" ] and l.miniPFRelIso_all < conf["miniRelIso"] and l.sip3d < conf["sip3d"] and abs(l.dxy) < conf["dxy"] and abs(l.dz) < conf["dz"]
+#electronSelection = lambda l : abs(l.eta) < 2.5 and l.pt > conf["elePt"] and l.miniPFRelIso_all < conf["miniRelIso"] and l.sip3d < conf["sip3d"] and abs(l.dxy) < conf["dxy"] and abs(l.dz) < conf["dz"] 
+muonSelection     = lambda l : abs(l.eta) < 2.4 and l.pt > conf["muPt_new" ] and l.miniPFRelIso_all < conf["miniRelIso"] and l.sip3d < conf["sip3d"] and abs(l.dxy) < conf["dxy"] and abs(l.dz) < conf["dz"]
+electronSelection = lambda l : abs(l.eta) < 2.5 and l.pt > conf["elePt_new"] and l.miniPFRelIso_all < conf["miniRelIso"] and l.sip3d < conf["sip3d"] and abs(l.dxy) < conf["dxy"] and abs(l.dz) < conf["dz"] 
 
 from CMGTools.TTHAnalysis.tools.nanoAOD.ttHPrescalingLepSkimmer import ttHPrescalingLepSkimmer
 # NB: do not wrap lepSkim a lambda, as we modify the configuration in the cfg itself 
@@ -485,10 +489,9 @@ remove_overlap = lambda : EvtTagger('pass_trigger', remove_overlap_booleans)
 
 triggerSequence = [Trigger_5TeV_FR,Trigger_5TeV_1e,Trigger_5TeV_1m,Trigger_5TeV_2e,Trigger_5TeV_2m] #,Trigger_em,Trigger_3e,Trigger_3m,Trigger_mee,Trigger_mme,Trigger_2lss,Trigger_3l ,Trigger_MET]
 
-WZ13TeV_Vico_mc = [recleaner_step1,recleaner_step2_mc,isMatchRightCharge, mcMatchId ,mcPromptGamma,Trigger_5TeV_FR,Trigger_5TeV_1e,Trigger_5TeV_1m,Trigger_5TeV_2e,Trigger_5TeV_2m]
-WZ13TeV_Vico_data = [yearTag2017,recleaner_step1,recleaner_step2_data,Trigger_5TeV_FR,Trigger_5TeV_1e,Trigger_5TeV_1m,Trigger_5TeV_2e,Trigger_5TeV_2m]
+WZ13TeV_Vico_mc = [recleaner_step1,recleaner_step2_mc,isMatchRightCharge, mcMatchId ,mcPromptGamma,yearTag2017, Trigger_1e_lowPu, Trigger_1m_lowPu, Trigger_2e_lowPu]
+WZ13TeV_Vico_data = [yearTag2017,recleaner_step1,recleaner_step2_data, Trigger_1e_lowPu, Trigger_1m_lowPu, Trigger_2e_lowPu]
 #triggerSequence_Carlos = [yearTag2017, Trigger_1e_lowPu, Trigger_1m_lowPu, Trigger_2e_lowPu]
-
 #### Add data tag
 from CMGTools.TTHAnalysis.tools.addDataTag import addDataTag
 addDoubleMuon = lambda : addDataTag(tags.doublemuon)
