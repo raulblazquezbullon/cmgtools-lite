@@ -384,6 +384,8 @@ class TreeToYield:
                 if var: 
                     if var.unc_type == 'envelope':
                         sign = 'var%d'%(idx ) 
+                    elif var.unc_type == 'envelopeRMS':
+                        sign = 'var_rms%d'%(idx ) 
                     else: 
                         sign = 'up' if idx == 0 else 'down'
                 if theExpr == None: theExpr = expr

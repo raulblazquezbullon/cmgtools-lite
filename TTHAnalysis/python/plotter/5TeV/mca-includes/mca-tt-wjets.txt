@@ -1,0 +1,14 @@
+TT : TT			  : xsec
+TT : T_tWch_noFullyHad 	  : xsec
+TT : TBar_tWch_noFullyHad : xsec
+
+WJETS : W0JetsToLNu : xsec
+WJETS : W1JetsToLNu : xsec
+WJETS : W2JetsToLNu : xsec
+WJETS : W3JetsToLNu : xsec
+
+DYJETS : DYJetsToLL_M10to50 : xsec
+DYJETS : DY0JetsToLL_M50    : xsec 
+DYJETS : DY1JetsToLL_M50    : xsec 
+DYJETS : DY2JetsToLL_M50    : xsec 
+DYJETS : DY3JetsToLL_M50    : xsec 

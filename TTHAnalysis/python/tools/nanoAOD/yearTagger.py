@@ -14,7 +14,7 @@ class yearTagger( Module ):
             self._year = component.year
         elif ("Autumn18" in component.dataset) or ("Run2018" in component.dataset):
             self._year = 2018
-        elif ("Fall17" in component.dataset) or ("Run2017" in component.dataset):
+        elif ("Fall17" in component.dataset) or ("Run2017" in component.dataset) or ("5TeV" in component.dataset):
             self._year = 2017
         elif ("Summer16" in component.dataset) or ("Run2016" in component.dataset):
             self._year = 2016

@@ -1,0 +1,5 @@
+DYJETS : DYJetsToLL_M10to50 : xsec
+DYJETS : DY0JetsToLL_M50    : xsec 
+DYJETS : DY1JetsToLL_M50    : xsec 
+DYJETS : DY2JetsToLL_M50    : xsec 
+DYJETS : DY3JetsToLL_M50    : xsec 

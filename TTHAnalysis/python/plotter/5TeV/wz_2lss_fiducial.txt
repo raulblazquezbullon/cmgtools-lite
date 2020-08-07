@@ -1,0 +1,17 @@
+alwaystrue: 1
+dilepGEN: nGenDressedLepton==2
+cleanupGEN: mass_2(GenDressedLepton_pt[0],GenDressedLepton_eta[0],GenDressedLepton_phi[0],GenDressedLepton_mass[0],GenDressedLepton_pt[1],GenDressedLepton_eta[1],GenDressedLepton_phi[1],GenDressedLepton_mass[1]) > 12
+pt2010GEN: GenDressedLepton_pt[0]>20 && GenDressedLepton_pt[1]>10
+same-signGEN: (GenDressedLepton_pdgId[0]*GenDressedLepton_pdgId[1])>0
+Zee_vetoGEN: abs(GenDressedLepton_pdgId[0])!=11 || abs(GenDressedLepton_pdgId[1]) != 11 || abs(mass_2(GenDressedLepton_pt[0],GenDressedLepton_eta[0],GenDressedLepton_phi[0],GenDressedLepton_mass[0],GenDressedLepton_pt[1],GenDressedLepton_eta[1],GenDressedLepton_phi[1],GenDressedLepton_mass[1])-91.2) > 20
+met25GEN: GenMET_pt>25
+
+
+##### channels
+ee : (abs(GenDressedLepton_pdgId[0]) + abs(GenDressedLepton_pdgId[1])) == 22 ; Disable=True
+em : (abs(GenDressedLepton_pdgId[0]) + abs(GenDressedLepton_pdgId[1])) == 24 ; Disable=True
+mm : (abs(GenDressedLepton_pdgId[0]) + abs(GenDressedLepton_pdgId[1])) == 26 ; Disable=True
+
+
+
+

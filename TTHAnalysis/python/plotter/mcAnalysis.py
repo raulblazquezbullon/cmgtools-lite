@@ -218,6 +218,7 @@ class MCAnalysis:
             variations={}
             if self.variationsFile:
                 for var in self.variationsFile.uncertainty():
+                    if var.unc_type == 'altSample': continue # these will be added later
                     if var.procmatch().match(pname) and var.binmatch().match(options.binname) and ( var.year() == None or options.year == var.year()) : 
                         #if var.name in variations:
                         #    print "Variation %s overriden for process %s, new process pattern %r, bin %r (old had %r, %r)" % (
@@ -237,7 +238,7 @@ class MCAnalysis:
             cnames = [ x.strip() for x in field[1].split("+") ]
             total_w = 0.; to_norm = False; ttys = [];
             genWeightName = extra["genWeightName"] if "genWeightName" in extra else "genWeight"
-            genSumWeightName = extra["genSumWeightName"] if "genSumWeightName" in extra else "genEventSumw_"
+            genSumWeightName = extra["genSumWeightName"] if "genSumWeightName" in extra else "genEventSumw"  #for nanoAODv6 this should be genEventSumw_
             is_w = -1
             pname0 = pname
             for cname in cnames:
@@ -536,6 +537,11 @@ class MCAnalysis:
         ## construct envelope variations if any
         for p,h in ret.iteritems():
             h.buildEnvelopes() 
+            h.buildEnvelopesRMS()
+
+        ## add variations from alternate samples
+        if self.variationsFile:
+            buildVariationsFromAlternative(self.variationsFile, ret)
 
         rescales = []
         self.compilePlotScaleMap(self._options.plotscalemap,rescales)
@@ -689,6 +695,10 @@ class MCAnalysis:
                 nfmtS+=u" &plusmn;%.2f"
                 nfmtX+=u" &plusmn;%.4f"
                 nfmtL+=u" &plusmn;%.2f"
+            elif self._options.txtfmt in ("latex"):
+                nfmtS+=u" \pm %.2f"
+                nfmtX+=u" \pm %.4f"
+                nfmtL+=u" \pm %.2f"                
             else:
                 nfmtS+=u" %7.2f"
                 nfmtX+=u" %7.4f"
@@ -732,8 +742,8 @@ class MCAnalysis:
                 print cfmt % cut,
                 print " ".join(row),
                 print ""
-        elif self._options.txtfmt in ("tsv","csv","dsv","ssv","md","jupyter"):
-            sep = { 'tsv':"\t", 'csv':",", 'dsv':';', 'ssv':' ', 'md':' | ', 'jupyter':' | ' }[self._options.txtfmt]
+        elif self._options.txtfmt in ("tsv","csv","dsv","ssv","md","jupyter","latex"):
+            sep = { 'tsv':"\t", 'csv':",", 'dsv':';', 'ssv':' ', 'md':' | ', 'jupyter':' | ', 'latex':' & ' }[self._options.txtfmt]
             ret = []
             procEscape = {}
             for k,r in table:

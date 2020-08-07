@@ -68,6 +68,77 @@ def _isNullHistogram(h):
         return (h.GetN() == 0)
     return False
 
+
+def buildVariationsFromAlternativesWithEnvelope(uncfile, ret):
+    for var in uncfile.uncertainty():
+        if var.unc_type != 'altSampleEnv': continue # now only adding the alternative samples
+
+        hasBeenApplied = False
+        toremove = []
+        for k, p in ret.iteritems():
+            if not var.procmatch().match(k): continue
+
+            if hasBeenApplied:
+                raise RuntimeError("FATAL: variation %s is being applied to at least two processes"%var.name)
+
+            if not isinstance(var.args[0], list):
+                raise RuntimeError("FATAL: the argument given for the envelope uncertainty calculation with alternative samples for the variation {var} is not a list of samples.".format(var = var.name))
+
+            if len(var.args) != 2:
+                raise RuntimeError("FATAL: more arguments than two provided for the envelope uncertainty calculation with alternative samples for the variation {var}.".format(var = var.name))
+
+            up   = _cloneNoDir( p.central, var.name + 'Up' )
+            down = _cloneNoDir( p.central, var.name + 'Down' )
+
+            for ibin in range(1, p.central.GetNbinsX() + 1):
+                maxUp = p.central.GetBinContent( ibin )
+                minDn = p.central.GetBinContent( ibin )
+                for samp in var.args[0]:
+                    cont = ret[samp].raw().GetBinContent(ibin)
+                    if (cont - maxUp > 0): maxUp = cont
+                    if (cont - minDn < 0): minDn = cont
+                    up.SetBinContent( ibin, maxUp )
+                    down.SetBinContent( ibin, minDn )
+
+            if var.args[1].lower() == "symm":
+                for ibin in range(1, p.central.GetNbinsX() + 1):
+                    if   up.GetBinContent(ibin) == p.central.GetBinContent(ibin):
+                        up.SetBinContent(ibin, 2 * p.central.GetBinContent(ibin) - dn.GetBinContent(ibin))
+                    elif dn.GetBinContent(ibin) == p.central.GetBinContent(ibin):
+                        dn.SetBinContent(ibin, 2 * p.central.GetBinContent(ibin) - up.GetBinContent(ibin))
+                    else:
+                        tmpvar = (up.GetBinContent(ibin) + dn.GetBinContent(ibin)) / 2
+                        up.SetBinContent(ibin, p.central.GetBinContent(ibin) + tmpvar)
+                        dn.SetBinContent(ibin, p.central.GetBinContent(ibin) - tmpvar)
+
+            p.addVariation(var.name, 'up'  , up)
+            p.addVariation(var.name, 'down', down)
+
+            toremove.extend( [el for el in var.args[0]])
+            hasBeenApplied = True
+
+        for rem in toremove:
+            if rem in ret: ret.pop(rem)
+
+
+def buildVariationsFromAlternative( uncfile, ret):
+    for var in uncfile.uncertainty():
+        if var.unc_type != 'altSample': continue # now only adding the alternative samples
+        hasBeenApplied=False
+        toremove=[]
+        for k,p in ret.iteritems(): 
+            if not var.procmatch().match(k): continue
+            if hasBeenApplied:
+                raise RuntimeError("variation %s is being applied to at least two processes"%var.name)
+            if var.args[0] not in ret or var.args[1] not in ret:
+                raise RuntimeError("Alternative sample (%s,%s) has not been processed, available samples are %s"%(var.args[0], var.args[1], ','.join(k for k in ret)))
+            p.addVariation( var.name, 'up'  , ret[var.args[0]].raw())
+            p.addVariation( var.name, 'down', ret[var.args[1]].raw())
+            toremove.extend( [var.args[0], var.args[1]])
+            hasBeenApplied=True
+        for rem in toremove: 
+            if rem in ret: ret.pop(rem)
+
 class RooFitContext:
     def __init__(self,workspace):
         self.workspace = workspace
@@ -655,6 +726,23 @@ class HistoWithNuisances:
                         if cont-minDn < 0: minDn = cont
                     up.SetBinContent( ibin, maxUp ) 
                     down.SetBinContent( ibin, minDn ) 
+            del self.variations[var]
+            self.addVariation( var, 'up', up)
+            self.addVariation( var, 'down', down)
+
+    def buildEnvelopesRMS(self):
+        for var in self.getVariationList():
+            if len( self.getVariation(var) ) < 30: continue #this is probably wrong here, but should prevent for computing this for nothing else but PDF....
+            up   = _cloneNoDir( self.central, self.central.GetName() + 'envUp' )
+            down = _cloneNoDir( self.central, self.central.GetName() + 'envDown' )
+            for x in range(1, self.central.GetNbinsX()+1):
+                for y in range(1,self.central.GetNbinsY()+1):
+                    ibin  = self.central.GetBin(x,y)
+                    delta   = 0
+                    for hvar in self.getVariation(var):
+                        delta = delta+hvar.GetBinContent(ibin)*hvar.GetBinContent(ibin)
+                    up.SetBinContent( ibin, sqrt(delta)) 
+                    down.SetBinContent( ibin, sqrt(delta)) 
             del self.variations[var]
             self.addVariation( var, 'up', up)
             self.addVariation( var, 'down', down)
