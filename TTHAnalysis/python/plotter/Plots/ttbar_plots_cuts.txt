@@ -1,0 +1,3 @@
+alwaystrue : 1
+pt1l : LepGood1_conePt>20
+em : abs(LepGood1_pdgId) != abs(LepGood2_pdgId)

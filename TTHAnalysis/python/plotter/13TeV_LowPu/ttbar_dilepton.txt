@@ -1,8 +1,6 @@
 alwaystrue: 1
-dilep: nLepFO>=2
-os: LepGood1_charge*LepGood2_charge<0
-cleanup: minMllAFAS > 20
-trigger1L: Trigger_1e_lowPu || Trigger_1m_lowPu
-pt2010: LepGood1_conePt>20 && LepGood2_conePt>10
-#MET:    if3(abs(LepGood1_pdgId)==abs(LepGood2_pdgId), MET_pt>30, 1)
-TT: LepGood1_isLepTight && LepGood2_isLepTight
+pt1l: LepGood1_conePt>20 
+trigger1L: Trigger_1m_lowPu || Trigger_1e_lowPu 
+em: abs(LepGood1_pdgId) != abs(LepGood2_pdgId)
+
+

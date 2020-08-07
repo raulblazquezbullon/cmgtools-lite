@@ -1,2 +1,2 @@
-VV : Tree_WZTo3LNu_TuneCP5_ext1_0 : 4.42965 ; genSumWeightName="genEventSumw_",FillColor=ROOT.kRed
-VV : Tree_WWTo2L2Nu_TuneCP5_ext1_0 : 12.178 ; genSumWeightName="genEventSumw_",FillColor=ROOT.kRed
+VV : Tree_WZTo3LNu_TuneCP5_ext1_0 : 4.42965 ; genSumWeightName="genEventSumw_",FillColor=ROOT.kGreen
+VV : Tree_WWTo2L2Nu_TuneCP5_ext1_0 : 12.178 ; genSumWeightName="genEventSumw_",FillColor=ROOT.kGreen

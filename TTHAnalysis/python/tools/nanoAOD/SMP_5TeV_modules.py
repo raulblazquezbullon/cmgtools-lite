@@ -285,12 +285,12 @@ triggerGroups=dict(
  #   },
   
     Trigger_1e_lowPu = {
-	2017 : lambda ev : bool(getattr(ev, 'HLT_Ele35_WPTight_Gsf_v'))
+	2017 : lambda ev : bool(getattr(ev, 'HLT_Ele35_WPTight_Gsf'))
 			   if (ev.datatag == tags.mc) else
 			   bool(getattr(ev, 'HLT_HIEle20_WPLoose_Gsf')) or bool(getattr(ev, 'HLT_HIEle40_WPLoose_Gsf'))
     },
     Trigger_1m_lowPu = {
-	2017 : lambda ev :  bool(getattr(ev, 'HLT_Mu17_IsoMu27'))
+	2017 : lambda ev :  bool(getattr(ev, 'HLT_IsoMu27'))
        			    if (ev.datatag == tags.mc) else bool(getattr(ev, 'HLT_HIMu17')) 
     },
     Trigger_2e_lowPu = {
