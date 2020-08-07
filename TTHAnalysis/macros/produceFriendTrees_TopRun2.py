@@ -11,8 +11,8 @@ r.gROOT.SetBatch(True)
 friendspath = "/pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions"
 #prodname    = "2020-06-01" # veya
 #prodname    = "2020-06-17" # nova
-#prodname    = "2020-07-03" # con sistematicos, en 2016 col tuning veyo
-prodname    = "2020-07-29" # prueba para Sheyla
+prodname    = "2020-07-03" # con sistematicos, en 2016 col tuning veyo
+#prodname    = "2020-07-29" # prueba para Sheyla
 
 
 datasamples  = ["SingleMuon", "SingleElec", "DoubleMuon", "DoubleEG", "MuonEG", "LowEGJet", "HighEGJet", "EGamma"]
@@ -67,17 +67,22 @@ sampledict[2016] = {}; sampledict[2017] = {}; sampledict[2018] = {}
 sampledict[2016] = {
     #### Nominales
     ### ttbar
+    # CP5
     "TTTo2L2Nu"        : ['Tree_TTTo2L2Nu_TuneCP5_PSweights_0','Tree_TTTo2L2Nu_TuneCP5_PSweights_1','Tree_TTTo2L2Nu_TuneCP5_PSweights_2','Tree_TTTo2L2Nu_TuneCP5_PSweights_3','Tree_TTTo2L2Nu_TuneCP5_PSweights_4','Tree_TTTo2L2Nu_TuneCP5_PSweights_5','Tree_TTTo2L2Nu_TuneCP5_PSweights_6','Tree_TTTo2L2Nu_TuneCP5_PSweights_7','Tree_TTTo2L2Nu_TuneCP5_PSweights_8','Tree_TTTo2L2Nu_TuneCP5_PSweights_9','Tree_TTTo2L2Nu_TuneCP5_PSweights_10','Tree_TTTo2L2Nu_TuneCP5_PSweights_11','Tree_TTTo2L2Nu_TuneCP5_PSweights_12'],
     "TTToSemiLeptonic" : "Tree_TTToSemiLeptonic_TuneCP5_PSweights_",
+
+    # CUETP8M1
     #"TT_CUETP8M2T4"    : ["Tree_TT_TuneCUETP8M2T4_nobackup_*", "Tree_TT_TuneCUETP8M2T4_PSweights*", "Tree_TT_TuneCUETP8M2T4_0", "Tree_TT_TuneCUETP8M2T4_1", "Tree_TT_TuneCUETP8M2T4_2", "Tree_TT_TuneCUETP8M2T4_3"],
-    "TT_CUETP8M2T4"    : ["Tree_TT_TuneCUETP8M2T4_PSweights*", "Tree_TT_TuneCUETP8M2T4_0", "Tree_TT_TuneCUETP8M2T4_1", "Tree_TT_TuneCUETP8M2T4_2", "Tree_TT_TuneCUETP8M2T4_3"], # Nobackup ta mal
+    #"TT_CUETP8M2T4"    : ["Tree_TT_TuneCUETP8M2T4_PSweights*", "Tree_TT_TuneCUETP8M2T4_0", "Tree_TT_TuneCUETP8M2T4_1", "Tree_TT_TuneCUETP8M2T4_2", "Tree_TT_TuneCUETP8M2T4_3"], # Nobackup ta mal
 
     ### tW
-    "tW_noFullHad_CUETP8M2T4"    : "Tree_tW_5f_noFullHad_",
-    "tbarW_noFullHad_CUETP8M2T4" : "Tree_tbarW_5f_noFullHad_",
-
+    # CP5
     "tW"    : "Tree_tW_5f_inclusiveDecays_TuneCP5_PSweights_",
     "tbarW" : "Tree_tbarW_5f_inclusiveDecays_TuneCP5_PSweights_",
+
+    # CUETP8M1
+    #"tW_noFullHad_CUETP8M2T4"    : "Tree_tW_5f_noFullHad_",
+    #"tbarW_noFullHad_CUETP8M2T4" : "Tree_tbarW_5f_noFullHad_",
 
     ### WJets
     "WJetsToLNu_MLM": "Tree_WJetsToLNu_TuneCUETP8M1_MLM",
@@ -114,32 +119,42 @@ sampledict[2016] = {
 
     ##### Incertidumbres
     #### tW
+    # CUETP8M1
     "tW_noFullHad_DS_CUETP8M2T4"    : "Tree_tW_5f_DS_noFullHad_TuneCUETP8M",
     "tbarW_noFullHad_DS_CUETP8M2T4" : "Tree_tbarW_5f_DS_noFullHad",
 
+    # CP5
+
+
     #### ttbar
-    "TT_hdampUp_CUETP8M2T4"     : "Tree_TT_hdampUP_TuneCUETP8M2T4",
-    "TT_hdampDown_CUETP8M2T4"   : "Tree_TT_hdampDOWN_TuneCUETP8M2T4",
+    ## hdamp CUETP8M1
+    #"TT_hdampUp_CUETP8M2T4"     : "Tree_TT_hdampUP_TuneCUETP8M2T4",
+    #"TT_hdampDown_CUETP8M2T4"   : "Tree_TT_hdampDOWN_TuneCUETP8M2T4",
 
-    "TT_GluonMoveCRTune_CUETP8M2T4"      : "Tree_TT_TuneCUETP8M2T4_GluonMoveCRTune_ext1",
-    "TT_QCDbasedCRTune_erdON_CUETP8M2T4" : "Tree_TT_TuneCUETP8M2T4_QCDbasedCRTune_erdON",
-    "TT_erdON_CUETP8M2T4"                : "Tree_TT_TuneCUETP8M2T4_erdON",
+    ## CR CUETP8M1
+    #"TT_GluonMoveCRTune_CUETP8M2T4"      : "Tree_TT_TuneCUETP8M2T4_GluonMoveCRTune_ext1",
+    #"TT_QCDbasedCRTune_erdON_CUETP8M2T4" : "Tree_TT_TuneCUETP8M2T4_QCDbasedCRTune_erdON",
+    #"TT_erdON_CUETP8M2T4"                : "Tree_TT_TuneCUETP8M2T4_erdON",
 
-    "TT_UEUp_CUETP8M2T4"   : "Tree_TT_TuneCUETP8M2T4up",
-    "TT_UEDown_CUETP8M2T4" : "Tree_TT_TuneCUETP8M2T4down",
+    ## UE CUETP8M1
+    #"TT_UEUp_CUETP8M2T4"   : "Tree_TT_TuneCUETP8M2T4up",
+    #"TT_UEDown_CUETP8M2T4" : "Tree_TT_TuneCUETP8M2T4down",
 
-    "TT_mtop1735_CUETP8M2T4" : "Tree_TT_TuneCUETP8M2T4_mtop1735",
-    "TT_mtop1715_CUETP8M2T4" : "Tree_TT_TuneCUETP8M2T4_mtop1715",
+    ## mtop CUETP8M1
+    #"TT_mtop1735_CUETP8M2T4" : "Tree_TT_TuneCUETP8M2T4_mtop1735",
+    #"TT_mtop1715_CUETP8M2T4" : "Tree_TT_TuneCUETP8M2T4_mtop1715",
 
-
+    # hdamp CP5
     "TTTo2L2Nu_hdampUp"     : "Tree_TTTo2L2Nu_hdampUP_TuneCP5_PSweights_",
     "TTTo2L2Nu_hdampDown"   : "Tree_TTTo2L2Nu_hdampDOWN_TuneCP5_PSweights_",
 
+    # CR CP5
     "TTTo2L2Nu_GluonMoveCRTune"      : "Tree_TTTo2L2Nu_TuneCP5CR2_GluonMove_PSweights_",
     "TTTo2L2Nu_QCDbasedCRTune_erdON" : "Tree_TTTo2L2Nu_TuneCP5CR1_QCDbased_PSweights_",
     "TTTo2L2Nu_erdON"                : "Tree_TTTo2L2Nu_TuneCP5_PSweights_erdON_",
 
-    #"TTTo2L2Nu_UEUp"   : "Tree_TTTo2L2Nu_TuneCP5up_PSweights_",# CORRUPTO
+    # UE CP5
+    "TTTo2L2Nu_UEUp"   : ['Tree_TTTo2L2Nu_TuneCP5up_PSweights_1','Tree_TTTo2L2Nu_TuneCP5up_PSweights_2','Tree_TTTo2L2Nu_TuneCP5up_PSweights_3','Tree_TTTo2L2Nu_TuneCP5up_PSweights_4','Tree_TTTo2L2Nu_TuneCP5up_PSweights_5','Tree_TTTo2L2Nu_TuneCP5up_PSweights_6','Tree_TTTo2L2Nu_TuneCP5up_PSweights_7','Tree_TTTo2L2Nu_TuneCP5up_PSweights_8','Tree_TTTo2L2Nu_TuneCP5up_PSweights_9','Tree_TTTo2L2Nu_TuneCP5up_PSweights_10','Tree_TTTo2L2Nu_TuneCP5up_PSweights_11','Tree_TTTo2L2Nu_TuneCP5up_PSweights_12','Tree_TTTo2L2Nu_TuneCP5up_PSweights_13','Tree_TTTo2L2Nu_TuneCP5up_PSweights_14','Tree_TTTo2L2Nu_TuneCP5up_PSweights_15','Tree_TTTo2L2Nu_TuneCP5up_PSweights_16','Tree_TTTo2L2Nu_TuneCP5up_PSweights_17', "Tree_TTTo2L2Nu_TuneCP5up_PSweights_ext1_*"], ### WARNING: EL 0 ESTÁ CORRUPTO
     "TTTo2L2Nu_UEDown" : "Tree_TTTo2L2Nu_TuneCP5down_PSweights_",
 
 
@@ -155,42 +170,45 @@ sampledict[2016] = {
 
 sampledict[2017] = {
     #### Nominales
-    # ttbar
+    ### ttbar
     "TTTo2L2Nu"        : ["Tree_TTTo2L2Nu_TuneCP5_PSweights_*", "Tree_TTTo2L2Nu_TuneCP5_*"],
     "TTToSemiLeptonic" : "Tree_TTToSemiLeptonic_TuneCP5_",
 
-    # tW
-    #"tW"              : "Tree_tW_5f_inclusiveDecays_TuneCP5_PSweights_pythia8new_",# CORRUPTO
-    #"tbarW"           : "",   # NUN TA
+    ### tW
+    # inclusiva
+    #"tW"              : "Tree_tW_5f_inclusiveDecays_TuneCP5_PSweights_pythia8new_",
+    "tW"              : ["Tree_tW_5f_inclusiveDecays_TuneCP5_0", "Tree_tW_5f_inclusiveDecays_TuneCP5_1", "Tree_tW_5f_inclusiveDecays_TuneCP5_2", "Tree_tW_5f_inclusiveDecays_TuneCP5_3", "Tree_tW_5f_inclusiveDecays_TuneCP5_4", "Tree_tW_5f_inclusiveDecays_TuneCP5_5", "Tree_tW_5f_inclusiveDecays_TuneCP5_6"], ### WARNING: CORRUPTOS LOS pythia8new
+    "tbarW"           : ["Tree_tbarW_5f_inclusiveDecays_TuneCP5_1", "Tree_tbarW_5f_inclusiveDecays_TuneCP5_2", "Tree_tbarW_5f_inclusiveDecays_TuneCP5_3", "Tree_tbarW_5f_inclusiveDecays_TuneCP5_4", "Tree_tbarW_5f_inclusiveDecays_TuneCP5_5", "Tree_tbarW_5f_inclusiveDecays_TuneCP5_6", "Tree_tbarW_5f_inclusiveDecays_TuneCP5_7", "Tree_tbarW_5f_inclusiveDecays_TuneCP5_PSweights_pythia_*"],   ### WARNING: EL 0 ESTÁ CORRUPTO
 
+    # nofullyhad
     "tW_noFullHad"    : "Tree_tW_5f_noFullHad_TuneCP5_",
     "tbarW_noFullHad" : "Tree_tbarW_5f_noFullHad_TuneCP5_",
 
-    # W Jets
+    ### WJets
     "WJetsToLNu_MLM" : "Tree_WJetsToLNu_TuneCP5_MLM",
 
-    # DY
+    ### DY
     "DYJetsToLL_M_10to50_MLM" : "Tree_DYJetsToLL_M_10to50_TuneCP5_MLM",
     "DYJetsToLL_M_50"         : "Tree_DYJetsToLL_M_50_TuneCP5_amcatnloFXFX",
 
-    # WW
+    ### WW
     "WWTo2L2Nu" : "Tree_WWTo2L2Nu_NNPDF31_TuneCP5",
 
-    # WZ
+    ### WZ
     "WZTo2L2Q" : "Tree_WZTo2L2Q_amcatnloFXFX_madspin",
     "WZTo3LNu_aMCatNLO" : "Tree_WZTo3LNu_TuneCP5_amcatnloFXFX",
     "WZTo3LNu" : "Tree_WZTo3LNu_0",
 
-    # ZZ
+    ### ZZ
     "ZZTo2L2Nu" : "Tree_ZZTo2L2Nu",
     "ZZTo2L2Q"  : "Tree_ZZTo2L2Q_amcatnloFXFX_madspin",
     "ZZTo4L"    : "Tree_ZZTo4L",
 
-    # ttW
+    ### ttW
     "TTWJetsToLNu" : "Tree_TTWJetsToLNu_TuneCP5_",
     "TTWJetsToQQ"  : "Tree_TTWJetsToQQ_TuneCP5_amcatnloFXFX_madspin",
 
-    # ttZ
+    ### ttZ
     "TTZToLL_M_1to10"  : "Tree_TTZToLL_M_1to10_TuneCP5_amcatnlo",
     "TTZToLLNuNu_M_10" : "Tree_TTZToLLNuNu_M_10_TuneCP5_amcatnlo",
     "TTZToQQ"          : "Tree_TTZToQQ_TuneCP5_amcatnlo",
@@ -198,37 +216,44 @@ sampledict[2017] = {
 
     #### Incertidumbres
     ### tW
+    # DS inclusiva
     "tW_DS"             : "Tree_tW_5f_DS_inclusiveDecays_TuneCP5_PSweights_",
     #"tbarW_DS"          : "",                               # NUN TA
 
+    # UE inclusiva
     "tW_TuneCP5Up"      : "Tree_tW_5f_inclusiveDecays_TuneCP5up_PSweights_",
     "tbarW_TuneCP5Up"   : "Tree_tbarW_5f_inclusiveDecays_TuneCP5up_PSweights_pyth_",
     #"tW_TuneCP5Down"    : "",                            # NUN TA
     #"tbarW_TuneCP5Down" : "",                            # NUN TA
 
-
+    # UE nofullyhad
     #"tW_noFullHad_TuneCP5Up"      : "", # NUN TA
     #"tbarW_noFullHad_TuneCP5Up"   : "", # NUN TA
     "tW_noFullHad_TuneCP5Down"    : "Tree_tW_5f_noFullHad_TuneCP5down_PSweights_",
     "tbarW_noFullHad_TuneCP5Down" : "Tree_tbarW_5f_noFullHad_TuneCP5down_PSweights_pow_",
 
+    # mtop inclusiva
     #"tW_mtop173p5"      : "",                                   # NUN TA
     "tbarW_mtop173p5"   : "Tree_tbarW_5f_inclusiveDecays_mtop1735_TuneCP5_PSweights_powh_",
     "tW_mtop171p5"      : "Tree_tW_5f_inclusiveDecays_mtop1715_TuneCP5_PSweights_p_",
     "tbarW_mtop171p5"   : "Tree_tbarW_5f_inclusiveDecays_mtop1715_TuneCP5_PSweights_powh_",
 
     #### ttbar
+    # hdamp
     "TTTo2L2Nu_hdampUp"     : "Tree_TTTo2L2Nu_hdampUP_TuneCP5_PSweights",
     "TTTo2L2Nu_hdampDown"   : "Tree_TTTo2L2Nu_hdampDOWN_TuneCP5_PSweights",
 
+    # UE
     "TTTo2L2Nu_TuneCP5Up"   : "Tree_TTTo2L2Nu_TuneCP5up_PSweights",
     "TTTo2L2Nu_TuneCP5Down" : "Tree_TTTo2L2Nu_TuneCP5down_PSweights",
 
+    # mtop
     "TTTo2L2Nu_mtop173p5"   : "Tree_TTTo2L2Nu_mtop173p5_TuneCP5_PSweights",
     "TTTo2L2Nu_mtop171p5"   : "Tree_TTTo2L2Nu_mtop171p5_TuneCP5_PSweights",
 
+    # CR
     "TTTo2L2Nu_GluonMoveCRTune"      : "Tree_TTTo2L2Nu_TuneCP5CR2_GluonMove_PSweights_",
-    #"TTTo2L2Nu_QCDbasedCRTune_erdON" : "Tree_TTTo2L2Nu_TuneCP5CR1_QCDbased_PSweights_",# CORRUPTO
+    "TTTo2L2Nu_QCDbasedCRTune_erdON" : ["Tree_TTTo2L2Nu_TuneCP5CR1_QCDbased_PSweights_1", "Tree_TTTo2L2Nu_TuneCP5CR1_QCDbased_PSweights_2", "Tree_TTTo2L2Nu_TuneCP5CR1_QCDbased_PSweights_3", "Tree_TTTo2L2Nu_TuneCP5CR1_QCDbased_PSweights_ext1_*"], ### WARNING: EL 0 ESTÁ CORRUPTO
     "TTTo2L2Nu_erdON"                : "Tree_TTTo2L2Nu_TuneCP5_erdON_",
 
     #### Datos
@@ -248,14 +273,17 @@ sampledict[2018] = {
     #"TTTo2L2Nu"        : "Tree_TTTo2L2Nu_TuneCP5_",
     "TTToSemiLeptonic" : "Tree_TTToSemiLeptonic_TuneCP5_",
 
-    # tW
+    ### tW
+    # inclusiva
     "tW"              : "Tree_tW_5f_inclusiveDecays_TuneCP5_ext1_",
     "tbarW"           : "Tree_tbarW_5f_inclusiveDecays_TuneCP5_ext1_",
 
+    # nofullyhad
     "tW_noFullHad"    : ["Tree_tW_5f_noFullHad_TuneCP5_ext1_0"],
     "tbarW_noFullHad" : ["Tree_tbarW_5f_noFullHad_TuneCP5_ext_0"],
 
-    # WWbb
+
+    ### WWbb
     "WWbb" : "Tree_b_bbar_4l_TuneCP5_ext1",
     "WWbb_noskim_4files" : ["8D0A2ECF-09D2-6841-BE66-0BCECFE4942A_Skim",
                             "C14C273E-2210-DA4E-AE8A-1D283123146B_Skim",
@@ -340,7 +368,7 @@ sampledict[2018] = {
 
     "TTTo2L2Nu_GluonMoveCRTune"      : "Tree_TTTo2L2Nu_TuneCP5CR2_GluonMove_PSweights_",
     "TTTo2L2Nu_QCDbasedCRTune_erdON" : "Tree_TTTo2L2Nu_TuneCP5CR1_QCDbased_PSweights_",
-    #"TTTo2L2Nu_erdON"                : "Tree_TTTo2L2Nu_TuneCP5_erdON_",                 # CORRUPTO
+    "TTTo2L2Nu_erdON"                : ["Tree_TTTo2L2Nu_TuneCP5_erdON_1", "Tree_TTTo2L2Nu_TuneCP5_erdON_2", "Tree_TTTo2L2Nu_TuneCP5_erdON_3", "Tree_TTTo2L2Nu_TuneCP5_erdON_ext1_*"], ### WARNING: EL 0 ESTÁ CORRUPTO
 
     #### Datos
     "SingleMuon" : "Tree_SingleMuon_Run2018",
@@ -362,7 +390,7 @@ trainsampledict[2016] = {
 
 
 trainsampledict[2017] = {
-    "TTTo2L2Nu"           : ["Tree_TTTo2L2Nu_TuneCP5_PSweights_*", "Tree_TTTo2L2Nu_TuneCP5_*"],
+    "TTTo2L2Nu"           : ['Tree_TTTo2L2Nu_TuneCP5_PSweights_0','Tree_TTTo2L2Nu_TuneCP5_PSweights_1','Tree_TTTo2L2Nu_TuneCP5_PSweights_2','Tree_TTTo2L2Nu_TuneCP5_PSweights_3','Tree_TTTo2L2Nu_TuneCP5_PSweights_4','Tree_TTTo2L2Nu_TuneCP5_PSweights_5','Tree_TTTo2L2Nu_TuneCP5_PSweights_6','Tree_TTTo2L2Nu_TuneCP5_PSweights_7','Tree_TTTo2L2Nu_TuneCP5_PSweights_8','Tree_TTTo2L2Nu_TuneCP5_PSweights_9','Tree_TTTo2L2Nu_TuneCP5_PSweights_10','Tree_TTTo2L2Nu_TuneCP5_PSweights_11','Tree_TTTo2L2Nu_TuneCP5_PSweights_12','Tree_TTTo2L2Nu_TuneCP5_PSweights_13','Tree_TTTo2L2Nu_TuneCP5_PSweights_14','Tree_TTTo2L2Nu_TuneCP5_PSweights_15','Tree_TTTo2L2Nu_TuneCP5_PSweights_16','Tree_TTTo2L2Nu_TuneCP5_PSweights_17','Tree_TTTo2L2Nu_TuneCP5_PSweights_18','Tree_TTTo2L2Nu_TuneCP5_PSweights_19','Tree_TTTo2L2Nu_TuneCP5_PSweights_20', "Tree_TTTo2L2Nu_TuneCP5_0", "Tree_TTTo2L2Nu_TuneCP5_1", "Tree_TTTo2L2Nu_TuneCP5_2"],
 
     "tW_noFullHad"    : "Tree_tW_5f_noFullHad_TuneCP5_",
     "tbarW_noFullHad" : "Tree_tbarW_5f_noFullHad_TuneCP5_",
