@@ -102,8 +102,35 @@ WZ_lowPu_13TeV = [lepMerge,
 # ===========================================================
 # ======================== Step 1 modules: Recleaning
 
+# == Imports
 from CMGTools.TTHAnalysis.tools.nanoAOD.jetmetGrouper import groups as jecGroups
 from CMGTools.TTHAnalysis.tools.combinedObjectTaggerForCleaning import combinedObjectTaggerForCleaning
 from CMGTools.TTHAnalysis.tools.nanoAOD.fastCombinedObjectRecleaner import fastCombinedObjectRecleaner
 
+# == Function definition
 
+def conePt_13TeV(lep):  # This function is just a copy of the one for 5 TeV !!!!!!
+    if (abs(lep.pdgId) != 11 and abs(lep.pdgId) != 13): return lep.pt
+    if ((abs(lep.pdgId) == 13 and lep.mvaTTH > 0.55 and lep.miniPFRelIso_all < 0.325) or (abs(lep.pdgId) == 11 and lep.mvaTTH > 0.125 and lep.miniPFRelIso_all < 0.085 )) and lep.lepJetBTagDeepCSV < 0.1522:
+        return lep.pt
+    else: return 0.90 * lep.pt * ( 1 + lep.jetRelIso )
+
+
+def clean_and_FO_selection_13TeV(lep): # This function is just a copy of the one for 5 TeV !!!!!!
+    if (lep.pt < 8): return False
+    if (abs(lep.eta) > (2.4 if abs(lep.pdgId) == 13 else 2.5)): return False
+    if (abs(lep.dxy) > 0.05 or abs(lep.dz) > 0.1): return False
+    if (lep.sip3d > 8): return False
+    return (abs(lep.pdgId) != 11 or (lep.convVeto and lep.lostHits == 0 and lep.mvaFall17V2Iso_WPL)) and (abs(lep.pdgId) != 13 or lep.mediumPromptId > 0)
+
+# == Modules definition
+recleaner_step1 = lambda : combinedObjectTaggerForCleaning("InternalRecl",
+                                                           looseLeptonSel       = lambda lep : lep.miniPFRelIso_all < 0.4 and lep.sip3d < 8 and (abs(lep.pdgId)!=11 or lep.lostHits <=1) and (abs(lep.pdgId)!=13 or lep.looseId),
+                                                           cleaningLeptonSel    = clean_and_FO_selection_13TeV,
+                                                           FOLeptonSel          = clean_and_FO_selection_13TeV,
+                                                           tightLeptonSel       = tightLeptonSel,
+                                                           FOTauSel             = lambda tau : False,
+                                                           tightTauSel          = lambda tau : False,
+                                                           selectJet            = lambda jet : jet.jetId > 0 and abs(jet.eta) < 2.4,
+                                                           tauCollection        = "LepGood",
+                                                           )
