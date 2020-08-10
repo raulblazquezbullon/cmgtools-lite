@@ -160,3 +160,26 @@ isMatchRightCharge = lambda : ObjTagger('isMatchRightCharge', 'LepGood', [lambda
 mcMatchId          = lambda : ObjTagger('mcMatchId', 'LepGood', [lambda l : (l.genPartFlav == 1 or l.genPartFlav == 15) ])
 mcPromptGamma      = lambda : ObjTagger('mcPromptGamma', 'LepGood', [lambda l : (l.genPartFlav == 22)] )
 
+# == Triggers
+triggerGroups = dict(
+    
+    Trigger_1e = {
+        2017 : lambda ev : bool(getattr(ev, 'HLT_Ele35_WPTight_Gsf'))
+               if (ev.datatag == tags.mc) else
+               bool(getattr(ev, 'HLT_HIEle20_WPLoose_Gsf')) or 
+               bool(getattr(ev, 'HLT_HIEle40_WPLoose_Gsf'))
+        }
+    Trigger_1m = {
+        2017 : lambda ev : bool(getattr(ev, 'HLT_IsoMu27'))
+               if (ev.datatag == tags.mc) else 
+               bool(getattr(ev, 'HLT_HIMu17'))
+        }
+    Trigger_2e = {
+        2017 : lambda ev : bool(getattr(ev, 'HLT_Ele23_Ele12_CaloIdl_TrackIdL_IsoVL_DZ')) 
+               or bool(getattr(getattr(ev, 'HLT_Ele23_Ele12_CaloIdl_TrackIdL_IsoVL'))) 
+               if (ev.datatag == tags.mc) else 
+               bool(getattr(ev, 'HLT_HIEle20_Ele12_CaloIdL_TrackIdL_IsoVL_DZ')) 
+               or bool(getattr(ev, 'HLT_HIEle20_Ele12_CaloIdL_TrackIdL_IsoVL'))
+        }
+    
+    )
