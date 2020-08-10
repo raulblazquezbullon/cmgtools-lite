@@ -100,67 +100,7 @@ WZ_lowPu_13TeV = [lepMerge,
         ]
 
 # ===========================================================
-# ======================== Step 1 modules: Recleaning
-
-# == Imports
-from CMGTools.TTHAnalysis.tools.nanoAOD.jetmetGrouper import groups as jecGroups
-from CMGTools.TTHAnalysis.tools.combinedObjectTaggerForCleaning import combinedObjectTaggerForCleaning
-from CMGTools.TTHAnalysis.tools.nanoAOD.fastCombinedObjectRecleaner import fastCombinedObjectRecleaner
-
-# == Function definition
-
-def conePt_13TeV(lep):  # This function is just a copy of the one for 5 TeV !!!!!!
-    if (abs(lep.pdgId) != 11 and abs(lep.pdgId) != 13): return lep.pt
-    if ((abs(lep.pdgId) == 13 and lep.mvaTTH > 0.55 and lep.miniPFRelIso_all < 0.325) or (abs(lep.pdgId) == 11 and lep.mvaTTH > 0.125 and lep.miniPFRelIso_all < 0.085 )) and lep.lepJetBTagDeepCSV < 0.1522:
-        return lep.pt
-    else: return 0.90 * lep.pt * ( 1 + lep.jetRelIso )
-
-
-def clean_and_FO_selection_13TeV(lep): # This function is just a copy of the one for 5 TeV !!!!!!
-    if (lep.pt < 8): return False
-    if (abs(lep.eta) > (2.4 if abs(lep.pdgId) == 13 else 2.5)): return False
-    if (abs(lep.dxy) > 0.05 or abs(lep.dz) > 0.1): return False
-    if (lep.sip3d > 8): return False
-    return (abs(lep.pdgId) != 11 or (lep.convVeto and lep.lostHits == 0 and lep.mvaFall17V2Iso_WPL)) and (abs(lep.pdgId) != 13 or lep.mediumPromptId > 0)
-
-# == Modules definition
-recleaner_step1_mc = lambda : combinedObjectTaggerForCleaning("InternalRecl",
-                                                           looseLeptonSel       = lambda lep : lep.miniPFRelIso_all < 0.4 and lep.sip3d < 8 and (abs(lep.pdgId)!=11 or lep.lostHits <=1) and (abs(lep.pdgId)!=13 or lep.looseId),
-                                                           cleaningLeptonSel    = clean_and_FO_selection_13TeV,
-                                                           FOLeptonSel          = clean_and_FO_selection_13TeV,
-                                                           tightLeptonSel       = tightLeptonSel,
-                                                           FOTauSel             = lambda tau : False,
-                                                           tightTauSel          = lambda tau : False,
-                                                           selectJet            = lambda jet : jet.jetId > 0 and abs(jet.eta) < 2.4,
-                                                           tauCollection        = "LepGood",
-                                                           )
-
-recleaner_step1_data = lambda : fastCombinedObjectRecleaner(label = "Recl", 
-                                                            inlabel = "_InternalRecl",
-                                                            cleanTausWithLooseLeptons = False,
-                                                            doVetoZ = False,
-                                                            doVetoLMf = False,
-                                                            doVetoLMt = False,
-                                                            jetPts = [25, 40]
-                                                            jetPtsFwd = [25, 60]
-                                                            btagL_thre = 99,
-                                                            btagM_thr = 99,
-                                                            year_ = 2017,
-                                                            tauCollection = "LepGood",
-                                                            #jetCollection = "Jet"
-                                                            jetBTag = "btagDeepB",
-                                                            isMC = True,
-                                                            #variations = ["jesTotal"] + ["jer"]
-                                                            variations = []
-                                                            )
-
-from CMGTools.TTHAnalysis.tools.objTagger import ObjTagger
-
-isMatchRightCharge = lambda : ObjTagger('isMatchRightCharge', 'LepGood', [lambda l,g : (l.genPartFlav == 1 or l.genPartFlav == 15) and (g.pdgId*l.pdgId > 0)], linkColl = 'GenPart', linkVar = 'genPartIdx')
-mcMatchId          = lambda : ObjTagger('mcMatchId', 'LepGood', [lambda l : (l.genPartFlav == 1 or l.genPartFlav == 15) ])
-mcPromptGamma      = lambda : ObjTagger('mcPromptGamma', 'LepGood', [lambda l : (l.genPartFlav == 22)] )
-
-# == Triggers
+# ======================== Step 1 modules: Triggers
 triggerGroups = dict(
     
     Trigger_1e = {
@@ -183,3 +123,98 @@ triggerGroups = dict(
         }
     
     )
+    
+    
+from CMGTools.TTHAnalysis.tools.evtTagger import EvtTagger
+Trigger_1e = lambda : EvtTagger('Trigger_1e', [lambda ev : triggerGroups['Trigger1e'][ev.year](ev) ])
+Trigger_1m = lambda : EvtTagger('Trigger_1m', [lambda ev : triggerGroups['Trigger1m'][ev.year](ev) ])
+Trigger_2e = lambda : EvtTagger('Trigger_2e', [lambda ev : triggerGroups['Trigger2e'][ev.year](ev) ])
+
+
+triggerSequence = [Trigger_1e, Trigger_1m, Trigger_2e]
+
+
+# ===========================================================
+# ======================== Step 2 modules: Recleaning
+# == Imports
+from CMGTools.TTHAnalysis.tools.nanoAOD.jetmetGrouper import groups as jecGroups
+from CMGTools.TTHAnalysis.tools.combinedObjectTaggerForCleaning import combinedObjectTaggerForCleaning
+from CMGTools.TTHAnalysis.tools.nanoAOD.fastCombinedObjectRecleaner import fastCombinedObjectRecleaner
+
+# == Function definition
+
+def conePt_13TeV(lep):  # This function is just a copy of the one for 5 TeV !!!!!!
+    if (abs(lep.pdgId) != 11 and abs(lep.pdgId) != 13): return lep.pt
+    if ((abs(lep.pdgId) == 13 and lep.mvaTTH > 0.55 and lep.miniPFRelIso_all < 0.325) or (abs(lep.pdgId) == 11 and lep.mvaTTH > 0.125 and lep.miniPFRelIso_all < 0.085 )) and lep.lepJetBTagDeepCSV < 0.1522:
+        return lep.pt
+    else: return 0.90 * lep.pt * ( 1 + lep.jetRelIso )
+
+
+def clean_and_FO_selection_13TeV(lep): # This function is just a copy of the one for 5 TeV !!!!!!
+    if (lep.pt < 8): return False
+    if (abs(lep.eta) > (2.4 if abs(lep.pdgId) == 13 else 2.5)): return False
+    if (abs(lep.dxy) > 0.05 or abs(lep.dz) > 0.1): return False
+    if (lep.sip3d > 8): return False
+    return (abs(lep.pdgId) != 11 or (lep.convVeto and lep.lostHits == 0 and lep.mvaFall17V2Iso_WPL)) and (abs(lep.pdgId) != 13 or lep.mediumPromptId > 0)
+
+
+# == Modules definition
+recleaner_step1 = lambda : combinedObjectTaggerForCleaning("InternalRecl",
+                                                           looseLeptonSel       = lambda lep : lep.miniPFRelIso_all < 0.4 and lep.sip3d < 8 and (abs(lep.pdgId)!=11 or lep.lostHits <=1) and (abs(lep.pdgId)!=13 or lep.looseId),
+                                                           cleaningLeptonSel    = clean_and_FO_selection_13TeV,
+                                                           FOLeptonSel          = clean_and_FO_selection_13TeV,
+                                                           tightLeptonSel       = tightLeptonSel,
+                                                           FOTauSel             = lambda tau : False,
+                                                           tightTauSel          = lambda tau : False,
+                                                           selectJet            = lambda jet : jet.jetId > 0 and abs(jet.eta) < 2.4,
+                                                           tauCollection        = "LepGood",
+                                                           )
+
+recleaner_step2_mc = lambda : fastCombinedObjectRecleaner(label = "Recl", 
+                                                            inlabel = "_InternalRecl",
+                                                            cleanTausWithLooseLeptons = False,
+                                                            doVetoZ = False,
+                                                            doVetoLMf = False,
+                                                            doVetoLMt = False,
+                                                            jetPts = [25, 40]
+                                                            jetPtsFwd = [25, 60]
+                                                            btagL_thre = 99,
+                                                            btagM_thr = 99,
+                                                            year_ = 2017,
+                                                            tauCollection = "LepGood",
+                                                            #jetCollection = "Jet"
+                                                            jetBTag = "btagDeepB",
+                                                            isMC = True,
+                                                            #variations = ["jesTotal"] + ["jer"]
+                                                            variations = []
+                                                            )
+
+recleaner_step2_data = lambda : fastCombinedObjectRecleaner(label = "Recl", 
+                                                            inlabel = "_InternalRecl",
+                                                            cleanTausWithLooseLeptons = False,
+                                                            doVetoZ = False,
+                                                            doVetoLMf = False,
+                                                            doVetoLMt = False,
+                                                            jetPts = [25, 40]
+                                                            jetPtsFwd = [25, 60]
+                                                            btagL_thre = 99,
+                                                            btagM_thr = 99,
+                                                            year_ = 2017,
+                                                            tauCollection = "LepGood",
+                                                            #jetCollection = "Jet"
+                                                            jetBTag = "btagDeepB",
+                                                            isMC = False,
+                                                            #variations = ["jesTotal"] + ["jer"]
+                                                            variations = []
+                                                            )
+
+
+from CMGTools.TTHAnalysis.tools.objTagger import ObjTagger
+
+isMatchRightCharge = lambda : ObjTagger('isMatchRightCharge', 'LepGood', [lambda l,g : (l.genPartFlav == 1 or l.genPartFlav == 15) and (g.pdgId*l.pdgId > 0)], linkColl = 'GenPart', linkVar = 'genPartIdx')
+mcMatchId          = lambda : ObjTagger('mcMatchId', 'LepGood', [lambda l : (l.genPartFlav == 1 or l.genPartFlav == 15) ])
+mcPromptGamma      = lambda : ObjTagger('mcPromptGamma', 'LepGood', [lambda l : (l.genPartFlav == 22)] )
+
+WZ_lowPu_recl_data = [recleaner_step1, recleaner_step2_mc, isMatchRightCharge, mcMatchId, mcPromptGamma]
+WZ_lowPu_recl_mc = [recleaner_step1, recleaner_step2_data]
+
