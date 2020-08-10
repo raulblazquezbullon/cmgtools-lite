@@ -4,19 +4,8 @@ import enum
 
 # Low Pile-Up modules used for friend-trees
 
-#class setts(enum.IntEnum):
-    #'''
-     #Configuration settings for lepton selections
-    #'''
-    #muPt = 5,
-    #elePt = 7,
-    #miniRelIso = 0.4,
-    #sip3d = 8,
-    #dxy = 0.05,
-    #dz = 0.1
-
-# =================================== Parameter configuration
-
+# ===========================================================
+# ======================== Particle parameters configuration
 muons = {
     "pt"            : 5,
     "miniRelIso"    : 0.4,
@@ -32,6 +21,13 @@ electrons = {
     "dz"            :0.1
     }
 
+
+
+# ===========================================================
+# ======================== Step 0 modules
+
+
+##                        Tags and channels modules, for MC and DATA differentiation
 class ch(enum.IntEnum):
     '''
      Considered channels
@@ -53,22 +49,24 @@ class tags(enum.IntEnum):
     HighEGJet  = 5
     LowEGJet   = 6
 
-# ========================== Lepton Selections
-muonSelection = lambda l: abs(l.eta) < 2.4 and l.pt > muons["pt"] and l.miniPFRelIso_all < muons["miniRelIso"] \
+
+##                        Lepton Identification
+
+muonID = lambda l: abs(l.eta) < 2.4 and l.pt > muons["pt"] and l.miniPFRelIso_all < muons["miniRelIso"] \
     and l.sip3d < muons["sip3d"] and abs(l.dxy) < muons["dxy"] and abs(l.dz) < muons["dz"]
 
-electronSelection = lambda l: abs(l.eta) < 2.4 and l.pt > electrons["pt"] and l.miniPFRelIso_all < electrons["miniRelIso"] \
+electronID = lambda l: abs(l.eta) < 2.4 and l.pt > electrons["pt"] and l.miniPFRelIso_all < electrons["miniRelIso"] \
     and l.sip3d < electrons["sip3d"] and abs(l.dxy) < electrons["dxy"] and abs(l.dz) < electrons["dz"]
 
-# ===============================
-# Basic lepton modules
 
+##                         Basic lepton modules
 from PhysicsTools.NanoAODTools.postprocessing.modules.common.collectionMerger import collectionMerger
+from CMGTools.TTHAnalysis.tools.nanoAOD.ttHLeptonCombMasses import ttHLeptonCombMasses
 
 lepMerge = lambda: collectionMerger(input = ["Electron", "Muon"],
                                     output = "LepGood",
-                                    selector = dict(Muon = muonSelection, Electron = electronSelection))
+                                    selector = dict(Muon = muonID, Electron = electronID))
 
-
+lepMasses = lambda: ttHLeptonCombMasses( ["Muon", muonID], ("Electron", electronID)], maxleps = 4)
 
 
