@@ -79,3 +79,13 @@ from CMGTools.TTHAnalysis.tools.nanoAOD.lepJetBTagAdder import lepJetBTagCSV, le
 #from PhysicsTools.NanoAODTools.postprocessing.modules.common.PrefireCorr import prefCorr_2017
 #from PhysicsTools.NanoAODTools.postprocessing.modules.common.muonScaleResProducer import muonScaleRes2017
 
+WZ_lowPu_13TeV = [lepMerge, 
+            xsecTag, 
+            lepJetBTagCSV,
+            lepJetBTagDeepCSV,
+            lepJetBTagDeepFlav,
+            lepMasses #,
+            #puWeight_2017,
+            #prefCorr_2017,
+            #muonScaleRes2017
+        ]
