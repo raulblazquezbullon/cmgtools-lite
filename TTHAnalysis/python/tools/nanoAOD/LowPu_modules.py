@@ -218,3 +218,8 @@ mcPromptGamma      = lambda : ObjTagger('mcPromptGamma', 'LepGood', [lambda l : 
 WZ_lowPu_recl_data = [recleaner_step1, recleaner_step2_mc, isMatchRightCharge, mcMatchId, mcPromptGamma]
 WZ_lowPu_recl_mc = [recleaner_step1, recleaner_step2_data]
 
+# ===========================================================
+# ======================== Step 3 modules: EventVars
+
+from CMGTools.TTHAnalysis.tools.eventVars_LowPu import eventVars_LowPu
+eventVars = lambda : eventVars_LowPu('', 'Recl')
