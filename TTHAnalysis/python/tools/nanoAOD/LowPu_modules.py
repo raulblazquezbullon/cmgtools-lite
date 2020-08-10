@@ -98,3 +98,12 @@ WZ_lowPu_13TeV = [lepMerge,
             #prefCorr_2017,
             #muonScaleRes2017
         ]
+
+# ===========================================================
+# ======================== Step 1 modules: Recleaning
+
+from CMGTools.TTHAnalysis.tools.nanoAOD.jetmetGrouper import groups as jecGroups
+from CMGTools.TTHAnalysis.tools.combinedObjectTaggerForCleaning import combinedObjectTaggerForCleaning
+from CMGTools.TTHAnalysis.tools.nanoAOD.fastCombinedObjectRecleaner import fastCombinedObjectRecleaner
+
+
