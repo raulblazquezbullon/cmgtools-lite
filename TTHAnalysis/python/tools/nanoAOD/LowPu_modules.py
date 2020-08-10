@@ -45,6 +45,14 @@ electronSelection = lambda l: abs(l.eta) < 2.5 and l.pt > conf.elePt and l.miniP
 
 
 # ===============================
-# LepMerging
+# Basic lepton modules
 
 from PhysicsTools.NanoAODTools.postprocessing.modules.common.collectionMerger import collectionMerger
+
+lepMerge = lambda: collectionMerger(input = ["Electron", "Muon"],
+                                    output = "LepGood",
+                                    selector = dict(Muon = muonSelection, Electron = electronSelection))
+
+
+
+
