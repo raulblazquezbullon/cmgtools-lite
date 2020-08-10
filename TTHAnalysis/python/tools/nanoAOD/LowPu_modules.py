@@ -42,12 +42,11 @@ class tags(enum.IntEnum):
       Tags for identifying different samples
     '''
     NoTag      = 0
-    mc         = 1
-    singleMuon = 2
-    singleElec = 3
-    doubleMuon = 4
-    HighEGJet  = 5
-    LowEGJet   = 6
+    MC         = 1
+    SingleMuon = 2
+    DoubleMuon = 3
+    HighEGJet  = 4
+    LowEGJet   = 5
 
 
 ##                        Lepton Identification
@@ -79,6 +78,16 @@ from CMGTools.TTHAnalysis.tools.nanoAOD.lepJetBTagAdder import lepJetBTagCSV, le
 #from PhysicsTools.NanoAODTools.postprocessing.modules.common.PrefireCorr import prefCorr_2017
 #from PhysicsTools.NanoAODTools.postprocessing.modules.common.muonScaleResProducer import muonScaleRes2017
 
+# MC and data tagging
+
+from CMGTools.TTHAnalysis.tools.addDataTag import addDataTag
+addDoubleMuon = lambda : addDataTag(tags.DoubleMuon)
+addSingleMuon = lambda : addDataTag(tags.SingleMuon)
+addHighEGJet  = lambda : addDataTag(tags.HighEGJet )
+addLowEGJet   = lambda : addDataTag(tags.LowEGJet  )
+addMC         = lambda : addDataTag(tags.MC        )
+
+# Lepton stuff
 WZ_lowPu_13TeV = [lepMerge, 
             xsecTag, 
             lepJetBTagCSV,
