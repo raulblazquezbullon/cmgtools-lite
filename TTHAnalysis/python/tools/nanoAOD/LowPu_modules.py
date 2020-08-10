@@ -69,4 +69,13 @@ lepMerge = lambda: collectionMerger(input = ["Electron", "Muon"],
 
 lepMasses = lambda: ttHLeptonCombMasses( ["Muon", muonID], ("Electron", electronID)], maxleps = 4)
 
+##                          Some useful branches
+from CMGTools.TTHAnalysis.tools.nanoAOD.yearTagger import yearTag, yearTag2017
+from CMGTools.TTHAnalysis.tools.nanoAOD.xsecTagger import xsecTag
+from CMGTools.TTHAnalysis.tools.nanoAOD.lepJetBTagAdder import lepJetBTagCSV, lepJetBTagDeepCSV, lepJetBTagDeepFlav, lepJetBTagDeepFlavC
+
+##                           This ones will come after the new post-proc
+#from PhysicsTools.NanoAODTools.postprocessing.modules.common.puWeightProducer import puWeight_2017, puAutoWeight_2017
+#from PhysicsTools.NanoAODTools.postprocessing.modules.common.PrefireCorr import prefCorr_2017
+#from PhysicsTools.NanoAODTools.postprocessing.modules.common.muonScaleResProducer import muonScaleRes2017
 
