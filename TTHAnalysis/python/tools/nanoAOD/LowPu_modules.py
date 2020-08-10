@@ -124,7 +124,7 @@ def clean_and_FO_selection_13TeV(lep): # This function is just a copy of the one
     return (abs(lep.pdgId) != 11 or (lep.convVeto and lep.lostHits == 0 and lep.mvaFall17V2Iso_WPL)) and (abs(lep.pdgId) != 13 or lep.mediumPromptId > 0)
 
 # == Modules definition
-recleaner_step1 = lambda : combinedObjectTaggerForCleaning("InternalRecl",
+recleaner_step1_mc = lambda : combinedObjectTaggerForCleaning("InternalRecl",
                                                            looseLeptonSel       = lambda lep : lep.miniPFRelIso_all < 0.4 and lep.sip3d < 8 and (abs(lep.pdgId)!=11 or lep.lostHits <=1) and (abs(lep.pdgId)!=13 or lep.looseId),
                                                            cleaningLeptonSel    = clean_and_FO_selection_13TeV,
                                                            FOLeptonSel          = clean_and_FO_selection_13TeV,
@@ -134,3 +134,22 @@ recleaner_step1 = lambda : combinedObjectTaggerForCleaning("InternalRecl",
                                                            selectJet            = lambda jet : jet.jetId > 0 and abs(jet.eta) < 2.4,
                                                            tauCollection        = "LepGood",
                                                            )
+
+recleaner_step1_data = lambda : fastCombinedObjectRecleaner(label = "Recl", 
+                                                            inlabel = "_InternalRecl",
+                                                            cleanTausWithLooseLeptons = False,
+                                                            doVetoZ = False,
+                                                            doVetoLMf = False,
+                                                            doVetoLMt = False,
+                                                            jetPts = [25, 40]
+                                                            jetPtsFwd = [25, 60]
+                                                            btagL_thre = 99,
+                                                            btagM_thr = 99,
+                                                            year_ = 2017,
+                                                            tauCollection = "LepGood",
+                                                            #jetCollection = "Jet"
+                                                            jetBTag = "btagDeepB",
+                                                            isMC = True,
+                                                            #variations = ["jesTotal"] + ["jer"]
+                                                            variations = []
+                                                            )
