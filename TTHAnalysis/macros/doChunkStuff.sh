@@ -14,7 +14,7 @@ do
     echo "I'm currently reading this sample: ${var}"
     CMD="/home/cvico/Prueba/scriptDePrueba.sh ${filesPath} ${var} "
     sh ${CMD}
-    break
+    #break
 done
-
+mv *chunk*.root chunks
 cd -
