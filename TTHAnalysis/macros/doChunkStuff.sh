@@ -1,20 +1,19 @@
 #!/bin/bash
 
-filesPath="$1"
-theoreticalCommand="sh chunkDealer.sh ~/Workspace/WZ_LowPu/FriendTrees/13TeV_Aug6/1_recleaning/ merge"
+FILESPATH="$1"
 
-cd ${filesPath}
+cd ${FILESPATH}
 # There's always a chunk0 file for each sample, so we get a list of those
-files=$(ls | grep ".*chunk1.root")
+FILES=$(ls | grep ".*chunk0.root")
+cd -
 
-for f in $files
+for f in $FILES
 do
     # Use the chunk keyword as a delimitr and get the fileName
-    var=$(echo ${f}|awk -F'Friend.chunk' '{print $1}')
-    echo "I'm currently reading this sample: ${var}"
-    CMD="/home/cvico/Prueba/scriptDePrueba.sh ${filesPath} ${var} "
+    FILENAME=$(echo ${f}|awk -F'Friend.chunk' '{print $1}')
+    echo "I'm currently reading this sample: ${FILENAME}"
+    CMD="$CMMSW_BASE/src/susyMaintenanceScripts/chunkDealer.sh ${FILESPATH} merge ${FILENAME} "
     sh ${CMD}
-    #break
 done
 mv *chunk*.root chunks
-cd -
+
