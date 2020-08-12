@@ -15,5 +15,4 @@ do
     CMD="$CMMSW_BASE/src/susyMaintenanceScripts/chunkDealer.sh ${FILESPATH} merge ${FILENAME} "
     sh ${CMD}
 done
-mv *chunk*.root chunks
-
+exit 0
