@@ -16,12 +16,12 @@ r.gROOT.SetBatch(True)
 
 
 # ================ Settings
-
+SamplesPath = "/pool/ciencias/nanoAODv6/lowPu_2017/2020_07_21/"
 FriendsPath = "/pool/phedexrw/userstorage/cmsstudents/cvico/WZ_LowPu/13TeV_Aug13"
 prodName = "2020_07_21" # Falta comprobar este nombre
 dataSamples = [ "SingleMuon", "DoubleMuon", "HighEGJet", "LowEGJet" ]
 logsPath = FriendsPath + "/" + prodname + "/{y}/{step_prefix}/logs"
-command = "python prepareEventVariablesFriendTree.py -t NanoAOD {inpath} {outpath} -I CMGTools.TTHAnalysis.tools.nanoAOD.SMP_13TeV_modules {module} {friends} {dataset} -N {chunksize} {cluster} {ex}"
+CMD = "python prepareEventVariablesFriendTree.py -t NanoAOD {inpath} {outpath} -I CMGTools.TTHAnalysis.tools.nanoAOD.LowPu_modules {module} {friends} {dataset} -N {chunksize} {cluster} {ex}"
 utilsPath = "/nfs/fanae/user/cvico/WorkSpace/WZ_LowPu/CMSSW_10_4_0/src/susyMaintenanceScripts/" 
 friendFolders = {0 : "0_tags",
                  1 : "1_lepMerge",
@@ -113,7 +113,43 @@ def RunCMD(CMD):
     #=============================#    
     print(CMD) if pretend else print("os.system(cmd)") # This is in a print for testing purposes
     
+def GetCMD(inpath, outpath, module, friends, dataset, chunksize, cluster, ex):
+    #=============================#
+    # Function to get the command #
+    #=============================#
+    CMD = CMD.format(inpath    = inpath,
+                     outpath   = outpath,
+                     module    = module,
+                     friends   = friends,
+                     dataset   = dataset,
+                     chunksize = chunksize,
+                     cluster   = cluster,
+                     ex        = ex
+                    )
+    return CMD
 
+def formatTag(tag):
+    if tag.lower == "singlemuon": processThis = "*SingleMuon*"
+    if tag.lower == "doublemuon": processThis = "*DoubleMuon*"
+    if tag.lower == "highegjet": processThis = "*HighEGJet*"
+    if tag.lower == "lowegjet": processThis = "*LowEGJet*"
+    return processThis
+
+def ProcessOptions(step, tag):
+    #=================================#
+    # Function to process the options #
+    # passed to getCMD                #
+    #=================================#
+    ProcessMC = "--xD .*Run.*"
+    if step == 0:
+        # Step 0 is for tagging samples with MC or data
+        inpath = SamplesPath # /pool/ciencias/nanoAODv6/lowPu_2017/2020_07_21 by default
+        outpath = FriendsPath + "/" + friendFolders[0]
+        if debug: 
+            print("[DEBUG]: You are running step {s} for {t}.".format(s = step, t = tag) 
+        if tag.lower() not in ["mc", "singlemuon", "doublemuon", "highegjet", "lowegjet"]: raise RuntimeError, '[ERROR]: Wrong tag'
+        dataset = ProcessMC if tag.lower() == "mc" else ProcessMC.replace("--xD", "-D").replace(".*Run.*", formatTag(tag))
+        
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(usage = "python prepareFriendTreesLowPu.py [options]", description = "Tool used for friend-trees production in the low PU analysis")
     parser.add_argument('--year',     '-y', metavar = 'year',       dest = "year",    required = False, default = 2017, type = int)
@@ -126,7 +162,7 @@ if __name__ == "__main__":
     parser.add_argument('--ncores',   '-n', metavar = 'ncores',     dest = "ncores",  required = False, default = 1, type = int)
     parser.add_argument('--merge',    '-m', action  = "store_true", dest = "merge",   required = False, default = False)
     parser.add_argument('--pretend',  '-p', action  = "store_true", dest = "pretend", required = False, default = True)
-    
+    parser.add_argument('--tag',      '-t', metavar = 'tag',        dest = "tag",     required = False, default = "MC")
     
     options     = parser.parse_args()
     year        = options.year
@@ -140,4 +176,4 @@ if __name__ == "__main__":
     merge       = options.merge
     pretend     = options.pretend
     
-    
+        
