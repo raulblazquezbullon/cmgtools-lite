@@ -150,21 +150,29 @@ def ProcessOptions(step, tag):
     # Function to process the options #
     # passed to getCMD                #
     #=================================#
+    inpath = SamplesPath # /pool/ciencias/nanoAODv6/lowPu_2017/2020_07_21 by default
+    outpath = FriendsPath + "/" + friendFolders[int(step)]
     processThis = "--xD .*Run.*" #Only process MC samples (--xD excludes anything that has Run in his name)
+    if tag.lower() not in ["mc", "singlemuon", "doublemuon", "highegjet", "lowegjet"]: raise RuntimeError("[ERROR]: Wrong tag ")
     if step == "0":
         # Step 0 is for tagging samples with MC or data
-        inpath = SamplesPath # /pool/ciencias/nanoAODv6/lowPu_2017/2020_07_21 by default
-        outpath = FriendsPath + "/" + friendFolders[int(step)]
-        if tag.lower() not in ["mc", "singlemuon", "doublemuon", "highegjet", "lowegjet"]: raise RuntimeError("[ERROR]: Wrong tag ")
+        # We got to be careful, since there are four different tags we need to differentiate not only between MC and DATA, but for 
+        # different DATA samples as well.
         module = GetTaggingModule(tag)
         friends = ""
         dataset = processThis if tag.lower() == "mc" else ProcessOnlyThisSample(tag, processThis) # each dataset has a different tag
-        chunksize = chunkSizes[0]
-        cluster = "-q batch --env oviedo"
-        logs = logsPath.format(y = year, step_prefix = friendFolders[int(step)])
-        GetCMD(CMD, inpath, outpath, module, friends, dataset, chunksize, cluster, logs)
         
-    return
+    if step == "1":
+        # Step 1 is for lep merging
+        module = "WZ_LowPu_13TeV"
+        friends = "-F Friends {outpath}/{step_prefix}".format(outpath = outpath, step_prefix = int(step)-1)
+        dataset = processThis if tag.lower() == "mc" else processThis.replace("--xD", "-D") # We process only MC or only DATA
+    chunksize = chunkSizes[0]
+    cluster = "-q batch --env oviedo"
+    logs = logsPath.format(y = year, step_prefix = friendFolders[int(step)])
+    comm = GetCMD(CMD, inpath, outpath, module, friends, dataset, chunksize, cluster, logs)    
+        
+    return comm
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(usage = "python prepareFriendTreesLowPu.py [options]", description = "Tool used for friend-trees production in the low PU analysis")
     parser.add_argument('--year',     '-y', metavar = 'year',       dest = "year",    required = False, default = 2017, type = int)
