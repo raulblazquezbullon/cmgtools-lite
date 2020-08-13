@@ -87,3 +87,23 @@ sampledict[2017] = {
     
     }
 
+#### xsecs 
+#DYJetsToLL_M_10to50_aMCatNLO : 22635.09
+#DYJetsToLL_M_50_a       : 6025.2
+
+#TTTo2L2Nu               : 88.28769753
+#TTToSemiLeptonic        : 365.3994209
+#TT                      : 831.76
+
+#WJetsToLNu_MLM          : 61526.7
+
+#WW                      : 115
+#WWTo2L2Nu               : 12.178
+
+#WZ                      : 47.13
+#WZTo3LNu                : 4.42965
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(usage = "python prepareFriendTreesLowPu.py [options]", description = "Tool used for friend-trees production in the low PU analysis")
+    
