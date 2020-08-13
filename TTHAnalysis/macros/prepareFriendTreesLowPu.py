@@ -20,8 +20,8 @@ SamplesPath = "/pool/ciencias/nanoAODv6/lowPu_2017/2020_07_21/"
 FriendsPath = "/pool/phedexrw/userstorage/cmsstudents/cvico/WZ_LowPu/13TeV_Aug13"
 prodName = "2020_07_21" # Falta comprobar este nombre
 dataSamples = [ "SingleMuon", "DoubleMuon", "HighEGJet", "LowEGJet" ]
-logsPath = FriendsPath + "/" + prodname + "/{y}/{step_prefix}/logs"
-CMD = "python prepareEventVariablesFriendTree.py -t NanoAOD {inpath} {outpath} -I CMGTools.TTHAnalysis.tools.nanoAOD.LowPu_modules {module} {friends} {dataset} -N {chunksize} {cluster} {ex}"
+logsPath = FriendsPath + "/" + prodName + "/{y}/{step_prefix}/logs"
+CMD = "python prepareEventVariablesFriendTree.py -t NanoAOD {inpath} {outpath} -I CMGTools.TTHAnalysis.tools.nanoAOD.LowPu_modules {module} {friends} {dataset} -N {chunksize} {cluster} --log={logs}"
 utilsPath = "/nfs/fanae/user/cvico/WorkSpace/WZ_LowPu/CMSSW_10_4_0/src/susyMaintenanceScripts/" 
 friendFolders = {0 : "0_tags",
                  1 : "1_lepMerge",
@@ -51,40 +51,40 @@ sampledict = {}
 sampledict[2017] = {
     ### ttbar
     # Di-leptonic
-    "TTTo2L2Nu"         :   ['Tree_TTTo2L2Nu_TuneCP5_ext1_0', 'Tree_TTTo2L2Nu_TuneCP5_ext1_1', 'Tree_TTTo2L2Nu_TuneCP5_ext1_2']
+    "TTTo2L2Nu"         :   ['Tree_TTTo2L2Nu_TuneCP5_ext1_0', 'Tree_TTTo2L2Nu_TuneCP5_ext1_1', 'Tree_TTTo2L2Nu_TuneCP5_ext1_2'],
     # Semi-leptonic
     "TTToSemiLeptonic"  :   ['Tree_TTToSemiLeptonic_TuneCP5_ext1_0', 'Tree_TTToSemiLeptonic_TuneCP5_ext1_1', 'Tree_TTToSemiLeptonic_TuneCP5_ext1_2',
                              'Tree_TTToSemiLeptonic_TuneCP5_ext1_3', 'Tree_TTToSemiLeptonic_TuneCP5_ext1_4', 'Tree_TTToSemiLeptonic_TuneCP5_ext1_5',
-                             'Tree_TTToSemiLeptonic_TuneCP5_ext1_6', 'Tree_TTToSemiLeptonic_TuneCP5_ext1_7']
+                             'Tree_TTToSemiLeptonic_TuneCP5_ext1_6', 'Tree_TTToSemiLeptonic_TuneCP5_ext1_7'],
     #Hadronic
     "TTToHadronic"      :   ['Tree_TTToHadronic_TuneCP5_ext1_0', 'Tree_TTToHadronic_TuneCP5_ext1_1', 'Tree_TTToHadronic_TuneCP5_ext1_2',
-                             'Tree_TTToHadronic_TuneCP5_ext1_3']
+                             'Tree_TTToHadronic_TuneCP5_ext1_3'],
     
     #Drell-Yan
     "DYJetsToLL"        :   ['Tree_DYJetsToLL_M_50_TuneCP5_amcatnloFXFX_ext1_0', 'Tree_DYJetsToLL_M_50_TuneCP5_amcatnloFXFX_ext1_1', 
-                             'Tree_DYJetsToLL_M_50_TuneCP5_amcatnloFXFX_ext1_2']
+                             'Tree_DYJetsToLL_M_50_TuneCP5_amcatnloFXFX_ext1_2'],
     
     ### Dibosons
     # WZ
-    "WZTo3LNu"          :   ['Tree_WZTo3LNu_TuneCP5_ext1_0']
+    "WZTo3LNu"          :   ['Tree_WZTo3LNu_TuneCP5_ext1_0'],
     # WW
-    "WWTo2L2Nu"         :   ['Tree_WWTo2L2Nu_TuneCP5_ext1_0']
+    "WWTo2L2Nu"         :   ['Tree_WWTo2L2Nu_TuneCP5_ext1_0'],
     
     ### V+jets
     # WJets             
-    "WJetsToLNu_0J"     :   ['Tree_WJetsToLNu_0J_TuneCP5_amcatnloFXFX_ext1_0']
+    "WJetsToLNu_0J"     :   ['Tree_WJetsToLNu_0J_TuneCP5_amcatnloFXFX_ext1_0'],
     #
-    "ZJToEEJ"           :   ['Tree_ZJToEEJ_M_50_0']
+    "ZJToEEJ"           :   ['Tree_ZJToEEJ_M_50_0'],
     
     ### Data
     #SingleMuon
-    "SingleMuon"        :   ['Tree_SingleMuon_Run2017H_17Nov2017_v2_0','Tree_SingleMuon_Run2017H_17Nov2017_v2_1', 'Tree_SingleMuon_Run2017H_17Nov2017_v2_2']
+    "SingleMuon"        :   ['Tree_SingleMuon_Run2017H_17Nov2017_v2_0','Tree_SingleMuon_Run2017H_17Nov2017_v2_1', 'Tree_SingleMuon_Run2017H_17Nov2017_v2_2'],
     #DoubleMuon
-    "DoubleMuon"        :   ['Tree_DoubleMuon_Run2017H_17Nov2017_v1_0']
+    "DoubleMuon"        :   ['Tree_DoubleMuon_Run2017H_17Nov2017_v1_0'],
     #HighEGJet
     "HighEGJet"         :   ['Tree_HighEGJet_Run2017H_17Nov2017_v1_0', 'Tree_HighEGJet_Run2017H_17Nov2017_v1_1', 'Tree_HighEGJet_Run2017H_17Nov2017_v1_2', 
-                             'Tree_HighEGJet_Run2017H_17Nov2017_v1_3', 'Tree_HighEGJet_Run2017H_17Nov2017_v1_4']
-    "HighEGJet"         :   ['Tree_LowEGJet_Run2017H_17Nov2017_v2_0', 'Tree_LowEGJet_Run2017H_17Nov2017_v2_1', 'Tree_LowEGJet_Run2017H_17Nov2017_v2_2']
+                             'Tree_HighEGJet_Run2017H_17Nov2017_v1_3', 'Tree_HighEGJet_Run2017H_17Nov2017_v1_4'],
+    "HighEGJet"         :   ['Tree_LowEGJet_Run2017H_17Nov2017_v2_0', 'Tree_LowEGJet_Run2017H_17Nov2017_v2_1', 'Tree_LowEGJet_Run2017H_17Nov2017_v2_2'],
     #LowEGJet
     
     
@@ -113,7 +113,7 @@ def RunCMD(CMD):
     #=============================#    
     print(CMD) if pretend else print("os.system(cmd)") # This is in a print for testing purposes
     
-def GetCMD(inpath, outpath, module, friends, dataset, chunksize, cluster, ex):
+def GetCMD(CMD, inpath, outpath, module, friends, dataset, chunksize, cluster, logs):
     #=============================#
     # Function to get the command #
     #=============================#
@@ -124,38 +124,53 @@ def GetCMD(inpath, outpath, module, friends, dataset, chunksize, cluster, ex):
                      dataset   = dataset,
                      chunksize = chunksize,
                      cluster   = cluster,
-                     ex        = ex
+                     logs      = logs
                     )
+    print(CMD)
     return CMD
 
-def formatTag(tag):
-    if tag.lower == "singlemuon": processThis = "*SingleMuon*"
-    if tag.lower == "doublemuon": processThis = "*DoubleMuon*"
-    if tag.lower == "highegjet": processThis = "*HighEGJet*"
-    if tag.lower == "lowegjet": processThis = "*LowEGJet*"
+def ProcessOnlyThisSample(tag, processThis):
+    processThis = "-D "
+    if tag.lower() == "singlemuon": processThis += "*SingleMuon*"
+    if tag.lower() == "doublemuon": processThis += "*DoubleMuon*"
+    if tag.lower() == "highegjet": processThis += "*HighEGJet*"
+    if tag.lower() == "lowegjet": processThis += "*LowEGJet*"
     return processThis
+def GetTaggingModule(tag):
+    module = ""
+    if tag.lower() == "mc": module = "addMC"
+    elif tag.lower() == "singlemuon": module = "addSingleMuon"
+    elif tag.lower() == "doublemuon": module = "addDoubleMuon"
+    elif tag.lower() == "highegjet": processThis = "addHighEGJet"
+    elif tag.lower() == "lowegjet": processThis = "addLowEGJet"
+    return module
 
 def ProcessOptions(step, tag):
     #=================================#
     # Function to process the options #
     # passed to getCMD                #
     #=================================#
-    ProcessMC = "--xD .*Run.*"
-    if step == 0:
+    processThis = "--xD .*Run.*" #Only process MC samples (--xD excludes anything that has Run in his name)
+    if step == "0":
         # Step 0 is for tagging samples with MC or data
         inpath = SamplesPath # /pool/ciencias/nanoAODv6/lowPu_2017/2020_07_21 by default
-        outpath = FriendsPath + "/" + friendFolders[0]
-        if debug: 
-            print("[DEBUG]: You are running step {s} for {t}.".format(s = step, t = tag) 
-        if tag.lower() not in ["mc", "singlemuon", "doublemuon", "highegjet", "lowegjet"]: raise RuntimeError, '[ERROR]: Wrong tag'
-        dataset = ProcessMC if tag.lower() == "mc" else ProcessMC.replace("--xD", "-D").replace(".*Run.*", formatTag(tag))
+        outpath = FriendsPath + "/" + friendFolders[int(step)]
+        if tag.lower() not in ["mc", "singlemuon", "doublemuon", "highegjet", "lowegjet"]: raise RuntimeError("[ERROR]: Wrong tag ")
+        module = GetTaggingModule(tag)
+        friends = ""
+        dataset = processThis if tag.lower() == "mc" else ProcessOnlyThisSample(tag, processThis) # each dataset has a different tag
+        chunksize = chunkSizes[0]
+        cluster = "-q batch --env oviedo"
+        logs = logsPath.format(y = year, step_prefix = friendFolders[int(step)])
+        GetCMD(CMD, inpath, outpath, module, friends, dataset, chunksize, cluster, logs)
         
+    return
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(usage = "python prepareFriendTreesLowPu.py [options]", description = "Tool used for friend-trees production in the low PU analysis")
     parser.add_argument('--year',     '-y', metavar = 'year',       dest = "year",    required = False, default = 2017, type = int)
     parser.add_argument('--dataset',  '-d', metavar = 'dataset',    dest = "dataset", required = False, default = "TTTo2L2Nu")
     parser.add_argument('--step',     '-s', metavar = 'step',       dest = "step",    required = False, default = "0")
-    parser.add_argument('--check',    '-c', action  = "store_true", dest = "check",   required = False, defualt = False)
+    parser.add_argument('--check',    '-c', action  = "store_true", dest = "check",   required = False, default = False)
     parser.add_argument('--queue',    '-q', metavar = 'queue',      dest = "queue",   required = False, default = "")
     parser.add_argument('--threads',  '-j', metavar = 'nthreads',   dest = "nthreads",required = False, default = 1, type = int)
     parser.add_argument('--extraArgs','-e', metavar = 'extra',      dest = "extra",   required = False, default = "")
@@ -170,10 +185,10 @@ if __name__ == "__main__":
     step        = options.step
     check       = options.check
     queue       = options.queue
-    threads     = options.threads
-    extraArgs   = options.extraArgs
+    threads     = options.nthreads
+    extraArgs   = options.extra
     ncores      = options.ncores
     merge       = options.merge
     pretend     = options.pretend
-    
-        
+    tag         = options.tag
+    ProcessOptions(step, tag)
