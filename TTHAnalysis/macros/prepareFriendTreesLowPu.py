@@ -162,24 +162,20 @@ def ProcessOptions(step, tag):
     if tag.lower() not in ["mc", "singlemuon", "doublemuon", "highegjet", "lowegjet"]: raise RuntimeError("[ERROR]: Wrong tag ")
     if step == "0":
         # Step 0 is for tagging samples with MC or data
-        # We got to be careful, since there are four different tags we need to differentiate not only between MC and DATA, but for 
-        # different DATA samples as well.
         module = GetTaggingModule(tag)
-        friends = addFriendTrees(step, FriendsPath)
         dataset = processThis if tag.lower() == "mc" else ProcessOnlyThisSample(tag, processThis) # each dataset has a different tag
         
     if step == "1":
         # Step 1 is for lep merging
         module = "WZ_LowPu_13TeV"
-        friends = addFriendTrees(step, FriendsPath)
         dataset = processThis if tag.lower() == "mc" else processThis.replace("--xD", "-D") # We process only MC or only DATA
         
     if step == "2":
-        # Step 2 is for triggering
-        module = "triggerSequence"
-        friends = addFriendTrees(step, FriendsPath)
+        # Step 2 is for recleaning
+        module = "WZ_lowPu_recl_mc" if tag.lower == "mc" else "WZ_lowPu_recl_data" 
         dataset = processThis if tag.lower() == "mc" else processThis.replace("--xD", "-D") # We process only MC or only DATA
-        
+    
+    friends = addFriendTrees(step, FriendsPath)
     chunksize = chunkSizes[0]
     cluster = "-q batch --env oviedo"
     logs = logsPath.format(y = year, step_prefix = friendFolders[int(step)])
