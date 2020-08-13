@@ -2,6 +2,8 @@
 #!/usr/bin/env python
 
 
+# This code is based on Victor's produceFriendTrees_TopRun2.py
+
 # ================ Imports
 import os
 import sys
@@ -106,4 +108,27 @@ sampledict[2017] = {
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(usage = "python prepareFriendTreesLowPu.py [options]", description = "Tool used for friend-trees production in the low PU analysis")
+    parser.add_argument('--year',     '-y', metavar = 'year',       dest = "year",    required = False, default = 2017, type = int)
+    parser.add_argument('--dataset',  '-d', metavar = 'dataset',    dest = "dataset", required = False, default = "TTTo2L2Nu")
+    parser.add_argument('--step',     '-s', metavar = 'step',       dest = "step",    required = False, default = "0")
+    parser.add_argument('--check',    '-c', action  = "store_true", dest = "check",   required = False, defualt = False)
+    parser.add_argument('--queue',    '-q', metavar = 'queue',      dest = "queue",   required = False, default = "")
+    parser.add_argument('--threads',  '-j', metavar = 'nthreads',   dest = "nthreads",required = False, default = 1, type = int)
+    parser.add_argument('--extraArgs','-e', metavar = 'extra',      dest = "extra",   required = False, default = "")
+    parser.add_argument('--ncores',   '-n', metavar = 'ncores',     dest = "ncores",  required = False, default = 1, type = int)
+    parser.add_argument('--merge',    '-m', action  = "store_true", dest = "merge",   required = False, default = False)
+    parser.add_argument('--pretend',  '-p', action  = "store_true", dest = "pretend", required = False, default = False)
+    
+    
+    options     = parser.parse_args()
+    year        = options.year
+    dataset     = options.dataset
+    step        = options.step
+    check       = options.check
+    queue       = options.queue
+    threads     = options.threads
+    extraArgs   = options.extraArgs
+    ncores      = options.ncores
+    merge       = options.merge
+    pretend     = options.pretend
     
