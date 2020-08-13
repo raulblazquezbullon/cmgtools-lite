@@ -12,7 +12,7 @@ do
     # Use the chunk keyword as a delimitr and get the fileName
     FILENAME=$(echo ${f}|awk -F'Friend.chunk' '{print $1}')
     echo "I'm currently reading this sample: ${FILENAME}"
-    CMD="$CMMSW_BASE/src/susyMaintenanceScripts/chunkDealer.sh ${FILESPATH} merge ${FILENAME} "
+    CMD="$CMSSW_BASE/src/susyMaintenanceScripts/chunkDealer.sh ${FILESPATH} merge ${FILENAME} "
     sh ${CMD}
 done
 exit 0
