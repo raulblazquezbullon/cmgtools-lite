@@ -145,6 +145,12 @@ def GetTaggingModule(tag):
     elif tag.lower() == "lowegjet": processThis = "addLowEGJet"
     return module
 
+def addFriendTrees(step, FriendsPath):
+    text = "-F Friends {FriendsPath}/{step_prefix} "
+    friends = ""
+    for previous_step in range(int(step)): friends += text.format(FriendsPath = FriendsPath, step_prefix = friendFolders[previous_step])
+    return friends
+
 def ProcessOptions(step, tag):
     #=================================#
     # Function to process the options #
@@ -159,14 +165,21 @@ def ProcessOptions(step, tag):
         # We got to be careful, since there are four different tags we need to differentiate not only between MC and DATA, but for 
         # different DATA samples as well.
         module = GetTaggingModule(tag)
-        friends = ""
+        friends = addFriendTrees(step, FriendsPath)
         dataset = processThis if tag.lower() == "mc" else ProcessOnlyThisSample(tag, processThis) # each dataset has a different tag
         
     if step == "1":
         # Step 1 is for lep merging
         module = "WZ_LowPu_13TeV"
-        friends = "-F Friends {outpath}/{step_prefix}".format(outpath = outpath, step_prefix = int(step)-1)
+        friends = addFriendTrees(step, FriendsPath)
         dataset = processThis if tag.lower() == "mc" else processThis.replace("--xD", "-D") # We process only MC or only DATA
+        
+    if step == "2":
+        # Step 2 is for triggering
+        module = "triggerSequence"
+        friends = addFriendTrees(step, FriendsPath)
+        dataset = processThis if tag.lower() == "mc" else processThis.replace("--xD", "-D") # We process only MC or only DATA
+        
     chunksize = chunkSizes[0]
     cluster = "-q batch --env oviedo"
     logs = logsPath.format(y = year, step_prefix = friendFolders[int(step)])
