@@ -175,6 +175,15 @@ def ProcessOptions(step, tag):
         module = "WZ_lowPu_recl_mc" if tag.lower == "mc" else "WZ_lowPu_recl_data" 
         dataset = processThis if tag.lower() == "mc" else processThis.replace("--xD", "-D") # We process only MC or only DATA
     
+    if step == "3":
+        # Step 3 is for triggering
+        module = "triggerSequence"
+        dataset = "" # Triggers for MC and data are are differentiated by its tag, so this works for any sample
+        
+    if step == "4":
+        # Step 4 is for event variables
+        module = "eventVars"
+        dataset = "" #This run for any sample since they have the same event variables
     friends = addFriendTrees(step, FriendsPath)
     chunksize = chunkSizes[0]
     cluster = "-q batch --env oviedo"
