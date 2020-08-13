@@ -21,6 +21,7 @@ FriendsPath = "/pool/phedexrw/userstorage/cmsstudents/cvico/WZ_LowPu/13TeV_Aug13
 prodName = "2020_07_21" # Falta comprobar este nombre
 dataSamples = [ "SingleMuon", "DoubleMuon", "HighEGJet", "LowEGJet" ]
 logsPath = FriendsPath + "/" + prodname + "/{y}/{step_prefix}/logs"
+command = "python prepareEventVariablesFriendTree.py -t NanoAOD {inpath} {outpath} -I CMGTools.TTHAnalysis.tools.nanoAOD.SMP_13TeV_modules {module} {friends} {dataset} -N {chunksize} {cluster} {ex}"
 utilsPath = "/nfs/fanae/user/cvico/WorkSpace/WZ_LowPu/CMSSW_10_4_0/src/susyMaintenanceScripts/" 
 friendFolders = {0 : "0_tags",
                  1 : "1_lepMerge",
@@ -106,6 +107,13 @@ sampledict[2017] = {
 #WZTo3LNu                : 4.42965
 
 
+def RunCMD(CMD):
+    #=============================#
+    # Function to run the command #
+    #=============================#    
+    print(CMD) if pretend else print("os.system(cmd)") # This is in a print for testing purposes
+    
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(usage = "python prepareFriendTreesLowPu.py [options]", description = "Tool used for friend-trees production in the low PU analysis")
     parser.add_argument('--year',     '-y', metavar = 'year',       dest = "year",    required = False, default = 2017, type = int)
@@ -117,7 +125,7 @@ if __name__ == "__main__":
     parser.add_argument('--extraArgs','-e', metavar = 'extra',      dest = "extra",   required = False, default = "")
     parser.add_argument('--ncores',   '-n', metavar = 'ncores',     dest = "ncores",  required = False, default = 1, type = int)
     parser.add_argument('--merge',    '-m', action  = "store_true", dest = "merge",   required = False, default = False)
-    parser.add_argument('--pretend',  '-p', action  = "store_true", dest = "pretend", required = False, default = False)
+    parser.add_argument('--pretend',  '-p', action  = "store_true", dest = "pretend", required = False, default = True)
     
     
     options     = parser.parse_args()
@@ -131,4 +139,5 @@ if __name__ == "__main__":
     ncores      = options.ncores
     merge       = options.merge
     pretend     = options.pretend
+    
     
