@@ -131,18 +131,18 @@ def GetCMD(CMD, inpath, outpath, module, friends, dataset, chunksize, cluster, l
 
 def ProcessOnlyThisSample(tag, processThis):
     processThis = "-D "
-    if tag.lower() == "singlemuon": processThis += "*SingleMuon*"
-    if tag.lower() == "doublemuon": processThis += "*DoubleMuon*"
-    if tag.lower() == "highegjet": processThis += "*HighEGJet*"
-    if tag.lower() == "lowegjet": processThis += "*LowEGJet*"
+    if tag.lower() == "singlemuon": processThis += ".*SingleMuon*"
+    if tag.lower() == "doublemuon": processThis += ".*DoubleMuon*"
+    if tag.lower() == "highegjet": processThis += ".*HighEGJet*"
+    if tag.lower() == "lowegjet": processThis += ".*LowEGJet*"
     return processThis
 def GetTaggingModule(tag):
     module = ""
     if tag.lower() == "mc": module = "addMC"
     elif tag.lower() == "singlemuon": module = "addSingleMuon"
     elif tag.lower() == "doublemuon": module = "addDoubleMuon"
-    elif tag.lower() == "highegjet": processThis = "addHighEGJet"
-    elif tag.lower() == "lowegjet": processThis = "addLowEGJet"
+    elif tag.lower() == "highegjet": module = "addHighEGJet"
+    elif tag.lower() == "lowegjet": module = "addLowEGJet"
     return module
 
 def addFriendTrees(step, FriendsPath):
