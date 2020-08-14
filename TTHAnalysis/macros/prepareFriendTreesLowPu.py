@@ -16,7 +16,7 @@ r.gROOT.SetBatch(True)
 
 
 # ================ Settings
-SamplesPath = "/pool/ciencias/nanoAODv6/lowPu_2017/2020_07_21/"
+SamplesPath = "/pool/ciencias/nanoAODv6/lowPU2017/2020_07_21_postProc/"
 FriendsPath = "/pool/phedexrw/userstorage/cmstudents/cvico/WZ_LowPu/13TeV_Aug13"
 prodName = "2020_07_21" # Falta comprobar este nombre
 dataSamples = [ "SingleMuon", "DoubleMuon", "HighEGJet", "LowEGJet" ]
@@ -156,7 +156,7 @@ def ProcessOptions(step, tag):
     # Function to process the options #
     # passed to getCMD                #
     #=================================#
-    inpath = SamplesPath # /pool/ciencias/nanoAODv6/lowPu_2017/2020_07_21 by default
+    inpath = SamplesPath # /pool/ciencias/nanoAODv6/lowPU2017/2020_07_21_postProc/ by default
     outpath = FriendsPath + "/" + friendFolders[int(step)]
     processThis = "--xD .*Run.*" #Only process MC samples (--xD excludes anything that has Run in his name)
     if tag.lower() not in ["mc", "singlemuon", "doublemuon", "highegjet", "lowegjet"]: raise RuntimeError("[ERROR]: Wrong tag ")
