@@ -17,7 +17,7 @@ r.gROOT.SetBatch(True)
 
 # ================ Settings
 SamplesPath = "/pool/ciencias/nanoAODv6/lowPu_2017/2020_07_21/"
-FriendsPath = "/pool/phedexrw/userstorage/cmsstudents/cvico/WZ_LowPu/13TeV_Aug13"
+FriendsPath = "/pool/phedexrw/userstorage/cmstudents/cvico/WZ_LowPu/13TeV_Aug13"
 prodName = "2020_07_21" # Falta comprobar este nombre
 dataSamples = [ "SingleMuon", "DoubleMuon", "HighEGJet", "LowEGJet" ]
 logsPath = FriendsPath + "/" + prodName + "/{y}/{step_prefix}/logs"
@@ -111,7 +111,7 @@ def RunCMD(CMD):
     #=============================#
     # Function to run the command #
     #=============================#    
-    print(CMD) if pretend else print("os.system(cmd)") # This is in a print for testing purposes
+    print(CMD) #if pretend else print("os.system(cmd)") # This is in a print for testing purposes
     
 def GetCMD(CMD, inpath, outpath, module, friends, dataset, chunksize, cluster, logs):
     #=============================#
@@ -188,6 +188,8 @@ def ProcessOptions(step, tag):
     chunksize = chunkSizes[0]
     cluster = "-q batch --env oviedo"
     logs = logsPath.format(y = year, step_prefix = friendFolders[int(step)])
+    # create the folder to store the logs
+    if not os.path.exists(logs): os.system("mkdir -p " + logs)
     comm = GetCMD(CMD, inpath, outpath, module, friends, dataset, chunksize, cluster, logs)    
         
     return comm
