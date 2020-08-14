@@ -66,7 +66,7 @@ lepMerge = lambda: collectionMerger(input = ["Electron", "Muon"],
                                     output = "LepGood",
                                     selector = dict(Muon = muonID, Electron = electronID))
 
-lepMasses = lambda: ttHLeptonCombMasses( ["Muon", muonID], ("Electron", electronID)], maxleps = 4)
+lepMasses = lambda: ttHLeptonCombMasses( [ ("Muon", muonID), ("Electron", electronID) ], maxleps = 4)
 
 ##                          Some useful branches
 from CMGTools.TTHAnalysis.tools.nanoAOD.yearTagger import yearTag, yearTag2017
@@ -101,22 +101,21 @@ WZ_lowPu_13TeV = [lepMerge,
 
 # ===========================================================
 # ======================== Step 1 modules: Triggers
-triggerGroups = dict(
-    
+triggerGroups = dict(    
     Trigger_1e = {
         2017 : lambda ev : bool(getattr(ev, 'HLT_Ele35_WPTight_Gsf'))
                if (ev.datatag == tags.mc) else
-               bool(getattr(ev, 'HLT_HIEle20_WPLoose_Gsf')) or 
-               bool(getattr(ev, 'HLT_HIEle40_WPLoose_Gsf'))
-        }
+               bool(getattr(ev, 'HLT_HIEle20_WPLoose_Gsf')) 
+	       or bool(getattr(ev, 'HLT_HIEle40_WPLoose_Gsf'))
+        },
     Trigger_1m = {
         2017 : lambda ev : bool(getattr(ev, 'HLT_IsoMu27'))
                if (ev.datatag == tags.mc) else 
                bool(getattr(ev, 'HLT_HIMu17'))
-        }
+        },
     Trigger_2e = {
         2017 : lambda ev : bool(getattr(ev, 'HLT_Ele23_Ele12_CaloIdl_TrackIdL_IsoVL_DZ')) 
-               or bool(getattr(getattr(ev, 'HLT_Ele23_Ele12_CaloIdl_TrackIdL_IsoVL'))) 
+	       or bool(getattr(getattr(ev, 'HLT_Ele23_Ele12_CaloIdl_TrackIdL_IsoVL'))) 
                if (ev.datatag == tags.mc) else 
                bool(getattr(ev, 'HLT_HIEle20_Ele12_CaloIdL_TrackIdL_IsoVL_DZ')) 
                or bool(getattr(ev, 'HLT_HIEle20_Ele12_CaloIdL_TrackIdL_IsoVL'))
@@ -138,7 +137,7 @@ triggerSequence = [Trigger_1e, Trigger_1m, Trigger_2e]
 # ======================== Step 2 modules: Recleaning
 # == Imports
 from CMGTools.TTHAnalysis.tools.nanoAOD.jetmetGrouper import groups as jecGroups
-from CMGTools.TTHAnalysis.tools.combinedObjectTaggerForCleaning import combinedObjectTaggerForCleaning
+from CMGTools.TTHAnalysis.tools.combinedObjectTaggerForCleaning import CombinedObjectTaggerForCleaning
 from CMGTools.TTHAnalysis.tools.nanoAOD.fastCombinedObjectRecleaner import fastCombinedObjectRecleaner
 
 # == Function definition
@@ -159,7 +158,7 @@ def clean_and_FO_selection_13TeV(lep): # This function is just a copy of the one
 
 
 # == Modules definition
-recleaner_step1 = lambda : combinedObjectTaggerForCleaning("InternalRecl",
+recleaner_step1 = lambda : CombinedObjectTaggerForCleaning("InternalRecl",
                                                            looseLeptonSel       = lambda lep : lep.miniPFRelIso_all < 0.4 and lep.sip3d < 8 and (abs(lep.pdgId)!=11 or lep.lostHits <=1) and (abs(lep.pdgId)!=13 or lep.looseId),
                                                            cleaningLeptonSel    = clean_and_FO_selection_13TeV,
                                                            FOLeptonSel          = clean_and_FO_selection_13TeV,
@@ -176,8 +175,8 @@ recleaner_step2_mc = lambda : fastCombinedObjectRecleaner(label = "Recl",
                                                             doVetoZ = False,
                                                             doVetoLMf = False,
                                                             doVetoLMt = False,
-                                                            jetPts = [25, 40]
-                                                            jetPtsFwd = [25, 60]
+                                                            jetPts = [25, 40],
+                                                            jetPtsFwd = [25, 60],
                                                             btagL_thre = 99,
                                                             btagM_thr = 99,
                                                             year_ = 2017,
@@ -195,8 +194,8 @@ recleaner_step2_data = lambda : fastCombinedObjectRecleaner(label = "Recl",
                                                             doVetoZ = False,
                                                             doVetoLMf = False,
                                                             doVetoLMt = False,
-                                                            jetPts = [25, 40]
-                                                            jetPtsFwd = [25, 60]
+                                                            jetPts = [25, 40],
+                                                            jetPtsFwd = [25, 60],
                                                             btagL_thre = 99,
                                                             btagM_thr = 99,
                                                             year_ = 2017,
