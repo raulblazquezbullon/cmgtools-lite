@@ -52,10 +52,10 @@ class tags(enum.IntEnum):
 ##                        Lepton Identification
 
 muonID = lambda l: abs(l.eta) < 2.4 and l.pt > muons["pt"] and l.miniPFRelIso_all < muons["miniRelIso"] \
-    and l.sip3d < muons["sip3d"] and abs(l.dxy) < muons["dxy"] and abs(l.dz) < muons["dz"]
+		   and l.sip3d < muons["sip3d"] and abs(l.dxy) < muons["dxy"] and abs(l.dz) < muons["dz"]
 
 electronID = lambda l: abs(l.eta) < 2.4 and l.pt > electrons["pt"] and l.miniPFRelIso_all < electrons["miniRelIso"] \
-    and l.sip3d < electrons["sip3d"] and abs(l.dxy) < electrons["dxy"] and abs(l.dz) < electrons["dz"]
+		       and l.sip3d < electrons["sip3d"] and abs(l.dxy) < electrons["dxy"] and abs(l.dz) < electrons["dz"]
 
 
 ##                         Basic lepton modules
@@ -66,7 +66,7 @@ lepMerge = lambda: collectionMerger(input = ["Electron", "Muon"],
                                     output = "LepGood",
                                     selector = dict(Muon = muonID, Electron = electronID))
 
-lepMasses = lambda: ttHLeptonCombMasses( [ ("Muon", muonID), ("Electron", electronID) ], maxleps = 4)
+lepMasses = lambda: ttHLeptonCombMasses( [ ("Muon", muonID), ("Electron", electronID) ], maxLeps = 4)
 
 ##                          Some useful branches
 from CMGTools.TTHAnalysis.tools.nanoAOD.yearTagger import yearTag, yearTag2017
@@ -89,7 +89,6 @@ addMC         = lambda : addDataTag(tags.MC        )
 
 # Lepton stuff
 WZ_lowPu_13TeV = [lepMerge, 
-            xsecTag, 
             lepJetBTagCSV,
             lepJetBTagDeepCSV,
             lepJetBTagDeepFlav,
