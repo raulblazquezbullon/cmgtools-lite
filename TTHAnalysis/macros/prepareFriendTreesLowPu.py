@@ -146,7 +146,7 @@ def GetTaggingModule(tag):
     return module
 
 def addFriendTrees(step, FriendsPath):
-    text = "-F Friends {FriendsPath}/{step_prefix} "
+    text = "-F Friends {FriendsPath}/{step_prefix}/{cname}_Friend.root "
     friends = ""
     for previous_step in range(int(step)): friends += text.format(FriendsPath = FriendsPath, step_prefix = friendFolders[previous_step])
     return friends
@@ -157,7 +157,7 @@ def ProcessOptions(step, tag):
     # passed to getCMD                #
     #=================================#
     inpath = SamplesPath # /pool/ciencias/nanoAODv6/lowPU2017/2020_07_21_postProc/ by default
-    outpath = FriendsPath + "/" + friendFolders[int(step)]
+    outpath = FriendsPath + "/" + prodName + "/{y}/{step_prefix}".format(y = year, step_prefix = friendFolders[int(step)])
     processThis = "--xD .*Run.*" #Only process MC samples (--xD excludes anything that has Run in his name)
     if tag.lower() not in ["mc", "singlemuon", "doublemuon", "highegjet", "lowegjet"]: raise RuntimeError("[ERROR]: Wrong tag ")
     if step == "0":
@@ -187,9 +187,9 @@ def ProcessOptions(step, tag):
     friends = addFriendTrees(step, FriendsPath)
     chunksize = chunkSizes[0]
     cluster = "-q batch --env oviedo"
-    logs = logsPath.format(y = year, step_prefix = friendFolders[int(step)])
+    logs = outpath + "/logs"
+    if not os.path.exists(outpath): os.system("mkdir -p " + logs)
     # create the folder to store the logs
-    if not os.path.exists(logs): os.system("mkdir -p " + logs)
     comm = GetCMD(CMD, inpath, outpath, module, friends, dataset, chunksize, cluster, logs)    
         
     return comm
