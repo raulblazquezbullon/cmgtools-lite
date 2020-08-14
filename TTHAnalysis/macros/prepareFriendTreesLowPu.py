@@ -146,9 +146,10 @@ def GetTaggingModule(tag):
     return module
 
 def addFriendTrees(step, FriendsPath):
-    text = "-F Friends {FriendsPath}/{step_prefix}/{cname}_Friend.root "
+    text = "-F Friends {FriendsPath}/{step_prefix}/"
+    suffix = "{cname}_Friend.root "
     friends = ""
-    for previous_step in range(int(step)): friends += text.format(FriendsPath = FriendsPath, step_prefix = friendFolders[previous_step])
+    for previous_step in range(int(step)): friends += text.format(FriendsPath = FriendsPath, step_prefix = friendFolders[previous_step]) + suffix
     return friends
 
 def ProcessOptions(step, tag):
