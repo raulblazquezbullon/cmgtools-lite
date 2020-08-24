@@ -156,6 +156,11 @@ def clean_and_FO_selection_13TeV(lep): # This function is just a copy of the one
     return (abs(lep.pdgId) != 11 or (lep.convVeto and lep.lostHits == 0 and lep.mvaFall17V2Iso_WPL)) and (abs(lep.pdgId) != 13 or lep.mediumPromptId > 0)
 
 
+tightLeptonSel = lambda lep, jet : clean_and_FO_selection_13TeV(lep) and lep.mvaTTH > (0.55 if abs(lep.pdgId)==13 else 0.125) \
+				   and lep.miniPFRelIso_all < (0.325 if abs(lep.pdgId)==13 else 0.085) \
+ 				   and lep.jetBTagDeepCSV<0.1522
+
+
 # == Modules definition
 recleaner_step1 = lambda : CombinedObjectTaggerForCleaning("InternalRecl",
                                                            looseLeptonSel       = lambda lep : lep.miniPFRelIso_all < 0.4 and lep.sip3d < 8 and (abs(lep.pdgId)!=11 or lep.lostHits <=1) and (abs(lep.pdgId)!=13 or lep.looseId),
@@ -171,38 +176,40 @@ recleaner_step1 = lambda : CombinedObjectTaggerForCleaning("InternalRecl",
 recleaner_step2_mc = lambda : fastCombinedObjectRecleaner(label = "Recl", 
                                                             inlabel = "_InternalRecl",
                                                             cleanTausWithLooseLeptons = False,
-                                                            doVetoZ = False,
+                                                            cleanJetsWithFOTaus = False,
+						            doVetoZ = False,
                                                             doVetoLMf = False,
                                                             doVetoLMt = False,
                                                             jetPts = [25, 40],
                                                             jetPtsFwd = [25, 60],
-                                                            btagL_thre = 99,
+                                                            btagL_thr = 99,
                                                             btagM_thr = 99,
                                                             year_ = 2017,
                                                             tauCollection = "LepGood",
                                                             #jetCollection = "Jet"
                                                             jetBTag = "btagDeepB",
                                                             isMC = True,
-                                                            #variations = ["jesTotal"] + ["jer"]
+                                                            #variations = ["jesTotal"] + ["jer"],
                                                             variations = []
                                                             )
 
 recleaner_step2_data = lambda : fastCombinedObjectRecleaner(label = "Recl", 
                                                             inlabel = "_InternalRecl",
                                                             cleanTausWithLooseLeptons = False,
+                                                            cleanJetsWithFOTaus = False,
                                                             doVetoZ = False,
                                                             doVetoLMf = False,
                                                             doVetoLMt = False,
                                                             jetPts = [25, 40],
                                                             jetPtsFwd = [25, 60],
-                                                            btagL_thre = 99,
+                                                            btagL_thr = 99,
                                                             btagM_thr = 99,
                                                             year_ = 2017,
                                                             tauCollection = "LepGood",
                                                             #jetCollection = "Jet"
                                                             jetBTag = "btagDeepB",
                                                             isMC = False,
-                                                            #variations = ["jesTotal"] + ["jer"]
+                                                            #variations = ["jesTotal"] + ["jer"],
                                                             variations = []
                                                             )
 
@@ -213,8 +220,8 @@ isMatchRightCharge = lambda : ObjTagger('isMatchRightCharge', 'LepGood', [lambda
 mcMatchId          = lambda : ObjTagger('mcMatchId', 'LepGood', [lambda l : (l.genPartFlav == 1 or l.genPartFlav == 15) ])
 mcPromptGamma      = lambda : ObjTagger('mcPromptGamma', 'LepGood', [lambda l : (l.genPartFlav == 22)] )
 
-WZ_lowPu_recl_data = [recleaner_step1, recleaner_step2_mc, isMatchRightCharge, mcMatchId, mcPromptGamma]
-WZ_lowPu_recl_mc = [recleaner_step1, recleaner_step2_data]
+WZ_lowPu_recl_mc = [recleaner_step1, recleaner_step2_mc, isMatchRightCharge, mcMatchId, mcPromptGamma]
+WZ_lowPu_recl_data = [recleaner_step1, recleaner_step2_data]
 
 # ===========================================================
 # ======================== Step 3 modules: EventVars
