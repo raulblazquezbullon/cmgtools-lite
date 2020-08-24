@@ -140,5 +140,5 @@ if __name__ == '__main__':
     command += FormatForPlots()
     command = ProcessMcPlotsStuff(command) if not options.mcPlotsOpts == "" else command
     command = ChannelStuff(command)
-    command += "--sP lep1_pt --sP lep1_eta --sP nLepGood --sP nLepTight --sP nLepFO --sP nElectronPlusMuon --sP nVert --sP channel --sP nJet25_from0"	 
+    command += "---scaleBkgToData -sP lep1_pt --sP lep1_eta --sP nLepGood --sP nLepTight --sP nLepFO --sP nElectronPlusMuon --sP nVert --sP channel --sP nJet25_from0"	 
     print(command)
