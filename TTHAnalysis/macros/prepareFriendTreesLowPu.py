@@ -145,11 +145,11 @@ def GetTaggingModule(tag):
     elif tag.lower() == "lowegjet": module = "addLowEGJet"
     return module
 
-def addFriendTrees(step, FriendsPath):
-    text = "-F Friends {FriendsPath}/{step_prefix}/"
+def addFriendTrees(step, outpath):
+    preffix = "-F Friends " + FriendsPath + "/" + prodName + "/{y}".format(y = year)
     suffix = "{cname}_Friend.root "
     friends = ""
-    for previous_step in range(int(step)): friends += text.format(FriendsPath = FriendsPath, step_prefix = friendFolders[previous_step]) + suffix
+    for previous_step in range(int(step)): friends += preffix + "/" + friendFolders[int(previous_step)] + "/" + suffix
     return friends
 
 def ProcessOptions(step, tag):
@@ -168,7 +168,7 @@ def ProcessOptions(step, tag):
         
     if step == "1":
         # Step 1 is for lep merging
-        module = "WZ_LowPu_13TeV"
+        module = "WZ_lowPu_13TeV"
         dataset = processThis if tag.lower() == "mc" else processThis.replace("--xD", "-D") # We process only MC or only DATA
         
     if step == "2":
@@ -185,12 +185,16 @@ def ProcessOptions(step, tag):
         # Step 4 is for event variables
         module = "eventVars"
         dataset = "" #This run for any sample since they have the same event variables
-    friends = addFriendTrees(step, FriendsPath)
-    chunksize = chunkSizes[0]
-    cluster = "-q batch --env oviedo"
-    logs = outpath + "/logs"
-    if not os.path.exists(outpath): os.system("mkdir -p " + logs)
-    # create the folder to store the logs
+    friends = addFriendTrees(step, outpath)
+    chunksize = 1000
+    cluster  = ""
+    logs     = "" 
+    if not nobatch:
+	    chunksize = chunkSizes[0]
+	    cluster += "-q batch --env oviedo"
+	    logs += outpath + "/logs"
+	    if not os.path.exists(outpath): os.system("mkdir -p " + logs)
+	    # create the folder to store the logs
     comm = GetCMD(CMD, inpath, outpath, module, friends, dataset, chunksize, cluster, logs)    
         
     return comm
@@ -207,7 +211,8 @@ if __name__ == "__main__":
     parser.add_argument('--merge',    '-m', action  = "store_true", dest = "merge",   required = False, default = False)
     parser.add_argument('--pretend',  '-p', action  = "store_true", dest = "pretend", required = False, default = True)
     parser.add_argument('--tag',      '-t', metavar = 'tag',        dest = "tag",     required = False, default = "MC")
-    
+    parser.add_argument('--nobatch',  '-b', action  = 'store_true', dest = "nobatch", required = False, default = False) 
+
     options     = parser.parse_args()
     year        = options.year
     dataset     = options.dataset
@@ -220,4 +225,6 @@ if __name__ == "__main__":
     merge       = options.merge
     pretend     = options.pretend
     tag         = options.tag
+    nobatch     = options.nobatch
+
     ProcessOptions(step, tag)
