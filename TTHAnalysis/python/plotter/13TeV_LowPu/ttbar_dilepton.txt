@@ -1,6 +1,6 @@
 alwaystrue: 1
 pt1l: LepGood1_conePt>20 
-trigger1L: Trigger_1m_lowPu || Trigger_1e_lowPu
+trigger1L: Trigger_1m || Trigger_1e
 em: abs(LepGood1_pdgId) != abs(LepGood2_pdgId)
 
 
