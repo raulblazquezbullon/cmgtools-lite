@@ -16,11 +16,13 @@ import argparse
 
 # ====== DEFAULT OPTIONS
 path = "/pool/ciencias/nanoAODv6/lowPU2017/2020_07_21_postProc"
-ftreesPath = "~/WorkSpace/WZ_LowPu/FriendTrees/13TeV_Aug6/"
-ftrees = ("--Fs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "0_lepGood ") +
-	  "--Fs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "0_tags ") +
-          "--Fs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "1_recleaning ")+
-          "--Fs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "2_eventVars ")
+#ftreesPath = "~/WorkSpace/WZ_LowPu/FriendTrees/13TeV_Aug6/"
+ftreesPath = "/pool/phedexrw/userstorage/cmstudents/cvico/WZ_LowPu/13TeV_Aug13/2020_07_21/2017/"
+ftrees = ("--Fs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "0_tags ") +
+	  "--Fs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "1_lepMerge ") +
+          "--Fs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "2_recleaning ") +
+          "--Fs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "3_triggers ") +
+          "--Fs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "4_eventVars ")
           )
 
 lumi = 0.23
@@ -140,5 +142,5 @@ if __name__ == '__main__':
     command += FormatForPlots()
     command = ProcessMcPlotsStuff(command) if not options.mcPlotsOpts == "" else command
     command = ChannelStuff(command)
-    command += "---scaleBkgToData -sP lep1_pt --sP lep1_eta --sP nLepGood --sP nLepTight --sP nLepFO --sP nElectronPlusMuon --sP nVert --sP channel --sP nJet25_from0"	 
+    command += " --scaleBkgToData --sP lep1_pt --sP lep1_eta --sP nLepGood --sP nLepTight --sP nLepFO --sP nElectronPlusMuon --sP nVert --sP channel --sP nJet25_from0"	 
     print(command)
