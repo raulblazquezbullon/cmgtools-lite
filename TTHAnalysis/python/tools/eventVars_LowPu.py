@@ -10,7 +10,7 @@ from copy import deepcopy
 from PhysicsTools.NanoAODTools.postprocessing.tools import deltaR,deltaPhi
 from PhysicsTools.Heppy.physicsobjects.Jet import _btagWPs
 
-class EventVars_LowPu(Module):
+class eventVars_LowPu(Module):
     def __init__(self, label="", recllabel='Recl', doSystJEC=True, variations=[]):
         self.namebranches = [ "MT_met_lep1",
                               "MT_met_lep2",
