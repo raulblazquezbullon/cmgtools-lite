@@ -173,7 +173,7 @@ def ProcessOptions(step, tag):
         
     if step == "2":
         # Step 2 is for recleaning
-        module = "WZ_lowPu_recl_mc" if tag.lower == "mc" else "WZ_lowPu_recl_data" 
+        module = "WZ_lowPu_recl_mc" if tag.lower() == "mc" else "WZ_lowPu_recl_data" 
         dataset = processThis if tag.lower() == "mc" else processThis.replace("--xD", "-D") # We process only MC or only DATA
     
     if step == "3":
