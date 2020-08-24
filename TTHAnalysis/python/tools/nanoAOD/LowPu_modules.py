@@ -103,19 +103,19 @@ WZ_lowPu_13TeV = [lepMerge,
 triggerGroups = dict(    
     Trigger_1e = {
         2017 : lambda ev : bool(getattr(ev, 'HLT_Ele35_WPTight_Gsf'))
-               if (ev.datatag == tags.mc) else
+               if (ev.datatag == tags.MC) else
                bool(getattr(ev, 'HLT_HIEle20_WPLoose_Gsf')) 
 	       or bool(getattr(ev, 'HLT_HIEle40_WPLoose_Gsf'))
         },
     Trigger_1m = {
         2017 : lambda ev : bool(getattr(ev, 'HLT_IsoMu27'))
-               if (ev.datatag == tags.mc) else 
+               if (ev.datatag == tags.MC) else 
                bool(getattr(ev, 'HLT_HIMu17'))
         },
     Trigger_2e = {
-        2017 : lambda ev : bool(getattr(ev, 'HLT_Ele23_Ele12_CaloIdl_TrackIdL_IsoVL_DZ')) 
-	       or bool(getattr(getattr(ev, 'HLT_Ele23_Ele12_CaloIdl_TrackIdL_IsoVL'))) 
-               if (ev.datatag == tags.mc) else 
+        2017 : lambda ev : bool(getattr(ev, 'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ')) 
+	       or bool(getattr(ev, 'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL')) 
+               if (ev.datatag == tags.MC) else 
                bool(getattr(ev, 'HLT_HIEle20_Ele12_CaloIdL_TrackIdL_IsoVL_DZ')) 
                or bool(getattr(ev, 'HLT_HIEle20_Ele12_CaloIdL_TrackIdL_IsoVL'))
         }
@@ -124,9 +124,9 @@ triggerGroups = dict(
     
     
 from CMGTools.TTHAnalysis.tools.evtTagger import EvtTagger
-Trigger_1e = lambda : EvtTagger('Trigger_1e', [lambda ev : triggerGroups['Trigger1e'][ev.year](ev) ])
-Trigger_1m = lambda : EvtTagger('Trigger_1m', [lambda ev : triggerGroups['Trigger1m'][ev.year](ev) ])
-Trigger_2e = lambda : EvtTagger('Trigger_2e', [lambda ev : triggerGroups['Trigger2e'][ev.year](ev) ])
+Trigger_1e = lambda : EvtTagger('Trigger_1e', [lambda ev : triggerGroups['Trigger_1e'][2017](ev) ])
+Trigger_1m = lambda : EvtTagger('Trigger_1m', [lambda ev : triggerGroups['Trigger_1m'][2017](ev) ])
+Trigger_2e = lambda : EvtTagger('Trigger_2e', [lambda ev : triggerGroups['Trigger_2e'][2017](ev) ])
 
 
 triggerSequence = [Trigger_1e, Trigger_1m, Trigger_2e]
