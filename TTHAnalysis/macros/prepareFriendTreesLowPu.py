@@ -161,11 +161,13 @@ def ProcessOptions(step, tag):
     outpath = FriendsPath + "/" + prodName + "/{y}/{step_prefix}".format(y = year, step_prefix = friendFolders[int(step)])
     
     processThis = "--xD .*Run.*" #Only process MC samples (--xD excludes anything that has Run in his name)
+    
+    if tag.lower() not in ["mc", "data"]: raise RuntimeError("[ERROR]: You have to specify whether data or mc is going to be processed")
     dataset = processThis if tag.lower() == "mc" else processThis.replace("--xD", "-D") # We process only MC or only DATA
 
     if step == "0":
         # Step 0 is for tagging samples with MC or data
-        if tag.lower() not in ["mc", "singlemuon", "doublemuon", "highegjet", "lowegjet"]: raise RuntimeError("[ERROR]: Wrong tag ")
+        if tag.lower() not in ["mc", "singlemuon", "doublemuon", "highegjet", "lowegjet"]: raise RuntimeError("[ERROR]: Wrong tag. For step 0 I need to know wich sample is to be tagged ")
 	module = GetTaggingModule(tag)
         dataset = processThis if tag.lower() == "mc" else ProcessOnlyThisSample(tag, processThis) # each dataset has a different tag
         
@@ -222,7 +224,7 @@ if __name__ == "__main__":
     threads     = options.nthreads
     extraArgs   = options.extra
     ncores      = options.ncores
-    merge       = options.merge
+#    merge       = options.merge
     pretend     = options.pretend
     tag         = options.tag
     nobatch     = options.nobatch
