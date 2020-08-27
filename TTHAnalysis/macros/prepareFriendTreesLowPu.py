@@ -153,7 +153,7 @@ def addFriendTrees(step, outpath):
     for previous_step in range(int(step)): friends += preffix + "/" + friendFolders[int(previous_step)] + "/" + suffix
     return friends
 
-def ProcessOptions(step, tag):
+def ProcessOptions(FriendsPath, step, tag):
     #=================================#
     # Function to process the options #
     # passed to getCMD                #
@@ -202,20 +202,22 @@ def ProcessOptions(step, tag):
     return comm
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(usage = "python prepareFriendTreesLowPu.py [options]", description = "Tool used for friend-trees production in the low PU analysis")
-    parser.add_argument('--year',     '-y', metavar = 'year',       dest = "year",    required = False, default = 2017, type = int)
-    parser.add_argument('--dataset',  '-d', metavar = 'dataset',    dest = "dataset", required = False, default = "TTTo2L2Nu")
-    parser.add_argument('--step',     '-s', metavar = 'step',       dest = "step",    required = False, default = "0")
-    parser.add_argument('--check',    '-c', action  = "store_true", dest = "check",   required = False, default = False)
-    parser.add_argument('--queue',    '-q', metavar = 'queue',      dest = "queue",   required = False, default = "")
-    parser.add_argument('--threads',  '-j', metavar = 'nthreads',   dest = "nthreads",required = False, default = 1, type = int)
-    parser.add_argument('--extraArgs','-e', metavar = 'extra',      dest = "extra",   required = False, default = "")
-    parser.add_argument('--ncores',   '-n', metavar = 'ncores',     dest = "ncores",  required = False, default = 1, type = int)
+    parser.add_argument('--FriendsPath','-f', metavar = 'FriendsPath',    dest = "FriendsPath", required = False, default = FriendsPath)
+    parser.add_argument('--year',       '-y', metavar = 'year',       dest = "year",    required = False, default = 2017, type = int)
+    parser.add_argument('--dataset',    '-d', metavar = 'dataset',    dest = "dataset", required = False, default = "TTTo2L2Nu")
+    parser.add_argument('--step',       '-s', metavar = 'step',       dest = "step",    required = False, default = "0")
+    parser.add_argument('--check',      '-c', action  = "store_true", dest = "check",   required = False, default = False)
+    parser.add_argument('--queue',      '-q', metavar = 'queue',      dest = "queue",   required = False, default = "")
+    parser.add_argument('--threads',    '-j', metavar = 'nthreads',   dest = "nthreads",required = False, default = 1, type = int)
+    parser.add_argument('--extraArgs',  '-e', metavar = 'extra',      dest = "extra",   required = False, default = "")
+    parser.add_argument('--ncores',     '-n', metavar = 'ncores',     dest = "ncores",  required = False, default = 1, type = int)
     #parser.add_argument('--merge',    '-m', action  = "store_true", dest = "merge",   required = False, default = False)
-    parser.add_argument('--pretend',  '-p', action  = "store_true", dest = "pretend", required = False, default = True)
-    parser.add_argument('--tag',      '-t', metavar = 'tag',        dest = "tag",     required = False, default = "MC")
-    parser.add_argument('--nobatch',  '-b', action  = 'store_true', dest = "nobatch", required = False, default = False) 
+    parser.add_argument('--pretend',    '-p', action  = "store_true", dest = "pretend", required = False, default = True)
+    parser.add_argument('--tag',        '-t', metavar = 'tag',        dest = "tag",     required = False, default = "MC")
+    parser.add_argument('--nobatch',    '-b', action  = 'store_true', dest = "nobatch", required = False, default = False) 
 
     options     = parser.parse_args()
+    FriendsPath = options.FriendsPath
     year        = options.year
     dataset     = options.dataset
     step        = options.step
@@ -229,4 +231,4 @@ if __name__ == "__main__":
     tag         = options.tag
     nobatch     = options.nobatch
 
-    ProcessOptions(step, tag)
+    ProcessOptions(FriendsPath, step, tag)
