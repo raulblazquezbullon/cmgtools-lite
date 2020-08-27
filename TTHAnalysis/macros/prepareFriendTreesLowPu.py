@@ -159,32 +159,32 @@ def ProcessOptions(step, tag):
     #=================================#
     inpath = SamplesPath # /pool/ciencias/nanoAODv6/lowPU2017/2020_07_21_postProc/ by default
     outpath = FriendsPath + "/" + prodName + "/{y}/{step_prefix}".format(y = year, step_prefix = friendFolders[int(step)])
+    
     processThis = "--xD .*Run.*" #Only process MC samples (--xD excludes anything that has Run in his name)
-    if tag.lower() not in ["mc", "singlemuon", "doublemuon", "highegjet", "lowegjet"]: raise RuntimeError("[ERROR]: Wrong tag ")
+    dataset = processThis if tag.lower() == "mc" else processThis.replace("--xD", "-D") # We process only MC or only DATA
+
     if step == "0":
         # Step 0 is for tagging samples with MC or data
-        module = GetTaggingModule(tag)
+        if tag.lower() not in ["mc", "singlemuon", "doublemuon", "highegjet", "lowegjet"]: raise RuntimeError("[ERROR]: Wrong tag ")
+	module = GetTaggingModule(tag)
         dataset = processThis if tag.lower() == "mc" else ProcessOnlyThisSample(tag, processThis) # each dataset has a different tag
         
-    if step == "1":
+    elif step == "1":
         # Step 1 is for lep merging
         module = "WZ_lowPu_13TeV"
-        dataset = processThis if tag.lower() == "mc" else processThis.replace("--xD", "-D") # We process only MC or only DATA
         
-    if step == "2":
+    elif step == "2":
         # Step 2 is for recleaning
         module = "WZ_lowPu_recl_mc" if tag.lower() == "mc" else "WZ_lowPu_recl_data" 
-        dataset = processThis if tag.lower() == "mc" else processThis.replace("--xD", "-D") # We process only MC or only DATA
     
-    if step == "3":
+    elif step == "3":
         # Step 3 is for triggering
         module = "triggerSequence"
-        dataset = "" # Triggers for MC and data are are differentiated by its tag, so this works for any sample
         
-    if step == "4":
+    elif step == "4":
         # Step 4 is for event variables
         module = "eventVars"
-        dataset = "" #This run for any sample since they have the same event variables
+    
     friends = addFriendTrees(step, outpath)
     chunksize = 1000
     cluster  = ""
