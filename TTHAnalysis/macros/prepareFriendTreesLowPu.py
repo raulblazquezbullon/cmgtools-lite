@@ -131,10 +131,11 @@ def GetCMD(CMD, inpath, outpath, module, friends, dataset, chunksize, cluster, l
 
 def ProcessOnlyThisSample(tag, processThis):
     processThis = "-D "
-    if tag.lower() == "singlemuon": processThis += ".*SingleMuon*"
-    if tag.lower() == "doublemuon": processThis += ".*DoubleMuon*"
-    if tag.lower() == "highegjet": processThis += ".*HighEGJet*"
-    if tag.lower() == "lowegjet": processThis += ".*LowEGJet*"
+    if tag.lower() == "data": processThis += ".*Run.*"
+    elif tag.lower() == "singlemuon": processThis += ".*SingleMuon*"
+    elif tag.lower() == "doublemuon": processThis += ".*DoubleMuon*"
+    elif tag.lower() == "highegjet": processThis += ".*HighEGJet*"
+    elif tag.lower() == "lowegjet": processThis += ".*LowEGJet*"
     return processThis
 def GetTaggingModule(tag):
     module = ""
@@ -162,14 +163,13 @@ def ProcessOptions(step, tag):
     
     processThis = "--xD .*Run.*" #Only process MC samples (--xD excludes anything that has Run in his name)
     
-    if tag.lower() not in ["mc", "data"]: raise RuntimeError("[ERROR]: You have to specify whether data or mc is going to be processed")
+    if tag.lower() not in ["mc","data", "singlemuon", "doublemuon", "highegjet", "lowegjet"]: raise RuntimeError("[ERROR]: I need to know whether the sample is mc or data")
     dataset = processThis if tag.lower() == "mc" else processThis.replace("--xD", "-D") # We process only MC or only DATA
 
     if step == "0":
         # Step 0 is for tagging samples with MC or data
-        if tag.lower() not in ["mc", "singlemuon", "doublemuon", "highegjet", "lowegjet"]: raise RuntimeError("[ERROR]: Wrong tag. For step 0 I need to know wich sample is to be tagged ")
-	module = GetTaggingModule(tag)
-        dataset = processThis if tag.lower() == "mc" else ProcessOnlyThisSample(tag, processThis) # each dataset has a different tag
+        if tag.lower() == "data": raise RuntimeError("[ERROR]: For step0 I need to know the specific name of the data sample in order to get the correct module")
+        module = GetTaggingModule(tag)
         
     elif step == "1":
         # Step 1 is for lep merging
