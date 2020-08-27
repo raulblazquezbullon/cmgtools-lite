@@ -208,7 +208,7 @@ if __name__ == "__main__":
     parser.add_argument('--threads',  '-j', metavar = 'nthreads',   dest = "nthreads",required = False, default = 1, type = int)
     parser.add_argument('--extraArgs','-e', metavar = 'extra',      dest = "extra",   required = False, default = "")
     parser.add_argument('--ncores',   '-n', metavar = 'ncores',     dest = "ncores",  required = False, default = 1, type = int)
-    parser.add_argument('--merge',    '-m', action  = "store_true", dest = "merge",   required = False, default = False)
+    #parser.add_argument('--merge',    '-m', action  = "store_true", dest = "merge",   required = False, default = False)
     parser.add_argument('--pretend',  '-p', action  = "store_true", dest = "pretend", required = False, default = True)
     parser.add_argument('--tag',      '-t', metavar = 'tag',        dest = "tag",     required = False, default = "MC")
     parser.add_argument('--nobatch',  '-b', action  = 'store_true', dest = "nobatch", required = False, default = False) 
