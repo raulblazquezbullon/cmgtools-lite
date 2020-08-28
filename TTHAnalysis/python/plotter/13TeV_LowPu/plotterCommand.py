@@ -9,7 +9,8 @@ import warnings as wr
         
 # =========== Default parameters
 path        = "/pool/ciencias/nanoAODv6/lowPU2017/2020_07_21_postProc"
-ftreesPath = "/pool/phedexrw/userstorage/cmstudents/cvico/WZ_LowPu/13TeV_Aug13/2020_07_21/2017/"
+ftreesPath  = "/pool/phedexrw/userstorage/cmstudents/cvico/WZ_LowPu/13TeV_Aug13/2020_07_21/2017/"
+logpath     = ftreesPath + "/{p}/{y}/logs"
 ftrees      = ("--Fs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "0_tags ") +
 	           "--Fs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "1_lepMerge ") +
                "--Fs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "2_recleaning ") +
@@ -20,20 +21,56 @@ ftrees      = ("--Fs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Frien
 lumi        = 0.23
 nCores      = 4
 
-command     = "python mcPlots.py"
+CMD         = "python mcPlots.py" 
 slurm       = 'sbatch -c {nth} -p {queue} -J {jobname} -e {logpath}/log.%j.%x.err -o {logpath}/log.%j.%x.out -- wrap "{command}"'
+
+
 
 
 
 # =========== Function declaration
 
+
+
+def checkIfExists(path):
+    return True if os.path.exists(path) else False
+
+def addBoringLines(text):
+    Lines = [" --tree NanoAOD",
+             "--pdir {outpath}",
+             "-f -l {lumi}"
+             "-L 13TeV_LowPu/functions13TeV_lowPu.cc",
+             "--mcc 13TeV_LowPu/lepchoice-FO.txt",
+             "--split-factor=-1".format(lumi = lumi),
+             "--maxRatioRange 0.6  1.99", 
+             "--ratioYNDiv 505",
+             "--showRatio",
+             "--attachRatioPanel", 
+             "--fixRatioRange",
+             "--legendColumns 3",
+             "--legendWidth 0.35",
+             "--legendFontSize 0.042"
+             "--noCms",
+             "--topSpamSize 1.1",
+             "--lspam '#scale[1.1]{#bf{CMS}} #scale[0.9]{#it{Preliminary}}'" 
+             "--rspam '%(lumi) (13 TeV)'"]
+    
+    for line in Lines: text += line
+    print(text)
+    
+    return text
 def ProcessCommand(args):
     prod, year, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend = args
     
-    # Check if the output folder exists
+    fullOutPath = outpath + "/" + year
+    fullLogPath = logpath.format(y = year, p = prod) 
+    # Check if the output folder and logpath exists
+    os.system("mkdir -p " + fullOutPath) if not checkIfExists(fullOutPath) and not pretend else 1
+    os.system("mkdir -p " + fullLogPath) if not checkIfExists(fullLogPath) and queue != "" else 1
     
-    cmd = ""
-    return cmd
+    # Stuff
+    command = addBoringLines(CMD)
+    return 
 
 # =========== Main part
 if __name__ == "__main__":
@@ -66,5 +103,5 @@ if __name__ == "__main__":
         print ('I still have to implement this :D')
     else:
         print('[INFO] Going local')
-        ProcessCommand( (prod, year, queue, extra, nthreads, selplot, pretend, outpath, region, ratiorange) )    
+        ProcessCommand( (prod, year, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend) )    
         
