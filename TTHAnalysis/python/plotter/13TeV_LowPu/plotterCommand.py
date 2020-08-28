@@ -6,10 +6,10 @@ import sys
 import enum
 import argparse
 import warnings as wr
-
+        
 # =========== Default parameters
 path        = "/pool/ciencias/nanoAODv6/lowPU2017/2020_07_21_postProc"
-friendspath = "/pool/phedexrw/userstorage/cmstudents/cvico/WZ_LowPu/13TeV_Aug13/2020_07_21/2017/"
+ftreesPath = "/pool/phedexrw/userstorage/cmstudents/cvico/WZ_LowPu/13TeV_Aug13/2020_07_21/2017/"
 ftrees      = ("--Fs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "0_tags ") +
 	           "--Fs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "1_lepMerge ") +
                "--Fs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "2_recleaning ") +
@@ -23,11 +23,23 @@ nCores      = 4
 command     = "python mcPlots.py"
 slurm       = 'sbatch -c {nth} -p {queue} -J {jobname} -e {logpath}/log.%j.%x.err -o {logpath}/log.%j.%x.out -- wrap "{command}"'
 
+
+
+# =========== Function declaration
+
+def ProcessCommand(args):
+    prod, year, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend = args
+    
+    # Check if the output folder exists
+    
+    cmd = ""
+    return cmd
+
 # =========== Main part
 if __name__ == "__main__":
     # Parser options
     parser = argparse.ArgumentParser()
-    parser.add_argument('--production',     '-P',   metavar = "prod",       dest = "prod",       required = True)
+    parser.add_argument('--production',     '-P',   metavar = "prod",       dest = "prod",       required = False)
     parser.add_argument('--year',           '-y',   metavar = 'year',       dest = "year",       required = False, default = "2016")
     parser.add_argument('--queue',          '-q',   metavar = 'queue',      dest = "queue",      required = False, default = "")
     parser.add_argument('--extraArgs',      '-e',   metavar = 'extra',      dest = "extra",      required = False, default = "")
@@ -50,3 +62,9 @@ if __name__ == "__main__":
     region     = args.region
     ratiorange = args.ratiorange
     
+    if queue != "":
+        print ('I still have to implement this :D')
+    else:
+        print('[INFO] Going local')
+        ProcessCommand( (prod, year, queue, extra, nthreads, selplot, pretend, outpath, region, ratiorange) )    
+        
