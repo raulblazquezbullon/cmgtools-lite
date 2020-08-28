@@ -3,7 +3,7 @@ dilep: nLepFO>=2
 os: LepGood1_charge*LepGood2_charge<0
 cleanup: minMllAFAS > 20
 triggerAll: Trigger_5TeV_1e || Trigger_5TeV_1m  || Trigger_5TeV_2e || Trigger_5TeV_2m; Disable=True
-trigger1L: Trigger_1e_lowPu || Trigger_1m_lowPu; Disable=True
+trigger1L: Trigger_1e || Trigger_1m
 pt2010: LepGood1_conePt>20 && LepGood2_conePt>10
 TT: LepGood1_isLepTight && LepGood2_isLepTight
 ZVeto:  if3(abs(LepGood1_pdgId)==abs(LepGood2_pdgId), abs(mZ1-91.2)>15, 1)
@@ -15,7 +15,7 @@ minmll: minMllAFOS > 20; Disable=True
  
 1btag:  nBJetMedium25>=1;			
 ee: abs(LepGood1_pdgId)==11 && abs(LepGood2_pdgId)==11; Disable=True
-em: abs(LepGood1_pdgId) != abs(LepGood2_pdgId);
+em: abs(LepGood1_pdgId) != abs(LepGood2_pdgId);         Disable=True
 mm: abs(LepGood1_pdgId)==13 && abs(LepGood2_pdgId)==13; Disable=True
 sf: abs(LepGood1_pdgId) == abs(LepGood2_pdgId);         Disable=True
 onZ: abs(mZ1-91.2)<15;	   				Disable=True
