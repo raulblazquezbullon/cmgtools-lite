@@ -17,13 +17,22 @@ CMD         = "python mcPlots.py --tree NanoAOD --pdir {outpath} "
 slurm       = 'sbatch -c {nth} -p {queue} -J {jobname} -e {logpath}/log.%j.%x.err -o {logpath}/log.%j.%x.out -- wrap "{command}"'
 
 
-defaultPars = {"lumi" : 0.23,
-               "nCores" : 4,
-               "mccFile" : "13TeV_LowPu/lepchoice-FO.txt",
-               "functions": "13TeV_LowPu/functions13TeV_lowPu",
+defaultPars = {"path"       : "/pool/ciencias/nanoAODv6/lowPU2017/2020_07_21_postProc",
+               "ftreesPath" : "/pool/phedexrw/userstorage/cmstudents/cvico/WZ_LowPu/13TeV_Aug13/2020_07_21/2017/",
+               "logpath"    : "/pool/phedexrw/userstorage/cmstudents/cvico/WZ_LowPu/13TeV_Aug13/2020_07_21/2017/{p}/{y}/logs",
+               "lumi"       : 0.23,
+               "nCores"     : 4,
+               "mccFile"    : "13TeV_LowPu/lepchoice-FO.txt",
+               "functions"  : "13TeV_LowPu/functions13TeV_lowPu",
+               "mcaFile"    : "13TeV_LowPu/mca-ttbar-mcdata.txt",
+               "cuts"       : "13TeV_LowPu/ttbar_dilepton.txt",
+               "plots"      : "13TeV_LowPu/ttbar_plots.txt",
+               "weight"     : "", 
+               "binnameTT"  : "ttbar"
               }
 
 
+steps = ["0_tags", "1_lepMerge", "2_recleaning", "3_triggers", "4_triggers"]
 # =========== Function declaration
 
 
@@ -32,13 +41,9 @@ def checkIfExists(path):
     return True if os.path.exists(path) else False
 
 def addBoringLines(text):
-    Lines = ["--Fs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "0_tags "),
-             "--Fs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "1_lepMerge "),
-             "--Fs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "2_recleaning "),
-             "--Fs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "3_triggers "),
-             "--Fs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "4_eventVars "),
-             "-f -l {lumi} ".format(lumi = defaultPars["lumi"]),
-             "-L 13TeV_LowPu/functions13TeV_lowPu.cc ",
+    for step in steps: text += "--Fs {ftreesPath}{Friend} ".format(ftreesPath = defaultPars["ftreesPath"], Friend = step)
+    Lines = ["-f -l {lumi} ".format(lumi = defaultPars["lumi"]),
+             "-L {functions} ".format(functions = defaultPars["functions"]),
              "--split-factor=-1 ",
              "--maxRatioRange 0.6  1.99 ", 
              "--ratioYNDiv 505 ",
@@ -50,13 +55,13 @@ def addBoringLines(text):
              "--legendFontSize 0.042 "
              "--noCms ",
              "--topSpamSize 1.1 ",
-             "--lspam '#scale[1.1]{#bf{CMS}} #scale[0.9]{#it{Preliminary}}' " 
-             "--rspam '%(lumi) (13 TeV)' "
-             "--mcc 13TeV_LowPu/lepchoice-FO.txt ",
-             "{mca} ".format(mca = "13TeV_LowPu/mca-ttbar-mcdata.txt"),
-             "{cuts} ".format(cuts = "13TeV_LowPu/ttbar_dilepton.txt"),
-             "{plots} ".format(plots = "13TeV_LowPu/ttbar_plots.txt"),
-             "{weight} ".format(weight = ""), #still have no weights to add
+             "--lspam '#scale[1.1]{#bf{CMS}} #scale[0.9]{#it{Preliminary}}' ",
+             "--rspam '%(lumi) (13 TeV)' ",
+             "--mcc {mccFile} ".format(mccFile = defaultPars["mccFile"]),
+             "{mca} ".format(mca = defaultPars["mcaFile"]),
+             "{cuts} ".format(cuts = defaultPars["cuts"]),
+             "{plots} ".format(plots = defaultPars["plots"]),
+             "{weight} ".format(weight = defaultPars["weight"]), #still have no weights to add
              "{binname} ".format(binname = "--binname ttbar"),
              ]
     
