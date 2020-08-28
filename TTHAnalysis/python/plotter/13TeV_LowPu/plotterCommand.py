@@ -72,7 +72,6 @@ def ProcessCommand(args):
     fullLogPath = defaultPars["logpath"].format(y = year, p = prod) 
     # Check if the output folder and logpath exists
     os.system("mkdir -p " + fullOutPath) if not checkIfExists(fullOutPath) and not pretend else 1
-    os.system("mkdir -p " + fullLogPath) if not checkIfExists(fullLogPath) and queue != "" else 1
     
     # Stuff
     command = CMD.format(outpath = fullOutPath)
@@ -108,8 +107,17 @@ if __name__ == "__main__":
     ratiorange = args.ratiorange
     
     if queue != "":
-        print ('I still have to implement this :D')
-        ProcessCommand( (prod, year, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend) )    
+        print ('[INFO] Running in cluster ')
+        print ('[INFO] For now this code is not prepared to submit commands, so it will only prompt the command to submit')
+        if queue != "":
+        os.system("mkdir -p " + fullLogPath) if not checkIfExists(fullLogPath) and queue != "" else 1
+        jobname = "CMGTplotter_{y}_{p}_{s}".format(y = year, p = prod, s = "all" if len(selplot)==0 else ".".join(selplot))
+        command = slurm.format(nth = nthreads,
+                               queue = queue,
+                               jobname = jobname,
+                               logpath = fullLogPath,
+                               command = ProcessCommand( (prod, year, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend) )
+                               )
     else:
         print('[INFO] Going local')
         ProcessCommand( (prod, year, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend) )    
