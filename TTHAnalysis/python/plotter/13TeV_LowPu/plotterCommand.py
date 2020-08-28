@@ -11,21 +11,17 @@ import warnings as wr
 path        = "/pool/ciencias/nanoAODv6/lowPU2017/2020_07_21_postProc"
 ftreesPath  = "/pool/phedexrw/userstorage/cmstudents/cvico/WZ_LowPu/13TeV_Aug13/2020_07_21/2017/"
 logpath     = ftreesPath + "/{p}/{y}/logs"
-ftrees      = ("--Fs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "0_tags ") +
-	           "--Fs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "1_lepMerge ") +
-               "--Fs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "2_recleaning ") +
-               "--Fs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "3_triggers ") +
-               "--Fs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "4_eventVars ")
-              )
 
-lumi        = 0.23
-nCores      = 4
 
-CMD         = "python mcPlots.py" 
+CMD         = "python mcPlots.py --tree NanoAOD --pdir {outpath} " 
 slurm       = 'sbatch -c {nth} -p {queue} -J {jobname} -e {logpath}/log.%j.%x.err -o {logpath}/log.%j.%x.out -- wrap "{command}"'
 
 
-
+defaultPars = {"lumi" : 0.23,
+               "nCores" : 4,
+               "mccFile" : "13TeV_LowPu/lepchoice-FO.txt",
+               "functions": "13TeV_LowPu/functions13TeV_lowPu",
+              }
 
 
 # =========== Function declaration
@@ -36,24 +32,28 @@ def checkIfExists(path):
     return True if os.path.exists(path) else False
 
 def addBoringLines(text):
-    Lines = [" --tree NanoAOD",
-             "--pdir {outpath}",
-             "-f -l {lumi}"
-             "-L 13TeV_LowPu/functions13TeV_lowPu.cc",
-             "--mcc 13TeV_LowPu/lepchoice-FO.txt",
-             "--split-factor=-1".format(lumi = lumi),
-             "--maxRatioRange 0.6  1.99", 
-             "--ratioYNDiv 505",
-             "--showRatio",
-             "--attachRatioPanel", 
-             "--fixRatioRange",
-             "--legendColumns 3",
-             "--legendWidth 0.35",
-             "--legendFontSize 0.042"
-             "--noCms",
-             "--topSpamSize 1.1",
-             "--lspam '#scale[1.1]{#bf{CMS}} #scale[0.9]{#it{Preliminary}}'" 
-             "--rspam '%(lumi) (13 TeV)'"]
+    Lines = ["--Fs {ftreesPath}{Friend} ".format(ftreesPath = ftreesPath, Friend = "0_tags "),
+             "--Fs {ftreesPath}{Friend} ".format(ftreesPath = ftreesPath, Friend = "1_lepMerge "),
+             "--Fs {ftreesPath}{Friend} ".format(ftreesPath = ftreesPath, Friend = "2_recleaning "),
+             "--Fs {ftreesPath}{Friend} ".format(ftreesPath = ftreesPath, Friend = "3_triggers "),
+             "--Fs {ftreesPath}{Friend} ".format(ftreesPath = ftreesPath, Friend = "4_eventVars "),
+             "-f -l {lumi} ".format(lumi = defaultPars["lumi"]),
+             "-L 13TeV_LowPu/functions13TeV_lowPu.cc ",
+             "--mcc 13TeV_LowPu/lepchoice-FO.txt ",
+             "--split-factor=-1 ",
+             "--maxRatioRange 0.6  1.99 ", 
+             "--ratioYNDiv 505 ",
+             "--showRatio ",
+             "--attachRatioPanel ", 
+             "--fixRatioRange ",
+             "--legendColumns 3 ",
+             "--legendWidth 0.35 ",
+             "--legendFontSize 0.042 "
+             "--noCms ",
+             "--topSpamSize 1.1 ",
+             "--lspam '#scale[1.1]{#bf{CMS}} #scale[0.9]{#it{Preliminary}}' " 
+             "--rspam '%(lumi) (13 TeV)' "
+             ]
     
     for line in Lines: text += line
     print(text)
@@ -69,6 +69,7 @@ def ProcessCommand(args):
     os.system("mkdir -p " + fullLogPath) if not checkIfExists(fullLogPath) and queue != "" else 1
     
     # Stuff
+    command = CMD.format(outpath = outpath)
     command = addBoringLines(CMD)
     return 
 
