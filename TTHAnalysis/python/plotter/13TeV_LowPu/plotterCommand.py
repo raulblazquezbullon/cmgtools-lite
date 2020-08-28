@@ -32,14 +32,13 @@ def checkIfExists(path):
     return True if os.path.exists(path) else False
 
 def addBoringLines(text):
-    Lines = ["--Fs {ftreesPath}{Friend} ".format(ftreesPath = ftreesPath, Friend = "0_tags "),
-             "--Fs {ftreesPath}{Friend} ".format(ftreesPath = ftreesPath, Friend = "1_lepMerge "),
-             "--Fs {ftreesPath}{Friend} ".format(ftreesPath = ftreesPath, Friend = "2_recleaning "),
-             "--Fs {ftreesPath}{Friend} ".format(ftreesPath = ftreesPath, Friend = "3_triggers "),
-             "--Fs {ftreesPath}{Friend} ".format(ftreesPath = ftreesPath, Friend = "4_eventVars "),
+    Lines = ["--Fs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "0_tags "),
+             "--Fs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "1_lepMerge "),
+             "--Fs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "2_recleaning "),
+             "--Fs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "3_triggers "),
+             "--Fs {ftreesPath}{Friend}".format(ftreesPath = ftreesPath, Friend = "4_eventVars "),
              "-f -l {lumi} ".format(lumi = defaultPars["lumi"]),
              "-L 13TeV_LowPu/functions13TeV_lowPu.cc ",
-             "--mcc 13TeV_LowPu/lepchoice-FO.txt ",
              "--split-factor=-1 ",
              "--maxRatioRange 0.6  1.99 ", 
              "--ratioYNDiv 505 ",
@@ -53,6 +52,12 @@ def addBoringLines(text):
              "--topSpamSize 1.1 ",
              "--lspam '#scale[1.1]{#bf{CMS}} #scale[0.9]{#it{Preliminary}}' " 
              "--rspam '%(lumi) (13 TeV)' "
+             "--mcc 13TeV_LowPu/lepchoice-FO.txt ",
+             "{mca} ".format(mca = "13TeV_LowPu/mca-ttbar-mcdata.txt"),
+             "{cuts} ".format(cuts = "13TeV_LowPu/ttbar_dilepton.txt"),
+             "{plots} ".format(plots = "13TeV_LowPu/ttbar_plots.txt"),
+             "{weight} ".format(weight = ""), #still have no weights to add
+             "{binname} ".format(binname = "--binname ttbar"),
              ]
     
     for line in Lines: text += line
