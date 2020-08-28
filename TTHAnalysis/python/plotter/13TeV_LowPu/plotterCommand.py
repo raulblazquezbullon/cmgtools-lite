@@ -8,10 +8,6 @@ import argparse
 import warnings as wr
         
 # =========== Default parameters
-path        = "/pool/ciencias/nanoAODv6/lowPU2017/2020_07_21_postProc"
-ftreesPath  = "/pool/phedexrw/userstorage/cmstudents/cvico/WZ_LowPu/13TeV_Aug13/2020_07_21/2017/"
-logpath     = ftreesPath + "/{p}/{y}/logs"
-
 
 CMD         = "python mcPlots.py --tree NanoAOD --pdir {outpath} " 
 slurm       = 'sbatch -c {nth} -p {queue} -J {jobname} -e {logpath}/log.%j.%x.err -o {logpath}/log.%j.%x.out -- wrap "{command}"'
@@ -66,21 +62,22 @@ def addBoringLines(text):
              ]
     
     for line in Lines: text += line
-    print(text)
     
     return text
+
 def ProcessCommand(args):
     prod, year, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend = args
     
     fullOutPath = outpath + "/" + year
-    fullLogPath = logpath.format(y = year, p = prod) 
+    fullLogPath = defaultPars["logpath"].format(y = year, p = prod) 
     # Check if the output folder and logpath exists
     os.system("mkdir -p " + fullOutPath) if not checkIfExists(fullOutPath) and not pretend else 1
     os.system("mkdir -p " + fullLogPath) if not checkIfExists(fullLogPath) and queue != "" else 1
     
     # Stuff
-    command = CMD.format(outpath = outpath)
-    command = addBoringLines(CMD)
+    command = CMD.format(outpath = fullOutPath)
+    command = addBoringLines(command)
+    print(command)
     return 
 
 # =========== Main part
@@ -88,7 +85,7 @@ if __name__ == "__main__":
     # Parser options
     parser = argparse.ArgumentParser()
     parser.add_argument('--production',     '-P',   metavar = "prod",       dest = "prod",       required = False)
-    parser.add_argument('--year',           '-y',   metavar = 'year',       dest = "year",       required = False, default = "2016")
+    parser.add_argument('--year',           '-y',   metavar = 'year',       dest = "year",       required = False, default = "2017")
     parser.add_argument('--queue',          '-q',   metavar = 'queue',      dest = "queue",      required = False, default = "")
     parser.add_argument('--extraArgs',      '-e',   metavar = 'extra',      dest = "extra",      required = False, default = "")
     parser.add_argument('--nthreads',       '-j',   metavar = 'nthreads',   dest = "nthreads",   required = False, default = 0, type = int)
@@ -112,6 +109,7 @@ if __name__ == "__main__":
     
     if queue != "":
         print ('I still have to implement this :D')
+        ProcessCommand( (prod, year, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend) )    
     else:
         print('[INFO] Going local')
         ProcessCommand( (prod, year, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend) )    
