@@ -37,7 +37,7 @@ parser = OptionParser(usage = "%prog [options]")
 
 ## === Options regarding paths and files
 parser.add_option("-P", "--path", dest = "path", type = "string", default = path, help = "Path where the postproc is storaged")
-parser.add_option("--pdir", dest = "outpath", type = "string", default = "./Plots", help = "Output path where the plots are going to be saved")
+parser.add_option("--pdir", dest = "outpath", type = "string", default = "/pool/phedexrw/userstorage/cmstudents/cvico/WZ_LowPu/Plots/", help = "Output path where the plots are going to be saved")
 parser.add_option("-F", "--ftreesPath", dest = "ftreesPath", type = "string", default = ftreesPath, help = "Path where the friend-trees are storaged" )
 parser.add_option("--ftrees", dest = "ftrees", type = "string", default = ftrees, action = "append", help = "Specify the ftrees that will be used")
 
