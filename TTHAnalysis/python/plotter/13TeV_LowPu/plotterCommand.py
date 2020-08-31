@@ -57,6 +57,8 @@ def addBoringLines(text):
              "{plots} ".format(plots = defaultPars["plots"]),
              "{weight} ".format(weight = defaultPars["weight"]), #still have no weights to add
              "{binname} ".format(binname = "--binname ttbar"),
+ 	     "--scaleBkgToData",
+	     "--scaleSigToData", 
              ]
     
     for line in Lines: text += line
