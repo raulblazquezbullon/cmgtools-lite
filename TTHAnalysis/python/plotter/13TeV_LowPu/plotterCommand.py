@@ -9,17 +9,17 @@ import warnings as wr
         
 # =========== Default parameters
 
-CMD         = "python mcPlots.py --tree NanoAOD --pdir {outpath} " 
-slurm       = 'sbatch -c {nth} -p {queue} -J {jobname} -e {logpath}/log.%j.%x.err -o {logpath}/log.%j.%x.out -- wrap "{command}"'
+CMD         = "python mcPlots.py --tree NanoAOD  -P {path} --pdir {outpath} " 
+slurm       = 'sbatch -c {nth} -p {queue} -J {jobname} -e {logpath}/log.%j.%x.err -o {logpath}/log.%j.%x.out --wrap "{command}"'
 
 
 defaultPars = {"path"       : "/pool/ciencias/nanoAODv6/lowPU2017/2020_07_21_postProc",
                "ftreesPath" : "/pool/phedexrw/userstorage/cmstudents/cvico/WZ_LowPu/13TeV_Aug13/2020_07_21/2017/",
-               "logpath"    : "/pool/phedexrw/userstorage/cmstudents/cvico/WZ_LowPu/13TeV_Aug13/2020_07_21/2017/{p}/{y}/logs",
+               "logpath"    : "{outpath}/logs",
                "lumi"       : 0.23,
                "nCores"     : 4,
                "mccFile"    : "13TeV_LowPu/lepchoice-FO.txt",
-               "functions"  : "13TeV_LowPu/functions13TeV_lowPu",
+               "functions"  : "13TeV_LowPu/functions13TeV_lowPu.cc",
                "mcaFile"    : "13TeV_LowPu/mca-ttbar-mcdata.txt",
                "cuts"       : "13TeV_LowPu/ttbar_dilepton.txt",
                "plots"      : "13TeV_LowPu/ttbar_plots.txt",
@@ -28,10 +28,8 @@ defaultPars = {"path"       : "/pool/ciencias/nanoAODv6/lowPU2017/2020_07_21_pos
               }
 
 
-steps = ["0_tags", "1_lepMerge", "2_recleaning", "3_triggers", "4_triggers"]
+steps = ["0_tags", "1_lepMerge", "2_recleaning", "3_triggers", "4_eventVars"]
 # =========== Function declaration
-
-
 
 def checkIfExists(path):
     return True if os.path.exists(path) else False
@@ -68,13 +66,13 @@ def addBoringLines(text):
 def ProcessCommand(args):
     prod, year, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend = args
     
-    fullOutPath = outpath + "/" + year
     # Check if the output folder and logpath exists
-    os.system("mkdir -p " + fullOutPath) if not checkIfExists(fullOutPath) and not pretend else 1
+    os.system("mkdir -p " + outpath) if not checkIfExists(outpath) and not pretend else 1
     
     # Stuff
-    command = CMD.format(outpath = fullOutPath)
+    command = CMD.format(path = defaultPars["path"], outpath = outpath)
     command = addBoringLines(command)
+    for plot in selplot: command += " --sP {plot}".format(plot = plot)
     
     return command
 
@@ -109,7 +107,7 @@ if __name__ == "__main__":
         print ('[INFO] Running in cluster ')
         print ('[INFO] For now this code is not prepared to submit commands, so it will only prompt the command to submit')
         jobname = "CMGTplotter_{y}_{p}_{s}".format(y = year, p = prod, s = "all" if len(selplot)==0 else ".".join(selplot))
-        fullLogPath = defaultPars["logpath"].format(y = year, p = prod) 
+        fullLogPath = defaultPars["logpath"].format(outpath = outpath) 
         os.system("mkdir -p " + fullLogPath) if not checkIfExists(fullLogPath) and queue != "" else 1
         command = slurm.format(nth = nthreads,
                                queue = queue,
