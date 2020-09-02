@@ -27,7 +27,7 @@ electrons = {
 # ======================== Step 0 modules
 
 
-##                        Tags and channels modules, for MC and DATA differentiation
+##                        Tags and channels modules
 class ch(enum.IntEnum):
     '''
      Considered channels
@@ -73,7 +73,7 @@ from CMGTools.TTHAnalysis.tools.nanoAOD.yearTagger import yearTag, yearTag2017
 from CMGTools.TTHAnalysis.tools.nanoAOD.xsecTagger import xsecTag
 from CMGTools.TTHAnalysis.tools.nanoAOD.lepJetBTagAdder import lepJetBTagCSV, lepJetBTagDeepCSV, lepJetBTagDeepFlav, lepJetBTagDeepFlavC
 
-##                           This ones will come after the new post-proc
+##                         
 #from PhysicsTools.NanoAODTools.postprocessing.modules.common.puWeightProducer import puWeight_2017, puAutoWeight_2017
 #from PhysicsTools.NanoAODTools.postprocessing.modules.common.PrefireCorr import prefCorr_2017
 #from PhysicsTools.NanoAODTools.postprocessing.modules.common.muonScaleResProducer import muonScaleRes2017
@@ -99,7 +99,7 @@ WZ_lowPu_13TeV = [lepMerge,
         ]
 
 # ===========================================================
-# ======================== Step 1 modules: Triggers
+# ======================== Step 3 modules: Triggers
 triggerGroups = dict(    
     Trigger_1e = {
         2017 : lambda ev : bool(getattr(ev, 'HLT_Ele35_WPTight_Gsf'))
@@ -224,7 +224,7 @@ WZ_lowPu_recl_mc = [recleaner_step1, recleaner_step2_mc, isMatchRightCharge, mcM
 WZ_lowPu_recl_data = [recleaner_step1, recleaner_step2_data]
 
 # ===========================================================
-# ======================== Step 3 modules: EventVars
+# ======================== Step 4 modules: EventVars
 
 from CMGTools.TTHAnalysis.tools.eventVars_LowPu import eventVars_LowPu
 eventVars = lambda : eventVars_LowPu('', 'Recl')
