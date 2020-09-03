@@ -7,7 +7,7 @@ kreator = ComponentCreator()
 # ====== T(T) + BOSON =====
 
 
-#TGJets_lep = kreator.makeMyPrivateMCComponent("TGJets_lep", "/TGJets_leptonDecays_TuneCP5_13TeV-madgraph-pythia8/RunIIAutumn18NanoAODv4-Nano14Dec2018_102X_upgrade2018_realistic_v16_ext1-v1/NANOAODSIM", "PRIVATE", ".*root",'phys03', 1.018, fracNegWeights=0.411, useAAA=True) # leptonic top decays only
+TGJets_lep = kreator.makeMyPrivateMCComponent("TGJets_lep", "/TGJets_leptonDecays_13TeV_amcatnlo_madspin_pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 1.018, fracNegWeights=0.411, useAAA=True) # leptonic top decays only
 # TTbar cross section: NNLO, https://twiki.cern.ch/twiki/bin/view/LHCPhysics/TtbarNNLO (172.5)
 #TTJets = kreator.makeMyPrivateMCComponent("TTJets", "/TTJets_TuneCUETP8M2T4_13TeV-amcatnloFXFX-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6-v1/NANOAODSIM", "PRIVATE", ".*root",'phys03', 831.76, fracNegWeights=0.319, useAAA=True)
 
@@ -20,8 +20,8 @@ TT_pow = kreator.makeMyPrivateMCComponent("TT_pow", "/TT_TuneCUETP8M2T4_13TeV-po
 #TTJets_DiLepton                 = kreator.makeMyPrivateMCComponent("TTJets_DiLepton"                , "/TTJets_DiLept_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6-v1/NANOAODSIM"     , "PRIVATE", ".*root",'phys03', 831.76*((3*0.108)**2) , useAAA=True)
 #TTJets_DiLepton_ext             = kreator.makeMyPrivateMCComponent("TTJets_DiLepton_ext"            , "/TTJets_DiLept_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6_ext1-v1/NANOAODSIM", "PRIVATE", ".*root",'phys03', 831.76*((3*0.108)**2) , useAAA=True)
 
-TTLep_pow = kreator.makeMyPrivateMCComponent("TTLep_pow", "/TTTo2L2Nu_TuneCUETP8M2_ttHtranche3_13TeV-powheg-pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 831.76*((3*0.108)**2) , useAAA=True)
-TTSemi_pow = kreator.makeMyPrivateMCComponent("TTSemi_pow", "/TTToSemilepton_TuneCUETP8M2_ttHtranche3_13TeV-powheg-pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 2*831.76*(3*0.108)*(1-3*0.108) , useAAA=True)
+TTLep_pow = kreator.makeMyPrivateMCComponent("TTLep_pow", "//TTTo2L2Nu_TuneCP5_PSweights_13TeV-powheg-pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 831.76*((3*0.108)**2) , useAAA=True)
+TTSemi_pow = kreator.makeMyPrivateMCComponent("TTSemi_pow", "/TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8/schoef-TopNanoAODv6-1-2-2_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 2*831.76*(3*0.108)*(1-3*0.108) , useAAA=True)
 
 #TTJets_LO_HT600to800   = kreator.makeMyPrivateMCComponent("TTJets_LO_HT600to800", "/TTJets_HT-600to800_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6_ext1-v1/NANOAODSIM", "PRIVATE", ".*root",'phys03', 1.610*831.76/502.2, useAAA=True)
 #TTJets_LO_HT800to1200  = kreator.makeMyPrivateMCComponent("TTJets_LO_HT800to1200", "/TTJets_HT-800to1200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6_ext1-v1/NANOAODSIM",  "PRIVATE", ".*root",'phys03', 0.663*831.76/502.2, useAAA=True)
@@ -30,6 +30,7 @@ TTSemi_pow = kreator.makeMyPrivateMCComponent("TTSemi_pow", "/TTToSemilepton_Tun
 
 
 TTs = [
+TGJets_lep,
 #TTJets,
 TT_pow,
 #TTJets_SingleLeptonFromTbar,
@@ -50,109 +51,104 @@ TTHnobb_pow = kreator.makeMyPrivateMCComponent("TTHnobb_pow", "/ttHToNonbb_M125_
 
 
 # These are the SM cross sections, i.e. cf = cv = 1.0 (see https://twiki.cern.ch/twiki/bin/viewauth/CMS/SingleTopHiggsGeneration13TeV, useAAA=True)
-THQ = kreator.makeMyPrivateMCComponent("THQ", "/THW_Hincl_13TeV-madgraph-pythia8_TuneCUETP8M1/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03',  0.7927, useAAA=True)
-THW = kreator.makeMyPrivateMCComponent("THW", "/THQ_Hincl_13TeV-madgraph-pythia8_TuneCUETP8M1/schoef-TopNanoAODv6-1-2-2_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03',  0.1472, useAAA=True)
+THW = kreator.makeMyPrivateMCComponent("THW", "/THW_Hincl_13TeV-madgraph-pythia8_TuneCUETP8M1/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 0.1472 , useAAA=True)
+THQ = kreator.makeMyPrivateMCComponent("THQ", "/THQ_Hincl_13TeV-madgraph-pythia8_TuneCUETP8M1/schoef-TopNanoAODv6-1-2-6_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03',  0.7927, useAAA=True)
 # GGH cross section from LHC Higgs XS WG: https://twiki.cern.ch/twiki/bin/view/LHCPhysics/CERNYellowReportPageAt1314TeV?rev=15
-GGHZZ4L = kreator.makeMyPrivateMCComponent("GGHZZ4L", "/GluGluHToZZTo4L_M125_13TeV_powheg2_JHUgenV6_pythia8/schoef-TopNanoAODv6-1-2-2_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 0.01212, useAAA=True) #43.92*2.76E-04)
-GGHZZ4L_ext = kreator.makeMyPrivateMCComponent("GGHZZ4L", "/GluGluHToZZTo4L_M125_13TeV_powheg2_JHUgenV6_pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 0.01212, useAAA=True) #43.92*2.76E-04)
+GGHZZ4L = kreator.makeMyPrivateMCComponent("GGHZZ4L", "/GluGluHToZZTo4L_M125_13TeV_powheg2_JHUgenV6_pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 0.01212, useAAA=True) #43.92*2.76E-04)
 
 #VHToNonbb = kreator.makeMyPrivateMCComponent("VHToNonbb", "/VHToNonbb_M125_13TeV_amcatnloFXFX_madspin_pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6-v1/NANOAODSIM", "PRIVATE", ".*root",'phys03', 0.9561, fracNegWeights=0.26, useAAA=True)
 
 Higgs = [
 TTHnobb_pow,
 GGHZZ4L,
-GGHZZ4L_ext,
 THQ, 
 THW,
 #VHToNonbb,
 ]
 
 
-T_sch_lep = kreator.makeMyPrivateMCComponent("T_sch_lep", "/ST_s-channel_4f_leptonDecays_TuneCP5_PSweights_13TeV-amcatnlo-pythia8/schoef-TopNanoAODv6-1-2-2_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', (7.20+4.16)*0.108*3, fracNegWeights=0.188, useAAA=True)
-T_sch_lep_2 = kreator.makeMyPrivateMCComponent("T_sch", "/ST_s-channel_4f_leptonDecays_TuneCP5_PSweights_13TeV-amcatnlo-pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', (7.20+4.16)*0.108*3, fracNegWeights=0.188, useAAA=True)
+T_sch_lep = kreator.makeMyPrivateMCComponent("T_sch_lep", "/ST_s-channel_4f_leptonDecays_TuneCP5_PSweights_13TeV-amcatnlo-pythia8/schoef-TopNanoAODv6-1-2-6_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', (7.20+4.16)*0.108*3, fracNegWeights=0.188, useAAA=True)
 
-T_tch = kreator.makeMyPrivateMCComponent("T_tch", "/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8/schoef-TopNanoAODv6-1-2-2_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 136.02, useAAA=True) # inclusive sample
-T_tch_ext = kreator.makeMyPrivateMCComponent("T_tch_ext", "/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 136.02, useAAA=True) # inclusive sample
-#TBar_tch = kreator.makeMCComponent("TBar_tch", "/ST_t-channel_antitop_4f_inclusiveDecays_13TeV-powhegV2-madspin-pythia8_TuneCUETP8M1/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6-v1/NANOAODSIM", "CMS", ".*root", 80.95) # inclusive sample
+T_tch = kreator.makeMyPrivateMCComponent("T_tch", "/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 136.02, useAAA=True) # inclusive sample
 
-
-
+TBar_tch = kreator.makeMCComponent("TBar_tch", "/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8/schoef-TopNanoAODv6-1-2-6_2016-88146d75cb10601530484643de5f7795/USER", "CMS", ".*root", 80.95) # inclusive sample
 
 T_tWch_noFullyHad = kreator.makeMyPrivateMCComponent("T_tWch_noFullyHad", "/ST_tW_top_5f_NoFullyHadronicDecays_13TeV-powheg_TuneCUETP8M1/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03',19.55, useAAA=True)
 #T_tWch_noFullyHad_ext = kreator.makeMCComponent("T_tWch_noFullyHad_ext", "/ST_tW_top_5f_NoFullyHadronicDecays_13TeV-powheg_TuneCUETP8M1/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6_ext1-v2/NANOAODSIM", "CMS", ".*root",19.55)
 #T_tWch_noFullyHad_ext2 = kreator.makeMCComponent("T_tWch_noFullyHad_ext2", "/ST_tW_top_5f_NoFullyHadronicDecays_13TeV-powheg_TuneCUETP8M1/RunIISummer16NanoAODv4-Nano14Dec2018_102X_mcRun2_asymptotic_v6_ext2-v1/NANOAODSIM", "CMS", ".*root",19.55)
 
 TBar_tWch_noFullyHad      = kreator.makeMyPrivateMCComponent("TBar_tWch_noFullyHad"     , "/ST_tW_antitop_5f_NoFullyHadronicDecays_13TeV-powheg_TuneCUETP8M1/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03',19.55, useAAA=True)
-TBar_tWch_noFullyHad_ext  = kreator.makeMyPrivateMCComponent("TBar_tWch_noFullyHad_ext" , "/ST_tW_antitop_5f_NoFullyHadronicDecays_13TeV-powheg_TuneCUETP8M1/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03',19.55, useAAA=True)
+
 #TBar_tWch_noFullyHad_ext2 = kreator.makeMCComponent("TBar_tWch_noFullyHad_ext2", "/ST_tW_antitop_5f_NoFullyHadronicDecays_13TeV-powheg_TuneCUETP8M1/RunIISummer16NanoAODv4-Nano14Dec2018_102X_mcRun2_asymptotic_v6_ext2-v1/NANOAODSIM", "CMS", ".*root",19.55)
 
 
-T_tWch = kreator.makeMyPrivateMCComponent("T_tWch", "/ST_tW_top_5f_inclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8/schoef-TopNanoAODv6-1-2-2_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03',35.6, useAAA=True)
-T_tWch_ext = kreator.makeMyPrivateMCComponent("T_tWch_ext", "/ST_tW_top_5f_inclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03',35.6, useAAA=True)
+#T_tWch = kreator.makeMyPrivateMCComponent("T_tWch", "/ST_tW_top_5f_inclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8/schoef-TopNanoAODv6-1-2-2_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03',35.6, useAAA=True)
+#T_tWch_ext = kreator.makeMyPrivateMCComponent("T_tWch_ext", "/ST_tW_top_5f_inclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03',35.6, useAAA=True)
 
 
 
-TBar_tWch = kreator.makeMyPrivateMCComponent("TBar_tWch", "/ST_tW_antitop_5f_inclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03',35.6, useAAA=True)
+#TBar_tWch = kreator.makeMyPrivateMCComponent("TBar_tWch", "/ST_tW_antitop_5f_inclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03',35.6, useAAA=True)
 
 
 TGJets_lep = kreator.makeMyPrivateMCComponent("TGJets_lep", "/TGJets_leptonDecays_13TeV_amcatnlo_madspin_pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 1.018, fracNegWeights=0.4, useAAA=True)
 
-tZq_ll_1 = kreator.makeMyPrivateMCComponent("tZq_ll_1", "/tZq_ll_4f_13TeV-amcatnlo-pythia8/schoef-TopNanoAODv6-1-2-2_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 0.0758, fracNegWeights=0.367 , useAAA=True)
-tZq_ll_2 = kreator.makeMyPrivateMCComponent("tZq_ll_2", "/tZq_ll_4f_13TeV-amcatnlo-pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 0.0758, fracNegWeights=0.367 , useAAA=True)
+TZQToLL = kreator.makeMyPrivateMCComponent("TZQToLL", "/tZq_ll_4f_13TeV-amcatnlo-pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 0.0758, fracNegWeights=0.367 , useAAA=True)
+
 
 tWll = kreator.makeMyPrivateMCComponent("tWll", "/ST_tWll_5f_LO_13TeV-MadGraph-pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 0.01123, useAAA=True)
-tWnunu = kreator.makeMyPrivateMCComponent("tWnunu", "/ST_tWnunu_5f_LO_13TeV-MadGraph-pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 0.01123*1.9822 , useAAA=True)
+#tWnunu = kreator.makeMyPrivateMCComponent("tWnunu", "/ST_tWnunu_5f_LO_13TeV-MadGraph-pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 0.01123*1.9822 , useAAA=True)
 
 
 SingleTop = [
 T_sch_lep,
-T_sch_lep_2,
 #T_sch,
-
 T_tch,
-T_tch_ext,
-#TBar_tch,
+TBar_tch,
 
 T_tWch_noFullyHad,
 #T_tWch_noFullyHad_ext,
 #T_tWch_noFullyHad_ext2,
 TBar_tWch_noFullyHad,
-TBar_tWch_noFullyHad_ext,
+#TBar_tWch_noFullyHad_ext,
 #TBar_tWch_noFullyHad_ext2,
 
-T_tWch,
-T_tWch_ext,
-TBar_tWch,
+#T_tWch,
+#T_tWch_ext,
+#TBar_tWch,
 
 TGJets_lep,
-tZq_ll_1,
-tZq_ll_2,
+TZQToLL,
 tWll,
-tWnunu
+#tWnunu
 ]
 
 ### V+jets inclusive (from https://twiki.cern.ch/twiki/bin/viewauth/CMS/StandardModelCrossSectionsat13TeV)
 
 WJetsToLNu_LO = kreator.makeMyPrivateMCComponent("WJetsToLNu_LO","/WJetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 3* 20508.9, useAAA=True)
+
 DYJetsToLL_M10to50 = kreator.makeMyPrivateMCComponent("DYJetsToLL_M10to50", "/DYJetsToLL_M-10to50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 18610, fracNegWeights=0.135, useAAA=True)
 DYJetsToLL_M10to50_LO = kreator.makeMyPrivateMCComponent("DYJetsToLL_M10to50_LO", "/DYJetsToLL_M-10to50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 18610, useAAA=True)
 DYJetsToLL_M50 = kreator.makeMyPrivateMCComponent("DYJetsToLL_M50", "/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 2008.*3, fracNegWeights=0.16, useAAA=True)
-DYJetsToLL_M50_LO =  kreator.makeMyPrivateMCComponent("DYJetsToLL_M50_LO", "/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 2008.*3, useAAA=True)
+DYJetsToLL_M50_LO =  kreator.makeMyPrivateMCComponent("DYJetsToLL_M50_LO", "/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/schoef-TopNanoAODv6-1-2-6_2016_ext1-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 2008.*3, useAAA=True)
+DYJetsToLL_M50_LO_ext =  kreator.makeMyPrivateMCComponent("DYJetsToLL_M50_LO_ext", "/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/schoef-TopNanoAODv6-1-2-6_2016_ext2-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 2008.*3, useAAA=True)
+
 VJets = [
 #WJetsToLNu,
 #WJetsToLNu_ext,
-WJetsToLNu_LO,
+#WJetsToLNu_LO,
 #WJetsToLNu_LO_ext,
 DYJetsToLL_M10to50,
 DYJetsToLL_M10to50_LO,
 DYJetsToLL_M50,
 DYJetsToLL_M50_LO,
+DYJetsToLL_M50_LO_ext,
 ]
 
 # DY njet bins
 
 
 # DY HT bins:
+'''
 #https://twiki.cern.ch/twiki/bin/view/CMS/SummaryTable1G25ns#DY_Z
 DYJetsToLL_M50_HT70to100      =   kreator.makeMyPrivateMCComponent("DYJetsToLL_M50_HT70to100"    , '/DYJetsToLL_M-50_HT-70to100_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/schoef-TopNanoAODv6-1-2-2_2016-88146d75cb10601530484643de5f7795/USER'        ,    "PRIVATE", ".*root",'phys03', 170.4*1.23, useAAA=True)
 DYJetsToLL_M50_HT100to200     =   kreator.makeMyPrivateMCComponent("DYJetsToLL_M50_HT100to200", "/DYJetsToLL_M-50_HT-100to200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER"             , "PRIVATE", ".*root",'phys03', 147.4*1.23, useAAA=True)
@@ -355,14 +351,13 @@ QCD_Pt300toInf_EMEnriched
 
 
 # QCD HT bins (cross sections from McM)
-
+'''
 ### DiBosons
 
 # cross section from https://twiki.cern.ch/twiki/bin/view/CMS/SummaryTable1G25ns#Diboson
 
 
 WWTo2L2Nu = kreator.makeMyPrivateMCComponent("WWTo2L2Nu", "/WWTo2L2Nu_13TeV-powheg/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 10.481 , useAAA=True)
-WWTo2L2Nu_ext = kreator.makeMyPrivateMCComponent("WWTo2L2Nu", "/WWTo2L2Nu_13TeV-powheg/schoef-TopNanoAODv6-1-2-2_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 10.481 , useAAA=True)
 WWToLNuQQ = kreator.makeMyPrivateMCComponent("WWToLNuQQ", "/WWToLNuQQ_13TeV-powheg/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 43.53 , useAAA=True)
 WWTo1L1Nu2Q = kreator.makeMyPrivateMCComponent("WWTo1L1Nu2Q", "/WWTo1L1Nu2Q_13TeV_amcatnloFXFX_madspin_pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 45.35, fracNegWeights=0.189 , useAAA=True) # genXSecAna
 
@@ -370,7 +365,7 @@ ZZTo2L2Nu = kreator.makeMyPrivateMCComponent("ZZTo2L2Nu", "/ZZTo2L2Nu_13TeV_powh
 #ZZTo2L2Q = kreator.makeMyPrivateMCComponent("ZZTo2L2Q", "/ZZTo2L2Q_13TeV_amcatnloFXFX_madspin_pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6-v1/NANOAODSIM", "PRIVATE", ".*root",'phys03',  3.28, fracNegWeights=0.18, useAAA=True)
 ZZTo2Q2Nu = kreator.makeMyPrivateMCComponent("ZZTo2Q2Nu", "/ZZTo2Q2Nu_13TeV_amcatnloFXFX_madspin_pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03',  4.04, fracNegWeights=0.19, useAAA=True)
 ZZTo4L = kreator.makeMyPrivateMCComponent("ZZTo4L", "/ZZTo4L_13TeV_powheg_pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 1.256, useAAA=True)
-WWDoubleTo2L = kreator.makeMyPrivateMCComponent("WWDoubleTo2L", "/WWTo2L2Nu_DoubleScattering_13TeV-pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root", 'phys03', 0.1729)
+WWTo2L2Nu_DPS = kreator.makeMyPrivateMCComponent("WWTo2L2Nu_DPS", "/WWTo2L2Nu_DoubleScattering_13TeV-pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root", 'phys03', 0.1729)
 
 #WZJToLLLNu =  kreator.makeMyPrivateMCComponent("WZJToLLLNu"  , "/WZJToLLLNu_TuneCUETP8M1_13TeV-amcnlo-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6-v1/NANOAODSIM"  , "PRIVATE", ".*root",'phys03', 4.708 , useAAA=True)
 #WZTo1L3Nu   = kreator.makeMyPrivateMCComponent("WZTo1L3Nu"  , "/WZTo1L3Nu_13TeV_amcatnloFXFX_madspin_pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6-v1/NANOAODSIM"  , "PRIVATE", ".*root",'phys03', (47.13)*(3*0.108)*(0.2), fracNegWeights=0.22 , useAAA=True)
@@ -398,57 +393,56 @@ ZGTo2LG_ext = kreator.makeMyPrivateMCComponent("ZGTo2LG", "/ZGToLLG_01J_LoosePtl
 
 
 WW = kreator.makeMyPrivateMCComponent("WW", "/WW_TuneCUETP8M1_13TeV-pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 63.21 * 1.82, useAAA=True)
-WW_DPS = kreator.makeMyPrivateMCComponent("WW_DPS", "/WWTo2L2Nu_DoubleScattering_13TeV-pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 0.2232, useAAA=True)
 ZZ = kreator.makeMyPrivateMCComponent("ZZ", "/ZZ_TuneCUETP8M1_13TeV-pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 16.523 , useAAA=True)
 
 
 DiBosons = [
 WWTo2L2Nu,
-WWToLNuQQ,
+#WWToLNuQQ,
 #WWToLNuQQ_ext,
-WWTo1L1Nu2Q,
-ZZTo2L2Nu,
+#WWTo1L1Nu2Q,
+#ZZTo2L2Nu,
 #ZZTo2L2Q,
-ZZTo2Q2Nu,
+#ZZTo2Q2Nu,
 ZZTo4L,
+WWTo2L2Nu_DPS
 #WZJToLLLNu,
 #WZTo1L3Nu,
 #WZTo1L1Nu2Q,
 #WZTo2L2Q,
-WZTo3LNu,
+#WZTo3LNu,
 #WZTo3LNu_ext,
 WZTo3LNu_fxfx,
-VVTo2L2Nu,
+#VVTo2L2Nu,
 #VVTo2L2Nu_ext,
 #WGToLNuG,
 #WGToLNuG_amcatnlo,
 #WGToLNuG_amcatnlo_ext,
 #WGToLNuG_amcatnlo_ext2,
 #WGJets,
+WGToLNuG_01J
 #ZNuNuGJets_40130,
 #ZGTo2NuG,
-ZGTo2LG,
-WWDoubleTo2L,
+#ZGTo2LG,
 #WpWpJJ,
-WW_DPS,
-WW,
+#WW,
 #WW_ext,
 #WZ,
 #WZ_ext,#
-ZZ,
+#ZZ,
 #ZZ_ext
 ]
 
 ### TriBosons
 # cross section from https://twiki.cern.ch/twiki/bin/view/CMS/SummaryTable1G25ns#Triboson
-#WWW = kreator.makeMyPrivateMCComponent("WWW", "/WWW_4F_TuneCUETP8M1_13TeV-amcatnlo-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6-v1/NANOAODSIM", "PRIVATE", ".*root",'phys03', 0.2086, fracNegWeights=0.053, useAAA=True)
+WWW = kreator.makeMyPrivateMCComponent("WWW", "/WWW_4F_TuneCUETP8M1_13TeV-amcatnlo-pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 0.2086, fracNegWeights=0.053, useAAA=True)
 #WWW_ll = kreator.makeMyPrivateMCComponent("WWW_ll", "/WWW_4F_DiLeptonFilter_TuneCUETP8M1_13TeV-amcatnlo-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6-v3/NANOAODSIM", "PRIVATE", ".*root",'phys03', 0.007201, fracNegWeights=0.063, useAAA=True) # xs from genXSecAna  (on Fall17)
 WWZ = kreator.makeMyPrivateMCComponent("WWZ", "/WWZ_TuneCUETP8M1_13TeV-amcatnlo-pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03',  0.1651 , fracNegWeights=0.06, useAAA=True)
 WZZ = kreator.makeMyPrivateMCComponent("WZZ", "/WZZ_TuneCUETP8M1_13TeV-amcatnlo-pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03',  0.05565 , fracNegWeights=0.060, useAAA=True)
 ZZZ = kreator.makeMyPrivateMCComponent("ZZZ", "/ZZZ_TuneCUETP8M1_13TeV-amcatnlo-pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03',  0.01398 , fracNegWeights=0.060, useAAA=True)
 
 TriBosons = [
-#WWW,
+WWW,
 #WWW_ll,
 WZZ,
 WWZ,
@@ -462,32 +456,32 @@ TTWToQQ = kreator.makeMyPrivateMCComponent("TTWToQQ", "/TTWJetsToQQ_TuneCUETP8M1
 #TTW_LO = kreator.makeMyPrivateMCComponent("TTW_LO", "/ttWJets_13TeV_madgraphMLM/RunIISummer16NanoAODv4-Nano14Dec2018_102X_mcRun2_asymptotic_v6-v1/NANOAODSIM", "PRIVATE", ".*root",'phys03',  0.6105 , useAAA=True)
 #TTZToQQ = kreator.makeMyPrivateMCComponent("TTZToQQ","/TTZToQQ_TuneCUETP8M1_13TeV-amcatnlo-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6-v1/NANOAODSIM", "PRIVATE", ".*root",'phys03', 0.5297, fracNegWeights=0.264, useAAA=True)
 TTZToLLNuNu      = kreator.makeMyPrivateMCComponent("TTZToLLNuNu", "/TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 0.2529, fracNegWeights=0.264, useAAA=True)
-#TTZToLLNuNu_ext  = kreator.makeMyPrivateMCComponent("TTZToLLNuNu_ext", "/TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6_ext2-v1/NANOAODSIM", "PRIVATE", ".*root",'phys03', 0.2529, fracNegWeights=0.264, useAAA=True)
+TTZToLLNuNu_ext  = kreator.makeMyPrivateMCComponent("TTZToLLNuNu_ext", "/TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8/schoef-TopNanoAODv6-1-2-6_2016_ext3-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 0.2529, fracNegWeights=0.264, useAAA=True)
 #TTZToLLNuNu_ext2 = kreator.makeMyPrivateMCComponent("TTZToLLNuNu_ext2", "/TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6_ext3-v1/NANOAODSIM", "PRIVATE", ".*root",'phys03', 0.2529, fracNegWeights=0.264, useAAA=True)
 TTZToLLNuNu_m1to10  = kreator.makeMyPrivateMCComponent("TTZToLLNuNu_m1to10","/TTZToLL_M-1to10_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 0.0493, useAAA=True)
 # https://twiki.cern.ch/twiki/bin/view/CMS/SameSignDilepton2016
 TTZ_LO = kreator.makeMyPrivateMCComponent("TTZ_LO", "/ttZJets_13TeV_madgraphMLM-pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03',  0.5297/0.692, useAAA=True)
-TTGJets     = kreator.makeMyPrivateMCComponent("TTGJets",    "/TTGJets_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8/schoef-TopNanoAODv6-1-2-2_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 3.76, fracNegWeights=0.34, useAAA=True)
-TTGJets_ext = kreator.makeMyPrivateMCComponent("TTGJets_ext","/TTGJets_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 3.76, fracNegWeights=0.34, useAAA=True)
+TTGJets     = kreator.makeMyPrivateMCComponent("TTGJets",    "/TTGJets_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8/schoef-TopNanoAODv6-1-2-6_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 3.76, fracNegWeights=0.34, useAAA=True)
+TTGJets_ext = kreator.makeMyPrivateMCComponent("TTGJets_ext","/TTGJets_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8/schoefTopNanoAODv6-1-2-6_2016_ext1-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 3.76, fracNegWeights=0.34, useAAA=True)
 
 TTV = [
 TTWToLNu,
 #TTWToLNu_ext,
-TTWToQQ,
+#TTWToQQ,
 #TTW_LO,
 #TTZToQQ,
 TTZToLLNuNu,
-#TTZToLLNuNu_ext,
+TTZToLLNuNu_ext,
 #TTZToLLNuNu_ext2,
 TTZToLLNuNu_m1to10,
-TTZ_LO,
+#TTZ_LO,
 TTGJets,
 TTGJets_ext
 ]
 
 ### Rares
 #TTTT = kreator.makeMyPrivateMCComponent("TTTT", "/TTTT_TuneCUETP8M1_13TeV-amcatnlo-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6-v1/NANOAODSIM", "PRIVATE", ".*root",'phys03', 0.009103, fracNegWeights=0.311, useAAA=True)
-TTTT_P8M2T4 = kreator.makeMyPrivateMCComponent("TTTT_P8M2T4", "/TTTT_TuneCUETP8M2T4_13TeV-amcatnlo-pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 0.009103, fracNegWeights=0.311, useAAA=True)
+TTTT_P8M2T4 = kreator.makeMyPrivateMCComponent("TTTT_P8M2T4", "/TTTT_TuneCUETP8M2T4_13TeV-amcatnlo-pythia8/schoef-TopNanoAODv6-1-2-6_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 0.009103, fracNegWeights=0.311, useAAA=True)
 TTWW_LO = kreator.makeMyPrivateMCComponent("TTWW_LO","/TTWW_TuneCUETP8M2T4_13TeV-madgraph-pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE",".*root",'phys03', 0.007936, useAAA=True) # XS from genXSAnalyzer
 
 Rares = [
