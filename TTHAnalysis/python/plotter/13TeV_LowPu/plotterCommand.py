@@ -16,7 +16,7 @@ slurm       = 'sbatch -c {nth} -p {queue} -J {jobname} -e {logpath}/log.%j.%x.er
 defaultPars = {"path"       : "/pool/ciencias/nanoAODv6/lowPU2017/2020_07_21_postProc",
                "ftreesPath" : "/pool/phedexrw/userstorage/cmstudents/cvico/WZ_LowPu/13TeV_Aug13/2020_07_21/2017/",
                "logpath"    : "{outpath}/logs",
-               "lumi"       : 0.23,
+               "lumi"       : 0.216943692,
                "nCores"     : 4,
                "mccFile"    : "13TeV_LowPu/lepchoice-FO.txt",
                "functions"  : "13TeV_LowPu/functions13TeV_lowPu.cc",
@@ -36,7 +36,7 @@ def checkIfExists(path):
 
 def addBoringLines(text):
     for step in steps: text += "--Fs {ftreesPath}{Friend} ".format(ftreesPath = defaultPars["ftreesPath"], Friend = step)
-    Lines = ["-f -l {lumi} ".format(lumi = defaultPars["lumi"]),
+    Lines = ["-f -j 3 -l {lumi} ".format(lumi = defaultPars["lumi"]),
              "-L {functions} ".format(functions = defaultPars["functions"]),
              "--split-factor=-1 ",
              "--maxRatioRange 0.6  1.99 ", 
@@ -57,8 +57,9 @@ def addBoringLines(text):
              "{plots} ".format(plots = defaultPars["plots"]),
              "{weight} ".format(weight = defaultPars["weight"]), #still have no weights to add
              "{binname} ".format(binname = "--binname ttbar"),
- 	     "--scaleBkgToData",
-	     "--scaleSigToData", 
+	     "--rebin 4 ",
+ 	     "--scaleBkgToData ",
+	     "--scaleSigToData ", 
              ]
     
     for line in Lines: text += line

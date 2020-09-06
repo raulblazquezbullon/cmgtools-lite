@@ -99,40 +99,6 @@ WZ_lowPu_13TeV = [lepMerge,
         ]
 
 # ===========================================================
-# ======================== Step 3 modules: Triggers
-triggerGroups = dict(    
-    Trigger_1e = {
-        2017 : lambda ev : bool(getattr(ev, 'HLT_Ele35_WPTight_Gsf'))
-               if (ev.datatag == tags.MC) else
-               bool(getattr(ev, 'HLT_HIEle20_WPLoose_Gsf')) 
-	       or bool(getattr(ev, 'HLT_HIEle40_WPLoose_Gsf'))
-        },
-    Trigger_1m = {
-        2017 : lambda ev : bool(getattr(ev, 'HLT_IsoMu27'))
-               if (ev.datatag == tags.MC) else 
-               bool(getattr(ev, 'HLT_HIMu17'))
-        },
-    Trigger_2e = {
-        2017 : lambda ev : bool(getattr(ev, 'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ')) 
-	       or bool(getattr(ev, 'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL')) 
-               if (ev.datatag == tags.MC) else 
-               bool(getattr(ev, 'HLT_HIEle20_Ele12_CaloIdL_TrackIdL_IsoVL_DZ')) 
-               or bool(getattr(ev, 'HLT_HIEle20_Ele12_CaloIdL_TrackIdL_IsoVL'))
-        }
-    
-    )
-    
-    
-from CMGTools.TTHAnalysis.tools.evtTagger import EvtTagger
-Trigger_1e = lambda : EvtTagger('Trigger_1e', [lambda ev : triggerGroups['Trigger_1e'][2017](ev) ])
-Trigger_1m = lambda : EvtTagger('Trigger_1m', [lambda ev : triggerGroups['Trigger_1m'][2017](ev) ])
-Trigger_2e = lambda : EvtTagger('Trigger_2e', [lambda ev : triggerGroups['Trigger_2e'][2017](ev) ])
-
-
-triggerSequence = [Trigger_1e, Trigger_1m, Trigger_2e]
-
-
-# ===========================================================
 # ======================== Step 2 modules: Recleaning
 # == Imports
 from CMGTools.TTHAnalysis.tools.nanoAOD.jetmetGrouper import groups as jecGroups
@@ -222,6 +188,41 @@ mcPromptGamma      = lambda : ObjTagger('mcPromptGamma', 'LepGood', [lambda l : 
 
 WZ_lowPu_recl_mc = [recleaner_step1, recleaner_step2_mc, isMatchRightCharge, mcMatchId, mcPromptGamma]
 WZ_lowPu_recl_data = [recleaner_step1, recleaner_step2_data]
+
+# ===========================================================
+# ======================== Step 3 modules: Triggers
+triggerGroups = dict(    
+    Trigger_1e = {
+        2017 : lambda ev : bool(getattr(ev, 'HLT_Ele35_WPTight_Gsf'))
+               if (ev.datatag == tags.MC) else
+               bool(getattr(ev, 'HLT_HIEle20_WPLoose_Gsf')) 
+	       or bool(getattr(ev, 'HLT_HIEle40_WPLoose_Gsf'))
+        },
+    Trigger_1m = {
+        2017 : lambda ev : bool(getattr(ev, 'HLT_IsoMu27'))
+               if (ev.datatag == tags.MC) else 
+               bool(getattr(ev, 'HLT_HIMu17'))
+        },
+    Trigger_2e = {
+        2017 : lambda ev : bool(getattr(ev, 'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ')) 
+	       or bool(getattr(ev, 'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL')) 
+               if (ev.datatag == tags.MC) else 
+               bool(getattr(ev, 'HLT_HIEle20_Ele12_CaloIdL_TrackIdL_IsoVL_DZ')) 
+               or bool(getattr(ev, 'HLT_HIEle20_Ele12_CaloIdL_TrackIdL_IsoVL'))
+        }
+    
+    )
+    
+    
+from CMGTools.TTHAnalysis.tools.evtTagger import EvtTagger
+Trigger_1e = lambda : EvtTagger('Trigger_1e', [lambda ev : triggerGroups['Trigger_1e'][2017](ev) ])
+Trigger_1m = lambda : EvtTagger('Trigger_1m', [lambda ev : triggerGroups['Trigger_1m'][2017](ev) ])
+Trigger_2e = lambda : EvtTagger('Trigger_2e', [lambda ev : triggerGroups['Trigger_2e'][2017](ev) ])
+
+
+triggerSequence = [Trigger_1e, Trigger_1m, Trigger_2e]
+
+
 
 # ===========================================================
 # ======================== Step 4 modules: EventVars
