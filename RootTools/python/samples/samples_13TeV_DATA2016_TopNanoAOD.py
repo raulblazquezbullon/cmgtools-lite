@@ -45,7 +45,7 @@ SingleElectron_Run2016F_25Oct2019 = kreator.makeMyPrivateDataComponent("SingleEl
 
 #---------------------------RunG 2016 25Oct2019
 
-DoubleMuon_Run2016G_25Oct2019 = kreator.makeMyPrivateDataComponent("DoubleMuon_Run2016G_25Oct2019", "/DoubleMuon/schoef-TopNanoAODv6-1-2-4_DoubleMuon_Run2016G-ba7e3129b1ff910ad1abce6981b33804/USE", "PRIVATE", ".*root", 'phys03',  json=json, useAAA=True)
+DoubleMuon_Run2016G_25Oct2019 = kreator.makeMyPrivateDataComponent("DoubleMuon_Run2016G_25Oct2019", "/DoubleMuon/schoef-TopNanoAODv6-1-2-4_DoubleMuon_Run2016G-ba7e3129b1ff910ad1abce6981b33804/USER", "PRIVATE", ".*root", 'phys03',  json=json, useAAA=True)
 MuonEG_Run2016G_25Oct2019 = kreator.makeMyPrivateDataComponent("MuonEG_Run2016G_25Oct2019", "/MuonEG/schoef-TopNanoAODv6-1-2-4_MuonEG_Run2016G-ba7e3129b1ff910ad1abce6981b33804/USER", "PRIVATE", ".*root", 'phys03',  json=json, useAAA=True)
 DoubleEG_Run2016G_25Oct2019 = kreator.makeMyPrivateDataComponent("DoubleEG_Run2016G_25Oct2019", "/DoubleEG/schoef-TopNanoAODv6-1-2-4_DoubleEG_Run2016G-ba7e3129b1ff910ad1abce6981b33804/USER", "PRIVATE", ".*root", 'phys03',  json=json, useAAA=True)
 SingleMuon_Run2016G_25Oct2019 = kreator.makeMyPrivateDataComponent("SingleMuon_Run2016G_25Oct2019", "/SingleMuon/schoef-TopNanoAODv6-1-2-4_SingleMuon_Run2016G-ba7e3129b1ff910ad1abce6981b33804/USER", "PRIVATE", ".*root", 'phys03',  json=json, useAAA=True)
