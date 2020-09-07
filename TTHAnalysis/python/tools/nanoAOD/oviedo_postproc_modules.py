@@ -8,7 +8,7 @@ conf = dict(
   #for electrons:
         dxy_b =  0.05, #barrel
         dz_b = 0.1,    #barrel
-        dxy_e =  0.10  #endcap
+        dxy_e =  0.10,  #endcap
         dz_e = 0.20,   #endcap
         eta0 = 1.4442,
         eta1 = 1.566,
@@ -24,17 +24,11 @@ ttH_skim_cut = ("nMuon + nElectron >= 2 &&" +
 "Sum$(Electron_pt > {muPt} && ((Electron_miniPFRelIso_all < {miniRelIso} && Electron_sip3d < {sip3d}) || (Electron_cutBased>=4)))").format(**conf)
 
 
-electronSelection = lambda l : l.pt > conf["elePt"] and 
-     ((abs(l.eta) < 2.5 and l.miniPFRelIso_all < conf["miniRelIso"] and l.sip3d < conf["sip3d"] and abs(l.dxy) < conf["dxy_b"] and abs(l.dz) < conf["dz_b"]) #ttw
-     or ((abs(l.eta) < conf["eta2"] and (abs(l.eta) < conf["eta0"] or abs(l.eta) > conf["eta1"]) )       #ttbar
-         and l.cutBased>=4 and l.lostHits <= 1 and
-         ((abs(l.dxy) < conf["dxy_b"] and abs(l.dz) < conf["dz_b"]) if (abs(l.eta) <= conf["etasc_be"])
-         else (abs(l.dxy) < conf["dxy_e"] and abs(l.dz) < conf["dz_e"]))))
+electronSelection = lambda l : l.pt > conf["elePt"] and ((abs(l.eta) < 2.5 and l.miniPFRelIso_all < conf["miniRelIso"] and l.sip3d < conf["sip3d"] and abs(l.dxy) < conf["dxy_b"] and abs(l.dz) < conf["dz_b"]) or ((abs(l.eta) < conf["eta2"] and (abs(l.eta) < conf["eta0"] or abs(l.eta) > conf["eta1"]) ) and l.cutBased>=4 and l.lostHits <= 1 and
+ ((abs(l.dxy) < conf["dxy_b"] and abs(l.dz) < conf["dz_b"]) if (abs(l.eta) <= conf["etasc_be"]) else (abs(l.dxy) < conf["dxy_e"] and abs(l.dz) < conf["dz_e"]))))
 
 
-muonSelection = lambda l : (l.pt > conf["muPt" ] and abs(l.eta) < 2.4) and 
-     ((l.miniPFRelIso_all < conf["miniRelIso"] and l.sip3d < conf["sip3d"] and abs(l.dxy) < conf["dxy_b"] and abs(l.dz) < conf["dz_b"]) #ttW
-     or (l.tightId and l.pfRelIso04_all < conf["isorelpf"]))                         #ttbar
+muonSelection = lambda l : (l.pt > conf["muPt" ] and abs(l.eta) < 2.4) and ((l.miniPFRelIso_all < conf["miniRelIso"] and l.sip3d < conf["sip3d"] and abs(l.dxy) < conf["dxy_b"] and abs(l.dz) < conf["dz_b"]) or (l.tightId and l.pfRelIso04_all < conf["isorelpf"]))                         
 
 #and (l.isGlobal or l.isTracker) and l.mediumId 
 #and l.lostHits<2
