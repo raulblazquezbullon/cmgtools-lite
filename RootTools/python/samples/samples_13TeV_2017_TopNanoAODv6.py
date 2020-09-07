@@ -321,7 +321,7 @@ TTJets_DiLepton = kreator.makeMyPrivateMCComponent("TTJets_DiLepton", "/TTJets_D
 '''
 
 TTs = [ #TTJets, 
-TTLep_pow, TTSemi_pow, TTJets_SingleLeptonFromT, TTJets_SingleLeptonFromTbar, TTJets_DiLepton
+TTLep_pow, #TTSemi_pow, TTJets_SingleLeptonFromT, TTJets_SingleLeptonFromTbar, TTJets_DiLepton
 ]
 
 # ====== SINGLE TOP ======

@@ -1,8 +1,8 @@
 from CMGTools.RootTools.samples.ComponentCreator import ComponentCreator
 kreator = ComponentCreator()
 
-json='/nfs/fanae/user/clara/ttW_Top/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/cfg/Cert_271036-284044_13TeV_ReReco_07Aug2017_Collisions16_JSON.txt'
-#json to modify
+json='/nfs/fanae/user/clara/ttW_Top/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/cfg/Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON_v1.txt'
+
 
 #---------------------------RunB 2017 25Oct2019
 
