@@ -47,7 +47,7 @@ elif year == 2016:
      from CMGTools.RootTools.samples.triggers_13TeV_DATA2016 import all_triggers as triggers
      triggers["FR_1mu_noiso_smpd"] = [] 
 
-from CMGTools.TTHAnalysis.tools.nanoAOD.ttW_modules import triggerGroups_dict
+from CMGTools.TTHAnalysis.tools.nanoAOD.oviedo_postproc_modules import triggerGroups_dict
 
 DatasetsAndTriggers = []
 if analysis == "main":
@@ -209,4 +209,3 @@ elif test == "94X-data":
     selectedComponents = [SingleElectron_Run2017C_14Dec2018]
 elif test in ('2','3','3s'):
     doTestN(test, selectedComponents)
-
