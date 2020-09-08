@@ -25,10 +25,10 @@ if preprocessor:
 else:
     if year == 2018:
         from CMGTools.RootTools.samples.samples_13TeV_2018_TopNanoAODv6 import samples as mcSamples_
-        from CMGTools.RootTools.samples.samples_13TeV_DATA2018_NanoAOD import dataSamples_25Oct2019 as allData
+        from CMGTools.RootTools.samples.samples_13TeV_DATA2018_TopNanoAOD import samples as allData
     elif year == 2017:
         from CMGTools.RootTools.samples.samples_13TeV_2017_TopNanoAODv6 import samples as mcSamples_
-        from CMGTools.RootTools.samples.samples_13TeV_DATA2017_NanoAOD import dataSamples_25Oct2019 as allData
+        from CMGTools.RootTools.samples.samples_13TeV_DATA2017_TopNanoAOD import samples as allData
     elif year == 2016:
         from CMGTools.RootTools.samples.samples_13TeV_2016_TopNanoAODv6 import samples as mcSamples_
         from CMGTools.RootTools.samples.samples_13TeV_DATA2016_TopNanoAOD import samples as allData

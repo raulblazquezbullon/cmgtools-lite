@@ -23,7 +23,6 @@ ttH_skim_cut = ("nMuon + nElectron >= 2 &&" +
 "Sum$(Muon_pt > {muPt} && ((Muon_miniPFRelIso_all < {miniRelIso} && Muon_sip3d < {sip3d}) || (Muon_tightId == 1))) +"
 "Sum$(Electron_pt > {muPt} && ((Electron_miniPFRelIso_all < {miniRelIso} && Electron_sip3d < {sip3d}) || (Electron_cutBased>=4)))").format(**conf)
 
-
 electronSelection = lambda l : l.pt > conf["elePt"] and \
      ((abs(l.eta) < 2.5 and l.miniPFRelIso_all < conf["miniRelIso"] and l.sip3d < conf["sip3d"] and abs(l.dxy) < conf["dxy_b"] and abs(l.dz) < conf["dz_b"]) \
      or ((abs(l.eta) < conf["eta2"] and (abs(l.eta) < conf["eta0"] or abs(l.eta) > conf["eta1"]) )    \
@@ -35,6 +34,7 @@ electronSelection = lambda l : l.pt > conf["elePt"] and \
 muonSelection = lambda l : (l.pt > conf["muPt" ] and abs(l.eta) < 2.4) and \
      ((l.miniPFRelIso_all < conf["miniRelIso"] and l.sip3d < conf["sip3d"] and abs(l.dxy) < conf["dxy_b"] and abs(l.dz) < conf["dz_b"]) \
      or (l.tightId and l.pfRelIso04_all < conf["isorelpf"]))                       
+
 
 #and (l.isGlobal or l.isTracker) and l.mediumId 
 #and l.lostHits<2
