@@ -23,12 +23,18 @@ ttH_skim_cut = ("nMuon + nElectron >= 2 &&" +
 "Sum$(Muon_pt > {muPt} && ((Muon_miniPFRelIso_all < {miniRelIso} && Muon_sip3d < {sip3d}) || (Muon_tightId == 1))) +"
 "Sum$(Electron_pt > {muPt} && ((Electron_miniPFRelIso_all < {miniRelIso} && Electron_sip3d < {sip3d}) || (Electron_cutBased>=4)))").format(**conf)
 
+electronSelection = lambda l : l.pt > conf["elePt"] and \
+     ((abs(l.eta) < 2.5 and l.miniPFRelIso_all < conf["miniRelIso"] and l.sip3d < conf["sip3d"] and abs(l.dxy) < conf["dxy_b"] and abs(l.dz) < conf["dz_b"]) \
+     or ((abs(l.eta) < conf["eta2"] and (abs(l.eta) < conf["eta0"] or abs(l.eta) > conf["eta1"]) )    \
+         and l.cutBased>=4 and l.lostHits <= 1 and \
+         ((abs(l.dxy) < conf["dxy_b"] and abs(l.dz) < conf["dz_b"]) if (abs(l.eta) <= conf["etasc_be"]) \
+         else (abs(l.dxy) < conf["dxy_e"] and abs(l.dz) < conf["dz_e"]))))
 
-electronSelection = lambda l : l.pt > conf["elePt"] and ((abs(l.eta) < 2.5 and l.miniPFRelIso_all < conf["miniRelIso"] and l.sip3d < conf["sip3d"] and abs(l.dxy) < conf["dxy_b"] and abs(l.dz) < conf["dz_b"]) or ((abs(l.eta) < conf["eta2"] and (abs(l.eta) < conf["eta0"] or abs(l.eta) > conf["eta1"]) ) and l.cutBased>=4 and l.lostHits <= 1 and
- ((abs(l.dxy) < conf["dxy_b"] and abs(l.dz) < conf["dz_b"]) if (abs(l.eta) <= conf["etasc_be"]) else (abs(l.dxy) < conf["dxy_e"] and abs(l.dz) < conf["dz_e"]))))
 
+muonSelection = lambda l : (l.pt > conf["muPt" ] and abs(l.eta) < 2.4) and \
+     ((l.miniPFRelIso_all < conf["miniRelIso"] and l.sip3d < conf["sip3d"] and abs(l.dxy) < conf["dxy_b"] and abs(l.dz) < conf["dz_b"]) \
+     or (l.tightId and l.pfRelIso04_all < conf["isorelpf"]))                       
 
-muonSelection = lambda l : (l.pt > conf["muPt" ] and abs(l.eta) < 2.4) and ((l.miniPFRelIso_all < conf["miniRelIso"] and l.sip3d < conf["sip3d"] and abs(l.dxy) < conf["dxy_b"] and abs(l.dz) < conf["dz_b"]) or (l.tightId and l.pfRelIso04_all < conf["isorelpf"]))                         
 
 #and (l.isGlobal or l.isTracker) and l.mediumId 
 #and l.lostHits<2
@@ -50,8 +56,10 @@ from CMGTools.TTHAnalysis.tools.nanoAOD.autoPuWeight import autoPuWeight
 from CMGTools.TTHAnalysis.tools.nanoAOD.yearTagger import yearTag
 from CMGTools.TTHAnalysis.tools.nanoAOD.xsecTagger import xsecTag
 from CMGTools.TTHAnalysis.tools.nanoAOD.lepJetBTagAdder import lepJetBTagDeepFlav
+from CMGTools.TTHAnalysis.tools.nanoAOD.dataTagger import dataTag
+from CMGTools.TTHAnalysis.tools.nanoAOD.datasetName import datasetName
 
-ttH_sequence_step1 = [lepSkim, lepMerge, autoPuWeight, yearTag, xsecTag, lepJetBTagDeepFlav]
+ttH_sequence_step1 = [lepSkim, lepMerge, autoPuWeight, yearTag, datasetName, dataTag,xsecTag, lepJetBTagDeepFlav]
 
 #==== 
 from PhysicsTools.NanoAODTools.postprocessing.tools import deltaR
