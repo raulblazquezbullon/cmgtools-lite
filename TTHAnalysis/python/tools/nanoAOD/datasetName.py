@@ -15,7 +15,7 @@ class datasetNamer( Module ):
         return True
     
     def initComponent(self, component):
-        self._DatasetName_name=[ord(x) for x in component.dataset.split('/')[1]]
+        self._DatasetName_name=[ord(x) for x in component.dataset]
         self._nDatasetName=len(self._DatasetName_name)
 
 
