@@ -11,7 +11,8 @@ r.gROOT.SetBatch(True)
 friendspath = "/pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions"
 #prodname    = "2020-06-01" # veya
 #prodname    = "2020-06-17" # nova
-prodname    = "2020-07-03" # con sistematicos, en 2016 col tuning veyo
+#prodname    = "2020-07-03" # con sistematicos, en 2016 col tuning veyo
+prodname    = "2020-07-29" # prueba para Sheyla
 
 
 datasamples  = ["SingleMuon", "SingleElec", "DoubleMuon", "DoubleEG", "MuonEG", "LowEGJet", "HighEGJet", "EGamma"]
@@ -28,6 +29,7 @@ friendfolders = {0 : "0_yeartag",
                  3 : "3_varstrigger",
                  4 : "4_scalefactors",
                  5 : "5_mvas",
+                 #5 : "5_mvas_new",
                  "mvatrain" : "x_mvatrain"
                 }
 #chunksizes    = [5000000, 100000, 500000, 100000, 250000] # veyos
@@ -255,6 +257,10 @@ sampledict[2018] = {
 
     # WWbb
     "WWbb" : "Tree_b_bbar_4l_TuneCP5_ext1",
+    "WWbb_noskim_4files" : ["8D0A2ECF-09D2-6841-BE66-0BCECFE4942A_Skim",
+                            "C14C273E-2210-DA4E-AE8A-1D283123146B_Skim",
+                            "EE18ACF2-2CB7-214F-93B9-B70E7861F9E7_Skim",
+                            "FF50A220-4B88-A349-B802-28FD77C317EA_Skim"],
 
     # W Jets
     "WJetsToLNu_MLM" : "Tree_WJetsToLNu_TuneCP5_MLM",
@@ -430,11 +436,11 @@ def getFriendsFolder(dataset, basepath, step_friends):
         myfibrefriends = [f for f in os.listdir(rofolder) if (".root" in f and dataset in f and "chunk" not in f and "Friend" in f)]
         if len(myfibrefriends) > 0: doihavefibrefriends = True
 
-    if doihavefibrefriends:
-        wr.warn("\n====== WARNING! Friends detected in RO folder for this production. Using them for dataset {d} and step (of the friends) {s}".format(d = dataset, s = step_friends))
-        return rofolder
-    else:
-        return rwfolder
+    #if doihavefibrefriends:
+        #wr.warn("\n====== WARNING! Friends detected in RO folder for this production. Using them for dataset {d} and step (of the friends) {s}".format(d = dataset, s = step_friends))
+        #return rofolder
+    #else:
+        #return rwfolder
     return rwfolder
 
 

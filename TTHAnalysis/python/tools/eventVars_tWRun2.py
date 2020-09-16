@@ -203,7 +203,7 @@ class EventVars_tWRun2(Module):
             met_4mMuonEnUp = r.TLorentzVector()
             met_4mMuonEnDn = r.TLorentzVector()
             for var in self.systsJEC:
-                allret["METgood_pt" + self.systsJEC[var]]  = -99
+                allret["METgood_pt"  + self.systsJEC[var]] = -99
                 allret["METgood_phi" + self.systsJEC[var]] = -99
                 if event.datatag != tags.mc:
                     allret["METgood_pt"  + self.systsJEC[var]] = event.MET_pt
