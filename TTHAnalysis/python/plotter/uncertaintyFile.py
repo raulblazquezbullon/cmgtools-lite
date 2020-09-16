@@ -5,8 +5,12 @@ import os, os.path
 from array import array
 from copy import deepcopy
 
-from CMGTools.TTHAnalysis.plotter.fakeRate import *
-from CMGTools.TTHAnalysis.plotter.histoWithNuisances import _cloneNoDir
+#from CMGTools.TTHAnalysis.plotter.fakeRate import *
+#from CMGTools.TTHAnalysis.plotter.histoWithNuisances import _cloneNoDir
+from fakeRate import *
+from histoWithNuisances import _cloneNoDir
+
+
 class Uncertainty:
     def __init__(self,name,procmatch,binmatch,unc_type,more_args=None,extra=None,options=None):
         self.name = name

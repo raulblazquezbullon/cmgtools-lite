@@ -5,8 +5,10 @@ import ROOT
 if "/fakeRate_cc.so" not in ROOT.gSystem.GetLibraries(): 
     ROOT.gROOT.ProcessLine(".L %s/src/CMGTools/TTHAnalysis/python/plotter/fakeRate.cc+" % os.environ['CMSSW_BASE']);
 
-from CMGTools.TTHAnalysis.plotter.mcCorrections import SimpleCorrection
-from CMGTools.TTHAnalysis.plotter.cutsFile import CutsFile 
+#from CMGTools.TTHAnalysis.plotter.mcCorrections import SimpleCorrection
+#from CMGTools.TTHAnalysis.plotter.cutsFile import CutsFile 
+from mcCorrections import SimpleCorrection
+from cutsFile import CutsFile 
 
 _loads = {}
 class FakeRate:
