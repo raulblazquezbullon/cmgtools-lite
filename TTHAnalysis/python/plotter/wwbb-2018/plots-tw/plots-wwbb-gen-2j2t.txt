@@ -22,7 +22,7 @@ DressedLep2_eta  : GenDressedLepton_eta[iDressSelLep[1]]         : 15,-5,5      
 OrigDressedJet1_pt   : GenJet_pt[0]      : 18,20,200     ; IncludeUnderflow=False, XTitle="Leading dressed jet p_{T} (GeV)"
 OrigDressedJet1_eta  : GenJet_eta[0]     : 15,-5,5   ; IncludeUnderflow=False, XTitle="Leading dressed jet #eta"
 OrigDressedJet1_m    : GenJet_mass[0]    : 12,0,60       ; IncludeUnderflow=False, XTitle="Leading dressed jet mass (GeV)"
-OrigDressedJet1_e    : GenJet1_E                 : 14,10,250             ; IncludeUnderflow=False, XTitle="Leading dressed jet energy (GeV)"
+OrigDressedJet1_e    : GenJet1_E[0]                 : 14,10,250             ; IncludeUnderflow=False, XTitle="Leading dressed jet energy (GeV)"
 
 
 OrigDressedJet2_pt   : GenJet_pt[1]      : 8,30,190     ; IncludeUnderflow=False, XTitle="Subleading dressed jet p_{T} (GeV)"
