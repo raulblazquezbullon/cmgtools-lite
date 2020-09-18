@@ -172,6 +172,6 @@ class selectParticleAndPartonInfo(Module):
         tmpleps = [l for l in Collection(ev, "GenDressedLepton")]
 
         for iL in self.listdresslep:
-            if j.p4().DeltaR(tmpleps[iL].p4()) < dR:
+            if abs(j.p4().DeltaR(tmpleps[iL].p4())) < dR:
                 return False
         return True
