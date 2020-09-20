@@ -66,7 +66,7 @@ class addRochester(Module):
                 if abs(lep.pdgId) == 11:
                     newvalsup2.append(lep.pt)
                 else:
-                    newvalsup2.append(lep.correctedDown_pt)
+                    newvalsup2.append(lep.correctedUp_pt)
             leps  = [l for l in Collection(event, "LepGoodmuDown")]
             for lep in leps:
                 if abs(lep.pdgId) == 11:
