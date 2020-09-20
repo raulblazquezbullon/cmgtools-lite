@@ -14,7 +14,9 @@ from CMGTools.TTHAnalysis.tools.nanoAOD.TopRun2_modules import ch, tags
 
 
 class EventVars_tWRun2(Module):
-    def __init__(self, label = "", recllabel = 'Recl', jecvars = ["jesTotal", "jer"], lepvars = ["mu"], isMC = True):
+    def __init__(self, label = "", recllabel = 'Recl', isMC = True,
+                 jecvars = ["jesTotal", "jer"], lepvars = ["mu"]):
+
         self.jecbranches = ["Lep1Lep2Jet1MET_Pz",
                             "Lep1Lep2Jet1MET_Pt",
                             "Lep1Lep2Jet1MET_M",
