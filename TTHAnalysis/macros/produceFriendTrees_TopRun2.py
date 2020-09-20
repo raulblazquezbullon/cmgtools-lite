@@ -11,8 +11,10 @@ r.gROOT.SetBatch(True)
 friendspath = "/pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions"
 #prodname    = "2020-06-01" # veya
 #prodname    = "2020-06-17" # nova
-prodname    = "2020-07-03" # con sistematicos, en 2016 col tuning veyo
+#prodname    = "2020-07-03" # con sistematicos, en 2016 col tuning veyo
 #prodname    = "2020-07-29" # prueba para Sheyla
+#prodname    = "2020-09-16" # prueba tras profundos cambios
+prodname    = "2020-09-20" # tras la prueba, todo aparentemente en orden
 
 
 datasamples  = ["SingleMuon", "SingleElec", "DoubleMuon", "DoubleEG", "MuonEG", "LowEGJet", "HighEGJet", "EGamma"]
@@ -37,7 +39,8 @@ friendfolders = {0 : "0_yeartag",
 #chunksizes    = [5000000, 250000, 5000000, 250000, 250000, 250000] # mais novos inda
 #chunksizes    = [5000000, 250000, 5000000, 500000, 500000, 250000] # pa la futura
 chunksizes    = {0 : 5000000,
-                 1 : 250000,
+                 #1 : 250000,
+                 1 : 150000,
                  2 : 5000000,
                  3 : 500000,
                  4 : 500000,
@@ -120,8 +123,8 @@ sampledict[2016] = {
     ##### Incertidumbres
     #### tW
     # CUETP8M1
-    "tW_noFullHad_DS_CUETP8M2T4"    : "Tree_tW_5f_DS_noFullHad_TuneCUETP8M",
-    "tbarW_noFullHad_DS_CUETP8M2T4" : "Tree_tbarW_5f_DS_noFullHad",
+    #"tW_noFullHad_DS_CUETP8M2T4"    : "Tree_tW_5f_DS_noFullHad_TuneCUETP8M",
+    #"tbarW_noFullHad_DS_CUETP8M2T4" : "Tree_tbarW_5f_DS_noFullHad",
 
     # CP5
 
@@ -285,10 +288,10 @@ sampledict[2018] = {
 
     ### WWbb
     "WWbb" : "Tree_b_bbar_4l_TuneCP5_ext1",
-    "WWbb_noskim_4files" : ["8D0A2ECF-09D2-6841-BE66-0BCECFE4942A_Skim",
-                            "C14C273E-2210-DA4E-AE8A-1D283123146B_Skim",
-                            "EE18ACF2-2CB7-214F-93B9-B70E7861F9E7_Skim",
-                            "FF50A220-4B88-A349-B802-28FD77C317EA_Skim"],
+    #"WWbb_noskim_4files" : ["8D0A2ECF-09D2-6841-BE66-0BCECFE4942A_Skim",
+                            #"C14C273E-2210-DA4E-AE8A-1D283123146B_Skim",
+                            #"EE18ACF2-2CB7-214F-93B9-B70E7861F9E7_Skim",
+                            #"FF50A220-4B88-A349-B802-28FD77C317EA_Skim"],
 
     # W Jets
     "WJetsToLNu_MLM" : "Tree_WJetsToLNu_TuneCP5_MLM",
@@ -504,18 +507,18 @@ def SendDatasetJobs(task):
     elif step == 2:
         #module_  = "cleaning_{ty}_{y}".format(y = year, ty = "data" if isData else "mc")
         module_  = "cleaning_{ty}".format(ty = "data" if isData else "mc")
-        friends_ += friendpref + getFriendsFolder(dataset, friendsbasepath, 0) + friendsuff
+        friends_ +=       friendpref + getFriendsFolder(dataset, friendsbasepath, 0) + friendsuff
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 1) + friendsuff
 
     elif step == 3:
         module_  = "varstrigger_" + ("mc" if not isData else "data")
-        friends_ += friendpref + getFriendsFolder(dataset, friendsbasepath, 0) + friendsuff
+        friends_ +=       friendpref + getFriendsFolder(dataset, friendsbasepath, 0) + friendsuff
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 1) + friendsuff
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 2) + friendsuff
 
     elif step == 4 and not isData:
         module_  = "sfSeq_{y}".format(y = year)
-        friends_ += friendpref + getFriendsFolder(dataset, friendsbasepath, 0) + friendsuff
+        friends_ +=       friendpref + getFriendsFolder(dataset, friendsbasepath, 0) + friendsuff
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 1) + friendsuff
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 2) + friendsuff
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 3) + friendsuff
