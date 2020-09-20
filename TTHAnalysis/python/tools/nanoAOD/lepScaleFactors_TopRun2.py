@@ -8,7 +8,7 @@ import os
 
 class lepScaleFactors_TopRun2(Module):
     # =================== ### Main methods
-    def __init__(self):
+    def __init__(self, lepenvars = ["mu"]):
         self.basepath     = os.environ["CMSSW_BASE"] + "/src/CMGTools/TTHAnalysis/data/TopRun2/"
         self.basepathlep  = self.basepath + "/lepton/"
         self.basepathtrig = self.basepath + "/trigger/"
@@ -27,6 +27,11 @@ class lepScaleFactors_TopRun2(Module):
         self.lumidict[2016]["BCDEF"] = 19.706
         self.lumidict[2016]["GH"]    = 16.1454
 
+        self.systsLepEn = {}
+        if   len(lepenvars):
+            for i, var in enumerate(lepenvars):
+                self.systsLepEn[i+1]    = "_%sUp"%var
+                self.systsLepEn[-(i+1)] = "_%sDown"%var
 
         print("[lepScaleFactors_TopRun2::constructor] - Loading histograms")
         # Muon ID
@@ -76,6 +81,11 @@ class lepScaleFactors_TopRun2(Module):
             self.out.branch('MuonSF' + var, 'F')
             self.out.branch('ElecSF' + var, 'F')
             self.out.branch('TrigSF' + var, 'F')
+            if var == "":
+                for delta,sys in self.systsLepEn.iteritems():
+                    self.out.branch('MuonSF' + sys, 'F')
+                    self.out.branch('ElecSF' + sys, 'F')
+                    self.out.branch('TrigSF' + sys, 'F')
         return
 
 
@@ -84,6 +94,7 @@ class lepScaleFactors_TopRun2(Module):
         chan = event.channel
         run  = event.run
         leps = [l for l in Collection(event, "LepGood")]
+        varleps = []
 
         # leptons
         for var in ["", "_Up", "_Dn"]:
@@ -124,14 +135,41 @@ class lepScaleFactors_TopRun2(Module):
             self.out.fillBranch('MuonSF' + var, muonsf)
             self.out.fillBranch('ElecSF' + var, elecsf)
 
-        # triggers
-        for var in ["", "_Up", "_Dn"]:
+            # triggers
             trigsf = 1
             #if len(leps) > 1 and chan != ch.NoChan:
             if event.nLepGood > 1 and chan != ch.NoChan:
                 trigsf *= self.getTrigSF(leps[0].pt_corrAll, leps[1].pt_corrAll, var, chan, year, ev = event)
 
             self.out.fillBranch('TrigSF' + var, trigsf)
+
+            # Now for the lepton energy variations...
+            if var == "":
+                for delta,sys in self.systsLepEn.iteritems():
+                    # leptons
+                    muonsf = 1; elecsf = 1
+                    varleps = [l for l in Collection(event, "LepGood" + sys[1:])]
+                    if len(varleps) > 0:
+                        if   abs(varleps[0].pdgId) == 11: # electron
+                            elecsf *= self.getLepSF(getattr(varleps[0], "pt" + sys), varleps[0].eta + varleps[0].deltaEtaSC, var, "e", year, event)
+                        elif abs(varleps[0].pdgId) == 13: # muon
+                            muonsf *= self.getLepSF(getattr(varleps[0], "pt" + sys), varleps[0].eta, var, "m", year, event)
+
+                        if len(varleps) > 1:
+                            if   abs(varleps[1].pdgId) == 11: # electron
+                                elecsf *= self.getLepSF(getattr(varleps[1], "pt" + sys), varleps[1].eta + varleps[1].deltaEtaSC, var, "e", year, event)
+                            elif abs(varleps[1].pdgId) == 13: # muon
+                                muonsf *= self.getLepSF(getattr(varleps[1], "pt" + sys), varleps[1].eta, var, "m", year, event)
+
+                    self.out.fillBranch('MuonSF' + sys, muonsf)
+                    self.out.fillBranch('ElecSF' + sys, elecsf)
+
+                    # triggers
+                    trigsf = 1
+                    if event.nLepGood > 1 and chan != ch.NoChan:
+                        trigsf *= self.getTrigSF(getattr(varleps[0], "pt" + sys), getattr(varleps[1], "pt" + sys), var, chan, year, ev = event)
+
+                    self.out.fillBranch('TrigSF' + sys, trigsf)
 
         return True
 

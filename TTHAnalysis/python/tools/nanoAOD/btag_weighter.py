@@ -8,7 +8,11 @@ from copy import deepcopy
 
 
 class btag_weighter(Module):
-    def __init__(self, csv, eff, algo = 'deepjet', wp = 1, branchbtag = 'btagDeepFlavB', branchflavour = 'hadronFlavour', label = "", isFastSim = False, year = 2017, SFmeasReg = "mujets", minptlow = 20, minpthigh = 30, maxeta = 2.4, debug = False):
+    def __init__(self, csv, eff, algo = 'deepjet', wp = 1, branchbtag = 'btagDeepFlavB', branchflavour = 'hadronFlavour',
+                 label = "", isFastSim = False, year = 2017, SFmeasReg = "mujets",
+                 minptlow = 20, minpthigh = 30, maxeta = 2.4,
+                 jecvars = ["jesTotal", "jer"], lepenvars = ["mu"],
+                 debug = False):
 
         self.algo      = algo
         self.wp        = wp
@@ -21,7 +25,20 @@ class btag_weighter(Module):
         self.branchflavour = branchflavour
         self.branchbtag   = branchbtag
         self.debug     = debug
-        self.jecs = ["", "_jesTotalUp", "_jesTotalDown", "_jerUp", "_jerDown"]
+
+        self.systsJEC   = {0: ""}
+        self.systsLepEn = {}
+        self.nominaljecscaff = "_nom"
+
+        if   len(jecvars):
+            for i, var in enumerate(jecvars):
+                self.systsJEC[i+1]    = "_%sUp"%var
+                self.systsJEC[-(i+1)] = "_%sDown"%var
+        if   len(lepenvars):
+            for i, var in enumerate(lepenvars):
+                self.systsLepEn[i+1]    = "_%sUp"%var
+                self.systsLepEn[-(i+1)] = "_%sDown"%var
+
 
         self.cutdict = {}
         self.cutdict["csvv2"] = {}; self.cutdict["deepcsv"] = {}; self.cutdict["deepjet"] = {}
@@ -75,29 +92,27 @@ class btag_weighter(Module):
         self.wrappedOutputTree.branch("bTagWeight" + self.label + "_mistag_Up", "F")
         self.wrappedOutputTree.branch("bTagWeight" + self.label + "_mistag_Dn", "F")
 
-        for jecVar in self.jecs:
+        for delta,jecVar in self.systsJEC.iteritems():
             self.wrappedOutputTree.branch("bTagWeight" + self.label + jecVar , "F")
+
+        for delta,lepVar in self.systsLepEn.iteritems():
+            self.wrappedOutputTree.branch("bTagWeight" + self.label + lepVar , "F")
         return
 
 
     def analyze(self, event):
         self.event = event
         self.ret.clear()
-        all_jets  = [j for j in Collection(event, "Jet")]
+        self.all_jets  = [j for j in Collection(event, "Jet")]
         self.jets = []
-        if event.nJetSel30_Recl >= 5:
-            self.jets    = [all_jets[event.iJetSel30_Recl[j]] for j in xrange(5)]
-        else:
-            self.jets    = [all_jets[event.iJetSel30_Recl[j]] for j in xrange(event.nJetSel30_Recl)]
-
-        self.computeWeights()
+        self.computeWeights(event)
 
         writeOutput(self, self.ret)
         return True
 
 
-    def computeWeights(self):
-        for jecVar in self.jecs:
+    def computeWeights(self, event):
+        for delta,jecVar in self.systsJEC.iteritems():
             mcTag     = 1
             mcNoTag   = 1
             dataTag   = 1
@@ -107,9 +122,14 @@ class btag_weighter(Module):
             sysLFup   = 1
             sysLFdn   = 1
 
+            self.jets    = [self.all_jets[getattr(event, 'iJetSel30{v}_Recl'.format(v = jecVar))[j]]
+                        for j in xrange(min([getattr(event, 'nJetSel30{v}_Recl'.format(v = jecVar)), 5]))]
+
+            jetjecsysscaff = (jecVar if jecVar != "" else self.nominaljecscaff)
+
             for jet in self.jets:
                 flavour = getattr(jet, self.branchflavour) if hasattr(jet, self.branchflavour) else jet.mcFlavour
-                jet.pt = getattr(jet, ("pt" + jecVar) if jecVar != "" else ("pt_nom"))
+                jet.pt = getattr(jet, "pt" + jetjecsysscaff)
 
                 if abs(jet.eta) >= self.maxeta:    continue
                 if abs(jet.pt)  <= self.minptlow : continue
@@ -169,6 +189,45 @@ class btag_weighter(Module):
                 self.ret["bTagWeight" + self.label + "_btag_Dn"]   = sysHFdn / ( mcNoTag * mcTag )
                 self.ret["bTagWeight" + self.label + "_mistag_Up"] = sysLFup / ( mcNoTag * mcTag )
                 self.ret["bTagWeight" + self.label + "_mistag_Dn"] = sysLFdn / ( mcNoTag * mcTag )
+
+                for ldelta,lepVar in self.systsLepEn.iteritems():
+                    mcTag     = 1
+                    mcNoTag   = 1
+                    dataTag   = 1
+                    dataNoTag = 1
+
+                    self.jets    = [self.all_jets[getattr(event, 'iJetSel30{v}_Recl'.format(v = lepVar))[j]]
+                                for j in xrange(min([getattr(event, 'nJetSel30{v}_Recl'.format(v = lepVar)), 5]))]
+
+                    jetjecsysscaff = self.nominaljecscaff
+
+                    for jet in self.jets:
+                        flavour = getattr(jet, self.branchflavour) if hasattr(jet, self.branchflavour) else jet.mcFlavour
+                        jet.pt = getattr(jet, "pt" + jetjecsysscaff)
+
+                        if abs(jet.eta) >= self.maxeta:    continue
+                        if abs(jet.pt)  <= self.minptlow : continue
+
+                        eff = self.getEffFromHisto(jet.pt, jet.eta, flavour) # WARNING: do not use later without changing it back!
+                        SF  = self.getSF (jet.pt, jet.eta, flavour)
+
+                        istag = (getattr(jet, self.branchbtag) > self.cutVal) and (abs(jet.eta) < self.maxeta and jet.pt > self.minptlow)
+
+                        if eff == 0:
+                            print "[btag_weighter::computeWeights] - WARNING: jet b-tagging is zero. To prevent a ZeroDivision error, we will fix its value to 10^-5."
+                            eff = 1e-5
+
+                        if istag:
+                            mcTag   *= eff
+                            dataTag *= eff*SF[0]
+                        else:
+                            mcNoTag   *= (1 - eff      )
+                            dataNoTag *= (1 - eff*SF[0])
+
+                    central = (dataNoTag * dataTag ) / ( mcNoTag * mcTag )
+
+                    self.ret["bTagWeight" + self.label + lepVar] = central
+
         return
 
 
