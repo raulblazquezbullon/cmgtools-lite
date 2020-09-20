@@ -109,7 +109,7 @@ class btag_weighter(Module):
 
             for jet in self.jets:
                 flavour = getattr(jet, self.branchflavour) if hasattr(jet, self.branchflavour) else jet.mcFlavour
-                jet.pt = getattr(jet, "pt" + jecVar)
+                jet.pt = getattr(jet, ("pt" + jecVar) if jecVar != "" else ("pt_nom"))
 
                 if abs(jet.eta) >= self.maxeta:    continue
                 if abs(jet.pt)  <= self.minptlow : continue
