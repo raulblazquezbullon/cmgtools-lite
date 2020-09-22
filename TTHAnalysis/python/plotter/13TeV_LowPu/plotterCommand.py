@@ -52,19 +52,20 @@ def addBoringLines(text):
              "--lspam '#scale[1.1]{#bf{CMS}} #scale[0.9]{#it{Preliminary}}' ",
              "--rspam '%(lumi) (13 TeV)' ",
              "--mcc {mccFile} ".format(mccFile = defaultPars["mccFile"]),
-             "{mca} ".format(mca = defaultPars["mcaFile"]),
-             "{cuts} ".format(cuts = defaultPars["cuts"]),
-             "{plots} ".format(plots = defaultPars["plots"]),
-             "{weight} ".format(weight = defaultPars["weight"]), #still have no weights to add
-             "{binname} ".format(binname = "--binname ttbar"),
-	     "--rebin 4 ",
- 	     "--scaleBkgToData ",
-	     "--scaleSigToData ", 
              ]
     
     for line in Lines: text += line
     
     return text
+
+def process_region(command, region):
+    Lines = ["{mca} ".format(mca = defaultPars["mcaFile"]),
+             "{cuts} ".format(cuts = defaultPars["cuts"]),
+             "{plots} ".format(plots = defaultPars["plots"]),
+             "{weight} ".format(weight = defaultPars["weight"]), #still have no weights to add
+             "{binname} ".format(binname = "--binname ttbar")]
+
+    return command
 
 def ProcessCommand(args):
     prod, year, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend = args
@@ -75,6 +76,7 @@ def ProcessCommand(args):
     # Stuff
     command = CMD.format(path = defaultPars["path"], outpath = outpath)
     command = addBoringLines(command)
+    command = process_region(command, region)
     for plot in selplot: command += " --sP {plot}".format(plot = plot)
     
     return command
