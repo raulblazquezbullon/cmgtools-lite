@@ -16,11 +16,11 @@ r.gROOT.SetBatch(True)
 
 
 # ================ Settings
-SamplesPath = "/pool/ciencias/nanoAODv6/lowPU2017/2020_07_21_postProc/"
-FriendsPath = "/pool/phedexrw/userstorage/cmstudents/cvico/WZ_LowPu/13TeV_Aug13"
-prodName = "2020_07_21" # Falta comprobar este nombre
+#SamplesPath = "/pool/ciencias/nanoAODv6/lowPU2017/2020_07_21_postProc/" # Old
+SamplesPath = "/pool/phedex/userstorage/cmstudents/cvico/WZ_LowPu/MiniTrees/14-07-2020"
+FriendsPath = "/pool/phedexrw/userstorage/cmstudents/cvico/WZ_LowPu/FriendTrees"
 dataSamples = [ "SingleMuon", "DoubleMuon", "HighEGJet", "LowEGJet" ]
-logsPath = FriendsPath + "/" + prodName + "/{y}/{step_prefix}/logs"
+logsPath = FriendsPath + "/{prodname}/{y}/{step_prefix}/logs"
 CMD = "python prepareEventVariablesFriendTree.py -t NanoAOD {inpath} {outpath} -I CMGTools.TTHAnalysis.tools.nanoAOD.LowPu_modules {module} {friends} {dataset} -N {chunksize} {cluster} --log={logs}"
 utilsPath = "/nfs/fanae/user/cvico/WorkSpace/WZ_LowPu/CMSSW_10_4_0/src/susyMaintenanceScripts/" 
 friendFolders = {0 : "0_tags",
@@ -129,7 +129,7 @@ def GetCMD(CMD, inpath, outpath, module, friends, dataset, chunksize, cluster, l
     print(CMD)
     return CMD
 
-def ProcessOnlyThisSample(tag, processThis):
+def processOnlyThisSample(tag):
     processThis = "-D "
     if tag.lower() == "data": processThis += ".*Run.*"
     elif tag.lower() == "singlemuon": processThis += ".*SingleMuon*"
@@ -147,7 +147,7 @@ def GetTaggingModule(tag):
     return module
 
 def addFriendTrees(step, outpath):
-    preffix = "-F Friends " + FriendsPath + "/" + prodName + "/{y}".format(y = year)
+    preffix = "-F Friends " + FriendsPath + "/{prodname}/{y}".format(prodname = prodname, y = year)
     suffix = "{cname}_Friend.root "
     friends = ""
     for previous_step in range(int(step)): friends += preffix + "/" + friendFolders[int(previous_step)] + "/" + suffix
@@ -159,7 +159,7 @@ def ProcessOptions(FriendsPath, step, tag):
     # passed to getCMD                #
     #=================================#
     inpath = SamplesPath # /pool/ciencias/nanoAODv6/lowPU2017/2020_07_21_postProc/ by default
-    outpath = FriendsPath + "/" + prodName + "/{y}/{step_prefix}".format(y = year, step_prefix = friendFolders[int(step)])
+    outpath = FriendsPath + "/{prodname}/{y}/{step_prefix}".format(prodname = prodname, y = year, step_prefix = friendFolders[int(step)])
     
     processThis = "--xD .*Run.*" #Only process MC samples (--xD excludes anything that has Run in his name)
     
@@ -169,7 +169,8 @@ def ProcessOptions(FriendsPath, step, tag):
     if step == "0":
         # Step 0 is for tagging samples with MC or data
         if tag.lower() == "data": raise RuntimeError("[ERROR]: For step0 I need to know the specific name of the data sample in order to get the correct module")
-        module = GetTaggingModule(tag)
+        dataset = processOnlyThisSample(tag) if tag.lower() != "mc" else dataset
+	module = GetTaggingModule(tag)
         
     elif step == "1":
         # Step 1 is for lep merging
@@ -195,14 +196,30 @@ def ProcessOptions(FriendsPath, step, tag):
 	    chunksize = chunkSizes[0]
 	    cluster += "-q batch --env oviedo"
 	    logs += outpath + "/logs"
-	    if not os.path.exists(outpath): os.system("mkdir -p " + logs)
-	    # create the folder to store the logs
+	    if not os.path.exists(outpath): os.system("mkdir -p " + logs) # create the folder to store the logs
+#	    else:
+#		answ = AskUser("A folder {outpath} already exists, do you want to create a {outpath}_new?".format(outpath = outpath))
+#		if answ: os.system("mkdir -p " + outpath + "_new/logs")
+
     comm = GetCMD(CMD, inpath, outpath, module, friends, dataset, chunksize, cluster, logs)    
         
     return comm
+
+def AskUser(msg = "Do you wish to continue?"):
+    """
+    Ask user to enter y(es) or n(o) (case-insensitive)
+    :return: True if the answer is Y.
+    :rtype: bool
+    """
+    answer = ""
+    while answer not in ["y", "n", "yes", "no"]:
+	answer = raw_input(msg + " [Y/N]\n").lower()
+    return answer[0] == "y"
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(usage = "python prepareFriendTreesLowPu.py [options]", description = "Tool used for friend-trees production in the low PU analysis")
     parser.add_argument('--FriendsPath','-f', metavar = 'FriendsPath',    dest = "FriendsPath", required = False, default = FriendsPath)
+    parser.add_argument('--prodname',   '-p', metavar = 'prodname',  	  dest = "prodname", default = "15-09-2020")
     parser.add_argument('--year',       '-y', metavar = 'year',       dest = "year",    required = False, default = 2017, type = int)
     parser.add_argument('--dataset',    '-d', metavar = 'dataset',    dest = "dataset", required = False, default = "TTTo2L2Nu")
     parser.add_argument('--step',       '-s', metavar = 'step',       dest = "step",    required = False, default = "0")
@@ -212,12 +229,13 @@ if __name__ == "__main__":
     parser.add_argument('--extraArgs',  '-e', metavar = 'extra',      dest = "extra",   required = False, default = "")
     parser.add_argument('--ncores',     '-n', metavar = 'ncores',     dest = "ncores",  required = False, default = 1, type = int)
     #parser.add_argument('--merge',    '-m', action  = "store_true", dest = "merge",   required = False, default = False)
-    parser.add_argument('--pretend',    '-p', action  = "store_true", dest = "pretend", required = False, default = True)
+    parser.add_argument('--pretend',    '-v', action  = "store_true", dest = "pretend", required = False, default = True)
     parser.add_argument('--tag',        '-t', metavar = 'tag',        dest = "tag",     required = False, default = "MC")
     parser.add_argument('--nobatch',    '-b', action  = 'store_true', dest = "nobatch", required = False, default = False) 
 
     options     = parser.parse_args()
     FriendsPath = options.FriendsPath
+    prodname    = options.prodname
     year        = options.year
     dataset     = options.dataset
     step        = options.step
