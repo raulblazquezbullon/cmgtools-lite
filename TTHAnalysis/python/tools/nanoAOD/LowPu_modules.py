@@ -51,11 +51,9 @@ class tags(enum.IntEnum):
 
 ##                        Lepton Identification
 
-muonID = lambda l: abs(l.eta) < 2.4 and l.pt > muons["pt"] and l.miniPFRelIso_all < muons["miniRelIso"] \
-		   and l.sip3d < muons["sip3d"] and abs(l.dxy) < muons["dxy"] and abs(l.dz) < muons["dz"]
+muonID = lambda l: abs(l.eta) < 2.4 and l.pt > muons["pt"] and l.miniPFRelIso_all < muons["miniRelIso"]  and l.sip3d < muons["sip3d"] and abs(l.dxy) < muons["dxy"] and abs(l.dz) < muons["dz"]
 
-electronID = lambda l: abs(l.eta) < 2.4 and l.pt > electrons["pt"] and l.miniPFRelIso_all < electrons["miniRelIso"] \
-		       and l.sip3d < electrons["sip3d"] and abs(l.dxy) < electrons["dxy"] and abs(l.dz) < electrons["dz"]
+electronID = lambda l: abs(l.eta) < 2.4 and l.pt > electrons["pt"] and l.miniPFRelIso_all < electrons["miniRelIso"] and l.sip3d < electrons["sip3d"] and abs(l.dxy) < electrons["dxy"] and abs(l.dz) < electrons["dz"]
 
 
 ##                         Basic lepton modules
@@ -83,9 +81,9 @@ from CMGTools.TTHAnalysis.tools.nanoAOD.lepJetBTagAdder import lepJetBTagCSV, le
 from CMGTools.TTHAnalysis.tools.addDataTag import addDataTag
 addDoubleMuon = lambda : addDataTag(tags.DoubleMuon)
 addSingleMuon = lambda : addDataTag(tags.SingleMuon)
-addHighEGJet  = lambda : addDataTag(tags.HighEGJet )
-addLowEGJet   = lambda : addDataTag(tags.LowEGJet  )
-addMC         = lambda : addDataTag(tags.MC        )
+addHighEGJet  = lambda : addDataTag(tags.HighEGJet)
+addLowEGJet   = lambda : addDataTag(tags.LowEGJet)
+addMC         = lambda : addDataTag(tags.MC)
 
 # Lepton stuff
 WZ_lowPu_13TeV = [lepMerge, 

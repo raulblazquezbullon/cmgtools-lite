@@ -2,7 +2,7 @@ alwaystrue : 1
 pt2010: LepGood1_conePt>20 && LepGood2_conePt>10
 trigger1L: Trigger_1m || Trigger_1e
 
-Xuantr: HLT_HIMu17 || HLT_HIEle17_WPLoose_Gsf ; Disable=True
+#Xuantr: HLT_Mu17 || HLT_HIEle20_WPLoose_Gsf 
  
 em: abs(LepGood1_pdgId) != abs(LepGood2_pdgId);   
 
