@@ -293,7 +293,7 @@ TBar_tWch_noFullyHad = kreator.makeMyPrivateMCComponent("TBar_tWch_noFullyHad", 
 
 Ts = [
     T_sch_lep,
-    #T_tch, 
+    T_tch, 
     TBar_tch,
     T_tWch_noFullyHad, TBar_tWch_noFullyHad
 ]

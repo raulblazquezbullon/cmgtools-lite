@@ -63,24 +63,29 @@ if analysis == "main":
         # conversions
         "TTGJets", "TGJets_lep", "WGToLNuG_01J",'TTGJets_ext',#"WGToLNuG", "ZGTo2LG",
         # ttV
-        "TTWToLNu_fxfx", "TTZToLLNuNu", "TTZToLLNuNu_m1to10",#'TTWToLNu', 
+        "TTWToLNu_fxfx", "TTZToLLNuNu", "TTZToLLNuNu_m1to10",
+        'TTWToLNu', 
         # ttH + tHq/tHW
         "TTHnobb_pow", "THQ", "THW", #"TTH_ctcvcp",'TTH_pow',
         # top + V rare processes
-        "TZQToLL", "tWll", "TTTT", "TTWW",#'tZq_ll_1','tZq_ll_2','TTWW_LO'
+        "TZQToLL", "tWll"
+        "TTWW","TTWW_LO",
+        'TTTT_P8M2T4','TTTT'#'tZq_ll_1','tZq_ll_2'
         # diboson + DPS + WWss
-        "WWTo2L2Nu", "WZTo3LNu_pow", "WZTo3LNu_fxfx", "ZZTo4L", "WW_DPS", "WWTo2L2Nu_DPS", "WpWpJJ",'TTTT_P8M2T4'
+        "WWTo2L2Nu", "WZTo3LNu_pow", "WZTo3LNu_fxfx", "ZZTo4L", "WW_DPS", 
+        "WWTo2L2Nu_DPS", #"WpWpJJ",
         # triboson
         "WWW", "WWW_ll", "WWZ", "WZG", "WZZ", "ZZZ",
         # other Higgs processes
         "GGHZZ4L", "VHToNonbb", "VHToNonbb_ll", "ZHTobb_ll", "ZHToTauTau", "TTWH", "TTZH",
+         
     ]])
-    DatasetsAndTriggers.append( ("DoubleMuon", triggerGroups_dict["Trigger_2m"][year] + triggerGroups_dict["Trigger_3m"][year]) )
-    DatasetsAndTriggers.append( ("EGamma",     triggerGroups_dict["Trigger_2e"][year] + triggerGroups_dict["Trigger_3e"][year] + triggerGroups_dict["Trigger_1e"][year]) if year == 2018 else
-                                ("DoubleEG",   triggerGroups_dict["Trigger_2e"][year] + triggerGroups_dict["Trigger_3e"][year]) )
+    #DatasetsAndTriggers.append( ("DoubleMuon", triggerGroups_dict["Trigger_2m"][year] + triggerGroups_dict["Trigger_3m"][year]) )
+    #DatasetsAndTriggers.append( ("EGamma",     triggerGroups_dict["Trigger_2e"][year] + triggerGroups_dict["Trigger_3e"][year] + triggerGroups_dict["Trigger_1e"][year]) if year == 2018 else
+    #                            ("DoubleEG",   triggerGroups_dict["Trigger_2e"][year] + triggerGroups_dict["Trigger_3e"][year]) )
     DatasetsAndTriggers.append( ("MuonEG",     triggerGroups_dict["Trigger_em"][year] + triggerGroups_dict["Trigger_mee"][year] + triggerGroups_dict["Trigger_mme"][year]) )
-    DatasetsAndTriggers.append( ("SingleMuon", triggerGroups_dict["Trigger_1m"][year]) )
-    DatasetsAndTriggers.append( ("SingleElectron", triggerGroups_dict["Trigger_1e"][year]) if year != 2018 else (None,None) )
+    #DatasetsAndTriggers.append( ("SingleMuon", triggerGroups_dict["Trigger_1m"][year]) )
+    #DatasetsAndTriggers.append( ("SingleElectron", triggerGroups_dict["Trigger_1e"][year]) if year != 2018 else (None,None) )
 elif analysis == "frqcd":
     mcSamples = byCompName(mcSamples_, [
         #"QCD_Mu15", "QCD_Pt(20|30|50|80|120|170)to.*_Mu5", 
