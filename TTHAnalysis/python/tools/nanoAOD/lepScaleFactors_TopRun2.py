@@ -13,12 +13,15 @@ class lepScaleFactors_TopRun2(Module):
         self.basepathlep  = self.basepath + "/lepton/"
         self.basepathtrig = self.basepath + "/trigger/"
 
-        self.leptonSF  = {}; self.triggerSF = {}
+        self.leptonSF = {}; self.leptonSFuncs = {}; self.triggerSF = {}
         self.leptonSF["m"] = {}; self.leptonSF["e"] = {}
+        self.leptonSFuncs["m"] = {}; self.leptonSFuncs["e"] = {}
         self.triggerSF[ch.ElMu] = {}; self.triggerSF[ch.Elec] = {}; self.triggerSF[ch.Muon] = {};
         for y in [2016, 2017, 2018]:
             self.leptonSF["m"][y] = {}
             self.leptonSF["e"][y] = {}
+            self.leptonSFuncs["m"][y] = {}
+            self.leptonSFuncs["e"][y] = {}
             for chan in [ch.ElMu, ch.Elec, ch.Muon]:
                 self.triggerSF[chan][y] = {}
 
@@ -34,27 +37,41 @@ class lepScaleFactors_TopRun2(Module):
                 self.systsLepEn[-(i+1)] = "_%sDown"%var
 
         print("[lepScaleFactors_TopRun2::constructor] - Loading histograms")
-        # Muon ID
-        self.leptonSF["m"][2016]["tight,BCDEF"] = self.loadHisto(self.basepathlep + "2016LegacyReReco_RunBCDEF_SF_ID.root", "NUM_TightID_DEN_genTracks_eta_pt")
-        self.leptonSF["m"][2016]["tight,GH"]    = self.loadHisto(self.basepathlep + "2016LegacyReReco_RunGH_SF_ID.root", "NUM_TightID_DEN_genTracks_eta_pt")
-        self.leptonSF["m"][2017]["tight"]       = self.loadHisto(self.basepathlep + "RunBCDEF_SF_ID.root", "NUM_TightID_DEN_genTracks_pt_abseta")
-        self.leptonSF["m"][2018]["tight"]       = self.loadHisto(self.basepathlep + "Run2018ABCD_SF_ID.root", "NUM_TightID_DEN_TrackerMuons_pt_abseta")
+        #### OLD MUON: JOINT VARIATIONS
+        ##Muon ID
+        #self.leptonSF["m"][2016]["idtight,BCDEF"] = self.loadHisto(self.basepathlep + "Muon_Run2016BCDEF_SF_ID.root", "NUM_TightID_DEN_genTracks_eta_pt")
+        #self.leptonSF["m"][2016]["idtight,GH"]    = self.loadHisto(self.basepathlep + "Muon_Run2016GH_SF_ID.root",    "NUM_TightID_DEN_genTracks_eta_pt")
+        #self.leptonSF["m"][2017]["idtight"]       = self.loadHisto(self.basepathlep + "Muon_Run2017BCDEF_SF_ID.root", "NUM_TightID_DEN_genTracks_pt_abseta")
+        #self.leptonSF["m"][2018]["idtight"]       = self.loadHisto(self.basepathlep + "Muon_Run2018ABCD_SF_ID.root",  "NUM_TightID_DEN_TrackerMuons_pt_abseta")
+
+        ## Muon iso
+        #self.leptonSF["m"][2016]["iso,BCDEF"] = self.loadHisto(self.basepathlep + "Muon_Run2016BCDEF_SF_ISO.root", "NUM_TightRelIso_DEN_TightIDandIPCut_eta_pt")
+        #self.leptonSF["m"][2016]["iso,GH"]    = self.loadHisto(self.basepathlep + "Muon_Run2016GH_SF_ISO.root",    "NUM_TightRelIso_DEN_TightIDandIPCut_eta_pt")
+        #self.leptonSF["m"][2017]["iso"]       = self.loadHisto(self.basepathlep + "Muon_Run2017BCDEF_SF_ISO.root", "NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta")
+        #self.leptonSF["m"][2018]["iso"]       = self.loadHisto(self.basepathlep + "Muon_Run2018ABCD_SF_ISO.root",  "NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta")
+
+        #### NEW MUON: SEPARATE UNCS
+        ## Muon ID
+        self.leptonSF["m"][2016]["idtight,BCDEF"], self.leptonSFuncs["m"][2016]["idtight_stat,BCDEF"], self.leptonSFuncs["m"][2016]["idtight_syst,BCDEF"] = self.loadHistoWithUncs(self.basepathlep + "Muon_Run2016BCDEF_SF_ID.root", "NUM_TightID_DEN_genTracks_eta_pt"  , ["_stat", "_syst"])
+        self.leptonSF["m"][2016]["idtight,GH"], self.leptonSFuncs["m"][2016]["idtight_stat,GH"], self.leptonSFuncs["m"][2016]["idtight_syst,GH"] = self.loadHistoWithUncs(self.basepathlep + "Muon_Run2016GH_SF_ID.root",    "NUM_TightID_DEN_genTracks_eta_pt"          , ["_stat", "_syst"])
+        self.leptonSF["m"][2017]["idtight"], self.leptonSFuncs["m"][2017]["idtight_stat"], self.leptonSFuncs["m"][2017]["idtight_syst"] = self.loadHistoWithUncs(self.basepathlep + "Muon_Run2017BCDEF_SF_ID.root", "NUM_TightID_DEN_genTracks_pt_abseta"       , ["_stat", "_syst"])
+        self.leptonSF["m"][2018]["idtight"], self.leptonSFuncs["m"][2018]["idtight_stat"], self.leptonSFuncs["m"][2018]["idtight_syst"] = self.loadHistoWithUncs(self.basepathlep + "Muon_Run2018ABCD_SF_ID.root",  "NUM_TightID_DEN_TrackerMuons_pt_abseta"    , ["_stat", "_syst"])
 
         # Muon iso
-        self.leptonSF["m"][2016]["iso,BCDEF"] = self.loadHisto(self.basepathlep + "2016LegacyReReco_RunBCDEF_SF_ISO.root", "NUM_TightRelIso_DEN_TightIDandIPCut_eta_pt")
-        self.leptonSF["m"][2016]["iso,GH"]    = self.loadHisto(self.basepathlep + "2016LegacyReReco_RunGH_SF_ISO.root", "NUM_TightRelIso_DEN_TightIDandIPCut_eta_pt")
-        self.leptonSF["m"][2017]["iso"]       = self.loadHisto(self.basepathlep + "RunBCDEF_SF_ISO.root", "NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta")
-        self.leptonSF["m"][2018]["iso"]       = self.loadHisto(self.basepathlep + "Run2018ABCD_SF_ISO.root", "NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta")
+        self.leptonSF["m"][2016]["iso,BCDEF"], self.leptonSFuncs["m"][2016]["iso_stat,BCDEF"], self.leptonSFuncs["m"][2016]["iso_syst,BCDEF"] = self.loadHistoWithUncs(self.basepathlep + "Muon_Run2016BCDEF_SF_ISO.root", "NUM_TightRelIso_DEN_TightIDandIPCut_eta_pt"   , ["_stat", "_syst"])
+        self.leptonSF["m"][2016]["iso,GH"], self.leptonSFuncs["m"][2016]["iso_stat,GH"], self.leptonSFuncs["m"][2016]["iso_syst,GH"] = self.loadHistoWithUncs(self.basepathlep + "Muon_Run2016GH_SF_ISO.root",    "NUM_TightRelIso_DEN_TightIDandIPCut_eta_pt"   , ["_stat", "_syst"])
+        self.leptonSF["m"][2017]["iso"], self.leptonSFuncs["m"][2017]["iso_stat"], self.leptonSFuncs["m"][2017]["iso_syst"] = self.loadHistoWithUncs(self.basepathlep + "Muon_Run2017BCDEF_SF_ISO.root", "NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta", ["_stat", "_syst"])
+        self.leptonSF["m"][2018]["iso"], self.leptonSFuncs["m"][2018]["iso_stat"], self.leptonSFuncs["m"][2018]["iso_syst"] = self.loadHistoWithUncs(self.basepathlep + "Muon_Run2018ABCD_SF_ISO.root",  "NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta", ["_stat", "_syst"])
 
         # Elec ID
-        self.leptonSF["e"][2016]["idtight"] = self.loadHisto(self.basepathlep + "2016LegacyReReco_ElectronTight_Fall17V2.root", "EGamma_SF2D")
-        self.leptonSF["e"][2017]["idtight"] = self.loadHisto(self.basepathlep + "2017_ElectronTight.root", "EGamma_SF2D")
-        self.leptonSF["e"][2018]["idtight"] = self.loadHisto(self.basepathlep + "2018_ElectronTight.root", "EGamma_SF2D")
+        self.leptonSF["e"][2016]["idtight"] = self.loadHisto(self.basepathlep + "Electron_2016_IDTight.root", "EGamma_SF2D")
+        self.leptonSF["e"][2017]["idtight"] = self.loadHisto(self.basepathlep + "Electron_2017_IDTight.root", "EGamma_SF2D")
+        self.leptonSF["e"][2018]["idtight"] = self.loadHisto(self.basepathlep + "Electron_2018_IDTight.root", "EGamma_SF2D")
 
         # Elec reco
-        self.leptonSF["e"][2016]["recotight"] = self.loadHisto(self.basepathlep + "2016ReReco_ElecRECO.root", "EGamma_SF2D")
-        self.leptonSF["e"][2017]["recotight"] = self.loadHisto(self.basepathlep + "2017_ElecRECO.root", "EGamma_SF2D")
-        self.leptonSF["e"][2018]["recotight"] = self.loadHisto(self.basepathlep + "2018_ElecRECO.root", "EGamma_SF2D")
+        self.leptonSF["e"][2016]["recotight"] = self.loadHisto(self.basepathlep + "Electron_2016_RECO.root", "EGamma_SF2D")
+        self.leptonSF["e"][2017]["recotight"] = self.loadHisto(self.basepathlep + "Electron_2017_RECO.root", "EGamma_SF2D")
+        self.leptonSF["e"][2018]["recotight"] = self.loadHisto(self.basepathlep + "Electron_2018_RECO.root", "EGamma_SF2D")
 
         # Trigger elmu
         self.triggerSF[ch.ElMu][2016] = self.loadHisto(self.basepathtrig + "TriggerSFfromReza.root", "trigSF2016_ElMu")
@@ -78,14 +95,21 @@ class lepScaleFactors_TopRun2(Module):
         self.out = wrappedOutputTree
 
         for var in ["", "_Up", "_Dn"]:
-            self.out.branch('MuonSF' + var, 'F')
-            self.out.branch('ElecSF' + var, 'F')
-            self.out.branch('TrigSF' + var, 'F')
+            self.out.branch('ElecIDSF'   + var, 'F')
+            self.out.branch('ElecRECOSF' + var, 'F')
+            self.out.branch('TrigSF'     + var, 'F')
             if var == "":
                 for delta,sys in self.systsLepEn.iteritems():
-                    self.out.branch('MuonSF' + sys, 'F')
-                    self.out.branch('ElecSF' + sys, 'F')
-                    self.out.branch('TrigSF' + sys, 'F')
+                    self.out.branch('MuonIDSF'  + sys, 'F')
+                    self.out.branch('MuonISOSF' + sys, 'F')
+                    self.out.branch('ElecIDSF'  + sys, 'F')
+                    self.out.branch('ElecISOSF' + sys, 'F')
+                    self.out.branch('TrigSF'    + sys, 'F')
+
+        for var in ["", "_statUp", "_statDn", "_systUp", "_systDn"]:
+            self.out.branch('MuonIDSF'   + var, 'F')
+            self.out.branch('MuonISOSF'  + var, 'F')
+
         return
 
 
@@ -97,43 +121,62 @@ class lepScaleFactors_TopRun2(Module):
         varleps = []
 
         # leptons
-        for var in ["", "_Up", "_Dn"]:
-            muonsf = 1; elecsf = 1
+        #### OLD (w/o dividing in stat & syst)
+        #for var in ["", "_Up", "_Dn"]:
+            #muonsf = 1; elecsf = 1
 
+            ##### NOTE: electron SF are in terms of the eta of the associated supercluster and
+            ## the pT of the electron. Take also into account that deltaEtaSC = etaSC - eta, as
+            ## indicated in PhysicsTools/NanoAOD/python/electrons_cff.py.
+            #if event.nLepGood > 0:
+                #if   abs(leps[0].pdgId) == 11: # electron
+                    #elecsf *= self.getLepSF(leps[0].pt_corrAll, leps[0].eta + leps[0].deltaEtaSC, var, "e", year, event)
+                #elif abs(leps[0].pdgId) == 13: # muon
+                    #muonsf *= self.getLepSF(leps[0].pt_corrAll, leps[0].eta, var, "m", year, event)
+
+                #if event.nLepGood > 1:
+                    #if   abs(leps[1].pdgId) == 11: # electron
+                        #elecsf *= self.getLepSF(leps[1].pt_corrAll, leps[1].eta + leps[1].deltaEtaSC, var, "e", year, event)
+                    #elif abs(leps[1].pdgId) == 13: # muon
+                        #muonsf *= self.getLepSF(leps[1].pt_corrAll, leps[1].eta, var, "m", year, event)
+
+        # muons (separated into stat & syst)
+        for var in ["", "_statUp", "_statDn", "_systUp", "_systDn"]:
+            muonidsf = 1; muonisosf  = 1;
+
+            if event.nLepGood > 0:
+                if abs(leps[0].pdgId) == 13: # muon
+                    muonidsf  *= self.getLepSF(leps[0].pt_corrAll, leps[0].eta, var, "m", year, event, "id")
+                    muonisosf *= self.getLepSF(leps[0].pt_corrAll, leps[0].eta, var, "m", year, event, "iso")
+
+                if event.nLepGood > 1:
+                    if abs(leps[1].pdgId) == 13: # muon
+                        muonidsf  *= self.getLepSF(leps[1].pt_corrAll, leps[1].eta, var, "m", year, event, "id")
+                        muonisosf *= self.getLepSF(leps[1].pt_corrAll, leps[1].eta, var, "m", year, event, "iso")
+
+            self.out.fillBranch('MuonIDSF'   + var, muonidsf)
+            self.out.fillBranch('MuonISOSF'  + var, muonisosf)
+
+
+        for var in ["", "_Up", "_Dn"]:
+            # electrons (they are not separated into stat/syst)
             #### NOTE: electron SF are in terms of the eta of the associated supercluster and
             # the pT of the electron. Take also into account that deltaEtaSC = etaSC - eta, as
             # indicated in PhysicsTools/NanoAOD/python/electrons_cff.py.
-            #if len(leps) > 0:
-                #if   chan == ch.ElMu:
-                    #if abs(leps[0].pdgId) == 11: # electron
-                        #elecsf *= self.getLepSF(leps[0].pt_corrAll, leps[0].eta + leps[0].deltaEtaSC, var, "e", year, event)
-                        #if len(leps) > 1: muonsf *= self.getLepSF(leps[1].pt_corrAll, leps[1].eta, var, "m", year, event)
-                    #else:
-                        #muonsf *= self.getLepSF(leps[0].pt_corrAll, leps[0].eta, var, "m", year, event)
-                        #if len(leps) > 1: elecsf *= self.getLepSF(leps[1].pt_corrAll, leps[1].eta + leps[1].deltaEtaSC, var, "e", year, event)
-                #elif chan == ch.Elec:
-                    #elecsf *= self.getLepSF(leps[0].pt_corrAll, leps[0].eta + leps[0].deltaEtaSC, var, "e", year, event)
-                    #if len(leps) > 1: elecsf *= self.getLepSF(leps[1].pt_corrAll, leps[1].eta + leps[1].deltaEtaSC, var, "e", year, event)
-                #elif chan == ch.Muon:
-                    #muonsf *= self.getLepSF(leps[0].pt_corrAll, leps[0].eta, var, "m", year, event)
-                    #if len(leps) > 1: muonsf *= self.getLepSF(leps[1].pt_corrAll, leps[1].eta, var, "m", year, event)
-
-            if len(leps) != event.nLepGood: wr.warn("WARNING: different collection size from nLepGood!!!!!!!")
-
+            elecidsf = 1; elecrecosf = 1
             if event.nLepGood > 0:
-                if   abs(leps[0].pdgId) == 11: # electron
-                    elecsf *= self.getLepSF(leps[0].pt_corrAll, leps[0].eta + leps[0].deltaEtaSC, var, "e", year, event)
-                elif abs(leps[0].pdgId) == 13: # muon
-                    muonsf *= self.getLepSF(leps[0].pt_corrAll, leps[0].eta, var, "m", year, event)
+                if abs(leps[0].pdgId) == 11: # electron
+                    elecidsf   *= self.getLepSF(leps[0].pt_corrAll, leps[0].eta + leps[0].deltaEtaSC, var, "e", year, event, "id")
+                    elecrecosf *= self.getLepSF(leps[0].pt_corrAll, leps[0].eta + leps[0].deltaEtaSC, var, "e", year, event, "reco")
 
                 if event.nLepGood > 1:
-                    if   abs(leps[1].pdgId) == 11: # electron
-                        elecsf *= self.getLepSF(leps[1].pt_corrAll, leps[1].eta + leps[1].deltaEtaSC, var, "e", year, event)
-                    elif abs(leps[1].pdgId) == 13: # muon
-                        muonsf *= self.getLepSF(leps[1].pt_corrAll, leps[1].eta, var, "m", year, event)
+                    if abs(leps[1].pdgId) == 11: # electron
+                        elecidsf   *= self.getLepSF(leps[1].pt_corrAll, leps[1].eta + leps[1].deltaEtaSC, var, "e", year, event, "id")
+                        elecrecosf *= self.getLepSF(leps[1].pt_corrAll, leps[1].eta + leps[1].deltaEtaSC, var, "e", year, event, "reco")
 
-            self.out.fillBranch('MuonSF' + var, muonsf)
-            self.out.fillBranch('ElecSF' + var, elecsf)
+
+            self.out.fillBranch('ElecIDSF'   + var, elecidsf)
+            self.out.fillBranch('ElecRECOSF' + var, elecrecosf)
 
             # triggers
             trigsf = 1
@@ -143,26 +186,35 @@ class lepScaleFactors_TopRun2(Module):
 
             self.out.fillBranch('TrigSF' + var, trigsf)
 
+
             # Now for the lepton energy variations...
             if var == "":
                 for delta,sys in self.systsLepEn.iteritems():
                     # leptons
-                    muonsf = 1; elecsf = 1
+                    muonidsf = 1; muonisosf  = 1;
+                    elecidsf = 1; elecrecosf = 1
                     varleps = [l for l in Collection(event, "LepGood" + sys[1:])]
+
                     if len(varleps) > 0:
                         if   abs(varleps[0].pdgId) == 11: # electron
-                            elecsf *= self.getLepSF(getattr(varleps[0], "pt" + sys), varleps[0].eta + varleps[0].deltaEtaSC, var, "e", year, event)
+                            elecidsf   *= self.getLepSF(getattr(varleps[0], "pt" + sys), varleps[0].eta + varleps[0].deltaEtaSC, var, "e", year, event, "id")
+                            elecrecosf *= self.getLepSF(getattr(varleps[0], "pt" + sys), varleps[0].eta + varleps[0].deltaEtaSC, var, "e", year, event, "reco")
                         elif abs(varleps[0].pdgId) == 13: # muon
-                            muonsf *= self.getLepSF(getattr(varleps[0], "pt" + sys), varleps[0].eta, var, "m", year, event)
+                            muonidsf  *= self.getLepSF(getattr(varleps[0], "pt" + sys), varleps[0].eta, var, "m", year, event, "id")
+                            muonisosf *= self.getLepSF(getattr(varleps[0], "pt" + sys), varleps[0].eta, var, "m", year, event, "iso")
 
                         if len(varleps) > 1:
                             if   abs(varleps[1].pdgId) == 11: # electron
-                                elecsf *= self.getLepSF(getattr(varleps[1], "pt" + sys), varleps[1].eta + varleps[1].deltaEtaSC, var, "e", year, event)
+                                elecidsf   *= self.getLepSF(getattr(varleps[1], "pt" + sys), varleps[1].eta + varleps[1].deltaEtaSC, var, "e", year, event, "id")
+                                elecrecosf *= self.getLepSF(getattr(varleps[1], "pt" + sys), varleps[1].eta + varleps[1].deltaEtaSC, var, "e", year, event, "reco")
                             elif abs(varleps[1].pdgId) == 13: # muon
-                                muonsf *= self.getLepSF(getattr(varleps[1], "pt" + sys), varleps[1].eta, var, "m", year, event)
+                                muonidsf  *= self.getLepSF(getattr(varleps[1], "pt" + sys), varleps[1].eta, var, "m", year, event, "id")
+                                muonisosf *= self.getLepSF(getattr(varleps[1], "pt" + sys), varleps[1].eta, var, "m", year, event, "iso")
 
-                    self.out.fillBranch('MuonSF' + sys, muonsf)
-                    self.out.fillBranch('ElecSF' + sys, elecsf)
+                    self.out.fillBranch('MuonIDSF'   + sys, muonidsf)
+                    self.out.fillBranch('MuonISOSF'  + sys, muonisosf)
+                    self.out.fillBranch('ElecIDSF'   + sys, elecidsf)
+                    self.out.fillBranch('ElecRECOSF' + sys, elecrecosf)
 
                     # triggers
                     trigsf = 1
@@ -177,10 +229,24 @@ class lepScaleFactors_TopRun2(Module):
     # =================== ### Other methods
     def loadHisto(self, fil, hist):
         tf = r.TFile.Open(fil)
-        if not tf: raise RuntimeError("No such file %s"%fil)
+        if not tf: raise RuntimeError("[lepScaleFactors_TopRun2::loadHisto] FATAL: no such file %s"%fil)
         hist = tf.Get(hist)
-        if not hist: raise RuntimeError("No such object %s in %s"%(hist,fil))
+        if not hist: raise RuntimeError("[lepScaleFactors_TopRun2::loadHisto] FATAL: no such object %s in %s"%(hist,fil))
         ret = deepcopy(hist)
+        tf.Close()
+        return ret
+
+
+    def loadHistoWithUncs(self, fil, hist, uncs = []):
+        tf = r.TFile.Open(fil)
+        if not tf: raise RuntimeError("[lepScaleFactors_TopRun2::loadHistoWithVars] FATAL: no such file %s"%fil)
+        histnom = tf.Get(hist)
+        if not hist: raise RuntimeError("[lepScaleFactors_TopRun2::loadHistoWithVars] FATAL: no such object %s in %s"%(hist,fil))
+        ret = [deepcopy(histnom)]
+
+        for var in uncs:
+            tmphist = tf.Get(hist + var)
+            ret.append(deepcopy(tmphist))
         tf.Close()
         return ret
 
@@ -266,11 +332,264 @@ class lepScaleFactors_TopRun2(Module):
         return self.getFromHisto(pt, abs(eta), histo, err)
 
 
-    def getLepSF(self, pt, eta, var, fl, yr, ev = None):
+#### Old, combined code
+    #def getLepSF(self, pt, eta, var, fl, yr, ev = None):
+        #out = 1
+        #doneSFtype = []
+
+        #for sf in self.leptonSF[fl][yr]:
+            ##tmpls = self.leptonSF[fl][yr][sf].split(",")
+            #tmpls = sf.split(",")
+            ##print sf, doneSFtype
+            #if (len(tmpls) > 1) and (tmpls[0] not in doneSFtype):
+                #doneSFtype.append(tmpls[0])
+
+                #sftorescale = [sf]
+                #for sf2 in self.leptonSF[fl][yr]:
+                    #if   sf2 == sf: continue
+                    #else:
+                        #tmpls2 = sf2.split(",")
+                        #if (len(tmpls) > 1):
+                            #if tmpls2[0] == tmpls[0]:
+                                #sftorescale.append(sf2)
+                #tmpout  = 0
+                #tmplumi = []
+
+                #for i in sftorescale:
+                    #tmplumi.append(self.lumidict[yr][i.split(",")[1]])
+                    #tmpout += self.getFromHisto(pt, eta, self.leptonSF[fl][yr][i]) * tmplumi[-1]
+                    ##tmpout += self.getFromHistoAbs(pt, eta, self.leptonSF[fl][yr][i]) * tmplumi[-1] ### Como'l stop
+
+                #tmpout /= sum(tmplumi)
+                ##if ev.event == 467503 or ev.event == 486099: print(var, fl, ev.event, tmpls[0], tmpout)
+                #out *= tmpout
+
+            #elif tmpls[0] not in doneSFtype:
+                ##if fl == "e": out  *= self.getFromHistoNoAbs(pt, eta, self.leptonSF[fl][yr][sf]) ### Como'l stop
+                ##else:         out  *= self.getFromHistoAbs(  pt, eta, self.leptonSF[fl][yr][sf]) ### Como'l stop
+                #out  *= self.getFromHisto(pt, eta, self.leptonSF[fl][yr][sf])
+                ##if ev.event == 467503 or ev.event == 486099:
+                    ##print(var, fl, ev.event, tmpls[0], out)
+                    ##print(var, fl, ev.event, tmpls[0], self.getFromHistoAbs(  pt, eta, self.leptonSF[fl][yr][sf]))
+                #doneSFtype.append(sf)
+        #if var != "":
+            #doneSFtype = []
+            #tmpsum = 0
+            #for sf in self.leptonSF[fl][yr]:
+                ##tmpls = self.leptonSF[fl][yr][sf].split(",")
+                #tmpls = sf.split(",")
+                #if (len(tmpls) > 1) and (tmpls[0] not in doneSFtype):
+                    #doneSFtype.append(tmpls[0])
+
+                    #sftorescale = [sf]
+                    #for sf2 in self.leptonSF[fl][yr]:
+                        #if   sf2 == sf: continue
+                        #else:
+                            #tmpls2 = sf2.split(",")
+                            #if (len(tmpls) > 1):
+                                #if tmpls2[0] == tmpls[0]:
+                                    #sftorescale.append(sf2)
+                    #tmpout  = 0
+                    #tmplumi = []
+
+                    #for i in sftorescale:
+                        #tmplumi.append(self.lumidict[yr][i.split(",")[1]])
+                        #tmpout += self.getFromHisto(pt, eta, self.leptonSF[fl][yr][i], err = True) * tmplumi[-1]
+
+                    #tmpout /= sum(tmplumi)
+                    #tmpsum += tmpout**2
+
+                #elif tmpls[0] not in doneSFtype:
+                    #tmpsum += (self.getFromHisto(pt, eta, self.leptonSF[fl][yr][sf], err = True))**2
+                    #doneSFtype.append(sf)
+
+            #if fl == "m": tmpsum += (out * 0.005)**2 # Extrapolation to top-like from DY-like phase space (CMS-AN-2018-210). Only for muons.
+            #tmpsum = r.TMath.Sqrt(tmpsum)
+
+            #if "up" in var.lower(): out += tmpsum
+            #else:                   out -= tmpsum
+        #return out
+
+
+    #def getLepSF(self, pt, eta, var, fl, yr, ev = None):
+        #return self.getIDSF(pt, eta, var, fl, yr, ev) * self.getISORECOSF(pt, eta, var, fl, yr, ev)
+
+
+    #def getIDSF(self, pt, eta, var, fl, yr, ev = None):
+        #out = 1
+        #doneSFtype = []
+
+        #for sf in self.leptonSF[fl][yr]:
+
+            #if "id" not in sf.lower(): continue
+
+            ##tmpls = self.leptonSF[fl][yr][sf].split(",")
+            #tmpls = sf.split(",")
+            ##print sf, doneSFtype
+            #if (len(tmpls) > 1) and (tmpls[0] not in doneSFtype):
+                #doneSFtype.append(tmpls[0])
+
+                #sftorescale = [sf]
+                #for sf2 in self.leptonSF[fl][yr]:
+                    #if   sf2 == sf: continue
+                    #else:
+                        #tmpls2 = sf2.split(",")
+                        #if (len(tmpls) > 1):
+                            #if tmpls2[0] == tmpls[0]:
+                                #sftorescale.append(sf2)
+                #tmpout  = 0
+                #tmplumi = []
+
+                #for i in sftorescale:
+                    #tmplumi.append(self.lumidict[yr][i.split(",")[1]])
+                    #tmpout += self.getFromHisto(pt, eta, self.leptonSF[fl][yr][i]) * tmplumi[-1]
+                    ##tmpout += self.getFromHistoAbs(pt, eta, self.leptonSF[fl][yr][i]) * tmplumi[-1] ### Como'l stop
+
+                #tmpout /= sum(tmplumi)
+                ##if ev.event == 467503 or ev.event == 486099: print(var, fl, ev.event, tmpls[0], tmpout)
+                #out *= tmpout
+
+            #elif tmpls[0] not in doneSFtype:
+                ##if fl == "e": out  *= self.getFromHistoNoAbs(pt, eta, self.leptonSF[fl][yr][sf]) ### Como'l stop
+                ##else:         out  *= self.getFromHistoAbs(  pt, eta, self.leptonSF[fl][yr][sf]) ### Como'l stop
+                #out  *= self.getFromHisto(pt, eta, self.leptonSF[fl][yr][sf])
+                ##if ev.event == 467503 or ev.event == 486099:
+                    ##print(var, fl, ev.event, tmpls[0], out)
+                    ##print(var, fl, ev.event, tmpls[0], self.getFromHistoAbs(  pt, eta, self.leptonSF[fl][yr][sf]))
+                #doneSFtype.append(sf)
+        #if var != "":
+            #doneSFtype = []
+            #tmpsum = 0
+            #for sf in self.leptonSF[fl][yr]:
+
+                #if "id" not in sf.lower(): continue
+
+                ##tmpls = self.leptonSF[fl][yr][sf].split(",")
+                #tmpls = sf.split(",")
+                #if (len(tmpls) > 1) and (tmpls[0] not in doneSFtype):
+                    #doneSFtype.append(tmpls[0])
+
+                    #sftorescale = [sf]
+                    #for sf2 in self.leptonSF[fl][yr]:
+                        #if   sf2 == sf: continue
+                        #else:
+                            #tmpls2 = sf2.split(",")
+                            #if (len(tmpls) > 1):
+                                #if tmpls2[0] == tmpls[0]:
+                                    #sftorescale.append(sf2)
+                    #tmpout  = 0
+                    #tmplumi = []
+
+                    #for i in sftorescale:
+                        #tmplumi.append(self.lumidict[yr][i.split(",")[1]])
+                        #tmpout += self.getFromHisto(pt, eta, self.leptonSFuncs[fl][yr][i.replace(",", var[:-2] + ",")], err = True) * tmplumi[-1]
+
+                    #tmpout /= sum(tmplumi)
+                    #tmpsum += tmpout**2
+
+                #elif tmpls[0] not in doneSFtype:
+                    #tmpsum += (self.getFromHisto(pt, eta, self.leptonSFuncs[fl][yr][sf + var[:-2]], err = True))**2
+                    #doneSFtype.append(sf)
+
+            #tmpsum = r.TMath.Sqrt(tmpsum)
+
+            #if "up" in var.lower(): out += tmpsum
+            #else:                   out -= tmpsum
+        #return out
+
+
+    #def getISORECOSF(self, pt, eta, var, fl, yr, ev = None):
+        #out = 1
+        #doneSFtype = []
+
+        #for sf in self.leptonSF[fl][yr]:
+
+            #if "iso" not in sf.lower() and "reco" not in sf.lower(): continue
+
+            ##tmpls = self.leptonSF[fl][yr][sf].split(",")
+            #tmpls = sf.split(",")
+            ##print sf, doneSFtype
+            #if (len(tmpls) > 1) and (tmpls[0] not in doneSFtype):
+                #doneSFtype.append(tmpls[0])
+
+                #sftorescale = [sf]
+                #for sf2 in self.leptonSF[fl][yr]:
+                    #if   sf2 == sf: continue
+                    #else:
+                        #tmpls2 = sf2.split(",")
+                        #if (len(tmpls) > 1):
+                            #if tmpls2[0] == tmpls[0]:
+                                #sftorescale.append(sf2)
+                #tmpout  = 0
+                #tmplumi = []
+
+                #for i in sftorescale:
+                    #tmplumi.append(self.lumidict[yr][i.split(",")[1]])
+                    #tmpout += self.getFromHisto(pt, eta, self.leptonSF[fl][yr][i]) * tmplumi[-1]
+                    ##tmpout += self.getFromHistoAbs(pt, eta, self.leptonSF[fl][yr][i]) * tmplumi[-1] ### Como'l stop
+
+                #tmpout /= sum(tmplumi)
+                ##if ev.event == 467503 or ev.event == 486099: print(var, fl, ev.event, tmpls[0], tmpout)
+                #out *= tmpout
+
+            #elif tmpls[0] not in doneSFtype:
+                ##if fl == "e": out  *= self.getFromHistoNoAbs(pt, eta, self.leptonSF[fl][yr][sf]) ### Como'l stop
+                ##else:         out  *= self.getFromHistoAbs(  pt, eta, self.leptonSF[fl][yr][sf]) ### Como'l stop
+                #out  *= self.getFromHisto(pt, eta, self.leptonSF[fl][yr][sf])
+                ##if ev.event == 467503 or ev.event == 486099:
+                    ##print(var, fl, ev.event, tmpls[0], out)
+                    ##print(var, fl, ev.event, tmpls[0], self.getFromHistoAbs(  pt, eta, self.leptonSF[fl][yr][sf]))
+                #doneSFtype.append(sf)
+        #if var != "":
+            #doneSFtype = []
+            #tmpsum = 0
+            #for sf in self.leptonSF[fl][yr]:
+
+                #if "iso" not in sf.lower() and "reco" not in sf.lower(): continue
+
+                ##tmpls = self.leptonSF[fl][yr][sf].split(",")
+                #tmpls = sf.split(",")
+                #if (len(tmpls) > 1) and (tmpls[0] not in doneSFtype):
+                    #doneSFtype.append(tmpls[0])
+
+                    #sftorescale = [sf]
+                    #for sf2 in self.leptonSF[fl][yr]:
+                        #if   sf2 == sf: continue
+                        #else:
+                            #tmpls2 = sf2.split(",")
+                            #if (len(tmpls) > 1):
+                                #if tmpls2[0] == tmpls[0]:
+                                    #sftorescale.append(sf2)
+                    #tmpout  = 0
+                    #tmplumi = []
+
+                    #for i in sftorescale:
+                        #tmplumi.append(self.lumidict[yr][i.split(",")[1]])
+                        #tmpout += self.getFromHisto(pt, eta, self.leptonSFuncs[fl][yr][i.replace(",", var[:-2] + ",")], err = True) * tmplumi[-1]
+
+                    #tmpout /= sum(tmplumi)
+                    #tmpsum += tmpout**2
+
+                #elif tmpls[0] not in doneSFtype:
+                    #tmpsum += (self.getFromHisto(pt, eta, self.leptonSFuncs[fl][yr][sf + var[:-2]], err = True))**2
+                    #doneSFtype.append(sf)
+
+            #if fl == "m" and "syst" in var: tmpsum += (out * 0.005)**2 # Extrapolation to top-like from DY-like phase space (CMS-AN-2018-210). Only for muons.
+            #tmpsum = r.TMath.Sqrt(tmpsum)
+
+            #if "up" in var.lower(): out += tmpsum
+            #else:                   out -= tmpsum
+        #return out
+
+
+    def getLepSF(self, pt, eta, var, fl, yr, ev = None, typ = None):
         out = 1
         doneSFtype = []
 
         for sf in self.leptonSF[fl][yr]:
+            if typ:
+                if all([i not in sf.lower() for i in typ]): continue
+
             #tmpls = self.leptonSF[fl][yr][sf].split(",")
             tmpls = sf.split(",")
             #print sf, doneSFtype
@@ -309,6 +628,9 @@ class lepScaleFactors_TopRun2(Module):
             doneSFtype = []
             tmpsum = 0
             for sf in self.leptonSF[fl][yr]:
+                if typ:
+                    if all([i not in sf.lower() for i in typ]): continue
+
                 #tmpls = self.leptonSF[fl][yr][sf].split(",")
                 tmpls = sf.split(",")
                 if (len(tmpls) > 1) and (tmpls[0] not in doneSFtype):
@@ -327,19 +649,23 @@ class lepScaleFactors_TopRun2(Module):
 
                     for i in sftorescale:
                         tmplumi.append(self.lumidict[yr][i.split(",")[1]])
-                        tmpout += self.getFromHisto(pt, eta, self.leptonSF[fl][yr][i], err = True) * tmplumi[-1]
+                        tmpout += self.getFromHisto(pt, eta, self.leptonSFuncs[fl][yr][i.replace(",", var[:-2] + ",")] if i.replace(",", var[:-2] + ",") in self.leptonSFuncs[fl][yr] else self.leptonSF[fl][yr][i], err = True) * tmplumi[-1]
 
                     tmpout /= sum(tmplumi)
                     tmpsum += tmpout**2
 
                 elif tmpls[0] not in doneSFtype:
-                    tmpsum += (self.getFromHisto(pt, eta, self.leptonSF[fl][yr][sf], err = True))**2
+                    tmpsum += (self.getFromHisto(pt, eta, self.leptonSFuncs[fl][yr][sf + var[:-2]] if (sf + var[:-2]) in self.leptonSFuncs[fl][yr] else self.leptonSF[fl][yr][sf], err = True))**2
                     doneSFtype.append(sf)
 
-            if fl == "m": tmpsum += (out * 0.005)**2 # Extrapolation to top-like from DY-like phase space (CMS-AN-2018-210). Only for muons.
+            if fl == "m" and "syst" in var:
+                if typ:
+                    if "iso" in typ:
+                        tmpsum += (out * 0.005)**2 # Extrapolation to top-like from DY-like phase space (CMS-AN-2018-210). Only for muons.
+                else:
+                    tmpsum += (out * 0.005)**2 # Extrapolation to top-like from DY-like phase space (CMS-AN-2018-210). Only for muons.
             tmpsum = r.TMath.Sqrt(tmpsum)
 
             if "up" in var.lower(): out += tmpsum
             else:                   out -= tmpsum
         return out
-
