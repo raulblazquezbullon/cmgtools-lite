@@ -296,7 +296,7 @@ class EventVars_tWRun2(Module):
 
 
                 if getattr(event, 'nJetSel30{v}_Recl'.format(v = sys)) > 0:
-                    allret["Lep1Lep2Jet1MET_Pz"          + sys] = (leps_4m[0] + leps_4m[1] + jets_4m[0] + met_4m).Pz()
+                    allret["Lep1Lep2Jet1MET_Pz"          + sys] = abs((leps_4m[0] + leps_4m[1] + jets_4m[0] + met_4m).Pz())
                     allret["Lep1Lep2Jet1MET_Pt"          + sys] = (leps_4m[0] + leps_4m[1] + jets_4m[0] + met_4m).Pt()
                     allret["Lep1Lep2Jet1MET_M"           + sys] = (leps_4m[0] + leps_4m[1] + jets_4m[0] + met_4m).M()
                     allret["Lep1Lep2Jet1MET_Mt"          + sys] = (leps_4m[0] + leps_4m[1] + jets_4m[0] + met_4m).Mt()
@@ -403,7 +403,7 @@ class EventVars_tWRun2(Module):
                     allret["JetLoose1_Pt" + sys] = loosejets_4m[0].Pt()
 
                 if getattr(event, 'nJetSel30{v}_Recl'.format(v = sys)) > 0:
-                    allret["Lep1Lep2Jet1MET_Pz"          + sys] = (leps_4m[0] + leps_4m[1] + jets_4m[0] + met_4m).Pz()
+                    allret["Lep1Lep2Jet1MET_Pz"          + sys] = abs((leps_4m[0] + leps_4m[1] + jets_4m[0] + met_4m).Pz())
                     allret["Lep1Lep2Jet1MET_Pt"          + sys] = (leps_4m[0] + leps_4m[1] + jets_4m[0] + met_4m).Pt()
                     allret["Lep1Lep2Jet1MET_M"           + sys] = (leps_4m[0] + leps_4m[1] + jets_4m[0] + met_4m).M()
                     allret["Lep1Lep2Jet1MET_Mt"          + sys] = (leps_4m[0] + leps_4m[1] + jets_4m[0] + met_4m).Mt()
