@@ -15,10 +15,12 @@ friendspath = "/pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions"
 #prodname    = "2020-07-29" # prueba para Sheyla
 #prodname    = "2020-09-16" # prueba tras profundos cambios
 prodname    = "2020-09-20" # tras la prueba, todo aparentemente en orden
+#prodname    = "2020-09-23" # validacion cramonal
 
 
 datasamples  = ["SingleMuon", "SingleElec", "DoubleMuon", "DoubleEG", "MuonEG", "LowEGJet", "HighEGJet", "EGamma"]
 mcpath       = "/pool/ciencias/nanoAODv6/29jan2020_MC"
+#mcpath       = "/pool/phedex/userstorage/clara/NanoAOD/Top_Nanov6_09_sep/2016_MC" # validacion cramonal
 datapath     = "/pool/ciencias/nanoAODv6/13jan2020"
 logpath      = friendspath + "/" + prodname + "/{y}/{step_prefix}/logs"
 utilspath    = "/nfs/fanae/user/vrbouza/Proyectos/tw_run2/desarrollo/susyMaintenanceScripts/friendsWithBenefits"
@@ -34,10 +36,7 @@ friendfolders = {0 : "0_yeartag",
                  #5 : "5_mvas_new",
                  "mvatrain" : "x_mvatrain"
                 }
-#chunksizes    = [5000000, 100000, 500000, 100000, 250000] # veyos
-#chunksizes    = [5000000, 250000, 500000, 250000, 250000] # novos
-#chunksizes    = [5000000, 250000, 5000000, 250000, 250000, 250000] # mais novos inda
-#chunksizes    = [5000000, 250000, 5000000, 500000, 500000, 250000] # pa la futura
+
 chunksizes    = {0 : 5000000,
                  1 : 200000,
                  2 : 5000000,
@@ -166,6 +165,10 @@ sampledict[2016] = {
     "DoubleMuon"     : "Tree_DoubleMuon_Run2016",
     "DoubleEG"       : "Tree_DoubleEG_Run2016",
     "MuonEG"         : "Tree_MuonEG_Run2016",
+
+
+    #### Validacion cramonal
+    #"validttz"       : "TTZToLLNuNu_m1to10",
 }
 
 
@@ -466,11 +469,11 @@ def getFriendsFolder(dataset, basepath, step_friends):
         myfibrefriends = [f for f in os.listdir(rofolder) if (".root" in f and dataset in f and "chunk" not in f and "Friend" in f)]
         if len(myfibrefriends) > 0: doihavefibrefriends = True
 
-    #if doihavefibrefriends:
-        #wr.warn("\n====== WARNING! Friends detected in RO folder for this production. Using them for dataset {d} and step (of the friends) {s}".format(d = dataset, s = step_friends))
-        #return rofolder
-    #else:
-        #return rwfolder
+    if doihavefibrefriends:
+        wr.warn("\n====== WARNING! Friends detected in RO folder for this production. Using them for dataset {d} and step (of the friends) {s}".format(d = dataset, s = step_friends))
+        return rofolder
+    else:
+        return rwfolder
     return rwfolder
 
 
@@ -497,26 +500,41 @@ def SendDatasetJobs(task):
                                                      "doubleeg"   if "doubleeg"   in dataset.lower() else
                                                      "muoneg")
                                                     )
+        #module_ = "addYearTag_{y}_{ty}_validacion".format(y  = year,
+                                               #ty = ("mc"         if not isData else
+                                                     #"singlemuon" if "singlemuon" in dataset.lower() else
+                                                     #"singleelec"
+                                                     #if ("singleelec" in dataset.lower() or "egamma" in dataset.lower()) else
+                                                     #"doublemuon" if "doublemuon" in dataset.lower() else
+                                                     #"doubleeg"   if "doubleeg"   in dataset.lower() else
+                                                     #"muoneg")
+                                                    #)
         friends_ = ""
 
     elif step == 1:
         module_  = "lepMerge_roch_" + ("mc" if not isData else "data")
+        #module_  = "lepMerge_roch_" + ("mc" if not isData else "data") + "_validacion"
         friends_ += friendpref + getFriendsFolder(dataset, friendsbasepath, 0) + friendsuff
 
     elif step == 2:
         #module_  = "cleaning_{ty}_{y}".format(y = year, ty = "data" if isData else "mc")
         module_  = "cleaning_{ty}".format(ty = "data" if isData else "mc")
+        #module_  = "cleaning_{ty}_validacion".format(ty = "data" if isData else "mc")
         friends_ +=       friendpref + getFriendsFolder(dataset, friendsbasepath, 0) + friendsuff
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 1) + friendsuff
 
     elif step == 3:
         module_  = "varstrigger_" + ("mc" if not isData else "data")
+        #module_  = "varstrigger_" + ("mc" if not isData else "data") + "_validacion"
         friends_ +=       friendpref + getFriendsFolder(dataset, friendsbasepath, 0) + friendsuff
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 1) + friendsuff
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 2) + friendsuff
 
     elif step == 4 and not isData:
-        module_  = "sfSeq_{y}".format(y = year)
+        if dataset in trainsampledict[year]:
+            module_  = "sfSeq_mvatrain_{y}".format(y = year)
+        else:
+            module_  = "sfSeq_{y}".format(y = year)
         friends_ +=       friendpref + getFriendsFolder(dataset, friendsbasepath, 0) + friendsuff
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 1) + friendsuff
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 2) + friendsuff
@@ -564,6 +582,7 @@ def GeneralSubmitter(task):
     for dataset_ in dataset.split(","):
         isData     = any(ext in dataset_ for ext in datasamples)
         inputpath_ = (datapath if isData else mcpath) + "/" + str(year) + "/"
+        #inputpath_ = (datapath if isData else mcpath) + "/" #### validacion cramonal
         if not os.path.isdir(logpath.format(step_prefix = friendfolders[step], y = year)):
             os.system("mkdir -p " + logpath.format(step_prefix = friendfolders[step], y = year))
 
