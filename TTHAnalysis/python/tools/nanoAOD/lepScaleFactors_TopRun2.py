@@ -103,7 +103,7 @@ class lepScaleFactors_TopRun2(Module):
                     self.out.branch('MuonIDSF'  + sys, 'F')
                     self.out.branch('MuonISOSF' + sys, 'F')
                     self.out.branch('ElecIDSF'  + sys, 'F')
-                    self.out.branch('ElecISOSF' + sys, 'F')
+                    self.out.branch('ElecRECOSF' + sys, 'F')
                     self.out.branch('TrigSF'    + sys, 'F')
 
         for var in ["", "_statUp", "_statDn", "_systUp", "_systDn"]:
@@ -218,8 +218,8 @@ class lepScaleFactors_TopRun2(Module):
 
                     # triggers
                     trigsf = 1
-                    if event.nLepGood > 1 and chan != ch.NoChan:
-                        trigsf *= self.getTrigSF(getattr(varleps[0], "pt" + sys), getattr(varleps[1], "pt" + sys), var, chan, year, ev = event)
+                    if len(varleps) > 1 and getattr(event, "channel" + sys) != ch.NoChan:
+                        trigsf *= self.getTrigSF(getattr(varleps[0], "pt" + sys), getattr(varleps[1], "pt" + sys), var, getattr(event, "channel" + sys), year, ev = event)
 
                     self.out.fillBranch('TrigSF' + sys, trigsf)
 
