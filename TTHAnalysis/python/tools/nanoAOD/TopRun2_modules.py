@@ -370,11 +370,11 @@ lepMerge_roch_data = [lepMerge, addRoch_data]
 
 #### BDT
 from CMGTools.TTHAnalysis.tools.nanoAOD.MVA_tWRun2 import MVA_tWRun2
-SergioBDT_mc   = lambda : MVA_tWRun2()
-SergioBDT_data = lambda : MVA_tWRun2(isData = True)
+MVAProc_mc   = lambda : MVA_tWRun2()
+MVAProc_data = lambda : MVA_tWRun2(isData = True)
 
-mvas_mc   = [SergioBDT_mc]
-mvas_data = [SergioBDT_data]
+mvas_mc   = [MVAProc_mc]
+mvas_data = [MVAProc_data]
 
 
 from CMGTools.TTHAnalysis.tools.nanoAOD.createTrainingMiniTree_tWRun2 import createTrainingMiniTree_tWRun2
