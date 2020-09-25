@@ -1,2 +1,6 @@
 alwaystrue: 1
 
+
+#emu:        channel == 1
+#muon:	    channel == 2
+elec:	    channel == 3
