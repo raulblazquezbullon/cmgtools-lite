@@ -13,8 +13,8 @@ CMD         = "python mcPlots.py --tree NanoAOD  -P {path} --pdir {outpath} "
 slurm       = 'sbatch -c {nth} -p {queue} -J {jobname} -e {logpath}/log.%j.%x.err -o {logpath}/log.%j.%x.out --wrap "{command}"'
 
 
-defaultPars = {"path"       : "/pool/ciencias/nanoAODv6/lowPU2017/2020_07_21_postProc",
-               "ftreesPath" : "/pool/phedexrw/userstorage/cmstudents/cvico/WZ_LowPu/13TeV_Aug13/2020_07_21/2017/",
+defaultPars = {"path"       : "/pool/phedex/userstorage/cmstudents/cvico/WZ_LowPu/MiniTrees/14-07-2020/",
+               "ftreesPath" : "/pool/phedex/userstorage/cmstudents/cvico/WZ_LowPu/FriendTrees/15-09-2020/2017/",
                "logpath"    : "{outpath}/logs",
                "lumi"       : 0.216943692,
                "nCores"     : 4,
@@ -46,8 +46,15 @@ def addBoringLines(text):
              "--fixRatioRange ",
              "--legendColumns 3 ",
              "--legendWidth 0.35 ",
+	     "--mcc {mcc} ".format(mcc = defaultPars["mccFile"]),
+	     "{mca} ".format(mca = defaultPars["mcaFile"]),
+             "{cuts} ".format(cuts = defaultPars["cuts"]),
+             "{plots} ".format(plots = defaultPars["plots"]),
+             "{weight} ".format(weight = defaultPars["weight"]), #still have no weights to add
+             "{binname} ".format(binname = "--binname ttbar"),
              "--legendFontSize 0.042 "
              "--noCms ",
+	     "--rebin 4 ",
              "--topSpamSize 1.1 ",
              "--lspam '#scale[1.1]{#bf{CMS}} #scale[0.9]{#it{Preliminary}}' ",
              "--rspam '%(lumi) (13 TeV)' ",
@@ -64,7 +71,7 @@ def process_region(command, region):
              "{plots} ".format(plots = defaultPars["plots"]),
              "{weight} ".format(weight = defaultPars["weight"]), #still have no weights to add
              "{binname} ".format(binname = "--binname ttbar")]
-
+	
     return command
 
 def ProcessCommand(args):
@@ -76,7 +83,7 @@ def ProcessCommand(args):
     # Stuff
     command = CMD.format(path = defaultPars["path"], outpath = outpath)
     command = addBoringLines(command)
-    command = process_region(command, region)
+#    command = process_region(command, region)
     for plot in selplot: command += " --sP {plot}".format(plot = plot)
     
     return command
