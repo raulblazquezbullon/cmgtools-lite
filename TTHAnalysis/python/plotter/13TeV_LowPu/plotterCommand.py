@@ -65,14 +65,6 @@ def addBoringLines(text):
     
     return text
 
-def process_region(command, region):
-    Lines = ["{mca} ".format(mca = defaultPars["mcaFile"]),
-             "{cuts} ".format(cuts = defaultPars["cuts"]),
-             "{plots} ".format(plots = defaultPars["plots"]),
-             "{weight} ".format(weight = defaultPars["weight"]), #still have no weights to add
-             "{binname} ".format(binname = "--binname ttbar")]
-	
-    return command
 
 def ProcessCommand(args):
     prod, year, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend = args
