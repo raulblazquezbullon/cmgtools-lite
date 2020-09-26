@@ -9,8 +9,8 @@ def byCompName(components, regexps):
 
 year = int(getHeppyOption("year", "2018"))
 analysis = getHeppyOption("analysis", "main")
-preprocessor = getHeppyOption("nanoPreProcessor")
-
+#preprocessor = getHeppyOption("nanoPreProcessor")
+preprocessor =0
 # Samples
 
 if preprocessor:
@@ -22,7 +22,7 @@ if preprocessor:
         from CMGTools.RootTools.samples.samples_13TeV_DATA2017 import dataSamples_31Mar2018 as allData
     elif year == 2016:
         from CMGTools.RootTools.samples.samples_13TeV_RunIISummer16MiniAODv3 import samples as mcSamples_
-        from CMGTools.RootTools.samples.samples_13TeV_DATA2016 import dataSamples_17Jul2018 as allDatas
+        from CMGTools.RootTools.samples.samples_13TeV_DATA2016 import dataSamples_17Jul2018 as allData
 else:
     if year == 2018:
         from CMGTools.RootTools.samples.samples_13TeV_2018_TopNanoAODv6 import samples as mcSamples_
@@ -33,39 +33,43 @@ else:
     elif year == 2016:
         from CMGTools.RootTools.samples.samples_13TeV_2016_TopNanoAODv6 import samples as mcSamples_
         from CMGTools.RootTools.samples.samples_13TeV_DATA2016_TopNanoAOD import samples as allData
-#allData=[]
+
+allData=[]
+mcSamples_=[]
 autoAAA(mcSamples_+allData, quiet=not(getHeppyOption("verboseAAA",False)), redirectorAAA="xrootd-cms.infn.it",node='T2_ES_IFCA') # must be done before mergeExtensions
 mcSamples_, _ = mergeExtensions(mcSamples_)
 
 # Triggers
-# if year == 2018:
-#     from CMGTools.RootTools.samples.triggers_13TeV_DATA2018 import all_triggers as triggers
-# elif year == 2017:
-#     from CMGTools.RootTools.samples.triggers_13TeV_DATA2017 import all_triggers as triggers
-#     triggers["FR_1mu_iso"] = [] # they probably existed but we didn't use them in 2017
-# elif year == 2016:
-#     from CMGTools.RootTools.samples.triggers_13TeV_DATA2016 import all_triggers as triggers
-#     triggers["FR_1mu_noiso_smpd"] = [] 
+if year == 2018:
+     from CMGTools.RootTools.samples.triggers_13TeV_DATA2018 import all_triggers as triggers
+elif year == 2017:
+     from CMGTools.RootTools.samples.triggers_13TeV_DATA2017 import all_triggers as triggers
+     triggers["FR_1mu_iso"] = [] # they probably existed but we didn't use them in 2017
+elif year == 2016:
+     from CMGTools.RootTools.samples.triggers_13TeV_DATA2016 import all_triggers as triggers
+     triggers["FR_1mu_noiso_smpd"] = [] 
 
 from CMGTools.TTHAnalysis.tools.nanoAOD.ttW_modules import triggerGroups_dict
-print(analysis)
+print('t',analysis)
 DatasetsAndTriggers = []
 if analysis == "main":
     mcSamples = byCompName(mcSamples_, ["%s(|_PS)$"%dset for dset in [
-        # single boson
-        "WJetsToLNu_LO_ext","WJetsToLNu_LO", "DYJetsToLL_M10to50_LO", "DYJetsToLL_M50",
+        #single boson
+        #"WJetsToLNu_LO_ext","WJetsToLNu_LO", 
+        "DYJetsToLL_M10to50_LO", "DYJetsToLL_M10to50","DYJetsToLL_M50",
         # ttbar + single top + tW
-        'TT_pow','TTLep_pow','TTSemi_pow','TTHad_pow'
+        #'TT_pow','TTLep_pow','TTHad_pow',
+        #'TTSemi_pow'
         #"TTJets_SingleLeptonFromT", "TTJets_SingleLeptonFromTbar", "TTJets_DiLepton",
-        "T_sch_lep", "T_tch", "TBar_tch", "T_tWch_noFullyHad", "TBar_tWch_noFullyHad",
+        "T_sch_lep", "T_tch", "TBar_tch", "T_tWch_noFullyHad", "TBar_tWch_noFullyHad", "T_tch_pow", "TBar_tch_pow" #pow for 2017
         # conversions
-        "TTGJets", "TGJets_lep", "WGToLNuG", "ZGTo2LG","WGToLNuG_01J",'TTGJets_ext'
+        "TTGJets", "TGJets_lep", "WGToLNuG_01J",'TTGJets_ext',#"WGToLNuG", "ZGTo2LG",
         # ttV
-        "TTWToLNu_fxfx", "TTZToLLNuNu_amc", "TTZToLLNuNu_m1to10",'TTWToLNu', 'TTZToLLNuNu',
+        "TTWToLNu_fxfx", "TTZToLLNuNu", "TTZToLLNuNu_m1to10",#'TTWToLNu', 
         # ttH + tHq/tHW
-        "TTHnobb_pow", "THQ", "THW", "TTH_ctcvcp",'TTH_pow',
+        "TTHnobb_pow", "THQ", "THW", #"TTH_ctcvcp",'TTH_pow',
         # top + V rare processes
-        "TZQToLL", "tWll", "TTTT", "TTWW",'tZq_ll_1','tZq_ll_2','TTWW_LO'
+        "TZQToLL", "tWll", "TTTT", "TTWW",#'tZq_ll_1','tZq_ll_2','TTWW_LO'
         # diboson + DPS + WWss
         "WWTo2L2Nu", "WZTo3LNu_pow", "WZTo3LNu_fxfx", "ZZTo4L", "WW_DPS", "WWTo2L2Nu_DPS", "WpWpJJ",'TTTT_P8M2T4'
         # triboson
@@ -81,11 +85,13 @@ if analysis == "main":
     DatasetsAndTriggers.append( ("SingleElectron", triggerGroups_dict["Trigger_1e"][year]) if year != 2018 else (None,None) )
 elif analysis == "frqcd":
     mcSamples = byCompName(mcSamples_, [
-        "QCD_Mu15", "QCD_Pt(20|30|50|80|120|170)to.*_Mu5", 
+        #"QCD_Mu15", "QCD_Pt(20|30|50|80|120|170)to.*_Mu5", 
         "QCD_Pt(20|30|50|80|120|170)to.*_EMEn.*", 
-      (r"QCD_Pt(20|30|50|80|120|170)to\d+$"       if year == 2018 else  
-        "QCD_Pt(20|30|50|80|120|170)to.*_bcToE.*" ),        
-        "WJetsToLNu_LO", "DYJetsToLL_M50_LO", "DYJetsToLL_M10to50_LO", "TT(Lep|Semi)_pow"
+      #(r"QCD_Pt(20|30|50|80|120|170)to\d+$"       if year == 2018 else  
+       # "QCD_Pt(20|30|50|80|120|170)to.*_bcToE.*" ),  
+        #"TT(Lep|Semi)_pow",
+        #"TTSemi_pow",   
+        #"WJetsToLNu_LO", "DYJetsToLL_M50_LO", "DYJetsToLL_M10to50_LO", 
     ])
     egfrpd = {2016:"DoubleEG", 2017:"SingleElectron", 2018:"EGamma"}[year]
     DatasetsAndTriggers.append( ("DoubleMuon", triggers["FR_1mu_noiso"] + triggers["FR_1mu_iso"]) )
@@ -238,11 +244,19 @@ if analysis == "frqcd":
     modules = ttH_sequence_step1_FR
     cut = ttH_skim_cut_FR
     compression = "LZMA:9"
-    branchsel_out = os.environ['CMSSW_BASE']+"/src/CMGTools/TTHAnalysis/python/plotter/ttH-multilepton/qcd1l-skim-ec.txt"
+    #branchsel_out = os.environ['CMSSW_BASE']+"/src/CMGTools/TTHAnalysis/python/plotter/ttH-multilepton/qcd1l-skim-ec.txt"
+'''
+if analysis == "no2lss":
+    modules = ttH_sequence_step1_no2lss
+    cut = ttH_skim_cut
 
+if analysis == "2lep_10gev":
+    modules = ttH_sequence_step1_2lep_10gev
+    cut = ttH_skim_cut_2lep_10gev
+'''
 POSTPROCESSOR = PostProcessor(None, [], modules = modules,
         cut = cut, prefetch = True, longTermCache = False,
-        branchsel = branchsel_in, outputbranchsel = branchsel_out, compression = compression)
+        branchsel = branchsel_in, compression = compression)
 
 test = getHeppyOption("test")
 if test == "94X-MC":
@@ -262,9 +276,18 @@ elif test=="ttW_sync":
     #TTJets_dilep.preprocessor = nanoAODPreprocessor(cfg="/nfs/fanae/user/clara/ttW/CMSSW_10_2_22/src/NANO_NANO.py",cmsswArea = "/mnt_pool/ciencias_users/user/clara/ttW/CMSSW_10_2_22",keepOutput=True)
     #TTJets_dilep.preprocessor = nanoAODPreprocessor(cfg="/nfs/fanae/user/clara/CMSSW_10_2_18/src/PhysicsTools/NanoAOD/test/topNano_v6p1_2016_cfg.py",cmsswArea = "/nfs/fanae/user/clara/CMSSW_10_2_18/src/",keepOutput=True)
     TTWToLNu_fxfx.preprocessor = nanoAODPreprocessor(cfg="/nfs/fanae/user/clara/CMSSW_10_2_18/src/PhysicsTools/NanoAOD/test/topNano_v6p1_2016_cfg.py",cmsswArea = "/nfs/fanae/user/clara/CMSSW_10_2_18/src/",keepOutput=True)
-    POSTPROCESSOR.modules.remove(lepSkim)
-    POSTPROCESSOR.cut='1'
+    #POSTPROCESSOR.modules.remove(lepSkim)
+    #POSTPROCESSOR.cut='1'
     selectedComponents = [TTWToLNu_fxfx]
+elif test=="test_skim_TTW":
+    TTDilep     = kreator.makeMyPrivateMCComponent("TTDilep", "/TTTo2L2Nu_TuneCP5_PSweights_13TeV-powheg-pythia8/palencia-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root", 'phys03', 831.762*((3*0.108)**2), useAAA=True)
+    #TTJets_dilep.files = ["/pool/phedex/userstorage/clara/00D134FC-FBE9-E811-AF6C-1C6A7A26C53B.root"]
+    TTDilep.files =["/pool/phedex/userstorage/clara/sync_ttW/Top_nano/test_skim/tree_6.root"]
+    from CMGTools.Production.nanoAODPreprocessor import nanoAODPreprocessor
+    #TTDilep.preprocessor = nanoAODPreprocessor(cfg="/nfs/fanae/user/clara/CMSSW_10_2_18/src/PhysicsTools/NanoAOD/test/topNano_v6p1_2016_cfg.py",cmsswArea = "/nfs/fanae/user/clara/CMSSW_10_2_18/src/", keepOutput=True)
+    selectedComponents = [TTDilep]
+    POSTPROCESSOR.modules=ttH_sequence_step1_combined 
+    POSTPROCESSOR.cut=ttH_skim_cut_Combined
 elif test=="ttj_sync":
     TTJets_dilep= kreator.makeMCComponent("TTJets_dilep", "/TTJets_DiLept_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/MINIAODSIM", "CMS", ".*root", 831.76*((3*0.108)**2) )
     TTJets_dilep.files = ["/pool/phedex/userstorage/clara/1A77724A-73EA-E811-A80E-0CC47A6C06C2.root"]

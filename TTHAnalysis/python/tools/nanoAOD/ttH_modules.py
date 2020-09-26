@@ -400,6 +400,9 @@ higgsDecay = lambda : higgsDecayFinder()
 from CMGTools.TTHAnalysis.tools.nanoAOD.VHsplitter import VHsplitter
 vhsplitter = lambda : VHsplitter()
 
+from CMGTools.TTHAnalysis.tools.nanoAOD.electron_genmatcher import electron_genmatcher
+electron_newPartgen = lambda : electron_genmatcher("genPartNewFlav")
+
 # from CMGTools.TTHAnalysis.tools.synchTools import SynchTuples
 # synchTuples = lambda : SynchTuples()
 

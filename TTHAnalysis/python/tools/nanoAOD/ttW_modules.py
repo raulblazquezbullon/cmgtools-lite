@@ -70,7 +70,7 @@ def ttH_idEmu_cuts_E3(lep):
 
 def conept_TTH(lep):
     if (abs(lep.pdgId)!=11 and abs(lep.pdgId)!=13): return lep.pt
-    if (abs(lep.pdgId)==13 and lep.mediumId>0 and lep.mvaTTH > 0.85) or (abs(lep.pdgId) == 11 and lep.mvaTTH > 0.80): return lep.pt
+    if (abs(lep.pdgId)==13 and lep.mediumId>0 and lep.mvaTOP > 0.90) or (abs(lep.pdgId) == 11 and lep.mvaTOP > 0.90): return lep.pt
     else: return 0.90 * lep.pt * (1 + lep.jetRelIso)
 
 def smoothBFlav(jetpt,ptmin,ptmax,year,scale_loose=1.0):
@@ -82,11 +82,11 @@ def smoothBFlav(jetpt,ptmin,ptmax,year,scale_loose=1.0):
 def clean_and_FO_selection_TTH(lep,year):
     bTagCut = 0.3093 if year==2016 else 0.3033 if year==2017 else 0.2770
     return lep.conept>10 and lep.jetBTagDeepFlav<bTagCut and (abs(lep.pdgId)!=11 or (ttH_idEmu_cuts_E3(lep) and lep.convVeto and lep.lostHits == 0)) \
-        and (lep.mvaTTH>(0.85 if abs(lep.pdgId)==13 else 0.80) or \
+        and (lep.mvaTOP>(0.90 if abs(lep.pdgId)==13 else 0.90) or \
              (abs(lep.pdgId)==13 and lep.jetBTagDeepFlav< smoothBFlav(0.9*lep.pt*(1+lep.jetRelIso), 20, 45, year) and lep.jetRelIso < 0.50) or \
              (abs(lep.pdgId)==11 and lep.mvaFall17V2noIso_WP80 and lep.jetRelIso < 0.70))
 
-tightLeptonSel = lambda lep,year : clean_and_FO_selection_TTH(lep,year) and (abs(lep.pdgId)!=13 or lep.mediumId>0) and lep.mvaTTH > (0.85 if abs(lep.pdgId)==13 else 0.80)
+tightLeptonSel = lambda lep,year : clean_and_FO_selection_TTH(lep,year) and (abs(lep.pdgId)!=13 or lep.mediumId>0) and lep.mvaTOP > (0.90 if abs(lep.pdgId)==13 else 0.90)
 
 foTauSel = lambda tau: tau.pt > 20 and abs(tau.eta)<2.3 and abs(tau.dxy) < 1000 and abs(tau.dz) < 0.2 and tau.idDecayModeNewDMs and (int(tau.idDeepTau2017v2p1VSjet)>>1 & 1) # VVLoose WP
 tightTauSel = lambda tau: (int(tau.idDeepTau2017v2p1VSjet)>>2 & 1) # VLoose WP
@@ -94,8 +94,10 @@ tightTauSel = lambda tau: (int(tau.idDeepTau2017v2p1VSjet)>>2 & 1) # VLoose WP
 from CMGTools.TTHAnalysis.tools.nanoAOD.jetmetGrouper import groups as jecGroups
 from CMGTools.TTHAnalysis.tools.combinedObjectTaggerForCleaning import CombinedObjectTaggerForCleaning
 from CMGTools.TTHAnalysis.tools.nanoAOD.fastCombinedObjectRecleaner import fastCombinedObjectRecleaner
+
+
 recleaner_step1 = lambda : CombinedObjectTaggerForCleaning("InternalRecl",
-                                                           looseLeptonSel = lambda lep : lep.miniPFRelIso_all < 0.4 and lep.sip3d < 8 and (abs(lep.pdgId)!=11 or lep.lostHits<=1) and (abs(lep.pdgId)!=13 or lep.looseId),
+                                                           looseLeptonSel = lambda lep: lep.miniPFRelIso_all < 0.4 and lep.sip3d < 8 and abs(lep.dxy) < 0.05 and abs(lep.dz) < 0.1 and (abs(lep.pdgId)!=11 or (abs(lep.eta)<2.5 and lep.lostHits<2) and (abs(lep.pdgId)!=13 or (abs(lep.eta)<2.4 and lep.looseId)) ),
                                                            cleaningLeptonSel = clean_and_FO_selection_TTH,
                                                            FOLeptonSel = clean_and_FO_selection_TTH,
                                                            tightLeptonSel = tightLeptonSel,
@@ -162,7 +164,7 @@ from PhysicsTools.NanoAODTools.postprocessing.modules.jme.jetmetHelperRun2 impor
 
 jetmetUncertainties2016All = createJMECorrector(dataYear=2016, jesUncert="All")
 jetmetUncertainties2017All = createJMECorrector(dataYear=2017, jesUncert="All", metBranchName="METFixEE2017")
-jetmetUncertainties2018All = createJMECorrector(dataYear=2016, jesUncert="All")
+jetmetUncertainties2018All = createJMECorrector(dataYear=2018, jesUncert="All")
 
 jme2016_allvariations = [jetmetUncertainties2016All,jetMetCorrelate2016] 
 jme2017_allvariations = [jetmetUncertainties2017All,jetMetCorrelate2017]
