@@ -1,6 +1,12 @@
 alwaystrue: 1
 
 
-#emu:        channel == 1
-#muon:	    channel == 2
-#elec:	    channel == 3
+
+#elel:	(GenDressedLepton_pdgId[0] == 11) && (GenDressedLepton_pdgId[1] == 11)
+#mumu:	(GenDressedLepton_pdgId[0] == 13) && (GenDressedLepton_pdgId[1] == 13)
+#elmu:	(GenDressedLepton_pdgId[0] == 11) && (GenDressedLepton_pdgId[1] == 13)
+#muel:	(GenDressedLepton_pdgId[0] == 13) && (GenDressedLepton_pdgId[1] == 11)
+
+
+
+
