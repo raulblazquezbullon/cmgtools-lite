@@ -62,9 +62,9 @@ lep1lep2jet1_c     : Lep1Lep2Jet1_C      : 20,0,1   ; IncludeUnderflow=False, XT
 httot              : HTtot               : 20,0,600 ; IncludeUnderflow=False, XTitle="H_{T} (GeV)"
 
 lepjet11lep2_dr    : LepJet11Lep2_DR     : 20,0,5   ; IncludeUnderflow=False, XTitle="\\Delta R (\\ell_{1}jet\, \\ell_{2}) (adim.)"
-lepjet11lep2_dphi  : LepJet11Lep2_DPhi   : 10,0,1   ; IncludeUnderflow=False, XTitle="\\Delta\\it{\\varphi}(\\ell_{1}jet\, \\ell_{2})/\\it{\\pi}
-lepjet11lep2_deta  : LepJet11Lep2_DEta   : 20,0,5   ; IncludeUnderflow=False, XTitle="\\Delta\\it{\\varphi}(\\ell_{1}jet\, \\ell_{2})/\\it{\\pi}
+lepjet11lep2_dphi  : LepJet11Lep2_DPhi   : 10,0,1   ; IncludeUnderflow=False, XTitle="\\Delta\\it{\\varphi}(\\ell_{1}jet\, \\ell_{2})/\\it{\\pi}"
+lepjet11lep2_deta  : LepJet11Lep2_DEta   : 20,0,5   ; IncludeUnderflow=False, XTitle="\\Delta\\it{\\varphi}(\\ell_{1}jet\, \\ell_{2})/\\it{\\pi}"
 
 lep1lepjet21_dr    : Lep1LepJet21_DR     : 20,0,5   ; IncludeUnderflow=False, XTitle="\\Delta R (\\ell_{1}\,jet\\ell_{2}) (adim.)"
-lep1lepjet21_dphi  : Lep1LepJet21_DPhi   : 10,0,1   ; IncludeUnderflow=False, XTitle="\\Delta\\it{\\varphi}(\\ell_{1}\,jet\\ell_{2})/\\it{\\pi}
-lep1lepjet21_deta  : Lep1LepJet21_DEta   : 20,0,5   ; IncludeUnderflow=False, XTitle="\\Delta\\it{\\varphi}(\\ell_{1}\,jet\\ell_{2})/\\it{\\pi}
+lep1lepjet21_dphi  : Lep1LepJet21_DPhi   : 10,0,1   ; IncludeUnderflow=False, XTitle="\\Delta\\it{\\varphi}(\\ell_{1}\,jet\\ell_{2})/\\it{\\pi}"
+lep1lepjet21_deta  : Lep1LepJet21_DEta   : 20,0,5   ; IncludeUnderflow=False, XTitle="\\Delta\\it{\\varphi}(\\ell_{1}\,jet\\ell_{2})/\\it{\\pi}"
