@@ -44,8 +44,8 @@ chunksizes    = {0 : 5000000,
                  4 : 500000,
                  5 : 250000,
                  "mvatrain" : 250000,
-                 #"mvatrain" : 500000,
-                 } # pa la futura
+                 #"mvatrain" : 500000, # pa la futura
+                 }
 minchunkbytes = 1000
 
 class errs(enum.IntEnum):
@@ -531,7 +531,7 @@ def SendDatasetJobs(task):
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 2) + friendsuff
 
     elif step == 4 and not isData:
-        if dataset in trainsampledict[year]:
+        if any([dataset in iD if type(iD) == str else any([dataset in jD for jD in iD]) for key,iD in trainsampledict[year].iteritems()]):
             module_  = "sfSeq_mvatrain_{y}".format(y = year)
         else:
             module_  = "sfSeq_{y}".format(y = year)
