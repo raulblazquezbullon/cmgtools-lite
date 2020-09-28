@@ -1,6 +1,5 @@
 change: \bchannel\b:              channel_muDown
 change: \bnLepGood\b:             nLepGoodmuDown
-change: \bminMllAFAS\b:           minMllAFAS_muDown
 change: \bMETgood_pt\b:           METgood_pt_muDown
 change: \bisSS\b:                 isSS_muDown
 change: \bMll\b:                  Mll_muDown
