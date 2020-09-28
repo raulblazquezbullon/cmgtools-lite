@@ -1,13 +1,14 @@
 alwaystrue: 1
 
-
+#nLepOrig:	nGenDressedLepton == 2
+#nLep:		nDressSelLep == 2
 
 #elel:	(GenDressedLepton_pdgId[0] == 11) && (GenDressedLepton_pdgId[1] == 11)
 #mumu:	(GenDressedLepton_pdgId[0] == 13) && (GenDressedLepton_pdgId[1] == 13)
-elmu:	(GenDressedLepton_pdgId[0] == 11 || GenDressedLepton_pdgId[0] == 13) && (GenDressedLepton_pdgId[1] == 11 || GenDressedLepton_pdgId[1] == 13) && (GenDressedLepton_pdgId[0] != GenDressedLepton_pdgId[1])
+#elmu:	(GenDressedLepton_pdgId[0] == 11 || GenDressedLepton_pdgId[0] == 13) && (GenDressedLepton_pdgId[1] == 11 || GenDressedLepton_pdgId[1] == 13) && (GenDressedLepton_pdgId[0] != GenDressedLepton_pdgId[1])
 
 
-#muel:	(GenDressedLepton_pdgId[0] == 13) && (GenDressedLepton_pdgId[1] == 11)
+
 
 
 
