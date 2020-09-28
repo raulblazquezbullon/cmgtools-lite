@@ -19,6 +19,7 @@ class particleAndPartonVars_tWRun2(Module):
                          #("isSS", "O"),
                          #("channel", "B"),
                          ("Dresschannel", "I"),
+			 ("OrigChannel", "I"),
                          "DressLep1Lep2_Pt",
                          "DressLep1Lep2_DPhi",
                          "DressMll",
@@ -88,6 +89,7 @@ class particleAndPartonVars_tWRun2(Module):
 
 
         allret["Dresschannel"]            = ch.NoChan
+	allret["OrigChannel"]		  = -99
         allret["DressisSS"]               = -99
         allret["DressLep1Lep2_Pt"]        = -99
         allret["DressLep1Lep2_DPhi"]      = -99
@@ -116,6 +118,63 @@ class particleAndPartonVars_tWRun2(Module):
         allret["Dressminimax"]            = -99
 
 
+	
+	# Definition of the new variable OrigChannel	
+	if event.GenDressedLepton == 0:
+	    allret["OrigChannel"] = 0
+
+	if event.GenDressedLepton == 1:
+	    if ((abs(all_leps[0].pdgId) == 11 or abs(all_leps[0] == 13)) and abs(all_leps[0].hasTauAnc == 0)):
+		allret["OrigChannel"] = 1
+	    elif ((abs(all_leps[0].pdgId) == 11 or abs(all_leps[0] == 13)) and abs(all_leps[0].hasTauAnc == 1)):
+		allret["OrigChannel"] = 2
+	    else:
+		allret["OrigChannel"] = -1
+
+	if event.GenDressedLepton >= 2:
+	    if ((abs(all_leps[0].pdgId) == 11 and abs(all_leps[1].pdgId) == 11) and (abs(all_leps[0].hasTauAnc) == 0 and abs(all_leps[1].hasTauAnc) == 0)):
+		allret["OrigChannel"] = 3
+	    elif ((abs(all_leps[0].pdgId) == 11 and abs(all_leps[1].pdgId) == 11) and (abs(all_leps[0].hasTauAnc) == 1 and abs(all_leps[1].hasTauAnc) == 1)):
+		allret["OrigChannel"] = 4
+	    elif ((abs(all_leps[0].pdgId) == 13 and abs(all_leps[1].pdgId) == 13) and (abs(all_leps[0].hasTauAnc) == 0 and abs(all_leps[1].hasTauAnc) == 0)):
+		allret["OrigChannel"] = 5
+	    elif ((abs(all_leps[0].pdgId) == 13 and abs(all_leps[1].pdgId) == 13) and (abs(all_leps[0].hasTauAnc) == 1 and abs(all_leps[1].hasTauAnc) == 1)):
+		allret["OrigChannel"] = 6
+	    elif (((abs(all_leps[0].pdgId) == 13 and abs(all_leps[1].pdgId) == 11) or (abs(all_leps[0].pdgId) == 11 and abs(all_leps[1].pdgId) == 13)) and (abs(all_leps[0].hasTauAnc) == 0 and abs(all_leps[1].hasTauAnc) == 0)):
+		allret["OrigChannel"] = 7
+	    elif (((abs(all_leps[0].pdgId) == 13 and abs(all_leps[1].pdgId) == 11) or (abs(all_leps[0].pdgId) == 11 and abs(all_leps[1].pdgId) == 13)) and (abs(all_leps[0].hasTauAnc) == 1 and abs(all_leps[1].hasTauAnc) == 1)):
+		allret["OrigChannel"] = 8
+	    elif (((abs(all_leps[0].pdgId) == 11 and abs(all_leps[0].pdgId) == 13) and (abs(all_leps[0].hasTauAnc) == 1 and abs(all_leps[1].hasTauAnc) == 0)) or ((abs(all_leps[0].pdgId) == 13 and abs(all_leps[0].pdgId) == 11) and (abs(all_leps[0].hasTauAnc) == 0 and abs(all_leps[1].hasTauAnc) == 1))):
+		allret["OrigChannel"] = 9
+	    elif (((abs(all_leps[0].pdgId) == 11 and abs(all_leps[0].pdgId) == 13) and (abs(all_leps[0].hasTauAnc) == 0 and abs(all_leps[1].hasTauAnc) == 1)) or ((abs(all_leps[0].pdgId) == 13 and abs(all_leps[0].pdgId) == 11) and (abs(all_leps[0].hasTauAnc) == 1 and abs(all_leps[1].hasTauAnc) == 0))):
+		allret["OrigChannel"] = 10
+	    elif ((abs(all_leps[0].pdgId) == 11 and abs(all_leps[1].pdgId) == 11) and ((abs(all_leps[0].hasTauAnc) == 1 and abs(all_leps[1].hasTauAnc) == 0) or (abs(all_leps[0].hasTauAnc) == 0 and abs(all_leps[1].hasTauAnc) == 1))):
+		allret["OrigChannel"] = 11
+	    elif ((abs(all_leps[0].pdgId) == 13 and abs(all_leps[1].pdgId) == 13) and ((abs(all_leps[0].hasTauAnc) == 1 and abs(all_leps[1].hasTauAnc) == 0) or (abs(all_leps[0].hasTauAnc) == 0 and abs(all_leps[1].hasTauAnc) == 1))):
+		allret["OrigChannel"] = 12
+	    else:
+		allret["OrigChannel"] = -1
+
+	''' Channel index:
+
+	0: no leptons
+	1: one muon/elec not from tau
+	2: one muon/elec from tau
+	3: two elec not from tau
+	4: two elec from tau
+	5: two muon not from tau
+	6: two muon from tau
+	7: one muon and one elec none from tau
+	8: one muon and one elec both from tau
+	9: one elec from tau and one muon not from tau
+	10: one elec not from tau and one muon from tau
+	11: two elec only one from tau
+	12: two muon only one from tau
+	'''
+
+
+
+	
         if event.nDressSelLep >= 2:
             allret["DressisSS"] = int((leps[0].pdgId > 0 and leps[1].pdgId > 0) or (leps[0].pdgId < 0 and leps[1].pdgId < 0))
             if   ((abs(leps[0].pdgId) == 13 and abs(leps[1].pdgId) == 11) or
