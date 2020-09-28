@@ -61,6 +61,7 @@ class EventVars_tWRun2(Module):
                               "Lep1Lep2_DR",
                               "Lep1Lep2_DPhi",
                               "Lep1Lep2_DEta",
+                              "Mll",
 
                               "Lep1Lep2Jet1MET_Pz",
                               "Lep1Lep2Jet1MET_Pt",
@@ -220,6 +221,10 @@ class EventVars_tWRun2(Module):
 
 
         # Nominal variables and those susceptible to JEC enter in this if-statement.
+        for iL in range(len(leps)):
+            for jL in range(iL + 1, len(leps)):
+                tmpM = (leps_4m[iL] + leps_4m[jL]).M()
+                if tmpM < allret["minMllAFAS"] or allret["minMllAFAS"] == -99: allret["minMllAFAS"] = tmpM
         if event.nLepGood >= 2:
             # ============================ Nominal variables
             allret["isSS"] = int(leps[0].charge == leps[1].charge)
@@ -239,10 +244,6 @@ class EventVars_tWRun2(Module):
             allret["Lep1Lep2_DPhi"]  = abs(deltaPhi(leps[0], leps[1]))/r.TMath.Pi()
             allret["Lep1Lep2_DEta"]  = abs(leps_4m[0].Eta() - leps_4m[1].Eta())
             allret["Mll"]            = (leps_4m[0] + leps_4m[1]).M()
-            for iL in range(len(leps)):
-                for jL in range(iL + 1, len(leps)):
-                    tmpM = (leps_4m[iL] + leps_4m[jL]).M()
-                    if tmpM < allret["minMllAFAS"]: allret["minMllAFAS"] = tmpM
 
 
             # ============================ Variables susceptible to JEC (nominal and their variations)
@@ -386,7 +387,7 @@ class EventVars_tWRun2(Module):
                 allret["Lep1Lep2_DR"    + sys] = leps_4m[0].DeltaR(leps_4m[1])
                 allret["Lep1Lep2_DPhi"  + sys] = abs(deltaPhi(leps[0], leps[1]))/r.TMath.Pi()
                 allret["Lep1Lep2_DEta"  + sys] = abs(leps_4m[0].Eta() - leps_4m[1].Eta())
-
+                allret["Mll"            + sys] = (leps_4m[0] + leps_4m[1]).M()
 
                 # ============================ Variables susceptible also to JEC
                 met_4m = r.TLorentzVector()
