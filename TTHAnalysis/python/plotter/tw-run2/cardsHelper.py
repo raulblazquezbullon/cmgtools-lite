@@ -17,7 +17,7 @@ friendsscaff = "--Fs {P}/0_yeartag --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning 
 
 slurmscaff   = "sbatch -c {nth} -p {queue} -J {jobname} -e {logpath}/log.%j.%x.err -o {logpath}/log.%j.%x.out --wrap '{command}'"
 
-commandscaff = '''python makeShapeCardsNew.py --tree NanoAOD {mcafile} {cutsfile} "{variable}" "{bins}" {samplespaths} {friends} --od {outpath} --s2v -l {lumi} {nth} -f -L tw-run2/functions_tw.cc --neg --threshold 0.01 -W "MuonIDSF * MuonISOSF * ElecISSF * ElecRECOSF * TrigSF * puWeight * bTagWeight * PrefireWeight" --year {year} {asimovornot} {uncs} {extra}'''
+commandscaff = '''python makeShapeCardsNew.py --tree NanoAOD {mcafile} {cutsfile} "{variable}" "{bins}" {samplespaths} {friends} --od {outpath} -l {lumi} {nth} -f -L tw-run2/functions_tw.cc --neg --threshold 0.01 -W "MuonIDSF * MuonISOSF * ElecISSF * ElecRECOSF * TrigSF * puWeight * bTagWeight * PrefireWeight" --year {year} {asimovornot} {uncs} {extra}'''
 
 
 
@@ -37,11 +37,11 @@ def CardsCommand(prod, year, var, bines, isAsimov, nthreads, outpath, region, no
     comm = commandscaff.format(outpath      = outpath_,
                                friends      = friends_,
                                samplespaths = samplespaths_,
-                               lumi      = lumidict[int(year)],
+                               lumi      = lumidict[int(year)] if year != "run2" else str(lumidict[2016]) + "," + str(lumidict[2017]) + "," + str(lumidict[2018]),
                                variable  = var,
                                bins      = bines,
                                nth       = nth_,
-                               year      = year,
+                               year      = year if year != "run2" else "2016,2017,2018",
                                asimovornot = "--asimov signal" if isAsimov else "",
                                mcafile   = mcafile_,
                                cutsfile  = cutsfile_,
