@@ -34,17 +34,17 @@ class addSeparationIndex(Module):
         if self.isThisSampleForMVA:
             #print "\n1if"
             if event.pass_trigger:
-                print "trig"
+                #print "trig"
                 if event.Flag_goodVertices and event.Flag_globalSuperTightHalo2016Filter and event.Flag_HBHENoiseFilter and event.Flag_HBHENoiseIsoFilter and event.Flag_EcalDeadCellTriggerPrimitiveFilter and event.Flag_BadPFMuonFilter:
                     #print "flags"
                     if event.nLepGood >= 2 and event.isSS == 0:
-                        print "\nleps"
-                        print event.LepGood_pt_corrAll[0], event.LepGood_pt_corrAll[1], event.minMllAFAS
+                        #print "\nleps"
+                        #print event.LepGood_pt_corrAll[0], event.LepGood_pt_corrAll[1], event.minMllAFAS
                         if event.LepGood_pt_corrAll[0] > 25 and event.LepGood_pt_corrAll[1] > 20 and event.minMllAFAS > 20:
-                            print "todos"
+                            #print "todos"
                             if self.randomObj.Rndm() > self.appProp:
                                 tmpval = 0
-                                print "final"
+                                #print "final"
 
         writeOutput(self, {self.label : tmpval})
         return True
