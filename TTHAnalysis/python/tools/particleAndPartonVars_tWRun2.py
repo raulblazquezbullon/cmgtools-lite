@@ -120,10 +120,10 @@ class particleAndPartonVars_tWRun2(Module):
 
 	
 	# Definition of the new variable OrigChannel	
-	if event.GenDressedLepton == 0:
+	if event.nGenDressedLepton == 0:
 	    allret["OrigChannel"] = 0
 
-	if event.GenDressedLepton == 1:
+	if event.nGenDressedLepton == 1:
 	    if ((abs(all_leps[0].pdgId) == 11 or abs(all_leps[0] == 13)) and abs(all_leps[0].hasTauAnc == 0)):
 		allret["OrigChannel"] = 1
 	    elif ((abs(all_leps[0].pdgId) == 11 or abs(all_leps[0] == 13)) and abs(all_leps[0].hasTauAnc == 1)):
@@ -131,7 +131,7 @@ class particleAndPartonVars_tWRun2(Module):
 	    else:
 		allret["OrigChannel"] = -1
 
-	if event.GenDressedLepton >= 2:
+	if event.nGenDressedLepton >= 2:
 	    if ((abs(all_leps[0].pdgId) == 11 and abs(all_leps[1].pdgId) == 11) and (abs(all_leps[0].hasTauAnc) == 0 and abs(all_leps[1].hasTauAnc) == 0)):
 		allret["OrigChannel"] = 3
 	    elif ((abs(all_leps[0].pdgId) == 11 and abs(all_leps[1].pdgId) == 11) and (abs(all_leps[0].hasTauAnc) == 1 and abs(all_leps[1].hasTauAnc) == 1)):
