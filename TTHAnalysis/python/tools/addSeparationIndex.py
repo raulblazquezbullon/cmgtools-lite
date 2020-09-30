@@ -5,9 +5,10 @@ from CMGTools.TTHAnalysis.tools.nanoAOD.friendVariableProducerTools import decla
 import ROOT as r
 
 class addSeparationIndex(Module):
-    def __init__(self, isThisSampleForMVA = False, applicationProp = 0.6, label = "separationIndex"):
+    def __init__(self, isThisSampleForMVA = False, isEntire = False, applicationProp = 0.6, label = "separationIndex"):
         self.label     = label
         self.isThisSampleForMVA = isThisSampleForMVA
+        self.isEntire = isEntire
         self.appProp = applicationProp
         self.branches  = [(self.label, "I")]
         self.randomObj = r.TRandomMixMax()
@@ -33,7 +34,9 @@ class addSeparationIndex(Module):
         tmpval = 1 #### 1 means belonging to the APPLICATION zone
         if self.isThisSampleForMVA:
             #print "\n1if"
-            if event.pass_trigger:
+            if   self.isEntire:
+                tmpval = 0
+            elif event.pass_trigger:
                 #print "trig"
                 if event.Flag_goodVertices and event.Flag_globalSuperTightHalo2016Filter and event.Flag_HBHENoiseFilter and event.Flag_HBHENoiseIsoFilter and event.Flag_EcalDeadCellTriggerPrimitiveFilter and event.Flag_BadPFMuonFilter:
                     #print "flags"

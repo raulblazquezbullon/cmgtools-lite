@@ -397,8 +397,9 @@ from CMGTools.TTHAnalysis.tools.addSeparationIndex import addSeparationIndex
 
 applicationProportion = 0.6
 
-addSeparationIndex_nomva = lambda : addSeparationIndex(isThisSampleForMVA = False, applicationProp = applicationProportion)
-addSeparationIndex_mva   = lambda : addSeparationIndex(isThisSampleForMVA = True, applicationProp = applicationProportion)
+addSeparationIndex_nomva   = lambda : addSeparationIndex(isThisSampleForMVA = False, applicationProp = applicationProportion)
+addSeparationIndex_mva     = lambda : addSeparationIndex(isThisSampleForMVA = True, applicationProp = applicationProportion)
+addSeparationIndex_mva_ent = lambda : addSeparationIndex(isThisSampleForMVA = True, isEntire = True, applicationProp = applicationProportion)
 
 sfSeq_2016 = [leptrigSFs, btagWeights_2016, addTopPtWeight, addSeparationIndex_nomva]
 sfSeq_2017 = [leptrigSFs, btagWeights_2017, addTopPtWeight, addSeparationIndex_nomva]
@@ -408,6 +409,9 @@ sfSeq_mvatrain_2016 = [leptrigSFs, btagWeights_2016, addTopPtWeight, addSeparati
 sfSeq_mvatrain_2017 = [leptrigSFs, btagWeights_2017, addTopPtWeight, addSeparationIndex_mva]
 sfSeq_mvatrain_2018 = [leptrigSFs, btagWeights_2018, addTopPtWeight, addSeparationIndex_mva]
 
+sfSeq_mvatrain_ent_2016 = [leptrigSFs, btagWeights_2016, addTopPtWeight, addSeparationIndex_mva_ent]
+sfSeq_mvatrain_ent_2017 = [leptrigSFs, btagWeights_2017, addTopPtWeight, addSeparationIndex_mva_ent]
+sfSeq_mvatrain_ent_2018 = [leptrigSFs, btagWeights_2018, addTopPtWeight, addSeparationIndex_mva_ent]
 
 
 #### TEMPORAL
