@@ -540,8 +540,11 @@ def SendDatasetJobs(task):
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 2) + friendsuff
 
     elif step == 4 and not isData:
-        if any([dataset.replace("*", "") in iD if type(iD) == str else any([dataset.replace("*", "") in jD for jD in iD]) for key,iD in trainsampledict[year].iteritems()]):
-            module_  = "sfSeq_mvatrain_{y}".format(y = year)
+        print dataset
+        if any([dataset.replace("*", "") in iD if type(iD) == str else any([dataset.replace("*", "") in jD for jD in iD]) for key,iD in trainsampledict[year].iteritems()] +
+               [iD.replace("*", "") in dataset  if type(iD) == str else any([jD.replace("*", "") in dataset in jD for jD in iD]) for key,iD in trainsampledict[year].iteritems()]):
+            if "noFullHad" in dataset: module_  = "sfSeq_mvatrain_ent_{y}".format(y = year)
+            else:                      module_  = "sfSeq_mvatrain_{y}".format(y = year)
         else:
             module_  = "sfSeq_{y}".format(y = year)
         friends_ +=       friendpref + getFriendsFolder(dataset, friendsbasepath, 0) + friendsuff
