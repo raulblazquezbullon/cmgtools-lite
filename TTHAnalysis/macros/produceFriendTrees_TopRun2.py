@@ -12,7 +12,8 @@ friendspath = "/pool/phedexrw/userstorage/cmstudents/sheylaag/TFG/WWbb/productio
 #prodname    = "2020-06-01" # veya
 #prodname    = "2020-06-17" # nova
 #prodname    = "2020-07-03" # con sistematicos, en 2016 col tuning veyo
-prodname    = "2020-09-03" # prueba para Sheyla
+#prodname    = "2020-09-03" # prueba para Sheyla
+prodname     = "2020-09-30" # prueba para ftrees con nueva variable
 
 
 datasamples  = ["SingleMuon", "SingleElec", "DoubleMuon", "DoubleEG", "MuonEG", "LowEGJet", "HighEGJet", "EGamma"]
