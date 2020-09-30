@@ -37,14 +37,13 @@ friendfolders = {0 : "0_yeartag",
                  "mvatrain" : "x_mvatrain"
                 }
 
-chunksizes    = {0 : 5000000,
-                 1 : 200000,
-                 2 : 5000000,
-                 3 : 500000,
-                 4 : 500000,
-                 5 : 250000,
-                 "mvatrain" : 250000,
-                 #"mvatrain" : 500000, # pa la futura
+chunksizes    = {0          : 5000000,
+                 1          : 200000,
+                 2          : 5000000,
+                 3          : 500000,
+                 4          : 500000,
+                 5          : 250000,
+                 "mvatrain" : 500000,
                  }
 minchunkbytes = 1000
 
@@ -176,7 +175,8 @@ sampledict[2016] = {
 sampledict[2017] = {
     #### Nominales
     ### ttbar
-    "TTTo2L2Nu"        : ["Tree_TTTo2L2Nu_TuneCP5_PSweights_*", "Tree_TTTo2L2Nu_TuneCP5_*"],
+    #"TTTo2L2Nu"        : ["Tree_TTTo2L2Nu_TuneCP5_PSweights_*", "Tree_TTTo2L2Nu_TuneCP5_*"],
+    "TTTo2L2Nu"        :['Tree_TTTo2L2Nu_TuneCP5_PSweights_0','Tree_TTTo2L2Nu_TuneCP5_PSweights_1','Tree_TTTo2L2Nu_TuneCP5_PSweights_2','Tree_TTTo2L2Nu_TuneCP5_PSweights_3','Tree_TTTo2L2Nu_TuneCP5_PSweights_4','Tree_TTTo2L2Nu_TuneCP5_PSweights_5','Tree_TTTo2L2Nu_TuneCP5_PSweights_6','Tree_TTTo2L2Nu_TuneCP5_PSweights_7','Tree_TTTo2L2Nu_TuneCP5_PSweights_8','Tree_TTTo2L2Nu_TuneCP5_PSweights_9','Tree_TTTo2L2Nu_TuneCP5_PSweights_10','Tree_TTTo2L2Nu_TuneCP5_PSweights_11','Tree_TTTo2L2Nu_TuneCP5_PSweights_12','Tree_TTTo2L2Nu_TuneCP5_PSweights_13','Tree_TTTo2L2Nu_TuneCP5_PSweights_14','Tree_TTTo2L2Nu_TuneCP5_PSweights_15','Tree_TTTo2L2Nu_TuneCP5_PSweights_16','Tree_TTTo2L2Nu_TuneCP5_PSweights_17','Tree_TTTo2L2Nu_TuneCP5_PSweights_18','Tree_TTTo2L2Nu_TuneCP5_PSweights_19','Tree_TTTo2L2Nu_TuneCP5_PSweights_20', "Tree_TTTo2L2Nu_TuneCP5_0", "Tree_TTTo2L2Nu_TuneCP5_1", "Tree_TTTo2L2Nu_TuneCP5_2"],
     "TTToSemiLeptonic" : "Tree_TTToSemiLeptonic_TuneCP5_",
 
     ### tW
@@ -385,33 +385,42 @@ sampledict[2018] = {
 trainsampledict = {}; trainsampledict[2016] = {}; trainsampledict[2017] = {}; trainsampledict[2018] = {}
 trainsampledict[2016] = {
     ### ttbar
-    "TTTo2L2Nu" : ['Tree_TTTo2L2Nu_TuneCP5_PSweights_0', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_1', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_2', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_3', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_4', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_5', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_6', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_7', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_8', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_9', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_10', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_11', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_12'],
+    #"TTTo2L2Nu" : ['Tree_TTTo2L2Nu_TuneCP5_PSweights_0', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_1', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_2', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_3', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_4', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_5', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_6', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_7', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_8', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_9', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_10', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_11', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_12'],
+    "TTTo2L2Nu" : sampledict[2016]["TTTo2L2Nu"],
 
     ### tW
 
-    "tW"    : "Tree_tW_5f_inclusiveDecays_TuneCP5_PSweights_",
-    "tbarW" : "Tree_tbarW_5f_inclusiveDecays_TuneCP5_PSweights_",
+    #"tW"    : "Tree_tW_5f_inclusiveDecays_TuneCP5_PSweights_",
+    "tW"    : sampledict[2016]["tW"],
+    #"tbarW" : "Tree_tbarW_5f_inclusiveDecays_TuneCP5_PSweights_",
+    "tbarW" : sampledict[2016]["tbarW"],
 }
 
 
 trainsampledict[2017] = {
-    "TTTo2L2Nu"           : ['Tree_TTTo2L2Nu_TuneCP5_PSweights_0','Tree_TTTo2L2Nu_TuneCP5_PSweights_1','Tree_TTTo2L2Nu_TuneCP5_PSweights_2','Tree_TTTo2L2Nu_TuneCP5_PSweights_3','Tree_TTTo2L2Nu_TuneCP5_PSweights_4','Tree_TTTo2L2Nu_TuneCP5_PSweights_5','Tree_TTTo2L2Nu_TuneCP5_PSweights_6','Tree_TTTo2L2Nu_TuneCP5_PSweights_7','Tree_TTTo2L2Nu_TuneCP5_PSweights_8','Tree_TTTo2L2Nu_TuneCP5_PSweights_9','Tree_TTTo2L2Nu_TuneCP5_PSweights_10','Tree_TTTo2L2Nu_TuneCP5_PSweights_11','Tree_TTTo2L2Nu_TuneCP5_PSweights_12','Tree_TTTo2L2Nu_TuneCP5_PSweights_13','Tree_TTTo2L2Nu_TuneCP5_PSweights_14','Tree_TTTo2L2Nu_TuneCP5_PSweights_15','Tree_TTTo2L2Nu_TuneCP5_PSweights_16','Tree_TTTo2L2Nu_TuneCP5_PSweights_17','Tree_TTTo2L2Nu_TuneCP5_PSweights_18','Tree_TTTo2L2Nu_TuneCP5_PSweights_19','Tree_TTTo2L2Nu_TuneCP5_PSweights_20', "Tree_TTTo2L2Nu_TuneCP5_0", "Tree_TTTo2L2Nu_TuneCP5_1", "Tree_TTTo2L2Nu_TuneCP5_2"],
+    #"TTTo2L2Nu"           : ['Tree_TTTo2L2Nu_TuneCP5_PSweights_0','Tree_TTTo2L2Nu_TuneCP5_PSweights_1','Tree_TTTo2L2Nu_TuneCP5_PSweights_2','Tree_TTTo2L2Nu_TuneCP5_PSweights_3','Tree_TTTo2L2Nu_TuneCP5_PSweights_4','Tree_TTTo2L2Nu_TuneCP5_PSweights_5','Tree_TTTo2L2Nu_TuneCP5_PSweights_6','Tree_TTTo2L2Nu_TuneCP5_PSweights_7','Tree_TTTo2L2Nu_TuneCP5_PSweights_8','Tree_TTTo2L2Nu_TuneCP5_PSweights_9','Tree_TTTo2L2Nu_TuneCP5_PSweights_10','Tree_TTTo2L2Nu_TuneCP5_PSweights_11','Tree_TTTo2L2Nu_TuneCP5_PSweights_12','Tree_TTTo2L2Nu_TuneCP5_PSweights_13','Tree_TTTo2L2Nu_TuneCP5_PSweights_14','Tree_TTTo2L2Nu_TuneCP5_PSweights_15','Tree_TTTo2L2Nu_TuneCP5_PSweights_16','Tree_TTTo2L2Nu_TuneCP5_PSweights_17','Tree_TTTo2L2Nu_TuneCP5_PSweights_18','Tree_TTTo2L2Nu_TuneCP5_PSweights_19','Tree_TTTo2L2Nu_TuneCP5_PSweights_20', "Tree_TTTo2L2Nu_TuneCP5_0", "Tree_TTTo2L2Nu_TuneCP5_1", "Tree_TTTo2L2Nu_TuneCP5_2"],
+    "TTTo2L2Nu"       : sampledict[2017]["TTTo2L2Nu"],
 
-    "tW_noFullHad"    : "Tree_tW_5f_noFullHad_TuneCP5_",
-    "tbarW_noFullHad" : "Tree_tbarW_5f_noFullHad_TuneCP5_",
+    #"tW_noFullHad"    : "Tree_tW_5f_noFullHad_TuneCP5_",
+    "tW_noFullHad"    : sampledict[2017]["tW_noFullHad"],
+    #"tbarW_noFullHad" : "Tree_tbarW_5f_noFullHad_TuneCP5_",
+    "tbarW_noFullHad" : sampledict[2017]["tbarW_noFullHad"],
 }
 
 
 trainsampledict[2018] = {
     # ttbar
-    "TTTo2L2Nu" : ['Tree_TTTo2L2Nu_TuneCP5_0', 'Tree_TTTo2L2Nu_TuneCP5_1', 'Tree_TTTo2L2Nu_TuneCP5_2', 'Tree_TTTo2L2Nu_TuneCP5_3', 'Tree_TTTo2L2Nu_TuneCP5_4', 'Tree_TTTo2L2Nu_TuneCP5_5', 'Tree_TTTo2L2Nu_TuneCP5_6', 'Tree_TTTo2L2Nu_TuneCP5_7', 'Tree_TTTo2L2Nu_TuneCP5_8', 'Tree_TTTo2L2Nu_TuneCP5_9', 'Tree_TTTo2L2Nu_TuneCP5_10', 'Tree_TTTo2L2Nu_TuneCP5_11', 'Tree_TTTo2L2Nu_TuneCP5_12', 'Tree_TTTo2L2Nu_TuneCP5_13', 'Tree_TTTo2L2Nu_TuneCP5_14', 'Tree_TTTo2L2Nu_TuneCP5_15', 'Tree_TTTo2L2Nu_TuneCP5_16', 'Tree_TTTo2L2Nu_TuneCP5_17', 'Tree_TTTo2L2Nu_TuneCP5_18', 'Tree_TTTo2L2Nu_TuneCP5_19', 'Tree_TTTo2L2Nu_TuneCP5_20', 'Tree_TTTo2L2Nu_TuneCP5_21', 'Tree_TTTo2L2Nu_TuneCP5_22', 'Tree_TTTo2L2Nu_TuneCP5_23', 'Tree_TTTo2L2Nu_TuneCP5_24', 'Tree_TTTo2L2Nu_TuneCP5_25', 'Tree_TTTo2L2Nu_TuneCP5_26', 'Tree_TTTo2L2Nu_TuneCP5_27', 'Tree_TTTo2L2Nu_TuneCP5_28', 'Tree_TTTo2L2Nu_TuneCP5_29', 'Tree_TTTo2L2Nu_TuneCP5_30', 'Tree_TTTo2L2Nu_TuneCP5_31', 'Tree_TTTo2L2Nu_TuneCP5_32', 'Tree_TTTo2L2Nu_TuneCP5_33', 'Tree_TTTo2L2Nu_TuneCP5_34', 'Tree_TTTo2L2Nu_TuneCP5_35', 'Tree_TTTo2L2Nu_TuneCP5_36', 'Tree_TTTo2L2Nu_TuneCP5_37', 'Tree_TTTo2L2Nu_TuneCP5_38', 'Tree_TTTo2L2Nu_TuneCP5_39', 'Tree_TTTo2L2Nu_TuneCP5_40', 'Tree_TTTo2L2Nu_TuneCP5_41', 'Tree_TTTo2L2Nu_TuneCP5_42', 'Tree_TTTo2L2Nu_TuneCP5_43', 'Tree_TTTo2L2Nu_TuneCP5_44'],
+    #"TTTo2L2Nu" : ['Tree_TTTo2L2Nu_TuneCP5_0', 'Tree_TTTo2L2Nu_TuneCP5_1', 'Tree_TTTo2L2Nu_TuneCP5_2', 'Tree_TTTo2L2Nu_TuneCP5_3', 'Tree_TTTo2L2Nu_TuneCP5_4', 'Tree_TTTo2L2Nu_TuneCP5_5', 'Tree_TTTo2L2Nu_TuneCP5_6', 'Tree_TTTo2L2Nu_TuneCP5_7', 'Tree_TTTo2L2Nu_TuneCP5_8', 'Tree_TTTo2L2Nu_TuneCP5_9', 'Tree_TTTo2L2Nu_TuneCP5_10', 'Tree_TTTo2L2Nu_TuneCP5_11', 'Tree_TTTo2L2Nu_TuneCP5_12', 'Tree_TTTo2L2Nu_TuneCP5_13', 'Tree_TTTo2L2Nu_TuneCP5_14', 'Tree_TTTo2L2Nu_TuneCP5_15', 'Tree_TTTo2L2Nu_TuneCP5_16', 'Tree_TTTo2L2Nu_TuneCP5_17', 'Tree_TTTo2L2Nu_TuneCP5_18', 'Tree_TTTo2L2Nu_TuneCP5_19', 'Tree_TTTo2L2Nu_TuneCP5_20', 'Tree_TTTo2L2Nu_TuneCP5_21', 'Tree_TTTo2L2Nu_TuneCP5_22', 'Tree_TTTo2L2Nu_TuneCP5_23', 'Tree_TTTo2L2Nu_TuneCP5_24', 'Tree_TTTo2L2Nu_TuneCP5_25', 'Tree_TTTo2L2Nu_TuneCP5_26', 'Tree_TTTo2L2Nu_TuneCP5_27', 'Tree_TTTo2L2Nu_TuneCP5_28', 'Tree_TTTo2L2Nu_TuneCP5_29', 'Tree_TTTo2L2Nu_TuneCP5_30', 'Tree_TTTo2L2Nu_TuneCP5_31', 'Tree_TTTo2L2Nu_TuneCP5_32', 'Tree_TTTo2L2Nu_TuneCP5_33', 'Tree_TTTo2L2Nu_TuneCP5_34', 'Tree_TTTo2L2Nu_TuneCP5_35', 'Tree_TTTo2L2Nu_TuneCP5_36', 'Tree_TTTo2L2Nu_TuneCP5_37', 'Tree_TTTo2L2Nu_TuneCP5_38', 'Tree_TTTo2L2Nu_TuneCP5_39', 'Tree_TTTo2L2Nu_TuneCP5_40', 'Tree_TTTo2L2Nu_TuneCP5_41', 'Tree_TTTo2L2Nu_TuneCP5_42', 'Tree_TTTo2L2Nu_TuneCP5_43', 'Tree_TTTo2L2Nu_TuneCP5_44'],
+    "TTTo2L2Nu"       : sampledict[2018]["TTTo2L2Nu"],
 
     # tW
     #"tW"              : "Tree_tW_5f_inclusiveDecays_TuneCP5_ext1_",
     #"tbarW"           : "Tree_tbarW_5f_inclusiveDecays_TuneCP5_ext1_",
 
-    "tW_noFullHad"    : ["Tree_tW_5f_noFullHad_TuneCP5_ext1_0"],
-    "tbarW_noFullHad" : ["Tree_tbarW_5f_noFullHad_TuneCP5_ext_0"],
+    #"tW_noFullHad"    : ["Tree_tW_5f_noFullHad_TuneCP5_ext1_0"],
+    "tW_noFullHad"    : sampledict[2018]["tW_noFullHad"],
+    #"tbarW_noFullHad" : ["Tree_tbarW_5f_noFullHad_TuneCP5_ext_0"],
+    "tbarW_noFullHad" : sampledict[2018]["tbarW_noFullHad"],
 }
 
 
@@ -469,11 +478,11 @@ def getFriendsFolder(dataset, basepath, step_friends):
         myfibrefriends = [f for f in os.listdir(rofolder) if (".root" in f and dataset in f and "chunk" not in f and "Friend" in f)]
         if len(myfibrefriends) > 0: doihavefibrefriends = True
 
-    if doihavefibrefriends:
-        wr.warn("\n====== WARNING! Friends detected in RO folder for this production. Using them for dataset {d} and step (of the friends) {s}".format(d = dataset, s = step_friends))
-        return rofolder
-    else:
-        return rwfolder
+    #if doihavefibrefriends:
+        #wr.warn("\n====== WARNING! Friends detected in RO folder for this production. Using them for dataset {d} and step (of the friends) {s}".format(d = dataset, s = step_friends))
+        #return rofolder
+    #else:
+        #return rwfolder
     return rwfolder
 
 
@@ -531,7 +540,7 @@ def SendDatasetJobs(task):
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 2) + friendsuff
 
     elif step == 4 and not isData:
-        if any([dataset in iD if type(iD) == str else any([dataset in jD for jD in iD]) for key,iD in trainsampledict[year].iteritems()]):
+        if any([dataset.replace("*", "") in iD if type(iD) == str else any([dataset.replace("*", "") in jD for jD in iD]) for key,iD in trainsampledict[year].iteritems()]):
             module_  = "sfSeq_mvatrain_{y}".format(y = year)
         else:
             module_  = "sfSeq_{y}".format(y = year)
