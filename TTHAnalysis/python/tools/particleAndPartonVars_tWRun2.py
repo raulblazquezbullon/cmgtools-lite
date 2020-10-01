@@ -124,11 +124,11 @@ class particleAndPartonVars_tWRun2(Module):
 	    allret["OrigChannel"] = 0
 
 	if event.nGenDressedLepton == 1:
-	    if ((abs(all_leps[0].pdgId) == 13 and abs(all_leps[0].hasTauAnc == 0)) or (abs(all_leps[1].pdgId) == 13 and abs(all_leps[1].hasTauAnc == 0))):
+	    if (abs(all_leps[0].pdgId) == 13 and abs(all_leps[0].hasTauAnc == 0)):
 		allret["OrigChannel"] = 1
-	    elif ((abs(all_leps[0].pdgId) == 11 and abs(all_leps[0].hasTauAnc == 0)) or (abs(all_leps[1].pdgId) == 11 and abs(all_leps[1].hasTauAnc == 0))):
+	    elif (abs(all_leps[0].pdgId) == 11 and abs(all_leps[0].hasTauAnc == 0)):
 		allret["OrigChannel"] = 2
-	    elif (((abs(all_leps[0].pdgId == 11) or abs(all_leps[0].pdgId == 13)) and abs(all_leps[0].hasTauAnc == 1)) or ((abs(all_leps[1].pdgId == 11) or abs(all_leps[1].pdgId == 13)) and abs(all_leps[1].hasTauAnc == 1))):
+	    elif ((abs(all_leps[0].pdgId == 11) or abs(all_leps[0].pdgId == 13)) and abs(all_leps[0].hasTauAnc == 1)):
 		allret["OrigChannel"] = 3
 
 	if event.nGenDressedLepton == 2:
@@ -143,7 +143,7 @@ class particleAndPartonVars_tWRun2(Module):
 		allret["OrigChannel"] = 7
 	    elif (((abs(all_leps[0].pdgId) == 11 and abs(all_leps[0].hasTauAnc) == 0) and ((abs(all_leps[1].pdgId) == 11 or abs(all_leps[1].pdgId == 13) and abs(all_leps[1].hasTauAnc) == 1))) or ((abs(all_leps[1].pdgId) == 11 and abs(all_leps[1].hasTauAnc) == 0) and ((abs(all_leps[0].pdgId) == 11 or abs(all_leps[0].pdgId) == 13) and abs(all_leps[0].hasTauAnc) == 1))):
 		allret["OrigChannel"] = 8
-	    elif (((abs(all_leps[0].pdgId) == 11 and abs(all_leps[1].pdgId) == 13) or (abs(all_leps[0].pdgId) == 11 and abs(all_leps[1].pdgId) == 11) or (abs(all_leps[0].pdgId) == 13 and abs(all_leps[1].pdgId) == 13)) and (abs(all_leps[0].hasTauAnc) == 1 and abs(all_leps[1].hasTauAnc) == 1))
+	    elif (((abs(all_leps[0].pdgId) == 11 and abs(all_leps[1].pdgId) == 13) or (abs(all_leps[0].pdgId) == 11 and abs(all_leps[1].pdgId) == 11) or (abs(all_leps[0].pdgId) == 13 and abs(all_leps[1].pdgId) == 13)) and (abs(all_leps[0].hasTauAnc) == 1 and abs(all_leps[1].hasTauAnc) == 1)):
 		allret["OrigChannel"] = 9
 
 	if event.nGenDressedLepton >= 3:
