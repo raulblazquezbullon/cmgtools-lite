@@ -84,16 +84,16 @@ class pythonCleaningTopRun2(Module):
         # Configuring C++ helpers for JEC variations as well as nominal results
         self.colls         = {}
         for delta,sys in self.systsJEC.iteritems():
-            self.colls["jetsSup"    + sys] = CollectionSkimmer("{col}Sel{pt}".format(   col = self.jc, pt = self.jetPts[0]) + sys + self.label, self.jc, floats = [], saveSelectedIndices = True, maxSize = 5)
-            self.colls["jetsInf"    + sys] = CollectionSkimmer("{col}Sel{pt}".format(   col = self.jc, pt = self.jetPts[1]) + sys + self.label, self.jc, floats = [], saveSelectedIndices = True, maxSize = 5)
-            self.colls["fwdjetsSup" + sys] = CollectionSkimmer("Fwd{col}Sel{pt}".format(col = self.jc, pt = self.jetPts[0]) + sys + self.label, self.jc, floats = [], saveSelectedIndices = True, maxSize = 5)
-            self.colls["fwdjetsInf" + sys] = CollectionSkimmer("Fwd{col}Sel{pt}".format(col = self.jc, pt = self.jetPts[1]) + sys + self.label, self.jc, floats = [], saveSelectedIndices = True, maxSize = 5)
+            self.colls["jetsSup"    + sys] = CollectionSkimmer("{col}Sel{pt}".format(   col = self.jc, pt = self.jetPts[0]) + sys + self.label, self.jc, floats = [], saveSelectedIndices = True)
+            self.colls["jetsInf"    + sys] = CollectionSkimmer("{col}Sel{pt}".format(   col = self.jc, pt = self.jetPts[1]) + sys + self.label, self.jc, floats = [], saveSelectedIndices = True)
+            self.colls["fwdjetsSup" + sys] = CollectionSkimmer("Fwd{col}Sel{pt}".format(col = self.jc, pt = self.jetPts[0]) + sys + self.label, self.jc, floats = [], saveSelectedIndices = True)
+            self.colls["fwdjetsInf" + sys] = CollectionSkimmer("Fwd{col}Sel{pt}".format(col = self.jc, pt = self.jetPts[1]) + sys + self.label, self.jc, floats = [], saveSelectedIndices = True)
 
         for delta,sys in self.systsLepEn.iteritems():
-            self.colls["jetsSup"    + sys] = CollectionSkimmer("{col}Sel{pt}".format(   col = self.jc, pt = self.jetPts[0]) + sys + self.label, self.jc, floats = [], saveSelectedIndices = True, maxSize = 5)
-            self.colls["jetsInf"    + sys] = CollectionSkimmer("{col}Sel{pt}".format(   col = self.jc, pt = self.jetPts[1]) + sys + self.label, self.jc, floats = [], saveSelectedIndices = True, maxSize = 5)
-            self.colls["fwdjetsSup" + sys] = CollectionSkimmer("Fwd{col}Sel{pt}".format(col = self.jc, pt = self.jetPts[0]) + sys + self.label, self.jc, floats = [], saveSelectedIndices = True, maxSize = 5)
-            self.colls["fwdjetsInf" + sys] = CollectionSkimmer("Fwd{col}Sel{pt}".format(col = self.jc, pt = self.jetPts[1]) + sys + self.label, self.jc, floats = [], saveSelectedIndices = True, maxSize = 5)
+            self.colls["jetsSup"    + sys] = CollectionSkimmer("{col}Sel{pt}".format(   col = self.jc, pt = self.jetPts[0]) + sys + self.label, self.jc, floats = [], saveSelectedIndices = True)
+            self.colls["jetsInf"    + sys] = CollectionSkimmer("{col}Sel{pt}".format(   col = self.jc, pt = self.jetPts[1]) + sys + self.label, self.jc, floats = [], saveSelectedIndices = True)
+            self.colls["fwdjetsSup" + sys] = CollectionSkimmer("Fwd{col}Sel{pt}".format(col = self.jc, pt = self.jetPts[0]) + sys + self.label, self.jc, floats = [], saveSelectedIndices = True)
+            self.colls["fwdjetsInf" + sys] = CollectionSkimmer("Fwd{col}Sel{pt}".format(col = self.jc, pt = self.jetPts[1]) + sys + self.label, self.jc, floats = [], saveSelectedIndices = True)
         return
 
 
@@ -147,7 +147,8 @@ class pythonCleaningTopRun2(Module):
         if self.debug: print("[pythonCleaningTopRun2::analyze] Beginning jet loop")
         for iJ in range(len(jets)):
             if cleanedandgoodjets[""][iJ]:
-                if   jets[iJ].eta < 2.4:
+                abseta = abs(jets[iJ].eta)
+                if   abseta < 2.4:
                     tmpisbtag = getattr(jets[iJ], self.jetBTag) > self.btagWPcut
                     for delta,jvar in self.systsJEC.iteritems():
                         if   getattr(jets[iJ], "pt" + (self.nomjecscaff if jvar == "" else jvar)) > self.jetPts[0]:
@@ -157,19 +158,19 @@ class pythonCleaningTopRun2(Module):
                             finalJetDict["jetsInf"    + jvar].append(iJ)
                             if tmpisbtag: finalnBtagsDict1[jvar] += 1
 
-                elif jets[iJ].eta < 2.7:
+                elif abseta < 2.7:
                     for delta,jvar in self.systsJEC.iteritems():
                         if   getattr(jets[iJ], "pt" + (self.nomjecscaff if jvar == "" else jvar)) > self.jetPts[0]:
                             finalJetDict["fwdjetsSup" + jvar].append(iJ)
                         elif getattr(jets[iJ], "pt" + (self.nomjecscaff if jvar == "" else jvar)) > self.jetPts[1]:
                             finalJetDict["fwdjetsInf" + jvar].append(iJ)
 
-                elif jets[iJ].eta < 3.0:
+                elif abseta < 3.0:
                     for delta,jvar in self.systsJEC.iteritems():
                         if   getattr(jets[iJ], "pt" + (self.nomjecscaff if jvar == "" else jvar)) > self.jetPtNoisyFwd:
                             finalJetDict["fwdjetsSup" + jvar].append(iJ)
 
-                elif jets[iJ].eta < 5.0:
+                elif abseta < 5.0:
                     for delta,jvar in self.systsJEC.iteritems():
                         if   getattr(jets[iJ], "pt" + (self.nomjecscaff if jvar == "" else jvar)) > self.jetPts[0]:
                             finalJetDict["fwdjetsSup" + jvar].append(iJ)
@@ -178,7 +179,8 @@ class pythonCleaningTopRun2(Module):
 
             for delta,lvar in self.systsLepEn.iteritems():
                 if cleanedandgoodjets[lvar][iJ]:
-                    if   jets[iJ].eta < 2.4:
+                    abseta = abs(jets[iJ].eta)
+                    if   abseta < 2.4:
                         tmpisbtag = getattr(jets[iJ], self.jetBTag) > self.btagWPcut
                         if   getattr(jets[iJ], "pt" + self.nomjecscaff) > self.jetPts[0]:
                             finalJetDict["jetsSup"    + lvar].append(iJ)
@@ -187,17 +189,17 @@ class pythonCleaningTopRun2(Module):
                             finalJetDict["jetsInf"    + lvar].append(iJ)
                             if tmpisbtag: finalnBtagsDict1[lvar] += 1
 
-                    elif jets[iJ].eta < 2.7:
+                    elif abseta < 2.7:
                         if   getattr(jets[iJ], "pt" + self.nomjecscaff) > self.jetPts[0]:
                             finalJetDict["fwdjetsSup" + lvar].append(iJ)
                         elif getattr(jets[iJ], "pt" + self.nomjecscaff) > self.jetPts[1]:
                             finalJetDict["fwdjetsInf" + lvar].append(iJ)
 
-                    elif jets[iJ].eta < 3.0:
+                    elif abseta < 3.0:
                         if   getattr(jets[iJ], "pt" + self.nomjecscaff) > self.jetPtNoisyFwd:
                             finalJetDict["fwdjetsSup" + lvar].append(iJ)
 
-                    elif jets[iJ].eta < 5.0:
+                    elif abseta < 5.0:
                         if   getattr(jets[iJ], "pt" + self.nomjecscaff) > self.jetPts[0]:
                             finalJetDict["fwdjetsSup" + lvar].append(iJ)
                         elif getattr(jets[iJ], "pt" + self.nomjecscaff) > self.jetPts[1]:
@@ -246,7 +248,7 @@ class pythonCleaningTopRun2(Module):
             self.selection = self.selecsdict[self.year]
             self.btagWPcut = _btagWPs[self.algoscaff.format(y = self.year, wp = self.btagWP)][1]
         else:
-            wr.warn("WARNING: as you did not choose year, we will use deepcsv as algotihm with random values for the working points.")
+            wr.warn("WARNING: as you did not choose year, we will use deepcsv as algorithm with random values for the working points.")
             self.btagWPcut = _btagWPs["DeepCSVM"][1]
         return
 
@@ -254,6 +256,7 @@ class pythonCleaningTopRun2(Module):
 #### WEIRD CLEANING (ttH-like)
     def areMyJetsCleanAndGood(self, thejets, theleps):
         clist = [self.selection(jet) for jet in thejets]
+        if self.debug: print("[pythonCleaningTopRun2::areMyJetsCleanAndGood] bad/good clist:", clist)
 
         for iL in range(len(theleps)):
             mindr = -1; best = -1;
@@ -264,6 +267,7 @@ class pythonCleaningTopRun2(Module):
                     best = iJ
             if (best > -1 and mindr < self.deltaRcut):
                 clist[best] = False
+        if self.debug: print("[pythonCleaningTopRun2::areMyJetsCleanAndGood] final clist:", clist)
         return clist
 
 
