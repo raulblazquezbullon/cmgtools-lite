@@ -901,7 +901,7 @@ class PlotMaker:
                     c1.SetWindowSize(plotformat[0] + (plotformat[0] - c1.GetWw()), (plotformat[1]+150 + (plotformat[1]+150 - c1.GetWh())));
                     p1 = ROOT.TPad("pad1","pad1",0,0.30,1,1);
                     p1.SetTopMargin(p1.GetTopMargin()*options.topSpamSize);
-                    p1.SetBottomMargin(0 if options.attachRatioPanel else 0.025);
+                    p1.SetBottomMargin(0 if options.attachRatioPanel else 3);
                     p1.Draw();
                     p2 = ROOT.TPad("pad2","pad2",0,0,1,0.30);
                     p2.SetTopMargin(0 if options.attachRatioPanel else 0.06);
