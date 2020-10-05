@@ -187,31 +187,28 @@ mcPromptGamma      = lambda : ObjTagger('mcPromptGamma', 'LepGood', [lambda l : 
 WZ_lowPu_recl_mc = [recleaner_step1, recleaner_step2_mc, isMatchRightCharge, mcMatchId, mcPromptGamma]
 WZ_lowPu_recl_data = [recleaner_step1, recleaner_step2_data]
 
-# ===========================================================
-# ======================== Step 3 modules: Triggers
 
-# OLD DICT: Before contacting the WZ analysis authors
-#triggerGroups = dict(    
-#    Trigger_1e = {
-#        2017 : lambda ev : bool(getattr(ev, 'HLT_Ele35_WPTight_Gsf'))
-#               if (ev.datatag == tags.MC) else
-#               bool(getattr(ev, 'HLT_HIEle20_WPLoose_Gsf')) 
-#	       or bool(getattr(ev, 'HLT_HIEle40_WPLoose_Gsf'))
-#        },
-#    Trigger_1m = {
-#        2017 : lambda ev : bool(getattr(ev, 'HLT_IsoMu27'))
-#               if (ev.datatag == tags.MC) else 
-#               bool(getattr(ev, 'HLT_HIMu17'))
-#        },
-#    Trigger_2e = {
-#        2017 : lambda ev : bool(getattr(ev, 'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ')) 
-#	       or bool(getattr(ev, 'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL')) 
-#               if (ev.datatag == tags.MC) else 
-#               bool(getattr(ev, 'HLT_HIEle20_Ele12_CaloIdL_TrackIdL_IsoVL_DZ')) 
-#               or bool(getattr(ev, 'HLT_HIEle20_Ele12_CaloIdL_TrackIdL_IsoVL'))
-#        }
-#    
-#    )
+
+
+remove_overlap_booleans = [ lambda ev : (
+                            (  (ev.Trigger_1m or ev.Trigger_1e or ev.Trigger_2e)
+                            if ev.datatag == tags.mc else
+
+                            ( (not ev.Trigger_2e) and (not ev.Trigger_1e) and ev.Trigger_1m ) 
+                            if ev.datatag == tags.SingleMuon else
+
+                            ( (not ev.Trigger_2e) and (not ev.Trigger_1e))
+                            if ev.datatag == tags.DoubleMuon else
+
+                            ( (not ev.Trigger_1m) and (not ev.Trigger_2e) )
+                            if ev.datatag == tags.LowEGJet else
+
+                            ( (not ev.Trigger_1m) and (not ev.Trigger_2e) )
+                            if ev.datatag == tags.HighEGJet else
+
+                            (False)
+                        )]
+
 
 # NEW DICT: 
 triggerGroups = dict(    
@@ -243,7 +240,8 @@ Trigger_1m = lambda : EvtTagger('Trigger_1m', [lambda ev : triggerGroups['Trigge
 Trigger_2e = lambda : EvtTagger('Trigger_2e', [lambda ev : triggerGroups['Trigger_2e'][2017](ev) ])
 
 
-triggerSequence = [Trigger_1e, Trigger_1m, Trigger_2e]
+remove_overlap = lambda : EvtTagger('pass_trigger', remove_overlap_booleans)
+triggerSequence = [Trigger_1e, Trigger_1m, Trigger_2e, remove_overlap]
 
 
 
@@ -252,3 +250,5 @@ triggerSequence = [Trigger_1e, Trigger_1m, Trigger_2e]
 
 from CMGTools.TTHAnalysis.tools.eventVars_LowPu import eventVars_LowPu
 eventVars = lambda : eventVars_LowPu('', 'Recl')
+
+triggerVars = [eventVars].extend(triggerSequence)
