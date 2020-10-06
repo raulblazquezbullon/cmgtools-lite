@@ -26,8 +26,9 @@ utilsPath = "/nfs/fanae/user/cvico/WorkSpace/WZ_LowPu/CMSSW_10_4_0/src/susyMaint
 friendFolders = {0 : "0_tags",
                  1 : "1_lepMerge",
                  2 : "2_recleaning",
-                 3 : "3_triggers",
-                 4 : "4_eventVars",
+		 3 : "3_triggerVars",
+                # 3 : "3_triggers",
+                # 4 : "4_eventVars",
                 # More steps yet to be implemented
                 }
 chunkSizes = {0 : 50000,
@@ -179,14 +180,17 @@ def ProcessOptions(FriendsPath, step, tag):
     elif step == "2":
         # Step 2 is for recleaning
         module = "WZ_lowPu_recl_mc" if tag.lower() == "mc" else "WZ_lowPu_recl_data" 
-    
     elif step == "3":
-        # Step 3 is for triggering
-        module = "triggerSequence"
-        
-    elif step == "4":
-        # Step 4 is for event variables
-        module = "eventVars"
+	# Step 3 is for triggering and event variables
+	module = "triggerVars" 
+
+   # elif step == "3":
+   #     # Step 3 is for triggering
+   #     module = "triggerSequence"
+   #     
+   # elif step == "4":
+   #     # Step 4 is for event variables
+   #     module = "eventVars"
     
     friends = addFriendTrees(step, outpath)
     chunksize = 1000
