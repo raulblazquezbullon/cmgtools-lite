@@ -191,8 +191,8 @@ WZ_lowPu_recl_data = [recleaner_step1, recleaner_step2_data]
 
 
 remove_overlap_booleans = [ lambda ev : (
-                            (  (ev.Trigger_1m or ev.Trigger_1e or ev.Trigger_2e)
-                            if ev.datatag == tags.mc else
+                            (  (ev.Trigger_1m or ev.Trigger_1e or ev.Trigger_2e) )
+                            if ev.datatag == tags.MC else
 
                             ( (not ev.Trigger_2e) and (not ev.Trigger_1e) and ev.Trigger_1m ) 
                             if ev.datatag == tags.SingleMuon else
@@ -200,10 +200,10 @@ remove_overlap_booleans = [ lambda ev : (
                             ( (not ev.Trigger_2e) and (not ev.Trigger_1e))
                             if ev.datatag == tags.DoubleMuon else
 
-                            ( (not ev.Trigger_1m) and (not ev.Trigger_2e) )
+                            ( (not ev.Trigger_1m) and (not ev.Trigger_2e) and ev.Trigger_1e )
                             if ev.datatag == tags.LowEGJet else
 
-                            ( (not ev.Trigger_1m) and (not ev.Trigger_2e) )
+                            ( (not ev.Trigger_1m) and (not ev.Trigger_2e) and ev.Trigger_1e )
                             if ev.datatag == tags.HighEGJet else
 
                             (False)
@@ -251,4 +251,6 @@ triggerSequence = [Trigger_1e, Trigger_1m, Trigger_2e, remove_overlap]
 from CMGTools.TTHAnalysis.tools.eventVars_LowPu import eventVars_LowPu
 eventVars = lambda : eventVars_LowPu('', 'Recl')
 
-triggerVars = [eventVars].extend(triggerSequence)
+#triggerVars = triggerSequence.extend([eventVars])
+triggerVars = [Trigger_1e, Trigger_1m, Trigger_2e, remove_overlap, eventVars]
+
