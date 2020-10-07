@@ -148,7 +148,7 @@ def GetTaggingModule(tag):
     return module
 
 def addFriendTrees(step, outpath):
-    preffix = "-F Friends " + FriendsPath + "/{prodname}/{y}".format(prodname = prodname, y = year)
+    preffix = "-F Friends " + FriendsPath.replace("phedexrw", "phedex") + "/{prodname}/{y}".format(prodname = prodname, y = year)
     suffix = "{cname}_Friend.root "
     friends = ""
     for previous_step in range(int(step)): friends += preffix + "/" + friendFolders[int(previous_step)] + "/" + suffix
