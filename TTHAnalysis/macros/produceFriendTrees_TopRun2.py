@@ -9,17 +9,19 @@ r.gROOT.SetBatch(True)
 
 #### Settings
 friendspath = "/pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions"
-#prodname    = "2020-06-01" # veya
+#prodname    = "2020-05-29" # veya
+#prodname    = "2020-06-01_bkp" # veya
 #prodname    = "2020-06-17" # nova
 #prodname    = "2020-07-03" # con sistematicos, en 2016 col tuning veyo
 #prodname    = "2020-07-29" # prueba para Sheyla
 #prodname    = "2020-09-16" # prueba tras profundos cambios
-prodname    = "2020-09-20" # tras la prueba, todo aparentemente en orden
+prodname    = "2020-09-20" # tras la prueba, todo aparentemente en orden; BUENA
 #prodname    = "2020-09-23" # validacion cramonal
 
 
 datasamples  = ["SingleMuon", "SingleElec", "DoubleMuon", "DoubleEG", "MuonEG", "LowEGJet", "HighEGJet", "EGamma"]
 mcpath       = "/pool/ciencias/nanoAODv6/29jan2020_MC"
+mcpathdiv    = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/misc/divisiones/"
 #mcpath       = "/pool/phedex/userstorage/clara/NanoAOD/Top_Nanov6_09_sep/2016_MC" # validacion cramonal
 datapath     = "/pool/ciencias/nanoAODv6/13jan2020"
 logpath      = friendspath + "/" + prodname + "/{y}/{step_prefix}/logs"
@@ -39,7 +41,8 @@ friendfolders = {0 : "0_yeartag",
 
 chunksizes    = {0          : 5000000,
                  1          : 200000,
-                 2          : 5000000,
+                 #2          : 5000000,
+                 2          : 500000, #PARA DY DE 2017
                  3          : 500000,
                  4          : 500000,
                  5          : 250000,
@@ -56,9 +59,9 @@ class errs(enum.IntEnum):
 
 
 minitnamedict = {
-    "ttbar" : ["TTTo2L2Nu"],
-    "tw"    : ["tW", "tW_noFullHad"],
-    "tbarw" : ["tbarW", "tbarW_noFullHad"],
+    "ttbar" : ["TTTo2L2Nu_division2"],
+    "tw"    : ["tW", "tW_division2"],
+    "tbarw" : ["tbarW", "tbarW_division2"],
     }
 
 
@@ -68,7 +71,12 @@ sampledict[2016] = {
     #### Nominales
     ### ttbar
     # CP5
-    "TTTo2L2Nu"        : ['Tree_TTTo2L2Nu_TuneCP5_PSweights_0','Tree_TTTo2L2Nu_TuneCP5_PSweights_1','Tree_TTTo2L2Nu_TuneCP5_PSweights_2','Tree_TTTo2L2Nu_TuneCP5_PSweights_3','Tree_TTTo2L2Nu_TuneCP5_PSweights_4','Tree_TTTo2L2Nu_TuneCP5_PSweights_5','Tree_TTTo2L2Nu_TuneCP5_PSweights_6','Tree_TTTo2L2Nu_TuneCP5_PSweights_7','Tree_TTTo2L2Nu_TuneCP5_PSweights_8','Tree_TTTo2L2Nu_TuneCP5_PSweights_9','Tree_TTTo2L2Nu_TuneCP5_PSweights_10','Tree_TTTo2L2Nu_TuneCP5_PSweights_11','Tree_TTTo2L2Nu_TuneCP5_PSweights_12'],
+    #"TTTo2L2Nu"        : ['Tree_TTTo2L2Nu_TuneCP5_PSweights_0','Tree_TTTo2L2Nu_TuneCP5_PSweights_1','Tree_TTTo2L2Nu_TuneCP5_PSweights_2','Tree_TTTo2L2Nu_TuneCP5_PSweights_3','Tree_TTTo2L2Nu_TuneCP5_PSweights_4','Tree_TTTo2L2Nu_TuneCP5_PSweights_5','Tree_TTTo2L2Nu_TuneCP5_PSweights_6','Tree_TTTo2L2Nu_TuneCP5_PSweights_7','Tree_TTTo2L2Nu_TuneCP5_PSweights_8','Tree_TTTo2L2Nu_TuneCP5_PSweights_9','Tree_TTTo2L2Nu_TuneCP5_PSweights_10','Tree_TTTo2L2Nu_TuneCP5_PSweights_11','Tree_TTTo2L2Nu_TuneCP5_PSweights_12'],
+
+    "TTTo2L2Nu_division1" : ['Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_0','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_1','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_2','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_3','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_4','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_5','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_6','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_7','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_8','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_9','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_10','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_11','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_12'],
+
+    "TTTo2L2Nu_division2" : ['Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_0','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_1','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_2','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_3','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_4','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_5','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_6','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_7','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_8','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_9','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_10','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_11','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_12'],
+
     "TTToSemiLeptonic" : "Tree_TTToSemiLeptonic_TuneCP5_PSweights_",
 
     # CUETP8M1
@@ -77,8 +85,14 @@ sampledict[2016] = {
 
     ### tW
     # CP5
-    "tW"    : "Tree_tW_5f_inclusiveDecays_TuneCP5_PSweights_",
-    "tbarW" : "Tree_tbarW_5f_inclusiveDecays_TuneCP5_PSweights_",
+    #"tW"    : "Tree_tW_5f_inclusiveDecays_TuneCP5_PSweights_",
+    #"tbarW" : "Tree_tbarW_5f_inclusiveDecays_TuneCP5_PSweights_",
+
+    "tW_division1"    : "Tree_tWdiv1_5f_inclusiveDecays_TuneCP5_PSweights_",
+    "tbarW_division1" : "Tree_tbarWdiv1_5f_inclusiveDecays_TuneCP5_PSweights_",
+
+    "tW_division2"    : "Tree_tWdiv2_5f_inclusiveDecays_TuneCP5_PSweights_",
+    "tbarW_division2" : "Tree_tbarWdiv2_5f_inclusiveDecays_TuneCP5_PSweights_",
 
     # CUETP8M1
     #"tW_noFullHad_CUETP8M2T4"    : "Tree_tW_5f_noFullHad_",
@@ -176,7 +190,14 @@ sampledict[2017] = {
     #### Nominales
     ### ttbar
     #"TTTo2L2Nu"        : ["Tree_TTTo2L2Nu_TuneCP5_PSweights_*", "Tree_TTTo2L2Nu_TuneCP5_*"],
-    "TTTo2L2Nu"        :['Tree_TTTo2L2Nu_TuneCP5_PSweights_0','Tree_TTTo2L2Nu_TuneCP5_PSweights_1','Tree_TTTo2L2Nu_TuneCP5_PSweights_2','Tree_TTTo2L2Nu_TuneCP5_PSweights_3','Tree_TTTo2L2Nu_TuneCP5_PSweights_4','Tree_TTTo2L2Nu_TuneCP5_PSweights_5','Tree_TTTo2L2Nu_TuneCP5_PSweights_6','Tree_TTTo2L2Nu_TuneCP5_PSweights_7','Tree_TTTo2L2Nu_TuneCP5_PSweights_8','Tree_TTTo2L2Nu_TuneCP5_PSweights_9','Tree_TTTo2L2Nu_TuneCP5_PSweights_10','Tree_TTTo2L2Nu_TuneCP5_PSweights_11','Tree_TTTo2L2Nu_TuneCP5_PSweights_12','Tree_TTTo2L2Nu_TuneCP5_PSweights_13','Tree_TTTo2L2Nu_TuneCP5_PSweights_14','Tree_TTTo2L2Nu_TuneCP5_PSweights_15','Tree_TTTo2L2Nu_TuneCP5_PSweights_16','Tree_TTTo2L2Nu_TuneCP5_PSweights_17','Tree_TTTo2L2Nu_TuneCP5_PSweights_18','Tree_TTTo2L2Nu_TuneCP5_PSweights_19','Tree_TTTo2L2Nu_TuneCP5_PSweights_20', "Tree_TTTo2L2Nu_TuneCP5_0", "Tree_TTTo2L2Nu_TuneCP5_1", "Tree_TTTo2L2Nu_TuneCP5_2"],
+    #"TTTo2L2Nu"        :['Tree_TTTo2L2Nu_TuneCP5_PSweights_0','Tree_TTTo2L2Nu_TuneCP5_PSweights_1','Tree_TTTo2L2Nu_TuneCP5_PSweights_2','Tree_TTTo2L2Nu_TuneCP5_PSweights_3','Tree_TTTo2L2Nu_TuneCP5_PSweights_4','Tree_TTTo2L2Nu_TuneCP5_PSweights_5','Tree_TTTo2L2Nu_TuneCP5_PSweights_6','Tree_TTTo2L2Nu_TuneCP5_PSweights_7','Tree_TTTo2L2Nu_TuneCP5_PSweights_8','Tree_TTTo2L2Nu_TuneCP5_PSweights_9','Tree_TTTo2L2Nu_TuneCP5_PSweights_10','Tree_TTTo2L2Nu_TuneCP5_PSweights_11','Tree_TTTo2L2Nu_TuneCP5_PSweights_12','Tree_TTTo2L2Nu_TuneCP5_PSweights_13','Tree_TTTo2L2Nu_TuneCP5_PSweights_14','Tree_TTTo2L2Nu_TuneCP5_PSweights_15','Tree_TTTo2L2Nu_TuneCP5_PSweights_16','Tree_TTTo2L2Nu_TuneCP5_PSweights_17','Tree_TTTo2L2Nu_TuneCP5_PSweights_18','Tree_TTTo2L2Nu_TuneCP5_PSweights_19','Tree_TTTo2L2Nu_TuneCP5_PSweights_20', "Tree_TTTo2L2Nu_TuneCP5_0", "Tree_TTTo2L2Nu_TuneCP5_1", "Tree_TTTo2L2Nu_TuneCP5_2"], ### THIS INCLUDES THE SAMPLE W/O PSWEIGHTS, NOW NOT USING IT
+
+    #"TTTo2L2Nu"        :['Tree_TTTo2L2Nu_TuneCP5_PSweights_0','Tree_TTTo2L2Nu_TuneCP5_PSweights_1','Tree_TTTo2L2Nu_TuneCP5_PSweights_2','Tree_TTTo2L2Nu_TuneCP5_PSweights_3','Tree_TTTo2L2Nu_TuneCP5_PSweights_4','Tree_TTTo2L2Nu_TuneCP5_PSweights_5','Tree_TTTo2L2Nu_TuneCP5_PSweights_6','Tree_TTTo2L2Nu_TuneCP5_PSweights_7','Tree_TTTo2L2Nu_TuneCP5_PSweights_8','Tree_TTTo2L2Nu_TuneCP5_PSweights_9','Tree_TTTo2L2Nu_TuneCP5_PSweights_10','Tree_TTTo2L2Nu_TuneCP5_PSweights_11','Tree_TTTo2L2Nu_TuneCP5_PSweights_12','Tree_TTTo2L2Nu_TuneCP5_PSweights_13','Tree_TTTo2L2Nu_TuneCP5_PSweights_14','Tree_TTTo2L2Nu_TuneCP5_PSweights_15','Tree_TTTo2L2Nu_TuneCP5_PSweights_16','Tree_TTTo2L2Nu_TuneCP5_PSweights_17','Tree_TTTo2L2Nu_TuneCP5_PSweights_18','Tree_TTTo2L2Nu_TuneCP5_PSweights_19','Tree_TTTo2L2Nu_TuneCP5_PSweights_20'],
+
+    "TTTo2L2Nu_division1" :['Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_0','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_1','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_2','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_3','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_4','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_5','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_6','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_7','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_8','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_9','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_10','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_11','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_12','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_13','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_14','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_15','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_16','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_17','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_18','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_19','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_20'],
+
+    "TTTo2L2Nu_division2" :['Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_0','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_1','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_2','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_3','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_4','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_5','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_6','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_7','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_8','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_9','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_10','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_11','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_12','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_13','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_14','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_15','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_16','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_17','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_18','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_19','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_20'],
+
     "TTToSemiLeptonic" : "Tree_TTToSemiLeptonic_TuneCP5_",
 
     ### tW
@@ -274,8 +295,13 @@ sampledict[2017] = {
 sampledict[2018] = {
     #### Nominales
     # ttbar
-    "TTTo2L2Nu"        : ['Tree_TTTo2L2Nu_TuneCP5_0','Tree_TTTo2L2Nu_TuneCP5_1','Tree_TTTo2L2Nu_TuneCP5_2','Tree_TTTo2L2Nu_TuneCP5_3','Tree_TTTo2L2Nu_TuneCP5_4','Tree_TTTo2L2Nu_TuneCP5_5','Tree_TTTo2L2Nu_TuneCP5_6','Tree_TTTo2L2Nu_TuneCP5_7','Tree_TTTo2L2Nu_TuneCP5_8','Tree_TTTo2L2Nu_TuneCP5_9','Tree_TTTo2L2Nu_TuneCP5_10','Tree_TTTo2L2Nu_TuneCP5_11','Tree_TTTo2L2Nu_TuneCP5_12','Tree_TTTo2L2Nu_TuneCP5_13','Tree_TTTo2L2Nu_TuneCP5_14','Tree_TTTo2L2Nu_TuneCP5_15','Tree_TTTo2L2Nu_TuneCP5_16','Tree_TTTo2L2Nu_TuneCP5_17','Tree_TTTo2L2Nu_TuneCP5_18','Tree_TTTo2L2Nu_TuneCP5_19','Tree_TTTo2L2Nu_TuneCP5_20','Tree_TTTo2L2Nu_TuneCP5_21','Tree_TTTo2L2Nu_TuneCP5_22','Tree_TTTo2L2Nu_TuneCP5_23','Tree_TTTo2L2Nu_TuneCP5_24','Tree_TTTo2L2Nu_TuneCP5_25','Tree_TTTo2L2Nu_TuneCP5_26','Tree_TTTo2L2Nu_TuneCP5_27','Tree_TTTo2L2Nu_TuneCP5_28','Tree_TTTo2L2Nu_TuneCP5_29','Tree_TTTo2L2Nu_TuneCP5_30','Tree_TTTo2L2Nu_TuneCP5_31','Tree_TTTo2L2Nu_TuneCP5_32','Tree_TTTo2L2Nu_TuneCP5_33','Tree_TTTo2L2Nu_TuneCP5_34','Tree_TTTo2L2Nu_TuneCP5_35','Tree_TTTo2L2Nu_TuneCP5_36','Tree_TTTo2L2Nu_TuneCP5_37','Tree_TTTo2L2Nu_TuneCP5_38','Tree_TTTo2L2Nu_TuneCP5_39','Tree_TTTo2L2Nu_TuneCP5_40','Tree_TTTo2L2Nu_TuneCP5_41','Tree_TTTo2L2Nu_TuneCP5_42','Tree_TTTo2L2Nu_TuneCP5_43','Tree_TTTo2L2Nu_TuneCP5_44'],
     #"TTTo2L2Nu"        : "Tree_TTTo2L2Nu_TuneCP5_",
+    #"TTTo2L2Nu" : ['Tree_TTTo2L2Nu_TuneCP5_0','Tree_TTTo2L2Nu_TuneCP5_1','Tree_TTTo2L2Nu_TuneCP5_2','Tree_TTTo2L2Nu_TuneCP5_3','Tree_TTTo2L2Nu_TuneCP5_4','Tree_TTTo2L2Nu_TuneCP5_5','Tree_TTTo2L2Nu_TuneCP5_6','Tree_TTTo2L2Nu_TuneCP5_7','Tree_TTTo2L2Nu_TuneCP5_8','Tree_TTTo2L2Nu_TuneCP5_9','Tree_TTTo2L2Nu_TuneCP5_10','Tree_TTTo2L2Nu_TuneCP5_11','Tree_TTTo2L2Nu_TuneCP5_12','Tree_TTTo2L2Nu_TuneCP5_13','Tree_TTTo2L2Nu_TuneCP5_14','Tree_TTTo2L2Nu_TuneCP5_15','Tree_TTTo2L2Nu_TuneCP5_16','Tree_TTTo2L2Nu_TuneCP5_17','Tree_TTTo2L2Nu_TuneCP5_18','Tree_TTTo2L2Nu_TuneCP5_19','Tree_TTTo2L2Nu_TuneCP5_20','Tree_TTTo2L2Nu_TuneCP5_21','Tree_TTTo2L2Nu_TuneCP5_22','Tree_TTTo2L2Nu_TuneCP5_23','Tree_TTTo2L2Nu_TuneCP5_24','Tree_TTTo2L2Nu_TuneCP5_25','Tree_TTTo2L2Nu_TuneCP5_26','Tree_TTTo2L2Nu_TuneCP5_27','Tree_TTTo2L2Nu_TuneCP5_28','Tree_TTTo2L2Nu_TuneCP5_29','Tree_TTTo2L2Nu_TuneCP5_30','Tree_TTTo2L2Nu_TuneCP5_31','Tree_TTTo2L2Nu_TuneCP5_32','Tree_TTTo2L2Nu_TuneCP5_33','Tree_TTTo2L2Nu_TuneCP5_34','Tree_TTTo2L2Nu_TuneCP5_35','Tree_TTTo2L2Nu_TuneCP5_36','Tree_TTTo2L2Nu_TuneCP5_37','Tree_TTTo2L2Nu_TuneCP5_38','Tree_TTTo2L2Nu_TuneCP5_39','Tree_TTTo2L2Nu_TuneCP5_40','Tree_TTTo2L2Nu_TuneCP5_41','Tree_TTTo2L2Nu_TuneCP5_42','Tree_TTTo2L2Nu_TuneCP5_43','Tree_TTTo2L2Nu_TuneCP5_44'],
+
+    "TTTo2L2Nu_division1" : ['Tree_TTTo2L2Nudiv1_TuneCP5_0','Tree_TTTo2L2Nudiv1_TuneCP5_1','Tree_TTTo2L2Nudiv1_TuneCP5_2','Tree_TTTo2L2Nudiv1_TuneCP5_3','Tree_TTTo2L2Nudiv1_TuneCP5_4','Tree_TTTo2L2Nudiv1_TuneCP5_5','Tree_TTTo2L2Nudiv1_TuneCP5_6','Tree_TTTo2L2Nudiv1_TuneCP5_7','Tree_TTTo2L2Nudiv1_TuneCP5_8','Tree_TTTo2L2Nudiv1_TuneCP5_9','Tree_TTTo2L2Nudiv1_TuneCP5_10','Tree_TTTo2L2Nudiv1_TuneCP5_11','Tree_TTTo2L2Nudiv1_TuneCP5_12','Tree_TTTo2L2Nudiv1_TuneCP5_13','Tree_TTTo2L2Nudiv1_TuneCP5_14','Tree_TTTo2L2Nudiv1_TuneCP5_15','Tree_TTTo2L2Nudiv1_TuneCP5_16','Tree_TTTo2L2Nudiv1_TuneCP5_17','Tree_TTTo2L2Nudiv1_TuneCP5_18','Tree_TTTo2L2Nudiv1_TuneCP5_19','Tree_TTTo2L2Nudiv1_TuneCP5_20','Tree_TTTo2L2Nudiv1_TuneCP5_21','Tree_TTTo2L2Nudiv1_TuneCP5_22','Tree_TTTo2L2Nudiv1_TuneCP5_23','Tree_TTTo2L2Nudiv1_TuneCP5_24','Tree_TTTo2L2Nudiv1_TuneCP5_25','Tree_TTTo2L2Nudiv1_TuneCP5_26','Tree_TTTo2L2Nudiv1_TuneCP5_27','Tree_TTTo2L2Nudiv1_TuneCP5_28','Tree_TTTo2L2Nudiv1_TuneCP5_29','Tree_TTTo2L2Nudiv1_TuneCP5_30','Tree_TTTo2L2Nudiv1_TuneCP5_31','Tree_TTTo2L2Nudiv1_TuneCP5_32','Tree_TTTo2L2Nudiv1_TuneCP5_33','Tree_TTTo2L2Nudiv1_TuneCP5_34','Tree_TTTo2L2Nudiv1_TuneCP5_35','Tree_TTTo2L2Nudiv1_TuneCP5_36','Tree_TTTo2L2Nudiv1_TuneCP5_37','Tree_TTTo2L2Nudiv1_TuneCP5_38','Tree_TTTo2L2Nudiv1_TuneCP5_39','Tree_TTTo2L2Nudiv1_TuneCP5_40','Tree_TTTo2L2Nudiv1_TuneCP5_41','Tree_TTTo2L2Nudiv1_TuneCP5_42','Tree_TTTo2L2Nudiv1_TuneCP5_43','Tree_TTTo2L2Nudiv1_TuneCP5_44'],
+
+    "TTTo2L2Nu_division2" : ['Tree_TTTo2L2Nudiv2_TuneCP5_0','Tree_TTTo2L2Nudiv2_TuneCP5_1','Tree_TTTo2L2Nudiv2_TuneCP5_2','Tree_TTTo2L2Nudiv2_TuneCP5_3','Tree_TTTo2L2Nudiv2_TuneCP5_4','Tree_TTTo2L2Nudiv2_TuneCP5_5','Tree_TTTo2L2Nudiv2_TuneCP5_6','Tree_TTTo2L2Nudiv2_TuneCP5_7','Tree_TTTo2L2Nudiv2_TuneCP5_8','Tree_TTTo2L2Nudiv2_TuneCP5_9','Tree_TTTo2L2Nudiv2_TuneCP5_10','Tree_TTTo2L2Nudiv2_TuneCP5_11','Tree_TTTo2L2Nudiv2_TuneCP5_12','Tree_TTTo2L2Nudiv2_TuneCP5_13','Tree_TTTo2L2Nudiv2_TuneCP5_14','Tree_TTTo2L2Nudiv2_TuneCP5_15','Tree_TTTo2L2Nudiv2_TuneCP5_16','Tree_TTTo2L2Nudiv2_TuneCP5_17','Tree_TTTo2L2Nudiv2_TuneCP5_18','Tree_TTTo2L2Nudiv2_TuneCP5_19','Tree_TTTo2L2Nudiv2_TuneCP5_20','Tree_TTTo2L2Nudiv2_TuneCP5_21','Tree_TTTo2L2Nudiv2_TuneCP5_22','Tree_TTTo2L2Nudiv2_TuneCP5_23','Tree_TTTo2L2Nudiv2_TuneCP5_24','Tree_TTTo2L2Nudiv2_TuneCP5_25','Tree_TTTo2L2Nudiv2_TuneCP5_26','Tree_TTTo2L2Nudiv2_TuneCP5_27','Tree_TTTo2L2Nudiv2_TuneCP5_28','Tree_TTTo2L2Nudiv2_TuneCP5_29','Tree_TTTo2L2Nudiv2_TuneCP5_30','Tree_TTTo2L2Nudiv2_TuneCP5_31','Tree_TTTo2L2Nudiv2_TuneCP5_32','Tree_TTTo2L2Nudiv2_TuneCP5_33','Tree_TTTo2L2Nudiv2_TuneCP5_34','Tree_TTTo2L2Nudiv2_TuneCP5_35','Tree_TTTo2L2Nudiv2_TuneCP5_36','Tree_TTTo2L2Nudiv2_TuneCP5_37','Tree_TTTo2L2Nudiv2_TuneCP5_38','Tree_TTTo2L2Nudiv2_TuneCP5_39','Tree_TTTo2L2Nudiv2_TuneCP5_40','Tree_TTTo2L2Nudiv2_TuneCP5_41','Tree_TTTo2L2Nudiv2_TuneCP5_42','Tree_TTTo2L2Nudiv2_TuneCP5_43','Tree_TTTo2L2Nudiv2_TuneCP5_44'],
+
     "TTToSemiLeptonic" : "Tree_TTToSemiLeptonic_TuneCP5_",
 
     ### tW
@@ -386,41 +412,55 @@ trainsampledict = {}; trainsampledict[2016] = {}; trainsampledict[2017] = {}; tr
 trainsampledict[2016] = {
     ### ttbar
     #"TTTo2L2Nu" : ['Tree_TTTo2L2Nu_TuneCP5_PSweights_0', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_1', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_2', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_3', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_4', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_5', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_6', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_7', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_8', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_9', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_10', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_11', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_12'],
-    "TTTo2L2Nu" : sampledict[2016]["TTTo2L2Nu"],
+    #"TTTo2L2Nu" : sampledict[2016]["TTTo2L2Nu"],
 
     ### tW
 
     #"tW"    : "Tree_tW_5f_inclusiveDecays_TuneCP5_PSweights_",
-    "tW"    : sampledict[2016]["tW"],
+    #"tW"    : sampledict[2016]["tW"],
     #"tbarW" : "Tree_tbarW_5f_inclusiveDecays_TuneCP5_PSweights_",
-    "tbarW" : sampledict[2016]["tbarW"],
+    #"tbarW" : sampledict[2016]["tbarW"],
+
+    "TTTo2L2Nu_division2" : sampledict[2016]["TTTo2L2Nu_division2"],
+
+    "tW_division2"    : sampledict[2016]["tW_division2"],
+    "tbarW_division2" : sampledict[2016]["tbarW_division2"],
 }
 
 
 trainsampledict[2017] = {
     #"TTTo2L2Nu"           : ['Tree_TTTo2L2Nu_TuneCP5_PSweights_0','Tree_TTTo2L2Nu_TuneCP5_PSweights_1','Tree_TTTo2L2Nu_TuneCP5_PSweights_2','Tree_TTTo2L2Nu_TuneCP5_PSweights_3','Tree_TTTo2L2Nu_TuneCP5_PSweights_4','Tree_TTTo2L2Nu_TuneCP5_PSweights_5','Tree_TTTo2L2Nu_TuneCP5_PSweights_6','Tree_TTTo2L2Nu_TuneCP5_PSweights_7','Tree_TTTo2L2Nu_TuneCP5_PSweights_8','Tree_TTTo2L2Nu_TuneCP5_PSweights_9','Tree_TTTo2L2Nu_TuneCP5_PSweights_10','Tree_TTTo2L2Nu_TuneCP5_PSweights_11','Tree_TTTo2L2Nu_TuneCP5_PSweights_12','Tree_TTTo2L2Nu_TuneCP5_PSweights_13','Tree_TTTo2L2Nu_TuneCP5_PSweights_14','Tree_TTTo2L2Nu_TuneCP5_PSweights_15','Tree_TTTo2L2Nu_TuneCP5_PSweights_16','Tree_TTTo2L2Nu_TuneCP5_PSweights_17','Tree_TTTo2L2Nu_TuneCP5_PSweights_18','Tree_TTTo2L2Nu_TuneCP5_PSweights_19','Tree_TTTo2L2Nu_TuneCP5_PSweights_20', "Tree_TTTo2L2Nu_TuneCP5_0", "Tree_TTTo2L2Nu_TuneCP5_1", "Tree_TTTo2L2Nu_TuneCP5_2"],
-    "TTTo2L2Nu"       : sampledict[2017]["TTTo2L2Nu"],
+    #"TTTo2L2Nu"       : sampledict[2017]["TTTo2L2Nu"],
+    "TTTo2L2Nu_division2" : sampledict[2017]["TTTo2L2Nu_division2"],
 
-    #"tW_noFullHad"    : "Tree_tW_5f_noFullHad_TuneCP5_",
-    "tW_noFullHad"    : sampledict[2017]["tW_noFullHad"],
-    #"tbarW_noFullHad" : "Tree_tbarW_5f_noFullHad_TuneCP5_",
-    "tbarW_noFullHad" : sampledict[2017]["tbarW_noFullHad"],
+    "tW"    : sampledict[2017]["tW"],
+    "tbarW" : sampledict[2017]["tbarW"],
+
+    #"tW_noFullHad"        : "Tree_tW_5f_noFullHad_TuneCP5_",
+    #"tW_noFullHad"    : sampledict[2017]["tW_noFullHad"],
+    #"tbarW_noFullHad"     : "Tree_tbarW_5f_noFullHad_TuneCP5_",
+    #"tbarW_noFullHad" : sampledict[2017]["tbarW_noFullHad"],
 }
 
 
 trainsampledict[2018] = {
     # ttbar
     #"TTTo2L2Nu" : ['Tree_TTTo2L2Nu_TuneCP5_0', 'Tree_TTTo2L2Nu_TuneCP5_1', 'Tree_TTTo2L2Nu_TuneCP5_2', 'Tree_TTTo2L2Nu_TuneCP5_3', 'Tree_TTTo2L2Nu_TuneCP5_4', 'Tree_TTTo2L2Nu_TuneCP5_5', 'Tree_TTTo2L2Nu_TuneCP5_6', 'Tree_TTTo2L2Nu_TuneCP5_7', 'Tree_TTTo2L2Nu_TuneCP5_8', 'Tree_TTTo2L2Nu_TuneCP5_9', 'Tree_TTTo2L2Nu_TuneCP5_10', 'Tree_TTTo2L2Nu_TuneCP5_11', 'Tree_TTTo2L2Nu_TuneCP5_12', 'Tree_TTTo2L2Nu_TuneCP5_13', 'Tree_TTTo2L2Nu_TuneCP5_14', 'Tree_TTTo2L2Nu_TuneCP5_15', 'Tree_TTTo2L2Nu_TuneCP5_16', 'Tree_TTTo2L2Nu_TuneCP5_17', 'Tree_TTTo2L2Nu_TuneCP5_18', 'Tree_TTTo2L2Nu_TuneCP5_19', 'Tree_TTTo2L2Nu_TuneCP5_20', 'Tree_TTTo2L2Nu_TuneCP5_21', 'Tree_TTTo2L2Nu_TuneCP5_22', 'Tree_TTTo2L2Nu_TuneCP5_23', 'Tree_TTTo2L2Nu_TuneCP5_24', 'Tree_TTTo2L2Nu_TuneCP5_25', 'Tree_TTTo2L2Nu_TuneCP5_26', 'Tree_TTTo2L2Nu_TuneCP5_27', 'Tree_TTTo2L2Nu_TuneCP5_28', 'Tree_TTTo2L2Nu_TuneCP5_29', 'Tree_TTTo2L2Nu_TuneCP5_30', 'Tree_TTTo2L2Nu_TuneCP5_31', 'Tree_TTTo2L2Nu_TuneCP5_32', 'Tree_TTTo2L2Nu_TuneCP5_33', 'Tree_TTTo2L2Nu_TuneCP5_34', 'Tree_TTTo2L2Nu_TuneCP5_35', 'Tree_TTTo2L2Nu_TuneCP5_36', 'Tree_TTTo2L2Nu_TuneCP5_37', 'Tree_TTTo2L2Nu_TuneCP5_38', 'Tree_TTTo2L2Nu_TuneCP5_39', 'Tree_TTTo2L2Nu_TuneCP5_40', 'Tree_TTTo2L2Nu_TuneCP5_41', 'Tree_TTTo2L2Nu_TuneCP5_42', 'Tree_TTTo2L2Nu_TuneCP5_43', 'Tree_TTTo2L2Nu_TuneCP5_44'],
-    "TTTo2L2Nu"       : sampledict[2018]["TTTo2L2Nu"],
+    #"TTTo2L2Nu"       : sampledict[2018]["TTTo2L2Nu"],
 
     # tW
     #"tW"              : "Tree_tW_5f_inclusiveDecays_TuneCP5_ext1_",
     #"tbarW"           : "Tree_tbarW_5f_inclusiveDecays_TuneCP5_ext1_",
 
     #"tW_noFullHad"    : ["Tree_tW_5f_noFullHad_TuneCP5_ext1_0"],
-    "tW_noFullHad"    : sampledict[2018]["tW_noFullHad"],
+    #"tW_noFullHad"    : sampledict[2018]["tW_noFullHad"],
     #"tbarW_noFullHad" : ["Tree_tbarW_5f_noFullHad_TuneCP5_ext_0"],
-    "tbarW_noFullHad" : sampledict[2018]["tbarW_noFullHad"],
+    #"tbarW_noFullHad" : sampledict[2018]["tbarW_noFullHad"],
+
+    "TTTo2L2Nu_division2"       : sampledict[2018]["TTTo2L2Nu_division2"],
+
+    "tW"    : sampledict[2018]["tW"],
+    "tbarW" : sampledict[2018]["tbarW"],
 }
 
 
@@ -478,11 +518,11 @@ def getFriendsFolder(dataset, basepath, step_friends):
         myfibrefriends = [f for f in os.listdir(rofolder) if (".root" in f and dataset in f and "chunk" not in f and "Friend" in f)]
         if len(myfibrefriends) > 0: doihavefibrefriends = True
 
-    #if doihavefibrefriends:
-        #wr.warn("\n====== WARNING! Friends detected in RO folder for this production. Using them for dataset {d} and step (of the friends) {s}".format(d = dataset, s = step_friends))
-        #return rofolder
-    #else:
-        #return rwfolder
+    if doihavefibrefriends:
+        wr.warn("\n====== WARNING! Friends detected in RO folder for this production. Using them for dataset {d} and step (of the friends) {s}".format(d = dataset, s = step_friends))
+        return rofolder
+    else:
+        return rwfolder
     return rwfolder
 
 
@@ -593,8 +633,11 @@ def GeneralSubmitter(task):
     dataset, year, step, queue, extra, pretend, nthreads = task
     for dataset_ in dataset.split(","):
         isData     = any(ext in dataset_ for ext in datasamples)
-        inputpath_ = (datapath if isData else mcpath) + "/" + str(year) + "/"
+        isDivision = ("division" in dataset_)
+        inputpath_ = ((datapath if isData else mcpath) + "/" + str(year) + "/") if not isDivision else (mcpathdiv + ("ttbar" if "TTTo2L2Nu" in dataset_ else "tw_incl") + "/" + str(year) + "/")
         #inputpath_ = (datapath if isData else mcpath) + "/" #### validacion cramonal
+        print inputpath_
+
         if not os.path.isdir(logpath.format(step_prefix = friendfolders[step], y = year)):
             os.system("mkdir -p " + logpath.format(step_prefix = friendfolders[step], y = year))
 
@@ -621,9 +664,9 @@ def getActualDatasets(listoffiles):
     return listofdatasets
 
 
-def getNchunks(fileparts, year, step):
+def getNchunks(fileparts, year, step, folder):
     isData = any(ext in (fileparts[0] if isinstance(fileparts, list) else fileparts) for ext in datasamples)
-    folder = (datapath if isData else mcpath) + "/" + str(year) + "/"
+    #folder = (datapath if isData else mcpath) + "/" + str(year) + "/"
 
     totalEntries = 0
     if isinstance(fileparts, list):
@@ -644,8 +687,8 @@ def getNchunks(fileparts, year, step):
 def CheckChunksByDataset(task):
     dataset, year, step = task
     isData     = any(ext in dataset for ext in datasamples)
-
-    inputpath_ = (datapath if isData else mcpath) + "/" + str(year) + "/"
+    isDivision = ("division" in dataset)
+    inputpath_ = ((datapath if isData else mcpath) + "/" + str(year) + "/") if not isDivision else (mcpathdiv + ("ttbar" if "TTTo2L2Nu" in dataset else "tw_incl") + "/" + str(year) + "/")
     basefolder = friendspath + "/" + prodname + "/" + str(year) + "/" + friendfolders[step]
 
 
@@ -661,7 +704,7 @@ def CheckChunksByDataset(task):
         pendingdict[dat] = {}
         nchks = 0; totEnt = 0
         try:
-            nchks, totEnt = getNchunks(dat, year, step)
+            nchks, totEnt = getNchunks(dat, year, step, inputpath_)
         except:
             raise RuntimeError("FATAL: could not access {d} to obtain the number of chunks from dataset group {dg}.".format(d = dat, dg = dataset))
         print "    - Checking dataset", dat, "(expected chunks: {nch})".format(nch = nchks)
@@ -711,7 +754,8 @@ def CheckMergedDataset(task):
     dataset, year, step = task
     isData     = any(ext in dataset for ext in datasamples)
 
-    inputpath_ = (datapath if isData else mcpath) + "/" + str(year) + "/"
+    isDivision = ("division" in dataset)
+    inputpath_ = ((datapath if isData else mcpath) + "/" + str(year) + "/") if not isDivision else (mcpathdiv + ("ttbar" if "TTTo2L2Nu" in dataset else "tw_incl") + "/" + str(year) + "/")
     basefolder = friendspath + "/" + prodname + "/" + str(year) + "/" + friendfolders[step]
 
 
@@ -727,7 +771,7 @@ def CheckMergedDataset(task):
         pendingdict[dat] = errs.NoErr
         nchks = 0; totEnt = 0
         try:
-            nchks, totEnt = getNchunks(dat, year, step)
+            nchks, totEnt = getNchunks(dat, year, step, inputpath_)
         except:
             raise RuntimeError("FATAL: could not access {d} to obtain the number of entries.".format(d = dat))
         print "    - Checking dataset", dat, "(expected entries: {ent})".format(ent = totEnt)
@@ -961,7 +1005,8 @@ def CheckLotsOfChunks(dataset, year, step, queue, extra, ncores, mva, nthreads):
                 for part in fullpendingdict[d]:
                     for ch in fullpendingdict[d][part]:
                         isData     = any(ext in part for ext in datasamples)
-                        inputpath_ = (datapath if isData else mcpath) + "/" + str(year) + "/"
+                        isDivision = ("division" in d)
+                        inputpath_ = ((datapath if isData else mcpath) + "/" + str(year) + "/") if not isDivision else (mcpathdiv + ("ttbar" if "TTTo2L2Nu" in d else "tw_incl") + "/" + str(year) + "/")
                         tasks.append( (part.replace(".root", ""), year, step, inputpath_, isData, queue, "-c {chk} ".format(chk = ch) + extra, False, False, nthreads) )
                         #sys.exit()
 
@@ -1004,6 +1049,7 @@ if __name__=="__main__":
     parser.add_argument('--check',   '-c', action = "store_true",dest = "check",   required = False, default = False)
     parser.add_argument('--merge',   '-m', action = "store_true",dest = "merge",   required = False, default = False)
     parser.add_argument('--pretend', '-p', action = "store_true",dest = "pretend", required = False, default = False)
+    parser.add_argument('--eraseChunks',   action = "store_true",dest = "eraseCh", required = False, default = False)
 
 
     args     = parser.parse_args()
@@ -1018,8 +1064,26 @@ if __name__=="__main__":
     merge    = args.merge
     pretend  = args.pretend
     mva      = (step == "mvatrain")
+    erasech  = args.eraseCh
 
-    if check and not merge:
+    if erasech:
+        print "\n====== ATTENTION!!!!!! ======"
+        print "This will erase ALL CHUNKS in production " + prodname + "'s folder for year " + str(year) + " that are present in these subfolders (if they exist):"
+        erasecomm = "rm -f {path}"
+        for step,name in friendfolders.iteritems():
+            print "- " + name
+        if confirm("\n> Do you REALLY want to continue?"):
+            basefolder = friendspath + "/" + prodname + "/" + str(year) + "/"
+            for step,name in friendfolders.iteritems():
+                if os.path.isdir(basefolder + name):
+                    if any(["chunk" in el for el in os.listdir(basefolder + name)]):
+                        print "# Erasing chunks in subfolder " + name + " of step " + str(step)
+                        #print erasecomm.format(path = basefolder + name + "/*chunk*.root")
+                        os.system(erasecomm.format(path = basefolder + name + "/*chunk*.root"))
+                        #sys.exit()
+
+
+    elif check and not merge:
         print "\n> Beginning checks of all chunks for the production of year {y}, of the friend trees of step {s} for {d} dataset(s).".format(y = year, s = step, d = dataset)
         CheckLotsOfChunks(dataset, year, step, queue, extra, ncores, mva, nthreads)
     elif merge and not check:
