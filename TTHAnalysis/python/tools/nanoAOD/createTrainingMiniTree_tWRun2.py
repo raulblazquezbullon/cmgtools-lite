@@ -15,8 +15,9 @@ from CMGTools.TTHAnalysis.tools.nanoAOD.TopRun2_modules import ch, tags
 
 class createTrainingMiniTree_tWRun2(Module):
     def __init__(self):
-        self.branches = [("njets",  "I"),
-                         ("nbjets", "I"),
+        self.branches = [("njets",   "I"),
+                         ("nbjets",  "I"),
+                         ("channel", "I"),
                          ("train_nloosejets",  "I"),
                          ("train_nbloosejets", "I"),
                          "train_jet1_pt",
@@ -45,15 +46,16 @@ class createTrainingMiniTree_tWRun2(Module):
 
 
     def analyze(self, event):
-        #if event.pass_trigger:
-            #if event.Flag_goodVertices and event.Flag_globalSuperTightHalo2016Filter and event.Flag_HBHENoiseFilter and event.Flag_HBHENoiseIsoFilter and event.Flag_EcalDeadCellTriggerPrimitiveFilter and event.Flag_BadPFMuonFilter:
-                #if event.nLepGood >= 2 and event.isSS == 0:
-                    #if event.LepGood_pt_corrAll[0] > 25 and event.LepGood_pt_corrAll[1] > 20 and event.minMllAFAS > 20:
-                        #writeOutput(self, self.run(event, NanoAODCollection))
-                        #return True
-        if event.separationIndex == 0:
-            writeOutput(self, self.run(event, NanoAODCollection))
-            return True
+        if event.pass_trigger:
+            if event.Flag_goodVertices and event.Flag_globalSuperTightHalo2016Filter and event.Flag_HBHENoiseFilter and event.Flag_HBHENoiseIsoFilter and event.Flag_EcalDeadCellTriggerPrimitiveFilter and event.Flag_BadPFMuonFilter:
+                if event.nLepGood >= 2 and event.isSS == 0:
+                    if event.LepGood_pt_corrAll[0] > 25 and event.LepGood_pt_corrAll[1] > 20 and event.minMllAFAS > 20:
+                        if event.nGenDressedLepton >= 2:
+                            writeOutput(self, self.run(event, NanoAODCollection))
+                            return True
+        #if event.separationIndex == 0:
+            #writeOutput(self, self.run(event, NanoAODCollection))
+            #return True
         return False
 
 
@@ -61,8 +63,9 @@ class createTrainingMiniTree_tWRun2(Module):
     def run(self, event, Collection):
         allret = {}
 
-        allret["njets"]  = event.nJetSel30_Recl
-        allret["nbjets"] = event.nBJetSelMedium30_Recl
+        allret["njets"]   = event.nJetSel30_Recl
+        allret["nbjets"]  = event.nBJetSelMedium30_Recl
+        allret["channel"] = event.channel
 
         allret["train_nloosejets"                 ] = event.nJetSel20_Recl              if event.nJetSel20_Recl              >= 0 else 0
         allret["train_nbloosejets"                ] = event.nBJetSelMedium20_Recl       if event.nBJetSelMedium20_Recl       >= 0 else 0
