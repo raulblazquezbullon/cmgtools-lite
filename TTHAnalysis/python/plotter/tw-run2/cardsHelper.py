@@ -5,8 +5,6 @@ import ROOT as r
 r.PyConfig.IgnoreCommandLineOptions = True
 r.gROOT.SetBatch(True)
 
-mcpath       = "/pool/ciencias/nanoAODv6/29jan2020_MC"
-datapath     = "/pool/ciencias/nanoAODv6/13jan2020"
 friendspath  = "/pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions"
 logpath      = friendspath + "/{p}/{y}/logs/plots"
 friendfolders = ["0_yeartag", "1_lepmerge_roch", "2_cleaning", "3_varstrigger", "4_scalefactors", "5_mvas"]
