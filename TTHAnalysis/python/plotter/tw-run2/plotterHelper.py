@@ -13,6 +13,7 @@ datasamples  = ["SingleMuon", "SingleElec", "DoubleMuon", "DoubleEG", "MuonEG", 
 
 mcpath       = "/pool/ciencias/nanoAODv6/29jan2020_MC"
 datapath     = "/pool/ciencias/nanoAODv6/13jan2020"
+mcpathdiv    = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/misc/divisiones/"
 logpath      = friendspath + "/{p}/{y}/logs/plots"
 
 #friendsscaff = "--Fs {fpath}/{p}/{y}/0_yeartag --Fs {fpath}/{p}/{y}/1_lepmerge_roch --Fs {fpath}/{p}/{y}/2_cleaning --Fs {fpath}/{p}/{y}/3_varstrigger --FMCs {fpath}/{p}/{y}/4_scalefactors --Fs {fpath}/{p}/{y}/5_mvas"
@@ -105,7 +106,7 @@ def PlottingCommand(prod, year, nthreads, outpath, selplot, region, ratio, extra
     if useFibre: samplespaths_ = samplespaths_.replace("phedexrw", "phedex").replace("cienciasrw", "ciencias")
 
     nth_       = "" if nthreads == 0 else ("--split-factor=-1 -j " + str(nthreads))
-    friends_   = friendsscaff + (" --Fs {P}/5_mvas" * ("MVA" in region))
+    friends_   = friendsscaff #+ (" --Fs {P}/5_mvas" * ("MVA" in region))
     outpath_   = outpath + "/" + year + "/" + (region if "_" not in region else (region.split("_")[0] + "/" + region.split("_")[1]))
     selplot_   = " ".join( [ "--sP {p}".format(p = sp) for sp in selplot ] ) if len(selplot) else ""
     ratio_     = "--maxRatioRange " + ratio
@@ -185,6 +186,20 @@ if __name__=="__main__":
                 os.system(SLcommscaff.format(realdataset = mcpath + "/" + str(year) + "/" + sam,
                                              symlink = destdir + "/" + sam))
         #sys.exit()
+
+        #### Also, the ones from
+        print "> Creating MC divisions symbolic links..."
+        mcsampleslist = os.listdir(mcpathdiv + "/ttbar/" + str(year))
+        for sam in mcsampleslist:
+            if not os.path.islink(destdir + "/" + sam):
+                os.system(SLcommscaff.format(realdataset = mcpathdiv + "/ttbar/" + str(year) + "/" + sam,
+                                             symlink = destdir + "/" + sam))
+        if int(year) == 2016:
+            mcsampleslist = os.listdir(mcpathdiv + "/tw_incl/" + str(year))
+            for sam in mcsampleslist:
+                if not os.path.islink(destdir + "/" + sam):
+                    os.system(SLcommscaff.format(realdataset = mcpathdiv + "/tw_incl/" + str(year) + "/" + sam,
+                                                symlink = destdir + "/" + sam))
 
         #### Later, data
         print "> Creating data symbolic links..."
