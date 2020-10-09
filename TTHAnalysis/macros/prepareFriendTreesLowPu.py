@@ -17,8 +17,8 @@ r.gROOT.SetBatch(True)
 
 # ================ Settings
 #SamplesPath = "/pool/ciencias/nanoAODv6/lowPU2017/2020_07_21_postProc/" # Old
-SamplesPath = "/pool/phedex/userstorage/cmstudents/cvico/WZ_LowPu/MiniTrees/14-07-2020"
-FriendsPath = "/pool/phedexrw/userstorage/cmstudents/cvico/WZ_LowPu/FriendTrees"
+SamplesPath = "/pool/phedex/userstorage/cvico/WZ_LowPu/MiniTrees/14-07-2020"
+FriendsPath = "/pool/phedexrw/userstorage/cvico/WZ_LowPu/FriendTrees"
 dataSamples = [ "SingleMuon", "DoubleMuon", "HighEGJet", "LowEGJet" ]
 logsPath = FriendsPath + "/{prodname}/{y}/{step_prefix}/logs"
 CMD = "python prepareEventVariablesFriendTree.py -t NanoAOD {inpath} {outpath} -I CMGTools.TTHAnalysis.tools.nanoAOD.LowPu_modules {module} {friends} {dataset} -N {chunksize} {cluster} --log={logs}"
