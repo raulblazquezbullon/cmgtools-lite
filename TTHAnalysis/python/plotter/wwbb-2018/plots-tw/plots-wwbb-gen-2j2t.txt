@@ -56,7 +56,7 @@ OrigDressedLep2_pdgId  : GenDressedLepton_pdgId[1]  : 16,-0.5,15.5		; IncludeUnd
 OrigDressedLep2_hasTauAnc   : GenDressedLepton_hasTauAnc[1]  :  9,-0.5,8.5  ; IncludeUnderflow=False, XTitle="(Original) Subeading dressed lepton #hasTauAnc"
 
 
-OrigChannel    : OrigChannel : 13,-0.5,12.5	; IncludeUnderflow=False, XTitle="(Original) Channel", xBinLabels="0\,#mu\,e\,e[#tau]/#mu[#tau]\,#mu#mu\,ee\,e#mu\,#mu(e[#tau]/#mu[#tau])\,e(e[#tau]/#mu[#tau])\,e#mu/ee/#mu#mu [#tau#tau]\,3 or more\, \, "
+OrigChannel    : OrigChannel : 13,-0.5,12.5	; IncludeUnderflow=False, XTitle="(Orig.) Channel", xBinLabels="0\,#mu\,e\,e[#tau]/#mu[#tau]\,#mu#mu\,ee\,e#mu\,#mu(e[#tau]/#mu[#tau])\,e(e[#tau]/#mu[#tau])\,e#mu/ee/#mu#mu [#tau#tau]\,3 or more\, \, "
 
 
 
