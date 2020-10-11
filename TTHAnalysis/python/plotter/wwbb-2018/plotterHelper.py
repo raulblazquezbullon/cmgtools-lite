@@ -8,7 +8,7 @@ r.PyConfig.IgnoreCommandLineOptions = True
 r.gROOT.SetBatch(True)
 
 #### Settings
-friendspath  = "/pool/phedexrw/userstorage/cmstudents/sheylaag/TFG/WWbb/productions"
+friendspath  = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/productions/2020-07-03/"
 datasamples  = ["SingleMuon", "SingleElec", "DoubleMuon", "DoubleEG", "MuonEG", "LowEGJet", "HighEGJet", "EGamma"]
 
 mcpath       = "/pool/ciencias/nanoAODv6/29jan2020_MC"
@@ -26,7 +26,7 @@ friendsscaff = "--Fs {P}/0_yeartag --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning 
 #commandscaff = "python mcPlots.py --tree NanoAOD --pdir {outpath} {friends} {samplespaths} -f -l {lumi} {nth} --year {year} {ratio} --ratioYNDiv 210 --showRatio --attachRatioPanel --fixRatioRange --legendColumns 3 --legendWidth 0.52 --legendFontSize 0.042 --noCms --topSpamSize 1.1 --lspam '#scale[1.1]{{#bf{{CMS}}}} #scale[0.9]{{#it{{Preliminary}}}}' --showMCError -L wwbb-2018/functions_tw.cc {selplot} {mcafile} {cutsfile} {plotsfile} {extra}"
 
 
-commandscaff = "python mcPlots.py --tree NanoAOD --pdir {outpath} {friends} {samplespaths} -f -l {lumi} {nth} --year {year} {ratio} --ratioYNDiv 210 --showRatio --wide --attachRatioPanel --fixRatioRange --legendColumns 1 --legendWidth 0.32 --legendFontSize 0.042 --noCms --topSpamSize 1.1 --lspam '#scale[1.1]{{#bf{{CMS}}}} #scale[0.9]{{#it{{Preliminary}}}}' --showMCError -L wwbb-2018/functions_tw.cc {selplot} {mcafile} {cutsfile} {plotsfile} {extra}"
+commandscaff = "python mcPlots.py --tree NanoAOD --pdir {outpath} {friends} {samplespaths} -f -l {lumi} {nth} --year {year} {ratio} --ratioYNDiv 210 --showRatio --attachRatioPanel --fixRatioRange --legendColumns 1 --legendWidth 0.32 --legendFontSize 0.042 --plotmode norm --noCms --topSpamSize 1.1 --lspam '#scale[1.1]{{#bf{{CMS}}}} #scale[0.9]{{#it{{Preliminary}}}}' --showMCError -L wwbb-2018/functions_tw.cc {selplot} {mcafile} {cutsfile} {plotsfile} {extra}"
 
 
 
