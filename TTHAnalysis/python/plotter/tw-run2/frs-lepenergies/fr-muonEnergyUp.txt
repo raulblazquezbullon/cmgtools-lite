@@ -3,7 +3,7 @@ change: \bnLepGood\b:              nLepGoodmuUp
 change: \bMETgood_pt\b:            METgood_pt_muUp
 change: \bisSS\b:                  isSS_muUp
 change: \bMll\b:                   Mll_muUp
-change: \bLepGood_pt_corrAll\[:    LepGoodmuUp_pt_corrAll[
+change: \bLepGood_pt_corrAll\[:    LepGoodmuUp_pt_muUp[
 change: \[iJetSel30_Recl\[:        [iJetSel30_muUp_Recl[
 change: \bnJetSel30_Recl\b:        nJetSel30_muUp_Recl
 change: \bnBJetSelMedium30_Recl\b: nBJetSelMedium30_muUp_Recl
@@ -26,7 +26,7 @@ change: \bLep1Lep2_PtSum\b:       Lep1Lep2_PtSum_muUp
 change: \bLep1Lep2_DR\b:          Lep1Lep2_DR_muUp
 change: \bLep1Lep2_DPhi\b:        Lep1Lep2_DPhi_muUp
 change: \bLep1Lep2_DEta\b:        Lep1Lep2_DEta_muUp
-                     :
+
 change: \bLep1Lep2Jet1MET_Pz\b:          Lep1Lep2Jet1MET_Pz_muUp
 change: \bLep1Lep2Jet1MET_Pt\b:          Lep1Lep2Jet1MET_Pt_muUp
 change: \bLep1Lep2Jet1MET_M\b:           Lep1Lep2Jet1MET_M_muUp
