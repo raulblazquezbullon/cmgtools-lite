@@ -100,11 +100,11 @@ class lepScaleFactors_TopRun2(Module):
             self.out.branch('TrigSF'     + var, 'F')
             if var == "":
                 for delta,sys in self.systsLepEn.iteritems():
-                    self.out.branch('MuonIDSF'  + sys, 'F')
-                    self.out.branch('MuonISOSF' + sys, 'F')
-                    self.out.branch('ElecIDSF'  + sys, 'F')
+                    self.out.branch('MuonIDSF'   + sys, 'F')
+                    self.out.branch('MuonISOSF'  + sys, 'F')
+                    self.out.branch('ElecIDSF'   + sys, 'F')
                     self.out.branch('ElecRECOSF' + sys, 'F')
-                    self.out.branch('TrigSF'    + sys, 'F')
+                    self.out.branch('TrigSF'     + sys, 'F')
 
         for var in ["", "_statUp", "_statDn", "_systUp", "_systDn"]:
             self.out.branch('MuonIDSF'   + var, 'F')
@@ -588,7 +588,7 @@ class lepScaleFactors_TopRun2(Module):
 
         for sf in self.leptonSF[fl][yr]:
             if typ:
-                if all([i not in sf.lower() for i in typ]): continue
+                if typ not in sf.lower(): continue
 
             #tmpls = self.leptonSF[fl][yr][sf].split(",")
             tmpls = sf.split(",")
@@ -629,7 +629,7 @@ class lepScaleFactors_TopRun2(Module):
             tmpsum = 0
             for sf in self.leptonSF[fl][yr]:
                 if typ:
-                    if all([i not in sf.lower() for i in typ]): continue
+                    if typ not in sf.lower(): continue
 
                 #tmpls = self.leptonSF[fl][yr][sf].split(",")
                 tmpls = sf.split(",")
