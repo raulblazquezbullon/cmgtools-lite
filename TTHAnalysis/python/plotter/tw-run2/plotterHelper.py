@@ -106,7 +106,7 @@ def PlottingCommand(prod, year, nthreads, outpath, selplot, region, ratio, extra
     if useFibre: samplespaths_ = samplespaths_.replace("phedexrw", "phedex").replace("cienciasrw", "ciencias")
 
     nth_       = "" if nthreads == 0 else ("--split-factor=-1 -j " + str(nthreads))
-    friends_   = friendsscaff #+ (" --Fs {P}/5_mvas" * ("MVA" in region))
+    friends_   = friendsscaff + (" --Fs {P}/5_mvas" * ("MVA" in region))
     outpath_   = outpath + "/" + year + "/" + (region if "_" not in region else (region.split("_")[0] + "/" + region.split("_")[1]))
     selplot_   = " ".join( [ "--sP {p}".format(p = sp) for sp in selplot ] ) if len(selplot) else ""
     ratio_     = "--maxRatioRange " + ratio
@@ -141,7 +141,7 @@ def confirm(message = "Do you wish to continue?"):
 
 
 if __name__=="__main__":
-    parser = argparse.ArgumentParser(usage = "python nanoAOD_checker.py [options]", description = "Checker tool for the outputs of nanoAOD production (NOT postprocessing)", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser = argparse.ArgumentParser(usage = "python plotterHelper.py [options]", description = "Helper for plotting.", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('--production','-P', metavar = "prod",      dest = "prod",    required = True)
     parser.add_argument('--year',      '-y', metavar = 'year',      dest = "year",    required = False, default = "2016")
     parser.add_argument('--queue',     '-q', metavar = 'queue',     dest = "queue",   required = False, default = "")
@@ -151,10 +151,11 @@ if __name__=="__main__":
     parser.add_argument('--pretend',   '-p', action = "store_true", dest = "pretend", required = False, default = False)
     parser.add_argument('--outpath',   '-o', metavar = 'outpath',   dest = "outpath", required = False, default = "./temp/varplots")
     parser.add_argument('--region',    '-r', metavar = 'region',    dest = "region",  required = False, default = "1j1t")
+    parser.add_argument('--maxRatioRange', "-R", metavar = 'ratiorange', dest = "ratiorange", required = False, default = "0.8 1.2")
     parser.add_argument('--createSoftLinks', action = "store_true", dest = "createSL", required = False, default = False)
     parser.add_argument('--useFibre',  "-f", action = "store_true", dest = "useFibre", required = False, default = False)
-    parser.add_argument('--maxRatioRange', "-R", metavar = 'ratiorange', dest = "ratiorange", required = False, default = "0.8 1.2")
     parser.add_argument('--uncertainties', "-u", action = "store_true", dest = "doUncs", required = False, default = False)
+    parser.add_argument('--blind', action = "store_true", dest = "blindornot", required = False, default = False)
 
 
 
@@ -172,6 +173,7 @@ if __name__=="__main__":
     useFibre = args.useFibre
     ratiorange = args.ratiorange
     doUncs = args.doUncs
+    if args.blindornot: extra += " --xp data"
 
 
     if createSL:
