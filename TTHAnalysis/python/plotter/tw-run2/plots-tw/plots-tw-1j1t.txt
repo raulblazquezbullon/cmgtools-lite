@@ -32,7 +32,7 @@ puppimet     : PuppiMET_pt         : 30,0,300               ; IncludeUnderflow=F
 puppimet_phi : PuppiMET_phi        : 40,-3.14,3.14          ; IncludeUnderflow=False, XTitle="#phi^{miss}_{puppi} (rad)"
 
 
-lep1lep2_dr   : Lep1Lep2_Pt        : 20,0,200 ; IncludeUnderflow=False, XTitle="#Delta#it{R}(#it{e}^{#pm}\, #it{#mu}^{#pm}) (adim.)"
+lep1lep2_dr   : Lep1Lep2_DR        : 20,0,200 ; IncludeUnderflow=False, XTitle="#Delta#it{R}(#it{e}^{#pm}\, #it{#mu}^{#pm}) (adim.)"
 lep1lep2_dphi : Lep1Lep2_DPhi      : 10,0,1   ; IncludeUnderflow=False, XTitle="#Delta#it{#varphi}(#it{e}^{#pm}\, #it{#mu}^{#mp})/#it{#pi} (adim.)"
 lep1lep2_deta : Lep1Lep2_DEta      : 20,0,5   ; IncludeUnderflow=False, XTitle="#Delta#it{#eta}(#it{e}^{#pm}\, #it{#mu}^{#pm}) (adim.)"
 lep1lep2_pt   : Lep1Lep2_Pt        : 20,0,200 ; IncludeUnderflow=False, XTitle="p_{T}(#it{e}^{#pm}\, #it{#mu}^{#pm}) (GeV)"
