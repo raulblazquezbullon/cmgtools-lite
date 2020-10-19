@@ -8,7 +8,7 @@ r.PyConfig.IgnoreCommandLineOptions = True
 r.gROOT.SetBatch(True)
 
 #### Settings
-friendspath  = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/productions/"
+friendspath  = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/productions"
 datasamples  = ["SingleMuon", "SingleElec", "DoubleMuon", "DoubleEG", "MuonEG", "LowEGJet", "HighEGJet", "EGamma"]
 
 mcpath       = "/pool/ciencias/nanoAODv6/29jan2020_MC"
