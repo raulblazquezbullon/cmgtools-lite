@@ -5,11 +5,8 @@ metfilters: Flag_goodVertices && Flag_globalSuperTightHalo2016Filter && Flag_HBH
 emu:        channel == 1
 
 
-dilepgen: (nDressSelLep >= 2)
 dilepgenorig: (nGenDressedLepton >= 2)
-emugen: (GenDressedLepton_pdgId[iDressSelLep[0]] == 11 && GenDressedLepton_pdgId[iDressSelLep[1]] == 13) || (GenDressedLepton_pdgId[iDressSelLep[0]] == 13 && GenDressedLepton_pdgId[iDressSelLep[1]] == 11)
 emugenorig: (GenDressedLepton_pdgId[0] == 11 && GenDressedLepton_pdgId[1] == 13) || (GenDressedLepton_pdgId[0] == 13 && GenDressedLepton_pdgId[1] == 11)
-
 
 
 dilep:      (nLepGood >= 2) && (LepGood_pt_corrAll[0] > 25) && (LepGood_pt_corrAll[1] > 20) && isSS == 0 && (minMllAFAS_Recl > 20)
