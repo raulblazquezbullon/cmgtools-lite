@@ -1,0 +1,11 @@
+alwaystrue : 1
+
+# PARTICLE
+
+dressemu    : Dresschannel == 1
+
+dressdilep  : (nDressSelLep >= 2) && (GenDressedLepton[iDressSelLep[0]] > 25) && (GenDressedLepton[iDressSelLep[1]] > 20) && DressisSS == 0 && (DressminMllAFAS > 20)
+
+dress1jet   : nDressSelJet == 1
+dress1btag  : nDressBSelJet == 1
+dress0loose : nDressSelLooseJet == 0

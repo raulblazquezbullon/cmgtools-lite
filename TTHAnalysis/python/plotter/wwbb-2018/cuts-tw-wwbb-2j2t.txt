@@ -6,7 +6,7 @@ emu:        channel == 1
 
 
 dilepgenorig: (nGenDressedLepton >= 2)
-emugenorig: (GenDressedLepton_pdgId[0] == 11 && GenDressedLepton_pdgId[1] == 13) || (GenDressedLepton_pdgId[0] == 13 && GenDressedLepton_pdgId[1] == 11)
+emugenorig: (abs(GenDressedLepton_pdgId[0]) == 11 && abs(GenDressedLepton_pdgId[1]) == 13) || (abs(GenDressedLepton_pdgId[0]) == 13 && abs(GenDressedLepton_pdgId[1]) == 11)
 
 
 dilep:      (nLepGood >= 2) && (LepGood_pt_corrAll[0] > 25) && (LepGood_pt_corrAll[1] > 20) && isSS == 0 && (minMllAFAS_Recl > 20)
