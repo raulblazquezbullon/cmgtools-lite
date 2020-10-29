@@ -92,34 +92,34 @@ varList['Lep1Lep2Jet1MET_Mt'] = {
     'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(#it{m}_{T}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{p}_{T}^{miss}, #it{j})) (adim.)',
     'yaxisfidbin' : '(1/#sigma_{fid.})d#sigma/d(#it{m}_{T}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{p}_{T}^{miss}, #it{j})) (1/GeV)',
     'yaxisnorm'   : 'd#sigma/d(#it{m}_{T}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{p}_{T}^{miss}, #it{j})) (pb/GeV)',
-    #'genbinning'  : [0., 225., 325., 425., 500.],                         # usado en drafts, en nota, etc. (4 bins)
-    #'recobinning' : [0., 225., 250., 275., 300., 325., 350., 425., 500.], # usado en drafts, en nota, etc. (4 bins)
+    #'bins_particle'  : [0., 225., 325., 425., 500.],                         # usado en drafts, en nota, etc. (4 bins)
+    #'bins_detector' : [0., 225., 250., 275., 300., 325., 350., 425., 500.], # usado en drafts, en nota, etc. (4 bins)
 
-    #'genbinning'  : [0., 220., 300., 325., 400., 500.], # propuesta (5 bins)
-    #'recobinning' : [0., 220., 250., 260., 270., 280., 290., 300., 325., 400., 500.], # propuesta (5 bins) SELECCIONADA
-    'genbinning'  : [100., 220., 300., 325., 400., 500.], # propuesta (5 bins)
-    'recobinning' : [100., 220., 250., 260., 270., 280., 290., 300., 325., 400., 500.], # propuesta (5 bins) SELECCIONADA
+    #'bins_particle'  : [0., 220., 300., 325., 400., 500.], # propuesta (5 bins)
+    #'bins_detector' : [0., 220., 250., 260., 270., 280., 290., 300., 325., 400., 500.], # propuesta (5 bins) SELECCIONADA
+    'bins_particle'  : [100., 220., 300., 325., 400., 500.], # propuesta (5 bins)
+    'bins_detector' : [100., 220., 250., 260., 270., 280., 290., 300., 325., 400., 500.], # propuesta (5 bins) SELECCIONADA
 
-    #'genbinning'  : [0., 220., 270., 300., 325., 400., 500.], # propuesta (6 bins)
-    #'recobinning' : [0., 220., 240., 250., 260., 270., 280., 290., 300., 310., 325., 400., 500.], # propuesta (6 bins)
+    #'bins_particle'  : [0., 220., 270., 300., 325., 400., 500.], # propuesta (6 bins)
+    #'bins_detector' : [0., 220., 240., 250., 260., 270., 280., 290., 300., 310., 325., 400., 500.], # propuesta (6 bins)
 
-    #'genbinning'  : [0., 220., 260., 280., 300., 325., 400., 500.], # propuesta (7 bins)
-    #'recobinning' : [0., 220., 240., 250., 260., 270., 275., 280., 285., 290., 300., 310., 325., 400., 500.], # propuesta (7 bins)
+    #'bins_particle'  : [0., 220., 260., 280., 300., 325., 400., 500.], # propuesta (7 bins)
+    #'bins_detector' : [0., 220., 240., 250., 260., 270., 275., 280., 285., 290., 300., 310., 325., 400., 500.], # propuesta (7 bins)
 
-    #'genbinning'  : [0., 220., 240., 270., 300., 320., 350., 430., 500.], # propuesta (8 bins)
-    #'recobinning' : [0., 190., 220., 230., 240., 250., 260., 270., 280., 290., 300., 310., 320., 330., 350., 430., 500.], # propuesta (8 bins)
+    #'bins_particle'  : [0., 220., 240., 270., 300., 320., 350., 430., 500.], # propuesta (8 bins)
+    #'bins_detector' : [0., 190., 220., 230., 240., 250., 260., 270., 280., 290., 300., 310., 320., 330., 350., 430., 500.], # propuesta (8 bins)
 
-    #'genbinning'  : [0., 220., 240., 250., 260., 270., 280., 320., 400., 500.], # propuesta (9 bins)
-    #'recobinning' : [0., 220., 230., 240., 250., 255., 260., 265., 270., 275., 280., 285., 290., 300., 310., 320., 330., 400., 500.], # propuesta (9 bins)
+    #'bins_particle'  : [0., 220., 240., 250., 260., 270., 280., 320., 400., 500.], # propuesta (9 bins)
+    #'bins_detector' : [0., 220., 230., 240., 250., 255., 260., 265., 270., 275., 280., 285., 290., 300., 310., 320., 330., 400., 500.], # propuesta (9 bins)
 
-    #'genbinning'  : [0., 220., 240., 250., 260., 270., 280., 300., 320., 400., 500.], # propuesta (10 bins)
-    #'recobinning' : [0., 220., 230., 240., 250., 255., 260., 265., 270., 275., 280., 285., 290., 295., 300., 305., 310., 320., 330., 400., 500.], # propuesta (10 bins)
+    #'bins_particle'  : [0., 220., 240., 250., 260., 270., 280., 300., 320., 400., 500.], # propuesta (10 bins)
+    #'bins_detector' : [0., 220., 230., 240., 250., 255., 260., 265., 270., 275., 280., 285., 290., 295., 300., 305., 310., 320., 330., 400., 500.], # propuesta (10 bins)
 
     #'descbinning' : [0., 800.], ## TEMPORAL
     #'ndescbins'   : 20, ## TEMPORAL
-    'var'         : 'max(min(Lep1Lep2Jet1MET_Mt, 499.), 100.)',
+    "var_detector"         : 'max(min(Lep1Lep2Jet1MET_Mt, 499.), 100.)',
     'var_response': 'Lep1Lep2Jet1MET_Mt',
-    'var_gen'     : 'max(min(DressLep1Lep2Jet1MET_Mt, 499.), 100.)',
+    'var_particle'     : 'max(min(DressLep1Lep2Jet1MET_Mt, 499.), 100.)',
     'legpos'      : (0.51, 0.55, 0.71, 0.93),
     #'legposdesc'  : (0.15, 0.425, 0.35, 0.81),
     "legposdesc"  : (0.65, 0.55, 0.85, 0.93),
@@ -168,11 +168,11 @@ varList['Lep1Lep2Jet1MET_MtATLAS'] = {
     'yaxis'       : 'd#sigma/d(#it{m}_{T}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{p}_{T}^{miss}, #it{j})) (pb)',
     'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(#it{m}_{T}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{p}_{T}^{miss}, #it{j})) (adim.)',
     'yaxisfidbin' : '(1/#sigma_{fid.})d#sigma/d(#it{m}_{T}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{p}_{T}^{miss}, #it{j})) (1/GeV)',
-    'genbinning'  : [0., 275., 375., 500., 1000.],
-    'recobinning' : [0., 200., 235., 275., 300., 325., 400., 500., 1000.],
-    'var'         : 'Lep1Lep2Jet1MET_Mt',
+    'bins_particle'  : [0., 275., 375., 500., 1000.],
+    'bins_detector' : [0., 200., 235., 275., 300., 325., 400., 500., 1000.],
+    "var_detector"         : 'Lep1Lep2Jet1MET_Mt',
     'var_response': 'Lep1Lep2Jet1MET_MtATLAS',
-    'var_gen'     : 'DressLep1Lep2Jet1MET_Mt',
+    'var_particle'     : 'DressLep1Lep2Jet1MET_Mt',
     'legpos'      : (0.51, 0.55, 0.71, 0.93),
     'legposdesc'  : (0.15, 0.425, 0.35, 0.81),
     'legpos_foldas':"BL",
@@ -207,31 +207,31 @@ varList['Lep1Lep2Jet1_M'] = {
     'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(#it{m}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (adim.)',
     'yaxisfidbin' : '(1/#sigma_{fid.})d#sigma/d(#it{m}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (1/GeV)',
     'yaxisnorm'   : 'd#sigma/d(#it{m}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (pb/GeV)',
-    #'genbinning'  : [0., 125., 250., 350., 400.],                         # usado en drafts, en nota, etc. (4 bins)
-    #'recobinning' : [0., 125., 170., 180., 200., 240., 290., 350., 400.], # usado en drafts, en nota, etc. (4 bins)
+    #'bins_particle'  : [0., 125., 250., 350., 400.],                         # usado en drafts, en nota, etc. (4 bins)
+    #'bins_detector' : [0., 125., 170., 180., 200., 240., 290., 350., 400.], # usado en drafts, en nota, etc. (4 bins)
 
-    #'genbinning'  : [0., 130., 170., 200., 325., 400.], # propuesta (5 bins)
-    #'recobinning' : [0., 130., 140., 150., 160., 170., 180., 190., 200., 325., 400.], # propuesta (5 bins)
+    #'bins_particle'  : [0., 130., 170., 200., 325., 400.], # propuesta (5 bins)
+    #'bins_detector' : [0., 130., 140., 150., 160., 170., 180., 190., 200., 325., 400.], # propuesta (5 bins)
 
-    #'genbinning'  : [0., 130., 170., 200., 205., 325., 400.], # propuesta (6 bins)
-    #'recobinning' : [0., 130., 140., 150., 160., 170., 180., 190., 200., 210., 240., 250., 325., 400.], # propuesta (6 bins) SELECCIONADA
-    #'genbinning'  : [0., 130., 170., 200., 250., 325., 400.], # propuesta (6 bins) BUENA
-    #'recobinning' : [0., 130., 140., 150., 160., 170., 180., 190., 200., 210., 220., 250., 325., 400.], # propuesta (6 bins) SELECCIONADA BUENA
+    #'bins_particle'  : [0., 130., 170., 200., 205., 325., 400.], # propuesta (6 bins)
+    #'bins_detector' : [0., 130., 140., 150., 160., 170., 180., 190., 200., 210., 240., 250., 325., 400.], # propuesta (6 bins) SELECCIONADA
+    #'bins_particle'  : [0., 130., 170., 200., 250., 325., 400.], # propuesta (6 bins) BUENA
+    #'bins_detector' : [0., 130., 140., 150., 160., 170., 180., 190., 200., 210., 220., 250., 325., 400.], # propuesta (6 bins) SELECCIONADA BUENA
 
-    'genbinning'  : [50., 130., 170., 200., 250., 325., 400.], # propuesta (6 bins) BUENA
-    'recobinning' : [50., 130., 140., 150., 160., 170., 180., 190., 200., 210., 220., 250., 325., 400.], # propuesta (6 bins) SELECCIONADA BUENA
+    'bins_particle'  : [50., 130., 170., 200., 250., 325., 400.], # propuesta (6 bins) BUENA
+    'bins_detector' : [50., 130., 140., 150., 160., 170., 180., 190., 200., 210., 220., 250., 325., 400.], # propuesta (6 bins) SELECCIONADA BUENA
 
-    #'genbinning'  : [0., 130., 150., 170., 200., 250., 325., 400.], # propuesta (7 bins)
-    #'recobinning' : [0., 130., 140., 150., 155., 160., 165., 170., 180., 190., 200., 210., 220., 250., 325., 400.], # propuesta (7 bins)
+    #'bins_particle'  : [0., 130., 150., 170., 200., 250., 325., 400.], # propuesta (7 bins)
+    #'bins_detector' : [0., 130., 140., 150., 155., 160., 165., 170., 180., 190., 200., 210., 220., 250., 325., 400.], # propuesta (7 bins)
 
-    #'genbinning'  : [0., 125., 170., 180., 200., 240., 290., 350., 400.], # propuesta (8 bins)
-    #'recobinning' : [0., 125., 150., 160., 170., 180., 190., 200., 210., 220., 230., 240., 250., 275., 290., 350., 400.], # propuesta (8 bins)
+    #'bins_particle'  : [0., 125., 170., 180., 200., 240., 290., 350., 400.], # propuesta (8 bins)
+    #'bins_detector' : [0., 125., 150., 160., 170., 180., 190., 200., 210., 220., 230., 240., 250., 275., 290., 350., 400.], # propuesta (8 bins)
 
-    #'genbinning'  : [0., 130., 150., 160., 170., 180., 200., 250., 325., 400.], # propuesta (9 bins)
-    #'recobinning' : [0., 130., 140., 145., 150., 155., 160., 165., 170., 175., 180., 185., 190., 195., 200., 225., 250., 325., 400.], # propuesta (9 bins)
+    #'bins_particle'  : [0., 130., 150., 160., 170., 180., 200., 250., 325., 400.], # propuesta (9 bins)
+    #'bins_detector' : [0., 130., 140., 145., 150., 155., 160., 165., 170., 175., 180., 185., 190., 195., 200., 225., 250., 325., 400.], # propuesta (9 bins)
 
-    #'genbinning'  : [0., 130., 140., 150., 160., 170., 180., 200., 250., 325., 400.], # propuesta (10 bins)
-    #'recobinning' : [0., 130., 140., 145., 150., 155., 160., 165., 170., 175., 180., 185., 190., 195., 200., 205., 210., 220., 250., 325., 400.], # propuesta (10 bins)
+    #'bins_particle'  : [0., 130., 140., 150., 160., 170., 180., 200., 250., 325., 400.], # propuesta (10 bins)
+    #'bins_detector' : [0., 130., 140., 145., 150., 155., 160., 165., 170., 175., 180., 185., 190., 195., 200., 205., 210., 220., 250., 325., 400.], # propuesta (10 bins)
 
     'descbinning' : [0., 400.],
     'ndescbins'   : 16,
@@ -239,9 +239,9 @@ varList['Lep1Lep2Jet1_M'] = {
     #'legposdesc'  : (0.11, 0.435, 0.31, 0.82),
     #'legposdesc'  : (0.65, 0.55, 0.85, 0.93),
     'legposdesc'  : (0.7, 0.55, 0.90, 0.93),
-    'var'         : 'max(min(Lep1Lep2Jet1_M, 399.), 50.)',
+    "var_detector"         : 'max(min(Lep1Lep2Jet1_M, 399.), 50.)',
     'var_response': 'Lep1Lep2Jet1_M',
-    'var_gen'     : 'max(min(DressLep1Lep2Jet1_M, 399.), 50.)',
+    'var_particle'     : 'max(min(DressLep1Lep2Jet1_M, 399.), 50.)',
     'uncleg_fold' : "TC",
     'uncleg_fid'  : "TC",
     'uncleg_unf'  : "TL",
@@ -273,16 +273,16 @@ varList['Lep1Lep2Jet1_MATLAS'] = {
     'yaxis'       : 'd#sigma/d(#it{m}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (pb)',
     'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(#it{m}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (adim.)',
     'yaxisfidbin' : '(1/#sigma_{fid.})d#sigma/d(#it{m}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (1/GeV)',
-    'genbinning'  : [0., 125., 175., 225., 300., 400., 1000.],
-    'recobinning' : [0., 125., 150., 165., 175., 190., 205., 225., 250., 300., 350., 400., 1000.],
+    'bins_particle'  : [0., 125., 175., 225., 300., 400., 1000.],
+    'bins_detector' : [0., 125., 150., 165., 175., 190., 205., 225., 250., 300., 350., 400., 1000.],
     'descbinning' : [0., 400.],
     'ndescbins'   : 16,
     'legpos'      : (0.75, 0.55, 0.95, 0.93),
     #'legposdesc'  : (0.11, 0.435, 0.31, 0.82),
     'legposdesc'  : (0.65, 0.55, 0.85, 0.93),
-    'var'         : 'Lep1Lep2Jet1_M',
+    "var_detector"         : 'Lep1Lep2Jet1_M',
     'var_response': 'Lep1Lep2Jet1_MATLAS',
-    'var_gen'     : 'DressLep1Lep2Jet1_M',
+    'var_particle'     : 'DressLep1Lep2Jet1_M',
     'uncleg_fold' : "TC",
     'uncleg_fid'  : "TL",
     'legpos_fidbin':"ML",
@@ -304,37 +304,37 @@ varList['Jet1_Pt'] = {
     'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(jet #it{p}_{T}) (adim.)',
     'yaxisfidbin' : '(1/#sigma_{fid.})d#sigma/d(jet #it{p}_{T}) (1/GeV)',
     'yaxisnorm'   : '(1/#sigma_{fid.})d#sigma/d(jet #it{p}_{T}) (pb/GeV)',
-    #'genbinning'  : [0, 75, 200, 300],
-    #'recobinning' : [0., 50., 75., 110., 150., 200., 300.],
-   #'genbinning'  : [0., 75., 140., 200., 300.],                            # binning presentado en singletop
-   #'recobinning' : [0., 60., 80., 105., 120., 140., 170., 210., 300.],
-#    'genbinning'  : [0., 60., 110., 150., 300.],
-#    'recobinning' : [0., 60., 75., 90., 110., 125., 150., 175., 300.],
-    #'genbinning'  : [0., 60., 90., 120., 150.],
-    #'recobinning' : [0., 60., 70., 80, 90., 100., 110., 120., 150.],
-    #'genbinning'  : [30., 60., 90., 120., 150.],                        # usado en drafts, en nota, etc. (4 bins)
-    #'recobinning' : [30., 60., 70., 80, 90., 100., 110., 120., 150.],   # usado en drafts, en nota, etc. (4 bins)
+    #'bins_particle'  : [0, 75, 200, 300],
+    #'bins_detector' : [0., 50., 75., 110., 150., 200., 300.],
+   #'bins_particle'  : [0., 75., 140., 200., 300.],                            # binning presentado en singletop
+   #'bins_detector' : [0., 60., 80., 105., 120., 140., 170., 210., 300.],
+#    'bins_particle'  : [0., 60., 110., 150., 300.],
+#    'bins_detector' : [0., 60., 75., 90., 110., 125., 150., 175., 300.],
+    #'bins_particle'  : [0., 60., 90., 120., 150.],
+    #'bins_detector' : [0., 60., 70., 80, 90., 100., 110., 120., 150.],
+    #'bins_particle'  : [30., 60., 90., 120., 150.],                        # usado en drafts, en nota, etc. (4 bins)
+    #'bins_detector' : [30., 60., 70., 80, 90., 100., 110., 120., 150.],   # usado en drafts, en nota, etc. (4 bins)
 
-    #'genbinning'  : [30., 50., 70., 90., 125., 150.], # propuesta (5 bins)
-    #'recobinning' : [30., 40., 45., 50., 55., 60., 65., 70., 90., 125., 150.], # propuesta (5 bins) SELECCTIONADA, VIEYA
+    #'bins_particle'  : [30., 50., 70., 90., 125., 150.], # propuesta (5 bins)
+    #'bins_detector' : [30., 40., 45., 50., 55., 60., 65., 70., 90., 125., 150.], # propuesta (5 bins) SELECCTIONADA, VIEYA
 
-    'genbinning'  : [30., 50., 70., 85., 110., 150.], # propuesta (5 bins)
-    'recobinning' : [30., 40., 45., 50., 55., 60., 65., 70., 85., 110., 150.], # propuesta (5 bins) SELECCTIONADA
+    'bins_particle'  : [30., 50., 70., 85., 110., 150.], # propuesta (5 bins)
+    'bins_detector' : [30., 40., 45., 50., 55., 60., 65., 70., 85., 110., 150.], # propuesta (5 bins) SELECCTIONADA
 
-    #'genbinning'  : [30., 40., 50., 70., 90., 125., 150.], # propuesta (6 bins)
-    #'recobinning' : [30., 35., 40., 45., 50., 55., 60., 65., 70., 90., 105., 125., 150.], # propuesta (6 bins)
+    #'bins_particle'  : [30., 40., 50., 70., 90., 125., 150.], # propuesta (6 bins)
+    #'bins_detector' : [30., 35., 40., 45., 50., 55., 60., 65., 70., 90., 105., 125., 150.], # propuesta (6 bins)
 
-    #'genbinning'  : [30., 40., 50., 60., 70., 90., 125., 150.], # propuesta (7 bins)
-    #'recobinning' : [30., 35., 37.5,40., 42.5, 45., 50., 55.,  60., 65., 70., 80., 105., 125., 150.], # propuesta (7 bins)
+    #'bins_particle'  : [30., 40., 50., 60., 70., 90., 125., 150.], # propuesta (7 bins)
+    #'bins_detector' : [30., 35., 37.5,40., 42.5, 45., 50., 55.,  60., 65., 70., 80., 105., 125., 150.], # propuesta (7 bins)
 
-    #'genbinning'  : [30., 50., 60., 70., 80., 90., 105., 125., 150.], # propuesta (8 bins)
-    #'recobinning' : [30., 40., 50., 55., 60., 65., 70., 75., 80., 85., 90., 95., 100., 105., 115., 125., 150.], # propuesta (8 bins)
+    #'bins_particle'  : [30., 50., 60., 70., 80., 90., 105., 125., 150.], # propuesta (8 bins)
+    #'bins_detector' : [30., 40., 50., 55., 60., 65., 70., 75., 80., 85., 90., 95., 100., 105., 115., 125., 150.], # propuesta (8 bins)
 
-    #'genbinning'  : [30., 40., 45., 50., 55., 60., 70., 80., 125., 150.], # propuesta (9 bins)
-    #'recobinning' : [30., 37.5, 40.,42.5, 45.,47.5, 50.,52.5,  55., 57.5, 60., 65., 70., 75., 80., 90., 105., 125., 150.], # propuesta (9 bins)
+    #'bins_particle'  : [30., 40., 45., 50., 55., 60., 70., 80., 125., 150.], # propuesta (9 bins)
+    #'bins_detector' : [30., 37.5, 40.,42.5, 45.,47.5, 50.,52.5,  55., 57.5, 60., 65., 70., 75., 80., 90., 105., 125., 150.], # propuesta (9 bins)
 
-    #'genbinning'  : [30., 40., 45., 50., 55., 60., 70., 80., 90., 125., 150.], # propuesta (10 bins)
-    #'recobinning' : [30., 35.,37.5, 40.,42.5, 45.,47.5, 50.,52.5,  55., 57.5, 60., 65., 70., 75., 80., 85., 90., 105., 125., 150.], # propuesta (10 bins)
+    #'bins_particle'  : [30., 40., 45., 50., 55., 60., 70., 80., 90., 125., 150.], # propuesta (10 bins)
+    #'bins_detector' : [30., 35.,37.5, 40.,42.5, 45.,47.5, 50.,52.5,  55., 57.5, 60., 65., 70., 75., 80., 85., 90., 105., 125., 150.], # propuesta (10 bins)
 
     'descbinning' : [10., 150.],
     'ndescbins'   : 14,
@@ -342,9 +342,9 @@ varList['Jet1_Pt'] = {
     'legposdesc'  : (0.7, 0.55, 0.90, 0.93),
     'maxdesc'     : 3600,
     "legpos_unf"  : "TC",
-    'var'         : 'min(Jet1_Pt, 149.)',
+    "var_detector"         : 'min(Jet1_Pt, 149.)',
     'var_response': 'Jet1_Pt',
-    'var_gen'     : 'min(DressJet1_Pt, 149.)',
+    'var_particle'     : 'min(DressJet1_Pt, 149.)',
     'uncleg_fold' : "TL",
     'uncleg_unf'  : "TL",
     'uncleg_fid'  : "TL",
@@ -388,45 +388,45 @@ varList['Lep1_Pt'] = {
     'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(leading lepton #it{p}_{T}) (adim.)',
     'yaxisfidbin' : '(1/#sigma_{fid.})d#sigma/d(leading lepton #it{p}_{T}) (1/GeV)',
     'yaxisnorm'   : 'd#sigma/d(leading lepton #it{p}_{T}) (pb/GeV)',
-    #'genbinning'  : [0, 50, 120, 190, 250],
-    #'recobinning' : [0, 50, 65, 85, 97, 110, 145, 180, 250],
-   #'genbinning'  : [0, 50, 120, 160, 250],                            # binning presentado en singletop
-   #'recobinning' : [0, 50, 65, 85, 97, 110, 145, 180, 250],
-#    'genbinning'  : [0., 50., 90., 135., 250.],
-#    'recobinning' : [0., 50., 65., 80., 95., 110., 130., 150., 250.],
-    #'genbinning'  : [0., 50., 90., 135., 250.],
-    #'recobinning' : [0., 50., 60., 75., 90., 105., 115., 135., 250.],
-    #'genbinning'  : [0., 50., 90., 125., 150.],
-    #'recobinning' : [0., 50., 60., 70., 80., 90., 105., 125., 150.], # antes de 15-10-2018
-    #'genbinning'  : [25., 50., 90., 125., 150.],                      # usado en drafts, en nota, etc. (4 bins)
-    #'recobinning' : [25., 50., 60., 70., 80., 90., 105., 125., 150.], # usado en drafts, en nota, etc. (4 bins)
+    #'bins_particle'  : [0, 50, 120, 190, 250],
+    #'bins_detector' : [0, 50, 65, 85, 97, 110, 145, 180, 250],
+   #'bins_particle'  : [0, 50, 120, 160, 250],                            # binning presentado en singletop
+   #'bins_detector' : [0, 50, 65, 85, 97, 110, 145, 180, 250],
+#    'bins_particle'  : [0., 50., 90., 135., 250.],
+#    'bins_detector' : [0., 50., 65., 80., 95., 110., 130., 150., 250.],
+    #'bins_particle'  : [0., 50., 90., 135., 250.],
+    #'bins_detector' : [0., 50., 60., 75., 90., 105., 115., 135., 250.],
+    #'bins_particle'  : [0., 50., 90., 125., 150.],
+    #'bins_detector' : [0., 50., 60., 70., 80., 90., 105., 125., 150.], # antes de 15-10-2018
+    #'bins_particle'  : [25., 50., 90., 125., 150.],                      # usado en drafts, en nota, etc. (4 bins)
+    #'bins_detector' : [25., 50., 60., 70., 80., 90., 105., 125., 150.], # usado en drafts, en nota, etc. (4 bins)
 
-    #'genbinning'  : [25., 45., 65., 90., 125., 150.], # propuesta (5 bins)
-    #'recobinning' : [25., 35., 45., 50.,  55., 60., 65., 75., 90., 125., 150.], # propuesta (5 bins)
+    #'bins_particle'  : [25., 45., 65., 90., 125., 150.], # propuesta (5 bins)
+    #'bins_detector' : [25., 35., 45., 50.,  55., 60., 65., 75., 90., 125., 150.], # propuesta (5 bins)
 
-    #'genbinning'  : [25., 45., 65., 85., 100., 125., 150.], # propuesta (6 bins)
-    #'recobinning' : [25., 35., 45., 50., 55., 60., 65., 75., 85., 100., 115., 125., 150.], # propuesta (6 bins)
+    #'bins_particle'  : [25., 45., 65., 85., 100., 125., 150.], # propuesta (6 bins)
+    #'bins_detector' : [25., 35., 45., 50., 55., 60., 65., 75., 85., 100., 115., 125., 150.], # propuesta (6 bins)
 
-    #'genbinning'  : [25., 45., 55., 65., 85., 100., 125., 150.], # propuesta (7 bins)
-    #'recobinning' : [25., 35., 45., 50., 55.,  60.,  65.,  70., 75., 80., 85., 100., 115., 125., 150.], # propuesta (7 bins)
+    #'bins_particle'  : [25., 45., 55., 65., 85., 100., 125., 150.], # propuesta (7 bins)
+    #'bins_detector' : [25., 35., 45., 50., 55.,  60.,  65.,  70., 75., 80., 85., 100., 115., 125., 150.], # propuesta (7 bins)
 
-    'genbinning'  : [25., 50., 60., 70., 80., 90., 105., 125., 150.], # propuesta (8 bins)
-    'recobinning' : [25., 35., 50., 55., 60., 65.,  70.,  75.,  80., 85., 90., 95., 100., 105., 115., 125., 150.], # propuesta (8 bins) SELECCIONADA
+    'bins_particle' : [25., 50., 60., 70., 80., 90., 105., 125., 150.], # propuesta (8 bins)
+    'bins_detector' : [25., 35., 50., 55., 60., 65.,  70.,  75.,  80., 85., 90., 95., 100., 105., 115., 125., 150.], # propuesta (8 bins) SELECCIONADA
 
-    #'genbinning'  : [25., 45., 50., 55., 60., 65., 85., 100., 125., 150.], # propuesta (9 bins)
-    #'recobinning' : [25., 40., 42.5, 45.,47.5,50.,52.5,  55., 57.5,  60., 62.5, 65., 70., 75., 85., 100., 115., 125., 150.], # propuesta (9 bins)
+    #'bins_particle'  : [25., 45., 50., 55., 60., 65., 85., 100., 125., 150.], # propuesta (9 bins)
+    #'bins_detector' : [25., 40., 42.5, 45.,47.5,50.,52.5,  55., 57.5,  60., 62.5, 65., 70., 75., 85., 100., 115., 125., 150.], # propuesta (9 bins)
 
-    #'genbinning'  : [25., 35., 45., 50., 55., 60., 65., 85., 100., 125., 150.], # propuesta (10 bins)
-    #'recobinning' : [25., 35., 40., 42.5, 45., 47.5, 50., 52.5, 55., 57.5, 60., 62.5, 65., 67.5, 70., 75., 85., 100., 115., 125., 150.], # propuesta (10 bins)
+    #'bins_particle'  : [25., 35., 45., 50., 55., 60., 65., 85., 100., 125., 150.], # propuesta (10 bins)
+    #'bins_detector' : [25., 35., 40., 42.5, 45., 47.5, 50., 52.5, 55., 57.5, 60., 62.5, 65., 67.5, 70., 75., 85., 100., 115., 125., 150.], # propuesta (10 bins)
 
     'descbinning' : [10., 150.],
     'ndescbins'   : 14,
     'legpos'      : (0.7, 0.55, 0.90, 0.93),
     'legposdesc'  : (0.7, 0.55, 0.90, 0.93),
     "maxdesc"     : 3300,
-    'var'         : 'min(Lep1_Pt, 149.)',
+    "var_detector": 'min(Lep1_Pt, 149.)',
     'var_response': 'Lep1_Pt',
-    'var_gen'     : 'min(DressLep1_Pt, 149.)',
+    'var_particle': 'min(DressLep1_Pt, 149.)',
     'uncleg_fold' : "TL",
     'uncleg_fid'  : "TL",
     #"legpos_unf"   : (.18, .3, .32, .05),
@@ -462,12 +462,12 @@ varList['ResponseLep1_Pt'] = {
 varList['Fiducial'] = {
     'xaxis'       : 'a.u.',
     'yaxis'       : 'd#sigma (pb)',
-    'genbinning'  : [25., 150.],
-    'recobinning' : [25., 150.],
-    #'recobinning' : [25., 80., 150.],
-    'var'         : 'min(Lep1_Pt, 149.)',
+    'bins_particle'  : [25., 150.],
+    'bins_detector' : [25., 150.],
+    #'bins_detector' : [25., 80., 150.],
+    "var_detector"         : 'min(Lep1_Pt, 149.)',
     'var_response': 'Fiducial',
-    'var_gen'     : 'min(DressLep1_Pt, 149.)',
+    'var_particle'     : 'min(DressLep1_Pt, 149.)',
 }
 varList['Fiducialuncertainties'] = {
     'xaxis'       : 'a.u.',
@@ -481,11 +481,11 @@ varList['ResponseFiducial'] = {
 varList['FiducialtWttbar'] = {
     'xaxis'       : 'a.u.',
     'yaxis'       : 'd#sigma (pb)',
-    'genbinning'  : [25., 150.],
-    'recobinning' : [25., 150.],
-    'var'         : 'min(Lep1_Pt, 149.)',
+    'bins_particle'  : [25., 150.],
+    'bins_detector' : [25., 150.],
+    "var_detector"         : 'min(Lep1_Pt, 149.)',
     'var_response': 'FiducialtWttbar',
-    'var_gen'     : 'min(DressLep1_Pt, 149.)',
+    'var_particle'     : 'min(DressLep1_Pt, 149.)',
 }
 varList['FiducialtWttbaruncertainties'] = {
     'xaxis'       : 'a.u.',
@@ -507,32 +507,32 @@ varList['Lep1Lep2Jet1MET_Pz'] = {
     'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(#it{p}_{Z} (#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (adim.)',
     'yaxisfidbin' : '(1/#sigma_{fid.})d#sigma/d(#it{p}_{Z} (#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (1/GeV)',
     'yaxisnorm'   : 'd#sigma/d(#it{p}_{Z} (#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (pb/GeV)',
-    #'genbinning'  : [0., 100., 200., 350., 450.],                        # usado en drafts, en nota, etc. (4 bins)
-    #'recobinning' : [0., 50., 100., 150., 200., 250., 300., 350., 450.], # usado en drafts, en nota, etc. (4 bins)
+    #'bins_particle'  : [0., 100., 200., 350., 450.],                        # usado en drafts, en nota, etc. (4 bins)
+    #'bins_detector' : [0., 50., 100., 150., 200., 250., 300., 350., 450.], # usado en drafts, en nota, etc. (4 bins)
 
-    #'genbinning'  : [0., 40., 100., 175., 300., 450.],  # propuesta (5 bins)
-    #'recobinning' : [0., 20., 40., 60., 80., 100., 125., 150., 175., 350., 450.], # propuesta (5 bins)
+    #'bins_particle'  : [0., 40., 100., 175., 300., 450.],  # propuesta (5 bins)
+    #'bins_detector' : [0., 20., 40., 60., 80., 100., 125., 150., 175., 350., 450.], # propuesta (5 bins)
 
-    #'genbinning'  : [0., 40., 100., 175., 250., 350., 450.],  # propuesta (6 bins)
-    #'recobinning' : [0., 20., 40., 60., 80., 100., 125., 150., 175., 200., 250., 350., 450.], # propuesta (6 bins)
+    #'bins_particle'  : [0., 40., 100., 175., 250., 350., 450.],  # propuesta (6 bins)
+    #'bins_detector' : [0., 20., 40., 60., 80., 100., 125., 150., 175., 200., 250., 350., 450.], # propuesta (6 bins)
 
-    #'genbinning'  : [0., 40., 60., 100., 175., 250., 350., 450.],  # propuesta (7 bins)
-    #'recobinning' : [0., 20., 30.,  40.,  50.,  60.,  80., 100., 125., 150., 175., 200., 250., 350., 450.], # propuesta (7 bins)
+    #'bins_particle'  : [0., 40., 60., 100., 175., 250., 350., 450.],  # propuesta (7 bins)
+    #'bins_detector' : [0., 20., 30.,  40.,  50.,  60.,  80., 100., 125., 150., 175., 200., 250., 350., 450.], # propuesta (7 bins)
 
-    'genbinning'  : [0., 50., 100., 150., 200., 250., 300., 350., 450.],                        # propuesta (8 bins)
-    'recobinning' : [0., 20., 40., 60., 80., 100., 125., 150., 175., 200., 225., 250., 275., 300., 350., 400., 450.], # propuesta (8 bins) SELECCIONADA
+    'bins_particle'  : [0., 50., 100., 150., 200., 250., 300., 350., 450.],                        # propuesta (8 bins)
+    'bins_detector' : [0., 20., 40., 60., 80., 100., 125., 150., 175., 200., 225., 250., 275., 300., 350., 400., 450.], # propuesta (8 bins) SELECCIONADA
 
-    #'genbinning'  : [0., 20., 40., 60., 80., 100., 175., 250., 350., 450.],  # propuesta (9 bins)
-    #'recobinning' : [0., 5.,  10., 15., 20.,  25.,  30.,  40.,  50.,  60.,  70.,  80.,  90., 100., 150., 175., 250., 350., 450.], # propuesta (9 bins)
+    #'bins_particle'  : [0., 20., 40., 60., 80., 100., 175., 250., 350., 450.],  # propuesta (9 bins)
+    #'bins_detector' : [0., 5.,  10., 15., 20.,  25.,  30.,  40.,  50.,  60.,  70.,  80.,  90., 100., 150., 175., 250., 350., 450.], # propuesta (9 bins)
 
-    #'genbinning'  : [0., 20., 40., 60., 80., 100., 125., 175., 250., 350., 450.],  # propuesta (10 bins)
-    #'recobinning' : [0., 5.,  10., 15., 20.,  25.,  30.,  40.,  50.,  60.,  70.,  80.,  90., 100., 125., 150., 175., 200., 250., 350., 450.], # propuesta (10 bins)
+    #'bins_particle'  : [0., 20., 40., 60., 80., 100., 125., 175., 250., 350., 450.],  # propuesta (10 bins)
+    #'bins_detector' : [0., 5.,  10., 15., 20.,  25.,  30.,  40.,  50.,  60.,  70.,  80.,  90., 100., 125., 150., 175., 200., 250., 350., 450.], # propuesta (10 bins)
 
     'descbinning' : [0., 450.],
     'ndescbins'   : 18,
-    'var'         : 'min(abs(Lep1Lep2Jet1MET_Pz), 449.)',
+    "var_detector"         : 'min(abs(Lep1Lep2Jet1MET_Pz), 449.)',
     'var_response': 'Lep1Lep2Jet1MET_Pz',
-    'var_gen'     : 'min(abs(DressLep1Lep2Jet1MET_Pz), 449.)',
+    'var_particle'     : 'min(abs(DressLep1Lep2Jet1MET_Pz), 449.)',
     'legpos'      : (0.51, 0.55, 0.71, 0.93),
     #'legposdesc'  : (0.57, 0.55, 0.78, 0.93),
     'legposdesc'  : (0.65, 0.55, 0.85, 0.93),
@@ -578,34 +578,34 @@ varList['Lep1Lep2_DPhi'] = {
     'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(#Delta#it{#varphi}(#it{e}^{#pm}, #it{#mu}^{#mp})/#it{#pi}) (adim.)',
     'yaxisfidbin' : '(1/#sigma_{fid.})d#sigma/d(#Delta#it{#varphi}(#it{e}^{#pm}, #it{#mu}^{#mp})/#it{#pi}) (adim.)',
     'yaxisnorm'   : 'd#sigma/d(#Delta#it{#varphi}(#it{e}^{#pm}, #it{#mu}^{#mp})/#it{#pi}) (pb)',
-    #'genbinning'  : [0., .25, .50, 0.75, 1.0],                        # usado en drafts, en nota, etc. (4 bins)
-    #'recobinning' : [0., .125, .25, .375, .50, .625, .75, .875, 1.0], # usado en drafts, en nota, etc. (4 bins)
-    #'genbinning'  : [0., .75, 1.5, 2.25, r.TMath.Pi()],
-    #'recobinning' : [0., .35, .85, 1.25, 1.65, 2.05, 2.45, 2.85, r.TMath.Pi()],
+    #'bins_particle'  : [0., .25, .50, 0.75, 1.0],                        # usado en drafts, en nota, etc. (4 bins)
+    #'bins_detector' : [0., .125, .25, .375, .50, .625, .75, .875, 1.0], # usado en drafts, en nota, etc. (4 bins)
+    #'bins_particle'  : [0., .75, 1.5, 2.25, r.TMath.Pi()],
+    #'bins_detector' : [0., .35, .85, 1.25, 1.65, 2.05, 2.45, 2.85, r.TMath.Pi()],
 
-    #'genbinning'  : [0., .2, .4, .6, .8, 1.0],                        # propuesta (5 bins)
-    #'recobinning' : [0., 0.1, .2, 0.3, 0.4, 0.5, .6, 0.7, 0.8, 0.9, 1.0], # propuesta (5 bins)
+    #'bins_particle'  : [0., .2, .4, .6, .8, 1.0],                        # propuesta (5 bins)
+    #'bins_detector' : [0., 0.1, .2, 0.3, 0.4, 0.5, .6, 0.7, 0.8, 0.9, 1.0], # propuesta (5 bins)
 
-    'genbinning'  : [0., .17, .33, .5, .67, .83, 1.0],                        # propuesta (6 bins)
-    'recobinning' : [0., 0.083, .17, 0.25, 0.33, 0.417, .5, 0.583, 0.67, 0.75, 0.83, 0.917, 1.0], # propuesta (6 bins)
+    'bins_particle'  : [0., .17, .33, .5, .67, .83, 1.0],                        # propuesta (6 bins)
+    'bins_detector' : [0., 0.083, .17, 0.25, 0.33, 0.417, .5, 0.583, 0.67, 0.75, 0.83, 0.917, 1.0], # propuesta (6 bins)
 
-    #'genbinning'  : [0., .14, .29, .42, .57, .71, .86, 1.0],                        # propuesta (7 bins)
-    #'recobinning' : [0., 0.07, .14, 0.21, 0.29, 0.36, .43, 0.5, 0.57, .64, 0.71, .79, 0.86, 0.93, 1.0], # propuesta (7 bins)
+    #'bins_particle'  : [0., .14, .29, .42, .57, .71, .86, 1.0],                        # propuesta (7 bins)
+    #'bins_detector' : [0., 0.07, .14, 0.21, 0.29, 0.36, .43, 0.5, 0.57, .64, 0.71, .79, 0.86, 0.93, 1.0], # propuesta (7 bins)
 
-    #'genbinning'  : [0., .125, .25, .375, .50, .625, .75, .875, 1.0],                        # propuesta (8 bins)
-    #'recobinning' : [0., 0.0625, .125, 0.1875, 0.25, 0.3125, .375, 0.4375, 0.50, 0.5625, 0.625, 0.6875, 0.75, 0.8125, 0.875, 0.9375, 1.0], # propuesta (8 bins)
+    #'bins_particle'  : [0., .125, .25, .375, .50, .625, .75, .875, 1.0],                        # propuesta (8 bins)
+    #'bins_detector' : [0., 0.0625, .125, 0.1875, 0.25, 0.3125, .375, 0.4375, 0.50, 0.5625, 0.625, 0.6875, 0.75, 0.8125, 0.875, 0.9375, 1.0], # propuesta (8 bins)
 
-    #'genbinning'  : [0., .11, .22, .33, .44, .56, .67, .78, .89, 1.0],                        # propuesta (9 bins)
-    #'recobinning' : [0., 0.056, .11, 0.17, 0.22, 0.28, .33, 0.39, 0.44, 0.5, 0.56, .61, .67, .72, .78, .83, .89, .94, 1.0], # propuesta (9 bins)
+    #'bins_particle'  : [0., .11, .22, .33, .44, .56, .67, .78, .89, 1.0],                        # propuesta (9 bins)
+    #'bins_detector' : [0., 0.056, .11, 0.17, 0.22, 0.28, .33, 0.39, 0.44, 0.5, 0.56, .61, .67, .72, .78, .83, .89, .94, 1.0], # propuesta (9 bins)
 
-    #'genbinning'  : [0., .1, .2, .3, .4, .5, .6, .7, .8, .9, 1.0],                        # propuesta (10 bins)
-    #'recobinning' : [0., 0.05, .1, 0.15, 0.2, 0.25, .3, 0.35, 0.4, 0.45, 0.5, 0.55, .6, .65, .7, .75, .8, .85, .9, .95, 1.0], # propuesta (10 bins)
+    #'bins_particle'  : [0., .1, .2, .3, .4, .5, .6, .7, .8, .9, 1.0],                        # propuesta (10 bins)
+    #'bins_detector' : [0., 0.05, .1, 0.15, 0.2, 0.25, .3, 0.35, 0.4, 0.45, 0.5, 0.55, .6, .65, .7, .75, .8, .85, .9, .95, 1.0], # propuesta (10 bins)
 
-    'var'         : 'abs(Lep1Lep2_DPhi)/' + str(r.TMath.Pi()),
-    #'var'         : 'abs(TDPhiLL)',
+    "var_detector"         : 'abs(Lep1Lep2_DPhi)/' + str(r.TMath.Pi()),
+    #"var_detector"         : 'abs(TDPhiLL)',
     'var_response': 'Lep1Lep2_DPhi',
-    'var_gen'     : 'abs(DressLep1Lep2_DPhi)/' + str(r.TMath.Pi()),
-    #'var_gen'     : 'abs(TGenDPhiLL)',
+    'var_particle'     : 'abs(DressLep1Lep2_DPhi)/' + str(r.TMath.Pi()),
+    #'var_particle'     : 'abs(TGenDPhiLL)',
     #'legpos'      : (0.82, 0.14, 0.93, 0.47),
     'legpos'      : (0.15, 0.425, 0.35, 0.81),
     #'legposdesc'  : (0.15, 0.425, 0.35, 0.81),
@@ -646,11 +646,11 @@ varList['Lep1Lep2_DPhiuncertainties'] = {
 #varList['E_LLB'] = {
     #'xaxis'       : 'E(\\ell_{1}, \\ell_{2}, j) (GeV)',
     #'yaxis'       : 'd#sigma (pb)',
-    #'genbinning'  : [0, 190, 330, 550, 700],
-    #'recobinning' : [0, 160, 220, 280, 340, 400, 450, 550, 700],
-    #'var'         : 'TE_LLB',
+    #'bins_particle'  : [0, 190, 330, 550, 700],
+    #'bins_detector' : [0, 160, 220, 280, 340, 400, 450, 550, 700],
+    #"var_detector"         : 'TE_LLB',
     #'var_response': 'ELLB',
-    #'var_gen'     : 'TGenE_LLB',
+    #'var_particle'     : 'TGenE_LLB',
 #}
 #varList['E_LLBuncertainties'] = {
     #'xaxis'       : varList['E_LLB']['xaxis'],
@@ -660,11 +660,11 @@ varList['Lep1Lep2_DPhiuncertainties'] = {
 #varList['LeadingJetE'] = {
     #'xaxis'       : 'E(j) (GeV)',
     #'yaxis'       : 'd#sigma (pb)',
-    #'genbinning'  : [0, 75, 275, 400],
-    #'recobinning' : [0., 40., 70., 120., 175., 275., 400.],
-    #'var'         : 'TLeadingJetE',
+    #'bins_particle'  : [0, 75, 275, 400],
+    #'bins_detector' : [0., 40., 70., 120., 175., 275., 400.],
+    #"var_detector"         : 'TLeadingJetE',
     #'var_response': 'LeadingJetE',
-    #'var_gen'     : 'TGenLeadingJetE',
+    #'var_particle'     : 'TGenLeadingJetE',
 #}
 #varList['LeadingJetEuncertainties'] = {
     #'xaxis'       : varList['LeadingJetE']['xaxis'],
@@ -675,11 +675,11 @@ varList['Lep1Lep2_DPhiuncertainties'] = {
 #varList['M_LeadingB'] = {
     #'xaxis'       : 'm(\\ell_{1}, j) (GeV)',
     #'yaxis'       : 'd#sigma (pb)',
-    #'genbinning'  : [0., 75., 175., 275., 400.],
-    #'recobinning' : [0., 75., 95., 115., 135., 175., 225., 275., 400.],
-    #'var'         : 'TM_LeadingB',
+    #'bins_particle'  : [0., 75., 175., 275., 400.],
+    #'bins_detector' : [0., 75., 95., 115., 135., 175., 225., 275., 400.],
+    #"var_detector"         : 'TM_LeadingB',
     #'var_response': 'MLeadingB',
-    #'var_gen'     : 'TGenM_LeadingB',
+    #'var_particle'     : 'TGenM_LeadingB',
 #}
 #varList['M_LeadingBuncertainties'] = {
     #'xaxis'       : varList['M_LeadingB']['xaxis'],
@@ -689,11 +689,11 @@ varList['Lep1Lep2_DPhiuncertainties'] = {
 #varList['M_SubLeadingB'] = {
     #'xaxis'       : 'm(\\ell_{2}, j) (GeV)',
     #'yaxis'       : 'd#sigma (pb)',
-    #'genbinning'  : [0., 60., 100., 150., 300.],
-    #'recobinning' : [0., 60., 70., 80., 90., 100., 125., 150., 300.],
-    #'var'         : 'TM_SubLeadingB',
+    #'bins_particle'  : [0., 60., 100., 150., 300.],
+    #'bins_detector' : [0., 60., 70., 80., 90., 100., 125., 150., 300.],
+    #"var_detector"         : 'TM_SubLeadingB',
     #'var_response': 'MSubLeadingB',
-    #'var_gen'     : 'TGenM_SubLeadingB',
+    #'var_particle'     : 'TGenM_SubLeadingB',
 #}
 #varList['M_SubLeadingBuncertainties'] = {
     #'xaxis'       : varList['M_SubLeadingB']['xaxis'],
@@ -703,11 +703,11 @@ varList['Lep1Lep2_DPhiuncertainties'] = {
 #varList['MET'] = {
     #'xaxis'       : '\\slash{E}_{T} (GeV)',
     #'yaxis'       : 'd#sigma (pb)',
-    #'genbinning'  : [0, 50, 140, 200],
-    #'recobinning' : [0., 20., 35., 50., 70., 140., 200.],
-    #'var'         : 'TMET',
+    #'bins_particle'  : [0, 50, 140, 200],
+    #'bins_detector' : [0., 20., 35., 50., 70., 140., 200.],
+    #"var_detector"         : 'TMET',
     #'var_response': 'MET',
-    #'var_gen'     : 'TGenMET'
+    #'var_particle'     : 'TGenMET'
 #}
 #varList['METuncertainties'] = {
     #'xaxis'       : varList['MET']['xaxis'],
@@ -717,11 +717,11 @@ varList['Lep1Lep2_DPhiuncertainties'] = {
 #varList['MET_Phi'] = {
     #'xaxis'       : '\\varphi(\\slash{E}_{T}) (GeV)',
     #'yaxis'       : 'd#sigma (pb)',
-    #'genbinning'  : [-r.TMath.Pi(), -1.5, 0, 1.5, r.TMath.Pi()],
-    #'recobinning' : [-r.TMath.Pi(), -2.25, -1.5, -.75, 0, .75, 1.5, 2.25, r.TMath.Pi()],
-    #'var'         : 'TMET_Phi',
+    #'bins_particle'  : [-r.TMath.Pi(), -1.5, 0, 1.5, r.TMath.Pi()],
+    #'bins_detector' : [-r.TMath.Pi(), -2.25, -1.5, -.75, 0, .75, 1.5, 2.25, r.TMath.Pi()],
+    #"var_detector"         : 'TMET_Phi',
     #'var_response': 'METPhi',
-    #'var_gen'     : 'TGenMET_Phi',
+    #'var_particle'     : 'TGenMET_Phi',
 #}
 #varList['MET_Phiuncertainties'] = {
     #'xaxis'       : varList['MET_Phi']['xaxis'],
@@ -732,11 +732,11 @@ varList['Lep1Lep2_DPhiuncertainties'] = {
 #varList['LeadingJetEta'] = {
     #'xaxis'       : '|\\eta|(j)',
     #'yaxis'       : 'd#sigma (pb)',
-    #'genbinning'  : [0., 0.6, 1.2, 1.8, 2.4],
-    #'recobinning' : [0., 0.3, 0.6, 0.9, 1.2, 1.5, 1.8, 2.1, 2.4],
-    #'var'         : 'abs(TLeadingJetEta)',
+    #'bins_particle'  : [0., 0.6, 1.2, 1.8, 2.4],
+    #'bins_detector' : [0., 0.3, 0.6, 0.9, 1.2, 1.5, 1.8, 2.1, 2.4],
+    #"var_detector"         : 'abs(TLeadingJetEta)',
     #'var_response': 'LeadingJetEta',
-    #'var_gen'     : 'abs(TGenLeadingJetEta)',
+    #'var_particle'     : 'abs(TGenLeadingJetEta)',
 #}
 #varList['LeadingJetEtauncertainties'] = {
     #'xaxis'       : varList['LeadingJetEta']['xaxis'],
@@ -750,11 +750,11 @@ varList['Lep1Lep2_DPhiuncertainties'] = {
 #varList['LeadingJetPhi'] = {
     #'xaxis'       : '\\varphi(j) (GeV)',
     #'yaxis'       : 'd#sigma (pb)',
-    #'genbinning'  : [-r.TMath.Pi(), -1.5, 0, 1.5, r.TMath.Pi()],
-    #'recobinning' : [-r.TMath.Pi(), -2.25, -1.5, -.75, 0, .75, 1.5, 2.25, r.TMath.Pi()],
-    #'var'         : 'TLeadingJetPhi',
+    #'bins_particle'  : [-r.TMath.Pi(), -1.5, 0, 1.5, r.TMath.Pi()],
+    #'bins_detector' : [-r.TMath.Pi(), -2.25, -1.5, -.75, 0, .75, 1.5, 2.25, r.TMath.Pi()],
+    #"var_detector"         : 'TLeadingJetPhi',
     #'var_response': 'LeadingJetPhi',
-    #'var_gen'     : 'TGenLeadingJetPhi',
+    #'var_particle'     : 'TGenLeadingJetPhi',
 #}
 #varList['LeadingJetPhiuncertainties'] = {
     #'xaxis'       : varList['LeadingJetPhi']['xaxis'],
@@ -764,11 +764,11 @@ varList['Lep1Lep2_DPhiuncertainties'] = {
 #varList['LeadingLepE'] = {
     #'xaxis'       : 'E(\\ell_{1}) (GeV)',
     #'yaxis'       : 'd#sigma (pb)',
-    #'genbinning'  : [0, 70, 120, 250, 350],
-    #'recobinning' : [0., 40., 60., 80., 100., 120., 150., 250., 350.],
-    #'var'         : 'TLeadingLepE',
+    #'bins_particle'  : [0, 70, 120, 250, 350],
+    #'bins_detector' : [0., 40., 60., 80., 100., 120., 150., 250., 350.],
+    #"var_detector"         : 'TLeadingLepE',
     #'var_response': 'LeadingLepE',
-    #'var_gen'     : 'TGenLeadingLepE',
+    #'var_particle'     : 'TGenLeadingLepE',
 #}
 #varList['LeadingLepEuncertainties'] = {
     #'xaxis'       : varList['LeadingLepE']['xaxis'],
@@ -778,11 +778,11 @@ varList['Lep1Lep2_DPhiuncertainties'] = {
 #varList['LeadingLepPhi'] = {
     #'xaxis'       : '\\varphi(\\ell_{1}) (rad)',
     #'yaxis'       : 'd#sigma (pb)',
-    #'genbinning'  : [-r.TMath.Pi(), -1.5, 0, 1.5, r.TMath.Pi()],
-    #'recobinning' : [-r.TMath.Pi(), -2.25, -1.5, -.75, 0, .75, 1.5, 2.25, r.TMath.Pi()],
-    #'var'         : 'TLeadingLepPhi',
+    #'bins_particle'  : [-r.TMath.Pi(), -1.5, 0, 1.5, r.TMath.Pi()],
+    #'bins_detector' : [-r.TMath.Pi(), -2.25, -1.5, -.75, 0, .75, 1.5, 2.25, r.TMath.Pi()],
+    #"var_detector"         : 'TLeadingLepPhi',
     #'var_response': 'LeadingLepPhi',
-    #'var_gen'     : 'TGenLeadingLepPhi',
+    #'var_particle'     : 'TGenLeadingLepPhi',
 #}
 #varList['LeadingLepPhiuncertainties'] = {
     #'xaxis'       : varList['LeadingLepPhi']['xaxis'],
@@ -792,13 +792,13 @@ varList['Lep1Lep2_DPhiuncertainties'] = {
 #varList['LeadingLepEta'] = {
     #'xaxis'       : '|\\eta|(\\ell_{1})',
     #'yaxis'       : 'd#sigma (pb)',
-    #'genbinning'  : [0., 0.6, 1.2, 1.8, 2.4],
-    #'recobinning' : [0., 0.3, 0.6, 0.9, 1.2, 1.5, 1.8, 2.1, 2.4],
-    ##'genbinning'  : [0., 0.5, 1., 1.6, 2.4],
-    ##'recobinning' : [0., 0.25, 0.5, 0.75, 1., 1.3, 1.6, 2., 2.4],
-    #'var'         : 'abs(TLeadingLepEta)',
+    #'bins_particle'  : [0., 0.6, 1.2, 1.8, 2.4],
+    #'bins_detector' : [0., 0.3, 0.6, 0.9, 1.2, 1.5, 1.8, 2.1, 2.4],
+    ##'bins_particle'  : [0., 0.5, 1., 1.6, 2.4],
+    ##'bins_detector' : [0., 0.25, 0.5, 0.75, 1., 1.3, 1.6, 2., 2.4],
+    #"var_detector"         : 'abs(TLeadingLepEta)',
     #'var_response': 'LeadingLepEta',
-    #'var_gen'     : 'abs(TGenLeadingLepEta)',
+    #'var_particle'     : 'abs(TGenLeadingLepEta)',
 #}
 #varList['LeadingLepEtauncertainties'] = {
     #'xaxis'       : varList['LeadingLepEta']['xaxis'],
@@ -812,11 +812,11 @@ varList['Lep1Lep2_DPhiuncertainties'] = {
 #varList['SubLeadingLepE'] = {
     #'xaxis'       : 'E(\\ell_{2}) (GeV)',
     #'yaxis'       : 'd#sigma (pb)',
-    #'genbinning'  : [0, 50, 100, 175, 250],
-    #'recobinning' : [0., 30., 50., 70., 90., 115., 140., 175., 250.],
-    #'var'         : 'TSubLeadingLepE',
+    #'bins_particle'  : [0, 50, 100, 175, 250],
+    #'bins_detector' : [0., 30., 50., 70., 90., 115., 140., 175., 250.],
+    #"var_detector"         : 'TSubLeadingLepE',
     #'var_response': 'SubLeadingLepE',
-    #'var_gen'     : 'TGenSubLeadingLepE',
+    #'var_particle'     : 'TGenSubLeadingLepE',
 #}
 #varList['SubLeadingLepEuncertainties'] = {
     #'xaxis'       : varList['SubLeadingLepE']['xaxis'],
@@ -826,11 +826,11 @@ varList['Lep1Lep2_DPhiuncertainties'] = {
 #varList['SubLeadingLepPt'] = {
     #'xaxis'       : 'p_{T}(\\ell_{2}) (GeV)',
     #'yaxis'       : 'd#sigma (pb)',
-    #'genbinning'  : [0, 30, 60, 100, 150],
-    #'recobinning' : [0., 30., 40., 50., 58., 68., 78., 100., 150.],
-    #'var'         : 'TSubLeadingLepPt',
+    #'bins_particle'  : [0, 30, 60, 100, 150],
+    #'bins_detector' : [0., 30., 40., 50., 58., 68., 78., 100., 150.],
+    #"var_detector"         : 'TSubLeadingLepPt',
     #'var_response': 'SubLeadingLepPt',
-    #'var_gen'     : 'TGenSubLeadingLepPt',
+    #'var_particle'     : 'TGenSubLeadingLepPt',
 #}
 #varList['SubLeadingLepPtuncertainties'] = {
     #'xaxis'       : varList['SubLeadingLepPt']['xaxis'],
@@ -840,11 +840,11 @@ varList['Lep1Lep2_DPhiuncertainties'] = {
 #varList['SubLeadingLepPhi'] = {
     #'xaxis'       : '\\varphi(\\ell_{2}) (rad)',
     #'yaxis'       : 'd#sigma (pb)',
-    #'genbinning'  : [-r.TMath.Pi(), -1.5, 0, 1.5, r.TMath.Pi()],
-    #'recobinning' : [-r.TMath.Pi(), -2.25, -1.5, -.75, 0, .75, 1.5, 2.25, r.TMath.Pi()],
-    #'var'         : 'TSubLeadingLepPhi',
+    #'bins_particle'  : [-r.TMath.Pi(), -1.5, 0, 1.5, r.TMath.Pi()],
+    #'bins_detector' : [-r.TMath.Pi(), -2.25, -1.5, -.75, 0, .75, 1.5, 2.25, r.TMath.Pi()],
+    #"var_detector"         : 'TSubLeadingLepPhi',
     #'var_response': 'SubLeadingLepPhi',
-    #'var_gen'     : 'TGenSubLeadingLepPhi',
+    #'var_particle'     : 'TGenSubLeadingLepPhi',
 #}
 #varList['SubLeadingLepPhiuncertainties'] = {
     #'xaxis'       : varList['SubLeadingLepPhi']['xaxis'],
@@ -854,11 +854,11 @@ varList['Lep1Lep2_DPhiuncertainties'] = {
 #varList['SubLeadingLepEta'] = {
     #'xaxis'       : '\\eta(\\ell_2)',
     #'yaxis'       : 'd#sigma (pb)',
-    #'genbinning'  : [0., 0.6, 1.2, 1.8, 2.4],
-    #'recobinning' : [0., 0.3, 0.6, 0.9, 1.2, 1.5, 1.8, 2.1, 2.4],
-    #'var'         : 'abs(TSubLeadingLepEta)',
+    #'bins_particle'  : [0., 0.6, 1.2, 1.8, 2.4],
+    #'bins_detector' : [0., 0.3, 0.6, 0.9, 1.2, 1.5, 1.8, 2.1, 2.4],
+    #"var_detector"         : 'abs(TSubLeadingLepEta)',
     #'var_response': 'SubLeadingLepEta',
-    #'var_gen'     : 'abs(TGenSubLeadingLepEta)',
+    #'var_particle'     : 'abs(TGenSubLeadingLepEta)',
 #}
 #varList['SubLeadingLepEtauncertainties'] = {
     #'xaxis'       : varList['SubLeadingLepEta']['xaxis'],
@@ -872,11 +872,11 @@ varList['Lep1Lep2_DPhiuncertainties'] = {
     #'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(#it{p}_{T} (#it{e}^{#pm}, #it{#mu}^{#mp})) (adim.)',
     #'yaxisfidbin' : '(1/#sigma_{fid.})d#sigma/d(#it{p}_{T} (#it{e}^{#pm}, #it{#mu}^{#mp})) (1/GeV)',
     #'yaxisnorm'   : 'd#sigma/d(#it{p}_{T} (#it{e}^{#pm}, #it{#mu}^{#mp})) (pb/GeV)',
-    #'genbinning'  : [0, 40, 70, 100, 150, 175, 200],
-    #'recobinning' : [0, 30, 40, 50, 60, 70, 85, 100, 115, 130, 150, 175, 200],
-    #'var'         : 'TDilepPt',
+    #'bins_particle'  : [0, 40, 70, 100, 150, 175, 200],
+    #'bins_detector' : [0, 30, 40, 50, 60, 70, 85, 100, 115, 130, 150, 175, 200],
+    #"var_detector"         : 'TDilepPt',
     #'var_response': 'DilepPt',
-    #'var_gen'     : 'TGenDilepPt',
+    #'var_particle'     : 'TGenDilepPt',
 #}
 #varList['DilepPtuncertainties'] = {
     #'xaxis'       : varList['DilepPt']['xaxis'],
@@ -887,11 +887,11 @@ varList['Lep1Lep2_DPhiuncertainties'] = {
 #varList['DilepJetPt'] = {
     #'xaxis'       : 'p_{T}(\\ell_{1}, \\ell_{2}, j) (GeV)',
     #'yaxis'       : 'd#sigma (pb)',
-    #'genbinning'  : [0., 40., 80., 120., 200.],
-    #'recobinning' : [0., 20., 30., 40., 50., 60., 80., 120., 200.],
-    #'var'         : 'TDilepJetPt',
+    #'bins_particle'  : [0., 40., 80., 120., 200.],
+    #'bins_detector' : [0., 20., 30., 40., 50., 60., 80., 120., 200.],
+    #"var_detector"         : 'TDilepJetPt',
     #'var_response': 'DilepJetPt',
-    #'var_gen'     : 'TGenDilepJetPt',
+    #'var_particle'     : 'TGenDilepJetPt',
 #}
 #varList['DilepJetPtuncertainties'] = {
     #'xaxis'       : varList['DilepJetPt']['xaxis'],
@@ -901,11 +901,11 @@ varList['Lep1Lep2_DPhiuncertainties'] = {
 #varList['DilepMETJetPt'] = {
     #'xaxis'       : 'p_{T}(\\ell_{1} ,\\ell_{2}, j,\\slash{E}_{T}) (GeV)',
     #'yaxis'       : 'd#sigma (pb)',
-    #'genbinning'  : [0., 20., 40., 70., 150.],
-    #'recobinning' : [0., 10., 20., 30., 40., 50., 60., 70., 150.],
-    #'var'         : 'TDilepMETJetPt',
+    #'bins_particle'  : [0., 20., 40., 70., 150.],
+    #'bins_detector' : [0., 10., 20., 30., 40., 50., 60., 70., 150.],
+    #"var_detector"         : 'TDilepMETJetPt',
     #'var_response': 'DilepMETJetPt',
-    #'var_gen'     : 'TGenDilepMETJetPt',
+    #'var_particle'     : 'TGenDilepMETJetPt',
 #}
 #varList['DilepMETJetPtuncertainties'] = {
     #'xaxis'       : varList['DilepMETJetPt']['xaxis'],
@@ -915,11 +915,11 @@ varList['Lep1Lep2_DPhiuncertainties'] = {
 #varList['HTtot'] = {
     #'xaxis'       : 'p_{T}(\\ell_{1}, \\ell_{2}, j,\\slash{E}_{T}) (GeV)',
     #'yaxis'       : 'd#sigma (pb)',
-    #'genbinning'  : [0, 200, 300, 450, 600],
-    #'recobinning' : [0., 150., 200., 250., 300., 350., 400., 450., 600.],
-    #'var'         : 'THTtot',
+    #'bins_particle'  : [0, 200, 300, 450, 600],
+    #'bins_detector' : [0., 150., 200., 250., 300., 350., 400., 450., 600.],
+    #"var_detector"         : 'THTtot',
     #'var_response': 'HTtot',
-    #'var_gen'     : 'TGenHTtot',
+    #'var_particle'     : 'TGenHTtot',
 #}
 #varList['HTtotuncertainties'] = {
     #'xaxis'       : varList['HTtot']['xaxis'],
@@ -931,11 +931,11 @@ varList['Lep1Lep2_DPhiuncertainties'] = {
 #varList['LLMETBEta'] = {
     #'xaxis'       : '\\eta(\\ell_{1}, \\ell_{2}, j)',
     #'yaxis'       : 'd#sigma (pb)',
-    #'genbinning'  : [0., 1.25, 2.5, 3.75, 5.],
-    #'recobinning' : [0., 0.75, 1.25, 1.75, 2.25, 2.75, 3.25, 3.75, 5.],
-    #'var'         : 'abs(TLLMETBEta)',
+    #'bins_particle'  : [0., 1.25, 2.5, 3.75, 5.],
+    #'bins_detector' : [0., 0.75, 1.25, 1.75, 2.25, 2.75, 3.25, 3.75, 5.],
+    #"var_detector"         : 'abs(TLLMETBEta)',
     #'var_response': 'LLMETBEta',
-    #'var_gen'     : 'abs(TGenLLMETBEta)',
+    #'var_particle'     : 'abs(TGenLLMETBEta)',
 #}
 #varList['LLMETBEtauncertainties'] = {
     #'xaxis'       : varList['LLMETBEta']['xaxis'],
@@ -945,11 +945,11 @@ varList['Lep1Lep2_DPhiuncertainties'] = {
 #varList['MSys'] = {
     #'xaxis'       : 'm(\\ell_{1}, \\ell_{2}, j,\\slash{E}_{T})',
     #'yaxis'       : 'd#sigma (pb)',
-    #'genbinning'  : [0., 225., 325., 425., 700.],
-    #'recobinning' : [0., 225., 250., 275., 300., 325., 350., 425., 700.],
-    #'var'         : 'TMSys',
+    #'bins_particle'  : [0., 225., 325., 425., 700.],
+    #'bins_detector' : [0., 225., 250., 275., 300., 325., 350., 425., 700.],
+    #"var_detector"         : 'TMSys',
     #'var_response': 'MSys',
-    #'var_gen'     : 'TGenMSys',
+    #'var_particle'     : 'TGenMSys',
 #}
 #varList['MSysuncertainties'] = {
     #'xaxis'       : varList['MSys']['xaxis'],
@@ -959,11 +959,11 @@ varList['Lep1Lep2_DPhiuncertainties'] = {
 #varList['Mll'] = {
     #'xaxis'       : 'm(\\ell_{1}, \\ell_{2})',
     #'yaxis'       : 'd#sigma (pb)',
-    #'genbinning'  : [0., 50., 100., 150., 300.],
-    #'recobinning' : [0., 25., 45., 60., 75., 100., 125., 150., 300.],
-    #'var'         : 'TMll',
+    #'bins_particle'  : [0., 50., 100., 150., 300.],
+    #'bins_detector' : [0., 25., 45., 60., 75., 100., 125., 150., 300.],
+    #"var_detector"         : 'TMll',
     #'var_response': 'Mll',
-    #'var_gen'     : 'TGenMll',
+    #'var_particle'     : 'TGenMll',
 #}
 #varList['Mlluncertainties'] = {
     #'xaxis'       : varList['Mll']['xaxis'],
@@ -974,11 +974,11 @@ varList['Lep1Lep2_DPhiuncertainties'] = {
 #varList['DPhiLeadJet'] = {
     #'xaxis'       : '\\Delta \\varphi(\\ell_{1}, j) (rad)',
     #'yaxis'       : 'd#sigma (pb)',
-    #'genbinning'  : [0, 1., 1.75, 2.5, r.TMath.Pi()],
-    #'recobinning' : [0, .5, 1., 1.5, 1.75, 2., 2.5, 2.85, r.TMath.Pi()],
-    #'var'         : 'abs(TDPhiLeadJet)',
+    #'bins_particle'  : [0, 1., 1.75, 2.5, r.TMath.Pi()],
+    #'bins_detector' : [0, .5, 1., 1.5, 1.75, 2., 2.5, 2.85, r.TMath.Pi()],
+    #"var_detector"         : 'abs(TDPhiLeadJet)',
     #'var_response': 'DPhiLeadJet',
-    #'var_gen'     : 'abs(TGenDPhiLeadJet)',
+    #'var_particle'     : 'abs(TGenDPhiLeadJet)',
 #}
 #varList['DPhiLeadJetuncertainties'] = {
     #'xaxis'       : varList['DPhiLeadJet']['xaxis'],
@@ -988,11 +988,11 @@ varList['Lep1Lep2_DPhiuncertainties'] = {
 #varList['DPhiSubLeadJet'] = {
     #'xaxis'       : '\\Delta \\varphi(\\ell_{2}, j) (rad)',
     #'yaxis'       : 'd#sigma (pb)',
-    #'genbinning'  : [0, 1., 1.75, 2.5, r.TMath.Pi()],
-    #'recobinning' : [0, .5, 1., 1.5, 1.75, 2., 2.5, 2.85, r.TMath.Pi()],
-    #'var'         : 'abs(TDPhiSubLeadJet)',
+    #'bins_particle'  : [0, 1., 1.75, 2.5, r.TMath.Pi()],
+    #'bins_detector' : [0, .5, 1., 1.5, 1.75, 2., 2.5, 2.85, r.TMath.Pi()],
+    #"var_detector"         : 'abs(TDPhiSubLeadJet)',
     #'var_response': 'DPhiSubLeadJet',
-    #'var_gen'     : 'abs(TGenDPhiSubLeadJet)',
+    #'var_particle'     : 'abs(TGenDPhiSubLeadJet)',
 #}
 #varList['DPhiSubLeadJetuncertainties'] = {
     #'xaxis'       : varList['DPhiSubLeadJet']['xaxis'],
@@ -1002,12 +1002,12 @@ varList['Lep1Lep2_DPhiuncertainties'] = {
 #varList['nLooseCentral'] = {
     #'xaxis'       : 'Number of loose jets',
     #'yaxis'       : 'd#sigma (pb)',
-    #'genbinning'  : [-0.5, 1.5, 3.5, 4.5],
-    #'recobinning' : [-0.5, 0.5, 1.5, 2.5, 3.5, 4.5],
+    #'bins_particle'  : [-0.5, 1.5, 3.5, 4.5],
+    #'bins_detector' : [-0.5, 0.5, 1.5, 2.5, 3.5, 4.5],
     #'legpos'      : (0.70, 0.55, 0.90, 0.93),
-    #'var'         : 'TnLooseCentral',
+    #"var_detector"         : 'TnLooseCentral',
     #'var_response': 'nLooseCentral',
-    #'var_gen'     : 'TnSergioLooseCentralJets',
+    #'var_particle'     : 'TnSergioLooseCentralJets',
 #}
 #varList['nLooseCentraluncertainties'] = {
     #'xaxis'       : varList['nLooseCentral']['xaxis'],
@@ -1018,14 +1018,14 @@ varList['Lep1Lep2_DPhiuncertainties'] = {
 #varList['NJetsNBJets'] = {
     #'xaxis'       : '(Number of jets, number of b-tagged jets)',
     #'yaxis'       : 'd#sigma (pb)',
-    #'genbinning'  : [-0.5, 1.5, 3.5, 4.5],
-    #'recobinning' : [-0.5, 0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5],
+    #'bins_particle'  : [-0.5, 1.5, 3.5, 4.5],
+    #'bins_detector' : [-0.5, 0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5],
     #'legpos'      : (0.7, 0.55, 0.90, 0.93),
     #'legposdesc'  : (0.58, 0.55, 0.78, 0.93),
     #"maxdesc"     : 110000,
-    #'var'         : 'nJetsnBs(TNJets, TNBJets)',
+    #"var_detector"         : 'nJetsnBs(TNJets, TNBJets)',
     #'var_response': 'NBJets',
-    #'var_gen'     : 'TDressNBJets',
+    #'var_particle'     : 'TDressNBJets',
 #}
 #varList['NJetsNBJetsuncertainties'] = {
     #'xaxis'       : varList['NJetsNBJets']['xaxis'],
