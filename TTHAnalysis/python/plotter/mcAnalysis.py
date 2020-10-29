@@ -539,9 +539,22 @@ class MCAnalysis:
             h.buildEnvelopes() 
             h.buildEnvelopesRMS()
 
+        #print "\nANTES", ret
+
         ## add variations from alternate samples
         if self.variationsFile:
             buildVariationsFromAlternative(self.variationsFile, ret)
+            buildVariationsFromAlternativesWithEnvelope(self.variationsFile, ret)
+
+        ## remove samples used for sytstematics
+        toremove = []
+        for key in ret:
+            if "syst" in key:
+                toremove.append(key)
+        for rem in toremove:
+            print " - Erasing " + rem
+            ret.pop(rem)
+        #print "\nLLUEU", ret
 
         rescales = []
         self.compilePlotScaleMap(self._options.plotscalemap,rescales)

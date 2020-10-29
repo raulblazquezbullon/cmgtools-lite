@@ -82,6 +82,11 @@ class Uncertainty:
                 raise RuntimeError("altSample requires exactly two arguments")
             if self.binmatchstr != ".*":
                 raise RuntimeError("altSample affects all bins by construction")
+        elif self.unc_type=='altSampleEnv':
+            if len(self.args) < 1:
+                raise RuntimeError("altSampleEnv requires at least one argument")
+            if self.binmatchstr != ".*":
+                raise RuntimeError("altSample affects all bins by construction")
         elif self.unc_type=='none':
             pass
         else: raise RuntimeError, 'Uncertainty type "%s" not recognised' % self.unc_type
