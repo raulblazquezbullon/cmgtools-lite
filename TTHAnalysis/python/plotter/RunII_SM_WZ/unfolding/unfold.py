@@ -1189,7 +1189,18 @@ class Unfolder(object):
         ROOT.TH1.SetDefaultSumw2()
         
         moneyplot=ROOT.TCanvas('out', 'out', 2000, 2000)
-        moneyplot.cd()
+        moneyplot.Draw()
+        p1 = ROOT.TPad("mainpad", "mainpad", 0, 0.30, 1, 1)
+        p1.SetTopMargin(0.065)
+        p1.SetBottomMargin(0.025)
+        p1.Draw()
+        p2 = ROOT.TPad("ratiopad", "ratiopad", 0, 0, 1, 0.30)
+        p2.SetTopMargin(0.01)
+        p2.SetBottomMargin(0.3)
+        p2.SetFillStyle(0)
+        p2.Draw()
+        
+        p1.cd()
         # Normalize properly for differential xsec
         # Data truth
         dt=copy.deepcopy(self.dataTruth_nom)
@@ -1237,7 +1248,9 @@ class Unfolder(object):
         if ('MWZ' in self.var) or ('Njets' in self.var) or ('pol' in self.var):
             ROOT.gPad.SetLogy()
             dt.SetMaximum(100*dt.GetMaximum())
-        dt.GetXaxis().SetTitleSize(0.045)
+        #dt.GetXaxis().SetTitleSize(0.045)
+        dt.GetXaxis().SetTitleSize(0) # for ratio
+        dt.GetXaxis().SetLabelSize(0)
         dt.GetYaxis().SetTitleSize(0.045)
         dt.GetXaxis().SetTitleOffset(1.35)
         dt.GetYaxis().SetTitleOffset(1.6)
@@ -1527,6 +1540,51 @@ class Unfolder(object):
         leg_money.Draw()
         tdr.setTDRStyle()
         CMS_lumi.CMS_lumi(moneyplot, 4, 0, aLittleExtra=0.08)
+        
+
+        # Ratio plot
+        p2.cd()
+
+        # Reference is nominal POWHEG prediction, i.e. dt
+
+        # Ratio MATRIX to POWHEG
+        if self.matrix:
+            enterTheMatrixratio=copy.deepcopy(enterTheMatrix)
+            enterTheMatrixratio.SetName("ratio_%s"%enterTheMatrixratio.GetName())
+            enterTheMatrixratio.Draw("AI")
+            enterTheMatrixratio.Divide(enterTheMatrixratio.GetHistogram(), dt)
+        
+
+        # Ratio POWHEG to POWHEG (for visualization purposes)
+        dtratio=copy.deepcopy(dt)
+        dtratio.SetName("ratio_%s"%dtratio.GetName())
+        dtratio.Divide(dt)
+        dtratio.GetXaxis().SetTitleSize(0.045)
+        dtratio.GetYaxis().SetTitleSize(0.045)
+        dtratio.GetXaxis().SetLabelSize(0.035)
+        dtratio.GetYaxis().SetLabelSize(0.035)
+        dtratio.GetXaxis().SetTitleOffset(1.1)
+        dtratio.GetYaxis().SetTitleOffset(1.6)
+        dtratio.GetYaxis().SetTitle("Relative ratio to POWHEG")
+        dtratio.SetMinimum(0.5)
+        dtratio.SetMaximum(1.5)
+        dtratio.Draw("E HIST")
+
+
+        # Ratio Unfolded data to POWHEG:
+        husratio=copy.deepcopy(hus)
+        husratio.SetName("ratio_%s"%husratio.GetName())
+        husratio.Divide(dt)
+        husratio.Draw("E2 SAME")
+        
+        # Ratio amcatnlo to POWHEG
+        dt_altratio=copy.deepcopy(dt_alt)
+        dt_altratio.SetName("ratio_%s"%dt_altratio.GetName())
+        dt_altratio.Divide(dt)
+        dt_altratio.Draw("SAME E HIST")
+
+        enterTheMatrixratio.Draw("SAME PE>")
+
         moneyplot.SaveAs(os.path.join(self.outputDir, '3_differentialXsec_%s_%s_%s.pdf' % (label, key, self.var)))
         moneyplot.SaveAs(os.path.join(self.outputDir, '3_differentialXsec_%s_%s_%s.png' % (label, key, self.var)))
         moneyplot.SaveAs(os.path.join(self.outputDir, '3_differentialXsec_%s_%s_%s.C' % (label, key, self.var)))
