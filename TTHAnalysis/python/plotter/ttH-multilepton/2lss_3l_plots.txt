@@ -290,6 +290,7 @@ lep3_elIdMVA:	 -0.5*log((1-LepGood3_mvaFall17V2noIso)/(1+LepGood3_mvaFall17V2noI
 lep3_relIso04:	 LepGood3_relIso04				 : 40,0,0.5; XTitle="Third lepton relIso04", Legend='TR', Logy
 lep3_relIso03:	 LepGood3_relIso03				 : 40,0,0.5; XTitle="Third lepton relIso03", Legend='TR', Logy
 
+sum_3l_pt:	 LepGood1_pt + LepGood2_pt + LepGood3_pt	 : 40, 0, 120; XTitle="sum 3l p_{T} (GeV)"
 lep4_pt: 	 LepGood4_pt					 : 40,0,120; XTitle="Fourth lepton p_{T} (GeV)"
 lep4_conePt: 	 LepGood4_conePt				 : 40,0,120; XTitle="Fourth lepton cone p_{T} (GeV)"
 lep4_eta: 	 LepGood4_eta					 : 40,-2.5,2.5; XTitle="Fourth lepton #eta"
