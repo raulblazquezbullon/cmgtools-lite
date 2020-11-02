@@ -1,2 +1,5 @@
 VV : Tree_WZTo3LNu_TuneCP5_ext1_0 : 4.42965 ; genSumWeightName="genEventSumw_",FillColor=ROOT.kGreen
-VV : Tree_WWTo2L2Nu_TuneCP5_ext1_0 : 12.178 ; genSumWeightName="genEventSumw_",FillColor=ROOT.kGreen
+#VV : Tree_WWTo2L2Nu_TuneCP5_ext1_0 : 12.178 ; genSumWeightName="genEventSumw_",FillColor=ROOT.kGreen
+VV : Tree_WWTo2L2Nu_TuneCP5_ext1_0 : 10.48 ; genSumWeightName="genEventSumw_",FillColor=ROOT.kGreen
+VV : Tree_ZJToEEJ_M_50_0 + Tree_ZJToEEJ_M_50_1 + Tree_ZJToEEJ_M_50_2: 1966.0648;  genSumWeightName="genEventSumw_",FillColor=ROOT.kGreen
+

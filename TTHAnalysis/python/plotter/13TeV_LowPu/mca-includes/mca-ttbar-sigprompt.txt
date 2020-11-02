@@ -1,5 +1,3 @@
-#TT+ : Tree_TTToSemiLeptonic_TuneCP5_ext1_0 + Tree_TTToSemiLeptonic_TuneCP5_ext1_1 + Tree_TTToSemiLeptonic_TuneCP5_ext1_2 + Tree_TTToSemiLeptonic_TuneCP5_ext1_3 + Tree_TTToSemiLeptonic_TuneCP5_ext1_4 + Tree_TTToSemiLeptonic_TuneCP5_ext1_5 + Tree_TTToSemiLeptonic_TuneCP5_ext1_6 + Tree_TTToSemiLeptonic_TuneCP5_ext1_7 : 365.35 ; genSumWeightName="genEventSumw_",FillColor=ROOT.kBlue+1
-#TT+ : Tree_TTToHadronic_TuneCP5_ext1_0 + Tree_TTToHadronic_TuneCP5_ext1_1 + Tree_TTToHadronic_TuneCP5_ext1_2 + Tree_TTToHadronic_TuneCP5_ext1_3 : 377.96 ; genSumWeightName="genEventSumw_",FillColor=ROOT.kBlue+1
-
-
+#TT+ : Tree_TTToSemiLeptonic_TuneCP5_ext1_0 + Tree_TTToSemiLeptonic_TuneCP5_ext1_1 + Tree_TTToSemiLeptonic_TuneCP5_ext1_2 + Tree_TTToSemiLeptonic_TuneCP5_ext1_3 + Tree_TTToSemiLeptonic_TuneCP5_ext1_4 + Tree_TTToSemiLeptonic_TuneCP5_ext1_5 + Tree_TTToSemiLeptonic_TuneCP5_ext1_6 + Tree_TTToSemiLeptonic_TuneCP5_ext1_7 : 365.35 ; genSumWeightName="genEventSumw_",FillColor=ROOT.kRed
+#TT+ : Tree_TTToHadronic_TuneCP5_ext1_0 + Tree_TTToHadronic_TuneCP5_ext1_1 + Tree_TTToHadronic_TuneCP5_ext1_2 + Tree_TTToHadronic_TuneCP5_ext1_3 : 377.96 ; genSumWeightName="genEventSumw_",FillColor=ROOT.kRed
 TT+ : Tree_TTTo2L2Nu_TuneCP5_ext1_0 + Tree_TTTo2L2Nu_TuneCP5_ext1_1 + Tree_TTTo2L2Nu_TuneCP5_ext1_2 : 88.29 ; genSumWeightName="genEventSumw_",FillColor=ROOT.kRed
