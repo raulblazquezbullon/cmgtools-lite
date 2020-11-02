@@ -27,7 +27,7 @@ defaultPars = {"path"       : "/pool/phedex/userstorage/cmstudents/cvico/WZ_LowP
                "binnameTT"  : "ttbar"
               }
 
-
+CMD = "python mcPlots.py --tree NanoAOD -P {path} --pedir {outpath} {extra} {mca} {cuts} {plots}" # Base part of the command that we are gonna use in this Analysis
 steps = ["0_tags", "1_lepMerge", "2_recleaning", "3_triggers", "4_eventVars"]
 # =========== Function declaration
 

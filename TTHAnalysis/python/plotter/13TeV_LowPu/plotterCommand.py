@@ -48,7 +48,9 @@ def add_options(parser):
 	parser.add_argument("--select-plot", '--sP', metavar = "selectPlot", dest = "selectPlot", default = "forLocal")
 	return parser
 
-
+def makeFolders(outpath, queue):
+	if not os.path.exists(outpath): os.system("mkdir -p " + outpath) # create the folder to store plots
+	if queue != None: os.system("mkdir -p " + outpath + "/logs") # create the folder to store logs from CMGTools
 
 def get_list_of_plots(selectPlot):
 	'''
@@ -74,13 +76,13 @@ def get_signal_mca(signal):
 		signal_dict["mca"]     = "{}/mca-ttbar-mcdata.txt".format(defaultPars["analysis_folder"])
 		signal_dict["mcc"] 	  = "{}/lepchoice-FO.txt".format(defaultPars["analysis_folder"])
 		signal_dict["binname"] = "ttbar"
-		signal_dict["plots"]   = "{}/ttbar_plots.txt".format(defaultPars["analysis_folder"])	
-	
+		signal_dict["plots"]   = "{}/ttbar_plots.txt".format(defaultPars["analysis_folder"])
+		signal_dict["rebin"] = "4"	
 	return signal_dict
 
 def get_cuts_file(selection):
 	if selection == "dilepton":
-		return "{}/ttbar_dilepton_backup.txt".format(defaultPars["analysis_folder"])
+		return "{}/ttbar_dilepton.txt".format(defaultPars["analysis_folder"])
 
 if __name__ == "__main__":
 	parser = add_options(argparse.ArgumentParser())
@@ -99,22 +101,25 @@ if __name__ == "__main__":
 	cut_file    = get_cuts_file(region)
 
 	extra = ["--Fs {ftreesPath}{Friend} ".format(ftreesPath = defaultPars["ftreesPath"], Friend = step) for step in steps]
-	extra.extend(["-f -j {} -l {}".format(nthreads, defaultPars["lumi"]),
-					  "--split-factor=-1",
-             	  "--maxRatioRange 0.6  1.99", 
-             	  "--ratioYNDiv 505",
-					  "--showRatio",
-					  "--attachRatioPanel", 
-					  "--fixRatioRange",
-					  "--legendColumns 3",
-					  "--legendWidth 0.35",
-					  "--legendFontSize 0.042 "
-					  "--noCms",
-					  "--topSpamSize 1.1 ",
-					  "--lspam '#scale[1.1]{#bf{CMS}} #scale[0.9]{#it{Preliminary}}'",
-					  "--rspam '%(lumi) (13 TeV)'",
-					  "--binname {}".format(signal_dict["binname"]),
-					  "--mcc {}".format(signal_dict["mcc"])])
+	extra.extend(["-f ",
+		      "-j {}".format(nthreads) if nthreads != 0 and queue == None else "", 
+		      "-l {}".format(defaultPars["lumi"]),
+		      "--split-factor=-1",
+             	      "--maxRatioRange 0.6  1.99", 
+             	      "--ratioYNDiv 505",
+		      "--showRatio",
+		      "--attachRatioPanel", 
+		      "--fixRatioRange",
+	              "--legendColumns 3",
+		      "--legendWidth 0.35",
+		      "--legendFontSize 0.042 "
+		      "--noCms",
+		      "--topSpamSize 1.1 ",
+		      "--lspam '#scale[1.1]{#bf{CMS}} #scale[0.9]{#it{Preliminary}}'",
+		      "--rspam '%(lumi) (13 TeV)'",
+		      "--binname {}".format(signal_dict["binname"]),
+		      "--rebin {}".format(signal_dict["rebin"]),
+		      "--mcc {}".format(signal_dict["mcc"])])
 
 	comm = CMD.format(path = defaultPars["path"].format(prod = production),
 							outpath = outpath,
@@ -123,17 +128,18 @@ if __name__ == "__main__":
 							cuts = cut_file,
 							plots = signal_dict["plots"],
 							listOfPlots = get_list_of_plots(selectPlot))
-	print(comm)
+	makeFolders(outpath, queue)
 	if queue != None:
 		if queue not in ["infinite", "batch"]: raise RuntimeError("\n".join(["[ERROR]: Invalid queue '{}'", "[INFO]: Available queues  are", "infinite", "batch"]))
 		else:
 			comm_2_submit = slurm_stuff.format(nth = nthreads,
-														  queue = queue,
-														  jobname = jobname,
-														  logpath = logpath.format(y = year, p = production),
-														  command = CMD)
-
-	
+							   queue = queue,
+							   jobname = defaultPars["jobname"],
+							   logpath = outpath + "/logs",
+							   command = comm)
+			print(comm_2_submit)
+	else:
+		print(comm)
 
 
 	

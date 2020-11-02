@@ -1,6 +1,8 @@
 tot_weight: 1 : 1,0.5,1.5; XTitle = "Selected events", Legend='TR', MoreY=2.0
 genSumWeight: genWeight : 1,0.5,1.5; XTitle = "Selected events", Legend='TR', MoreY=2.0
-
+single_mu_trigger: Trigger_1m: 1,0, 1; XTitle = "Selected events"
+single_e_trigger: Trigger_1e: 1,0, 1; XTitle = "Selected events"
+double_e_trigger: Trigger_2e:1,0, 1; XTitle = "Selected events"
 
 met: 		MET_pt					: 28,0,210 ; XTitle="E_{T}^{miss} (GeV)"
 met_log:	MET_pt					: 28,0,210 ; XTitle="E_{T}^{miss} (GeV)",  Logy
