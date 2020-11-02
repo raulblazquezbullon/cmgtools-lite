@@ -21,7 +21,7 @@ slurmscaff   = "sbatch -c {nth} -p {queue} -J {jobname} -e {logpath}/log.%j.%x.e
 
 commandscaff = '''python makeShapeCardsNew.py --tree NanoAOD {mcafile} {cutsfile} "{variable}" "{bins}" {samplespaths} {friends} --od {outpath} -l {lumi} {nth} -f -L tw-run2/functions_tw.cc --neg --threshold 0.01 {weights} --year {year} {asimovornot} {uncs} {extra} {name}'''
 
-nomweight    = '''-W "MuonIDSF * MuonISOSF * ElecISSF * ElecRECOSF * TrigSF * puWeight * bTagWeight * PrefireWeight"'''
+nomweight    = '''-W "MuonIDSF * MuonISOSF * ElecIDSF * ElecRECOSF * TrigSF * puWeight * bTagWeight * PrefireWeight"'''
 
 genweight    = ""
 
@@ -36,8 +36,8 @@ def PythonListToString(theL):
 
 
 def CardsCommand(prod, year, var, isAsimov, nthreads, outpath, region, noUnc, useFibre, extra):
-    mcafile_   = "tw-run2/mca-differential/mca-tw-diff.txt"
-    cutsfile_  = "tw-run2/cuts-differential/cuts-{reg}-1j1t.txt".format(reg = region.replace("Response", ""))
+    mcafile_   = "tw-run2/differential/mca-differential/mca-tw-diff.txt"
+    cutsfile_  = "tw-run2/differential/cuts-differential/cuts-{reg}-1j1t.txt".format(reg = region.replace("Response", ""))
 
     samplespaths_ = "-P " + friendspath + "/" + prod + ("/" + year) * (year != "run2")
     if useFibre: samplespaths_ = samplespaths_.replace("phedexrw", "phedex").replace("cienciasrw", "ciencias")
@@ -45,6 +45,9 @@ def CardsCommand(prod, year, var, isAsimov, nthreads, outpath, region, noUnc, us
     nth_       = "" if nthreads == 0 else ("--split-factor=-1 -j " + str(nthreads))
     friends_   = friendsscaff
     outpath_   = outpath + "/" + year + "/" + var + "/"
+
+    if not os.path.isdir(outpath):
+        os.system("mkdir -p " + outpath)
 
     thebins = (vl.varList[var]["bins_detector"] if (region == "detector" or region == "nonfiducial") else
                vl.varList[var]["bins_particle"] if (region == "particle" or region == "detectorparticle") else
@@ -56,7 +59,7 @@ def CardsCommand(prod, year, var, isAsimov, nthreads, outpath, region, noUnc, us
     else:
         bins_ = PythonListToString(thebins[0]) + "*" + PythonListToString(thebins[1])
 
-    variable_  = (vl.varList[var]["var_detector"] if (region == "detector") else
+    variable_  = (vl.varList[var]["var_detector"] if (region == "detector" or region == "nonfiducial") else
                   vl.varList[var]["var_particle"] if (region == "particle" or region == "detectorparticle") else
                   vl.varList[var]["var_particle"] + ":" + vl.varList[var]["var_detector"])
     name_      = "--binname " + region
@@ -72,7 +75,7 @@ def CardsCommand(prod, year, var, isAsimov, nthreads, outpath, region, noUnc, us
                                bins      = bins_,
                                nth       = nth_,
                                year      = year if year != "run2" else "2016,2017,2018",
-                               asimovornot = "--asimov signal" if isAsimov else "",
+                               asimovornot = "--asimov s+b" if isAsimov else "",
                                mcafile   = mcafile_,
                                cutsfile  = cutsfile_,
                                uncs      = "" if region == "particle" else "--unc tw-run2/uncs-tw.txt --amc" if not noUnc else "--amc",

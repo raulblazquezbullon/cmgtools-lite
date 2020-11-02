@@ -15,4 +15,6 @@ dilep      : (nLepGood >= 2) && (LepGood_pt_corrAll[0] > 25) && (LepGood_pt_corr
 
 # NOT PARTICLE
 
-notpart : (! ((Dresschannel == 1) && (nDressSelLep >= 2) && (GenDressedLepton[iDressSelLep[0]] > 25) && (GenDressedLepton[iDressSelLep[1]] > 20) && (DressisSS == 0) && (DressminMllAFAS > 20) && (nDressSelJet == 1) && (nDressBSelJet == 1) && (nDressSelLooseJet == 0)))
+#####notpart : (! ((Dresschannel == 1) && (nDressSelLep >= 2) && (GenDressedLepton_pt[iDressSelLep[0]] > 25) && (GenDressedLepton_pt[iDressSelLep[1]] > 20) && (DressisSS == 0) && (DressminMllAFAS > 20) && (nDressSelJet == 1) && (nDressBSelJet == 1) && (nDressSelLooseJet == 0)))
+
+notpart : (! ((Dresschannel == 1) && (nDressSelLep >= 2) && (GenDressedLepton_pt[iDressSelLep[0]] > 25) && (GenDressedLepton_pt[iDressSelLep[1]] > 20) && (DressisSS == 0) && (DressMll > 20) && (nDressSelJet == 1) && (nDressBSelJet == 1) && (nDressSelLooseJet == 0)))

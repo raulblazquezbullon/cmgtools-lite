@@ -26,7 +26,7 @@ def GetAndPlotResponseMatrix(var, key, theresponseh, theparticleh, thepath):
 
     hGen  = r.TH2D('hGen', '', nparticlebins, particlebins, ndetectorbins, detectorbins)
 
-    htemp = deepcopy(thresponseh.Clone("response"))
+    htemp = deepcopy(theresponseh.Clone("response"))
 
     for i in range(0, nparticlebins + 2):
         for j in range(0, ndetectorbins + 2):
@@ -75,7 +75,7 @@ def GetAndPlotResponseMatrix(var, key, theresponseh, theparticleh, thepath):
     plot = c.GetPad(0);
     #plot.SetPad(0.0, 0.23, 1.0, 1.0);
     plot.SetTopMargin(0.0475); plot.SetRightMargin(0.1); plot.SetLeftMargin(0.12); plot.SetBottomMargin(0.1)
-    if 'resptxtsize' in vl.varList[vname]: htemp.SetMarkerSize(vl.varList[vname]['resptxtsize'])
+    if 'resptxtsize' in vl.varList[var]: htemp.SetMarkerSize(vl.varList[var]['resptxtsize'])
     else:                                  htemp.SetMarkerSize(markersize)
     htemp.SetMarkerColor(r.kRed)
     htemp.Draw("colz text e")
@@ -112,7 +112,7 @@ def GetAndPlotResponseMatrix(var, key, theresponseh, theparticleh, thepath):
     return htemp, overlap
 
 
-def GetAndPlotPuritiesAndStabilities(var, theresponseh, theparticleh, thedetectorparticleh, thepath):
+def GetAndPlotPuritiesAndStabilities(var, theresponseh, theparticleh, thedetectorparticleh, thedetectorh, thepath):
     purities          = []
     stabilities       = []
     stabilities_woeff = []
@@ -147,7 +147,7 @@ def GetAndPlotPuritiesAndStabilities(var, theresponseh, theparticleh, thedetecto
             sumpur += theresponseh.GetBinContent(i, j)
 
         try:
-            purities.append(sumpur / hReco1.GetBinContent(j))
+            purities.append(sumpur / thedetectorh.GetBinContent(j))
         except ZeroDivisionError:
             purities.append(0)
 
@@ -167,7 +167,7 @@ def GetAndPlotPuritiesAndStabilities(var, theresponseh, theparticleh, thedetecto
     #plot.SetPad(0.0, 0.23, 1.0, 1.0);
     plot.SetTopMargin(0.06); plot.SetRightMargin(0.05); plot.SetLeftMargin(0.1); plot.SetBottomMargin(0.12)
 
-    hPur.SetXTitle(vl.varList[vname]['xaxis'])
+    hPur.SetXTitle(vl.varList[var]['xaxis'])
     hPur.SetStats(False)
     hPur.SetYTitle("Purities and stabilities")
     hStab.SetLineColor(r.kBlue)
@@ -218,7 +218,7 @@ def GetAndPlotPuritiesAndStabilities(var, theresponseh, theparticleh, thedetecto
 
     hStab_woeff.SetLineColor(r.kBlue)
     hPur.Draw('')
-    hStab.Draw('same')
+    hStab_woeff.Draw('same')
     r.gPad.Update()
 
     textSize      = 0.035
@@ -248,7 +248,7 @@ def GetConditionNumber(thehisto):
 
     decomp = r.TDecompSVD(matrx)
     condn  = decomp.Condition()
-    del matrx, decomp, prob
+    del matrx, decomp
     return condn
 
 
@@ -279,7 +279,7 @@ def SaveOverlap(theoverlap, thepath):
 
 
 def SaveAllConditionNumbers(thedict, thepath):
-    fcn = open(thepath + "/condnums.txt")
+    fcn = open(thepath + "/condnums.txt", "w")
     out = 'Variation        Value\n'
     for key in thedict:
         out += ("Nominal" if key == "" else key) + ":\t" + str(round(thedict[key], 4)) + '\n'
@@ -291,23 +291,31 @@ def SaveAllConditionNumbers(thedict, thepath):
 def CalculateAndPlotResponseMatrices(tsk):
     inpath, iY, iV = tsk
     # 0) Preliminary.
-    fParticle = r.TFile(inpath + "/" + iY + "/" + iV + "/NOMBREPARTICULA.root", "READ")
-    hParticle = fParticle.Get(iV).Clone("hParticle_" + iV)
+    print "\nCreando matrices de respuesta en", inpath, "para el anyo", iY, "y la variable", iV
+
+    fParticle = r.TFile(inpath + "/" + iY + "/" + iV + "/particle.root", "READ")
+    hParticle = deepcopy(fParticle.Get("x_tw").Clone("hParticle_" + iV))
     fParticle.Close(); del fParticle
 
     unclist = []
-    fDetector         = r.TFile(inpath + "/" + iY + "/" + iV + "/NOMBREDETECTOR.root", "READ")
-    fDetectorParticle = r.TFile(inpath + "/" + iY + "/" + iV + "/NOMBREDETECTORPARTICLE.root", "READ")
-    fResponse         = r.TFile(inpath + "/" + iY + "/" + iV + "/NOMBRERESPONSE.root", "READ")
+    fDetector         = r.TFile(inpath + "/" + iY + "/" + iV + "/detector.root", "READ")
+    fDetectorParticle = r.TFile(inpath + "/" + iY + "/" + iV + "/detectorparticle.root", "READ")
+    fResponse         = r.TFile(inpath + "/" + iY + "/" + iV + "/detectorparticleResponse.root", "READ")
+    fNonFiducial      = r.TFile(inpath + "/" + iY + "/" + iV + "/nonfiducial.root", "READ")
 
-    detectordict = {}; detectorparticledict = {}; responsedict = {}; condnumdict = {}
+    detectordict = {}; detectorparticledict = {};
+    responsedict = {}; nonfiducialdict = {};
+    condnumdict = {}
     for key in fDetector.GetListOfKeys():
         tmpnam = key.GetName()
+
+        if "data" in tmpnam: continue
 
         if "Up" not in tmpnam and "Down" not in tmpnam: # It is the nominal value!
             detectordict[""]         = deepcopy(fDetector.Get(tmpnam).Clone(""))
             detectorparticledict[""] = deepcopy(fDetectorParticle.Get(tmpnam).Clone(""))
             responsedict[""]         = deepcopy(fResponse.Get(tmpnam).Clone(""))
+            nonfiducialdict[""]      = deepcopy(fNonFiducial.Get(tmpnam).Clone(""))
         else:
             tmpunc  = tmpnam.replace("x_tw_", "")
 
@@ -319,11 +327,15 @@ def CalculateAndPlotResponseMatrices(tsk):
             detectordict[tmpunc]         = deepcopy(fDetector.Get(tmpnam).Clone(tmpunc))
             detectorparticledict[tmpunc] = deepcopy(fDetectorParticle.Get(tmpnam).Clone(tmpunc))
             responsedict[tmpunc]         = deepcopy(fResponse.Get(tmpnam).Clone(tmpunc))
+            nonfiducialdict[tmpunc]         = deepcopy(fNonFiducial.Get(tmpnam).Clone(tmpunc))
 
 
     fDetector.Close();         del fDetector
     fDetectorParticle.Close(); del fDetectorParticle
     fResponse.Close();         del fResponse
+    fNonFiducial.Close();      del fNonFiducial
+
+    print detectordict, detectorparticledict, responsedict, nonfiducialdict
 
     tmpoutpath = inpath + "/" + iY + "/" + iV + "/responseplots"
 
@@ -333,7 +345,7 @@ def CalculateAndPlotResponseMatrices(tsk):
     foutput = r.TFile(inpath + "/" + iY + "/" + iV + "/UnfoldingInfo.root", "recreate")
     for key in detectordict:
         if key == "":
-            GetAndPlotPuritiesAndStabilities(iV, responsedict[key], hParticle, detectorparticledict[key], tmpoutpath)
+            GetAndPlotPuritiesAndStabilities(iV, responsedict[key], hParticle, detectorparticledict[key], detectordict[key], tmpoutpath)
 
         hResponse, theoverlap = GetAndPlotResponseMatrix(iV, key, responsedict[key], hParticle, tmpoutpath)
 
@@ -341,7 +353,7 @@ def CalculateAndPlotResponseMatrices(tsk):
             SaveOverlap(theoverlap, tmpoutpath)
 
         condnumdict[key] = GetConditionNumber(hResponse)
-        hNonFiducial     = GetAndPlotNonFiducialHisto(var, theunc, thefiducialh, tmpoutpath)
+        hNonFiducial     = GetAndPlotNonFiducialHisto(iV, key, nonfiducialdict[key], tmpoutpath)
 
         hResponse.Write()
         hNonFiducial.Write()
@@ -354,10 +366,9 @@ def CalculateAndPlotResponseMatrices(tsk):
 
 if __name__=="__main__":
     parser = argparse.ArgumentParser(usage = "python nanoAOD_checker.py [options]", description = "Checker tool for the outputs of nanoAOD production (NOT postprocessing)", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument('--production','-P', metavar = "prod",       dest = "prod",     required = True)
+    parser.add_argument('--inpath',    '-i', metavar = 'inpath',     dest = "inpath",   required = False, default = "./temp/differential/cards")
     parser.add_argument('--year',      '-y', metavar = 'year',       dest = "year",     required = False, default = "all")
     parser.add_argument('--variable',  '-v', metavar = 'variable',   dest = "variable", required = False, default = "all")
-    parser.add_argument('--inpath',    '-i', metavar = 'inpath',     dest = "inpath",   required = False, default = "./temp/differential/cards")
     parser.add_argument('--extraArgs', '-e', metavar = 'extra',      dest = "extra",    required = False, default = "")
     parser.add_argument('--nthreads',  '-j', metavar = 'nthreads',   dest = "nthreads", required = False, default = 0, type = int)
     parser.add_argument('--pretend',   '-p', action  = "store_true", dest = "pretend",  required = False, default = False)
@@ -376,8 +387,6 @@ if __name__=="__main__":
     print("> Setting binning, paths, and other details...")
 
     print "\n> Drawing matrices and writing ROOT file (old one will be overwritten!)."
-    print "The matrices will be saved in " + str(matrixoutputpath)
-    print "The plots will be drawn in " + str(plotsoutputpath)
 
 
     #### First, find the tasks
@@ -385,170 +394,16 @@ if __name__=="__main__":
     if year == "all":
         if variable == "all":
             theyears = next(os.walk(inpath))[1]
-            for iY in years:
+            for iY in theyears:
                 thevars = next(os.walk(inpath + "/" + iY))[1]
                 for iV in thevars:
                     tasks.append( (inpath, iY, iV) )
 
-    pool = Pool(ncores)
-    pool.map(CalculateAndPlotResponseMatrices, tasks)
-    pool.close()
-    pool.join()
-    
-
-
-#### OLD
-## ---------------------------------------------------------------- BINNING IMPORTING FROM varList
-#VarBins_X = []
-#VarBins_Y = []
-
-#for i in range(len(VarNames)):
-    #VarBins_X.append(array('f', vl.varList[VarNames[i]]['genbinning']))
-    #VarBins_Y.append(array('f', vl.varList[VarNames[i]]['recobinning']))
-
-#xmin    = [int(round(i[0]))  for i in VarBins_X]
-#xmax    = [int(round(i[-1])) for i in VarBins_Y]
-#ymin    = xmin
-#ymax    = xmax
-#nybins  = [len(i)-1  for i in VarBins_Y]
-#nxbins  = [int(i/2)  for i in nybins]  ### IMPORTANT!!!! The relation 1(gen):2(reco) in the number of bins MUST be preserved
-#for i in range(len(nxbins)):
-    #if nxbins[i] == 0: nxbins[i] = 1
-
-#for i in range(nvars):
-    #print("\n    - Drawing and saving the response matrices of the variable "+ VarNames[i] + " ...")
-    ## Nominal response matrices
-    #htemp = GetResponseMatrix([treeTW, treeTW_noFully], [treeTbarW, treeTbarW_noFully], VarNames[i], nxbins[i], VarBins_X[i], nybins[i], VarBins_Y[i], t3 = treeTTbar)
-    #htemp.Write()
-    #PrintResponseMatrix(htemp, VarNames[i], nxbins[i], VarBins_X[i], xmin[i], xmax[i], nybins[i], VarBins_Y[i], ymin[i], ymax[i], purities[i], stabilities[i])
-    #htemp = GetFiducialHisto([treeTW, treeTW_noFully], [treeTbarW, treeTbarW_noFully], VarNames[i], nybins[i], VarBins_Y[i], t3 = treeTTbar)
-    #htemp.Write()
-    #PrintFiducialHisto(htemp, VarNames[i])
-
-    ## JES, JER and weight-related systematics response matrices
-    #for j in range(nsys):
-        ##if j != 2: continue
-        #htemp = GetResponseMatrix([treeTW, treeTW_noFully], [treeTbarW, treeTbarW_noFully], VarNames[i], nxbins[i], VarBins_X[i], nybins[i], VarBins_Y[i], SysList[j], t3 = treeTTbar)
-        #htemp.Write()
-        #PrintResponseMatrix(htemp, VarNames[i], nxbins[i], VarBins_X[i], xmin[i], xmax[i], nybins[i], VarBins_Y[i], ymin[i], ymax[i])
-        #htemp = GetFiducialHisto([treeTW, treeTW_noFully], [treeTbarW, treeTbarW_noFully], VarNames[i], nybins[i], VarBins_Y[i], SysList[j], t3 = treeTTbar)
-        #htemp.Write()
-        #PrintFiducialHisto(htemp, VarNames[i])
-
-    ## Modeling systematics response matrices
-    #htemp = GetResponseMatrix(treeTW_DSUp,    treeTbarW_DSUp,       VarNames[i], nxbins[i], VarBins_X[i], nybins[i], VarBins_Y[i], "modeling", t3 = treeTTbar)
-    #htemp.Write()
-    #PrintResponseMatrix(htemp, VarNames[i], nxbins[i], VarBins_X[i], xmin[i], xmax[i], nybins[i], VarBins_Y[i], ymin[i], ymax[i])
-    #htemp = GetFiducialHisto(treeTW_DSUp,     treeTbarW_DSUp,       VarNames[i], nybins[i], VarBins_Y[i], "modeling", t3 = treeTTbar)
-    #htemp.Write()
-    #PrintFiducialHisto(htemp, VarNames[i])
-    ##htemp = GetResponseMatrix(treeTW_fsrUp,   treeTbarW_fsrUp,    VarNames[i], nxbins[i], VarBins_X[i], nybins[i], VarBins_Y[i], "modeling", [treeTW, treeTbarW, treeTTbar], t3 = treeTTbar_fsrUp)
-    #htemp = GetResponseMatrix(treeTW_fsrUp,   treeTbarW_fsrUp,    VarNames[i], nxbins[i], VarBins_X[i], nybins[i], VarBins_Y[i], "modeling", [treeTW_noFully, treeTbarW_noFully, treeTTbar], t3 = treeTTbar_fsrUp)
-    #htemp.Write()
-    #PrintResponseMatrix(htemp, VarNames[i], nxbins[i], VarBins_X[i], xmin[i], xmax[i], nybins[i], VarBins_Y[i], ymin[i], ymax[i])
-    ##htemp = GetFiducialHisto(treeTW_fsrUp,    treeTbarW_fsrUp,    VarNames[i], nybins[i], VarBins_Y[i], "modeling", [treeTW, treeTbarW, treeTTbar], t3 = treeTTbar_fsrUp)
-    #htemp = GetFiducialHisto(treeTW_fsrUp,    treeTbarW_fsrUp,    VarNames[i], nybins[i], VarBins_Y[i], "modeling", [treeTW_noFully, treeTbarW_noFully, treeTTbar], t3 = treeTTbar_fsrUp)
-    #htemp.Write()
-    #PrintFiducialHisto(htemp, VarNames[i])
-    ##htemp = GetResponseMatrix(treeTW_fsrDown, treeTbarW_fsrDown,  VarNames[i], nxbins[i], VarBins_X[i], nybins[i], VarBins_Y[i], "modeling", [treeTW, treeTbarW, treeTTbar], t3 = treeTTbar_fsrDown)
-    #htemp = GetResponseMatrix(treeTW_fsrDown, treeTbarW_fsrDown,  VarNames[i], nxbins[i], VarBins_X[i], nybins[i], VarBins_Y[i], "modeling", [treeTW_noFully, treeTbarW_noFully, treeTTbar], t3 = treeTTbar_fsrDown)
-    #htemp.Write()
-    #PrintResponseMatrix(htemp, VarNames[i], nxbins[i], VarBins_X[i], xmin[i], xmax[i], nybins[i], VarBins_Y[i], ymin[i], ymax[i])
-    ##htemp = GetFiducialHisto(treeTW_fsrDown,  treeTbarW_fsrDown,  VarNames[i], nybins[i], VarBins_Y[i], "modeling", [treeTW, treeTbarW, treeTTbar], t3 = treeTTbar_fsrDown)
-    #htemp = GetFiducialHisto(treeTW_fsrDown,  treeTbarW_fsrDown,  VarNames[i], nybins[i], VarBins_Y[i], "modeling", [treeTW_noFully, treeTbarW_noFully, treeTTbar], t3 = treeTTbar_fsrDown)
-    #htemp.Write()
-    #PrintFiducialHisto(htemp, VarNames[i])
-    ##htemp = GetResponseMatrix(treeTW_isrDown, treeTbarW_isrDown,  VarNames[i], nxbins[i], VarBins_X[i], nybins[i], VarBins_Y[i], "modeling", [treeTW, treeTbarW, treeTTbar], t3 = treeTTbar_isrDown)
-    #htemp = GetResponseMatrix(treeTW_isrDown, treeTbarW_isrDown,  VarNames[i], nxbins[i], VarBins_X[i], nybins[i], VarBins_Y[i], "modeling", [treeTW_noFully, treeTbarW_noFully, treeTTbar], t3 = treeTTbar_isrDown)
-    #htemp.Write()
-    #PrintResponseMatrix(htemp, VarNames[i], nxbins[i], VarBins_X[i], xmin[i], xmax[i], nybins[i], VarBins_Y[i], ymin[i], ymax[i])
-    ##htemp = GetFiducialHisto(treeTW_isrDown,  treeTbarW_isrDown,  VarNames[i], nybins[i], VarBins_Y[i], "modeling", [treeTW, treeTbarW, treeTTbar], t3 = treeTTbar_isrDown)
-    #htemp = GetFiducialHisto(treeTW_isrDown,  treeTbarW_isrDown,  VarNames[i], nybins[i], VarBins_Y[i], "modeling", [treeTW_noFully, treeTbarW_noFully, treeTTbar], t3 = treeTTbar_isrDown)
-    #htemp.Write()
-    #PrintFiducialHisto(htemp, VarNames[i])
-    ##htemp = GetResponseMatrix(treeTW_isrUp,   treeTbarW_isrUp,    VarNames[i], nxbins[i], VarBins_X[i], nybins[i], VarBins_Y[i], "modeling", [treeTW, treeTbarW, treeTTbar], t3 = treeTTbar_isrUp)
-    #htemp = GetResponseMatrix(treeTW_isrUp,   treeTbarW_isrUp,    VarNames[i], nxbins[i], VarBins_X[i], nybins[i], VarBins_Y[i], "modeling", [treeTW_noFully, treeTbarW_noFully, treeTTbar], t3 = treeTTbar_isrUp)
-    #htemp.Write()
-    #PrintResponseMatrix(htemp, VarNames[i], nxbins[i], VarBins_X[i], xmin[i], xmax[i], nybins[i], VarBins_Y[i], ymin[i], ymax[i])
-    ##htemp = GetFiducialHisto(treeTW_isrUp,    treeTbarW_isrUp,    VarNames[i], nybins[i], VarBins_Y[i], "modeling", [treeTW, treeTbarW, treeTTbar], t3 = treeTTbar_isrUp)
-    #htemp = GetFiducialHisto(treeTW_isrUp,    treeTbarW_isrUp,    VarNames[i], nybins[i], VarBins_Y[i], "modeling", [treeTW_noFully, treeTbarW_noFully, treeTTbar], t3 = treeTTbar_isrUp)
-    #htemp.Write()
-    #PrintFiducialHisto(htemp, VarNames[i])
-
-    ##htemp = GetResponseMatrix(treeTW_MEUp,    treeTbarW_MEUp,     VarNames[i], nxbins[i], VarBins_X[i], nybins[i], VarBins_Y[i], "modeling", t3 = treeTTbar_MEUp)
-    #htemp = GetResponseMatrix(treeTW_MEUp,    treeTbarW_MEUp,     VarNames[i], nxbins[i], VarBins_X[i], nybins[i], VarBins_Y[i], "modeling", t3 = treeTTbar)
-    #htemp.Write()
-    #PrintResponseMatrix(htemp, VarNames[i], nxbins[i], VarBins_X[i], xmin[i], xmax[i], nybins[i], VarBins_Y[i], ymin[i], ymax[i])
-    ##htemp = GetFiducialHisto(treeTW_MEUp,     treeTbarW_MEUp,     VarNames[i], nybins[i], VarBins_Y[i], "modeling", t3 = treeTTbar_MEUp)
-    #htemp = GetFiducialHisto(treeTW_MEUp,     treeTbarW_MEUp,     VarNames[i], nybins[i], VarBins_Y[i], "modeling", t3 = treeTTbar)
-    #htemp.Write()
-    #PrintFiducialHisto(htemp, VarNames[i])
-
-    ##htemp = GetResponseMatrix(treeTW_MEDown,  treeTbarW_MEDown,   VarNames[i], nxbins[i], VarBins_X[i], nybins[i], VarBins_Y[i], "modeling", t3 = treeTTbar_MEDown)
-    #htemp = GetResponseMatrix(treeTW_MEDown,  treeTbarW_MEDown,   VarNames[i], nxbins[i], VarBins_X[i], nybins[i], VarBins_Y[i], "modeling", t3 = treeTTbar)
-    #htemp.Write()
-    #PrintResponseMatrix(htemp, VarNames[i], nxbins[i], VarBins_X[i], xmin[i], xmax[i], nybins[i], VarBins_Y[i], ymin[i], ymax[i])
-    ##htemp = GetFiducialHisto(treeTW_MEDown,   treeTbarW_MEDown,   VarNames[i], nybins[i], VarBins_Y[i], "modeling", t3 = treeTTbar_MEDown)
-    #htemp = GetFiducialHisto(treeTW_MEDown,   treeTbarW_MEDown,   VarNames[i], nybins[i], VarBins_Y[i], "modeling", t3 = treeTTbar)
-    #htemp.Write()
-    #PrintFiducialHisto(htemp, VarNames[i])
-
-    ## MTOP
-    #htemp = GetResponseMatrix(treeTW_mtopUp,  treeTbarW_mtopUp,   VarNames[i], nxbins[i], VarBins_X[i], nybins[i], VarBins_Y[i], "modeling", [treeTW_noFully, treeTbarW_noFully, treeTTbar], t3 = treeTTbar)
-    #htemp.Write()
-    #PrintResponseMatrix(htemp, VarNames[i], nxbins[i], VarBins_X[i], xmin[i], xmax[i], nybins[i], VarBins_Y[i], ymin[i], ymax[i])
-    #htemp = GetFiducialHisto(treeTW_mtopUp, treeTbarW_mtopUp, VarNames[i], nybins[i], VarBins_Y[i], "modeling", [treeTW_noFully, treeTbarW_noFully, treeTTbar], t3 = treeTTbar)
-    #htemp.Write()
-    #PrintFiducialHisto(htemp, VarNames[i])
-
-    #htemp = GetResponseMatrix(treeTW_mtopDown,  treeTbarW_mtopDown,   VarNames[i], nxbins[i], VarBins_X[i], nybins[i], VarBins_Y[i], "modeling", [treeTW_noFully, treeTbarW_noFully, treeTTbar], t3 = treeTTbar)
-    #htemp.Write()
-    #PrintResponseMatrix(htemp, VarNames[i], nxbins[i], VarBins_X[i], xmin[i], xmax[i], nybins[i], VarBins_Y[i], ymin[i], ymax[i])
-    #htemp = GetFiducialHisto(treeTW_mtopDown, treeTbarW_mtopDown, VarNames[i], nybins[i], VarBins_Y[i], "modeling", [treeTW_noFully, treeTbarW_noFully, treeTTbar], t3 = treeTTbar)
-    #htemp.Write()
-    #PrintFiducialHisto(htemp, VarNames[i])
-
-    #if "twttbar" in VarNames[i].lower():
-        #htemp = GetResponseMatrix([treeTW, treeTW_noFully], [treeTbarW, treeTbarW_noFully], VarNames[i], nxbins[i], VarBins_X[i], nybins[i], VarBins_Y[i], "modeling", t3 = treeTTbar_UEDown)
-        #htemp.Write()
-        #PrintResponseMatrix(htemp, VarNames[i], nxbins[i], VarBins_X[i], xmin[i], xmax[i], nybins[i], VarBins_Y[i], ymin[i], ymax[i])
-        #htemp = GetFiducialHisto([treeTW, treeTW_noFully], [treeTbarW, treeTbarW_noFully], VarNames[i], nybins[i], VarBins_Y[i], "modeling", t3 = treeTTbar_UEDown)
-        #htemp.Write()
-        #PrintFiducialHisto(htemp, VarNames[i])
-
-        #htemp = GetResponseMatrix([treeTW, treeTW_noFully], [treeTbarW, treeTbarW_noFully], VarNames[i], nxbins[i], VarBins_X[i], nybins[i], VarBins_Y[i], "modeling", t3 = treeTTbar_UEUp)
-        #htemp.Write()
-        #PrintResponseMatrix(htemp, VarNames[i], nxbins[i], VarBins_X[i], xmin[i], xmax[i], nybins[i], VarBins_Y[i], ymin[i], ymax[i])
-        #htemp = GetFiducialHisto([treeTW, treeTW_noFully], [treeTbarW, treeTbarW_noFully], VarNames[i], nybins[i], VarBins_Y[i], "modeling", t3 = treeTTbar_UEUp)
-        #htemp.Write()
-        #PrintFiducialHisto(htemp, VarNames[i])
-
-        #htemp = GetResponseMatrix([treeTW, treeTW_noFully], [treeTbarW, treeTbarW_noFully], VarNames[i], nxbins[i], VarBins_X[i], nybins[i], VarBins_Y[i], "modeling", t3 = treeTTbar_erdON)
-        #htemp.Write()
-        #PrintResponseMatrix(htemp, VarNames[i], nxbins[i], VarBins_X[i], xmin[i], xmax[i], nybins[i], VarBins_Y[i], ymin[i], ymax[i])
-        #htemp = GetFiducialHisto([treeTW, treeTW_noFully], [treeTbarW, treeTbarW_noFully], VarNames[i], nybins[i], VarBins_Y[i], "modeling", t3 = treeTTbar_erdON)
-        #htemp.Write()
-        #PrintFiducialHisto(htemp, VarNames[i])
-
-        #htemp = GetResponseMatrix([treeTW, treeTW_noFully], [treeTbarW, treeTbarW_noFully], VarNames[i], nxbins[i], VarBins_X[i], nybins[i], VarBins_Y[i], "modeling", t3 = treeTTbar_hDampDown)
-        #htemp.Write()
-        #PrintResponseMatrix(htemp, VarNames[i], nxbins[i], VarBins_X[i], xmin[i], xmax[i], nybins[i], VarBins_Y[i], ymin[i], ymax[i])
-        #htemp = GetFiducialHisto([treeTW, treeTW_noFully], [treeTbarW, treeTbarW_noFully], VarNames[i], nybins[i], VarBins_Y[i], "modeling", t3 = treeTTbar_hDampDown)
-        #htemp.Write()
-        #PrintFiducialHisto(htemp, VarNames[i])
-
-        #htemp = GetResponseMatrix([treeTW, treeTW_noFully], [treeTbarW, treeTbarW_noFully], VarNames[i], nxbins[i], VarBins_X[i], nybins[i], VarBins_Y[i], "modeling", t3 = treeTTbar_hDampUp)
-        #htemp.Write()
-        #PrintResponseMatrix(htemp, VarNames[i], nxbins[i], VarBins_X[i], xmin[i], xmax[i], nybins[i], VarBins_Y[i], ymin[i], ymax[i])
-        #htemp = GetFiducialHisto([treeTW, treeTW_noFully], [treeTbarW, treeTbarW_noFully], VarNames[i], nybins[i], VarBins_Y[i], "modeling", t3 = treeTTbar_hDampUp)
-        #htemp.Write()
-        #PrintFiducialHisto(htemp, VarNames[i])
-
-
-
-######################################################################################### lo del overlap
-#GetOverlap([treeTW, treeTW_noFully], [treeTbarW, treeTbarW_noFully], VarNames[-1], nxbins[-1], VarBins_X[-1], nybins[-1], VarBins_Y[-1])
-
-#print("> Done!")
-
-
+    if nthreads > 1:
+        pool = Pool(nthreads)
+        pool.map(CalculateAndPlotResponseMatrices, tasks)
+        pool.close()
+        pool.join()
+    else:
+        for tsk in tasks:
+            CalculateAndPlotResponseMatrices(tsk)

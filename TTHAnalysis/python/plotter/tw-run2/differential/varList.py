@@ -601,10 +601,9 @@ varList['Lep1Lep2_DPhi'] = {
     #'bins_particle'  : [0., .1, .2, .3, .4, .5, .6, .7, .8, .9, 1.0],                        # propuesta (10 bins)
     #'bins_detector' : [0., 0.05, .1, 0.15, 0.2, 0.25, .3, 0.35, 0.4, 0.45, 0.5, 0.55, .6, .65, .7, .75, .8, .85, .9, .95, 1.0], # propuesta (10 bins)
 
-    "var_detector"         : 'abs(Lep1Lep2_DPhi)/' + str(r.TMath.Pi()),
-    #"var_detector"         : 'abs(TDPhiLL)',
-    'var_response': 'Lep1Lep2_DPhi',
-    'var_particle'     : 'abs(DressLep1Lep2_DPhi)/' + str(r.TMath.Pi()),
+    "var_detector"  : 'Lep1Lep2_DPhi',
+    'var_response'  : 'Lep1Lep2_DPhi',
+    'var_particle'  : 'DressLep1Lep2_DPhi',
     #'var_particle'     : 'abs(TGenDPhiLL)',
     #'legpos'      : (0.82, 0.14, 0.93, 0.47),
     'legpos'      : (0.15, 0.425, 0.35, 0.81),
