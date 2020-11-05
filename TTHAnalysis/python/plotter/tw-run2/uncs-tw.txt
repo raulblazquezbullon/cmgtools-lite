@@ -3,7 +3,7 @@
 # =========================================================================================================================================================================
 ### ALIASES
 # =========================================================================================================================================================================
-$alias : AllBkg : ttbar|dy|nonworz|vvttv
+$alias : AllBkg : tw|ttbar|dy|nonworz|vvttv
 
 
 
@@ -177,7 +177,8 @@ nonworz_norm : nonworz : .* : normSymm : 1.5
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ### PDF
 ## --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-pdf : ttbar : .* : envelope ; FakeRates=['tw-run2/frs-pdfs/fr-pdf_0.txt'\,'tw-run2/frs-pdfs/fr-pdf_1.txt'\,'tw-run2/frs-pdfs/fr-pdf_2.txt'\,'tw-run2/frs-pdfs/fr-pdf_3.txt'\,'tw-run2/frs-pdfs/fr-pdf_4.txt'\,'tw-run2/frs-pdfs/fr-pdf_5.txt'\,'tw-run2/frs-pdfs/fr-pdf_6.txt'\,'tw-run2/frs-pdfs/fr-pdf_7.txt'\,'tw-run2/frs-pdfs/fr-pdf_8.txt'\,'tw-run2/frs-pdfs/fr-pdf_9.txt'\,'tw-run2/frs-pdfs/fr-pdf_10.txt'\,'tw-run2/frs-pdfs/fr-pdf_11.txt'\,'tw-run2/frs-pdfs/fr-pdf_12.txt'\,'tw-run2/frs-pdfs/fr-pdf_13.txt'\,'tw-run2/frs-pdfs/fr-pdf_14.txt'\,'tw-run2/frs-pdfs/fr-pdf_15.txt'\,'tw-run2/frs-pdfs/fr-pdf_16.txt'\,'tw-run2/frs-pdfs/fr-pdf_17.txt'\,'tw-run2/frs-pdfs/fr-pdf_18.txt'\,'tw-run2/frs-pdfs/fr-pdf_19.txt'\,'tw-run2/frs-pdfs/fr-pdf_20.txt'\,'tw-run2/frs-pdfs/fr-pdf_21.txt'\,'tw-run2/frs-pdfs/fr-pdf_22.txt'\,'tw-run2/frs-pdfs/fr-pdf_23.txt'\,'tw-run2/frs-pdfs/fr-pdf_24.txt'\,'tw-run2/frs-pdfs/fr-pdf_25.txt'\,'tw-run2/frs-pdfs/fr-pdf_26.txt'\,'tw-run2/frs-pdfs/fr-pdf_27.txt'\,'tw-run2/frs-pdfs/fr-pdf_28.txt'\,'tw-run2/frs-pdfs/fr-pdf_29.txt'\,'tw-run2/frs-pdfs/fr-pdf_30.txt'\,'tw-run2/frs-pdfs/fr-pdf_31.txt'\,'tw-run2/frs-pdfs/fr-pdf_32.txt']
+#### HAY QUE REHACER COMO ESTAN IMPLEMENTADAS EN EL CODIGO
+#pdf : ttbar|tw : .* : envelope ; FakeRates=['tw-run2/frs-pdfs/fr-pdf_0.txt'\,'tw-run2/frs-pdfs/fr-pdf_1.txt'\,'tw-run2/frs-pdfs/fr-pdf_2.txt'\,'tw-run2/frs-pdfs/fr-pdf_3.txt'\,'tw-run2/frs-pdfs/fr-pdf_4.txt'\,'tw-run2/frs-pdfs/fr-pdf_5.txt'\,'tw-run2/frs-pdfs/fr-pdf_6.txt'\,'tw-run2/frs-pdfs/fr-pdf_7.txt'\,'tw-run2/frs-pdfs/fr-pdf_8.txt'\,'tw-run2/frs-pdfs/fr-pdf_9.txt'\,'tw-run2/frs-pdfs/fr-pdf_10.txt'\,'tw-run2/frs-pdfs/fr-pdf_11.txt'\,'tw-run2/frs-pdfs/fr-pdf_12.txt'\,'tw-run2/frs-pdfs/fr-pdf_13.txt'\,'tw-run2/frs-pdfs/fr-pdf_14.txt'\,'tw-run2/frs-pdfs/fr-pdf_15.txt'\,'tw-run2/frs-pdfs/fr-pdf_16.txt'\,'tw-run2/frs-pdfs/fr-pdf_17.txt'\,'tw-run2/frs-pdfs/fr-pdf_18.txt'\,'tw-run2/frs-pdfs/fr-pdf_19.txt'\,'tw-run2/frs-pdfs/fr-pdf_20.txt'\,'tw-run2/frs-pdfs/fr-pdf_21.txt'\,'tw-run2/frs-pdfs/fr-pdf_22.txt'\,'tw-run2/frs-pdfs/fr-pdf_23.txt'\,'tw-run2/frs-pdfs/fr-pdf_24.txt'\,'tw-run2/frs-pdfs/fr-pdf_25.txt'\,'tw-run2/frs-pdfs/fr-pdf_26.txt'\,'tw-run2/frs-pdfs/fr-pdf_27.txt'\,'tw-run2/frs-pdfs/fr-pdf_28.txt'\,'tw-run2/frs-pdfs/fr-pdf_29.txt'\,'tw-run2/frs-pdfs/fr-pdf_30.txt'\,'tw-run2/frs-pdfs/fr-pdf_31.txt'\,'tw-run2/frs-pdfs/fr-pdf_32.txt']
 #
 #
 #### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
