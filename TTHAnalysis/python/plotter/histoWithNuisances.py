@@ -545,27 +545,70 @@ class HistoWithNuisances:
         """return true if the specified variation alters the shape of the histogram.
            this is tested by checking if the ratio between non-empty bins of the 
            nominal and varied histogram are identical within the tolerance"""
-        if "TH1" not in self.central.ClassName(): raise RuntimeError("Unsupported for non-TH1")
         h0 = self.central
-        for h in self.variations[name]:
-            ratio = None 
-            for b in xrange(1,h0.GetNbinsX()+1):
-                y0 = h0.GetBinContent(b)
-                y  =  h.GetBinContent(b)
-                if debug: 
-                    print "  bin %3d  nominal %9.4f  varied %9.4f   ratio %8.5f   diff %8.5f" % (
-                        b, y0, y, (y/y0 if y0 else 1), y/y0-ratio if (ratio != None and y0 != 0) else 0)
-                if (y0 <= 1e-5):
-                    if (y > 1e-4):
-                        return True
-                elif y == 0: 
-                    return True
-                else:
-                    if ratio is None:
-                        ratio = y/y0
-                    else:
-                        if abs(y/y0 - ratio) > tolerance: 
+        #if "TH1" not in self.central.ClassName(): raise RuntimeError("Unsupported for non-TH1")
+        #for h in self.variations[name]:
+            #ratio = None
+            #for b in xrange(1,h0.GetNbinsX()+1):
+                #y0 = h0.GetBinContent(b)
+                #y  =  h.GetBinContent(b)
+                #if debug:
+                    #print "  bin %3d  nominal %9.4f  varied %9.4f   ratio %8.5f   diff %8.5f" % (
+                        #b, y0, y, (y/y0 if y0 else 1), y/y0-ratio if (ratio != None and y0 != 0) else 0)
+                #if (y0 <= 1e-5):
+                    #if (y > 1e-4):
+                        #return True
+                #elif y == 0:
+                    #return True
+                #else:
+                    #if ratio is None:
+                        #ratio = y/y0
+                    #else:
+                        #if abs(y/y0 - ratio) > tolerance:
+                            #return True
+        if   "TH1" in self.central.ClassName():
+            for h in self.variations[name]:
+                ratio = None
+                for b in xrange(1,h0.GetNbinsX()+1):
+                    y0 = h0.GetBinContent(b)
+                    y  =  h.GetBinContent(b)
+                    if debug:
+                        print "  bin %3d  nominal %9.4f  varied %9.4f   ratio %8.5f   diff %8.5f" % (
+                            b, y0, y, (y/y0 if y0 else 1), y/y0-ratio if (ratio != None and y0 != 0) else 0)
+                    if (y0 <= 1e-5):
+                        if (y > 1e-4):
                             return True
+                    elif y == 0:
+                        return True
+                    else:
+                        if ratio is None:
+                            ratio = y/y0
+                        else:
+                            if abs(y/y0 - ratio) > tolerance:
+                                return True
+        elif "TH2" in self.central.ClassName():
+            for h in self.variations[name]:
+                ratio = None
+                for iB in xrange(1, h0.GetNbinsX() + 1):
+                    for jB in range(1, h0.GetNbinsY() + 1):
+                        y0 = h0.GetBinContent(iB, jB)
+                        y  =  h.GetBinContent(iB, jB)
+                        if debug:
+                            print "  iBin %3d,%3d  nominal %9.4f  varied %9.4f   ratio %8.5f   diff %8.5f" % (
+                                iB, jB, y0, y, (y/y0 if y0 else 1), y/y0-ratio if (ratio != None and y0 != 0) else 0)
+                        if (y0 <= 1e-5):
+                            if (y > 1e-4):
+                                return True
+                        elif y == 0:
+                            return True
+                        else:
+                            if ratio is None:
+                                ratio = y/y0
+                            else:
+                                if abs(y/y0 - ratio) > tolerance:
+                                    return True
+        else:
+            raise RuntimeError("Unsupported for non-TH1/2")
         return False
     def regularizeVariation(self, var, minUnweightedEvents=12, minRatio=0.2, quiet=False, debug=False, binname="<unknown bin>"):
         if "TH1" not in self.central.ClassName(): raise RuntimeError("Unsupported for non-TH1")
