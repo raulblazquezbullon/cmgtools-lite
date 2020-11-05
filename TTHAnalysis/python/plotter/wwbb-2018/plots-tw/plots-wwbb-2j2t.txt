@@ -58,7 +58,8 @@ lep1jet1_dr        : Lep1Jet1_DR         : 20,0,5   ; IncludeUnderflow=False, XT
 lep2jet1_pt        : Lep2Jet1_Pt         : 20,0,200 ; IncludeUnderflow=False, XTitle="//it{p}_{T} (\\ell_{2}\, \\it{j}) (GeV)"
 lep2jet1_m         : Lep2Jet1_M          : 20,0,200 ; IncludeUnderflow=False, XTitle="m (\\ell_{2}\, \\it{j}) (GeV)"
 
-#minimax  : minimax : [0.0,40.0,60.0,80.0,100.0,120.0,140.0,160.0,180.0,200.0,220.0,240.0,270.0,310.0,380.0,420.0] ; IncludeUnderflow=False, XTitle="m_{bl}^{minimax} (GeV)", Logy, Legend='TR'
+minimaxLogyATLAS  : minimax : [0.0,40.0,60.0,80.0,100.0,120.0,140.0,160.0,180.0,200.0,220.0,240.0,270.0,310.0,380.0,420.0] ; IncludeUnderflow=False, XTitle="m_{bl}^{minimax} (GeV)", Logy, Legend='TR'
+minimaxATLAS  : minimax : [0.0,40.0,60.0,80.0,100.0,120.0,140.0,160.0,180.0,200.0,220.0,240.0,270.0,310.0,380.0,420.0] ; IncludeUnderflow=False, XTitle="m_{bl}^{minimax} (GeV)", Legend='TR'
 minimaxLogy  : minimax : 15,0,450 ; IncludeUnderflow=False, XTitle="m_{bl}^{minimax} (GeV)", Logy, Legend='TR'
 minimax  : minimax : 15,0,450 ; IncludeUnderflow=False, XTitle="m_{bl}^{minimax} (GeV)", Legend='TR'
 
