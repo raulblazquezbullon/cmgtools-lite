@@ -17,10 +17,11 @@ markersize  = 0.8
 
 
 def GetAndPlotResponseMatrix(var, key, theresponseh, theparticleh, thepath):
+    #print "\n[GetAndPlotResponseMatrix]"
     particlebins = vl.varList[var]["bins_particle"]
     detectorbins = vl.varList[var]["bins_detector"]
-    nparticlebins = len(particlebins)
-    ndetectorbins = len(detectorbins)
+    nparticlebins = len(particlebins) - 1
+    ndetectorbins = len(detectorbins) - 1
     particlebins = array("d", particlebins)
     detectorbins = array("d", detectorbins)
 
@@ -44,6 +45,7 @@ def GetAndPlotResponseMatrix(var, key, theresponseh, theparticleh, thepath):
         tmpsum = 0.
         for j in range(1, ndetectorbins+1):
             tmpsum += htemp.GetBinContent(i, j)
+        #print tmpsum
         htemp.SetBinContent(i, 0, 0.)
         htemp.SetBinContent(i, ndetectorbins + 1, 1 - tmpsum)
         #htemp.SetBinContent(i, ndetectorbins + 1, 0)
@@ -113,17 +115,19 @@ def GetAndPlotResponseMatrix(var, key, theresponseh, theparticleh, thepath):
 
 
 def GetAndPlotPuritiesAndStabilities(var, theresponseh, theparticleh, thedetectorparticleh, thedetectorh, thepath):
+    #print "\n[PuritiesAndStabilities]"
     purities          = []
     stabilities       = []
     stabilities_woeff = []
 
     particlebins  = vl.varList[var]["bins_particle"]
     detectorbins  = vl.varList[var]["bins_detector"]
-    nparticlebins = len(particlebins)
-    ndetectorbins = len(detectorbins)
+    nparticlebins = len(particlebins) - 1
+    ndetectorbins = len(detectorbins) - 1
     particlebins  = array("d", particlebins)
     detectorbins  = array("d", detectorbins)
 
+    #print " > Calculating stabilities..."
     for i in range(1, nparticlebins + 1):
         sumstab = 0
         for j in range(1, ndetectorbins + 1):
@@ -141,6 +145,7 @@ def GetAndPlotPuritiesAndStabilities(var, theresponseh, theparticleh, thedetecto
         except ZeroDivisionError:
             stabilities_woeff.append(0)
 
+    #print " > Calculating purities..."
     for j in range(1, ndetectorbins + 1):
         sumpur = 0
         for i in range(1, nparticlebins + 1):
@@ -152,9 +157,11 @@ def GetAndPlotPuritiesAndStabilities(var, theresponseh, theparticleh, thedetecto
             purities.append(0)
 
 
+    #print " > Fixing values of histograms..."
+    #print nparticlebins, particlebins, ndetectorbins, detectorbins
     hStab       = r.TH1D('hStab',       '', nparticlebins, particlebins)
     hStab_woeff = r.TH1D('hStab_woeff', '', nparticlebins, particlebins)
-    hPur        = r.TH1D('hPur',  '', ndetectorbins, detectorbins)
+    hPur        = r.TH1D('hPur',        '', ndetectorbins, detectorbins)
     for i in range(1, hStab.GetNbinsX() + 1):
         hStab.SetBinContent(i, stabilities[i - 1])
         hStab_woeff.SetBinContent(i, stabilities_woeff[i - 1])
@@ -162,6 +169,7 @@ def GetAndPlotPuritiesAndStabilities(var, theresponseh, theparticleh, thedetecto
     for j in range(1, hPur.GetNbinsX() + 1):
         hPur.SetBinContent(j, purities[j - 1])
 
+    #print " > Plotting first purities and stabilities plot..."
     c = r.TCanvas('c', "Purities and stabilities of " + var)
     plot = c.GetPad(0);
     #plot.SetPad(0.0, 0.23, 1.0, 1.0);
@@ -203,14 +211,13 @@ def GetAndPlotPuritiesAndStabilities(var, theresponseh, theparticleh, thedetecto
     l.Draw()
     r.gPad.Update()
 
-
-
     c.SaveAs(thepath + "/PurStab_" + var + ".png")
     c.SaveAs(thepath + "/PurStab_" + var + ".pdf")
     c.SaveAs(thepath + "/PurStab_" + var + ".root")
     c.Close(); del c, hStab, plot
 
 
+    #print " > Plotting second purities and stabilities plot..."
     c = r.TCanvas('c', "Purities and stabilities of " + var)
     plot = c.GetPad(0);
     #plot.SetPad(0.0, 0.23, 1.0, 1.0);
@@ -241,6 +248,7 @@ def GetAndPlotPuritiesAndStabilities(var, theresponseh, theparticleh, thedetecto
 
 
 def GetConditionNumber(thehisto):
+    #print "\n[GetConditionNumber]"
     matrx = r.TMatrixD( thehisto.GetYaxis().GetNbins(), thehisto.GetXaxis().GetNbins()) # rows are y, x are columns
     for i in range(thehisto.GetXaxis().GetNbins()):
         for j in range(thehisto.GetYaxis().GetNbins()):
@@ -253,6 +261,7 @@ def GetConditionNumber(thehisto):
 
 
 def GetAndPlotNonFiducialHisto(var, theunc, thefiducialh, thepath):
+    #print "\n[GetAndPlotNonFiducialHisto]"
     '''This function obtains the non fiducial histograms.'''
     hNonFid = deepcopy(thefiducialh.Clone("F" + var + "_" + theunc))
     hNonFid.SetXTitle("var")
@@ -270,15 +279,17 @@ def GetAndPlotNonFiducialHisto(var, theunc, thefiducialh, thepath):
 
 
 def SaveOverlap(theoverlap, thepath):
-    fcn = open(thepath + "/overlaps.txt")
+    #print "\n[SaveOverlap]"
+    fcn = open(thepath + "/overlaps.txt", "w")
     out = '(detector & particle) / particle\n'
-    out += str(round(overlap_overparticle, 4)) + '\n'
+    out += str(round(theoverlap, 4)) + '\n'
     fcn.write(out)
     fcn.close
     return
 
 
 def SaveAllConditionNumbers(thedict, thepath):
+    #print "\n[SaveAllConditionNumbers]"
     fcn = open(thepath + "/condnums.txt", "w")
     out = 'Variation        Value\n'
     for key in thedict:
@@ -291,7 +302,7 @@ def SaveAllConditionNumbers(thedict, thepath):
 def CalculateAndPlotResponseMatrices(tsk):
     inpath, iY, iV = tsk
     # 0) Preliminary.
-    print "\nCreando matrices de respuesta en", inpath, "para el anyo", iY, "y la variable", iV
+    print "\n> Creando matrices de respuesta en", inpath, "para el anyo", iY, "y la variable", iV
 
     fParticle = r.TFile(inpath + "/" + iY + "/" + iV + "/particle.root", "READ")
     hParticle = deepcopy(fParticle.Get("x_tw").Clone("hParticle_" + iV))
@@ -308,6 +319,10 @@ def CalculateAndPlotResponseMatrices(tsk):
     condnumdict = {}
     for key in fDetector.GetListOfKeys():
         tmpnam = key.GetName()
+        #print "\ntmpnam:", tmpnam
+
+        if "mistagging" in tmpnam: continue #### ?????????????????????????????????????????????????????????????????????????
+
 
         if "data" in tmpnam: continue
 
@@ -318,16 +333,15 @@ def CalculateAndPlotResponseMatrices(tsk):
             nonfiducialdict[""]      = deepcopy(fNonFiducial.Get(tmpnam).Clone(""))
         else:
             tmpunc  = tmpnam.replace("x_tw_", "")
+            #print "tmpunc", tmpunc
 
             if tmpunc not in detectordict:
                 detectordict[tmpunc]         = {}
-                detectorparticledict[tmpunc] = {}
                 responsedict[tmpunc]         = {}
 
             detectordict[tmpunc]         = deepcopy(fDetector.Get(tmpnam).Clone(tmpunc))
-            detectorparticledict[tmpunc] = deepcopy(fDetectorParticle.Get(tmpnam).Clone(tmpunc))
             responsedict[tmpunc]         = deepcopy(fResponse.Get(tmpnam).Clone(tmpunc))
-            nonfiducialdict[tmpunc]         = deepcopy(fNonFiducial.Get(tmpnam).Clone(tmpunc))
+            nonfiducialdict[tmpunc]      = deepcopy(fNonFiducial.Get(tmpnam).Clone(tmpunc))
 
 
     fDetector.Close();         del fDetector
@@ -335,7 +349,7 @@ def CalculateAndPlotResponseMatrices(tsk):
     fResponse.Close();         del fResponse
     fNonFiducial.Close();      del fNonFiducial
 
-    print detectordict, detectorparticledict, responsedict, nonfiducialdict
+    #print detectordict, detectorparticledict, responsedict, nonfiducialdict
 
     tmpoutpath = inpath + "/" + iY + "/" + iV + "/responseplots"
 
@@ -375,7 +389,6 @@ if __name__=="__main__":
 
 
     args     = parser.parse_args()
-    prod     = args.prod
     year     = args.year
     extra    = args.extra
     nthreads = args.nthreads
@@ -393,10 +406,25 @@ if __name__=="__main__":
     tasks = []
     if year == "all":
         if variable == "all":
-            theyears = next(os.walk(inpath))[1]
+            theyears = []
+            presentyears = next(os.walk(inpath))[1]
+
+            if "2016" in presentyears:
+                theyears.append("2016")
+            if "2017" in presentyears:
+                theyears.append("2017")
+            if "2018" in presentyears:
+                theyears.append("2018")
+            if "run2" in presentyears:
+                theyears.append("run2")
+
             for iY in theyears:
                 thevars = next(os.walk(inpath + "/" + iY))[1]
+
                 for iV in thevars:
+                    if "plots" in iV:
+                        continue
+
                     tasks.append( (inpath, iY, iV) )
 
     if nthreads > 1:

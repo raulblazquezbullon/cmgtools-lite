@@ -1,5 +1,6 @@
 import ROOT as r
-import math, copy
+import math
+from copy import deepcopy
 from array import array
 import varList as vl
 ###############################################################################
@@ -113,56 +114,22 @@ def propagateHisto( nom, varDict, doEnv = False ):
     return out
 
 
-def propagateHistoAsym(nom, varDict, doEnv = False, doAsimov = False, doSym = False):
+def propagateHistoAsym(varDict, doSym = False):
     ### Introducimos la simetrizacion aqui porque en la otra no esta todo lo nuevo.
-    outUp   = nom.Clone(nom.GetName() + '_uncUp')
-    outDown = nom.Clone(nom.GetName() + '_uncDown')
-    
-    if doAsimov:
-        if 'asimov' not in varDict: raise RuntimeError("Asimov variation has not been found in the dictionary provided to the error propagation procedure.")
-        hasimov = copy.deepcopy(varDict['asimov'])
-    
-    if doEnv:
-        for bin in range(1, nom.GetNbinsX() + 1):
-            err         = outUp.GetBinError(bin)    # <==  Fit unc. (or stat. and unf. uncs.) taken here
-            cont        = outUp.GetBinContent(bin)
-            tmpDict     = dict([(key, histo.GetBinContent(bin)) for (key, histo) in varDict.iteritems()])
-            tmpuncUp    = 0.
-            tmpuncDown  = 0.
-            tmpunc      = 0.
-            valasimov   = 0.
-            for (key, histo) in varDict.iteritems():
-                if key in vl.varList['Names']['colorSysts']:
-                    tmpunc  = tmpDict[key] - cont
-                    if tmpunc > tmpuncUp:
-                        tmpuncUp    = tmpunc
-                    elif tmpunc < tmpuncDown:
-                        tmpuncDown  = tmpunc
-                    del tmpDict[key]
-            if doAsimov: valasimov = hasimov.GetBinError(bin)
-            if 'asimov' in varDict: del tmpDict['asimov']
+    outUp   = deepcopy(varDict[""].Clone(varDict[""].GetName() + 'uncUp'))
+    outDown = deepcopy(varDict[""].Clone(varDict[""].GetName() + 'uncDown'))
 
-            if doSym:
-                meanEnv   = vl.mean([tmpuncUp, abs(tmpuncDown)])
-                totsymunc = quadSum([propagateQuantity(cont, tmpDict, 0), err, meanEnv, valasimov])
-                outUp.SetBinError(bin, totsymunc); outDown.SetBinError(bin, totsymunc)
-            else:
-                outUp.SetBinError(bin, quadSum([propagateQuantity(cont, tmpDict, +1), err, tmpuncUp, valasimov]))
-                outDown.SetBinError(bin, quadSum([propagateQuantity(cont, tmpDict, -1), err, abs(tmpuncDown), valasimov]))
-    else:
-        for bin in range(1, nom.GetNbinsX() + 1):
-            err     = outUp.GetBinError(bin)    # <==  Fit unc. taken here
-            cont    = outUp.GetBinContent(bin)
-            tmpDict = dict([(key, histo.GetBinContent(bin)) for (key, histo) in varDict.iteritems()])
-            if doAsimov: valasimov = hasimov.GetBinError(bin)
-            if 'asimov' in varDict: del tmpDict['asimov']
+    for bin in range(1, varDict[""].GetNbinsX() + 1):
+        err     = outUp.GetBinError(bin)    # <==  Fit unc. taken here
+        cont    = outUp.GetBinContent(bin)
+        tmpDict = dict([(key, histo.GetBinContent(bin)) for (key, histo) in varDict.iteritems() if key != ""])
 
-            if doSym:
-                totsymunc = quadSum([propagateQuantity(cont, tmpDict, 0), err, valasimov])
-                outUp.SetBinError(bin, totsymunc); outDown.SetBinError(bin, totsymunc)
-            else:
-                outUp.SetBinError(bin, quadSum([propagateQuantity(cont, tmpDict, +1), err, valasimov]))
-                outDown.SetBinError(bin, quadSum([propagateQuantity(cont, tmpDict, -1), err, valasimov]))
+        if doSym:
+            totsymunc = quadSum([propagateQuantity(cont, tmpDict, 0), err])
+            outUp.SetBinError(bin, totsymunc); outDown.SetBinError(bin, totsymunc)
+        else:
+            outUp.SetBinError(  bin, quadSum([propagateQuantity(cont, tmpDict, +1), err]))
+            outDown.SetBinError(bin, quadSum([propagateQuantity(cont, tmpDict, -1), err]))
     return [outUp, outDown]
 
 
@@ -193,40 +160,23 @@ def maximumHisto(histo1, histo2):
     return maxHist
 
 
-def getUncList(nom, varDict, doEnv = False, doFit = True, doAsimov = False):
-    if doFit:    medDict = [('Fit', nom)]
-    else:        medDict = [('Stat.', nom)]
-    if doAsimov: medDict.append(( 'asimov', varDict['asimov'])) # Note: the asimov histogram must arrive here with the
-                                                                # proper uncs. in the bin errors and the nominal contents.
+def getUncList(varDict, doFit = True):
+    if doFit:    medDict = [('Fit',   varDict[""])]
+    else:        medDict = [('Stat.', varDict[""])]
     outDict = []
-    histUp  = [[] for i in range(nom.GetNbinsX())]
-    histDown= [[] for i in range(nom.GetNbinsX())]
+    histUp  = [[] for i in range(varDict[""].GetNbinsX())]
+    histDown= [[] for i in range(varDict[""].GetNbinsX())]
     for var in varDict:
-        if var == 'asimov': continue
-        hist    = nom.Clone(nom.GetName() + var)
+        if var == '': continue
+        hist    = varDict[""].Clone(varDict[""].GetName() + var)
         variat  = 0.
-        for bin in range(1, nom.GetNbinsX() + 1):
-            variat = nom.GetBinContent(bin) - varDict[var].GetBinContent(bin)
-            #if 'fsr' in var or 'FSR' in var or 'isr' in var or 'ISR' in var: variat/(2**(1/2))
-            if doEnv and var in vl.varList['Names']['colorSysts']:
-                if (variat >= 0):
-                    if abs(variat) >= nom.GetBinContent(bin): histDown[bin - 1].append(nom.GetBinContent(bin))
-                    else:                                     histDown[bin - 1].append(abs(variat))
-                else: histUp[bin - 1].append(abs(variat))
-            else:
-                if abs(variat) >= nom.GetBinContent(bin): hist.SetBinError(bin, nom.GetBinContent(bin))
-                else:                                     hist.SetBinError(bin, abs(variat))
-        if not doEnv or var not in vl.varList['Names']['colorSysts']:
-            medDict.append( (var,hist) )
-    
-    if doEnv:
-        finalhistUp     = nom.Clone(nom.GetName() + 'ColorRUp')
-        finalhistDown   = nom.Clone(nom.GetName() + 'ColorRDown')
-        for bin in range(1, nom.GetNbinsX() + 1):
-            finalhistUp.SetBinError(bin, max(histUp[bin - 1] + [0]))
-            finalhistDown.SetBinError(bin, max(histDown[bin - 1] + [0]))
-        medDict.append(('ColorRUp', finalhistUp))
-        medDict.append(('ColorRDown', finalhistDown))
+        for bin in range(1, varDict[""].GetNbinsX() + 1):
+            variat = varDict[""].GetBinContent(bin) - varDict[var].GetBinContent(bin)
+
+            if abs(variat) >= varDict[""].GetBinContent(bin): hist.SetBinError(bin, varDict[""].GetBinContent(bin))
+            else:                                             hist.SetBinError(bin, abs(variat))
+
+        medDict.append( (var,hist) )
     
     medDict.sort(key = lambda x : MeanUncertaintyHisto(x[1]), reverse = True)
     #medDict.sort(key = lambda x : maxRelativeError(x[1]), reverse = True)

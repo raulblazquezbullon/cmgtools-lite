@@ -8,13 +8,18 @@ import os
 
 # === ESSENTIAL PARAMETERS OF THE ANALYSIS. CHANGING THIS APPLIES TO EVERYTHING. ===
 nuncs       = 4         # Number of uncs. shown in the relative uncertainty plots
-asimov      = False     # Use of Asimov dataset or data
+asimov      = True      # Use of Asimov dataset or data
 doxsec      = True      # Show events or diff. cross section in final results
 doPre       = True      # Show or not show the "Preliminary" in the plots
 doSym       = True      # Symmetrise the uncertainties or not
+doReg       = False     # Regularise distributions (general setting, can be overrrided for each variable separately)
+doArea      = False     # Apply area constraint in unfolding (general setting, can be overrrided for each variable separately)
 
 # === OTHER IMPORTANT DEFINITIONS ===
-Lumi        = 35.864    # In femtobarns
+LumiDict    = {2016 : 35.92,
+               2017 : 41.53,
+               2018 : 59.74}
+TotalLumi   = LumiDict[2016] + LumiDict[2017] + LumiDict[2018] # In femtobarns
 
 nominal_weight = "(TWeight)"
 #nominal_weight             = "(TWeight * (TWeight_TopPtUp/TWeight))"
@@ -70,7 +75,7 @@ varList['LCurve'] = {
 
 
 varList['Names'] = {
-    'Variables'   : ["LeadingLepPt", "LeadingJetPt", "DPhiLL", "DilepMETJet1Pz", "MT_LLMETB", "M_LLB", "Fiducial"],
+    'Variables'   : ["Lep1_Pt", "Jet1_Pt", "Lep1Lep2_DPhi", "Lep1Lep2Jet1MET_Pz", "Lep1Lep2Jet1MET_Mt", "Lep1Lep2Jet1_M", "Fiducial"],
     'ExpSysts'    : ["JESUp", "JESDown", "JERUp", "ElecEffUp", "ElecEffDown", "MuonEffUp", #   DO NOT MOVE THE FIRST THREE TO OTHER
                      "MuonEffDown", "TrigUp", "TrigDown", "PUUp", "PUDown", "BtagUp",      # POSITION: it will affect the calculus
                      #"BtagDown", "MistagUp", "MistagDown"],                                # of the response matrices.
@@ -92,6 +97,7 @@ varList['Lep1Lep2Jet1MET_Mt'] = {
     'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(#it{m}_{T}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{p}_{T}^{miss}, #it{j})) (adim.)',
     'yaxisfidbin' : '(1/#sigma_{fid.})d#sigma/d(#it{m}_{T}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{p}_{T}^{miss}, #it{j})) (1/GeV)',
     'yaxisnorm'   : 'd#sigma/d(#it{m}_{T}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{p}_{T}^{miss}, #it{j})) (pb/GeV)',
+    'yaxis_unc'   : 'Relative uncertainty (adim.)',
     #'bins_particle'  : [0., 225., 325., 425., 500.],                         # usado en drafts, en nota, etc. (4 bins)
     #'bins_detector' : [0., 225., 250., 275., 300., 325., 350., 425., 500.], # usado en drafts, en nota, etc. (4 bins)
 
@@ -207,6 +213,7 @@ varList['Lep1Lep2Jet1_M'] = {
     'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(#it{m}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (adim.)',
     'yaxisfidbin' : '(1/#sigma_{fid.})d#sigma/d(#it{m}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (1/GeV)',
     'yaxisnorm'   : 'd#sigma/d(#it{m}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (pb/GeV)',
+    'yaxis_unc'   : 'Relative uncertainty (adim.)',
     #'bins_particle'  : [0., 125., 250., 350., 400.],                         # usado en drafts, en nota, etc. (4 bins)
     #'bins_detector' : [0., 125., 170., 180., 200., 240., 290., 350., 400.], # usado en drafts, en nota, etc. (4 bins)
 
@@ -304,6 +311,7 @@ varList['Jet1_Pt'] = {
     'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(jet #it{p}_{T}) (adim.)',
     'yaxisfidbin' : '(1/#sigma_{fid.})d#sigma/d(jet #it{p}_{T}) (1/GeV)',
     'yaxisnorm'   : '(1/#sigma_{fid.})d#sigma/d(jet #it{p}_{T}) (pb/GeV)',
+    'yaxis_unc'   : 'Relative uncertainty (adim.)',
     #'bins_particle'  : [0, 75, 200, 300],
     #'bins_detector' : [0., 50., 75., 110., 150., 200., 300.],
    #'bins_particle'  : [0., 75., 140., 200., 300.],                            # binning presentado en singletop
@@ -342,9 +350,9 @@ varList['Jet1_Pt'] = {
     'legposdesc'  : (0.7, 0.55, 0.90, 0.93),
     'maxdesc'     : 3600,
     "legpos_unf"  : "TC",
-    "var_detector"         : 'min(Jet1_Pt, 149.)',
+    "var_detector": 'min(Jet1_Pt, 149.)',
     'var_response': 'Jet1_Pt',
-    'var_particle'     : 'min(DressJet1_Pt, 149.)',
+    'var_particle': 'min(DressJet1_Pt, 149.)',
     'uncleg_fold' : "TL",
     'uncleg_unf'  : "TL",
     'uncleg_fid'  : "TL",
@@ -388,6 +396,7 @@ varList['Lep1_Pt'] = {
     'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(leading lepton #it{p}_{T}) (adim.)',
     'yaxisfidbin' : '(1/#sigma_{fid.})d#sigma/d(leading lepton #it{p}_{T}) (1/GeV)',
     'yaxisnorm'   : 'd#sigma/d(leading lepton #it{p}_{T}) (pb/GeV)',
+    'yaxis_unc'   : 'Relative uncertainty (adim.)',
     #'bins_particle'  : [0, 50, 120, 190, 250],
     #'bins_detector' : [0, 50, 65, 85, 97, 110, 145, 180, 250],
    #'bins_particle'  : [0, 50, 120, 160, 250],                            # binning presentado en singletop
@@ -424,9 +433,9 @@ varList['Lep1_Pt'] = {
     'legpos'      : (0.7, 0.55, 0.90, 0.93),
     'legposdesc'  : (0.7, 0.55, 0.90, 0.93),
     "maxdesc"     : 3300,
-    "var_detector": 'min(Lep1_Pt, 149.)',
+    "var_detector": 'min(LepGood_pt_corrAll[0], 149.)',
     'var_response': 'Lep1_Pt',
-    'var_particle': 'min(DressLep1_Pt, 149.)',
+    'var_particle': 'min(GenDressedLepton_pt[iDressSelLep[0]], 149.)',
     'uncleg_fold' : "TL",
     'uncleg_fid'  : "TL",
     #"legpos_unf"   : (.18, .3, .32, .05),
@@ -462,12 +471,13 @@ varList['ResponseLep1_Pt'] = {
 varList['Fiducial'] = {
     'xaxis'       : 'a.u.',
     'yaxis'       : 'd#sigma (pb)',
+    'yaxis_unc'   : 'Relative uncertainty (adim.)',
     'bins_particle'  : [25., 150.],
     'bins_detector' : [25., 150.],
     #'bins_detector' : [25., 80., 150.],
-    "var_detector"         : 'min(Lep1_Pt, 149.)',
-    'var_response': 'Fiducial',
-    'var_particle'     : 'min(DressLep1_Pt, 149.)',
+    "var_detector": 'min(LepGood_pt_corrAll[0], 149.)',
+    'var_response': 'LepGood_pt_corrAll[0]',
+    'var_particle': 'min(GenDressedLepton_pt[iDressSelLep[0]], 149.)',
 }
 varList['Fiducialuncertainties'] = {
     'xaxis'       : 'a.u.',
@@ -507,6 +517,7 @@ varList['Lep1Lep2Jet1MET_Pz'] = {
     'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(#it{p}_{Z} (#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (adim.)',
     'yaxisfidbin' : '(1/#sigma_{fid.})d#sigma/d(#it{p}_{Z} (#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (1/GeV)',
     'yaxisnorm'   : 'd#sigma/d(#it{p}_{Z} (#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (pb/GeV)',
+    'yaxis_unc'   : 'Relative uncertainty (adim.)',
     #'bins_particle'  : [0., 100., 200., 350., 450.],                        # usado en drafts, en nota, etc. (4 bins)
     #'bins_detector' : [0., 50., 100., 150., 200., 250., 300., 350., 450.], # usado en drafts, en nota, etc. (4 bins)
 
@@ -530,9 +541,9 @@ varList['Lep1Lep2Jet1MET_Pz'] = {
 
     'descbinning' : [0., 450.],
     'ndescbins'   : 18,
-    "var_detector"         : 'min(abs(Lep1Lep2Jet1MET_Pz), 449.)',
+    "var_detector": 'min(abs(Lep1Lep2Jet1MET_Pz), 449.)',
     'var_response': 'Lep1Lep2Jet1MET_Pz',
-    'var_particle'     : 'min(abs(DressLep1Lep2Jet1MET_Pz), 449.)',
+    'var_particle': 'min(abs(DressLep1Lep2Jet1MET_Pz), 449.)',
     'legpos'      : (0.51, 0.55, 0.71, 0.93),
     #'legposdesc'  : (0.57, 0.55, 0.78, 0.93),
     'legposdesc'  : (0.65, 0.55, 0.85, 0.93),
@@ -578,6 +589,7 @@ varList['Lep1Lep2_DPhi'] = {
     'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(#Delta#it{#varphi}(#it{e}^{#pm}, #it{#mu}^{#mp})/#it{#pi}) (adim.)',
     'yaxisfidbin' : '(1/#sigma_{fid.})d#sigma/d(#Delta#it{#varphi}(#it{e}^{#pm}, #it{#mu}^{#mp})/#it{#pi}) (adim.)',
     'yaxisnorm'   : 'd#sigma/d(#Delta#it{#varphi}(#it{e}^{#pm}, #it{#mu}^{#mp})/#it{#pi}) (pb)',
+    'yaxis_unc'   : 'Relative uncertainty (adim.)',
     #'bins_particle'  : [0., .25, .50, 0.75, 1.0],                        # usado en drafts, en nota, etc. (4 bins)
     #'bins_detector' : [0., .125, .25, .375, .50, .625, .75, .875, 1.0], # usado en drafts, en nota, etc. (4 bins)
     #'bins_particle'  : [0., .75, 1.5, 2.25, r.TMath.Pi()],
@@ -1122,11 +1134,11 @@ ColorMap = {
     'Trig'                  : r.kBlue,
     'PU'                    : r.kRed,
     'Btag'                  : r.kGreen+4,
-    'Mistag'                : r.kYellow-6,
+    'mistagging'            : r.kYellow-6,
     'ttbar'                 : r.kTeal-7,
-    'Non-WorZ'              : r.kViolet-2,
-    'DY'                    : r.kPink+1,
-    'VVttbarV'              : r.kSpring-9,
+    'nonworz'               : r.kViolet-2,
+    'dy'                    : r.kPink+1,
+    'vvttv'                 : r.kSpring-9,
     'Stat.'                 : r.TColor.GetColor("#fb9a99"),
     'TopPt'                 : r.kGreen+1,
     'mtop'                  : r.kBlue+3,
@@ -1134,6 +1146,34 @@ ColorMap = {
     'asimov'                : r.kTeal,
 }
 
+ColorMapList = [
+    r.TColor.GetColor("#a6cee3"),
+    r.TColor.GetColor("#1f77b4"),
+    r.TColor.GetColor("#b2df8a"),
+    r.TColor.GetColor("#33a02c"),
+    r.TColor.GetColor("#e31a1c"),
+    r.TColor.GetColor("#fdbf6f"),
+    r.TColor.GetColor("#ff7f00"),
+    r.TColor.GetColor("#6a3d9a"),
+    r.kOrange-6,
+    r.TColor.GetColor("#cab2d6"),
+    r.kAzure-6,
+    r.kMagenta,
+    r.kGray+2,
+    r.kBlue,
+    r.kRed,
+    r.kGreen+4,
+    r.kYellow-6,
+    r.kTeal-7,
+    r.kViolet-2,
+    r.kPink+1,
+    r.kSpring-9,
+    r.TColor.GetColor("#fb9a99"),
+    r.kGreen+1,
+    r.kBlue+3,
+    r.kPink-5,
+    r.kTeal,
+]
 
 SysNameTranslator = {
     'JES'      : "JES",
