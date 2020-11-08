@@ -1,0 +1,3 @@
+alwaystrue : 1
+
+skim       : event%2 == 1

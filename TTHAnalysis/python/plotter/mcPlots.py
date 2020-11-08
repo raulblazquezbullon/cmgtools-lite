@@ -670,6 +670,10 @@ class PlotMaker:
             for pspec in pspecs:
                 print "    plot: ",pspec.name
                 pmap = mca.getPlots(pspec,cut,makeSummary=True,closeTreeAfter=True)
+
+                #print pmap
+                #sys.exit()
+
                 #
                 # blinding policy
                 blind = pspec.getOption('Blinded','None') if 'data' in pmap else 'None'
@@ -790,6 +794,7 @@ class PlotMaker:
 
     def printOnePlot(self,mca,pspec,pmapIn,mytotal=None,makeCanvas=True,outputDir=None,printDir=None,xblind=[9e99,-9e99],extraProcesses=[],plotmode="auto",outputName=None):
                 pmap = dict( (k, h if isinstance(h,HistoWithNuisances) else HistoWithNuisances(h)) for (k,h) in pmapIn.iteritems() )
+                #print(pmap)
                 options = self._options
                 if printDir == None: printDir=self._options.printDir
                 if outputDir == None: outputDir = self._dir

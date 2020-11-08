@@ -22,7 +22,8 @@ class selectParticleAndPartonInfo(Module):
                        dressfwdloosejetSel_ = lambda j: True):
 
         self.branches = ["Top1_pt", "Top1_eta", "Top1_phi", ("Top1_charge", "I"),
-                         "Top2_pt", "Top2_eta", "Top2_phi", ("Top2_charge", "I")]
+                         "Top2_pt", "Top2_eta", "Top2_phi", ("Top2_charge", "I"),
+                         ("nDressBSelJet", "I"), ("nDressBSelLooseJet", "I")]
 
         self.vars_common       = ["pt", "eta", "phi", "mass"]
         self.vars_dressleptons = ["pdgId", "hasTauAnc"]
@@ -78,14 +79,27 @@ class selectParticleAndPartonInfo(Module):
         self.listdressfwdjet      = []
         self.listdressfwdloosejet = []
 
+        otherVarsDict = {}
+        for b in self.branches:
+            if not isinstance(b, tuple):
+                otherVarsDict[b] = -99
+                if "nDress" in b: otherVarsDict[b] = 0
+            else:
+                otherVarsDict[b[0]] = -99
+                if "nDress" in b[0]: otherVarsDict[b[0]] = 0
+
         for i, lep in enumerate(dressleps):
             if self.dresslepSel(lep): self.listdresslep.append(i)
 
         for i, jet in enumerate(dressjets):
             if   self.dressjetSel(jet):
-                if self.isClean(event, jet): self.listdressjet.append(i)
+                if self.isClean(event, jet):
+                    self.listdressjet.append(i)
+                    if abs(jet.partonFlavour) == 5: otherVarsDict["nDressBSelJet"] += 1
             elif self.dressloosejetSel(jet):
-                if self.isClean(event, jet): self.listdressloosejet.append(i)
+                if self.isClean(event, jet):
+                    self.listdressloosejet.append(i)
+                    if abs(jet.partonFlavour) == 5: otherVarsDict["nDressBSelLooseJet"] += 1
             elif self.dressfwdjetSel(jet):
                 if self.isClean(event, jet): self.listdressfwdjet.append(i)
             elif self.dressfwdloosejetSel(jet):
@@ -106,13 +120,6 @@ class selectParticleAndPartonInfo(Module):
 
 
         #### Obtain information about the generated tops
-        topdict = {};
-        for b in self.branches:
-            if not isinstance(b, tuple):
-                topdict[b] = -99
-            else:
-                topdict[b[0]] = -99
-
         partobjs = [p for p in Collection(event, "GenPart")]
         candtops = []
         for i, part in enumerate(partobjs):
@@ -129,24 +136,24 @@ class selectParticleAndPartonInfo(Module):
                 lowptind  = 0
 
         if len(candtops) > 0:
-            topdict["Top1_pt"]     = partobjs[candtops[highptind]].pt
-            topdict["Top1_eta"]    = partobjs[candtops[highptind]].eta
-            topdict["Top1_phi"]    = partobjs[candtops[highptind]].phi
-            topdict["Top1_charge"] = 1 if (partobjs[candtops[highptind]].pdgId > 0) else -1
+            otherVarsDict["Top1_pt"]     = partobjs[candtops[highptind]].pt
+            otherVarsDict["Top1_eta"]    = partobjs[candtops[highptind]].eta
+            otherVarsDict["Top1_phi"]    = partobjs[candtops[highptind]].phi
+            otherVarsDict["Top1_charge"] = 1 if (partobjs[candtops[highptind]].pdgId > 0) else -1
 
             if len(candtops) > 1:
-                topdict["Top2_pt"]     = partobjs[candtops[lowptind]].pt
-                topdict["Top2_eta"]    = partobjs[candtops[lowptind]].eta
-                topdict["Top2_phi"]    = partobjs[candtops[lowptind]].phi
-                topdict["Top2_charge"] = 1 if (partobjs[candtops[lowptind]].pdgId > 1) else -1
+                otherVarsDict["Top2_pt"]     = partobjs[candtops[lowptind]].pt
+                otherVarsDict["Top2_eta"]    = partobjs[candtops[lowptind]].eta
+                otherVarsDict["Top2_phi"]    = partobjs[candtops[lowptind]].phi
+                otherVarsDict["Top2_charge"] = 1 if (partobjs[candtops[lowptind]].pdgId > 1) else -1
 
 
         #### Write branches not in colls (and their counts).
         for b in self.branches:
             if not isinstance(b, tuple):
-                self.wrappedOutputTree.fillBranch(b, topdict[b])
+                self.wrappedOutputTree.fillBranch(b, otherVarsDict[b])
             else:
-                self.wrappedOutputTree.fillBranch(b[0], topdict[b[0]])
+                self.wrappedOutputTree.fillBranch(b[0], otherVarsDict[b[0]])
 
         return True
 
@@ -172,6 +179,6 @@ class selectParticleAndPartonInfo(Module):
         tmpleps = [l for l in Collection(ev, "GenDressedLepton")]
 
         for iL in self.listdresslep:
-            if j.p4().DeltaR(tmpleps[iL].p4()) < dR:
+            if abs(j.p4().DeltaR(tmpleps[iL].p4())) < dR:
                 return False
         return True

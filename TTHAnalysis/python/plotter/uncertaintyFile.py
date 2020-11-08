@@ -44,7 +44,7 @@ class Uncertainty:
                 for idx in xrange(2):
                     self.fakerate[idx]._weight = '(%s)*(%s)'%(self.fakerate[idx]._weight,self.extra['AddWeights'][idx])
             if 'FakeRates' not in self.extra and 'AddWeights' not in self.extra:
-                raise RuntimeError("templateAsym requires at least one of FakeRates=['fname1'\\,'fname2'] or AddWeights=['expr1'\\,'expr2']")
+                raise RuntimeError("templateAsymm requires at least one of FakeRates=['fname1'\\,'fname2'] or AddWeights=['expr1'\\,'expr2']. Given extra arguments: " + str(self.extra))
         elif self.unc_type=='templateSymm':
             self.fakerate[1] = None
             self.trivialFunc[1] = 'symmetrize_up_to_dn'
@@ -54,7 +54,7 @@ class Uncertainty:
             if 'AddWeight' in self.extra:
                 self.fakerate[0]._weight = '(%s)*(%s)'%(self.fakerate[0]._weight,self.extra['AddWeight'])
             if 'FakeRate' not in self.extra and 'AddWeight' not in self.extra:
-                raise RuntimeError("templateAsym requires at least one of FakeRate='fname' or AddWeight='expr'")
+                raise RuntimeError("templateSymm requires at least one of FakeRate='fname' or AddWeight='expr'. Given extra arguments: " + str(self.extra))
         elif self.unc_type=='normAsymm':
             if len(self.args) != 2:
                 raise RuntimeError("normAsymm requires two arguments: low and high")
@@ -73,9 +73,18 @@ class Uncertainty:
             if 'FakeRates' not in self.extra: 
                 raise RuntimeError("A set of FakeRates are needed for envelope")
             self.fakerate = [ FakeRate( fr, loadFilesNow=False, year=self._options.year) for fr in self.extra['FakeRates'] ]
+        elif self.unc_type=='envelopeRMS':
+            if 'FakeRates' not in self.extra:
+                raise RuntimeError("A set of FakeRates are needed for envelopeRMS")
+            self.fakerate = [ FakeRate( fr, loadFilesNow=False, year=self._options.year) for fr in self.extra['FakeRates'] ]
         elif self.unc_type=='altSample':
             if len(self.args) != 2: 
                 raise RuntimeError("altSample requires exactly two arguments")
+            if self.binmatchstr != ".*":
+                raise RuntimeError("altSample affects all bins by construction")
+        elif self.unc_type=='altSampleEnv':
+            if len(self.args) < 1:
+                raise RuntimeError("altSampleEnv requires at least one argument")
             if self.binmatchstr != ".*":
                 raise RuntimeError("altSample affects all bins by construction")
         elif self.unc_type=='none':

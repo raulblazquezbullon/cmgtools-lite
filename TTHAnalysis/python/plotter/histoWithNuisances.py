@@ -72,7 +72,7 @@ def _isNullHistogram(h):
 def buildVariationsFromAlternativesWithEnvelope(uncfile, ret):
     for var in uncfile.uncertainty():
         if var.unc_type != 'altSampleEnv': continue # now only adding the alternative samples
-
+        thelist = var.args[0].replace("[", "").replace("]", "").replace("'", "").split("\,")
         hasBeenApplied = False
         toremove = []
         for k, p in ret.iteritems():
@@ -81,11 +81,12 @@ def buildVariationsFromAlternativesWithEnvelope(uncfile, ret):
             if hasBeenApplied:
                 raise RuntimeError("FATAL: variation %s is being applied to at least two processes"%var.name)
 
-            if not isinstance(var.args[0], list):
+            if not isinstance(thelist, list):
+                print thelist
                 raise RuntimeError("FATAL: the argument given for the envelope uncertainty calculation with alternative samples for the variation {var} is not a list of samples.".format(var = var.name))
 
-            if len(var.args) != 2:
-                raise RuntimeError("FATAL: more arguments than two provided for the envelope uncertainty calculation with alternative samples for the variation {var}.".format(var = var.name))
+            #if len(var.args) < 2:
+                #raise RuntimeError("FATAL: more arguments than two provided for the envelope uncertainty calculation with alternative samples for the variation {var}.".format(var = var.name))
 
             up   = _cloneNoDir( p.central, var.name + 'Up' )
             down = _cloneNoDir( p.central, var.name + 'Down' )
@@ -93,28 +94,30 @@ def buildVariationsFromAlternativesWithEnvelope(uncfile, ret):
             for ibin in range(1, p.central.GetNbinsX() + 1):
                 maxUp = p.central.GetBinContent( ibin )
                 minDn = p.central.GetBinContent( ibin )
-                for samp in var.args[0]:
+                
+                for samp in thelist:
                     cont = ret[samp].raw().GetBinContent(ibin)
                     if (cont - maxUp > 0): maxUp = cont
                     if (cont - minDn < 0): minDn = cont
-                    up.SetBinContent( ibin, maxUp )
-                    down.SetBinContent( ibin, minDn )
+
+                up.SetBinContent( ibin, maxUp )
+                down.SetBinContent( ibin, minDn )
 
             if var.args[1].lower() == "symm":
                 for ibin in range(1, p.central.GetNbinsX() + 1):
                     if   up.GetBinContent(ibin) == p.central.GetBinContent(ibin):
-                        up.SetBinContent(ibin, 2 * p.central.GetBinContent(ibin) - dn.GetBinContent(ibin))
-                    elif dn.GetBinContent(ibin) == p.central.GetBinContent(ibin):
-                        dn.SetBinContent(ibin, 2 * p.central.GetBinContent(ibin) - up.GetBinContent(ibin))
+                        up.SetBinContent(ibin, 2 * p.central.GetBinContent(ibin) - down.GetBinContent(ibin))
+                    elif down.GetBinContent(ibin) == p.central.GetBinContent(ibin):
+                        down.SetBinContent(ibin, 2 * p.central.GetBinContent(ibin) - up.GetBinContent(ibin))
                     else:
-                        tmpvar = (up.GetBinContent(ibin) + dn.GetBinContent(ibin)) / 2
-                        up.SetBinContent(ibin, p.central.GetBinContent(ibin) + tmpvar)
-                        dn.SetBinContent(ibin, p.central.GetBinContent(ibin) - tmpvar)
+                        tmpvar = (up.GetBinContent(ibin) - down.GetBinContent(ibin)) / 2
+                        up.SetBinContent(ibin,   p.central.GetBinContent(ibin) + tmpvar)
+                        down.SetBinContent(ibin, p.central.GetBinContent(ibin) - tmpvar)
 
             p.addVariation(var.name, 'up'  , up)
             p.addVariation(var.name, 'down', down)
 
-            toremove.extend( [el for el in var.args[0]])
+            toremove.extend( [el for el in thelist])
             hasBeenApplied = True
 
         for rem in toremove:
@@ -136,6 +139,7 @@ def buildVariationsFromAlternative( uncfile, ret):
             p.addVariation( var.name, 'down', ret[var.args[1]].raw())
             toremove.extend( [var.args[0], var.args[1]])
             hasBeenApplied=True
+        #print toremove
         for rem in toremove: 
             if rem in ret: ret.pop(rem)
 
@@ -553,27 +557,70 @@ class HistoWithNuisances:
         """return true if the specified variation alters the shape of the histogram.
            this is tested by checking if the ratio between non-empty bins of the 
            nominal and varied histogram are identical within the tolerance"""
-        if "TH1" not in self.central.ClassName(): raise RuntimeError("Unsupported for non-TH1")
         h0 = self.central
-        for h in self.variations[name]:
-            ratio = None 
-            for b in xrange(1,h0.GetNbinsX()+1):
-                y0 = h0.GetBinContent(b)
-                y  =  h.GetBinContent(b)
-                if debug: 
-                    print "  bin %3d  nominal %9.4f  varied %9.4f   ratio %8.5f   diff %8.5f" % (
-                        b, y0, y, (y/y0 if y0 else 1), y/y0-ratio if (ratio != None and y0 != 0) else 0)
-                if (y0 <= 1e-5):
-                    if (y > 1e-4):
-                        return True
-                elif y == 0: 
-                    return True
-                else:
-                    if ratio is None:
-                        ratio = y/y0
-                    else:
-                        if abs(y/y0 - ratio) > tolerance: 
+        #if "TH1" not in self.central.ClassName(): raise RuntimeError("Unsupported for non-TH1")
+        #for h in self.variations[name]:
+            #ratio = None
+            #for b in xrange(1,h0.GetNbinsX()+1):
+                #y0 = h0.GetBinContent(b)
+                #y  =  h.GetBinContent(b)
+                #if debug:
+                    #print "  bin %3d  nominal %9.4f  varied %9.4f   ratio %8.5f   diff %8.5f" % (
+                        #b, y0, y, (y/y0 if y0 else 1), y/y0-ratio if (ratio != None and y0 != 0) else 0)
+                #if (y0 <= 1e-5):
+                    #if (y > 1e-4):
+                        #return True
+                #elif y == 0:
+                    #return True
+                #else:
+                    #if ratio is None:
+                        #ratio = y/y0
+                    #else:
+                        #if abs(y/y0 - ratio) > tolerance:
+                            #return True
+        if   "TH1" in self.central.ClassName():
+            for h in self.variations[name]:
+                ratio = None
+                for b in xrange(1,h0.GetNbinsX()+1):
+                    y0 = h0.GetBinContent(b)
+                    y  =  h.GetBinContent(b)
+                    if debug:
+                        print "  bin %3d  nominal %9.4f  varied %9.4f   ratio %8.5f   diff %8.5f" % (
+                            b, y0, y, (y/y0 if y0 else 1), y/y0-ratio if (ratio != None and y0 != 0) else 0)
+                    if (y0 <= 1e-5):
+                        if (y > 1e-4):
                             return True
+                    elif y == 0:
+                        return True
+                    else:
+                        if ratio is None:
+                            ratio = y/y0
+                        else:
+                            if abs(y/y0 - ratio) > tolerance:
+                                return True
+        elif "TH2" in self.central.ClassName():
+            for h in self.variations[name]:
+                ratio = None
+                for iB in xrange(1, h0.GetNbinsX() + 1):
+                    for jB in range(1, h0.GetNbinsY() + 1):
+                        y0 = h0.GetBinContent(iB, jB)
+                        y  =  h.GetBinContent(iB, jB)
+                        if debug:
+                            print "  iBin %3d,%3d  nominal %9.4f  varied %9.4f   ratio %8.5f   diff %8.5f" % (
+                                iB, jB, y0, y, (y/y0 if y0 else 1), y/y0-ratio if (ratio != None and y0 != 0) else 0)
+                        if (y0 <= 1e-5):
+                            if (y > 1e-4):
+                                return True
+                        elif y == 0:
+                            return True
+                        else:
+                            if ratio is None:
+                                ratio = y/y0
+                            else:
+                                if abs(y/y0 - ratio) > tolerance:
+                                    return True
+        else:
+            raise RuntimeError("Unsupported for non-TH1/2")
         return False
     def regularizeVariation(self, var, minUnweightedEvents=12, minRatio=0.2, quiet=False, debug=False, binname="<unknown bin>"):
         if "TH1" not in self.central.ClassName(): raise RuntimeError("Unsupported for non-TH1")

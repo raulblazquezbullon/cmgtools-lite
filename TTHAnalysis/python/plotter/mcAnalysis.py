@@ -238,7 +238,7 @@ class MCAnalysis:
             cnames = [ x.strip() for x in field[1].split("+") ]
             total_w = 0.; to_norm = False; ttys = [];
             genWeightName = extra["genWeightName"] if "genWeightName" in extra else "genWeight"
-            genSumWeightName = extra["genSumWeightName"] if "genSumWeightName" in extra else "genEventSumw"  #for nanoAODv6 this should be genEventSumw_
+            genSumWeightName = extra["genSumWeightName"] if "genSumWeightName" in extra else "genEventSumw_"  #for nanoAODv6 this should be genEventSumw_
             is_w = -1
             pname0 = pname
             for cname in cnames:
@@ -539,9 +539,22 @@ class MCAnalysis:
             h.buildEnvelopes() 
             h.buildEnvelopesRMS()
 
+        #print "\nANTES", ret
+
         ## add variations from alternate samples
         if self.variationsFile:
             buildVariationsFromAlternative(self.variationsFile, ret)
+            buildVariationsFromAlternativesWithEnvelope(self.variationsFile, ret)
+
+        ## remove samples used for sytstematics
+        toremove = []
+        for key in ret:
+            if "syst" in key:
+                toremove.append(key)
+        for rem in toremove:
+            print " - Erasing " + rem
+            ret.pop(rem)
+        #print "\nLLUEU", ret
 
         rescales = []
         self.compilePlotScaleMap(self._options.plotscalemap,rescales)
