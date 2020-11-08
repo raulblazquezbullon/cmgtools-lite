@@ -205,14 +205,20 @@ class MVA_tWRun2(Module):
             #MVAVar("deltaRL1L2_J1J2_",      func = lambda ev : ev.Lep12Jet12_DR_jerDown),
             #MVAVar("deltaRL1L2_metJ1J2_",   func = lambda ev : ev.Lep12Jet12MET_DR_jerDown),
         #]
-
-        mvas_path = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/mvas"
-
-        path_SergioBDT_1j1b = mvas_path + "/2018_00_00_SergioBDT/bdt1j1t/weights/TMVAClassification_GradBoost_2000_0.01.weights.xml"
-        path_SergioBDT_2j1b = mvas_path + "/2018_00_00_SergioBDT/bdt2j1t/weights/TMVAClassification_GradBoost_200_005_4.weights.xml"
-
-        path_tmvaBDT_1j1b = mvas_path + "/2020_07_13_run2/tmvaBDT_1j1t/weights/TMVAClassification_GradBoost_2000_0.01.weights.xml"
-        path_tmvaBDT_2j1b = mvas_path + "/2020_07_13_run2/tmvaBDT_2j1t/weights/TMVAClassification_GradBoost_200_005_4.weights.xml"
+        #------Ruta anterior------
+#        mvas_path = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/mvas"
+#
+#        path_SergioBDT_1j1b = mvas_path + "/2018_00_00_SergioBDT/bdt1j1t/weights/TMVAClassification_GradBoost_2000_0.01.weights.xml"
+#        path_SergioBDT_2j1b = mvas_path + "/2018_00_00_SergioBDT/bdt2j1t/weights/TMVAClassification_GradBoost_200_005_4.weights.xml"
+#
+#        path_tmvaBDT_1j1b = mvas_path + "/2020_07_13_run2/tmvaBDT_1j1t/weights/TMVAClassification_GradBoost_2000_0.01.weights.xml"
+#        path_tmvaBDT_2j1b = mvas_path + "/2020_07_13_run2/tmvaBDT_2j1t/weights/TMVAClassification_GradBoost_200_005_4.weights.xml"
+        #------Ruta anterior------
+                
+        #------Mi ruta------
+        path_tmvaBDT_1j1b = "/nfs/fanae/user/asoto/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/tw_MVAS_asoto/tmvaBDT_1j1t/weights/TMVAClassification_GradBoost_2000_0.01.weights.xml"
+        path_tmvaBDT_2j1b = "/nfs/fanae/user/asoto/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/tw_MVAS_asoto/tmvaBDT_2j1t/weights/TMVAClassification_GradBoost_200_005_4.weights.xml"
+        #------Mi ruta------
 
 
         #self.MVAs["SergioBDT_1j1b"]       = MVATool("BDT",         path_SergioBDT_1j1b, self.vars_1j1t)

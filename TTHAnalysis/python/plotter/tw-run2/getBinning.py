@@ -173,5 +173,5 @@ Float_t theBDT(Double_t BDT){
 #getBinningForThatVariable("./temp/varplots/run2/1j1t/MVAtrain/plots-tw-1j1t_MVAtrain.root", "SergioBDT_1j1b_smallb_ttbar", 10)
 #getBinningForThatVariable("./temp/varplots/run2/2j1t/MVAtrain/plots-tw-2j1t_MVAtrain.root", "SergioBDT_2j1b_smallb_ttbar", 6)
 
-getBinningForThatVariable("./temp/varplots/run2/1j1t/MVAtrain/plots-tw-1j1t_MVAtrain.root", "tmvaBDT_1j1b_smallb_ttbar", 10)
-getBinningForThatVariable("./temp/varplots/run2/2j1t/MVAtrain/plots-tw-2j1t_MVAtrain.root", "tmvaBDT_2j1b_smallb_ttbar", 6)
+getBinningForThatVariable("/nfs/fanae/user/asoto/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/prueba_08-09-2020/run2/1j1t/MVAtrain/plots-tw-1j1t_MVAtrain.root", "tmvaBDT_1j1b_smallb_ttbar", 10)
+getBinningForThatVariable("/nfs/fanae/user/asoto/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/prueba_08-09-2020/run2/2j1t/MVAtrain/plots-tw-2j1t_MVAtrain.root", "tmvaBDT_2j1b_smallb_ttbar", 6)

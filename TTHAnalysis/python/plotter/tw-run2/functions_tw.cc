@@ -55,25 +55,25 @@ float getSergioBDtWOther(double BDT) {
 
 
 float getBDtW(double BDT) {
-  if      (BDT < -0.576136) return 1;
-  else if (BDT < -0.456186) return 2;
-  else if (BDT < -0.317302) return 3;
-  else if (BDT < -0.189152) return 4;
-  else if (BDT < -0.084137) return 5;
-  else if (BDT < 0.012613)  return 6;
-  else if (BDT < 0.110381)  return 7;
-  else if (BDT < 0.216965)  return 8;
-  else if (BDT < 0.335691)  return 9;
+  if      (BDT < -0.559568061817) return 1;
+  else if (BDT < -0.444112565203) return 2;
+  else if (BDT < -0.295492682032) return 3;
+  else if (BDT < -0.167431061743) return 4;
+  else if (BDT < -0.0664100735425) return 5;
+  else if (BDT < 0.0232723180179)  return 6;
+  else if (BDT < 0.1115432379)  return 7;
+  else if (BDT < 0.205757949766)  return 8;
+  else if (BDT < 0.314230186393)  return 9;
   else                      return 10;
 }
 
 
 float getBDtWOther(double BDT) {
-  if      (BDT < -0.239698) return 1;
-  else if (BDT < -0.126132) return 2;
-  else if (BDT < -0.029249) return 3;
-  else if (BDT < 0.062478)  return 4;
-  else if (BDT < 0.163814)  return 5;
+  if      (BDT < -0.198456933309) return 1;
+  else if (BDT < -0.104870778878) return 2;
+  else if (BDT < -0.0376734662819) return 3;
+  else if (BDT < 0.0272681912809)  return 4;
+  else if (BDT < 0.134647973966)  return 5;
   else                      return 6;
 }
 

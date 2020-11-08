@@ -21,7 +21,7 @@
 using namespace TMVA;
 
 
-void trainBDtW_2j1t(TString outputdir, TString outputbasedir = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/mvas/", TString inputdir = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/productions/2020-07-03/", TString outputFileName = "tmvaBDT_2j1t.root", TString myMethodList = "", TString twname = "tw.root", TString tbarwname = "tbarw.root", TString ttbarname = "ttbar.root") {
+void trainBDtW_2j1t(TString outputdir, TString outputbasedir = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/mvas/", TString inputdir = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/productions/2020-09-20/", TString outputFileName = "tmvaBDT_2j1t.root", TString myMethodList = "", TString twname = "tw.root", TString tbarwname = "tbarw.root", TString ttbarname = "ttbar.root") {
   // This loads the library
   TMVA::Tools::Instance();
 
@@ -81,12 +81,30 @@ void trainBDtW_2j1t(TString outputdir, TString outputbasedir = "/pool/phedex/use
   loader->AddVariable("train_jet2_pt"         , "Subleading jet p_{T}",                         "", 'F');
   loader->AddVariable("train_lep1jet1_dr"	   , "#Delta R(l_{1}, j_{1})",                       "", 'F');
   loader->AddVariable("train_lep12jet12_dr"   , "#Delta R(l_{1}l_{2}, j_{1}j_{2})",             "", 'F');
-  loader->AddVariable("train_lep12jet12met_dr", "#Delta R(l_{1}l_{2}, j_{1}j_{2}p_{T}^{miss})", "", 'F');
+//  loader->AddVariable("train_lep12jet12met_dr", "#Delta R(l_{1}l_{2}, j_{1}j_{2}p_{T}^{miss})", "", 'F');
 
   //   loader->AddVariable( "nBLooseCentral + nBLooseFwd"       ,   "nBLoose"           , ""   , 'I' );
   // loader->AddVariable( "nLooseFwd"      ,   "n_{jet}^{20}_fwd"                         , ""   , 'I' );
 
-
+//-------------------------------------------Prueba con nuevas variables-----------------------------------
+//  loader->AddVariable("train_lep1lep2jet1_pt", "train_lep1lep2jet1_pt", "", 'F');
+//  loader->AddVariable("train_lep1lep2jet1met_pt", "train_lep1lep2jet1met_pt", "", 'F');
+//  loader->AddVariable("train_lep1lep2jet1_c", "train_lep1lep2jet1_c", "", 'F');
+//  loader->AddVariable("train_lep1lep2jet1_m", "train_lep1lep2jet1_m", "", 'F');
+//  loader->AddVariable("train_lep1lep2jet1_e", "train_lep1lep2jet1_e", "", 'F');
+//  loader->AddVariable("train_lep1jet1_pt", "train_lep1jet1_pt", "", 'F');
+//  loader->AddVariable("train_lep1jet1_m", "train_lep1jet1_m", "", 'F');
+//  loader->AddVariable("train_lep2jet1_m", "train_lep2jet1_m", "", 'F');
+//  loader->AddVariable("train_lepjet11lep2_dr", "train_lepjet11lep2_dr", "", 'F');
+//  loader->AddVariable("train_lepjet11lep2_dphi", "train_lepjet11lep2_dphi", "", 'F');
+//  loader->AddVariable("train_lepjet11lep2_deta", "train_lepjet11lep2_deta", "", 'F');
+//  loader->AddVariable("train_lep1lep2_pt", "train_lep1lep2_pt", "", 'F');
+//  loader->AddVariable("train_lep1lep2_dr", "train_lep1lep2_dr", "", 'F');
+//  loader->AddVariable("train_lep2_eta", "train_lep2_eta", "", 'F');
+//  loader->AddVariable("train_jet1_eta", "train_jet1_eta", "", 'F');
+//  loader->AddVariable("train_jet1_m", "train_jet1_m", "", 'F');
+//  loader->AddVariable("train_jet2_eta", "train_jet2_eta", "", 'F');
+//-------------------------------------------Prueba con nuevas variables-----------------------------------
 
   ////// MVA SETTINGS ===========================================================================
   TString layoutString ("Layout=TANH|10,TANH|20,TANH|10,TANH|5,TANH|4,LINEAR");
@@ -128,12 +146,21 @@ void trainBDtW_2j1t(TString outputdir, TString outputbasedir = "/pool/phedex/use
   loader->SetSignalWeightExpression(    "allweights");
   loader->SetBackgroundWeightExpression("allweights");
 
-  TCut mycuts = "((njets == 2) && (nbjets == 1))";
-  TCut mycutb = "((njets == 2) && (nbjets == 1))";
+  TCut mycuts = "((njets == 2) && (nbjets == 1) && (channel == 1))";
+  TCut mycutb = "((njets == 2) && (nbjets == 1) && (channel == 1))";
 
 
-  loader->PrepareTrainingAndTestTree( mycuts,mycutb,"nTrain_Signal=0:nTrain_Background=0:SplitMode=Random:NormMode=NumEvents:!V:nTest_Background=0" );
-
+  //loader->PrepareTrainingAndTestTree( mycuts,mycutb,"nTrain_Signal=0:nTrain_Background=0:SplitMode=Random:NormMode=NumEvents:!V:nTest_Background=0" );
+  
+  //========70% training and 30% testing======
+  double bkgtrain = (TTtree->GetEntries("((njets == 2) && (nbjets == 1) && (channel == 1))"))*0.7;
+  double sigtrain = (SItree->GetEntries("((njets == 2) && (nbjets == 1) && (channel == 1))"))*0.7;
+  loader->PrepareTrainingAndTestTree(mycuts,
+                                     mycutb,
+                                     "nTrain_Signal="+to_string(sigtrain)+":nTrain_Background="+to_string(bkgtrain)+":SplitMode=Random:NormMode=NumEvents:!V:nTest_Background=0:nTest_Signal=0"); 
+  //========70% training and 30% testing======
+  
+  
   // factory->BookMethod( loader, TMVA::Types::kBDT, "8TeVSetup",
   // 		       "!H:!V");
 
@@ -161,8 +188,48 @@ void trainBDtW_2j1t(TString outputdir, TString outputbasedir = "/pool/phedex/use
   // factory->BookMethod( loader, TMVA::Types::kBDT, "8TeVSetup",
   // 			"!H:!V");
 
+
+
+
   factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_200_005_4",
       "NTrees=200:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.05:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
+  
+  //====================Metodos Nuevos=================================== Learning rate opt
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_200_0001_4",
+//      "NTrees=200:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.001:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_200_0005_4",
+//      "NTrees=200:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.005:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_200_001_4",
+//      "NTrees=200:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.01:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_200_005_4",
+//      "NTrees=200:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.05:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_200_01_4",
+//      "NTrees=200:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.1:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
+
+  //==ncuts opt
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_200_005_4_ncuts20",
+//      "NTrees=200:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.05:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_200_005_4_ncuts5",
+//      "NTrees=200:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.05:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=5:MaxDepth=4" );
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_200_005_4_ncuts70",
+//      "NTrees=200:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.05:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=70:MaxDepth=4" );
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_200_005_4_ncuts150",
+//      "NTrees=200:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.05:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=150:MaxDepth=4" );
+  //==ntrees opt
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_200_005_4",
+//      "NTrees=200:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.05:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_400_005_4",
+//      "NTrees=400:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.05:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_600_005_4",
+//      "NTrees=600:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.05:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_800_005_4",
+//      "NTrees=800:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.05:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_1000_005_4",
+//      "NTrees=1000:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.05:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
+  //====================Metodos Nuevos===================================
+  
+  
+  
   // factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_400_005_3",
   // 			"NTrees=600:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.01:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=3" );
   //   factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_1400_001_3",
@@ -216,3 +283,20 @@ void trainBDtW_2j1t(TString outputdir, TString outputbasedir = "/pool/phedex/use
   // Launch the GUI for the root macros
   if (!gROOT->IsBatch()) TMVAGui( outputFileName );
 }
+
+
+
+
+                   
+
+               
+
+                             
+
+              
+
+                                 
+
+
+
+

@@ -13,7 +13,8 @@ datasamples  = ["SingleMuon", "SingleElec", "DoubleMuon", "DoubleEG", "MuonEG", 
 
 mcpath       = "/pool/ciencias/nanoAODv6/29jan2020_MC"
 datapath     = "/pool/ciencias/nanoAODv6/13jan2020"
-logpath      = friendspath + "/{p}/{y}/logs/plots"
+logpath_victor      = friendspath + "/{p}/{y}/logs/plots"
+logpath = "/nfs/fanae/user/asoto/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/plot_logs"
 
 #friendsscaff = "--Fs {fpath}/{p}/{y}/0_yeartag --Fs {fpath}/{p}/{y}/1_lepmerge_roch --Fs {fpath}/{p}/{y}/2_cleaning --Fs {fpath}/{p}/{y}/3_varstrigger --FMCs {fpath}/{p}/{y}/4_scalefactors --Fs {fpath}/{p}/{y}/5_mvas"
 
