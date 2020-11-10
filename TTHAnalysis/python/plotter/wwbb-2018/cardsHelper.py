@@ -25,8 +25,11 @@ commandscaff = '''python makeShapeCardsNew.py --tree NanoAOD {mcafile} {cutsfile
 
 def CardsCommand(prod, year, var, bines, isAsimov, nthreads, outpath, region, noUnc, useFibre, extra):
     mcafile_   = "wwbb-2018/mca-tw-wwbb.txt"
-    cutsfile_  = "wwbb-2018/cuts-differential/cuts-wwbb-particle-{reg}.txt".format( reg = region)
-    plotsfile_ = "wwbb-2018/plots-wwbb-{reg}.txt".format(reg = region)
+    cutsfile_  = "wwbb-2018/cuts-differential/cuts-wwbb-particle-fiducial-{reg}.txt".format( reg = region)	# Particle (fiducial)
+    #cutsfile_  = "wwbb-2018/cuts-differential/cuts-wwbb-particle-phsp-{reg}.txt".format( reg = region)		# Particle (phase space)
+    #cutsfile_  = "wwbb-2018/cuts-differential/cuts-wwbb-detector-{reg}.txt".format( reg = region)		# Detector
+    plotsfile_ = "wwbb-2018/plots-wwbb-gen-{reg}.txt".format(reg = region)					# Particle (generation level plots)
+    #plotsfile_ = "wwbb-2018/plots-wwbb-{reg}.txt".format(reg = region)						# Detector
 
     samplespaths_ = "-P " + friendspath + "/" + prod + ("/" + year) * (year != "run2")
     if useFibre: samplespaths_ = samplespaths_.replace("phedexrw", "phedex").replace("cienciasrw", "ciencias")
