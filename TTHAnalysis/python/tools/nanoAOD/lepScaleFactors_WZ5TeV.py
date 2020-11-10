@@ -10,8 +10,8 @@ class lepScaleFactors_WZ5TeV(Module):
         self.looseToTight  = {} 
 
         for fl in ['ele','mu']:
-            self.recoToLoose['%s'%(fl)]  = self.loadHisto(os.environ['CMSSW_BASE'] + '/src/CMGTools/TTHAnalysis/data/leptonSF/final_%s_recotolooseSF.root'%(fl),"EGamma_SF2D")
-            self.looseToTight['%s'%(fl)] = self.loadHisto(os.environ['CMSSW_BASE'] + '/src/CMGTools/TTHAnalysis/data/leptonSF/final_%s_loosetotightSF.root'%(fl), "EGamma_SF2D")
+            self.recoToLoose['%s'%(fl)]  = self.loadHisto(os.environ['CMSSW_BASE'] + '/src/CMGTools/TTHAnalysis/data/leptonSF/refinal_%s_recotolooseSF.root'%(fl),"EGamma_SF2D")
+            self.looseToTight['%s'%(fl)] = self.loadHisto(os.environ['CMSSW_BASE'] + '/src/CMGTools/TTHAnalysis/data/leptonSF/refinal_%s_loosetotightSF.root'%(fl), "EGamma_SF2D")
 
 
     def loadHisto(self, fil, hist):
