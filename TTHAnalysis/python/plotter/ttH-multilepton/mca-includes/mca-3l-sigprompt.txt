@@ -1,4 +1,4 @@
-ttH+   : TTHnobb_fxfx : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0; FillColor=ROOT.kOrange+10
+ttH   : TTHnobb_fxfx : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0; FillColor=ROOT.kOrange+10
 
 tHq	: THQ_ctcvcp_new: 0.07096*LHEReweightingWeight[11] : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0; FillColor=ROOT.kBlue,genSumWeightName="LHEReweightingSumw_[11]/LHEScaleSumw_[4]*genEventSumw_"
 tHW	: THW_ctcvcp_new :0.01561*LHEReweightingWeight[11] : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0; FillColor=ROOT.kOrange+8,genSumWeightName="LHEReweightingSumw_[11]/LHEScaleSumw_[4]*genEventSumw_"
@@ -6,8 +6,8 @@ tHW	: THW_ctcvcp_new :0.01561*LHEReweightingWeight[11] : LepGood1_mcMatchId!=0 &
 
 TTWW	: TTWW : 0.006981 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kGreen
 
-TTW     : TTWToLNu_fxfx : 0.1960 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ;  FillColor=ROOT.kGreen-5, Label="ttW   ", years="2016\,2018"
-TTW     : TTWToLNu_fxfx+TTWToLNu_fxfx_PS : 0.1960 :LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ;  FillColor=ROOT.kGreen-5, Label="ttW   ", years="2017"
+TTW+     : TTWToLNu_fxfx : 0.1960 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ;  FillColor=ROOT.kGreen-5, Label="ttW   ", years="2016\,2018"
+TTW+    : TTWToLNu_fxfx+TTWToLNu_fxfx_PS : 0.1960 :LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ;  FillColor=ROOT.kGreen-5, Label="ttW   ", years="2017"
 TTZ     : TTZToLLNuNu_amc : 0.281 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ;  FillColor=ROOT.kSpring+2, Label="ttZ ", years="2016\,2018"
 TTZ     : TTZToLLNuNu_amc+TTZToLLNuNu_amc_PS : 0.281 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ;  FillColor=ROOT.kSpring+2, Label="ttZ   ", years="2017"
 TTZ     : TTZToLLNuNu_m1to10 : 0.082 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ;  FillColor=ROOT.kSpring+2
