@@ -22,8 +22,10 @@ noB:  nBJetMedium25==0; Disable=True
 eq1J: nJet25==1; 	Disable=True
 eq2J: nJet25==2;	Disable=True
 eq3J: nJet25==3;        Disable=True
+gt3J: nJet25>=3;	Disable=True
 eq1B: nBJetMedium25==1; Disable=True
 eq2B: nBJetMedium25==2; Disable=True
+
 
 x2j: nJet25==2 ; Disable=True
 4j: nJet25>=4 ;  Disable=True
