@@ -1632,7 +1632,7 @@ def main(args):
         'MWZ'       : ['M(WZ) [GeV]'             , 'M_{WZ}'             ],
         'Wpt'       : ['p_{T}^{W} [GeV]'          , 'p_{T}^{W}'          ],
         'Njets'      : ['N_{jets}'                 , 'N_{jets}^{gen}'    ],
-        'Wpol'      : ['cos(#theta_{W}^{Dn})'     , 'cos(#theta_{W}^{Dn})' ],
+        'Wpol'      : ['q#cdot cos(#theta_{W}^{Dn})'     , 'q#cdot cos(#theta_{W}^{Dn})' ],
         'Zpol'      : ['cos(#theta_{Z}^{Dn})'     , 'cos(#theta_{Z}^{Dn})' ],
         
         }
@@ -1640,6 +1640,8 @@ def main(args):
     for var, fancy in vardict.items():
         fancyvar=fancy[0]
         diffvar=fancy[1]
+        if args.singlevar and not var in args.singlevar:
+            continue
         u = Unfolder(args,var,fancyvar, diffvar)
         u.print_responses()
         u.study_responses()
@@ -1666,6 +1668,7 @@ if __name__ == '__main__':
     parser.add_argument('-r', '--responseAsPdf',  help='Print response matrix as pdf', action='store_true') 
     parser.add_argument('-f', '--finalState',     help='Final state', default=None)
     parser.add_argument('--charge',               help='Charge of the W', default='')
+    parser.add_argument('--singlevar',            help='Run unfolding only for a single variable', default=None)
     parser.add_argument('-b', '--bias',           help='Scale bias (0 deactivates bias vector)', default=None, type=float)
     parser.add_argument('-a', '--areaConstraint', help='Area constraint', action='store_true')
     parser.add_argument('--checkLO',              help='Compare also with LO inclusive MC', action='store_true')
