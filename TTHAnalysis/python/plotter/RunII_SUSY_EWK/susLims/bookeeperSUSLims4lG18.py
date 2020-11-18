@@ -1,6 +1,6 @@
 import os
- 
-base183l = "python makeShapeCardsSusy.py  RunII_SUSY_EWK/2018/4l/mca_ewkino_v5.txt RunII_SUSY_EWK/2018/4l/cuts_4l.txt --FFasts {P}/puWeight/ '[VAR]' '[BINS]' RunII_SUSY_EWK/systs/systs_wz18.txt --tree treeProducerSusyMultilepton -P /pool/cienciasrw/HeppyTrees/RA7/nanoAODv5_2018_skimWZ/ -P /pool/cienciasrw/HeppyTrees/RA7/nanoAODv5_2018_signals/ --FFulls {P}/leptonPtCorrections/  --Fs {P}/leptonJetReCleanerWZSM/ --Fs {P}/leptonBuilderEWK/  --FMCs {P}/leptonMatcher/ --FMCs {P}/bTagEventWeights/ -L RunII_SM_WZ/functionsWZ.cc -L RunII_SM_WZ/functionsSF.cc -L RunII_SM_WZ/functionsMCMatch.cc -L RunII_SUSY_EWK/functionsEWKcorr.cc --plotgroup data_fakes+=.*promptsub.*  --mcc RunII_SM_WZ/2018/mcc_triggerdefs.txt --neglist .*promptsub.* --neg -W 'puWeight*($MC{bTagWeightDeepCSVT_nom} $FASTSIM{bTagWeightDeepCSVT})*(getLeptonSF_v4(0,0,2018,LepSel_pt[0],LepSel_eta[0],LepSel_pdgId[0])*getLeptonSF_v4(0,0,2018,LepSel_pt[1],LepSel_eta[1],LepSel_pdgId[1])*getLeptonSF_v4(0,0,2018,LepSel_pt[2],LepSel_eta[2],LepSel_pdgId[2])*getLeptonSF_v4(0,0,2018,LepSel_pt[3],LepSel_eta[3],LepSel_pdgId[3]))' --obj Events -j 64 -f  -l 59.8  -E [SRCUT]  [EXCLUDERS] -o [OCARD] --od [OD] "
+
+base183l = "python makeShapeCardsNew.py RunII_SUSY_EWK/2018/4l/mca_ewkino_v5.txt RunII_SUSY_EWK/2018/4l/cuts_4l.txt '[VAR]' '[BINS]' --unc RunII_SUSY_EWK/systs/systs_wz18_forplot4l.txt --tree treeProducerSusyMultilepton -P /pool/ciencias/HeppyTrees/RA7/nanoAODv5_2018_skimWZ/ -P /pool/ciencias/HeppyTrees/RA7/nanoAODv5_2018_signals/ --FFulls {P}/leptonPtCorrections/ --FFasts {P}/puWeight/ --Fs {P}/leptonJetReCleanerEWK_NEWID/ --Fs {P}/leptonBuilderEWK_NEWID/ --FMCs {P}/leptonMatcher/ --FMCs {P}/bTagEventWeights_NEWID/ -L RunII_SUSY_EWK/functionsWZ.cc -L RunII_SUSY_EWK/functionsSF.cc -L RunII_SUSY_EWK/functionsMCMatch.cc -L RunII_SUSY_EWK/functionsEWK.cc  --plotgroup data_fakes+=.*promptsub.* --neglist .*promptsub.* --neg -W 'puWeight*bTagWeightDeepCSVT_nom*1*getLeptonSF_v5(2,0,2018,LepSel_conePt[0],LepSel_eta[0],LepSel_pdgId[0])*getLeptonSF_v5(2,0,2018,LepSel_conePt[1],LepSel_eta[1],LepSel_pdgId[1])*getLeptonSF_v5(2,0,2018,LepSel_conePt[2],LepSel_eta[2],LepSel_pdgId[2])*getLeptonSF_v5(2,0,2018,LepSel_conePt[3],LepSel_eta[3],LepSel_pdgId[3])' --obj Events -j 8 -f  --mcc RunII_SUSY_EWK/2018/mcc_triggerdefs.txt -l 59.8 -E [SRCUT] [EXCLUDERS]  --ms --od [OD]"
 
 allSignals = ['sig_TChiWZ.*', 'sig_TChiWH.*', 'sig_TChiZZ.*', 'sig_TChiHH.*', 'sig_TChiHZ.*', 'sig_TChiSlep.*', 'sig_TChiTESlep.*', 'sig_TChiStau.*']
 vetoSignals = ['sig_TChiWZ.*', 'sig_TChiSlep.*',  'sig_TChiTESlep.*', 'sig_TChiWH.*', 'sig_TChiStau.*']
@@ -18,5 +18,5 @@ for sigs in allSignals:
           excluders = excluders + " --xp " + v
      command = base183l.replace("[VAR]", vb).replace("[BINS]",varsandbins[vb]).replace("[SRCUT]",SRCUT).replace("[OCARD]",oCARD).replace("[OD]", oDir[vb]+ sigs.replace("sig_","").replace(".*","")).replace("[EXCLUDERS]", excluders)
      print command
-     #os.system("sbatch -c 64 -p short -J" + sigs + " --wrap \"" + command.replace("$","\$") + "\"")
+     os.system("sbatch -c 12 -p batch -J" + sigs + " --wrap \"" + command.replace("$","\$") + "\"")
 
