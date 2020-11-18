@@ -462,8 +462,8 @@ class LeptonBuilderEWK_nanoAOD:
         biglist.append(("nOS"+tag   , "I"))
         biglist.append(("mll"+tag   , "F", 20, "nOS"+tag))
         biglist.append(("mll_fl"+tag, "I", 20, "nOS"+tag))
-        biglist.append(("mll_i1"+tag, "I", 20, "nOS"+tag))
-        biglist.append(("mll_i2"+tag, "I", 20, "nOS"+tag))
+        biglist.append(("mll_i1"+tag, "I", 20))#, "nOS"+tag))
+        biglist.append(("mll_i2"+tag, "I", 20))#, "nOS"+tag))
 
         biglist.append(("nLepSel"+tag   , "I"))
         for vvar in ["pt", "eta", "phi", "mass", "conePt", "dxy", "dz", "sip3d", "miniPFRelIso_all", "pfRelIso04_all"]:

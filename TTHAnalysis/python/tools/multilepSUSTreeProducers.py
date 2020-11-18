@@ -59,9 +59,8 @@ MODULES.append( ('leptonEnergyCorrections_2018', lambda: leptonEnergyCorrections
 ###################################
 
 from CMGTools.TTHAnalysis.tools.leptonJetReCleaner import LeptonJetReCleaner
-from CMGTools.TTHAnalysis.tools.functionsEWK_v5 import _loose_muon, _loose_electron, _loose_lepton, _fO_muon_16, _fO_electron_16,_fO_muon_17, _fO_electron_17,_fO_muon_18, _fO_electron_18, _fO_lepton,_tight_muon,_tight_electron,_tight_lepton,conept
-#from CMGTools.TTHAnalysis.tools.functionsEWK_v5 import *
-from CMGTools.TTHAnalysis.tools.functionsWZ import  _tauId_CBloose, _tauId_CBtight
+from CMGTools.TTHAnalysis.tools.functionsEWK_v5 import _loose_muon, _loose_electron, _loose_lepton, _fO_muon_16, _fO_electron_16,_fO_muon_17, _fO_electron_17,_fO_muon_18, _fO_electron_18, _fO_lepton,_tight_muon,_tight_electron,_tight_lepton,conept,_tauId_CBloose, _tauId_CBtight
+
 
 
 MODULES.append( ('leptonJetReCleanerEWK_2016_v5', lambda : LeptonJetReCleaner("Mini", 
@@ -408,7 +407,7 @@ MODULES.append( ('leptonMatcher', lambda : leptonMatcher("Mini")))
 ###################################
 
 from CMGTools.TTHAnalysis.tools.trigTagger_nano import trigTagger
-MODULES.append( ('Trigger_2016', lambda : trigTagger("Trigger_3l_2016",[
+MODULES.append( ('Trigger_2016_all', lambda : trigTagger("Trigger_3l_2016",[
                     ["HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",0,1000000],
                     ["HLT_Ele27_WPTight_Gsf",0,1000000],
                     ["HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL",0,280919],
@@ -487,6 +486,30 @@ MODULES.append( ('Trigger_2016_se', lambda : trigTagger("Trigger_3l_2016",[
                     ["HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ",280919,1000000]
                     ] )))
 
+MODULES.append( ('Trigger_2017', lambda : trigTagger("Trigger_3l_2017",[
+                    ["HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",0,1000000],
+                    ["HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8",0,1000000],
+                    ["HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ",0,1000000],
+                    ["HLT_Mu8_DiEle12_CaloIdL_TrackIdL",0,1000000],
+                    ["HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",0,1000000],
+                    ["HLT_Ele35_WPTight_Gsf",0,1000000],
+                    ["HLT_IsoMu24",0,30504],
+                    ["HLT_IsoMu27",30504,100000],
+                    ],[
+                    ] )))
+
+MODULES.append( ('Trigger_2018', lambda : trigTagger("Trigger_3l_2018",[
+                    ["HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL",0,1000000],
+                    ["HLT_DoubleEle25_CaloIdL_MW",0,1000000],
+                    ["HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8",0,1000000],
+                    ["HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ",0,1000000],
+                    ["HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL",0,1000000],
+                    ["HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL",0,1000000],
+                    ["HLT_IsoMu24",0,100000],
+                    ["HLT_Ele32_WPTight_Gsf",0,100000],
+                    ],[
+                    ] )))
+
 ###################################
 ############ b-Tag SF #############
 ###################################
@@ -560,6 +583,10 @@ from CMGTools.TTHAnalysis.tools.JetPhotonPrefiring import JetPhotonPrefiring
 MODULES.append( ('JetPhotonPrefiring_2016',  lambda : JetPhotonPrefiring(os.path.join(utility_files_dir, "jetPref", "L1prefiring_jetpt_2016BtoH.root"), os.path.join(utility_files_dir, "jetPref", "L1prefiring_photonpt_2016BtoH.root"), "L1prefiring_jetpt_2016BtoH", "L1prefiring_photonpt_2016BtoH" ) ))
 MODULES.append( ('JetPhotonPrefiring_2017',  lambda : JetPhotonPrefiring(os.path.join(utility_files_dir, "jetPref", "L1prefiring_jetpt_2017BtoF.root"), os.path.join(utility_files_dir, "jetPref", "L1prefiring_photonpt_2017BtoF.root"), "L1prefiring_jetpt_2017BtoF", "L1prefiring_photonpt_2017BtoF" ) ))
 
+#2018 just fill with 1
+MODULES.append( ('JetPhotonPrefiring_2018',  lambda : JetPhotonPrefiring(os.path.join(utility_files_dir, "jetPref", "L1prefiring_jetpt_2017BtoF.root"), os.path.join(utility_files_dir, "jetPref", "L1prefiring_photonpt_2017BtoF.root"), "L1prefiring_jetpt_2017BtoF", "L1prefiring_photonpt_2017BtoF", doDummy=True ) ))
+
+
 ###################################
 ###### Boson polarization #########
 ###################################
@@ -592,5 +619,49 @@ MODULES.append( ('bTagEffCount2018', lambda : bTagEffCount(label = "btagDeepB" ,
 
 
 from CMGTools.TTHAnalysis.tools.eventWeighter import eventWeighter
-MODULES.append( ('eventWeighter', lambda : eventWeighter(1000,123456)))
+MODULES.append( ('eventWeighter', lambda : eventWeighter(2,3461924)))
 
+
+from CMGTools.TTHAnalysis.tools.eventWeighterWeighted import eventWeighterWeighted
+MODULES.append( ('eventWeighterWeighted_data', lambda : eventWeighterWeighted(2,3461924,1)))
+MODULES.append( ('eventWeighterWeighted_WZTo3LNu_pow', lambda : eventWeighterWeighted(2,3461924,0.09461952)))
+MODULES.append( ('eventWeighterWeighted_HZZ', lambda : eventWeighterWeighted(2,3461924,0.00073983)))
+MODULES.append( ('eventWeighterWeighted_ZZTo4L_part0', lambda : eventWeighterWeighted(2,3461924,0.00676019)))
+MODULES.append( ('eventWeighterWeighted_ZZTo4L_part1', lambda : eventWeighterWeighted(2,3461924,0.00676019)))
+MODULES.append( ('eventWeighterWeighted_GluGluToContinToZZTo2e2mu', lambda : eventWeighterWeighted(2,3461924,0.00013248)))
+MODULES.append( ('eventWeighterWeighted_GluGluToContinToZZTo2e2nu', lambda : eventWeighterWeighted(2,3461924,0.00039000)))
+MODULES.append( ('eventWeighterWeighted_GluGluToContinToZZTo2e2tau', lambda : eventWeighterWeighted(2,3461924,0.00038937)))
+MODULES.append( ('eventWeighterWeighted_GluGluToContinToZZTo2mu2nu', lambda : eventWeighterWeighted(2,3461924,0.00038937)))
+MODULES.append( ('eventWeighterWeighted_GluGluToContinToZZTo2mu2tau', lambda : eventWeighterWeighted(2,3461924,0.00038953)))
+MODULES.append( ('eventWeighterWeighted_GluGluToContinToZZTo4e', lambda : eventWeighterWeighted(2,3461924,0.00009916)))
+MODULES.append( ('eventWeighterWeighted_GluGluToContinToZZTo4mu', lambda : eventWeighterWeighted(2,3461924,0.00009751)))
+MODULES.append( ('eventWeighterWeighted_GluGluToContinToZZTo4tau', lambda : eventWeighterWeighted(2,3461924,0.00019572)))
+MODULES.append( ('eventWeighterWeighted_TTHnonbb', lambda : eventWeighterWeighted(2,3461924,0.00193957)))
+MODULES.append( ('eventWeighterWeighted_TTWToLNu', lambda : eventWeighterWeighted(2,3461924,0.00339528)))
+MODULES.append( ('eventWeighterWeighted_TTZToLLNuNu', lambda : eventWeighterWeighted(2,3461924,0.00455678)))
+MODULES.append( ('eventWeighterWeighted_TTGJets', lambda : eventWeighterWeighted(2,3461924,0.02724794)))
+MODULES.append( ('eventWeighterWeighted_TTZToLLNuNu_m1to10', lambda : eventWeighterWeighted(2,3461924,0.00717150)))
+MODULES.append( ('eventWeighterWeighted_tZq_ll_part0', lambda : eventWeighterWeighted(2,3461924,0.00019926)))
+MODULES.append( ('eventWeighterWeighted_tZq_ll_part1', lambda : eventWeighterWeighted(2,3461924,0.00019926)))
+MODULES.append( ('eventWeighterWeighted_tZq_ll_part2', lambda : eventWeighterWeighted(2,3461924,0.00019926)))
+MODULES.append( ('eventWeighterWeighted_tZq_ll_part3', lambda : eventWeighterWeighted(2,3461924,0.00019926)))
+MODULES.append( ('eventWeighterWeighted_tZq_ll_part4', lambda : eventWeighterWeighted(2,3461924,0.00019926)))
+MODULES.append( ('eventWeighterWeighted_tZq_ll_part5', lambda : eventWeighterWeighted(2,3461924,0.00019926)))
+MODULES.append( ('eventWeighterWeighted_VHToNonbb', lambda : eventWeighterWeighted(2,3461924,0.03405502)))
+MODULES.append( ('eventWeighterWeighted_WWW', lambda : eventWeighterWeighted(2,3461924,0.03120308)))
+MODULES.append( ('eventWeighterWeighted_WWZ', lambda : eventWeighterWeighted(2,3461924,0.02370836)))
+MODULES.append( ('eventWeighterWeighted_WZZ', lambda : eventWeighterWeighted(2,3461924,0.00809496)))
+MODULES.append( ('eventWeighterWeighted_ZZZ', lambda : eventWeighterWeighted(2,3461924,0.00201367)))
+MODULES.append( ('eventWeighterWeighted_WZG', lambda : eventWeighterWeighted(2,3461924,0.00148175)))
+MODULES.append( ('eventWeighterWeighted_TTGJets', lambda : eventWeighterWeighted(2,3461924,0.03051770)))
+MODULES.append( ('eventWeighterWeighted_WGToLNuG', lambda : eventWeighterWeighted(2,3461924,0.26922427)))
+MODULES.append( ('eventWeighterWeighted_WZG', lambda : eventWeighterWeighted(2,3461924,0.00165956)))
+MODULES.append( ('eventWeighterWeighted_ZGTo2LG_part1', lambda : eventWeighterWeighted(2,3461924,0.36731561)))
+MODULES.append( ('eventWeighterWeighted_ZGTo2LG_part2', lambda : eventWeighterWeighted(2,3461924,0.36731561)))
+MODULES.append( ('eventWeighterWeighted_ZGTo2LG_part0', lambda : eventWeighterWeighted(2,3461924,0.36731561)))
+MODULES.append( ('eventWeighterWeighted_TChiWZ_400_175', lambda : eventWeighterWeighted(1000,3461924,0.77103155)))
+MODULES.append( ('eventWeighterWeighted_TChiWZ_225_135', lambda : eventWeighterWeighted(1000,3461924,0.74453524)))
+MODULES.append( ('eventWeighterWeighted_TChiWZ_450_1', lambda : eventWeighterWeighted(1000,3461924,0.81031058)))
+
+from  CMGTools.TTHAnalysis.tools.ISRnJets import  ISRnJets
+MODULES.append( ('ISRnJets', lambda : ISRnJets("nJet30_Mini")))

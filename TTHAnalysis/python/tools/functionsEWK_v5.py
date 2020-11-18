@@ -155,3 +155,10 @@ def _fO_lepton(lep, btagWPT, btagWPM, btagWPL,jetlist, year):
 def _tight_lepton(lep, btagWPT, btagWPM, btagWPL,jetlist):
     return _tight_muon(lep,btagWPM,btagWPL,jetlist) if abs(lep.pdgId) == 13 else _tight_electron(lep,btagWPM,jetlist)
 
+
+def _tauId_CBloose(tau):
+    return (tau.pt > 20 and abs(tau.eta)<2.3 and abs(tau.dxy)<1000 and abs(tau.dz)<0.2 and (ord(tau.idMVAoldDM2017v2) >= 4) and (ord(tau.idAntiMu) >= 1) and (ord(tau.idAntiEle) >= 2))
+
+def _tauId_CBtight(tau):
+    if not _tauId_CBloose(tau): return False
+    return (ord(tau.idMVAoldDM2017v2) >= 16)
