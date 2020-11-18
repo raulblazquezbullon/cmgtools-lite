@@ -1,0 +1,29 @@
+one : 1 : 1,0,2 ; XTitle ="Yields"
+flavor   : ((abs(LepGood_pdgId[0])+abs(LepGood_pdgId[1]))-22)/2  : 3,-0.5,2.5 ; XTitle="flavor", xBinLabels="ee\,e#mu\,#mu#mu", Legend="TL", LegendCutoff5e-3, MoreY=2.0
+charge : ((LepSel_pdgId[0]<0)-0.5)*2 : 2,-2.,2. ;XTitle="charge", xBinLabels="--\,++" , Legend="TL", LegendCutoff5e-3, MoreY=2.0
+nBJet25    : nBJetTight25_Mini  : 5,-0.5,4.5  ; XTitle="N(b-jet\, p_{T} > 25\, DCSVT)", LegendCutoff5e-3, Logy, YMax=100000, YMin=1
+nJet30     : nJet30_Mini         : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5] ; XTitle="N(jet\, p_{T} > 30)"         , LegendCutoff5e-3, Logy, YMax=50000, YMin=1e-1
+met        : MET_pt_central    : 20,0,400   ; XTitle="p_{T}^{miss}  (GeV)"         , LegendCutoff5e-3, Logy, YMin=1, YMax=100000, Legend="TR"
+
+lep1_pt       : LepSel_pt[0] : 20,0,200  ; XTitle="p_{T}(l1) [GeV]",  LegendCutoff=9e-1, MoreY=2.5 , YMin=1, YMax=50000, Logy
+lep2_pt       : LepSel_pt[1] : 20,0,200  ; XTitle="p_{T}(l2) [GeV]",  LegendCutoff=9e-1, MoreY=2.5 , YMin=1, YMax=50000, Logy
+lep1_eta       : LepSel_eta[0] : 20,-2.4,2.4  ; XTitle="#eta(l1)",  LegendCutoff=9e-1, MoreY=2.5 , YMin=1, YMax=50000, Logy
+lep2_eta       : LepSel_eta[1] : 20,-2.4,2.4  ; XTitle="#eta(l2)",  LegendCutoff=9e-1, MoreY=2.5 , YMin=1, YMax=50000, Logy
+lep1_phi       : LepSel_phi[0] : 20,-2.4,2.4  ; XTitle="#phi(l1)",  LegendCutoff=9e-1, MoreY=2.5 , YMin=1, YMax=50000, Logy
+lep2_phi       : LepSel_phi[1] : 20,-2.4,2.4  ; XTitle="#phi(l2)",  LegendCutoff=9e-1, MoreY=2.5 , YMin=1, YMax=50000, Logy
+
+el_pt     : if3(abs(LepSel_pdgId)==11,LepSel_pt,-1) : 20,0,200    ; YTitle="Electrons", XTitle="p_{T\,cone}(e)"   , IncludeOverflows=False, IncludeOverflow=True, LegendCutoff5e-3, Logy, YMin=1e-1, YMax=50000
+mu_pt     : if3(abs(LepSel_pdgId)==13,LepSel_pt,-1) : 20,0,200    ; YTitle="Muons"    , XTitle="p_{T\,cone}(#mu)" , IncludeOverflows=False, IncludeOverflow=True, LegendCutoff5e-3, Logy, YMin=1e-1, YMax=50000
+el_eta    : if3(abs(LepSel_pdgId)==11,LepSel_eta,-999)  : 20,-2.5,2.5 ; YTitle="Electrons", XTitle="#eta(e)"   , IncludeOverflows=False, LegendCutoff5e-3, Logy, YMin=1e-1, YMax=100000
+mu_eta    : if3(abs(LepSel_pdgId)==13,LepSel_eta,-999)  : 20,-2.5,2.5 ; YTitle="Muons"    , XTitle="#eta(#mu)" , IncludeOverflows=False, LegendCutoff5e-3, Logy, YMin=1e-1, YMax=100000
+el_phi    : if3(abs(LepSel_pdgId)==11,LepSel_phi,-999)  : 20,-3.14,3.14 ; YTitle="Electrons", XTitle="#phi(e)"   , IncludeOverflows=False, LegendCutoff5e-3, Logy, YMin=1e-1, YMax=50000
+mu_phi    : if3(abs(LepSel_pdgId)==13,LepSel_phi,-999)  : 20,-3.14,3.14 ; YTitle="Muons"    , XTitle="#phi(#mu)" , IncludeOverflows=False, LegendCutoff5e-3, Logy, YMin=1e-1, YMax=50000
+
+
+jet_pt   : if3(nJetSel_Mini>0, Jet_pt[iJSel_Mini], -99) : 20,0,200 ; XTitle="p_{T}(jet) [GeV]", YTitle="Jets", LegendCutoff5e-3, Logy, YMin=1e-1, YMax=500000
+jet_eta  : if3(nJetSel_Mini>0, Jet_eta[iJSel_Mini], -99) : 20,-5.,5. ; XTitle="#eta(jet)", YTitle="Jets", LegendCutoff5e-3, Logy, YMin=1e-1, YMax=500000
+jet1_eta  : if3(nJetSel_Mini>0, Jet_eta[iJSel_Mini[0]], -99) : 20,-5.,5. ; XTitle="#eta (leading jet) ", YTitle="Jets", LegendCutoff5e-3, Logy, YMin=1e-1, YMax=50000
+jet2_eta  : if3(nJetSel_Mini>1, Jet_eta[iJSel_Mini[1]], -99) : 20,-5.,5. ; XTitle="#eta (subleading jet) ", YTitle="Jets", LegendCutoff5e-3, Logy, YMin=1e-1, YMax=50000
+jet1_pt  : if3(nJetSel_Mini>0, Jet_pt[iJSel_Mini[0]], -99) : 40,0,400 ; XTitle="p_{T}(leading jet) [GeV]", YTitle="Jets", LegendCutoff5e-3, Logy, YMin=1e-1, YMax=50000
+jet2_pt  : if3(nJetSel_Mini>1, Jet_pt[iJSel_Mini[1]], -99) : 40,0,400 ; XTitle="p_{T}(subleading jet) [GeV]", YTitle="Jets", LegendCutoff5e-3, Logy, YMin=1e-1, YMax=50000
+
