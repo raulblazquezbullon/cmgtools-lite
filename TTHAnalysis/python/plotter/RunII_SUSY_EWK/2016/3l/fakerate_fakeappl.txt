@@ -17,5 +17,6 @@ change    : nBJetLoose25\b : nBJetLoose25_Mini
 
 load-histo     : FR3_el        : $DATA/EWKino/fakeRateMaps_3l/fakeRateMap_data_electron_2016_mT.root        : fakeRate_electron_2016
 load-histo     : FR3_mu        : $DATA/EWKino/fakeRateMaps_3l/fakeRateMap_data_muon_2016_mT.root            : fakeRate_muon_2016
+#load-histo     : FR3_tau        : $DATA/EWKino/fakeRateMaps_tau/fakeRateDATA2016_quot.root            : fakeRate
 load-histo     : FR3_tau       : $DATA/fakeRateMaps/DATA2016/fakeRateTau_2016.root                : fakeRateTau
 

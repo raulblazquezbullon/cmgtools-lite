@@ -1,10 +1,139 @@
 #include <iostream>
 
+int SRcorr(float mll, float mT, float met, float ht, int offset = 0) {
+
+    if(              mll <  75 && ht >=  0 && ht < 200) {
+        if(mT >=   0 && mT < 100 && met >=   0 && met < 100) return offset +  1;
+        if(mT >=   0 && mT < 100 && met >= 100 && met < 150) return offset +  2;
+        if(mT >=   0 && mT < 100 && met >= 150 && met < 200) return offset +  3;
+        if(mT >=   0 && mT < 100 && met >= 200             ) return offset +  4;
+        if(mT >= 100 && mT < 160 && met >=   0 && met < 100) return offset +  5;
+        if(mT >= 100 && mT < 160 && met >= 100 && met < 150) return offset +  6;
+        if(mT >= 100 && mT < 160 && met >= 150             ) return offset +  7;
+        if(mT >= 160 &&             met >=   0 && met < 100) return offset +  8;
+        if(mT >= 160 &&             met >= 100 && met < 150) return offset +  9;
+        if(mT >= 160 &&             met >= 150 && met < 200) return offset + 10;
+        if(mT >= 160 &&             met >= 200             ) return offset + 11;
+    }
+    if(              mll <  75 && ht >= 200            ) {
+        if(mT >=   0 && mT < 100                           ) return offset + 12;
+        if(mT >= 100 && mT < 160                           ) return offset + 13;
+        if(mT >= 160                                       ) return offset + 14;
+    }
+    if(mll >=  75 && mll < 105 && ht >=  0 && ht < 100) {
+        if(mT >=   0 && mT < 100 && met >=   0 && met < 100) return 0          ; // this is the WZ CR !
+        if(mT >=   0 && mT < 100 && met >= 100 && met < 150) return offset + 15;
+        if(mT >=   0 && mT < 100 && met >= 150 && met < 200) return offset + 16;
+        if(mT >=   0 && mT < 100 && met >= 200 && met < 250) return offset + 17;
+        if(mT >=   0 && mT < 100 && met >= 250             ) return offset + 18;
+        if(mT >= 100 && mT < 160 && met >=   0 && met < 100) return offset + 19;
+        if(mT >= 100 && mT < 160 && met >= 100 && met < 150) return offset + 20;
+        if(mT >= 100 && mT < 160 && met >= 150 && met < 200) return offset + 21;
+        if(mT >= 100 && mT < 160 && met >= 200             ) return offset + 22;
+        if(mT >= 160 &&             met >=   0 && met < 100) return offset + 23;
+        if(mT >= 160 &&             met >= 100 && met < 150) return offset + 24;
+        if(mT >= 160 &&             met >= 150 && met < 200) return offset + 25;
+        if(mT >= 160 &&             met >= 200             ) return offset + 26;
+    }
+    if(mll >=  75 && mll < 105 && ht >= 100 && ht < 200) {
+        if(mT >=   0 && mT < 100 && met >=   0 && met < 100) return offset + 27;
+        if(mT >=   0 && mT < 100 && met >= 100 && met < 150) return offset + 28;
+        if(mT >=   0 && mT < 100 && met >= 150 && met < 200) return offset + 29;
+        if(mT >=   0 && mT < 100 && met >= 200 && met < 250) return offset + 30;
+        if(mT >=   0 && mT < 100 && met >= 250             ) return offset + 31;
+        if(mT >= 100 && mT < 160 && met >=   0 && met < 100) return offset + 32;
+        if(mT >= 100 && mT < 160 && met >= 100 && met < 150) return offset + 33;
+        if(mT >= 100 && mT < 160 && met >= 150 && met < 200) return offset + 34;
+        if(mT >= 100 && mT < 160 && met >= 200             ) return offset + 35;
+        if(mT >= 160 &&             met >=   0 && met < 100) return offset + 36;
+        if(mT >= 160 &&             met >= 100 && met < 150) return offset + 37;
+        if(mT >= 160 &&             met >= 150 && met < 200) return offset + 38;
+        if(mT >= 160 &&             met >= 200             ) return offset + 39;
+    }
+    if(mll >=  75 && mll < 105 && ht >= 200            ) {
+        if(mT >=   0 && mT < 100 && met >=   0 && met < 150) return offset + 40;
+        if(mT >=   0 && mT < 100 && met >= 150 && met < 250) return offset + 41;
+        if(mT >=   0 && mT < 100 && met >= 250 && met < 350) return offset + 42;
+        if(mT >=   0 && mT < 100 && met >= 350             ) return offset + 43;
+        if(mT >= 100 && mT < 160 && met >=   0 && met < 100) return offset + 44;
+        if(mT >= 100 && mT < 160 && met >= 100 && met < 150) return offset + 45;
+        if(mT >= 100 && mT < 160 && met >= 150 && met < 200) return offset + 46;
+        if(mT >= 100 && mT < 160 && met >= 200 && met < 250) return offset + 47;
+        if(mT >= 100 && mT < 160 && met >= 250 && met < 300) return offset + 48;
+        if(mT >= 100 && mT < 160 && met >= 300             ) return offset + 49;
+        if(mT >= 160 &&             met >=   0 && met < 100) return offset + 50;
+        if(mT >= 160 &&             met >= 100 && met < 150) return offset + 51;
+        if(mT >= 160 &&             met >= 150 && met < 200) return offset + 52;
+        if(mT >= 160 &&             met >= 200 && met < 250) return offset + 53;
+        if(mT >= 160 &&             met >= 250 && met < 300) return offset + 54;
+        if(mT >= 160 &&             met >= 300             ) return offset + 55;
+    }
+    if(mll >= 105                                      ) {
+        if(mT >=   0 && mT < 100                           ) return offset + 56;
+        if(mT >= 100 && mT < 160                           ) return offset + 57;
+        if(mT >= 160                                       ) return offset + 58;
+    } 
+    return 0;
+}
+
+
+int unused4(int id1, int id2, int ord){
+    int idx = 0;
+    for (int i = 0; i< 4; i ++){
+        if (i == id1 || i == id2){continue;}
+        else idx++;
+        if (idx == ord) return i;
+    }
+    return -1;
+}
+
 bool isFake(int mcTag, int pdgId, bool requireid = false, int requiredpdgId = 0){
   if (pdgId != requiredpdgId && requireid) return false;
   else if(mcTag%10 == 2 || mcTag%10 == 3 || mcTag%10 == 9 || mcTag%-1 == 0) return true;
   else return false;
 }
+
+
+int SR_ewk_ss2l_v6_plot(float mt2, float met, float ptll, float ptdil, float mtW, float charge){
+  int SR = 1;
+  if (mt2 == 0){
+      if (ptll < 70){
+          if (met < 100) SR =  2;
+          else if (met < 150 && charge > 0) SR =  3;
+          else if (met < 150 && charge < 0) SR =  4;
+          else if (charge > 0) SR =  5;
+          else if (charge < 0) SR = 6;
+      }
+  }
+  else if (mt2 < 80){
+      if (ptdil < 30){
+          if (met < 200 && charge > 0) SR = 7;
+          else if (met < 200 && charge < 0) SR = 8;
+          else if (charge > 0) SR = 9;
+          else if (charge < 0) SR = 8;
+      }
+      else {
+          SR=10;
+      }
+  }
+  else if (mt2 >= 80){
+      if (met < 100 && ptll < 200) SR = 11;
+      else if (met < 200 && ptll < 200 && charge > 0) SR = 12;
+      else if (met < 200 && ptll < 200 && charge < 0) SR = 13;
+      else if (ptll < 200 && charge > 0) SR = 14;
+      else if (ptll < 200 && charge < 0) SR = 15;
+      if (ptll > 200){
+          if (met < 100) SR =  16;
+          else if (met < 200 && charge > 0) SR =  17;
+          else if (met < 200 && charge < 0) SR =  18;
+          else if (met < 900 && charge > 0) SR =  19;
+          else if (met < 900 && charge < 0) SR =  20;
+          else SR = 20;
+      }
+  }
+  return SR;   
+}
+
 
 float WZunc(float met, float mt, int var = 0){
   if (mt>=  0 && mt<100 && met>= 50 && met<100) return (1 + var*0.05);
@@ -146,11 +275,29 @@ int tightChargeCut(int nLep, int l1pdgId, int l1tightCharge, int l2pdgId, int l2
     if((abs(l4pdgId)==11 && l4tightCharge<2) || (abs(l4pdgId)==13 && l4tightCharge<2)) return 0;
     return 1;
 }
-
+/*
 int allTight(int nLep, int l1isTight, int l2isTight, int l3isTight = 0, int l4isTight = 0){
     if(nLep == 2) return ((l1isTight+l2isTight)==2);
     if(nLep == 3) return ((l1isTight+l2isTight+l3isTight)==3);
     return ((l1isTight+l2isTight+l3isTight+l4isTight)==4);
+}
+*/
+
+Bool_t samesign(int pdg1, int pdg2){
+  return pdg1*pdg2 > 0;
+}
+
+
+Bool_t allTight(Bool_t isT1, Bool_t isT2){
+  return isT1 && isT2;
+}
+
+Bool_t allTight(Bool_t isT1, Bool_t isT2, Bool_t isT3){
+  return isT1 && isT2 && isT3;
+}
+
+Bool_t allTight(Bool_t isT1, Bool_t isT2, Bool_t isT3, Bool_t isT4){
+  return isT1 && isT2 && isT3 && isT4;
 }
 
 int countTaus(int nLep, int l1pdgId, int l2pdgId, int l3pdgId, int l4pdgId = 0){
@@ -548,25 +695,21 @@ int SRB_new(float dR3l, int offset=0){
   return 3+offset;
 }
 
-int SRC_new(float mll, float ptlll, float met, float mtZprime, float mt2ll, int offset = 0){
-    //if (ptlll < 125) return 1 + offset;
-    if (abs(mll - 91.186) < 25){
-        return 1 + offset;
-    }
-    else if (met < 200){
-        if (mt2ll < 80) return 2 + offset;
-        if (mt2ll < 120) return 3 + offset;
-        else return 4 + offset;
+int SRC_new(float met, float mtZprime, float mt2ll, int offset = 0){
+    if (met < 200){
+        if (mt2ll < 80) return 1 + offset;
+        if (mt2ll < 120) return 2 + offset;
+        else return 3 + offset;
     }
     else if (met > 200 && met < 300){
-        if (mt2ll < 80) return 5 + offset;
-        if (mt2ll < 120) return 6 + offset;
-        return 7 + offset;
+        if (mt2ll < 80) return 4 + offset;
+        if (mt2ll < 120) return 5 + offset;
+        return 6 + offset;
     }
     else if (met > 300){
-        if (mtZprime < 250) return 8 + offset;
-        if (mtZprime < 500) return 9 + offset;
-        return 10 + offset;
+        if (mtZprime < 250) return 7 + offset;
+        if (mtZprime < 500) return 8 + offset;
+        return 9 + offset;
     }
 }
 
@@ -657,7 +800,7 @@ int SR3l_new(int cat, float mT2L, float mT2T, float mll, float mT, float ptlll, 
     if(cat == 1              ) return SRA_new(mll, mT, met,  0);
     if(cat == 2              ) return SRB_new(dR3l, 44);
     // 2 light + 1 tau
-    if(cat == 3              ) return SRC_new(mll, ptlll, met, mtZprime, mT2L, 47);
+    if(cat == 3              ) return SRC_new(met, mtZprime, mT2L, 47);
     if(cat == 4              ) return SRD_new(mT2L,  met,  mll, 57);
     if(cat == 5              ) return SRE_new(mT2T,  mll, met, 73);
     // 1 light + 2 tau
@@ -738,8 +881,8 @@ int SSR_3l(int cat, float mT2L, float mT2T, float mll, float mT, float ptlll, fl
 
 
 int SR4lGplot(float mT2Z, float met, float mZ2, int offset=0) {
-    if(mT2Z > 450) return 5+offset;
-    if(mT2Z > 300) return 4+offset;
+    if(mT2Z > 400) return 5+offset;
+    if(mT2Z > 250) return 4+offset;
     if(mT2Z > 150 && mZ2 < 60) return 3+offset;
     if(mT2Z > 150 && mZ2 >= 60) return 2+offset;
     if(mT2Z < 150) return 1+offset;

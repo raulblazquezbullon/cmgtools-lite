@@ -29,8 +29,8 @@ prompt_VVV : ZZZv2 : xsec ; FillColor=ROOT.kRed + 1, FakeRate="RunII_SUSY_EWK/co
 prompt_VVV : WZGv2 : xsec ; FillColor=ROOT.kRed + 1, FakeRate="RunII_SUSY_EWK/common/fakerate_standard_central.txt\,RunII_SUSY_EWK/common/fakerate_load_isprompt.txt", Label="VVV", NormSystematic=0.50
 
 
-convs : TTGJetsv2  : xsec*1.12 ; FillColor=ROOT.kOrange-3 , FakeRate="RunII_SUSY_EWK/common/fakerate_standard_central.txt\,RunII_SUSY_EWK/common/fakerate_load_isconv.txt", Label="X+g k=1.12", NormSystematic=0.20
-convs : WGToLNuGv2 : xsec*1.12 ; FillColor=ROOT.kOrange-3 , FakeRate="RunII_SUSY_EWK/common/fakerate_standard_central.txt\,RunII_SUSY_EWK/common/fakerate_load_isconv.txt", Label="X+g k=1.12", NormSystematic=0.20
-convs : WZGv2      : xsec*1.12 ; FillColor=ROOT.kOrange-3 , FakeRate="RunII_SUSY_EWK/common/fakerate_standard_central.txt\,RunII_SUSY_EWK/common/fakerate_load_isconv.txt", Label="X+g k=1.12", NormSystematic=0.20
-convs : ZGTo2LGv2_part1 + ZGTo2LGv2_part2 + ZGTo2LGv2_part0 + ZGTo2LGv2_part3 + ZGTo2LGv2_part4 : xsec*1.12 ; FillColor=ROOT.kOrange-3 , FakeRate="RunII_SUSY_EWK/common/fakerate_standard_central.txt\,RunII_SUSY_EWK/common/fakerate_load_isconv.txt", Label="X+g k=1.12", NormSystematic=0.20
+convs : TTGJetsv2  : xsec*1.12 ; FillColor=ROOT.kOrange-3 , FakeRate="RunII_SUSY_EWK/common/fakerate_standard_central.txt\,RunII_SUSY_EWK/common/fakerate_load_isconv.txt", Label="X+g", NormSystematic=0.20
+convs : WGToLNuGv2 : xsec*1.12 ; FillColor=ROOT.kOrange-3 , FakeRate="RunII_SUSY_EWK/common/fakerate_standard_central.txt\,RunII_SUSY_EWK/common/fakerate_load_isconv.txt", Label="X+g", NormSystematic=0.20
+convs : WZGv2      : xsec*1.12 ; FillColor=ROOT.kOrange-3 , FakeRate="RunII_SUSY_EWK/common/fakerate_standard_central.txt\,RunII_SUSY_EWK/common/fakerate_load_isconv.txt", Label="X+g", NormSystematic=0.20
+convs : ZGTo2LGv2_part1 + ZGTo2LGv2_part2 + ZGTo2LGv2_part0 + ZGTo2LGv2_part3 + ZGTo2LGv2_part4 : xsec*1.12 ; FillColor=ROOT.kOrange-3 , FakeRate="RunII_SUSY_EWK/common/fakerate_standard_central.txt\,RunII_SUSY_EWK/common/fakerate_load_isconv.txt", Label="X+g", NormSystematic=0.20
 

@@ -1,5 +1,10 @@
 ## Signal regions
 SR_3lA : SRcorr(mll_3l, mT_3l , MET_pt_nom, htJet30j) : 58, 0.5,58.5 ; XTitle="SR 3l-A (Comb.)", IncludeOverflows=False, LegendCutoff=1e-4, Logy, YMin=1e-1, YMax=50000
+SR_3lB : minDeltaR_3l : [0.,0.4, 1., 2.]; XTitle="SR 3l-B",  LegendCutoff=1e-5, MoreY=2.5 , YMin=0.1, YMax=1000, Logy
+SR_3lC : SRC_new(MET_pt_nom,mt_2(pt_2(LepSel_conePt[mll_i1[0]],LepSel_phi[mll_i1[0]],LepSel_conePt[mll_i2[0]],LepSel_phi[mll_i2[0]]),phi_2(LepSel_conePt[mll_i1[0]],LepSel_phi[mll_i1[0]],LepSel_conePt[mll_i2[0]],LepSel_phi[mll_i2[0]]),MET_pt_nom,MET_phi_nom),mT2L_3l) : 9,0.5,9.5; XTitle="SR 3l-C", IncludeOverflows=False, LegendCutoff=1e-4, Logy, YMin=1e-1, YMax=5000
+SR_3lD : SR3lD(mT2L_3l, mT2T_3l, mll_3l, mT_3l, MET_pt_nom) : 16, 0.5, 16.5 ; XTitle="SR 3l-D", IncludeOverflows=False, LegendCutoff=1e-4, Logy, YMin=1e-1, YMax=5000
+SR_3lE : SRE_new(mt2davis(LepGood_pt[iL_Mini[0]], LepGood_eta[iL_Mini[0]], LepGood_phi[iL_Mini[0]], TauSel_Mini_pt[0], TauSel_Mini_eta[0], TauSel_Mini_phi[0], MET_pt_nom,MET_phi_nom), mass_2(LepGood_pt[iL_Mini[0]], LepGood_eta[iL_Mini[0]], LepGood_phi[iL_Mini[0]], LepGood_mass[iL_Mini[0]], TauSel_Mini_pt[0], TauSel_Mini_eta[0], TauSel_Mini_phi[0], TauSel_Mini_mass[0]), MET_pt_nom) : 9,0.5,9.5 ; XTitle="SR 3l-E", IncludeOverflows=False, LegendCutoff=1e-4, Logy, YMin=1e-1, YMax=5000
+SR_3lF : SR3lF(mT2L_3l, mt2davis(LepGood_pt[iL_Mini[0]], LepGood_eta[iL_Mini[0]], LepGood_phi[iL_Mini[0]], TauSel_Mini_pt[0], TauSel_Mini_eta[0], TauSel_Mini_phi[0], MET_pt_nom,MET_phi_nom), mass_2(LepGood_pt[iL_Mini[0]], LepGood_eta[iL_Mini[0]], LepGood_phi[iL_Mini[0]], LepGood_mass[iL_Mini[0]], TauSel_Mini_pt[0], TauSel_Mini_eta[0], TauSel_Mini_phi[0], TauSel_Mini_mass[0]), -1, MET_pt_nom) : 12,0.5,12.5;  XTitle="SR 3l-F", IncludeOverflows=False, LegendCutoff=1e-4, Logy, YMin=1e-1, YMax=5000
 
 ## basic lepton observables
 ## ----------------------------------------------------------
@@ -126,7 +131,6 @@ jet_eta  : if3(nJetSel_Mini>0, Jet_eta[iJSel_Mini], -99) : 20,-2.4,2.4 ; XTitle=
 #DeltaRMn: sqrt((deltaPhi(sump4(2, LepW_pt, LepW_eta, LepW_phi, LepW_mass, $DATA{MET_pt} $MC{MET_pt_central} , 0, MET_phi, 0),LepW_phi))^2 +abs(sump4(1, LepW_pt, LepW_eta, LepW_phi, LepW_mass, $DATA{MET_pt} $MC{MET_pt_nom} , 0, MET_phi, 0)-LepW_eta)^2) : [0.0, 0.3105, 0.45899999999999996, 0.5984999999999999, 0.738, 0.8909999999999999, 1.071, 1.3005, 1.638, 2.2455, 4.5]; XTitle="#DeltaR^{-}", Legend='TL', LegendCutoff=1e-5, MoreY=2.5 
 
 
-SR3lB : minDeltaR_3l : [0.,0.4, 1., 2.]; XTitle="SR 3lB (min #Delta R(l l))",  LegendCutoff=1e-5, MoreY=2.5 , YMin=0.1, YMax=1000, Logy
 
 #SR_3lA : SRcorr(mll_3l, mT_3l, MET_pt_central, htJet30j, 0) : 59,-0.5,58.5 ; XTitle="SR 3lA", LegendCutoff=1e-5, MoreY=2.5 , YMin=1, YMax=5000000, Logy
 

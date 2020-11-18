@@ -1,3 +1,4 @@
+weight    : 1
 change    : MET_pt_nom\b : (MET_pt_nom - abs(GenMET_pt - MET_pt_nom)/2.)
 change    : mT_3l\b    : (mT_3l - abs(mT_3l - mT_3l_gen)/2.)
 change    : mTL_3l\b    : (mTT_3l - abs(mTT_3l - mTT_3l_gen)/2.)

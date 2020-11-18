@@ -1,4 +1,4 @@
-
+weight: 1
 change: nLepSel\b: nLepSel_elScaleDown
 change: LepSel_pdgId\b: LepSel_pdgId_elScaleDown
 change: nOSSF_3l\b: nOSSF_3l_elScaleDown

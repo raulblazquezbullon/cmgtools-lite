@@ -1,5 +1,18 @@
 ## Signal regions
 
+SR4lG: SR4lGplot(mt2davis_mass(pt_2(LepSel_conePt[mll_i1[0]],LepSel_phi[mll_i1[0]],LepSel_conePt[mll_i2[0]],LepSel_phi[mll_i2[0]]), eta_2(LepSel_conePt[mll_i1[0]],LepSel_eta[mll_i1[0]],LepSel_phi[mll_i1[0]],LepSel_mass[mll_i1[0]],LepSel_conePt[mll_i2[0]],LepSel_eta[mll_i2[0]],LepSel_phi[mll_i2[0]],LepSel_mass[mll_i2[0]]), phi_2(LepSel_conePt[mll_i1[0]],LepSel_phi[mll_i1[0]],LepSel_conePt[mll_i2[0]],LepSel_phi[mll_i2[0]]), pt_2(LepSel_conePt[mll_i1[1]],LepSel_phi[mll_i1[1]],LepSel_conePt[mll_i2[1]],LepSel_phi[mll_i2[1]]), eta_2(LepSel_conePt[mll_i1[1]],LepSel_eta[mll_i1[1]],LepSel_phi[mll_i1[1]],LepSel_mass[mll_i1[1]],LepSel_conePt[mll_i2[1]],LepSel_eta[mll_i2[1]],LepSel_phi[mll_i2[1]],LepSel_mass[mll_i2[1]]), phi_2(LepSel_conePt[mll_i1[1]],LepSel_phi[mll_i1[1]],LepSel_conePt[mll_i2[1]],LepSel_phi[mll_i2[1]]), MET_pt_nom, MET_phi_nom, 91.16), MET_pt_nom, mass_2(LepSel_pt[unused4(mll_i1[0], mll_i2[0], 1)], LepSel_eta[unused4(mll_i1[0], mll_i2[0], 1)], LepSel_phi[unused4(mll_i1[0], mll_i2[0], 1)], LepSel_mass[unused4(mll_i1[0], mll_i2[0], 1)], LepSel_pt[unused4(mll_i1[0], mll_i2[0], 2)], LepSel_eta[unused4(mll_i1[0], mll_i2[0], 2)], LepSel_phi[unused4(mll_i1[0], mll_i2[0], 2)], LepSel_mass[unused4(mll_i1[0], mll_i2[0], 2)])) :  5, 0.5,5.5 ; XTitle="SR 4lG", IncludeOverflows=False, LegendCutoff=1e-4, Logy, YMin=1e-1, YMax=50000
+
+SR4lH : SR4lHplot(deltaR(LepSel_eta[unused4(mll_i1[0], mll_i2[0], 1)], LepSel_phi[unused4(mll_i1[0], mll_i2[0], 1)], LepSel_eta[unused4(mll_i1[0], mll_i2[0], 2)], LepSel_phi[unused4(mll_i1[0], mll_i2[0], 2)]),mllL_4l) : 3,0.5,3.5 : XTitle="SR 4lH", IncludeOverflows=False, LegendCutoff=1e-4, Logy, YMin=1e-1, YMax=5000
+
+SR4lI: SR4lHplot(deltaR(LepSel_eta[unused4(mll_i1[0], mll_i2[0], 1)], LepSel_phi[unused4(mll_i1[0], mll_i2[0], 1)], LepSel_eta[unused4(mll_i1[0], mll_i2[0], 2)], LepSel_phi[unused4(mll_i1[0], mll_i2[0], 2)]),mllL_4l) : 3,0.5,3.5 ; XTitle="SR 4lI", IncludeOverflows=False, IncludeOverflow=True, LegendCutoff=1e-4, Logy, YMin=1e-1, YMax=500
+
+SR4lK: SR4lHplot(deltaR(LepSel_eta[unused4(mll_i1[0], mll_i2[0], 1)], LepSel_phi[unused4(mll_i1[0], mll_i2[0], 1)], LepSel_eta[unused4(mll_i1[0], mll_i2[0], 2)], LepSel_phi[unused4(mll_i1[0], mll_i2[0], 2)]),mllL_4l) : 3,0.5,3.5 ; XTitle="SR 4lK", IncludeOverflows=False, IncludeOverflow=True, LegendCutoff=1e-4, Logy, YMin=1e-1, YMax=500
+
+SR4lJ: SR4lHplot(deltaR(LepSel_eta[unused4(mll_i1[0], mll_i2[0], 1)], LepSel_phi[unused4(mll_i1[0], mll_i2[0], 1)], LepSel_eta[unused4(mll_i1[0], mll_i2[0], 2)], LepSel_phi[unused4(mll_i1[0], mll_i2[0], 2)]),mllL_4l) : 3,0.5,3.5 ; XTitle="SR 4lJ", IncludeOverflows=False, IncludeOverflow=True, LegendCutoff=1e-4, Logy, YMin=1e-1, YMax=500
+
+
+
+
 dR_llH : deltaR(LepSel_eta[unused4(mll_i1[0], mll_i2[0], 1)], LepSel_phi[unused4(mll_i1[0], mll_i2[0], 1)], LepSel_eta[unused4(mll_i1[0], mll_i2[0], 2)], LepSel_phi[unused4(mll_i1[0], mll_i2[0], 2)]) : 8,0,3.2; XTitle="#Delta R(l l)^{H}", IncludeOverflows=False, LegendCutoff=1e-4, Logy, YMin=1e-1, YMax=5000
 
 ## basic lepton observables

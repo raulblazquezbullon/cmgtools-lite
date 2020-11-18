@@ -1121,4 +1121,8 @@ float SR3lAfromlepgood(float metpt, float m12, float m13, float m23, float mt1, 
   return -1;
 }
 
+Bool_t samesign(int pdg1, int pdg2){
+  return pdg1*pdg2 > 0;
+}
+
 void functionsEWKcorr() {}

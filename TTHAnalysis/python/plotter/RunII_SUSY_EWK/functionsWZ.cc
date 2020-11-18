@@ -37,9 +37,6 @@ Float_t baseDeltaR(Float_t eta1, Float_t phi1, Float_t eta2, Float_t phi2)
   return res;
 }
 
-Bool_t allTight(Bool_t isT1, Bool_t isT2, Bool_t isT3){
-  return isT1 && isT2 && isT3;
-}
 
 
 //                balance = self.bestOSPair.l1.p4()
