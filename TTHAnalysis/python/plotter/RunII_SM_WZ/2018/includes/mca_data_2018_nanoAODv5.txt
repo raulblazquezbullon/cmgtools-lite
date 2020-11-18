@@ -25,8 +25,7 @@ data : EGamma_Run2018D_part0 ; Label="Data", FakeRate="RunII_SM_WZ/common/fakera
 data : EGamma_Run2018D_part1 ; Label="Data", FakeRate="RunII_SM_WZ/common/fakerate_standard_central.txt"
 data : EGamma_Run2018D_part2 ; Label="Data", FakeRate="RunII_SM_WZ/common/fakerate_standard_central.txt"
 data : EGamma_Run2018D_part3 ; Label="Data", FakeRate="RunII_SM_WZ/common/fakerate_standard_central.txt"
-#data : EGamma_Run2018D_part4 ; Label="Data", FakeRate="RunII_SM_WZ/common/fakerate_standard_central.txt"
-#data : EGamma_Run2018D_part5 ; Label="Data", FakeRate="RunII_SM_WZ/common/fakerate_standard_central.txt"
+data : EGamma_Run2018D_part4 ; Label="Data", FakeRate="RunII_SM_WZ/common/fakerate_standard_central.txt"
 
 data : MuonEG_Run2018A ; Label="Data", FakeRate="RunII_SM_WZ/common/fakerate_standard_central.txt"
 data : MuonEG_Run2018B ; Label="Data", FakeRate="RunII_SM_WZ/common/fakerate_standard_central.txt"
