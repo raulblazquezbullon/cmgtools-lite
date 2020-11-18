@@ -1,0 +1,8 @@
+prompt_WZ_powheg : WZTo3LNu_pow_part0 + WZTo3LNu_pow_part1 : xsec ; FillColor=ROOT.kOrange , FakeRate="RunII_SM_WZ/common/fakerate_standard_central.txt\,RunII_SM_WZ/common/fakerate_load_isprompt.txt", Label="WZ (k-2016)", NormSystematic=0.12
+
+prompt_WZ_amcatnlo : WZTo3LNu_part0+WZTo3LNu_part2+WZTo3LNu_part3+WZTo3LNu_part4: xsec ; FillColor=ROOT.kOrange , FakeRate="RunII_SM_WZ/common/fakerate_standard_central.txt\,RunII_SM_WZ/common/fakerate_load_isprompt.txt", Label="WZ (k-2016)", NormSystematic=0.12
+
+
+prompt_WZ_mll1 : WZTo3LNu_mll01_part0+WZTo3LNu_mll01_part1+WZTo3LNu_mll01_part2+WZTo3LNu_mll01_part3+WZTo3LNu_mll01_part4+WZTo3LNu_mll01_part5+WZTo3LNu_mll01_part6+WZTo3LNu_mll01_part7+WZTo3LNu_mll01_part8+WZTo3LNu_mll01_part9+WZTo3LNu_mll01_part10+WZTo3LNu_mll01_part11+WZTo3LNu_mll01_part12+WZTo3LNu_mll01_part13+WZTo3LNu_mll01_part14+WZTo3LNu_mll01_part15+WZTo3LNu_mll01_part16+WZTo3LNu_mll01_part17+WZTo3LNu_mll01_part22+WZTo3LNu_mll01_part23 : xsec ; FillColor=ROOT.kOrange , FakeRate="RunII_SM_WZ/common/fakerate_standard_central.txt\,RunII_SM_WZ/common/fakerate_load_isprompt.txt", Label="WZ (k-2016)", NormSystematic=0.12
+
+
