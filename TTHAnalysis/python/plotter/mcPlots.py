@@ -38,7 +38,7 @@ class PlotFile:
                 (line,more) = line.split(";")[:2]
                 more = more.replace("\\,",";")
                 for setting in [f.strip().replace(";",",") for f in more.split(',')]:
-                    if "=" in setting: 
+                    if "=" in setting:
                         (key,val) = [f.strip() for f in setting.split("=")]
                         extra[key] = eval(val)
                     else: extra[setting] = True
@@ -213,6 +213,9 @@ def doStackSignalNorm(pspec,pmap,individuals,extrascale=1.0,norm=True,cumulative
         sigs = []
         for sig in [pmap[x] for x in mca.listSignals() if pmap.has_key(x) and pmap[x].Integral() > 0]:
             sig = sig.Clone(sig.GetName()+"_norm")
+            if options.addBkgToSig:
+                for bkg in [pmap[x] for x in mca.listBackgrounds() if pmap.has_key(x) and pmap[x].Integral() > 0 and not(x in options.addBkgExc)]:
+                    sig = sig + bkg
             sig.SetFillStyle(0)
             sig.SetLineColor(sig.GetFillColor())
             sig.SetLineWidth(4)
@@ -400,7 +403,7 @@ def doNormFit(pspec,pmap,mca,saveScales=False):
 def doRatioHists(pspec,pmap,total,totalSyst,maxRange,fixRange=False,fitRatio=None,errorsOnRef=True,ratioNums="signal",ratioDen="background",ylabel="Data/pred.",doWide=False,showStatTotLegend=False,cumulative=False):
     numkeys = [ "data" ]
 
-    if "data" not in pmap: 
+    if "data" not in pmap: #True:#"data" not in pmap: 
         if ratioDen in pmap or ratioDen=="total":
         #if len(pmap) >= 4 and ratioDen in pmap:
             numkeys = []
@@ -869,6 +872,7 @@ class PlotMaker:
                             if mca.getProcessOption(p,'NormSystematic',0.0) > 0:
                                 syst = mca.getProcessOption(p,'NormSystematic',0.0)
                                 if "TH1" in plot.ClassName():
+                                    print "Adding normsystematic %f to %s"%(syst,p)
                                     for b in xrange(1,plot.GetNbinsX()+1):
                                         totalSyst.SetBinError(b, hypot(totalSyst.GetBinError(b), syst*plot.GetBinContent(b)))
                         elif not plotmode in ["stack", "closure"]:
@@ -1258,6 +1262,8 @@ def addPlotMakerOptions(parser, addAlsoMCAnalysis=True):
     parser.add_option("--printBin", dest="printBinning", type="string", default=None, help="Write 'Events/xx' instead of 'Events' on the y axis")
     parser.add_option('--env',      dest='env'         , type='string', default="", help='Set environment (currently supported: "oviedo")')
     parser.add_option('--add-histos', dest='addHistos' , type='string', action="append", nargs=2, default=[], help='File path to load and add histograms from to the ones that are newly made.')
+    parser.add_option("--addBkgToSig", dest="addBkgToSig", action="store_true", default=False, help="Add background contributions to the signal, i.e., when signal is a modified SM process.");
+    parser.add_option("--addBkgExc", dest="addBkgExc", type="string", action="append", default=None, help="Do not add this backgrounds to the signal");
     parser.add_option('--cumulative', dest='cumulative', action="store_true", default=False, help="Draw the cumulative distribution for the given histogram")
     parser.add_option('--notShowStatTotLegend', dest='showStatTotLegend', action="store_false", default=True, help="Do not draw legend in the ratio plot")
 
