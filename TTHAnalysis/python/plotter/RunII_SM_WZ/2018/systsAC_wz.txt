@@ -12,10 +12,12 @@ normVVV_ML    : prompt_VVV                         : .*                : 1.5
 normVH_ML     : prompt_VH                          : .*                : 1.25
 normtZq_ML    : prompt_TZQ                         : .*                : 1.35
 normTTX_ML    : prompt_TT.*                        : .*                : 1.15
+normWZ_EWK    : prompt_WZ_EWK.* : .* : 1.2
 
 
 #Templates#
-JES_ML           : prompt_.*|diboson.*|convs          : .* : jec        : templates
+JESCORR_ML           : prompt_.*|diboson.*|convs          : .* : jescorr        : templates
+JES2018_ML           : prompt_.*|diboson.*|convs          : .* : jesuncorr        : templates
 MuScale_ML       : prompt_.*|diboson.*|convs          : .* : muscale    : templates
 ElScale_ML       : prompt_.*|diboson.*|convs          : .* : elscale    : templates
 PUW_ML           : prompt_.*|diboson.*|convs          : .* : puw        : templates
