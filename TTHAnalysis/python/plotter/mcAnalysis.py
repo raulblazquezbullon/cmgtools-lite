@@ -69,7 +69,7 @@ class MCAnalysis:
                     if setting == "": continue
                     if "=" in setting: 
                         (key,val) = [f.strip() for f in setting.split("=",1)]
-                        extra[key] = eval(val)
+                        extra[key] = eval(val) if key!="Label" else val.replace("\"","")
                     else: extra[setting] = True
             for k,v in addExtras.iteritems():
                 if k in extra: raise RuntimeError, 'You are trying to overwrite an extra option already set'
@@ -588,6 +588,7 @@ class MCAnalysis:
             table += [ (fomname, [ (None, [fom(self, reports, row), 0, 0]) for row in xrange(nrows) ] ) ]
 
         # maximum length of the cut descriptions
+        print table
         clen = max([len(cut) for cut,yields in table[0][1]]) + 3
         cfmt = "%%-%ds" % clen;
 

@@ -2,18 +2,26 @@ from CMGTools.TTHAnalysis.treeReAnalyzer import *
 import ROOT 
 
 class JetPhotonPrefiring: 
-    def __init__(self, jetfile, photonfile, jetmap, photonmap):
+    def __init__(self, jetfile, photonfile, jetmap, photonmap, doDummy=False):
         self.branches = ["is_Prefiring_central","is_Prefiring", "weight_PrefiringJets", "weight_PrefiringPhotons"]
         self.fJets = ROOT.TFile(jetfile)
         self.mapJets = self.fJets.Get(jetmap)
         self.fPhotons = ROOT.TFile(photonfile)
         self.mapPhotons = self.fPhotons.Get(photonmap)
+        self.doDummy = doDummy
         
     def listBranches(self):
         return self.branches[:]
 
     def __call__(self,event):
         self.allret = {}
+        if self.doDummy:
+           self.allret["is_Prefiring_central"] = 0
+           self.allret["is_Prefiring"] = 0
+           self.allret["weight_PrefiringJets"] = 1.
+           self.allret["weight_PrefiringPhotons"] = 1.
+           return self.allret
+
         self.allret["is_Prefiring_central"] = 0
         self.allret["is_Prefiring"] = 0
         self.allret["weight_PrefiringJets"] = 1.

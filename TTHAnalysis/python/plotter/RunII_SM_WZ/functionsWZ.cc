@@ -50,6 +50,47 @@ Bool_t allTight(Bool_t isT1, Bool_t isT2, Bool_t isT3, Bool_t isT4){
   return isT1 && isT2 && isT3 && isT4;
 }
 
+Int_t DiFakeRateBin(float pt1, float eta1, float pt2, float eta2, int pdgcode, int tightcode, int ptbin, int etabin)
+{
+ // First lepton is the one "in range", second lepton is "off range"
+ // Returns flavorcode*4 + tightcode
+ // Flavor code:
+ // -1 == No lepton in range
+ //   0 == ee
+ //   1 == em
+ //   2 == me
+ //   3 == mm
+ // Tight code:
+ //   0 = Tight (in) Tight (out)
+ //   1 = Loose (in) Tight (out)
+ //   2 = Tight (in) Loose (out)
+ //   3 = Loose (in) Loose (out)
+  float ptmin; float ptmax; float etamax; float etamin;
+ if (ptbin == 0){
+   ptmax = 40;
+   ptmin = 20;
+ } 
+ if (etabin == 0){
+   etamax = 2.5;
+   etamin = -2.5;
+ }
+ if (pt1 <= ptmax &&  pt1 >= ptmin && eta1 <= etamax && eta1 >= etamin && !( pt2 > ptmax ||  pt2 < ptmin || eta2 > etamax || eta2 < etamin )){
+    // First one passes, second doesn't
+    return pdgcode*4+tightcode;
+ }
+ if (pt2 <= ptmax &&  pt2 >= ptmin && eta2 <= etamax && eta2 >= etamin && !( pt1 > ptmax ||  pt1 < ptmin || eta1 > etamax || eta1 < etamin )){
+    // Second one passes, first doesn't
+    int newpdgcode;
+    int newtightcode;
+    if (pdgcode == 1) newpdgcode = 2;
+    if (pdgcode == 2) newpdgcode = 1;
+    if (tightcode == 1) newtightcode = 2;
+    if (tightcode == 2) newtightcode = 1;
+    return newpdgcode*4+newtightcode;
+ }
+ // If here, no candidate lepton
+ return -1;   
+}
 
 //                balance = self.bestOSPair.l1.p4()
 //                balance += self.bestOSPair.l2.p4()

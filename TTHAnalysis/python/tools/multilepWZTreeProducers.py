@@ -393,12 +393,17 @@ MODULES.append( ('leptonBuilderEWK_FastSim_2018', lambda : LeptonBuilderEWK_nano
 from CMGTools.TTHAnalysis.tools.leptonMatcher import leptonMatcher
 MODULES.append( ('leptonMatcher', lambda : leptonMatcher("Mini")))
 
+from CMGTools.TTHAnalysis.tools.leptonTaggerConv import leptonTaggerConv
+MODULES.append( ('leptonTaggerConv', lambda : leptonTaggerConv("Mini")))
+
+
+
 ###################################
 ############ Trigger  #############
 ###################################
 
 from CMGTools.TTHAnalysis.tools.trigTagger_nano import trigTagger
-MODULES.append( ('Trigger_2016', lambda : trigTagger("Trigger_3l_2016",[
+MODULES.append( ('Trigger_2016_all', lambda : trigTagger("Trigger_3l_2016",[
                     ["HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ",0,1000000],
                     ["HLT_Ele27_WPTight_Gsf",0,1000000],
                     ["HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL",0,280919],
@@ -571,6 +576,9 @@ MODULES.append( ('lepgenVarsWZSM_2018', lambda : lepgenVarsWZSM("Mini")))
 
 from  CMGTools.TTHAnalysis.tools.lepgenVarsWZSM_nondressed import lepgenVarsWZSM_nondressed
 MODULES.append( ('lepgenVarsWZSM_nondressed', lambda : lepgenVarsWZSM_nondressed("Mini")))
+
+from  CMGTools.TTHAnalysis.tools.lepgenVarsWZSM_filtertaus import lepgenVarsWZSM_filtertaus
+MODULES.append( ('lepgenVarsWZSM_filtertaus', lambda : lepgenVarsWZSM_filtertaus("Mini")))
 
 from  CMGTools.TTHAnalysis.tools.bosonPolarizationGEN_TotalTruth import bosonPolarizationGEN_TotalTruth
 

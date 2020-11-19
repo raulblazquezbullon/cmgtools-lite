@@ -1,7 +1,7 @@
 from CMGTools.TTHAnalysis.treeReAnalyzer import *
 from PhysicsTools.HeppyCore.utils.deltar import matchObjectCollection3
 import ROOT
-from copy import copy
+from copy import copy, deepcopy
 
 class MyVarProxy:
     def __init__(self,lep):
@@ -41,7 +41,7 @@ class LeptonJetReCleaner:
         self.strBJetPt = str(int(bJetPt))
         self.systsJEC = {0:"", 1:"_jesTotalCorrUp", -1:"_jesTotalCorrDown",2:"_jesTotalUnCorrUp", -2:"_jesTotalUnCorrDown"}
         self.systsLepScale = {0:"", 1:"_elScaleUp", 2:"_elScaleDown", 3:"_muScaleUp",4:"_muScaleDown"}
-
+        
         self.debugprinted = False
         self.storeJetVariables = storeJetVariables
         self.year = year
@@ -325,6 +325,9 @@ class LeptonJetReCleaner:
                 tauret[tfloat] = []
                 for g in goodtaus:
                     tauret[tfloat].append( getattr(g, tfloat) )
+            tauret["pdgId"] = []
+            for g in goodtaus:
+                tauret["pdgId"].append(getattr(g,"charge")*(-15))
             for tfloat in "mcMatchId".split():
                 tauret[tfloat] = []
                 for g in goodtaus:
@@ -345,6 +348,11 @@ class LeptonJetReCleaner:
         fullret = {}
         leps = {}
         leps[0] = [l for l in Collection(event,"LepGood","nLepGood")]
+	if not(hasattr(event,"xsec")):
+          self.systsJEC = {0:"", 1:"", -1:"",2:"", -2:""}
+          self.systsLepScale = {0:"", 1:"_elScaleUp", 2:"_elScaleDown", 3:"_muScaleUp",4:"_muScaleDown"}
+
+
         for l in leps[0]:
             if hasattr(l, "correctedpt"): l.pt = l.correctedpt
         for key in [1,2,3,4]:
@@ -386,16 +394,16 @@ class LeptonJetReCleaner:
 
         jetsd[0] = [] 
         for var in [-1,1,-2,2]:
-            if hasattr(event,"nJet"+self.systsJEC[var]):
-                jetsc[var] = [j for j in Collection(event,"Jet"+self.systsJEC[var],"nJet"+self.systsJEC[var])]
-            else:
-                jetsc[var] = [j for j in Collection(event,"Jet","nJet")]
-                jetsc[var] = self.applyJEC(event, "Jet", jetsc[var], var)
+            jetsc[var] = []
+            if hasattr(event,"nJet"):
+                for j in jetsc[0]:
+                    jetsc[var].append(copy(j)) #What's not to love about python and objects?
+                    setattr(jetsc[var][-1],"pt",getattr(jetsc[var][-1],"pt"+ self.systsJEC[var]))
             if hasattr(event,"nDiscJet"+self.systsJEC[var]):
                 jetsd[var] = [] #[j for j in Collection(event,"DiscJet"+self.systsJEC[var],"nDiscJet"+self.systsJEC[var])]
             else:
                 jetsd[var] = [] #[j for j in Collection(event,"DiscJet","nDiscJet")]
-        for jet in jetsc:
+        for jet in jetsc[0]:
             if hasattr(jet, "pt_nom"): jet.pt = getattr(jet, "pt_nom")
         self.jetColl = jetsc
         lepsld = {}; lepslvd = {}

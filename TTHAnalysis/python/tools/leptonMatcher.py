@@ -41,7 +41,7 @@ class leptonMatcher:
     ## listBranches
     ## _______________________________________________________________
     def listBranches(self):
-        biglist = [("LepGood_mcUCSX_v2", "I", 4), ("LepGood_motherId", "I",4), ("LepGood_motherIdx","I",4), ("LepGood_grandmotherId","I",4), ("LepGood_grandmotherIdx","I",4)]
+        biglist = [("LepGood_mcUCSX_v2", "I", 8), ("LepGood_motherId", "I",8), ("LepGood_motherIdx","I",8), ("LepGood_grandmotherId","I",8), ("LepGood_grandmotherIdx","I",8)]
         return biglist
 
 
@@ -53,7 +53,6 @@ class leptonMatcher:
       #We need to rebuild a la UCSX to match 2016 analysis like inHeppy/python/analyzers/objects/LeptonAnalyzer.py
       if not self.isData:
           for i in range(len(self.lepSelFO)):
-              print i, len(self.lepSelFO)
 
               self.lepSelFO[i].isMatched      = False
               self.lepSelFO[i].genpt          = 0
@@ -62,7 +61,7 @@ class leptonMatcher:
               self.lepSelFO[i].genmass        = 0
               self.lepSelFO[i].isMatchingWZ   = False
 
-              if self.lepSelFO[i].genPartIdx < 0: 
+              if self.lepSelFO[i].genPartIdx < 0 or self.lepSelFO[i].genPartIdx > len(self.genparts)-1: 
                   self.lepSelFO[i].isMatched      = False
                   self.lepSelFO[i].genpt          = 0
                   self.lepSelFO[i].geneta         = 0
@@ -87,7 +86,6 @@ class leptonMatcher:
                   sumTau = 0
                   nParents = 0
                   while nParents < 1000:
-                      print "nParents", nParents, idx 
                       if self.ret["LepGood_grandmotherId"][i] == -999 and self.ret["LepGood_motherId"][i] != -999: 
                           self.ret["LepGood_grandmotherId"][i]  = mother.pdgId
                           self.ret["LepGood_grandmotherIdx"][i] = idx
@@ -134,16 +132,15 @@ class leptonMatcher:
                       nParents += 1
 
               self.ret["LepGood_mcUCSX_v2"][i] = self.lepSelFO[i].mcUCSX
-      print self.ret
     ## resetMemory
     ## _______________________________________________________________
     def resetMemory(self):
         self.ret = {};
-        self.ret["LepGood_mcUCSX_v2"] = [0]*4
-        self.ret["LepGood_motherId"]  = [-999]*4
-        self.ret["LepGood_grandmotherId"]  = [-999]*4
-        self.ret["LepGood_motherIdx"]  = [-999]*4
-        self.ret["LepGood_grandmotherIdx"]  = [-999]*4
+        self.ret["LepGood_mcUCSX_v2"] = [0]*8
+        self.ret["LepGood_motherId"]  = [-999]*8
+        self.ret["LepGood_grandmotherId"]  = [-999]*8
+        self.ret["LepGood_motherIdx"]  = [-999]*8
+        self.ret["LepGood_grandmotherIdx"]  = [-999]*8
 
 
 ## deltaPhi

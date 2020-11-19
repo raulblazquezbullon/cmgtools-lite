@@ -3,6 +3,7 @@ from CMGTools.TTHAnalysis.plotter.mcAnalysis import *
 import re, sys, os, os.path, copy
 systs = {}
 ROOT.v5.TFormula.SetMaxima(3000)
+#ROOT.gROOT.ProcessLine("gErrorIgnoreLevel = 10000000000;")
 
 from optparse import OptionParser
 parser = OptionParser(usage="%prog [options] mc.txt cuts.txt var bins systs.txt ")
@@ -407,7 +408,8 @@ for name in systsEnv.keys():
                 effect0  = "1"
                 effect12 = "-"
         effmap0[p]  = effect0 
-        effmap12[p] = effect12 
+        effmap12[p] = effect12
+    print name, effmap0, effmap12 
     systsEnv[name] = (effmap0,effmap12,mode)
 
 

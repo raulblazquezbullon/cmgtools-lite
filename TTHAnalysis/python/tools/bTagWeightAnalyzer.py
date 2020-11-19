@@ -102,7 +102,6 @@ class bTagWeightAnalyzer():
             istag = getattr(jet, self.branchbtag) > self.cutVal and abs(jet.eta) < 2.5 and jet.pt > 20
             if istag and jet.pt > 25: self.ret["nBJet25" +self.label+"_"+jesVar]              += 1
             if istag and jet.pt > 30: self.ret["nBJet30" +self.label+"_"+jesVar]              += 1
-            if jesVar == "nom": print jet.pt, jet.eta, getattr(jet, self.branchbtag), eff, SF
             if (eff == 0): eff = 1e-5 #Regularize
             if(istag):
                  mcTag   *= eff

@@ -120,7 +120,10 @@ if len(options.chunks) != 0 and len(options.datasets) != 1:
     exit()
 
 jobs = []
-for D in glob(args[0]+"/*"):
+foldsToScan = glob(args[0]+"/*")
+iFolds = 0
+for D in foldsToScan:
+    iFolds += 1
     treename = options.tree
     fname    = "%s/%s/%s_tree.root" % (D,options.tree,options.tree)
     if (not os.path.exists(fname)) and (os.path.exists("%s/%s/tree.root" % (D,options.tree)) ):
@@ -165,7 +168,7 @@ for D in glob(args[0]+"/*"):
         if options.newOnly:
             fout = "%s/evVarFriend_%s.root" % (args[1],short)
             if os.path.exists(fout):
-                if os.path.getsize(fout) <= 1000: continue
+                #if os.path.getsize(fout) <= 1000: break
                 f = ROOT.TFile.Open(fout);
                 t = f.Get("sf/t")
                 print fout
@@ -185,7 +188,7 @@ for D in glob(args[0]+"/*"):
 
         chunk = options.chunkSize
         if entries < chunk:
-            print "  ",os.path.basename(D),("  DATA" if data else "  MC")," single chunk"
+            print "  ",os.path.basename(D),("  DATA" if data else "  MC")," single chunk, iFolds %i/%i"%(iFolds,len(foldsToScan))
             jobs.append((short,fname,"%s/evVarFriend_%s.root" % (args[1],short),data,xrange(entries),-1,None))
         else:
             nchunk = int(ceil(entries/float(chunk)))
@@ -234,8 +237,8 @@ if options.queue:
         super  = "qsub -q {queue} -N friender".format(queue = options.queue)
         runner = "psibatch_runner.sh"
     elif options.env == "oviedo":
-        if options.queue != "":
-            options.queue = "batch" 
+        #if options.queue != "":
+        #    options.queue = "batch" 
         super  = "qsub -q {queue} -N happyTreeFriend".format(queue = options.queue)
         runner = "lxbatch_runner.sh"
         theoutput = theoutput.replace('/pool/ciencias/','/pool/cienciasrw/')

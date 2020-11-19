@@ -1,7 +1,7 @@
 from CMGTools.TTHAnalysis.treeReAnalyzer import *
 from PhysicsTools.HeppyCore.utils.deltar import matchObjectCollection3
 import ROOT
-from copy import copy
+from copy import copy, deepcopy
 
 class MyVarProxy:
     def __init__(self,lep):
@@ -325,6 +325,10 @@ class LeptonJetReCleanerFastSim:
                 tauret[tfloat] = []
                 for g in goodtaus:
                     tauret[tfloat].append( getattr(g, tfloat) )
+            tauret["pdgId"] = []
+            for g in goodtaus:
+                tauret["pdgId"].append(getattr(g,"charge")*(-15))
+
             for tfloat in "mcMatchId".split():
                 tauret[tfloat] = []
                 for g in goodtaus:
@@ -362,16 +366,16 @@ class LeptonJetReCleanerFastSim:
 
         jetsd[0] = [] 
         for var in [-1,1]:
-            if hasattr(event,"nJet"+self.systsJEC[var]):
-                jetsc[var] = [j for j in Collection(event,"Jet"+self.systsJEC[var],"nJet"+self.systsJEC[var])]
-            else:
-                jetsc[var] = [j for j in Collection(event,"Jet","nJet")]
-                jetsc[var] = self.applyJEC(event, "Jet", jetsc[var], var)
             if hasattr(event,"nDiscJet"+self.systsJEC[var]):
                 jetsd[var] = [] #[j for j in Collection(event,"DiscJet"+self.systsJEC[var],"nDiscJet"+self.systsJEC[var])]
             else:
                 jetsd[var] = [] #[j for j in Collection(event,"DiscJet","nDiscJet")]
-        for jet in jetsc:
+            jetsc[var] = []
+            if hasattr(event,"nJet"):
+                for j in jetsc[0]:
+                    jetsc[var].append(copy(j)) #What's not to love about python and objects?
+                    setattr(jetsc[var][-1],"pt",getattr(jetsc[var][-1],"pt"+ self.systsJEC[var]))
+        for jet in jetsc[0]:
             if hasattr(jet, "pt_nom"): jet.pt = getattr(jet, "pt_nom")
         self.jetColl = jetsc
         lepsld = {}; lepslvd = {}

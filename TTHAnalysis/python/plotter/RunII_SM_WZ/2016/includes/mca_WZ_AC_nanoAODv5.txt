@@ -1,0 +1,8 @@
+diboson+ : WZ_aTGC_0_200_part0_minus + WZ_aTGC_0_200_part0_plus + WZ_aTGC_0_200_part1_minus + WZ_aTGC_0_200_part1_plus : 1.045*xsec*LHEReweightingWeight[61] ; XTitle="WZ SM", FillColor=ROOT.kOrange
+diboson+ : WZ_aTGC_200_300_minus + WZ_aTGC_200_300_plus : 1.045*xsec*LHEReweightingWeight[61] ; XTitle="WZ SM", FillColor=ROOT.kOrange
+diboson+ : WZ_aTGC_300_inf_minus + WZ_aTGC_300_inf_plus : 1.045*xsec*LHEReweightingWeight[61] ; XTitle="WZ SM", FillColor=ROOT.kOrange
+
+diboson+ : WZ_aTGC_0_200_sc_part0_minus + WZ_aTGC_0_200_sc_part0_plus + WZ_aTGC_0_200_sc_part1_minus + WZ_aTGC_0_200_sc_part1_plus : 1.045*xsec*LHEReweightingWeight[61] ; XTitle="WZ AC", FillColor=ROOT.kOrange
+diboson+ : WZ_aTGC_200_300_sc_minus + WZ_aTGC_200_300_sc_plus  : 1.045*xsec*LHEReweightingWeight[61] ; XTitle="WZ SM", FillColor=ROOT.kOrange
+diboson+ : WZ_aTGC_300_inf_sc_minus + WZ_aTGC_300_inf_sc_plus: 1.045*xsec*LHEReweightingWeight[61] ; XTitle="WZ SM", FillColor=ROOT.kOrange
+
