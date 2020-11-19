@@ -1,0 +1,9 @@
+# Cálculo de la sección eficaz
+
+N_obs = N_total - N_fondo
+
+A = fiducial / espacio de fases
+En la aceptancia no se aplican pesos, pues es a nivel de generación. El fichero de cortes solo tiene cortes a nivel de partícula
+
+E = señal / fiducial
+En la región de señal sí se aplican pesos y hay cortes a nivel de partícula y de detector. En la región de señal no se aplican pesos y solo hay cortes a nivel de partícula
