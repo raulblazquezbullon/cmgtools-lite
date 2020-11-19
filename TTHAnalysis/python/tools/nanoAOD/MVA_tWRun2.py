@@ -14,12 +14,6 @@ class MVA_tWRun2(Module):
     def __init__(self, isData = False, jecvars = ["jer", "jesTotal"], lepvars = ["mu"]):
         self.MVAs = {}
 
-                
-#        #------Mi ruta------
-#        path_tmvaBDT_1j1b = "/nfs/fanae/user/asoto/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/tw_MVAS_asoto/tmvaBDT_1j1t/weights/TMVAClassification_GradBoost_2000_0.01.weights.xml"
-#        path_tmvaBDT_2j1b = "/nfs/fanae/user/asoto/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/tw_MVAS_asoto/tmvaBDT_2j1t/weights/TMVAClassification_GradBoost_200_005_4.weights.xml"
-#        #------Mi ruta------
-
 
         self.systsJEC   = {0: ""}
         self.systsLepEn = {}
@@ -40,15 +34,15 @@ class MVA_tWRun2(Module):
         for delta,sys in self.systsJEC.iteritems():
             setattr(self, "vars_1j1t" + sys, [
                 MVAVar("train_nloosejets",                  func = lambda ev : getattr(ev, "nJetSel20{v}_Recl".format(v = sys))),
-                MVAVar("train_nbloosejets",                 func = lambda ev : getattr(ev, "nBJetSelMedium20{v}_Recl".format(v = sys))),
-                MVAVar("train_lep1lep2jet1met_pt",          func = lambda ev : getattr(ev, "Lep1Lep2Jet1MET_Pt" + sys)),
-                MVAVar("train_httot",                       func = lambda ev : getattr(ev, "HTtot" + sys)),
+                #MVAVar("train_nbloosejets",                 func = lambda ev : getattr(ev, "nBJetSelMedium20{v}_Recl".format(v = sys))),
+                #MVAVar("train_lep1lep2jet1met_pt",          func = lambda ev : getattr(ev, "Lep1Lep2Jet1MET_Pt" + sys)),
+                #MVAVar("train_httot",                       func = lambda ev : getattr(ev, "HTtot" + sys)),
                 MVAVar("train_jet1_pt",                     func = lambda ev : getattr(ev, "Jet1_Pt" + sys)),
                 MVAVar("train_loosejet1_pt",                func = lambda ev : getattr(ev, "JetLoose1_Pt" + sys if "ev.nJetSel20{v}_Recl".format(v = sys) else 0.0)),
-                MVAVar("train_lep1lep2jet1met_ptOVERhttot", func = lambda ev : getattr(ev, "Lep1Lep2Jet1MET_PtOverHTtot" + sys)),
+                #MVAVar("train_lep1lep2jet1met_ptOVERhttot", func = lambda ev : getattr(ev, "Lep1Lep2Jet1MET_PtOverHTtot" + sys)),
                 MVAVar("train_lep1lep2jet1met_m",           func = lambda ev : getattr(ev, "Lep1Lep2Jet1MET_M" + sys)),
                 MVAVar("train_lep1lep2jet1_c",              func = lambda ev : getattr(ev, "Lep1Lep2Jet1_C" + sys)),
-                MVAVar("train_htlepOVERhttot",              func = lambda ev : getattr(ev, "Lep1_PtLep2_PtOverHTtot" + sys)),
+                #MVAVar("train_htlepOVERhttot",              func = lambda ev : getattr(ev, "Lep1_PtLep2_PtOverHTtot" + sys)),
                 MVAVar("train_lep1lep2jet1_pt",             func = lambda ev : getattr(ev, "Lep1Lep2Jet1_Pt" + sys)),
                 ])
 
@@ -56,21 +50,21 @@ class MVA_tWRun2(Module):
                 MVAVar("train_jet2_pt",          func = lambda ev : getattr(ev, "Jet2_Pt" + sys)),
                 MVAVar("train_lep1jet1_dr",      func = lambda ev : getattr(ev, "Lep1Jet1_DR" + sys)),
                 MVAVar("train_lep12jet12_dr",    func = lambda ev : getattr(ev, "Lep12Jet12_DR" + sys)),
-                MVAVar("train_lep12jet12met_dr", func = lambda ev : getattr(ev, "Lep12Jet12MET_DR" + sys)),
+                #MVAVar("train_lep12jet12met_dr", func = lambda ev : getattr(ev, "Lep12Jet12MET_DR" + sys)),
             ])
 
         for delta,sys in self.systsLepEn.iteritems():
             setattr(self, "vars_1j1t" + sys, [
                 MVAVar("train_nloosejets",                  func = lambda ev : getattr(ev, "nJetSel20{v}_Recl".format(v = sys))),
-                MVAVar("train_nbloosejets",                 func = lambda ev : getattr(ev, "nBJetSelMedium20{v}_Recl".format(v = sys))),
-                MVAVar("train_lep1lep2jet1met_pt",          func = lambda ev : getattr(ev, "Lep1Lep2Jet1MET_Pt" + sys)),
-                MVAVar("train_httot",                       func = lambda ev : getattr(ev, "HTtot" + sys)),
+                #MVAVar("train_nbloosejets",                 func = lambda ev : getattr(ev, "nBJetSelMedium20{v}_Recl".format(v = sys))),
+                #MVAVar("train_lep1lep2jet1met_pt",          func = lambda ev : getattr(ev, "Lep1Lep2Jet1MET_Pt" + sys)),
+                #MVAVar("train_httot",                       func = lambda ev : getattr(ev, "HTtot" + sys)),
                 MVAVar("train_jet1_pt",                     func = lambda ev : getattr(ev, "Jet1_Pt" + sys)),
                 MVAVar("train_loosejet1_pt",                func = lambda ev : getattr(ev, "JetLoose1_Pt" + sys if "ev.nJetSel20{v}_Recl".format(v = sys) else 0.0)),
-                MVAVar("train_lep1lep2jet1met_ptOVERhttot", func = lambda ev : getattr(ev, "Lep1Lep2Jet1MET_PtOverHTtot" + sys)),
+                #MVAVar("train_lep1lep2jet1met_ptOVERhttot", func = lambda ev : getattr(ev, "Lep1Lep2Jet1MET_PtOverHTtot" + sys)),
                 MVAVar("train_lep1lep2jet1met_m",           func = lambda ev : getattr(ev, "Lep1Lep2Jet1MET_M" + sys)),
                 MVAVar("train_lep1lep2jet1_c",              func = lambda ev : getattr(ev, "Lep1Lep2Jet1_C" + sys)),
-                MVAVar("train_htlepOVERhttot",              func = lambda ev : getattr(ev, "Lep1_PtLep2_PtOverHTtot" + sys)),
+                #MVAVar("train_htlepOVERhttot",              func = lambda ev : getattr(ev, "Lep1_PtLep2_PtOverHTtot" + sys)),
                 MVAVar("train_lep1lep2jet1_pt",             func = lambda ev : getattr(ev, "Lep1Lep2Jet1_Pt" + sys)),
                 ])
 
@@ -78,19 +72,19 @@ class MVA_tWRun2(Module):
                 MVAVar("train_jet2_pt",          func = lambda ev : getattr(ev, "Jet2_Pt" + sys)),
                 MVAVar("train_lep1jet1_dr",      func = lambda ev : getattr(ev, "Lep1Jet1_DR" + sys)),
                 MVAVar("train_lep12jet12_dr",    func = lambda ev : getattr(ev, "Lep12Jet12_DR" + sys)),
-                MVAVar("train_lep12jet12met_dr", func = lambda ev : getattr(ev, "Lep12Jet12MET_DR" + sys)),
+                #MVAVar("train_lep12jet12met_dr", func = lambda ev : getattr(ev, "Lep12Jet12MET_DR" + sys)),
             ])
 
-        mvas_path = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/mvas"
+        mvas_path = "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/tw_MVAS_asoto"
 
-        path_SergioBDT_1j1b = mvas_path + "/2018_00_00_SergioBDT/bdt1j1t/weights/TMVAClassification_GradBoost_2000_0.01.weights.xml"
-        path_SergioBDT_2j1b = mvas_path + "/2018_00_00_SergioBDT/bdt2j1t/weights/TMVAClassification_GradBoost_200_005_4.weights.xml"
+        #path_SergioBDT_1j1b = mvas_path + "/2018_00_00_SergioBDT/bdt1j1t/weights/TMVAClassification_GradBoost_2000_0.01.weights.xml"
+        #path_SergioBDT_2j1b = mvas_path + "/2018_00_00_SergioBDT/bdt2j1t/weights/TMVAClassification_GradBoost_200_005_4.weights.xml"
 
         #path_tmvaBDT_1j1b = mvas_path + "/2020_07_13_run2/tmvaBDT_1j1t/weights/TMVAClassification_GradBoost_2000_0.01.weights.xml"
         #path_tmvaBDT_2j1b = mvas_path + "/2020_07_13_run2/tmvaBDT_2j1t/weights/TMVAClassification_GradBoost_200_005_4.weights.xml"
 
-        path_tmvaBDT_1j1b = mvas_path + "/2020_10_09/tmvaBDT_1j1t/weights/TMVAClassification_GradBoost_2000_0.01.weights.xml"
-        path_tmvaBDT_2j1b = mvas_path + "/2020_10_09/tmvaBDT_2j1t/weights/TMVAClassification_GradBoost_200_005_4.weights.xml"
+        path_tmvaBDT_1j1b = mvas_path + "/tmvaBDT_1j1t/weights/TMVAClassification_GradBoost_2000_0.01.weights.xml"
+        path_tmvaBDT_2j1b = mvas_path + "/tmvaBDT_2j1t/weights/TMVAClassification_GradBoost_200_005_4.weights.xml"
 
 
         for delta,sys in self.systsJEC.iteritems():

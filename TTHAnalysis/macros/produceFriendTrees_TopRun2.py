@@ -12,14 +12,11 @@ friendspath = "/pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions"
 #prodname    = "2020-05-29" # veya
 #prodname    = "2020-06-01_bkp" # veya
 #prodname    = "2020-06-17" # nova
-
-
 #prodname    = "2020-07-03" # con sistematicos, en 2016 col tuning veyo
 #prodname    = "2020-07-29" # prueba para Sheyla
 #prodname    = "2020-09-16" # prueba tras profundos cambios
 prodname    = "2020-09-20" # tras la prueba, todo aparentemente en orden; BUENA
 #prodname    = "2020-09-23" # validacion cramonal
-
 
 
 datasamples  = ["SingleMuon", "SingleElec", "DoubleMuon", "DoubleEG", "MuonEG", "LowEGJet", "HighEGJet", "EGamma"]
@@ -32,8 +29,6 @@ utilspath    = "/nfs/fanae/user/vrbouza/Proyectos/tw_run2/desarrollo/susyMainten
 commandscaff = "python prepareEventVariablesFriendTree.py -t NanoAOD {inpath} {outpath} -I CMGTools.TTHAnalysis.tools.nanoAOD.TopRun2_modules {module} {friends} {dataset} -N {chunksize} {cluster} {ex}"
 clusterscaff = "--log {logdir} --name {jobname} -q {queue} --env oviedo"
 #friendfolders = ["0_yeartag", "1_lepmerge_roch", "2_cleaning", "3_varstrigger", "4_scalefactors", "5_mvas"]
-
-
 friendfolders = {0 : "0_yeartag",
                  1 : "1_lepmerge_roch",
                  2 : "2_cleaning",
@@ -44,7 +39,6 @@ friendfolders = {0 : "0_yeartag",
                  "mvatrain" : "x_mvatrain"
                 }
 
-
 chunksizes    = {0          : 5000000,
                  1          : 200000,
                  2          : 5000000,
@@ -54,7 +48,6 @@ chunksizes    = {0          : 5000000,
                  5          : 250000,
                  "mvatrain" : 500000,
                  }
-
 minchunkbytes = 1000
 
 class errs(enum.IntEnum):
@@ -78,7 +71,6 @@ sampledict  = {}
 sampledict[2016] = {}; sampledict[2017] = {}; sampledict[2018] = {}
 sampledict[2016] = {
     #### Nominales
-
     ### ttbar
     # CP5
     #"TTTo2L2Nu"        : ['Tree_TTTo2L2Nu_TuneCP5_PSweights_0','Tree_TTTo2L2Nu_TuneCP5_PSweights_1','Tree_TTTo2L2Nu_TuneCP5_PSweights_2','Tree_TTTo2L2Nu_TuneCP5_PSweights_3','Tree_TTTo2L2Nu_TuneCP5_PSweights_4','Tree_TTTo2L2Nu_TuneCP5_PSweights_5','Tree_TTTo2L2Nu_TuneCP5_PSweights_6','Tree_TTTo2L2Nu_TuneCP5_PSweights_7','Tree_TTTo2L2Nu_TuneCP5_PSweights_8','Tree_TTTo2L2Nu_TuneCP5_PSweights_9','Tree_TTTo2L2Nu_TuneCP5_PSweights_10','Tree_TTTo2L2Nu_TuneCP5_PSweights_11','Tree_TTTo2L2Nu_TuneCP5_PSweights_12'],
@@ -143,7 +135,6 @@ sampledict[2016] = {
 
     ##### Incertidumbres
     #### tW
-
     # CUETP8M1
     #"tW_noFullHad_DS_CUETP8M2T4"    : "Tree_tW_5f_DS_noFullHad_TuneCUETP8M",
     #"tbarW_noFullHad_DS_CUETP8M2T4" : "Tree_tbarW_5f_DS_noFullHad",
@@ -183,7 +174,6 @@ sampledict[2016] = {
     "TTTo2L2Nu_UEDown" : "Tree_TTTo2L2Nu_TuneCP5down_PSweights_",
 
 
-
     #### Datos
     "SingleMuon"     : "Tree_SingleMuon_Run2016",
     "SingleElectron" : "Tree_SingleElectron_Run2016",
@@ -214,7 +204,7 @@ sampledict[2017] = {
 
     ### tW
     # inclusiva
-    "tW"              : "Tree_tW_5f_inclusiveDecays_TuneCP5_PSweights_pythia8new_",
+    #"tW"              : "Tree_tW_5f_inclusiveDecays_TuneCP5_PSweights_pythia8new_",
     #"tW"              : ["Tree_tW_5f_inclusiveDecays_TuneCP5_0", "Tree_tW_5f_inclusiveDecays_TuneCP5_1", "Tree_tW_5f_inclusiveDecays_TuneCP5_2", "Tree_tW_5f_inclusiveDecays_TuneCP5_3", "Tree_tW_5f_inclusiveDecays_TuneCP5_4", "Tree_tW_5f_inclusiveDecays_TuneCP5_5", "Tree_tW_5f_inclusiveDecays_TuneCP5_6"], ### WARNING: CORRUPTOS LOS pythia8new
     "tbarW"           : ["Tree_tbarW_5f_inclusiveDecays_TuneCP5_1", "Tree_tbarW_5f_inclusiveDecays_TuneCP5_2", "Tree_tbarW_5f_inclusiveDecays_TuneCP5_3", "Tree_tbarW_5f_inclusiveDecays_TuneCP5_4", "Tree_tbarW_5f_inclusiveDecays_TuneCP5_5", "Tree_tbarW_5f_inclusiveDecays_TuneCP5_6", "Tree_tbarW_5f_inclusiveDecays_TuneCP5_7", "Tree_tbarW_5f_inclusiveDecays_TuneCP5_PSweights_pythia_*"],   ### WARNING: EL 0 ESTÁ CORRUPTO
 
@@ -253,7 +243,6 @@ sampledict[2017] = {
 
 
     #### Incertidumbres
-
     ### tW
     # DS inclusiva
     "tW_DS"             : "Tree_tW_5f_DS_inclusiveDecays_TuneCP5_PSweights_",
@@ -294,7 +283,6 @@ sampledict[2017] = {
     "TTTo2L2Nu_GluonMoveCRTune"      : "Tree_TTTo2L2Nu_TuneCP5CR2_GluonMove_PSweights_",
     "TTTo2L2Nu_QCDbasedCRTune_erdON" : ["Tree_TTTo2L2Nu_TuneCP5CR1_QCDbased_PSweights_1", "Tree_TTTo2L2Nu_TuneCP5CR1_QCDbased_PSweights_2", "Tree_TTTo2L2Nu_TuneCP5CR1_QCDbased_PSweights_3", "Tree_TTTo2L2Nu_TuneCP5CR1_QCDbased_PSweights_ext1_*"], ### WARNING: EL 0 ESTÁ CORRUPTO
     "TTTo2L2Nu_erdON"                : "Tree_TTTo2L2Nu_TuneCP5_erdON_",
-
 
     #### Datos
     "SingleMuon"     : "Tree_SingleMuon_Run2017",
@@ -386,7 +374,6 @@ sampledict[2018] = {
 
 
     #### Incertidumbres
-
     #### tW
     #"tW_DS"             : "", # NUN TA
     #"tbarW_DS"          : "", # NUN TA
@@ -415,7 +402,6 @@ sampledict[2018] = {
     "TTTo2L2Nu_GluonMoveCRTune"      : "Tree_TTTo2L2Nu_TuneCP5CR2_GluonMove_",
     "TTTo2L2Nu_QCDbasedCRTune_erdON" : "Tree_TTTo2L2Nu_TuneCP5CR1_QCDbased_",
     "TTTo2L2Nu_erdON"                : ["Tree_TTTo2L2Nu_TuneCP5_erdON_1", "Tree_TTTo2L2Nu_TuneCP5_erdON_2", "Tree_TTTo2L2Nu_TuneCP5_erdON_3", "Tree_TTTo2L2Nu_TuneCP5_erdON_ext1_*"], ### WARNING: EL 0 ESTÁ CORRUPTO
-
 
     #### Datos
     "SingleMuon" : "Tree_SingleMuon_Run2018",

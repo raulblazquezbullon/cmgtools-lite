@@ -87,14 +87,14 @@ void trainBDtW_1j1t(TString outputdir, TString outputbasedir = "/pool/phedex/use
   //loader->AddVariable("train_lep1lep2jet1met_ptOVERhttot", "p_{T} (#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j}, #it{p}_{T}^{miss}) / H_{T}", ""   , 'F');
   loader->AddVariable("train_lep1lep2jet1met_m"          , "m (#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j}, #it{p}_{T}^{miss})"            , "GeV", 'F');
   loader->AddVariable("train_lep1lep2jet1_c"             , "C (#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})"                               , ""   , 'F');
-  loader->AddVariable("train_htlepOVERhttot"             , "(p_{T}(e)^{#pm} + p_{T}(#mu)^{#mp}) / H_{T}"                            , ""   , 'F');
+//  loader->AddVariable("train_htlepOVERhttot"             , "(p_{T}(e)^{#pm} + p_{T}(#mu)^{#mp}) / H_{T}"                            , ""   , 'F');
   loader->AddVariable("train_lep1lep2jet1_pt"            , "#it{p}_{T} (#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j}, p_{T}^{miss})"        , "GeV", 'F');
   // =====New Input variables=========
-  loader->AddVariable("train_lep1jet1_dr"                , "#DeltaR (#it{l_{1}}^{#pm}, #it{j_{1}})"                              , "", 'F');
+//  loader->AddVariable("train_lep1jet1_dr"                , "#DeltaR (#it{l_{1}}^{#pm}, #it{j_{1}})"                              , "", 'F');
 //  loader->AddVariable("train_lep1jet1_m"                 , "m (#it{l_{1}}^{#pm}, #it{j_{1}})"                                    , "GeV", 'F');
-  loader->AddVariable("train_lep1_eta","Leading lepton #eta","",'F'); 
+//  loader->AddVariable("train_lep1_eta","Leading lepton #eta","",'F'); 
 //  loader->AddVariable("train_lep1lep2_pt"                , "#it{p}_{T} (#it{e}^{#pm}, #it{#mu}^{#mp})"                              , "GeV", 'F');
-  loader->AddVariable("train_lep2jet1_m"                 , "m (#it{l_{2}}^{#pm}, #it{j_{1}})"                                    , "GeV", 'F');
+//  loader->AddVariable("train_lep2jet1_m"                 , "m (#it{l_{2}}^{#pm}, #it{j_{1}})"                                    , "GeV", 'F');
         
         
         
@@ -196,10 +196,13 @@ void trainBDtW_1j1t(TString outputdir, TString outputbasedir = "/pool/phedex/use
 
   // (pass_trigger * Flag_goodVertices * Flag_globalSuperTightHalo2016Filter * Flag_HBHENoiseFilter * Flag_HBHENoiseIsoFilter * Flag_EcalDeadCellTriggerPrimitiveFilter * Flag_BadPFMuonFilter) * ((channel == 1) && (nLepGood >= 2) && (LepGood_pt_corrAll[0] > 25) && (LepGood_pt_corrAll[1] > 20) && isSS == 0 && (minMllAFAS_Recl > 20) ) * ((nJetSel30_Recl == 1) && (nBJetSelMedium30_Recl == 1))
 
-  TCut mycuts = "((njets == 1) && (nbjets == 1) && (channel == 1))";
-  TCut mycutb = "((njets == 1) && (nbjets == 1) && (channel == 1))";
+//  TCut mycuts = "((njets == 1) && (nbjets == 1) && (channel == 1))";
+//  TCut mycutb = "((njets == 1) && (nbjets == 1) && (channel == 1))";
 
-
+//========Cortes sin el channel cut=============
+  TCut mycuts = "((njets == 1) && (nbjets == 1))";
+  TCut mycutb = "((njets == 1) && (nbjets == 1))";
+//========Cortes sin el channel cut=============
 
 //  loader->PrepareTrainingAndTestTree(mycuts,
 //                                     mycutb,

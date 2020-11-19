@@ -117,7 +117,7 @@ systsGroup = {
 dowhat = 'step1'
 POIs   = ["r"]
 
-thecard = "./temp_2020_10_30/cards/combinada.root"
+thecard = "./combinada.root"
 
 groupList   = ['mc_stat', 'jecs', 'trigger', 'pileup', 'lep', 'btag', 'lumi', 'prefiring', 'norm', "pdf", "matching", "ps", "colour", "ue"]
 
@@ -129,7 +129,7 @@ if dowhat == 'step1':
 
         print basecommand + '-n nominal_%s %s --task-name nominal_%s -P %s %s'%(poi, thecard, poi, poi, ",".join(cumulative))
 
-        print basecommand.replace('--algo grid','--algo none').replace("--points 100","").replace("--job-mode SGE","")+ '-n bestfit_%s --saveWorkspace tw-run2_WS.root -P %s '%(poi,poi)
+        print basecommand.replace('--algo grid','--algo none').replace("--points 100","").replace("--job-mode SGE","")+ '-n bestfit_%s --saveWorkspace combinada.root -P %s '%(poi,poi)
 
         for group in groupList:
             cumulative += systsGroup[group]
