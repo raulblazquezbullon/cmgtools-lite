@@ -1,5 +1,21 @@
 alwaystrue : 1
 
+# PARTICLE
+
+dressemu    : Dresschannel == 1
+
+dressdilep  : (nDressSelLep >= 2) && (GenDressedLepton_pt[iDressSelLep[0]] > 25) && (GenDressedLepton_pt[iDressSelLep[1]] > 20) && DressisSS == 0
+
+### TEMP && (DressminMllAFAS > 20)
+minmll      : DressMll > 20
+
+
+dress2jet   : nDressSelJet == 2
+dress2btag  : nDressBSelJet == 2
+
+
+# DETECTOR
+
 trigger    : pass_trigger
 metfilters : Flag_goodVertices && Flag_globalSuperTightHalo2016Filter && Flag_HBHENoiseFilter && Flag_HBHENoiseIsoFilter && Flag_EcalDeadCellTriggerPrimitiveFilter && Flag_BadPFMuonFilter
 emu        : channel == 1
