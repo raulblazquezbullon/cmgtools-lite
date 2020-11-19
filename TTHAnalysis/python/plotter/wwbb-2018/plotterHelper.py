@@ -115,8 +115,9 @@ def PlottingCommand(prod, year, nthreads, outpath, selplot, region, ratio, extra
     mcafile_   = "wwbb-2018/mca-tw-wwbb.txt"
     cutsfile_  = "wwbb-2018/cuts-tw-wwbb-{reg}.txt".format(reg = region if "_" not in region else region.split("_")[0])
     #cutsfile_  = "wwbb-2018/cuts-tw-{reg}.txt".format(reg = region if "_" not in region else region.split("_")[0])
-    plotsfile_ = "wwbb-2018/plots-tw/plots-wwbb-{reg}.txt".format(reg = region)
-    #plotsfile_ = "wwbb-2018/plots-tw/plots-tw-{reg}.txt".format(reg = region)
+    plotsfile_ = "wwbb-2018/plots-tw/plots-wwbb-{reg}.txt".format(reg = region)		# Detector level
+    #plotsfile_ = "wwbb-2018/plots-tw/plots-tw-{reg}.txt".format(reg = region)			# Used for nojets region
+    #plotsfile_ = "wwbb-2018/plots-tw/plots-wwbb-gen-{reg}.txt".format(reg = region)		# Generation level
 
     samplespaths_ = "-P " + friendspath + "/" + prod + ("/" + year) * (year != "run2")
     if useFibre: samplespaths_ = samplespaths_.replace("phedexrw", "phedex").replace("cienciasrw", "ciencias")
