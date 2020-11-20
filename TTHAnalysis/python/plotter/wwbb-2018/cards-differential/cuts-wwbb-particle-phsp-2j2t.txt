@@ -1,0 +1,13 @@
+## Datacard for cut file wwbb-2018/cuts-differential/cuts-wwbb-particle-phsp-2j2t.txt
+shapes *        * cuts-wwbb-particle-phsp-2j2t.root x_$PROCESS x_$PROCESS_$SYSTEMATIC
+##----------------------------------
+bin         cuts-wwbb-particle-phsp-2j2t
+observation 975619.570027
+##----------------------------------
+##----------------------------------
+bin            cuts-wwbb-particle-phsp-2j2t 
+process                                wwbb 
+process                                   1 
+rate                             975619.570 
+##----------------------------------
+* autoMCStats 10
