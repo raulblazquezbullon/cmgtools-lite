@@ -87,9 +87,9 @@ systsGroup = {
     ],
 
     # Modelling
-    'pdf' : [
-        "pdf",
-    ],
+    #'pdf' : [
+        #"pdf",
+    #],
     'matching' : [
         "ttbar_matching",
     ],
@@ -119,7 +119,7 @@ POIs   = ["r"]
 
 thecard = "./temp_2020_10_30/cards/combinada.root"
 
-groupList   = ['mc_stat', 'jecs', 'trigger', 'pileup', 'lep', 'btag', 'lumi', 'prefiring', 'norm', "pdf", "matching", "ps", "colour", "ue"]
+groupList   = ['mc_stat', 'jecs', 'trigger', 'pileup', 'lep', 'btag', 'lumi', 'prefiring', 'norm', "matching", "ps", "colour", "ue"]
 
 basecommand = '\ncombineTool.py -M MultiDimFit --algo grid --points 100 --rMin 0 --rMax 3 --floatOtherPOIs=1 -m 125  --split-points 1 --setParameters r=1 -t -1 --expectSignal=1 --job-mode SGE --saveInactivePOI 1 '
 
@@ -131,6 +131,7 @@ if dowhat == 'step1':
 
         print basecommand.replace('--algo grid','--algo none').replace("--points 100","").replace("--job-mode SGE","")+ '-n bestfit_%s --saveWorkspace tw-run2_WS.root -P %s '%(poi,poi)
 
+        #print basecommand.replace('--algo grid','--algo none').replace("--points 300","").replace("--job-mode SGE","")+ '-n bestfit_%s --saveWorkspace combinada.root -P %s '%(poi,poi) ### de Soto
         for group in groupList:
             cumulative += systsGroup[group]
             print basecommand + ' -P %s '%poi + '-n ' + group + '_%s'%poi + ' higgsCombinebestfit_%s.MultiDimFit.mH125.root --snapshotName MultiDimFit  --freezeParameters %s'%(poi,",".join(cumulative)) + ' --task-name %s_%s'%(group,poi)
