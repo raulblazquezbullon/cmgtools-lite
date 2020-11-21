@@ -6,6 +6,12 @@ class ch(enum.IntEnum):
     ElMu   = 1
     Muon   = 2
     Elec   = 3
+    ElMuFromTaus = 4
+    MuonFromTaus = 5
+    ElecFromTaus = 6
+    ElMuMixedFromTaus = 7
+    MuonMixedFromTaus = 8
+    ElecMixedFromTaus = 9
 
 
 class tags(enum.IntEnum):
