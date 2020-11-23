@@ -6,8 +6,7 @@ dressemu    : Dresschannel == 1
 
 dressdilep  : (nDressSelLep >= 2) && (GenDressedLepton_pt[iDressSelLep[0]] > 25) && (GenDressedLepton_pt[iDressSelLep[1]] > 20) && DressisSS == 0
 
-### TEMP && (DressminMllAFAS > 20)
-minmll      : DressMll > 20
+minmllafas  : DressminMllAFAS > 20
 
 
 dress2jet   : nDressSelJet == 2
