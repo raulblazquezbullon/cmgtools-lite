@@ -1,0 +1,21 @@
+alwaystrue : 1
+
+# PARTICLE (non fiducial)
+
+nonfiducial : !((Dresschannel == 1) && (nDressSelLep >= 2) && (GenDressedLepton_pt[iDressSelLep[0]] > 25) && (GenDressedLepton_pt[iDressSelLep[1]] > 20) && (DressisSS == 0) && (DressMll > 20) && (nDressSelJet == 2) && (nDressBSelJet == 2))
+
+
+
+# DETECTOR
+
+trigger    : pass_trigger
+metfilters : Flag_goodVertices && Flag_globalSuperTightHalo2016Filter && Flag_HBHENoiseFilter && Flag_HBHENoiseIsoFilter && Flag_EcalDeadCellTriggerPrimitiveFilter && Flag_BadPFMuonFilter
+emu        : channel == 1
+
+dilep      : (nLepGood >= 2) && (LepGood_pt_corrAll[0] > 25) && (LepGood_pt_corrAll[1] > 20) && isSS == 0 && (minMllAFAS > 20)
+zveto      : (channel == 1) || (abs(Mll - 91) > 15)
+
+metgood    : (channel == 1) || (METgood_pt > 40)
+
+2jet       : nJetSel30_Recl == 2
+2btag      : nBJetSelMedium30_Recl == 2
