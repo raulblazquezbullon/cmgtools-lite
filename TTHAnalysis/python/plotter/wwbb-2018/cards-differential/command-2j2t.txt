@@ -38,9 +38,22 @@ python makeShapeCardsNew.py --tree NanoAOD wwbb-2018/mca-tw-wwbb.txt wwbb-2018/c
 
 
 # DETECTOR (Señal)
-# Used jet1_pt ("Jet_pt_corr[iJetSel30_Recl[0]]") variable from plots-wwbb-2j2t since it's detector level
 
 python makeShapeCardsNew.py --tree NanoAOD wwbb-2018/mca-tw-wwbb.txt wwbb-2018/cuts-differential/cuts-wwbb-detector-2j2t.txt "GenJet_pt[iDressSelJet[0]]" "[0,100]" -P /pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions/2020-09-20/2018 --Fs {P}/0_yeartag --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --od ./wwbb-2018/cards-differential/ --s2v -l 59.74  -f -L tw-run2/functions_tw.cc --neg --threshold 0.01 -W "MuonIDSF * MuonISOSF * ElecIDSF * ElecRECOSF * TrigSF * puWeight * bTagWeight * PrefireWeight" --year 2018  --amc --asimov s+b
+
+
+
+
+# DETECTOR (Sin fiducial, plot nivel generación)
+
+python makeShapeCardsNew.py --tree NanoAOD wwbb-2018/mca-tw-wwbb.txt wwbb-2018/cuts-differential/cuts-wwbb-detector-nofiducial-2j2t.txt "GenJet_pt[iDressSelJet[0]]" "[0,100]" -P /pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions/2020-09-20/2018 --Fs {P}/0_yeartag --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --od ./wwbb-2018/cards-differential/ --s2v -l 59.74  -f -L tw-run2/functions_tw.cc --neg --threshold 0.01 -W "MuonIDSF * MuonISOSF * ElecIDSF * ElecRECOSF * TrigSF * puWeight * bTagWeight * PrefireWeight" --year 2018  --amc --asimov s+b
+
+
+
+
+# DETECTOR (Sin fiducial, plot nivel detector)
+
+python makeShapeCardsNew.py --tree NanoAOD wwbb-2018/mca-tw-wwbb.txt wwbb-2018/cuts-differential/cuts-wwbb-detector-nofiducial-2j2t.txt "Jet_pt_corr[iJetSel30_Recl[0]]" "[0,100]" -P /pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions/2020-09-20/2018 --Fs {P}/0_yeartag --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --od ./wwbb-2018/cards-differential/ --s2v -l 59.74  -f -L tw-run2/functions_tw.cc --neg --threshold 0.01 -W "MuonIDSF * MuonISOSF * ElecIDSF * ElecRECOSF * TrigSF * puWeight * bTagWeight * PrefireWeight" --year 2018  --amc --asimov s+b
 
 
 
