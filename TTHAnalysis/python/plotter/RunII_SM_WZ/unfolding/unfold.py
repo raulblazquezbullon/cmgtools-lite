@@ -29,24 +29,6 @@ CMS_lumi.lumiTextOffset   = 0.2
 CMS_lumi.cmsTextSize      = 0.80
 CMS_lumi.cmsTextOffset    = 0.1
 
-#from abc import ABCMeta, abstractmethod
-# 
-#class AbstractTSpline(object):
-#    __metaclass__ = ABCMeta
-#     
-#    @abstractmethod
-#    def run(self):
-#        pass
-
-class ResponseComputation:
-
-    def __init__(self, inputFiles):
-        print('Initialization')
-        print('Input for matrix creation: %s' % inputFiles)
-        self.inputFiles=inputFiles
-        
-        
-        
 class DatacardReader:
 
     def __init__(self, inputCard, year, signalString=None):
@@ -185,7 +167,7 @@ class Unfolder(object):
             "2016" : '35.9 fb^{-1}',
             "2017" : '41.5 fb^{-1}',
             "2018" : '59.8 fb^{-1}',
-            "runII": '137.1 fb^{-1}',
+            "runII": '137.2 fb^{-1}',
             }
         CMS_lumi.lumi_13TeV = lumi_per_year[self.year]
         self.response_nom=None
