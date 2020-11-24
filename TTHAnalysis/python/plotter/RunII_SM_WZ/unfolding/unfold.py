@@ -655,10 +655,14 @@ class Unfolder(object):
         if file_handle.Get('x_prompt_VVV') :        totbkg.append(copy.deepcopy(file_handle.Get('x_prompt_VVV')  ))
         if file_handle.Get('x_prompt_TTXX'):        totbkg.append(copy.deepcopy(file_handle.Get('x_prompt_TTXX') ))
         if file_handle.Get('x_convs')      :        totbkg.append(copy.deepcopy(file_handle.Get('x_convs')       ))
-        if file_handle.Get('x_fakes_DY')   :        totbkg.append(copy.deepcopy(file_handle.Get('x_fakes_DY')    ))
-        if file_handle.Get('x_fakes_TT')   :        totbkg.append(copy.deepcopy(file_handle.Get('x_fakes_TT')    ))
-        if file_handle.Get('x_fakes_T')    :        totbkg.append(copy.deepcopy(file_handle.Get('x_fakes_T')     ))
-        if file_handle.Get('x_fakes_VV')   :        totbkg.append(copy.deepcopy(file_handle.Get('x_fakes_VV')    ))
+        fakesFromData=True
+        if fakesFromData:
+            if file_handle.Get('x_data_fakes')   :        totbkg.append(copy.deepcopy(file_handle.Get('x_data_fakes')    ))
+        else:
+            if file_handle.Get('x_fakes_DY')   :        totbkg.append(copy.deepcopy(file_handle.Get('x_fakes_DY')    ))
+            if file_handle.Get('x_fakes_TT')   :        totbkg.append(copy.deepcopy(file_handle.Get('x_fakes_TT')    ))
+            if file_handle.Get('x_fakes_T')    :        totbkg.append(copy.deepcopy(file_handle.Get('x_fakes_T')     ))
+            if file_handle.Get('x_fakes_VV')   :        totbkg.append(copy.deepcopy(file_handle.Get('x_fakes_VV')    ))
 
         if 'sum' in action:
             for i in range(1,len(totbkg)):
