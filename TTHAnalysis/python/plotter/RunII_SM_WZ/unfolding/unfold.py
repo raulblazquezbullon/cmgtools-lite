@@ -748,14 +748,21 @@ class Unfolder(object):
         scale_bgr=1.0
         dscale_bgr=0.05
         for iBkg in self.bkg:
-            raise Exception('MUST UPDATE THE UNCERTAINTIES FOR THE BACKGROUND SUBTRACTION (or better get them from the datacardReader grepping for theory or whatever the name is)')
-            print('Background %s has bins %d' % (iBkg.GetName(), iBkg.GetNbinsX()) )
+            # raise Exception('MUST UPDATE THE UNCERTAINTIES FOR THE BACKGROUND SUBTRACTION (or better get them from the datacardReader grepping for theory or whatever the name is)')
+            # Cannot. These must be hardcoded because they come from the postfit of the inclusive. Or I could build a configuration file, but that's the same concept.
+            # At least hardcoded values here call for attention, an anonymous file loaded would be too unconspicuous (*un is the archaic form, so I like it more than *in)
+            # ZZ => 7%, ttX= > 15%, tZq=> 35%, convs=>12%, VH 25, VBS 25, VVV 50
+            Print('Background %s has bins %d' % (iBkg.GetName(), iBkg.GetNbinsX()) )
             if 'convs' in iBkg.GetName():
-                dscale_bgr=0.20
+                dscale_bgr=0.12
             elif 'rares_ttX' in iBkg.GetName():
                 dscale_bgr=0.15
             elif 'rares_VVV' in iBkg.GetName():
                 dscale_bgr=0.5
+            elif 'rares_VH' in iBkg.GetName():
+                dscale_bgr=0.25
+            elif 'rares_VBS' in iBkg.GetName():
+                dscale_bgr=0.25
             elif 'rares_tZq' in iBkg.GetName():
                 dscale_bgr=0.35
             elif 'fakes_appldata' in iBkg.GetName():
