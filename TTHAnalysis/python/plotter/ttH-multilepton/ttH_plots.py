@@ -21,21 +21,26 @@ dowhat = "yields"
 dojeccomps=True
 P0="/eos/cms/store/cmst3/group/tthlep/peruzzi/"
 #if 'cmsco01'   in os.environ['HOSTNAME']: P0="/data1/peruzzi"
-nCores = 32
+nCores = 10
 if 'fanae' in os.environ['HOSTNAME']:
-    nCores = 32
-    #submit = 'sbatch -c %d -p cpupower  --wrap "{command}"'%nCores
-    P0     = "/pool/ciencias/HeppyTrees/EdgeZ/TTH/"
+    nCores = 4
+    #submit = 'sbatch -c %d -p batch  --wrap "{command}"'%nCores
+#    P0     = "/pool/ciencias/HeppyTrees/EdgeZ/TTH/"
+    P0     =  "/pool/phedex/userstorage/clara/NanoAOD/Top_Nanov6_03_Nov_skim2lss_new"
 if 'gae' in os.environ['HOSTNAME']: 
     P0     = "/pool/ciencias/HeppyTrees/EdgeZ/TTH/"
 
 if 'cism.ucl.ac.be' in os.environ['HOSTNAME']:
     P0 = "/nfs/user/pvischia/tth/v5pre/"
 
-TREESALL = "--xf THQ_LHE,THW_LHE,TTTW,TTWH --FMCs {P}/0_jmeUnc_v1 --FDs {P}/1_recl --FMCs {P}/1_recl_allvars --FMCs {P}/2_btag_SFs --FMCs {P}/2_scalefactors_lep_fixed --Fs {P}/3_tauCount --Fs {P}/4_evtVars  --Fs {P}/5_BDThtt_reco_new_blah --Fs {P}/6_mva2lss --Fs {P}/6_mva3l --Fs {P}/6_mva4l  "  #_new
+#TREESALL = "--xf THQ_LHE,THW_LHE,TTTW,TTWH --FMCs {P}/0_jmeUnc_v1 --FDs {P}/1_recl --FMCs {P}/1_recl_allvars --FMCs {P}/2_btag_SFs --FMCs {P}/2_scalefactors_lep_fixed --Fs {P}/3_tauCount --Fs {P}/4_evtVars  --Fs {P}/5_BDThtt_reco_new_blah --Fs {P}/6_mva2lss --Fs {P}/6_mva3l --Fs {P}/6_mva4l  "  #_new
+
+TREESALL = "--xf THQ_LHE,THW_LHE,TTTW,TTWH --FMCs {P}/0_jmeUnc_v2 --FDs {P}/1_recl --FMCs {P}/1_recl_allvars --FMCs {P}/2_btag_SFs --FMCs {P}/2_scalefactors_lep --Fs {P}/3_tauCount --Fs {P}/4_evtVars"  #_even newer
+
 YEARDIR=YEAR if YEAR != 'all' else ''
 TREESONLYFULL     = "-P "+P0+"/NanoTrees_TTH_090120_091019_v6/%s "%(YEARDIR,)         
-TREESONLYSKIM     = "-P "+P0+"/NanoTrees_TTH_090120_091019_v6_skim2lss/%s "%(YEARDIR,)
+#TREESONLYSKIM     = "-P "+P0+"/NanoTrees_TTH_090120_091019_v6_skim2lss/%s "%(YEARDIR,)
+TREESONLYSKIM     = "-P "+P0+"/%s "%(YEARDIR,)
 TREESONLYMEMZVETO = "-P "+P0+"/NanoTrees_TTH_090120_091019_v6/%s "%(YEARDIR,)         
 TREESONLYMEMZPEAK = "-P "+P0+"/NanoTrees_TTH_090120_091019_v6/%s "%(YEARDIR,)         
 
