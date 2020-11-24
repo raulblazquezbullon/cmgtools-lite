@@ -31,11 +31,12 @@ CMS_lumi.cmsTextOffset    = 0.1
 
 class DatacardReader:
 
-    def __init__(self, inputCard, year, signalString=None):
+    def __init__(self, inputCard, year, signalString=None, debug=False):
         print('Initialization for card %s' % inputCard)
         self.inputCard=inputCard
         self.year=year
         self.signalString=signalString
+        self.debug=debug
         self.systs = [] #Systematics, ordered by appearance
         self.normSysts = [] # Normalization-only uncertainties
         self.unsymNormSystsUp = [] # Normalization-only uncertainties, non symmetrized
@@ -153,11 +154,12 @@ class AcceptanceComputer:
 
 class Unfolder(object):
 
-    def __init__(self, args, var, fancyvar, diffvar):
+    def __init__(self, args, var, fancyvar, diffvar, debug=False):
         print('Initialization')
         self.var=var
         self.fancyvar=fancyvar
         self.diffvar=diffvar
+        self.debug=debug
         self.checkLO=args.checkLO
         self.logx = False if self.var is not 'MWZ' else True
         self.unfold=None
@@ -222,21 +224,17 @@ class Unfolder(object):
         folder=self.inputDir
         dataFile=None
         mcFile=None
-        #genFile=None # Taken from a separate file  
         print('diocane is', self.charge)
         print('Opening file %s.' % utils.get_file_from_glob(os.path.join(folder, '%s_%s_fitWZonly_%s%s/%s' % (self.year, self.finalState, self.var, self.charge, self.combineInput) ) if folder else self.combineInput) )
         file_handle = ROOT.TFile.Open(utils.get_file_from_glob(os.path.join(folder,  '%s_%s_fitWZonly_%s%s/%s' % (self.year, self.finalState, self.var, self.charge, self.combineInput)) if folder else self.combineInput))
-        # gdata=file_handle.Get('x_data')
-        # gdata.Draw('AP')
-        # hdata=self.get_graph_as_hist(gdata, ('recodata','recodata',4,0,4))
-        # data   = copy.deepcopy(ROOT.TH1F(hdata))
         data   = copy.deepcopy(file_handle.Get('x_data'))
         signal = copy.deepcopy(file_handle.Get('x_prompt_WZ'))
         bkg    = copy.deepcopy(self.get_total_bkg_as_hist(file_handle, 'list'))   
         # bkg    = copy.deepcopy(self.get_total_bkg_as_hist(file_handle, 'sum'))
-        # Subtraction is done by the TUnfoldDensityClass
-        # Scheme 1: subtraction
-        # print('Before subtraction. Data: %f, Bkg: %f, Signal: %f' % (data.Integral(), bkg.Integral(), signal.Integral()))  
+        # Background subtraction is dealt with in self.set_unfolding by using the TUnfoldDensityClass dedicated method
+
+        if self.debug:
+            print('Before subtraction. Data: %f, Bkg: %f, Signal: %f' % (data.Integral(), bkg.Integral(), signal.Integral()))  
         #data.Add(bkg, -1)
         if self.closure:
             data=self.getDataFromClosure(signal, bkg)
@@ -245,25 +243,25 @@ class Unfolder(object):
         self.mc=signal
         self.bkg=bkg
 
-        print('bins of input data: %d' % self.data.GetNbinsX() ) 
-        print('bins of input signal: %d' % self.mc.GetNbinsX() ) 
-        #print('bins of input bkg: %d' % self.bkg.GetNbinsX()   ) 
-        print('bins of input bkg: %d' % self.bkg[0].GetNbinsX()   ) 
-
-        
-        # print('Subtraction completed. Data-bkg: %f, Signal: %f' % (self.data.Integral(), self.mc.Integral() ))
-        # print('Expected mu=(data-bkg)/NLO: %f' % (self.data.Integral()/self.mc.Integral()) )
+        print('We have %d bins for input data' % self.data.GetNbinsX() ) 
+        print('We have %d bins for input signal' % self.mc.GetNbinsX() ) 
+        if isinstance(self.bkg, list):
+            for b in self.bkg:
+                print('We have %d bins for input background %s' %(b.GetNbinsX(),b.GetName())) 
+        else: 
+            print('bins of input bkg: %d' % self.bkg.GetNbinsX()   ) 
             
-        #genFile  = utils.get_file_from_glob(os.path.join(folder, genFName)  if folder else genFName)
-
-        # Add reading gen file to build response matrix
+        # Load the response matrices
         self.get_responses()
+        # Easily rebin if needed
         #self.rebin_all(4)
-        # Pass through numpy arrays?
-        print('Data correctly loaded.')
-        #return data, mc, response
+        print('All inputs have been correctly loaded.')
 
     def getDataFromClosure(self, hin, bkg):
+        '''
+        Build pseudodata with statistical fluctuations
+        This is NOT the Asimov dataset, which doesn't have any statistical fluctuation
+        '''
         hout=copy.deepcopy(hin)
         for ibkg in bkg:
             hout.Add(ibkg)
@@ -295,10 +293,13 @@ class Unfolder(object):
 
 
     def get_condition_number(self, th2):
-
-        #cond(K) = sigma_max / max (0, sigma_min), where sigma_max and sigma_min are the largest and smaller singular values of K. Use TDecompSVD, but not the method Condition(). If the condition number is small (~10), then the problem is well-conditioned and can most likely be solved using the unregularized maximum likelihood estimate (MLE). This happens when the resolution effects are small and $\bm{K}$ is almost diagonal. If, on the other hand, the condition number is large (~10^5) then the problem is ill-conditioned and the unfolded estimator needs to be regularized.
-
-        # convert th2 to matrix
+        '''
+        cond(K) = sigma_max / max(0, sigma_min).
+        sigma_max, sigma_min are the largest and smallest singular values of K
+        Interpretation: cond(K) ~ O(10)   ---> problem well-conditioned and no regularization is likely needed (can typically just use unregularized MLE from chi2 fit)
+                        cond(K) ~ O(10^5) ---> problem ill-conditioned and regularization is needed
+        '''
+        # Convert th2 to numpy matrix
         matrix = root_numpy.hist2array(th2)
         U, s, Vh = linalg.svd(matrix)
 
@@ -306,6 +307,9 @@ class Unfolder(object):
         return condition_number
 
     def study_responses(self):
+        '''
+        Make all the profile plots
+        '''
         self.compute_stability_and_purity()
         thematrices = [self.response_nom, self.response_alt]
         if self.checkLO: thematrices.append(self.response_inc)
@@ -318,7 +322,7 @@ class Unfolder(object):
             print(profY)
             c = ROOT.TCanvas('matrix', 'Response Matrix', 2000, 1000)
             tdr.setTDRStyle()
-            # Margin not being applied somehow. Must do it via gStyle? Current suspicion: now that I have the TStyle, they are screwing the tdr style up
+            # Margins are somehow not being applied. Must do it via gStyle? Current suspicion: now that I have the TStyle, the TStyle is screwing the tdr style up
             #ROOT.gStyle.SetPadTopMargin(0.1)
             #ROOT.gStyle.SetPadBottomMargin(0.1)
             #ROOT.gStyle.SetPadLeftMargin(0.1)
@@ -345,12 +349,14 @@ class Unfolder(object):
 
 
     def get_truth_theory_variations(self, datacardReader):
-
-        # For the moment, add only the overall normalization uncertainty, without bothering with the shape component 
-        #self.dataTruth_nom_up, self.dataTruth_nom_dn = ... datacardReader.getTheoUncsOnNom()
-        
+        '''
+        Get the envelope of scale and pdf variations, separately
+        All the other uncertainties are acquired later via datacardReader.getNormAndShapeSysts
+        Maybe I should check that I am not double counting
+        '''
         self.unsymNormSystsDn, self.unsymNormSystsUp = datacardReader.getUnsymNormSysts()
-        print('HEY', self.unsymNormSystsDn, self.unsymNormSystsUp)
+        if self.debug:
+            print('HEY', self.unsymNormSystsDn, self.unsymNormSystsUp)
         self.dataTruth_nom_up = copy.deepcopy(ROOT.TH1D(self.dataTruth_nom))
         self.dataTruth_nom_dn = copy.deepcopy(ROOT.TH1D(self.dataTruth_nom))
         factorUp=0.0
@@ -358,31 +364,37 @@ class Unfolder(object):
         for [sysName, sysValue] in self.unsymNormSystsUp:
             sysValue=float(sysValue)
             if ('scaleNorm' in sysName) or ('pdfNorm' in sysName):
-                print('UP: adding ', sysValue*sysValue, 'to total unc because of ', sysName)
+                if self.debug:
+                    print('UP: adding ', sysValue*sysValue, 'to total unc because of ', sysName)
                 factorUp += sysValue*sysValue
         for [sysName, sysValue] in self.unsymNormSystsDn:
             sysValue=float(sysValue)
             if ('scaleNorm' in sysName) or ('pdfNorm' in sysName):
-                print('DN: adding ', sysValue*sysValue, 'to total unc because of ', sysName)
+                if self.debug:
+                    print('DN: adding ', sysValue*sysValue, 'to total unc because of ', sysName)
                 factorDn += sysValue*sysValue
 
         factorUp=ROOT.TMath.Sqrt(factorUp)
         factorDn=ROOT.TMath.Sqrt(factorDn)
-        print("PORCHODIO")
-        print('Factorup', factorUp, '; FactorDn', factorDn)
-        print('nomup integral', self.dataTruth_nom_up.Integral(), 'nomdn integral', self.dataTruth_nom_dn.Integral())
-        # They will be present once we include them in the nano
+        if self.debug:
+            print("PORCHODIO")
+            print('Factorup', factorUp, '; FactorDn', factorDn)
+            print('nomup integral', self.dataTruth_nom_up.Integral(), 'nomdn integral', self.dataTruth_nom_dn.Integral())
+            # They will be present once we include them in the nano
         if factorUp != 0: self.dataTruth_nom_up.Scale(factorUp)
         if factorDn != 0: self.dataTruth_nom_dn.Scale(factorDn)
-        print('AFTER SCALING: nomup integral', self.dataTruth_nom_up.Integral(), 'nomdn integral', self.dataTruth_nom_dn.Integral())
+        if self.debug:
+            print('AFTER SCALING: nomup integral', self.dataTruth_nom_up.Integral(), 'nomdn integral', self.dataTruth_nom_dn.Integral())
 
     def get_responses(self):
+        '''
+        Acquire all the necessary response matrices (included systematic variations)
+        '''
         print('Acquiring response matrices.')
         folder=os.path.join(self.inputDir, 'responses/%s_%s_fitWZonly_%s%s/common/' % (self.year,self.finalState, self.var, self.charge) )        
 
         print('Opening file: %sWZSR_%s.input.root' % (folder, self.year))
-        file_handle = ROOT.TFile.Open('%sWZSR_%s.input.root' % (folder, self.year))
-        #file_handle_alt = ROOT.TFile.Open('%sWZSR_%s.input.root' % (folder, self.year))
+        file_handle = ROOT.TFile.Open('%sWZSR_%s.input.root' % (folder, self.year)) # This contains both Powheg (nominal) and aMCatNLO (alternative, for uncertainty caused by the modelling) shapes
         #file_handle_inc = ROOT.TFile.Open('%sWZSR_%s.input.root' % (folder, self.year))
         
         self.response_nom = copy.deepcopy(ROOT.TH2D(file_handle.Get('x_prompt_altWZ_%s' % 'Pow')))
@@ -409,19 +421,17 @@ class Unfolder(object):
         self.normSystsList, self.shapeSystsList = datacardReader.getNormAndShapeSysts()
         # Get theory variations
         self.get_truth_theory_variations(datacardReader)
-        
-
 
 
     def print_responses(self):
+        '''
+        Create fancy plots of the response matrices.
+        These are kind of duplicates of other plots created below, I can't remember which set we use in the paper, so let's just produce them
+        Esto es jodidamente inteligente (no tarda mucho a correr)
+        '''
         c = ROOT.TCanvas('matrix', 'Response Matrix', 2000, 2000)
         c.cd()
-        # Margin not being applied somehow. Must do it via gStyle?
-        #ROOT.gStyle.SetPadTopMargin(0.1)
-        #ROOT.gStyle.SetPadBottomMargin(0.1)
-        #ROOT.gStyle.SetPadLeftMargin(0.1)
-        #ROOT.gStyle.SetPadRightMargin(0.1)
-        #ROOT.gStyle.SetOptStat('uo')
+
         self.response_nom.GetXaxis().SetTitle('Reco %s' % self.fancyvar)
         self.response_alt.GetXaxis().SetTitle('Reco %s' % self.fancyvar)
         if self.checkLO: self.response_inc.GetXaxis().SetTitle('Reco %s' % self.fancyvar)
@@ -464,7 +474,7 @@ class Unfolder(object):
             resp_alt.GetYaxis().SetTitle('Gen %s' % self.fancyvar)
             if self.checkLO: resp_inc.GetYaxis().SetTitle('Gen %s' % self.fancyvar)
 
-            # Compute stability
+            # Compute stability fractions plots that we never used (remnant of when we wanted to imitate the 2015 analysis (Vukovukovuko!)
             diagonalSum_nom=0
             diagonalSum_alt=0
             diagonalSum_inc=0
@@ -505,11 +515,12 @@ class Unfolder(object):
                 resp_inc.Draw('COLZ')
                 utils.saveCanva(c, os.path.join(self.outputDir, '1_responseMatrixAsPdf_%s_Inc' % self.var))
 
-
         c.IsA().Destructor(c)
 
     def compute_stability_and_purity(self):
-
+        '''
+        Compute stability and purity plots that we never used (remnant of when we wanted to imitate the 2015 analysis (Vukovukovuko!)
+        '''
         purity_nom=self.response_nom.ProjectionX('%s_purity'%self.response_nom.GetName(), 0, self.response_nom.GetNbinsY())
         purity_alt=self.response_alt.ProjectionX('%s_purity'%self.response_alt.GetName(), 0, self.response_alt.GetNbinsY())
         purity_inc= self.response_inc.ProjectionX('%s_purity'%self.response_inc.GetName(), 0, self.response_inc.GetNbinsY()) if self.checkLO else None
@@ -540,8 +551,6 @@ class Unfolder(object):
                 recobinevts_nom += self.response_nom.GetBinContent(xbin, ybin)
                 recobinevts_alt += self.response_alt.GetBinContent(xbin, ybin)
                 if self.checkLO: recobinevts_inc += self.response_inc.GetBinContent(xbin, ybin)
-
-
             purity_nom.SetBinContent(xbin, self.response_nom.GetBinContent(xbin,xbin))
             purity_alt.SetBinContent(xbin, self.response_alt.GetBinContent(xbin,xbin))
             if self.checkLO: purity_inc.SetBinContent(xbin, self.response_inc.GetBinContent(xbin,xbin))
@@ -558,8 +567,6 @@ class Unfolder(object):
                 recobinevts_nom += self.response_nom.GetBinContent(xbin, ybin)
                 recobinevts_alt += self.response_alt.GetBinContent(xbin, ybin)
                 if self.checkLO: recobinevts_inc += self.response_inc.GetBinContent(xbin, ybin)
-
-                    
             stability_nom.SetBinContent(ybin, self.response_nom.GetBinContent(ybin,ybin))
             stability_alt.SetBinContent(ybin, self.response_alt.GetBinContent(ybin,ybin))
             if self.checkLO: stability_inc.SetBinContent(ybin, self.response_inc.GetBinContent(ybin,ybin))
@@ -579,12 +586,6 @@ class Unfolder(object):
         print(purity_nom)
         print(stability_nom)
         c = ROOT.TCanvas('matrix', 'Response Matrix', 3000, 1000)
-        # Margin not being applied somehow. Must do it via gStyle?
-        #ROOT.gStyle.SetPadTopMargin(0.1)
-        #ROOT.gStyle.SetPadBottomMargin(0.1)
-        #ROOT.gStyle.SetPadLeftMargin(0.1)
-        #ROOT.gStyle.SetPadRightMargin(0.1)
-        #ROOT.gStyle.SetOptStat('uo')
         c.Divide(3,1)
         c.cd(1)
         print(purity_nom)
@@ -623,6 +624,9 @@ class Unfolder(object):
         c.IsA().Destructor(c)
 
     def get_total_bkg_as_hist(self, file_handle, action):
+        '''
+        Sum the backgrounds to obtain the sum of backgrounds (later we subtract it from the data)
+        '''
         totbkg = []
 
         # 2016
@@ -653,6 +657,9 @@ class Unfolder(object):
         return totbkg
 
     def get_graph_as_hist(self, g, args):
+        '''
+        When we want to get a graph from a hist, we need to call this get_graph_as_hist
+        '''
         h = ROOT.TH1F(args[0], args[1], args[2], args[3], args[4])
 
         for ibin in range(0,args[2]):
@@ -660,14 +667,16 @@ class Unfolder(object):
             y=0
             g.GetPoint(ibin, ROOT.Double(x), ROOT.Double(y))
             h.Fill(x,y)
-        print('h bins: %d; g bin: %d' %(h.GetNbinsX(), g.GetN()))
-        #g.Draw('PAE')
-        #print('h bins: %d; g bin: %d' %(h.GetNbinsX(), g.GetN()))
-        #h=copy.deepcopy(ROOT.TH1F(g.GetHistogram()))
-        print('h bins: %d; g bin: %d' %(h.GetNbinsX(), g.GetN()))
+        if self.debug:
+            print('h bins: %d; g bin: %d' %(h.GetNbinsX(), g.GetN()))
+            print('h bins: %d; g bin: %d' %(h.GetNbinsX(), g.GetN()))
         return h
 
     def print_histo(self,h,key,label,opt=''):
+        '''
+        When you have an histogram and you want to print it.
+        But it needs to be that specific histogram corresponding to unfoldResults, because it will be saved as 2_unfoldResults....
+        '''
         c = ROOT.TCanvas(h.GetName(), h.GetTitle(), 2000, 2000)
         c.cd()
         h.Draw(opt)
@@ -687,7 +696,6 @@ class Unfolder(object):
         # kEConstraintNone (no extra constraint), kEConstraintArea (enforce preservation of area)
         self.densitymode= ROOT.TUnfoldDensity.kDensityModeNone
         # kDensityModeNone (no scale factors, matrix L is similar to unity matrix), kDensityModeBinWidth (scale factors from multidimensional bin width), kDensityModeUser (scale factors from user function in TUnfoldBinning), kDensityModeBinWidthAndUser (scale factors from multidimensional bin width and user function)
-
 
         # First do it with no regularization
         print('NOW I AM DOING UNFOLDING WITHOUT REGULARIZATION')
@@ -710,8 +718,9 @@ class Unfolder(object):
 
      
     def set_unfolding(self, key):
-        #destruir = lambda x : x.IsA().Destructor(x)
-        #if self.unfold: destruir(self.unfold)
+        # The following two commented lines somehow weren't working. But they were elegant, I am leaving them here
+        # destruir = lambda x : x.IsA().Destructor(x)
+        # if self.unfold: destruir(self.unfold)
         if self.unfold:
             self.unfold.IsA().Destructor(self.unfold)
 
@@ -739,6 +748,7 @@ class Unfolder(object):
         scale_bgr=1.0
         dscale_bgr=0.05
         for iBkg in self.bkg:
+            raise Exception('MUST UPDATE THE UNCERTAINTIES FOR THE BACKGROUND SUBTRACTION (or better get them from the datacardReader grepping for theory or whatever the name is)')
             print('Background %s has bins %d' % (iBkg.GetName(), iBkg.GetNbinsX()) )
             if 'convs' in iBkg.GetName():
                 dscale_bgr=0.20
@@ -756,7 +766,6 @@ class Unfolder(object):
 
         # Add systematic uncertainties
         self.add_systematic_uncertainties()
-        # unfold.AddSysError(histUnfoldMatrixSys,"signalshape_SYS", TUnfold::kHistMapOutputHoriz, TUnfoldSys::kSysErrModeMatrix)
 
         # Bias term! It corresponds to the distribution I expect to see after unfolding (e.g. the true Zpt distribution)
         if self.bias != 0:
@@ -784,7 +793,9 @@ class Unfolder(object):
             print(sysName, sysValue.Integral()/self.response_nom.Integral())
 
     def do_scan(self):
-        # Scan the L-curve and find the best point
+        '''
+        Scan the L-curve and find the best point, corresponding to the best regularization parameter
+        '''
         
         # Set verbosity
         oldinfo=ROOT.gErrorIgnoreLevel
@@ -806,7 +817,7 @@ class Unfolder(object):
             ROOT.gErrorIgnoreLevel=oldInfo
 
         # Here do something for the error
-        ### 
+        ### I don't know what I wanted to do here. Typically something I later implemented in other portions of the code.
 
     def print_unfolding_results(self, key, label):
         # Print results
@@ -841,8 +852,6 @@ class Unfolder(object):
         histEmatTotal=self.unfold.GetEmatrixTotal('Error matrix (total errors)') # Total error matrix. Migration matrix uncorrelated and correlated syst errors added in quadrature to the data statistical errors
         
         
-        #TH1 *histDetNormBgr1=unfold.GetBackground("bgr1 normalized",
-        #                                          "background1");
         histDetNormBgrTotal=self.unfold.GetBackground("Total background (normalized)")
 
         print('Bins of unfolded distribution: %d' % histMunfold.GetNbinsX() )
@@ -888,6 +897,7 @@ class Unfolder(object):
 
         print('Now get global correlation coefficients')
         # get global correlation coefficients
+        # I think this code was crashing somehow because pyroot doen't deal well with some of the ways TUnfold accesses pointers/references, and I never got it to work. Not used anyway.
         # for this calculation one has to specify whether the
         # underflow/overflow bins are included or not
         # default: include all bins
