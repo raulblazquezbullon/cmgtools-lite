@@ -1,0 +1,8 @@
+diboson+ : WZ_aMCatNLO_AC_part0_minus + WZ_aMCatNLO_AC_part1_minus + WZ_aMCatNLO_AC_part2_minus+ WZ_aMCatNLO_AC_part3_minus+  WZ_aMCatNLO_AC_part5_minus : xsec*1.*1.045 ; FillColor=ROOT.kOrange , FakeRate="RunII_SM_WZ/common/fakerate_standard_central.txt\,RunII_SM_WZ/common/fakerate_load_isprompt.txt", Label="WZ (k-2016)", NormSystematic=0.12
+
+diboson+ : WZ_aMCatNLO_AC_part0_plus + WZ_aMCatNLO_AC_part1_plus + WZ_aMCatNLO_AC_part2_plus+ WZ_aMCatNLO_AC_part3_plus+ WZ_aMCatNLO_AC_part5_plus: xsec*1.*1.045 ; FillColor=ROOT.kOrange , FakeRate="RunII_SM_WZ/common/fakerate_standard_central.txt\,RunII_SM_WZ/common/fakerate_load_isprompt.txt", Label="WZ (k-2016)", NormSystematic=0.12
+
+#diboson+ : WZ_aMCatNLO_AC_ext_part0_minus + WZ_aMCatNLO_AC_ext_part1_minus + WZ_aMCatNLO_AC_ext_part2_minus+ WZ_aMCatNLO_AC_ext_part3_minus+ WZ_aMCatNLO_AC_ext_part4_minus+ WZ_aMCatNLO_AC_ext_part5_minus+ WZ_aMCatNLO_AC_ext_part7_minus+WZ_aMCatNLO_AC_ext_part8_minus+ WZ_aMCatNLO_AC_ext_part6_minus : xsec*1.*1.045 ; FillColor=ROOT.kOrange , FakeRate="RunII_SM_WZ/common/fakerate_standard_central.txt\,RunII_SM_WZ/common/fakerate_load_isprompt.txt", Label="WZ (k-2016)", NormSystematic=0.12
+
+#diboson+ : WZ_aMCatNLO_AC_ext_part0_plus + WZ_aMCatNLO_AC_ext_part1_plus + WZ_aMCatNLO_AC_ext_part2_plus+ WZ_aMCatNLO_AC_ext_part3_plus+ WZ_aMCatNLO_AC_ext_part4_plus+ WZ_aMCatNLO_AC_ext_part5_plus+ WZ_aMCatNLO_AC_ext_part7_plus+ WZ_aMCatNLO_AC_ext_part8_plus+ WZ_aMCatNLO_AC_ext_part6_plus : xsec*1.*1.045 ; FillColor=ROOT.kOrange , FakeRate="RunII_SM_WZ/common/fakerate_standard_central.txt\,RunII_SM_WZ/common/fakerate_load_isprompt.txt", Label="WZ (k-2016)", NormSystematic=0.12
+

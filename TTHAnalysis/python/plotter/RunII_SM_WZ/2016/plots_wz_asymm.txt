@@ -1,0 +1,39 @@
+## further lepton observables
+## ----------------------------------------------------------
+
+lepZ1_pt          : LepZ1_pt      : [0,50,150,300]   ; YTitle="Leptons", XTitle="p_{T\,cone}(Z1 lep.)"   , LegendCutoff=1e-4, YMin=1, YMax=50000, Logy
+lepZ2_pt          : LepZ2_pt      : [0,50,150,300]   ; YTitle="Leptons", XTitle="p_{T\,cone}(Z2 lep.)", LegendCutoff=1e-4, YMin=1, YMax=50000, Logy
+lepW_pt           : LepW_pt      : [0,50,100,300]  ; YTitle="Leptons", XTitle="p_{T\,cone}(W lep.)"     , LegendCutoff=1e-4, YMin=1, YMax=50000, Logy
+
+lepZ1_eta         : abs(LepZ1_eta)         : [0,1,2,2.5] ; YTitle="Leptons", XTitle="#eta(Z1 lep.)"   , LegendCutoff=1e-4, YMin=1, YMax=50000, Logy
+lepZ2_eta         : abs(LepZ2_eta)         : [0,1,2,2.5] ; YTitle="Leptons", XTitle="#eta(Z2 lep.)", LegendCutoff=1e-4, YMin=1, YMax=50000, Logy
+lepW_eta         : abs(LepW_eta)         :  [0,1,2,2.5] ; YTitle="Leptons", XTitle="#eta(W lep.)"     , LegendCutoff=1e-4, YMin=1, YMax=50000, Logy
+
+
+
+lepZ1_phi         :  abs(LepZ1_phi)         : [0,1.05,2.10,3.15]; YTitle="Leptons", XTitle="#phi(Z1 lep.)"   , LegendCutoff=1e-4, YMin=1, YMax=5000000, Logy
+lepZ2_phi         :  abs(LepZ2_phi)         : [0,1.05,2.10,3.15]; YTitle="Leptons", XTitle="#phi(Z2 lep.)", LegendCutoff=1e-4, YMin=1, YMax=5000000, Logy
+lepW_phi         : abs(LepW_phi)         : [0,1.05,2.10,3.15]; YTitle="Leptons", XTitle="#phi(W lep.)"     , LegendCutoff=1e-4, YMin=1, YMax=500000, Logy
+
+Zpt :  sump4(0, LepZ1_pt, LepZ1_eta, LepZ1_phi, LepZ1_mass, LepZ2_pt , LepZ2_eta, LepZ2_phi, LepZ2_mass) : [0,100,250,400] ; XTitle="p_{T}^{Z} [GeV]", Legend="TR", legendCutoff=1e-2
+Zeta :  abs(sump4(1, LepZ1_pt, LepZ1_eta, LepZ1_phi, LepZ1_mass, LepZ2_pt , LepZ2_eta, LepZ2_phi, LepZ2_mass)) : [0,1,3,7] ; XTitle="#eta^{Z} [GeV]", Legend="TR", legendCutoff=1e-2
+Zphi :  abs(sump4(2, LepZ1_pt, LepZ1_eta, LepZ1_phi, LepZ1_mass, LepZ2_pt , LepZ2_eta, LepZ2_phi, LepZ2_mass)) : [0,1.05,2.1,3.15]; XTitle="#phi^{Z} [GeV]", Legend="TR", legendCutoff=1e-2
+
+Wpt :  WDn_pt_Lab : [0,100,250,400] ; XTitle="p_{T}^{W} [GeV]", Legend="TR", legendCutoff=1e-2
+Weta :  abs(WDn_eta_Lab) : [0,1,3,7]; XTitle="#eta^{W} [GeV]", Legend="TR", legendCutoff=1e-2
+Wphi :  abs(WDn_phi_Lab) : [0,1.05,2.1,3.15] ; XTitle="#phi^{W} [GeV]", Legend="TR", legendCutoff=1e-2
+
+dEtaWZ : abs(sump4(1, LepZ1_pt, LepZ1_eta, LepZ1_phi, LepZ1_mass, LepZ2_pt , LepZ2_eta, LepZ2_phi, LepZ2_mass) - WDn_eta_Lab) : [0,1,3,5]; XTitle = "#Delta(#eta)^{WZ}", Legend="TR", legendCutoff=1e-2
+dPhiWZ : deltaPhi(sump4(2, LepZ1_pt, LepZ1_eta, LepZ1_phi, LepZ1_mass, LepZ2_pt , LepZ2_eta, LepZ2_phi, LepZ2_mass), WDn_phi_Lab) : 10, -3.14, 3.14; XTitle = "#Delta(#phi)^{WZ}", Legend="TR", legendCutoff=1e-2
+
+
+m3l        : m3L            : [100, 200,350,500] ; XTitle="m_{3L} (GeV)"                , LegendCutoff=1e-4, Logy, Legend="TL", YMin=1, YMax=100000, Legend="TR"
+
+m3lmet_Meas : m3Lmet : [100,200,500,3000] ; XTitle="m_{WZ} [GeV]", LegendCutoff=1e-8, YTitle='Events/bin', Logy, YMin=0.1, YMax=100000000, IncludeOverflows=False
+
+charge3l   : if3(LepSel_pdgId[0]>0,-1,1)+if3(LepSel_pdgId[1]>0,-1,1)+if3(LepSel_pdgId[2]>0,-1,1) : 1,-1,1 ; XTitle="charge", Legend="TL", LegendCutoff=1e-4, MoreY=3.0
+
+one : 1 : 1,0,2 ; XTitle ="Yields"
+
+phistarZ : phistar(LepZ1_eta, LepZ1_phi, LepZ2_eta, LepZ2_phi) : [-4,1.5,1.5,4]; XTitle="#phi*" , Logy, YMin=1, YMax=50000
+

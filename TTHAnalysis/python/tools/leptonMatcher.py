@@ -41,7 +41,7 @@ class leptonMatcher:
     ## listBranches
     ## _______________________________________________________________
     def listBranches(self):
-        biglist = [("LepGood_mcUCSX_v2", "I", 4), ("LepGood_motherId", "I",4), ("LepGood_motherIdx","I",4), ("LepGood_grandmotherId","I",4), ("LepGood_grandmotherIdx","I",4)]
+        biglist = [("LepGood_mcUCSX_v2", "I", 8), ("LepGood_motherId", "I",8), ("LepGood_motherIdx","I",8), ("LepGood_grandmotherId","I",8), ("LepGood_grandmotherIdx","I",8)]
         return biglist
 
 
@@ -53,6 +53,7 @@ class leptonMatcher:
       #We need to rebuild a la UCSX to match 2016 analysis like inHeppy/python/analyzers/objects/LeptonAnalyzer.py
       if not self.isData:
           for i in range(len(self.lepSelFO)):
+
               self.lepSelFO[i].isMatched      = False
               self.lepSelFO[i].genpt          = 0
               self.lepSelFO[i].geneta         = 0
@@ -60,7 +61,7 @@ class leptonMatcher:
               self.lepSelFO[i].genmass        = 0
               self.lepSelFO[i].isMatchingWZ   = False
 
-              if self.lepSelFO[i].genPartIdx < 0: 
+              if self.lepSelFO[i].genPartIdx < 0 or self.lepSelFO[i].genPartIdx > len(self.genparts)-1: 
                   self.lepSelFO[i].isMatched      = False
                   self.lepSelFO[i].genpt          = 0
                   self.lepSelFO[i].geneta         = 0
@@ -68,6 +69,7 @@ class leptonMatcher:
                   self.lepSelFO[i].genmass        = 0
                   self.lepSelFO[i].isMatchingWZ   = False
                   self.lepSelFO[i].mcUCSX         = -1
+
               else:
                   match  = self.genparts[self.lepSelFO[i].genPartIdx]
                   isPrompt = (match.statusFlags & 1) or (match.statusFlags & 32) or (match.statusFlags & 128)
@@ -84,13 +86,14 @@ class leptonMatcher:
                   sumTau = 0
                   nParents = 0
                   while nParents < 1000:
-                      if self.ret["LepGood_motherId"] == -999: 
-                          self.ret["LepGood_motherId"] = mother.pdgId
-                          self.ret["LepGood_motherId"] = idx
+                      if self.ret["LepGood_grandmotherId"][i] == -999 and self.ret["LepGood_motherId"][i] != -999: 
+                          self.ret["LepGood_grandmotherId"][i]  = mother.pdgId
+                          self.ret["LepGood_grandmotherIdx"][i] = idx
 
-                      if self.ret["LepGood_grandmotherId"] == -999 and self.ret["LepGood_motherId"] != -999: 
-                          self.ret["LepGood_grandmotherId"]  = mother.pdgId
-                          self.ret["LepGood_grandmotherIdx"] = idx
+                      if self.ret["LepGood_motherId"][i] == -999: 
+                          self.ret["LepGood_motherId"][i] = mother.pdgId
+                          self.ret["LepGood_motherIdx"][i] = idx
+
 
                       if mother.pdgId == 22:
                           self.lepSelFO[i].mcUCSX = 4 + sumTau
@@ -117,19 +120,27 @@ class leptonMatcher:
                               mother = self.genparts[mother.genPartIdxMother]
                               idx = mother.genPartIdxMother
                       self.lepSelFO[i].mcUCSX = sumTau
+                      if self.ret["LepGood_grandmotherId"][i] == -999 and self.ret["LepGood_motherId"][i] != -999: 
+                          self.ret["LepGood_grandmotherId"][i]  = mother.pdgId
+                          self.ret["LepGood_grandmotherIdx"][i] = idx
+
+                      if self.ret["LepGood_motherId"][i] == -999: 
+                          self.ret["LepGood_motherId"][i] = mother.pdgId
+                          self.ret["LepGood_motherIdx"][i] = idx
+
 
                       nParents += 1
-                  self.ret["LepGood_mcUCSX_v2"][i] = self.lepSelFO[i].mcUCSX
 
+              self.ret["LepGood_mcUCSX_v2"][i] = self.lepSelFO[i].mcUCSX
     ## resetMemory
     ## _______________________________________________________________
     def resetMemory(self):
         self.ret = {};
-        self.ret["LepGood_mcUCSX_v2"] = [0]*20
-        self.ret["LepGood_motherId"]  = [-999]*20
-        self.ret["LepGood_grandmotherId"]  = [-999]*20
-        self.ret["LepGood_motherIdx"]  = [-999]*20
-        self.ret["LepGood_grandmotherIdx"]  = [-999]*20
+        self.ret["LepGood_mcUCSX_v2"] = [0]*8
+        self.ret["LepGood_motherId"]  = [-999]*8
+        self.ret["LepGood_grandmotherId"]  = [-999]*8
+        self.ret["LepGood_motherIdx"]  = [-999]*8
+        self.ret["LepGood_grandmotherIdx"]  = [-999]*8
 
 
 ## deltaPhi
@@ -160,38 +171,16 @@ def deltaR(eta1, phi1, eta2, phi2):
 if __name__ == '__main__':
     from sys import argv
     file = ROOT.TFile(argv[1])
-    tree = file.Get("tree")
+    tree = file.Get("Events")
     tree.vectorTree = True
     class Tester(Module):
         def __init__(self, name):
             Module.__init__(self,name,None)
-            self.sf1 = LeptonChoiceEWK("Old", 
-                lambda lep : lep.relIso03 < 0.5, 
-                lambda lep : lep.relIso03 < 0.1 and lep.sip3d < 4 and _susy2lss_lepId_CB(lep),
-                cleanJet = lambda lep,jet,dr : (lep.pt > 10 and dr < 0.4))
-            self.sf2 = LeptonChoiceEWK("PtRel", 
-                lambda lep : lep.relIso03 < 0.4 or lep.jetPtRel > 5, 
-                lambda lep : (lep.relIso03 < 0.1 or lep.jetPtRel > 14) and lep.sip3d < 4 and _susy2lss_lepId_CB(lep),
-                cleanJet = lambda lep,jet,dr : (lep.pt > 10 and dr < 0.4))
-            self.sf3 = LeptonChoiceEWK("MiniIso", 
-                lambda lep : lep.miniRelIso < 0.4, 
-                lambda lep : lep.miniRelIso < 0.05 and lep.sip3d < 4 and _susy2lss_lepId_CB(lep),
-                cleanJet = lambda lep,jet,dr : (lep.pt > 10 and dr < 0.4))
-            self.sf4 = LeptonChoiceEWK("PtRelJC", 
-                lambda lep : lep.relIso03 < 0.4 or lep.jetPtRel > 5, 
-                lambda lep : (lep.relIso03 < 0.1 or lep.jetPtRel > 14) and lep.sip3d < 4 and _susy2lss_lepId_CB(lep),
-                cleanJet = lambda lep,jet,dr : (lep.pt > 10 and dr < 0.4 and not (lep.jetPtRel > 5 and lep.pt*(1/lep.jetPtRatio-1) > 25)))
-            self.sf5 = LeptonChoiceEWK("MiniIsoJC", 
-                lambda lep : lep.miniRelIso < 0.4, 
-                lambda lep : lep.miniRelIso < 0.05 and lep.sip3d < 4 and _susy2lss_lepId_CB(lep),
-                cleanJet = lambda lep,jet,dr : (lep.pt > 10 and dr < 0.4 and not (lep.jetDR > 0.5*10/min(50,max(lep.pt,200)) and lep.pt*(1/lep.jetPtRatio-1) > 25)))
+            self.sf1 = leptonMatcher("Mini", metbranch ="MET")
+
         def analyze(self,ev):
-            print "\nrun %6d lumi %4d event %d: leps %d" % (ev.run, ev.lumi, ev.evt, ev.nLepGood)
+            #print "\nrun %6d lumi %4d event %d: leps %d" % (ev.run, ev.lumi, ev.evt, ev.nLepGood)
             print self.sf1(ev)
-            print self.sf2(ev)
-            print self.sf3(ev)
-            print self.sf4(ev)
-            print self.sf5(ev)
     el = EventLoop([ Tester("tester") ])
     el.loop([tree], maxEvents = 50)
 

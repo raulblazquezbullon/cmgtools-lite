@@ -117,24 +117,47 @@ class lepgenVarsWZSM_nondressed:
 
 
     def filterGenPart(self, p):
-       if not(abs(p.pdgId)==11 or abs(p.pdgId)==13) or abs(p.pdgId==15): return False
-       if not(p.status==23 or p.status==1): return False
+       #print p.pdgId, p.status, p.genPartIdxMother
+       if not(abs(p.pdgId)==11 or abs(p.pdgId)==13 or abs(p.pdgId)==15): return False
+       #print "... passID"
+       if not(p.status==23 or p.status==1 or (p.status==2 and abs(p.pdgId)==15)): return False
+       #print "... passStatus"
        if p.genPartIdxMother < 0: return False
+       #print "... passMother"
        #Now go back and try to get ancesters
        motherIdx = p.genPartIdxMother
        while motherIdx > 0:
            newpart = self.genparts[motherIdx]
+           #print "......", newpart.pdgId
            if  abs(newpart.pdgId) == 23 or abs(newpart.pdgId) == 24:
-               setattr(p, "motherpdgId", self.genparts[p.genPartIdxMother].pdgId)
+               setattr(p, "motherpdgId", newpart.pdgId)
                break
-           elif newpart.pdgId == p.pdgId:
+           elif newpart.pdgId == p.pdgId: #The mother is just the same particle in another step or after radiating a photon
                motherIdx = newpart.genPartIdxMother
            else: #Decay from tau, jet or photon
                return False
        setattr(p, "motherIDX", motherIdx)
-
-       if not( abs(self.genparts[p.genPartIdxMother].pdgId) == 23 or abs(self.genparts[p.genPartIdxMother].pdgId) == 24): return False
+       #print "... passed while"
+       if not( hasattr(p,"motherpdgId")): return False
+       #print "... passed all"
        return True
+
+    def getMotherIdx(self, p):
+       motherIdx = p.genPartIdxMother
+       while motherIdx > 0:
+           newpart = self.genparts[motherIdx]
+           #print "......", newpart.pdgId
+           if  abs(newpart.pdgId) == 23 or abs(newpart.pdgId) == 24:
+               setattr(p, "motherpdgId", newpart.pdgId)
+               break
+           elif newpart.pdgId == p.pdgId: #The mother is just the same particle in another step or after radiating a photon
+               motherIdx = newpart.genPartIdxMother
+           else: #Decay from tau, jet or photon
+               return False
+       setattr(p, "motherIDX", motherIdx)
+       return motherIdx
+
+
     ## collectObjects
     ## _______________________________________________________________
     def collectObjects(self, event):
@@ -148,7 +171,14 @@ class lepgenVarsWZSM_nondressed:
         for lep in self.genleps:
             test = min([10] + [deltaR(lep.eta, lep.phi, l.eta, l.phi)  for l in finalleps])
             if test < 0.02: continue
+            matched = False
+            for lep2 in finalleps:
+               if self.getMotherIdx(lep) == self.getMotherIdx(lep2) and lep.pdgId == lep2.pdgId: matched = True
+
+            if matched: continue
             else: finalleps.append(lep)
+
+        #print "Cleaning:", len(self.genleps), len(finalleps)
         self.genleps = finalleps
         self.setAttributes(event, self.genleps, False, True)
         self.metgen        = {}
@@ -496,7 +526,7 @@ class lepgenVarsWZSM_nondressed:
 
         all = []
         for os in self.OS:
-            all.append((0 if os.isSF else 1, 1 if os.wTau else 0, os.diff, os)) # priority to SF, then light, then difference to target
+            all.append((0 if os.isSF else 1, 1 if os.wTau else 1, os.diff, os)) # priority to SF, then light, then difference to target
         if all:
             all.sort()
             self.ret["nOS_gen"] = len(all)
