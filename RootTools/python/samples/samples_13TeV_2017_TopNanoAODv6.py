@@ -309,9 +309,9 @@ VJetsQQHT = [
 
 # TTbar cross section: NNLO, https://twiki.cern.ch/twiki/bin/view/LHCPhysics/TtbarNNLO (172.5)
 #TTJets = kreator.makeMyPrivateMCComponent("TTJets", "/TTJets_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIFall17NanoAODv4-PU2017_12Apr2018_Nano14Dec2018_new_pmx_102X_mc2017_realistic_v6-v1/NANOAODSIM", "PRIVATE", ".*root", 'phys03', 831.76, fracNegWeights=0.319, useAAA=True)
-
+                                                            
 TTLep_pow  = kreator.makeMyPrivateMCComponent("TTLep_pow", "/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/palencia-TopNanoAODv6-1-1_2017-a11761155c05d04d6fed5a2401fa93e8/USER", "PRIVATE", ".*root", 'phys03', 831.76*((3*0.108)**2) , useAAA=True)
-#TTSemi_pow = kreator.makeMyPrivateMCComponent("TTSemi_pow", "/TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8/RunIIFall17NanoAODv4-PU2017_12Apr2018_Nano14Dec2018_102X_mc2017_realistic_v6-v1/NANOAODSIM", "PRIVATE", ".*root", 'phys03', 831.76*2*(3*0.108)*(1-3*0.108) , useAAA=True)
+TTSemi_pow = kreator.makeMyPrivateMCComponent("TTSemi_pow", "/TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8/umolinat-TopNanoAODv6p1_2017-a11761155c05d04d6fed5a2401fa93e8/USER", "PRIVATE", ".*root", 'phys03', 831.76*2*(3*0.108)*(1-3*0.108) , useAAA=True)
 
 
 '''
@@ -321,7 +321,7 @@ TTJets_DiLepton = kreator.makeMyPrivateMCComponent("TTJets_DiLepton", "/TTJets_D
 '''
 
 TTs = [ #TTJets, 
-TTLep_pow, #TTSemi_pow, TTJets_SingleLeptonFromT, TTJets_SingleLeptonFromTbar, TTJets_DiLepton
+TTLep_pow, TTSemi_pow,# TTJets_SingleLeptonFromT, TTJets_SingleLeptonFromTbar, TTJets_DiLepton
 ]
 
 # ====== SINGLE TOP ======

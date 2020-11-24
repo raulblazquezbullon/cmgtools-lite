@@ -25,7 +25,7 @@ lepSkim = ttHPrescalingLepSkimmer(5,
                 muonSel = muonSelection, electronSel = electronSelection,
                 minLeptonsNoPrescale = 2, # things with less than 2 leptons are rejected irrespectively of the prescale
                 minLeptons = 2, requireSameSignPair = True,
-                jetSel = lambda j : j.pt > 25 and abs(j.eta) < 2.4 and j.jetId > 0, 
+                jetSel = lambda j : j.pt > 25 and abs(j.eta) < 2.4 and j.jetId >=2 , 
                 minJets = 4, minMET = 70)
 from PhysicsTools.NanoAODTools.postprocessing.modules.common.collectionMerger import collectionMerger
 lepMerge = collectionMerger(input = ["Electron","Muon"], 
@@ -45,7 +45,7 @@ ttH_sequence_step1 = [lepSkim, lepMerge, autoPuWeight, yearTag, xsecTag, lepJetB
 #==== 
 from PhysicsTools.NanoAODTools.postprocessing.tools import deltaR
 from CMGTools.TTHAnalysis.tools.nanoAOD.ttHLepQCDFakeRateAnalyzer import ttHLepQCDFakeRateAnalyzer
-centralJetSel = lambda j : j.pt > 25 and abs(j.eta) < 2.4 and j.jetId > 0
+centralJetSel = lambda j : j.pt > 25 and abs(j.eta) < 2.4 and j.jetId >= 2
 lepFR = ttHLepQCDFakeRateAnalyzer(jetSel = centralJetSel,
                                   pairSel = lambda pair : deltaR(pair[0].eta, pair[0].phi, pair[1].eta, pair[1].phi) > 0.7,
                                   maxLeptons = 1, requirePair = True)
@@ -68,16 +68,40 @@ def ttH_idEmu_cuts_E3(lep):
     if (lep.sieie>=(0.011+0.019*(abs(lep.eta+lep.deltaEtaSC)>1.479))): return False
     return True
 
+def interp_deepJet(lep_flav, year, minPt, maxPt, pt ):
+#### deepFlavour_cut_high at minPt and deepFlavour_cut_low at maxPt
+   if abs(lep_flav) == 13:
+      deepFlavour_H_values = (0.02,0.025,0.025)
+      deepFlavour_L_values = (0.015,0.015,0.015)
+   elif abs(lep_flav) == 11:
+      deepFlavour_H_values = (0.5,0.5,0.4)
+      deepFlavour_L_values = (0.05,0.08,0.05)
+   
+   if deepFlavour_H_values[year-2016] == deepFlavour_L_values[year-2016]:
+      return deepFlavour_H_values[year-2016]
+   elif pt < minPt:
+      return deepFlavour_H_values[year-2016]
+   elif pt > maxPt:
+      return deepFlavour_L_values[year-2016]
+   else:
+      return ( deepFlavour_H_values[year-2016] - ( deepFlavour_H_values[year-2016] - deepFlavour_L_values[year-2016] ) / ( maxPt - minPt ) * ( pt - minPt ) )
+
 def conept_TTH(lep):
     if (abs(lep.pdgId)!=11 and abs(lep.pdgId)!=13): return lep.pt
-    if (abs(lep.pdgId)==13 and lep.mediumId>0 and lep.mvaTOP > 0.90) or (abs(lep.pdgId) == 11 and lep.mvaTOP > 0.90): return lep.pt
+    if (abs(lep.pdgId)==13 and lep.mediumId>0 and lep.mvaTTH > 0.90) or (abs(lep.pdgId) == 11 and lep.mvaTTH > 0.90): return lep.pt
     else: return 0.90 * lep.pt * (1 + lep.jetRelIso)
+
+def conept_TTW(lep):
+    if (abs(lep.pdgId)!=11 and abs(lep.pdgId)!=13): return lep.pt
+    if (abs(lep.pdgId)==13 and lep.mvaTOP > 0.40) or (abs(lep.pdgId) == 11 and lep.mvaTOP > 0.40): return lep.pt
+    else: return 0.67 * lep.pt * (1 + lep.jetRelIso)
 
 def smoothBFlav(jetpt,ptmin,ptmax,year,scale_loose=1.0):
     wploose = (0.0614, 0.0521, 0.0494)
     wpmedium = (0.3093, 0.3033, 0.2770)
     x = min(max(0.0, jetpt - ptmin)/(ptmax-ptmin), 1.0)
     return x*wploose[year-2016]*scale_loose + (1-x)*wpmedium[year-2016]
+
 
 def clean_and_FO_selection_TTH(lep,year):
     bTagCut = 0.3093 if year==2016 else 0.3033 if year==2017 else 0.2770
@@ -86,7 +110,13 @@ def clean_and_FO_selection_TTH(lep,year):
              (abs(lep.pdgId)==13 and lep.jetBTagDeepFlav< smoothBFlav(0.9*lep.pt*(1+lep.jetRelIso), 20, 45, year) and lep.jetRelIso < 0.50) or \
              (abs(lep.pdgId)==11 and lep.mvaFall17V2noIso_WP80 and lep.jetRelIso < 0.70))
 
-tightLeptonSel = lambda lep,year : clean_and_FO_selection_TTH(lep,year) and (abs(lep.pdgId)!=13 or lep.mediumId>0) and lep.mvaTOP > (0.90 if abs(lep.pdgId)==13 else 0.90)
+def clean_and_FO_selection_TTW(lep,year):
+    return lep.conept>10 and (abs(lep.pdgId)!=11 or (ttH_idEmu_cuts_E3(lep) and lep.convVeto and lep.tightCharge>=1 and lep.lostHits <= 1)) \
+        and  (abs(lep.pdgId)!=13 or lep.mediumId) and (lep.mvaTOP>0.4 or (abs(lep.pdgId)==13 and lep.jetBTagDeepFlav< interp_deepJet(lep.pdgId,year,20,40,lep.pt) and lep.jetRelIso > 0.45) or \
+             (abs(lep.pdgId)==11 and lep.mvaFall17V2noIso_WPL and lep.jetRelIso > 0.50 and lep.jetBTagDeepFlav < interp_deepJet(lep.pdgId,year,25,50,lep.pt) ))
+
+print('hola')
+tightLeptonSel = lambda lep,year : clean_and_FO_selection_TTW(lep,year) and lep.mvaTOP > 0.40 
 
 foTauSel = lambda tau: tau.pt > 20 and abs(tau.eta)<2.3 and abs(tau.dxy) < 1000 and abs(tau.dz) < 0.2 and tau.idDecayModeNewDMs and (int(tau.idDeepTau2017v2p1VSjet)>>1 & 1) # VVLoose WP
 tightTauSel = lambda tau: (int(tau.idDeepTau2017v2p1VSjet)>>2 & 1) # VLoose WP
@@ -97,14 +127,14 @@ from CMGTools.TTHAnalysis.tools.nanoAOD.fastCombinedObjectRecleaner import fastC
 
 
 recleaner_step1 = lambda : CombinedObjectTaggerForCleaning("InternalRecl",
-                                                           looseLeptonSel = lambda lep: lep.miniPFRelIso_all < 0.4 and lep.sip3d < 8 and abs(lep.dxy) < 0.05 and abs(lep.dz) < 0.1 and (abs(lep.pdgId)!=11 or (abs(lep.eta)<2.5 and lep.lostHits<2) and (abs(lep.pdgId)!=13 or (abs(lep.eta)<2.4 and lep.looseId)) ),
-                                                           cleaningLeptonSel = clean_and_FO_selection_TTH,
-                                                           FOLeptonSel = clean_and_FO_selection_TTH,
+                                                           looseLeptonSel = lambda lep: lep.miniPFRelIso_all < 0.4 and lep.sip3d < 8 and abs(lep.dxy) < 0.05 and abs(lep.dz) < 0.1 and (abs(lep.pdgId)!=11 or (abs(lep.eta)<2.5 and lep.lostHits<=1) and (abs(lep.pdgId)!=13 or (abs(lep.eta)<2.4 and lep.mediumId)) ),
+                                                           cleaningLeptonSel = clean_and_FO_selection_TTW,
+                                                           FOLeptonSel = clean_and_FO_selection_TTW,
                                                            tightLeptonSel = tightLeptonSel,
                                                            FOTauSel = foTauSel,
                                                            tightTauSel = tightTauSel,
-                                                           selectJet = lambda jet: jet.jetId > 0, # pt and eta cuts are (hard)coded in the step2 
-                                                           coneptdef = lambda lep: conept_TTH(lep),
+                                                           selectJet = lambda jet: jet.jetId >= 2, # pt and eta cuts are (hard)coded in the step2 
+                                                           coneptdef = lambda lep: conept_TTW(lep),
 )
 recleaner_step2_mc_allvariations = lambda : fastCombinedObjectRecleaner(label="Recl", inlabel="_InternalRecl",
                                                                         cleanTausWithLooseLeptons=True,
