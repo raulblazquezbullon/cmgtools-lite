@@ -218,9 +218,9 @@ kinMVA_4l_input_met_LD  : MET_pt*0.6 + mhtJet25*0.4 : 40,0,400; XTitle="E_{T}^{m
 nLepFO:  nLepFO: [-0.5,0.5,1.5,2.5,3.5,4.5,5.5] ; XTitle="Number of fakeable leptons", XNDdiv=505
 nLepTight:   nLepTight : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5] ; XTitle="Number of tight leptons", XNDdiv=505
 
-lep1_pt: 	 LepGood1_pt					 : 40,0,200; XTitle="Leading lepton p_{T} (GeV)"
-lep1_conePt: 	 LepGood1_conePt				 : 40,0,120; XTitle="Leading lepton cone p_{T} (GeV)"
-lep1_eta: 	 LepGood1_eta					 : 15,-2.5,2.5; XTitle="Leading lepton #eta"
+lep1_pt: 	 LepGood1_pt					 : 10,10,200; XTitle="Leading lepton p_{T} (GeV)"
+lep1_conePt: 	 LepGood1_conePt				 : 19,10,200; XTitle="Leading lepton cone p_{T} (GeV)"
+lep1_eta: 	 abs(LepGood1_eta)					 :11,0,2.5; XTitle="Leading lepton #eta"
 lep1_phi: 	 LepGood1_phi					 : 20,-3.14,3.14; XTitle="Leading lepton #phi"
 lep1_pdgId:	 0.5*LepGood1_pdgId/abs(LepGood1_pdgId)*(abs(LepGood1_pdgId)-10) : [-2,-1,0,1,2]; XTitle="Leading lepton PDG ID (#mu^{-}/e^{-}/e^{+}/#mu^{+})", XNDdiv=505
 lep1_charge:	 LepGood1_charge				 : 40,0,120; XTitle="Leading lepton charge", XNDdiv=505, Legend='TL', MoreY=2.0
@@ -243,8 +243,8 @@ lep1_relIso04:	 LepGood1_relIso04				 : 40,0,0.5; XTitle="Leading lepton relIso0
 lep1_relIso03:	 LepGood1_relIso03				 : 40,0,0.5; XTitle="Leading lepton relIso03", Legend='TR', Logy
 
 lep2_pt: 	 LepGood2_pt					 : 40,0,200; XTitle="Sub-leading lepton p_{T} (GeV)"
-lep2_conePt: 	 LepGood2_conePt				 : [15,20,25,40,55,70,100]; XTitle="Sub-leading lepton cone p_{T} (GeV)"
-lep2_eta: 	 LepGood2_eta					 : 15,-2.5,2.5; XTitle="Sub-leading lepton #eta"
+lep2_conePt: 	 LepGood2_conePt				 : 13,10,150; XTitle="Sub-leading lepton cone p_{T} (GeV)"
+lep2_eta: 	 abs(LepGood2_eta)					 : 11,0,2.5; XTitle="Sub-leading lepton #eta"
 lep2_phi: 	 LepGood2_phi					 : 20,-3.14,3.14; XTitle="Sub-leading lepton #phi"
 lep2_pdgId:	 0.5*LepGood2_pdgId/abs(LepGood2_pdgId)*(abs(LepGood2_pdgId)-10) : [-2,-1,0,1,2]; XTitle="Sub-leading lepton PDG ID (#mu^{-}/e^{-}/e^{+}/#mu^{+})", XNDdiv=505
 lep2_charge:	 LepGood2_charge				 : [-1.5,-0.5,0.5,1.5]; XTitle="Sub-leading lepton charge", XNDdiv=505, Legend='TL', MoreY=2.0
