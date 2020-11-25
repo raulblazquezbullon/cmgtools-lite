@@ -183,6 +183,17 @@ void trainBDtW_1j1t(TString outputdir, TString outputbasedir = "/pool/phedex/use
   TTtree->Add(inputdir + "/2016/x_mvatrain/" + ttbarname);
   TTtree->Add(inputdir + "/2017/x_mvatrain/" + ttbarname);
   TTtree->Add(inputdir + "/2018/x_mvatrain/" + ttbarname);
+  
+  //========Drell-Yann training only=================================================================
+  TString DY_50 = "dy_50.root";
+  TString DY_10to50 = "dy_10to50.root";
+  TTtree->Add(inputdir + "/2016/x_mvatrain/" + DY_50);
+  TTtree->Add(inputdir + "/2017/x_mvatrain/" + DY_50);
+  TTtree->Add(inputdir + "/2018/x_mvatrain/" + DY_50);  
+  TTtree->Add(inputdir + "/2016/x_mvatrain/" + DY_10to50);
+  TTtree->Add(inputdir + "/2017/x_mvatrain/" + DY_10to50);
+  TTtree->Add(inputdir + "/2018/x_mvatrain/" + DY_10to50);
+  //========Drell-Yann training only=================================================================
 
   Double_t sigWeight = 1.0;
   Double_t bkgWeight = 1.0;
@@ -196,12 +207,12 @@ void trainBDtW_1j1t(TString outputdir, TString outputbasedir = "/pool/phedex/use
 
   // (pass_trigger * Flag_goodVertices * Flag_globalSuperTightHalo2016Filter * Flag_HBHENoiseFilter * Flag_HBHENoiseIsoFilter * Flag_EcalDeadCellTriggerPrimitiveFilter * Flag_BadPFMuonFilter) * ((channel == 1) && (nLepGood >= 2) && (LepGood_pt_corrAll[0] > 25) && (LepGood_pt_corrAll[1] > 20) && isSS == 0 && (minMllAFAS_Recl > 20) ) * ((nJetSel30_Recl == 1) && (nBJetSelMedium30_Recl == 1))
 
-//  TCut mycuts = "((njets == 1) && (nbjets == 1) && (channel == 1))";
-//  TCut mycutb = "((njets == 1) && (nbjets == 1) && (channel == 1))";
+  TCut mycuts = "((njets == 1) && (nbjets == 1) && (channel == 1))";
+  TCut mycutb = "((njets == 1) && (nbjets == 1) && (channel == 1))";
 
 //========Cortes sin el channel cut=============
-  TCut mycuts = "((njets == 1) && (nbjets == 1))";
-  TCut mycutb = "((njets == 1) && (nbjets == 1))";
+//  TCut mycuts = "((njets == 1) && (nbjets == 1))";
+//  TCut mycutb = "((njets == 1) && (nbjets == 1))";
 //========Cortes sin el channel cut=============
 
 //  loader->PrepareTrainingAndTestTree(mycuts,

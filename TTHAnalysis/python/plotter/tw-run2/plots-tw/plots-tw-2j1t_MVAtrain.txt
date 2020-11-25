@@ -14,3 +14,6 @@ lep12jet12met_dr   : Lep12Jet12MET_DR    : 20,0,5   ; IncludeUnderflow=False, XT
 tmvaBDT_2j1b        : tmvaBDT_2j1b          : 10,-1,1   ; IncludeUnderflow=False, XTitle="BDT discriminant (adim.)"
 tmvaBDT_2j1b_smallb : tmvaBDT_2j1b          : 1000,-1,1 ; IncludeUnderflow=False, XTitle="BDT discriminant (adim.)"
 tmvaBDT_2j1b_rebin  : getBDtWOther(tmvaBDT_2j1b) : [0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5] ; IncludeUnderflow=False, XTitle="BDT discriminant (adim.)"
+
+#For the Nbins study:
+tmvaBDT_2j1b_12bins  : getBDtWOther12bins(tmvaBDT_2j1b) : [0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5, 10.5, 11.5, 12.5] ; IncludeUnderflow=False, XTitle="BDT discriminant (adim.)"
