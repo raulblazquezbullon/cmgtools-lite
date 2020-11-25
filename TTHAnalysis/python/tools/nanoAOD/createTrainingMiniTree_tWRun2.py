@@ -37,6 +37,7 @@ class createTrainingMiniTree_tWRun2(Module):
 
                          #### NUEVAS
                          "train_lep1lep2jet1met_mt",
+                         "train_lep1lep2jet1met_pz",
                          "train_lep1lep2jet1_m",
                          "train_lep1lep2jet1_e",
                          "train_lep1jet1_pt",
@@ -147,6 +148,7 @@ class createTrainingMiniTree_tWRun2(Module):
 
         #### NUEVAS
         allret["train_lep1lep2jet1met_mt"         ] = event.Lep1Lep2Jet1MET_Mt          if event.Lep1Lep2Jet1MET_Mt          >= 0 else 0
+        allret["train_lep1lep2jet1met_pz"         ] = event.Lep1Lep2Jet1MET_Pz          if event.Lep1Lep2Jet1MET_Pz          >= 0 else 0
         allret["train_lep1lep2jet1_m"             ] = event.Lep1Lep2Jet1_M              if event.Lep1Lep2Jet1_M              >= 0 else 0
         allret["train_lep1lep2jet1_e"             ] = event.Lep1Lep2Jet1_E              if event.Lep1Lep2Jet1_E              >= 0 else 0
         allret["train_lep1jet1_pt"                ] = event.Lep1Jet1_Pt                 if event.Lep1Jet1_Pt                 >= 0 else 0

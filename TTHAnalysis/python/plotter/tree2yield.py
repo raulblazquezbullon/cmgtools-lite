@@ -220,8 +220,8 @@ class TreeToYield:
                 tty2._isVariation = (var,direction)
                 tty2._variations = []
                 if not tty2._isdata:
-                    if (var.name,direction) in self._varScaleFactor0: 
-                        tty2.setScaleFactor( self._varScaleFactor0[(var.name,direction)])
+                    if (var.name,direction) in self._varScaleFactor:
+                        tty2.setScaleFactor( self._varScaleFactor[(var.name,direction)])
                 if var.getFRToRemove() != None:
                     #print "Passa di qui"
                     tty2._FRSourceList = []
@@ -376,10 +376,15 @@ class TreeToYield:
         if self._maintty != None: print "WARNING: getSumW called on a non-main TTY"
         varNormList = []
         for var in [None] + self.getVariations():
+            #print "\nvar:", var
+            #if var:
+                #print "unctype:", var.unc_type
             if var == None: 
                 exprs = [(expr,0)]
-            else: 
+
+            else:
                 exprs = [('(%s)*(%s)'%(fr._altNorm if (fr and fr._altNorm) else '1',expr), idx) for idx,fr in enumerate(var.fakerate) ]
+
             for theExpr, idx in exprs:
                 if var: 
                     if var.unc_type == 'envelope':
@@ -579,10 +584,10 @@ class TreeToYield:
         self._stylePlot(ret,plotspec)
         ret._cname = self._cname
         return ret
-    def getWeightForCut(self,cut):
+    def getWeightForCut(self, cut):
         if self._weight:
-            if self._isdata: cut = "(%s)     *(%s)*(%s)" % (self._weightString,                    self._scaleFactor, self.adaptExpr(cut,cut=True))
-            else:            cut = "(%s)*(%s)*(%s)*(%s)" % (self._weightString,float(self._options.lumi), self._scaleFactor, self.adaptExpr(cut,cut=True))
+            if self._isdata: cut = "(%s)     *(%s)*(%s)" % (self._weightString,                            self._scaleFactor, self.adaptExpr(cut,cut=True))
+            else:            cut = "(%s)*(%s)*(%s)*(%s)" % (self._weightString, float(self._options.lumi), self._scaleFactor, self.adaptExpr(cut,cut=True))
         else:
             cut = self.adaptExpr(cut,cut=True)
         if self._weightStringAll != "1":
@@ -606,7 +611,9 @@ class TreeToYield:
         if self._options.doS2V:
             cut  = scalarToVector(cut)
             expr = scalarToVector(expr)
-        #print "DEBUG: ",self._name, self._cname, cut, expr
+
+        #print "DEBUG - name:", self._name, "#### cname:", self._cname, "#### cut:", cut, "#### expr:", expr
+
         (firstEntry, maxEntries) = self._rangeToProcess(fsplit)
         if ROOT.gROOT.FindObject("dummy") != None: ROOT.gROOT.FindObject("dummy").Delete()
         histo = makeHistFromBinsAndSpec("dummy",expr,bins,plotspec)

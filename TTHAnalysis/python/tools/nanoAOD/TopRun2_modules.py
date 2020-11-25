@@ -6,6 +6,12 @@ class ch(enum.IntEnum):
     ElMu   = 1
     Muon   = 2
     Elec   = 3
+    ElMuFromTaus = 4
+    MuonFromTaus = 5
+    ElecFromTaus = 6
+    ElMuMixedFromTaus = 7
+    MuonMixedFromTaus = 8
+    ElecMixedFromTaus = 9
 
 
 class tags(enum.IntEnum):
@@ -350,9 +356,9 @@ addYearTag_2018_muoneg     = [addYear_2018, addMuonEG    , addJetPtCorrAll]
 
 #### Add Rochester corrections
 from CMGTools.TTHAnalysis.tools.addRochester import addRochester
- #from CMGTools.TTHAnalysis.tools.addRochesterValid import addRochesterValid
+from CMGTools.TTHAnalysis.tools.addRochesterValid import addRochesterValid
 addRoch_mc = lambda : addRochester()
- #addRoch_mc_validacion = lambda : addRochesterValid()
+addRoch_mc_validacion = lambda : addRochesterValid()
 addRoch_data = lambda : addRochester(isMC = False)
 
 from CMGTools.TTHAnalysis.tools.nanoAOD.selectParticleAndPartonInfo import selectParticleAndPartonInfo
