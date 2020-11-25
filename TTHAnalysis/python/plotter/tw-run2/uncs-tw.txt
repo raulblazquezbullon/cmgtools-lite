@@ -184,13 +184,17 @@ nonworz_norm : nonworz : .* : normSymm : 1.5
 #### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #### Matrix element factorisation and renormalisation scales
 #### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#ttbar_scales : ttbar : .* : envelope ; FakeRates=['tw-run2/frs-scales/fr-muR_0p5_muF_0p5.txt'\,'tw-run2/frs-scales/fr-muR_1p0_muF_2p0.txt'\,'tw-run2/frs-scales/fr-muR_2p0_muF_1p0.txt'\,'tw-run2/frs-scales/fr-muR_0p5_muF_1p0.txt'\,'tw-run2/frs-scales/fr-muR_1p0_muF_0p5.txt'\,'tw-run2/frs-scales/fr-muR_2p0_muF_2p0.txt']
-#tw_scales    : tw    : .* : envelope ; FakeRates=['tw-run2/frs-scales/fr-muR_0p5_muF_0p5.txt'\,'tw-run2/frs-scales/fr-muR_1p0_muF_2p0.txt'\,'tw-run2/frs-scales/fr-muR_2p0_muF_1p0.txt'\,'tw-run2/frs-scales/fr-muR_0p5_muF_1p0.txt'\,'tw-run2/frs-scales/fr-muR_1p0_muF_0p5.txt'\,'tw-run2/frs-scales/fr-muR_2p0_muF_2p0.txt']
+ttbar_scales : ttbar : .* : envelope ; FakeRates=['tw-run2/frs-scales/fr-muR_0p5_muF_0p5.txt'\,'tw-run2/frs-scales/fr-muR_1p0_muF_2p0.txt'\,'tw-run2/frs-scales/fr-muR_2p0_muF_1p0.txt'\,'tw-run2/frs-scales/fr-muR_0p5_muF_1p0.txt'\,'tw-run2/frs-scales/fr-muR_1p0_muF_0p5.txt'\,'tw-run2/frs-scales/fr-muR_2p0_muF_2p0.txt']
+
+tw_scales    : tw    : .* : envelope ; FakeRates=['tw-run2/frs-scales/fr-muR_0p5_muF_0p5.txt'\,'tw-run2/frs-scales/fr-muR_1p0_muF_2p0.txt'\,'tw-run2/frs-scales/fr-muR_2p0_muF_1p0.txt'\,'tw-run2/frs-scales/fr-muR_0p5_muF_1p0.txt'\,'tw-run2/frs-scales/fr-muR_1p0_muF_0p5.txt'\,'tw-run2/frs-scales/fr-muR_2p0_muF_2p0.txt']
 ##
 ##
+#ttbarscales : ttbar : .* : templateAsymm ; FakeRates=['tw-run2/frs-scales/fr-muR_2p0_muF_1p0.txt'\,'tw-run2/frs-scales/fr-muR_2p0_muF_1p0.txt']
 #ttbar_scales_xuanin : ttbar : .* : envelope ; FakeRates=['tw-run2/frs-scales-comoxuan/fr-muR_0p5_muF_0p5.txt'\,'tw-run2/frs-scales-comoxuan/fr-muR_1p0_muF_2p0.txt'\,'tw-run2/frs-scales-comoxuan/fr-muR_2p0_muF_1p0.txt'\,'tw-run2/frs-scales-comoxuan/fr-muR_0p5_muF_1p0.txt'\,'tw-run2/frs-scales-comoxuan/fr-muR_1p0_muF_0p5.txt'\,'tw-run2/frs-scales-comoxuan/fr-muR_2p0_muF_2p0.txt']
+#ttbarscalesxuanin : ttbar : .* : templateAsymm ; FakeRates=['tw-run2/frs-scales-comoxuan/fr-muR_2p0_muF_1p0.txt'\,'tw-run2/frs-scales-comoxuan/fr-muR_2p0_muF_1p0.txt']
+#ttbarscalespruebina : ttbar : .* : templateAsymm ; FakeRates=['tw-run2/frs-scales-pruebina/fr-muR_2p0_muF_1p0.txt'\,'tw-run2/frs-scales-pruebina/fr-muR_2p0_muF_1p0.txt']
 #tw_scales_xuanin    : tw    : .* : envelope ; FakeRates=['tw-run2/frs-scales-comoxuan/fr-muR_0p5_muF_0p5.txt'\,'tw-run2/frs-scales-comoxuan/fr-muR_1p0_muF_2p0.txt'\,'tw-run2/frs-scales-comoxuan/fr-muR_2p0_muF_1p0.txt'\,'tw-run2/frs-scales-comoxuan/fr-muR_0p5_muF_1p0.txt'\,'tw-run2/frs-scales-comoxuan/fr-muR_1p0_muF_0p5.txt'\,'tw-run2/frs-scales-comoxuan/fr-muR_2p0_muF_2p0.txt']
-##
+#
 ##
 ##### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ##### ISR/FSR
