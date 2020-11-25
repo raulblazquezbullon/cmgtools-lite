@@ -752,7 +752,7 @@ class Unfolder(object):
             # Cannot. These must be hardcoded because they come from the postfit of the inclusive. Or I could build a configuration file, but that's the same concept.
             # At least hardcoded values here call for attention, an anonymous file loaded would be too unconspicuous (*un is the archaic form, so I like it more than *in)
             # ZZ => 7%, ttX= > 15%, tZq=> 35%, convs=>12%, VH 25, VBS 25, VVV 50
-            Print('Background %s has bins %d' % (iBkg.GetName(), iBkg.GetNbinsX()) )
+            print('Background %s has bins %d' % (iBkg.GetName(), iBkg.GetNbinsX()) )
             if 'convs' in iBkg.GetName():
                 dscale_bgr=0.12
             elif 'rares_ttX' in iBkg.GetName():
