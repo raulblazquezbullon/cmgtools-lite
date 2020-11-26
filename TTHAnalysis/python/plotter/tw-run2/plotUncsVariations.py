@@ -39,6 +39,22 @@ def plotVariationsFromOneProcess(tsk):
         if iU == "": continue
 
         c = r.TCanvas("c", "", 600, 600)
+
+        c.Divide(1, 2)
+        c.GetPad(1).SetPad(*tuple([float(i) for i in "0.00, 0.25, 1.00, 1.00".split(',')]))
+        c.GetPad(2).SetPad(*tuple([float(i) for i in "0.00, 0.00, 1.00, 0.25".split(',')]))
+        c.GetPad(1).SetTopMargin(0.08)
+        c.GetPad(1).SetRightMargin(0.03)
+        c.GetPad(1).SetLeftMargin(0.16)
+        c.GetPad(1).SetBottomMargin(0.025)
+
+        c.GetPad(2).SetBottomMargin(0.3)
+        c.GetPad(2).SetBottomMargin(0.35)
+        c.GetPad(2).SetBottomMargin(0.375)
+        c.GetPad(2).SetRightMargin(0.03)
+        c.GetPad(2).SetLeftMargin(0.16)
+
+        c.cd(1)
         nominal = subdict[""]
         varup   = subdict[iU]["Up"]
         vardn   = subdict[iU]["Down"]
@@ -57,6 +73,9 @@ def plotVariationsFromOneProcess(tsk):
         nominal.GetXaxis().SetTitle("BDT disc." if any([el in outpath for el in ["1j1t", "2j1t"]]) else "Subleading jet p_{T}")
         nominal.SetMaximum(-1111); varup.SetMaximum(-1111); vardn.SetMaximum(-1111);
         nominal.GetYaxis().SetRangeUser(0, max([nominal.GetMaximum(), varup.GetMaximum(), vardn.GetMaximum()]) * 1.1)
+        nominal.GetXaxis().SetLabelOffset(999)
+        nominal.GetXaxis().SetLabelSize(0)
+        nominal.GetXaxis().SetTitle(' ')
         leg.AddEntry(nominal, "Nominal", "f")
 
         varup.SetLineColor(r.kBlue)
@@ -73,6 +92,57 @@ def plotVariationsFromOneProcess(tsk):
         varup.Draw("histsame")
         vardn.Draw("histsame")
         leg.Draw("same")
+
+        c.cd(2)
+        ratioUp   = deepcopy(nominal.Clone("ratioUp"))
+        ratioDown = deepcopy(vardn.Clone("ratioDown"))
+        constant  = deepcopy(nominal.Clone("constant"))
+
+        for iB in range(1, ratioUp.GetNbinsX() + 1):
+            try:
+                ratioUp.SetBinContent(iB, varup.GetBinContent(iB) / nominal.GetBinContent(iB))
+            except ZeroDivisionError:
+                ratioUp.SetBinContent(iB, 1)
+            try:
+                ratioDown.SetBinContent(iB, ratioDown.GetBinContent(iB) / nominal.GetBinContent(iB))
+            except ZeroDivisionError:
+                ratioDown.SetBinContent(iB, 1)
+
+            constant.SetBinContent(iB, 1)
+
+        ratioUp.SetStats(0)
+        ratioUp.SetTitle(" ")
+        ratioUp.SetLineColor(r.kBlue)
+        ratioUp.SetLineWidth(2)
+        ratioUp.SetFillStyle(0)
+        ratioUp.GetXaxis().SetTitle(nominal.GetXaxis().GetTitle())
+        ratioUp.GetXaxis().SetTitleFont(43)
+        ratioUp.GetXaxis().SetTitleSize(22)
+        ratioUp.GetXaxis().SetTitleOffset(4)
+        ratioUp.GetXaxis().SetLabelFont(43)
+        ratioUp.GetXaxis().SetLabelSize(22)
+        ratioUp.GetXaxis().SetLabelOffset(0.007)
+        ratioUp.GetXaxis().SetNdivisions(510, True)
+        #ratioUp.GetXaxis().SetNdivisions(505, False)
+        ratioUp.GetXaxis().SetRangeUser(nominal.GetXaxis().GetBinLowEdge(1), nominal.GetXaxis().GetBinUpEdge(nominal.GetNbinsX()))
+
+        ratioUp.GetYaxis().SetRangeUser(0.8, 1.2)
+        ratioUp.GetYaxis().SetTitle('Vars./Nom.')
+        ratioUp.GetYaxis().SetTitleFont(43)
+        ratioUp.GetYaxis().SetTitleSize(16)
+        ratioUp.GetYaxis().SetTitleOffset(2.2)
+        ratioUp.GetYaxis().CenterTitle(True)
+        ratioUp.GetYaxis().SetLabelFont(43)
+        ratioUp.GetYaxis().SetLabelSize(16)
+        ratioUp.GetYaxis().SetLabelOffset(0.007)
+        ratioUp.GetYaxis().SetNdivisions(505, True)
+
+        constant.SetLineWidth(1)
+
+        ratioUp.Draw("histsame")
+        ratioDown.Draw("histsame")
+        constant.Draw("histsame")
+
         c.SaveAs(outpath + "/uncVar_" + theproc + "_" + iU + ".png")
         c.SaveAs(outpath + "/uncVar_" + theproc + "_" + iU + ".pdf")
         c.Close(); del c; del leg
