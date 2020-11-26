@@ -356,9 +356,9 @@ addYearTag_2018_muoneg     = [addYear_2018, addMuonEG    , addJetPtCorrAll]
 
 #### Add Rochester corrections
 from CMGTools.TTHAnalysis.tools.addRochester import addRochester
-from CMGTools.TTHAnalysis.tools.addRochesterValid import addRochesterValid
+ #from CMGTools.TTHAnalysis.tools.addRochesterValid import addRochesterValid
 addRoch_mc = lambda : addRochester()
-addRoch_mc_validacion = lambda : addRochesterValid()
+ #addRoch_mc_validacion = lambda : addRochesterValid()
 addRoch_data = lambda : addRochester(isMC = False)
 
 from CMGTools.TTHAnalysis.tools.nanoAOD.selectParticleAndPartonInfo import selectParticleAndPartonInfo
@@ -370,7 +370,7 @@ theDressAndPartInfo = lambda : selectParticleAndPartonInfo(dresslepSel_         
 
 #lepMerge_roch_mc   = [lepMerge, lepMerge_muenUp, lepMerge_muenDn, lepMerge_elenUp, lepMerge_elenDn, addRoch_mc, theDressAndPartInfo] ### FIXME: este es el "bueno"
 lepMerge_roch_mc   = [lepMerge, lepMerge_muenUp, lepMerge_muenDn, addRoch_mc, theDressAndPartInfo]
- #lepMerge_roch_mc_validacion   = [lepMerge_validacion, addRoch_mc_validacion, theDressAndPartInfo]
+#lepMerge_roch_mc_validacion   = [lepMerge_validacion, addRoch_mc_validacion, theDressAndPartInfo]
 lepMerge_roch_data = [lepMerge, addRoch_data]
 
 
