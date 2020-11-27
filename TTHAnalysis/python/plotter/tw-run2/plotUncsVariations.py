@@ -3,6 +3,10 @@ from multiprocessing import Pool
 from copy import deepcopy
 import warnings as wr
 import ROOT as r
+
+#sys.path.append('{cmsswpath}/src/CMGTools/TTHAnalysis/python/plotter/tw-run2/differential/'.format(cmsswpath = os.environ['CMSSW_BASE']))
+#import varList as vl
+
 r.PyConfig.IgnoreCommandLineOptions = True
 r.gROOT.SetBatch(True)
 
@@ -16,19 +20,38 @@ r.gROOT.SetBatch(True)
 #colour_syst    = ["ColourQCDbasedCRTuneerdON", "ColourGluonMoveCRTuneerdON", "ColourPowhegerdON", "ColourGluonMoveCRTune"]
 #colour_syst    = []
 
+vetolist       = ["UnfoldingInfo", "detector", "nonfiducial", "particle"]
+foldervetolist = ["responseplots", "particleplots", "detectorplots"]
+
+
+def getOutSuffix(s):
+    if "cuts" in s:
+        return ""
+
+    ret = "_" + s.replace(".root", "")
+
+    if   "forExtr" in ret:
+        ret = "_detector"
+    elif "unfOutput" in ret:
+        ret = "_particle"
+
+    return ret
+
+
 def getFiles(path):
     theinfo = next(os.walk(path))
     #print(theinfo)
     retlist = []
     if len(theinfo[1]) != 0:
         for iF in theinfo[2]:
-            if ".root" in iF:
+            if ".root" in iF and not any([el in iF for el in vetolist]):
                 retlist.append( (iF, path) )
         for iD in theinfo[1]:
-            retlist.extend(getFiles(path + "/" + iD))
+            if not any([el in iD for el in foldervetolist]):
+                retlist.extend(getFiles(path + "/" + iD))
     else:
         for iF in theinfo[2]:
-            if ".root" in iF:
+            if ".root" in iF and not any([el in iF for el in vetolist]):
                 retlist.append( (iF, path) )
     return retlist
 
@@ -154,22 +177,34 @@ def plotVariations(tup, outname, ncores = -1):
     histodict = {}
     rF = r.TFile(tup[1] + "/" + tup[0], "READ")
 
-    if not os.path.isdir(tup[1] + "/" + outname):
-        os.system("mkdir -p " + tup[1] + "/" + outname)
+    outfolder = tup[1] + "/" + outname + getOutSuffix(tup[0])
+    if not os.path.isdir(outfolder):
+        os.system("mkdir -p " + outfolder)
 
     print("\n> Reading file " + tup[1] + "/" + tup[0] + " ...")
     nplots = 0
+    thisisnotacard = False
+    tmpprefix = "x_"
     for key in rF.GetListOfKeys():
-        tmpnam = key.GetName()
-        if "data" in tmpnam: continue
+        tmpnam     = key.GetName()
+        if not "x_" in tmpnam and not thisisnotacard:
+            print "    - This is not a card!"
+            thisisnotacard = True
+            tmpprefix = tup[1].split("/")[-1] if tup[1][-1] != "/" else tup[1].split("/")[-2]
+            #print tmpprefix
 
-        if "Up" not in tmpnam and "Down" not in tmpnam: # It is the nominal value of a process
-            histodict[tmpnam.replace("x_", "")] = {}
-            histodict[tmpnam.replace("x_", "")][""] = deepcopy(rF.Get(tmpnam).Clone(tmpnam.replace("x_", "") + "_"))
+        cleanednam = "signal" * (thisisnotacard) + tmpnam.replace(tmpprefix, "")
+        #print cleanednam
+
+        if any([el in tmpnam for el in ["data", "CovMat", "nom0", "nom1"]]): continue
+
+        if all([el not in tmpnam for el in ["Up", "Down"]]): # It is the nominal value of a process
+            histodict[cleanednam] = {}
+            histodict[cleanednam][""] = deepcopy(rF.Get(tmpnam).Clone(cleanednam + "_"))
         else:
-            tmpproc = tmpnam.replace("x_", "").split("_")[0]
-            tmpunc  = ("_".join(tmpnam.replace("x_", "").split("_")[1:])).replace("Up", "").replace("Down", "")
-            tmpvar  = "Up" if "Up" in tmpnam.replace("x_", "") else "Down" if "Down" in tmpnam.replace("x_", "") else "OTHER"
+            tmpproc = cleanednam.split("_")[0]
+            tmpunc  = ("_".join(cleanednam.split("_")[1:])).replace("Up", "").replace("Down", "")
+            tmpvar  = "Up" if "Up" in cleanednam else "Down" if "Down" in cleanednam else "OTHER"
             #print(tmpnam, tmpproc, tmpunc, tmpvar)
             if tmpproc not in histodict:
                 histodict[tmpproc] = {}
@@ -185,7 +220,7 @@ def plotVariations(tup, outname, ncores = -1):
     print("    - Plotting " + str(nplots) + " histograms...")
     tasks = []
     for iP in histodict:
-        tasks.append( (iP, histodict[iP], tup[1] + "/" + outname) )
+        tasks.append( (iP, histodict[iP], outfolder) )
     if ncores < 2:
         for tsk in tasks:
             plotVariationsFromOneProcess(tsk)
