@@ -53,38 +53,43 @@ DatasetsAndTriggers = []
 if analysis == "main":
     mcSamples = byCompName(mcSamples_, ["%s(|_PS)$"%dset for dset in [
         #single boson
-        #"WJetsToLNu_LO_ext","WJetsToLNu_LO", 
-      #  "DYJetsToLL_M10to50_LO", "DYJetsToLL_M10to50","DYJetsToLL_M50",
+        "WJetsToLNu_LO_ext","WJetsToLNu_LO", 
+        "DYJetsToLL_M10to50_LO", "DYJetsToLL_M10to50","DYJetsToLL_M50",
         # ttbar + single top + tW
         #'TT_pow','TTHad_pow',
-        #'TTSemi_pow',
-      #  'TTLep_pow',
+        'TTSemi_pow',
+        'TTLep_pow',
         #"TTJets_SingleLeptonFromT", "TTJets_SingleLeptonFromTbar", "TTJets_DiLepton",
-     #   "T_sch_lep", "T_tch", "TBar_tch", "T_tWch_noFullyHad", "TBar_tWch_noFullyHad", "T_tch_pow", "TBar_tch_pow" #pow for 2017
+        "T_sch_lep", "T_tch", "TBar_tch", "T_tWch_noFullyHad", "TBar_tWch_noFullyHad", "T_tch_pow", "TBar_tch_pow" #pow for 2017
         # conversions
-       "TTGJets","TTGJets_ext",# "TGJets_lep",# "WGToLNuG_01J",',#"WGToLNuG", "ZGTo2LG",
+       "TTGJets","TTGJets_ext", "TGJets_lep",# "WGToLNuG_01J",',#"WGToLNuG", "ZGTo2LG",
         # ttV
-      #  "TTWToLNu_fxfx", "TTZToLLNuNu", "TTZToLLNuNu_m1to10",
-      #  'TTWToLNu', 
+        "TTWToLNu_fxfx", "TTZToLLNuNu", "TTZToLLNuNu_m1to10",
+        'TTWToLNu', "TTWToLNu_EWK",
         # ttH + tHq/tHW
-      #  "TTHnobb_pow",
-      #  "THQ", "THW", #"TTH_ctcvcp",'TTH_pow',
+        "TTHnobb_pow",
+        "THQ", "THW", #"TTH_ctcvcp",'TTH_pow',
         # top + V rare processes
-      #  "TZQToLL",
-      #  "tWll",
-       # "TTWW","TTWW_LO",
-       # 'TTTT_P8M2T4',#'TTTT','tZq_ll_1','tZq_ll_2',
+        "TZQToLL",
+        "tWll",
+      # "TTWW","TTWW_LO",
+        'TTTT_P8M2T4','TTTT',#'tZq_ll_1','tZq_ll_2',
         # diboson + DPS + WWss
-     #   "WWTo2L2Nu",# "WZTo3LNu_pow", 
-        #"WZTo3LNu_fxfx", 
-     #   "ZZTo4L", "WW_DPS", 
-     #    "WWTo2L2Nu_DPS", #"WpWpJJ",
+        "WWTo2L2Nu",# "WZTo3LNu_pow", 
+        "WZTo3LNu_fxfx", 
+        "ZZTo4L", "WW_DPS", 
+        "WpWpJJ",#
+        "WWTo2L2Nu_DPS",
         # triboson
-        #"WWW","WWZ","WZZ",
-      #   "WWW_ll",  "WZG",  "ZZZ",
+        "WWW","WWZ","WZZ", "ZZZ",
+        "WZG",# "WWW_ll",  
+        
         # other Higgs processes
-      #  "GGHZZ4L", "VHToNonbb", "VHToNonbb_ll", "ZHTobb_ll", "ZHToTauTau", "TTWH", "TTZH",
+        "qqHZZ4L", "VHToNonbb", "GGHZZ4L", #"VHToNonbb_ll", "ZHTobb_ll", "ZHToTauTau", "TTWH", "TTZH",
        
+
+
+
     ]])
     DatasetsAndTriggers.append( ("DoubleMuon", triggerGroups_dict["Trigger_2m"][year] + triggerGroups_dict["Trigger_3m"][year]) )
     DatasetsAndTriggers.append( ("EGamma",     triggerGroups_dict["Trigger_2e"][year] + triggerGroups_dict["Trigger_3e"][year] + triggerGroups_dict["Trigger_1e"][year]) if year == 2018 else
@@ -100,7 +105,7 @@ elif analysis == "frqcd":
        # "QCD_Pt(20|30|50|80|120|170)to.*_bcToE.*" ),  
         #"TT(Lep|Semi)_pow",
         #"TTSemi_pow",   
-        #"WJetsToLNu_LO", "WJetsToLNu_LO_ext", "DYJetsToLL_M50_LO", "DYJetsToLL_M10to50_LO", 
+        #"WJetsToLNu_LO", "WJetsToLNu_LO_ext", #"DYJetsToLL_M50_LO", "DYJetsToLL_M10to50_LO", 
     ])
     egfrpd = {2016:"DoubleEG", 2017:"SingleElectron", 2018:"EGamma"}[year]
     DatasetsAndTriggers.append( ("DoubleMuon", triggers["FR_1mu_noiso"] + triggers["FR_1mu_iso"]) )
