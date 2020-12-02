@@ -20,6 +20,7 @@ class particleAndPartonVars_tWRun2(Module):
                          #("channel", "B"),
                          ("Dresschannel", "I"),
                          ("DressEXTchannel", "I"),
+                         ("Origchannel", "I"),
                          "DressLep1Lep2_Pt",
                          "DressLep1Lep2_DPhi",
                          "DressMll",
@@ -91,6 +92,7 @@ class particleAndPartonVars_tWRun2(Module):
 
         allret["Dresschannel"]            = ch.NoChan
         allret["DressEXTchannel"]         = ch.NoChan
+        allret["Origchannel"]             = ch.NoChan
         allret["DressisSS"]               = -99
         allret["DressminMllAFAS"]         = -99
         allret["DressLep1Lep2_Pt"]        = -99
@@ -118,6 +120,35 @@ class particleAndPartonVars_tWRun2(Module):
         allret["DressLep1Jet2_M"]         = -99
         allret["DressLep2Jet2_M"]         = -99
         allret["Dressminimax"]            = -99
+
+        if   event.nGenDressedLepton == 0:
+            allret["Origchannel"] = 0
+
+        elif event.nGenDressedLepton == 1:
+            if (abs(all_leps[0].pdgId) == 13 and not all_leps[0].hasTauAnc):
+                allret["Origchannel"] = 1
+            elif (abs(all_leps[0].pdgId) == 11 and not all_leps[0].hasTauAnc):
+                allret["Origchannel"] = 2
+            elif ((abs(all_leps[0].pdgId == 11) or abs(all_leps[0].pdgId == 13)) and all_leps[0].hasTauAnc):
+                allret["Origchannel"] = 3
+
+        elif event.nGenDressedLepton == 2:
+            if ((abs(all_leps[0].pdgId) == 13 and abs(all_leps[1].pdgId) == 13) and (not all_leps[0].hasTauAnc and not all_leps[1].hasTauAnc)):
+                allret["Origchannel"] = 4
+            elif ((abs(all_leps[0].pdgId) == 11 and abs(all_leps[1].pdgId) == 11) and (not all_leps[0].hasTauAnc and not all_leps[1].hasTauAnc)):
+                allret["Origchannel"] = 5
+            elif (((abs(all_leps[0].pdgId) == 13 and abs(all_leps[1].pdgId) == 11) or (abs(all_leps[0].pdgId) == 11 and abs(all_leps[1].pdgId) == 13)) and
+                  (not all_leps[0].hasTauAnc and not all_leps[1].hasTauAnc)):
+                allret["Origchannel"] = 6
+            elif (((abs(all_leps[0].pdgId) == 13 and not all_leps[0].hasTauAnc) and ((abs(all_leps[1].pdgId) == 11 or abs(all_leps[1].pdgId == 13) and all_leps[1].hasTauAnc))) or ((abs(all_leps[1].pdgId) == 13 and not all_leps[1].hasTauAnc) and ((abs(all_leps[0].pdgId) == 11 or abs(all_leps[0].pdgId == 13)) and all_leps[0].hasTauAnc))):
+                allret["Origchannel"] = 7
+            elif (((abs(all_leps[0].pdgId) == 11 and not all_leps[0].hasTauAnc) and ((abs(all_leps[1].pdgId) == 11 or abs(all_leps[1].pdgId == 13) and all_leps[1].hasTauAnc))) or ((abs(all_leps[1].pdgId) == 11 and not all_leps[1].hasTauAnc) and ((abs(all_leps[0].pdgId) == 11 or abs(all_leps[0].pdgId) == 13) and all_leps[0].hasTauAnc))):
+                allret["Origchannel"] = 8
+            elif (((abs(all_leps[0].pdgId) == 11 and abs(all_leps[1].pdgId) == 13) or (abs(all_leps[0].pdgId) == 11 and abs(all_leps[1].pdgId) == 11) or (abs(all_leps[0].pdgId) == 13 and abs(all_leps[1].pdgId) == 13)) and (all_leps[0].hasTauAnc and all_leps[1].hasTauAnc)):
+                allret["Origchannel"] = 9
+
+        elif event.nGenDressedLepton >= 3:
+            allret["Origchannel"] = 10
 
 
         if event.nDressSelLep >= 2:
