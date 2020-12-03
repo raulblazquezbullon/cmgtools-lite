@@ -20,7 +20,7 @@ r.gROOT.SetBatch(True)
 #colour_syst    = ["ColourQCDbasedCRTuneerdON", "ColourGluonMoveCRTuneerdON", "ColourPowhegerdON", "ColourGluonMoveCRTune"]
 #colour_syst    = []
 
-vetolist       = ["UnfoldingInfo", "detector", "nonfiducial", "particle"]
+vetolist       = ["UnfoldingInfo", "detector", "nonfiducial", "particle.root"]
 foldervetolist = ["responseplots", "particleplots", "detectorplots"]
 
 
