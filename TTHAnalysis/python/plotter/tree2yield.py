@@ -544,7 +544,7 @@ class TreeToYield:
                     var.postProcess(nominal, [variations['up'], variations['down']])
                 else: 
                     var.postProcess(nominal, [v for k,v in variations.iteritems()])
-                for k,v in variations.iteritems(): 
+                for k,v in variations.iteritems():
                     ret.addVariation(var.name, k, v)
 
             if closeTreeAfter and _wasclosed: self._close()
