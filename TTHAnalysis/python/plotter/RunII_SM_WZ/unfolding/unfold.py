@@ -1530,7 +1530,7 @@ class Unfolder(object):
             leg_money.AddEntry(hus, 'Unfolded Pseudo data (stat.unc.)', 'pel')
         else:
             leg_money.AddEntry(hus, 'Unfolded data (stat.unc.)', 'pel')
-        leg_money.AddEntry(dt, 'POWHEG prediction: #chi^{2}/NDOF=%0.3f'% dt.Chi2Test(hus, 'CHI2/NDF WW'), 'la')
+        leg_money.AddEntry(dt, 'POWHEG, NNPDF3.0NLO: #chi^{2}/NDOF=%0.3f'% dt.Chi2Test(hus, 'CHI2/NDF WW'), 'la')
         leg_money.AddEntry(dt_alt, 'aMC@NLO, NNPDF3.0NLO: #chi^{2}/NDOF=%0.3f'% dt_alt.Chi2Test(hus, 'CHI2/NDF WW'), 'la')
         ###leg_money.AddEntry(dt_inc, 'PYTHIA #chi^{2}/NDOF=%0.3f'% dt_inc.Chi2Test(hus, 'CHI2/NDF WW'), 'la')
         #leg_money.AddEntry(hus, 'Stat. unc.', 'f')
