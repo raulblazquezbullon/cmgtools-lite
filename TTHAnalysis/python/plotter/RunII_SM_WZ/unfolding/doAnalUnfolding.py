@@ -57,24 +57,22 @@ class Steer:
                      }
 
         self.inputPairs={
-            #'sump4(0, LepZ1_pt,LepZ1_eta,LepZ1_phi,LepZ1_mass,LepZ2_pt,LepZ2_eta,LepZ2_phi,LepZ2_mass)' : ['[0,5,10,15,20,25,30,40,50,60,70,80,90,100,110,120,130,140,160,180,200,250,300]','Reco p\_\{T\}(Z) [GeV]','Zpt'],
-            #'Jet_pt[iJSel_Mini[0]]' : ['[25,30,35,40,50,60,70,80,90,100,110,120,130,140,160,180,200,250,300]','Reco p\_\{T\}(leading jet) [GeV]','LeadJetPt'],
-            #'m3Lmet' :  ['[100,140,160,180,200,250,300,400,600,1000,3000]','Reco M\_\{WZ\} [GeV]','MWZ'],
-            #'LepW_pt' : ['[25,30,35,40,50,60,70,80,90,100,110,120,130,140,160,180,200,250,300]','Reco p\_\{T\}(W) [GeV]','Wpt'],
-            #'nJet25_Mini'   : ['[0,1,2,3,4,5]', 'Reco N\_\{jets\}', 'Njets'], 
-            #'cos_ThetaWDn_HE'   : ['[-1,-0.9,-0.8,-0.7,-0.6,-0.5,-0.4,-0.3,-0.2,-0.1,0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0]', 'cos(#theta_{W}^{Dn})', 'Wpol'],
+            'sump4(0, LepZ1_pt,LepZ1_eta,LepZ1_phi,LepZ1_mass,LepZ2_pt,LepZ2_eta,LepZ2_phi,LepZ2_mass)' : ['[0,5,10,15,20,25,30,40,50,60,70,80,90,100,110,120,130,140,160,180,200,250,300]','Reco p\_\{T\}(Z) [GeV]','Zpt'],
+            'Jet_pt[iJSel_Mini[0]]' : ['[25,30,35,40,50,60,70,80,90,100,110,120,130,140,160,180,200,250,300]','Reco p\_\{T\}(leading jet) [GeV]','LeadJetPt'],
+            'm3Lmet' :  ['[100,140,160,180,200,250,300,400,600,1000,3000]','Reco M\_\{WZ\} [GeV]','MWZ'],
+            'LepW_pt' : ['[25,30,35,40,50,60,70,80,90,100,110,120,130,140,160,180,200,250,300]','Reco p\_\{T\}(W) [GeV]','Wpt'],
+            'nJet25_Mini'   : ['[0,1,2,3,4,5]', 'Reco N\_\{jets\}', 'Njets'], 
             'cos_ThetaWDn_HE'   : ['[-1,-0.75,-0.5,-0.25,0.0,0.25,0.5,0.75,1.0]', 'cos(#theta_{W}^{Dn})', 'Wpol'],
-            #'cos_ThetaZDn_HE'   : ['[-1,-0.9,-0.8,-0.7,-0.6,-0.5,-0.4,-0.3,-0.2,-0.1,0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0]', 'cos(#theta_{Z}^{Dn})', 'Zpol'],
+            'cos_ThetaZDn_HE'   : ['[-1,-0.9,-0.8,-0.7,-0.6,-0.5,-0.4,-0.3,-0.2,-0.1,0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0]', 'cos(#theta_{Z}^{Dn})', 'Zpol'],
         }
         self.responsePairs={
-            #'sump4(0, genLepZ1_pt,genLepZ1_eta,genLepZ1_phi,genLepZ1_mass,genLepZ2_pt,genLepZ2_eta,genLepZ2_phi,genLepZ2_mass):sump4(0,LepZ1_pt,LepZ1_eta,LepZ1_phi,LepZ1_mass,LepZ2_pt,LepZ2_eta,LepZ2_phi,LepZ2_mass)' : ['[0,5,10,15,20,25,30,40,50,60,70,80,90,100,110,120,130,140,160,180,200,250,300]*[0,10,20,30,50,70,90,110,130,160,200,300]','Reco p\_\{T\}(Z) [GeV]','Gen p\_\{T\}(Z) [GeV]','Zpt'],
-            #'GenJet_pt[Jet_genJetIdx[iJSel_Mini[0]]]:Jet_pt[iJSel_Mini[0]]' : ['[25,30,35,40,50,60,70,80,90,100,110,120,130,140,160,180,200,250,300]*[25,35,50,70,90,110,130,160,200,300]','Reco p\_\{T\}(leading jet) [GeV]','Gen p\_\{T\}(leading jet) [GeV]','LeadJetPt'],
-            #'m3Lmet_gen:m3Lmet' : ['[100,140,160,180,200,250,300,400,600,1000,3000]*[100,160,200,300,600,3000]','Reco M\_\{WZ\} [GeV]','Gen M\_\{WZ\} [GeV]','MWZ'],
-            #'genLepW_pt:LepW_pt' : ['[25,30,35,40,50,60,70,80,90,100,110,120,130,140,160,180,200,250,300]*[25,35,50,70,90,110,130,160,200,300]','Reco p\_\{T\}(W) [GeV]','Gen p\_\{T\}(W) [GeV]','Wpt'],
-            #'Sum\\$(GenJet_pt>25&&abs(GenJet_eta)<2.5&&deltaR(GenJet_eta,GenJet_phi,genLepZ1_eta,genLepZ1_phi)>0.5&&deltaR(GenJet_eta,GenJet_phi,genLepZ2_eta,genLepZ2_phi)>0.5&&deltaR(GenJet_eta,GenJet_phi,genLepW_eta,genLepW_phi)>0.5):nJet25_Mini'   : ['[0,1,2,3,4,5]*[0,1,2,3,4,5]', 'Reco N\_\{jets\}', 'Gen N\_\{jets\}', 'Njets'], # Not sure that genLepW is what we want
-            #'cos_genThetaWDn_HE:cos_ThetaWDn_HE' : ['[-1,-0.9,-0.8,-0.7,-0.6,-0.5,-0.4,-0.3,-0.2,-0.1,0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0]*[-1,-0.8,-0.6,-0.4,-0.2,0.0,0.2,0.4,0.6,0.8,1.0]','Reco cos(#theta_{W}^{Dn})','Gen cos(#theta_{W}^{Dn})', 'Wpol' ],
+            'sump4(0, genLepZ1_pt,genLepZ1_eta,genLepZ1_phi,genLepZ1_mass,genLepZ2_pt,genLepZ2_eta,genLepZ2_phi,genLepZ2_mass):sump4(0,LepZ1_pt,LepZ1_eta,LepZ1_phi,LepZ1_mass,LepZ2_pt,LepZ2_eta,LepZ2_phi,LepZ2_mass)' : ['[0,5,10,15,20,25,30,40,50,60,70,80,90,100,110,120,130,140,160,180,200,250,300]*[0,10,20,30,50,70,90,110,130,160,200,300]','Reco p\_\{T\}(Z) [GeV]','Gen p\_\{T\}(Z) [GeV]','Zpt'],
+            'GenJet_pt[Jet_genJetIdx[iJSel_Mini[0]]]:Jet_pt[iJSel_Mini[0]]' : ['[25,30,35,40,50,60,70,80,90,100,110,120,130,140,160,180,200,250,300]*[25,35,50,70,90,110,130,160,200,300]','Reco p\_\{T\}(leading jet) [GeV]','Gen p\_\{T\}(leading jet) [GeV]','LeadJetPt'],
+            'm3Lmet_gen:m3Lmet' : ['[100,140,160,180,200,250,300,400,600,1000,3000]*[100,160,200,300,600,3000]','Reco M\_\{WZ\} [GeV]','Gen M\_\{WZ\} [GeV]','MWZ'],
+            'genLepW_pt:LepW_pt' : ['[25,30,35,40,50,60,70,80,90,100,110,120,130,140,160,180,200,250,300]*[25,35,50,70,90,110,130,160,200,300]','Reco p\_\{T\}(W) [GeV]','Gen p\_\{T\}(W) [GeV]','Wpt'],
+            'Sum\\$(GenJet_pt>25&&abs(GenJet_eta)<2.5&&deltaR(GenJet_eta,GenJet_phi,genLepZ1_eta,genLepZ1_phi)>0.5&&deltaR(GenJet_eta,GenJet_phi,genLepZ2_eta,genLepZ2_phi)>0.5&&deltaR(GenJet_eta,GenJet_phi,genLepW_eta,genLepW_phi)>0.5):nJet25_Mini'   : ['[0,1,2,3,4,5]*[0,1,2,3,4,5]', 'Reco N\_\{jets\}', 'Gen N\_\{jets\}', 'Njets'], # Not sure that genLepW is what we want
             'cos_genThetaWDn_HE:cos_ThetaWDn_HE' : ['[-1,-0.75,-0.5,-0.25,0.0,0.25,0.5,0.75,1.0]*[-1,-0.5,0.0,0.5,1.0]','Reco cos(#theta_{W}^{Dn})','Gen cos(#theta_{W}^{Dn})', 'Wpol' ],
-            #'cos_genThetaZDn_HE:cos_ThetaZDn_HE' : ['[-1,-0.9,-0.8,-0.7,-0.6,-0.5,-0.4,-0.3,-0.2,-0.1,0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0]*[-1,-0.8,-0.6,-0.4,-0.2,0.0,0.2,0.4,0.6,0.8,1.0]','Reco cos(#theta_{Z}^{Dn})','Gen cos(#theta_{Z}^{Dn})', 'Zpol' ],
+            'cos_genThetaZDn_HE:cos_ThetaZDn_HE' : ['[-1,-0.9,-0.8,-0.7,-0.6,-0.5,-0.4,-0.3,-0.2,-0.1,0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0]*[-1,-0.8,-0.6,-0.4,-0.2,0.0,0.2,0.4,0.6,0.8,1.0]','Reco cos(#theta_{Z}^{Dn})','Gen cos(#theta_{Z}^{Dn})', 'Zpol' ],
             # HE helicity frame, CS collins-soper
             # Dn / Up --> CS lo mismo (se cancelan cosas y se resuelve analiticamente, para HE no (a nivel reco recosntruyes 4mom W, y te falta pz neutrino (dos soluciones)
         }
