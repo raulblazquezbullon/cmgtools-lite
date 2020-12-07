@@ -139,14 +139,14 @@ void trainBDtW_2j1t(TString outputdir, TString outputbasedir = "/pool/phedex/use
   TTtree->Add(inputdir + "/2018/x_mvatrain/" + ttbarname);
   
   //========Drell-Yann training only=================================================================
-  TString DY_50 = "dy_50.root";
-  TString DY_10to50 = "dy_10to50.root";
-  TTtree->Add(inputdir + "/2016/x_mvatrain/" + DY_50);
-  TTtree->Add(inputdir + "/2017/x_mvatrain/" + DY_50);
-  TTtree->Add(inputdir + "/2018/x_mvatrain/" + DY_50);  
-  TTtree->Add(inputdir + "/2016/x_mvatrain/" + DY_10to50);
-  TTtree->Add(inputdir + "/2017/x_mvatrain/" + DY_10to50);
-  TTtree->Add(inputdir + "/2018/x_mvatrain/" + DY_10to50);
+//  TString DY_50 = "dy_50.root";
+//  TString DY_10to50 = "dy_10to50.root";
+//  TTtree->Add(inputdir + "/2016/x_mvatrain/" + DY_50);
+//  TTtree->Add(inputdir + "/2017/x_mvatrain/" + DY_50);
+//  TTtree->Add(inputdir + "/2018/x_mvatrain/" + DY_50);  
+//  TTtree->Add(inputdir + "/2016/x_mvatrain/" + DY_10to50);
+//  TTtree->Add(inputdir + "/2017/x_mvatrain/" + DY_10to50);
+//  TTtree->Add(inputdir + "/2018/x_mvatrain/" + DY_10to50);
   //========Drell-Yann training only=================================================================
   
   Double_t sigWeight = 1.0;
@@ -160,6 +160,10 @@ void trainBDtW_2j1t(TString outputdir, TString outputbasedir = "/pool/phedex/use
   TCut mycuts = "((njets == 2) && (nbjets == 1) && (channel == 1))";
   TCut mycutb = "((njets == 2) && (nbjets == 1) && (channel == 1))";
 
+//========Cortes sin el channel cut=============
+//  TCut mycuts = "((njets == 2) && (nbjets == 1))";
+//  TCut mycutb = "((njets == 2) && (nbjets == 1))";
+//========Cortes sin el channel cut=============
 
   //loader->PrepareTrainingAndTestTree( mycuts,mycutb,"nTrain_Signal=0:nTrain_Background=0:SplitMode=Random:NormMode=NumEvents:!V:nTest_Background=0" );
   

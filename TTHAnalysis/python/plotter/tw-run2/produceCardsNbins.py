@@ -6,6 +6,7 @@ import ROOT as r
 r.PyConfig.IgnoreCommandLineOptions = True
 r.gROOT.SetBatch(True)
 from datetime import datetime
+import numpy as np
 
 
 
@@ -21,7 +22,10 @@ smallb1j1t = "tmvaBDT_1j1b_smallb_ttbar"
 BDT_2j1t_path = "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2020_20_11/smallbinning/run2/2j1t/MVAtrain/plots-tw-2j1t_MVAtrain.root" 
 smallb2j1t = "tmvaBDT_2j1b_smallb_ttbar"
 
-
+#BDT_1j1t_path = "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2020-11-27_oldBDT/smallbinning/run2/1j1t/MVAtrain/plots-tw-1j1t_MVAtrain.root" 
+#smallb1j1t = "tmvaBDT_1j1b_smallb_ttbar"
+#BDT_2j1t_path = "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2020-11-27_oldBDT/smallbinning/run2/2j1t/MVAtrain/plots-tw-2j1t_MVAtrain.root" 
+#smallb2j1t = "tmvaBDT_2j1b_smallb_ttbar"
 
 # Card maker command
 commandscaff =  "python makeShapeCardsNew.py --tree NanoAOD tw-run2/mca-tw.txt tw-run2/cuts-tw-{region}.txt '{BDTfunction}' '{Nbins}' -P {prodpath} {friendtrees} --od {directory} -l 35.92,41.53,59.74 -f -L tw-run2/functions_tw.cc --neg --threshold 0.01 -W 'MuonIDSF * MuonISOSF * ElecRECOSF * ElecIDSF * TrigSF * puWeight * bTagWeight * PrefireWeight' --year 2016,2017,2018 --unc tw-run2/uncs-tw.txt --amc --asimov s+b --split-factor=-1 -j 32 --AP"
@@ -88,10 +92,17 @@ if __name__=="__main__":
         BDTfunction = "theBDT%sbins%s(tmvaBDT_1j1b)"%(str(bins),reg) 
         getBinningForThatVariable(BDT_1j1t_path, smallb1j1t, bins, reg)
         outpath = outpath + "/1j1t%sbins"%(bins)
-    elif reg == "2j1t":
+    if reg == "2j1t":
         BDTfunction = "theBDT%sbins%s(tmvaBDT_2j1b)"%(str(bins),reg) 
         getBinningForThatVariable(BDT_2j1t_path, smallb2j1t, bins, reg)
         outpath = outpath + "/2j1t%sbins"%(bins)
+    if reg == "2j2t":
+        listabins = []
+        paso = (190-30)/bins
+        for i in np.arange(30,191,paso):
+            listabins.append(i) 
+        BDTfunction = "Jet_pt_corr[iJetSel30_Recl[1]]"
+        outpath = outpath + "/2j2t%sbins"%(bins)
     
     if not os.path.isdir(outpath):
         os.system("mkdir -p " + outpath)
