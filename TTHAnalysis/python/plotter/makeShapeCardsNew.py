@@ -20,6 +20,7 @@ parser.add_option("--categorize-by-ranges", dest="categ_ranges", type="string", 
 parser.add_option("--regularize", dest="regularize", action="store_true", default=False, help="Regularize templates")
 parser.add_option("--threshold", dest="threshold", type=float, default=0.0, help="Minimum event yield to consider processes")
 parser.add_option("--filter", dest="filter", type="string", default=None, help="File with list of processes to be removed from the datacards")
+parser.add_option("--storeAll", dest = "storeall", action="store_true", default=False, help="Store all histograms in the final rootfile, including those of normalisation uncertainties.")
 (options, args) = parser.parse_args()
 options.weight = True
 options.final  = True
@@ -177,7 +178,7 @@ for binname, report in allreports.iteritems():
         for p,(hup,hdn) in effshape.iteritems():
             i0 = allyields[p]
             kup, kdn = hup.Integral()/i0, hdn.Integral()/i0
-            if abs(kup*kdn-1)<1e-5:
+            if abs(kup*kdn-1)<1e-5 and not options.storeall:
                 if abs(kup-1)>2e-4:
                     effyield[p] = "%.3f" % kup
                     isNorm = True
@@ -185,10 +186,13 @@ for binname, report in allreports.iteritems():
                 effyield[p] = "%.3f/%.3f" % (kdn,kup)
                 isNorm = True
         if isNorm:
+            thedict = {}
+            if options.storeall:
+                thedict = effshape
             if name.endswith("_lnU"):
-                systs[name] = ("lnU", effyield, {})
+                systs[name] = ("lnU", effyield, thedict)
             else:
-                systs[name] = ("lnN", effyield, {})
+                systs[name] = ("lnN", effyield, thedict)
   # make a new list with only the ones that have an effect
   nuisances = sorted(systs.keys())
 
