@@ -350,6 +350,8 @@ met_phi : MET_phi : 40,-3.14,3.14; XTitle="MET #phi"
 #mass_2(JetSel_Recl_pt[1],JetSel_Recl_eta[1],JetSel_Recl_phi[1],JetSel_Recl_mass[1],JetSel_Recl_pt[2],JetSel_Recl_eta[2],JetSel_Recl_phi[2],JetSel_Recl_mass[2])) : 40,0,400; XTitle="M(l2\,j2\,j3) (GeV)"
 #rec3j_j2j3_lowestCSV:  min(JetSel_Recl_btagCSV[2],JetSel_Recl_btagCSV[1]): 40,0,1.0; XTitle="lowest b-tag of j2\, j3"
 
+ttW_3l_njetnb: ttW_3l_njetnb(nJet25, nBJetMedium25): [0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5]; XTitle="nJet nBJet clasification",  XNDdiv=505, IncludeOverflows=False, xBinLabels="2j0b\,2j1b\,2j2b\,3j0b\,3j1b\,3j2b\,>3j0b\,>3j1b\,>3j2b"
+ttW_3l_njetnb_charge: ttW_3l_SVA_classifier( nJet25,nBJetMedium25, LepGood1_charge, LepGood2_charge, LepGood3_charge): [0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5,10.5,11.5,12.5]; XTitle="nJet nBJet charge clasification",  XNDdiv=505, IncludeOverflows=False, xBinLabels="2j1b-\,2j1b+\,2j2b-\,2j2b+\,3j1b-\,3j1b+\,3j2b-\,3j2b+\,>3j1b-\,>3j1b+\,>3j2b-\,>3j2b+"
 
 #Control regions
 cr_3l: ttH_3l_clasifier(nJet25, nBJetMedium25): [0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5,10.5,11.5,12.5]; XTitle="nJet nBJet clasification",YMin=0.1 , YMax=5.0e3,  XNDdiv=505, IncludeOverflows=False, xBinLabels="1j\,2j\,3j\,>3j\,2j\,3j\,4j\,>4j\,2j\,3j\,4j\,>4j"
