@@ -21,6 +21,8 @@ class particleAndPartonVars_tWRun2(Module):
                          ("Dresschannel", "I"),
                          ("DressEXTchannel", "I"),
                          ("Origchannel", "I"),
+                         "DressLep1_Pt",
+                         "DressLep2_Pt",
                          "DressLep1Lep2_Pt",
                          "DressLep1Lep2_DPhi",
                          "DressMll",
@@ -95,6 +97,8 @@ class particleAndPartonVars_tWRun2(Module):
         allret["Origchannel"]             = ch.NoChan
         allret["DressisSS"]               = -99
         allret["DressminMllAFAS"]         = -99
+        allret["DressLep1_Pt"]            = -99
+        allret["DressLep2_Pt"]            = -99
         allret["DressLep1Lep2_Pt"]        = -99
         allret["DressLep1Lep2_DPhi"]      = -99
         allret["DressMll"]                = -99
@@ -153,94 +157,96 @@ class particleAndPartonVars_tWRun2(Module):
         elif event.nGenDressedLepton >= 3:
             allret["Origchannel"] = 10    # three or more dressed leptons
 
-
-        if event.nDressSelLep >= 2:
-            allret["DressisSS"] = int((leps[0].pdgId > 0 and leps[1].pdgId > 0) or (leps[0].pdgId < 0 and leps[1].pdgId < 0))
-            if   ((abs(leps[0].pdgId) == 13 and abs(leps[1].pdgId) == 11) or
-                 (abs(leps[0].pdgId) == 11 and abs(leps[1].pdgId) == 13)):
-                allret["Dresschannel"] = ch.ElMu
-            elif (abs(leps[0].pdgId) == 13 and abs(leps[1].pdgId) == 13):
-                allret["Dresschannel"] = ch.Muon
-            elif (abs(leps[0].pdgId) == 11 and abs(leps[1].pdgId) == 11):
-                allret["Dresschannel"] = ch.Elec
-            else:
-                allret["Dresschannel"] = ch.NoChan
-
-
-            if   (((abs(leps[0].pdgId) == 13 and abs(leps[1].pdgId) == 11) or
-                   (abs(leps[0].pdgId) == 11 and abs(leps[1].pdgId) == 13)) and
-                   (leps[0].hasTauAnc == 0) and (leps[1].hasTauAnc == 0)):
-                allret["DressEXTchannel"] = ch.ElMu
-            elif ((abs(leps[0].pdgId) == 13 and abs(leps[1].pdgId) == 13) and
-                  (leps[0].hasTauAnc == 0) and (leps[1].hasTauAnc == 0)):
-                allret["DressEXTchannel"] = ch.Muon
-            elif ((abs(leps[0].pdgId) == 11 and abs(leps[1].pdgId) == 11) and
-                  (leps[0].hasTauAnc == 0) and (leps[1].hasTauAnc == 0)):
-                allret["DressEXTchannel"] = ch.Elec
-            elif (((abs(leps[0].pdgId) == 13 and abs(leps[1].pdgId) == 11) or
-                   (abs(leps[0].pdgId) == 11 and abs(leps[1].pdgId) == 13)) and
-                   (leps[0].hasTauAnc == 1) and (leps[1].hasTauAnc == 1)):
-                allret["DressEXTchannel"] = ch.ElMuFromTaus
-            elif ((abs(leps[0].pdgId) == 13 and abs(leps[1].pdgId) == 13) and
-                  (leps[0].hasTauAnc == 1) and (leps[1].hasTauAnc == 1)):
-                allret["DressEXTchannel"] = ch.MuonFromTaus
-            elif ((abs(leps[0].pdgId) == 11 and abs(leps[1].pdgId) == 11) and
-                  (leps[0].hasTauAnc == 1) and (leps[1].hasTauAnc == 1)):
-                allret["DressEXTchannel"] = ch.ElecFromTaus
-            elif (((abs(leps[0].pdgId) == 13 and abs(leps[1].pdgId) == 11) or
-                   (abs(leps[0].pdgId) == 11 and abs(leps[1].pdgId) == 13)) and
-                   (int(leps[0].hasTauAnc) + int(leps[1].hasTauAnc) == 1)):
-                allret["DressEXTchannel"] = ch.ElMuMixedFromTaus
-            elif ((abs(leps[0].pdgId) == 13 and abs(leps[1].pdgId) == 13) and
-                  (int(leps[0].hasTauAnc) + int(leps[1].hasTauAnc) == 1)):
-                allret["DressEXTchannel"] = ch.MuonMixedFromTaus
-            elif ((abs(leps[0].pdgId) == 11 and abs(leps[1].pdgId) == 11) and
-                  (int(leps[0].hasTauAnc) + int(leps[1].hasTauAnc) == 1)):
-                allret["DressEXTchannel"] = ch.ElecMixedFromTaus
-            else:
-                allret["DressEXTchannel"] = ch.NoChan
-
-            allret["DressLep1Lep2_Pt"]   = (leps_4m[0] + leps_4m[1]).Pt()
-            allret["DressLep1Lep2_DPhi"] = abs(deltaPhi(leps[0], leps[1]))/r.TMath.Pi()
-            allret["DressMll"]           = (leps_4m[0] + leps_4m[1]).M()
-
-            for iL in range(len(leps)):
-                for jL in range(iL + 1, len(leps)):
-                    tmpM = (leps_4m[iL] + leps_4m[jL]).M()
-                    if tmpM < allret["DressminMllAFAS"] or allret["DressminMllAFAS"] == -99: allret["DressminMllAFAS"] = tmpM
-
-            if event.nDressSelLooseJet > 0:
-                allret["DressJetLoose1_Pt"] = loosejets_4[0].Pt()
+        if event.nDressSelLep >= 1:
+            allret["DressLep1_Pt"] = leps_4m[0].Pt()
+            if event.nDressSelLep >= 2:
+                allret["DressLep2_Pt"] = leps_4m[1].Pt()
+                allret["DressisSS"] = int((leps[0].pdgId > 0 and leps[1].pdgId > 0) or (leps[0].pdgId < 0 and leps[1].pdgId < 0))
+                if   ((abs(leps[0].pdgId) == 13 and abs(leps[1].pdgId) == 11) or
+                    (abs(leps[0].pdgId) == 11 and abs(leps[1].pdgId) == 13)):
+                    allret["Dresschannel"] = ch.ElMu
+                elif (abs(leps[0].pdgId) == 13 and abs(leps[1].pdgId) == 13):
+                    allret["Dresschannel"] = ch.Muon
+                elif (abs(leps[0].pdgId) == 11 and abs(leps[1].pdgId) == 11):
+                    allret["Dresschannel"] = ch.Elec
+                else:
+                    allret["Dresschannel"] = ch.NoChan
 
 
-            if event.nDressSelJet > 0:
-                allret["DressLep1Lep2Jet1MET_Pz"] = (leps_4m[0] + leps_4m[1] + jets_4m[0] + met_4m).Pz()
-                allret["DressLep1Lep2Jet1MET_Pt"] = (leps_4m[0] + leps_4m[1] + jets_4m[0] + met_4m).Pt()
-                allret["DressLep1Lep2Jet1MET_M"]  = (leps_4m[0] + leps_4m[1] + jets_4m[0] + met_4m).M()
-                allret["DressLep1Lep2Jet1MET_Mt"] = (leps_4m[0] + leps_4m[1] + jets_4m[0] + met_4m).Mt()
-                allret["DressLep1Lep2Jet1_Pt"]    = (leps_4m[0] + leps_4m[1] + jets_4m[0]).Pt()
-                allret["DressLep1Lep2Jet1_M"]     = (leps_4m[0] + leps_4m[1] + jets_4m[0]).M()
-                allret["DressLep1Lep2Jet1_E"]     = (leps_4m[0] + leps_4m[1] + jets_4m[0]).E()
-                allret["DressLep1Jet1_Pt"]        = (leps_4m[0] + jets_4m[0]).Pt()
-                allret["DressLep1Jet1_M"]         = (leps_4m[0] + jets_4m[0]).M()
-                allret["DressLep2Jet1_Pt"]        = (leps_4m[1] + jets_4m[0]).Pt()
-                allret["DressLep2Jet1_M"]         = (leps_4m[1] + jets_4m[0]).M()
-                allret["DressJet1_Pt"]            = jets_4m[0].Pt()
-                allret["DressJet1_E"]             = jets_4m[0].E()
-                allret["DressLep1Jet1_DR"]        = leps_4m[0].DeltaR(jets_4m[0])
-                allret["DressLep1Lep2Jet1_C"]     = (leps_4m[0] + leps_4m[1] + jets_4m[0]).Et() / (leps_4m[0] + leps_4m[1] + jets_4m[0]).E()
-                allret["DressHTtot"]              = leps_4m[0].Pt() + leps_4m[1].Pt() + jets_4m[0].Pt() + met_4m.Pt()
+                if   (((abs(leps[0].pdgId) == 13 and abs(leps[1].pdgId) == 11) or
+                    (abs(leps[0].pdgId) == 11 and abs(leps[1].pdgId) == 13)) and
+                    (leps[0].hasTauAnc == 0) and (leps[1].hasTauAnc == 0)):
+                    allret["DressEXTchannel"] = ch.ElMu
+                elif ((abs(leps[0].pdgId) == 13 and abs(leps[1].pdgId) == 13) and
+                    (leps[0].hasTauAnc == 0) and (leps[1].hasTauAnc == 0)):
+                    allret["DressEXTchannel"] = ch.Muon
+                elif ((abs(leps[0].pdgId) == 11 and abs(leps[1].pdgId) == 11) and
+                    (leps[0].hasTauAnc == 0) and (leps[1].hasTauAnc == 0)):
+                    allret["DressEXTchannel"] = ch.Elec
+                elif (((abs(leps[0].pdgId) == 13 and abs(leps[1].pdgId) == 11) or
+                    (abs(leps[0].pdgId) == 11 and abs(leps[1].pdgId) == 13)) and
+                    (leps[0].hasTauAnc == 1) and (leps[1].hasTauAnc == 1)):
+                    allret["DressEXTchannel"] = ch.ElMuFromTaus
+                elif ((abs(leps[0].pdgId) == 13 and abs(leps[1].pdgId) == 13) and
+                    (leps[0].hasTauAnc == 1) and (leps[1].hasTauAnc == 1)):
+                    allret["DressEXTchannel"] = ch.MuonFromTaus
+                elif ((abs(leps[0].pdgId) == 11 and abs(leps[1].pdgId) == 11) and
+                    (leps[0].hasTauAnc == 1) and (leps[1].hasTauAnc == 1)):
+                    allret["DressEXTchannel"] = ch.ElecFromTaus
+                elif (((abs(leps[0].pdgId) == 13 and abs(leps[1].pdgId) == 11) or
+                    (abs(leps[0].pdgId) == 11 and abs(leps[1].pdgId) == 13)) and
+                    (int(leps[0].hasTauAnc) + int(leps[1].hasTauAnc) == 1)):
+                    allret["DressEXTchannel"] = ch.ElMuMixedFromTaus
+                elif ((abs(leps[0].pdgId) == 13 and abs(leps[1].pdgId) == 13) and
+                    (int(leps[0].hasTauAnc) + int(leps[1].hasTauAnc) == 1)):
+                    allret["DressEXTchannel"] = ch.MuonMixedFromTaus
+                elif ((abs(leps[0].pdgId) == 11 and abs(leps[1].pdgId) == 11) and
+                    (int(leps[0].hasTauAnc) + int(leps[1].hasTauAnc) == 1)):
+                    allret["DressEXTchannel"] = ch.ElecMixedFromTaus
+                else:
+                    allret["DressEXTchannel"] = ch.NoChan
 
-                if event.nDressSelJet > 1:
-                    allret["DressLep12Jet12_DR"]    = (leps_4m[0] + leps_4m[1]).DeltaR(jets_4m[0] + jets_4m[1])
-                    allret["DressLep12Jet12MET_DR"] = (leps_4m[0] + leps_4m[1]).DeltaR(jets_4m[0] + jets_4m[1] + met_4m)
-                    allret["DressLep1Jet2_M"]       = (leps_4m[0] + jets_4m[1]).M()
-                    allret["DressLep2Jet2_M"]       = (leps_4m[1] + jets_4m[1]).M()
-                    allret["DressJet2_Pt"]          = jets_4m[1].Pt()
-                    #### WARNING: this minimax variable is only equal to that of ATLAS' PRL when the signal region is njets == 2, nbjets == 2.
-                    allret["Dressminimax"] = min([max([allret["DressLep1Jet1_M"],
-                                                       allret["DressLep2Jet2_M"]]),
-                                                  max(allret["DressLep2Jet1_M"],
-                                                      allret["DressLep1Jet2_M"])])
+                allret["DressLep1Lep2_Pt"]   = (leps_4m[0] + leps_4m[1]).Pt()
+                allret["DressLep1Lep2_DPhi"] = abs(deltaPhi(leps[0], leps[1]))/r.TMath.Pi()
+                allret["DressMll"]           = (leps_4m[0] + leps_4m[1]).M()
+
+                for iL in range(len(leps)):
+                    for jL in range(iL + 1, len(leps)):
+                        tmpM = (leps_4m[iL] + leps_4m[jL]).M()
+                        if tmpM < allret["DressminMllAFAS"] or allret["DressminMllAFAS"] == -99: allret["DressminMllAFAS"] = tmpM
+
+                if event.nDressSelLooseJet > 0:
+                    allret["DressJetLoose1_Pt"] = loosejets_4[0].Pt()
+
+
+                if event.nDressSelJet > 0:
+                    allret["DressLep1Lep2Jet1MET_Pz"] = (leps_4m[0] + leps_4m[1] + jets_4m[0] + met_4m).Pz()
+                    allret["DressLep1Lep2Jet1MET_Pt"] = (leps_4m[0] + leps_4m[1] + jets_4m[0] + met_4m).Pt()
+                    allret["DressLep1Lep2Jet1MET_M"]  = (leps_4m[0] + leps_4m[1] + jets_4m[0] + met_4m).M()
+                    allret["DressLep1Lep2Jet1MET_Mt"] = (leps_4m[0] + leps_4m[1] + jets_4m[0] + met_4m).Mt()
+                    allret["DressLep1Lep2Jet1_Pt"]    = (leps_4m[0] + leps_4m[1] + jets_4m[0]).Pt()
+                    allret["DressLep1Lep2Jet1_M"]     = (leps_4m[0] + leps_4m[1] + jets_4m[0]).M()
+                    allret["DressLep1Lep2Jet1_E"]     = (leps_4m[0] + leps_4m[1] + jets_4m[0]).E()
+                    allret["DressLep1Jet1_Pt"]        = (leps_4m[0] + jets_4m[0]).Pt()
+                    allret["DressLep1Jet1_M"]         = (leps_4m[0] + jets_4m[0]).M()
+                    allret["DressLep2Jet1_Pt"]        = (leps_4m[1] + jets_4m[0]).Pt()
+                    allret["DressLep2Jet1_M"]         = (leps_4m[1] + jets_4m[0]).M()
+                    allret["DressJet1_Pt"]            = jets_4m[0].Pt()
+                    allret["DressJet1_E"]             = jets_4m[0].E()
+                    allret["DressLep1Jet1_DR"]        = leps_4m[0].DeltaR(jets_4m[0])
+                    allret["DressLep1Lep2Jet1_C"]     = (leps_4m[0] + leps_4m[1] + jets_4m[0]).Et() / (leps_4m[0] + leps_4m[1] + jets_4m[0]).E()
+                    allret["DressHTtot"]              = leps_4m[0].Pt() + leps_4m[1].Pt() + jets_4m[0].Pt() + met_4m.Pt()
+
+                    if event.nDressSelJet > 1:
+                        allret["DressLep12Jet12_DR"]    = (leps_4m[0] + leps_4m[1]).DeltaR(jets_4m[0] + jets_4m[1])
+                        allret["DressLep12Jet12MET_DR"] = (leps_4m[0] + leps_4m[1]).DeltaR(jets_4m[0] + jets_4m[1] + met_4m)
+                        allret["DressLep1Jet2_M"]       = (leps_4m[0] + jets_4m[1]).M()
+                        allret["DressLep2Jet2_M"]       = (leps_4m[1] + jets_4m[1]).M()
+                        allret["DressJet2_Pt"]          = jets_4m[1].Pt()
+                        #### WARNING: this minimax variable is only equal to that of ATLAS' PRL when the signal region is njets == 2, nbjets == 2.
+                        allret["Dressminimax"] = min([max([allret["DressLep1Jet1_M"],
+                                                        allret["DressLep2Jet2_M"]]),
+                                                    max(allret["DressLep2Jet1_M"],
+                                                        allret["DressLep1Jet2_M"])])
 
         return allret
