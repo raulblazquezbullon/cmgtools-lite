@@ -108,11 +108,15 @@ for binname, report in allreports.iteritems():
   procs = []; iproc = {}
   for i,s in enumerate(mca.listSignals()):
     if s not in allyields: continue
-    if allyields[s] <= options.threshold: continue
+    if allyields[s] <= options.threshold:
+        print "Dropping", s, "for low yields"
+        continue
     procs.append(s); iproc[s] = i-len(mca.listSignals())+1
   for i,b in enumerate(mca.listBackgrounds()):
     if b not in allyields: continue
-    if allyields[b] <= options.threshold: continue
+    if allyields[b] <= options.threshold:
+        print "Dropping", s, "for low yields"
+        continue
     procs.append(b); iproc[b] = i+1
   #for p in procs: print "%-10s %10.4f" % (p, allyields[p])
 
