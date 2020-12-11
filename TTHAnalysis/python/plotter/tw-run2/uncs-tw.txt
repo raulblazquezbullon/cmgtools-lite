@@ -147,12 +147,12 @@ jer_2018 : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jerUp.t
 btagging:   $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_btag_Up/bTagWeight'\,'bTagWeight_btag_Dn/bTagWeight']
 mistagging: $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_Up/bTagWeight'\,'bTagWeight_mistag_Dn/bTagWeight']
 
-btagging_2016:   $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_btag_Up/bTagWeight'\,'bTagWeight_btag_Dn/bTagWeight'], year="2016"
-btagging_2017:   $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_btag_Up/bTagWeight'\,'bTagWeight_btag_Dn/bTagWeight'], year="2017"
-btagging_2018:   $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_btag_Up/bTagWeight'\,'bTagWeight_btag_Dn/bTagWeight'], year="2018"
-mistagging_2016: $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_Up/bTagWeight'\,'bTagWeight_mistag_Dn/bTagWeight'], year="2016"
-mistagging_2017: $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_Up/bTagWeight'\,'bTagWeight_mistag_Dn/bTagWeight'], year="2017"
-mistagging_2018: $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_Up/bTagWeight'\,'bTagWeight_mistag_Dn/bTagWeight'], year="2018"
+#btagging_2016:   $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_btag_Up/bTagWeight'\,'bTagWeight_btag_Dn/bTagWeight'], year="2016"
+#btagging_2017:   $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_btag_Up/bTagWeight'\,'bTagWeight_btag_Dn/bTagWeight'], year="2017"
+#btagging_2018:   $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_btag_Up/bTagWeight'\,'bTagWeight_btag_Dn/bTagWeight'], year="2018"
+#mistagging_2016: $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_Up/bTagWeight'\,'bTagWeight_mistag_Dn/bTagWeight'], year="2016"
+#mistagging_2017: $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_Up/bTagWeight'\,'bTagWeight_mistag_Dn/bTagWeight'], year="2017"
+#mistagging_2018: $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_Up/bTagWeight'\,'bTagWeight_mistag_Dn/bTagWeight'], year="2018"
 
 #btagging_2016:   $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_btag_Up/bTagWeight'\,'bTagWeight_btag_Dn/bTagWeight'], year="2016"
 #btagging_1718:   $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_btag_Up/bTagWeight'\,'bTagWeight_btag_Dn/bTagWeight'], year="2017"
