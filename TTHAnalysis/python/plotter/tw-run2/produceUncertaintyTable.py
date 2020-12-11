@@ -31,11 +31,13 @@ systsGroup = {
 
     #### Systematic
     # Experimental
-    'jecs': [
+    'jes': [
+        "jes",
+    ],
+    'jer': [
         "jer_2016",
         "jer_2017",
         "jer_2018",
-        "jes",
     ],
     'trigger': [
         "triggereff_2016",
@@ -45,9 +47,11 @@ systsGroup = {
     'pileup': [
         "pileup",
     ],
-    'lep': [
+    'elec': [
         "elecidsf",
         "elecrecosf",
+    ],
+    'muon': [
         "muonen_2016",
         "muonen_2017",
         "muonen_2018",
@@ -62,6 +66,8 @@ systsGroup = {
     ],
     'btag': [
         "btagging",
+    ],
+    'mistag': [
         "mistagging",
     ],
     'lumi': [
@@ -81,10 +87,16 @@ systsGroup = {
     ],
 
     # Normalisation
-    'norm' : [
+    'ttbar_norm' : [
         "ttbar_norm",
+    ],
+    'nonworz_norm' : [
         "nonworz_norm",
+    ],
+    'dy_norm' : [
         "dy_norm",
+    ],
+    'vvttv_norm' : [
         "vvttv_norm",
     ],
 
@@ -99,9 +111,11 @@ systsGroup = {
         "ttbar_scales",
         "tw_scales",
     ],
-    'ps' : [
-        "fsr_ttbar",
+    'isr' : [
         "isr_ttbar",
+    ],
+    'fsr' : [
+        "fsr_ttbar",
     ],
     'colour' : [
         "colour_rec",
@@ -121,7 +135,7 @@ systsGroup = {
 POIs   = ["r"]
 
 
-groupList   = ['mc_stat', 'jecs', 'trigger', 'pileup', 'lep', 'btag', 'lumi', 'prefiring', 'norm', "matching", "scales", "ps", "colour", "ue"]
+groupList   = ['mc_stat', 'jes', "jer", 'trigger', 'pileup', 'elec', "muon", 'btag', 'mistag', 'lumi', 'prefiring', 'norm', "matching", "scales", "ps", "colour", "ue"]
 
 basecommand = '\ncombineTool.py -M MultiDimFit --algo grid --points 100 --rMin 0 --rMax 3 --floatOtherPOIs=1 -m 125  --split-points 1 --setParameters r=1 -t -1 --expectSignal=1 --job-mode SGE --saveInactivePOI 1 '
 
