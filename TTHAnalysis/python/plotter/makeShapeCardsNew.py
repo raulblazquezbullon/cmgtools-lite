@@ -20,7 +20,9 @@ parser.add_option("--categorize-by-ranges", dest="categ_ranges", type="string", 
 parser.add_option("--regularize", dest="regularize", action="store_true", default=False, help="Regularize templates")
 parser.add_option("--threshold", dest="threshold", type=float, default=0.0, help="Minimum event yield to consider processes")
 parser.add_option("--filter", dest="filter", type="string", default=None, help="File with list of processes to be removed from the datacards")
-parser.add_option("--storeAll", dest = "storeall", action="store_true", default=False, help="Store all histograms in the final rootfile, including those of normalisation uncertainties.")
+parser.add_option("--storeAll",       dest = "storeall",       action = "store_true", default = False, help = "Store all histograms in the final rootfile, including those of normalisation uncertainties.")
+parser.add_option("--notMinimumFill", dest = "notminimumfill", action = "store_true", default = False, help = "Don't crop bins whenever they show low number of entries, or negative ones.")
+parser.add_option("--notVarsChanges", dest = "notvarschanges", action = "store_true", default = False, help = "Don't modify variations in extreme situations.")
 (options, args) = parser.parse_args()
 options.weight = True
 options.final  = True
@@ -49,7 +51,9 @@ else:
        report = mca.getPlotsRaw("x", cexpr+":"+args[2], makeBinningProductString(args[3],cbins), cuts.allCuts(), nodata=options.asimov) 
     else:
        report = mca.getPlotsRaw("x", args[2], args[3], cuts.allCuts(), nodata=options.asimov) 
-    for p,h in report.iteritems(): h.cropNegativeBins(threshold=1e-5)
+
+    if not options.notMinimumFill:
+        for p,h in report.iteritems(): h.cropNegativeBins(threshold=1e-5)
 
 if options.savefile:
     savefile = ROOT.TFile(outdir+binname+".bare.root","recreate")
@@ -150,27 +154,31 @@ for binname, report in allreports.iteritems():
                 #    h.isShapeVariation(name,debug=True)
                 isShape = True
             variants = list(h.getVariation(name))
+
             for hv,d in zip(variants, ('up','down')):
                 k = hv.Integral()/n0
-                if k == 0: 
+                if k == 0:
                     print "Warning: underflow template for %s %s %s %s. Will take the nominal scaled down by a factor 2" % (binname, p, name, d)
                     hv.Add(h.raw()); hv.Scale(0.5)
                 elif k < 0.2 or k > 5:
                     print "Warning: big shift in template for %s %s %s %s: kappa = %g " % (binname, p, name, d, k)
-            # prevent variations from going to zero by symmetrizing
-            for bin in range(1,h.GetXaxis().GetNbins()+1):
-                for d in range(2):
-                    if variants[d].GetBinContent( bin ) == 0: 
-                        shift = variants[1-d].GetBinContent(bin); shift = max(5e-6, shift)
-                        variants[d].SetBinContent( bin, h.raw().GetBinContent( bin )**2/shift)
-                    if variants[d].GetBinContent( bin )/h.raw().GetBinContent(bin) > 10: 
-                        print "Warning: big shift in template for %s %s %s %s in bin %d: variation = %g"%( binname, p, name, d, bin, variants[d].GetBinContent( bin )/h.raw().GetBinContent(bin))
-                        variants[d].SetBinContent( bin, 10*h.raw().GetBinContent(bin) )
-                    if variants[d].GetBinContent( bin )/h.raw().GetBinContent(bin) < 0.1: 
-                        print "Warning: big shift in template for %s %s %s %s in bin %d: variation = %g"%( binname, p, name, d, bin, variants[d].GetBinContent( bin )/h.raw().GetBinContent(bin))
-                        variants[d].SetBinContent( bin, 0.1*h.raw().GetBinContent(bin) )
 
-            effshape[p] = variants 
+            # prevent variations from going to zero by symmetrizing
+            if not options.notvarschanges:
+                for bin in range(1,h.GetXaxis().GetNbins()+1):
+                    for d in range(2):
+                        if variants[d].GetBinContent( bin ) == 0:
+                            shift = variants[1-d].GetBinContent(bin); shift = max(5e-6, shift)
+                            variants[d].SetBinContent( bin, h.raw().GetBinContent( bin )**2/shift)
+                        if variants[d].GetBinContent( bin )/h.raw().GetBinContent(bin) > 10:
+                            print "Warning: big shift in template for %s %s %s %s in bin %d: variation = %g"%( binname, p, name, d, bin, variants[d].GetBinContent( bin )/h.raw().GetBinContent(bin))
+                            variants[d].SetBinContent( bin, 10*h.raw().GetBinContent(bin) )
+                        if variants[d].GetBinContent( bin )/h.raw().GetBinContent(bin) < 0.1:
+                            print "Warning: big shift in template for %s %s %s %s in bin %d: variation = %g"%( binname, p, name, d, bin, variants[d].GetBinContent( bin )/h.raw().GetBinContent(bin))
+                            variants[d].SetBinContent( bin, 0.1*h.raw().GetBinContent(bin) )
+
+            effshape[p] = variants
+
     if isShape:
         if options.regularize: 
             for p in procs:
