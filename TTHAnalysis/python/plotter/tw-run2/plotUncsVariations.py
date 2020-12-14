@@ -25,7 +25,7 @@ foldervetolist = ["responseplots", "particleplots", "detectorplots"]
 
 
 def getOutSuffix(s):
-    if "cuts" in s:
+    if "cuts" in s or "plots" in s:
         return ""
 
     ret = "_" + s.replace(".root", "")
@@ -57,7 +57,7 @@ def getFiles(path):
 
 
 def plotVariationsFromOneProcess(tsk):
-    theproc, subdict, outpath = tsk
+    thevar, theproc, subdict, outpath = tsk
     for iU in subdict:
         if iU == "": continue
 
@@ -78,6 +78,7 @@ def plotVariationsFromOneProcess(tsk):
         c.GetPad(2).SetLeftMargin(0.16)
 
         c.cd(1)
+        #print thevar, theproc, iU
         nominal = subdict[""]
         varup   = subdict[iU]["Up"]
         vardn   = subdict[iU]["Down"]
@@ -166,8 +167,8 @@ def plotVariationsFromOneProcess(tsk):
         ratioDown.Draw("histsame")
         constant.Draw("histsame")
 
-        c.SaveAs(outpath + "/uncVar_" + theproc + "_" + iU + ".png")
-        c.SaveAs(outpath + "/uncVar_" + theproc + "_" + iU + ".pdf")
+        c.SaveAs(outpath + "/uncVar_" + thevar + "_" + theproc + "_" + iU + ".png")
+        c.SaveAs(outpath + "/uncVar_" + thevar + "_" + theproc + "_" + iU + ".pdf")
         c.Close(); del c; del leg
     return
 
@@ -183,44 +184,68 @@ def plotVariations(tup, outname, ncores = -1):
 
     print("\n> Reading file " + tup[1] + "/" + tup[0] + " ...")
     nplots = 0
-    thisisnotacard = False
-    tmpprefix = "x_"
+    #thisisnotacard = False
+    varprefix = "x"
+    vetostring = "ptcmtptoverhttotdetadphibtagdrpzptsum2j1b1j1brebin"
+
     for key in rF.GetListOfKeys():
         tmpnam     = key.GetName()
-        if not "x_" in tmpnam and not thisisnotacard:
-            print "    - This is not a card!"
-            thisisnotacard = True
-            tmpprefix = tup[1].split("/")[-1] if tup[1][-1] != "/" else tup[1].split("/")[-2]
-            #print tmpprefix
+        if any([el in tmpnam for el in ["data", "canvas", "stack", "CovMat", "nom0", "nom1"]]): continue
 
-        cleanednam = "signal" * (thisisnotacard) + tmpnam.replace(tmpprefix, "")
+        #print tmpnam
+
+        #### OLD
+        #if not "x_" in tmpnam and not thisisnotacard:
+            #print "    - This is not a card!"
+            #thisisnotacard = True
+            #tmpprefix = tup[1].split("/")[-1] if tup[1][-1] != "/" else tup[1].split("/")[-2]
+            ##tmpprefix = tmpnam.split("_")[0]
+            ##print tmpprefix
+
+        if (varprefix + "_") != tmpnam[:len((varprefix + "_"))] or (tmpnam.replace(varprefix, "").split("_")[0].lower() in vetostring):
+            varprefix = (tmpnam.split("_")[0]
+                         if ( (tmpnam.split("_")[1]).lower() not in vetostring )
+                         else "_".join(tmpnam.split("_")[0:2]) )
+
+        #cleanednam = "signal" * (thisisnotacard) + tmpnam.replace(tmpprefix, "")
+        cleanednam = tmpnam.replace(varprefix + "_", "")
         #print cleanednam
 
-        if any([el in tmpnam for el in ["data", "CovMat", "nom0", "nom1"]]): continue
+        if varprefix not in histodict:
+            histodict[varprefix] = {}
 
         if all([el not in tmpnam for el in ["Up", "Down"]]): # It is the nominal value of a process
-            histodict[cleanednam] = {}
-            histodict[cleanednam][""] = deepcopy(rF.Get(tmpnam).Clone(cleanednam + "_"))
+            if cleanednam not in histodict[varprefix]:
+                histodict[varprefix][cleanednam] = {}
+            #if "dy" in cleanednam:
+                #print tmpnam, cleanednam
+            histodict[varprefix][cleanednam][""] = deepcopy(rF.Get(tmpnam).Clone(cleanednam + "_" + varprefix))
         else:
             tmpproc = cleanednam.split("_")[0]
-            tmpunc  = ("_".join(cleanednam.split("_")[1:])).replace("Up", "").replace("Down", "")
+
+            tmpunc  = ("_".join( cleanednam.split("_")[1:] )).replace("Up", "").replace("Down", "")
             tmpvar  = "Up" if "Up" in cleanednam else "Down" if "Down" in cleanednam else "OTHER"
-            #print(tmpnam, tmpproc, tmpunc, tmpvar)
-            if tmpproc not in histodict:
-                histodict[tmpproc] = {}
-            if tmpunc not in histodict[tmpproc]:
-                histodict[tmpproc][tmpunc] = {}
+
+            #print(varprefix, tmpnam, tmpproc, tmpunc, tmpvar)
+
+            if tmpproc not in histodict[varprefix]:
+                histodict[varprefix][tmpproc] = {}
+            if tmpunc not in histodict[varprefix][tmpproc]:
+                histodict[varprefix][tmpproc][tmpunc] = {}
                 nplots += 1
 
-            histodict[tmpproc][tmpunc][tmpvar] = deepcopy(rF.Get(tmpnam).Clone(tmpproc + "_" + tmpunc))
+            histodict[varprefix][tmpproc][tmpunc][tmpvar] = deepcopy(rF.Get(tmpnam).Clone(tmpproc + "_" + tmpunc))
 
     rF.Close()
-    #print(histodict)
+    #print(histodict["nloosejets"])
+    #sys.exit()
 
     print("    - Plotting " + str(nplots) + " histograms...")
     tasks = []
-    for iP in histodict:
-        tasks.append( (iP, histodict[iP], outfolder) )
+    for iV in histodict:
+        for iP in histodict[iV]:
+            print iP
+            tasks.append( (iV, iP, histodict[iV][iP], outfolder) )
     if ncores < 2:
         for tsk in tasks:
             plotVariationsFromOneProcess(tsk)
@@ -261,7 +286,7 @@ if __name__=="__main__":
 
     filelist = getFiles(infolder)
 
-    print(filelist)
+    #print(filelist)
     #sys.exit()
 
     for iT in filelist:
