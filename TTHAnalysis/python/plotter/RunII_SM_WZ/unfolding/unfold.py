@@ -213,6 +213,7 @@ class Unfolder(object):
         self.constraint=ROOT.TUnfold.kEConstraintNone
         self.densitymode=ROOT.TUnfoldDensity.kDensityModeNone
         self.closure=args.closure
+        self.onlyMC=args.onlyMonteCarlo
         self.load_data(args.data, args.mc, args.gen)
 
         ROOT.gStyle.SetOptStat(0)
@@ -1283,7 +1284,8 @@ class Unfolder(object):
         hmu.SetFillStyle(2001)
         hmu.SetFillColor(ROOT.kAzure-9)
         hmu.SetLineWidth(0)
-        hmu.Draw('SAME E2')
+        if not self.onlyMC:
+            hmu.Draw('SAME E2')
         # Inner error: stat only
         hus=copy.deepcopy(histUnfoldStat)
         for ibin in range(0, hus.GetNbinsX()+1):
@@ -1327,7 +1329,8 @@ class Unfolder(object):
         dterr.SetLineColor(dt.GetLineColor())
         dterr.SetFillColor(dt.GetLineColor())
         dterr.SetFillStyle(3001)
-        hus.Draw('SAME PE')
+        if not self.onlyMC:
+            hus.Draw('SAME PE')
         dterr.Draw('2 SAME')
         
         # Draw predictions from MATRIX
@@ -1578,7 +1581,8 @@ class Unfolder(object):
         husratio=copy.deepcopy(hus)
         husratio.SetName("ratio_%s"%husratio.GetName())
         husratio.Divide(dt)
-        husratio.Draw("E2 SAME")
+        if not self.onlyMC:
+            husratio.Draw("E2 SAME")
         
         # Ratio amcatnlo to POWHEG
         dt_altratio=copy.deepcopy(dt_alt)
@@ -1643,8 +1647,11 @@ def main(args):
     for var, fancy in vardict.items():
         fancyvar=fancy[0]
         diffvar=fancy[1]
+        print('Trying to run on %s'%var)
+        print(args.singlevar, var in args.singlevar)
         if args.singlevar and not var in args.singlevar:
             continue
+        print('Will run on %s'%var)
         u = Unfolder(args,var,fancyvar, diffvar)
         u.print_responses()
         u.study_responses()
@@ -1656,26 +1663,27 @@ def main(args):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('-i', '--inputDir',       help='Input directory', default=None)
-    parser.add_argument('-o', '--outputDir',      help='Output directory', default='./')
-    parser.add_argument('-c', '--combineInput',   help='Data and postfit from combine output', default=None)
-    parser.add_argument('--closure',              help='Use MC as data, for closure test', action='store_true')
-    parser.add_argument('-d', '--data',           help='File containing data histogram', default=None)
-    parser.add_argument('-m', '--mc',             help='File containing mc reco histogram', default=None)
-    parser.add_argument('-g', '--gen',            help='File containing gen info for matrix', default=None)
-    parser.add_argument('-l', '--lepCat',         help='Lepton multiplicity (1 or 2)', default=1, type=int)
-    parser.add_argument('-e', '--epochs',         help='Number of epochs', default=100, type=int)
-    parser.add_argument('-y', '--year',           help='Year of data taking', default=2016)
-    parser.add_argument('-s', '--splitMode',      help='Split mode (input or random)', default='input')
-    parser.add_argument('-v', '--verbose',        help='Verbose printing of the L-curve scan', action='store_true')
-    parser.add_argument('-r', '--responseAsPdf',  help='Print response matrix as pdf', action='store_true') 
-    parser.add_argument('-f', '--finalState',     help='Final state', default=None)
-    parser.add_argument('--charge',               help='Charge of the W', default='')
-    parser.add_argument('--singlevar',            help='Run unfolding only for a single variable', default=None)
-    parser.add_argument('-b', '--bias',           help='Scale bias (0 deactivates bias vector)', default=None, type=float)
-    parser.add_argument('-a', '--areaConstraint', help='Area constraint', action='store_true')
-    parser.add_argument('--checkLO',              help='Compare also with LO inclusive MC', action='store_true')
-    parser.add_argument('--matrix',               help='Compare with results from MATRIX (must provide directory)', default=None)
+    parser.add_argument('-i', '--inputDir',         help='Input directory', default=None)
+    parser.add_argument('-o', '--outputDir',        help='Output directory', default='./')
+    parser.add_argument('-c', '--combineInput',     help='Data and postfit from combine output', default=None)
+    parser.add_argument('--closure',                help='Use MC as data, for closure test', action='store_true')
+    parser.add_argument('-om', '--onlyMonteCarlo', help='Produce the final plot only comparing predictions with each other', action='store_true')
+    parser.add_argument('-d', '--data',             help='File containing data histogram', default=None)
+    parser.add_argument('-m', '--mc',               help='File containing mc reco histogram', default=None)
+    parser.add_argument('-g', '--gen',              help='File containing gen info for matrix', default=None)
+    parser.add_argument('-l', '--lepCat',           help='Lepton multiplicity (1 or 2)', default=1, type=int)
+    parser.add_argument('-e', '--epochs',           help='Number of epochs', default=100, type=int)
+    parser.add_argument('-y', '--year',             help='Year of data taking', default=2016)
+    parser.add_argument('-s', '--splitMode',        help='Split mode (input or random)', default='input')
+    parser.add_argument('-v', '--verbose',          help='Verbose printing of the L-curve scan', action='store_true')
+    parser.add_argument('-r', '--responseAsPdf',    help='Print response matrix as pdf', action='store_true') 
+    parser.add_argument('-f', '--finalState',       help='Final state', default=None)
+    parser.add_argument('--charge',                 help='Charge of the W', default='')
+    parser.add_argument('--singlevar',              help='Run unfolding only for a single variable', default=None)
+    parser.add_argument('-b', '--bias',             help='Scale bias (0 deactivates bias vector)', default=None, type=float)
+    parser.add_argument('-a', '--areaConstraint',   help='Area constraint', action='store_true')
+    parser.add_argument('--checkLO',                help='Compare also with LO inclusive MC', action='store_true')
+    parser.add_argument('--matrix',                 help='Compare with results from MATRIX (must provide directory)', default=None)
     args = parser.parse_args()
     # execute only if run as a script
     ROOT.gROOT.SetBatch()

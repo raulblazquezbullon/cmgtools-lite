@@ -34,6 +34,7 @@ class Steer:
         self.mca='./mca_unfoldingInputs.txt' # File to be updated
         self.nthreads=args.nthreads
         self.singlevar=args.singlevar
+        self.onlyMC=args.onlyMonteCarlo
         self.base=args.base
         self.dryrun=args.dryrun
         self.matrix=args.matrix
@@ -66,10 +67,17 @@ class Steer:
             'cos_ThetaZDn_HE'   : ['[-1,-0.9,-0.8,-0.7,-0.6,-0.5,-0.4,-0.3,-0.2,-0.1,0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0]', 'cos(#theta_{Z}^{Dn})', 'Zpol'],
         }
         self.responsePairs={
-            'sump4(0, genLepZ1_pt,genLepZ1_eta,genLepZ1_phi,genLepZ1_mass,genLepZ2_pt,genLepZ2_eta,genLepZ2_phi,genLepZ2_mass):sump4(0,LepZ1_pt,LepZ1_eta,LepZ1_phi,LepZ1_mass,LepZ2_pt,LepZ2_eta,LepZ2_phi,LepZ2_mass)' : ['[0,5,10,15,20,25,30,40,50,60,70,80,90,100,110,120,130,140,160,180,200,250,300]*[0,10,20,30,50,70,90,110,130,160,200,300]','Reco p\_\{T\}(Z) [GeV]','Gen p\_\{T\}(Z) [GeV]','Zpt'],
+            #'sump4(0, genLepZ1_pt,genLepZ1_eta,genLepZ1_phi,genLepZ1_mass,genLepZ2_pt,genLepZ2_eta,genLepZ2_phi,genLepZ2_mass):sump4(0,LepZ1_pt,LepZ1_eta,LepZ1_phi,LepZ1_mass,LepZ2_pt,LepZ2_eta,LepZ2_phi,LepZ2_mass)' : ['[0,5,10,15,20,25,30,40,50,60,70,80,90,100,110,120,130,140,160,180,200,250,300]*[0,10,20,30,50,70,90,110,130,160,200,300]','Reco p\_\{T\}(Z) [GeV]','Gen p\_\{T\}(Z) [GeV]','Zpt'],
+
+            'sump4(0, genLepZ1_pt,genLepZ1_eta,genLepZ1_phi,genLepZ1_mass,genLepZ2_pt,genLepZ2_eta,genLepZ2_phi,genLepZ2_mass):sump4(0,LepZ1_pt,LepZ1_eta,LepZ1_phi,LepZ1_mass,LepZ2_pt,LepZ2_eta,LepZ2_phi,LepZ2_mass)' : ['[0,5,10,15,20,25,30,40,50,60,70,80,90,100,110,120,130,140,160,180,200,250,300]*[0,75,150,250,400,1000]','Reco p\_\{T\}(Z) [GeV]','Gen p\_\{T\}(Z) [GeV]','Zpt'],
+
             'GenJet_pt[Jet_genJetIdx[iJSel_Mini[0]]]:Jet_pt[iJSel_Mini[0]]' : ['[25,30,35,40,50,60,70,80,90,100,110,120,130,140,160,180,200,250,300]*[25,35,50,70,90,110,130,160,200,300]','Reco p\_\{T\}(leading jet) [GeV]','Gen p\_\{T\}(leading jet) [GeV]','LeadJetPt'],
             'm3Lmet_gen:m3Lmet' : ['[100,140,160,180,200,250,300,400,600,1000,3000]*[100,160,200,300,600,3000]','Reco M\_\{WZ\} [GeV]','Gen M\_\{WZ\} [GeV]','MWZ'],
-            'genLepW_pt:LepW_pt' : ['[25,30,35,40,50,60,70,80,90,100,110,120,130,140,160,180,200,250,300]*[25,35,50,70,90,110,130,160,200,300]','Reco p\_\{T\}(W) [GeV]','Gen p\_\{T\}(W) [GeV]','Wpt'],
+            #'genLepW_pt:LepW_pt' : ['[25,30,35,40,50,60,70,80,90,100,110,120,130,140,160,180,200,250,300]*[25,35,50,70,90,110,130,160,200,300]','Reco p\_\{T\}(W) [GeV]','Gen p\_\{T\}(W) [GeV]','Wpt'],
+
+'genLepW_pt:LepW_pt' : ['[25,30,35,40,50,60,70,80,90,100,110,120,130,140,160,180,200,250,300]*[0,75,150,250,400,1000]','Reco p\_\{T\}(W) [GeV]','Gen p\_\{T\}(W) [GeV]','Wpt'],
+
+
             'Sum\\$(GenJet_pt>25&&abs(GenJet_eta)<2.5&&deltaR(GenJet_eta,GenJet_phi,genLepZ1_eta,genLepZ1_phi)>0.5&&deltaR(GenJet_eta,GenJet_phi,genLepZ2_eta,genLepZ2_phi)>0.5&&deltaR(GenJet_eta,GenJet_phi,genLepW_eta,genLepW_phi)>0.5):nJet25_Mini'   : ['[0,1,2,3,4,5]*[0,1,2,3,4,5]', 'Reco N\_\{jets\}', 'Gen N\_\{jets\}', 'Njets'], # Not sure that genLepW is what we want
             'cos_genThetaWDn_HE:cos_ThetaWDn_HE' : ['[-1,-0.75,-0.5,-0.25,0.0,0.25,0.5,0.75,1.0]*[-1,-0.5,0.0,0.5,1.0]','Reco cos(#theta_{W}^{Dn})','Gen cos(#theta_{W}^{Dn})', 'Wpol' ],
             'cos_genThetaZDn_HE:cos_ThetaZDn_HE' : ['[-1,-0.9,-0.8,-0.7,-0.6,-0.5,-0.4,-0.3,-0.2,-0.1,0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0]*[-1,-0.8,-0.6,-0.4,-0.2,0.0,0.2,0.4,0.6,0.8,1.0]','Reco cos(#theta_{Z}^{Dn})','Gen cos(#theta_{Z}^{Dn})', 'Zpol' ],
@@ -239,6 +247,9 @@ class Steer:
         executable='RunII_SM_WZ/unfolding/unfold.py'
         thematrix = '--matrix ./MATRIX/' if self.matrix else ''
         singlevar = '--singlevar %s'%self.singlevar if self.singlevar else ''
+        if self.onlyMC:
+            singlevar = '%s --onlyMonteCarlo '%singlevar
+
         #for charge in [ '', '_plus', '_minus' ]:
         #for charge in [ '_plus', '_minus' ]:
         for charge in [ '_none', '_plus', '_minus' ]:
@@ -332,16 +343,18 @@ import ROOT
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('-w', '--what',           help='Action to be taken [inputs, responses, unfolding, all]', default='all')
-    parser.add_argument('-o', '--outputDir',      help='Output directory', default='./temp')
-    parser.add_argument('-y', '--year',           help='Year', default=2016)
-    parser.add_argument('-n', '--nthreads',       help='Number of multiprocessing threads (only for -w unfolding)', default=4, type=int)
-    parser.add_argument('-b', '--base',           help='Run only on base (the one to put in the paper) parameter set (only for -w unfolding)', action='store_true')
-    parser.add_argument('-d', '--dryrun',         help='Only print commands and exit (only for -w unfolding, because of legacy structure)', action='store_true')
-    parser.add_argument('-q', '--queue',          help='Batch queue [default is short]', default='short')
-    parser.add_argument('--singlevar',            help='Run only on a given variable')
-    parser.add_argument('--matrix',               help='Compare to MATRIX NNLO', action='store_true')
+    parser.add_argument('-w', '--what',             help='Action to be taken [inputs, responses, unfolding, all]', default='all')
+    parser.add_argument('-o', '--outputDir',        help='Output directory', default='./temp')
+    parser.add_argument('-om', '--onlyMonteCarlo', help='Produce the final plot only comparing predictions with each other', action='store_true')
+    parser.add_argument('-y', '--year',             help='Year', default=2016)
+    parser.add_argument('-n', '--nthreads',         help='Number of multiprocessing threads (only for -w unfolding)', default=4, type=int)
+    parser.add_argument('-b', '--base',             help='Run only on base (the one to put in the paper) parameter set (only for -w unfolding)', action='store_true')
+    parser.add_argument('-d', '--dryrun',           help='Only print commands and exit (only for -w unfolding, because of legacy structure)', action='store_true')
+    parser.add_argument('-q', '--queue',            help='Batch queue [default is short]', default='short')
+    parser.add_argument('--singlevar',              help='Run only on a given variable')
+    parser.add_argument('--matrix',                 help='Compare to MATRIX NNLO', action='store_true')
     args = parser.parse_args()
+    print(args)
     # execute only if run as a script
     ROOT.gROOT.SetBatch()
     main(args)
