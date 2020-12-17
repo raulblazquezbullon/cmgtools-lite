@@ -25,7 +25,8 @@ eq3J: nJet25==3;        Disable=True
 gt3J: nJet25>3;	Disable=True
 eq1B: nBJetMedium25==1; Disable=True
 eq2B: nBJetMedium25==2; Disable=True
-
+pos: (LepGood1_charge + LepGood2_charge + LepGood3_charge) > 0; Disable=True
+neg: (LepGood1_charge + LepGood2_charge + LepGood3_charge) < 0; Disable=True
 
 x2j: nJet25==2 ; Disable=True
 4j: nJet25>=4 ;  Disable=True
