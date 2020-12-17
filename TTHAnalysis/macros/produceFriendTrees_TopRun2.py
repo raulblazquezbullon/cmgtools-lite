@@ -552,14 +552,15 @@ def SendDatasetJobs(task):
 
     if   step == 0:
         module_ = "addYearTag_{y}_{ty}".format(y  = year,
-                                               ty = ("mc"         if not isData else
+                                               ty = ("mc_ttbar"   if not isData and "ttto2l2nu" in dataset.lower() else
+                                                     "mc"         if not isData else
                                                      "singlemuon" if "singlemuon" in dataset.lower() else
                                                      "singleelec"
                                                      if ("singleelec" in dataset.lower() or "egamma" in dataset.lower()) else
                                                      "doublemuon" if "doublemuon" in dataset.lower() else
                                                      "doubleeg"   if "doubleeg"   in dataset.lower() else
                                                      "muoneg")
-                                                    )
+                                              )
         #module_ = "addYearTag_{y}_{ty}_validacion".format(y  = year,
                                                #ty = ("mc"         if not isData else
                                                      #"singlemuon" if "singlemuon" in dataset.lower() else
