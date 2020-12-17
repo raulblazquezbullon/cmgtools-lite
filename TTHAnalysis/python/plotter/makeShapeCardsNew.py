@@ -52,7 +52,7 @@ else:
     else:
        report = mca.getPlotsRaw("x", args[2], args[3], cuts.allCuts(), nodata=options.asimov) 
 
-    if not options.notMinimumFill:
+    if not options.notminimumfill:
         for p,h in report.iteritems(): h.cropNegativeBins(threshold=1e-5)
 
 if options.savefile:

@@ -107,8 +107,10 @@ systsGroup = {
     'matching' : [
         "ttbar_matching",
     ],
-    'scales' : [
+    'ttbar_scales' : [
         "ttbar_scales",
+    ],
+    'tw_scales' : [
         "tw_scales",
     ],
     'isr' : [
@@ -136,7 +138,7 @@ POIs   = ["r"]
 
 
 
-groupList   = ['mc_stat', 'jes', "jer", 'trigger', 'pileup', 'elec', "muon", 'btag', 'mistag', 'lumi', 'prefiring', 'ttbar_norm', 'nonworz_norm', 'dy_norm' , 'vvttv_norm', "matching", "scales", "isr", "fsr", "colour", "ue", "toppt"]
+groupList   = ['mc_stat', 'jes', "jer", 'trigger', 'pileup', 'elec', "muon", 'btag', 'mistag', 'lumi', 'prefiring', 'ttbar_norm', 'nonworz_norm', 'dy_norm' , 'vvttv_norm', "matching", "ttbar_scales", "tw_scales","isr", "fsr", "colour", "ue", "toppt"]
 
 
 basecommand = '\ncombineTool.py -M MultiDimFit --algo grid --points 100 --rMin 0 --rMax 3 --floatOtherPOIs=1 -m 125  --split-points 1 --setParameters r=1 -t -1 --expectSignal=1 --job-mode SGE --saveInactivePOI 1 '
