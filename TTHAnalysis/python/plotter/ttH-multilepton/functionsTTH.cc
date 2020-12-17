@@ -865,6 +865,38 @@ float ttH_3l_clasifier(float nJet25,float nBJetMedium25){
 }
 
 
+float ttW_3l_njetnb(float nJet25,float nBJetMedium25){
+
+  if ((nJet25 == 2)*(nBJetMedium25 == 0)) return 1;
+  if ((nJet25 == 2)*(nBJetMedium25 == 1)) return 2;
+  if ((nJet25 == 2)*(nBJetMedium25 == 2)) return 3;
+  if ((nJet25 == 3)*(nBJetMedium25 == 0)) return 4;
+  if ((nJet25 == 3)*(nBJetMedium25 == 1)) return 5;
+  if ((nJet25 == 3)*(nBJetMedium25 == 2)) return 6;
+  if ((nJet25 > 3)*(nBJetMedium25 == 0)) return 7;
+  if ((nJet25 > 3)*(nBJetMedium25 == 1)) return 8;
+  if ((nJet25 > 3)*(nBJetMedium25 == 2)) return 9;
+//  if ((nJet25 == 4)*(nBJetMedium25 == 1)) return 7;
+//  if ((nJet25>4)*(nBJetMedium25 == 1))    return 8;
+//  if ((nJet25 == 2)*(nBJetMedium25>1))    return 9;
+//  if ((nJet25 == 3)*(nBJetMedium25>1))    return 10;
+//  if ((nJet25 == 4)*(nBJetMedium25>1))    return 11;
+//  if ((nJet25>4)*(nBJetMedium25>1))       return 12;
+  else return -1;
+}
+
+float ttW_3l_SVA_classifier(float nJet25,float nBJetMedium25,int LepGood1_charge, int LepGood2_charge, int LepGood3_charge){
+  int ret = -2;
+  if ((nJet25 == 2)*(nBJetMedium25 == 1)) ret = 1;
+  if ((nJet25 == 2)*(nBJetMedium25 == 2)) ret = 3;
+  if ((nJet25 == 3)*(nBJetMedium25 == 1)) ret = 5;
+  if ((nJet25 == 3)*(nBJetMedium25 == 2)) ret = 7;
+  if ((nJet25 > 3)*(nBJetMedium25 == 1))  ret = 9;
+  if ((nJet25 > 3)*(nBJetMedium25 == 2))  ret = 11;
+  if ((LepGood1_charge+LepGood2_charge+LepGood3_charge)>0) ret = ret+1;
+  return ret;
+}
+
 float triggerSF_ttH(int pdgid1, float pt1, int pdgid2, float pt2, int nlep, int year, int var=0){
   if (nlep == 2){
     if (abs(pdgid1*pdgid2) == 121){

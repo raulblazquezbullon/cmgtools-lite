@@ -112,10 +112,9 @@ def clean_and_FO_selection_TTH(lep,year):
 
 def clean_and_FO_selection_TTW(lep,year):
     return lep.conept>10 and (abs(lep.pdgId)!=11 or (ttH_idEmu_cuts_E3(lep) and lep.convVeto and lep.tightCharge>=1 and lep.lostHits <= 1)) \
-        and  (abs(lep.pdgId)!=13 or lep.mediumId) and (lep.mvaTOP>0.4 or (abs(lep.pdgId)==13 and lep.jetBTagDeepFlav< interp_deepJet(lep.pdgId,year,20,40,lep.pt) and lep.jetRelIso > 0.45) or \
-             (abs(lep.pdgId)==11 and lep.mvaFall17V2noIso_WPL and lep.jetRelIso > 0.50 and lep.jetBTagDeepFlav < interp_deepJet(lep.pdgId,year,25,50,lep.pt) ))
+        and  (abs(lep.pdgId)!=13 or lep.mediumId) and (lep.mvaTOP>0.4 or (abs(lep.pdgId)==13 and lep.jetBTagDeepFlav< interp_deepJet(lep.pdgId,year,20,40,lep.pt) and lep.jetRelIso < 1.2222) or \
+             (abs(lep.pdgId)==11 and lep.mvaFall17V2noIso_WPL and lep.jetRelIso < 1 and lep.jetBTagDeepFlav < interp_deepJet(lep.pdgId,year,25,50,lep.pt) ))
 
-print('hola')
 tightLeptonSel = lambda lep,year : clean_and_FO_selection_TTW(lep,year) and lep.mvaTOP > 0.40 
 
 foTauSel = lambda tau: tau.pt > 20 and abs(tau.eta)<2.3 and abs(tau.dxy) < 1000 and abs(tau.dz) < 0.2 and tau.idDecayModeNewDMs and (int(tau.idDeepTau2017v2p1VSjet)>>1 & 1) # VVLoose WP

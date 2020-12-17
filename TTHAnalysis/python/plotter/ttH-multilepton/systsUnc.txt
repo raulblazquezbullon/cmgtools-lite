@@ -12,7 +12,7 @@ $alias : WH   : WH|WH_h[a-z]+
 $alias : PromptFromMC : $ttHX|$ttV|$ZH|$WH|Rares|Convs|WZ|ZZ|EWK  
 $alias : FRData : data_fakes|.*_promptsub
 $alias : FRAll  : data_fakes|.*_promptsub|TT_FR_QCD
-
+$alias : FRMC   :  .*_mcfakes
 ### Uncertainties
 # lumi from https://twiki.cern.ch/twiki/bin/view/CMS/TWikiLUM#LumiComb
 lumi_13TeV_2016		: $PromptFromMC : .* : normSymm : 1.022; year="2016"
@@ -273,6 +273,7 @@ BR_hzz	       : .*_hzz       : .* : normSymm : 1.0154
 BR_htt	       : .*_htt       : .* : normSymm : 1.0165
 
 # shape theoretical uncertainties (private to this channel)
+CMS_ttHl_FR_flat: $FRMC : .* : normSymm : 1.20
 
 CMS_ttHl_FRe_norm : $FRData  : .*2lss.* : templateAsymm; FakeRates=["ttH-multilepton/fakerate-vars/fakeRate-2lss-frdata-e-up.txt"\,"ttH-multilepton/fakerate-vars/fakeRate-2lss-frdata-e-down.txt"], \
         RemoveFakeRate="ttH-multilepton/fakeRate-2lss-frdata.txt", DoesNotChangeEventSelection=True

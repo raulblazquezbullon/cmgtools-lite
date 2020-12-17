@@ -63,6 +63,7 @@ FUNCTION_CR_4L='''"ttH_4l_clasifier(nJet25,nBJetMedium25,mZ2)" [0.5,1.5,2.5,3.5,
 FUNCTION_SVA_2L='''"mass_2(LepGood1_conePt,LepGood1_eta,LepGood1_phi,LepGood1_mass,LepGood2_conePt,LepGood2_eta,LepGood2_phi,LepGood2_mass)" [10.,40.0,55.0,70.0,80.0,95.0,110.0,140.0,180.,800.0]'''
 FUNCTION_SVA_2L_scan='''"deltaPhi(LepGood1_phi, LepGood2_phi)" 30,-3.14,3.14 '''
 FUNCTION_SVA_3L='''"mass_3_cheap(LepGood1_pt,LepGood1_eta,LepGood2_pt,LepGood2_eta,LepGood2_phi-LepGood1_phi,LepGood3_pt,LepGood3_eta,LepGood3_phi-LepGood1_phi)" [20.,100.,140.,190.,250.,1000.]'''
+FUNCTION_SVA_3l_ttW =  '''"LepGood1_pt+LepGood2_pt+LepGood3_pt" 50,50,400'''
 FUNCTION_SVA_4L="m4l [70.,200.0,300.0,1000.]"
 ONEBIN="1 1,0.5,1.5"
 MCASUFFIX="mcdata-frdata"
@@ -128,6 +129,14 @@ if REGION == "3l_SVA":
     TORUN="python {SCRIPT} {DOFILE} ttH-multilepton/mca-3l-{MCASUFFIX}{MCAOPTION}.txt ttH-multilepton/3l_tight.txt {FUNCTION_SVA_3L} {SYSTS} {OPT_3L} --binname ttH_3l_{YEAR} --categorize {CATFUNC} {CATBINS} {CATNAMES}  --year {YEAR} ;".format(SCRIPT=SCRIPT,DOFILE=DOFILE,MCASUFFIX=MCASUFFIX,MCAOPTION=MCAOPTION,FUNCTION_SVA_3L=FUNCTION_SVA_3L,SYSTS=SYSTS,OPT_3L=OPT_3L,CATFUNC=CATFUNC,CATBINS=CATBINS,CATNAMES=CATNAMES,YEAR=YEAR)
     print submit.format(command=TORUN)
 
+if REGION == "3l_SVA_ttW":
+    CATFUNC='''"ttW_3l_SVA_classifier( nJet25,nBJetMedium25, LepGood1_charge, LepGood2_charge,  LepGood3_charge)"'''
+    CATBINS="[0.5,1.5,2.5,3.5,4.5,6.5,7.5,8.5,9.5,10.5,11.5,12.5]"
+    CATNAMES="2j1b_neg,2j1b_pos,2j2b_neg,2j2b_pos,3j1b_neg,3j1b_pos,3j2b_neg,3j2b_pos,gt3j1b_neg,gt3j1b_pos,gt3j2b_neg,gt3j2b_pos"
+    OPT_3L="{T3L} {OPTIONS} -W L1PreFiringWeight_Nom*puWeight*btagSF_shape*triggerSF_3l*leptonSF_3l".format(T3L=T3L, OPTIONS=OPTIONS)
+    TORUN1='''python {SCRIPT} {DOFILE} ttH-multilepton/mca-3l-{MCASUFFIX}{MCAOPTION}.txt ttH-multilepton/3l_tight.txt {FUNCTION_SVA_3L} {SYSTS} {OPT_3L} --binname ttH_3l_{YEAR} --categorize {CATFUNC} {CATBINS} {CATNAMES}  --year {YEAR};'''.format(SCRIPT=SCRIPT, DOFILE=DOFILE, MCASUFFIX=MCASUFFIX, MCAOPTION=MCAOPTION, FUNCTION_SVA_3L=FUNCTION_SVA_3l_ttW, SYSTS=SYSTS, OPT_3L=OPT_3L, CATFUNC=CATFUNC,CATNAMES=CATNAMES, CATBINS=CATBINS,YEAR=YEAR)
+    print submit.format(command=TORUN1)
+
 if REGION == "3l_SVA_scan":
     CATFUNC='''"ttH_catIndex_3l_SVA_soft(LepGood1_charge,LepGood2_charge,LepGood3_charge,nJet25)"'''
     CATBINS="[10.5,11.5,12.5,13.5,14.5]"
@@ -137,6 +146,9 @@ if REGION == "3l_SVA_scan":
     TORUN2='''python {SCRIPT} {DOFILE} ttH-multilepton/mca-3l-{MCASUFFIX}{MCAOPTION}.txt ttH-multilepton/3l_tight_thq.txt {FUNCTION_SVA_3L} {SYSTS} {OPT_3L} --binname tHq_3l_{YEAR} -E ^thqlike -X ^borthogonality -X ^FRWorthogonality --categorize {CATFUNC} {CATBINS} {CATNAMES}  --year {YEAR};'''.format(SCRIPT=SCRIPT, DOFILE=DOFILE, MCASUFFIX=MCASUFFIX, MCAOPTION=MCAOPTION, FUNCTION_SVA_3L=FUNCTION_SVA_2L_scan, SYSTS=SYSTS, OPT_3L=OPT_3L, CATFUNC=CATFUNC,CATNAMES=CATNAMES, CATBINS=CATBINS,YEAR=YEAR)
     print submit.format(command=TORUN1)
     print submit.format(command=TORUN2)
+
+
+   
 
 if  REGION == "cr_3l":
     OPT_3L='{T3L} {OPTIONS} -W "L1PreFiringWeight_Nom*puWeight*btagSF_shape*triggerSF_ttH(LepGood1_pdgId, LepGood1_conePt, LepGood2_pdgId, LepGood2_conePt, 3, year)*leptonSF_3l"'.format(T3L=T3L,OPTIONS=OPTIONS)
