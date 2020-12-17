@@ -233,10 +233,13 @@ def SetTheUncsFromHere(histo, hlist, SetStatUncs = False):
     return
 
 
-def getCovarianceFromVar(nom, var, name, ty = "folded", doCorr = False):
+def getCovarianceFromVar(nom, var, name, year = "2016", ty = "detector", doCorr = False):
     nbins   = nom.GetXaxis().GetNbins()
-    binning = array('f', vl.varList[name]['recobinning'] if ty == "folded" else vl.varList[name]['genbinning'])
-    if ty == "folded" and vl.doxsec: var.Scale(1/vl.Lumi/1000)
+    binning = array('f', vl.varList[name]['bins_detector'] if ty == "detector" else vl.varList[name]['bins_particle'])
+    if ty == "detector" and vl.doxsec:
+        thelumi = vl.TotalLumi if year == "run2" else vl.LumiDict[int(year)]
+        scaleval = 1/thelumi/1000 if vl.doxsec else 1
+        var.Scale(scaleval)
     cov     = r.TH2D(var.GetName().replace("data_", "").replace(name+"_", ''), '', nbins, binning, nbins, binning)
     for x in range(nbins):
         for y in range(nbins):
@@ -244,3 +247,98 @@ def getCovarianceFromVar(nom, var, name, ty = "folded", doCorr = False):
             cov.SetBinContent(bin, (nom.GetBinContent(x + 1) - var.GetBinContent(x + 1)) * (nom.GetBinContent(y + 1) - var.GetBinContent(y + 1)))
 
     return cov
+
+
+def drawTheRelUncPlot(listWithHistos, thedict, thePlot, yaxismax = "auto"):
+    # Calculate the order
+    uncListorig = getUncList(thedict, False)
+    uncList     = uncListorig[:vl.nuncs]
+
+    # Calculate the total uncertainty histogram and the total systematic one
+    incmax = []; incsyst = []
+    maxinctot = 0
+    hincmax   = deepcopy(thedict[""].Clone('hincmax'))
+    hincmax.SetLineColor(r.kBlack)
+    hincmax.SetLineWidth( 2 )
+    hincmax.SetFillColorAlpha(r.kBlue, 0.)
+
+    hincsyst  = deepcopy(thedict[""].Clone('hincsyst'))
+    hincsyst.SetLineColor(r.kBlack)
+    hincsyst.SetLineWidth( 2 )
+    hincsyst.SetLineStyle( 3 )
+    hincsyst.SetFillColorAlpha(r.kBlue, 0.)
+
+    for bin in range(1, listWithHistos[0].GetNbinsX() + 1):
+        if listWithHistos[1].GetBinError(bin) > listWithHistos[0].GetBinContent(bin):
+            incmax.append(max([listWithHistos[0].GetBinError(bin), listWithHistos[0].GetBinContent(bin)]))
+        else:
+            incmax.append(max([listWithHistos[0].GetBinError(bin), listWithHistos[1].GetBinError(bin)]))
+
+        if math.sqrt(listWithHistos[1].GetBinError(bin)**2 - thedict[""].GetBinError(bin)**2) > listWithHistos[0].GetBinContent(bin):
+            incsyst.append(max([math.sqrt(listWithHistos[0].GetBinError(bin)**2 - thedict[""].GetBinError(bin)**2),
+                                listWithHistos[0].GetBinContent(bin)]))
+        else:
+            incsyst.append(max([math.sqrt(listWithHistos[0].GetBinError(bin)**2 - thedict[""].GetBinError(bin)**2),
+                                math.sqrt(listWithHistos[1].GetBinError(bin)**2 - thedict[""].GetBinError(bin)**2)]))
+
+        hincmax.SetBinContent(bin, incmax[bin-1] / hincmax.GetBinContent(bin))
+        hincmax.SetBinError(bin, 0.)
+
+        if (hincmax.GetBinContent(bin) > maxinctot): maxinctot = hincmax.GetBinContent(bin)
+
+        hincsyst.SetBinContent(bin, incsyst[bin-1] / hincsyst.GetBinContent(bin))
+        hincsyst.SetBinError(bin, 0.)
+
+
+    # Set maximum of the y axis
+    if yaxismax == "auto":
+        if (maxinctot >= 0.9):
+            if maxinctot >= 5:
+                hincmax.GetYaxis().SetRangeUser(0, 5)
+            else:
+                hincmax.GetYaxis().SetRangeUser(0, maxinctot + 0.1)
+
+        else:
+            hincmax.GetYaxis().SetRangeUser(0, 0.9)
+    else:
+        hincmax.GetYaxis().SetRangeUser(0, yaxismax)
+
+
+    # Begin drawing; first the total, systematic and statistical lines
+    thePlot.addHisto(hincmax,  'hist',      'Total',      'L')
+    thePlot.addHisto(hincsyst, 'hist,same', 'Systematic', 'L')
+
+    hincstat = None
+    for i in range(len(uncListorig)):
+        if "Stat" in uncListorig[i][0]:
+            uncListorig[i][1].SetLineColor(r.kBlack)
+            uncListorig[i][1].SetLineStyle( 2 )
+
+            hincstat = deepcopy(uncListorig[i][1].Clone("hincstat"))
+
+            #thePlot.addHisto(uncListorig[i][1], 'hist,same', vl.SysNameTranslator[uncListorig[i][0]], 'L')
+            uncListorig[i][1].SetFillColorAlpha(r.kBlue, 0.)
+            thePlot.addHisto(uncListorig[i][1], 'hist,same', uncListorig[i][0], 'L')
+
+    # And now, the rest of the lines are up to vl.nuncs of the most dominant systematic sources
+    iS = 0
+    plottedsysts = 0
+    while plottedsysts < vl.nuncs and plottedsysts <= len(uncListorig):
+        if "Stat" in uncListorig[iS][0]:
+            iS += 1
+            continue
+
+        if "Lumi" in uncListorig[iS][0]:
+            uncListorig[iS][1].SetLineColor(r.kBlack)
+            uncListorig[iS][1].SetLineStyle( 4 )
+        else:
+            uncListorig[iS][1].SetLineColor( vl.ColorMapList[iS] )
+            uncListorig[iS][1].SetLineWidth( 2 )
+
+        uncListorig[iS][1].SetFillColorAlpha(r.kBlue, 0.)
+        #thePlot.addHisto(uncListorig[iS][1], 'H,same', vl.SysNameTranslator[uncListorig[iS][0]], 'L')
+        thePlot.addHisto(uncListorig[iS][1], 'H,same', uncListorig[iS][0], 'L')
+        plottedsysts += 1
+        iS += 1
+
+    return (uncListorig, hincstat, hincsyst, hincmax)

@@ -18,10 +18,14 @@ colorMap = [
     ]
 
 
-class beautifulUnfoldingPlots:
+
+class beautifulUnfPlot:
     def __init__(self, name, variable):
         #r.gROOT.SetBatch(True)
         self.name           = name
+        self.isUncPlot      = False
+        if "uncs" in self.name:
+            self.isUncPlot = True
         self.var            = variable
         self.inited         = False
         self.objectsInLeg   = []
@@ -33,6 +37,7 @@ class beautifulUnfoldingPlots:
         self.doPreliminary  = True
         self.doSupplementary= False
         self.yaxisuplimit   = 0
+        self.yaxis_unclabel = 'Relative uncertainty (adim.)'
 
 
     def initCanvasAndAll(self):
@@ -88,16 +93,18 @@ class beautifulUnfoldingPlots:
             
             if self.var in vl.varList:
                 asymhisto.GetXaxis().SetTitle( vl.varList[self.var]['xaxis'] )
-                if not vl.doxsec:
+                if self.isUncPlot:
+                    asymhisto.GetYaxis().SetTitle( self.yaxis_unclabel )
+                elif not vl.doxsec or "detector" in self.name:
                     asymhisto.GetYaxis().SetTitle( 'Events' )
-                elif "fiducial" in self.var and not "uncertainties" in self.var and not "norm" in self.var:
+                elif "fiducial" in self.name and not "norm" in self.name:
                     asymhisto.GetYaxis().SetTitle( vl.varList[self.var]['yaxisfid'] )
-                elif "norm" in self.var and "fiducial" in self.var and not "uncertainties" in self.var:
+                elif "norm" in self.name and "fiducial" in self.name:
                     asymhisto.GetYaxis().SetTitle( vl.varList[self.var]['yaxisfidbin'] )
-                elif "norm" in self.var and not "uncertainties" in self.var:
-                    asymhisto.GetYaxis().SetTitle( vl.varList[self.var]['yaxisnorm'] )
+                elif "bin" in self.var:
+                    asymhisto.GetYaxis().SetTitle( vl.varList[self.var]['yaxisbin'] )
                 else:
-                    asymhisto.GetYaxis().SetTitle( vl.varList[self.var]['yaxis_unc'] )
+                    asymhisto.GetYaxis().SetTitle( vl.varList[self.var]['yaxis_particle'] )
             
             asymhisto.GetXaxis().SetRangeUser(histo.GetXaxis().GetBinLowEdge(1), histo.GetXaxis().GetBinUpEdge(histo.GetNbinsX()))
             
@@ -137,16 +144,18 @@ class beautifulUnfoldingPlots:
             histo = histos
             if self.var in vl.varList:
                 histo.GetXaxis().SetTitle( vl.varList[self.var]['xaxis'] )
-                if not vl.doxsec:
-                    histo.GetYaxis().SetTitle( 'Events' ).replace('_norm', '').replace("norm", "")
-                elif "fiducial" in self.var and not "uncertainties" in self.var and not "norm" in self.var:
+                if self.isUncPlot:
+                    histo.GetYaxis().SetTitle( self.yaxis_unclabel )
+                elif not vl.doxsec or "detector" in self.name:
+                    histo.GetYaxis().SetTitle( 'Events' )
+                elif "fid" in self.var and not "bin" in self.var:
                     histo.GetYaxis().SetTitle( vl.varList[self.var]['yaxisfid'] )
-                elif "norm" in self.var and "fiducial" in self.var and not "uncertainties" in self.var:
+                elif "bin" in self.var and "fid" in self.var:
                     histo.GetYaxis().SetTitle( vl.varList[self.var]['yaxisfidbin'] )
-                elif "norm" in self.var and not "uncertainties" in self.var:
-                    histo.GetYaxis().SetTitle( vl.varList[self.var]['yaxisnorm'] )
+                elif "bin" in self.var:
+                    histo.GetYaxis().SetTitle( vl.varList[self.var]['yaxisbin'] )
                 else:
-                    histo.GetYaxis().SetTitle( vl.varList[self.var]['yaxis_unc'] )
+                    histo.GetYaxis().SetTitle( vl.varList[self.var]['yaxis_particle'] )
 
             histo.GetXaxis().SetTitleFont(43)
             histo.GetXaxis().SetTitleSize(22)
@@ -209,16 +218,18 @@ class beautifulUnfoldingPlots:
 
         if self.var in vl.varList:
             histo.GetXaxis().SetTitle( vl.varList[self.var]['xaxis'] )
-            if not vl.doxsec:
+            if self.isUncPlot:
+                histo.GetYaxis().SetTitle( self.yaxis_unclabel )
+            elif not vl.doxsec or "detector" in self.name:
                 histo.GetYaxis().SetTitle( 'Events' )
-            elif "fiducial" in self.var and not "uncertainties" in self.var and not "norm" in self.var:
+            elif "fid" in self.var and not "bin" in self.var:
                 histo.GetYaxis().SetTitle( vl.varList[self.var]['yaxisfid'] )
-            elif "fiducial" in self.var and "norm" in self.var and not "uncertainties" in self.var:
+            elif "fid" in self.var and "bin" in self.var:
                 histo.GetYaxis().SetTitle( vl.varList[self.var]['yaxisfidbin'] )
-            elif "norm" in self.var and not "uncertainties" in self.var:
-                histo.GetYaxis().SetTitle( vl.varList[self.var]['yaxisnorm'] )
+            elif "bin" in self.var:
+                histo.GetYaxis().SetTitle( vl.varList[self.var]['yaxisbin'] )
             else:
-                histo.GetYaxis().SetTitle( vl.varList[self.var]['yaxis_unc'] )
+                histo.GetYaxis().SetTitle( vl.varList[self.var]['yaxis_particle'] )
 
         histo.GetXaxis().SetTitleFont(43)
         histo.GetXaxis().SetTitleSize(22)

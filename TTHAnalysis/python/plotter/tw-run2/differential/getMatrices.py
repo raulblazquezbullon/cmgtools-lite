@@ -53,12 +53,19 @@ def GetAndPlotResponseMatrix(var, key, theresponseh, theparticleh, thepath):
         htemp.SetBinContent(0, j, 0.)
         htemp.SetBinContent(nparticlebins + 1, j, 0.)
 
+    #print "htemp 00", htemp.GetBinContent(0, 0)
+    #print "htemp 20", htemp.GetBinContent(nparticlebins + 1, 0)
+    #print "htemp 02", htemp.GetBinContent(0, ndetectorbins + 1)
+    #print "htemp 11", htemp.GetBinContent(1, 1)
+    #print "htemp 12", htemp.GetBinContent(1, 2)
+    #print "htemp 21", htemp.GetBinContent(2, 1)
+    #print "htemp 11", htemp.GetBinContent(nparticlebins + 1, ndetectorbins + 1)
+
     htemp.SetXTitle(vl.varList[var]['xaxis'] + " [particle level]")
     htemp.SetYTitle(vl.varList[var]['xaxis'] + " [detector level]")
     htemp.SetName("R" + var + "_" + key)
 
     tdrstyle.setTDRStyle()
-    htemp.Scale(100)
     htemp.SetStats(False)
     r.gStyle.SetLabelFont(43, "XYZ")
     r.gStyle.SetLabelSize(22, "XYZ")
@@ -80,7 +87,11 @@ def GetAndPlotResponseMatrix(var, key, theresponseh, theparticleh, thepath):
     if 'resptxtsize' in vl.varList[var]: htemp.SetMarkerSize(vl.varList[var]['resptxtsize'])
     else:                                  htemp.SetMarkerSize(markersize)
     htemp.SetMarkerColor(r.kRed)
-    htemp.Draw("colz text e")
+    #print htemp.GetBinContent(2, 2)
+    htemptodraw = deepcopy(htemp.Clone("htemptodraw"))
+    htemptodraw.Scale(100.)
+    #print htemp.GetBinContent(2, 2)
+    htemptodraw.Draw("colz text e")
     r.gStyle.SetPaintTextFormat("4.3f")
     CMS_lumi.lumi_13TeV = ""
     #CMS_lumi.extraText  = 'Simulation Supplementary'
@@ -312,23 +323,26 @@ def CalculateAndPlotResponseMatrices(tsk):
     fDetector         = r.TFile(inpath + "/" + iY + "/" + iV + "/detector.root", "READ")
     fDetectorParticle = r.TFile(inpath + "/" + iY + "/" + iV + "/detectorparticle.root", "READ")
     fResponse         = r.TFile(inpath + "/" + iY + "/" + iV + "/detectorparticleResponse.root", "READ")
+    fDetectorParticleButDetector  = r.TFile(inpath + "/" + iY + "/" + iV + "/detectorparticlebutdetector.root", "READ")
     fNonFiducial      = r.TFile(inpath + "/" + iY + "/" + iV + "/nonfiducial.root", "READ")
 
-    detectordict = {}; detectorparticledict = {};
+    detectordict = {}; detectorparticledict = {}; detectorparticlebutdetectordict = {};
     responsedict = {}; nonfiducialdict = {};
     condnumdict = {}
     for key in fDetector.GetListOfKeys():
         tmpnam = key.GetName()
         #print "\ntmpnam:", tmpnam
 
-        if "mistagging" in tmpnam: continue #### ?????????????????????????????????????????????????????????????????????????
+        #if "mistagging" in tmpnam: continue #### ?????????????????????????????????????????????????????????????????????????
 
 
         if "data" in tmpnam: continue
 
         if "Up" not in tmpnam and "Down" not in tmpnam: # It is the nominal value!
+            print tmpnam
             detectordict[""]         = deepcopy(fDetector.Get(tmpnam).Clone(""))
             detectorparticledict[""] = deepcopy(fDetectorParticle.Get(tmpnam).Clone(""))
+            detectorparticlebutdetectordict[""] = deepcopy(fDetectorParticleButDetector.Get(tmpnam).Clone(""))
             responsedict[""]         = deepcopy(fResponse.Get(tmpnam).Clone(""))
             nonfiducialdict[""]      = deepcopy(fNonFiducial.Get(tmpnam).Clone(""))
         else:
@@ -338,7 +352,7 @@ def CalculateAndPlotResponseMatrices(tsk):
             if tmpunc not in detectordict:
                 detectordict[tmpunc]         = {}
                 responsedict[tmpunc]         = {}
-
+            #print tmpunc
             detectordict[tmpunc]         = deepcopy(fDetector.Get(tmpnam).Clone(tmpunc))
             responsedict[tmpunc]         = deepcopy(fResponse.Get(tmpnam).Clone(tmpunc))
             nonfiducialdict[tmpunc]      = deepcopy(fNonFiducial.Get(tmpnam).Clone(tmpunc))
@@ -348,6 +362,7 @@ def CalculateAndPlotResponseMatrices(tsk):
     fDetectorParticle.Close(); del fDetectorParticle
     fResponse.Close();         del fResponse
     fNonFiducial.Close();      del fNonFiducial
+    fDetectorParticleButDetector.Close(); del fDetectorParticleButDetector
 
     #print detectordict, detectorparticledict, responsedict, nonfiducialdict
 

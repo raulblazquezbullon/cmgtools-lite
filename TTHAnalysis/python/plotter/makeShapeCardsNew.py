@@ -117,9 +117,10 @@ for binname, report in allreports.iteritems():
     for p,h in report.iteritems(): 
       if p not in ("data", "data_obs"):
         h.addBinByBin(namePattern="%s_%s_%s_bin{bin}" % (options.bbb, binname, p), conservativePruning = True)
-  for p,h in report.iteritems():
-    for b in xrange(1,h.GetNbinsX()+1):
-      h.SetBinError(b,min(h.GetBinContent(b),h.GetBinError(b))) # crop all uncertainties to 100% to avoid negative variations
+  if not options.notvarschanges:
+    for p,h in report.iteritems():
+      for b in xrange(1,h.GetNbinsX()+1):
+        h.SetBinError(b,min(h.GetBinContent(b),h.GetBinError(b))) # crop all uncertainties to 100% to avoid negative variations
   nuisances = sorted(listAllNuisances(report))
 
   allyields = dict([(p,h.Integral()) for p,h in report.iteritems()])
@@ -155,16 +156,16 @@ for binname, report in allreports.iteritems():
                 isShape = True
             variants = list(h.getVariation(name))
 
-            for hv,d in zip(variants, ('up','down')):
-                k = hv.Integral()/n0
-                if k == 0:
-                    print "Warning: underflow template for %s %s %s %s. Will take the nominal scaled down by a factor 2" % (binname, p, name, d)
-                    hv.Add(h.raw()); hv.Scale(0.5)
-                elif k < 0.2 or k > 5:
-                    print "Warning: big shift in template for %s %s %s %s: kappa = %g " % (binname, p, name, d, k)
-
-            # prevent variations from going to zero by symmetrizing
             if not options.notvarschanges:
+                for hv,d in zip(variants, ('up','down')):
+                    k = hv.Integral()/n0
+                    if k == 0:
+                        print "Warning: underflow template for %s %s %s %s. Will take the nominal scaled down by a factor 2" % (binname, p, name, d)
+                        hv.Add(h.raw()); hv.Scale(0.5)
+                    elif k < 0.2 or k > 5:
+                        print "Warning: big shift in template for %s %s %s %s: kappa = %g " % (binname, p, name, d, k)
+
+                # prevent variations from going to zero by symmetrizing
                 for bin in range(1,h.GetXaxis().GetNbins()+1):
                     for d in range(2):
                         if variants[d].GetBinContent( bin ) == 0:

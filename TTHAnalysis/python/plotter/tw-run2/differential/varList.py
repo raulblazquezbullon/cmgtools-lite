@@ -7,7 +7,7 @@ import warnings as wr
 import os
 
 # === ESSENTIAL PARAMETERS OF THE ANALYSIS. CHANGING THIS APPLIES TO EVERYTHING. ===
-nuncs       = 4         # Number of uncs. shown in the relative uncertainty plots
+nuncs       = 3         # Number of uncs. shown in the relative uncertainty plots
 asimov      = True      # Use of Asimov dataset or data
 doxsec      = True      # Show events or diff. cross section in final results
 doPre       = True      # Show or not show the "Preliminary" in the plots
@@ -21,23 +21,17 @@ LumiDict    = {2016 : 35.92,
                2018 : 59.74}
 TotalLumi   = LumiDict[2016] + LumiDict[2017] + LumiDict[2018] # In femtobarns
 
-nominal_weight = "(TWeight)"
-#nominal_weight             = "(TWeight * (TWeight_TopPtUp/TWeight))"
-
 plotlimits   = tuple([float(i) for i in "0.00, 0.25, 1.00, 1.00".split(',')]) # xlow, ylow, xup, yup
 ratiolimits  = tuple([float(i) for i in "0.00, 0.00, 1.00, 0.25".split(',')]) # xlow, ylow, xup, yup
 margins      = "0.06, 0.1, 0.04, 0.1" # top, bottom, right, left
 marginsratio = "0.03, 0.4, 0.04, 0.1" # top, bottom, right, left
 legpos       = (0.82, 0.65, 0.93, 0.93)
 
-if asimov: labellegend = 'Pseudodata'
+if asimov: labellegend = 'Asimov dataset'
 else:      labellegend = 'Data'
 
 #storagepath = "/pool/ciencias/userstorage/vrbouza/proyectos/TW/MiniTrees/"
 storagepath = "/pool/phedex/userstorage/vrbouza/proyectos/TW/MiniTrees/"
-minipath    = "../../../TW_temp/"
-tablespath  = "./results/tables"
-gofpath     = "./results/goftests"
 
 def GetLastFolder(stpth):
     savefolders   = next(os.walk(stpth))[1]
@@ -69,8 +63,8 @@ def GiveMeTheExpNamesWOJER(inl):
 # var_response  := name of the variable in the response matrix without the M
 varList = {}
 varList['LCurve'] = {
-    'xaxis'       : 'log L_{1}',
-    'yaxis'       : 'log \\frac{L_{2}}{\\tau^{2}}',
+    'xaxis' : 'log L_{1}',
+    'yaxis' : 'log \\frac{L_{2}}{\\tau^{2}}',
 }
 
 
@@ -93,7 +87,7 @@ varList['Lep1Lep2Jet1MET_Mt'] = {
     'printname'   : "\\transmassvar (\GeV)",
     'printnamenodim':"\\transmassvar",
     'mathprintname': "\\transmassvar",
-    'yaxis'       : 'd#sigma/d(#it{m}_{T}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{p}_{T}^{miss}, #it{j})) (pb)',
+    'yaxis_particle'       : 'd#sigma/d(#it{m}_{T}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{p}_{T}^{miss}, #it{j})) (pb)',
     'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(#it{m}_{T}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{p}_{T}^{miss}, #it{j})) (adim.)',
     'yaxisfidbin' : '(1/#sigma_{fid.})d#sigma/d(#it{m}_{T}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{p}_{T}^{miss}, #it{j})) (1/GeV)',
     'yaxisnorm'   : 'd#sigma/d(#it{m}_{T}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{p}_{T}^{miss}, #it{j})) (pb/GeV)',
@@ -123,55 +117,51 @@ varList['Lep1Lep2Jet1MET_Mt'] = {
 
     #'descbinning' : [0., 800.], ## TEMPORAL
     #'ndescbins'   : 20, ## TEMPORAL
-    "var_detector"         : 'max(min(Lep1Lep2Jet1MET_Mt, 499.), 100.)',
-    'var_response': 'Lep1Lep2Jet1MET_Mt',
-    'var_particle'     : 'max(min(DressLep1Lep2Jet1MET_Mt, 499.), 100.)',
+    "var_detector"  : 'max(min(Lep1Lep2Jet1MET_Mt, 499.), 100.)',
+    'var_response'  : 'Lep1Lep2Jet1MET_Mt',
+    'var_particle'  : 'max(min(DressLep1Lep2Jet1MET_Mt, 499.), 100.)',
     'legpos'      : (0.51, 0.55, 0.71, 0.93),
     #'legposdesc'  : (0.15, 0.425, 0.35, 0.81),
     "legposdesc"  : (0.65, 0.55, 0.85, 0.93),
     "maxdesc"  : 2600,
-    'legpos_foldas':"BL",
-    'legpos_fold' : "BL",
-    'legpos_fid'  : "TL",
-    "legpos_unf"   : (.18, .26, .36, .03),
-    #"legpos_unf"  : "BL",
-    'legpos_unfas': "TL",
-    'uncleg_fold' : "TL",
-    'uncleg_unf'  : "TC",
-    'uncleg_fid'  : "TL",
-    #'legpos_fidbin':(.175, .73, .27, .49),
-    'legpos_fidbin': (.52, .9, .72, .65),
-    'uncleg_fidbin':"TL",
+    'legpos_detectoras':"BL",
+    'legpos_detector' : "BL",
+    'legpos_particlefid'  : "TL",
+    "legpos_particle"   : (.18, .26, .36, .03),
+    #"legpos_particle"  : "BL",
+    'legpos_particleas': "TL",
+    'legpos_detectorunc' : "TL",
+    'legpos_particleunc'  : "TC",
+    'legpos_particlefidunc'  : "TL",
+    #'legpos_particlefidbin':(.175, .73, .27, .49),
+    'legpos_particlefidbin': (.52, .9, .72, .65),
+    'legpos_particlefidbinunc':"TL",
     'resptxtsize' : 0.9,
-    'covtxtsizefol': 0.75,
-    'covtxtsizeunf': 1.5,
+    'txtsize_covdetector': 0.75,
+    'txtsize_covparticle': 1.5,
     'covtxtangleunf': 45,
-    "covtxtsizefidnorm": 1.4,
+    "txtsize_covparticlefidbin": 1.4,
     'covtxtangleunffidnorm': 35,
     "yaxisuplimitunf": 0.176,
-    "yaxismax_fid" : 1.6,
-    #"yaxismax_fidnorm" : 1.8,
-    "yaxismax_fidnorm" : 1.2,
+    "yaxismax_particlefid" : 1.6,
+    #"yaxismax_particlefidbin" : 1.8,
+    "yaxismax_particlefidbin" : 1.2,
     "yaxismax_unf" : 2,
-    #"yaxismax_norm": 2.0,
-    "yaxismax_norm": 2.1,
-    'legpos_norm': "TL",
-    "uncleg_norm" : "TC",
-    "yaxisuplimitunfnorm": 0.0038,
+    #"yaxismax_particlebinunc": 2.0,
+    "yaxismax_particlebinunc": 2.1,
+    'legpos_particlebin': "TL",
+    "legpos_particlebinunc" : "TC",
+    "yaxismax_particlebin": 0.0038,
     #"yaxismax_ratio_fidnorm" : 4.0,
     "yaxismax_ratio_fidnorm" : 2.5,
     "yaxismax_ratio_norm" : 5.0,
-    "yaxisuplimitunffidnorm": 0.0155,
-}
-varList['Lep1Lep2Jet1MET_Mtuncertainties'] = {
-    'xaxis'       : varList['Lep1Lep2Jet1MET_Mt']['xaxis'],
-    'yaxis'       : 'Relative uncertainty (adim.)'
+    "yaxismax_particlefidbin": 0.0155,
 }
 
 varList['Lep1Lep2Jet1MET_MtATLAS'] = {
     #'xaxis'       : 'm_{T}(\\ell_{1}, \\ell_{2},\\slash{E}_{T}, j) (GeV)',
     'xaxis'       : '#it{m}_{T}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{p}_{T}^{miss}, #it{j}) (GeV)',
-    'yaxis'       : 'd#sigma/d(#it{m}_{T}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{p}_{T}^{miss}, #it{j})) (pb)',
+    'yaxis_particle'       : 'd#sigma/d(#it{m}_{T}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{p}_{T}^{miss}, #it{j})) (pb)',
     'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(#it{m}_{T}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{p}_{T}^{miss}, #it{j})) (adim.)',
     'yaxisfidbin' : '(1/#sigma_{fid.})d#sigma/d(#it{m}_{T}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{p}_{T}^{miss}, #it{j})) (1/GeV)',
     'bins_particle'  : [0., 275., 375., 500., 1000.],
@@ -181,26 +171,22 @@ varList['Lep1Lep2Jet1MET_MtATLAS'] = {
     'var_particle'     : 'DressLep1Lep2Jet1MET_Mt',
     'legpos'      : (0.51, 0.55, 0.71, 0.93),
     'legposdesc'  : (0.15, 0.425, 0.35, 0.81),
-    'legpos_foldas':"BL",
-    'legpos_fold' : "BL",
-    'legpos_fid'  : "TL",
-    "legpos_unf"  : (.18, .65, .38, .40),
-    'legpos_unfas': "TL",
-    'uncleg_fold' : "TL",
-    'uncleg_unf'  : "TC",
-    'uncleg_fid'  : "TL",
-    'legpos_fidbin':"ML",
-    'uncleg_fidbin':"TL",
+    'legpos_detectoras':"BL",
+    'legpos_detector' : "BL",
+    'legpos_particlefid'  : "TL",
+    "legpos_particle"  : (.18, .65, .38, .40),
+    'legpos_particleas': "TL",
+    'legpos_detectorunc' : "TL",
+    'legpos_particleunc'  : "TC",
+    'legpos_particlefidunc'  : "TL",
+    'legpos_particlefidbin':"ML",
+    'legpos_particlefidbinunc':"TL",
     'resptxtsize' : 0.9,
-    'covtxtsizefol': 0.75,
-    'covtxtsizeunf': 1.5,
-    "covtxtsizefidnorm": 1.4,
+    'txtsize_covdetector': 0.75,
+    'txtsize_covparticle': 1.5,
+    "txtsize_covparticlefidbin": 1.4,
     'covtxtangleunffidnorm': "45",
-    "yaxismax_norm": 1.7,
-}
-varList['Lep1Lep2Jet1MET_MtATLASuncertainties'] = {
-    'xaxis'       : varList['Lep1Lep2Jet1MET_Mt']['xaxis'],
-    'yaxis'       : 'Relative uncertainty (adim.)',
+    "yaxismax_particlebinunc": 1.7,
 }
 
 varList['Lep1Lep2Jet1_M'] = {
@@ -209,7 +195,7 @@ varList['Lep1Lep2Jet1_M'] = {
     'printname'   : '\\invmassvar (\\GeV)',
     'printnamenodim':'\\invmassvar',
     'mathprintname': '\\invmassvar',
-    'yaxis'       : 'd#sigma/d(#it{m}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (pb)',
+    'yaxis_particle'       : 'd#sigma/d(#it{m}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (pb)',
     'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(#it{m}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (adim.)',
     'yaxisfidbin' : '(1/#sigma_{fid.})d#sigma/d(#it{m}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (1/GeV)',
     'yaxisnorm'   : 'd#sigma/d(#it{m}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (pb/GeV)',
@@ -246,38 +232,34 @@ varList['Lep1Lep2Jet1_M'] = {
     #'legposdesc'  : (0.11, 0.435, 0.31, 0.82),
     #'legposdesc'  : (0.65, 0.55, 0.85, 0.93),
     'legposdesc'  : (0.7, 0.55, 0.90, 0.93),
-    "var_detector"         : 'max(min(Lep1Lep2Jet1_M, 399.), 50.)',
-    'var_response': 'Lep1Lep2Jet1_M',
-    'var_particle'     : 'max(min(DressLep1Lep2Jet1_M, 399.), 50.)',
-    'uncleg_fold' : "TC",
-    'uncleg_fid'  : "TC",
-    'uncleg_unf'  : "TL",
-    'uncleg_fidbin': (.45, .615, .63, .9),
-    'legpos_fidbin': (.52, .9, .72, .65),
-    "legpos_unf"   : (.52, .9, .72, .65),
-    'covtxtsizefol': 0.5,
-    'covtxtsizeunf': 1.5,
+    "var_detector"         : 'max(min(Lep1Lep2Jet1_M, 399.), 50.1)',
+    'var_response'         : 'Lep1Lep2Jet1_M',
+    'var_particle'         : 'max(min(DressLep1Lep2Jet1_M, 399.), 50.1)',
+    'legpos_detectorunc' : "TC",
+    'legpos_particlefidunc'  : "TC",
+    'legpos_particleunc'  : "TL",
+    'legpos_particlefidbinunc': (.45, .615, .63, .9),
+    'legpos_particlefidbin': (.52, .9, .72, .65),
+    "legpos_particle"   : (.52, .9, .72, .65),
+    'txtsize_covdetector': 0.5,
+    'txtsize_covparticle': 1.5,
     'covtxtangleunf': 35,
-    'covtxtsizefidnorm': 1.3,
+    'txtsize_covparticlefidbin': 1.3,
     'covtxtangleunffidnorm': 35,
     "yaxisuplimitunf": 0.15,
-    "yaxismax_fid" : 0.7,
-    "yaxismax_fidnorm" : 0.7,
+    "yaxismax_particlefid" : 0.7,
+    "yaxismax_particlefidbin" : 0.7,
     "yaxismax_unf" : 1.55,
-    "yaxisuplimitunfnorm": 0.004,
-    "uncleg_norm" : (.18, .5, .31, .785),
-    "uncleg_fidbin": (.4, .615, .58, .9),
+    "yaxismax_particlebin": 0.004,
+    "legpos_particlebinunc" : (.18, .5, .31, .785),
+    "legpos_particlefidbinunc": (.4, .615, .58, .9),
     "yaxismax_ratio_fidnorm" : 2.5,
-}
-varList['Lep1Lep2Jet1_Muncertainties'] = {
-    'xaxis'       : varList['Lep1Lep2Jet1_M']['xaxis'],
-    'yaxis'       : 'Relative uncertainty (adim.)'
 }
 
 varList['Lep1Lep2Jet1_MATLAS'] = {
     #'xaxis'       : 'm(#ell_{1}, #ell_{2}, j) (GeV)',
     'xaxis'       : '#it{m}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j}) (GeV)',
-    'yaxis'       : 'd#sigma/d(#it{m}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (pb)',
+    'yaxis_particle'       : 'd#sigma/d(#it{m}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (pb)',
     'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(#it{m}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (adim.)',
     'yaxisfidbin' : '(1/#sigma_{fid.})d#sigma/d(#it{m}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (1/GeV)',
     'bins_particle'  : [0., 125., 175., 225., 300., 400., 1000.],
@@ -290,24 +272,19 @@ varList['Lep1Lep2Jet1_MATLAS'] = {
     "var_detector"         : 'Lep1Lep2Jet1_M',
     'var_response': 'Lep1Lep2Jet1_MATLAS',
     'var_particle'     : 'DressLep1Lep2Jet1_M',
-    'uncleg_fold' : "TC",
-    'uncleg_fid'  : "TL",
-    'legpos_fidbin':"ML",
-    'covtxtsizefol': 0.5,
-    'covtxtsizeunf': 1.3,
+    'legpos_detectorunc' : "TC",
+    'legpos_particlefidunc'  : "TL",
+    'legpos_particlefidbin':"ML",
+    'txtsize_covdetector': 0.5,
+    'txtsize_covparticle': 1.3,
 }
-varList['Lep1Lep2Jet1_MATLASuncertainties'] = {
-    'xaxis'       : varList['Lep1Lep2Jet1_MATLAS']['xaxis'],
-    'yaxis'       : 'Relative uncertainty (adim.)'
-}
-
 
 varList['Jet1_Pt'] = {
     'printname'   : 'Jet \\pt (\\GeV)',
     'printnamenodim':'Jet \\pt',
     'mathprintname': '\\text{Jet }\\pt',
     'xaxis'       : 'Jet #it{p}_{T} (GeV)',
-    'yaxis'       : 'd#sigma/d(jet #it{p}_{T}) (pb)',
+    'yaxis_particle'       : 'd#sigma/d(jet #it{p}_{T}) (pb)',
     'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(jet #it{p}_{T}) (adim.)',
     'yaxisfidbin' : '(1/#sigma_{fid.})d#sigma/d(jet #it{p}_{T}) (1/GeV)',
     'yaxisnorm'   : '(1/#sigma_{fid.})d#sigma/d(jet #it{p}_{T}) (pb/GeV)',
@@ -349,42 +326,33 @@ varList['Jet1_Pt'] = {
     'legpos'      : (0.7, 0.55, 0.90, 0.93),
     'legposdesc'  : (0.7, 0.55, 0.90, 0.93),
     'maxdesc'     : 3600,
-    "legpos_unf"  : "TC",
-    "var_detector": 'min(Jet1_Pt, 149.)',
+    "legpos_particle"  : "TC",
+    "var_detector": 'min(max(Jet1_Pt, 30.1), 149.)',
     'var_response': 'Jet1_Pt',
-    'var_particle': 'min(DressJet1_Pt, 149.)',
-    'uncleg_fold' : "TL",
-    'uncleg_unf'  : "TL",
-    'uncleg_fid'  : "TL",
-    'uncleg_fidbin':"TL",
-    'legpos_fidbin':"TC",
+    'var_particle': 'min(max(DressJet1_Pt, 30.1), 149.)',
+    'legpos_detectorunc' : "TL",
+    'legpos_particleunc'  : "TL",
+    'legpos_particlefidunc'  : "TL",
+    'legpos_particlefidbinunc':"TL",
+    'legpos_particlefidbin':"TC",
     'resptxtsize' : 1.5,
-    'covtxtsizeunf': 2,
+    'txtsize_covparticle': 2,
     'covtxtangleunf': 45,
-    'covtxtsizefol': 1.25,
-    "covtxtsizefidnorm": 1.8,
+    'txtsize_covdetector': 1.25,
+    "txtsize_covparticlefidbin": 1.8,
     "covtxtangleunffidnorm": 45,
     "yaxisuplimitunf": 0.20,
-    "yaxisuplimitunffidnorm": 0.029,
-    "yaxismax_fid" : 1.8,
-    #"yaxismax_fidnorm" : 1.4,
-    "yaxismax_fidnorm" : 1.2,
+    "yaxismax_particlefidbin": 0.029,
+    "yaxismax_particlefid" : 1.8,
+    #"yaxismax_particlefidbin" : 1.4,
+    "yaxismax_particlefidbin" : 1.2,
     "yaxismax_unf" : 2.3,
-    "yaxismax_norm": 1.8,
-    "yaxisuplimitunfnorm": 0.010,
-    "uncleg_norm" : "TL",
+    "yaxismax_particlebinunc": 1.8,
+    "yaxismax_particlebin": 0.010,
+    "legpos_particlebinunc" : "TL",
     "yaxismax_ratio_norm" : 3.5,
     "yaxismax_ratio_fidnorm" : 2.5,
 }
-varList['Jet1_Ptuncertainties'] = {
-    'xaxis'       : varList['Jet1_Pt']['xaxis'],
-    'yaxis'       : 'Relative uncertainty (adim.)'
-}
-varList['ResponseJet1_Pt'] = {
-    'xaxis'       : 'Gen Jet #it{p}_{T} (GeV)',
-    'yaxis'       : 'Jet #it{p}_{T} (GeV)'
-}
-
 
 varList['Lep1_Pt'] = {
     #'xaxis'       : 'p_{T}(\\ell_{1}) (GeV)',
@@ -392,7 +360,7 @@ varList['Lep1_Pt'] = {
     'printnamenodim': 'Leading lepton \\pt',
     'mathprintname':'\\text{Leading lepton }\\pt',
     'xaxis'       : 'Leading lepton #it{p}_{T} (GeV)',
-    'yaxis'       : 'd#sigma/d(leading lepton #it{p}_{T}) (pb)',
+    'yaxis_particle'       : 'd#sigma/d(leading lepton #it{p}_{T}) (pb)',
     'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(leading lepton #it{p}_{T}) (adim.)',
     'yaxisfidbin' : '(1/#sigma_{fid.})d#sigma/d(leading lepton #it{p}_{T}) (1/GeV)',
     'yaxisnorm'   : 'd#sigma/d(leading lepton #it{p}_{T}) (pb/GeV)',
@@ -433,87 +401,62 @@ varList['Lep1_Pt'] = {
     'legpos'      : (0.7, 0.55, 0.90, 0.93),
     'legposdesc'  : (0.7, 0.55, 0.90, 0.93),
     "maxdesc"     : 3300,
-    "var_detector": 'min(LepGood_pt_corrAll[0], 149.)',
+    "var_detector": 'min(max(LepGood_pt_corrAll[0], 25.1), 149.)',
     'var_response': 'Lep1_Pt',
-    'var_particle': 'min(GenDressedLepton_pt[iDressSelLep[0]], 149.)',
-    'uncleg_fold' : "TL",
-    'uncleg_fid'  : "TL",
-    #"legpos_unf"   : (.18, .3, .32, .05),
-    "legpos_unf"   : "TC",
-    'legpos_fidbin': "TC",
-    'uncleg_unf'   : "TL",
-    'uncleg_fidbin': "TL",
+    'var_particle': 'min(max(GenDressedLepton_pt[iDressSelLep[0]], 25.1), 149.)',
+    'legpos_detectorunc' : "TL",
+    'legpos_particlefidunc'  : "TL",
+    #"legpos_particle"   : (.18, .3, .32, .05),
+    "legpos_particle"   : "TC",
+    'legpos_particlefidbin': "TC",
+    'legpos_particleunc'   : "TL",
+    'legpos_particlefidbinunc': "TL",
     'resptxtsize'  : 1.5,
-    'covtxtsizefol': 1.2,
-    'covtxtsizeunf': 1.35,
+    'txtsize_covdetector': 1.2,
+    'txtsize_covparticle': 1.35,
     'covtxtangleunf': 42.50,
-    "covtxtsizefidnorm": 1.2,
+    "txtsize_covparticlefidbin": 1.2,
     "covtxtangleunffidnorm": 35,
     "yaxisuplimitunf": 0.2,
-    "yaxisuplimitunffidnorm": 0.025,
-    "yaxismax_fid" : 1.1,
-    #"yaxismax_fidnorm" : 1.1,
-    "yaxismax_fidnorm" : 0.8,
+    "yaxismax_particlefidbin": 0.025,
+    "yaxismax_particlefid" : 1.1,
+    #"yaxismax_particlefidbin" : 0.8,
+    "yaxismax_particlefidbin" : 2.0,
     "yaxismax_unf" : 1.35,
-    "yaxisuplimitunfnorm": 0.0085,
-    "uncleg_norm" : "TL",
+    "yaxismax_particlebin": 0.0085,
+    "legpos_particlebinunc" : "TL",
     "yaxismax_ratio_fidnorm" : 2.5,
-}
-varList['Lep1_Ptuncertainties'] = {
-    'xaxis'       : varList['Lep1_Pt']['xaxis'],
-    'yaxis'       : 'Relative uncertainty (adim.)'
-}
-varList['ResponseLep1_Pt'] = {
-    'xaxis'       : 'Gen Leading lep #it{p}_{T} (GeV)',
-    'yaxis'       : 'Leading lep #it{p}_{T} (GeV)'
 }
 
 varList['Fiducial'] = {
-    'xaxis'       : 'a.u.',
-    'yaxis'       : 'd#sigma (pb)',
-    'yaxis_unc'   : 'Relative uncertainty (adim.)',
-    'bins_particle'  : [25., 150.],
+    'xaxis'         : 'a.u.',
+    'yaxis_particle': 'd#sigma (pb)',
+    'bins_particle' : [25., 150.],
     'bins_detector' : [25., 150.],
     #'bins_detector' : [25., 80., 150.],
-    "var_detector": 'min(LepGood_pt_corrAll[0], 149.)',
-    'var_response': 'LepGood_pt_corrAll[0]',
-    'var_particle': 'min(GenDressedLepton_pt[iDressSelLep[0]], 149.)',
-}
-varList['Fiducialuncertainties'] = {
-    'xaxis'       : 'a.u.',
-    'yaxis'       : 'Relative uncertainty (adim.)'
-}
-varList['ResponseFiducial'] = {
-    'xaxis'       : 'a.u.',
-    'yaxis'       : 'a.u.'
+    "var_detector"  : 'min(max(LepGood_pt_corrAll[0], 25.1), 149.)',
+    #"var_detector"  : 'min(max(Jet1_Pt, 25.1), 149.)',
+    'var_response'  : 'Fiducial',
+    'var_particle'  : 'min(max(GenDressedLepton_pt[iDressSelLep[0]], 25.1), 149.)',
+    #'var_particle'  : 'min(max(DressJet1_Pt, 25.1), 149.)',
 }
 
 varList['FiducialtWttbar'] = {
     'xaxis'       : 'a.u.',
-    'yaxis'       : 'd#sigma (pb)',
+    'yaxis_particle'       : 'd#sigma (pb)',
     'bins_particle'  : [25., 150.],
     'bins_detector' : [25., 150.],
     "var_detector"         : 'min(Lep1_Pt, 149.)',
     'var_response': 'FiducialtWttbar',
     'var_particle'     : 'min(DressLep1_Pt, 149.)',
 }
-varList['FiducialtWttbaruncertainties'] = {
-    'xaxis'       : 'a.u.',
-    'yaxis'       : 'Relative uncertainty (adim.)'
-}
-varList['ResponseFiducialtWttbar'] = {
-    'xaxis'       : 'a.u.',
-    'yaxis'       : 'a.u.'
-}
-
-
 
 varList['Lep1Lep2Jet1MET_Pz'] = {
     'xaxis'       : '#it{p}_{Z} (#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j}) (GeV)',
     'printname'   : '\\pzvar (\\GeV)',
     'printnamenodim':'\\pzvar',
     'mathprintname': '\\pzvar',
-    'yaxis'       : 'd#sigma/d(#it{p}_{Z} (#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (pb)',
+    'yaxis_particle'       : 'd#sigma/d(#it{p}_{Z} (#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (pb)',
     'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(#it{p}_{Z} (#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (adim.)',
     'yaxisfidbin' : '(1/#sigma_{fid.})d#sigma/d(#it{p}_{Z} (#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (1/GeV)',
     'yaxisnorm'   : 'd#sigma/d(#it{p}_{Z} (#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (pb/GeV)',
@@ -541,43 +484,37 @@ varList['Lep1Lep2Jet1MET_Pz'] = {
 
     'descbinning' : [0., 450.],
     'ndescbins'   : 18,
-    "var_detector": 'min(abs(Lep1Lep2Jet1MET_Pz), 449.)',
+    "var_detector": 'min(max(abs(Lep1Lep2Jet1MET_Pz), 0.1), 449.)',
     'var_response': 'Lep1Lep2Jet1MET_Pz',
-    'var_particle': 'min(abs(DressLep1Lep2Jet1MET_Pz), 449.)',
+    'var_particle': 'min(max(abs(DressLep1Lep2Jet1MET_Pz), 0.1), 449.)',
     'legpos'      : (0.51, 0.55, 0.71, 0.93),
     #'legposdesc'  : (0.57, 0.55, 0.78, 0.93),
     'legposdesc'  : (0.65, 0.55, 0.85, 0.93),
-    #'legpos_fold':  "TC",
-    'legpos_fold' : (.5, .685, .725, .93),
-    'legpos_foldas':"BL",
-    "uncleg_unf" : "TL",
-    'uncleg_fold' : "TL",
-    'uncleg_fid'  : "TL",
-    'uncleg_fidbin': "TL",
-    'legpos_fidbin':"TC",
-    "legpos_unf"  : "TC",
+    #'legpos_detector':  "TC",
+    'legpos_detector' : (.5, .685, .725, .93),
+    'legpos_detectoras':"BL",
+    "legpos_particleunc" : "TL",
+    'legpos_detectorunc' : "TL",
+    'legpos_particlefidunc'  : "TL",
+    'legpos_particlefidbinunc': "TL",
+    'legpos_particlefidbin':"TC",
+    "legpos_particle"  : "TC",
     'resptxtsize' : 1.7,
-    'covtxtsizeunf': 1.4,
+    'txtsize_covparticle': 1.4,
     'covtxtangleunf': 45,
-    'covtxtsizefol': 1.4,
-    "covtxtsizefidnorm": 1.2,
+    'txtsize_covdetector': 1.4,
+    "txtsize_covparticlefidbin": 1.2,
     "covtxtangleunffidnorm": 45,
     "yaxisuplimitunf": 0.1,
-    "yaxisuplimitunffidnorm": 0.0065,
-    "yaxismax_fid" : 1,
-    #"yaxismax_fidnorm" : 1,
-    "yaxismax_fidnorm" : 0.7,
+    "yaxismax_particlefidbin": 0.0065,
+    "yaxismax_particlefid" : 1,
+    #"yaxismax_particlefidbin" : 1,
+    "yaxismax_particlefidbin" : 0.7,
     "yaxismax_unf" : 1.3,
-    "yaxisuplimitunfnorm" : 0.002,
-    "uncleg_norm" : "TC",
+    "yaxismax_particlebin" : 0.002,
+    "legpos_particlebinunc" : "TC",
     "yaxismax_ratio_fidnorm" : 2.5,
 }
-varList['Lep1Lep2Jet1MET_Pzuncertainties'] = {
-    'xaxis'       : varList['Lep1Lep2Jet1MET_Pz']['xaxis'],
-    'yaxis'       : 'Relative uncertainty (adim.)'
-}
-
-
 
 varList['Lep1Lep2_DPhi'] = {
     #'xaxis'       : '\\Delta \\varphi(\\ell_{1}, \\ell_{2}) (rad)',
@@ -585,7 +522,7 @@ varList['Lep1Lep2_DPhi'] = {
     'printname'   : "$\\deltaPhiVar/ \\pi$",
     'printnamenodim':"$\\deltaPhiVar/ \\pi$",
     'mathprintname': "\\deltaPhiVar/ \\pi",
-    'yaxis'       : "d#sigma/d(#Delta#it{#varphi}(#it{e}^{#pm}, #it{#mu}^{#mp})/#it{#pi}) (pb)",
+    'yaxis_particle'       : "d#sigma/d(#Delta#it{#varphi}(#it{e}^{#pm}, #it{#mu}^{#mp})/#it{#pi}) (pb)",
     'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(#Delta#it{#varphi}(#it{e}^{#pm}, #it{#mu}^{#mp})/#it{#pi}) (adim.)',
     'yaxisfidbin' : '(1/#sigma_{fid.})d#sigma/d(#Delta#it{#varphi}(#it{e}^{#pm}, #it{#mu}^{#mp})/#it{#pi}) (adim.)',
     'yaxisnorm'   : 'd#sigma/d(#Delta#it{#varphi}(#it{e}^{#pm}, #it{#mu}^{#mp})/#it{#pi}) (pb)',
@@ -613,196 +550,145 @@ varList['Lep1Lep2_DPhi'] = {
     #'bins_particle'  : [0., .1, .2, .3, .4, .5, .6, .7, .8, .9, 1.0],                        # propuesta (10 bins)
     #'bins_detector' : [0., 0.05, .1, 0.15, 0.2, 0.25, .3, 0.35, 0.4, 0.45, 0.5, 0.55, .6, .65, .7, .75, .8, .85, .9, .95, 1.0], # propuesta (10 bins)
 
-    "var_detector"  : 'Lep1Lep2_DPhi',
+    "var_detector"  : 'max(Lep1Lep2_DPhi, 0.01)',
     'var_response'  : 'Lep1Lep2_DPhi',
-    'var_particle'  : 'DressLep1Lep2_DPhi',
+    'var_particle'  : 'max(DressLep1Lep2_DPhi, 0.01)',
     #'var_particle'     : 'abs(TGenDPhiLL)',
     #'legpos'      : (0.82, 0.14, 0.93, 0.47),
     'legpos'      : (0.15, 0.425, 0.35, 0.81),
     #'legposdesc'  : (0.15, 0.425, 0.35, 0.81),
     'legposdesc'  : (0.15, 0.52, 0.35, 0.9215),
     'maxdesc'     : 2000,
-    'legpos_fold' : "TL",
-    'legpos_fid'  : "BR",
-    #'legpos_unf'  : "BC",
-    "legpos_unf"   : (.43, .255, .63, .04),
-    'legpos_foldas':"TL",
-    'legpos_unfas': "TL",
-    'legpos_fidbin':"BC",
-    'uncleg_fidbin': "TC",
-    "uncleg_unf"  : "TL",
+    'legpos_detector' : "TL",
+    'legpos_particlefid'  : "BR",
+    #'legpos_particle'  : "BC",
+    "legpos_particle"   : (.43, .255, .63, .04),
+    'legpos_detectoras':"TL",
+    'legpos_particleas': "TL",
+    'legpos_particlefidbin':"BC",
+    'legpos_particlefidbinunc': "TC",
+    "legpos_particleunc"  : "TL",
     'resptxtsize' : 2,
-    'covtxtsizeunf': 1.75,
+    'txtsize_covparticle': 1.75,
     'covtxtangleunf': 45,
-    'covtxtsizefol': 1.75,
-    "covtxtsizefidnorm": 1.6,
+    'txtsize_covdetector': 1.75,
+    "txtsize_covparticlefidbin": 1.6,
     'covtxtangleunffidnorm': 45,
     "equalbinsunf" : True,
     "equalbinsfol" : True,
-    "yaxismax_fid" : 0.4,
-    #"yaxismax_fidnorm" : 0.4,
-    "yaxismax_fidnorm" : 0.35,
+    "yaxismax_particlefid" : 0.4,
+    #"yaxismax_particlefidbin" : 0.4,
+    "yaxismax_particlefidbin" : 0.35,
     "yaxismax_unf" : 1,
-    #'legpos_norm':(.18, .75, .36, .52),
-    'legpos_norm': (.35, 0.58950, .585, .9),
-    "yaxisuplimitunfnorm" : 0.85,
+    #'legpos_particlebin':(.18, .75, .36, .52),
+    'legpos_particlebin': (.35, 0.58950, .585, .9),
+    "yaxismax_particlebin" : 0.85,
     "yaxismax_ratio_fidnorm" : 2.5,
 }
-varList['Lep1Lep2_DPhiuncertainties'] = {
-    'xaxis'       : varList['Lep1Lep2_DPhi']['xaxis'],
-    'yaxis'       : 'Relative uncertainty (adim.)'
-}
-
 
 #varList['E_LLB'] = {
     #'xaxis'       : 'E(\\ell_{1}, \\ell_{2}, j) (GeV)',
-    #'yaxis'       : 'd#sigma (pb)',
+    #'yaxis_particle'       : 'd#sigma (pb)',
     #'bins_particle'  : [0, 190, 330, 550, 700],
     #'bins_detector' : [0, 160, 220, 280, 340, 400, 450, 550, 700],
     #"var_detector"         : 'TE_LLB',
     #'var_response': 'ELLB',
     #'var_particle'     : 'TGenE_LLB',
 #}
-#varList['E_LLBuncertainties'] = {
-    #'xaxis'       : varList['E_LLB']['xaxis'],
-    #'yaxis'       : 'Relative uncertainty (adim.)'
-#}
 
 #varList['LeadingJetE'] = {
     #'xaxis'       : 'E(j) (GeV)',
-    #'yaxis'       : 'd#sigma (pb)',
+    #'yaxis_particle'       : 'd#sigma (pb)',
     #'bins_particle'  : [0, 75, 275, 400],
     #'bins_detector' : [0., 40., 70., 120., 175., 275., 400.],
     #"var_detector"         : 'TLeadingJetE',
     #'var_response': 'LeadingJetE',
     #'var_particle'     : 'TGenLeadingJetE',
 #}
-#varList['LeadingJetEuncertainties'] = {
-    #'xaxis'       : varList['LeadingJetE']['xaxis'],
-    #'yaxis'       : 'Relative uncertainty (adim.)'
-#}
-
 
 #varList['M_LeadingB'] = {
     #'xaxis'       : 'm(\\ell_{1}, j) (GeV)',
-    #'yaxis'       : 'd#sigma (pb)',
+    #'yaxis_particle'       : 'd#sigma (pb)',
     #'bins_particle'  : [0., 75., 175., 275., 400.],
     #'bins_detector' : [0., 75., 95., 115., 135., 175., 225., 275., 400.],
     #"var_detector"         : 'TM_LeadingB',
     #'var_response': 'MLeadingB',
     #'var_particle'     : 'TGenM_LeadingB',
 #}
-#varList['M_LeadingBuncertainties'] = {
-    #'xaxis'       : varList['M_LeadingB']['xaxis'],
-    #'yaxis'       : 'Relative uncertainty (adim.)'
-#}
 
 #varList['M_SubLeadingB'] = {
     #'xaxis'       : 'm(\\ell_{2}, j) (GeV)',
-    #'yaxis'       : 'd#sigma (pb)',
+    #'yaxis_particle'       : 'd#sigma (pb)',
     #'bins_particle'  : [0., 60., 100., 150., 300.],
     #'bins_detector' : [0., 60., 70., 80., 90., 100., 125., 150., 300.],
     #"var_detector"         : 'TM_SubLeadingB',
     #'var_response': 'MSubLeadingB',
     #'var_particle'     : 'TGenM_SubLeadingB',
 #}
-#varList['M_SubLeadingBuncertainties'] = {
-    #'xaxis'       : varList['M_SubLeadingB']['xaxis'],
-    #'yaxis'       : 'Relative uncertainty (adim.)'
-#}
 
 #varList['MET'] = {
     #'xaxis'       : '\\slash{E}_{T} (GeV)',
-    #'yaxis'       : 'd#sigma (pb)',
+    #'yaxis_particle'       : 'd#sigma (pb)',
     #'bins_particle'  : [0, 50, 140, 200],
     #'bins_detector' : [0., 20., 35., 50., 70., 140., 200.],
     #"var_detector"         : 'TMET',
     #'var_response': 'MET',
     #'var_particle'     : 'TGenMET'
 #}
-#varList['METuncertainties'] = {
-    #'xaxis'       : varList['MET']['xaxis'],
-    #'yaxis'       : 'Relative uncertainty (adim.)'
-#}
 
 #varList['MET_Phi'] = {
     #'xaxis'       : '\\varphi(\\slash{E}_{T}) (GeV)',
-    #'yaxis'       : 'd#sigma (pb)',
+    #'yaxis_particle'       : 'd#sigma (pb)',
     #'bins_particle'  : [-r.TMath.Pi(), -1.5, 0, 1.5, r.TMath.Pi()],
     #'bins_detector' : [-r.TMath.Pi(), -2.25, -1.5, -.75, 0, .75, 1.5, 2.25, r.TMath.Pi()],
     #"var_detector"         : 'TMET_Phi',
     #'var_response': 'METPhi',
     #'var_particle'     : 'TGenMET_Phi',
 #}
-#varList['MET_Phiuncertainties'] = {
-    #'xaxis'       : varList['MET_Phi']['xaxis'],
-    #'yaxis'       : 'Relative uncertainty (adim.)'
-#}
-
 
 #varList['LeadingJetEta'] = {
     #'xaxis'       : '|\\eta|(j)',
-    #'yaxis'       : 'd#sigma (pb)',
+    #'yaxis_particle'       : 'd#sigma (pb)',
     #'bins_particle'  : [0., 0.6, 1.2, 1.8, 2.4],
     #'bins_detector' : [0., 0.3, 0.6, 0.9, 1.2, 1.5, 1.8, 2.1, 2.4],
     #"var_detector"         : 'abs(TLeadingJetEta)',
     #'var_response': 'LeadingJetEta',
     #'var_particle'     : 'abs(TGenLeadingJetEta)',
 #}
-#varList['LeadingJetEtauncertainties'] = {
-    #'xaxis'       : varList['LeadingJetEta']['xaxis'],
-    #'yaxis'       : 'Relative uncertainty (adim.)'
-#}
-#varList['ResponseLeadingJetEta'] = {
-    #'xaxis'       : 'Gen Jet \\eta',
-    #'yaxis'       : 'Jet \\eta'
-#}
 
 #varList['LeadingJetPhi'] = {
     #'xaxis'       : '\\varphi(j) (GeV)',
-    #'yaxis'       : 'd#sigma (pb)',
+    #'yaxis_particle'       : 'd#sigma (pb)',
     #'bins_particle'  : [-r.TMath.Pi(), -1.5, 0, 1.5, r.TMath.Pi()],
     #'bins_detector' : [-r.TMath.Pi(), -2.25, -1.5, -.75, 0, .75, 1.5, 2.25, r.TMath.Pi()],
     #"var_detector"         : 'TLeadingJetPhi',
     #'var_response': 'LeadingJetPhi',
     #'var_particle'     : 'TGenLeadingJetPhi',
 #}
-#varList['LeadingJetPhiuncertainties'] = {
-    #'xaxis'       : varList['LeadingJetPhi']['xaxis'],
-    #'yaxis'       : 'Relative uncertainty (adim.)'
-#}
 
 #varList['LeadingLepE'] = {
     #'xaxis'       : 'E(\\ell_{1}) (GeV)',
-    #'yaxis'       : 'd#sigma (pb)',
+    #'yaxis_particle'       : 'd#sigma (pb)',
     #'bins_particle'  : [0, 70, 120, 250, 350],
     #'bins_detector' : [0., 40., 60., 80., 100., 120., 150., 250., 350.],
     #"var_detector"         : 'TLeadingLepE',
     #'var_response': 'LeadingLepE',
     #'var_particle'     : 'TGenLeadingLepE',
 #}
-#varList['LeadingLepEuncertainties'] = {
-    #'xaxis'       : varList['LeadingLepE']['xaxis'],
-    #'yaxis'       : 'Relative uncertainty (adim.)'
-#}
 
 #varList['LeadingLepPhi'] = {
     #'xaxis'       : '\\varphi(\\ell_{1}) (rad)',
-    #'yaxis'       : 'd#sigma (pb)',
+    #'yaxis_particle'       : 'd#sigma (pb)',
     #'bins_particle'  : [-r.TMath.Pi(), -1.5, 0, 1.5, r.TMath.Pi()],
     #'bins_detector' : [-r.TMath.Pi(), -2.25, -1.5, -.75, 0, .75, 1.5, 2.25, r.TMath.Pi()],
     #"var_detector"         : 'TLeadingLepPhi',
     #'var_response': 'LeadingLepPhi',
     #'var_particle'     : 'TGenLeadingLepPhi',
 #}
-#varList['LeadingLepPhiuncertainties'] = {
-    #'xaxis'       : varList['LeadingLepPhi']['xaxis'],
-    #'yaxis'       : 'Relative uncertainty (adim.)'
-#}
 
 #varList['LeadingLepEta'] = {
     #'xaxis'       : '|\\eta|(\\ell_{1})',
-    #'yaxis'       : 'd#sigma (pb)',
+    #'yaxis_particle'       : 'd#sigma (pb)',
     #'bins_particle'  : [0., 0.6, 1.2, 1.8, 2.4],
     #'bins_detector' : [0., 0.3, 0.6, 0.9, 1.2, 1.5, 1.8, 2.1, 2.4],
     ##'bins_particle'  : [0., 0.5, 1., 1.6, 2.4],
@@ -811,75 +697,50 @@ varList['Lep1Lep2_DPhiuncertainties'] = {
     #'var_response': 'LeadingLepEta',
     #'var_particle'     : 'abs(TGenLeadingLepEta)',
 #}
-#varList['LeadingLepEtauncertainties'] = {
-    #'xaxis'       : varList['LeadingLepEta']['xaxis'],
-    #'yaxis'       : 'Relative uncertainty (adim.)'
-#}
-#varList['ResponseLeadingLepEta'] = {
-    #'xaxis'       : 'Gen Leading lep \\eta',
-    #'yaxis'       : 'Leading lep \\eta'
-#}
 
 #varList['SubLeadingLepE'] = {
     #'xaxis'       : 'E(\\ell_{2}) (GeV)',
-    #'yaxis'       : 'd#sigma (pb)',
+    #'yaxis_particle'       : 'd#sigma (pb)',
     #'bins_particle'  : [0, 50, 100, 175, 250],
     #'bins_detector' : [0., 30., 50., 70., 90., 115., 140., 175., 250.],
     #"var_detector"         : 'TSubLeadingLepE',
     #'var_response': 'SubLeadingLepE',
     #'var_particle'     : 'TGenSubLeadingLepE',
 #}
-#varList['SubLeadingLepEuncertainties'] = {
-    #'xaxis'       : varList['SubLeadingLepE']['xaxis'],
-    #'yaxis'       : 'Relative uncertainty (adim.)'
-#}
 
 #varList['SubLeadingLepPt'] = {
     #'xaxis'       : 'p_{T}(\\ell_{2}) (GeV)',
-    #'yaxis'       : 'd#sigma (pb)',
+    #'yaxis_particle'       : 'd#sigma (pb)',
     #'bins_particle'  : [0, 30, 60, 100, 150],
     #'bins_detector' : [0., 30., 40., 50., 58., 68., 78., 100., 150.],
     #"var_detector"         : 'TSubLeadingLepPt',
     #'var_response': 'SubLeadingLepPt',
     #'var_particle'     : 'TGenSubLeadingLepPt',
 #}
-#varList['SubLeadingLepPtuncertainties'] = {
-    #'xaxis'       : varList['SubLeadingLepPt']['xaxis'],
-    #'yaxis'       : 'Relative uncertainty (adim.)'
-#}
 
 #varList['SubLeadingLepPhi'] = {
     #'xaxis'       : '\\varphi(\\ell_{2}) (rad)',
-    #'yaxis'       : 'd#sigma (pb)',
+    #'yaxis_particle'       : 'd#sigma (pb)',
     #'bins_particle'  : [-r.TMath.Pi(), -1.5, 0, 1.5, r.TMath.Pi()],
     #'bins_detector' : [-r.TMath.Pi(), -2.25, -1.5, -.75, 0, .75, 1.5, 2.25, r.TMath.Pi()],
     #"var_detector"         : 'TSubLeadingLepPhi',
     #'var_response': 'SubLeadingLepPhi',
     #'var_particle'     : 'TGenSubLeadingLepPhi',
 #}
-#varList['SubLeadingLepPhiuncertainties'] = {
-    #'xaxis'       : varList['SubLeadingLepPhi']['xaxis'],
-    #'yaxis'       : 'Relative uncertainty (adim.)'
-#}
 
 #varList['SubLeadingLepEta'] = {
     #'xaxis'       : '\\eta(\\ell_2)',
-    #'yaxis'       : 'd#sigma (pb)',
+    #'yaxis_particle'       : 'd#sigma (pb)',
     #'bins_particle'  : [0., 0.6, 1.2, 1.8, 2.4],
     #'bins_detector' : [0., 0.3, 0.6, 0.9, 1.2, 1.5, 1.8, 2.1, 2.4],
     #"var_detector"         : 'abs(TSubLeadingLepEta)',
     #'var_response': 'SubLeadingLepEta',
     #'var_particle'     : 'abs(TGenSubLeadingLepEta)',
 #}
-#varList['SubLeadingLepEtauncertainties'] = {
-    #'xaxis'       : varList['SubLeadingLepEta']['xaxis'],
-    #'yaxis'       : 'Relative uncertainty (adim.)'
-#}
-
 
 #varList['DilepPt'] = {
     #'xaxis'       : '#it{p}_{T} (#it{e}^{#pm}, #it{#mu}^{#mp}) (GeV)',
-    #'yaxis'       : 'd#sigma/d(#it{p}_{T} (#it{e}^{#pm}, #it{#mu}^{#mp})) (pb)',
+    #'yaxis_particle'       : 'd#sigma/d(#it{p}_{T} (#it{e}^{#pm}, #it{#mu}^{#mp})) (pb)',
     #'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(#it{p}_{T} (#it{e}^{#pm}, #it{#mu}^{#mp})) (adim.)',
     #'yaxisfidbin' : '(1/#sigma_{fid.})d#sigma/d(#it{p}_{T} (#it{e}^{#pm}, #it{#mu}^{#mp})) (1/GeV)',
     #'yaxisnorm'   : 'd#sigma/d(#it{p}_{T} (#it{e}^{#pm}, #it{#mu}^{#mp})) (pb/GeV)',
@@ -889,130 +750,90 @@ varList['Lep1Lep2_DPhiuncertainties'] = {
     #'var_response': 'DilepPt',
     #'var_particle'     : 'TGenDilepPt',
 #}
-#varList['DilepPtuncertainties'] = {
-    #'xaxis'       : varList['DilepPt']['xaxis'],
-    #'yaxis'       : 'Relative uncertainty (adim.)'
-#}
-
 
 #varList['DilepJetPt'] = {
     #'xaxis'       : 'p_{T}(\\ell_{1}, \\ell_{2}, j) (GeV)',
-    #'yaxis'       : 'd#sigma (pb)',
+    #'yaxis_particle'       : 'd#sigma (pb)',
     #'bins_particle'  : [0., 40., 80., 120., 200.],
     #'bins_detector' : [0., 20., 30., 40., 50., 60., 80., 120., 200.],
     #"var_detector"         : 'TDilepJetPt',
     #'var_response': 'DilepJetPt',
     #'var_particle'     : 'TGenDilepJetPt',
 #}
-#varList['DilepJetPtuncertainties'] = {
-    #'xaxis'       : varList['DilepJetPt']['xaxis'],
-    #'yaxis'       : 'Relative uncertainty (adim.)'
-#}
 
 #varList['DilepMETJetPt'] = {
     #'xaxis'       : 'p_{T}(\\ell_{1} ,\\ell_{2}, j,\\slash{E}_{T}) (GeV)',
-    #'yaxis'       : 'd#sigma (pb)',
+    #'yaxis_particle'       : 'd#sigma (pb)',
     #'bins_particle'  : [0., 20., 40., 70., 150.],
     #'bins_detector' : [0., 10., 20., 30., 40., 50., 60., 70., 150.],
     #"var_detector"         : 'TDilepMETJetPt',
     #'var_response': 'DilepMETJetPt',
     #'var_particle'     : 'TGenDilepMETJetPt',
 #}
-#varList['DilepMETJetPtuncertainties'] = {
-    #'xaxis'       : varList['DilepMETJetPt']['xaxis'],
-    #'yaxis'       : 'Relative uncertainty (adim.)'
-#}
 
 #varList['HTtot'] = {
     #'xaxis'       : 'p_{T}(\\ell_{1}, \\ell_{2}, j,\\slash{E}_{T}) (GeV)',
-    #'yaxis'       : 'd#sigma (pb)',
+    #'yaxis_particle'       : 'd#sigma (pb)',
     #'bins_particle'  : [0, 200, 300, 450, 600],
     #'bins_detector' : [0., 150., 200., 250., 300., 350., 400., 450., 600.],
     #"var_detector"         : 'THTtot',
     #'var_response': 'HTtot',
     #'var_particle'     : 'TGenHTtot',
 #}
-#varList['HTtotuncertainties'] = {
-    #'xaxis'       : varList['HTtot']['xaxis'],
-    #'yaxis'       : 'Relative uncertainty (adim.)'
-#}
-
-
 
 #varList['LLMETBEta'] = {
     #'xaxis'       : '\\eta(\\ell_{1}, \\ell_{2}, j)',
-    #'yaxis'       : 'd#sigma (pb)',
+    #'yaxis_particle'       : 'd#sigma (pb)',
     #'bins_particle'  : [0., 1.25, 2.5, 3.75, 5.],
     #'bins_detector' : [0., 0.75, 1.25, 1.75, 2.25, 2.75, 3.25, 3.75, 5.],
     #"var_detector"         : 'abs(TLLMETBEta)',
     #'var_response': 'LLMETBEta',
     #'var_particle'     : 'abs(TGenLLMETBEta)',
 #}
-#varList['LLMETBEtauncertainties'] = {
-    #'xaxis'       : varList['LLMETBEta']['xaxis'],
-    #'yaxis'       : 'Relative uncertainty (adim.)'
-#}
 
 #varList['MSys'] = {
     #'xaxis'       : 'm(\\ell_{1}, \\ell_{2}, j,\\slash{E}_{T})',
-    #'yaxis'       : 'd#sigma (pb)',
+    #'yaxis_particle'       : 'd#sigma (pb)',
     #'bins_particle'  : [0., 225., 325., 425., 700.],
     #'bins_detector' : [0., 225., 250., 275., 300., 325., 350., 425., 700.],
     #"var_detector"         : 'TMSys',
     #'var_response': 'MSys',
     #'var_particle'     : 'TGenMSys',
 #}
-#varList['MSysuncertainties'] = {
-    #'xaxis'       : varList['MSys']['xaxis'],
-    #'yaxis'       : 'Relative uncertainty (adim.)'
-#}
 
 #varList['Mll'] = {
     #'xaxis'       : 'm(\\ell_{1}, \\ell_{2})',
-    #'yaxis'       : 'd#sigma (pb)',
+    #'yaxis_particle'       : 'd#sigma (pb)',
     #'bins_particle'  : [0., 50., 100., 150., 300.],
     #'bins_detector' : [0., 25., 45., 60., 75., 100., 125., 150., 300.],
     #"var_detector"         : 'TMll',
     #'var_response': 'Mll',
     #'var_particle'     : 'TGenMll',
 #}
-#varList['Mlluncertainties'] = {
-    #'xaxis'       : varList['Mll']['xaxis'],
-    #'yaxis'       : 'Relative uncertainty (adim.)'
-#}
-
 
 #varList['DPhiLeadJet'] = {
     #'xaxis'       : '\\Delta \\varphi(\\ell_{1}, j) (rad)',
-    #'yaxis'       : 'd#sigma (pb)',
+    #'yaxis_particle'       : 'd#sigma (pb)',
     #'bins_particle'  : [0, 1., 1.75, 2.5, r.TMath.Pi()],
     #'bins_detector' : [0, .5, 1., 1.5, 1.75, 2., 2.5, 2.85, r.TMath.Pi()],
     #"var_detector"         : 'abs(TDPhiLeadJet)',
     #'var_response': 'DPhiLeadJet',
     #'var_particle'     : 'abs(TGenDPhiLeadJet)',
 #}
-#varList['DPhiLeadJetuncertainties'] = {
-    #'xaxis'       : varList['DPhiLeadJet']['xaxis'],
-    #'yaxis'       : 'Relative uncertainty (adim.)'
-#}
 
 #varList['DPhiSubLeadJet'] = {
     #'xaxis'       : '\\Delta \\varphi(\\ell_{2}, j) (rad)',
-    #'yaxis'       : 'd#sigma (pb)',
+    #'yaxis_particle'       : 'd#sigma (pb)',
     #'bins_particle'  : [0, 1., 1.75, 2.5, r.TMath.Pi()],
     #'bins_detector' : [0, .5, 1., 1.5, 1.75, 2., 2.5, 2.85, r.TMath.Pi()],
     #"var_detector"         : 'abs(TDPhiSubLeadJet)',
     #'var_response': 'DPhiSubLeadJet',
     #'var_particle'     : 'abs(TGenDPhiSubLeadJet)',
 #}
-#varList['DPhiSubLeadJetuncertainties'] = {
-    #'xaxis'       : varList['DPhiSubLeadJet']['xaxis'],
-    #'yaxis'       : 'Relative uncertainty (adim.)'
-#}
 
 #varList['nLooseCentral'] = {
     #'xaxis'       : 'Number of loose jets',
-    #'yaxis'       : 'd#sigma (pb)',
+    #'yaxis_particle'       : 'd#sigma (pb)',
     #'bins_particle'  : [-0.5, 1.5, 3.5, 4.5],
     #'bins_detector' : [-0.5, 0.5, 1.5, 2.5, 3.5, 4.5],
     #'legpos'      : (0.70, 0.55, 0.90, 0.93),
@@ -1020,15 +841,10 @@ varList['Lep1Lep2_DPhiuncertainties'] = {
     #'var_response': 'nLooseCentral',
     #'var_particle'     : 'TnSergioLooseCentralJets',
 #}
-#varList['nLooseCentraluncertainties'] = {
-    #'xaxis'       : varList['nLooseCentral']['xaxis'],
-    #'yaxis'       : 'Relative uncertainty (adim.)'
-#}
-
 
 #varList['NJetsNBJets'] = {
     #'xaxis'       : '(Number of jets, number of b-tagged jets)',
-    #'yaxis'       : 'd#sigma (pb)',
+    #'yaxis_particle'       : 'd#sigma (pb)',
     #'bins_particle'  : [-0.5, 1.5, 3.5, 4.5],
     #'bins_detector' : [-0.5, 0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5],
     #'legpos'      : (0.7, 0.55, 0.90, 0.93),
@@ -1037,10 +853,6 @@ varList['Lep1Lep2_DPhiuncertainties'] = {
     #"var_detector"         : 'nJetsnBs(TNJets, TNBJets)',
     #'var_response': 'NBJets',
     #'var_particle'     : 'TDressNBJets',
-#}
-#varList['NJetsNBJetsuncertainties'] = {
-    #'xaxis'       : varList['NJetsNBJets']['xaxis'],
-    #'yaxis'       : 'Relative uncertainty (adim.)'
 #}
 
 

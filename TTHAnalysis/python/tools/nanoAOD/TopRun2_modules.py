@@ -328,12 +328,14 @@ addDoubleEG   = lambda : addDataTag(tags.doubleeg)
 addSingleMuon = lambda : addDataTag(tags.singlemuon)
 addSingleElec = lambda : addDataTag(tags.singleelec)
 addMC         = lambda : addDataTag(tags.mc)
+addMC_ttbar   = lambda : addDataTag(tags.mc, isTop = True)
 
 from CMGTools.TTHAnalysis.tools.addJetPtCorr import addJetPtCorr
 
 addJetPtCorrAll = lambda : addJetPtCorr()
 
 addYearTag_2016_mc         = [addYear_2016, addMC        , addJetPtCorrAll]
+addYearTag_2016_mc_ttbar   = [addYear_2016, addMC_ttbar  , addJetPtCorrAll]
 addYearTag_2016_singlemuon = [addYear_2016, addSingleMuon, addJetPtCorrAll]
 addYearTag_2016_singleelec = [addYear_2016, addSingleElec, addJetPtCorrAll]
 addYearTag_2016_doublemuon = [addYear_2016, addDoubleMuon, addJetPtCorrAll]
@@ -341,6 +343,7 @@ addYearTag_2016_doubleeg   = [addYear_2016, addDoubleEG  , addJetPtCorrAll]
 addYearTag_2016_muoneg     = [addYear_2016, addMuonEG    , addJetPtCorrAll]
 
 addYearTag_2017_mc         = [addYear_2017, addMC        , addJetPtCorrAll]
+addYearTag_2017_mc_ttbar   = [addYear_2017, addMC_ttbar  , addJetPtCorrAll]
 addYearTag_2017_singlemuon = [addYear_2017, addSingleMuon, addJetPtCorrAll]
 addYearTag_2017_singleelec = [addYear_2017, addSingleElec, addJetPtCorrAll]
 addYearTag_2017_doublemuon = [addYear_2017, addDoubleMuon, addJetPtCorrAll]
@@ -348,6 +351,7 @@ addYearTag_2017_doubleeg   = [addYear_2017, addDoubleEG  , addJetPtCorrAll]
 addYearTag_2017_muoneg     = [addYear_2017, addMuonEG    , addJetPtCorrAll]
 
 addYearTag_2018_mc         = [addYear_2018, addMC        , addJetPtCorrAll]
+addYearTag_2018_mc_ttbar   = [addYear_2018, addMC_ttbar  , addJetPtCorrAll]
 addYearTag_2018_singlemuon = [addYear_2018, addSingleMuon, addJetPtCorrAll]
 addYearTag_2018_singleelec = [addYear_2018, addSingleElec, addJetPtCorrAll]
 addYearTag_2018_doublemuon = [addYear_2018, addDoubleMuon, addJetPtCorrAll]
@@ -362,11 +366,11 @@ addRoch_mc = lambda : addRochester()
 addRoch_data = lambda : addRochester(isMC = False)
 
 from CMGTools.TTHAnalysis.tools.nanoAOD.selectParticleAndPartonInfo import selectParticleAndPartonInfo
-theDressAndPartInfo = lambda : selectParticleAndPartonInfo(dresslepSel_         = lambda l: dresslepID,
-                                                           dressjetSel_         = lambda j: dressjetID,
-                                                           dressloosejetSel_    = lambda j: dressloosejetID,
-                                                           dressfwdjetSel_      = lambda j: dressfwdjetID,
-                                                           dressfwdloosejetSel_ = lambda j: dressfwdloosejetID)
+theDressAndPartInfo = lambda : selectParticleAndPartonInfo(dresslepSel_         = dresslepID,
+                                                           dressjetSel_         = dressjetID,
+                                                           dressloosejetSel_    = dressloosejetID,
+                                                           dressfwdjetSel_      = dressfwdjetID,
+                                                           dressfwdloosejetSel_ = dressfwdloosejetID)
 
 #lepMerge_roch_mc   = [lepMerge, lepMerge_muenUp, lepMerge_muenDn, lepMerge_elenUp, lepMerge_elenDn, addRoch_mc, theDressAndPartInfo] ### FIXME: este es el "bueno"
 lepMerge_roch_mc   = [lepMerge, lepMerge_muenUp, lepMerge_muenDn, addRoch_mc, theDressAndPartInfo]
