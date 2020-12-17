@@ -1,49 +1,65 @@
+from copy import deepcopy
 import ROOT as r
-import errorPropagator as ep
-import beautifulUnfoldingPlots as bp
-import varList as vl
 import warnings as wr
-from   multiprocessing import Pool
+import os, sys, math, argparse, shutil
 from   array import array
-import sys, os, copy, math, shutil, CMS_lumi, tdrstyle
-#===================================
+from multiprocessing import Pool
+
+sys.path.append('{cmsswpath}/src/CMGTools/TTHAnalysis/python/plotter/tw-run2/differential/'.format(cmsswpath = os.environ['CMSSW_BASE']))
+import beautifulUnfoldingPlots as bp
+import errorPropagator as ep
+#import getLaTeXtable as tex
+import varList as vl
+import CMS_lumi, tdrstyle
 
 r.gROOT.SetBatch(True)
+vl.SetUpWarnings()
+
+
 CMS_lumi.writeExtraText = 1
-plotsoutputpath = "results/CovMat"
-if not os.path.isdir(plotsoutputpath):
-    os.system('mkdir -p ' + plotsoutputpath)
-scaleval        = 1/vl.Lumi/1000 if vl.doxsec else 1
 
 def printCovarianceMatrix(tsk):
-    var, ty, fidornot, normornot = tsk
-    if ty == 'unfolded' and not fidornot: tfile = r.TFile("temp/{vr}_/unfOutput_{vr}.root".format(vr = var), "read")
-    elif fidornot and not normornot:      tfile = r.TFile("temp/{vr}_/fidOutput_{vr}.root".format(vr = var), "read")
-    elif normornot and fidornot:          tfile = r.TFile("temp/{vr}_/fidOutput_{vr}norm.root".format(vr = var), "read")
-    elif not fidornot and normornot:      tfile = r.TFile("temp/{vr}_/unfOutput_{vr}.root".format(vr = var), "read")
-    else:                                 tfile = r.TFile("temp/{vr}_/cutOutput_{vr}.root".format(vr = var), "read")
+    inpath, iY, var, ty = tsk
+
+    fidornot = "fid" in ty
+    binornot = "bin" in ty
+    ty = ty.replace("fid", "").replace("bin", "")
+
+    pathtothings = inpath + "/" + iY + "/" + var
+
+    if ty == 'particle' and not fidornot: tfile = r.TFile(pathtothings + "/particleOutput.root",       "read")
+    elif not binornot   and     fidornot:
+        tfile = r.TFile(pathtothings + "/particlefidOutput.root",    "read")
+    elif     binornot   and     fidornot: tfile = r.TFile(pathtothings + "/particlefidbinOutput.root", "read")
+    elif     binornot   and not fidornot: tfile = r.TFile(pathtothings + "/particlebinOutput.root",    "read")
+    else:                                 tfile = r.TFile(pathtothings + "/detectorsignal_bs.root",    "read")
     
-    if ty == "folded": nominal = copy.deepcopy(tfile.Get("data_").Clone("nominal"))
-    else:              nominal = copy.deepcopy(tfile.Get(var).Clone("nominal"))
-    if vl.doxsec and ty == 'folded': nominal.Scale(scaleval)
+
+    if ty == "detector": nominal = deepcopy(tfile.Get("data_").Clone("nominal"))
+    else:                nominal = deepcopy(tfile.Get(var).Clone("nominal"))
+
+
+    thelumi = vl.TotalLumi if iY == "run2" else vl.LumiDict[int(iY)]
+    scaleval = 1/thelumi/1000 if vl.doxsec else 1
+    if vl.doxsec and ty == 'detector': nominal.Scale(scaleval)
     
     varMat  = {}
     for key in tfile.GetListOfKeys():
-        if key.GetName() == "data_" or "asimov" in key.GetName() or key.GetName().replace("data_", "").replace(var + "_", '') in vl.varList['Names']['colorSysts'] or key.GetName() == var or key.GetName() == "nom0" or key.GetName() == "nom1":
+        if key.GetName() == "data_" or "asimov" in key.GetName() or key.GetName() == var or key.GetName() == "nom0" or key.GetName() == "nom1":
             continue # Colour envelope is applied in any case
-        elif key.GetName() == "CovMat" and ty == "unfolded":
-            varMat["unfCovMat"] = copy.deepcopy(key.ReadObj())
+        elif key.GetName() == "CovMat" and ty == "particle":
+            varMat["unfCovMat"] = deepcopy(key.ReadObj())
         else:
             if "Down" in key.GetName() or "Up" not in key.GetName(): continue
             #elif "Up" not in key.GetName():
                 #print key.GetName()
-                #varMat[key.GetName().replace("data_", "").replace(var + "_", "")] = copy.deepcopy(ep.getCovarianceFromVar(nominal, key.ReadObj(), var, ty))
+                #varMat[key.GetName().replace("data_", "").replace(var + "_", "")] = deepcopy(ep.getCovarianceFromVar(nominal, key.ReadObj(), var, ty))
             else:
-                tmphistoup = copy.deepcopy(key.ReadObj().Clone("tmphistoup"))
+                tmphistoup = deepcopy(key.ReadObj().Clone("tmphistoup"))
 
                 for key2 in tfile.GetListOfKeys():
                     if key2.GetName() == key.GetName().replace("Up", "Down"):
-                        tmphistodw = copy.deepcopy(key2.ReadObj().Clone("tmphistodw"))
+                        tmphistodw = deepcopy(key2.ReadObj().Clone("tmphistodw"))
                 
                 varsup  = [abs(tmphistoup.GetBinContent(binin) - nominal.GetBinContent(binin)) for binin in range(1, nominal.GetNbinsX() + 1)]
                 varsdw  = [abs(tmphistodw.GetBinContent(binin) - nominal.GetBinContent(binin)) for binin in range(1, nominal.GetNbinsX() + 1)]
@@ -51,46 +67,47 @@ def printCovarianceMatrix(tsk):
                 for binin in range(1, nominal.GetNbinsX() + 1):
                     tmphistoup.SetBinContent(binin, nominal.GetBinContent(binin) + varsfin[binin - 1])
                 del varsup, varsdw, varsfin, tmphistodw
-                varMat[key.GetName().replace("data_", "").replace(var + "_", "")] = copy.deepcopy(ep.getCovarianceFromVar(nominal, tmphistoup, var, ty))
+                varMat[key.GetName().replace("data_", "").replace(var + "_", "")] = deepcopy(ep.getCovarianceFromVar(nominal, tmphistoup, var, iY, ty))
                 del tmphistoup
     
+    #colup = deepcopy(nominal.Clone("ColorRUp"))
+    #coldn = deepcopy(nominal.Clone("ColorRDown"))
     
-    colup = copy.deepcopy(nominal.Clone("ColorRUp"))
-    coldn = copy.deepcopy(nominal.Clone("ColorRDown"))
+    #for bin in range(1, nominal.GetNbinsX() + 1): # Colour envelope is applied in any case
+        #tmpuncUp   = nominal.GetBinContent(bin)
+        #tmpuncDown = nominal.GetBinContent(bin)
+        #tmpunc     = 0.
+        #for key in tfile.GetListOfKeys():
+            #if key.GetName().replace("data_", "").replace(var+"_", "") in vl.varList['Names']['colorSysts']:
+                #tmpunc  = key.ReadObj().GetBinContent(bin)
+                #if tmpunc > tmpuncUp:
+                    #tmpuncUp    = tmpunc
+                #elif tmpunc < tmpuncDown:
+                    #tmpuncDown  = tmpunc
+        #colup.SetBinContent(bin, tmpuncUp)
+        #coldn.SetBinContent(bin, tmpuncDown)
     
-    for bin in range(1, nominal.GetNbinsX() + 1): # Colour envelope is applied in any case
-        tmpuncUp   = nominal.GetBinContent(bin)
-        tmpuncDown = nominal.GetBinContent(bin)
-        tmpunc     = 0.
-        for key in tfile.GetListOfKeys():
-            if key.GetName().replace("data_", "").replace(var+"_", "") in vl.varList['Names']['colorSysts']:
-                tmpunc  = key.ReadObj().GetBinContent(bin)
-                if tmpunc > tmpuncUp:
-                    tmpuncUp    = tmpunc
-                elif tmpunc < tmpuncDown:
-                    tmpuncDown  = tmpunc
-        colup.SetBinContent(bin, tmpuncUp)
-        coldn.SetBinContent(bin, tmpuncDown)
+    #varsup  = [abs(colup.GetBinContent(binin) - nominal.GetBinContent(binin)) for binin in range(1, nominal.GetNbinsX() + 1)]
+    #varsdw  = [abs(coldn.GetBinContent(binin) - nominal.GetBinContent(binin)) for binin in range(1, nominal.GetNbinsX() + 1)]
+    #varsfin = [(varsup[binin] + varsdw[binin])/2 for binin in range(nominal.GetNbinsX())]
+    #for binin in range(1, nominal.GetNbinsX() + 1):
+        #colup.SetBinContent(binin, nominal.GetBinContent(binin) + varsfin[binin - 1])
+    #del varsup, varsdw, varsfin
     
-    varsup  = [abs(colup.GetBinContent(binin) - nominal.GetBinContent(binin)) for binin in range(1, nominal.GetNbinsX() + 1)]
-    varsdw  = [abs(coldn.GetBinContent(binin) - nominal.GetBinContent(binin)) for binin in range(1, nominal.GetNbinsX() + 1)]
-    varsfin = [(varsup[binin] + varsdw[binin])/2 for binin in range(nominal.GetNbinsX())]
-    for binin in range(1, nominal.GetNbinsX() + 1):
-        colup.SetBinContent(binin, nominal.GetBinContent(binin) + varsfin[binin - 1])
-    del varsup, varsdw, varsfin
-    
-    varMat["ColorRUp"]   = ep.getCovarianceFromVar(nominal, colup, var, ty)
+    #varMat["ColorRUp"]   = ep.getCovarianceFromVar(nominal, colup, var, ty)
     #varMat["ColorRDown"] = ep.getCovarianceFromVar(nominal, coldn, var, ty)
     
-    binning  = array('f', vl.varList[var]['recobinning'] if ty == "folded" else vl.varList[var]['genbinning'])
+    binning  = array('f', vl.varList[var]['bins_detector'] if ty == "detector" else vl.varList[var]['bins_particle'])
     
     if fidornot: # We must calculate the (complete) covariance matrix for the statistical uncertainties for this case, as it is not directly providen by doFiducial.py nor TUnfold.
-        ffid = r.TFile.Open("temp/Fiducial_/unfOutput_Fiducial.root",       "read")
-        fvar = r.TFile.Open("temp/" + var + "_/unfOutput_" + var + ".root", "read")
+        ffid = r.TFile.Open(inpath + "/" + iY + "/Fiducial/particleOutput.root", "read")
+        fvar = r.TFile.Open(pathtothings + "/particleOutput.root",                "read")
+
         newmat = r.TH2F('newmat', '', nominal.GetNbinsX(), binning, nominal.GetNbinsX(), binning)
         
-        dxs = copy.deepcopy(fvar.Get(var).Clone("dxs"))
-        covm = copy.deepcopy(fvar.Get("CovMat").Clone("covm"))
+        dxs = deepcopy(fvar.Get(var).Clone("dxs"))
+        covm = deepcopy(fvar.Get("CovMat").Clone("covm"))
+
         for key in ffid.GetListOfKeys():
             if key.GetName() != "Fiducial": continue
             dfid = r.TH1D(fvar.Get(var))
@@ -107,19 +124,19 @@ def printCovarianceMatrix(tsk):
                 #if bin1 == bin2: print "bin", bin1, goodunc
                 newmat.SetBinContent(bin1, bin2, goodunc)
         
-        if normornot:
+        if binornot:
             newmat.Scale(1, "width"); # THIS IS A COVARIANCE!! Constants that apply to the random variable apply SQUARED to the covariance (and variance)! NOTE: when you have a 2D histo, the scale is already done "two times".
             #print "\nFiducialnorm"
-        varMat["statistical"] = copy.deepcopy(newmat.Clone("statistical"))
+        varMat["statistical"] = deepcopy(newmat.Clone("statistical"))
         #for bin in range(1, nominal.GetNbinsX() + 1):
             #print "bin", bin, newmat.GetBinContent(bin, bin)
         ffid.Close(); fvar.Close(); del ffid, fvar, dfid, dxs, newmat;
     
-    if ty == "folded":
+    if ty == "detector":
         newmat = r.TH2F('newmat', '', nominal.GetNbinsX(), binning, nominal.GetNbinsX(), binning)
         for bin in range(1, nominal.GetNbinsX() + 1):
             newmat.SetBinContent(bin, bin, nominal.GetBinError(bin)**2)
-        varMat["statistical"] = copy.deepcopy(newmat.Clone("statistical"))
+        varMat["statistical"] = deepcopy(newmat.Clone("statistical"))
         del newmat;
     idnx = 0
     finalmat = r.TH2F('finalmat', '', nominal.GetNbinsX(), binning, nominal.GetNbinsX(), binning)
@@ -132,9 +149,10 @@ def printCovarianceMatrix(tsk):
     
     #for bin in range(1, nominal.GetNbinsX() + 1): print "matfinal bin", bin, ":", finalmat.GetBinContent(bin, bin)
     
-    if normornot and not fidornot: finalmat.Scale(1, "width")
+    if binornot and not fidornot: finalmat.Scale(1, "width")
 
-    if fidornot and ("unfCovMat" in varMat or "statistical" not in varMat): raise RuntimeError("You are calculating the covariance matrix of some fiducial results but you do not have the statistical uncertainties covariance matrix!!!!")
+    if fidornot and ("unfCovMat" in varMat or "statistical" not in varMat):
+        raise RuntimeError("You are calculating the covariance matrix of some fiducial results but you do not have the statistical uncertainties covariance matrix!!!!")
     
     tdrstyle.setTDRStyle()
     finalmat.SetStats(False)
@@ -142,15 +160,19 @@ def printCovarianceMatrix(tsk):
     finalmat.SetYTitle(vl.varList[var]['xaxis'])
     finalmat.SetMarkerColor(r.kRed)
     finalmat.SetMarkerColor(r.kRed)
-    if 'covtxtsizeunf' in vl.varList[var] and ty == "unfolded" and not fidornot: finalmat.SetMarkerSize(vl.varList[var]['covtxtsizeunf'])
-    elif 'covtxtsizefol' in vl.varList[var] and ty == "folded": finalmat.SetMarkerSize(vl.varList[var]['covtxtsizefol'])
-    elif 'covtxtsizefidnorm' in vl.varList[var] and fidornot and normornot: finalmat.SetMarkerSize(vl.varList[var]['covtxtsizefidnorm'])
+
+    if   'txtsize_covparticle' in vl.varList[var] and ty == "particle" and not fidornot:
+        finalmat.SetMarkerSize(vl.varList[var]['txtsize_covparticle'])
+    elif 'txtsize_covdetector' in vl.varList[var] and ty == "detector":
+        finalmat.SetMarkerSize(vl.varList[var]['txtsize_covdetector'])
+    elif 'txtsize_covparticlefidbin' in vl.varList[var] and fidornot and binornot:
+        finalmat.SetMarkerSize(vl.varList[var]['txtsize_covparticlefidbin'])
     
-    fcovmat = r.TFile("temp/{vr}_/CovMat_{vr}_{t}{lodefid}{lodenorm}.root".format(vr = var, t = ty, lodefid = "_fiducial"*(fidornot), lodenorm = "norm"*(normornot)), "recreate")
+    fcovmat = r.TFile(pathtothings + "/CovMat_{t}{lodefid}{lodenorm}.root".format(t = ty, lodefid = "fid" * (fidornot), lodenorm = "bin" * (binornot)), "recreate")
     finalmat.Write()
     fcovmat.Close()
     
-    r.gStyle.SetPaintTextFormat("4.5f" if not normornot else "4.8f")
+    r.gStyle.SetPaintTextFormat("4.5f" if not binornot else "4.8f")
     r.gStyle.SetPadRightMargin(0.17)
     r.gStyle.SetPadTopMargin(0.05)
     r.gStyle.SetPadBottomMargin(0.1)
@@ -167,74 +189,89 @@ def printCovarianceMatrix(tsk):
     finalmat.GetYaxis().SetLabelSize(22)
     r.gStyle.SetLabelFont(43, "XYZ")
     r.gStyle.SetLabelSize(22, "XYZ")
+
     c = r.TCanvas('c', "", 200, 10, 600, 600)
-    finalmat.Draw("colz text{s}".format(s = vl.varList[var]['covtxtangle'] if 'covtxtangle' in vl.varList[var] and ty == "folded" else vl.varList[var]['covtxtangleunf'] if ('covtxtangleunf' in vl.varList[var] and ty == "unfolded" and not fidornot) else vl.varList[var]['covtxtangleunffid'] if ('covtxtangleunffid' in vl.varList[var] and fidornot and not normornot) else vl.varList[var]['covtxtangleunffidnorm'] if ('covtxtangleunffidnorm' in vl.varList[var] and normornot) else ""))
+
+    txtanglestring = ""
+    if 'covtxtangle' in vl.varList[var] and ty == "detector":
+        txtanglestring = vl.varList[var]['covtxtangle']
+    elif ('covtxtangleunf' in vl.varList[var] and ty == "particle" and not fidornot):
+        txtanglestring = vl.varList[var]['covtxtangleunf']
+    elif ('covtxtangleunffid' in vl.varList[var] and fidornot and not binornot):
+        txtanglestring = vl.varList[var]['covtxtangleunffid']
+    elif ('covtxtangleunffidnorm' in vl.varList[var] and binornot):
+        vl.varList[var]['covtxtangleunffidnorm']
+
+    finalmat.Draw("colz text{s}".format(s = txtanglestring))
     r.gPad.Update()
+
     CMS_lumi.lumi_13TeV = ""
     #CMS_lumi.extraText  = 'Simulation Supplementary'
     CMS_lumi.extraText  = 'Simulation Preliminary'
     CMS_lumi.lumi_sqrtS = ''
     #CMS_lumi.cmsTextSize += 0.1
     CMS_lumi.CMS_lumi(r.gPad, 0, 0, 0.05)
-    c.SaveAs(plotsoutputpath + "/Cov_{vr}_{t}{lodefid}{lodenorm}.png" .format(vr = var, t = ty, lodefid = "_fiducial"*(fidornot), lodenorm = "norm"*(normornot)))
-    c.SaveAs(plotsoutputpath + "/Cov_{vr}_{t}{lodefid}{lodenorm}.pdf" .format(vr = var, t = ty, lodefid = "_fiducial"*(fidornot), lodenorm = "norm"*(normornot)))
-    c.SaveAs(plotsoutputpath + "/Cov_{vr}_{t}{lodefid}{lodenorm}.eps" .format(vr = var, t = ty, lodefid = "_fiducial"*(fidornot), lodenorm = "norm"*(normornot)))
-    c.SaveAs(plotsoutputpath + "/Cov_{vr}_{t}{lodefid}{lodenorm}.root".format(vr = var, t = ty, lodefid = "_fiducial"*(fidornot), lodenorm = "norm"*(normornot)))
+
+    plotsoutputpath = pathtothings + "/CovMatplots"
+    if not os.path.isdir(plotsoutputpath):
+        os.system('mkdir -p ' + plotsoutputpath)
+
+    c.SaveAs(plotsoutputpath + "/Cov_{vr}_{t}{lodefid}{lodenorm}.png" .format(vr = var, t = ty, lodefid = "fid" * (fidornot), lodenorm = "bin" * (binornot)))
+    c.SaveAs(plotsoutputpath + "/Cov_{vr}_{t}{lodefid}{lodenorm}.pdf" .format(vr = var, t = ty, lodefid = "fid" * (fidornot), lodenorm = "bin" * (binornot)))
+    c.SaveAs(plotsoutputpath + "/Cov_{vr}_{t}{lodefid}{lodenorm}.eps" .format(vr = var, t = ty, lodefid = "fid" * (fidornot), lodenorm = "bin" * (binornot)))
+    c.SaveAs(plotsoutputpath + "/Cov_{vr}_{t}{lodefid}{lodenorm}.root".format(vr = var, t = ty, lodefid = "fid" * (fidornot), lodenorm = "bin" * (binornot)))
     c.Close(); tfile.Close()
-    del c, nominal, colup, coldn, tfile, varMat, finalmat, binning
+    del c, nominal, tfile, varMat, finalmat, binning
     return
 
 
 if __name__=="__main__":
-    if (len(sys.argv) > 1):
-        varName     = sys.argv[1]
-        print "> Chosen variable:", varName, "\n"
-        if (len(sys.argv) > 2):
-            nCores      = int(sys.argv[2])
-            print ('> Parallelization will be done with ' + str(nCores) + ' cores')
-        else:
-            print '> Sequential execution mode chosen'
-            nCores      = 1
-    else:
-        print "> Default choice of variable and minitrees\n"
-        varName     = 'LeadingLepEta'
-        nCores      = 1
+    parser = argparse.ArgumentParser(usage = "python nanoAOD_checker.py [options]", description = "Checker tool for the outputs of nanoAOD production (NOT postprocessing)", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument('--inpath',    '-i', metavar = 'inpath',     dest = "inpath",   required = False, default = "./temp/differential")
+    parser.add_argument('--year',      '-y', metavar = 'year',       dest = "year",     required = False, default = "all")
+    parser.add_argument('--variable',  '-v', metavar = 'variable',   dest = "variable", required = False, default = "all")
+    parser.add_argument('--extraArgs', '-e', metavar = 'extra',      dest = "extra",    required = False, default = "")
+    parser.add_argument('--nthreads',  '-j', metavar = 'nthreads',   dest = "nthreads", required = False, default = 0, type = int)
+    parser.add_argument('--pretend',   '-p', action  = "store_true", dest = "pretend",  required = False, default = False)
+
+    args     = parser.parse_args()
+    year     = args.year
+    extra    = args.extra
+    nthreads = args.nthreads
+    pretend  = args.pretend
+    inpath   = args.inpath
+    variable = args.variable
+
+    #### First, find the tasks
+    tasks = []
+    if year == "all":
+        if variable == "all":
+            theyears = []
+            presentyears = next(os.walk(inpath))[1]
+            if "2016" in presentyears:
+                theyears.append("2016")
+            if "2017" in presentyears:
+                theyears.append("2017")
+            if "2018" in presentyears:
+                theyears.append("2018")
+            if "run2" in presentyears:
+                theyears.append("run2")
+
+            for iY in theyears:
+                thevars = next(os.walk(inpath + "/" + iY))[1]
+                for iV in thevars:
+                    if "plots" in iV or "Fiducial" in iV: continue
+
+                    for t in ["detector", "particle", "particlefid", "particlebin", "particlefidbin"]:
+                        tasks.append( (inpath, iY, iV, t) )
 
     vl.SetUpWarnings()
-    if nCores == 1:
-        if varName != "All":
-            printCovarianceMatrix((varName, 'folded',   False, False))
-            printCovarianceMatrix((varName, 'unfolded', False, False))
-            printCovarianceMatrix((varName, 'unfolded', True,  False))
-            printCovarianceMatrix((varName, 'unfolded', True,  True))
-            printCovarianceMatrix((varName, 'unfolded', False,  True))
-        else:
-            for var in vl.varList['Names']['Variables']:
-                if "Fiducial" in var: continue
-                printCovarianceMatrix((var, 'folded',   False, False))
-                printCovarianceMatrix((var, 'unfolded', False, False))
-                printCovarianceMatrix((var, 'unfolded', True,  False))
-                printCovarianceMatrix((var, 'unfolded', True,  True))
-                printCovarianceMatrix((var, 'unfolded', False,  True))
-    else:
-        tasks = []
-        if varName == "All":
-            for var in vl.varList['Names']['Variables']:
-                if "Fiducial" in var: continue
-                for el in ['folded', 'unfolded']:
-                    tasks.append( (var, el, False, False) )
-                    if el == "unfolded": 
-                        tasks.append( (var, el, True, False))
-                        tasks.append( (var, el, True, True) )
-                        tasks.append( (var, el, False, True) )
-        else:
-            tasks.append((varName, 'folded',   False, False))
-            tasks.append((varName, 'unfolded', False, False))
-            tasks.append((varName, 'unfolded', True,  False))
-            tasks.append((varName, 'unfolded', True,  True))
-            tasks.append((varName, 'unfolded', False,  True))
-        pool = Pool(nCores)
+    if nthreads > 1:
+        pool = Pool(nthreads)
         pool.map(printCovarianceMatrix, tasks)
         pool.close()
         pool.join()
         del pool
+    else:
+        for tsk in tasks:
+            printCovarianceMatrix(tsk)
