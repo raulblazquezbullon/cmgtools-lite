@@ -33,14 +33,11 @@ if 'gae' in os.environ['HOSTNAME']:
 if 'cism.ucl.ac.be' in os.environ['HOSTNAME']:
     P0 = "/nfs/user/pvischia/tth/v5pre/"
 
-<<<<<<< HEAD
-TREESALL = "--xf THQ_LHE,THW_LHE,TTTW,TTWH --FMCs {P}/0_jmeUnc_v1 --FDs {P}/1_recl --FMCs {P}/1_recl_allvars --FMCs {P}/2_btag_SFs --FMCs {P}/2_scalefactors_lep_fixed --Fs {P}/3_tauCount --Fs {P}/4_evtVars  --Fs {P}/6_mva2lss --Fs {P}/6_mva3l --Fs {P}/6_mva4l  "  #_new
-=======
 if ".psi.ch" in os.environ['HOSTNAME']:
     P0 = "/pnfs/psi.ch/cms/trivcat/store/user/sesanche"
 
 TREESALL = "--xf THQ_LHE,THW_LHE,TTTW,TTWH --FMCs {P}/0_jmeUnc_v1 --FDs {P}/1_recl --FMCs {P}/1_recl_allvars --FMCs {P}/2_btag_SFs --FMCs {P}/2_scalefactors_lep_fixed --Fs {P}/3_tauCount --Fs {P}/4_evtVars  --Fs {P}/5_BDThtt_reco_new_blah --Fs {P}/6_mva2lss --Fs {P}/6_mva3l --Fs {P}/6_mva4l  "  #_new
->>>>>>> f2fbee5e270979d41ec8e9122e59c111c4b412f9
+
 YEARDIR=YEAR if YEAR != 'all' else ''
 
 TREESONLYFULL     = "-P "+P0+"/NanoTrees_TTH_090120_091019_v6/%s "%(YEARDIR,)         
@@ -472,14 +469,10 @@ if __name__ == '__main__':
         else: 
             print "ERROR: cr_wz with MC backgrounds does not work."
         if '_unc' in torun:
-<<<<<<< HEAD
-            x = add(x,"--unc ttH-multilepton/systsUnc.txt --xu CMS_ttHl_TTZ_lnU,CMS_ttHl_TTW_lnU")
-=======
             x = add(x,"--unc ttH-multilepton/systsUnc.txt  --xu CMS_ttHl_TTZ_lnU,CMS_ttHl_TTW_lnU")
             if '_postfit' in torun:
                 x = add(x, "--aefr fitDiagnostics.root fit_s --aefrl Postfit --peg-process TTZ r_ttZ --peg-process TTW r_ttW")
 
->>>>>>> f2fbee5e270979d41ec8e9122e59c111c4b412f9
         if '_fit' in torun:
             if not '_data' in torun: raise RuntimeError
             x = add(x,"--sP tot_weight --preFitData tot_weight --sp WZ ")
@@ -509,14 +502,10 @@ if __name__ == '__main__':
         if '_1fwd' in torun:
             x = add(x, "-A ^alwaystrue fwdjet1 'nFwdJet>0'")
         if '_unc' in torun:
-<<<<<<< HEAD
-            x = add(x,"--unc ttH-multilepton/systsUnc.txt --xu CMS_ttHl_TTZ_lnU,CMS_ttHl_TTW_lnU")
-=======
             x = add(x,"--unc ttH-multilepton/systsUnc.txt  --xu CMS_ttHl_TTZ_lnU,CMS_ttHl_TTW_lnU")
             if '_postfit' in torun:
                 x = add(x, "--aefr fitDiagnostics.root fit_s --aefrl Postfit --peg-process TTZ r_ttZ --peg-process TTW r_ttW")
 
->>>>>>> f2fbee5e270979d41ec8e9122e59c111c4b412f9
         if '_4j' in torun:
             x = add(x,"-E ^4j ")
             runIt(x,'%s/4j'%torun,plots)
@@ -565,14 +554,10 @@ if __name__ == '__main__':
             x = x.replace('mca-3l-mcdata.txt','mca-3l-mcdata-frdata.txt')
         plots = ['cr_3l']
         if '_unc' in torun:
-<<<<<<< HEAD
-            x = add(x,"--unc ttH-multilepton/systsUnc.txt --xu CMS_ttHl_TTZ_lnU,CMS_ttHl_TTW_lnU")
-=======
             x = add(x,"--unc ttH-multilepton/systsUnc.txt  --xu CMS_ttHl_TTZ_lnU,CMS_ttHl_TTW_lnU")
             if '_postfit' in torun:
                 x = add(x, "--aefr fitDiagnostics.root fit_s --aefrl Postfit --peg-process TTZ r_ttZ --peg-process TTW r_ttW")
 
->>>>>>> f2fbee5e270979d41ec8e9122e59c111c4b412f9
         runIt(x,'%s'%torun,plots)
     if 'cr_4l' in torun:
         x = base('4l')
@@ -583,14 +568,10 @@ if __name__ == '__main__':
             x = promptsub(x)
             raise RuntimeError, 'Fakes estimation not implemented for 4l'
         if '_unc' in torun:
-<<<<<<< HEAD
-            x = add(x,"--unc ttH-multilepton/systsUnc.txt --xu CMS_ttHl_TTZ_lnU,CMS_ttHl_TTW_lnU")
-=======
             x = add(x,"--unc ttH-multilepton/systsUnc.txt  --xu CMS_ttHl_TTZ_lnU,CMS_ttHl_TTW_lnU")
             if '_postfit' in torun:
                 x = add(x, "--aefr fitDiagnostics.root fit_s --aefrl Postfit --peg-process TTZ r_ttZ --peg-process TTW r_ttW")
 
->>>>>>> f2fbee5e270979d41ec8e9122e59c111c4b412f9
         plots = ['cr_4l']
         runIt(x,'%s'%torun,plots)
        
