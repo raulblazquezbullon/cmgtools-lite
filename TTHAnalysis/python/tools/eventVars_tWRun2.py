@@ -145,7 +145,6 @@ class EventVars_tWRun2(Module):
             self.branches.extend([(el[0] + self.label + var, el[1]) for el in self.lepenergyvars if type(el) == tuple])
 
         self.branches.extend(self.otherbranches)
-
         return
 
 
@@ -170,7 +169,6 @@ class EventVars_tWRun2(Module):
 
     # Common processing
     def run(self, event, Collection):
-
         # ============================ Definitions and declarations
         allret = {}
 
