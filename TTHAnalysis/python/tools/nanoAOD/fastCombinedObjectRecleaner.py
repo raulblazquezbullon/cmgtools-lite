@@ -6,17 +6,10 @@ import ROOT, os
 import warnings as wr
 
 class fastCombinedObjectRecleaner(Module):
-<<<<<<< HEAD
 
-    def __init__(self, label, inlabel, cleanTausWithLooseLeptons, cleanJetsWithFOTaus, doVetoZ, doVetoLMf, doVetoLMt,
-                 jetPts, jetPtsFwd, btagL_thr, btagM_thr, jetCollection = 'Jet', jetBTag = 'btagDeepFlavB', tauCollection = 'Tau',
-                 isMC = None, variations = ["jesTotalCorr", "jesTotalUnCorr", "jer"], cleanElectrons = 0.3, year_ = None):
-
-=======
     def __init__(self, label, inlabel, cleanTausWithLooseLeptons, cleanJetsWithFOTaus, doVetoZ, doVetoLMf, doVetoLMt,
                  jetPts, jetPtsFwd, btagL_thr, btagM_thr, jetCollection = 'Jet', jetBTag = 'btagDeepFlavB', tauCollection = 'Tau',
                  isMC = None, variations = [], cleanElectrons = 0.3, year_ = None):
->>>>>>> f2fbee5e270979d41ec8e9122e59c111c4b412f9
 
         self.label = "" if (label in ["",None]) else ("_"+label)
         self.inlabel = inlabel
@@ -53,15 +46,8 @@ class fastCombinedObjectRecleaner(Module):
         self.vars_leptons = ["pdgId",'jetIdx','pt']
         self.vars_taus = ["pt"]
         self.vars_taus_int = ['jetIdx']
-<<<<<<< HEAD
-
-        self.vars_taus_uchar = [] #'idMVAoldDMdR032017v2','idDeepTau2017v2p1VSjet']
-        self.vars_jets = [("pt","pt_nom") if self.isMC else 'pt',"btagDeepB","qgl",'btagDeepFlavB'] + [ 'pt_%s%s'%(x,y) for x in self.variations for y in ["Up","Down"]] #"btagCSVV2",,"btagDeepC"]#"btagCSV","btagDeepCSV",,"btagDeepCSVCvsL","btagDeepCSVCvsB","ptd","axis1"] # FIXME recover
-
-=======
         self.vars_taus_uchar = ['idMVAoldDMdR032017v2','idDeepTau2017v2p1VSjet']
         self.vars_jets = [("pt","pt_nom") if self.isMC and len(self.variations) else 'pt',"btagDeepB","qgl",'btagDeepFlavB'] + [ 'pt_%s%s'%(x,y) for x in self.variations for y in ["Up","Down"]] #"btagCSVV2",,"btagDeepC"]#"btagCSV","btagDeepCSV",,"btagDeepCSVCvsL","btagDeepCSVCvsB","ptd","axis1"] # FIXME recover
->>>>>>> f2fbee5e270979d41ec8e9122e59c111c4b412f9
         self.vars_jets_int = (["hadronFlavour"] if self.isMC else [])
         self.vars_jets_nooutput = []
         self.systsJEC = {0:""}
