@@ -366,11 +366,6 @@ def PlotParticleFidBinLevelResults(thedict, inpath, iY, varName):
     savetfile2.Close()
 
 
-    nominal_withErrors[0].GetYaxis().SetRangeUser(0, 0.3)
-    plot.yaxisuplimit = 0.025
-    #if nominal_withErrors[0].GetMaximum() <= tru.GetMaximum(): nominal_withErrors[0].SetMaximum(tru.GetMaximum())
-
-
     plot.addHisto(nominal_withErrors, 'hist',    'Uncertainty',              'F', 'unc')
     plot.addHisto(tru,                'L,same',  'tW Powheg DR + Pythia8',   'L', 'mc')
     #plot.addHisto(hDS,                'L,same',  'tW Powheg DS + Pythia8',   'L', 'mc')
@@ -388,11 +383,11 @@ def PlotParticleFidBinLevelResults(thedict, inpath, iY, varName):
     plot2.doPreliminary = vl.doPre
     plot2.plotspath = inpath + "/" + iY + "/particlefidbinplots/"
 
-    yaxismax_particlefidbin = 1.4
-    if "yaxismax_particlefidbin" in vl.varList[varName]:
-        yaxismax_particlefidbin = vl.varList[varName]["yaxismax_particlefidbin"]
+    yaxismax_particlefidbinunc = 1.4
+    if "yaxismax_particlefidbinunc" in vl.varList[varName]:
+        yaxismax_particlefidbinunc = vl.varList[varName]["yaxismax_particlefidbinunc"]
 
-    uncListorig, hincstat, hincsyst, hincmax = ep.drawTheRelUncPlot(nominal_withErrors, thedict, plot2, yaxismax_particlefidbin)
+    uncListorig, hincstat, hincsyst, hincmax = ep.drawTheRelUncPlot(nominal_withErrors, thedict, plot2, yaxismax_particlefidbinunc)
 
     if "legpos_particlefidbinunc" in vl.varList[varName]:
         unclegpos = vl.varList[varName]["legpos_particlefidbinunc"]
