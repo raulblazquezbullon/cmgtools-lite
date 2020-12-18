@@ -110,5 +110,5 @@ if __name__=="__main__":
     commandscaff = commandscaff.format(region = reg, BDTfunction = BDTfunction, Nbins = listabins, prodpath = friendspath+prod, friendtrees = friendtrees, directory = outpath)
     slurmscaff = slurmscaff.format(region = reg, command = commandscaff)
     print(slurmscaff)
-    os.system(slurmscaff)
+    #os.system(slurmscaff)
     print("")
