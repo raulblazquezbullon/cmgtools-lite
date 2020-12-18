@@ -26,6 +26,8 @@ change: \bLep1Jet1_M\b:                  Lep1Jet1_M_jerUp
 change: \bLep2Jet1_Pt\b:                 Lep2Jet1_Pt_jerUp
 change: \bLep2Jet1_M\b:                  Lep2Jet1_M_jerUp
 change: \bJet1_E\b:                      Jet1_E_jerUp
+change: \bJet_pt_nom\b:                  Jet_pt_jerUp
+change: \bJet_mass_nom\b:                Jet_mass_jerUp
 change: \bJet1_Pt\b:                     Jet1_Pt_jerUp
 change: \bJet2_Pt\b:                     Jet2_Pt_jerUp
 change: \bJetLoose1_Pt\b:                JetLoose1_Pt_jerUp
