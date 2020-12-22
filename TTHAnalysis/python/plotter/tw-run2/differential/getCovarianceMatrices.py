@@ -28,16 +28,13 @@ def printCovarianceMatrix(tsk):
     pathtothings = inpath + "/" + iY + "/" + var
 
     if ty == 'particle' and not fidornot: tfile = r.TFile(pathtothings + "/particleOutput.root",       "read")
-    elif not binornot   and     fidornot:
-        tfile = r.TFile(pathtothings + "/particlefidOutput.root",    "read")
+    elif not binornot   and     fidornot: tfile = r.TFile(pathtothings + "/particlefidOutput.root",    "read")
     elif     binornot   and     fidornot: tfile = r.TFile(pathtothings + "/particlefidbinOutput.root", "read")
     elif     binornot   and not fidornot: tfile = r.TFile(pathtothings + "/particlebinOutput.root",    "read")
     else:                                 tfile = r.TFile(pathtothings + "/detectorsignal_bs.root",    "read")
     
-
     if ty == "detector": nominal = deepcopy(tfile.Get("data_").Clone("nominal"))
     else:                nominal = deepcopy(tfile.Get(var).Clone("nominal"))
-
 
     thelumi = vl.TotalLumi if iY == "run2" else vl.LumiDict[int(iY)]
     scaleval = 1/thelumi/1000 if vl.doxsec else 1
@@ -46,7 +43,7 @@ def printCovarianceMatrix(tsk):
     varMat  = {}
     for key in tfile.GetListOfKeys():
         if key.GetName() == "data_" or "asimov" in key.GetName() or key.GetName() == var or key.GetName() == "nom0" or key.GetName() == "nom1":
-            continue # Colour envelope is applied in any case
+            continue
         elif key.GetName() == "CovMat" and ty == "particle":
             varMat["unfCovMat"] = deepcopy(key.ReadObj())
         else:
@@ -101,7 +98,7 @@ def printCovarianceMatrix(tsk):
     
     if fidornot: # We must calculate the (complete) covariance matrix for the statistical uncertainties for this case, as it is not directly providen by doFiducial.py nor TUnfold.
         ffid = r.TFile.Open(inpath + "/" + iY + "/Fiducial/particleOutput.root", "read")
-        fvar = r.TFile.Open(pathtothings + "/particleOutput.root",                "read")
+        fvar = r.TFile.Open(pathtothings + "/particleOutput.root",               "read")
 
         newmat = r.TH2F('newmat', '', nominal.GetNbinsX(), binning, nominal.GetNbinsX(), binning)
         
@@ -165,6 +162,8 @@ def printCovarianceMatrix(tsk):
         finalmat.SetMarkerSize(vl.varList[var]['txtsize_covparticle'])
     elif 'txtsize_covdetector' in vl.varList[var] and ty == "detector":
         finalmat.SetMarkerSize(vl.varList[var]['txtsize_covdetector'])
+    elif ('txtsize_covparticlefid' in vl.varList[var] and fidornot and not binornot):
+        finalmat.SetMarkerSize(vl.varList[var]['txtsize_covparticlefid'])
     elif 'txtsize_covparticlefidbin' in vl.varList[var] and fidornot and binornot:
         finalmat.SetMarkerSize(vl.varList[var]['txtsize_covparticlefidbin'])
     
@@ -193,14 +192,14 @@ def printCovarianceMatrix(tsk):
     c = r.TCanvas('c', "", 200, 10, 600, 600)
 
     txtanglestring = ""
-    if 'covtxtangle' in vl.varList[var] and ty == "detector":
-        txtanglestring = vl.varList[var]['covtxtangle']
-    elif ('covtxtangleunf' in vl.varList[var] and ty == "particle" and not fidornot):
-        txtanglestring = vl.varList[var]['covtxtangleunf']
-    elif ('covtxtangleunffid' in vl.varList[var] and fidornot and not binornot):
-        txtanglestring = vl.varList[var]['covtxtangleunffid']
-    elif ('covtxtangleunffidnorm' in vl.varList[var] and binornot):
-        vl.varList[var]['covtxtangleunffidnorm']
+    if   ('txtangle_covdetector' in vl.varList[var] and ty == "detector"):
+        txtanglestring = vl.varList[var]['txtangle_covdetector']
+    elif ('txtangle_covparticle' in vl.varList[var] and ty == "particle" and not fidornot and not binornot):
+        txtanglestring = vl.varList[var]['txtangle_covparticle']
+    elif ('txtangle_covparticlefid' in vl.varList[var] and fidornot and not binornot):
+        txtanglestring = vl.varList[var]['txtangle_covparticlefid']
+    elif ('txtangle_covparticlefidbin' in vl.varList[var] and binornot):
+        txtanglestring = vl.varList[var]['txtangle_covparticlefidbin']
 
     finalmat.Draw("colz text{s}".format(s = txtanglestring))
     r.gPad.Update()

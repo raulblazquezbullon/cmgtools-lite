@@ -183,7 +183,7 @@ def GiveMeMyGoodGOFTests(tsk):
         hDR       = deepcopy(f2.Get("x_tw").Clone("hDR"))
         #hDS       = deepcopy(f3.Get("tW").Clone("hDS"))
         #haMCatNLO = deepcopy(f4.Get("tW").Clone("haMCatNLO"))
-        f1.Close(); f2.Close(); f3.Close(); f4.Close(); f5.Close()
+        f1.Close(); f2.Close();  f5.Close() #f3.Close(); f4.Close();
     elif ty == "particlefidbin":
         hDR       = deepcopy(f1.Get("tru").Clone("hDR"))
         #hDS       = deepcopy(f1.Get("hDS").Clone("hDS"))
@@ -194,9 +194,15 @@ def GiveMeMyGoodGOFTests(tsk):
     hData.SetLineWidth(2)
     hData.SetLineColor(r.kBlack)
     hData.SetLineStyle(2)
+
+    thelumi = vl.TotalLumi if iY == "run2" else vl.LumiDict[int(iY)]
+    scaleval = 1/thelumi/1000
+
     hDR.SetFillColor(r.kWhite)
     hDR.SetLineWidth(2)
     hDR.SetLineColor(r.kRed)
+    if ty == "particle":
+        hDR.Scale(scaleval)
     
     #hDS.SetFillColor(r.kWhite)
     #hDS.SetLineWidth(2)
