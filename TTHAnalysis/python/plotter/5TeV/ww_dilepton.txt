@@ -5,6 +5,8 @@ em: abs(LepGood1_pdgId) != abs(LepGood2_pdgId)
 cleanup: minMllAFAS > 20
 trigger: Trigger_5TeV_1e || Trigger_5TeV_1m
 pt2010: LepGood1_conePt>20 && LepGood2_conePt>10
+etacut1: abs(LepGood1_pdgId) == 13 || (abs(LepGood1_pdgId) == 11 && (abs(LepGood1_eta)<1.479 || abs(LepGood1_eta)>1.566))
+etacut2: abs(LepGood2_pdgId) == 13 || (abs(LepGood2_pdgId) == 11 && (abs(LepGood2_eta)<1.479 || abs(LepGood2_eta)>1.566))
 TT: LepGood1_isLepTight && LepGood2_isLepTight
 dilpt:   ptlep12>20
 dphill:  abs(dphilep12) < 2.8
