@@ -3,16 +3,19 @@ trilep: nLepFO==3
 cleanup: minMllAFAS > 12
 exclusive: nLepTight<=3
 OSSF3l:  hasOSSF3l
-trigger: Trigger_5TeV_1e || Trigger_5TeV_1m || Trigger_5TeV_2e || Trigger_5TeV_2m
-trigger: Trigger_5TeV_1e || Trigger_5TeV_1m; Disable=True
+#trigger: Trigger_5TeV_1e || Trigger_5TeV_1m || Trigger_5TeV_2e || Trigger_5TeV_2m
+trigger: Trigger_5TeV_1e || Trigger_5TeV_1m
 ptcuts2: passPtCuts(LepGood1_pt,LepGood1_pdgId,LepGood2_pt,LepGood2_pdgId,LepGood3_pt,LepGood3_pdgId); Disable=True
-ptcuts:  LepGood1_pt > 8 && LepGood3_pt > 8 && LepGood3_pt > 8
+ptcuts:  LepGood1_pt > 8 && LepGood2_pt > 8 && LepGood3_pt > 8
+etacut1: abs(LepGood1_pdgId) == 13 || (abs(LepGood1_pdgId) == 11 && (abs(LepGood1_eta)<1.479 || abs(LepGood1_eta)>1.566))
+etacut2: abs(LepGood2_pdgId) == 13 || (abs(LepGood2_pdgId) == 11 && (abs(LepGood2_eta)<1.479 || abs(LepGood2_eta)>1.566))
+etacut3: abs(LepGood3_pdgId) == 13 || (abs(LepGood3_pdgId) == 11 && (abs(LepGood3_eta)<1.479 || abs(LepGood3_eta)>1.566))
 Zmass: abs(mZ_3l-91.2) < 30
 TT: LepGoodW_isLepTight && LepGoodZ1_isLepTight
 m3l: m3l > 100 
 lWpt20: lW_pt > 20
 
-SingleHLT: Trigger_5TeV_1e || Trigger_5TeV_1m; Disable=True
+#SingleHLT: Trigger_5TeV_1e || Trigger_5TeV_1m; Disable=True
 
 ###  
 TTT: LepGoodW_isLepTight && LepGoodZ1_isLepTight && LepGoodZ2_isLepTight; Disable=True
