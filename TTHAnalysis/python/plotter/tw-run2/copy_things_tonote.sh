@@ -2,7 +2,8 @@
 
 plotter="/nfs/fanae/user/vrbouza/Proyectos/tw_run2/desarrollo/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter"
 slash="/"
-tmpfolder="temp_2020_12_17"
+# tmpfolder="temp_2020_12_17"
+tmpfolder="temp_2020_11_25"
 prefix=$plotter/$tmpfolder/
 
 outfolder="/nfs/fanae/user/vrbouza/Proyectos/tw_run2/documentacion/AN-20-118"
@@ -11,28 +12,37 @@ outfolder="/nfs/fanae/user/vrbouza/Proyectos/tw_run2/documentacion/AN-20-118"
 vars=("Lep1_Pt Jet1_Pt Lep1Lep2_DPhi Lep1Lep2Jet1MET_Pz Lep1Lep2Jet1_M Lep1Lep2Jet1MET_Mt")
 years="2016 2017 2018 run2"
 
-for v in $vars; do
-    for y in $years; do
-        cp $prefix/differential/$y/$v/responseplots/PurStab_$v.pdf $outfolder/figures/8-Unfolding/$y/
-        cp $prefix/differential/$y/$v/responseplots/R_$v\_.pdf $outfolder/figures/8-Unfolding/$y/
-    done;
-    cp $prefix/differential/run2/particleplots/$v\_regcomp.pdf $outfolder/figures/8-Unfolding/run2/
-    cp $prefix/differential/run2/particleplots/$v\_areacomp.pdf $outfolder/figures/8-Unfolding/run2/
-    cp $prefix/differential/run2/particleplots/$v\_LCurve.pdf $outfolder/figures/8-Unfolding/run2/
+# for v in $vars; do
+#     for y in $years; do
+#         cp $prefix/differential/$y/$v/responseplots/PurStab_$v.pdf $outfolder/figures/8-Unfolding/$y/
+#         cp $prefix/differential/$y/$v/responseplots/R_$v\_.pdf $outfolder/figures/8-Unfolding/$y/
+#     done;
+#     cp $prefix/differential/run2/particleplots/$v\_regcomp.pdf $outfolder/figures/8-Unfolding/run2/
+#     cp $prefix/differential/run2/particleplots/$v\_areacomp.pdf $outfolder/figures/8-Unfolding/run2/
+#     cp $prefix/differential/run2/particleplots/$v\_LCurve.pdf $outfolder/figures/8-Unfolding/run2/
+#
+#     cp $prefix/differential/run2/detectorplots/$v\_detector.pdf $outfolder/figures/9-DiffResults/run2/
+#     cp $prefix/differential/run2/detectorplots/$v\uncs_detector.pdf $outfolder/figures/9-DiffResults/run2/
+#
+#     cp $prefix/differential/run2/particleplots/$v.pdf $outfolder/figures/9-DiffResults/run2/
+#     cp $prefix/differential/run2/particleplots/$v\uncs.pdf $outfolder/figures/9-DiffResults/run2/
+#
+#     cp $prefix/differential/run2/particlefidbinplots/$v\_particlefidbin.pdf $outfolder/figures/9-DiffResults/run2/
+#     cp $prefix/differential/run2/particlefidbinplots/$v\uncs_particlefidbin.pdf $outfolder/figures/9-DiffResults/run2/
+#
+#     cp $prefix/differential/run2/$v/CovMatplots/Cov_$v\_detector.pdf $outfolder/figures/9-DiffResults/run2/
+#     cp $prefix/differential/run2/$v/CovMatplots/Cov_$v\_particle.pdf $outfolder/figures/9-DiffResults/run2/
+#     cp $prefix/differential/run2/$v/CovMatplots/Cov_$v\_particlefidbin.pdf $outfolder/figures/9-DiffResults/run2/
+# done;
 
-    cp $prefix/differential/run2/detectorplots/$v\_detector.pdf $outfolder/figures/9-DiffResults/run2/
-    cp $prefix/differential/run2/detectorplots/$v\uncs_detector.pdf $outfolder/figures/9-DiffResults/run2/
+varsforplots=("lep1_pt jet1_pt lep1lep2_dphi lep1lep2jet1met_pz lep1lep2jet1met_m lep1lep2jet1met_mt")
+for v in $varsforplots; do
+    cp $prefix/run2/1j1t/differential/$v.pdf $outfolder/figures/eventselection/run2/1j1t/differential/
 
-    cp $prefix/differential/run2/particleplots/$v.pdf $outfolder/figures/9-DiffResults/run2/
-    cp $prefix/differential/run2/particleplots/$v\uncs.pdf $outfolder/figures/9-DiffResults/run2/
-
-    cp $prefix/differential/run2/particlefidbinplots/$v\_particlefidbin.pdf $outfolder/figures/9-DiffResults/run2/
-    cp $prefix/differential/run2/particlefidbinplots/$v\uncs_particlefidbin.pdf $outfolder/figures/9-DiffResults/run2/
-
-    cp $prefix/differential/run2/$v/CovMatplots/Cov_$v\_detector.pdf $outfolder/figures/9-DiffResults/run2/
-    cp $prefix/differential/run2/$v/CovMatplots/Cov_$v\_particle.pdf $outfolder/figures/9-DiffResults/run2/
-    cp $prefix/differential/run2/$v/CovMatplots/Cov_$v\_particlefidbin.pdf $outfolder/figures/9-DiffResults/run2/
 done;
+
+cp $prefix/run2/1j1t/nloosejets.pdf $outfolder/figures/eventselection/run2/1j1t/
+
 
 return
 
