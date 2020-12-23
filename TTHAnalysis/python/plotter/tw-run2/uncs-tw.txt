@@ -222,8 +222,8 @@ tw_scales    : tw    : .* : envelope ; FakeRates=['tw-run2/frs-scales/fr-muR_0p5
 isr_ttbar : ttbar : .* : templateAsymm; AddWeights=['PSWeight[2]'\,'PSWeight[0]']
 fsr_ttbar : ttbar : .* : templateAsymm; AddWeights=['PSWeight[3]'\,'PSWeight[1]']
 
-#isr_tw    : tw    : .* : templateAsymm; AddWeights=['PSWeight[2]'\,'PSWeight[0]']
-#fsr_tw    : tw    : .* : templateAsymm; AddWeights=['PSWeight[3]'\,'PSWeight[1]']
+isr_tw    : tw    : .* : templateAsymm; AddWeights=['PSWeight[2]'\,'PSWeight[0]']
+fsr_tw    : tw    : .* : templateAsymm; AddWeights=['PSWeight[3]'\,'PSWeight[1]']
 
 
 ##### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
