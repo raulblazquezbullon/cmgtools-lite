@@ -214,6 +214,7 @@ class Unfolder(object):
         self.densitymode=ROOT.TUnfoldDensity.kDensityModeNone
         self.closure=args.closure
         self.onlyMC=args.onlyMonteCarlo
+        self.produceOnlyPlot=args.produceOnlyPlot if args.produceOnlyPlot else '*' # By default, produce all plots
         self.load_data(args.data, args.mc, args.gen)
 
         ROOT.gStyle.SetOptStat(0)
@@ -411,11 +412,11 @@ class Unfolder(object):
         for ibin in range(0, self.response_nom.GetNbinsX()+2):
             for jbin in range(0, self.response_nom.GetNbinsY()+2):
                 if ibin==0 or jbin==0 or ibin>self.response_nom.GetNbinsX() or jbin>self.response_nom.GetNbinsY():
-                    self.response_nom.SetBinContent(ibin, jbin, 0)
-                    self.response_alt.SetBinContent(ibin, jbin, 0)
+                    #self.response_nom.SetBinContent(ibin, jbin, 0)
+                    #self.response_alt.SetBinContent(ibin, jbin, 0)
                     if self.checkLO: self.response_inc.SetBinContent(ibin, jbin, 0)
-                    self.response_nom.SetBinError(ibin, jbin, 0)
-                    self.response_alt.SetBinError(ibin, jbin, 0)
+                    #self.response_nom.SetBinError(ibin, jbin, 0)
+                    #self.response_alt.SetBinError(ibin, jbin, 0)
                     if self.checkLO: self.response_inc.SetBinError(ibin, jbin, 0)
                     
         datacardReader = DatacardReader(os.path.join(self.inputDir, 'responses/{year}_{finalState}_fitWZonly_{var}{charge}/prompt_altWZ_Pow/WZSR_{year}.card.txt'.format(year=self.year, finalState=self.finalState, var=self.var,charge=self.charge)), self.year, 'prompt_altWZ_Pow')
@@ -995,9 +996,10 @@ class Unfolder(object):
         print(self.mc.GetNbinsX())
         print(histDetNormBgrTotal.GetNbinsX())
         CMS_lumi.CMS_lumi(output, 4, 0, aLittleExtra=0.08)
-        output.SaveAs(os.path.join(self.outputDir, '2_p1_unfold_%s_%s_%s.pdf' % (label, key, self.var)))
-        output.SaveAs(os.path.join(self.outputDir, '2_p1_unfold_%s_%s_%s.png' % (label, key, self.var)))
-        output.SaveAs(os.path.join(self.outputDir, '2_p1_unfold_%s_%s_%s.C' % (label, key, self.var)))
+        if '*' in self.produceOnlyPlot or '2_p1' in self.produceOnlyPlot:
+            output.SaveAs(os.path.join(self.outputDir, '2_p1_unfold_%s_%s_%s.pdf' % (label, key, self.var)))
+            output.SaveAs(os.path.join(self.outputDir, '2_p1_unfold_%s_%s_%s.png' % (label, key, self.var)))
+            output.SaveAs(os.path.join(self.outputDir, '2_p1_unfold_%s_%s_%s.C' % (label, key, self.var)))
         output.Clear()
         # draw generator-level distribution:
         #   data (red) [for real data this is not available]
@@ -1044,9 +1046,10 @@ class Unfolder(object):
         leg_2.AddEntry(histUnfoldStat, '#frac{#chi^{2}}{NDOF}=%0.3f' % histUnfoldTotal.Chi2Test(self.dataTruth_nom, 'CHI2/NDF WW'), '')
         leg_2.Draw()
         CMS_lumi.CMS_lumi(output, 4, 0, aLittleExtra=0.08)
-        output.SaveAs(os.path.join(self.outputDir, '2_p2_unfold_%s_%s_%s.pdf' % (label, key, self.var)))
-        output.SaveAs(os.path.join(self.outputDir, '2_p2_unfold_%s_%s_%s.png' % (label, key, self.var)))
-        output.SaveAs(os.path.join(self.outputDir, '2_p2_unfold_%s_%s_%s.C' % (label, key, self.var)))
+        if '*' in self.produceOnlyPlot or '2_p2' in self.produceOnlyPlot:
+            output.SaveAs(os.path.join(self.outputDir, '2_p2_unfold_%s_%s_%s.pdf' % (label, key, self.var)))
+            output.SaveAs(os.path.join(self.outputDir, '2_p2_unfold_%s_%s_%s.png' % (label, key, self.var)))
+            output.SaveAs(os.path.join(self.outputDir, '2_p2_unfold_%s_%s_%s.C' % (label, key, self.var)))
         output.Clear()
         # show detector level distributions
         #    data (red)
@@ -1089,9 +1092,10 @@ class Unfolder(object):
         #leg_3.AddEntry(histInput, 'Input', 'la')
         leg_3.Draw()
         CMS_lumi.CMS_lumi(output, 4, 0, aLittleExtra=0.08)
-        output.SaveAs(os.path.join(self.outputDir, '2_p3_unfold_%s_%s_%s.pdf' % (label, key, self.var)))
-        output.SaveAs(os.path.join(self.outputDir, '2_p3_unfold_%s_%s_%s.png' % (label, key, self.var)))
-        output.SaveAs(os.path.join(self.outputDir, '2_p3_unfold_%s_%s_%s.C' % (label, key, self.var)))
+        if '*' in self.produceOnlyPlot or '2_p3' in self.produceOnlyPlot:
+            output.SaveAs(os.path.join(self.outputDir, '2_p3_unfold_%s_%s_%s.pdf' % (label, key, self.var)))
+            output.SaveAs(os.path.join(self.outputDir, '2_p3_unfold_%s_%s_%s.png' % (label, key, self.var)))
+            output.SaveAs(os.path.join(self.outputDir, '2_p3_unfold_%s_%s_%s.C' % (label, key, self.var)))
         output.Clear()
         #output.cd(4) 
         # show correlation coefficients
@@ -1114,9 +1118,10 @@ class Unfolder(object):
         #leg_4.AddEntry(histInput, 'Data-bkg by tool', 'la')
         leg_4.Draw()
         CMS_lumi.CMS_lumi(output, 4, 0, aLittleExtra=0.08)
-        output.SaveAs(os.path.join(self.outputDir, '2_p4_unfold_%s_%s_%s.pdf' % (label, key, self.var)))
-        output.SaveAs(os.path.join(self.outputDir, '2_p4_unfold_%s_%s_%s.png' % (label, key, self.var)))
-        output.SaveAs(os.path.join(self.outputDir, '2_p4_unfold_%s_%s_%s.C' % (label, key, self.var)))
+        if '*' in self.produceOnlyPlot or '2_p4' in self.produceOnlyPlot:
+            output.SaveAs(os.path.join(self.outputDir, '2_p4_unfold_%s_%s_%s.pdf' % (label, key, self.var)))
+            output.SaveAs(os.path.join(self.outputDir, '2_p4_unfold_%s_%s_%s.png' % (label, key, self.var)))
+            output.SaveAs(os.path.join(self.outputDir, '2_p4_unfold_%s_%s_%s.C' % (label, key, self.var)))
         output.Clear()
         if self.regmode is not ROOT.TUnfold.kRegModeNone:
 
@@ -1134,9 +1139,10 @@ class Unfolder(object):
             bestLogTauLogChi2.Draw('P')
             # show the L curve
             CMS_lumi.CMS_lumi(output, 4, 0, aLittleExtra=0.08)
-            output.SaveAs(os.path.join(self.outputDir, '2_p5_unfold_%s_%s_%s.pdf' % (label, key, self.var)))
-            output.SaveAs(os.path.join(self.outputDir, '2_p5_unfold_%s_%s_%s.png' % (label, key, self.var)))
-            output.SaveAs(os.path.join(self.outputDir, '2_p5_unfold_%s_%s_%s.C' % (label, key, self.var)))
+            if '*' in self.produceOnlyPlot or '2_p5' in self.produceOnlyPlot:
+                output.SaveAs(os.path.join(self.outputDir, '2_p5_unfold_%s_%s_%s.pdf' % (label, key, self.var)))
+                output.SaveAs(os.path.join(self.outputDir, '2_p5_unfold_%s_%s_%s.png' % (label, key, self.var)))
+                output.SaveAs(os.path.join(self.outputDir, '2_p5_unfold_%s_%s_%s.C' % (label, key, self.var)))
             output.Clear()
             #output.cd(6)
             tdr.setTDRStyle()
@@ -1148,9 +1154,10 @@ class Unfolder(object):
             bestLcurve.SetMarkerSize(2)
             bestLcurve.Draw("P")
             CMS_lumi.CMS_lumi(output, 4, 0, aLittleExtra=0.08)
-            output.SaveAs(os.path.join(self.outputDir, '2_p6_unfold_%s_%s_%s.pdf' % (label, key, self.var)))
-            output.SaveAs(os.path.join(self.outputDir, '2_p6_unfold_%s_%s_%s.png' % (label, key, self.var)))
-            output.SaveAs(os.path.join(self.outputDir, '2_p6_unfold_%s_%s_%s.C' % (label, key, self.var)))
+            if '*' in self.produceOnlyPlot or '2_p6' in self.produceOnlyPlot:
+                output.SaveAs(os.path.join(self.outputDir, '2_p6_unfold_%s_%s_%s.pdf' % (label, key, self.var)))
+                output.SaveAs(os.path.join(self.outputDir, '2_p6_unfold_%s_%s_%s.png' % (label, key, self.var)))
+                output.SaveAs(os.path.join(self.outputDir, '2_p6_unfold_%s_%s_%s.C' % (label, key, self.var)))
             output.Clear()
        
         #output.cd(7)
@@ -1175,17 +1182,19 @@ class Unfolder(object):
                 self.response_inc.Draw('colz')
         CMS_lumi.CMS_lumi(output, 4, 0, aLittleExtra=0.08)
         ROOT.gPad.Update()
-        output.SaveAs(os.path.join(self.outputDir, '2_p7_unfold_%s_%s_%s.pdf' % (label, key, self.var)))
-        output.SaveAs(os.path.join(self.outputDir, '2_p7_unfold_%s_%s_%s.png' % (label, key, self.var)))
-        #outputti.SaveAs(os.path.join(self.outputDir, '2_p7_unfold_%s_%s_%s.C' % (label, key, self.var)))
+        if '*' in self.produceOnlyPlot or '2_p7' in self.produceOnlyPlot:
+            output.SaveAs(os.path.join(self.outputDir, '2_p7_unfold_%s_%s_%s.pdf' % (label, key, self.var)))
+            output.SaveAs(os.path.join(self.outputDir, '2_p7_unfold_%s_%s_%s.png' % (label, key, self.var)))
+            #outputti.SaveAs(os.path.join(self.outputDir, '2_p7_unfold_%s_%s_%s.C' % (label, key, self.var)))
         output.Clear()
         #output.cd(8)
         histCorr.SetTitle('Correlation matrix')
         histCorr.Draw('COLZ')
         CMS_lumi.CMS_lumi(output, 4, 0, aLittleExtra=0.08)
-        output.SaveAs(os.path.join(self.outputDir, '2_p8_unfold_%s_%s_%s.pdf' % (label, key, self.var)))
-        output.SaveAs(os.path.join(self.outputDir, '2_p8_unfold_%s_%s_%s.png' % (label, key, self.var)))
-        output.SaveAs(os.path.join(self.outputDir, '2_p8_unfold_%s_%s_%s.C' % (label, key, self.var)))
+        if '*' in self.produceOnlyPlot or '2_p8' in self.produceOnlyPlot:
+            output.SaveAs(os.path.join(self.outputDir, '2_p8_unfold_%s_%s_%s.pdf' % (label, key, self.var)))
+            output.SaveAs(os.path.join(self.outputDir, '2_p8_unfold_%s_%s_%s.png' % (label, key, self.var)))
+            output.SaveAs(os.path.join(self.outputDir, '2_p8_unfold_%s_%s_%s.C' % (label, key, self.var)))
         #output.SaveAs(os.path.join(self.outputDir, '2_unfold_%s_%s_%s.png' % (label, key, self.var)))
  
         # =====================================================================
@@ -1252,6 +1261,8 @@ class Unfolder(object):
         if ('MWZ' in self.var) or ('Njets' in self.var) or ('pol' in self.var):
             ROOT.gPad.SetLogy()
             dt.SetMaximum(100*dt.GetMaximum())
+        ROOT.gPad.SetLogy()
+        dt.SetMaximum(100*dt.GetMaximum())
         #dt.GetXaxis().SetTitleSize(0.045)
         dt.GetXaxis().SetTitleSize(0) # for ratio
         dt.GetXaxis().SetLabelSize(0)
@@ -1591,7 +1602,6 @@ class Unfolder(object):
         dt_altratio.Draw("SAME E HIST")
 
         enterTheMatrixratio.Draw("SAME PE>")
-
         moneyplot.SaveAs(os.path.join(self.outputDir, '3_differentialXsec_%s_%s_%s.pdf' % (label, key, self.var)))
         moneyplot.SaveAs(os.path.join(self.outputDir, '3_differentialXsec_%s_%s_%s.png' % (label, key, self.var)))
         moneyplot.SaveAs(os.path.join(self.outputDir, '3_differentialXsec_%s_%s_%s.C' % (label, key, self.var)))
@@ -1684,6 +1694,7 @@ if __name__ == '__main__':
     parser.add_argument('-a', '--areaConstraint',   help='Area constraint', action='store_true')
     parser.add_argument('--checkLO',                help='Compare also with LO inclusive MC', action='store_true')
     parser.add_argument('--matrix',                 help='Compare with results from MATRIX (must provide directory)', default=None)
+    parser.add_argument('--produceOnlyPlot',        help='Produce files only for a subset of plots [None = all plots', default=None) 
     args = parser.parse_args()
     # execute only if run as a script
     ROOT.gROOT.SetBatch()
