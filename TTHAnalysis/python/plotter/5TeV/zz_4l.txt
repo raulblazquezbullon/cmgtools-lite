@@ -1,7 +1,11 @@
-çalwaystrue: 1
+alwaystrue: 1
 fourlep: nLepFO==4
 cleanup: minMllAFAS > 12
 hasOSSF: hasOSSF4l
-
+pt8888: LepGood1_pt>8 && LepGood2_pt>8 &&  LepGood3_pt>8 && LepGood4_pt>8
+etacut1: abs(LepGood1_pdgId) == 13 || (abs(LepGood1_pdgId) == 11 && (abs(LepGood1_eta)<1.479 || abs(LepGood1_eta)>1.566))
+etacut2: abs(LepGood2_pdgId) == 13 || (abs(LepGood2_pdgId) == 11 && (abs(LepGood2_eta)<1.479 || abs(LepGood2_eta)>1.566))
+etacut3: abs(LepGood3_pdgId) == 13 || (abs(LepGood3_pdgId) == 11 && (abs(LepGood3_eta)<1.479 || abs(LepGood3_eta)>1.566))
+etacut4: abs(LepGood4_pdgId) == 13 || (abs(LepGood4_pdgId) == 11 && (abs(LepGood4_eta)<1.479 || abs(LepGood4_eta)>1.566))
 
 
