@@ -247,9 +247,9 @@ triggerGroups=dict(
         2018 : lambda ev : _fires(ev,'HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL'), # prescaled in the two years according to https://twiki.cern.ch/twiki/bin/view/CMS/EgHLTRunIISummary#2018
     },
     Trigger_3m={
-        2016 : lambda ev : _fires(ev,'HLT_TripleMu_12_10_5') or _fires(ev, 'HLT_TripleMu_5_3_3_Mass3p8to60_DZ') or _fires(ev, 'TripleMu_12_10_5'),
+        2016 : lambda ev : _fires(ev,'HLT_TripleMu_12_10_5'),
         2017 : lambda ev : _fires(ev,'HLT_TripleMu_12_10_5'),
-        2018 : lambda ev : _fires(ev,'HLT_TripleMu_12_10_5'),
+        2018 : lambda ev : _fires(ev,'HLT_TripleMu_12_10_5') or _fires(ev, 'HLT_TripleMu_5_3_3_Mass3p8to60_DZ') or _fires(ev, 'TripleMu_12_10_5'),
     },
     Trigger_mee={
         2016 : lambda ev : _fires(ev,'HLT_Mu8_DiEle12_CaloIdL_TrackIdL'),
