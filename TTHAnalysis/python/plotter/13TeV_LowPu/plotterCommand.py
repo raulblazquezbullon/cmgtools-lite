@@ -21,19 +21,9 @@ defaultPars = {"path"       : "/pool/phedex/userstorage/cvico/WZ_LowPu/MiniTrees
 					"analysis_folder" : "13TeV_LowPu"
               }
 
-#steps = ["0_tags", "1_lepMerge", "2_recleaning", "3_triggers", "4_eventVars"]
 steps = ["0_tags", "1_lepMerge", "2_recleaning", "3_triggerVars"]
 
 
-
-class fun_colors:
-    OKBLUE = '\033[94m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
 
 
 def add_options(parser):
