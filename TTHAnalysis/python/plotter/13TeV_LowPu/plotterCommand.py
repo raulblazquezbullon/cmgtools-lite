@@ -34,7 +34,7 @@ def add_options(parser):
 	parser.add_argument("--signal", 	   '-s', metavar = "signal", 	   dest = "signal", default = "ttbar")
 	parser.add_argument("--outpath", 	'-o', metavar = "outpath", 	dest = "outpath",  	default = "/tmp/plots") # save plots in temporary folder (testing purposes)
 	parser.add_argument("--queue", 	   '-q', metavar = "queue", 	   dest = "queue",  			default = None) # save plots in temporary folder (testing purposes)
-	parser.add_argument("--nthreads", 	'-j', metavar = "nthreads", 	   dest = "nthreads",  	default = 0, type = int) 
+	parser.add_argument("--nthreads", 	'-j', metavar = "nthreads", 	   dest = "nthreads",  	default = 4, type = int) 
 	parser.add_argument("--select-plot", '--sP', metavar = "selectPlot", dest = "selectPlot", default = "forLocal")
 	return parser
 
@@ -92,7 +92,7 @@ if __name__ == "__main__":
 
 	extra = ["--Fs {ftreesPath}{Friend} ".format(ftreesPath = defaultPars["ftreesPath"], Friend = step) for step in steps]
 	extra.extend(["-f ",
-		      "-j {}".format(nthreads) if nthreads != 0 and queue == None else "", 
+		      "-j {}".format(nthreads),  
 		      "-l {}".format(defaultPars["lumi"]),
 		      "--split-factor=-1",
              	      "--maxRatioRange 0.6  1.99", 
