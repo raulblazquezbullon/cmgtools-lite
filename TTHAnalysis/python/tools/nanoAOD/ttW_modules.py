@@ -111,7 +111,7 @@ def clean_and_FO_selection_TTH(lep,year):
              (abs(lep.pdgId)==11 and lep.mvaFall17V2noIso_WP80 and lep.jetRelIso < 0.70))
 
 def clean_and_FO_selection_TTW(lep,year):
-    return lep.conept>10 and (abs(lep.pdgId)!=11 or (ttH_idEmu_cuts_E3(lep) and lep.convVeto and lep.tightCharge>=1 and lep.lostHits <= 1)) \
+    return lep.conept>10 and (abs(lep.pdgId)!=11 or (ttH_idEmu_cuts_E3(lep) and lep.convVeto and lep.tightCharge>=2 and lep.lostHits <= 1)) \
         and  (abs(lep.pdgId)!=13 or lep.mediumId) and (lep.mvaTOP>0.4 or (abs(lep.pdgId)==13 and lep.jetBTagDeepFlav< interp_deepJet(lep.pdgId,year,20,40,lep.pt) and lep.jetRelIso < 1.2222) or \
              (abs(lep.pdgId)==11 and lep.mvaFall17V2noIso_WPL and lep.jetRelIso < 1 and lep.jetBTagDeepFlav < interp_deepJet(lep.pdgId,year,25,50,lep.pt) ))
 
@@ -126,7 +126,7 @@ from CMGTools.TTHAnalysis.tools.nanoAOD.fastCombinedObjectRecleaner import fastC
 
 
 recleaner_step1 = lambda : CombinedObjectTaggerForCleaning("InternalRecl",
-                                                           looseLeptonSel = lambda lep: lep.miniPFRelIso_all < 0.4 and lep.sip3d < 8 and abs(lep.dxy) < 0.05 and abs(lep.dz) < 0.1 and (abs(lep.pdgId)!=11 or (abs(lep.eta)<2.5 and lep.lostHits<=1) and (abs(lep.pdgId)!=13 or (abs(lep.eta)<2.4 and lep.mediumId)) ),
+                                                           looseLeptonSel = lambda lep: lep.miniPFRelIso_all < 0.4 and lep.sip3d < 8 and abs(lep.dxy) < 0.05 and abs(lep.dz) < 0.1 and (abs(lep.pdgId)!=11 or (abs(lep.eta)<2.5 and lep.lostHits<=1)) and (abs(lep.pdgId)!=13 or (abs(lep.eta)<2.4 and lep.mediumId) ),
                                                            cleaningLeptonSel = clean_and_FO_selection_TTW,
                                                            FOLeptonSel = clean_and_FO_selection_TTW,
                                                            tightLeptonSel = tightLeptonSel,
@@ -209,22 +209,22 @@ def _fires(ev, path):
 triggerGroups=dict(
     Trigger_1e={
         2016 : lambda ev : _fires(ev,'HLT_Ele27_WPTight_Gsf') or _fires(ev,'HLT_Ele25_eta2p1_WPTight_Gsf') or _fires(ev,'HLT_Ele27_eta2p1_WPLoose_Gsf'),
-        2017 : lambda ev : _fires(ev,'HLT_Ele32_WPTight_Gsf') or _fires(ev,'HLT_Ele35_WPTight_Gsf'),
+        2017 : lambda ev : _fires(ev,'HLT_Ele32_WPTight_Gsf') or _fires(ev,'HLT_Ele35_WPTight_Gsf') or _fires(ev,'HLT_Ele115_CaloIdVT_GsfTrkIdT'),
         2018 : lambda ev : _fires(ev,'HLT_Ele32_WPTight_Gsf'),
     },
     Trigger_1m={
         2016 : lambda ev : _fires(ev,'HLT_IsoMu24') or _fires(ev,'HLT_IsoTkMu24') or _fires(ev,'HLT_IsoMu22_eta2p1') or _fires(ev,'HLT_IsoTkMu22_eta2p1') or _fires(ev,'HLT_IsoMu22') or _fires(ev,'HLT_IsoTkMu22'),
-        2017 : lambda ev : _fires(ev,'HLT_IsoMu24') or _fires(ev,'HLT_IsoMu27'),
+        2017 : lambda ev : _fires(ev,'HLT_IsoMu24') or _fires(ev,'HLT_IsoMu27') or _fires(ev,"HLT_IsoMu24_eta2p1") or _fires(ev,"HLT_Mu50") or  _fires(ev,"HLT_OldMu100") or   _fires(ev,"HLT_TkMu100"),
         2018 : lambda ev : _fires(ev,'HLT_IsoMu24'),
     },
     Trigger_2e={
         2016 : lambda ev : _fires(ev,'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ'),
-        2017 : lambda ev : _fires(ev,'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL'),
+        2017 : lambda ev : _fires(ev,'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL') or _fires(ev,"HLT_DoubleEle33_CaloIdL_MW"),
         2018 : lambda ev : _fires(ev,'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL'),
     },
     Trigger_2m={
         2016 : lambda ev : _fires(ev,'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL') or _fires(ev,'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL') or  _fires(ev,'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ') or _fires(ev,'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ'),
-        2017 : lambda ev : _fires(ev,'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8') or _fires(ev,'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8'),
+        2017 : lambda ev : _fires(ev,'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8') or _fires(ev,'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8') or _fires(ev,"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL") or _fires(ev,"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ") or _fires(ev,"HLT_Mu37_TkMu27"),
         2018 : lambda ev : _fires(ev,'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8'),
     },
     Trigger_em={
@@ -233,7 +233,9 @@ triggerGroups=dict(
         2017 :  lambda ev : _fires(ev,'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL')\
         or _fires(ev,'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ')\
         or _fires(ev,'HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ')\
-        or _fires(ev,'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ'),
+        or _fires(ev,'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ')\
+        or  _fires(ev,"HLT_Mu27_Ele37_CaloIdL_MW")\			
+        or  _fires(ev,"HLT_Mu37_Ele27_CaloIdL_MW"),\
         2018 :  lambda ev : _fires(ev,'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL')\
         or _fires(ev,'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ')\
         or _fires(ev,'HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ'),
@@ -245,7 +247,7 @@ triggerGroups=dict(
     },
     Trigger_3m={
         2016 : lambda ev : _fires(ev,'HLT_TripleMu_12_10_5'),
-        2017 : lambda ev : _fires(ev,'HLT_TripleMu_12_10_5'),
+        2017 : lambda ev : _fires(ev,'HLT_TripleMu_10_5_5_DZ') or _fires(ev,"HLT_TripleMu_5_3_3_Mass3p8to60_DZ") or _fires(ev,"TripleMu_12_10_5"),			
         2018 : lambda ev : _fires(ev,'HLT_TripleMu_12_10_5'),
     },
     Trigger_mee={
