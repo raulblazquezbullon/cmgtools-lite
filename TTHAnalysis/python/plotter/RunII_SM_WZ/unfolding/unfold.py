@@ -1185,7 +1185,7 @@ class Unfolder(object):
         if '*' in self.produceOnlyPlot or '2_p7' in self.produceOnlyPlot:
             output.SaveAs(os.path.join(self.outputDir, '2_p7_unfold_%s_%s_%s.pdf' % (label, key, self.var)))
             output.SaveAs(os.path.join(self.outputDir, '2_p7_unfold_%s_%s_%s.png' % (label, key, self.var)))
-            #outputti.SaveAs(os.path.join(self.outputDir, '2_p7_unfold_%s_%s_%s.C' % (label, key, self.var)))
+            output.SaveAs(os.path.join(self.outputDir, '2_p7_unfold_%s_%s_%s.C'   % (label, key, self.var)))
         output.Clear()
         #output.cd(8)
         histCorr.SetTitle('Correlation matrix')
@@ -1194,7 +1194,7 @@ class Unfolder(object):
         if '*' in self.produceOnlyPlot or '2_p8' in self.produceOnlyPlot:
             output.SaveAs(os.path.join(self.outputDir, '2_p8_unfold_%s_%s_%s.pdf' % (label, key, self.var)))
             output.SaveAs(os.path.join(self.outputDir, '2_p8_unfold_%s_%s_%s.png' % (label, key, self.var)))
-            output.SaveAs(os.path.join(self.outputDir, '2_p8_unfold_%s_%s_%s.C' % (label, key, self.var)))
+            output.SaveAs(os.path.join(self.outputDir, '2_p8_unfold_%s_%s_%s.C'   % (label, key, self.var)))
         #output.SaveAs(os.path.join(self.outputDir, '2_unfold_%s_%s_%s.png' % (label, key, self.var)))
  
         # =====================================================================

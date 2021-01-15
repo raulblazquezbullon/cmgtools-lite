@@ -104,7 +104,9 @@ class Steer:
             iXTitle=iPack[1]
             iOut=iPack[2]
             iYTitle='Events'
-            
+            if not self.singlevar in iOut:
+                continue
+
             for iChan, iChanCut in self.chanCuts.items():
                 print('mkdir -p {outdir}/{year}_{chan}_fitWZonly_{thevar}/'.format(outdir=self.outputDir, year=self.year,chan=iChan, cut=iChanCut, thevar=iOut))
                 if self.year=='runII':
@@ -141,7 +143,9 @@ class Steer:
                 iXTitle=iPack[1]
                 iOut=iPack[2]
                 iYTitle='Events'
-                
+                if not self.singlevar in iOut:
+                    continue
+
                 for iChan, iChanCut in self.chanCuts.items():
                     print('mkdir -p {outdir}/{year}_{chan}_fitWZonly_{thevar}_{iWhat}/'.format(outdir=self.outputDir, year=self.year,chan=iChan, cut=iChanCut,thevar=iOut, iWhat=iWhat) )
                     if self.year=='runII':
@@ -191,6 +195,8 @@ class Steer:
             iYTitle=iPack[2]
             iOut=iPack[3]
             print('echo \"{iShape}, range {iRange}\"'.format(iShape=iShape,iRange=iRange))
+            if not self.singlevar in iOut:
+                continue
             
             for iChan, iChanCut in self.chanCuts.items():
                 print('mkdir -p {outdir}/responses/{year}_{chan}_fitWZonly_{iOut}/'.format(outdir=self.outputDir, year=self.year,chan=iChan, cut=iChanCut, iOut=iOut))
@@ -221,6 +227,8 @@ class Steer:
                 iOut=iPack[3]
                 
                 print('echo \"{iShape}, range {iRange}\"'.format(iShape=iShape,iRange=iRange))
+                if not self.singlevar in iOut:
+                    continue
 
                 for iChan, iChanCut in self.chanCuts.items():
                     print('mkdir -p {outdir}/responses/{year}_{chan}_fitWZonly_{iout}_{chargeinfo}/'.format(outdir=self.outputDir, year=self.year,chan=iChan, cut=iChanCut, iout=iOut,chargeinfo=iWhat))
@@ -296,7 +304,7 @@ class Steer:
         
         jobs = self.get_list_of_jobs(args.base)
         
-        if self.dryrun:
+        if self.dryrun: # When I was submitting directly in-job. Now I just print the command anyway (to be redirected using the shell's pipe)
             print jobs
             quit()
         pool=Pool(self.nthreads)
