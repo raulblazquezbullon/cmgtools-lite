@@ -587,3 +587,10 @@ from CMGTools.TTHAnalysis.tools.bTagEffCount import bTagEffCount
 MODULES.append( ('bTagEffCount2016', lambda : bTagEffCount(label = "btagDeepB" , WPs={'L': 0.2217, 'M': 0.6321, 'T': 0.8953})))
 MODULES.append( ('bTagEffCount2017', lambda : bTagEffCount(label = "btagDeepB" , WPs={'L': 0.1522, 'M': 0.4941, 'T': 0.8001})))
 MODULES.append( ('bTagEffCount2018', lambda : bTagEffCount(label = "btagDeepB" , WPs={'L': 0.1241, 'M': 0.4184, 'T': 0.7527})))
+
+
+from CMGTools.TTHAnalysis.tools.jetCollector import jetCollector
+
+MODULES.append( ('Jet25CleanedMC'  , lambda : jetCollector(lambda x: x.pt_nom >= 25 and abs(x.eta) <= 2.5,   "MC", "Clean25")))
+MODULES.append( ('Jet25CleanedDATA', lambda : jetCollector(lambda x: x.pt_nom >= 25 and abs(x.eta) <= 2.5, "DATA", "Clean25")))
+

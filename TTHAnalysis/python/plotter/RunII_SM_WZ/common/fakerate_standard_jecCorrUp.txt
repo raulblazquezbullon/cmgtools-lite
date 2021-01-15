@@ -12,3 +12,5 @@ change: nBJetLoose25\b: nBJetLoose25_Mini_jesTotalCorrUp
 change: bTagWeightDeepCSVT_nom\b: bTagWeightDeepCSVT_jesTotalCorrUp
 change: bTagWeightDeepCSVM_nom\b: bTagWeightDeepCSVM_jesTotalCorrUp
 change: bTagWeightDeepCSVL_nom\b: bTagWeightDeepCSVL_jesTotalCorrUp
+
+change: JetClean25_pt\b: JetClean25_pt_jesTotalCorrUp
