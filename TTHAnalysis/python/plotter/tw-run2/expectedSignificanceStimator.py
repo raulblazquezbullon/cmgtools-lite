@@ -6,7 +6,7 @@ import os, sys, enum, argparse
 
 #Read the cards folder: neccesary structure 1j1tNbins and 2j1tNbins
 
-cardsFolder = "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp_cards/2020-11-28/run2/"
+cardsFolder = "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp_cards/2020-12-21/run2/"
 
 files = os.listdir(cardsFolder)
 
@@ -67,34 +67,34 @@ k=0
 for cat_1j1t in Folders1j1t:
     for cat_2j1t in Folders2j1t:
         for cat_2j2t in Folders2j2t:
-##            print(combinecards_command.format(cardsFolder = cardsFolder, folder_1j1t = cat_1j1t, folder_2j1t = cat_2j1t, folder_2j2t = cat_2j2t, binning = str(Nbins1j1t[i])+ "_1j1t_" + str(Nbins2j1t[j])+ "_2j1t_" + str(Nbins2j2t[k])+"_2j2t"))
-#            os.system(combinecards_command.format(cardsFolder = cardsFolder, folder_1j1t = cat_1j1t, folder_2j1t = cat_2j1t, folder_2j2t = cat_2j2t, binning = str(Nbins1j1t[i])+ "_1j1t_" + str(Nbins2j1t[j])+ "_2j1t_" + str(Nbins2j2t[k])+"_2j2t"))
+#            print(combinecards_command.format(cardsFolder = cardsFolder, folder_1j1t = cat_1j1t, folder_2j1t = cat_2j1t, folder_2j2t = cat_2j2t, binning = str(Nbins1j1t[i])+ "_1j1t_" + str(Nbins2j1t[j])+ "_2j1t_" + str(Nbins2j2t[k])+"_2j2t"))
+            os.system(combinecards_command.format(cardsFolder = cardsFolder, folder_1j1t = cat_1j1t, folder_2j1t = cat_2j1t, folder_2j2t = cat_2j2t, binning = str(Nbins1j1t[i])+ "_1j1t_" + str(Nbins2j1t[j])+ "_2j1t_" + str(Nbins2j2t[k])+"_2j2t"))
+        
+#            print(workspace_command.format(cardsFolder = cardsFolder, binning = str(Nbins1j1t[i])+ "_1j1t_" + str(Nbins2j1t[j])+ "_2j1t_"+ str(Nbins2j2t[k])+"_2j2t"))
+            os.system(workspace_command.format(cardsFolder = cardsFolder, binning = str(Nbins1j1t[i])+ "_1j1t_" + str(Nbins2j1t[j])+ "_2j1t_"+ str(Nbins2j2t[k])+"_2j2t"))
+        
+#            print(fit_command.format(cardsFolder = cardsFolder, binning = str(Nbins1j1t[i])+ "_1j1t_" + str(Nbins2j1t[j])+ "_2j1t_"+ str(Nbins2j2t[k])+"_2j2t"))
+            os.system(fit_command.format(cardsFolder = cardsFolder, binning = str(Nbins1j1t[i])+ "_1j1t_" + str(Nbins2j1t[j])+ "_2j1t_"+ str(Nbins2j2t[k])+"_2j2t"))
 #        
-##            print(workspace_command.format(cardsFolder = cardsFolder, binning = str(Nbins1j1t[i])+ "_1j1t_" + str(Nbins2j1t[j])+ "_2j1t_"+ str(Nbins2j2t[k])+"_2j2t"))
-#            os.system(workspace_command.format(cardsFolder = cardsFolder, binning = str(Nbins1j1t[i])+ "_1j1t_" + str(Nbins2j1t[j])+ "_2j1t_"+ str(Nbins2j2t[k])+"_2j2t"))
-#        
-##            print(fit_command.format(cardsFolder = cardsFolder, binning = str(Nbins1j1t[i])+ "_1j1t_" + str(Nbins2j1t[j])+ "_2j1t_"+ str(Nbins2j2t[k])+"_2j2t"))
-#            os.system(fit_command.format(cardsFolder = cardsFolder, binning = str(Nbins1j1t[i])+ "_1j1t_" + str(Nbins2j1t[j])+ "_2j1t_"+ str(Nbins2j2t[k])+"_2j2t"))
-##        
 
 
-            archivo = open(cardsFolder + "fits/output/output_all_%s_1j1t_%s_2j1t_%s_2j2t.txt"%(str(Nbins1j1t[i]), str(Nbins2j1t[j]), str(Nbins2j2t[k])),"r")
-            texto = archivo.read()
-            obj_string = "Best fit r: "
-            POI_position = texto.find(obj_string)
-            r = float(texto[POI_position+len(obj_string):POI_position+len(obj_string)+1])
-            r_list.append(r)
-            if not "/" in texto[POI_position+len(obj_string)+4:POI_position+len(obj_string)+12]:
-                r_negative = float(texto[POI_position+len(obj_string)+4:POI_position+len(obj_string)+12])
-                r_positive = float(texto[POI_position+len(obj_string)+14:POI_position+len(obj_string)+23])
-            else:
-                barra_pos = texto[POI_position+len(obj_string)+4:POI_position+len(obj_string)+12].find("/")
-                r_negative = float(texto[POI_position+len(obj_string)+4:POI_position+len(obj_string)+4+barra_pos])
-                r_positive = float(texto[POI_position+len(obj_string)+2+4+barra_pos:POI_position+len(obj_string)+2+4+barra_pos+6])
-            r_neg_list.append(r_negative)
-            
-            r_pos_list.append(r_positive)
-            sumaNbins.append(int(Nbins1j1t[i])+int(Nbins2j1t[j])+int(Nbins2j2t[k]))
+#            archivo = open(cardsFolder + "fits/output/output_all_%s_1j1t_%s_2j1t_%s_2j2t.txt"%(str(Nbins1j1t[i]), str(Nbins2j1t[j]), str(Nbins2j2t[k])),"r")
+#            texto = archivo.read()
+#            obj_string = "Best fit r: "
+#            POI_position = texto.find(obj_string)
+#            r = float(texto[POI_position+len(obj_string):POI_position+len(obj_string)+1])
+#            r_list.append(r)
+#            if not "/" in texto[POI_position+len(obj_string)+4:POI_position+len(obj_string)+12]:
+#                r_negative = float(texto[POI_position+len(obj_string)+4:POI_position+len(obj_string)+12])
+#                r_positive = float(texto[POI_position+len(obj_string)+14:POI_position+len(obj_string)+23])
+#            else:
+#                barra_pos = texto[POI_position+len(obj_string)+4:POI_position+len(obj_string)+12].find("/")
+#                r_negative = float(texto[POI_position+len(obj_string)+4:POI_position+len(obj_string)+4+barra_pos])
+#                r_positive = float(texto[POI_position+len(obj_string)+2+4+barra_pos:POI_position+len(obj_string)+2+4+barra_pos+6])
+#            r_neg_list.append(r_negative)
+#            
+#            r_pos_list.append(r_positive)
+#            sumaNbins.append(int(Nbins1j1t[i])+int(Nbins2j1t[j])+int(Nbins2j2t[k]))
             k=k+1
         j=j+1
         k=0
