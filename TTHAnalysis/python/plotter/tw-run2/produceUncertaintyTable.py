@@ -115,9 +115,11 @@ systsGroup = {
     ],
     'isr' : [
         "isr_ttbar",
+        "isr_tw",
     ],
     'fsr' : [
         "fsr_ttbar",
+        "fsr_tw",
     ],
     'colour' : [
         "colour_rec",

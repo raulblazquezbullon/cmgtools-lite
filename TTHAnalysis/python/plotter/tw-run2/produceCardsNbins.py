@@ -17,9 +17,9 @@ friendspath  = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/productions/"
 friendtrees = "--Fs {P}/0_yeartag --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --Fs {P}/5_mvas"
 
 
-BDT_1j1t_path = "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2020_20_11/smallbinning/run2/1j1t/MVAtrain/plots-tw-1j1t_MVAtrain.root" 
+BDT_1j1t_path = "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2020-12-19/MVA/run2/1j1t/MVAtrain/plots-tw-1j1t_MVAtrain.root" 
 smallb1j1t = "tmvaBDT_1j1b_smallb_ttbar"
-BDT_2j1t_path = "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2020_20_11/smallbinning/run2/2j1t/MVAtrain/plots-tw-2j1t_MVAtrain.root" 
+BDT_2j1t_path = "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2020-12-19/MVA/run2/2j1t/MVAtrain/plots-tw-2j1t_MVAtrain.root" 
 smallb2j1t = "tmvaBDT_2j1b_smallb_ttbar"
 
 #BDT_1j1t_path = "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2020-11-27_oldBDT/smallbinning/run2/1j1t/MVAtrain/plots-tw-1j1t_MVAtrain.root" 
@@ -110,5 +110,5 @@ if __name__=="__main__":
     commandscaff = commandscaff.format(region = reg, BDTfunction = BDTfunction, Nbins = listabins, prodpath = friendspath+prod, friendtrees = friendtrees, directory = outpath)
     slurmscaff = slurmscaff.format(region = reg, command = commandscaff)
     print(slurmscaff)
-    #os.system(slurmscaff)
+    os.system(slurmscaff)
     print("")

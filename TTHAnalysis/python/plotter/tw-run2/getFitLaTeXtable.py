@@ -341,7 +341,7 @@ translateDict = {
     "vvttv_norm"  : "\\qquad VVt$\\bar{\\mathrm{t}}$V",
     "matching"    : "\\qquad Matrix element/PS matching",
     "ttbar_scales": "\\qquad t$\\bar{\\mathrm{t}}$ $\\mu_{R}$ and $\\mu_{F}$ scales",
-    "tw_scales"   : "\\qquad tw $\\mu_{R}$ and $\\mu_{F}$ scales",
+    "tw_scales"   : "\\qquad tW $\\mu_{R}$ and $\\mu_{F}$ scales",
     "isr"         : "\\qquad Initial state radiation",
     "fsr"         : "\\qquad Final state radiation",
     "colour"      : "\\qquad Colour reconnection",
@@ -460,4 +460,4 @@ def getFitUncsLaTeXtable(path = "./temp/cards/uncstable", inname = "outputfit.tx
 
 
 if __name__ == "__main__":
-    getFitUncsLaTeXtable("./temp_cards/2020-12-15/NewBin")
+    getFitUncsLaTeXtable("./")
