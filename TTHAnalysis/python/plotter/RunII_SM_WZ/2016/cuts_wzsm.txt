@@ -36,7 +36,7 @@ flav_xxx : (abs(LepZ1_pdgId)+abs(LepZ2_pdgId)+abs(LepW_pdgId)-33)/2 == 0 || (abs
 flav_xxy : (abs(LepZ1_pdgId)+abs(LepZ2_pdgId)+abs(LepW_pdgId)-33)/2 == 1 || (abs(LepZ1_pdgId)+abs(LepZ2_pdgId)+abs(LepW_pdgId)-33)/2 == 2; Disable=True
 
 #OneJet
-onejet : nJet25_Mini>0; Disable=True
+onejet : nJetClean25>0; Disable=True
 
 m3lmetblind : $DATA{m3Lmet <= 400} $MC{1} $FASTSIM{1}; Disable=True
 NOallTight  : !(LepSel_isTight[0] &&  LepSel_isTight[1] && LepSel_isTight[2]); Disable= True

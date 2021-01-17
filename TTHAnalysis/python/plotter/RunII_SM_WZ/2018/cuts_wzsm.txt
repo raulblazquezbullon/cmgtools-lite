@@ -24,7 +24,7 @@ CRTT   : m3L >= 100 && nBJetTight25_Mini > 0   && nLepGood < 4 && MET_pt_central
 CRconv : m3L < 100 && nBJetTight25_Mini == 0  && MET_pt_central < 30 && nLepGood < 4; Disable=True
 
 #OneJet
-onejet : nJet25_Mini>0; Disable=True
+onejet : nJetClean25>0; Disable=True
 
 flav_eee : (abs(LepZ1_pdgId)+abs(LepZ2_pdgId)+abs(LepW_pdgId)-33)/2 == 0; Disable=True
 flav_eem : (abs(LepZ1_pdgId)+abs(LepZ2_pdgId)+abs(LepW_pdgId)-33)/2 == 1; Disable=True
