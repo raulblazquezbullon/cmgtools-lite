@@ -97,7 +97,7 @@ varList['Lep1Lep2Jet1MET_Mt'] = {
 
     #'bins_particle'  : [0., 220., 300., 325., 400., 500.], # propuesta (5 bins)
     #'bins_detector' : [0., 220., 250., 260., 270., 280., 290., 300., 325., 400., 500.], # propuesta (5 bins) SELECCIONADA
-    'bins_particle'  : [100., 220., 300., 325., 400., 500.], # propuesta (5 bins)
+    'bins_particle' : [100., 220., 300., 325., 400., 500.], # propuesta (5 bins)
     'bins_detector' : [100., 220., 250., 260., 270., 280., 290., 300., 325., 400., 500.], # propuesta (5 bins) SELECCIONADA
 
     #'bins_particle'  : [0., 220., 270., 300., 325., 400., 500.], # propuesta (6 bins)
@@ -117,9 +117,9 @@ varList['Lep1Lep2Jet1MET_Mt'] = {
 
     #'descbinning' : [0., 800.], ## TEMPORAL
     #'ndescbins'   : 20, ## TEMPORAL
-    "var_detector"  : 'min(Lep1Lep2Jet1MET_Mt, 499.)',
+    "var_detector"  : 'min(max(Lep1Lep2Jet1MET_Mt, 101.), 499.)',
     'var_response'  : 'Lep1Lep2Jet1MET_Mt',
-    'var_particle'  : 'min(DressLep1Lep2Jet1MET_Mt, 499.)',
+    'var_particle'  : 'min(max(DressLep1Lep2Jet1MET_Mt, 101.), 499.)',
     'legpos'      : (0.51, 0.55, 0.71, 0.93),
     #'legposdesc'  : (0.15, 0.425, 0.35, 0.81),
     "legposdesc"  : (0.65, 0.55, 0.85, 0.93),
@@ -232,9 +232,9 @@ varList['Lep1Lep2Jet1_M'] = {
     #'legposdesc'  : (0.11, 0.435, 0.31, 0.82),
     #'legposdesc'  : (0.65, 0.55, 0.85, 0.93),
     'legposdesc'  : (0.7, 0.55, 0.90, 0.93),
-    "var_detector"         : 'min(Lep1Lep2Jet1_M, 399.)',
+    "var_detector"         : 'min(max(Lep1Lep2Jet1_M, 51.), 399.)',
     'var_response'         : 'Lep1Lep2Jet1_M',
-    'var_particle'         : 'min(DressLep1Lep2Jet1_M, 399.)',
+    'var_particle'         : 'min(max(DressLep1Lep2Jet1_M, 51.), 399.)',
     'legpos_detectorunc' : "TC",
     'legpos_particlefidunc'  : "TC",
     'legpos_particleunc'  : "TL",
@@ -327,9 +327,9 @@ varList['Jet1_Pt'] = {
     'legposdesc'  : (0.7, 0.55, 0.90, 0.93),
     'maxdesc'     : 3600,
     "legpos_particle"  : "TC",
-    "var_detector": 'min(Jet1_Pt, 30.1)',
+    "var_detector": 'min(max(Jet1_Pt, 31.), 149)',
     'var_response': 'Jet1_Pt',
-    'var_particle': 'min(DressJet1_Pt, 30.1)',
+    'var_particle': 'min(max(DressJet1_Pt, 31.), 149)',
     'legpos_detectorunc' : "TL",
     'legpos_particleunc'  : "TL",
     'legpos_particlefidunc'  : "TL",
@@ -401,9 +401,9 @@ varList['Lep1_Pt'] = {
     'legpos'      : (0.7, 0.55, 0.90, 0.93),
     'legposdesc'  : (0.7, 0.55, 0.90, 0.93),
     "maxdesc"     : 3300,
-    "var_detector": 'min(LepGood_pt_corrAll[0], 149.)',
+    "var_detector": 'min(max(LepGood_pt_corrAll[0], 26.), 149.)',
     'var_response': 'Lep1_Pt',
-    'var_particle': 'min(GenDressedLepton_pt[iDressSelLep[0]], 149.)',
+    'var_particle': 'min(max(GenDressedLepton_pt[iDressSelLep[0]], 26.), 149.)',
     'legpos_detectorunc' : "TL",
     'legpos_particlefidunc'  : "TL",
     #"legpos_particle"   : (.18, .3, .32, .05),
@@ -484,9 +484,9 @@ varList['Lep1Lep2Jet1MET_Pz'] = {
 
     'descbinning' : [0., 450.],
     'ndescbins'   : 18,
-    "var_detector": 'min(abs(Lep1Lep2Jet1MET_Pz), 449.)',
+    "var_detector": 'min(max(abs(Lep1Lep2Jet1MET_Pz), 1.), 449.)',
     'var_response': 'Lep1Lep2Jet1MET_Pz',
-    'var_particle': 'min(abs(DressLep1Lep2Jet1MET_Pz), 449.)',
+    'var_particle': 'min(max(abs(DressLep1Lep2Jet1MET_Pz), 1.), 449.)',
     'legpos'      : (0.51, 0.55, 0.71, 0.93),
     #'legposdesc'  : (0.57, 0.55, 0.78, 0.93),
     'legposdesc'  : (0.65, 0.55, 0.85, 0.93),
