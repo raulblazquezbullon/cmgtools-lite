@@ -151,7 +151,8 @@ def plotVariationsFromOneProcess(tsk):
         #ratioUp.GetXaxis().SetNdivisions(505, False)
         ratioUp.GetXaxis().SetRangeUser(nominal.GetXaxis().GetBinLowEdge(1), nominal.GetXaxis().GetBinUpEdge(nominal.GetNbinsX()))
 
-        ratioUp.GetYaxis().SetRangeUser(0.8, 1.2)
+        #ratioUp.GetYaxis().SetRangeUser(0.8, 1.2)
+        ratioUp.GetYaxis().SetRangeUser(0.95, 1.05)
         ratioUp.GetYaxis().SetTitle('Vars./Nom.')
         ratioUp.GetYaxis().SetTitleFont(43)
         ratioUp.GetYaxis().SetTitleSize(16)
