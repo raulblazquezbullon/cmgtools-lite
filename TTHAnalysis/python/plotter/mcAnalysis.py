@@ -546,7 +546,7 @@ class MCAnalysis:
             buildVariationsFromAlternative(self.variationsFile, ret)
             buildVariationsFromAlternativesWithEnvelope(self.variationsFile, ret)
 
-        ## remove samples used for sytstematics
+        ## remove samples used for systematics
         toremove = []
         for key in ret:
             if "syst" in key:
