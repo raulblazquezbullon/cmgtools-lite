@@ -89,7 +89,7 @@ class particleAndPartonVars_tWRun2(Module):
 
         loosejets    = [all_jets[getattr(event, 'iDressSelLooseJet')[j]]
                         for j in xrange(min([getattr(event, 'nDressSelLooseJet'), 5]))]
-        loosejets_4m = [j.p4() for j in jets]
+        loosejets_4m = [j.p4() for j in loosejets]
 
 
         allret["Dresschannel"]            = ch.NoChan
@@ -216,7 +216,7 @@ class particleAndPartonVars_tWRun2(Module):
                         if tmpM < allret["DressminMllAFAS"] or allret["DressminMllAFAS"] == -99: allret["DressminMllAFAS"] = tmpM
 
                 if event.nDressSelLooseJet > 0:
-                    allret["DressJetLoose1_Pt"] = loosejets_4[0].Pt()
+                    allret["DressJetLoose1_Pt"] = loosejets_4m[0].Pt()
 
 
                 if event.nDressSelJet > 0:
