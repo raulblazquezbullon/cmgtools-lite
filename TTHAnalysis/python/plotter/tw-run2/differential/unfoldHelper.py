@@ -81,7 +81,7 @@ class DataContainer:
         if '' not in self.responseMatrices:
             raise RuntimeError("The nominal response matrix is not present in the provided rootfile.")
         
-        if verbose: print "Printy thingy. listOfSysts:\n", self.listOfSysts, "\nsystListResp:\n", self.systListResp
+        #if verbose: print "Printy thingy. listOfSysts:\n", self.listOfSysts, "\nsystListResp:\n", self.systListResp
 
 
         #print self.var, self.year
@@ -447,12 +447,15 @@ class Unfolder():
 
         allHistos = {}
         self.prepareAllHelpers()
-        if self.doRegularisation and self.tau == 0:
-            print '> Performing regularisation...'
-            self.doLCurveScan()
         tauval = 0
         if self.doRegularisation:
+            print "> Performing regularisation..."
+            if self.tau == 0:
+                print '   - Tau value not yet calculated! Extracting it with the L-curve method...'
+                self.doLCurveScan()
+
             tauval = self.taulist['']
+
 
         if verbose: print '\n> Unfolding nominal distribution'
         self.helpers[''].tunfolder.DoUnfold(tauval)
@@ -620,11 +623,11 @@ class Unfolder():
         tru.SetMarkerSize(0)
         tru.SetLineWidth(2)
         tru.SetLineColor(bp.colorMap[0])
-        if self.var == "Fiducial":
-            print "JEJE:", tru.GetBinContent(1)
+        #if self.var == "Fiducial":
+            #print "JEJE:", tru.GetBinContent(1)
 
-        for iB in range(1, allHistos[""].GetNbinsX() + 1):
-            print allHistos[""].GetBinContent(iB), tru.GetBinContent(iB),  (allHistos[""].GetBinContent(iB) - tru.GetBinContent(iB)) / tru.GetBinContent(iB) * 100
+        #for iB in range(1, allHistos[""].GetNbinsX() + 1):
+            #print allHistos[""].GetBinContent(iB), tru.GetBinContent(iB),  (allHistos[""].GetBinContent(iB) - tru.GetBinContent(iB)) / tru.GetBinContent(iB) * 100
 
         #sys.exit()
         ##print "tW DR", tru.GetBinContent(1)
@@ -736,8 +739,10 @@ def UnfoldVariable(tsk):
 
     a.plotspath        = outplotspath
     a.doSanityCheck    = True
-    a.doRegularisation = vl.varList[iV]["doReg"]  if "doReg"  in vl.varList[iV] else vl.doReg
-    a.doAreaConstraint = vl.varList[iV]["doArea"] if "doArea" in vl.varList[iV] else vl.doArea
+    #a.doRegularisation = vl.varList[iV]["doReg"]  if "doReg"  in vl.varList[iV] else vl.doReg
+    #a.doAreaConstraint = vl.varList[iV]["doArea"] if "doArea" in vl.varList[iV] else vl.doArea
+    a.doRegularisation = False
+    a.doAreaConstraint = False
 
     a.doUnfoldingForAllNuis() # Unfolding
 
@@ -791,6 +796,7 @@ if __name__ == "__main__":
                 for iV in thevars:
                     if "plots" in iV: continue
                     #if "Fiducial" not in iV: continue
+                    #if "Lep1_Pt" not in iV: continue
                     tasks.append( (inpath, iY, iV) )
 
 
