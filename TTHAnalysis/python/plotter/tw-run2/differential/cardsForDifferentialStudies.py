@@ -99,7 +99,8 @@ def CardsCommand(prod, year, var, isAsimov, nthreads, outpath, region, noUnc, us
 
     variable_  = (vl.varList[var]["var_detector"] if (region == "detector" or region == "detectorparticlebutdetector" or region == "nonfiducial" or "forExtr" in region) else
                   vl.varList[var]["var_particle"] if (region == "particle" or region == "detectorparticle") else
-                  vl.varList[var]["var_particle"] + ":" + vl.varList[var]["var_detector"])
+                  #vl.varList[var]["var_particle"] + ":" + vl.varList[var]["var_detector"])
+                  vl.varList[var]["var_detector"] + ":" + vl.varList[var]["var_particle"])
     name_      = "--binname " + region
     weights_   = (nomweight if (region == "detector" or "forExtr" in region or region == "detectorparticlebutdetector") else
                   nomweight if region == "detectorparticleResponse" or region == "nonfiducial" else
