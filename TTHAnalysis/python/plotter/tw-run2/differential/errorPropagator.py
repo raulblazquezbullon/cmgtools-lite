@@ -347,7 +347,7 @@ def drawTheRelUncPlot(listWithHistos, thedict, thePlot, yaxismax = "auto", doSym
         hincsyst.SetBinContent(bin, incsyst[bin-1] / hincsyst.GetBinContent(bin))
         hincsyst.SetBinError(bin, 0.)
 
-        print "bin:", bin, "incmax:", incmax[-1]/thedict[""].GetBinContent(bin)*100, "incsyst:", incsyst[-1]/thedict[""].GetBinContent(bin)*100, "theinc:", max([listWithHistos[0].GetBinError(bin), listWithHistos[1].GetBinError(bin)])/thedict[""].GetBinContent(bin)*100
+        #print "bin:", bin, "incmax:", incmax[-1]/thedict[""].GetBinContent(bin)*100, "incsyst:", incsyst[-1]/thedict[""].GetBinContent(bin)*100, "theinc:", max([listWithHistos[0].GetBinError(bin), listWithHistos[1].GetBinError(bin)])/thedict[""].GetBinContent(bin)*100
 
 
 
@@ -385,7 +385,7 @@ def drawTheRelUncPlot(listWithHistos, thedict, thePlot, yaxismax = "auto", doSym
     plottedsysts = 0
     while plottedsysts < vl.nuncs and plottedsysts <= len(uncList):
         if "Stat" in uncList[iS][0]:
-            print "holi", iS
+            #print "holi", iS
             iS += 1
             continue
 
@@ -401,7 +401,7 @@ def drawTheRelUncPlot(listWithHistos, thedict, thePlot, yaxismax = "auto", doSym
         thePlot.addHisto(uncList[iS][1], 'H,same', uncList[iS][0], 'L')
         plottedsysts += 1
 
-        print iS, uncList[iS][0]
+        #print iS, uncList[iS][0]
         iS += 1
 
 
