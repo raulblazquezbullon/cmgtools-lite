@@ -1,5 +1,5 @@
 import ROOT as r
-import math
+import math, sys
 from copy import deepcopy
 from array import array
 import varList as vl
@@ -160,51 +160,106 @@ def maximumHisto(histo1, histo2):
     return maxHist
 
 
-def getUncList(varDict, doFit = True):
-    if doFit:    medDict = [('Fit',   varDict[""])]
-    else:        medDict = [('Stat.', varDict[""])]
+def getUncList(varDict, doFit = True, doSym = False):
+    if doFit:    medDict = [('Fit',         varDict[""])]
+    else:        medDict = [('Statistical', varDict[""])]
+
     outDict = []
-    histUp  = [[] for i in range(varDict[""].GetNbinsX())]
-    histDown= [[] for i in range(varDict[""].GetNbinsX())]
-    for var in varDict:
-        if var == '': continue
-        hist    = varDict[""].Clone(varDict[""].GetName() + var)
-        variat  = 0.
-        for bin in range(1, varDict[""].GetNbinsX() + 1):
-            variat = varDict[""].GetBinContent(bin) - varDict[var].GetBinContent(bin)
 
-            if abs(variat) >= varDict[""].GetBinContent(bin): hist.SetBinError(bin, varDict[""].GetBinContent(bin))
-            else:                                             hist.SetBinError(bin, abs(variat))
+    if not doSym:
+        for var in varDict:
+            if var == '': continue
+            hist    = deepcopy(varDict[""].Clone(varDict[""].GetName() + var))
+            variat  = 0.
+            for bin in range(1, varDict[""].GetNbinsX() + 1):
+                variat = varDict[""].GetBinContent(bin) - varDict[var].GetBinContent(bin)
 
-        medDict.append( (var,hist) )
-    
-    medDict.sort(key = lambda x : MeanUncertaintyHisto(x[1]), reverse = True)
-    #medDict.sort(key = lambda x : maxRelativeError(x[1]), reverse = True)
-    #medDict.sort(key = lambda x : relativeErrorHist(x[1]).GetBinContent(1), reverse = True)
-    
-    for key in medDict:
-        done = False
-        for i in range(len(outDict)):
-            if key[0].replace('Up', '').replace('Down', '') == outDict[i][0]: done = True
-        if done: continue
-        if 'Down' in key[0]:
-            for key2 in medDict:
-                if key2[0] == key[0].replace('Down','Up'):
-                    down = key2
-            hist = maximumHisto(key[1], key2[1])
-            outDict.append( (key[0].replace('Down','').replace('_',''), hist) )
-        elif 'Up' in key[0]:
-            for key2 in medDict:
-                if key2[0] == key[0].replace('Up','Down'):
-                    down = key2
-            if key[0].replace('Up', 'Down') in medDict:
-                hist = maximumHisto(key[1], key2[1])
-                outDict.append( (key[0].replace('Up','').replace('_',''), hist) )
-            else:
-                outDict.append( (key[0].replace('Up','').replace('_',''), key[1]) )
-        else: # We expect only the fit unc. to arrive here
-            outDict.append( (key[0].replace('_',''), key[1]) )
-    
+                if abs(variat) >= varDict[""].GetBinContent(bin): hist.SetBinError(bin, varDict[""].GetBinContent(bin))
+                else:                                             hist.SetBinError(bin, abs(variat))
+
+            medDict.append( (var, hist) )
+
+        medDict.sort(key = lambda x : MeanUncertaintyHisto(x[1]), reverse = True)
+        #medDict.sort(key = lambda x : maxRelativeError(x[1]), reverse = True)
+        #medDict.sort(key = lambda x : relativeErrorHist(x[1]).GetBinContent(1), reverse = True)
+
+        #for el in medDict:
+            #print el
+
+        #sys.exit()
+
+        #### NOTE: this does not support one sided variations, except from statistical ones: ALL SYST. VARS.
+        #          SHOULD HAVE UP AND DOWN VARIATIONS!
+
+        for key in medDict:
+            done = False
+            for el in outDict:
+                if key[0].replace('Up', '').replace('Down', '') == el[0]:
+                    done = True
+            if done: continue
+
+            if 'Down' in key[0]:
+                for key2 in medDict:
+                    if key2[0] == key[0].replace('Down','Up'):
+                        hist = maximumHisto(key[1], key2[1])
+                        outDict.append( (key[0].replace('Down',''), hist) )
+                        break
+            elif 'Up' in key[0]:
+                for key2 in medDict:
+                    if key2[0] == key[0].replace('Up','Down'):
+                        hist = maximumHisto(key[1], key2[1])
+                        outDict.append( (key[0].replace('Up', ''), hist) )
+            else: # We expect only the fit unc. or statistical uncertainty to arrive here
+                outDict.append( (key[0].replace('_',''), key[1]) )
+
+    else: #### Symmetric uncertainties
+        for var in varDict:
+            if "Up" in var:
+                hist    = deepcopy(varDict[""].Clone(varDict[""].GetName() + var.replace("Up", "")))
+                variat  = 0.
+                for bin in range(1, varDict[""].GetNbinsX() + 1):
+                    variat = math.sqrt(GetSymUnc(varDict[""].GetBinContent(bin), varDict[var].GetBinContent(bin), varDict[var.replace("Up", "Down")].GetBinContent(bin)))
+
+                    if abs(variat) >= varDict[""].GetBinContent(bin): hist.SetBinError(bin, varDict[""].GetBinContent(bin))
+                    else:                                             hist.SetBinError(bin, abs(variat))
+
+                medDict.append( (var.replace("Up", ""), hist) )
+
+        medDict.sort(key = lambda x : MeanUncertaintyHisto(x[1]), reverse = True)
+        #medDict.sort(key = lambda x : maxRelativeError(x[1]), reverse = True)
+        #medDict.sort(key = lambda x : relativeErrorHist(x[1]).GetBinContent(1), reverse = True)
+
+        #for el in medDict:
+            #print el
+
+        #sys.exit()
+
+        #### NOTE: this does not support one sided variations, except from statistical ones: ALL SYST. VARS.
+        #          SHOULD HAVE UP AND DOWN VARIATIONS!
+
+        #for key in medDict:
+            #done = False
+            #for el in outDict:
+                #if key[0].replace('Up', '').replace('Down', '') == el[0]:
+                    #done = True
+            #if done: continue
+
+            #if 'Down' in key[0]:
+                #for key2 in medDict:
+                    #if key2[0] == key[0].replace('Down','Up'):
+                        #hist = maximumHisto(key[1], key2[1])
+                        #outDict.append( (key[0].replace('Down',''), hist) )
+                        #break
+            #elif 'Up' in key[0]:
+                #for key2 in medDict:
+                    #if key2[0] == key[0].replace('Up','Down'):
+                        #hist = maximumHisto(key[1], key2[1])
+                        #outDict.append( (key[0].replace('Up', ''), hist) )
+            #else: # We expect only the fit unc. or statistical uncertainty to arrive here
+                #outDict.append( (key[0].replace('_',''), key[1]) )
+
+        outDict = medDict
+
     return map( lambda x : (x[0], relativeErrorHist(x[1])), outDict)
 
 
@@ -249,11 +304,14 @@ def getCovarianceFromVar(nom, var, name, year = "2016", ty = "detector", doCorr 
     return cov
 
 
-def drawTheRelUncPlot(listWithHistos, thedict, thePlot, yaxismax = "auto"):
+def drawTheRelUncPlot(listWithHistos, thedict, thePlot, yaxismax = "auto", doSym = False):
     # Calculate the order
-    uncListorig = getUncList(thedict, False)
-    uncList     = uncListorig[:vl.nuncs]
+    uncList = getUncList(thedict, False, doSym)
 
+    #for el in uncList:
+        #print el
+
+    #sys.exit()
     # Calculate the total uncertainty histogram and the total systematic one
     incmax = []; incsyst = []
     maxinctot = 0
@@ -289,6 +347,9 @@ def drawTheRelUncPlot(listWithHistos, thedict, thePlot, yaxismax = "auto"):
         hincsyst.SetBinContent(bin, incsyst[bin-1] / hincsyst.GetBinContent(bin))
         hincsyst.SetBinError(bin, 0.)
 
+        print "bin:", bin, "incmax:", incmax[-1]/thedict[""].GetBinContent(bin)*100, "incsyst:", incsyst[-1]/thedict[""].GetBinContent(bin)*100, "theinc:", max([listWithHistos[0].GetBinError(bin), listWithHistos[1].GetBinError(bin)])/thedict[""].GetBinContent(bin)*100
+
+
 
     # Set maximum of the y axis
     if yaxismax == "auto":
@@ -309,36 +370,39 @@ def drawTheRelUncPlot(listWithHistos, thedict, thePlot, yaxismax = "auto"):
     thePlot.addHisto(hincsyst, 'hist,same', 'Systematic', 'L')
 
     hincstat = None
-    for i in range(len(uncListorig)):
-        if "Stat" in uncListorig[i][0]:
-            uncListorig[i][1].SetLineColor(r.kBlack)
-            uncListorig[i][1].SetLineStyle( 2 )
+    for i in range(len(uncList)):
+        if "Stat" in uncList[i][0]:
+            uncList[i][1].SetLineColor(r.kBlack)
+            uncList[i][1].SetLineStyle( 2 )
 
-            hincstat = deepcopy(uncListorig[i][1].Clone("hincstat"))
+            hincstat = deepcopy(uncList[i][1].Clone("hincstat"))
 
-            #thePlot.addHisto(uncListorig[i][1], 'hist,same', vl.SysNameTranslator[uncListorig[i][0]], 'L')
-            uncListorig[i][1].SetFillColorAlpha(r.kBlue, 0.)
-            thePlot.addHisto(uncListorig[i][1], 'hist,same', uncListorig[i][0], 'L')
+            uncList[i][1].SetFillColorAlpha(r.kBlue, 0.)
+            thePlot.addHisto(uncList[i][1], 'hist,same', "Statistical", 'L')
 
     # And now, the rest of the lines are up to vl.nuncs of the most dominant systematic sources
     iS = 0
     plottedsysts = 0
-    while plottedsysts < vl.nuncs and plottedsysts <= len(uncListorig):
-        if "Stat" in uncListorig[iS][0]:
+    while plottedsysts < vl.nuncs and plottedsysts <= len(uncList):
+        if "Stat" in uncList[iS][0]:
+            print "holi", iS
             iS += 1
             continue
 
-        if "Lumi" in uncListorig[iS][0]:
-            uncListorig[iS][1].SetLineColor(r.kBlack)
-            uncListorig[iS][1].SetLineStyle( 4 )
+        if "Lumi" in uncList[iS][0]:
+            uncList[iS][1].SetLineColor(r.kBlack)
+            uncList[iS][1].SetLineStyle( 4 )
         else:
-            uncListorig[iS][1].SetLineColor( vl.ColorMapList[iS] )
-            uncListorig[iS][1].SetLineWidth( 2 )
+            uncList[iS][1].SetLineColor( vl.ColorMapList[iS] )
+            uncList[iS][1].SetLineWidth( 2 )
 
-        uncListorig[iS][1].SetFillColorAlpha(r.kBlue, 0.)
-        #thePlot.addHisto(uncListorig[iS][1], 'H,same', vl.SysNameTranslator[uncListorig[iS][0]], 'L')
-        thePlot.addHisto(uncListorig[iS][1], 'H,same', uncListorig[iS][0], 'L')
+        uncList[iS][1].SetFillColorAlpha(r.kBlue, 0.)
+        #thePlot.addHisto(uncList[iS][1], 'H,same', vl.SysNameTranslator[uncList[iS][0]], 'L')
+        thePlot.addHisto(uncList[iS][1], 'H,same', uncList[iS][0], 'L')
         plottedsysts += 1
+
+        print iS, uncList[iS][0]
         iS += 1
 
-    return (uncListorig, hincstat, hincsyst, hincmax)
+
+    return (uncList, hincstat, hincsyst, hincmax)

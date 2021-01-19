@@ -100,8 +100,8 @@ def calculateNormalisedValues(inpath, iY, iV):
         name    = "Fiducial" if key == iV else "Fiducial" + key.replace(iV, "")
         dirfinal[key] = deepcopy(dirvar[key].Clone())
         dirfinal[key].Divide(dirfid[name])
-        for iB in range(1, dirfinal[key].GetNbinsX() + 1):
-            print name, key, dirfinal[key].GetBinContent(iB)
+        #for iB in range(1, dirfinal[key].GetNbinsX() + 1):
+            #print name, key, dirfinal[key].GetBinContent(iB)
 
     BibhuFunction(dirvar, dirfid, dirfinal, covmat, iV)
     del dirfid
@@ -146,11 +146,11 @@ def PlotParticleFidLevelResults(thedict, inpath, iY, varName):
     savetfile2.Close(); del nom0,nom1,savetfile2
 
     #############################
-    print "\nLOS RESULTAOS NORMALIZAOS A SECCION EF. FID. - {uno} - {dos}".format(uno = "DATOS", dos = varName)
-    for bin in range(1, nominal_withErrors[0].GetNbinsX() + 1):
-        print "Bin", bin, "(abs.): (", round(thedict[""].GetBinContent(bin), 4), "+", round(nominal_withErrors[0].GetBinError(bin), 4), "-", round(nominal_withErrors[1].GetBinError(bin), 4), ") pb"
-        print "Bin", bin, "(rel.): (", round(thedict[""].GetBinContent(bin), 4), "+", round(nominal_withErrors[0].GetBinError(bin)/thedict[""].GetBinContent(bin)*100, 4), "-", round(nominal_withErrors[1].GetBinError(bin)/thedict[""].GetBinContent(bin)*100, 4), ") pb\n"
-    print "\n"
+    #print "\nLOS RESULTAOS NORMALIZAOS A SECCION EF. FID. - {uno} - {dos}".format(uno = "DATOS", dos = varName)
+    #for bin in range(1, nominal_withErrors[0].GetNbinsX() + 1):
+        #print "Bin", bin, "(abs.): (", round(thedict[""].GetBinContent(bin), 4), "+", round(nominal_withErrors[0].GetBinError(bin), 4), "-", round(nominal_withErrors[1].GetBinError(bin), 4), ") pb"
+        #print "Bin", bin, "(rel.): (", round(thedict[""].GetBinContent(bin), 4), "+", round(nominal_withErrors[0].GetBinError(bin)/thedict[""].GetBinContent(bin)*100, 4), "-", round(nominal_withErrors[1].GetBinError(bin)/thedict[""].GetBinContent(bin)*100, 4), ") pb\n"
+    #print "\n"
     #############################
 
     #tex.saveLaTeXfromhisto(thedict[""], varName, path = vl.tablespath, errhisto = nominal_withErrors[0], ty = "unfolded_norm")
@@ -182,8 +182,8 @@ def PlotParticleFidLevelResults(thedict, inpath, iY, varName):
     tmptfile11 = r.TFile.Open(inpath + "/" + iY + '/Fiducial/particle.root')
     htmp = deepcopy(tru.Clone("htmp"))
     for bin in range(1, tru.GetNbinsX() + 1):
-        htmp.SetBinContent(bin, tmptfile11.Get('x_tw').GetBinContent(1))
-        htmp.SetBinError(bin,   tmptfile11.Get('x_tw').GetBinError(1))
+        htmp.SetBinContent(bin, tmptfile11.Get('x_tw').GetBinContent(1) * scaleval)
+        htmp.SetBinError(bin,   tmptfile11.Get('x_tw').GetBinError(1) * scaleval)
     tru.Divide(htmp)
     tmptfile.Close(); tmptfile11.Close(); del tmptfile, tmptfile11, htmp
 
@@ -246,7 +246,7 @@ def PlotParticleFidLevelResults(thedict, inpath, iY, varName):
     if "yaxismax_particlefidunc" in vl.varList[varName]:
         yaxismax_particlefidunc = vl.varList[varName]["yaxismax_particlefidunc"]
 
-    uncListorig, hincstat, hincsyst, hincmax = ep.drawTheRelUncPlot(nominal_withErrors, thedict, plot2, yaxismax_particlefidunc)
+    uncListorig, hincstat, hincsyst, hincmax = ep.drawTheRelUncPlot(nominal_withErrors, thedict, plot2, yaxismax_particlefidunc, vl.doSym)
 
     if "legpos_particlefidunc" in vl.varList[varName]:
         unclegpos = vl.varList[varName]["legpos_particlefidunc"]
@@ -287,16 +287,16 @@ def PlotParticleFidBinLevelResults(thedict, inpath, iY, varName):
         plot.yaxisuplimit = vl.varList[varName]["yaxismax_particlefidbin"]
 
     #############################
-    print "\nLOS RESULTAOS NORMALIZAOS A SEC. EF. FID. Y POR BIN- {uno} - {dos}".format(uno = "DATOS", dos = varName)
-    comprobasao = 0
-    for bin in range(1, nominal_withErrors[0].GetNbinsX() + 1):
-        print "Bin", bin, "(abs.): (", round(thedict[""].GetBinContent(bin), 6), "+", round(nominal_withErrors[0].GetBinError(bin), 6), "-", round(nominal_withErrors[1].GetBinError(bin), 6), ") pb"
-        print "Bin", bin, "(rel.): (", round(thedict[""].GetBinContent(bin), 6), "+", round(nominal_withErrors[0].GetBinError(bin)/thedict[""].GetBinContent(bin)*100, 6), "-", round(nominal_withErrors[1].GetBinError(bin)/thedict[""].GetBinContent(bin)*100, 6), ") pb\n"
-        comprobasao += thedict[""].GetBinContent(bin) * thedict[""].GetBinWidth(bin)
-    print "Comprobasao:", comprobasao, "\n"
-    print "Underflow:", thedict[""].GetBinContent(0)
-    print "Overflow:",  thedict[""].GetBinContent(thedict[""].GetNbinsX() + 1)
-    print "\n"
+    #print "\nLOS RESULTAOS NORMALIZAOS A SEC. EF. FID. Y POR BIN- {uno} - {dos}".format(uno = "DATOS", dos = varName)
+    #comprobasao = 0
+    #for bin in range(1, nominal_withErrors[0].GetNbinsX() + 1):
+        #print "Bin", bin, "(abs.): (", round(thedict[""].GetBinContent(bin), 6), "+", round(nominal_withErrors[0].GetBinError(bin), 6), "-", round(nominal_withErrors[1].GetBinError(bin), 6), ") pb"
+        #print "Bin", bin, "(rel.): (", round(thedict[""].GetBinContent(bin), 6), "+", round(nominal_withErrors[0].GetBinError(bin)/thedict[""].GetBinContent(bin)*100, 6), "-", round(nominal_withErrors[1].GetBinError(bin)/thedict[""].GetBinContent(bin)*100, 6), ") pb\n"
+        #comprobasao += thedict[""].GetBinContent(bin) * thedict[""].GetBinWidth(bin)
+    #print "Comprobasao:", comprobasao, "\n"
+    #print "Underflow:", thedict[""].GetBinContent(0)
+    #print "Overflow:",  thedict[""].GetBinContent(thedict[""].GetNbinsX() + 1)
+    #print "\n"
     #############################
 
     #tex.saveLaTeXfromhisto(thedict[""], varName, path = vl.tablespath, errhisto = nominal_withErrors[0], ty = "unfolded_binnorm")
@@ -387,7 +387,7 @@ def PlotParticleFidBinLevelResults(thedict, inpath, iY, varName):
     if "yaxismax_particlefidbinunc" in vl.varList[varName]:
         yaxismax_particlefidbinunc = vl.varList[varName]["yaxismax_particlefidbinunc"]
 
-    uncListorig, hincstat, hincsyst, hincmax = ep.drawTheRelUncPlot(nominal_withErrors, thedict, plot2, yaxismax_particlefidbinunc)
+    uncListorig, hincstat, hincsyst, hincmax = ep.drawTheRelUncPlot(nominal_withErrors, thedict, plot2, yaxismax_particlefidbinunc, vl.doSym)
 
     if "legpos_particlefidbinunc" in vl.varList[varName]:
         unclegpos = vl.varList[varName]["legpos_particlefidbinunc"]
@@ -429,12 +429,12 @@ def PlotParticleBinLevelResults(thedict, inpath, iY, varName):
     savetfile1.Close()
 
     #############################
-    print "\nLOS RESULTAOS NORMALIZAOS A ANCHO DEL BIN - {uno} - {dos}".format(uno = "DATOS", dos = varName)
+    #print "\nLOS RESULTAOS NORMALIZAOS A ANCHO DEL BIN - {uno} - {dos}".format(uno = "DATOS", dos = varName)
 
-    comprobasao = 0
-    for bin in range(1, nominal_withErrors[0].GetNbinsX() + 1):
-        print "Bin", bin, "(abs.): (", round(thedict[""].GetBinContent(bin), 5), "+", round(nominal_withErrors[0].GetBinError(bin), 5), "-", round(nominal_withErrors[1].GetBinError(bin), 5), ") pb"
-        print "Bin", bin, "(rel.): (", round(thedict[""].GetBinContent(bin), 4), "+", round(nominal_withErrors[0].GetBinError(bin)/thedict[""].GetBinContent(bin)*100, 5), "-", round(nominal_withErrors[1].GetBinError(bin)/thedict[""].GetBinContent(bin)*100, 5), ") pb\n"
+    #comprobasao = 0
+    #for bin in range(1, nominal_withErrors[0].GetNbinsX() + 1):
+        #print "Bin", bin, "(abs.): (", round(thedict[""].GetBinContent(bin), 5), "+", round(nominal_withErrors[0].GetBinError(bin), 5), "-", round(nominal_withErrors[1].GetBinError(bin), 5), ") pb"
+        #print "Bin", bin, "(rel.): (", round(thedict[""].GetBinContent(bin), 4), "+", round(nominal_withErrors[0].GetBinError(bin)/thedict[""].GetBinContent(bin)*100, 5), "-", round(nominal_withErrors[1].GetBinError(bin)/thedict[""].GetBinContent(bin)*100, 5), ") pb\n"
     #############################
 
     #tex.saveLaTeXfromhisto(thedict[""], varName, path = vl.tablespath, errhisto = nominal_withErrors[0], ty = "unfolded_bin")
@@ -508,7 +508,7 @@ def PlotParticleBinLevelResults(thedict, inpath, iY, varName):
     if "yaxismax_particlebinunc" in vl.varList[varName]:
         yaxismax_particlebinunc = vl.varList[varName]["yaxismax_particlebinunc"]
 
-    uncListorig, hincstat, hincsyst, hincmax = ep.drawTheRelUncPlot(nominal_withErrors, thedict, plot2, yaxismax_particlebinunc)
+    uncListorig, hincstat, hincsyst, hincmax = ep.drawTheRelUncPlot(nominal_withErrors, thedict, plot2, yaxismax_particlebinunc, vl.doSym)
 
     if "legpos_particlebinunc" in vl.varList[varName]:
         unclegpos = vl.varList[varName]["legpos_particlebinunc"]
@@ -568,10 +568,10 @@ if __name__ == "__main__":
             for iY in theyears:
                 thevars = next(os.walk(inpath + "/" + iY))[1]
                 for iV in thevars:
-                    if "plots" in iV or "Fiducial" in iV and "Jet1_Pt" not in iV: continue
+                    if "plots" in iV or "Fiducial" in iV: continue
                     tasks.append( (inpath, iY, iV) )
 
-    #tasks = [ (inpath, "2016", "Lep1_Pt") ]
+    #tasks = [ (inpath, "2016", "Lep1Lep2Jet1MET_Mt") ]
 
     if nthreads > 1:
         pool = Pool(nthreads)

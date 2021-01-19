@@ -20,7 +20,8 @@ r.gROOT.SetBatch(True)
 #colour_syst    = ["ColourQCDbasedCRTuneerdON", "ColourGluonMoveCRTuneerdON", "ColourPowhegerdON", "ColourGluonMoveCRTune"]
 #colour_syst    = []
 
-vetolist       = ["UnfoldingInfo", "detector", "nonfiducial", "particle.root"]
+vetolist       = ["UnfoldingInfo", "detector.root", "detectorparticleResponse.root", "nonfiducial", "particle.root", "particleOutput.root", "particlefidOutput.root", "particlefidbinOutput.root", "particlebinOutput.root"]
+#vetolist       = ["UnfoldingInfo", "detector", "nonfiducial", "particle.root"]
 foldervetolist = ["responseplots", "particleplots", "detectorplots"]
 
 
@@ -32,7 +33,7 @@ def getOutSuffix(s):
 
     if   "forExtr" in ret:
         ret = "_detector"
-    elif "unfOutput" in ret:
+    elif "particleOutput" in ret:
         ret = "_particle"
 
     return ret
@@ -187,10 +188,13 @@ def plotVariations(tup, outname, ncores = -1):
     #thisisnotacard = False
     varprefix = "x"
     vetostring = "ptcmtptoverhttotdetadphibtagdrpzptsum2j1b1j1brebin"
+    thisisandiffrfile = "Output" in tup[0] or "detectorsignal_bs" in tup[0]
 
     for key in rF.GetListOfKeys():
         tmpnam     = key.GetName()
-        if any([el in tmpnam for el in ["data", "canvas", "stack", "CovMat", "nom0", "nom1"]]): continue
+        if any([el in tmpnam for el in ["hincsyst", "hincmax", "canvas", "stack", "CovMat", "nom0", "nom1"]]): continue
+        if not thisisandiffrfile:
+            if "data" in tmpnam: continue
 
         #print tmpnam
 
@@ -202,13 +206,20 @@ def plotVariations(tup, outname, ncores = -1):
             ##tmpprefix = tmpnam.split("_")[0]
             ##print tmpprefix
 
-        if (varprefix + "_") != tmpnam[:len((varprefix + "_"))] or (tmpnam.replace(varprefix, "").split("_")[0].lower() in vetostring):
+        if thisisandiffrfile:
+            varprefix = "signal"
+
+        elif (varprefix + "_") != tmpnam[:len((varprefix + "_"))] or (tmpnam.replace(varprefix, "").split("_")[0].lower() in vetostring):
             varprefix = (tmpnam.split("_")[0]
+                         if ( len(tmpnam.split("_")) < 2 )
+                         else tmpnam.split("_")[0]
                          if ( (tmpnam.split("_")[1]).lower() not in vetostring )
                          else "_".join(tmpnam.split("_")[0:2]) )
 
         #cleanednam = "signal" * (thisisnotacard) + tmpnam.replace(tmpprefix, "")
         cleanednam = tmpnam.replace(varprefix + "_", "")
+        if cleanednam[-1] == "_":
+            cleanednam = cleanednam[:-1]
         #print cleanednam
 
         if varprefix not in histodict:

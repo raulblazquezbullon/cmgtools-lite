@@ -5,6 +5,8 @@ cleanup: minMllAFAS > 12
 trigger: Trigger_5TeV_1e || Trigger_5TeV_1m
 pt2010: LepGood1_pt>20 && LepGood2_pt>10
 pt2020: LepGood1_pt>20 && LepGood2_pt>20; Disable=True
+etacut1: abs(LepGood1_pdgId) == 13 || (abs(LepGood1_pdgId) == 11 && (abs(LepGood1_eta)<1.479 || abs(LepGood1_eta)>1.566))
+etacut2: abs(LepGood2_pdgId) == 13 || (abs(LepGood2_pdgId) == 11 && (abs(LepGood2_eta)<1.479 || abs(LepGood2_eta)>1.566))
 TT: LepGood1_isLepTight && LepGood2_isLepTight
 exclusive: nLepTight<=2
 same-sign: (LepGood1_pdgId*LepGood2_pdgId)>0
