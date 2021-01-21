@@ -62,8 +62,8 @@ minitnamedict = {
     "ttbar"     : ["TTTo2L2Nu_division2"],
     "tw"        : ["tW", "tW_division2"],
     "tbarw"     : ["tbarW", "tbarW_division2"],
-    "dy_10to50" : ["DYJetsToLL_M_10to50", "DYJetsToLL_M_10to50_MLM"],
-    "dy_50"     : ["DYJetsToLL_M_50"],
+    #"dy_10to50" : ["DYJetsToLL_M_10to50", "DYJetsToLL_M_10to50_MLM"],
+    #"dy_50"     : ["DYJetsToLL_M_50"],
     }
 
 
@@ -428,8 +428,8 @@ trainsampledict[2016] = {
     "tW_division2"        : sampledict[2016]["tW_division2"],
     "tbarW_division2"     : sampledict[2016]["tbarW_division2"],
 
-    "DYJetsToLL_M_10to50" : sampledict[2016]["DYJetsToLL_M_10to50"],
-    "DYJetsToLL_M_50"     : sampledict[2016]["DYJetsToLL_M_50"],
+    #"DYJetsToLL_M_10to50" : sampledict[2016]["DYJetsToLL_M_10to50"],
+    #"DYJetsToLL_M_50"     : sampledict[2016]["DYJetsToLL_M_50"],
 }
 
 
@@ -446,8 +446,8 @@ trainsampledict[2017] = {
     #"tbarW_noFullHad"     : "Tree_tbarW_5f_noFullHad_TuneCP5_",
     #"tbarW_noFullHad" : sampledict[2017]["tbarW_noFullHad"],
 
-    "DYJetsToLL_M_10to50_MLM" : sampledict[2017]["DYJetsToLL_M_10to50_MLM"],
-    "DYJetsToLL_M_50"         : sampledict[2017]["DYJetsToLL_M_50"],
+    #"DYJetsToLL_M_10to50_MLM" : sampledict[2017]["DYJetsToLL_M_10to50_MLM"],
+    #"DYJetsToLL_M_50"         : sampledict[2017]["DYJetsToLL_M_50"],
 }
 
 
@@ -470,8 +470,8 @@ trainsampledict[2018] = {
     "tW"    : sampledict[2018]["tW"],
     "tbarW" : sampledict[2018]["tbarW"],
 
-    "DYJetsToLL_M_10to50_MLM" : sampledict[2018]["DYJetsToLL_M_10to50_MLM"],
-    "DYJetsToLL_M_50"         : sampledict[2018]["DYJetsToLL_M_50"],
+    #"DYJetsToLL_M_10to50_MLM" : sampledict[2018]["DYJetsToLL_M_10to50_MLM"],
+    #"DYJetsToLL_M_50"         : sampledict[2018]["DYJetsToLL_M_50"],
 }
 
 
