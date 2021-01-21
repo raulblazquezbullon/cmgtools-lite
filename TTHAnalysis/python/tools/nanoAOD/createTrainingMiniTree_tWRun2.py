@@ -28,6 +28,7 @@ class createTrainingMiniTree_tWRun2(Module):
                          "train_lep1lep2jet1met_m",
                          "train_htlepOVERhttot",
                          "train_lep1lep2jet1_c",
+                         "train_lep1lep2jet1_cscalar",
                          "train_httot",
 
                          "train_jet2_pt",
@@ -139,6 +140,7 @@ class createTrainingMiniTree_tWRun2(Module):
         allret["train_lep1lep2jet1met_m"          ] = event.Lep1Lep2Jet1MET_M           if event.Lep1Lep2Jet1MET_M           >= 0 else 0
         allret["train_htlepOVERhttot"             ] = event.Lep1_PtLep2_PtOverHTtot     if event.Lep1_PtLep2_PtOverHTtot     >= 0 else 0
         allret["train_lep1lep2jet1_c"             ] = event.Lep1Lep2Jet1_C              if event.Lep1Lep2Jet1_C              >= 0 else 0
+        allret["train_lep1lep2jet1_cscalar"       ] = event.Lep1Lep2Jet1_Cscalar        if event.Lep1Lep2Jet1_Cscalar        >= 0 else 0
         allret["train_httot"                      ] = event.HTtot                       if event.HTtot                       >= 0 else 0
 
         allret["train_jet2_pt"                    ] = event.Jet2_Pt                     if event.Jet2_Pt                     >= 0 else 0
