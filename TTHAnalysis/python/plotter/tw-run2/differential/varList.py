@@ -8,6 +8,9 @@ import os
 
 # === ESSENTIAL PARAMETERS OF THE ANALYSIS. CHANGING THIS APPLIES TO EVERYTHING. ===
 nuncs       = 3         # Number of uncs. shown in the relative uncertainty plots
+nBinsForBDT = 5         # Number of bins for the BDT discr. distribution used for the signal extraction procedure
+                        #   for the differential analysis when using maximum-likelihood fits.
+unifttbar   = True      # Force the BDT disc. distrib. bins to hace the same amount of ttbar events.
 asimov      = True      # Use of Asimov dataset or data
 doxsec      = True      # Show events or diff. cross section in final results
 doPre       = True      # Show or not show the "Preliminary" in the plots
@@ -857,74 +860,76 @@ varList['Lep1Lep2_DPhi'] = {
 
 # Profiling things
 systMap = {
-    'fsrUp' : { 'TW'             : 'TW_noFullyHadr_fsrUp',
-                'TbarW'          : 'TbarW_noFullyHadr_fsrUp', 
-                'TTbar_Powheg'   : 'TTbar_Powheg_fsrUp'
-                },
-    'fsrDown' : { 'TW'           : 'TW_noFullyHadr_fsrDown',
-                  'TbarW'        : 'TbarW_noFullyHadr_fsrDown', 
-                  'TTbar_Powheg' : 'TTbar_Powheg_fsrDown'
-                  },
-    'isrUp' : { 'TW'             : 'TW_noFullyHadr_isrUp',
-                'TbarW'          : 'TbarW_noFullyHadr_isrUp', 
-                'TTbar_Powheg'   : 'TTbar_Powheg_isrUp'
-                },
-    'isrDown' : { 'TW'           : 'TW_noFullyHadr_isrDown',
-                  'TbarW'        : 'TbarW_noFullyHadr_isrDown', 
-                  'TTbar_Powheg' : 'TTbar_Powheg_isrDown'
-                  },
-    'tWMEUp': { 'TW'           : 'TW_noFullyHadr_MEscaleUp',
-                  'TbarW'        : 'TbarW_noFullyHadr_MEscaleUp',
-                  'TTbar_Powheg' : 'TTbar_Powheg'
-                  },
-    'tWMEDown': { 'TW'         : 'TW_noFullyHadr_MEscaleDown',
-                  'TbarW'        : 'TbarW_noFullyHadr_MEscaleDown',
-                  'TTbar_Powheg' : 'TTbar_Powheg'
-                  },
-    'tWPSUp': { 'TW'           : 'TW_noFullyHadr_PSscaleUp',
-                  'TbarW'        : 'TbarW_noFullyHadr_PSscaleUp',
-                  'TTbar_Powheg' : 'TTbar_Powheg'
-                  },
-    'tWPSDown': { 'TW'           : 'TW_noFullyHadr_PSscaleDown',
-                    'TbarW'        : 'TbarW_noFullyHadr_PSscaleDown',
-                    'TTbar_Powheg' : 'TTbar_Powheg'
-                  },
-    'DSUp'        : { 'TW'           : 'TW_noFullyHadr_DS',
-                    'TbarW'        : 'TbarW_noFullyHadr_DS',
-                    'TTbar_Powheg' : 'TTbar_Powheg'
-                  },
-    'hDampUp'   : { 'TW'           : 'TW',
-                    'TbarW'        : 'TbarW',
-                    'TTbar_Powheg' : 'TTbar_Powheg_hdampUp'
-                  },
-    'hDampDown'   : { 'TW'           : 'TW',
-                      'TbarW'        : 'TbarW',
-                      'TTbar_Powheg' : 'TTbar_Powheg_hdampDown'
-                      },
-    'UEUp'        : { 'TW'           : 'TW',
-                      'TbarW'        : 'TbarW',
-                      'TTbar_Powheg' : 'TTbar_Powheg_ueUp'
-                      },
-    'UEDown'      : { 'TW'           : 'TW',
-                      'TbarW'        : 'TbarW',
-                      'TTbar_Powheg' : 'TTbar_Powheg_ueDown'
-                      },
-    'GluonMoveCRTune' : { 'TW'           : 'TW',
-                          'TbarW'        : 'TbarW',
-                          'TTbar_Powheg' : 'TTbar_GluonMoveCRTune'
-                          },
-    'GluonMoveCRTuneerdON' : { 'TW'           : 'TW',
-                                'TbarW'        : 'TbarW',
-                                'TTbar_Powheg' : 'TTbar_GluonMoveCRTune_erdON'
-                                },
-    'PowhegerdON' : { 'TW'           : 'TW',
-                       'TbarW'        : 'TbarW',
-                       'TTbar_Powheg' : 'TTbar_Powheg_erdON'
-                       },
-    'QCDbasedCRTuneerdON' : { 'TW'           : 'TW',
-                               'TbarW'        : 'TbarW',
-                               'TTbar_Powheg' : 'TTbar_QCDbasedCRTune_erdON'
-                               },
+    'btagging'   : True,
+    'mistagging' : True,
+    'muonen_2016': True,
+    'muonen_2017': True,
+    'muonen_2018': True,
+    'elecidsf'   : True,
+    'elecrecosf' : True,
+    'muonidsf_stat_2016'  : True,
+    'muonidsf_syst'       : True,
+    'muonisosf_stat_2016' : True,
+    'muonisosf_syst'      : True,
+    'pileup'         : True,
+    'prefiring_2016' : True,
+    'jes'        : True,
+    'jer_2016'   : True,
+    'jer_2017'   : True,
+    'jer_2018'   : True,
+    'triggereff_2016' : True,
+    'triggereff_2017' : True,
+    'triggereff_2018' : True,
+    'ttbar_matching' : {'tw'      : False,
+                    'ttbar'   : True,
+                    'dy'      : False,
+                    'nonworz' : False,
+                    'vvttv'   : False},
+    'ue'           : {'tw'      : False,
+                    'ttbar'   : True,
+                    'dy'      : False,
+                    'nonworz' : False,
+                    'vvttv'   : False},
+    'isr_ttbar' : {'tw'      : False,
+                    'ttbar'   : True,
+                    'dy'      : False,
+                    'nonworz' : False,
+                    'vvttv'   : False},
+    'isr_tw' : {'tw'       : True,
+                    'ttbar'   : False,
+                    'dy'      : False,
+                    'nonworz' : False,
+                    'vvttv'   : False},
+    'fsr_ttbar' : {'tw'      : False,
+                    'ttbar'   : True,
+                    'dy'      : False,
+                    'nonworz' : False,
+                    'vvttv'   : False},
+    'fsr_tw' : {'tw'       : True,
+                    'ttbar'   : False,
+                    'dy'      : False,
+                    'nonworz' : False,
+                    'vvttv'   : False},
+    'ttbar_scales' : {'tw'      : False,
+                    'ttbar'   : True,
+                    'dy'      : False,
+                    'nonworz' : False,
+                    'vvttv'   : False},
+    'tw_scales' : {'tw'       : True,
+                    'ttbar'   : False,
+                    'dy'      : False,
+                    'nonworz' : False,
+                    'vvttv'   : False},
+    'topptrew'   : {'tw'      : False,
+                    'ttbar'   : True,
+                    'dy'      : False,
+                    'nonworz' : False,
+                    'vvttv'   : False},
+    'colour_rec' : {'tw'      : False,
+                    'ttbar'   : True,
+                    'dy'      : False,
+                    'nonworz' : False,
+                    'vvttv'   : False},
 }
 
 
@@ -1093,3 +1098,7 @@ TableDict = {
             "dimensions" : "",
         },
 }
+
+
+ProfileSysts = {"dy_norm", "nonworz_norm", "ttbar_norm", "vvttv_norm",
+                "lumi_2016", "lumi_BBD", "lumi_DB", "lumi_GS", "lumi_XY"}
