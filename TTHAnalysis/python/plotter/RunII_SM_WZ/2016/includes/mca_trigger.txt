@@ -1,0 +1,12 @@
+prompt_WZ+ : WZTo3LNu_pow : xsec*1.125 ; FillColor=ROOT.kOrange , FakeRate="RunII_SM_WZ/common/fakerate_standard_central.txt\,RunII_SM_WZ/common/fakerate_load_isprompt.txt", Label="WZ (k-NNLO)", NormSystematic=0.12
+
+data : MET_Run2016B + MET_Run2016C + MET_Run2016D + MET_Run2016E + MET_Run2016F + MET_Run2016G + MET_Run2016H 
+
+dataB : MET_Run2016B
+dataC : MET_Run2016C
+dataD : MET_Run2016D
+dataE : MET_Run2016E
+dataF : MET_Run2016F
+dataG : MET_Run2016G
+dataH : MET_Run2016H
+
