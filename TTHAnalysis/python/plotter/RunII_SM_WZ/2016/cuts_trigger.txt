@@ -2,11 +2,17 @@ alwaystrue: 1
 filters   : $DATA{Flag_goodVertices && Flag_globalSuperTightHalo2016Filter && Flag_HBHENoiseFilter && Flag_HBHENoiseIsoFilter && Flag_EcalDeadCellTriggerPrimitiveFilter && Flag_BadPFMuonFilter && Flag_BadChargedCandidateFilter && Flag_eeBadScFilter && Flag_ecalBadCalibFilter} $MC{1} $FASTSIM{1}
 3l        : nLepSel >= 3
 BRevent   : abs(LepSel_pdgId[0]) < 15 && abs(LepSel_pdgId[1]) < 15 && abs(LepSel_pdgId[2]) < 15 
+tight     : LepSel_isTight[0] && LepSel_isTight[1] && LepSel_isTight[2]
 lowmass   : minMllSFOS_Mini > 12 || minMllSFOS_Mini == -1
 lepPt     : LepZ1_pt >= 25  && LepZ2_pt >= 10  && LepW_pt >= 25 
 highPt    : LepZ2_pt >= 25 ; Disable=True
 lowPt     : LepZ2_pt < 25 ; Disable=True
-reftrigger: HLT_PFMETNoMu90_PFMHTNoMu90_IDTight || HLT_PFHT300_PFMET110
+barrel3   : (abs(LepSel_eta[0]) < (1.2+0.245*(abs(LepSel_pdgId[0])==11))) + (abs(LepSel_eta[1]) < (1.2+0.245*(abs(LepSel_pdgId[1])==11))) + (abs(LepSel_eta[0]) < (1.2+0.245*(abs(LepSel_pdgId[0])==11))) == 3 ; Disable=True
+barrel2   : (abs(LepSel_eta[0]) < (1.2+0.245*(abs(LepSel_pdgId[0])==11))) + (abs(LepSel_eta[1]) < (1.2+0.245*(abs(LepSel_pdgId[1])==11))) + (abs(LepSel_eta[0]) < (1.2+0.245*(abs(LepSel_pdgId[0])==11))) == 2 ; Disable=True
+barrel1   : (abs(LepSel_eta[0]) < (1.2+0.245*(abs(LepSel_pdgId[0])==11))) + (abs(LepSel_eta[1]) < (1.2+0.245*(abs(LepSel_pdgId[1])==11))) + (abs(LepSel_eta[0]) < (1.2+0.245*(abs(LepSel_pdgId[0])==11))) == 1 ; Disable=True
+barrel0   : (abs(LepSel_eta[0]) < (1.2+0.245*(abs(LepSel_pdgId[0])==11))) + (abs(LepSel_eta[1]) < (1.2+0.245*(abs(LepSel_pdgId[1])==11))) + (abs(LepSel_eta[0]) < (1.2+0.245*(abs(LepSel_pdgId[0])==11))) == 0 ; Disable=True
+met110    : MET_pt_central >= 110 
+reftrigger:  HLT_PFHT300_PFMET110 || HLT_PFMETNoMu90_PFMHTNoMu90_IDTight
 trigger   : Trigger_3l_2016
 
 
