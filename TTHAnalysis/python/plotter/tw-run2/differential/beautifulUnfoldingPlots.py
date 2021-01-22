@@ -36,6 +36,7 @@ class beautifulUnfPlot:
         self.doFit          = True
         self.doPreliminary  = True
         self.doSupplementary= False
+        self.displayedLumi  = vl.TotalLumi
         self.yaxisuplimit   = 0
         self.yaxis_unclabel = 'Relative uncertainty (adim.)'
 
@@ -323,7 +324,7 @@ class beautifulUnfPlot:
             leg.Draw('same')
 
         if not hasattr(self, 'noCMS'):
-            CMS_lumi.lumi_13TeV = "%.1f fb^{-1}" %(vl.TotalLumi)
+            CMS_lumi.lumi_13TeV = "%.1f fb^{-1}" %(self.displayedLumi)
             if self.doPreliminary: CMS_lumi.extraText  = 'Preliminary'
             else:                  CMS_lumi.extraText  = ''
             #if self.doSupplementary: CMS_lumi.extraText  += 'Supplementary'
