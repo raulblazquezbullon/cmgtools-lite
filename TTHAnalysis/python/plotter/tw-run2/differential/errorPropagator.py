@@ -130,6 +130,7 @@ def propagateHistoAsym(varDict, doSym = False):
         else:
             outUp.SetBinError(  bin, quadSum([propagateQuantity(cont, tmpDict, +1), err]))
             outDown.SetBinError(bin, quadSum([propagateQuantity(cont, tmpDict, -1), err]))
+        #print "bin", bin, "inc", totsymunc, varDict[""].GetBinContent(bin), varDict["jesUp"].GetBinContent(bin) - varDict[""].GetBinContent(bin), varDict["jesDown"].GetBinContent(bin) - varDict[""].GetBinContent(bin)
     return [outUp, outDown]
 
 
@@ -223,6 +224,8 @@ def getUncList(varDict, doFit = True, doSym = False):
                     if abs(variat) >= varDict[""].GetBinContent(bin): hist.SetBinError(bin, varDict[""].GetBinContent(bin))
                     else:                                             hist.SetBinError(bin, abs(variat))
 
+                    #print var, hist.GetBinContent(bin), hist.GetBinError(bin)
+
                 medDict.append( (var.replace("Up", ""), hist) )
 
         medDict.sort(key = lambda x : MeanUncertaintyHisto(x[1]), reverse = True)
@@ -304,9 +307,9 @@ def getCovarianceFromVar(nom, var, name, year = "2016", ty = "detector", doCorr 
     return cov
 
 
-def drawTheRelUncPlot(listWithHistos, thedict, thePlot, yaxismax = "auto", doSym = False):
+def drawTheRelUncPlot(listWithHistos, thedict, thePlot, yaxismax = "auto", doSym = False, doFit = False):
     # Calculate the order
-    uncList = getUncList(thedict, False, doSym)
+    uncList = getUncList(thedict, doFit, doSym)
 
     #for el in uncList:
         #print el
@@ -349,7 +352,7 @@ def drawTheRelUncPlot(listWithHistos, thedict, thePlot, yaxismax = "auto", doSym
 
         #print "bin:", bin, "incmax:", incmax[-1]/thedict[""].GetBinContent(bin)*100, "incsyst:", incsyst[-1]/thedict[""].GetBinContent(bin)*100, "theinc:", max([listWithHistos[0].GetBinError(bin), listWithHistos[1].GetBinError(bin)])/thedict[""].GetBinContent(bin)*100
 
-
+    #sys.exit()
 
     # Set maximum of the y axis
     if yaxismax == "auto":
