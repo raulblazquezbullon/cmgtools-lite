@@ -68,14 +68,17 @@ def ExecuteOrSubmitTask(tsk):
 
         if not pretend:
             os.system(thecomm)
-
-
     return
 
 
 def CardsCommand(prod, year, var, isAsimov, nthreads, outpath, region, noUnc, useFibre, extra):
+    doPure = False
+    if "pure1j1t" in region:
+        doPure = True
+        region = region.replace("pure1j1t", "")
+
     mcafile_   = "tw-run2/differential/mca-differential/mca-tw-diff.txt" if "forExtr" not in region else "tw-run2/mca-tw.txt"
-    cutsfile_  = "tw-run2/differential/cuts-differential/cuts-{reg}-1j1t.txt".format(reg = region.replace("Response", "") if ("forExtr" not in region and "but" not in region) else "detectorparticle" if "but" in region else "detector")
+    cutsfile_  = "tw-run2/differential/cuts-differential{pureornot}/cuts-{reg}-1j1t.txt".format(reg = region.replace("Response", "") if ("forExtr" not in region and "but" not in region) else "detectorparticle" if "but" in region else "detector", pureornot = "-pure1j1t" if doPure else "")
 
     samplespaths_ = "-P " + friendspath + "/" + prod + ("/" + year) * (year != "run2")
     if useFibre: samplespaths_ = samplespaths_.replace("phedexrw", "phedex").replace("cienciasrw", "ciencias")
@@ -140,21 +143,23 @@ if __name__=="__main__":
     parser.add_argument('--variable',  '-v', metavar = 'variable',   dest = "variable", required = False, default = "Lep1Lep2_DPhi")
     parser.add_argument('--asimov',    '-a', action  = "store_true", dest = "asimov",   required = False, default = False)
     parser.add_argument('--useFibre',  '-f', action  = "store_true", dest = "useFibre", required = False, default = False)
+    parser.add_argument('--pureReg',   '-pr', action = "store_true", dest = "doPureReg",required = False, default = False)
 
 
-    args     = parser.parse_args()
-    prod     = args.prod
-    year     = args.year
-    queue    = args.queue
-    extra    = args.extra
-    nthreads = args.nthreads
-    pretend  = args.pretend
-    outpath  = args.outpath
-    region   = args.region
-    noUnc    = args.nounc
-    variable = args.variable
-    asimov   = args.asimov
-    useFibre = args.useFibre
+    args      = parser.parse_args()
+    prod      = args.prod
+    year      = args.year
+    queue     = args.queue
+    extra     = args.extra
+    nthreads  = args.nthreads
+    pretend   = args.pretend
+    outpath   = args.outpath
+    region    = args.region
+    noUnc     = args.nounc
+    variable  = args.variable
+    asimov    = args.asimov
+    useFibre  = args.useFibre
+    doPureReg = args.doPureReg
 
     theregs  = ["detector", "particle", "detectorparticleResponse", "detectorparticlebutdetector",
                 "detectorparticle", "nonfiducial", "forExtr"]
@@ -176,7 +181,7 @@ if __name__=="__main__":
     for reg in theregs:
         for var in thevars:
             for yr in theyears:
-                tasks.append( (prod, yr, var, asimov, nthreads, outpath, reg, noUnc, useFibre, extra, pretend, queue) )
+                tasks.append( (prod, yr, var, asimov, nthreads, outpath, reg + "pure1j1t" * doPureReg, noUnc, useFibre, extra, pretend, queue) )
 
     print tasks
     calculate = True
