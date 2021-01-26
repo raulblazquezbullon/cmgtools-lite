@@ -45,6 +45,8 @@ class EventVars_tWRun2(Module):
                             "Lep1LepJet21_DPhi",
                             "Lep1LepJet21_DEta",
                             "Lep1Lep2Jet1_C",
+                            "Lep1Lep2Jet1_Cscalar",
+                            "Lep1Lep2Jet1_CwithP",
                             "HTtot",
 
                             "minimax",
@@ -91,6 +93,8 @@ class EventVars_tWRun2(Module):
                               "Lep1LepJet21_DPhi",
                               "Lep1LepJet21_DEta",
                               "Lep1Lep2Jet1_C",
+                              "Lep1Lep2Jet1_Cscalar",
+                              "Lep1Lep2Jet1_CwithP",
                               "HTtot",
 
                               "minimax",
@@ -311,6 +315,8 @@ class EventVars_tWRun2(Module):
 
                     allret["Lep1Jet1_DR"                 + sys] = leps_4m[0].DeltaR(jets_4m[0])
                     allret["Lep1Lep2Jet1_C"              + sys] = (leps_4m[0] + leps_4m[1] + jets_4m[0]).Et() / (leps_4m[0] + leps_4m[1] + jets_4m[0]).E()
+                    allret["Lep1Lep2Jet1_Cscalar"        + sys] = (leps_4m[0].Et() + leps_4m[1].Et() + jets_4m[0].Et()) / (leps_4m[0].E() + leps_4m[1].E() + jets_4m[0].E())
+                    allret["Lep1Lep2Jet1_CwithP"         + sys] = (leps_4m[0] + leps_4m[1] + jets_4m[0]).Pt() / (leps_4m[0] + leps_4m[1] + jets_4m[0]).P()
                     allret["HTtot"                       + sys] = leps_4m[0].Pt() + leps_4m[1].Pt() + jets_4m[0].Pt() + met_4m.Pt()
                     allret["Lep1Lep2Jet1MET_PtOverHTtot" + sys] = allret["Lep1Lep2Jet1MET_Pt" + sys] / allret["HTtot" + sys]
                     allret["Lep1_PtLep2_PtOverHTtot"     + sys] = (leps_4m[0].Pt() + leps_4m[1].Pt()) / allret["HTtot" + sys]
@@ -418,6 +424,8 @@ class EventVars_tWRun2(Module):
 
                     allret["Lep1Jet1_DR"                 + sys] = leps_4m[0].DeltaR(jets_4m[0])
                     allret["Lep1Lep2Jet1_C"              + sys] = (leps_4m[0] + leps_4m[1] + jets_4m[0]).Et() / (leps_4m[0] + leps_4m[1] + jets_4m[0]).E()
+                    allret["Lep1Lep2Jet1_Cscalar"        + sys] = (leps_4m[0].Et() + leps_4m[1].Et() + jets_4m[0].Et()) / (leps_4m[0].E() + leps_4m[1].E() + jets_4m[0].E())
+                    allret["Lep1Lep2Jet1_CwithP"         + sys] = (leps_4m[0] + leps_4m[1] + jets_4m[0]).Pt() / (leps_4m[0] + leps_4m[1] + jets_4m[0]).P()
 
                     allret["LepJet11Lep2_DR"             + sys] = (leps_4m[0] + jets_4m[0]).DeltaR(leps_4m[1])
                     allret["LepJet11Lep2_DPhi"           + sys] = abs((leps_4m[0] + jets_4m[0]).Phi() - leps_4m[1].Phi()) / r.TMath.Pi()

@@ -539,18 +539,20 @@ class TreeToYield:
                     variations[var.name][1][sign] = tty2.getPlot(plotspec,cut,fsplit=fsplit,closeTreeAfter=False,noUncertainties=True)
                     tty2._isInit = False; tty2._tree = None
             for (var,variations) in variations.itervalues():
-                if var.unc_type != 'envelope': 
+                if var.unc_type != 'envelope':
                     if 'up'   not in variations: variations['up']    = var.getTrivial("up",  [nominal,None,None])
                     if 'down' not in variations: variations['down']  = var.getTrivial("down",  [nominal,variations['up'],None])
                     var.postProcess(nominal, [variations['up'], variations['down']])
-                else: 
+                else:
                     var.postProcess(nominal, [v for k,v in variations.iteritems()])
                 for k,v in variations.iteritems():
                     ret.addVariation(var.name, k, v)
 
             if closeTreeAfter and _wasclosed: self._close()
             return ret
+
         ret = self.getPlotRaw(plotspec.name, plotspec.expr, plotspec.bins, cut, plotspec, fsplit=fsplit, closeTreeAfter=closeTreeAfter)
+
         # fold overflow
         if ret.ClassName() in [ "TH1F", "TH1D" ] :
             n = ret.GetNbinsX()
@@ -561,18 +563,18 @@ class TreeToYield:
                 ret.SetBinError(n,hypot(ret.GetBinError(n+1),ret.GetBinError(n)))
                 ret.SetBinContent(0,0)
                 ret.SetBinContent(n+1,0)
-                ret.SetBinContent(0,0)
-                ret.SetBinContent(n+1,0)
+                ret.SetBinError(0,0)
+                ret.SetBinError(n+1,0)
             if plotspec.getOption('IncludeOverflow',False) and ("TProfile" not in ret.ClassName()):
                 ret.SetBinContent(n,ret.GetBinContent(n+1)+ret.GetBinContent(n))
                 ret.SetBinError(n,hypot(ret.GetBinError(n+1),ret.GetBinError(n)))
                 ret.SetBinContent(n+1,0)
-                ret.SetBinContent(n+1,0)
+                ret.SetBinError(n+1,0)
             if plotspec.getOption('IncludeUnderflow',False) and ("TProfile" not in ret.ClassName()):
                 ret.SetBinContent(1,ret.GetBinContent(0)+ret.GetBinContent(1))
                 ret.SetBinError(1,hypot(ret.GetBinError(0),ret.GetBinError(1)))
                 ret.SetBinContent(0,0)
-                ret.SetBinContent(0,0)
+                ret.SetBinError(0,0)
             rebin = plotspec.getOption('rebinFactor',0)
             if plotspec.bins[0] != "[" and rebin > 1 and n > 5:
                 while n % rebin != 0: rebin -= 1
@@ -581,6 +583,9 @@ class TreeToYield:
                 for b in xrange(1,n+1):
                     ret.SetBinContent( b, ret.GetBinContent(b) / ret.GetXaxis().GetBinWidth(b) )
                     ret.SetBinError(   b, ret.GetBinError(b) / ret.GetXaxis().GetBinWidth(b) )
+
+            #### TODO: extend to 2D histograms
+
         self._stylePlot(ret,plotspec)
         ret._cname = self._cname
         return ret

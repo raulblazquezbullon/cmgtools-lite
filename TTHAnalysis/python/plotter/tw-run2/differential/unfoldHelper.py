@@ -22,11 +22,12 @@ class DataContainer:
         self.year             = year_
         self.folderpath       = folderpath_
         self.fileName         = self.folderpath + "/" + inputsfilename_
-        self.fileNameReponse  = self.folderpath + "/" + matricesfilename_
+        self.fileNameResponse = self.folderpath + "/" + matricesfilename_
         self.systListResp     = []
         self.listOfSysts      = []
         self.responseMatrices = {}
         self.unfoldingInputs  = {}
+        self.covmatInput      = {}
         self.bkgs             = {}
         self.readAndStore()
 
@@ -34,19 +35,27 @@ class DataContainer:
         # Getting inputs
         if not os.path.isfile(self.fileName):
             raise RuntimeError('The rootfile with the post signal extraction information of variable {var} does not exist.'.format(var = self.var))
+        if not os.path.isfile(self.fileNameResponse):
+            raise RuntimeError('The rootfile with the response matrices information of variable {var} does not exist.'.format(var = self.var))
+
         tfile = r.TFile.Open(self.fileName)
         for key in tfile.GetListOfKeys():
             if 'data_' in key.GetName():
                 sysName = key.GetName().replace('data_', '')
                 self.unfoldingInputs[sysName] = deepcopy(key.ReadObj())
                 if sysName != '': self.listOfSysts.append(sysName)
+            elif 'fitcovmat' in key.GetName():
+                sysName = key.GetName().replace('fitcovmat_', '')
+                self.covmatInput[sysName] = deepcopy(key.ReadObj())
 
         if '' not in self.unfoldingInputs:
             raise RuntimeError("Unfolding input for nominal sample is missing.")
+        if '' not in self.covmatInput and "fit" in self.fileName:
+            raise RuntimeError("Covariance input for nominal sample is missing")
         tfile.Close()
         
         # Getting uncertainties in the response matrix
-        tfile = r.TFile.Open(self.fileNameReponse)
+        tfile = r.TFile.Open(self.fileNameResponse)
         for key in tfile.GetListOfKeys():
             #print key.GetName()
             if key.GetName()[0] != 'R': continue
@@ -81,7 +90,7 @@ class DataContainer:
         if '' not in self.responseMatrices:
             raise RuntimeError("The nominal response matrix is not present in the provided rootfile.")
         
-        if verbose: print "Printy thingy. listOfSysts:\n", self.listOfSysts, "\nsystListResp:\n", self.systListResp
+        #if verbose: print "Printy thingy. listOfSysts:\n", self.listOfSysts, "\nsystListResp:\n", self.systListResp
 
 
         #print self.var, self.year
@@ -101,14 +110,19 @@ class DataContainer:
         return
     
 
-    def getInputs(self,nuis):
+    def getInputs(self, nuis):
         if verbose: print '\n> Getting inputs for nuisance', nuis
+
+        retcovmat = None
+        if nuis in self.covmatInput:
+            retcovmat = self.covmatInput[nuis]
+
         if nuis not in self.responseMatrices:
             #raise RuntimeError("%s is not in the list of varied response matrices nor in the blacklist of systs. w/o associated response matrices."%nuis)
             wr.warn("WARNING: %s is not in the list of varied response matrices nor in the blacklist of systs. w/o associated response matrices. Nominal will be asigned"%nuis)
-            return self.unfoldingInputs[nuis], self.responseMatrices[""], self.bkgs[""]
+            return self.unfoldingInputs[nuis], self.responseMatrices[""], self.bkgs[""], retcovmat
         else:
-            return self.unfoldingInputs[nuis], self.responseMatrices[nuis], self.bkgs[nuis]
+            return self.unfoldingInputs[nuis], self.responseMatrices[nuis], self.bkgs[nuis], retcovmat
 
 
     def getResponse(self, nuis):
@@ -126,31 +140,29 @@ class UnfolderHelper:
         self.plotspath  = ''
         self.doArea     = False
         self.Init       = False
-        self.tau        = 0
         self.wearedoingasimov = False
+        self.tau        = 0
+
+        self.tunfolder  = None
+        self.unfInput   = None
+        self.response   = None
+        self.bkg        = None
+        self.inputcovmat= None
     
     
     def makeUnfolderCore(self, unfInputNresponse):
-        self.unfInput, self.response, self.bkg = unfInputNresponse
+        self.unfInput, self.response, self.bkg, self.inputcovmat = unfInputNresponse
         self.tunfolder = r.TUnfoldDensity(self.response,
                                           r.TUnfold.kHistMapOutputHoriz,
                                           r.TUnfold.kRegModeCurvature,
                                           r.TUnfold.kEConstraintArea if self.doArea else r.TUnfold.kEConstraintNone,
                                           r.TUnfoldDensity.kDensityModeNone)
-        
-        #wololo = r.TUnfoldBinning("LeadingLepPt", 0)
-        #wololo.AddAxis("LeadingLepPt", 1, array.array("d", [25., 150.]), True, True)
-        
-        #self.tunfolder = r.TUnfoldDensity(self.response, r.TUnfold.kHistMapOutputHoriz,
-                                             #r.TUnfold.kRegModeCurvature, r.TUnfold.kEConstraintArea if self.doArea else r.TUnfold.kEConstraintNone,
-                                             #r.TUnfoldDensity.kDensityModeNone, wololo)
-        
-        
-        #for bin in range(1, self.unfInput.GetNbinsX() + 1):
-            #self.unfInput.SetBinContent(bin, self.unfInput.GetBinContent(bin) - self.bkg.GetBinContent(bin))
 
+        if self.inputcovmat:
+            self.tunfolder.SetInput(self.unfInput, 0., 0., self.inputcovmat)
+        else:
+            self.tunfolder.SetInput(self.unfInput)
 
-        self.tunfolder.SetInput(self.unfInput)
         self.tunfolder.SubtractBackground(self.bkg, "Events outside the fiducial region")
         return
     
@@ -206,6 +218,7 @@ class UnfolderHelper:
         plot = bp.beautifulUnfPlot('{var}_asimov_LCurve'.format(var = self.var) if (self.wearedoingasimov) else '{var}_LCurve'.format(var = self.var), self.var)
         plot.isLCurve      = True
         plot.doPreliminary = vl.doPre
+        plot.displayedLumi = vl.TotalLumi if self.year == "run2" else vl.LumiDict[int(self.year)]
         plot.plotspath     = self.plotspath
 
         if not hasattr(self, 'scanRes'):
@@ -236,6 +249,7 @@ class UnfolderHelper:
         # Second: L-curve curvature plot
         plot = bp.beautifulUnfPlot('{var}_asimov_LogTauCurv'.format(var = self.var) if (self.wearedoingasimov) else '{var}_LogTauCurv'.format(var = self.var), self.var)
         plot.plotspath     = self.plotspath
+        plot.displayedLumi = vl.TotalLumi if self.year == "run2" else vl.LumiDict[int(self.year)]
         plot.doPreliminary = vl.doPre
         plot.initCanvasAndAll()
         #plot.addHisto(self.lCurve, 'AL','',0)
@@ -277,6 +291,7 @@ class Unfolder():
         self.helpers[''].wearedoingasimov = self.wearedoingasimov    # ONLY IMPLEMENTED FOR NOMINAL ONES!!!!!
         self.plotspath        = ""
         self.doRegularisation = False
+        self.usingFitInput    = False
         self.taulist          = { nuis : 0 for nuis in self.sysList } # Different taus for all the response matrices not implemented.
         self.taulist['']      = 0
         self.doAreaConstraint = False
@@ -339,6 +354,7 @@ class Unfolder():
         plot.plotspath       = self.plotspath
         plot.doPreliminary   = vl.doPre
         plot.doSupplementary = False
+        plot.displayedLumi   = vl.TotalLumi if self.year == "run2" else vl.LumiDict[int(self.year)]
         
         if not os.path.isfile('temp/{var}_/ClosureTest_{var}.root'.format(var = self.var)):
             raise RuntimeError('The rootfile with the generated information does not exist')
@@ -384,6 +400,7 @@ class Unfolder():
             regularized.SetBinContent(bin, regularized.GetBinContent(bin)/unregularized.GetBinContent(bin))
         
         plot = bp.beautifulUnfPlot(self.var + '_asimov_regcomp' if (self.wearedoingasimov) else self.var + '_regcomp', self.var)
+        plot.displayedLumi = vl.TotalLumi if self.year == "run2" else vl.LumiDict[int(self.year)]
 #        regularized.Draw()
         regularized.GetXaxis().SetTitle(vl.varList[self.var]['xaxis'])
         regularized.GetYaxis().SetTitle('Reg./Unreg.')
@@ -425,6 +442,7 @@ class Unfolder():
                 withoutareaconst.SetBinContent(bin, 0)
         
         plot = bp.beautifulUnfPlot(self.var + '_asimov_areacomp' if (self.wearedoingasimov) else self.var + '_areacomp', self.var)
+        plot.displayedLumi = vl.TotalLumi if self.year == "run2" else vl.LumiDict[int(self.year)]
         withareaconst.GetXaxis().SetTitle(vl.varList[self.var]['xaxis'])
         withareaconst.GetYaxis().SetTitle('Area/No area')
         plot.addHisto(withareaconst, 'hist', 'areacomp', 'L')
@@ -447,12 +465,15 @@ class Unfolder():
 
         allHistos = {}
         self.prepareAllHelpers()
-        if self.doRegularisation and self.tau == 0:
-            print '> Performing regularisation...'
-            self.doLCurveScan()
         tauval = 0
         if self.doRegularisation:
+            print "> Performing regularisation..."
+            if self.tau == 0:
+                print '   - Tau value not yet calculated! Extracting it with the L-curve method...'
+                self.doLCurveScan()
+
             tauval = self.taulist['']
+
 
         if verbose: print '\n> Unfolding nominal distribution'
         self.helpers[''].tunfolder.DoUnfold(tauval)
@@ -517,6 +538,11 @@ class Unfolder():
                 
                 allHistos[nuis].SetBinContent(1, 1, valor)
                 allHistos[nuis].SetBinError(  1, 1, inc)
+            else:
+                tmpcov = deepcopy(self.helpers[nuis].tunfolder.GetEmatrixTotal("tmpcov"))
+                for bin in range(1, allHistos[nuis].GetNbinsX() + 1):
+                    allHistos[nuis].SetBinError(bin, math.sqrt(tmpcov.GetBinContent(bin, bin)))
+                del tmpcov
                 
         
         scaleval = 1/thelumi/1000 if vl.doxsec else 1
@@ -566,10 +592,11 @@ class Unfolder():
         else:                         nominal_withErrors = ep.propagateHistoAsym(allHistos, vl.doSym)
         plot                 = bp.beautifulUnfPlot(self.var + "_asimov"  if self.wearedoingasimov else self.var, self.var)
         plot.doRatio         = True
-        plot.doFit           = False
+        plot.doFit           = self.usingFitInput
         plot.doPreliminary   = vl.doPre
         plot.doSupplementary = False
         plot.plotspath       = self.plotspath
+        plot.displayedLumi   = vl.TotalLumi if self.year == "run2" else vl.LumiDict[int(self.year)]
         
         allHistos[""].SetMarkerStyle(r.kFullCircle)
         allHistos[""].SetLineColor(r.kBlack)
@@ -620,11 +647,11 @@ class Unfolder():
         tru.SetMarkerSize(0)
         tru.SetLineWidth(2)
         tru.SetLineColor(bp.colorMap[0])
-        if self.var == "Fiducial":
-            print "JEJE:", tru.GetBinContent(1)
+        #if self.var == "Fiducial":
+            #print "JEJE:", tru.GetBinContent(1)
 
-        for iB in range(1, allHistos[""].GetNbinsX() + 1):
-            print allHistos[""].GetBinContent(iB), tru.GetBinContent(iB),  (allHistos[""].GetBinContent(iB) - tru.GetBinContent(iB)) / tru.GetBinContent(iB) * 100
+        #for iB in range(1, allHistos[""].GetNbinsX() + 1):
+            #print allHistos[""].GetBinContent(iB), tru.GetBinContent(iB),  (allHistos[""].GetBinContent(iB) - tru.GetBinContent(iB)) / tru.GetBinContent(iB) * 100
 
         #sys.exit()
         ##print "tW DR", tru.GetBinContent(1)
@@ -655,15 +682,16 @@ class Unfolder():
         #plot.addHisto(hDS,                'L,same', 'tW Powheg DS + Pythia8',   'L', 'mc')
         #plot.addHisto(aMCatNLO,           'L,same', 'tW aMC@NLO DR + Pythia8',  'L', 'mc')
         if self.wearedoingasimov:
-            plot.addHisto(allHistos[""], 'P,same{s}'.format(s = ",X0" if "equalbinsunf" in vl.varList[self.var] else ""), "Pseudodata",   'PE{s}'.format(s = "L" if not "equalbinsunf" in vl.varList[self.var] else ""), 'data')
+            plot.addHisto(allHistos[""], 'P,same{s}'.format(s = ",X0" if "equalbinsunf" in vl.varList[self.var] else ""), "Asimov dataset", 'PE{s}'.format(s = "L" if not "equalbinsunf" in vl.varList[self.var] else ""), 'data')
         else:
-            plot.addHisto(allHistos[""], 'P,same{s}'.format(s = ",X0" if "equalbinsunf" in vl.varList[self.var] else ""), vl.labellegend, 'PE{s}'.format(s = "L" if not "equalbinsunf" in vl.varList[self.var] else ""), 'data')
+            plot.addHisto(allHistos[""], 'P,same{s}'.format(s = ",X0" if "equalbinsunf" in vl.varList[self.var] else ""), vl.labellegend,   'PE{s}'.format(s = "L" if not "equalbinsunf" in vl.varList[self.var] else ""), 'data')
         plot.saveCanvas(legloc)
 
         del plot
 
         plot2 = bp.beautifulUnfPlot(self.var + 'uncs_asimov' if self.wearedoingasimov else self.var + 'uncs', self.var)
-        plot2.doFit           = False
+        plot2.displayedLumi   = vl.TotalLumi if self.year == "run2" else vl.LumiDict[int(self.year)]
+        plot2.doFit           = self.usingFitInput
         plot2.plotspath       = self.plotspath
         plot2.doPreliminary   = vl.doPre
         plot2.doSupplementary = False
@@ -671,7 +699,7 @@ class Unfolder():
         yaxismax_detectorunc = 2
         if "yaxismax_detectorunc" in vl.varList[self.var]: yaxismax_detectorunc = vl.varList[self.var]["yaxismax_detectorunc"]
 
-        uncListorig, hincstat, hincsyst, hincmax = ep.drawTheRelUncPlot(nominal_withErrors, allHistos, plot2, yaxismax_detectorunc)
+        uncListorig, hincstat, hincsyst, hincmax = ep.drawTheRelUncPlot(nominal_withErrors, allHistos, plot2, yaxismax_detectorunc, doFit = self.usingFitInput, doSym = vl.doSym)
         
         if   "legpos_particleunc"   in vl.varList[self.var] and not self.wearedoingasimov:
             unclegpos = vl.varList[self.var]["legpos_particleunc"]
@@ -726,25 +754,29 @@ class Unfolder():
 
 
 def UnfoldVariable(tsk):
-    inpath, iY, iV = tsk
+    inpath, iY, iV, signalextr = tsk
     pathtovariablefolder = inpath + "/" + iY + "/" + iV
     outplotspath         = inpath + "/" + iY + "/particleplots"
-    a = Unfolder(iV, pathtovariablefolder, iY)
+    a = Unfolder(iV, pathtovariablefolder, iY, "detectorsignal_" + signalextr + ".root")
 
     if not os.path.isdir(outplotspath):
         os.system("mkdir -p " + outplotspath)
 
     a.plotspath        = outplotspath
     a.doSanityCheck    = True
-    a.doRegularisation = vl.varList[iV]["doReg"]  if "doReg"  in vl.varList[iV] else vl.doReg
-    a.doAreaConstraint = vl.varList[iV]["doArea"] if "doArea" in vl.varList[iV] else vl.doArea
+    if "fit" in signalextr:
+        a.usingFitInput    = True
+    #a.doRegularisation = vl.varList[iV]["doReg"]  if "doReg"  in vl.varList[iV] else vl.doReg
+    #a.doAreaConstraint = vl.varList[iV]["doArea"] if "doArea" in vl.varList[iV] else vl.doArea
+    a.doRegularisation = False
+    a.doAreaConstraint = False
 
     a.doUnfoldingForAllNuis() # Unfolding
 
     if "Fiducial" not in iV:
-        a.doScanPlots()                # L-Curve and curvature plots
-        a.doRegularizationComparison() # Comparison plot between regularisation and not
-        a.doAreaConstraintComparison() # Comparison plot between area constraint and not
+        #a.doScanPlots()                # L-Curve and curvature plots
+        #a.doRegularizationComparison() # Comparison plot between regularisation and not
+        #a.doAreaConstraintComparison() # Comparison plot between area constraint and not
         a.doBottomLineTest()           # Bottom-line test
 
     del a
@@ -755,20 +787,22 @@ def UnfoldVariable(tsk):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(usage = "python nanoAOD_checker.py [options]", description = "Checker tool for the outputs of nanoAOD production (NOT postprocessing)", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument('--inpath',    '-i', metavar = 'inpath',     dest = "inpath",   required = False, default = "./temp/differential/")
-    parser.add_argument('--year',      '-y', metavar = 'year',       dest = "year",     required = False, default = "all")
-    parser.add_argument('--variable',  '-v', metavar = 'variable',   dest = "variable", required = False, default = "all")
-    parser.add_argument('--extraArgs', '-e', metavar = 'extra',      dest = "extra",    required = False, default = "")
-    parser.add_argument('--nthreads',  '-j', metavar = 'nthreads',   dest = "nthreads", required = False, default = 0, type = int)
-    parser.add_argument('--pretend',   '-p', action  = "store_true", dest = "pretend",  required = False, default = False)
+    parser.add_argument('--inpath',    '-i', metavar = 'inpath',     dest = "inpath",     required = False, default = "./temp/differential/")
+    parser.add_argument('--year',      '-y', metavar = 'year',       dest = "year",       required = False, default = "all")
+    parser.add_argument('--variable',  '-v', metavar = 'variable',   dest = "variable",   required = False, default = "all")
+    parser.add_argument('--extraArgs', '-e', metavar = 'extra',      dest = "extra",      required = False, default = "")
+    parser.add_argument('--nthreads',  '-j', metavar = 'nthreads',   dest = "nthreads",   required = False, default = 0, type = int)
+    parser.add_argument('--pretend',   '-p', action  = "store_true", dest = "pretend",    required = False, default = False)
+    parser.add_argument('--signalextr','-s', metavar = "signalextr", dest = "signalextr", required = False, default = "bs")
 
-    args     = parser.parse_args()
-    year     = args.year
-    extra    = args.extra
-    nthreads = args.nthreads
-    pretend  = args.pretend
-    inpath   = args.inpath
-    variable = args.variable
+    args       = parser.parse_args()
+    year       = args.year
+    extra      = args.extra
+    nthreads   = args.nthreads
+    pretend    = args.pretend
+    inpath     = args.inpath
+    variable   = args.variable
+    signalextr = args.signalextr
 
     vl.SetUpWarnings()
 
@@ -791,7 +825,10 @@ if __name__ == "__main__":
                 for iV in thevars:
                     if "plots" in iV: continue
                     #if "Fiducial" not in iV: continue
-                    tasks.append( (inpath, iY, iV) )
+                    #if "Lep1_Pt" not in iV: continue
+                    if "Lep1Lep2_DPhi" not in iV: continue
+                    if "2016" != iY: continue
+                    tasks.append( (inpath, iY, iV, signalextr) )
 
 
     #tasks = [ ("Lep1_Pt", inpath + "/" + "run2" + "/" + "Lep1_Pt", inpath + "/run2/particleplots") ]

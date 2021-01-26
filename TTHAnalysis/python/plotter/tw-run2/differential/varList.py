@@ -8,6 +8,9 @@ import os
 
 # === ESSENTIAL PARAMETERS OF THE ANALYSIS. CHANGING THIS APPLIES TO EVERYTHING. ===
 nuncs       = 3         # Number of uncs. shown in the relative uncertainty plots
+nBinsForBDT = 4         # Number of bins for the BDT discr. distribution used for the signal extraction procedure
+                        #   for the differential analysis when using maximum-likelihood fits.
+unifttbar   = True      # Force the BDT disc. distrib. bins to hace the same amount of ttbar events.
 asimov      = True      # Use of Asimov dataset or data
 doxsec      = True      # Show events or diff. cross section in final results
 doPre       = True      # Show or not show the "Preliminary" in the plots
@@ -97,7 +100,7 @@ varList['Lep1Lep2Jet1MET_Mt'] = {
 
     #'bins_particle'  : [0., 220., 300., 325., 400., 500.], # propuesta (5 bins)
     #'bins_detector' : [0., 220., 250., 260., 270., 280., 290., 300., 325., 400., 500.], # propuesta (5 bins) SELECCIONADA
-    'bins_particle'  : [100., 220., 300., 325., 400., 500.], # propuesta (5 bins)
+    'bins_particle' : [100., 220., 300., 325., 400., 500.], # propuesta (5 bins)
     'bins_detector' : [100., 220., 250., 260., 270., 280., 290., 300., 325., 400., 500.], # propuesta (5 bins) SELECCIONADA
 
     #'bins_particle'  : [0., 220., 270., 300., 325., 400., 500.], # propuesta (6 bins)
@@ -117,9 +120,9 @@ varList['Lep1Lep2Jet1MET_Mt'] = {
 
     #'descbinning' : [0., 800.], ## TEMPORAL
     #'ndescbins'   : 20, ## TEMPORAL
-    "var_detector"  : 'min(Lep1Lep2Jet1MET_Mt, 499.)',
+    "var_detector"  : 'min(max(Lep1Lep2Jet1MET_Mt, 101.), 499.)',
     'var_response'  : 'Lep1Lep2Jet1MET_Mt',
-    'var_particle'  : 'min(DressLep1Lep2Jet1MET_Mt, 499.)',
+    'var_particle'  : 'min(max(DressLep1Lep2Jet1MET_Mt, 101.), 499.)',
     'legpos'      : (0.51, 0.55, 0.71, 0.93),
     #'legposdesc'  : (0.15, 0.425, 0.35, 0.81),
     "legposdesc"  : (0.65, 0.55, 0.85, 0.93),
@@ -232,9 +235,9 @@ varList['Lep1Lep2Jet1_M'] = {
     #'legposdesc'  : (0.11, 0.435, 0.31, 0.82),
     #'legposdesc'  : (0.65, 0.55, 0.85, 0.93),
     'legposdesc'  : (0.7, 0.55, 0.90, 0.93),
-    "var_detector"         : 'min(Lep1Lep2Jet1_M, 399.)',
+    "var_detector"         : 'min(max(Lep1Lep2Jet1_M, 51.), 399.)',
     'var_response'         : 'Lep1Lep2Jet1_M',
-    'var_particle'         : 'min(DressLep1Lep2Jet1_M, 399.)',
+    'var_particle'         : 'min(max(DressLep1Lep2Jet1_M, 51.), 399.)',
     'legpos_detectorunc' : "TC",
     'legpos_particlefidunc'  : "TC",
     'legpos_particleunc'  : "TL",
@@ -327,9 +330,9 @@ varList['Jet1_Pt'] = {
     'legposdesc'  : (0.7, 0.55, 0.90, 0.93),
     'maxdesc'     : 3600,
     "legpos_particle"  : "TC",
-    "var_detector": 'min(Jet1_Pt, 30.1)',
+    "var_detector": 'min(max(Jet1_Pt, 31.), 149)',
     'var_response': 'Jet1_Pt',
-    'var_particle': 'min(DressJet1_Pt, 30.1)',
+    'var_particle': 'min(max(DressJet1_Pt, 31.), 149)',
     'legpos_detectorunc' : "TL",
     'legpos_particleunc'  : "TL",
     'legpos_particlefidunc'  : "TL",
@@ -401,9 +404,9 @@ varList['Lep1_Pt'] = {
     'legpos'      : (0.7, 0.55, 0.90, 0.93),
     'legposdesc'  : (0.7, 0.55, 0.90, 0.93),
     "maxdesc"     : 3300,
-    "var_detector": 'min(LepGood_pt_corrAll[0], 149.)',
+    "var_detector": 'min(max(LepGood_pt_corrAll[0], 26.), 149.)',
     'var_response': 'Lep1_Pt',
-    'var_particle': 'min(GenDressedLepton_pt[iDressSelLep[0]], 149.)',
+    'var_particle': 'min(max(GenDressedLepton_pt[iDressSelLep[0]], 26.), 149.)',
     'legpos_detectorunc' : "TL",
     'legpos_particlefidunc'  : "TL",
     #"legpos_particle"   : (.18, .3, .32, .05),
@@ -484,9 +487,9 @@ varList['Lep1Lep2Jet1MET_Pz'] = {
 
     'descbinning' : [0., 450.],
     'ndescbins'   : 18,
-    "var_detector": 'min(abs(Lep1Lep2Jet1MET_Pz), 449.)',
+    "var_detector": 'min(max(abs(Lep1Lep2Jet1MET_Pz), 1.), 449.)',
     'var_response': 'Lep1Lep2Jet1MET_Pz',
-    'var_particle': 'min(abs(DressLep1Lep2Jet1MET_Pz), 449.)',
+    'var_particle': 'min(max(abs(DressLep1Lep2Jet1MET_Pz), 1.), 449.)',
     'legpos'      : (0.51, 0.55, 0.71, 0.93),
     #'legposdesc'  : (0.57, 0.55, 0.78, 0.93),
     'legposdesc'  : (0.65, 0.55, 0.85, 0.93),
@@ -857,74 +860,76 @@ varList['Lep1Lep2_DPhi'] = {
 
 # Profiling things
 systMap = {
-    'fsrUp' : { 'TW'             : 'TW_noFullyHadr_fsrUp',
-                'TbarW'          : 'TbarW_noFullyHadr_fsrUp', 
-                'TTbar_Powheg'   : 'TTbar_Powheg_fsrUp'
-                },
-    'fsrDown' : { 'TW'           : 'TW_noFullyHadr_fsrDown',
-                  'TbarW'        : 'TbarW_noFullyHadr_fsrDown', 
-                  'TTbar_Powheg' : 'TTbar_Powheg_fsrDown'
-                  },
-    'isrUp' : { 'TW'             : 'TW_noFullyHadr_isrUp',
-                'TbarW'          : 'TbarW_noFullyHadr_isrUp', 
-                'TTbar_Powheg'   : 'TTbar_Powheg_isrUp'
-                },
-    'isrDown' : { 'TW'           : 'TW_noFullyHadr_isrDown',
-                  'TbarW'        : 'TbarW_noFullyHadr_isrDown', 
-                  'TTbar_Powheg' : 'TTbar_Powheg_isrDown'
-                  },
-    'tWMEUp': { 'TW'           : 'TW_noFullyHadr_MEscaleUp',
-                  'TbarW'        : 'TbarW_noFullyHadr_MEscaleUp',
-                  'TTbar_Powheg' : 'TTbar_Powheg'
-                  },
-    'tWMEDown': { 'TW'         : 'TW_noFullyHadr_MEscaleDown',
-                  'TbarW'        : 'TbarW_noFullyHadr_MEscaleDown',
-                  'TTbar_Powheg' : 'TTbar_Powheg'
-                  },
-    'tWPSUp': { 'TW'           : 'TW_noFullyHadr_PSscaleUp',
-                  'TbarW'        : 'TbarW_noFullyHadr_PSscaleUp',
-                  'TTbar_Powheg' : 'TTbar_Powheg'
-                  },
-    'tWPSDown': { 'TW'           : 'TW_noFullyHadr_PSscaleDown',
-                    'TbarW'        : 'TbarW_noFullyHadr_PSscaleDown',
-                    'TTbar_Powheg' : 'TTbar_Powheg'
-                  },
-    'DSUp'        : { 'TW'           : 'TW_noFullyHadr_DS',
-                    'TbarW'        : 'TbarW_noFullyHadr_DS',
-                    'TTbar_Powheg' : 'TTbar_Powheg'
-                  },
-    'hDampUp'   : { 'TW'           : 'TW',
-                    'TbarW'        : 'TbarW',
-                    'TTbar_Powheg' : 'TTbar_Powheg_hdampUp'
-                  },
-    'hDampDown'   : { 'TW'           : 'TW',
-                      'TbarW'        : 'TbarW',
-                      'TTbar_Powheg' : 'TTbar_Powheg_hdampDown'
-                      },
-    'UEUp'        : { 'TW'           : 'TW',
-                      'TbarW'        : 'TbarW',
-                      'TTbar_Powheg' : 'TTbar_Powheg_ueUp'
-                      },
-    'UEDown'      : { 'TW'           : 'TW',
-                      'TbarW'        : 'TbarW',
-                      'TTbar_Powheg' : 'TTbar_Powheg_ueDown'
-                      },
-    'GluonMoveCRTune' : { 'TW'           : 'TW',
-                          'TbarW'        : 'TbarW',
-                          'TTbar_Powheg' : 'TTbar_GluonMoveCRTune'
-                          },
-    'GluonMoveCRTuneerdON' : { 'TW'           : 'TW',
-                                'TbarW'        : 'TbarW',
-                                'TTbar_Powheg' : 'TTbar_GluonMoveCRTune_erdON'
-                                },
-    'PowhegerdON' : { 'TW'           : 'TW',
-                       'TbarW'        : 'TbarW',
-                       'TTbar_Powheg' : 'TTbar_Powheg_erdON'
-                       },
-    'QCDbasedCRTuneerdON' : { 'TW'           : 'TW',
-                               'TbarW'        : 'TbarW',
-                               'TTbar_Powheg' : 'TTbar_QCDbasedCRTune_erdON'
-                               },
+    'btagging'   : True,
+    'mistagging' : True,
+    'muonen_2016': True,
+    'muonen_2017': True,
+    'muonen_2018': True,
+    'elecidsf'   : True,
+    'elecrecosf' : True,
+    'muonidsf_stat_2016'  : True,
+    'muonidsf_syst'       : True,
+    'muonisosf_stat_2016' : True,
+    'muonisosf_syst'      : True,
+    'pileup'         : True,
+    'prefiring_2016' : True,
+    'jes'        : True,
+    'jer_2016'   : True,
+    'jer_2017'   : True,
+    'jer_2018'   : True,
+    'triggereff_2016' : True,
+    'triggereff_2017' : True,
+    'triggereff_2018' : True,
+    'ttbar_matching' : {'tw'      : False,
+                    'ttbar'   : True,
+                    'dy'      : False,
+                    'nonworz' : False,
+                    'vvttv'   : False},
+    'ue'           : {'tw'      : False,
+                    'ttbar'   : True,
+                    'dy'      : False,
+                    'nonworz' : False,
+                    'vvttv'   : False},
+    'isr_ttbar' : {'tw'      : False,
+                    'ttbar'   : True,
+                    'dy'      : False,
+                    'nonworz' : False,
+                    'vvttv'   : False},
+    'isr_tw' : {'tw'       : True,
+                    'ttbar'   : False,
+                    'dy'      : False,
+                    'nonworz' : False,
+                    'vvttv'   : False},
+    'fsr_ttbar' : {'tw'      : False,
+                    'ttbar'   : True,
+                    'dy'      : False,
+                    'nonworz' : False,
+                    'vvttv'   : False},
+    'fsr_tw' : {'tw'       : True,
+                    'ttbar'   : False,
+                    'dy'      : False,
+                    'nonworz' : False,
+                    'vvttv'   : False},
+    'ttbar_scales' : {'tw'      : False,
+                    'ttbar'   : True,
+                    'dy'      : False,
+                    'nonworz' : False,
+                    'vvttv'   : False},
+    'tw_scales' : {'tw'       : True,
+                    'ttbar'   : False,
+                    'dy'      : False,
+                    'nonworz' : False,
+                    'vvttv'   : False},
+    'topptrew'   : {'tw'      : False,
+                    'ttbar'   : True,
+                    'dy'      : False,
+                    'nonworz' : False,
+                    'vvttv'   : False},
+    'colour_rec' : {'tw'      : False,
+                    'ttbar'   : True,
+                    'dy'      : False,
+                    'nonworz' : False,
+                    'vvttv'   : False},
 }
 
 
@@ -1093,3 +1098,7 @@ TableDict = {
             "dimensions" : "",
         },
 }
+
+
+ProfileSysts = {"dy_norm", "nonworz_norm", "ttbar_norm", "vvttv_norm",
+                "lumi_2016", "lumi_BBD", "lumi_DB", "lumi_GS", "lumi_XY"}

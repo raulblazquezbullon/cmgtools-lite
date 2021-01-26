@@ -139,11 +139,28 @@ def GetAndPlotPuritiesAndStabilities(var, theresponseh, theparticleh, thedetecto
     detectorbins  = array("d", detectorbins)
 
     #print " > Calculating stabilities..."
+
+    #print "under,under:", theresponseh.GetBinContent(0, 0)
+    #print "under,over:",  theresponseh.GetBinContent(0, ndetectorbins + 2)
+    #print "over,under:",  theresponseh.GetBinContent(nparticlebins + 2, 0)
+    #print "over,over:",   theresponseh.GetBinContent(nparticlebins + 2, ndetectorbins + 2)
+    #print "underparticle:", theparticleh.GetBinContent(0)
+    #print "overparticle:", theparticleh.GetBinContent(nparticlebins + 2)
+
     for i in range(1, nparticlebins + 1):
         sumstab = 0
+        #print "underflow :",   theresponseh.GetBinContent(i, 0)
         for j in range(1, ndetectorbins + 1):
+            #print j, ":", theresponseh.GetBinContent(i, j)
             sumstab += theresponseh.GetBinContent(i, j)
 
+        #print "overflow :", theresponseh.GetBinContent(i, ndetectorbins + 2)
+        #print "num:", sumstab
+        #print "den:", theparticleh.GetBinContent(i)
+        #print "coc:", sumstab / theparticleh.GetBinContent(i), "\n"
+
+        #print "den2:", thedetectorparticleh.GetBinContent(i)
+        #print "coc2:", sumstab / thedetectorparticleh.GetBinContent(i), "\n"
         ## CON EFICIENCIA DE RECONSTRUCCION
         try:
             stabilities.append(sumstab / theparticleh.GetBinContent(i))
@@ -157,17 +174,25 @@ def GetAndPlotPuritiesAndStabilities(var, theresponseh, theparticleh, thedetecto
             stabilities_woeff.append(0)
 
     #print " > Calculating purities..."
+    #print "underreco:", thedetectorh.GetBinContent(0)
+    #print "overreco:",  thedetectorh.GetBinContent(ndetectorbins + 2)
     for j in range(1, ndetectorbins + 1):
         sumpur = 0
+        #print "underflow :",   theresponseh.GetBinContent(0, j)
         for i in range(1, nparticlebins + 1):
+            #print i, ":", theresponseh.GetBinContent(i, j)
             sumpur += theresponseh.GetBinContent(i, j)
 
+        #print "overflow :", theresponseh.GetBinContent(nparticlebins + 2, j)
+        #print "num:", sumpur
+        #print "den:", thedetectorh.GetBinContent(j)
+        #print "coc:", sumpur / thedetectorh.GetBinContent(j), "\n"
         try:
             purities.append(sumpur / thedetectorh.GetBinContent(j))
         except ZeroDivisionError:
             purities.append(0)
 
-
+    #sys.exit()
     #print " > Fixing values of histograms..."
     #print nparticlebins, particlebins, ndetectorbins, detectorbins
     hStab       = r.TH1D('hStab',       '', nparticlebins, particlebins)
@@ -339,7 +364,7 @@ def CalculateAndPlotResponseMatrices(tsk):
         if "data" in tmpnam: continue
 
         if "Up" not in tmpnam and "Down" not in tmpnam: # It is the nominal value!
-            print tmpnam
+            #print tmpnam
             detectordict[""]         = deepcopy(fDetector.Get(tmpnam).Clone(""))
             detectorparticledict[""] = deepcopy(fDetectorParticle.Get(tmpnam).Clone(""))
             detectorparticlebutdetectordict[""] = deepcopy(fDetectorParticleButDetector.Get(tmpnam).Clone(""))
@@ -350,12 +375,12 @@ def CalculateAndPlotResponseMatrices(tsk):
             #print "tmpunc", tmpunc
 
             if tmpunc not in detectordict:
-                detectordict[tmpunc]         = {}
-                responsedict[tmpunc]         = {}
+                detectordict[tmpunc] = {}
+                responsedict[tmpunc] = {}
             #print tmpunc
-            detectordict[tmpunc]         = deepcopy(fDetector.Get(tmpnam).Clone(tmpunc))
-            responsedict[tmpunc]         = deepcopy(fResponse.Get(tmpnam).Clone(tmpunc))
-            nonfiducialdict[tmpunc]      = deepcopy(fNonFiducial.Get(tmpnam).Clone(tmpunc))
+            detectordict[tmpunc]     = deepcopy(fDetector.Get(tmpnam).Clone(tmpunc))
+            responsedict[tmpunc]     = deepcopy(fResponse.Get(tmpnam).Clone(tmpunc))
+            nonfiducialdict[tmpunc]  = deepcopy(fNonFiducial.Get(tmpnam).Clone(tmpunc))
 
 
     fDetector.Close();         del fDetector
@@ -437,8 +462,8 @@ if __name__=="__main__":
                 thevars = next(os.walk(inpath + "/" + iY))[1]
 
                 for iV in thevars:
-                    if "plots" in iV:
-                        continue
+                    if "plots" in iV: continue
+                    #if "Pz" not in iV: continue
 
                     tasks.append( (inpath, iY, iV) )
 
