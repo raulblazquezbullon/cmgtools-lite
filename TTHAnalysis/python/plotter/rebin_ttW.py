@@ -18,8 +18,7 @@ r.gROOT.SetBatch(1)
 # THIS PATH CONTAINS PLOTS FOR EACH REGION
 #DIR = "/pool/phedex/userstorage/cvico/ttV/Plots/new_Rebining/{ch}/2016/3l_tight_legacy/2lss_3l_plots.root"
 
-#DIR = "/pool/phedexrw/userstorage/cvico/ttV/Plots/NewFtrees/plots_without_rebining/m3l/{ch}/2016/3l_tight_legacy/2lss_3l_plots.root"
-DIR = "/pool/phedexrw/userstorage/cvico/ttV/Plots/NewFtrees/plots_without_rebining/m3l/3j2b_neg/2016/3l_tight_legacy/2lss_3l_plots.root"
+DIR = "/pool/phedexrw/userstorage/cvico/ttV/Plots/NewFtrees/plots_without_rebining/m3l/{ch}/2016/3l_tight_legacy/2lss_3l_plots.root"
 
 NQUANT = sys.argv[1].split(",")
 VAR = sys.argv[2]
