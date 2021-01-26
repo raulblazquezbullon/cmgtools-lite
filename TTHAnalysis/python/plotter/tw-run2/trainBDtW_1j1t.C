@@ -86,7 +86,10 @@ void trainBDtW_1j1t(TString outputdir, TString outputbasedir = "/pool/phedex/use
   loader->AddVariable("train_loosejet1_pt"               , "Loose jet p_{T}"                                                        , "GeV", 'F');
   //loader->AddVariable("train_lep1lep2jet1met_ptOVERhttot", "p_{T} (#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j}, #it{p}_{T}^{miss}) / H_{T}", ""   , 'F');
   loader->AddVariable("train_lep1lep2jet1met_m"          , "m (#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j}, #it{p}_{T}^{miss})"            , "GeV", 'F');
+  //----Prueba variable C------
   loader->AddVariable("train_lep1lep2jet1_c"             , "C (#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})"                               , ""   , 'F');
+  //loader->AddVariable("train_lep1lep2jet1_cscalar"             , "C_{scalar} (#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})"                               , ""   , 'F');
+  //----Prueba variable C------
 //  loader->AddVariable("train_htlepOVERhttot"             , "(p_{T}(e)^{#pm} + p_{T}(#mu)^{#mp}) / H_{T}"                            , ""   , 'F');
   loader->AddVariable("train_lep1lep2jet1_pt"            , "#it{p}_{T} (#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j}, p_{T}^{miss})"        , "GeV", 'F');
   // =====New Input variables=========

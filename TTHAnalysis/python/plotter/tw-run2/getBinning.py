@@ -174,6 +174,6 @@ Float_t theBDT(Double_t BDT){
 #getBinningForThatVariable("./temp/varplots/run2/2j1t/MVAtrain/plots-tw-2j1t_MVAtrain.root", "SergioBDT_2j1b_smallb_ttbar", 6)
 
 
-getBinningForThatVariable("/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2020-12-19/MVA/run2/1j1t/MVAtrain/plots-tw-1j1t_MVAtrain.root", "tmvaBDT_1j1b_smallb_ttbar", 20)
-getBinningForThatVariable("/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2020-12-19/MVA/run2/2j1t/MVAtrain/plots-tw-2j1t_MVAtrain.root", "tmvaBDT_2j1b_smallb_ttbar", 12)
+getBinningForThatVariable("/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2021-01-21_nuevoSmallBin/run2/1j1t/MVAtrain/plots-tw-1j1t_MVAtrain.root", "tmvaBDT_1j1b_smallb_ttbar", 20)
+getBinningForThatVariable("/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2021-01-21_nuevoSmallBin/run2/2j1t/MVAtrain/plots-tw-2j1t_MVAtrain.root", "tmvaBDT_2j1b_smallb_ttbar", 12)
 

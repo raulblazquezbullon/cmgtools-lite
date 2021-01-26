@@ -62,8 +62,8 @@ minitnamedict = {
     "ttbar"     : ["TTTo2L2Nu_division2"],
     "tw"        : ["tW", "tW_division2"],
     "tbarw"     : ["tbarW", "tbarW_division2"],
-    "dy_10to50" : ["DYJetsToLL_M_10to50", "DYJetsToLL_M_10to50_MLM"],
-    "dy_50"     : ["DYJetsToLL_M_50"],
+    #"dy_10to50" : ["DYJetsToLL_M_10to50", "DYJetsToLL_M_10to50_MLM"],
+    #"dy_50"     : ["DYJetsToLL_M_50"],
     }
 
 
@@ -77,7 +77,7 @@ sampledict[2016] = {
 
     "TTTo2L2Nu_division1" : ['Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_0','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_1','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_2','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_3','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_4','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_5','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_6','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_7','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_8','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_9','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_10','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_11','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_12'],
 
-    #"TTTo2L2Nu_division2" : ['Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_0','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_1','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_2','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_3','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_4','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_5','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_6','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_7','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_8','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_9','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_10','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_11','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_12'],
+    "TTTo2L2Nu_division2" : ['Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_0','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_1','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_2','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_3','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_4','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_5','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_6','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_7','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_8','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_9','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_10','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_11','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_12'],
 
     "TTToSemiLeptonic" : "Tree_TTToSemiLeptonic_TuneCP5_PSweights_",
 
@@ -93,8 +93,8 @@ sampledict[2016] = {
     "tW_division1"    : "Tree_tWdiv1_5f_inclusiveDecays_TuneCP5_PSweights_",
     "tbarW_division1" : "Tree_tbarWdiv1_5f_inclusiveDecays_TuneCP5_PSweights_",
 
-    #"tW_division2"    : "Tree_tWdiv2_5f_inclusiveDecays_TuneCP5_PSweights_",
-    #"tbarW_division2" : "Tree_tbarWdiv2_5f_inclusiveDecays_TuneCP5_PSweights_",
+    "tW_division2"    : "Tree_tWdiv2_5f_inclusiveDecays_TuneCP5_PSweights_",
+    "tbarW_division2" : "Tree_tbarWdiv2_5f_inclusiveDecays_TuneCP5_PSweights_",
 
     # CUETP8M1
     #"tW_noFullHad_CUETP8M2T4"    : "Tree_tW_5f_noFullHad_",
@@ -198,17 +198,15 @@ sampledict[2017] = {
 
     "TTTo2L2Nu_division1" :['Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_0','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_1','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_2','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_3','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_4','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_5','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_6','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_7','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_8','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_9','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_10','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_11','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_12','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_13','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_14','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_15','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_16','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_17','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_18','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_19','Tree_TTTo2L2Nudiv1_TuneCP5_PSweights_20'],
 
-    #"TTTo2L2Nu_division2" :['Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_0','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_1','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_2','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_3','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_4','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_5','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_6','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_7','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_8','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_9','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_10','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_11','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_12','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_13','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_14','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_15','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_16','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_17','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_18','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_19','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_20'],
+    "TTTo2L2Nu_division2" :['Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_0','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_1','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_2','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_3','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_4','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_5','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_6','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_7','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_8','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_9','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_10','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_11','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_12','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_13','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_14','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_15','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_16','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_17','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_18','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_19','Tree_TTTo2L2Nudiv2_TuneCP5_PSweights_20'],
 
     "TTToSemiLeptonic" : "Tree_TTToSemiLeptonic_TuneCP5_",
 
     ### tW
     # inclusiva
     #"tW"              : "Tree_tW_5f_inclusiveDecays_TuneCP5_PSweights_pythia8new_",
-
-    #"tW"              : ["Tree_tW_5f_inclusiveDecays_TuneCP5_0", "Tree_tW_5f_inclusiveDecays_TuneCP5_1", "Tree_tW_5f_inclusiveDecays_TuneCP5_2", "Tree_tW_5f_inclusiveDecays_TuneCP5_3", "Tree_tW_5f_inclusiveDecays_TuneCP5_4", "Tree_tW_5f_inclusiveDecays_TuneCP5_5", "Tree_tW_5f_inclusiveDecays_TuneCP5_6"], ### WARNING: CORRUPTOS LOS pythia8new
-    #"tbarW"           : ["Tree_tbarW_5f_inclusiveDecays_TuneCP5_1", "Tree_tbarW_5f_inclusiveDecays_TuneCP5_2", "Tree_tbarW_5f_inclusiveDecays_TuneCP5_3", "Tree_tbarW_5f_inclusiveDecays_TuneCP5_4", "Tree_tbarW_5f_inclusiveDecays_TuneCP5_5", "Tree_tbarW_5f_inclusiveDecays_TuneCP5_6", "Tree_tbarW_5f_inclusiveDecays_TuneCP5_7", "Tree_tbarW_5f_inclusiveDecays_TuneCP5_PSweights_pythia_*"],   ### WARNING: EL 0 ESTÁ CORRUPTO
-
+    "tW"              : ["Tree_tW_5f_inclusiveDecays_TuneCP5_0", "Tree_tW_5f_inclusiveDecays_TuneCP5_1", "Tree_tW_5f_inclusiveDecays_TuneCP5_2", "Tree_tW_5f_inclusiveDecays_TuneCP5_3", "Tree_tW_5f_inclusiveDecays_TuneCP5_4", "Tree_tW_5f_inclusiveDecays_TuneCP5_5", "Tree_tW_5f_inclusiveDecays_TuneCP5_6"], ### WARNING: CORRUPTOS LOS pythia8new
+    "tbarW"           : ["Tree_tbarW_5f_inclusiveDecays_TuneCP5_1", "Tree_tbarW_5f_inclusiveDecays_TuneCP5_2", "Tree_tbarW_5f_inclusiveDecays_TuneCP5_3", "Tree_tbarW_5f_inclusiveDecays_TuneCP5_4", "Tree_tbarW_5f_inclusiveDecays_TuneCP5_5", "Tree_tbarW_5f_inclusiveDecays_TuneCP5_6", "Tree_tbarW_5f_inclusiveDecays_TuneCP5_7", "Tree_tbarW_5f_inclusiveDecays_TuneCP5_PSweights_pythia_*"],   ### WARNING: EL 0 ESTÁ CORRUPTO
 
     # nofullyhad
     "tW_noFullHad"    : "Tree_tW_5f_noFullHad_TuneCP5_",
@@ -304,14 +302,14 @@ sampledict[2018] = {
 
     "TTTo2L2Nu_division1" : ['Tree_TTTo2L2Nudiv1_TuneCP5_0','Tree_TTTo2L2Nudiv1_TuneCP5_1','Tree_TTTo2L2Nudiv1_TuneCP5_2','Tree_TTTo2L2Nudiv1_TuneCP5_3','Tree_TTTo2L2Nudiv1_TuneCP5_4','Tree_TTTo2L2Nudiv1_TuneCP5_5','Tree_TTTo2L2Nudiv1_TuneCP5_6','Tree_TTTo2L2Nudiv1_TuneCP5_7','Tree_TTTo2L2Nudiv1_TuneCP5_8','Tree_TTTo2L2Nudiv1_TuneCP5_9','Tree_TTTo2L2Nudiv1_TuneCP5_10','Tree_TTTo2L2Nudiv1_TuneCP5_11','Tree_TTTo2L2Nudiv1_TuneCP5_12','Tree_TTTo2L2Nudiv1_TuneCP5_13','Tree_TTTo2L2Nudiv1_TuneCP5_14','Tree_TTTo2L2Nudiv1_TuneCP5_15','Tree_TTTo2L2Nudiv1_TuneCP5_16','Tree_TTTo2L2Nudiv1_TuneCP5_17','Tree_TTTo2L2Nudiv1_TuneCP5_18','Tree_TTTo2L2Nudiv1_TuneCP5_19','Tree_TTTo2L2Nudiv1_TuneCP5_20','Tree_TTTo2L2Nudiv1_TuneCP5_21','Tree_TTTo2L2Nudiv1_TuneCP5_22','Tree_TTTo2L2Nudiv1_TuneCP5_23','Tree_TTTo2L2Nudiv1_TuneCP5_24','Tree_TTTo2L2Nudiv1_TuneCP5_25','Tree_TTTo2L2Nudiv1_TuneCP5_26','Tree_TTTo2L2Nudiv1_TuneCP5_27','Tree_TTTo2L2Nudiv1_TuneCP5_28','Tree_TTTo2L2Nudiv1_TuneCP5_29','Tree_TTTo2L2Nudiv1_TuneCP5_30','Tree_TTTo2L2Nudiv1_TuneCP5_31','Tree_TTTo2L2Nudiv1_TuneCP5_32','Tree_TTTo2L2Nudiv1_TuneCP5_33','Tree_TTTo2L2Nudiv1_TuneCP5_34','Tree_TTTo2L2Nudiv1_TuneCP5_35','Tree_TTTo2L2Nudiv1_TuneCP5_36','Tree_TTTo2L2Nudiv1_TuneCP5_37','Tree_TTTo2L2Nudiv1_TuneCP5_38','Tree_TTTo2L2Nudiv1_TuneCP5_39','Tree_TTTo2L2Nudiv1_TuneCP5_40','Tree_TTTo2L2Nudiv1_TuneCP5_41','Tree_TTTo2L2Nudiv1_TuneCP5_42','Tree_TTTo2L2Nudiv1_TuneCP5_43','Tree_TTTo2L2Nudiv1_TuneCP5_44'],
 
-    #"TTTo2L2Nu_division2" : ['Tree_TTTo2L2Nudiv2_TuneCP5_0','Tree_TTTo2L2Nudiv2_TuneCP5_1','Tree_TTTo2L2Nudiv2_TuneCP5_2','Tree_TTTo2L2Nudiv2_TuneCP5_3','Tree_TTTo2L2Nudiv2_TuneCP5_4','Tree_TTTo2L2Nudiv2_TuneCP5_5','Tree_TTTo2L2Nudiv2_TuneCP5_6','Tree_TTTo2L2Nudiv2_TuneCP5_7','Tree_TTTo2L2Nudiv2_TuneCP5_8','Tree_TTTo2L2Nudiv2_TuneCP5_9','Tree_TTTo2L2Nudiv2_TuneCP5_10','Tree_TTTo2L2Nudiv2_TuneCP5_11','Tree_TTTo2L2Nudiv2_TuneCP5_12','Tree_TTTo2L2Nudiv2_TuneCP5_13','Tree_TTTo2L2Nudiv2_TuneCP5_14','Tree_TTTo2L2Nudiv2_TuneCP5_15','Tree_TTTo2L2Nudiv2_TuneCP5_16','Tree_TTTo2L2Nudiv2_TuneCP5_17','Tree_TTTo2L2Nudiv2_TuneCP5_18','Tree_TTTo2L2Nudiv2_TuneCP5_19','Tree_TTTo2L2Nudiv2_TuneCP5_20','Tree_TTTo2L2Nudiv2_TuneCP5_21','Tree_TTTo2L2Nudiv2_TuneCP5_22','Tree_TTTo2L2Nudiv2_TuneCP5_23','Tree_TTTo2L2Nudiv2_TuneCP5_24','Tree_TTTo2L2Nudiv2_TuneCP5_25','Tree_TTTo2L2Nudiv2_TuneCP5_26','Tree_TTTo2L2Nudiv2_TuneCP5_27','Tree_TTTo2L2Nudiv2_TuneCP5_28','Tree_TTTo2L2Nudiv2_TuneCP5_29','Tree_TTTo2L2Nudiv2_TuneCP5_30','Tree_TTTo2L2Nudiv2_TuneCP5_31','Tree_TTTo2L2Nudiv2_TuneCP5_32','Tree_TTTo2L2Nudiv2_TuneCP5_33','Tree_TTTo2L2Nudiv2_TuneCP5_34','Tree_TTTo2L2Nudiv2_TuneCP5_35','Tree_TTTo2L2Nudiv2_TuneCP5_36','Tree_TTTo2L2Nudiv2_TuneCP5_37','Tree_TTTo2L2Nudiv2_TuneCP5_38','Tree_TTTo2L2Nudiv2_TuneCP5_39','Tree_TTTo2L2Nudiv2_TuneCP5_40','Tree_TTTo2L2Nudiv2_TuneCP5_41','Tree_TTTo2L2Nudiv2_TuneCP5_42','Tree_TTTo2L2Nudiv2_TuneCP5_43','Tree_TTTo2L2Nudiv2_TuneCP5_44'],
+    "TTTo2L2Nu_division2" : ['Tree_TTTo2L2Nudiv2_TuneCP5_0','Tree_TTTo2L2Nudiv2_TuneCP5_1','Tree_TTTo2L2Nudiv2_TuneCP5_2','Tree_TTTo2L2Nudiv2_TuneCP5_3','Tree_TTTo2L2Nudiv2_TuneCP5_4','Tree_TTTo2L2Nudiv2_TuneCP5_5','Tree_TTTo2L2Nudiv2_TuneCP5_6','Tree_TTTo2L2Nudiv2_TuneCP5_7','Tree_TTTo2L2Nudiv2_TuneCP5_8','Tree_TTTo2L2Nudiv2_TuneCP5_9','Tree_TTTo2L2Nudiv2_TuneCP5_10','Tree_TTTo2L2Nudiv2_TuneCP5_11','Tree_TTTo2L2Nudiv2_TuneCP5_12','Tree_TTTo2L2Nudiv2_TuneCP5_13','Tree_TTTo2L2Nudiv2_TuneCP5_14','Tree_TTTo2L2Nudiv2_TuneCP5_15','Tree_TTTo2L2Nudiv2_TuneCP5_16','Tree_TTTo2L2Nudiv2_TuneCP5_17','Tree_TTTo2L2Nudiv2_TuneCP5_18','Tree_TTTo2L2Nudiv2_TuneCP5_19','Tree_TTTo2L2Nudiv2_TuneCP5_20','Tree_TTTo2L2Nudiv2_TuneCP5_21','Tree_TTTo2L2Nudiv2_TuneCP5_22','Tree_TTTo2L2Nudiv2_TuneCP5_23','Tree_TTTo2L2Nudiv2_TuneCP5_24','Tree_TTTo2L2Nudiv2_TuneCP5_25','Tree_TTTo2L2Nudiv2_TuneCP5_26','Tree_TTTo2L2Nudiv2_TuneCP5_27','Tree_TTTo2L2Nudiv2_TuneCP5_28','Tree_TTTo2L2Nudiv2_TuneCP5_29','Tree_TTTo2L2Nudiv2_TuneCP5_30','Tree_TTTo2L2Nudiv2_TuneCP5_31','Tree_TTTo2L2Nudiv2_TuneCP5_32','Tree_TTTo2L2Nudiv2_TuneCP5_33','Tree_TTTo2L2Nudiv2_TuneCP5_34','Tree_TTTo2L2Nudiv2_TuneCP5_35','Tree_TTTo2L2Nudiv2_TuneCP5_36','Tree_TTTo2L2Nudiv2_TuneCP5_37','Tree_TTTo2L2Nudiv2_TuneCP5_38','Tree_TTTo2L2Nudiv2_TuneCP5_39','Tree_TTTo2L2Nudiv2_TuneCP5_40','Tree_TTTo2L2Nudiv2_TuneCP5_41','Tree_TTTo2L2Nudiv2_TuneCP5_42','Tree_TTTo2L2Nudiv2_TuneCP5_43','Tree_TTTo2L2Nudiv2_TuneCP5_44'],
 
     "TTToSemiLeptonic" : "Tree_TTToSemiLeptonic_TuneCP5_",
 
     ### tW
     # inclusiva
-    #"tW"              : "Tree_tW_5f_inclusiveDecays_TuneCP5_ext1_",
-    #"tbarW"           : "Tree_tbarW_5f_inclusiveDecays_TuneCP5_ext1_",
+    "tW"              : "Tree_tW_5f_inclusiveDecays_TuneCP5_ext1_",
+    "tbarW"           : "Tree_tbarW_5f_inclusiveDecays_TuneCP5_ext1_",
 
     # nofullyhad
     "tW_noFullHad"    : ["Tree_tW_5f_noFullHad_TuneCP5_ext1_0"],
@@ -413,7 +411,6 @@ sampledict[2018] = {
 }
 
 trainsampledict = {}; trainsampledict[2016] = {}; trainsampledict[2017] = {}; trainsampledict[2018] = {}
-'''
 trainsampledict[2016] = {
     ### ttbar
     #"TTTo2L2Nu" : ['Tree_TTTo2L2Nu_TuneCP5_PSweights_0', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_1', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_2', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_3', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_4', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_5', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_6', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_7', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_8', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_9', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_10', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_11', 'Tree_TTTo2L2Nu_TuneCP5_PSweights_12'],
@@ -431,8 +428,8 @@ trainsampledict[2016] = {
     "tW_division2"        : sampledict[2016]["tW_division2"],
     "tbarW_division2"     : sampledict[2016]["tbarW_division2"],
 
-    "DYJetsToLL_M_10to50" : sampledict[2016]["DYJetsToLL_M_10to50"],
-    "DYJetsToLL_M_50"     : sampledict[2016]["DYJetsToLL_M_50"],
+    #"DYJetsToLL_M_10to50" : sampledict[2016]["DYJetsToLL_M_10to50"],
+    #"DYJetsToLL_M_50"     : sampledict[2016]["DYJetsToLL_M_50"],
 }
 
 
@@ -449,8 +446,8 @@ trainsampledict[2017] = {
     #"tbarW_noFullHad"     : "Tree_tbarW_5f_noFullHad_TuneCP5_",
     #"tbarW_noFullHad" : sampledict[2017]["tbarW_noFullHad"],
 
-    "DYJetsToLL_M_10to50_MLM" : sampledict[2017]["DYJetsToLL_M_10to50_MLM"],
-    "DYJetsToLL_M_50"         : sampledict[2017]["DYJetsToLL_M_50"],
+    #"DYJetsToLL_M_10to50_MLM" : sampledict[2017]["DYJetsToLL_M_10to50_MLM"],
+    #"DYJetsToLL_M_50"         : sampledict[2017]["DYJetsToLL_M_50"],
 }
 
 
@@ -473,10 +470,10 @@ trainsampledict[2018] = {
     "tW"    : sampledict[2018]["tW"],
     "tbarW" : sampledict[2018]["tbarW"],
 
-    "DYJetsToLL_M_10to50_MLM" : sampledict[2018]["DYJetsToLL_M_10to50_MLM"],
-    "DYJetsToLL_M_50"         : sampledict[2018]["DYJetsToLL_M_50"],
+    #"DYJetsToLL_M_10to50_MLM" : sampledict[2018]["DYJetsToLL_M_10to50_MLM"],
+    #"DYJetsToLL_M_50"         : sampledict[2018]["DYJetsToLL_M_50"],
 }
-'''
+
 
 #### xsecs (del stop): TEMPORAL
 #DYJetsToLL_M_10to50_aMCatNLO : 22635.09

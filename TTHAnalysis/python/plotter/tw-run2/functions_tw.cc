@@ -79,44 +79,42 @@ float getBDtWOther(double BDT) {
 
 
 Float_t getBDtW20bins(Double_t BDT){
-  if      (BDT < -0.461322   ) return 1;
-  else if (BDT < -0.396417) return 2;
-  else if (BDT < -0.348542) return 3;
-  else if (BDT < -0.304996) return 4;
-  else if (BDT < -0.268547) return 5;
-  else if (BDT < -0.236142) return 6;
-  else if (BDT < -0.201742) return 7;
-  else if (BDT < -0.162798) return 8;
-  else if (BDT < -0.120081) return 9;
-  else if (BDT < -0.076244) return 10;
-  else if (BDT < -0.033727) return 11;
-  else if (BDT < 0.007686) return 12;
-  else if (BDT < 0.050584) return 13;
-  else if (BDT < 0.101481) return 14;
-  else if (BDT < 0.156476) return 15;
-  else if (BDT < 0.206361) return 16;
-  else if (BDT < 0.246990) return 17;
-  else if (BDT < 0.284749) return 18;
-  else if (BDT < 0.328806) return 19;
+  if      (BDT < -0.459502   ) return 1;
+  else if (BDT < -0.393907) return 2;
+  else if (BDT < -0.344764) return 3;
+  else if (BDT < -0.303371) return 4;
+  else if (BDT < -0.267338) return 5;
+  else if (BDT < -0.234096) return 6;
+  else if (BDT < -0.199462) return 7;
+  else if (BDT < -0.162641) return 8;
+  else if (BDT < -0.121428) return 9;
+  else if (BDT < -0.078996) return 10;
+  else if (BDT < -0.036689) return 11;
+  else if (BDT < 0.006054) return 12;
+  else if (BDT < 0.051079) return 13;
+  else if (BDT < 0.101833) return 14;
+  else if (BDT < 0.156526) return 15;
+  else if (BDT < 0.205728) return 16;
+  else if (BDT < 0.245920) return 17;
+  else if (BDT < 0.284059) return 18;
+  else if (BDT < 0.329370) return 19;
   else                       return 20;
 }
 
-
 Float_t getBDtWOther12bins(Double_t BDT){
-  if      (BDT < -0.327467   ) return 1;
-  else if (BDT < -0.218765) return 2;
-  else if (BDT < -0.146988) return 3;
-  else if (BDT < -0.090181) return 4;
-  else if (BDT < -0.042963) return 5;
-  else if (BDT < 0.000932) return 6;
-  else if (BDT < 0.037092) return 7;
-  else if (BDT < 0.069757) return 8;
-  else if (BDT < 0.102122) return 9;
-  else if (BDT < 0.143085) return 10;
-  else if (BDT < 0.189322) return 11;
+  if      (BDT < -0.328624   ) return 1;
+  else if (BDT < -0.226015) return 2;
+  else if (BDT < -0.149537) return 3;
+  else if (BDT < -0.090281) return 4;
+  else if (BDT < -0.042565) return 5;
+  else if (BDT < 0.001832) return 6;
+  else if (BDT < 0.035527) return 7;
+  else if (BDT < 0.070456) return 8;
+  else if (BDT < 0.102554) return 9;
+  else if (BDT < 0.144660) return 10;
+  else if (BDT < 0.190770) return 11;
   else                       return 12;
 }
-
 
 Float_t getBDtW20bins2016(Double_t BDT){
   if      (BDT < -0.457570   ) return 1;
@@ -240,5 +238,4 @@ void functions_tw() {}
 
 
 //////////////////////////////////////////////
-
 
