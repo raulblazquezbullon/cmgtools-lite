@@ -2,7 +2,7 @@
 
 
 ### Alias definitions. Careful to avoid trailing '.*' to avoid matching _promptsub
-$alias : TTH : TTH|TTH_h[a-z]+|TTH_ct_[0-9]p[0-9]+_cv_[0-9]p[0-9]+|TTH_ct_-[0-9]p[0-9]+_cv_[0-9]p[0-9]+|TTH_ct_[0-9]p[0-9]+_cv_[0-9]p[0-9]+_h[a-z]+|TTH_ct_-[0-9]p[0-9]+_cv_[0-9]p[0-9]+_h[a-z]+
+$alias : ttH : TTH|TTH_h[a-z]+|TTH_ct_[0-9]p[0-9]+_cv_[0-9]p[0-9]+|TTH_ct_-[0-9]p[0-9]+_cv_[0-9]p[0-9]+|TTH_ct_[0-9]p[0-9]+_cv_[0-9]p[0-9]+_h[a-z]+|TTH_ct_-[0-9]p[0-9]+_cv_[0-9]p[0-9]+_h[a-z]+
 $alias : tHq : tHq|tHq_h[a-z]+|tHq_ct_[0-9]p[0-9]+_cv_[0-9]p[0-9]+|tHq_ct_-[0-9]p[0-9]+_cv_[0-9]p[0-9]+|tHq_ct_[0-9]p[0-9]+_cv_[0-9]p[0-9]+_h[a-z]+|tHq_ct_-[0-9]p[0-9]+_cv_[0-9]p[0-9]+_h[a-z]+
 $alias : tHW : tHW|tHW_h[a-z]+|tHW_ct_[0-9]p[0-9]+_cv_[0-9]p[0-9]+|tHW_ct_-[0-9]p[0-9]+_cv_[0-9]p[0-9]+|tHW_ct_[0-9]p[0-9]+_cv_[0-9]p[0-9]+_h[a-z]+|tHW_ct_-[0-9]p[0-9]+_cv_[0-9]p[0-9]+_h[a-z]+
 $alias : ttHX : $ttH|$tHq|$tHW
@@ -15,7 +15,7 @@ $alias : FRAll  : data_fakes|.*_promptsub|TT_FR_QCD
 $alias : FRMC   :  .*_mcfakes
 ### Uncertainties
 # lumi from https://twiki.cern.ch/twiki/bin/view/CMS/TWikiLUM#LumiComb
-lumi_13TeV_2016		: $PromptFromMC : .* : normSymm : 1.022; year="2016"
+lumi_2016		: $PromptFromMC : .* : normSymm : 1.022; year="2016"
 lumi_13TeV_2017		: $PromptFromMC : .* : normSymm : 1.020; year="2017"
 lumi_13TeV_2018		: $PromptFromMC : .* : normSymm : 1.015; year="2018"
 
@@ -209,8 +209,8 @@ CMS_ttW_UnclusteredEn : $PromptFromMC : .* : templateAsymm; \
         FakeRates=['ttH-multilepton/fr-unclUp.txt'\,'ttH-multilepton/fr-unclDn.txt']
 CMS_ttW_HEM      : $PromptFromMC : .* : templateSymm; Normalize=False, FakeRate='ttH-multilepton/frs-jecs/fr-HEM-up.txt', year="2018"
 
-CMS_ttW_btag_LF    : $PromptFromMC : .* : templateAsymm; AddWeights=['btagSF_shape_up_lf/btagSF_shape'\,'btagSF_shape_down_lf/btagSF_shape']
-CMS_ttW_btag_HF    : $PromptFromMC : .* : templateAsymm; AddWeights=['btagSF_shape_up_hf/btagSF_shape'\,'btagSF_shape_down_hf/btagSF_shape']
+btagSFLight  	     : $PromptFromMC : .* : templateAsymm; AddWeights=['btagSF_shape_up_lf/btagSF_shape'\,'btagSF_shape_down_lf/btagSF_shape']
+btagSFHeavy    	     : $PromptFromMC : .* : templateAsymm; AddWeights=['btagSF_shape_up_hf/btagSF_shape'\,'btagSF_shape_down_hf/btagSF_shape']
 CMS_ttW_btag_cErr1   : $PromptFromMC : .* : templateAsymm; AddWeights=['btagSF_shape_up_cferr1/btagSF_shape'\,'btagSF_shape_down_cferr1/btagSF_shape']
 CMS_ttW_btag_cErr2   : $PromptFromMC : .* : templateAsymm; AddWeights=['btagSF_shape_up_cferr2/btagSF_shape'\,'btagSF_shape_down_cferr2/btagSF_shape']
 
@@ -248,9 +248,9 @@ CMS_ttW_Convs		: Convs : .* : normSymm : 1.3
 
 # common theoretical uncertainties (fully correlated everywhere)
 # note: pdf_gg is entered as 1/kappa since it has to be anti-correlated with Hgg
-QCDscale_ttH   : $ttH  : .* : normAsymm : 0.907 : 1.058
+scale_TTH   : $ttH  : .* : normAsymm : 0.907 : 1.058
 QCDscale_ttW   : TTW   : .* : normAsymm : 0.885 : 1.129
-QCDscale_ttZ   : TTZ   : .* : normAsymm : 0.904 : 1.112
+scale_TTZ   : TTZ   : .* : normAsymm : 0.904 : 1.112
 QCDscale_tHq   : $tHq  : .* : normAsymm : 0.933 : 1.041
 QCDscale_tHW   : $tHW  : .* : normAsymm : 0.939 : 1.046
 QCDscale_ttWW  : TTWW  : .* : normAsymm : 0.891 : 1.081
