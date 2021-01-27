@@ -18,7 +18,6 @@ slurmscaff   = "sbatch -c {nth} -p {queue} -J {jobname} -e {logpath}/log.%j.%x.e
 commandscaff = '''python makeShapeCardsNew.py --tree NanoAOD {mcafile} {cutsfile} "{variable}" "{bins}" {samplespaths} {friends} --od {outpath} -l {lumi} {nth} -f -L tw-run2/functions_tw.cc --neg --threshold 0.01 -W "MuonIDSF * MuonISOSF * ElecIDSF * ElecRECOSF * TrigSF * puWeight * bTagWeight * PrefireWeight" --year {year} {asimovornot} {uncs} {extra} --AP'''
 
 
-
 def CardsCommand(prod, year, var, bines, isAsimov, nthreads, outpath, region, noUnc, useFibre, extra):
     mcafile_   = "tw-run2/mca-tw.txt"
     cutsfile_  = "tw-run2/cuts-tw-{reg}.txt".format( reg = region)
@@ -49,7 +48,7 @@ def CardsCommand(prod, year, var, bines, isAsimov, nthreads, outpath, region, no
     return comm
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
     parser = argparse.ArgumentParser(usage = "python nanoAOD_checker.py [options]", description = "Checker tool for the outputs of nanoAOD production (NOT postprocessing)", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('--production','-P', metavar = "prod",       dest = "prod",     required = True)
     parser.add_argument('--year',      '-y', metavar = 'year',       dest = "year",     required = False, default = "2016")
