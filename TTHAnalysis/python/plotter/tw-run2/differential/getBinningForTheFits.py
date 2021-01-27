@@ -1,7 +1,8 @@
 import ROOT as r
-import sys, os, argparse
+import sys, os, argparse, math
 from array import array
 from copy import deepcopy
+from multiprocessing import Pool
 
 sys.path.append('{cmsswpath}/src/CMGTools/TTHAnalysis/python/plotter/tw-run2/differential/'.format(cmsswpath = os.environ['CMSSW_BASE']))
 import varList as vl
@@ -93,10 +94,10 @@ def CardsCommand(prod, year, var, isAsimov, nthreads, outpath, region, noUnc, us
                                cutsfile  = cutsfile_,
                                uncs      = "" if not "forExtr" in region else "--unc tw-run2/uncs-tw.txt --amc" if not noUnc else "--amc",
                                name      = name_,
-                               func      = "tw-run2/functions_tw.cc" if "forExtr" not in region else (outpath_ + "/rebin_functions.cc"),
+                               func      = "tw-run2/functions_tw.cc" if "forExtr" not in region else (outpath_ + "/rebin_functions_{y}_{v}.cc".format(y = year, v = var)),
                                extra     = extra)
-
     return comm
+
 
 def createFunctionFileForVariable(tsk):
     inpath, iY, iV = tsk
@@ -121,14 +122,22 @@ def createFunctionFileForVariable(tsk):
         #print Base
 
     print "> Saving file"
-    outputF = open(path + "/rebinhistos/rebin_functions.cc", 'w')
+    outputF = open(path + "/rebinhistos/rebin_functions_{y}_{v}.cc".format(y = iY, v = iV), 'w')
     outputF.write(Base)
     outputF.close()
+    return
+
+
+def compileFunctionFile(tsk):
+    inpath, iY, iV = tsk
+    path = inpath + "/" + iY + "/" + iV + "/sigextr_fit"
 
     print "> Compiling..."
-    os.system("rm " + path + "/rebinhistos/rebin_functions_cc*")
-    r.gROOT.LoadMacro(path + "/rebinhistos/rebin_functions.cc+")
+    os.system("rm " + path + "/rebinhistos/rebin_functions_{y}_{v}_cc*".format(y = iY, v = iV))
+    r.gROOT.LoadMacro(path + "/rebinhistos/rebin_functions_{y}_{v}.cc+".format(y = iY, v = iV))
+
     return
+
 
 
 def addFunctionOfBin(fpath, histoname, thebin):
@@ -160,6 +169,7 @@ Float_t theBDT_bin{iB}(Double_t BDT) {{
 
 def createCardsForEachSys(tsk):
     inpath, iY, iV, syst = tsk
+    print "    - Creating individual cards for variable " + iV + " of year " + iY + " for syst. " + syst
 
     path = inpath + "/" + iY + "/" + iV + "/sigextr_fit/rebinhistos"
 
@@ -179,7 +189,14 @@ def createCardsForEachSys(tsk):
         for line in readF:
             entries = line.split()
             if entries[0] in validfirstentries.union(vl.ProfileSysts):
-                outtext += line
+                tmpline = deepcopy(line)
+                for el in vl.ProfileSysts:
+                    tmpline = tmpline.replace(el, el + "_" + str(iB))
+
+                if "shapes" in tmpline and iY == "run2":
+                    tmpline = tmpline.replace("forExtr_bin{b}.root".format(b = iB), "forExtr_bin{b}_run2.root".format(b = iB))
+
+                outtext += tmpline
             elif len(entries) > 1:
                 if ("lnN" in entries[1]):
                     outtext += line
@@ -263,6 +280,22 @@ def createCardsForEachSys(tsk):
         outF.close()
         #break
 
+        if iY == "run2" and syst == "": #### We need to modify the rootfiles!
+            print "    - Creating new rootfile card."
+            therootfile = r.TFile.Open(path + "/forExtr_bin{b}.root".format(b = iB), "READ")
+            tmpdictofthings = {}
+            for key in therootfile.GetListOfKeys():
+                copyname = key.GetName()
+                for el in vl.ProfileSysts:
+                    copyname = copyname.replace(el, el + "_" + str(iB))
+                tmpdictofthings[copyname] = deepcopy(therootfile.Get(key.GetName()).Clone(copyname))
+            therootfile.Close(); del therootfile
+
+            theoutrootfile = r.TFile.Open(path + "/forExtr_bin{b}_run2.root".format(b = iB), "RECREATE")
+            for key in tmpdictofthings:
+                tmpdictofthings[key].Write()
+            theoutrootfile.Close(); del theoutrootfile
+
     return
 
 
@@ -321,12 +354,12 @@ if __name__=="__main__":
                     for theb in range(len(vl.varList[var]["bins_detector"]) - 1):
                         tasks.append( (prod, yr, var, asimov, nthreads, outpath, reg, noUnc, useFibre, extra, pretend, queue, theb) )
 
-        print tasks
+        #print tasks
         calculate = True
         for task in tasks:
             print "\nProcessing " + str(task) + "\n"
 
-            #if str(task) == "('2020-09-20', 'run2', 'Lep1Lep2Jet1MET_Mt', True, 87, 'temp_2020_10_29_pruebasdiff', 'forExtr', False, True, '', False, '')":
+            #if str(task) == "('2020-09-20', 'run2', 'Lep1Lep2_DPhi', True, 16, 'temp_2021_01_22_fitdiftodas/differential', 'forExtr', False, True, '', False, '')":
                 #calculate = True
 
             if calculate:
@@ -357,15 +390,23 @@ if __name__=="__main__":
                         if not os.path.isdir(inpath + "/" + iY + "/" + iV + "/sigextr_fit"): continue
 
                         tasks.append( (inpath, iY, iV) )
-        print tasks
+        #print tasks
         if nthreads > 1:
             pool = Pool(nthreads)
             pool.map(createFunctionFileForVariable, tasks)
             pool.close()
             pool.join()
+            del pool
         else:
             for tsk in tasks:
                 createFunctionFileForVariable(tsk)
+
+        for iP in range(int(math.ceil(len(tasks) / float(nthreads)))):
+            pool = Pool(nthreads)
+            pool.map(compileFunctionFile, tasks[iP*nthreads:(iP + 1)*(nthreads) if (iP + 1)*nthreads < len(tasks) else len(tasks)])
+            pool.close()
+            pool.join()
+            del pool
     elif step == 2:
         print "> Preparing to submit the cards for the fit..."
 
@@ -378,56 +419,67 @@ if __name__=="__main__":
         if year.lower() != "all":
             theyears = [ year ]
 
-
         for reg in theregs:
             for yr in theyears:
                 for var in thevars:
                     for theb in range(len(vl.varList[var]["bins_detector"]) - 1):
                         tasks.append( (prod, yr, var, asimov, nthreads, outpath, reg, noUnc, useFibre, extra, pretend, queue, theb) )
 
-        print tasks
+        #print tasks
         calculate = True
         for task in tasks:
             print "\nProcessing " + str(task) + "\n"
 
-            #if str(task) == "('2020-09-20', 'run2', 'Lep1Lep2Jet1MET_Mt', True, 87, 'temp_2020_10_29_pruebasdiff', 'forExtr', False, True, '', False, '')":
+            #if str(task) == "('2020-09-20', 'run2', 'Lep1Lep2_DPhi', True, 16, 'temp_2021_01_22_fitdiftodas/differential', 'forExtr', False, True, '', False, 'batch', 8)":
                 #calculate = True
 
             if calculate:
+                #print "jjeje"
                 ExecuteOrSubmitTask(task)
+                #sys.exit()
+                #calculate = False
     else:
         print "> Producing final cards..."
         tasks = []
-        if year == "all":
-            if variable == "all":
-                theyears = []
-                presentyears = next(os.walk(inpath))[1]
+        theyears = []
+        presentyears = next(os.walk(inpath))[1]
 
-                if "2016" in presentyears:
-                    theyears.append("2016")
-                if "2017" in presentyears:
-                    theyears.append("2017")
-                if "2018" in presentyears:
-                    theyears.append("2018")
-                if "run2" in presentyears:
-                    theyears.append("run2")
-
-                for iY in theyears:
-                    thevars = next(os.walk(inpath + "/" + iY))[1]
-
-                    for iV in thevars:
-                        if "plots" in iV: continue
-                        if not os.path.isdir(inpath + "/" + iY + "/" + iV + "/sigextr_fit"): continue
+        if "2016" in presentyears:
+            theyears.append("2016")
+        if "2017" in presentyears:
+            theyears.append("2017")
+        if "2018" in presentyears:
+            theyears.append("2018")
+        if "run2" in presentyears:
+            theyears.append("run2")
 
 
-                        tasks.append( (inpath, iY, iV, "") )
-                        for iS in vl.systMap:
-                            if "_" in iS:
-                                if iS.split("_")[-1].isdigit():
-                                    if iY not in iS.split("_")[-1]:
-                                        continue
-                            tasks.append( (inpath, iY, iV, iS + "Up") )
-                            tasks.append( (inpath, iY, iV, iS + "Down") )
+        if year.lower() != "all" and year in presentyears:
+            theyears = [ year ]
+        elif year.lower() != "all":
+            raise RuntimeError("FATAL: the year requested is not in the provided input folder.")
+
+        for iY in theyears:
+            thevars = next(os.walk(inpath + "/" + iY))[1]
+
+            if variable.lower() != "all" and variable in thevars:
+                thevars = [ variable ]
+            elif variable.lower() != "all":
+                raise RuntimeError("FATAL: the variable requested is not in the provided input folder.")
+
+            for iV in thevars:
+                if "plots" in iV: continue
+                if not os.path.isdir(inpath + "/" + iY + "/" + iV + "/sigextr_fit"): continue
+
+
+                tasks.append( (inpath, iY, iV, "") )
+                for iS in vl.systMap:
+                    if "_" in iS:
+                        if iS.split("_")[-1].isdigit():
+                            if iY not in iS.split("_")[-1]:
+                                continue
+                    tasks.append( (inpath, iY, iV, iS + "Up") )
+                    tasks.append( (inpath, iY, iV, iS + "Down") )
         #print tasks
         #sys.exit()
         if nthreads > 1:
@@ -438,3 +490,4 @@ if __name__=="__main__":
         else:
             for tsk in tasks:
                 createCardsForEachSys(tsk)
+        print "> Done!"
