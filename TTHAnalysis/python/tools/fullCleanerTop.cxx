@@ -14,9 +14,10 @@
 struct JetSumCalculatorOutput {
   int thr;
   int nBJetSelMedium;
-  int nJetSel;
-  int nFwdJetSel;
+//   int nJetSel;
+//   int nFwdJetSel;
 };
+
 
 struct LeptonPairInfo {
   int i;
@@ -24,6 +25,7 @@ struct LeptonPairInfo {
   float m;
   float dR;
 };
+
 
 class fullCleanerTop {
   // NOTE: the eta requirements are HARDCODED in this class.
@@ -102,6 +104,223 @@ class fullCleanerTop {
     typedef math::XYZTLorentzVectorD      crvec;
 
 
+
+// OLDDDDDDDDDDD
+//     std::vector<JetSumCalculatorOutput> GetJetSums(int variation = 0) {
+//       std::vector<JetSumCalculatorOutput> output;
+//
+//       int var = -1;
+//       if (variation < 0) var = 2 * abs(variation) - 1;
+//       else               var = 2 * variation - 2;
+//
+//       // UNU
+//       JetSumCalculatorOutput sums0;
+//       sums0.thr         = float(jetPt0_);
+//       sums0.nJetSel     = 0;
+//       sums0.nFwdJetSel  = 0;
+//       sums0.nBJetSelMedium = 0;
+//
+//
+//       for (auto j : *_cj) {
+//         float pt = (*Jet_pt_)[j];
+//         if (variation != 0) pt = (*(Jet_corr_.at(var)))[j];
+//
+//         float abseta = fabs((*Jet_eta_)[j]);
+//         if (abseta >= 2.7 && abseta < 3) {      // Forward jets in noisy region
+//           if (pt  > fwdNoisyJetPt_) {
+//             sums0.nFwdJetSel++;
+//           }
+//         }
+//         else if (abseta >= 2.4 && abseta < 5) { // Forward jets in not noisy region
+//           if (pt > sums0.thr) {
+//             sums0.nFwdJetSel++;
+//           }
+//         }
+//         else if (abseta < 2.4) {                // Central jets
+//           if (pt <= sums0.thr) continue;
+//           float btagdisc = (*Jet_btag_)[j];
+//           if (btagdisc > bTagM_) sums0.nBJetSelMedium += 1;
+//           sums0.nJetSel += 1;
+//         }
+//       }
+//       output.push_back(sums0);
+//
+//       // DOS
+//       JetSumCalculatorOutput sums1;
+//       sums1.thr         = float(jetPt1_);
+//       sums1.nJetSel     = 0;
+//       sums1.nFwdJetSel  = 0;
+//       sums1.nBJetSelMedium = 0;
+//
+//
+//       for (auto j : *_cj) {
+//         float pt = (*Jet_pt_)[j];
+//         if (variation != 0) pt = (*(Jet_corr_.at(var)))[j];
+//
+//         float abseta = fabs((*Jet_eta_)[j]);
+//         if (abseta >= 2.7 && abseta < 3) {     // Forward jets in noisy region
+//           if (pt  > fwdNoisyJetPt_) {
+//             sums1.nFwdJetSel++;
+//           }
+//         }
+//         else if (abseta >= 2.4 && abseta < 5) { // Forward jets in not noisy region
+//           if (pt > sums1.thr) {
+//             sums1.nFwdJetSel++;
+//           }
+//         }
+//         else if (abseta < 2.4) {               // Central jets
+//           if (pt <= sums1.thr) continue;
+//           float btagdisc = (*Jet_btag_)[j];
+//
+//           if (btagdisc > bTagM_) sums1.nBJetSelMedium += 1;
+//           sums1.nJetSel += 1;
+//         }
+//       }
+//       output.push_back(sums1);
+//
+//       return output;
+//     }
+
+
+
+    // getjetsums SINVARIACION
+    std::vector<JetSumCalculatorOutput> GetNominalJetSums(int variation = 0) {
+      std::vector<JetSumCalculatorOutput> output;
+
+      // UNU
+      JetSumCalculatorOutput sums0;
+      sums0.thr            = float(jetPt0_);
+      sums0.nBJetSelMedium = 0;
+
+      for (auto j : *_cj) {
+        float pt = (*Jet_pt_)[j];
+        float abseta = fabs((*Jet_eta_)[j]);
+        if (abseta < 2.4) {                // Central jets
+          if (pt <= sums0.thr) continue;
+          float btagdisc = (*Jet_btag_)[j];
+          if (btagdisc > bTagM_) sums0.nBJetSelMedium += 1;
+        }
+      }
+      output.push_back(sums0);
+
+      // DOS
+      JetSumCalculatorOutput sums1;
+      sums1.thr            = float(jetPt1_);
+      sums1.nBJetSelMedium = 0;
+
+
+      for (auto j : *_cj) {
+        float pt = (*Jet_pt_)[j];
+        float abseta = fabs((*Jet_eta_)[j]);
+        if (abseta < 2.4) {               // Central jets
+          if (pt <= sums1.thr) continue;
+          float btagdisc = (*Jet_btag_)[j];
+          if (btagdisc > bTagM_) sums1.nBJetSelMedium += 1;
+        }
+      }
+      output.push_back(sums1);
+
+      return output;
+    }
+
+
+
+    // getjetsums CONVARIACION
+//     std::vector<JetSumCalculatorOutput> GetJetSums(int variation = 0) {
+//       std::vector<JetSumCalculatorOutput> output;
+//
+//       int var = -1;
+//       if (variation < 0) var = 2 * abs(variation) - 1;
+//       else               var = 2 * variation - 2;
+//
+// //       CollectionSkimmer &coljet0, &coljet1, &colfwdjet0, &colfwdjet1;
+//
+//       CollectionSkimmer* coljet0    = &(jecskimmers[variation].at(0).get());
+//       CollectionSkimmer* coljet1    = &(jecskimmers[variation].at(1).get());
+//       CollectionSkimmer* colfwdjet0 = &(jecskimmers[variation].at(2).get());
+//       CollectionSkimmer* colfwdjet1 = &(jecskimmers[variation].at(3).get());
+//
+// //         jecskimmers[variation].at(0).get().clear(); jecskimmers[variation].at(1).get().clear(); jecskimmers[variation].at(2).get().clear(); jecskimmers[variation].at(3).get().clear();
+//       coljet0->clear(); coljet1->clear(); colfwdjet0->clear(); colfwdjet1->clear();
+//
+//       // UNU
+//       JetSumCalculatorOutput sums0;
+//       sums0.thr            = float(jetPt0_);
+//       sums0.nBJetSelMedium = 0;
+//
+//
+//       for (auto j : *_cj) {
+//         float pt = (*Jet_pt_)[j];
+//         if (variation != 0) pt = (*(Jet_corr_.at(var)))[j];
+//
+//         float abseta = fabs((*Jet_eta_)[j]);
+//         if (abseta >= 2.7 && abseta < 3) {      // Forward jets in noisy region
+//           if (pt  > fwdNoisyJetPt_) {
+// //             jecskimmers[variation].at(2).push_back(j);
+//             colfwdjet0->push_back(j);
+// //             (jecskimmers[variation][2].get()).push_back(j);
+//           }
+//         }
+//         else if (abseta >= 2.4 && abseta < 5) { // Forward jets in not noisy region
+//           if (pt > sums0.thr) {
+// //             jecskimmers[variation].at(2).get().push_back(j);
+//             colfwdjet0->push_back(j);
+// //             (jecskimmers[variation][2].get()).push_back(j);
+//           }
+//         }
+//         else if (abseta < 2.4) {                // Central jets
+//           if (pt <= sums0.thr) continue;
+//           float btagdisc = (*Jet_btag_)[j];
+//           if (btagdisc > bTagM_) sums0.nBJetSelMedium += 1;
+// //           (jecskimmers[variation].at(0).get()).push_back(j);
+//             coljet0->push_back(j);
+// //           (jecskimmers[variation][0].get()).push_back(j);
+//         }
+//       }
+//       output.push_back(sums0);
+//
+//       // DOS
+//       JetSumCalculatorOutput sums1;
+//       sums1.thr            = float(jetPt1_);
+//       sums1.nBJetSelMedium = 0;
+//
+//
+//       for (auto j : *_cj) {
+//         float pt = (*Jet_pt_)[j];
+//         if (variation != 0) pt = (*(Jet_corr_.at(var)))[j];
+//
+//         float abseta = fabs((*Jet_eta_)[j]);
+//         if (abseta >= 2.7 && abseta < 3) {     // Forward jets in noisy region
+//           if (pt  > fwdNoisyJetPt_) {
+// //             jecskimmers[variation].at(3).get().push_back(j);
+// //             (jecskimmers[variation][3].get()).push_back(j);
+//             colfwdjet1->push_back(j);
+//           }
+//         }
+//         else if (abseta >= 2.4 && abseta < 5) { // Forward jets in not noisy region
+//           if (pt > sums1.thr) {
+// //             jecskimmers[variation].at(3).get().push_back(j);
+// //             (jecskimmers[variation][3].get()).push_back(j);
+//             colfwdjet1->push_back(j);
+//           }
+//         }
+//         else if (abseta < 2.4) {               // Central jets
+//           if (pt <= sums1.thr) continue;
+//           float btagdisc = (*Jet_btag_)[j];
+//
+//           if (btagdisc > bTagM_) sums1.nBJetSelMedium += 1;
+// //           jecskimmers[variation].at(1).get().push_back(j);
+// //           (jecskimmers[variation][1].get()).push_back(j);
+//             coljet1->push_back(j);
+//         }
+//       }
+//       output.push_back(sums1);
+//
+//       return output;
+//     }
+
+
+    // getjetsums CONVARIACION CONPUNTEROS
     std::vector<JetSumCalculatorOutput> GetJetSums(int variation = 0) {
       std::vector<JetSumCalculatorOutput> output;
 
@@ -109,43 +328,50 @@ class fullCleanerTop {
       if (variation < 0) var = 2 * abs(variation) - 1;
       else               var = 2 * variation - 2;
 
+      cout << "JOJOJOJOJOJOJOJO ============================" << endl;
+
+      cout << "variation: " << variation << endl;
+      cout << "tamanyo: " << jecskimmers[variation].size() << endl;
+
+//       jecskimmers[variation].at(0)->clear(); jecskimmers[variation].at(1)->clear(); jecskimmers[variation].at(2)->clear(); jecskimmers[variation].at(3)->clear();
+      (*jecskimmers[variation].at(0)).clear(); (*jecskimmers[variation].at(1)).clear(); (*jecskimmers[variation].at(2)).clear(); (*jecskimmers[variation].at(3)).clear();
+
+      cout << "JOJOJOJOJOJOJOJO ============================" << endl;
       // UNU
       JetSumCalculatorOutput sums0;
-      sums0.thr         = float(jetPt0_);
-      sums0.nJetSel     = 0;
-      sums0.nFwdJetSel  = 0;
+      sums0.thr            = float(jetPt0_);
       sums0.nBJetSelMedium = 0;
 
 
+      cout << "JOJOJOJOJOJOJOJO ============================" << endl;
       for (auto j : *_cj) {
         float pt = (*Jet_pt_)[j];
         if (variation != 0) pt = (*(Jet_corr_.at(var)))[j];
 
         float abseta = fabs((*Jet_eta_)[j]);
-        if (abseta >= 2.7 && abseta < 3) {     // Forward jets in noisy region
+        if (abseta >= 2.7 && abseta < 3) {      // Forward jets in noisy region
           if (pt  > fwdNoisyJetPt_) {
-            sums0.nFwdJetSel++;
+            jecskimmers[variation].at(2)->push_back(j);
           }
         }
         else if (abseta >= 2.4 && abseta < 5) { // Forward jets in not noisy region
           if (pt > sums0.thr) {
-            sums0.nFwdJetSel++;
+            jecskimmers[variation].at(2)->push_back(j);
           }
         }
-        else if (abseta < 2.4) {               // Central jets
+        else if (abseta < 2.4) {                // Central jets
           if (pt <= sums0.thr) continue;
           float btagdisc = (*Jet_btag_)[j];
           if (btagdisc > bTagM_) sums0.nBJetSelMedium += 1;
-          sums0.nJetSel += 1;
+            jecskimmers[variation].at(0)->push_back(j);
         }
       }
       output.push_back(sums0);
 
+      cout << "JOJOJOJOJOJOJOJO ============================" << endl;
       // DOS
       JetSumCalculatorOutput sums1;
-      sums1.thr         = float(jetPt1_);
-      sums1.nJetSel     = 0;
-      sums1.nFwdJetSel  = 0;
+      sums1.thr            = float(jetPt1_);
       sums1.nBJetSelMedium = 0;
 
 
@@ -156,12 +382,12 @@ class fullCleanerTop {
         float abseta = fabs((*Jet_eta_)[j]);
         if (abseta >= 2.7 && abseta < 3) {     // Forward jets in noisy region
           if (pt  > fwdNoisyJetPt_) {
-            sums1.nFwdJetSel++;
+            jecskimmers[variation].at(3)->push_back(j);
           }
         }
         else if (abseta >= 2.4 && abseta < 5) { // Forward jets in not noisy region
           if (pt > sums1.thr) {
-            sums1.nFwdJetSel++;
+            jecskimmers[variation].at(3)->push_back(j);
           }
         }
         else if (abseta < 2.4) {               // Central jets
@@ -169,11 +395,12 @@ class fullCleanerTop {
           float btagdisc = (*Jet_btag_)[j];
 
           if (btagdisc > bTagM_) sums1.nBJetSelMedium += 1;
-          sums1.nJetSel += 1;
+            jecskimmers[variation].at(1)->push_back(j);
         }
       }
       output.push_back(sums1);
 
+      cout << "JOJOJOJOJOJOJOJO ============================" << endl;
       return output;
     }
 
@@ -187,7 +414,7 @@ class fullCleanerTop {
     }
 
 
-    void setDR(float f) {deltaR2cut = f*f;}
+    void setDR(float f) {deltaR2cut = f * f;}
 
 
     std::vector<int>* run() {
@@ -226,19 +453,26 @@ class fullCleanerTop {
         if (good[iJ] && sel_jets[iJ]) {
           _cj->push_back(iJ);
           if      (fabs((*Jet_eta_)[iJ]) < 2.4) {
-            if      ((*Jet_pt_)[iJ] > jetPt0_ && clean_jets0_.size() < 5) clean_jets0_.push_back(iJ);
-            else if ((*Jet_pt_)[iJ] > jetPt1_ && clean_jets1_.size() < 5) clean_jets1_.push_back(iJ);
+//             if      ((*Jet_pt_)[iJ] > jetPt0_ && clean_jets0_.size() < 5) clean_jets0_.push_back(iJ);
+//             else if ((*Jet_pt_)[iJ] > jetPt1_ && clean_jets1_.size() < 5) clean_jets1_.push_back(iJ);
+            if      ((*Jet_pt_)[iJ] > jetPt0_) clean_jets0_.push_back(iJ);
+            else if ((*Jet_pt_)[iJ] > jetPt1_) clean_jets1_.push_back(iJ);
           }
           else if (fabs((*Jet_eta_)[iJ]) < 2.7) {
-            if      ((*Jet_pt_)[iJ] > jetPt0_ && clean_fwdjets0_.size() < 5) clean_fwdjets0_.push_back(iJ);
-            else if ((*Jet_pt_)[iJ] > jetPt1_ && clean_fwdjets1_.size() < 5) clean_fwdjets1_.push_back(iJ);
+//             if      ((*Jet_pt_)[iJ] > jetPt0_ && clean_fwdjets0_.size() < 5) clean_fwdjets0_.push_back(iJ);
+//             else if ((*Jet_pt_)[iJ] > jetPt1_ && clean_fwdjets1_.size() < 5) clean_fwdjets1_.push_back(iJ);
+            if      ((*Jet_pt_)[iJ] > jetPt0_) clean_fwdjets0_.push_back(iJ);
+            else if ((*Jet_pt_)[iJ] > jetPt1_) clean_fwdjets1_.push_back(iJ);
           }
           else if (fabs((*Jet_eta_)[iJ]) < 3.0) {
-            if      ((*Jet_pt_)[iJ] > fwdNoisyJetPt_ && clean_fwdjets0_.size() < 5) clean_fwdjets0_.push_back(iJ);
+//             if      ((*Jet_pt_)[iJ] > fwdNoisyJetPt_ && clean_fwdjets0_.size() < 5) clean_fwdjets0_.push_back(iJ);
+            if      ((*Jet_pt_)[iJ] > fwdNoisyJetPt_) clean_fwdjets0_.push_back(iJ);
           }
           else if (fabs((*Jet_eta_)[iJ]) < 5.0) {
-            if      ((*Jet_pt_)[iJ] > jetPt0_ && clean_fwdjets0_.size() < 5) clean_fwdjets0_.push_back(iJ);
-            else if ((*Jet_pt_)[iJ] > jetPt1_ && clean_fwdjets1_.size() < 5) clean_fwdjets1_.push_back(iJ);
+//             if      ((*Jet_pt_)[iJ] > jetPt0_ && clean_fwdjets0_.size() < 5) clean_fwdjets0_.push_back(iJ);
+//             else if ((*Jet_pt_)[iJ] > jetPt1_ && clean_fwdjets1_.size() < 5) clean_fwdjets1_.push_back(iJ);
+            if      ((*Jet_pt_)[iJ] > jetPt0_) clean_fwdjets0_.push_back(iJ);
+            else if ((*Jet_pt_)[iJ] > jetPt1_) clean_fwdjets1_.push_back(iJ);
           }
         }
       }
@@ -256,9 +490,39 @@ class fullCleanerTop {
     }
 
 
+    void setJECVariation(int delta,
+                         CollectionSkimmer &jets0Skimmer, CollectionSkimmer &jets1Skimmer,
+                         CollectionSkimmer &fwdjets0Skimmer, CollectionSkimmer &fwdjets1Skimmer) {
+
+      cout << "Setting " << delta << " variation with four collection skimmers" << endl;
+
+      CollectionSkimmer* jets0(&jets0Skimmer);
+      CollectionSkimmer* jets1(&jets1Skimmer);
+      CollectionSkimmer* fwdjets0(&fwdjets0Skimmer);
+      CollectionSkimmer* fwdjets1(&fwdjets1Skimmer);
+
+//       CollectionSkimmer& jets0(jets0Skimmer);
+//       CollectionSkimmer& jets1(jets1Skimmer);
+//       CollectionSkimmer& fwdjets0(fwdjets0Skimmer);
+//       CollectionSkimmer& fwdjets1(fwdjets1Skimmer);
+
+//       jecskimmers[delta] = {&jets0Skimmer, &jets1Skimmer, &fwdjets0Skimmer, &fwdjets1Skimmer};
+      jecskimmers[delta] = {jets0, jets1, fwdjets0, fwdjets1};
+
+//       jecskimmers[delta].push_back(std::ref(jets0Skimmer));
+//       jecskimmers[delta].push_back(std::ref(jets1Skimmer));
+//       jecskimmers[delta].push_back(std::ref(fwdjets0Skimmer));
+//       jecskimmers[delta].push_back(std::ref(fwdjets0Skimmer));
+
+    }
+
+
   private:
     std::unique_ptr<bool[]> sel_jets;
     CollectionSkimmer &clean_jets0_, &clean_jets1_, &clean_fwdjets0_, &clean_fwdjets1_;
+//     map<int, std::vector<std::reference_wrapper<CollectionSkimmer>>> jecskimmers;
+    map<int, std::vector<CollectionSkimmer*>> jecskimmers;
+
     rcount nLep_, nJet_;
     Int_t nLep;
     rfloats *Lep_pt_,  *Lep_eta_, *Lep_phi_, *Lep_mass_;

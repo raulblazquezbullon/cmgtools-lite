@@ -220,8 +220,8 @@ class TreeToYield:
                 tty2._isVariation = (var,direction)
                 tty2._variations = []
                 if not tty2._isdata:
-                    if (var.name,direction) in self._varScaleFactor0: 
-                        tty2.setScaleFactor( self._varScaleFactor0[(var.name,direction)])
+                    if (var.name,direction) in self._varScaleFactor:
+                        tty2.setScaleFactor( self._varScaleFactor[(var.name,direction)])
                 if var.getFRToRemove() != None:
                     #print "Passa di qui"
                     tty2._FRSourceList = []
@@ -376,10 +376,14 @@ class TreeToYield:
         if self._maintty != None: print "WARNING: getSumW called on a non-main TTY"
         varNormList = []
         for var in [None] + self.getVariations():
+            #print "\nvar:", var
+            #if var:
+                #print "unctype:", var.unc_type
             if var == None: 
                 exprs = [(expr,0)]
-            else: 
-                exprs = [(fr._altNorm if fr else expr, idx) for idx,fr in enumerate(var.fakerate) ]
+            else:
+                exprs = [('(%s)*(%s)'%(fr._altNorm if (fr and fr._altNorm) else '1',expr), idx) for idx,fr in enumerate(var.fakerate) ]
+
             for theExpr, idx in exprs:
                 if var: 
                     if var.unc_type == 'envelope':
@@ -534,18 +538,20 @@ class TreeToYield:
                     variations[var.name][1][sign] = tty2.getPlot(plotspec,cut,fsplit=fsplit,closeTreeAfter=False,noUncertainties=True)
                     tty2._isInit = False; tty2._tree = None
             for (var,variations) in variations.itervalues():
-                if var.unc_type != 'envelope': 
+                if var.unc_type != 'envelope':
                     if 'up'   not in variations: variations['up']    = var.getTrivial("up",  [nominal,None,None])
                     if 'down' not in variations: variations['down']  = var.getTrivial("down",  [nominal,variations['up'],None])
                     var.postProcess(nominal, [variations['up'], variations['down']])
-                else: 
+                else:
                     var.postProcess(nominal, [v for k,v in variations.iteritems()])
-                for k,v in variations.iteritems(): 
+                for k,v in variations.iteritems():
                     ret.addVariation(var.name, k, v)
 
             if closeTreeAfter and _wasclosed: self._close()
             return ret
+
         ret = self.getPlotRaw(plotspec.name, plotspec.expr, plotspec.bins, cut, plotspec, fsplit=fsplit, closeTreeAfter=closeTreeAfter)
+
         # fold overflow
         if ret.ClassName() in [ "TH1F", "TH1D" ] :
             n = ret.GetNbinsX()
@@ -556,18 +562,18 @@ class TreeToYield:
                 ret.SetBinError(n,hypot(ret.GetBinError(n+1),ret.GetBinError(n)))
                 ret.SetBinContent(0,0)
                 ret.SetBinContent(n+1,0)
-                ret.SetBinContent(0,0)
-                ret.SetBinContent(n+1,0)
+                ret.SetBinError(0,0)
+                ret.SetBinError(n+1,0)
             if plotspec.getOption('IncludeOverflow',False) and ("TProfile" not in ret.ClassName()):
                 ret.SetBinContent(n,ret.GetBinContent(n+1)+ret.GetBinContent(n))
                 ret.SetBinError(n,hypot(ret.GetBinError(n+1),ret.GetBinError(n)))
                 ret.SetBinContent(n+1,0)
-                ret.SetBinContent(n+1,0)
+                ret.SetBinError(n+1,0)
             if plotspec.getOption('IncludeUnderflow',False) and ("TProfile" not in ret.ClassName()):
                 ret.SetBinContent(1,ret.GetBinContent(0)+ret.GetBinContent(1))
                 ret.SetBinError(1,hypot(ret.GetBinError(0),ret.GetBinError(1)))
                 ret.SetBinContent(0,0)
-                ret.SetBinContent(0,0)
+                ret.SetBinError(0,0)
             rebin = plotspec.getOption('rebinFactor',0)
             if plotspec.bins[0] != "[" and rebin > 1 and n > 5:
                 while n % rebin != 0: rebin -= 1
@@ -576,13 +582,16 @@ class TreeToYield:
                 for b in xrange(1,n+1):
                     ret.SetBinContent( b, ret.GetBinContent(b) / ret.GetXaxis().GetBinWidth(b) )
                     ret.SetBinError(   b, ret.GetBinError(b) / ret.GetXaxis().GetBinWidth(b) )
+
+            #### TODO: extend to 2D histograms
+
         self._stylePlot(ret,plotspec)
         ret._cname = self._cname
         return ret
-    def getWeightForCut(self,cut):
+    def getWeightForCut(self, cut):
         if self._weight:
-            if self._isdata: cut = "(%s)     *(%s)*(%s)" % (self._weightString,                    self._scaleFactor, self.adaptExpr(cut,cut=True))
-            else:            cut = "(%s)*(%s)*(%s)*(%s)" % (self._weightString,float(self._options.lumi), self._scaleFactor, self.adaptExpr(cut,cut=True))
+            if self._isdata: cut = "(%s)     *(%s)*(%s)" % (self._weightString,                            self._scaleFactor, self.adaptExpr(cut,cut=True))
+            else:            cut = "(%s)*(%s)*(%s)*(%s)" % (self._weightString, float(self._options.lumi), self._scaleFactor, self.adaptExpr(cut,cut=True))
         else:
             cut = self.adaptExpr(cut,cut=True)
         if self._weightStringAll != "1":
@@ -606,7 +615,9 @@ class TreeToYield:
         if self._options.doS2V:
             cut  = scalarToVector(cut)
             expr = scalarToVector(expr)
-        #print "DEBUG: ",self._name, self._cname, cut, expr
+
+        #print "DEBUG - name:", self._name, "#### cname:", self._cname, "#### cut:", cut, "#### expr:", expr
+
         (firstEntry, maxEntries) = self._rangeToProcess(fsplit)
         if ROOT.gROOT.FindObject("dummy") != None: ROOT.gROOT.FindObject("dummy").Delete()
         histo = makeHistFromBinsAndSpec("dummy",expr,bins,plotspec)

@@ -54,28 +54,74 @@ float getSergioBDtWOther(double BDT) {
 }
 
 
+// OLD
+// float getBDtW(double BDT) {
+//   if      (BDT < -0.576136) return 1;
+//   else if (BDT < -0.456186) return 2;
+//   else if (BDT < -0.317302) return 3;
+//   else if (BDT < -0.189152) return 4;
+//   else if (BDT < -0.084137) return 5;
+//   else if (BDT < 0.012613)  return 6;
+//   else if (BDT < 0.110381)  return 7;
+//   else if (BDT < 0.216965)  return 8;
+//   else if (BDT < 0.335691)  return 9;
+//   else                      return 10;
+// }
+
+// float getBDtWOther(double BDT) {
+//   if      (BDT < -0.239698) return 1;
+//   else if (BDT < -0.126132) return 2;
+//   else if (BDT < -0.029249) return 3;
+//   else if (BDT < 0.062478)  return 4;
+//   else if (BDT < 0.163814)  return 5;
+//   else                      return 6;
+// }
+
+// mio veyo
+// float getBDtW(double BDT) {
+//   if      (BDT < -0.544421) return 1;
+//   else if (BDT < -0.441191) return 2;
+//   else if (BDT < -0.314091) return 3;
+//   else if (BDT < -0.179858) return 4;
+//   else if (BDT < -0.070402) return 5;
+//   else if (BDT < 0.023153)  return 6;
+//   else if (BDT < 0.112208)  return 7;
+//   else if (BDT < 0.208561)  return 8;
+//   else if (BDT < 0.319610)  return 9;
+//   else                      return 10;
+// }
+//
+// float getBDtWOther(double BDT) {
+//   if      (BDT < -0.245901) return 1;
+//   else if (BDT < -0.118314) return 2;
+//   else if (BDT < -0.015773) return 3;
+//   else if (BDT < 0.070211)  return 4;
+//   else if (BDT < 0.159383)  return 5;
+//   else                      return 6;
+// }
+
+// entrenamiento 1
 float getBDtW(double BDT) {
-  if      (BDT < -0.576136) return 1;
-  else if (BDT < -0.456186) return 2;
-  else if (BDT < -0.317302) return 3;
-  else if (BDT < -0.189152) return 4;
-  else if (BDT < -0.084137) return 5;
-  else if (BDT < 0.012613)  return 6;
-  else if (BDT < 0.110381)  return 7;
-  else if (BDT < 0.216965)  return 8;
-  else if (BDT < 0.335691)  return 9;
+  if      (BDT < -0.396418153467) return 1;
+  else if (BDT < -0.30499644675) return 2;
+  else if (BDT < -0.236142485226) return 3;
+  else if (BDT < -0.162798219325) return 4;
+  else if (BDT < -0.0762444292515) return 5;
+  else if (BDT < 0.0076855476712)  return 6;
+  else if (BDT < 0.101481073534)  return 7;
+  else if (BDT < 0.206361298811)  return 8;
+  else if (BDT < 0.284749075658)  return 9;
   else                      return 10;
 }
 
 
 float getBDtWOther(double BDT) {
-  if      (BDT < -0.239698) return 1;
-  else if (BDT < -0.126132) return 2;
-  else if (BDT < -0.029249) return 3;
-  else if (BDT < 0.062478)  return 4;
-  else if (BDT < 0.163814)  return 5;
+  if      (BDT < -0.218763270562) return 1;
+  else if (BDT < -0.0901804057127) return 2;
+  else if (BDT < 0.00093254008394) return 3;
+  else if (BDT < 0.0697575197756)  return 4;
+  else if (BDT < 0.143085010259)  return 5;
   else                      return 6;
 }
-
 
 void functions_tw() {}
