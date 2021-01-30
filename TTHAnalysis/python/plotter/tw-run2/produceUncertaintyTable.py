@@ -65,10 +65,12 @@ systsGroup = {
         "muonisosf_syst",
     ],
     'btag': [
-        "btagging",
+        "btagging_1718",
+        "btagging_2016",
     ],
     'mistag': [
-        "mistagging",
+        "mistagging_1718",
+        "mistagging_2016",
     ],
     'lumi': [
         "lumi_2016",

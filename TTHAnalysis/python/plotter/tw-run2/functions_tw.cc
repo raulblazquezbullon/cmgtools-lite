@@ -55,28 +55,26 @@ float getSergioBDtWOther(double BDT) {
 
 
 float getBDtW(double BDT) {
-  if      (BDT < -0.396418153467) return 1;
-  else if (BDT < -0.30499644675) return 2;
-  else if (BDT < -0.236142485226) return 3;
-  else if (BDT < -0.162798219325) return 4;
-  else if (BDT < -0.0762444292515) return 5;
-  else if (BDT < 0.0076855476712)  return 6;
-  else if (BDT < 0.101481073534)  return 7;
-  else if (BDT < 0.206361298811)  return 8;
-  else if (BDT < 0.284749075658)  return 9;
-  else                      return 10;
+  if      (BDT < -0.393907   ) return 1;
+  else if (BDT < -0.303371) return 2;
+  else if (BDT < -0.234096) return 3;
+  else if (BDT < -0.162641) return 4;
+  else if (BDT < -0.078996) return 5;
+  else if (BDT < 0.006054) return 6;
+  else if (BDT < 0.101833) return 7;
+  else if (BDT < 0.205728) return 8;
+  else if (BDT < 0.284059) return 9;
+  else                       return 10;
 }
-
 
 float getBDtWOther(double BDT) {
-  if      (BDT < -0.218763270562) return 1;
-  else if (BDT < -0.0901804057127) return 2;
-  else if (BDT < 0.00093254008394) return 3;
-  else if (BDT < 0.0697575197756)  return 4;
-  else if (BDT < 0.143085010259)  return 5;
-  else                      return 6;
+  if      (BDT < -0.226015) return 1;
+  else if (BDT < -0.090281) return 2;
+  else if (BDT < 0.001832) return 3;
+  else if (BDT < 0.070456) return 4;
+  else if (BDT < 0.144660) return 5;
+  else                       return 6;
 }
-
 
 Float_t getBDtW20bins(Double_t BDT){
   if      (BDT < -0.459502   ) return 1;
@@ -238,4 +236,5 @@ void functions_tw() {}
 
 
 //////////////////////////////////////////////
+
 
