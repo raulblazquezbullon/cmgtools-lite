@@ -991,6 +991,16 @@ ColorMapList = [
     r.kTeal,
 ]
 
+
+ColourMapForProcesses = {
+    "tw"       : 798,
+    "ttbar"    : 633,
+    "nonworz"  : 413,
+    "vvttv"    : 390,
+    "dy"       : 852
+}
+
+
 SysNameTranslator = {
     'JES'      : "JES",
     'fsr'      : "FSR",
@@ -1058,10 +1068,14 @@ ProcessNameTranslator = {
     "ttbar"        : "\\ttbar",
     "t#bar{t}"     : "\\ttbar",
     "Non-WorZ"     : "Non W/Z",
+    "nonworz"      : "Non W/Z",
     "DY"           : "Drell-Yan",
+    "dy"           : "Drell-Yan",
     "VVttbarV"     : "VV and \\ttbar V",
+    "vvttv"        : "VV and \\ttbar V",
     "VV+t#bar{t}V" : "VV and \\ttbar V",
     "tW"           : "tW (signal)",
+    "tw"           : "tW (signal)",
 }
 
 
@@ -1101,4 +1115,5 @@ TableDict = {
 
 
 ProfileSysts = {"dy_norm", "nonworz_norm", "ttbar_norm", "vvttv_norm",
-                "lumi_2016", "lumi_BBD", "lumi_DB", "lumi_GS", "lumi_XY"}
+                "lumi_2016", "lumi_2017", "lumi_2018",
+                "lumi_BBD", "lumi_DB", "lumi_LS", "lumi_BCC", "lumi_GS", "lumi_XY"}

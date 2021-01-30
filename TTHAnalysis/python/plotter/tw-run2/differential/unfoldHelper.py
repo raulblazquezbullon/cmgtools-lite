@@ -807,28 +807,37 @@ if __name__ == "__main__":
     vl.SetUpWarnings()
 
     tasks = []
-    if year == "all":
-        if variable == "all":
-            theyears = []
-            presentyears = next(os.walk(inpath))[1]
-            if "2016" in presentyears:
-                theyears.append("2016")
-            if "2017" in presentyears:
-                theyears.append("2017")
-            if "2018" in presentyears:
-                theyears.append("2018")
-            if "run2" in presentyears:
-                theyears.append("run2")
+    theyears = []
+    presentyears = next(os.walk(inpath))[1]
+    if "2016" in presentyears:
+        theyears.append("2016")
+    if "2017" in presentyears:
+        theyears.append("2017")
+    if "2018" in presentyears:
+        theyears.append("2018")
+    if "run2" in presentyears:
+        theyears.append("run2")
 
-            for iY in theyears:
-                thevars = next(os.walk(inpath + "/" + iY))[1]
-                for iV in thevars:
-                    if "plots" in iV: continue
-                    #if "Fiducial" not in iV: continue
-                    #if "Lep1_Pt" not in iV: continue
-                    if "Lep1Lep2_DPhi" not in iV: continue
-                    if "2016" != iY: continue
-                    tasks.append( (inpath, iY, iV, signalextr) )
+    if year.lower() != "all" and year in presentyears:
+        theyears = [ year ]
+    elif year.lower() != "all":
+        raise RuntimeError("FATAL: the year requested is not in the provided input folder.")
+
+    for iY in theyears:
+        thevars = next(os.walk(inpath + "/" + iY))[1]
+
+        if variable.lower() != "all" and variable in thevars:
+            thevars = [ variable ]
+        elif variable.lower() != "all":
+            raise RuntimeError("FATAL: the variable requested is not in the provided input folder.")
+
+        for iV in thevars:
+            if "plots" in iV: continue
+            if "Fiducial" in iV: continue
+            #if "Lep1_Pt" not in iV: continue
+            #if "Lep1Lep2_DPhi" not in iV: continue
+            #if iY not in ["2016", "2017"]: continue
+            tasks.append( (inpath, iY, iV, signalextr) )
 
 
     #tasks = [ ("Lep1_Pt", inpath + "/" + "run2" + "/" + "Lep1_Pt", inpath + "/run2/particleplots") ]
