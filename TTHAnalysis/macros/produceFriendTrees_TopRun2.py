@@ -44,8 +44,8 @@ friendfolders = {0 : "0_yeartag",
 
 chunksizes    = {0          : 5000000,
                  1          : 200000,
-                 #2          : 5000000,
-                 2          : 500000, #PARA DY DE 2017
+                 2          : 5000000,
+                 #2          : 500000, #PARA DY DE 2017
                  3          : 500000,
                  4          : 500000,
                  5          : 250000,
@@ -62,9 +62,11 @@ class errs(enum.IntEnum):
 
 
 minitnamedict = {
-    "ttbar" : ["TTTo2L2Nu_division2"],
-    "tw"    : ["tW", "tW_division2"],
-    "tbarw" : ["tbarW", "tbarW_division2"],
+    "ttbar"     : ["TTTo2L2Nu_division2"],
+    "tw"        : ["tW", "tW_division2"],
+    "tbarw"     : ["tbarW", "tbarW_division2"],
+    #"dy_10to50" : ["DYJetsToLL_M_10to50", "DYJetsToLL_M_10to50_MLM"],
+    #"dy_50"     : ["DYJetsToLL_M_50"],
     }
 
 
@@ -400,8 +402,8 @@ sampledict[2018] = {
     "TTTo2L2Nu_mtop173p5"   : "Tree_TTTo2L2Nu_mtop173p5_TuneCP5",
     "TTTo2L2Nu_mtop171p5"   : "Tree_TTTo2L2Nu_mtop171p5_TuneCP5",
 
-    "TTTo2L2Nu_GluonMoveCRTune"      : "Tree_TTTo2L2Nu_TuneCP5CR2_GluonMove_PSweights_",
-    "TTTo2L2Nu_QCDbasedCRTune_erdON" : "Tree_TTTo2L2Nu_TuneCP5CR1_QCDbased_PSweights_",
+    "TTTo2L2Nu_GluonMoveCRTune"      : "Tree_TTTo2L2Nu_TuneCP5CR2_GluonMove_",
+    "TTTo2L2Nu_QCDbasedCRTune_erdON" : "Tree_TTTo2L2Nu_TuneCP5CR1_QCDbased_",
     "TTTo2L2Nu_erdON"                : ["Tree_TTTo2L2Nu_TuneCP5_erdON_1", "Tree_TTTo2L2Nu_TuneCP5_erdON_2", "Tree_TTTo2L2Nu_TuneCP5_erdON_3", "Tree_TTTo2L2Nu_TuneCP5_erdON_ext1_*"], ### WARNING: EL 0 ESTÁ CORRUPTO
 
     #### Datos
@@ -426,8 +428,11 @@ trainsampledict[2016] = {
 
     "TTTo2L2Nu_division2" : sampledict[2016]["TTTo2L2Nu_division2"],
 
-    "tW_division2"    : sampledict[2016]["tW_division2"],
-    "tbarW_division2" : sampledict[2016]["tbarW_division2"],
+    "tW_division2"        : sampledict[2016]["tW_division2"],
+    "tbarW_division2"     : sampledict[2016]["tbarW_division2"],
+
+    #"DYJetsToLL_M_10to50" : sampledict[2016]["DYJetsToLL_M_10to50"],
+    #"DYJetsToLL_M_50"     : sampledict[2016]["DYJetsToLL_M_50"],
 }
 
 
@@ -443,6 +448,9 @@ trainsampledict[2017] = {
     #"tW_noFullHad"    : sampledict[2017]["tW_noFullHad"],
     #"tbarW_noFullHad"     : "Tree_tbarW_5f_noFullHad_TuneCP5_",
     #"tbarW_noFullHad" : sampledict[2017]["tbarW_noFullHad"],
+
+    #"DYJetsToLL_M_10to50_MLM" : sampledict[2017]["DYJetsToLL_M_10to50_MLM"],
+    #"DYJetsToLL_M_50"         : sampledict[2017]["DYJetsToLL_M_50"],
 }
 
 
@@ -464,6 +472,9 @@ trainsampledict[2018] = {
 
     "tW"    : sampledict[2018]["tW"],
     "tbarW" : sampledict[2018]["tbarW"],
+
+    #"DYJetsToLL_M_10to50_MLM" : sampledict[2018]["DYJetsToLL_M_10to50_MLM"],
+    #"DYJetsToLL_M_50"         : sampledict[2018]["DYJetsToLL_M_50"],
 }
 
 
@@ -544,14 +555,15 @@ def SendDatasetJobs(task):
 
     if   step == 0:
         module_ = "addYearTag_{y}_{ty}".format(y  = year,
-                                               ty = ("mc"         if not isData else
+                                               ty = ("mc_ttbar"   if not isData and "ttto2l2nu" in dataset.lower() else
+                                                     "mc"         if not isData else
                                                      "singlemuon" if "singlemuon" in dataset.lower() else
                                                      "singleelec"
                                                      if ("singleelec" in dataset.lower() or "egamma" in dataset.lower()) else
                                                      "doublemuon" if "doublemuon" in dataset.lower() else
                                                      "doubleeg"   if "doubleeg"   in dataset.lower() else
                                                      "muoneg")
-                                                    )
+                                              )
         #module_ = "addYearTag_{y}_{ty}_validacion".format(y  = year,
                                                #ty = ("mc"         if not isData else
                                                      #"singlemuon" if "singlemuon" in dataset.lower() else
@@ -828,7 +840,7 @@ def MergeThoseChunks(year, step, queue, extra, noconf = False):
     if len(chunklist) == 0:
         print "> No chunks found in the search folder! ({f})".format(f = basefolder)
     else:
-        allRfileslist  = [f for f in os.listdir(basefolder) if (".root" in f)]
+        allRfileslist  = [f for f in os.listdir(basefolder) if (".root" in f and f not in [el + ".root" for el in minitnamedict.keys()])]
         print "> Chunks found in {b}. Please, take into account that no check upon the chunks will be done here.".format(b = basefolder)
         dictofmerges = {}
         for chk in allRfileslist:

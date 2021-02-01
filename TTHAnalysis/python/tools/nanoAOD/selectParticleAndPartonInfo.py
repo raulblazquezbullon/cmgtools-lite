@@ -6,6 +6,7 @@ import ROOT as r
 
 from PhysicsTools.NanoAODTools.postprocessing.framework.eventloop import Module
 from PhysicsTools.NanoAODTools.postprocessing.framework.datamodel import Collection as NanoAODCollection 
+from PhysicsTools.NanoAODTools.postprocessing.framework.datamodel import Collection
 from PhysicsTools.NanoAODTools.postprocessing.tools import deltaR,deltaPhi
 from CMGTools.TTHAnalysis.tools.collectionSkimmer import CollectionSkimmer
 
@@ -79,6 +80,8 @@ class selectParticleAndPartonInfo(Module):
         self.listdressfwdjet      = []
         self.listdressfwdloosejet = []
 
+        self.vetoedjets           = []
+
         otherVarsDict = {}
         for b in self.branches:
             if not isinstance(b, tuple):
@@ -89,21 +92,29 @@ class selectParticleAndPartonInfo(Module):
                 if "nDress" in b[0]: otherVarsDict[b[0]] = 0
 
         for i, lep in enumerate(dressleps):
-            if self.dresslepSel(lep): self.listdresslep.append(i)
+            if self.dresslepSel(lep):
+                self.vetoedjets.extend(self.vetoJets(event, lep))
+                self.listdresslep.append(i)
 
         for i, jet in enumerate(dressjets):
             if   self.dressjetSel(jet):
-                if self.isClean(event, jet):
+                #if self.isClean(event, jet):
+                if i not in self.vetoedjets:
                     self.listdressjet.append(i)
                     if abs(jet.partonFlavour) == 5: otherVarsDict["nDressBSelJet"] += 1
             elif self.dressloosejetSel(jet):
-                if self.isClean(event, jet):
+                #if self.isClean(event, jet):
+                if i not in self.vetoedjets:
                     self.listdressloosejet.append(i)
                     if abs(jet.partonFlavour) == 5: otherVarsDict["nDressBSelLooseJet"] += 1
             elif self.dressfwdjetSel(jet):
-                if self.isClean(event, jet): self.listdressfwdjet.append(i)
+                #if self.isClean(event, jet):
+                if i not in self.vetoedjets:
+                    self.listdressfwdjet.append(i)
             elif self.dressfwdloosejetSel(jet):
-                if self.isClean(event, jet): self.listdressfwdloosejet.append(i)
+                #if self.isClean(event, jet):
+                if i not in self.vetoedjets:
+                    self.listdressfwdloosejet.append(i)
 
 
         if self._ttreereaderversion != event._tree._ttreereaderversion:
@@ -174,11 +185,22 @@ class selectParticleAndPartonInfo(Module):
         return True
 
 
+    #### Old, standard cleaning
     def isClean(self, ev, j, dR = 0.04):
-        from PhysicsTools.NanoAODTools.postprocessing.framework.datamodel import Collection
         tmpleps = [l for l in Collection(ev, "GenDressedLepton")]
 
         for iL in self.listdresslep:
             if abs(j.p4().DeltaR(tmpleps[iL].p4())) < dR:
                 return False
         return True
+
+
+    #### ttH-like cleaning
+    def vetoJets(self, ev, l, dR = 0.04):
+        tmpjets = [j for j in Collection(ev, "GenJet")]
+        vetoed  = []
+
+        for i, j in enumerate(tmpjets):
+            if abs(j.p4().DeltaR(l.p4())) < dR:
+                vetoed.append(i)
+        return vetoed

@@ -18,10 +18,15 @@ colorMap = [
     ]
 
 
-class beautifulUnfoldingPlots:
-    def __init__(self, name):
+
+class beautifulUnfPlot:
+    def __init__(self, name, variable):
         #r.gROOT.SetBatch(True)
         self.name           = name
+        self.isUncPlot      = False
+        if "uncs" in self.name:
+            self.isUncPlot = True
+        self.var            = variable
         self.inited         = False
         self.objectsInLeg   = []
         self.plotspath      = ""
@@ -31,7 +36,9 @@ class beautifulUnfoldingPlots:
         self.doFit          = True
         self.doPreliminary  = True
         self.doSupplementary= False
+        self.displayedLumi  = vl.TotalLumi
         self.yaxisuplimit   = 0
+        self.yaxis_unclabel = 'Relative uncertainty (adim.)'
 
 
     def initCanvasAndAll(self):
@@ -47,7 +54,7 @@ class beautifulUnfoldingPlots:
         #height      = plotformat[1]+150 if self.doRatio else plotformat[1]
         height      = plotformat[1]
 
-        self.canvas = r.TCanvas(self.name+"_canvas", self.name, plotformat[0], height)
+        self.canvas = r.TCanvas(self.name + "_canvas", self.name, plotformat[0], height)
         
         self.canvas.SetTopMargin(self.canvas.GetTopMargin() * topSpamSize)
         topsize = 0.12*600./height if self.doRatio else 0.06*600./height
@@ -80,28 +87,35 @@ class beautifulUnfoldingPlots:
         
         if isinstance(histos, list):
             histo = histos[0]
-            asymhisto   =   r.TGraphAsymmErrors(histo)
+            asymhisto = r.TGraphAsymmErrors(histo)
             for bin in range(asymhisto.GetN()):
                 asymhisto.SetPointEYhigh(bin, histo.GetBinError(bin + 1))
-                asymhisto.SetPointEYlow(bin, histos[1].GetBinError(bin + 1))
+                asymhisto.SetPointEYlow(bin,  histos[1].GetBinError(bin + 1))
             
-            if self.name.replace('_folded', '').replace('_asimov', '').replace("_fiducial", "").replace('_norm', '').replace("norm", "") in vl.varList:
-                asymhisto.GetXaxis().SetTitle( vl.varList[self.name.replace('_folded', '').replace('_asimov', '').replace("_fiducial", "").replace('_norm', '').replace("norm", "")]['xaxis'] )
-                if not vl.doxsec:             asymhisto.GetYaxis().SetTitle( 'Events' )
-                elif "fiducial" in self.name and not "uncertainties" in self.name and not "norm" in self.name: asymhisto.GetYaxis().SetTitle( vl.varList[self.name.replace('_folded', '').replace('_asimov', '').replace("_fiducial", "").replace('_norm', '').replace("norm", "")]['yaxisfid'] )
-                elif "norm" in self.name and "fiducial" in self.name and not "uncertainties" in self.name: asymhisto.GetYaxis().SetTitle( vl.varList[self.name.replace('_folded', '').replace('_asimov', '').replace("_fiducial", "").replace('_norm', '').replace("norm", "")]['yaxisfidbin'] )
-                elif "norm" in self.name and not "uncertainties" in self.name: asymhisto.GetYaxis().SetTitle( vl.varList[self.name.replace('_folded', '').replace('_asimov', '').replace("_fiducial", "").replace('_norm', '').replace("norm", "")]['yaxisnorm'] )
-                else:                         asymhisto.GetYaxis().SetTitle( vl.varList[self.name.replace('_folded', '').replace('_asimov', '').replace("_fiducial", "").replace('_norm', '').replace("norm", "")]['yaxis'] )
+            if self.var in vl.varList:
+                asymhisto.GetXaxis().SetTitle( vl.varList[self.var]['xaxis'] )
+                if self.isUncPlot:
+                    asymhisto.GetYaxis().SetTitle( self.yaxis_unclabel )
+                elif not vl.doxsec or "detector" in self.name:
+                    asymhisto.GetYaxis().SetTitle( 'Events' )
+                elif "fiducial" in self.name and not "norm" in self.name:
+                    asymhisto.GetYaxis().SetTitle( vl.varList[self.var]['yaxisfid'] )
+                elif "norm" in self.name and "fiducial" in self.name:
+                    asymhisto.GetYaxis().SetTitle( vl.varList[self.var]['yaxisfidbin'] )
+                elif "bin" in self.var:
+                    asymhisto.GetYaxis().SetTitle( vl.varList[self.var]['yaxisbin'] )
+                else:
+                    asymhisto.GetYaxis().SetTitle( vl.varList[self.var]['yaxis_particle'] )
             
             asymhisto.GetXaxis().SetRangeUser(histo.GetXaxis().GetBinLowEdge(1), histo.GetXaxis().GetBinUpEdge(histo.GetNbinsX()))
             
             asymhisto.GetXaxis().SetTitleFont(43)
             asymhisto.GetXaxis().SetTitleSize(22)
-            asymhisto.GetXaxis().SetTitleOffset(1.4 if "unc" not in self.name else 1.1)
+            asymhisto.GetXaxis().SetTitleOffset(1.4 if "unc" not in self.var else 1.1)
             asymhisto.GetXaxis().SetLabelFont(43)
             asymhisto.GetXaxis().SetLabelSize(22)
             asymhisto.GetXaxis().SetLabelOffset(0.007)
-            asymhisto.GetXaxis().SetNdivisions(510, True* ("DPhi" not in self.name and "MT_LLMETB" not in self.name))
+            asymhisto.GetXaxis().SetNdivisions(510, True* ("DPhi" not in self.var and "MT_LLMETB" not in self.var))
             #asymhisto.GetXaxis().SetNdivisions(505, False)
             
             asymhisto.GetYaxis().SetTitleFont(43)
@@ -129,21 +143,28 @@ class beautifulUnfoldingPlots:
             self.objectsInLeg.append( (asymhisto, name, legOptions, idname) )
         else:
             histo = histos
-            if self.name.replace('_folded', '').replace('_asimov', '').replace("_fiducial", "").replace('_norm', '').replace("norm", "") in vl.varList:
-                histo.GetXaxis().SetTitle( vl.varList[self.name.replace('_folded', '').replace('_asimov', '').replace("_fiducial", "").replace('_norm', '').replace("norm", "")]['xaxis'] )
-                if not vl.doxsec:             histo.GetYaxis().SetTitle( 'Events' ).replace('_norm', '').replace("norm", "")
-                elif "fiducial" in self.name and not "uncertainties" in self.name and not "norm" in self.name: histo.GetYaxis().SetTitle( vl.varList[self.name.replace('_folded', '').replace('_asimov', '').replace("_fiducial", "").replace('_norm', '').replace("norm", "")]['yaxisfid'] )
-                elif "norm" in self.name and "fiducial" in self.name and not "uncertainties" in self.name: histo.GetYaxis().SetTitle( vl.varList[self.name.replace('_folded', '').replace('_asimov', '').replace("_fiducial", "").replace('_norm', '').replace("norm", "")]['yaxisfidbin'] )
-                elif "norm" in self.name and not "uncertainties" in self.name: histo.GetYaxis().SetTitle( vl.varList[self.name.replace('_folded', '').replace('_asimov', '').replace("_fiducial", "").replace('_norm', '').replace("norm", "")]['yaxisnorm'] )
-                else:                         histo.GetYaxis().SetTitle( vl.varList[self.name.replace('_folded', '').replace('_asimov', '').replace("_fiducial", "").replace('_norm', '').replace("norm", "")]['yaxis'] )
+            if self.var in vl.varList:
+                histo.GetXaxis().SetTitle( vl.varList[self.var]['xaxis'] )
+                if self.isUncPlot:
+                    histo.GetYaxis().SetTitle( self.yaxis_unclabel )
+                elif not vl.doxsec or "detector" in self.name:
+                    histo.GetYaxis().SetTitle( 'Events' )
+                elif "fid" in self.var and not "bin" in self.var:
+                    histo.GetYaxis().SetTitle( vl.varList[self.var]['yaxisfid'] )
+                elif "bin" in self.var and "fid" in self.var:
+                    histo.GetYaxis().SetTitle( vl.varList[self.var]['yaxisfidbin'] )
+                elif "bin" in self.var:
+                    histo.GetYaxis().SetTitle( vl.varList[self.var]['yaxisbin'] )
+                else:
+                    histo.GetYaxis().SetTitle( vl.varList[self.var]['yaxis_particle'] )
 
             histo.GetXaxis().SetTitleFont(43)
             histo.GetXaxis().SetTitleSize(22)
-            histo.GetXaxis().SetTitleOffset(1.7 if (self.isLCurve) else 1.1 if "unc" in self.name else 1.4)
+            histo.GetXaxis().SetTitleOffset(1.7 if (self.isLCurve) else 1.1 if "unc" in self.var else 1.4)
             histo.GetXaxis().SetLabelFont(43)
             histo.GetXaxis().SetLabelSize(13 if self.isLCurve else 22)
             histo.GetXaxis().SetLabelOffset(0.033 if self.isLCurve else 0.007)
-            histo.GetXaxis().SetNdivisions(010 if self.isLCurve else 510, True* ("DPhi" not in self.name))
+            histo.GetXaxis().SetNdivisions(010 if self.isLCurve else 510, True* ("DPhi" not in self.var))
             #histo.GetXaxis().SetNdivisions(010 if self.isLCurve else 505, False)
             
             histo.GetYaxis().SetTitleFont(43)
@@ -196,13 +217,20 @@ class beautifulUnfoldingPlots:
         self.canvas.cd(padnum)
         histo = histos
 
-        if self.name.replace('_folded', '').replace('_asimov', '').replace("_fiducial", "") in vl.varList:
-            histo.GetXaxis().SetTitle( vl.varList[self.name.replace('_folded', '').replace('_asimov', '').replace("_fiducial", "").replace('_norm', '').replace("norm", "")]['xaxis'] )
-            if not vl.doxsec:             histo.GetYaxis().SetTitle( 'Events' )
-            elif "fiducial" in self.name and not "uncertainties" in self.name and not "norm" in self.name: histo.GetYaxis().SetTitle( vl.varList[self.name.replace('_folded', '').replace('_asimov', '').replace("_fiducial", "").replace('_norm', '').replace("norm", "")]['yaxisfid'] )
-            elif "fiducial" in self.name and "norm" in self.name and not "uncertainties" in self.name: histo.GetYaxis().SetTitle( vl.varList[self.name.replace('_folded', '').replace('_asimov', '').replace("_fiducial", "").replace('_norm', '').replace("norm", "")]['yaxisfidbin'] )
-            elif "norm" in self.name and not "uncertainties" in self.name: histo.GetYaxis().SetTitle( vl.varList[self.name.replace('_folded', '').replace('_asimov', '').replace("_fiducial", "").replace('_norm', '').replace("norm", "")]['yaxisnorm'] )
-            else:                         histo.GetYaxis().SetTitle( vl.varList[self.name.replace('_folded', '').replace('_asimov', '').replace("_fiducial", "").replace('_norm', '').replace("norm", "")]['yaxis'] )
+        if self.var in vl.varList:
+            histo.GetXaxis().SetTitle( vl.varList[self.var]['xaxis'] )
+            if self.isUncPlot:
+                histo.GetYaxis().SetTitle( self.yaxis_unclabel )
+            elif not vl.doxsec or "detector" in self.name:
+                histo.GetYaxis().SetTitle( 'Events' )
+            elif "fid" in self.var and not "bin" in self.var:
+                histo.GetYaxis().SetTitle( vl.varList[self.var]['yaxisfid'] )
+            elif "fid" in self.var and "bin" in self.var:
+                histo.GetYaxis().SetTitle( vl.varList[self.var]['yaxisfidbin'] )
+            elif "bin" in self.var:
+                histo.GetYaxis().SetTitle( vl.varList[self.var]['yaxisbin'] )
+            else:
+                histo.GetYaxis().SetTitle( vl.varList[self.var]['yaxis_particle'] )
 
         histo.GetXaxis().SetTitleFont(43)
         histo.GetXaxis().SetTitleSize(22)
@@ -243,21 +271,21 @@ class beautifulUnfoldingPlots:
         return
 
 
-    def saveCanvas(self, corner, suffix='', leg=True):
+    def saveCanvas(self, corner, suffix = '', leg = True):
         if self.doRatio: self.canvas.cd(1)
         else:            self.canvas.cd()
         
         # Draw legend
         #textSize = 0.022
-        textSize = 0.035 if "unc" in self.name else 0.0435
-        if "unc" in self.name: legWidth = 0.13
+        textSize = 0.035 if "unc" in self.var else 0.0435
+        if "unc" in self.var: legWidth = 0.13
         #else:                  legWidth = 0.385 # this is tight
         else:                  legWidth = 0.2
         height = (.18 + textSize * max(len(self.objectsInLeg) - 3, 0))
         
         if isinstance(corner, str):
             if corner == "TR":
-                if "unc" in self.name: (x1,y1,x2,y2) = (0.93 - legWidth if self.doWide else .85 - legWidth, .9 - height, .865,         .9)
+                if "unc" in self.var: (x1,y1,x2,y2) = (0.93 - legWidth if self.doWide else .85 - legWidth, .9 - height, .865,         .9)
                 else:                  (x1,y1,x2,y2) = (0.8  - legWidth if self.doWide else .72 - legWidth, .9 - height, .735,         .9)
             elif corner == "TC":
                 (x1,y1,x2,y2) = (.5,                                             .9 - height, .55+legWidth, .9)
@@ -296,7 +324,7 @@ class beautifulUnfoldingPlots:
             leg.Draw('same')
 
         if not hasattr(self, 'noCMS'):
-            CMS_lumi.lumi_13TeV = "%.1f fb^{-1}" %(vl.Lumi)
+            CMS_lumi.lumi_13TeV = "%.1f fb^{-1}" %(self.displayedLumi)
             if self.doPreliminary: CMS_lumi.extraText  = 'Preliminary'
             else:                  CMS_lumi.extraText  = ''
             #if self.doSupplementary: CMS_lumi.extraText  += 'Supplementary'
@@ -308,7 +336,7 @@ class beautifulUnfoldingPlots:
             print '> Plotting ratio between prediction(s) and results'
             if 'data' not in [it[3] for it in self.objectsInLeg]: raise RuntimeError('There is not data to make a ratio plot as demanded.')
             if [it[3] for it in self.objectsInLeg].count('data') > 1: raise RuntimeError('There are more than one data histograms attached: multiple ratios are not implemented.')
-            if 'mc' not in [it[3] for it in self.objectsInLeg]: raise RuntimeError('There is not (at least) one prediction to make a ratio plot as demanded.')
+            #if 'mc' not in [it[3] for it in self.objectsInLeg]: raise RuntimeError('There is not (at least) one prediction to make a ratio plot as demanded.')
             if 'unc' not in [it[3] for it in self.objectsInLeg]: raise RuntimeError('There is not histogram with the total uncertainties to make a ratio plot as demanded.')
             if [it[3] for it in self.objectsInLeg].count('unc') > 1: raise RuntimeError('There are more than one total uncertainty histograms attached. Please add only one.')
             # Obtaining resources
@@ -351,23 +379,23 @@ class beautifulUnfoldingPlots:
             totalunc.GetXaxis().SetRangeUser(fitunc.GetXaxis().GetBinLowEdge(1), fitunc.GetXaxis().GetBinUpEdge(fitunc.GetNbinsX()))
             #else:          totalunc.GetXaxis().SetRangeUser(datavalues.GetXaxis().GetBinLowEdge(1), datavalues.GetXaxis().GetBinUpEdge(datavalues.GetNbinsX()))
             
-            totalunc.GetXaxis().SetTitle(vl.varList[self.name.replace('_folded', '').replace('_asimov', '').replace("_fiducial", "").replace('_norm', '').replace("norm", "")]['xaxis'])
+            totalunc.GetXaxis().SetTitle(vl.varList[self.var]['xaxis'])
             totalunc.GetXaxis().SetTitleFont(43)
             totalunc.GetXaxis().SetTitleSize(22)
             totalunc.GetXaxis().SetTitleOffset(4)
             totalunc.GetXaxis().SetLabelFont(43)
             totalunc.GetXaxis().SetLabelSize(22)
             totalunc.GetXaxis().SetLabelOffset(0.007)
-            #totalunc.GetXaxis().SetNdivisions(510, True * ("DPhi" not in self.name and "MT_LLMETB" not in self.name))
-            totalunc.GetXaxis().SetNdivisions(510, True * ("DPhi" not in self.name))
+            #totalunc.GetXaxis().SetNdivisions(510, True * ("DPhi" not in self.var and "MT_LLMETB" not in self.var))
+            totalunc.GetXaxis().SetNdivisions(510, True * ("DPhi" not in self.var))
             #totalunc.GetXaxis().SetNdivisions(505, False)
-            if "DPhi"      in self.name: totalunc.GetXaxis().SetMaxDigits(2)     ### RESTAURARRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
-            if "MT_LLMETB" in self.name: totalunc.GetXaxis().SetNdivisions(515, True)
+            if "DPhi"      in self.var: totalunc.GetXaxis().SetMaxDigits(2)     ### RESTAURARRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
+            if "MT_LLMETB" in self.var: totalunc.GetXaxis().SetNdivisions(515, True)
             
-            if   "yaxismax_ratio_fidnorm" in vl.varList[self.name.replace('_folded', '').replace('_asimov', '').replace("_fiducial", "").replace('_norm', '').replace("norm", "")] and "fiducialnorm" in self.name:
-                totalunc.GetYaxis().SetRangeUser(0, vl.varList[self.name.replace('_folded', '').replace('_asimov', '').replace("_fiducial", "").replace('_norm', '').replace("norm", "")]["yaxismax_ratio_fidnorm"])
-            elif "yaxismax_ratio_norm" in vl.varList[self.name.replace('_folded', '').replace('_asimov', '').replace("_fiducial", "").replace('_norm', '').replace("norm", "")] and "norm" in self.name:
-                totalunc.GetYaxis().SetRangeUser(0, vl.varList[self.name.replace('_folded', '').replace('_asimov', '').replace("_fiducial", "").replace('_norm', '').replace("norm", "")]["yaxismax_ratio_norm"])
+            if   "yaxismax_ratio_fidnorm" in vl.varList[self.var] and "fiducialnorm" in self.var:
+                totalunc.GetYaxis().SetRangeUser(0, vl.varList[self.var]["yaxismax_ratio_fidnorm"])
+            elif "yaxismax_ratio_norm" in vl.varList[self.var] and "norm" in self.var:
+                totalunc.GetYaxis().SetRangeUser(0, vl.varList[self.var]["yaxismax_ratio_norm"])
             else:
                 totalunc.GetYaxis().SetRangeUser(0, 2.5)
 
@@ -380,20 +408,20 @@ class beautifulUnfoldingPlots:
             totalunc.GetYaxis().SetLabelSize(22)
             totalunc.GetYaxis().SetLabelOffset(0.007)
             totalunc.GetYaxis().SetNdivisions(510, True)
-            if "LeadingJetPt_norm" in self.name or "MT_LLMETB_norm" in self.name or "MT_LLMETB_fiducialnorm" in self.name: totalunc.GetYaxis().SetNdivisions(505, False)
+            if "LeadingJetPt_norm" in self.var or "MT_LLMETB_norm" in self.var or "MT_LLMETB_fiducialnorm" in self.var: totalunc.GetYaxis().SetNdivisions(505, False)
             
             # Drawing
             self.canvas.cd(2)
             totalunc.Draw('a2')
             #fitunc.Draw('E2,L,same')
-            fitunc.Draw('P,E,same{s}'.format(s = ",X0" if "equalbinsunf" in vl.varList[self.name.replace('_folded', '').replace('_asimov', '').replace("_fiducial", "").replace('_norm', '').replace("norm", "")] else ""))
+            fitunc.Draw('P,E,same{s}'.format(s = ",X0" if "equalbinsunf" in vl.varList[self.var] else ""))
             for el in ratiohistos:
                 el.Draw('L,same')
         
         # Save results
-        self.canvas.SaveAs(self.plotspath + self.name + suffix + '.pdf')
-        self.canvas.SaveAs(self.plotspath + self.name + suffix + '.png')
-        self.canvas.SaveAs(self.plotspath + self.name + suffix + '.eps')
-        self.canvas.SaveAs(self.plotspath + self.name + suffix + '.root')
+        self.canvas.SaveAs(self.plotspath + "/" + self.name + suffix + '.pdf')
+        self.canvas.SaveAs(self.plotspath + "/" + self.name + suffix + '.png')
+        self.canvas.SaveAs(self.plotspath + "/" + self.name + suffix + '.eps')
+        self.canvas.SaveAs(self.plotspath + "/" + self.name + suffix + '.root')
 
         self.canvas.IsA().Destructor(self.canvas)

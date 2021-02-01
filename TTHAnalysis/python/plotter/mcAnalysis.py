@@ -372,7 +372,7 @@ class MCAnalysis:
                     for tty in ttys: tty.setScaleFactor("%s*%g" % (scale, 1000.0/total_w))
                 else:
                     if total_w != 0: raise RuntimeError, "Weights from pck file shoulnd't be there for NanoAOD for %s " % pname
-                    self._groupsToNormalize.append( (ttys, genSumWeightName if is_w == 1 else "genEventCount", scale) )
+                    self._groupsToNormalize.append( (ttys, genSumWeightName if is_w == 1 else "genEventCount_", scale) )
                     
             #for tty in ttys: tty.makeTTYVariations()
         #if len(self._signals) == 0: raise RuntimeError, "No signals!"
@@ -539,9 +539,22 @@ class MCAnalysis:
             h.buildEnvelopes() 
             h.buildEnvelopesRMS()
 
+        #print "\nANTES", ret
+
         ## add variations from alternate samples
         if self.variationsFile:
             buildVariationsFromAlternative(self.variationsFile, ret)
+            buildVariationsFromAlternativesWithEnvelope(self.variationsFile, ret)
+
+        ## remove samples used for systematics
+        toremove = []
+        for key in ret:
+            if "syst" in key:
+                toremove.append(key)
+        for rem in toremove:
+            print " - Erasing " + rem
+            ret.pop(rem)
+        #print "\nLLUEU", ret
 
         rescales = []
         self.compilePlotScaleMap(self._options.plotscalemap,rescales)

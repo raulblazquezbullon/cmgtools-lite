@@ -1,4 +1,9 @@
-tw+ : Tree_tW_5f_inclusiveDecays_TuneCP5_PSweights_0 + Tree_tW_5f_inclusiveDecays_TuneCP5_PSweights_1 + Tree_tW_5f_inclusiveDecays_TuneCP5_PSweights_2 + Tree_tW_5f_inclusiveDecays_TuneCP5_PSweights_3 + Tree_tW_5f_inclusiveDecays_TuneCP5_PSweights_4 : 35.85 ; genSumWeightName="genEventSumw_",FillColor=798
+#tw+ : Tree_tW_5f_inclusiveDecays_TuneCP5_PSweights_0 + Tree_tW_5f_inclusiveDecays_TuneCP5_PSweights_1 + Tree_tW_5f_inclusiveDecays_TuneCP5_PSweights_2 + Tree_tW_5f_inclusiveDecays_TuneCP5_PSweights_3 + Tree_tW_5f_inclusiveDecays_TuneCP5_PSweights_4 : 35.85 ; genSumWeightName="genEventSumw_",FillColor=798
 
-tw+ : Tree_tbarW_5f_inclusiveDecays_TuneCP5_PSweights_pythia_0 + Tree_tbarW_5f_inclusiveDecays_TuneCP5_PSweights_pythia_1 + Tree_tbarW_5f_inclusiveDecays_TuneCP5_PSweights_pythia_2 + Tree_tbarW_5f_inclusiveDecays_TuneCP5_PSweights_pythia_3 : 35.85 ; genSumWeightName="genEventSumw_",FillColor=798
+#tw+ : Tree_tbarW_5f_inclusiveDecays_TuneCP5_PSweights_pythia_0 + Tree_tbarW_5f_inclusiveDecays_TuneCP5_PSweights_pythia_1 + Tree_tbarW_5f_inclusiveDecays_TuneCP5_PSweights_pythia_2 + Tree_tbarW_5f_inclusiveDecays_TuneCP5_PSweights_pythia_3 : 35.85 ; genSumWeightName="genEventSumw_",FillColor=798
 
+tw+ : Tree_tWdiv1_5f_inclusiveDecays_TuneCP5_PSweights_0 + Tree_tWdiv1_5f_inclusiveDecays_TuneCP5_PSweights_1 + Tree_tWdiv1_5f_inclusiveDecays_TuneCP5_PSweights_2 + Tree_tWdiv1_5f_inclusiveDecays_TuneCP5_PSweights_3 + Tree_tWdiv1_5f_inclusiveDecays_TuneCP5_PSweights_4 : 35.85 * 2 ; genSumWeightName="genEventSumw_",FillColor=798
+
+#tw+ : Tree_tWdiv1_5f_inclusiveDecays_TuneCP5_PSweights_4 : 35.85 * 2 ; genSumWeightName="genEventSumw_",FillColor=798
+
+tw+ : Tree_tbarWdiv1_5f_inclusiveDecays_TuneCP5_PSweights_pythia_0 + Tree_tbarWdiv1_5f_inclusiveDecays_TuneCP5_PSweights_pythia_1 + Tree_tbarWdiv1_5f_inclusiveDecays_TuneCP5_PSweights_pythia_2 + Tree_tbarWdiv1_5f_inclusiveDecays_TuneCP5_PSweights_pythia_3 : 35.85 * 2 ; genSumWeightName="genEventSumw_",FillColor=798
