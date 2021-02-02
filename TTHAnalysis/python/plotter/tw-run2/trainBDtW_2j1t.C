@@ -220,6 +220,8 @@ void trainBDtW_2j1t(TString outputdir, TString outputbasedir = "/pool/phedex/use
 //      "NTrees=200:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.05:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
 //  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_200_01_4",
 //      "NTrees=200:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.1:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_200_05_4",
+//      "NTrees=200:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
 
   //==ncuts opt
 //  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_200_005_4_ncuts20",
@@ -231,6 +233,10 @@ void trainBDtW_2j1t(TString outputdir, TString outputbasedir = "/pool/phedex/use
 //  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_200_005_4_ncuts150",
 //      "NTrees=200:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.05:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=150:MaxDepth=4" );
   //==ntrees opt
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_50_005_4",
+//      "NTrees=50:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.05:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_100_005_4",
+//      "NTrees=100:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.05:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
 //  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_200_005_4",
 //      "NTrees=200:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.05:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
 //  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_400_005_4",
@@ -239,8 +245,17 @@ void trainBDtW_2j1t(TString outputdir, TString outputbasedir = "/pool/phedex/use
 //      "NTrees=600:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.05:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
 //  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_800_005_4",
 //      "NTrees=800:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.05:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
-//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_1000_005_4",
-//      "NTrees=1000:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.05:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
+  //==maxDepth opt
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_200_005_2",
+//      "NTrees=200:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.05:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=2" );
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_200_005_4",
+//      "NTrees=200:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.05:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_200_005_6",
+//      "NTrees=200:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.05:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=6" );
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_200_005_8",
+//      "NTrees=200:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.05:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=8" );
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_200_005_10",
+//      "NTrees=200:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.05:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=10" );
   //====================Metodos Nuevos===================================
   
   

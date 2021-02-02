@@ -6,7 +6,7 @@ import os, sys, enum, argparse
 
 #Read the cards folder: neccesary structure 1j1tNbins and 2j1tNbins
 
-cardsFolder = "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp_cards/2020-12-21/run2/"
+cardsFolder = "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp_cards/2021-02-01/run2/"
 
 files = os.listdir(cardsFolder)
 
