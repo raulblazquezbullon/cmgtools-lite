@@ -2,9 +2,9 @@
 
 
 ### Alias definitions. Careful to avoid trailing '.*' to avoid matching _promptsub
-$alias : ttH : TTH|TTH_h[a-z]+|TTH_ct_[0-9]p[0-9]+_cv_[0-9]p[0-9]+|TTH_ct_-[0-9]p[0-9]+_cv_[0-9]p[0-9]+|TTH_ct_[0-9]p[0-9]+_cv_[0-9]p[0-9]+_h[a-z]+|TTH_ct_-[0-9]p[0-9]+_cv_[0-9]p[0-9]+_h[a-z]+
-$alias : tHq : tHq|tHq_h[a-z]+|tHq_ct_[0-9]p[0-9]+_cv_[0-9]p[0-9]+|tHq_ct_-[0-9]p[0-9]+_cv_[0-9]p[0-9]+|tHq_ct_[0-9]p[0-9]+_cv_[0-9]p[0-9]+_h[a-z]+|tHq_ct_-[0-9]p[0-9]+_cv_[0-9]p[0-9]+_h[a-z]+
-$alias : tHW : tHW|tHW_h[a-z]+|tHW_ct_[0-9]p[0-9]+_cv_[0-9]p[0-9]+|tHW_ct_-[0-9]p[0-9]+_cv_[0-9]p[0-9]+|tHW_ct_[0-9]p[0-9]+_cv_[0-9]p[0-9]+_h[a-z]+|tHW_ct_-[0-9]p[0-9]+_cv_[0-9]p[0-9]+_h[a-z]+
+$alias : ttH : TTH|TTH_h[a-z]+
+$alias : tHq : tHq|tHq_h[a-z]+
+$alias : tHW : tHW|tHW_h[a-z]+
 $alias : ttHX : $ttH|$tHq|$tHW
 $alias : ttV  : TT[WZ]|TTWW
 $alias : ZH   : ZH|ZH_h[a-z]+
@@ -15,7 +15,7 @@ $alias : FRAll  : data_fakes|.*_promptsub|TT_FR_QCD
 $alias : FRMC   :  .*_mcfakes
 ### Uncertainties
 # lumi from https://twiki.cern.ch/twiki/bin/view/CMS/TWikiLUM#LumiComb
-lumi_2016		: $PromptFromMC : .* : normSymm : 1.022; year="2016"
+lumi_13TeV_2016		: $PromptFromMC : .* : normSymm : 1.022; year="2016"
 lumi_13TeV_2017		: $PromptFromMC : .* : normSymm : 1.020; year="2017"
 lumi_13TeV_2018		: $PromptFromMC : .* : normSymm : 1.015; year="2018"
 
@@ -61,8 +61,7 @@ CMS_eff_ttW_etight : $PromptFromMC : .*4l.* : templateAsymm ; AddWeights=['lepto
 CMS_ttW16_L1PreFiring : $PromptFromMC : .* : templateAsymm; AddWeights=['L1PreFiringWeight_Up/L1PreFiringWeight_Nom'\,'L1PreFiringWeight_Dn/L1PreFiringWeight_Nom'], year="2016"
 CMS_ttW17_L1PreFiring : $PromptFromMC : .* : templateAsymm; AddWeights=['L1PreFiringWeight_Up/L1PreFiringWeight_Nom'\,'L1PreFiringWeight_Dn/L1PreFiringWeight_Nom'], year="2017"
 
-### todo: replace with tau veto efficiency
-#CMS_ttHl_tauID		: $PromptFromMC : .*2lss_1tau.* : 1.1
+
 
 # trigger efficiencies
 CMS_ttW16_trigger_ee      : $PromptFromMC : .*2lss.* : templateSymm; Normalize=False, AddWeight='ttH_2lss_ifflav(LepGood1_pdgId\,LepGood2_pdgId\,1.02\,1.0\,1.0)', year="2016"
@@ -366,219 +365,4 @@ CMS_ttW_QF     : data_flips  : .* : normSymm : 1.3
 
  
 
-# xsec scan uncertainties
-pdf_tHW : tHW_ct_-3p0_cv_1p0_h[a-z]+ : .* : normSymm : 1.038                          
-pdf_tHW : tHW_ct_-2p0_cv_1p0_h[a-z]+ : .* : normSymm : 1.038                          
-pdf_tHW : tHW_ct_-1p5_cv_1p0_h[a-z]+ : .* : normSymm : 1.039                          
-pdf_tHW : tHW_ct_-1p25_cv_1p0_h[a-z]+ : .* : normSymm : 1.039                          
-pdf_tHW : tHW_ct_-0p75_cv_1p0_h[a-z]+ : .* : normSymm : 1.04                           
-pdf_tHW : tHW_ct_-0p5_cv_1p0_h[a-z]+ : .* : normSymm : 1.04                           
-pdf_tHW : tHW_ct_-0p25_cv_1p0_h[a-z]+ : .* : normSymm : 1.04                           
-pdf_tHW : tHW_ct_0p0_cv_1p0_h[a-z]+ : .* : normSymm : 1.039                          
-pdf_tHW : tHW_ct_0p25_cv_1p0_h[a-z]+ : .* : normSymm : 1.038                          
-pdf_tHW : tHW_ct_0p5_cv_1p0_h[a-z]+ : .* : normSymm : 1.035                          
-pdf_tHW : tHW_ct_0p75_cv_1p0_h[a-z]+ : .* : normSymm : 1.029                          
-pdf_tHW :  tHW_ct_1p0_cv_1p0_h[a-z]+ : .* : normSymm : 1.027                          
-pdf_tHW : tHW_ct_1p25_cv_1p0_h[a-z]+ : .* : normSymm : 1.028                          
-pdf_tHW :  tHW_ct_1p5_cv_1p0_h[a-z]+ : .* : normAsymm : 1.03 : 0.961                   
-pdf_tHW : tHW_ct_2p0_cv_1p0_h[a-z]+ : .* : normSymm : 1.032                          
-pdf_tHW : tHW_ct_3p0_cv_1p0_h[a-z]+ : .* : normSymm : 1.034                          
-pdf_tHW : tHW_ct_-3p0_cv_1p5_h[a-z]+ : .* : normSymm : 1.038                          
-pdf_tHW : tHW_ct_-2p0_cv_1p5_h[a-z]+ : .* : normSymm : 1.039                          
-pdf_tHW : tHW_ct_-1p5_cv_1p5_h[a-z]+ : .* : normSymm : 1.039                          
-pdf_tHW : tHW_ct_-1p25_cv_1p5_h[a-z]+ : .* : normSymm : 1.039                          
-pdf_tHW : tHW_ct_-1p0_cv_1p5_h[a-z]+ : .* : normSymm : 1.039                          
-pdf_tHW : tHW_ct_-0p75_cv_1p5_h[a-z]+ : .* : normSymm : 1.04                           
-pdf_tHW : tHW_ct_-0p5_cv_1p5_h[a-z]+ : .* : normSymm : 1.04                           
-pdf_tHW : tHW_ct_-0p25_cv_1p5_h[a-z]+ : .* : normSymm : 1.04                           
-pdf_tHW : tHW_ct_0p0_cv_1p5_h[a-z]+ : .* : normSymm : 1.039                          
-pdf_tHW : tHW_ct_0p25_cv_1p5_h[a-z]+ : .* : normSymm : 1.039                          
-pdf_tHW : tHW_ct_0p5_cv_1p5_h[a-z]+ : .* : normSymm : 1.038                          
-pdf_tHW : tHW_ct_0p75_cv_1p5_h[a-z]+ : .* : normSymm : 1.035                          
-pdf_tHW : tHW_ct_1p0_cv_1p5_h[a-z]+ : .* : normSymm : 1.031                          
-pdf_tHW : tHW_ct_1p25_cv_1p5_h[a-z]+ : .* : normSymm : 1.028                          
-pdf_tHW : tHW_ct_1p5_cv_1p5_h[a-z]+ : .* : normSymm : 1.027                          
-pdf_tHW : tHW_ct_2p0_cv_1p5_h[a-z]+ : .* : normSymm : 1.028                          
-pdf_tHW : tHW_ct_3p0_cv_1p5_h[a-z]+ : .* : normSymm : 1.032                          
-pdf_tHW : tHW_ct_-3p0_cv_0p5_h[a-z]+ : .* : normSymm : 1.037                          
-pdf_tHW : tHW_ct_-2p0_cv_0p5_h[a-z]+ : .* : normSymm : 1.038                          
-pdf_tHW : tHW_ct_-1p5_cv_0p5_h[a-z]+ : .* : normSymm : 1.038                          
-pdf_tHW : tHW_ct_-1p25_cv_0p5_h[a-z]+ : .* : normSymm : 1.038                          
-pdf_tHW : tHW_ct_-1p0_cv_0p5_h[a-z]+ : .* : normSymm : 1.039                          
-pdf_tHW : tHW_ct_-0p75_cv_0p5_h[a-z]+ : .* : normSymm : 1.039                          
-pdf_tHW : tHW_ct_-0p5_cv_0p5_h[a-z]+ : .* : normSymm : 1.039                          
-pdf_tHW : tHW_ct_-0p25_cv_0p5_h[a-z]+ : .* : normSymm : 1.04                           
-pdf_tHW : tHW_ct_0p0_cv_0p5_h[a-z]+ : .* : normSymm : 1.04                           
-pdf_tHW : tHW_ct_0p25_cv_0p5_h[a-z]+ : .* : normSymm : 1.035                          
-pdf_tHW : tHW_ct_0p5_cv_0p5_h[a-z]+ : .* : normSymm : 1.027                          
-pdf_tHW : tHW_ct_0p75_cv_0p5_h[a-z]+ : .* : normSymm : 1.03                           
-pdf_tHW : tHW_ct_1p0_cv_0p5_h[a-z]+ : .* : normSymm : 1.032                          
-pdf_tHW : tHW_ct_1p25_cv_0p5_h[a-z]+ : .* : normSymm : 1.033                          
-pdf_tHW : tHW_ct_1p5_cv_0p5_h[a-z]+ : .* : normSymm : 1.034                          
-pdf_tHW : tHW_ct_2p0_cv_0p5_h[a-z]+ : .* : normSymm : 1.035                          
-pdf_tHW : tHW_ct_3p0_cv_0p5_h[a-z]+ : .* : normSymm : 1.035                          
-pdf_tHW : tHW_ct_-1p0_cv_1p0_h[a-z]+ : .* : normSymm : 1.039                          
-
-pdf_tHq : tHq_ct_-3p0_cv_1p0_h[a-z]+ : .* : normSymm : 1.009                          
-pdf_tHq : tHq_ct_-2p0_cv_1p0_h[a-z]+ : .* : normSymm : 1.009                          
-pdf_tHq : tHq_ct_-1p5_cv_1p0_h[a-z]+ : .* : normSymm : 1.009                          
-pdf_tHq : tHq_ct_-1p25_cv_1p0_h[a-z]+ : .* : normSymm : 1.009                          
-pdf_tHq : tHq_ct_-0p75_cv_1p0_h[a-z]+ : .* : normSymm : 1.009                          
-pdf_tHq : tHq_ct_-0p5_cv_1p0_h[a-z]+ : .* : normSymm : 1.009                          
-pdf_tHq : tHq_ct_-0p25_cv_1p0_h[a-z]+ : .* : normSymm : 1.009                          
-pdf_tHq : tHq_ct_0p0_cv_1p0_h[a-z]+ : .* : normSymm : 1.009                          
-pdf_tHq : tHq_ct_0p25_cv_1p0_h[a-z]+ : .* : normSymm : 1.01                           
-pdf_tHq : tHq_ct_0p5_cv_1p0_h[a-z]+ : .* : normSymm : 1.01                           
-pdf_tHq : tHq_ct_0p75_cv_1p0_h[a-z]+ : .* : normSymm : 1.01                           
-pdf_tHq : tHq_ct_1p0_cv_1p0_h[a-z]+ : .* : normSymm : 1.01                           
-pdf_tHq : tHq_ct_1p25_cv_1p0_h[a-z]+ : .* : normSymm : 1.01                           
-pdf_tHq : tHq_ct_1p5_cv_1p0_h[a-z]+ : .* : normSymm : 1.009                          
-pdf_tHq : tHq_ct_2p0_cv_1p0_h[a-z]+ : .* : normSymm : 1.009                          
-pdf_tHq : tHq_ct_3p0_cv_1p0_h[a-z]+ : .* : normSymm : 1.009                          
-pdf_tHq : tHq_ct_-3p0_cv_1p5_h[a-z]+ : .* : normSymm : 1.009                          
-pdf_tHq : tHq_ct_-2p0_cv_1p5_h[a-z]+ : .* : normSymm : 1.009                          
-pdf_tHq : tHq_ct_-1p5_cv_1p5_h[a-z]+ : .* : normSymm : 1.009                          
-pdf_tHq : tHq_ct_-1p25_cv_1p5_h[a-z]+ : .* : normSymm : 1.009                          
-pdf_tHq : tHq_ct_-1p0_cv_1p5_h[a-z]+ : .* : normSymm : 1.009                          
-pdf_tHq : tHq_ct_-0p75_cv_1p5_h[a-z]+ : .* : normSymm : 1.009                          
-pdf_tHq : tHq_ct_-0p5_cv_1p5_h[a-z]+ : .* : normSymm : 1.009                          
-pdf_tHq : tHq_ct_-0p25_cv_1p5_h[a-z]+ : .* : normSymm : 1.009                          
-pdf_tHq : tHq_ct_0p0_cv_1p5_h[a-z]+ : .* : normSymm : 1.009                          
-pdf_tHq : tHq_ct_0p25_cv_1p5_h[a-z]+ : .* : normSymm : 1.009                          
-pdf_tHq : tHq_ct_0p5_cv_1p5_h[a-z]+ : .* : normSymm : 1.01                           
-pdf_tHq : tHq_ct_0p75_cv_1p5_h[a-z]+ : .* : normSymm : 1.01                           
-pdf_tHq : tHq_ct_1p0_cv_1p5_h[a-z]+ : .* : normSymm : 1.01                           
-pdf_tHq : tHq_ct_1p25_cv_1p5_h[a-z]+ : .* : normSymm : 1.01                           
-pdf_tHq : tHq_ct_1p5_cv_1p5_h[a-z]+ : .* : normSymm : 1.01                           
-pdf_tHq : tHq_ct_2p0_cv_1p5_h[a-z]+ : .* : normSymm : 1.009                          
-pdf_tHq : tHq_ct_3p0_cv_1p5_h[a-z]+ : .* : normSymm : 1.009                          
-pdf_tHq : tHq_ct_-3p0_cv_0p5_h[a-z]+ : .* : normSymm : 1.009                          
-pdf_tHq : tHq_ct_-2p0_cv_0p5_h[a-z]+ : .* : normSymm : 1.009                          
-pdf_tHq : tHq_ct_-1p5_cv_0p5_h[a-z]+ : .* : normSymm : 1.009                          
-pdf_tHq : tHq_ct_-1p25_cv_0p5_h[a-z]+ : .* : normSymm : 1.009                          
-pdf_tHq : tHq_ct_-1p0_cv_0p5_h[a-z]+ : .* : normSymm : 1.009                          
-pdf_tHq : tHq_ct_-0p75_cv_0p5_h[a-z]+ : .* : normSymm : 1.009                          
-pdf_tHq : tHq_ct_-0p5_cv_0p5_h[a-z]+ : .* : normSymm : 1.009                          
-pdf_tHq : tHq_ct_-0p25_cv_0p5_h[a-z]+ : .* : normSymm : 1.009                          
-pdf_tHq : tHq_ct_0p0_cv_0p5_h[a-z]+ : .* : normSymm : 1.009                          
-pdf_tHq : tHq_ct_0p25_cv_0p5_h[a-z]+ : .* : normSymm : 1.01                           
-pdf_tHq : tHq_ct_0p5_cv_0p5_h[a-z]+ : .* : normSymm : 1.01                           
-pdf_tHq : tHq_ct_0p75_cv_0p5_h[a-z]+ : .* : normSymm : 1.009                          
-pdf_tHq : tHq_ct_1p0_cv_0p5_h[a-z]+ : .* : normSymm : 1.009                          
-pdf_tHq : tHq_ct_1p25_cv_0p5_h[a-z]+ : .* : normSymm : 1.009                          
-pdf_tHq : tHq_ct_1p5_cv_0p5_h[a-z]+ : .* : normSymm : 1.009                          
-pdf_tHq : tHq_ct_2p0_cv_0p5_h[a-z]+ : .* : normSymm : 1.009                          
-pdf_tHq : tHq_ct_3p0_cv_0p5_h[a-z]+ : .* : normSymm : 1.009                          
-pdf_tHq : tHq_ct_-1p0_cv_1p0_h[a-z]+ : .* : normSymm : 1.009                          
-
-
-
-# xsec scan uncertainties
-QCDscale_tHW : tHW_ct_-3p0_cv_1p0_h[a-z]+ : .* : normAsymm : 1.023 : 0.973                  
-QCDscale_tHW : tHW_ct_-2p0_cv_1p0_h[a-z]+ : .* : normAsymm : 1.022 : 0.975                  
-QCDscale_tHW : tHW_ct_-1p5_cv_1p0_h[a-z]+ : .* : normAsymm : 1.021 : 0.978                  
-QCDscale_tHW : tHW_ct_-1p25_cv_1p0_h[a-z]+ : .* : normAsymm : 1.02 : 0.98                    
-QCDscale_tHW : tHW_ct_-0p75_cv_1p0_h[a-z]+ : .* : normAsymm : 1.02 : 0.983                   
-QCDscale_tHW : tHW_ct_-0p5_cv_1p0_h[a-z]+ : .* : normAsymm : 1.017 : 0.986                  
-QCDscale_tHW : tHW_ct_-0p25_cv_1p0_h[a-z]+ : .* : normAsymm : 1.016 : 0.989                  
-QCDscale_tHW : tHW_ct_0p0_cv_1p0_h[a-z]+ : .* : normAsymm : 1.015 : 0.988                  
-QCDscale_tHW : tHW_ct_0p25_cv_1p0_h[a-z]+ : .* : normAsymm : 1.016 : 0.985                  
-QCDscale_tHW : tHW_ct_0p5_cv_1p0_h[a-z]+ : .* : normAsymm : 1.021 : 0.98                   
-QCDscale_tHW : tHW_ct_0p75_cv_1p0_h[a-z]+ : .* : normAsymm : 1.032 : 0.961                  
-QCDscale_tHW : tHW_ct_1p0_cv_1p0_h[a-z]+ : .* : normAsymm : 1.046 : 0.939                  
-QCDscale_tHW : tHW_ct_1p25_cv_1p0_h[a-z]+ : .* : normAsymm : 1.048 : 0.946                  
-QCDscale_tHW : tHW_ct_1p5_cv_1p0_h[a-z]+ : .* : normAsymm : 1.046 : 0.937                  
-QCDscale_tHW : tHW_ct_2p0_cv_1p0_h[a-z]+ : .* : normAsymm : 1.04 : 0.945                   
-QCDscale_tHW : tHW_ct_3p0_cv_1p0_h[a-z]+ : .* : normAsymm : 1.033 : 0.954                  
-QCDscale_tHW : tHW_ct_-3p0_cv_1p5_h[a-z]+ : .* : normAsymm : 1.021 : 0.977                  
-QCDscale_tHW : tHW_ct_-2p0_cv_1p5_h[a-z]+ : .* : normAsymm : 1.021 : 0.979                  
-QCDscale_tHW : tHW_ct_-1p5_cv_1p5_h[a-z]+ : .* : normAsymm : 1.019 : 0.982                  
-QCDscale_tHW : tHW_ct_-1p25_cv_1p5_h[a-z]+ : .* : normAsymm : 1.019 : 0.984                  
-QCDscale_tHW : tHW_ct_-1p0_cv_1p5_h[a-z]+ : .* : normAsymm : 1.019 : 0.985                  
-QCDscale_tHW : tHW_ct_-0p75_cv_1p5_h[a-z]+ : .* : normAsymm : 1.018 : 0.987                  
-QCDscale_tHW : tHW_ct_-0p5_cv_1p5_h[a-z]+ : .* : normAsymm : 1.016 : 0.988                  
-QCDscale_tHW : tHW_ct_-0p25_cv_1p5_h[a-z]+ : .* : normAsymm : 1.016 : 0.988                  
-QCDscale_tHW : tHW_ct_0p0_cv_1p5_h[a-z]+ : .* : normAsymm : 1.015 : 0.988                  
-QCDscale_tHW : tHW_ct_0p25_cv_1p5_h[a-z]+ : .* : normAsymm : 1.015 : 0.986                  
-QCDscale_tHW : tHW_ct_0p5_cv_1p5_h[a-z]+ : .* : normAsymm : 1.018 : 0.983                  
-QCDscale_tHW : tHW_ct_0p75_cv_1p5_h[a-z]+ : .* : normAsymm : 1.021 : 0.98                   
-QCDscale_tHW : tHW_ct_1p0_cv_1p5_h[a-z]+ : .* : normAsymm : 1.028 : 0.97                   
-QCDscale_tHW : tHW_ct_1p25_cv_1p5_h[a-z]+ : .* : normAsymm : 1.036 : 0.953                  
-QCDscale_tHW : tHW_ct_1p5_cv_1p5_h[a-z]+ : .* : normAsymm : 1.046 : 0.94                   
-QCDscale_tHW : tHW_ct_2p0_cv_1p5_h[a-z]+ : .* : normAsymm : 1.048 : 0.935                  
-QCDscale_tHW : tHW_ct_3p0_cv_1p5_h[a-z]+ : .* : normAsymm : 1.04 : 0.944                   
-QCDscale_tHW : tHW_ct_-3p0_cv_0p5_h[a-z]+ : .* : normAsymm : 1.023 : 0.97                   
-QCDscale_tHW : tHW_ct_-2p0_cv_0p5_h[a-z]+ : .* : normAsymm : 1.023 : 0.972                  
-QCDscale_tHW : tHW_ct_-1p5_cv_0p5_h[a-z]+ : .* : normAsymm : 1.023 : 0.972                  
-QCDscale_tHW : tHW_ct_-1p25_cv_0p5_h[a-z]+ : .* : normAsymm : 1.022 : 0.975                  
-QCDscale_tHW : tHW_ct_-1p0_cv_0p5_h[a-z]+ : .* : normAsymm : 1.021 : 0.977                  
-QCDscale_tHW : tHW_ct_-0p75_cv_0p5_h[a-z]+ : .* : normAsymm : 1.02 : 0.979                   
-QCDscale_tHW : tHW_ct_-0p5_cv_0p5_h[a-z]+ : .* : normAsymm : 1.019 : 0.982                  
-QCDscale_tHW : tHW_ct_-0p25_cv_0p5_h[a-z]+ : .* : normAsymm : 1.018 : 0.987                  
-QCDscale_tHW : tHW_ct_0p0_cv_0p5_h[a-z]+ : .* : normAsymm : 1.016 : 0.987                  
-QCDscale_tHW : tHW_ct_0p25_cv_0p5_h[a-z]+ : .* : normAsymm : 1.021 : 0.98                   
-QCDscale_tHW : tHW_ct_0p5_cv_0p5_h[a-z]+ : .* : normAsymm : 1.046 : 0.939                  
-QCDscale_tHW : tHW_ct_0p75_cv_0p5_h[a-z]+ : .* : normAsymm : 1.047 : 0.937                  
-QCDscale_tHW : tHW_ct_1p0_cv_0p5_h[a-z]+ : .* : normAsymm : 1.04 : 0.945                   
-QCDscale_tHW : tHW_ct_1p25_cv_0p5_h[a-z]+ : .* : normAsymm : 1.037 : 0.948                  
-QCDscale_tHW : tHW_ct_1p5_cv_0p5_h[a-z]+ : .* : normAsymm : 1.035 : 0.951                  
-QCDscale_tHW : tHW_ct_2p0_cv_0p5_h[a-z]+ : .* : normAsymm : 1.03 : 0.957                   
-QCDscale_tHW : tHW_ct_3p0_cv_0p5_h[a-z]+ : .* : normAsymm : 1.028 : 0.96                   
-QCDscale_tHW : tHW_ct_-1p0_cv_1p0_h[a-z]+ : .* : normAsymm : 1.02 : 0.982 
-QCDscale_tHq : tHq_ct_-3p0_cv_1p0_h[a-z]+ : .* : normAsymm : 1.021 : 0.969                  
-QCDscale_tHq : tHq_ct_-2p0_cv_1p0_h[a-z]+ : .* : normAsymm : 1.026 : 0.968                  
-QCDscale_tHq : tHq_ct_-1p5_cv_1p0_h[a-z]+ : .* : normAsymm : 1.025 : 0.964                  
-QCDscale_tHq : tHq_ct_-1p25_cv_1p0_h[a-z]+ : .* : normAsymm : 1.026 : 0.966                  
-QCDscale_tHq : tHq_ct_-0p75_cv_1p0_h[a-z]+ : .* : normAsymm : 1.029 : 0.959                  
-QCDscale_tHq : tHq_ct_-0p5_cv_1p0_h[a-z]+ : .* : normAsymm : 1.032 : 0.956                  
-QCDscale_tHq : tHq_ct_-0p25_cv_1p0_h[a-z]+ : .* : normAsymm : 1.035 : 0.95                   
-QCDscale_tHq : tHq_ct_0p0_cv_1p0_h[a-z]+ : .* : normAsymm : 1.039 : 0.945                  
-QCDscale_tHq : tHq_ct_0p25_cv_1p0_h[a-z]+ : .* : normAsymm : 1.044 : 0.938                  
-QCDscale_tHq : tHq_ct_0p5_cv_1p0_h[a-z]+ : .* : normAsymm : 1.05 : 0.929                   
-QCDscale_tHq : tHq_ct_0p75_cv_1p0_h[a-z]+ : .* : normAsymm : 1.057 : 0.924                  
-QCDscale_tHq : tHq_ct_1p0_cv_1p0_h[a-z]+ : .* : normAsymm : 1.041 : 0.933                  
-QCDscale_tHq : tHq_ct_1p25_cv_1p0_h[a-z]+ : .* : normAsymm : 1.023 : 0.954                  
-QCDscale_tHq : tHq_ct_1p5_cv_1p0_h[a-z]+ : .* : normAsymm : 1.012 : 0.971                  
-QCDscale_tHq : tHq_ct_2p0_cv_1p0_h[a-z]+ : .* : normAsymm : 1.01 : 0.964                   
-QCDscale_tHq : tHq_ct_3p0_cv_1p0_h[a-z]+ : .* : normAsymm : 1.008 : 0.963                  
-QCDscale_tHq : tHq_ct_-3p0_cv_1p5_h[a-z]+ : .* : normAsymm : 1.026 : 0.968                  
-QCDscale_tHq : tHq_ct_-2p0_cv_1p5_h[a-z]+ : .* : normAsymm : 1.025 : 0.964                  
-QCDscale_tHq : tHq_ct_-1p5_cv_1p5_h[a-z]+ : .* : normAsymm : 1.027 : 0.961                  
-QCDscale_tHq : tHq_ct_-1p25_cv_1p5_h[a-z]+ : .* : normAsymm : 1.028 : 0.961                  
-QCDscale_tHq : tHq_ct_-1p0_cv_1p5_h[a-z]+ : .* : normAsymm : 1.03 : 0.957                   
-QCDscale_tHq : tHq_ct_-0p75_cv_1p5_h[a-z]+ : .* : normAsymm : 1.031 : 0.956                  
-QCDscale_tHq : tHq_ct_-0p5_cv_1p5_h[a-z]+ : .* : normAsymm : 1.034 : 0.953                  
-QCDscale_tHq : tHq_ct_-0p25_cv_1p5_h[a-z]+ : .* : normAsymm : 1.036 : 0.95                   
-QCDscale_tHq : tHq_ct_0p0_cv_1p5_h[a-z]+ : .* : normAsymm : 1.038 : 0.946                  
-QCDscale_tHq : tHq_ct_0p25_cv_1p5_h[a-z]+ : .* : normAsymm : 1.042 : 0.939                  
-QCDscale_tHq : tHq_ct_0p5_cv_1p5_h[a-z]+ : .* : normAsymm : 1.046 : 0.935                  
-QCDscale_tHq : tHq_ct_0p75_cv_1p5_h[a-z]+ : .* : normAsymm : 1.052 : 0.928                  
-QCDscale_tHq : tHq_ct_1p0_cv_1p5_h[a-z]+ : .* : normAsymm : 1.057 : 0.924                  
-QCDscale_tHq : tHq_ct_1p25_cv_1p5_h[a-z]+ : .* : normAsymm : 1.055 : 0.925                  
-QCDscale_tHq : tHq_ct_1p5_cv_1p5_h[a-z]+ : .* : normAsymm : 1.041 : 0.933                  
-QCDscale_tHq : tHq_ct_2p0_cv_1p5_h[a-z]+ : .* : normAsymm : 1.02 : 0.961                   
-QCDscale_tHq : tHq_ct_3p0_cv_1p5_h[a-z]+ : .* : normAsymm : 1.009 : 0.963                  
-QCDscale_tHq : tHq_ct_-3p0_cv_0p5_h[a-z]+ : .* : normAsymm : 1.019 : 0.973                  
-QCDscale_tHq : tHq_ct_-2p0_cv_0p5_h[a-z]+ : .* : normAsymm : 1.02 : 0.971                   
-QCDscale_tHq : tHq_ct_-1p5_cv_0p5_h[a-z]+ : .* : normAsymm : 1.021 : 0.969                  
-QCDscale_tHq : tHq_ct_-1p25_cv_0p5_h[a-z]+ : .* : normAsymm : 1.021 : 0.97                   
-QCDscale_tHq : tHq_ct_-1p0_cv_0p5_h[a-z]+ : .* : normAsymm : 1.023 : 0.967                  
-QCDscale_tHq : tHq_ct_-0p75_cv_0p5_h[a-z]+ : .* : normAsymm : 1.025 : 0.965                  
-QCDscale_tHq : tHq_ct_-0p5_cv_0p5_h[a-z]+ : .* : normAsymm : 1.028 : 0.961                  
-QCDscale_tHq : tHq_ct_-0p25_cv_0p5_h[a-z]+ : .* : normAsymm : 1.031 : 0.954                  
-QCDscale_tHq : tHq_ct_0p0_cv_0p5_h[a-z]+ : .* : normAsymm : 1.038 : 0.944                  
-QCDscale_tHq : tHq_ct_0p25_cv_0p5_h[a-z]+ : .* : normAsymm : 1.05 : 0.929                   
-QCDscale_tHq : tHq_ct_0p5_cv_0p5_h[a-z]+ : .* : normAsymm : 1.042 : 0.933                  
-QCDscale_tHq : tHq_ct_0p75_cv_0p5_h[a-z]+ : .* : normAsymm : 1.014 : 0.971                  
-QCDscale_tHq : tHq_ct_1p0_cv_0p5_h[a-z]+ : .* : normAsymm : 1.01 : 0.964                   
-QCDscale_tHq : tHq_ct_1p25_cv_0p5_h[a-z]+ : .* : normAsymm : 1.009 : 0.963                  
-QCDscale_tHq : tHq_ct_1p5_cv_0p5_h[a-z]+ : .* : normAsymm : 1.008 : 0.963                  
-QCDscale_tHq : tHq_ct_2p0_cv_0p5_h[a-z]+ : .* : normAsymm : 1.01 : 0.964                   
-QCDscale_tHq : tHq_ct_3p0_cv_0p5_h[a-z]+ : .* : normAsymm : 1.012 : 0.968                  
-QCDscale_tHq : tHq_ct_-1p0_cv_1p0_h[a-z]+ : .* : normAsymm : 1.027 : 0.961
-
-
-#floating ttZ and ttW, for scan only!!
-CMS_ttW_TTZ_lnU  : TTZ   : .*     : normSymm : 3.0 ; lnU=True
-CMS_ttW_TTW_lnU  : TTW   : .*     : normSymm : 3.0 ; lnU=True
 
