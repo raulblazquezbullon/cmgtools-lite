@@ -8,6 +8,7 @@ sys.path.append('{cmsswpath}/src/CMGTools/TTHAnalysis/python/plotter/tw-run2/dif
 import errorPropagator as ep
 import beautifulUnfoldingPlots as bp
 import varList as vl
+import getLaTeXtable as tex
 
 r.gROOT.SetBatch(True)
 
@@ -117,6 +118,9 @@ def PlotDetectorLevelResults(inpath, iY, iV, thedict):
     nominal_withErrors[0].SetFillColorAlpha(r.kBlue, 0.35)
     nominal_withErrors[0].SetLineColor(0)
     nominal_withErrors[0].SetFillStyle(1001)
+
+    if iV != "Fiducial":
+        tex.saveLaTeXfromhisto(thedict[""], iV, path = inpath + "/" + iY + "/tables", errhisto = nominal_withErrors[0], ty = "detector")
 
     if "legpos_detector" in vl.varList[iV]: legloc = vl.varList[iV]["legpos_detector"]
     else:                                   legloc = "TR"

@@ -873,6 +873,7 @@ systMap = {
     'muonisosf_syst'      : True,
     'pileup'         : True,
     'prefiring_2016' : True,
+    'prefiring_2017' : True,
     'jes'        : True,
     'jer_2016'   : True,
     'jer_2017'   : True,
@@ -1033,33 +1034,47 @@ SysNameTranslator = {
 
 
 PrintSysNameTranslator = {
-    'JES'      : "JES",
-    'fsr'      : "FSR",
-    'isr'      : "ISR",
-    'tWME'     : "tW $\\mu_{R}/\\mu_{F}$",
-    'DS'       : "tW DS-DR",
-    'hDamp'    : "ME/PS",
-    'UE'       : "UE",
-    'ttbarME'  : "\\ttbar \\mu_{R}/\\mu_{F}",
-    'pdf'      : "PDF",
-    'ColorR'   : "Colour rec.",
-    'JER'      : "JER",
-    'ElecEff'  : "Electron eff.",
-    'MuonEff'  : "Muon eff.",
-    'Trig'     : "Trigger eff.",
-    'TopPt'    : "Top \pt rew.",
-    'mtop'     : "$m_{top}$ unc.",
-    'PU'       : "PU",
-    'Btag'     : "B-tagging",
-    'Mistag'   : "Mistagging",
-    'ttbar'    : "\\ttbar norm.",
-    'Non-WorZ' : "Non-W/Z norm.",
-    'DY'       : "DY norm.",
-    'VVttbarV' : "VV+\\ttbar V norm.",
-    'Stat.'    : "Statistical",
-    'Lumi'     : "Luminosity",
-    'asimov'   : "asimov",
-    ''         : "Nominal",
+    'asimov'              : "Asimov",
+    'Nominal'             : "Nominal",
+    'btagging'            : "B-tagging",
+    'btagging_2016'       : "B-tagging (2016)",
+    'btagging_1718'       : "B-tagging (2017, 2018)",
+    'mistagging'          : "Mistagging",
+    'mistagging_2016'     : "Mistagging (2016)",
+    'mistagging_1718'     : "Mistagging (2017, 2018)",
+    'muonen_2016'         : "Muon en. corr. (2016)",
+    'muonen_2017'         : "Muon en. corr. (2017)",
+    'muonen_2018'         : "Muon en. corr. (2018)",
+    'elecidsf'            : "Electron ID eff.",
+    'elecrecosf'          : "Electron reco. eff.",
+    'muonidsf_stat_2016'  : "Muon ID eff. (2016, stat.)",
+    'muonidsf_stat_2017'  : "Muon ID eff. (2017, stat.)",
+    'muonidsf_stat_2018'  : "Muon ID eff. (2018, stat.)",
+    'muonidsf_syst'       : "Muon ID eff. (syst.)",
+    'muonisosf_stat_2016' : "Muon ISO eff. (2016, stat.)",
+    'muonisosf_stat_2017' : "Muon ISO eff. (2017, stat.)",
+    'muonisosf_stat_2018' : "Muon ISO eff. (2018, stat.)",
+    'muonisosf_syst'      : "Muon ISO eff. (syst.)",
+    'pileup'              : "Pile-up",
+    'prefiring_2016'      : "L1 ECAL prefiring (2016)",
+    'prefiring_2017'      : "L1 ECAL prefiring (2017)",
+    'jes'                 : "JES",
+    'jer_2016'            : "JER (2016)",
+    'jer_2017'            : "JER (2017)",
+    'jer_2018'            : "JER (2018)",
+    'triggereff_2016'     : "Trigger eff. (2016)",
+    'triggereff_2017'     : "Trigger eff. (2017)",
+    'triggereff_2018'     : "Trigger eff. (2018)",
+    'isr_ttbar'           : "ISR (\\ttbar)",
+    'isr_tw'              : "ISR (\\tw)",
+    'fsr_ttbar'           : "FSR (\\ttbar)",
+    'fsr_tw'              : "FSR (\\tw)",
+    'topptrew'            : "Top \pt rew.",
+    'ue'                  : "UE",
+    'ttbar_matching'      : "ME/PS matching (\\ttbar)",
+    'ttbar_scales'        : "\\ttbar $\\mu_{R}$/$\\mu_{F}$",
+    'tw_scales'           : "\\tw $\\mu_{R}$/$\\mu_{F}$",
+    'colour_rec'          : "Colour rec.",
 }
 
 
@@ -1087,29 +1102,17 @@ GOFTranslator = {
 
 
 TableDict = {
-    "folded" : {
+    "detector" : {
             "prefix"     : "$d\\sigma/d\\left(",
             "dimensions" : "(pb)",
         },
-    "folded_bin" : {
-            "prefix"     : "$d\\sigma/d\\left(",
-            "dimensions" : "(pb/\\GeV)",
-        },
-    "unfolded" : {
+    "particle" : {
             "prefix"     : "$d\\sigma/d\\left(",
             "dimensions" : "(pb)",
         },
-    "unfolded_bin" : {
-            "prefix"     : "$d\\sigma/d\\left(",
-            "dimensions" : "(pb/\\GeV)",
-        },
-    "unfolded_binnorm" : {
+    "particlefidbin" : {
             "prefix"     : "$(1/\\sigma_{\\rm{fid}})d\\sigma/d\\left(",
             "dimensions" : "(1/\\GeV)",
-        },
-    "unfolded_norm" : {
-            "prefix"     : "$(1/\\sigma_{\\rm{fid}})d\\sigma/d\\left(",
-            "dimensions" : "",
         },
 }
 

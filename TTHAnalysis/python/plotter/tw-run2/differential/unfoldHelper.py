@@ -7,7 +7,7 @@ from multiprocessing import Pool
 sys.path.append('{cmsswpath}/src/CMGTools/TTHAnalysis/python/plotter/tw-run2/differential/'.format(cmsswpath = os.environ['CMSSW_BASE']))
 import beautifulUnfoldingPlots as bp
 import errorPropagator as ep
-#import getLaTeXtable as tex
+import getLaTeXtable as tex
 import varList as vl
 import goftests as gof
 
@@ -134,9 +134,10 @@ class DataContainer:
 
 class UnfolderHelper:
     ''' Performs unfolding for one specific nuisance'''
-    def __init__(self, var, nuis):
+    def __init__(self, var, nuis, year):
         self.var        = var
         self.nuis       = nuis
+        self.year       = year
         self.plotspath  = ''
         self.doArea     = False
         self.Init       = False
@@ -176,8 +177,9 @@ class UnfolderHelper:
         self.logTauCurv = r.TSpline3()
         self.lCurve     = r.TGraph(0)
 
-        #self.themax = self.tunfolder.ScanLcurve(10000, 1e-10, 1e-4, self.lCurve, self.logTauX, self.logTauY, self.logTauCurv)
-        self.themax = self.tunfolder.ScanLcurve(10000, r.Double(1e-30), r.Double(1e-4), self.lCurve, self.logTauX,  self.logTauY, self.logTauCurv)
+        self.themax = self.tunfolder.ScanLcurve(100, 1, 1, self.lCurve, self.logTauX, self.logTauY, self.logTauCurv)
+        #self.themax = self.tunfolder.ScanLcurve(10000, r.Double(1e-30), r.Double(1e-4), self.lCurve, self.logTauX,  self.logTauY, self.logTauCurv)
+        #self.themax = self.tunfolder.ScanLcurve(1000, 8, 8, self.lCurve, self.logTauX, self.logTauY, self.logTauCurv)
         
         self.tau = self.tunfolder.GetTau()
         return
@@ -285,11 +287,12 @@ class Unfolder():
         self.Data             = DataContainer(var, self.folderpath, inputsfilename_, matricesfilename_, year)
         self.systListResp     = self.Data.systListResp
         self.sysList          = self.Data.listOfSysts
-        self.helpers          = { nuis : UnfolderHelper(self.var, nuis) for nuis in self.sysList }
-        self.helpers['']      = UnfolderHelper(self.var, '')
+        self.helpers          = { nuis : UnfolderHelper(self.var, nuis, self.year) for nuis in self.sysList }
+        self.helpers['']      = UnfolderHelper(self.var, '', self.year)
         self.wearedoingasimov = (not vl.asimov and not 'asimov' in self.sysList)
         self.helpers[''].wearedoingasimov = self.wearedoingasimov    # ONLY IMPLEMENTED FOR NOMINAL ONES!!!!!
         self.plotspath        = ""
+        self.tablespath       = ""
         self.doRegularisation = False
         self.usingFitInput    = False
         self.taulist          = { nuis : 0 for nuis in self.sysList } # Different taus for all the response matrices not implemented.
@@ -461,6 +464,11 @@ class Unfolder():
 
 
     def doUnfoldingForAllNuis(self):
+        if self.plotspath == "":
+            raise RuntimeError("FATAL: no output plots path set.")
+        if self.tablespath == "":
+            raise RuntimeError("FATAL: no output tables path set.")
+
         thelumi = vl.TotalLumi if self.year == "run2" else vl.LumiDict[int(self.year)]
 
         allHistos = {}
@@ -520,7 +528,7 @@ class Unfolder():
 
         for nuis in self.sysList:
             if nuis == "": continue
-            if verbose: print '> Unfolding distribution of {sys} systematic'.format(sys = nuis)
+            if verbose: print '    - Unfolding distribution of {sys} systematic'.format(sys = nuis)
             self.helpers[nuis].tunfolder.DoUnfold(tauval)
             allHistos[nuis] = self.helpers[nuis].tunfolder.GetOutput(self.var + '_' + nuis)
             if "Fiducial" in self.var:
@@ -539,7 +547,7 @@ class Unfolder():
                 allHistos[nuis].SetBinContent(1, 1, valor)
                 allHistos[nuis].SetBinError(  1, 1, inc)
             else:
-                tmpcov = deepcopy(self.helpers[nuis].tunfolder.GetEmatrixTotal("tmpcov"))
+                tmpcov = deepcopy(self.helpers[nuis].tunfolder.GetEmatrixTotal("tmpcov_" + nuis))
                 for bin in range(1, allHistos[nuis].GetNbinsX() + 1):
                     allHistos[nuis].SetBinError(bin, math.sqrt(tmpcov.GetBinContent(bin, bin)))
                 del tmpcov
@@ -625,8 +633,8 @@ class Unfolder():
         print "\n"
         #############################
         
-        #if not self.wearedoingasimov and varName != "Fiducial":
-            #tex.saveLaTeXfromhisto(allHistos[""], varName, path = vl.tablespath, errhisto = nominal_withErrors[0], ty = "unfolded")
+        if self.var != "Fiducial":
+            tex.saveLaTeXfromhisto(allHistos[""], self.var, path = self.tablespath, errhisto = nominal_withErrors[0], ty = "particle")
 
         if   "legpos_particle"   in vl.varList[self.var] and not self.wearedoingasimov:
             legloc = vl.varList[self.var]["legpos_particle"]
@@ -763,20 +771,21 @@ def UnfoldVariable(tsk):
         os.system("mkdir -p " + outplotspath)
 
     a.plotspath        = outplotspath
+    a.tablespath       = inpath + "/" + iY + "/tables"
     a.doSanityCheck    = True
     if "fit" in signalextr:
         a.usingFitInput    = True
-    #a.doRegularisation = vl.varList[iV]["doReg"]  if "doReg"  in vl.varList[iV] else vl.doReg
-    #a.doAreaConstraint = vl.varList[iV]["doArea"] if "doArea" in vl.varList[iV] else vl.doArea
+    a.doRegularisation = vl.varList[iV]["doReg"]  if "doReg"  in vl.varList[iV] else vl.doReg
+    a.doAreaConstraint = vl.varList[iV]["doArea"] if "doArea" in vl.varList[iV] else vl.doArea
     a.doRegularisation = False
     a.doAreaConstraint = False
 
     a.doUnfoldingForAllNuis() # Unfolding
 
     if "Fiducial" not in iV:
-        #a.doScanPlots()                # L-Curve and curvature plots
-        #a.doRegularizationComparison() # Comparison plot between regularisation and not
-        #a.doAreaConstraintComparison() # Comparison plot between area constraint and not
+        a.doScanPlots()                # L-Curve and curvature plots
+        a.doRegularizationComparison() # Comparison plot between regularisation and not
+        a.doAreaConstraintComparison() # Comparison plot between area constraint and not
         a.doBottomLineTest()           # Bottom-line test
 
     del a
@@ -833,7 +842,8 @@ if __name__ == "__main__":
 
         for iV in thevars:
             if "plots" in iV: continue
-            if "Fiducial" in iV: continue
+            if "table" in iV: continue
+            #if "Fiducial" in iV: continue
             #if "Lep1_Pt" not in iV: continue
             #if "Lep1Lep2_DPhi" not in iV: continue
             #if iY not in ["2016", "2017"]: continue
