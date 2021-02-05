@@ -392,16 +392,17 @@ def drawTheRelUncPlot(listWithHistos, thedict, thePlot, yaxismax = "auto", doSym
             iS += 1
             continue
 
-        if "Lumi" in uncList[iS][0]:
+        if "lumi" in uncList[iS][0].lower():
             uncList[iS][1].SetLineColor(r.kBlack)
             uncList[iS][1].SetLineStyle( 4 )
         else:
-            uncList[iS][1].SetLineColor( vl.ColorMapList[iS] )
+            #uncList[iS][1].SetLineColor( vl.ColorMapList[iS] )
+            uncList[iS][1].SetLineColor( vl.UncsColourMap[uncList[iS][0].lower()] )
             uncList[iS][1].SetLineWidth( 2 )
 
         uncList[iS][1].SetFillColorAlpha(r.kBlue, 0.)
-        #thePlot.addHisto(uncList[iS][1], 'H,same', vl.SysNameTranslator[uncList[iS][0]], 'L')
-        thePlot.addHisto(uncList[iS][1], 'H,same', uncList[iS][0], 'L')
+        thePlot.addHisto(uncList[iS][1], 'H,same', vl.SysNameTranslator[uncList[iS][0].lower()], 'L')
+        #thePlot.addHisto(uncList[iS][1], 'H,same', uncList[iS][0], 'L')
         plottedsysts += 1
 
         #print iS, uncList[iS][0]
