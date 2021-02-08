@@ -13,7 +13,6 @@ import varList as vl
 
 r.gROOT.SetBatch(True)
 vl.SetUpWarnings()
-print "\nREMEMBER TO RUN THIS WITH A CMSSW INSTALLATION (or with ROOT, Numpy, and Scipy)\n"
 
 
 #def GiveMeMyGOFTests(var): # Old code!
@@ -445,7 +444,7 @@ if __name__ == "__main__":
             for iY in theyears:
                 thevars = next(os.walk(inpath + "/" + iY))[1]
                 for iV in thevars:
-                    if "plots" in iV or "Fiducial" in iV: continue
+                    if "plots" in iV or "Fiducial" in iV or "table" in iV: continue
 
                     for t in ["particle", "particlefidbin"]:
                         tasks.append( (inpath, iY, iV, t) )

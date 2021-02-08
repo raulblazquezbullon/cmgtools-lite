@@ -206,7 +206,7 @@ def GetAndPlotPuritiesAndStabilities(var, theresponseh, theparticleh, thedetecto
         hPur.SetBinContent(j, purities[j - 1])
 
     #print " > Plotting first purities and stabilities plot..."
-    c = r.TCanvas('c', "Purities and stabilities of " + var)
+    c = r.TCanvas('c', "Purities and stabilities of " + var, 600, 600)
     plot = c.GetPad(0);
     #plot.SetPad(0.0, 0.23, 1.0, 1.0);
     plot.SetTopMargin(0.06); plot.SetRightMargin(0.05); plot.SetLeftMargin(0.1); plot.SetBottomMargin(0.12)
@@ -254,7 +254,7 @@ def GetAndPlotPuritiesAndStabilities(var, theresponseh, theparticleh, thedetecto
 
 
     #print " > Plotting second purities and stabilities plot..."
-    c = r.TCanvas('c', "Purities and stabilities of " + var)
+    c = r.TCanvas('c', "Purities and stabilities of " + var, 600, 600)
     plot = c.GetPad(0);
     #plot.SetPad(0.0, 0.23, 1.0, 1.0);
     plot.SetTopMargin(0.06); plot.SetRightMargin(0.05); plot.SetLeftMargin(0.1); plot.SetBottomMargin(0.12)

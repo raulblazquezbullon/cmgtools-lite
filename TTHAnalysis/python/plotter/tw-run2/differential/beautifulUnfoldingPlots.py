@@ -145,7 +145,9 @@ class beautifulUnfPlot:
             histo = histos
             if self.var in vl.varList:
                 histo.GetXaxis().SetTitle( vl.varList[self.var]['xaxis'] )
-                if self.isUncPlot:
+                if self.isLCurve:
+                    histo.GetYaxis().SetTitle( vl.varList[self.var]['yaxis'] )
+                elif self.isUncPlot:
                     histo.GetYaxis().SetTitle( self.yaxis_unclabel )
                 elif not vl.doxsec or "detector" in self.name:
                     histo.GetYaxis().SetTitle( 'Events' )

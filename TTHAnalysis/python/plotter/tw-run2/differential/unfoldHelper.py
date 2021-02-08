@@ -3,11 +3,12 @@ import ROOT as r
 import warnings as wr
 import os, sys, math, array, argparse
 from multiprocessing import Pool
+import numpy as np
 
 sys.path.append('{cmsswpath}/src/CMGTools/TTHAnalysis/python/plotter/tw-run2/differential/'.format(cmsswpath = os.environ['CMSSW_BASE']))
 import beautifulUnfoldingPlots as bp
 import errorPropagator as ep
-#import getLaTeXtable as tex
+import getLaTeXtable as tex
 import varList as vl
 import goftests as gof
 
@@ -134,9 +135,10 @@ class DataContainer:
 
 class UnfolderHelper:
     ''' Performs unfolding for one specific nuisance'''
-    def __init__(self, var, nuis):
+    def __init__(self, var, nuis, year):
         self.var        = var
         self.nuis       = nuis
+        self.year       = year
         self.plotspath  = ''
         self.doArea     = False
         self.Init       = False
@@ -176,8 +178,8 @@ class UnfolderHelper:
         self.logTauCurv = r.TSpline3()
         self.lCurve     = r.TGraph(0)
 
-        #self.themax = self.tunfolder.ScanLcurve(10000, 1e-10, 1e-4, self.lCurve, self.logTauX, self.logTauY, self.logTauCurv)
-        self.themax = self.tunfolder.ScanLcurve(10000, r.Double(1e-30), r.Double(1e-4), self.lCurve, self.logTauX,  self.logTauY, self.logTauCurv)
+        self.themax = self.tunfolder.ScanLcurve(150, 1, 1, self.lCurve, self.logTauX, self.logTauY, self.logTauCurv)
+        #self.themax = self.tunfolder.ScanLcurve(100, r.Double(1e-20), r.Double(5), self.lCurve, self.logTauX,  self.logTauY, self.logTauCurv)
         
         self.tau = self.tunfolder.GetTau()
         return
@@ -215,46 +217,123 @@ class UnfolderHelper:
             self.doLCurveScan()
         
         # First: L-curve plot
-        plot = bp.beautifulUnfPlot('{var}_asimov_LCurve'.format(var = self.var) if (self.wearedoingasimov) else '{var}_LCurve'.format(var = self.var), self.var)
+        plot = bp.beautifulUnfPlot('{var}_asimov_LCurve'.format(var = self.var) if (self.wearedoingasimov) else '{var}_LCurve'.format(var = self.var), "LCurve")
         plot.isLCurve      = True
         plot.doPreliminary = vl.doPre
         plot.displayedLumi = vl.TotalLumi if self.year == "run2" else vl.LumiDict[int(self.year)]
         plot.plotspath     = self.plotspath
+        plot.initCanvasAndAll()
+        plot.canvas.SetBottomMargin(0.15)
 
+        curvplot = deepcopy(self.lCurve.Clone("curvplot"))
         if not hasattr(self, 'scanRes'):
             self.logTauX.GetKnot( self.themax, t, x)
             self.logTauY.GetKnot( self.themax, t, y)
-
             self.lCurve.SetLineWidth(2)
             self.lCurve.SetLineColor(r.kBlue)
             r.TGaxis.SetMaxDigits(3)
             self.lCurve.GetXaxis().SetNoExponent(True)
             self.lCurve.GetYaxis().SetNoExponent(True)
-            self.lCurve.GetXaxis().SetTitle('log(#chi^{2}_{R})')
-            self.lCurve.GetYaxis().SetTitle('log(#chi^{2}_{reg.})')
-            plot.addHisto(self.lCurve,'ALnomin', '', 0)
+            self.lCurve.GetYaxis().SetRangeUser(self.lCurve.GetYaxis().GetXmin(),
+                                                (self.lCurve.GetYaxis().GetXmax() - self.lCurve.GetYaxis().GetXmin()) * 1.1 + self.lCurve.GetYaxis().GetXmin())
+            #self.lCurve.GetXaxis().SetTitle('log(#chi^{2}_{R})')    ### Del TFM
+            #self.lCurve.GetYaxis().SetTitle('log(#chi^{2}_{reg.})') ### Del TFM
+            plot.addHisto(self.lCurve, 'ALnomin', '', 0)
         else:
-            plot.addHisto(self.scanRes,'ALnomin','L curve',0)
+            plot.addHisto(self.scanRes, 'ALnomin', 'L-curve', 0)
 
         grph = r.TGraph(1, array.array('d', [r.Double(self.tunfolder.GetLcurveX())]), array.array('d', [r.Double(self.tunfolder.GetLcurveY())]))
+
+        print t, x, y
+        print self.tunfolder.GetLcurveX(), self.tunfolder.GetLcurveY()
+        print self.tau
+
         grph.SetMarkerColor(r.kRed)
         grph.SetMarkerSize(2)
         grph.SetMarkerStyle(29)
-        #grph.Draw("P")
-        plot.addTLatex(0.75, 0.9, "#tau = {taupar}".format(taupar = round(self.tau, 10)))
+        grph.Draw("P")
+
+        plot.addTLatex(0.75, 0.85, "#tau = {taupar}".format(taupar = round(self.tau, 10)))
         #plot.addTLatex(0.75, 0.9, "#tau = {taupar}".format(taupar = self.tau))
         plot.saveCanvas('TR', leg = False)
         del plot, grph
         
-        # Second: L-curve curvature plot
-        plot = bp.beautifulUnfPlot('{var}_asimov_LogTauCurv'.format(var = self.var) if (self.wearedoingasimov) else '{var}_LogTauCurv'.format(var = self.var), self.var)
+        #for iP in range(self.logTauCurv.GetNp()):
+            #ix = r.Double(); iy = r.Double()
+            #self.logTauCurv.GetKnot(iP, ix, iy)
+            #print iP, ix, iy
+        #self.logTauCurv.GetKnot(iP + 1, ix, iy)
+        #print iP + 1, ix, iy
+
+        nps    = curvplot.GetN()
+        xmin  = self.logTauCurv.GetXmin()
+        xmax  = self.logTauCurv.GetXmax()
+        delta = (xmax - xmin) / nps
+
+        #print nps, xmin, xmax
+
+        for iP in range(nps):
+            thex = xmin + iP * delta
+            curvplot.SetPoint(iP, thex, self.logTauCurv.Eval(thex))
+            #print iP, thex, 10**thex, self.logTauCurv.Eval(thex)
+
+
+        #sys.exit()
+
+        # Second: L-curve curvature plot.
+        plot = bp.beautifulUnfPlot('{var}_asimov_LogTauCurv'.format(var = self.var) if (self.wearedoingasimov) else '{var}_LogTauCurv'.format(var = self.var), "LogTauCurv")
+        plot.isLCurve      = True
         plot.plotspath     = self.plotspath
         plot.displayedLumi = vl.TotalLumi if self.year == "run2" else vl.LumiDict[int(self.year)]
         plot.doPreliminary = vl.doPre
         plot.initCanvasAndAll()
-        #plot.addHisto(self.lCurve, 'AL','',0)
         plot.canvas.cd()
-        self.logTauCurv.Draw("AL")
+        plot.canvas.SetBottomMargin(0.125)
+        curvplot.GetXaxis().SetNoExponent(True)
+        #curvplot.GetYaxis().SetNoExponent(True)
+
+        pointx = r.TMath.Log10(self.tau)
+        pointy = self.logTauCurv.Eval(r.TMath.Log10(self.tau))
+
+        #thedist = (xmax - xmin) / 4
+        #mindist = abs(pointx - xmin)
+        #maxdist = abs(pointx - xmax)
+        #if  mindist < thedist:
+            #newmin = curvplot.GetXaxis().GetXmin()
+            #newmax = curvplot.GetXaxis().GetXmin() + thedist
+
+        #elif maxdist < thedist:
+            #newmin = curvplot.GetXaxis().GetXmax() - thedist
+            #newmax = curvplot.GetXaxis().GetXmax()
+        #else:
+            #newmin = pointx - thedist/4
+            #newmax = pointx + thedist/4
+
+        #thelist = [self.logTauCurv.Eval(ix) for ix in np.linspace(newmin, newmax, nps)]
+        #miny = min(thelist); maxy = max(thelist)
+        ##print miny, maxy, thelist,
+        ##sys.exit()
+        #curvplot.GetXaxis().SetRangeUser(newmin, newmax)
+        #curvplot.GetYaxis().SetRangeUser(miny - (maxy - miny) * 0.05,
+                                         #miny + (maxy - miny) * 1.2)
+
+        curvplot.GetYaxis().SetRangeUser(curvplot.GetYaxis().GetXmin(),
+                                         curvplot.GetYaxis().GetXmin() + (curvplot.GetYaxis().GetXmax() - curvplot.GetYaxis().GetXmin()) * 1.175)
+
+        plot.addHisto(curvplot, 'ALnomin', '', 0)
+
+
+        grph = r.TGraph(1, array.array('d', [r.Double(pointx)]), array.array('d', [r.Double(pointy)]))
+        grph.SetMarkerColor(r.kRed)
+        grph.SetMarkerSize(2)
+        grph.SetMarkerStyle(29)
+        grph.Draw("P")
+
+        #plot.canvas.GetPad(1).SetPad(*vl.plotlimits)
+        #self.logTauCurv.SetTitle(";log(\\tau);\\mathcal{C}")
+        #self.logTauCurv.GetXaxis().SetTitle('log(#tau)')
+        #self.logTauCurv.GetYaxis().SetTitle('\\mathcal{C}')
+        #self.logTauCurv.Draw("AL")
         plot.saveCanvas('TR')
         del plot
         return
@@ -285,11 +364,12 @@ class Unfolder():
         self.Data             = DataContainer(var, self.folderpath, inputsfilename_, matricesfilename_, year)
         self.systListResp     = self.Data.systListResp
         self.sysList          = self.Data.listOfSysts
-        self.helpers          = { nuis : UnfolderHelper(self.var, nuis) for nuis in self.sysList }
-        self.helpers['']      = UnfolderHelper(self.var, '')
+        self.helpers          = { nuis : UnfolderHelper(self.var, nuis, self.year) for nuis in self.sysList }
+        self.helpers['']      = UnfolderHelper(self.var, '', self.year)
         self.wearedoingasimov = (not vl.asimov and not 'asimov' in self.sysList)
         self.helpers[''].wearedoingasimov = self.wearedoingasimov    # ONLY IMPLEMENTED FOR NOMINAL ONES!!!!!
         self.plotspath        = ""
+        self.tablespath       = ""
         self.doRegularisation = False
         self.usingFitInput    = False
         self.taulist          = { nuis : 0 for nuis in self.sysList } # Different taus for all the response matrices not implemented.
@@ -329,12 +409,14 @@ class Unfolder():
     def doTauScan(self):
         self.helpers[''].doTauScan()
         self.taulist[''] = self.helpers[''].tau
+        return
 
 
     def doScanPlots(self):
         self.helpers[''].plotspath = self.plotspath
         self.helpers[''].doScanPlots()
         self.taulist[''] = self.helpers[''].tau
+        return
 
 
     def doClosure(self, tau = None):
@@ -461,6 +543,11 @@ class Unfolder():
 
 
     def doUnfoldingForAllNuis(self):
+        if self.plotspath == "":
+            raise RuntimeError("FATAL: no output plots path set.")
+        if self.tablespath == "":
+            raise RuntimeError("FATAL: no output tables path set.")
+
         thelumi = vl.TotalLumi if self.year == "run2" else vl.LumiDict[int(self.year)]
 
         allHistos = {}
@@ -520,7 +607,7 @@ class Unfolder():
 
         for nuis in self.sysList:
             if nuis == "": continue
-            if verbose: print '> Unfolding distribution of {sys} systematic'.format(sys = nuis)
+            if verbose: print '    - Unfolding distribution of {sys} systematic'.format(sys = nuis)
             self.helpers[nuis].tunfolder.DoUnfold(tauval)
             allHistos[nuis] = self.helpers[nuis].tunfolder.GetOutput(self.var + '_' + nuis)
             if "Fiducial" in self.var:
@@ -539,7 +626,7 @@ class Unfolder():
                 allHistos[nuis].SetBinContent(1, 1, valor)
                 allHistos[nuis].SetBinError(  1, 1, inc)
             else:
-                tmpcov = deepcopy(self.helpers[nuis].tunfolder.GetEmatrixTotal("tmpcov"))
+                tmpcov = deepcopy(self.helpers[nuis].tunfolder.GetEmatrixTotal("tmpcov_" + nuis))
                 for bin in range(1, allHistos[nuis].GetNbinsX() + 1):
                     allHistos[nuis].SetBinError(bin, math.sqrt(tmpcov.GetBinContent(bin, bin)))
                 del tmpcov
@@ -625,8 +712,8 @@ class Unfolder():
         print "\n"
         #############################
         
-        #if not self.wearedoingasimov and varName != "Fiducial":
-            #tex.saveLaTeXfromhisto(allHistos[""], varName, path = vl.tablespath, errhisto = nominal_withErrors[0], ty = "unfolded")
+        if self.var != "Fiducial":
+            tex.saveLaTeXfromhisto(allHistos[""], self.var, path = self.tablespath, errhisto = nominal_withErrors[0], ty = "particle")
 
         if   "legpos_particle"   in vl.varList[self.var] and not self.wearedoingasimov:
             legloc = vl.varList[self.var]["legpos_particle"]
@@ -763,20 +850,21 @@ def UnfoldVariable(tsk):
         os.system("mkdir -p " + outplotspath)
 
     a.plotspath        = outplotspath
+    a.tablespath       = inpath + "/" + iY + "/tables"
     a.doSanityCheck    = True
     if "fit" in signalextr:
         a.usingFitInput    = True
-    #a.doRegularisation = vl.varList[iV]["doReg"]  if "doReg"  in vl.varList[iV] else vl.doReg
-    #a.doAreaConstraint = vl.varList[iV]["doArea"] if "doArea" in vl.varList[iV] else vl.doArea
+    a.doRegularisation = vl.varList[iV]["doReg"]  if "doReg"  in vl.varList[iV] else vl.doReg
+    a.doAreaConstraint = vl.varList[iV]["doArea"] if "doArea" in vl.varList[iV] else vl.doArea
     a.doRegularisation = False
     a.doAreaConstraint = False
 
     a.doUnfoldingForAllNuis() # Unfolding
 
     if "Fiducial" not in iV:
-        #a.doScanPlots()                # L-Curve and curvature plots
-        #a.doRegularizationComparison() # Comparison plot between regularisation and not
-        #a.doAreaConstraintComparison() # Comparison plot between area constraint and not
+        a.doScanPlots()                # L-Curve and curvature plots
+        a.doRegularizationComparison() # Comparison plot between regularisation and not
+        a.doAreaConstraintComparison() # Comparison plot between area constraint and not
         a.doBottomLineTest()           # Bottom-line test
 
     del a
@@ -833,7 +921,8 @@ if __name__ == "__main__":
 
         for iV in thevars:
             if "plots" in iV: continue
-            if "Fiducial" in iV: continue
+            if "table" in iV: continue
+            #if "Fiducial" in iV: continue
             #if "Lep1_Pt" not in iV: continue
             #if "Lep1Lep2_DPhi" not in iV: continue
             #if iY not in ["2016", "2017"]: continue

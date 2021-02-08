@@ -259,7 +259,7 @@ if __name__=="__main__":
             for iY in theyears:
                 thevars = next(os.walk(inpath + "/" + iY))[1]
                 for iV in thevars:
-                    if "plots" in iV or "Fiducial" in iV: continue
+                    if "plots" in iV or "Fiducial" in iV or "table" in iV: continue
 
                     for t in ["detector", "particle", "particlefid", "particlebin", "particlefidbin"]:
                         tasks.append( (inpath, iY, iV, t) )

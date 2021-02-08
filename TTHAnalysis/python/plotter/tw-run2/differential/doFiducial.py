@@ -7,7 +7,7 @@ from multiprocessing import Pool
 sys.path.append('{cmsswpath}/src/CMGTools/TTHAnalysis/python/plotter/tw-run2/differential/'.format(cmsswpath = os.environ['CMSSW_BASE']))
 import beautifulUnfoldingPlots as bp
 import errorPropagator as ep
-#import getLaTeXtable as tex
+import getLaTeXtable as tex
 import varList as vl
 
 vl.SetUpWarnings()
@@ -282,6 +282,9 @@ def PlotParticleFidBinLevelResults(thedict, inpath, iY, varName):
     nominal_withErrors[0].SetFillColorAlpha(r.kBlue, 0.35)
     nominal_withErrors[0].SetLineColor(0)
     nominal_withErrors[0].SetFillStyle(1001)
+
+    if varName != "Fiducial":
+        tex.saveLaTeXfromhisto(thedict[""], varName, path = inpath + "/" + iY + "/tables", errhisto = nominal_withErrors[0], ty = "particlefidbin")
 
     if "yaxismax_particlefidbin" in vl.varList[varName]:
         plot.yaxisuplimit = vl.varList[varName]["yaxismax_particlefidbin"]
@@ -568,7 +571,7 @@ if __name__ == "__main__":
             for iY in theyears:
                 thevars = next(os.walk(inpath + "/" + iY))[1]
                 for iV in thevars:
-                    if "plots" in iV or "Fiducial" in iV: continue
+                    if "plots" in iV or "Fiducial" in iV or "table" in iV: continue
                     tasks.append( (inpath, iY, iV) )
 
     #tasks = [ (inpath, "2016", "Lep1Lep2Jet1MET_Mt") ]
