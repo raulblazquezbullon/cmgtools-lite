@@ -244,9 +244,9 @@ class UnfolderHelper:
 
         grph = r.TGraph(1, array.array('d', [r.Double(self.tunfolder.GetLcurveX())]), array.array('d', [r.Double(self.tunfolder.GetLcurveY())]))
 
-        print t, x, y
-        print self.tunfolder.GetLcurveX(), self.tunfolder.GetLcurveY()
-        print self.tau
+        #print t, x, y
+        #print self.tunfolder.GetLcurveX(), self.tunfolder.GetLcurveY()
+        #print self.tau
 
         grph.SetMarkerColor(r.kRed)
         grph.SetMarkerSize(2)
