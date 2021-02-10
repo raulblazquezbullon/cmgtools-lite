@@ -206,8 +206,8 @@ void trainBDtW_2j1t(TString outputdir, TString outputbasedir = "/pool/phedex/use
 
 
 
-  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_200_005_4",
-      "NTrees=200:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.05:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_200_005_4",
+//      "NTrees=200:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.05:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
   
   //====================Metodos Nuevos=================================== Learning rate opt
 //  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_200_0001_4",
@@ -256,6 +256,9 @@ void trainBDtW_2j1t(TString outputdir, TString outputbasedir = "/pool/phedex/use
 //      "NTrees=200:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.05:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=8" );
 //  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_200_005_10",
 //      "NTrees=200:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.05:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=10" );
+  //==Overtraining fixing
+  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_150_005_2_MinNodeSize5",
+      "NTrees=150:MinNodeSize=5%:BoostType=Grad:Shrinkage=0.05:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=2" );
   //====================Metodos Nuevos===================================
   
   
