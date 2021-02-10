@@ -55,6 +55,20 @@ class Uncertainty:
                 self.fakerate[0]._weight = '(%s)*(%s)'%(self.fakerate[0]._weight,self.extra['AddWeight'])
             if 'FakeRate' not in self.extra and 'AddWeight' not in self.extra:
                 raise RuntimeError("templateSymm requires at least one of FakeRate='fname' or AddWeight='expr'. Given extra arguments: " + str(self.extra))
+
+        elif self.unc_type == 'templateSymmAdditive':
+            self.fakerate[1]    = None
+            self.trivialFunc[1] = 'symmetrize_up_to_dn_additively'
+            if 'FakeRate' in self.extra:
+                self._nontrivialSelectionChange = True
+                self.fakerate[0] = FakeRate(self.extra['FakeRate'], loadFilesNow = False, year = self._options.year)
+
+            if 'AddWeight' in self.extra:
+                self.fakerate[0]._weight = '(%s)*(%s)'%(self.fakerate[0]._weight, self.extra['AddWeight'])
+
+            if 'FakeRate' not in self.extra and 'AddWeight' not in self.extra:
+                raise RuntimeError("FATAL: templateSymmAdditive requires at least one of FakeRate='fname' or AddWeight='expr'. Given extra arguments: " + str(self.extra))
+
         elif self.unc_type=='normAsymm':
             if len(self.args) != 2:
                 raise RuntimeError("normAsymm requires two arguments: low and high")
@@ -64,7 +78,7 @@ class Uncertainty:
                 self.normUnc[idx] = float(self.args[1-idx])
         elif self.unc_type=='normSymm':
             if len(self.args) != 1:
-                raise RuntimeError("normAsymm requires one argument")
+                raise RuntimeError("normSymm requires one argument")
             self.fakerate = [None,None]
             self.trivialFunc = ['apply_norm_up','apply_norm_dn']
             self.normUnc[0] = float(self.args[0])
@@ -133,10 +147,20 @@ class Uncertainty:
 
     def symmetrize_up_to_dn(self,results):
         central, up, down = results
+
         h = central.Clone('');
         h.Multiply(h)
         h.Divide(up)
         return h
+
+    def symmetrize_up_to_dn_additively(self, results):
+        central, up, down = results
+
+        h = central.Clone('');
+        h.Add(h)
+        h.Add(up, -1)
+        return h
+
     def apply_norm_up(self,results):
         return self.apply_norm('up',results)
     def apply_norm_dn(self,results):
