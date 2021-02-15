@@ -10,16 +10,23 @@ import array, math
 class jetCollector:
     ## __init__
     ## _______________________________________________________________
-    def __init__(self, select, tag, label):
+    def __init__(self, select, tag, label, lightweight=False):
         self.isData = False
         self.select = select
         self.label = label
         if tag == "MC":
             self.subbranchesF = ['area', 'btagCMVA', 'btagCSVV2', 'btagDeepB', 'btagDeepC', 'btagDeepFlavB', 'btagDeepFlavC', 'chEmEF', 'chHEF', 'eta', 'jercCHF', 'jercCHPUF', 'mass', 'muEF', 'muonSubtrFactor', 'neEmEF', 'neHEF', 'phi', 'pt', 'qgl', 'rawFactor', 'bRegCorr', 'bRegRes', 'pt_nom', 'corr_JEC', 'corr_JER', 'mass_nom', 'pt_jerUp', 'mass_jerUp', 'mass_jmrUp', 'mass_jmsUp', 'pt_jesTotalUp', 'mass_jesTotalUp', 'pt_jerDown', 'mass_jerDown', 'mass_jmrDown', 'mass_jmsDown', 'pt_jesTotalDown', 'mass_jesTotalDown', 'pt_jesTotalCorrUp', 'pt_jesTotalCorrDown', 'pt_jesTotalUnCorrUp', 'pt_jesTotalUnCorrDown']
             self.subbranchesI = ['electronIdx1', 'electronIdx2', 'jetId', 'muonIdx1', 'muonIdx2', 'nConstituents', 'nElectrons', 'nMuons', 'puId', 'genJetIdx', 'hadronFlavour', 'partonFlavour', 'cleanmask'] 
+            if lightweight:
+               self.subbranchesF = ['eta',  'phi', 'pt', 'pt_nom', 'mass_nom', 'pt_jerUp', 'mass_jerUp', 'mass_jmrUp', 'mass_jmsUp', 'pt_jesTotalUp', 'mass_jesTotalUp', 'pt_jerDown', 'mass_jerDown', 'mass_jmrDown', 'mass_jmsDown', 'pt_jesTotalDown', 'mass_jesTotalDown', 'pt_jesTotalCorrUp', 'pt_jesTotalCorrDown', 'pt_jesTotalUnCorrUp', 'pt_jesTotalUnCorrDown']
+               self.subbranchesI = ['jetId', 'genJetIdx', 'hadronFlavour', 'partonFlavour']
+
         elif tag == "DATA":
             self.subbranchesF = ['area', 'btagCMVA', 'btagCSVV2', 'btagDeepB', 'btagDeepC', 'btagDeepFlavB', 'btagDeepFlavC', 'chEmEF', 'chHEF', 'eta', 'jercCHF', 'jercCHPUF', 'mass', 'muEF', 'muonSubtrFactor', 'neEmEF', 'neHEF', 'phi', 'pt', 'qgl', 'rawFactor', 'bRegCorr', 'bRegRes', 'pt_nom']
             self.subbranchesI = ['electronIdx1', 'electronIdx2', 'jetId', 'muonIdx1', 'muonIdx2', 'nConstituents', 'nElectrons', 'nMuons', 'puId', 'cleanmask']
+            if lightweight:
+               self.subbranchesF = ['eta',  'phi', 'pt', 'pt_nom']
+               self.subbranchesI = ['jetId']
 
     ## __call__
     ## _______________________________________________________________
@@ -41,6 +48,7 @@ class jetCollector:
         self.cleanindex = [iJ  for iJ in getattr(event,"iJSel_Mini")     ] 
         self.cleanjets  = []
         for iJ in self.cleanindex:
+           if iJ < 0 or  iJ >= len(self.jets): continue
            if self.select(self.jets[iJ]):
               self.cleanjets.append(self.jets[iJ])
         self.cleanjets.sort(key=lambda x : x.pt_nom, reverse=True)
