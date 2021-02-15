@@ -1,0 +1,14 @@
+fakes : DYJetsToLL_M50_part0 + DYJetsToLL_M50_part1 + DYJetsToLL_M50_part2 + DYJetsToLL_M50_part3 + DYJetsToLL_M50_part4 + DYJetsToLL_M50_part5 + DYJetsToLL_M50_part6 + DYJetsToLL_M50_part7 + DYJetsToLL_M50_part8 + DYJetsToLL_M50_part9 + DYJetsToLL_M50_part10 + DYJetsToLL_M50_part11 + DYJetsToLL_M50_part12 + DYJetsToLL_M50_part13 + DYJetsToLL_M50_part14 + DYJetsToLL_M50_part15: xsec ; FillColor=ROOT.kGray , FakeRate="RunII_SM_WZ/common/fakerate_standard_central.txt\,RunII_SM_WZ/common/fakerate_load_isfake.txt", Label="MC Fakes", NormSystematic=0.30
+fakes : TTTo2L2Nu_part0 + TTTo2L2Nu_part1  : xsec ; FillColor=ROOT.kGray , FakeRate="RunII_SM_WZ/common/fakerate_standard_central.txt\,RunII_SM_WZ/common/fakerate_load_isfake.txt", Label="MC Fakes", NormSystematic=0.30
+
+
+fakes_fromdat+ : DYJetsToLL_M50_part0 + DYJetsToLL_M50_part1 + DYJetsToLL_M50_part2 + DYJetsToLL_M50_part3 + DYJetsToLL_M50_part4 + DYJetsToLL_M50_part5 + DYJetsToLL_M50_part6 + DYJetsToLL_M50_part7 + DYJetsToLL_M50_part8 + DYJetsToLL_M50_part9 + DYJetsToLL_M50_part10 + DYJetsToLL_M50_part11 + DYJetsToLL_M50_part12 + DYJetsToLL_M50_part13 + DYJetsToLL_M50_part14 + DYJetsToLL_M50_part15: xsec ; FillColor=ROOT.kRed , FakeRate="RunII_SM_WZ/2016/fakerate_fakeappl.txt", Label="Fakes (Data ff)", NormSystematic=0.30
+fakes_fromdat+ : TTTo2L2Nu_part0 + TTTo2L2Nu_part1  : xsec ; FillColor=ROOT.kBlue , FakeRate="RunII_SM_WZ/2016/fakerate_fakeappl.txt", Label="Fakes (QCD ff)", NormSystematic=0.30
+
+
+fakes_fromqcd+ : DYJetsToLL_M50_part0 + DYJetsToLL_M50_part1 + DYJetsToLL_M50_part2 + DYJetsToLL_M50_part3 + DYJetsToLL_M50_part4 + DYJetsToLL_M50_part5 + DYJetsToLL_M50_part6 + DYJetsToLL_M50_part7 + DYJetsToLL_M50_part8 + DYJetsToLL_M50_part9 + DYJetsToLL_M50_part10 + DYJetsToLL_M50_part11 + DYJetsToLL_M50_part12 + DYJetsToLL_M50_part13 + DYJetsToLL_M50_part14 + DYJetsToLL_M50_part15: xsec ; FillColor=ROOT.kBlue , FakeRate="RunII_SM_WZ/2016/fakerate_fakeappl_qcd.txt", Label="Fakes (QCD ff)", NormSystematic=0.30
+fakes_fromqcd+ : TTTo2L2Nu_part0 + TTTo2L2Nu_part1  : xsec ; FillColor=ROOT.kBlue , FakeRate="RunII_SM_WZ/2016/fakerate_fakeappl_qcd.txt", Label="Fakes (QCD ff)", NormSystematic=0.30
+
+fakes_fromtt+ : DYJetsToLL_M50_part0 + DYJetsToLL_M50_part1 + DYJetsToLL_M50_part2 + DYJetsToLL_M50_part3 + DYJetsToLL_M50_part4 + DYJetsToLL_M50_part5 + DYJetsToLL_M50_part6 + DYJetsToLL_M50_part7 + DYJetsToLL_M50_part8 + DYJetsToLL_M50_part9 + DYJetsToLL_M50_part10 + DYJetsToLL_M50_part11 + DYJetsToLL_M50_part12 + DYJetsToLL_M50_part13 + DYJetsToLL_M50_part14 + DYJetsToLL_M50_part15: xsec ; FillColor=ROOT.kBlack , FakeRate="RunII_SM_WZ/2016/fakerate_fakeappl_tt.txt", Label="Fakes (TT ff)", NormSystematic=0.30
+fakes_fromtt+ : TTTo2L2Nu_part0 + TTTo2L2Nu_part1  : xsec ; FillColor=ROOT.kBlack , FakeRate="RunII_SM_WZ/2016/fakerate_fakeappl_tt.txt", Label="Fakes (TT ff)", NormSystematic=0.30
+
