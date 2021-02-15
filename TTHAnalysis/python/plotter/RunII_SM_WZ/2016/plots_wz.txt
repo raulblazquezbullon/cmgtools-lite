@@ -39,8 +39,8 @@ lepW_phi         : LepW_phi         : 10,-3.15,3.15; YTitle="Leptons", XTitle="#
 ## further further lepton observables
 ## ------------------------------------------------------------
 
-pol_cosWfromFT_Dn : cos_ThetaWDn_HE :  10,-1,1  ; XTitle="q_{W}*cos(#theta_{W}^{Dn})", Legend='TL', LegendCutoff5e-3, MoreY=2.0
-pol_cosZfromFT_Dn : cos_ThetaZDn_HE :  10,-1,1  ; XTitle="cos(#theta_{Z})", Legend='TL', LegendCutoff5e-3, MoreY=2.0
+pol_cosWfromFT_Dn : cos_ThetaWDn_HE :  10,-1,1  ; XTitle="q_{W}*cos(#theta_{W}^{Dn})", Legend='TL', LegendCutoff=5e-3, MoreY=2.0
+pol_cosZfromFT_Dn : cos_ThetaZDn_HE :  10,-1,1  ; XTitle="cos(#theta_{Z})", Legend='TL', LegendCutoff=5e-3, MoreY=2.0
 
 pol_cosWfromFT_Dn_CS : cos_ThetaWDn_CS :  10,-1,1  ; XTitle="q_{W}*cos(#theta_{W}^{Dn}(CS))", Legend='TL', LegendCutoff5e-3, MoreY=2.0
 pol_cosZfromFT_Dn_CS : cos_ThetaZ_CS :  10,-1,1  ; XTitle="cos(#theta_{Z}(CS))", Legend='TL', LegendCutoff5e-3, MoreY=2.0
@@ -51,6 +51,11 @@ pol_RecWetaPL :   (2*(LepW_pdgId < 0)-1)*abs(sump4(1, LepW_pt, LepW_eta, LepW_ph
 
 
 pol_Wpt :  (2*(LepW_pdgId < 0)-1)*sump4(0, LepW_pt, LepW_eta, LepW_phi, LepW_mass, MET_pt_central , 0, MET_phi_central, 0) : 40,-200,200 ; XTitle="q_{W}*p_{T}^{W} [GeV]", Legend="TL", legendCutoff=1e-2
+
+pol_Wpt_TT :  (2*(LepW_pdgId < 0)-1)*sump4(0, LepW_pt, LepW_eta, LepW_phi, LepW_mass, MET_pt_central , 0, MET_phi_central, 0) : 20,-400,400 ; XTitle="q_{W}*p_{T}^{W} [GeV]", Legend="TL", legendCutoff=1e-2
+
+
+
 
 pol_RecZphiPL :  (2*(LepW_pdgId < 0)-1)*abs(deltaPhi(sump4(2, LepZ1_pt, LepZ1_eta, LepZ1_phi, LepZ1_mass, LepZ2_pt , LepZ2_eta, LepZ2_phi, LepZ2_mass),(LepZ1_phi*(LepZ1_pdgId >0)+LepZ2_phi*(LepZ2_pdgId>0))))  : 20,-3.141592,3.141592; XTitle="q_{W}*|#Delta_{#phi}(Z\,l_{Z})|", Legend='TL', LegendCutoff5e-3, MoreY=2.5
 
@@ -71,6 +76,8 @@ dEtaWZ : sump4(1, LepZ1_pt, LepZ1_eta, LepZ1_phi, LepZ1_mass, LepZ2_pt , LepZ2_e
 dPhiWZ : deltaPhi(sump4(2, LepZ1_pt, LepZ1_eta, LepZ1_phi, LepZ1_mass, LepZ2_pt , LepZ2_eta, LepZ2_phi, LepZ2_mass), WDn_phi_Lab) : 10, -3.14, 3.14; XTitle = "#Delta(#phi)^{WZ}", Legend="TR", legendCutoff=1e-2
 
 pol_Zpt :   (2*(LepW_pdgId < 0)-1)*sump4(0, LepZ1_pt, LepZ1_eta, LepZ1_phi, LepZ1_mass, LepZ2_pt , LepZ2_eta, LepZ2_phi, LepZ2_mass) : 40,-200,200 ; XTitle="q_{W}*p_{T}^{Z} [GeV]", Legend="TL", legendCutoff=1e-2
+pol_Zpt_TT :   (2*(LepW_pdgId < 0)-1)*sump4(0, LepZ1_pt, LepZ1_eta, LepZ1_phi, LepZ1_mass, LepZ2_pt , LepZ2_eta, LepZ2_phi, LepZ2_mass) : 20,-400,400 ; XTitle="q_{W}*p_{T}^{Z} [GeV]", Legend="TL", legendCutoff=1e-2
+
 
 ## event observables
 ## ----------------------------------------------------------
@@ -84,10 +91,43 @@ met        : MET_pt_central    : 20,0,400   ; XTitle="p_{T}^{miss}  (GeV)"      
 htJet30j   : htJet30j       : 20,0,200    ; XTitle="H_{T}(jet p_{T} > 30) [GeV]" , LegendCutoff5e-3, Logy, YMax=50000, YMin=1e-1
 nJet30     : nJet30_Mini         : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5] ; XTitle="N(jet\, p_{T} > 30)"         , LegendCutoff5e-3, Logy, YMax=50000, YMin=1e-1
 nBJet25    : nBJetTight25_Mini  : 1,-1,1  ; XTitle="N(b-jet\, p_{T} > 25\, DCSVT)", LegendCutoff5e-3, Logy, YMax=100000, YMin=1
+nJet25     : nJet25_Mini : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5]  ; XTitle="N(jet\, p_{T} > 25)"         , LegendCutoff5e-3, Logy, YMax=50000, YMin=1e-1
+nPUJet : nJet25_Mini-Sum$(Jet_genJetIdx[iJSel_Mini]>= 0 && Jet_pt[iJSel_Mini] >= 25) : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5]  ; XTitle="N(jet\, p_{T} > 25\, not gen matched)"         , LegendCutoff5e-3, Logy, YMax=50000, YMin=1e-1
+
+nPUJetPUID4 :  Sum$(Jet_pt[iJSel_Mini] >= 25 && (Jet_puId[iJSel_Mini] >= 4|| Jet_pt >= 50) && abs(Jet_eta[iJSel_Mini]) < 2.5) - Sum$(Jet_genJetIdx[iJSel_Mini]>= 0 && Jet_pt[iJSel_Mini] >= 25 && (Jet_puId[iJSel_Mini] >= 4|| Jet_pt >= 50) && abs(Jet_eta[iJSel_Mini]) < 2.5) : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5] ; XTitle="N(jet\, p_{T} > 25\, not gen matched\, PUID L)"         , LegendCutoff5e-3, Logy, YMax=50000, YMin=1e-1
+
+nPUJetPUID6 :  Sum$(Jet_pt[iJSel_Mini] >= 25 && (Jet_puId[iJSel_Mini] >= 6|| Jet_pt >= 50) && abs(Jet_eta[iJSel_Mini]) < 2.5) - Sum$(Jet_genJetIdx[iJSel_Mini]>= 0 && Jet_pt[iJSel_Mini] >= 25 && (Jet_puId[iJSel_Mini] >= 6|| Jet_pt >= 50) && abs(Jet_eta[iJSel_Mini]) < 2.5) : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5] ; XTitle="N(jet\, p_{T} > 25\, not gen matched\, PUID M)"         , LegendCutoff5e-3, Logy, YMax=50000, YMin=1e-1
+
+nPUJetPUID7 :  Sum$(Jet_pt[iJSel_Mini] >= 25 && (Jet_puId[iJSel_Mini] >= 7|| Jet_pt >= 50) && abs(Jet_eta[iJSel_Mini]) < 2.5) - Sum$(Jet_genJetIdx[iJSel_Mini]>= 0 && Jet_pt[iJSel_Mini] >= 25 && (Jet_puId[iJSel_Mini] >= 7|| Jet_pt >= 50) && abs(Jet_eta[iJSel_Mini]) < 2.5) : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5] ; XTitle="N(jet\, p_{T} > 25\, not gen matched\, PUID T)"         , LegendCutoff5e-3, Logy, YMax=50000, YMin=1e-1
+
+nPUJetPUID8 :  Sum$(Jet_pt[iJSel_Mini] >= 25 && (Jet_puId[iJSel_Mini] >= 8|| Jet_pt >= 50) && abs(Jet_eta[iJSel_Mini]) < 2.5) - Sum$(Jet_genJetIdx[iJSel_Mini]>= 0 && Jet_pt[iJSel_Mini] >= 25 && (Jet_puId[iJSel_Mini] >= 8 || Jet_pt >= 50)&& abs(Jet_eta[iJSel_Mini]) < 2.5) : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5] ; XTitle="N(jet\, p_{T} > 25\, not gen matched\, PUID Impossible)"         , LegendCutoff5e-3, Logy, YMax=50000, YMin=1e-1
+
+
+nJet25PUID0 :  Sum$(Jet_pt[iJSel_Mini] >= 25 && abs(Jet_eta[iJSel_Mini]) < 2.5 && Jet_jetId[iJSel_Mini] >= 2)  : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5] ; XTitle="N(jet\, p_{T} > 25)"         , LegendCutoff5e-3, Logy, YMax=50000, YMin=1e-1
+
+nJet25PUID4 :  Sum$(Jet_pt[iJSel_Mini] >= 25 && (Jet_puId[iJSel_Mini] >= 4 || Jet_pt[iJSel_Mini] >= 50) && abs(Jet_eta[iJSel_Mini]) < 2.5 && Jet_jetId[iJSel_Mini] >= 2)  : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5] ; XTitle="N(jet\, p_{T} > 25\, PUID L)"         , LegendCutoff5e-3, Logy, YMax=50000, YMin=1e-1
+
+nJet25PUID6 :  Sum$(Jet_pt[iJSel_Mini] >= 25 && (Jet_puId[iJSel_Mini] >= 6 || Jet_pt[iJSel_Mini] >= 50) && abs(Jet_eta[iJSel_Mini]) < 2.5 && Jet_jetId[iJSel_Mini] >= 2)  : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5] ; XTitle="N(jet\, p_{T} > 25\, PUID M)"         , LegendCutoff5e-3, Logy, YMax=50000, YMin=1e-1
+
+nJet25PUID7 :  Sum$(Jet_pt[iJSel_Mini] >= 25 && (Jet_puId[iJSel_Mini] >= 7 || Jet_pt[iJSel_Mini] >= 50) && abs(Jet_eta[iJSel_Mini]) < 2.5 && Jet_jetId[iJSel_Mini] >= 2)  : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5] ; XTitle="N(jet\, p_{T} > 25\, PUID T)"         , LegendCutoff5e-3, Logy, YMax=50000, YMin=1e-1
+
+nJet25PUID8 :  Sum$(Jet_pt[iJSel_Mini] >= 25 && (Jet_puId[iJSel_Mini] >= 8 || Jet_pt[iJSel_Mini] >= 50) && abs(Jet_eta[iJSel_Mini]) < 2.5 && Jet_jetId[iJSel_Mini] >= 2)  : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5] ; XTitle="N(jet\, p_{T} > 25\, PUID impossible)"         , LegendCutoff5e-3, Logy, YMax=50000, YMin=1e-1
+
+nJetClean25 : nJetClean25 : 10,-0.5,10.5 : XTitle="N_{jet} (p_{T} >= 25 GeV)", LegendCutoff5e-3, Logy=True, YMax=50000, YMin=1e-1
+
+nJetCleanPUL25: nJetPULClean25 : 10,-0.5,10.5 : XTitle="N_{jet} (p_{T} >= 25 GeV)", LegendCutoff5e-3, Logy=True, YMax=50000, YMin=1e-1
+
+jetptclean : JetClean25_pt : 30,0.,600. : XTitle="p_{T} (jet)", LegendCutoff5e-3, Logy=True, YMax=50000, YMin=1e-1
+
+jetetaclean: JetClean25_eta : 30,-2.5,2.5 : XTitle="#eta (jet)", LegendCutoff5e-3, Logy=True, YMax=50000, YMin=1e-1
+
 
 m3l        : m3L            : 10,0,500    ; XTitle="m_{3L} (GeV)"                , LegendCutoff5e-3, Logy, Legend="TL", YMin=1, YMax=100000, Legend="TR"
 mll3l      : mll_3l        : 15,75,105    ; XTitle="M_{ll} (GeV)"                , LegendCutoff5e-3, Logy, YMin=1, YMax=5000000, Legend="TR"
 mtW3l      : mT_3l         : 20,0,200    ; XTitle="M_{T} (GeV)"                 , LegendCutoff5e-3, Logy, YMin=1, YMax=500000, Legend="TR"
+mllZ2      : mass_2(LepSel_pt[unused4(mll_i1[0], mll_i2[0], 1)],LepSel_eta[unused4(mll_i1[0], mll_i2[0], 1)], LepSel_phi[unused4(mll_i1[0], mll_i2[0], 1)],0, LepSel_pt[unused4(mll_i1[0], mll_i2[0], 2)], LepSel_eta[unused4(mll_i1[0], mll_i2[0], 2)], LepSel_phi[unused4(mll_i1[0], mll_i2[0], 2)],0): 100,0,200 ; XTitle="M_{Z2} (GeV)", LegendCutoff5e-3, Logy, YMin=1, YMax=500000, Legend="TR"
+mll3lconv  : mll_3l        : 8,35,75    ; XTitle="M_{ll} (GeV)"                , LegendCutoff5e-3, Logy, YMin=1, YMax=5000000, Legend="TR"
+
 
 flavor3l   : (abs(LepSel_pdgId[0])+abs(LepSel_pdgId[1])+abs(LepSel_pdgId[2])-33)/2  : 4,-0.5,3.5 ; XTitle="flavor", xBinLabels="eee\,ee#mu\,e#mu#mu\,#mu#mu#mu", Legend="TL", LegendCutoff5e-3, MoreY=3.0
 flavorcharge3l   : (abs(LepSel_pdgId[0])+abs(LepSel_pdgId[1])+abs(LepSel_pdgId[2])-33)/2+ 4*(LepW_pdgId[0] < 0)  : 8,-0.5,7.5 ; XTitle="flavor", xBinLabels="eee^{-}\,ee#mu^{-}\,e#mu#mu^{-}\,#mu#mu#mu^{-}\,eee^{+}\,ee#mu^{+}\,e#mu#mu^{+}\,#mu#mu#mu^{+}", Legend="TL", LegendCutoff5e-3, MoreY=3.0
@@ -95,6 +135,9 @@ flavorcharge3l   : (abs(LepSel_pdgId[0])+abs(LepSel_pdgId[1])+abs(LepSel_pdgId[2
 
 charge3l_sign3TC   : if3(LepSel_pdgId[0]>0,-1,1)+if3(LepSel_pdgId[1]>0,-1,1)+if3(LepSel_pdgId[2]>0,-1,1) : 7,-3.5,3.5 ; XTitle="charge", Legend="TL", LegendCutoff5e-3, MoreY=3.0
 m3lmet_Meas : m3Lmet : [100,200,300,400,500,1000,1500,3000] ; XTitle="m_{WZ} [GeV]", LegendCutoff=1e-8, YTitle='Events/bin', Logy, YMin=0.1, YMax=100000000, IncludeOverflows=False
+m3lmet_Meas_conv : m3Lmet : 5,0,100 ; XTitle="m_{WZ} [GeV]", LegendCutoff=1e-8, YTitle='Events/bin', Logy, YMin=0.1, YMax=100000000, IncludeOverflows=False
+
+
 Zpt_Meas :  sump4(0, LepZ1_pt, LepZ1_eta, LepZ1_phi, LepZ1_mass, LepZ2_pt , LepZ2_eta, LepZ2_phi, LepZ2_mass) : [0,75,150,225,300,350,400,500]; XTitle="p_{T}^{Z} [GeV]", Legend="TR", legendCutoff=1e-2 
 charge3l_eee3TC   : if3(LepSel_pdgId[0]>0,-1,1)+if3(LepSel_pdgId[1]>0,-1,1)+if3(LepSel_pdgId[2]>0,-1,1) : 7,-3.5,3.5 ; XTitle="charge", Legend="TL", LegendCutoff5e-3, MoreY=3.0
 charge3l_mme3TC   : if3(LepSel_pdgId[0]>0,-1,1)+if3(LepSel_pdgId[1]>0,-1,1)+if3(LepSel_pdgId[2]>0,-1,1) : 7,-3.5,3.5 ; XTitle="charge", Legend="TL", LegendCutoff5e-3, MoreY=3.0
@@ -111,19 +154,8 @@ one : 1 : 1,0,2 ; XTitle ="Yields"
 ## ----------------------------------------------------------
 
 
-#nJBWT      : (nJet25_Mini == 0 && nBJetMedium25_Mini == 0)*1 + (nJet25_Mini == 1 && nBJetMedium25_Mini == 0)*2 + (nJet25_Mini == 2 && nBJetMedium25_Mini == 0)*3 + (nJet25_Mini == 3 && nBJetMedium25_Mini == 0)*4 + (nJet25_Mini >= 4 && nBJetMedium25_Mini == 0)*5  + (nJet25_Mini == 0 && nBJetMedium25_Mini == 1)*6 + (nJet25_Mini == 1 && nBJetMedium25_Mini == 1)*7 + (nJet25_Mini == 2 && nBJetMedium25_Mini == 1)*8 + (nJet25_Mini == 3 && nBJetMedium25_Mini == 1)*9 + (nJet25_Mini >= 4 && nBJetMedium25_Mini == 1)*10 + (nJet25_Mini == 0 && nBJetMedium25_Mini >= 2)*11 + (nJet25_Mini == 1 && nBJetMedium25_Mini >= 2)*12 + (nJet25_Mini == 2 && nBJetMedium25_Mini >= 2)*13 + (nJet25_Mini == 3 && nBJetMedium25_Mini >= 2)*14 + (nJet25_Mini >= 4 && nBJetMedium25_Mini >= 2)*15     : 16,0.5,16.5 ; XTitle="(N_{jet p_{T} > 25 GeV}\, N_{btag DCSVM p_{T} > 25 GeV})"         , LegendCutoff5e-3, Logy, YMax=5000, YMin=1,  xBinLabels="(0 0)\,(1 0)\,(2 0)\,(3 0)\,(4 0)\,(0 1)\,(0 2)\,(1 2)\,(2 2)\,(3 2)\,(4 2)"
 
-#nJB20      : (nJet25_Mini == 0 && nBJetMedium25_Mini == 0)*1 + (nJet25_Mini == 1 && nBJetMedium25_Mini == 0)*2 + (nJet25_Mini == 2 && nBJetMedium25_Mini == 0)*3 + (nJet25_Mini == 3 && nBJetMedium25_Mini == 0)*4 + (nJet25_Mini >= 4 && nBJetMedium25_Mini == 0)*5  + (nJet25_Mini == 0 && nBJetMedium25_Mini == 1)*6 + (nJet25_Mini == 1 && nBJetMedium25_Mini == 1)*7 + (nJet25_Mini == 2 && nBJetMedium25_Mini == 1)*8 + (nJet25_Mini == 3 && nBJetMedium25_Mini == 1)*9 + (nJet25_Mini >= 4 && nBJetMedium25_Mini == 1)*10 + (nJet25_Mini == 0 && nBJetMedium25_Mini >= 2)*11 + (nJet25_Mini == 1 && nBJetMedium25_Mini >= 2)*12 + (nJet25_Mini == 2 && nBJetMedium25_Mini >= 2)*13 + (nJet25_Mini == 3 && nBJetMedium25_Mini >= 2)*14 + (nJet25_Mini >= 4 && nBJetMedium25_Mini >= 2)*15     : 16,0.5,16.5 ; XTitle="(N_{jet p_{T} > 25 GeV}\, N_{btag DCSVM p_{T} > 25 GeV})"         , LegendCutoff5e-3, Logy, YMax=5000, YMin=1,  xBinLabels="(0 0)\,(1 0)\,(2 0)\,(3 0)\,(4 0)\,(0 1)\,(0 2)\,(1 2)\,(2 2)\,(3 2)\,(4 2)"
-
-#nJB25      : (nJet25_Mini == 0 && nBJetMedium25_Mini == 0)*1 + (nJet25_Mini == 1 && nBJetMedium25_Mini == 0)*2 + (nJet25_Mini == 2 && nBJetMedium25_Mini == 0)*3 + (nJet25_Mini == 3 && nBJetMedium25_Mini == 0)*4 + (nJet25_Mini >= 4 && nBJetMedium25_Mini == 0)*5  + (nJet25_Mini == 0 && nBJetMedium25_Mini == 1)*6 + (nJet25_Mini == 1 && nBJetMedium25_Mini == 1)*7 + (nJet25_Mini == 2 && nBJetMedium25_Mini == 1)*8 + (nJet25_Mini == 3 && nBJetMedium25_Mini == 1)*9 + (nJet25_Mini >= 4 && nBJetMedium25_Mini == 1)*10 + (nJet25_Mini == 0 && nBJetMedium25_Mini >= 2)*11 + (nJet25_Mini == 1 && nBJetMedium25_Mini >= 2)*12 + (nJet25_Mini == 2 && nBJetMedium25_Mini >= 2)*13 + (nJet25_Mini == 3 && nBJetMedium25_Mini >= 2)*14 + (nJet25_Mini >= 4 && nBJetMedium25_Mini >= 2)*15     : 16,0.5,16.5 ; XTitle="(N_{jet p_{T} > 25 GeV}\, N_{btag DCSVM p_{T} > 25 GeV})"         , LegendCutoff5e-3, Logy, YMax=5000, YMin=1,  xBinLabels="(0 0)\,(1 0)\,(2 0)\,(3 0)\,(4 0)\,(0 1)\,(0 2)\,(1 2)\,(2 2)\,(3 2)\,(4 2)"
-
-#nJB30      : (nJet25_Mini == 0 && nBJetMedium25_Mini == 0)*1 + (nJet25_Mini == 1 && nBJetMedium25_Mini == 0)*2 + (nJet25_Mini == 2 && nBJetMedium25_Mini == 0)*3 + (nJet25_Mini == 3 && nBJetMedium25_Mini == 0)*4 + (nJet25_Mini >= 4 && nBJetMedium25_Mini == 0)*5  + (nJet25_Mini == 0 && nBJetMedium25_Mini == 1)*6 + (nJet25_Mini == 1 && nBJetMedium25_Mini == 1)*7 + (nJet25_Mini == 2 && nBJetMedium25_Mini == 1)*8 + (nJet25_Mini == 3 && nBJetMedium25_Mini == 1)*9 + (nJet25_Mini >= 4 && nBJetMedium25_Mini == 1)*10 + (nJet25_Mini == 0 && nBJetMedium25_Mini >= 2)*11 + (nJet25_Mini == 1 && nBJetMedium25_Mini >= 2)*12 + (nJet25_Mini == 2 && nBJetMedium25_Mini >= 2)*13 + (nJet25_Mini == 3 && nBJetMedium25_Mini >= 2)*14 + (nJet25_Mini >= 4 && nBJetMedium25_Mini >= 2)*15     : 16,0.5,16.5 ; XTitle="(N_{jet p_{T} > 25 GeV}\, N_{btag DCSVM p_{T} > 25 GeV})"         , LegendCutoff5e-3, Logy, YMax=5000, YMin=1,  xBinLabels="(0 0)\,(1 0)\,(2 0)\,(3 0)\,(4 0)\,(0 1)\,(0 2)\,(1 2)\,(2 2)\,(3 2)\,(4 2)"
-
-#nJB35      : (nJet25_Mini == 0 && nBJetMedium25_Mini == 0)*1 + (nJet25_Mini == 1 && nBJetMedium25_Mini == 0)*2 + (nJet25_Mini == 2 && nBJetMedium25_Mini == 0)*3 + (nJet25_Mini == 3 && nBJetMedium25_Mini == 0)*4 + (nJet25_Mini >= 4 && nBJetMedium25_Mini == 0)*5  + (nJet25_Mini == 0 && nBJetMedium25_Mini == 1)*6 + (nJet25_Mini == 1 && nBJetMedium25_Mini == 1)*7 + (nJet25_Mini == 2 && nBJetMedium25_Mini == 1)*8 + (nJet25_Mini == 3 && nBJetMedium25_Mini == 1)*9 + (nJet25_Mini >= 4 && nBJetMedium25_Mini == 1)*10 + (nJet25_Mini == 0 && nBJetMedium25_Mini >= 2)*11 + (nJet25_Mini == 1 && nBJetMedium25_Mini >= 2)*12 + (nJet25_Mini == 2 && nBJetMedium25_Mini >= 2)*13 + (nJet25_Mini == 3 && nBJetMedium25_Mini >= 2)*14 + (nJet25_Mini >= 4 && nBJetMedium25_Mini >= 2)*15     : 16,0.5,16.5 ; XTitle="(N_{jet p_{T} > 25 GeV}\, N_{btag DCSVM p_{T} > 25 GeV})"         , LegendCutoff5e-3, Logy, YMax=5000, YMin=1,  xBinLabels="(0 0)\,(1 0)\,(2 0)\,(3 0)\,(4 0)\,(0 1)\,(0 2)\,(1 2)\,(2 2)\,(3 2)\,(4 2)"
-
-
-#nJB40      : (nJet25_Mini == 0 && nBJetMedium25_Mini == 0)*1 + (nJet25_Mini == 1 && nBJetMedium25_Mini == 0)*2 + (nJet25_Mini == 2 && nBJetMedium25_Mini == 0)*3 + (nJet25_Mini == 3 && nBJetMedium25_Mini == 0)*4 + (nJet25_Mini >= 4 && nBJetMedium25_Mini == 0)*5  + (nJet25_Mini == 0 && nBJetMedium25_Mini == 1)*6 + (nJet25_Mini == 1 && nBJetMedium25_Mini == 1)*7 + (nJet25_Mini == 2 && nBJetMedium25_Mini == 1)*8 + (nJet25_Mini == 3 && nBJetMedium25_Mini == 1)*9 + (nJet25_Mini >= 4 && nBJetMedium25_Mini == 1)*10 + (nJet25_Mini == 0 && nBJetMedium25_Mini >= 2)*11 + (nJet25_Mini == 1 && nBJetMedium25_Mini >= 2)*12 + (nJet25_Mini == 2 && nBJetMedium25_Mini >= 2)*13 + (nJet25_Mini == 3 && nBJetMedium25_Mini >= 2)*14 + (nJet25_Mini >= 4 && nBJetMedium25_Mini >= 2)*15     : 16,0.5,16.5 ; XTitle="(N_{jet p_{T} > 25 GeV}\, N_{btag DCSVM p_{T} > 25 GeV})"         , LegendCutoff5e-3, Logy, YMax=5000, YMin=1,  xBinLabels="(0 0)\,(1 0)\,(2 0)\,(3 0)\,(4 0)\,(0 1)\,(0 2)\,(1 2)\,(2 2)\,(3 2)\,(4 2)"
-
+jetnoclean_pt : if3(nJet > 0, Jet_pt[0], -99) : [25,30,35,40,50,60,70,80,90,100,110,120,130,140,160,180,200,250,300] ; XTitle="p_{T}(leading dirty jet) [GeV]", YTitle="Jets", LegendCutoff5e-3, Logy, YMin=1e-1, YMax=50000
 
 jet1_pt  : if3(nJetSel_Mini>0, Jet_pt[iJSel_Mini[0]], -99) : 40,0,400 ; XTitle="p_{T}(leading jet) [GeV]", YTitle="Jets", LegendCutoff5e-3, Logy, YMin=1e-1, YMax=50000
 jet2_pt  : if3(nJetSel_Mini>1, Jet_pt[iJSel_Mini[1]], -99) : 40,0,400 ; XTitle="p_{T}(subleading jet) [GeV]", YTitle="Jets", LegendCutoff5e-3, Logy, YMin=1e-1, YMax=50000

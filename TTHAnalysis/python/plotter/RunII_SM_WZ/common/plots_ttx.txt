@@ -1,0 +1,23 @@
+## basic lepton observables
+## ----------------------------------------------------------
+
+pol_cosWfromFT_Dn : cos_ThetaWDn_HE :  10,-1,1  ; XTitle="q_{W}*cos(#theta_{W}^{Dn})", Legend='TL', LegendCutoff=5e-3, MoreY=2.0
+pol_cosZfromFT_Dn : cos_ThetaZDn_HE :  10,-1,1  ; XTitle="cos(#theta_{Z})", Legend='TL', LegendCutoff=5e-3, MoreY=2.0
+
+pol_Wpt :  (2*(LepW_pdgId < 0)-1)*sump4(0, LepW_pt, LepW_eta, LepW_phi, LepW_mass, MET_pt_central , 0, MET_phi_central, 0) : 20,-200,200 ; XTitle="q_{W}*p_{T}^{W} [GeV]", Legend="TL", legendCutoff=1e-2
+pol_Zpt :   (2*(LepW_pdgId < 0)-1)*sump4(0, LepZ1_pt, LepZ1_eta, LepZ1_phi, LepZ1_mass, LepZ2_pt , LepZ2_eta, LepZ2_phi, LepZ2_mass) : 20,-200,200 ; XTitle="q_{W}*p_{T}^{Z} [GeV]", Legend="TL", legendCutoff=1e-2
+
+## event observables
+## ----------------------------------------------------------
+
+
+nJetClean25 : nJetClean25   : 10,-0.5,9.5  ; XTitle="N_{jet} (p_{T} #geq 25 GeV)", LegendCutoff=5e-3, MoreY=2.
+mll3l       : mll_3l        : 5,75,105     ; XTitle="M_{ll} (GeV)"                , LegendCutoff=5e-3, Logy, YMin=1, YMax=5000000, Legend="TR"
+flavor3l   : (abs(LepSel_pdgId[0])+abs(LepSel_pdgId[1])+abs(LepSel_pdgId[2])-33)/2  : 4,-0.5,3.5 ; XTitle="flavor", xBinLabels="eee\,ee#mu\,e#mu#mu\,#mu#mu#mu", Legend="TL", LegendCutoff5e-3, MoreY=3.0
+flavorcharge3l   : (abs(LepSel_pdgId[0])+abs(LepSel_pdgId[1])+abs(LepSel_pdgId[2])-33)/2+ 4*(LepW_pdgId[0] < 0)  : 8,-0.5,7.5 ; XTitle="flavor", xBinLabels="eee^{-}\,ee#mu^{-}\,e#mu#mu^{-}\,#mu#mu#mu^{-}\,eee^{+}\,ee#mu^{+}\,e#mu#mu^{+}\,#mu#mu#mu^{+}", Legend="TL", LegendCutoff5e-3, MoreY=3.0
+
+
+charge3l   : if3(LepSel_pdgId[0]>0,-1,1)+if3(LepSel_pdgId[1]>0,-1,1)+if3(LepSel_pdgId[2]>0,-1,1) : 7,-3.5,3.5 ; XTitle="charge", Legend="TL", LegendCutoff5e-3, MoreY=3.0
+m3lmet_Meas : m3Lmet : [100,200,300,400,500,1000,1500,3000] ; XTitle="m_{WZ} [GeV]", LegendCutoff=1e-8, YTitle='Events/bin', Logy, YMin=0.1, YMax=100000000, IncludeOverflows=False
+
+one : 1 : 1,0,2 ; XTitle ="Yields"
