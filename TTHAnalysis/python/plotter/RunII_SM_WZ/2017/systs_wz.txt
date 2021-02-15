@@ -45,7 +45,10 @@ LepSFMu_ML            : prompt_.*|convs          : .* : lepSFMu : templates
 LepSFEl_ML            : prompt_.*|convs          : .* : lepSFEl : templates
 LepSFMuStat2017_ML    : prompt_.*|convs          : .* : lepSFMuStat2017 : templates
 LepSFElStat2017_ML    : prompt_.*|convs          : .* : lepSFElStat2017 : templates
-ISR17 : prompt_WZ : .* : isr : templates
 
+scaleNorm  : prompt_WZ : .* : scale : envelope : 6   # 7 point 1/2 scale varations
+pdfNorm    : prompt_WZ : .* : pdf   : quad : 30 # NNPDF31 is 30 hessian replicas (2017/2018, weight 0 is nominal 1-30 are variations)
+
+ISR17 : prompt_WZ : .* : isr : templates
 #poltaus  : prompt_WZ_Wf.* : .* : taus :  templates
 

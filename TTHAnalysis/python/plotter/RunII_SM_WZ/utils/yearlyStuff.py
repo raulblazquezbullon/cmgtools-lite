@@ -5,8 +5,8 @@ accidenteCofCof = {
 }
 lumi = {
     2016: 35.9,
-    2017: 41.2,
-    2018: 58.9,
+    2017: 41.5,
+    2018: 59.8,
 }
 prefiringTrees = {
     2016: '--FMCs {P}/trigger_prefiring/',
