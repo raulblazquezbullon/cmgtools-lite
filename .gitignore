@@ -13,6 +13,7 @@ __init__.py
 *cxx_tmp
 *.pcm
 *.gitignore
+slurm-*out
 LSFJOB*/
 TTHAnalysis/macros/getFTrees.py
 TTHAnalysis/python/plotter/met-2lss/
