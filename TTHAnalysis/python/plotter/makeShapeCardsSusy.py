@@ -324,10 +324,18 @@ for name in systsEnv.keys():
                 pVars = [report["%s_%s_%i"%(p, effect, i)] for i in range(replicas)]
                 p0Up = nominal.Clone("%s_%s_Up"%(p, effect))
                 p0Dn = nominal.Clone("%s_%s_Up"%(p, effect))
-                for iB in range(1,nominal.GetNbinsX()+1):
-                  values = [pVars[i].GetBinContent(iB) for i in range(replicas)]
-                  p0Up.SetBinContent(iB, max(values))
-                  p0Dn.SetBinContent(iB, min(values))
+                if type(p0Up) == type(ROOT.TH1D()):
+                  for iB in range(1,nominal.GetNbinsX()+1):
+                    values = [pVars[i].GetBinContent(iB) for i in range(replicas)]
+                    p0Up.SetBinContent(iB, max(values))
+                    p0Dn.SetBinContent(iB, min(values))
+                elif type(p0Up) == type(ROOT.TH2D()):
+                  for iBx in range(1,nominal.GetNbinsX()+1):
+                    for iBy in range(1,nominal.GetNbinsY()+1):
+                      values = [pVars[i].GetBinContent(iBx, iBy) for i in range(replicas)]
+                      p0Up.SetBinContent(iBx, iBy, max(values))
+                      p0Dn.SetBinContent(iBx, iBy, min(values))
+
                 if options.noNegVar:
                     p0Up = fixNegVariations(p0Up, report[p])
                     p0Dn = fixNegVariations(p0Dn, report[p])
@@ -346,11 +354,19 @@ for name in systsEnv.keys():
                 p0Dn = nominal.Clone("%s_%s_Up"%(p, effect))
                 iUp = int(round(0.84*replicas))-1
                 iDn = int(round(0.16*replicas))-1
-        
-                for iB in range(1,nominal.GetNbinsX()+1):
-                  values = sorted([pVars[i].GetBinContent(iB) for i in range(replicas)])
-                  p0Up.SetBinContent(iB, values[iUp])
-                  p0Dn.SetBinContent(iB, values[iDn])
+
+                if type(p0Up) == type(ROOT.TH1D()):        
+                  for iB in range(1,nominal.GetNbinsX()+1):
+                    values = sorted([pVars[i].GetBinContent(iB) for i in range(replicas)])
+                    p0Up.SetBinContent(iB, values[iUp])
+                    p0Dn.SetBinContent(iB, values[iDn])
+                elif type(p0Up) == type(ROOT.TH2D()):
+                  for iBx in range(1,nominal.GetNbinsX()+1):
+                    for iBy in range(1,nominal.GetNbinsY()+1):
+                      values = sorted([pVars[i].GetBinContent(iBx,iBy) for i in range(replicas)])
+                      p0Up.SetBinContent(iBx, iBy, values[iUp])
+                      p0Dn.SetBinContent(iBx, iBy, values[iDn])
+
                 if options.noNegVar:
                     p0Up = fixNegVariations(p0Up, report[p])
                     p0Dn = fixNegVariations(p0Dn, report[p])
@@ -368,14 +384,27 @@ for name in systsEnv.keys():
                 pVars = [report["%s_%s_%i"%(p, effect, i)] for i in range(replicas)]
                 p0Up = nominal.Clone("%s_%s_Up"%(p, effect))
                 p0Dn = nominal.Clone("%s_%s_Up"%(p, effect))
-                for iB in range(1,nominal.GetNbinsX()+1):
-                  vUp = 0
-                  vDn = 0
-                  for replica in pVars:
-                    if   replica.GetBinContent(iB) > nominal.GetBinContent(iB): vUp = (vUp**2 + (replica.GetBinContent(iB)-nominal.GetBinContent(iB))**2)**0.5
-                    elif replica.GetBinContent(iB) < nominal.GetBinContent(iB): vDn = (vDn**2 + (replica.GetBinContent(iB)-nominal.GetBinContent(iB))**2)**0.5
-                  p0Up.SetBinContent(iB, nominal.GetBinContent(iB) + vUp)
-                  p0Dn.SetBinContent(iB, nominal.GetBinContent(iB) - vDn)
+                print type(p0Up)
+                if type(p0Up) == type(ROOT.TH1D()):
+                  for iB in range(1,nominal.GetNbinsX()+1):
+                    vUp = 0
+                    vDn = 0
+                    for replica in pVars:
+                      if   replica.GetBinContent(iB) > nominal.GetBinContent(iB): vUp = (vUp**2 + (replica.GetBinContent(iB)-nominal.GetBinContent(iB))**2)**0.5
+                      elif replica.GetBinContent(iB) < nominal.GetBinContent(iB): vDn = (vDn**2 + (replica.GetBinContent(iB)-nominal.GetBinContent(iB))**2)**0.5
+                    p0Up.SetBinContent(iB, nominal.GetBinContent(iB) + vUp)
+                    p0Dn.SetBinContent(iB, nominal.GetBinContent(iB) - vDn)
+                elif type(p0Up) == type(ROOT.TH2D()):
+                  for iBx in range(1,nominal.GetNbinsX()+1):
+                    for iBy in range(1,nominal.GetNbinsY()+1):
+                      vUp = 0
+                      vDn = 0
+                      for replica in pVars:
+                        if   replica.GetBinContent(iBx,iBy) > nominal.GetBinContent(iBx,iBy): vUp = (vUp**2 + (replica.GetBinContent(iBx,iBy)-nominal.GetBinContent(iBx,iBy))**2)**0.5
+                        elif replica.GetBinContent(iBx,iBy) < nominal.GetBinContent(iBx,iBy): vDn = (vDn**2 + (replica.GetBinContent(iBx,iBy)-nominal.GetBinContent(iBx,iBy))**2)**0.5
+                      p0Up.SetBinContent(iBx, iBy, nominal.GetBinContent(iBx,iBy) + vUp)
+                      p0Dn.SetBinContent(iBx, iBy, nominal.GetBinContent(iBx,iBy) - vDn)
+
                 if options.noNegVar:
                     p0Up = fixNegVariations(p0Up, report[p])
                     p0Dn = fixNegVariations(p0Dn, report[p])
