@@ -45,3 +45,7 @@ LepSFMu_ML            : prompt_.*|convs          : .* : lepSFMu : templates
 LepSFEl_ML            : prompt_.*|convs          : .* : lepSFEl : templates
 LepSFMuStat2017_ML    : prompt_.*|convs          : .* : lepSFMuStat2017 : templates
 LepSFElStat2017_ML    : prompt_.*|convs          : .* : lepSFElStat2017 : templates
+ISR17 : prompt_WZ : .* : isr : templates
+
+#poltaus  : prompt_WZ_Wf.* : .* : taus :  templates
+

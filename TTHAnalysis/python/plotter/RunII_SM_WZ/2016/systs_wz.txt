@@ -41,3 +41,6 @@ LepSFMu_ML            : prompt_.*|convs          : .* : lepSFMu : templates
 LepSFEl_ML            : prompt_.*|convs          : .* : lepSFEl : templates
 LepSFMuStat2016_ML    : prompt_.*|convs          : .* : lepSFMuStat2016 : templates
 LepSFElStat2016_ML    : prompt_.*|convs          : .* : lepSFElStat2016 : templates
+ISR16 : prompt_WZ : .* : isr : templates
+
+#poltaus  : prompt_WZ_Wf.* : .* : taus :  templates #Only ON for Vitaliano's requested test on tau templates
