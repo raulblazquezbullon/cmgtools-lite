@@ -31,11 +31,11 @@ SRwZ35      : m3L >= 100 && nBJetTight25_Mini == 0 &&  MET_pt_central  > 35  && 
 SRwZ40      : m3L >= 100 && nBJetTight25_Mini == 0 &&  MET_pt_central  > 40  && abs(mll_3l - 91.16) < 15 && nLepGood < 4; Disable=True
 
 CRZZ   : m3L >= 100 && nBJetTight25_Mini == 0  && abs(mll_3l - 91.16) < 15 && nLepSel == 4 && LepSel_pt[3] > 10 && MET_pt_central > 30; Disable=True
-#CRZZnomet   : m3L >= 100 && nBJetTight25_Mini == 0 &&  nLepSel == 4 && LepSel_pt[3] > 10
 CRTT   : m3L >= 100 && nBJetTight25_Mini > 0   && nLepGood < 4 && MET_pt_central > 30 && abs(mll_3l-91.16) < 15; Disable=True
 CRconv : m3L < 100 && nBJetTight25_Mini == 0  && MET_pt_central  < 30 && nLepGood < 4; Disable=True
+ZZTight : allTight(LepSel_isTight[0], LepSel_isTight[1], LepSel_isTight[2], LepSel_isTight[3]) ; Disable=True
+CRZZnomet  :  m3L >= 100 && nBJetTight25_Mini == 0 &&  nLepSel == 4 && LepSel_pt[3] > 10 && abs(mll_3l - 91.16) < 15 && ((abs(LepSel_pdgId[0]) + abs(LepSel_pdgId[1]) + abs(LepSel_pdgId[2]) + abs(LepSel_pdgId[3]) - 44)/2)%2 == 0 ;Disable=True
 
-#OneJet
 onejet : nJetClean25>0; Disable=True
 
 chargeplus  : LepW_pdgId < 0 ; Disable=True

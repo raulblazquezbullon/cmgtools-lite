@@ -3,9 +3,6 @@
 lumi_2018_ML       : prompt_.*|convs   : .*                : 1.015
 lumi_XY_ML         : prompt_.*|convs   : .*                : 1.020
 lumi_length_ML     : prompt_.*|convs   : .*                : 1.002
-lumi_bbd_ML        : prompt_.*|convs   : .*                : 1.000
-lumi_dbeta_ML      : prompt_.*|convs   : .*                : 1.000
-lumi_ghosts_ML     : prompt_.*|convs   : .*                : 1.000
 lumi_calib_ML      : prompt_.*|convs   : .*                : 1.002
 
 #Trigger efficiency measurements performed by ourselves
@@ -43,3 +40,8 @@ LepSFMu_ML            : prompt_.*|convs          : .* : lepSFMu : templates
 LepSFEl_ML            : prompt_.*|convs          : .* : lepSFEl : templates
 LepSFMuStat2018_ML    : prompt_.*|convs          : .* : lepSFMuStat2018 : templates
 LepSFElStat2018_ML    : prompt_.*|convs          : .* : lepSFElStat2018 : templates
+
+scaleNorm  : prompt_WZ : .* : scale : envelope : 6   # 7 point 1/2 scale varations
+pdfNorm    : prompt_WZ : .* : pdf   : quad : 30 # NNPDF31 is 30 hessian replicas (2017/2018, weight 0 is nominal 1-30 are variations)
+ISR18 : prompt_WZ : .* : isr : templates
+#poltaus  : prompt_WZ_Wf.* : .* : taus :  templates

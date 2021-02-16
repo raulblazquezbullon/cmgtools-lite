@@ -53,6 +53,12 @@ MODULES.append( ('leptonEnergyCorrections_2017', lambda: leptonEnergyCorrections
 MODULES.append( ('leptonEnergyCorrections_2018', lambda: leptonEnergyCorrections("", "RoccoR2018.txt", "2018")))
 
 
+from CMGTools.TTHAnalysis.tools.leptonEnergyCorrections_ECALelecs import leptonEnergyCorrections_ECALelecs
+MODULES.append( ('leptonEnergyCorrectionsECAL_2016', lambda: leptonEnergyCorrections_ECALelecs("", "RoccoR2016.txt", "2016")))
+MODULES.append( ('leptonEnergyCorrectionsECAL_2017', lambda: leptonEnergyCorrections_ECALelecs("", "RoccoR2017.txt", "2017")))
+MODULES.append( ('leptonEnergyCorrectionsECAL_2018', lambda: leptonEnergyCorrections_ECALelecs("", "RoccoR2018.txt", "2018")))
+
+
 
 ###################################
 ########## lepReCleaner ###########
@@ -623,6 +629,8 @@ MODULES.append( ('eventWeighter', lambda : eventWeighter(2,3461924)))
 
 
 from CMGTools.TTHAnalysis.tools.eventWeighterWeighted import eventWeighterWeighted
+MODULES.append( ('eventWeighterWeighted_N10000', lambda : eventWeighterWeighted(2,3461924,10000)))
+
 MODULES.append( ('eventWeighterWeighted_data', lambda : eventWeighterWeighted(2,3461924,1)))
 MODULES.append( ('eventWeighterWeighted_WZTo3LNu_pow', lambda : eventWeighterWeighted(2,3461924,0.09461952)))
 MODULES.append( ('eventWeighterWeighted_HZZ', lambda : eventWeighterWeighted(2,3461924,0.00073983)))

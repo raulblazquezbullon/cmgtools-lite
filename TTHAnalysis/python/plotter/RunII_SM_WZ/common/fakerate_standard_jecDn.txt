@@ -8,3 +8,4 @@ change: MET_phi\b: MET_phi_jesTotalDown
 change: METFixEE2017_pt\b: METFixEE2017_pt_jesTotalDown
 change: METFixEE2017_phi\b: METFixEE2017_phi_jesTotalDown
 
+change: JetClean25_pt\b: JetClean25_pt_jesTotalDown

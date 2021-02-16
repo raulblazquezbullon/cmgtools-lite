@@ -235,6 +235,13 @@ for sysfile in args[4:]:
             if re.match(binmap+"$",binname) == None: continue
             if name not in systsEnv: systsEnv[name] = []
             systsEnv[name].append((re.compile(procmap+"$"),amount,field[4],field[5].split(',')))
+        elif field[4] in ["envelope","quad", "envelope68"]:
+            (name, procmap, binmap, amount) = field[:4]
+            replicas = int(field[5])
+            print name, procmap, binmap, amount, replicas
+            if re.match(binmap+"$",binname) == None: continue
+            if name not in systsEnv: systsEnv[name] = []
+            systsEnv[name].append((re.compile(procmap+"$"),amount,field[4], replicas))
         else:
             raise RuntimeError, "Unknown systematic type %s" % field[4]
     if options.verbose > 0:
@@ -269,7 +276,8 @@ for name in systsEnv.keys():
         effect12 = "-"
         for entry in systsEnv[name]:
             (procmap,amount,mode) = entry[:3]
-            if re.match(procmap, p): effect = float(amount) if mode not in ["templates","alternateShape", "alternateShapeOnly"] else amount
+            if len(entry) > 3:  replicas = entry[3]
+            if re.match(procmap, p): effect = float(amount) if mode not in ["templates","alternateShape", "alternateShapeOnly", "envelope", "quad", "envelope68"] else amount
             morefields=entry[3:]
             if mca._projection != None and effect not in ["-","0","1",1.0,0.0] and type(effect) == type(1.0):
                 effect = mca._projection.scaleSyst(name, effect)
@@ -310,6 +318,104 @@ for name in systsEnv.keys():
                     h.SetFillStyle(0); h.SetLineWidth(2)
                 for h in p1up, p1dn: h.SetLineColor(4)
                 for h in p2up, p2dn: h.SetLineColor(2)
+            elif mode in ["envelope"]:
+                nominal = report[p]
+                # Amount here coresponds to the number of replicas
+                pVars = [report["%s_%s_%i"%(p, effect, i)] for i in range(replicas)]
+                p0Up = nominal.Clone("%s_%s_Up"%(p, effect))
+                p0Dn = nominal.Clone("%s_%s_Up"%(p, effect))
+                if type(p0Up) == type(ROOT.TH1D()):
+                  for iB in range(1,nominal.GetNbinsX()+1):
+                    values = [pVars[i].GetBinContent(iB) for i in range(replicas)]
+                    p0Up.SetBinContent(iB, max(values))
+                    p0Dn.SetBinContent(iB, min(values))
+                elif type(p0Up) == type(ROOT.TH2D()):
+                  for iBx in range(1,nominal.GetNbinsX()+1):
+                    for iBy in range(1,nominal.GetNbinsY()+1):
+                      values = [pVars[i].GetBinContent(iBx, iBy) for i in range(replicas)]
+                      p0Up.SetBinContent(iBx, iBy, max(values))
+                      p0Dn.SetBinContent(iBx, iBy, min(values))
+
+                if options.noNegVar:
+                    p0Up = fixNegVariations(p0Up, report[p])
+                    p0Dn = fixNegVariations(p0Dn, report[p])
+                p0Up.SetName("%s_%sUp"   % (nominal.GetName(),name))
+                p0Dn.SetName("%s_%sDown" % (nominal.GetName(),name))
+                report[str(p0Up.GetName())[2:]] = p0Up
+                report[str(p0Dn.GetName())[2:]] = p0Dn
+                effect0  = "1"
+                effect12 = "-"
+
+            elif mode in ["envelope68"]:
+                nominal = report[p]
+                # Amount here coresponds to the number of replicas
+                pVars = [report["%s_%s_%i"%(p, effect, i)] for i in range(replicas)]
+                p0Up = nominal.Clone("%s_%s_Up"%(p, effect))
+                p0Dn = nominal.Clone("%s_%s_Up"%(p, effect))
+                iUp = int(round(0.84*replicas))-1
+                iDn = int(round(0.16*replicas))-1
+
+                if type(p0Up) == type(ROOT.TH1D()):        
+                  for iB in range(1,nominal.GetNbinsX()+1):
+                    values = sorted([pVars[i].GetBinContent(iB) for i in range(replicas)])
+                    p0Up.SetBinContent(iB, values[iUp])
+                    p0Dn.SetBinContent(iB, values[iDn])
+                elif type(p0Up) == type(ROOT.TH2D()):
+                  for iBx in range(1,nominal.GetNbinsX()+1):
+                    for iBy in range(1,nominal.GetNbinsY()+1):
+                      values = sorted([pVars[i].GetBinContent(iBx,iBy) for i in range(replicas)])
+                      p0Up.SetBinContent(iBx, iBy, values[iUp])
+                      p0Dn.SetBinContent(iBx, iBy, values[iDn])
+
+                if options.noNegVar:
+                    p0Up = fixNegVariations(p0Up, report[p])
+                    p0Dn = fixNegVariations(p0Dn, report[p])
+                p0Up.SetName("%s_%sUp"   % (nominal.GetName(),name))
+                p0Dn.SetName("%s_%sDown" % (nominal.GetName(),name))
+                report[str(p0Up.GetName())[2:]] = p0Up
+                report[str(p0Dn.GetName())[2:]] = p0Dn
+                effect0  = "1"
+                effect12 = "-"
+
+
+            elif mode in ["quad"]:
+                nominal = report[p]
+                # Amount here coresponds to the number of replicas
+                pVars = [report["%s_%s_%i"%(p, effect, i)] for i in range(replicas)]
+                p0Up = nominal.Clone("%s_%s_Up"%(p, effect))
+                p0Dn = nominal.Clone("%s_%s_Up"%(p, effect))
+                print type(p0Up)
+                if type(p0Up) == type(ROOT.TH1D()):
+                  for iB in range(1,nominal.GetNbinsX()+1):
+                    vUp = 0
+                    vDn = 0
+                    for replica in pVars:
+                      if   replica.GetBinContent(iB) > nominal.GetBinContent(iB): vUp = (vUp**2 + (replica.GetBinContent(iB)-nominal.GetBinContent(iB))**2)**0.5
+                      elif replica.GetBinContent(iB) < nominal.GetBinContent(iB): vDn = (vDn**2 + (replica.GetBinContent(iB)-nominal.GetBinContent(iB))**2)**0.5
+                    p0Up.SetBinContent(iB, nominal.GetBinContent(iB) + vUp)
+                    p0Dn.SetBinContent(iB, nominal.GetBinContent(iB) - vDn)
+                elif type(p0Up) == type(ROOT.TH2D()):
+                  for iBx in range(1,nominal.GetNbinsX()+1):
+                    for iBy in range(1,nominal.GetNbinsY()+1):
+                      vUp = 0
+                      vDn = 0
+                      for replica in pVars:
+                        if   replica.GetBinContent(iBx,iBy) > nominal.GetBinContent(iBx,iBy): vUp = (vUp**2 + (replica.GetBinContent(iBx,iBy)-nominal.GetBinContent(iBx,iBy))**2)**0.5
+                        elif replica.GetBinContent(iBx,iBy) < nominal.GetBinContent(iBx,iBy): vDn = (vDn**2 + (replica.GetBinContent(iBx,iBy)-nominal.GetBinContent(iBx,iBy))**2)**0.5
+                      p0Up.SetBinContent(iBx, iBy, nominal.GetBinContent(iBx,iBy) + vUp)
+                      p0Dn.SetBinContent(iBx, iBy, nominal.GetBinContent(iBx,iBy) - vDn)
+
+                if options.noNegVar:
+                    p0Up = fixNegVariations(p0Up, report[p])
+                    p0Dn = fixNegVariations(p0Dn, report[p])
+                p0Up.SetName("%s_%sUp"   % (nominal.GetName(),name))
+                p0Dn.SetName("%s_%sDown" % (nominal.GetName(),name))
+                report[str(p0Up.GetName())[2:]] = p0Up
+                report[str(p0Dn.GetName())[2:]] = p0Dn
+                effect0  = "1"
+                effect12 = "-"
+
+
             elif mode in ["templates"]:
                 nominal = report[p]
                 p0Up = report["%s_%s_Up" % (p, effect)]
@@ -380,7 +486,7 @@ for name in systsEnv.keys():
     ###                mca._projection.scaleSystTemplate(name,nominal,p0Dn) # should be implemented differently
             elif mode in ["alternateShape", "alternateShapeOnly"]:
                 nominal = report[p]
-                alternate = report[effect]
+                alternate = report["%s_%s"%(p,effect)]
                 if mca._projection != None:
                     mca._projection.scaleSystTemplate(name,nominal,alternate)
                 alternate.SetName("%s_%sUp" % (nominal.GetName(),name))
@@ -451,7 +557,7 @@ for signal in mca.listSignals():
     for name,effmap in systsU.iteritems():
         datacard.write(('%-12s lnU' % name) + " ".join([kpatt % effmap[p]   for p in myprocs]) +"\n")
     for name,(effmap0,effmap12,mode) in systsEnv.iteritems():
-        if mode in ["templates","lnN_in_shape_bins"]:
+        if mode in ["templates","lnN_in_shape_bins","envelope", "quad"]:
             datacard.write(('%-10s shape' % name) + " ".join([kpatt % effmap0[p] for p in myprocs]) +"\n")
         if mode == "stat_foreach_shape_bins":
             nbins = None

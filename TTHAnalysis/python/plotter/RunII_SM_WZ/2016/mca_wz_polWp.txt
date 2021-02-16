@@ -1,14 +1,15 @@
 ## Data
 ## -----------------------------------------------------------
-#incl_data      : + ; IncludeMca="RunII_SM_WZ/2016/includes/mca_data_2016_nanoAODv5.txt"
+incl_data      : + ; IncludeMca="RunII_SM_WZ/2016/includes/mca_data_2016_nanoAODv5.txt"
 
 ## Backgrounds
 ## -----------------------------------------------------------
 incl_signal         : + ; IncludeMca="RunII_SM_WZ/2016/includes/mca_WZ_nanoAODv5_polWp.txt"
 incl_prompts        : + ; IncludeMca="RunII_SM_WZ/2016/includes/mca_prompts_nanoAODv5.txt"
+incl_promptsub      : + ; IncludeMca="RunII_SM_WZ/2016/includes/mca_promptsub_nanoAODv5.txt"
 incl_convs          : + ; IncludeMca="RunII_SM_WZ/2016/includes/mca_convs_nanoAODv5.txt"
-incl_fakes          : + ; IncludeMca="RunII_SM_WZ/2016/includes/mca_mcfakes_nanoAODv5.txt"
-
+#incl_fakes          : + ; IncludeMca="RunII_SM_WZ/2016/includes/mca_mcfakes_nanoAODv5.txt"
+incl_fakes          : + ; IncludeMca="RunII_SM_WZ/2016/includes/mca_datafakes_nanoAODv5.txt"
 
 ##### PROMPTS #####
 #Pile Up Weights
@@ -33,7 +34,7 @@ incl_prompts_lepSFEl_Dn        : + ; IncludeMca="RunII_SM_WZ/2016/includes/mca_p
 
 #B tag Weights HF
 incl_prompts_bTag_HF_Up        : + ; IncludeMca="RunII_SM_WZ/2016/includes/mca_prompts_nanoAODv5.txt", AddWeight="bTagWeightDeepCSVT_HF_Up/bTagWeightDeepCSVT_nom", SkipMe=True, PostFix="_bTagHF_Up"
-incl_prompts_bTag_HF_Dn        : + ; IncludeMca="RunII_SM_WZ/2016/includes/mca_prompts_nanoAODv5.txt", AddWeight="bTagWeightDeepCSVT_LF_Dn/bTagWeightDeepCSVT_nom", SkipMe=True, PostFix="_bTagHF_Dn"
+incl_prompts_bTag_HF_Dn        : + ; IncludeMca="RunII_SM_WZ/2016/includes/mca_prompts_nanoAODv5.txt", AddWeight="bTagWeightDeepCSVT_HF_Dn/bTagWeightDeepCSVT_nom", SkipMe=True, PostFix="_bTagHF_Dn"
 
 #B tag Weights LF
 incl_prompts_bTag_LF_Up        : + ; IncludeMca="RunII_SM_WZ/2016/includes/mca_prompts_nanoAODv5.txt", AddWeight="bTagWeightDeepCSVT_LF_Up/bTagWeightDeepCSVT_nom", SkipMe=True, PostFix="_bTagLF_Up"
@@ -80,7 +81,7 @@ incl_convs_lepSFEl_Dn        : + ; IncludeMca="RunII_SM_WZ/2016/includes/mca_con
 
 #B tag Weights HF
 incl_convs_bTag_HF_Up        : + ; IncludeMca="RunII_SM_WZ/2016/includes/mca_convs_nanoAODv5.txt", AddWeight="bTagWeightDeepCSVT_HF_Up/bTagWeightDeepCSVT_nom", SkipMe=True, PostFix="_bTagHF_Up"
-incl_convs_bTag_HF_Dn        : + ; IncludeMca="RunII_SM_WZ/2016/includes/mca_convs_nanoAODv5.txt", AddWeight="bTagWeightDeepCSVT_LF_Dn/bTagWeightDeepCSVT_nom", SkipMe=True, PostFix="_bTagHF_Dn"
+incl_convs_bTag_HF_Dn        : + ; IncludeMca="RunII_SM_WZ/2016/includes/mca_convs_nanoAODv5.txt", AddWeight="bTagWeightDeepCSVT_HF_Dn/bTagWeightDeepCSVT_nom", SkipMe=True, PostFix="_bTagHF_Dn"
 
 #B tag Weights LF
 incl_convs_bTag_LF_Up        : + ; IncludeMca="RunII_SM_WZ/2016/includes/mca_convs_nanoAODv5.txt", AddWeight="bTagWeightDeepCSVT_LF_Up/bTagWeightDeepCSVT_nom", SkipMe=True, PostFix="_bTagLF_Up"
@@ -127,7 +128,7 @@ incl_signal_lepSFEl_Dn        : + ; IncludeMca="RunII_SM_WZ/2016/includes/mca_WZ
 
 #B tag Weights HF
 incl_signal_bTag_HF_Up        : + ; IncludeMca="RunII_SM_WZ/2016/includes/mca_WZ_nanoAODv5_polWp.txt", AddWeight="bTagWeightDeepCSVT_HF_Up/bTagWeightDeepCSVT_nom", SkipMe=True, PostFix="_bTagHF_Up"
-incl_signal_bTag_HF_Dn        : + ; IncludeMca="RunII_SM_WZ/2016/includes/mca_WZ_nanoAODv5_polWp.txt", AddWeight="bTagWeightDeepCSVT_LF_Dn/bTagWeightDeepCSVT_nom", SkipMe=True, PostFix="_bTagHF_Dn"
+incl_signal_bTag_HF_Dn        : + ; IncludeMca="RunII_SM_WZ/2016/includes/mca_WZ_nanoAODv5_polWp.txt", AddWeight="bTagWeightDeepCSVT_HF_Dn/bTagWeightDeepCSVT_nom", SkipMe=True, PostFix="_bTagHF_Dn"
 
 #B tag Weights LF
 incl_signal_bTag_LF_Up        : + ; IncludeMca="RunII_SM_WZ/2016/includes/mca_WZ_nanoAODv5_polWp.txt", AddWeight="bTagWeightDeepCSVT_LF_Up/bTagWeightDeepCSVT_nom", SkipMe=True, PostFix="_bTagLF_Up"
@@ -148,4 +149,8 @@ incl_signal_elscale_Dn        : + ; IncludeMca="RunII_SM_WZ/2016/includes/mca_WZ
 #Muon Scale
 incl_signal_muscale_Up        : + ; IncludeMca="RunII_SM_WZ/2016/includes/mca_WZ_nanoAODv5_polWp.txt", ExtraFakeRate="RunII_SM_WZ/common/fakerate_standard_muonScaleUp.txt", SkipMe=True, PostFix="_muscale_Up"
 incl_signal_muscale_Dn        : + ; IncludeMca="RunII_SM_WZ/2016/includes/mca_WZ_nanoAODv5_polWp.txt", ExtraFakeRate="RunII_SM_WZ/common/fakerate_standard_muonScaleDn.txt", SkipMe=True, PostFix="_muscale_Dn"
+
+#Fake rates
+incl_fakes_Up  : + ; IncludeMca="RunII_SM_WZ/2016/includes/mca_datafakes_nanoAODv5_frup.txt",  SkipMe=True
+incl_fakes_Dn  : + ; IncludeMca="RunII_SM_WZ/2016/includes/mca_datafakes_nanoAODv5_frdn.txt",  SkipMe=True
 

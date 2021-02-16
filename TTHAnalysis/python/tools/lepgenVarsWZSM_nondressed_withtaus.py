@@ -67,7 +67,7 @@ class OSpair:
 
 ## lepgenVarsWZSM
 ## ___________________________________________________________________
-class lepgenVarsWZSM_nondressed:
+class lepgenVarsWZSM_nondressed_withtaus:
 
 
     ## __init__
@@ -117,9 +117,13 @@ class lepgenVarsWZSM_nondressed:
 
 
     def filterGenPart(self, p):
-       if not(abs(p.pdgId)==11 or abs(p.pdgId)==13) or abs(p.pdgId==15): return False
-       if not(p.status==23 or p.status==1): return False
+       #print "Analyze GenPart:", p.pdgId, p.status
+       if not(abs(p.pdgId)==11 or abs(p.pdgId)==13 or abs(p.pdgId)==15): return False
+       #print "Pass pdgId"
+       if not(p.status==23 or p.status==1 or (abs(p.pdgId) == 15 and p.status == 2)): return False
+       #print "Pass status"
        if p.genPartIdxMother < 0: return False
+       #print "Has mother"
        #Now go back and try to get ancesters
        motherIdx = p.genPartIdxMother
        while motherIdx > 0:
@@ -132,8 +136,9 @@ class lepgenVarsWZSM_nondressed:
            else: #Decay from tau, jet or photon
                return False
        setattr(p, "motherIDX", motherIdx)
-
+       #print "Has mother index: ", motherIdx
        if not( abs(self.genparts[p.genPartIdxMother].pdgId) == 23 or abs(self.genparts[p.genPartIdxMother].pdgId) == 24): return False
+       #print "Mother is W/Z"
        return True
     ## collectObjects
     ## _______________________________________________________________
@@ -529,38 +534,15 @@ def deltaR(eta1, phi1, eta2, phi2):
 if __name__ == '__main__':
     from sys import argv
     file = ROOT.TFile(argv[1])
-    tree = file.Get("tree")
+    tree = file.Get("Events")
     tree.vectorTree = True
     class Tester(Module):
         def __init__(self, name):
             Module.__init__(self,name,None)
-            self.sf1 = LeptonChoiceEWK("Old", 
-                lambda lep : lep.relIso03 < 0.5, 
-                lambda lep : lep.relIso03 < 0.1 and lep.sip3d < 4 and _susy2lss_lepId_CB(lep),
-                cleanJet = lambda lep,jet,dr : (lep.pt > 10 and dr < 0.4))
-            self.sf2 = LeptonChoiceEWK("PtRel", 
-                lambda lep : lep.relIso03 < 0.4 or lep.jetPtRel > 5, 
-                lambda lep : (lep.relIso03 < 0.1 or lep.jetPtRel > 14) and lep.sip3d < 4 and _susy2lss_lepId_CB(lep),
-                cleanJet = lambda lep,jet,dr : (lep.pt > 10 and dr < 0.4))
-            self.sf3 = LeptonChoiceEWK("MiniIso", 
-                lambda lep : lep.miniRelIso < 0.4, 
-                lambda lep : lep.miniRelIso < 0.05 and lep.sip3d < 4 and _susy2lss_lepId_CB(lep),
-                cleanJet = lambda lep,jet,dr : (lep.pt > 10 and dr < 0.4))
-            self.sf4 = LeptonChoiceEWK("PtRelJC", 
-                lambda lep : lep.relIso03 < 0.4 or lep.jetPtRel > 5, 
-                lambda lep : (lep.relIso03 < 0.1 or lep.jetPtRel > 14) and lep.sip3d < 4 and _susy2lss_lepId_CB(lep),
-                cleanJet = lambda lep,jet,dr : (lep.pt > 10 and dr < 0.4 and not (lep.jetPtRel > 5 and lep.pt*(1/lep.jetPtRatio-1) > 25)))
-            self.sf5 = LeptonChoiceEWK("MiniIsoJC", 
-                lambda lep : lep.miniRelIso < 0.4, 
-                lambda lep : lep.miniRelIso < 0.05 and lep.sip3d < 4 and _susy2lss_lepId_CB(lep),
-                cleanJet = lambda lep,jet,dr : (lep.pt > 10 and dr < 0.4 and not (lep.jetDR > 0.5*10/min(50,max(lep.pt,200)) and lep.pt*(1/lep.jetPtRatio-1) > 25)))
+            self.sf1 = lepgenVarsWZSM_nondressed_withtaus("Mini")
         def analyze(self,ev):
-            print "\nrun %6d lumi %4d event %d: leps %d" % (ev.run, ev.lumi, ev.evt, ev.nLepGood)
+            print "New event!"
             print self.sf1(ev)
-            print self.sf2(ev)
-            print self.sf3(ev)
-            print self.sf4(ev)
-            print self.sf5(ev)
     el = EventLoop([ Tester("tester") ])
-    el.loop([tree], maxEvents = 50)
+    el.loop([tree], maxEvents = 3)
 

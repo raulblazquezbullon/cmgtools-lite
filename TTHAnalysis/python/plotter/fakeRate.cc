@@ -1068,13 +1068,13 @@ float EWK3L_fakeRate(float pt, float eta, int pdgId, int var = 1, bool print=fal
 float EWK3L_fakeTransfer(unsigned int nLep, float l1fr    , int l1isFake,
                                             float l2fr    , int l2isFake,
                                             float l3fr = 0, int l3isFake = 0,
-                                            float l4fr = 0, int l4isFake = 0) {
-
+                                            float extra=0) {
+    float l4fr = 1; 
+    int l4isFake = 0;
     int nfail = l1isFake + l2isFake + l3isFake + l4isFake;
     if(nLep == 3) nfail = l1isFake + l2isFake + l3isFake;
     if(nLep == 2) nfail = l1isFake + l2isFake;
     if(nLep == 1) nfail = l1isFake;
-    //std::cout << "Fails:" << nfail << std::endl;
     if(nfail == 0) return 0;
 
     float weight = 1;
@@ -1082,9 +1082,29 @@ float EWK3L_fakeTransfer(unsigned int nLep, float l1fr    , int l1isFake,
     if(l2isFake           ) weight *= -1*l2fr;
     if(l3isFake && nLep>=3) weight *= -1*l3fr;
     if(l4isFake && nLep==4) weight *= -1*l4fr;
-    //std::cout << nLep << " , " << l1fr << " , " << l2fr << " , "  << l1isFake << " , " << l2isFake << " , "  <<  " , " << -1*weight << std::endl;
-    return -1*weight;
+    return -1*weight*(1+extra);
 }
+
+float EWK4L_fakeTransfer(unsigned int nLep, float l1fr    , int l1isFake,
+                                            float l2fr    , int l2isFake,
+                                            float l3fr = 0, int l3isFake = 0,
+                                            float l4fr = 0, int l4isFake = 0,
+                                            float extra=0) {
+    int nfail = l1isFake + l2isFake + l3isFake + l4isFake;
+    if(nLep == 3) nfail = l1isFake + l2isFake + l3isFake;
+    if(nLep == 2) nfail = l1isFake + l2isFake;
+    if(nLep == 1) nfail = l1isFake;
+    if(nfail == 0) return 0;
+
+    float weight = 1;
+    if(l1isFake           ) weight *= -1*l1fr;
+    if(l2isFake           ) weight *= -1*l2fr;
+    if(l3isFake && nLep>=3) weight *= -1*l3fr;
+    if(l4isFake && nLep==4) weight *= -1*l4fr;
+    return -1*weight*(1+extra);
+}
+
+
 
 float EWK3L_flipRate(float pt1, float eta1, int pdgId1, float pt2, float eta2, int pdgId2, float pt3, float eta3, int pdgId3) {
     std::vector<int> lights;

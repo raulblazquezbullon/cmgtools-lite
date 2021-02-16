@@ -580,10 +580,36 @@ MODULES.append( ('lepgenVarsWZSM_nondressed', lambda : lepgenVarsWZSM_nondressed
 from  CMGTools.TTHAnalysis.tools.lepgenVarsWZSM_filtertaus import lepgenVarsWZSM_filtertaus
 MODULES.append( ('lepgenVarsWZSM_filtertaus', lambda : lepgenVarsWZSM_filtertaus("Mini")))
 
+from CMGTools.TTHAnalysis.tools.lepgenVarsWZSM_nondressed_withtaus import lepgenVarsWZSM_nondressed_withtaus
+MODULES.append( ('lepgenVarsWZSM_nondressed_withtaus', lambda : lepgenVarsWZSM_nondressed_withtaus("Mini")))
+
 from  CMGTools.TTHAnalysis.tools.bosonPolarizationGEN_TotalTruth import bosonPolarizationGEN_TotalTruth
 
 MODULES.append( ('bosonPolarizationGEN', lambda : bosonPolarizationGEN_TotalTruth()))
+
+from  CMGTools.TTHAnalysis.tools.bosonPolarizationGEN_TotalTruth_wt import bosonPolarizationGEN_TotalTruth_wt
+
+MODULES.append( ('bosonPolarizationGEN_wt', lambda : bosonPolarizationGEN_TotalTruth_wt()))
+
+
 from CMGTools.TTHAnalysis.tools.bTagEffCount import bTagEffCount
 MODULES.append( ('bTagEffCount2016', lambda : bTagEffCount(label = "btagDeepB" , WPs={'L': 0.2217, 'M': 0.6321, 'T': 0.8953})))
 MODULES.append( ('bTagEffCount2017', lambda : bTagEffCount(label = "btagDeepB" , WPs={'L': 0.1522, 'M': 0.4941, 'T': 0.8001})))
 MODULES.append( ('bTagEffCount2018', lambda : bTagEffCount(label = "btagDeepB" , WPs={'L': 0.1241, 'M': 0.4184, 'T': 0.7527})))
+
+
+from CMGTools.TTHAnalysis.tools.jetCollector import jetCollector
+
+MODULES.append( ('Jet25CleanedMC'  , lambda : jetCollector(lambda x: x.pt_nom >= 25 and abs(x.eta) <= 2.5,   "MC", "Clean25")))
+MODULES.append( ('Jet25CleanedDATA', lambda : jetCollector(lambda x: x.pt_nom >= 25 and abs(x.eta) <= 2.5, "DATA", "Clean25")))
+
+MODULES.append( ('Jet25PULCleanedMC'  , lambda : jetCollector(lambda x: x.pt_nom >= 25 and abs(x.eta) <= 2.5 and (x.pt_nom >= 50 or x.puId >= 4),   "MC", "PULClean25",lightweight=True)))
+MODULES.append( ('Jet25PULCleanedDATA', lambda : jetCollector(lambda x: x.pt_nom >= 25 and abs(x.eta) <= 2.5 and (x.pt_nom >= 50 or x.puId >= 4), "DATA", "PULClean25",lightweight=True)))
+
+
+from CMGTools.TTHAnalysis.tools.jetPUIDSF import jetPUIDSF
+
+MODULES.append( ('JetPUIDSF2016', lambda : jetPUIDSF(lambda x: x.pt_nom >= 25 and abs(x.eta) <= 2.5, "/nfs/fanae/user/carlosec/WZ/CMSSW_9_4_4/src/CMGTools/TTHAnalysis/data/jetPU/effcyPUID_81Xtraining.root", "/nfs/fanae/user/carlosec/WZ/CMSSW_9_4_4/src/CMGTools/TTHAnalysis/data/jetPU/scalefactorsPUID_81Xtraining.root", ["h2_eff_mc2016_[WP]","h2_mistag_mc2016_[WP]"], ["h2_eff_sf2016_[WP]","h2_mistag_sf2016_[WP]","h2_eff_sf2016_[WP]_Systuncty","h2_mistag_sf2016_[WP]_Systuncty"])))
+MODULES.append( ('JetPUIDSF2017', lambda : jetPUIDSF(lambda x: x.pt_nom >= 25 and abs(x.eta) <= 2.5, "/nfs/fanae/user/carlosec/WZ/CMSSW_9_4_4/src/CMGTools/TTHAnalysis/data/jetPU/effcyPUID_81Xtraining.root", "/nfs/fanae/user/carlosec/WZ/CMSSW_9_4_4/src/CMGTools/TTHAnalysis/data/jetPU/scalefactorsPUID_81Xtraining.root", ["h2_eff_mc2016_[WP]","h2_mistag_mc2017_[WP]"], ["h2_eff_sf2017_[WP]","h2_mistag_sf2017_[WP]","h2_eff_sf2017_[WP]_Systuncty","h2_mistag_sf2017_[WP]_Systuncty"])))
+MODULES.append( ('JetPUIDSF2018', lambda : jetPUIDSF(lambda x: x.pt_nom >= 25 and abs(x.eta) <= 2.5, "/nfs/fanae/user/carlosec/WZ/CMSSW_9_4_4/src/CMGTools/TTHAnalysis/data/jetPU/effcyPUID_81Xtraining.root", "/nfs/fanae/user/carlosec/WZ/CMSSW_9_4_4/src/CMGTools/TTHAnalysis/data/jetPU/scalefactorsPUID_81Xtraining.root", ["h2_eff_mc2018_[WP]","h2_mistag_mc2018_[WP]"], ["h2_eff_sf2018_[WP]","h2_mistag_sf2018_[WP]","h2_eff_sf2018_[WP]_Systuncty","h2_mistag_sf2018_[WP]_Systuncty"])))
+

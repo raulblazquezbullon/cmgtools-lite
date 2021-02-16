@@ -41,3 +41,8 @@ LepSFMu_ML            : prompt_.*|convs          : .* : lepSFMu : templates
 LepSFEl_ML            : prompt_.*|convs          : .* : lepSFEl : templates
 LepSFMuStat2016_ML    : prompt_.*|convs          : .* : lepSFMuStat2016 : templates
 LepSFElStat2016_ML    : prompt_.*|convs          : .* : lepSFElStat2016 : templates
+ISR16 : prompt_WZ : .* : isr : templates
+
+scaleNorm  : prompt_WZ : .* : scale : envelope : 6   # 7 point 1/2 scale varations
+pdfNorm    : prompt_WZ : .* : pdf   : envelope68 : 100 # NNPDF30 is 100 MC replicas (2016, weights 0-99 are variations)
+#poltaus  : prompt_WZ_Wf.* : .* : taus :  templates #Only ON for Vitaliano's requested test on tau templates
