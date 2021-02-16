@@ -1166,19 +1166,23 @@ class Unfolder(object):
         #outputti=ROOT.TCanvas('outt', 'outt', 2000, 2000)
         #outputti.cd()
         #ROOT.gStyle.SetPadBorderMode(0)
-        #ROOT.gPad.SetRightMargin(0.1)
+        #ROOT.gPad.SetRightMargin(0.1)   
+        
         if 'nom' in key:
             self.response_nom.Scale(1./self.response_nom.Integral())
             self.response_nom.SetTitle('Response Matrix (powheg)')
+            self.response_nom.GetZaxis().SetLabelOffset(0.01);
             self.response_nom.Draw("colz")
         elif 'alt' in key:
             self.response_alt.Scale(1./self.response_alt.Integral())
             self.response_alt.SetTitle('Response Matrix (amcatnlo)')
+            self.response_alt.GetZaxis().SetLabelOffset(0.01);
             self.response_alt.Draw('colz')
         elif 'inc' in key:
             if self.checkLO: 
                 self.response_inc.Scale(1./self.response_inc.Integral())
                 self.response_inc.SetTitle('Response Matrix (pythia)')
+                self.response_inc.GetZaxis().SetLabelOffset(0.01);
                 self.response_inc.Draw('colz')
         CMS_lumi.CMS_lumi(output, 4, 0, aLittleExtra=0.08)
         ROOT.gPad.Update()
@@ -1188,8 +1192,15 @@ class Unfolder(object):
             output.SaveAs(os.path.join(self.outputDir, '2_p7_unfold_%s_%s_%s.C'   % (label, key, self.var)))
         output.Clear()
         #output.cd(8)
+        ROOT.gPad.SetRightMargin(0.15)
         histCorr.SetTitle('Correlation matrix')
+        histCorr.GetZaxis().SetLabelOffset(0.01);
+        histCorr.GetXaxis().SetLabelSize(0.035)
+        histCorr.GetYaxis().SetLabelSize(0.035)
+        histCorr.GetZaxis().SetLabelSize(0.035)
         histCorr.Draw('COLZ')
+        ROOT.gStyle.SetPaintTextFormat("1.1f");
+        histCorr.Draw('TEXT SAME')
         CMS_lumi.CMS_lumi(output, 4, 0, aLittleExtra=0.08)
         if '*' in self.produceOnlyPlot or '2_p8' in self.produceOnlyPlot:
             output.SaveAs(os.path.join(self.outputDir, '2_p8_unfold_%s_%s_%s.pdf' % (label, key, self.var)))
@@ -1658,9 +1669,10 @@ def main(args):
         fancyvar=fancy[0]
         diffvar=fancy[1]
         print('Trying to run on %s'%var)
-        print(args.singlevar, var in args.singlevar)
-        if args.singlevar and not var in args.singlevar:
-            continue
+        if args.singlevar:
+            print(args.singlevar, var in args.singlevar)
+            if args.singlevar and not var in args.singlevar:
+                continue
         print('Will run on %s'%var)
         u = Unfolder(args,var,fancyvar, diffvar)
         u.print_responses()
