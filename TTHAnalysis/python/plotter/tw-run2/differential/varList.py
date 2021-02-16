@@ -866,8 +866,12 @@ varList['Lep1Lep2_DPhi'] = {
 
 # Profiling things
 systMap = {
-    'btagging'   : True,
-    'mistagging' : True,
+    #'btagging'   : True,
+    'btagging_2016'   : True,
+    'btagging_1718'   : True,
+    #'mistagging' : True,
+    'mistagging_2016' : True,
+    'mistagging_1718' : True,
     'muonen_2016': True,
     'muonen_2017': True,
     'muonen_2018': True,
@@ -941,7 +945,7 @@ systMap = {
 
 
 UncsColourMap = {
-    'fit'                 : r.kRed,
+    'fit'                 : r.kPink-7,
     'btagging'            : r.TColor.GetColor("#b2df8a"),
     'btagging_2016'       : r.TColor.GetColor("#b2df8a"),
     'btagging_1718'       : r.TColor.GetColor("#e31a1c"),
@@ -1126,17 +1130,17 @@ PrintSysNameTranslator = {
 # Details for transcribing to table
 ProcessNameTranslator = {
     "ttbar"        : "\\ttbar",
-    "t#bar{t}"     : "\\ttbar",
-    "Non-WorZ"     : "Non W/Z",
     "nonworz"      : "Non W/Z",
-    "DY"           : "Drell-Yan",
     "dy"           : "Drell-Yan",
-    "VVttbarV"     : "VV and \\ttbar V",
     "vvttv"        : "VV and \\ttbar V",
-    "VV+t#bar{t}V" : "VV and \\ttbar V",
-    "tW"           : "tW (signal)",
     "tw"           : "tW (signal)",
 }
+ProcessNameTranslator["tW"]           = ProcessNameTranslator["tw"]
+ProcessNameTranslator["t#bar{t}"]     = ProcessNameTranslator["ttbar"]
+ProcessNameTranslator["Non-WorZ"]     = ProcessNameTranslator["nonworz"]
+ProcessNameTranslator["DY"]           = ProcessNameTranslator["dy"]
+ProcessNameTranslator["VVttbarV"]     = ProcessNameTranslator["vvttv"]
+ProcessNameTranslator["VV+t#bar{t}V"] = ProcessNameTranslator["vvttv"]
 
 
 GOFTranslator = {
@@ -1161,7 +1165,22 @@ TableDict = {
         },
 }
 
-
+#### NOTE: it is important to note that they are all normalisation uncertainties
 ProfileSysts = {"dy_norm", "nonworz_norm", "ttbar_norm", "vvttv_norm",
                 "lumi_2016", "lumi_2017", "lumi_2018",
                 "lumi_BBD", "lumi_DB", "lumi_LS", "lumi_BCC", "lumi_GS", "lumi_XY"}
+
+ProfileSystsThatAreNotPresentAllYears = {
+    "lumi_2016" : ["2016"],
+    "lumi_2017" : ["2017"],
+    "lumi_2018" : ["2018"],
+    "lumi_BBD"  : ["2016", "2017"],
+    "lumi_DB"   : ["2016", "2017"],
+    "lumi_LS"   : ["2017", "2018"],
+    "lumi_BCC"  : ["2017", "2018"],
+    "lumi_GS"   : ["2016", "2017"],
+    "lumi_XY"   : ["2016", "2017", "2018"],
+}
+
+
+ProcessesNames = {"tw", "ttbar", "dy", "nonworz", "vvttv"}

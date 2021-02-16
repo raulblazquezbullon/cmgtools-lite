@@ -169,13 +169,22 @@ if __name__=="__main__":
     tasks    = []
 
     if variable.lower() != "all":
-        thevars = [ variable ]
+        if "," in variable:
+            thevars = variable.split(",")
+        else:
+            thevars = [ variable ]
 
     if region.lower() != "all":
-        theregs = [ region ]
+        if "," in region:
+            theregs = region.split(",")
+        else:
+            theregs = [ region ]
 
     if year.lower() != "all":
-        theyears = [ year ]
+        if "," in year:
+            theyears = year.split(",")
+        else:
+            theyears = [ year ]
 
 
     for reg in theregs:

@@ -315,6 +315,12 @@ def makeFit(task):
 
 
     # Ahora recogemos la virutilla
+    if not os.path.isfile(fitoutpath + '/fitDiagnostics{y}_{var}_{sys}.root'.format(y = year, var = varName, sys = syst)):
+        raise RuntimeError("FATAL: no valid fitDiagnostics file found for variable {v} of year {y} with the unc. {s}. Maybe there was a problem with the fit.\n".format(v = varName, y = year, s = syst))
+
+    if not os.path.isfile(fitoutpath + "/higgsCombine{y}_{var}_{sys}.FitDiagnostics.mH120.root".format(y = year, var = varName, sys = syst)):
+        raise RuntimeError("FATAL: no valid higgsCombine file found for variable {v} of year {y} with the unc. {s}. Maybe there was a problem with the fit, and/or moving the file to its corresponding folder.\n".format(v = varName, y = year, s = syst))
+
     tfile     = r.TFile.Open(fitoutpath + '/fitDiagnostics{y}_{var}_{sys}.root'.format(y = year, var = varName, sys = syst))
     tfile2    = r.TFile.Open(fitoutpath + "/higgsCombine{y}_{var}_{sys}.FitDiagnostics.mH120.root".format(y = year, var = varName, sys = syst))
 
@@ -564,8 +570,7 @@ if __name__ == '__main__':
             raise RuntimeError("FATAL: the variable requested is not in the provided input folder.")
 
         for iV in thevars:
-            if "plots" in iV: continue
-            if "Fiducial" in iV: continue
+            if "plots" in iV or "Fiducial" in iV or "table" in iV: continue
             if not os.path.isdir(inpath + "/" + iY + "/" + iV + "/sigextr_fit"): continue
 
             tasks.append( (inpath, iY, iV, "", pretend) )

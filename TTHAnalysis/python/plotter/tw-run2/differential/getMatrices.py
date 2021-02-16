@@ -444,28 +444,34 @@ if __name__=="__main__":
 
     #### First, find the tasks
     tasks = []
-    if year == "all":
-        if variable == "all":
-            theyears = []
-            presentyears = next(os.walk(inpath))[1]
+    theyears = []
+    presentyears = next(os.walk(inpath))[1]
 
-            if "2016" in presentyears:
-                theyears.append("2016")
-            if "2017" in presentyears:
-                theyears.append("2017")
-            if "2018" in presentyears:
-                theyears.append("2018")
-            if "run2" in presentyears:
-                theyears.append("run2")
+    if "2016" in presentyears:
+        theyears.append("2016")
+    if "2017" in presentyears:
+        theyears.append("2017")
+    if "2018" in presentyears:
+        theyears.append("2018")
+    if "run2" in presentyears:
+        theyears.append("run2")
 
-            for iY in theyears:
-                thevars = next(os.walk(inpath + "/" + iY))[1]
+    if year.lower() != "all" and year in presentyears:
+        theyears = [ year ]
+    elif year.lower() != "all":
+        raise RuntimeError("FATAL: the year requested is not in the provided input folder.")
 
-                for iV in thevars:
-                    if "plots" in iV: continue
-                    #if "Pz" not in iV: continue
+    for iY in theyears:
+        thevars = next(os.walk(inpath + "/" + iY))[1]
 
-                    tasks.append( (inpath, iY, iV) )
+        if variable.lower() != "all" and variable in thevars:
+            thevars = [ variable ]
+        elif variable.lower() != "all":
+            raise RuntimeError("FATAL: the variable requested is not in the provided input folder.")
+
+        for iV in thevars:
+            if "plots" in iV or "table" in iV: continue
+            tasks.append( (inpath, iY, iV) )
 
     if nthreads > 1:
         pool = Pool(nthreads)
@@ -475,3 +481,5 @@ if __name__=="__main__":
     else:
         for tsk in tasks:
             CalculateAndPlotResponseMatrices(tsk)
+
+    print("\n> Done!")

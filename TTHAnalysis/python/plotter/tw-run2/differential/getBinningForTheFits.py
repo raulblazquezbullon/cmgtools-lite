@@ -167,6 +167,43 @@ Float_t theBDT_bin{iB}(Double_t BDT) {{
     return outtxt
 
 
+def getVariedHisto(inpath, iV, thenom, theunc, theproc, thebin, thevar):
+    outh = None; tmpname  = thenom + "_" + theunc + "_" + str(thebin) + thevar
+    #print "### Creating varied normalisation", theunc, "unc. for nominal", thenom, "and variation", thevar
+    for y in ["2016", "2017", "2018"]:
+        #print "### file", inpath + "/" + y + "/" + iV + "/sigextr_fit/rebinhistos/forExtr_bin{b}.root".format(b = thebin)
+
+        rf_oftheyear = r.TFile(inpath + "/" + y + "/" + iV + "/sigextr_fit/rebinhistos/forExtr_bin{b}.root".format(b = thebin), "READ")
+
+        nametoconsider = thenom
+        for iY in ["2016", "2017", "2018"]:
+            if iY in nametoconsider and iY != y:
+                nametoconsider = "x_" + theproc
+
+        for iY in [["16", "17"], ["16", "18"], ["17", "18"]]:
+            if "".join(iY) in nametoconsider and not any([sub in y for sub in iY]):
+                nametoconsider = "x_" + theproc
+
+        #print "name", nametoconsider
+
+        if y in vl.ProfileSystsThatAreNotPresentAllYears[theunc]:
+            htmp    = deepcopy(rf_oftheyear.Get(nametoconsider).Clone(tmpname))
+            sf      = rf_oftheyear.Get("x_" + theproc + "_" + theunc + thevar).Integral() / rf_oftheyear.Get("x_" + theproc).Integral()
+            htmp.Scale(sf)
+            if not outh:
+                outh = deepcopy(htmp)
+            else:
+                outh.Add(htmp)
+            del htmp
+        elif outh:
+            outh.Add(rf_oftheyear.Get(nametoconsider))
+        else:
+            outh = deepcopy(rf_oftheyear.Get(nametoconsider).Clone(tmpname))
+        rf_oftheyear.Close(); del rf_oftheyear
+
+    return outh
+
+
 def createCardsForEachSys(tsk):
     inpath, iY, iV, syst = tsk
     print "    - Creating individual cards for variable " + iV + " of year " + iY + " for syst. " + syst
@@ -281,14 +318,32 @@ def createCardsForEachSys(tsk):
         #break
 
         if iY == "run2" and syst == "": #### We need to modify the rootfiles!
-            print "    - Creating new rootfile card."
+            print "    - Creating new rootfile card for bin", iB
             therootfile = r.TFile.Open(path + "/forExtr_bin{b}.root".format(b = iB), "READ")
             tmpdictofthings = {}
             for key in therootfile.GetListOfKeys():
                 copyname = key.GetName()
+                isaproc  = False; isaprofiledunc = False;
+                theproc = deepcopy(copyname.split("_")[1])
+                if (copyname.split("_")[1] in vl.ProcessesNames and
+                   len(copyname.split("_")) <= 2) or copyname == "x_data_obs":
+                    isaproc = True
+
                 for el in vl.ProfileSysts:
+                    if el in copyname:
+                        isaprofiledunc = True
                     copyname = copyname.replace(el, el + "_" + str(iB))
                 tmpdictofthings[copyname] = deepcopy(therootfile.Get(key.GetName()).Clone(copyname))
+
+
+                # We have to create new files!
+                if not isaproc and not isaprofiledunc and "data" not in copyname:
+                    for iU in vl.ProfileSystsThatAreNotPresentAllYears:
+                        newnam = copyname + "_" + iU + "_" + str(iB)
+                        #print "# Creating variations for the normalisation unc.", iU, "for nominal", copyname
+
+                        tmpdictofthings[newnam + "Up"]   = deepcopy(getVariedHisto(inpath, iV, copyname, iU, theproc, iB, "Up"))
+                        tmpdictofthings[newnam + "Down"] = deepcopy(getVariedHisto(inpath, iV, copyname, iU, theproc, iB, "Down"))
             therootfile.Close(); del therootfile
 
             theoutrootfile = r.TFile.Open(path + "/forExtr_bin{b}_run2.root".format(b = iB), "RECREATE")
@@ -342,11 +397,16 @@ if __name__=="__main__":
         tasks    = []
 
         if variable.lower() != "all":
-            thevars = [ variable ]
+            if "," in variable:
+                thevars = variable.split(",")
+            else:
+                thevars = [ variable ]
 
         if year.lower() != "all":
-            theyears = [ year ]
-
+            if "," in year:
+                theyears = year.split(",")
+            else:
+                theyears = [ year ]
 
         for reg in theregs:
             for yr in theyears:
@@ -368,28 +428,38 @@ if __name__=="__main__":
     elif step == 1:
         print "> Creating function files..."
         tasks = []
-        if year == "all":
-            if variable == "all":
-                theyears = []
-                presentyears = next(os.walk(inpath))[1]
+        theyears = []
+        presentyears = next(os.walk(inpath))[1]
 
-                if "2016" in presentyears:
-                    theyears.append("2016")
-                if "2017" in presentyears:
-                    theyears.append("2017")
-                if "2018" in presentyears:
-                    theyears.append("2018")
-                if "run2" in presentyears:
-                    theyears.append("run2")
+        if "2016" in presentyears:
+            theyears.append("2016")
+        if "2017" in presentyears:
+            theyears.append("2017")
+        if "2018" in presentyears:
+            theyears.append("2018")
+        if "run2" in presentyears:
+            theyears.append("run2")
 
-                for iY in theyears:
-                    thevars = next(os.walk(inpath + "/" + iY))[1]
+        if   year.lower() != "all" and year in theyears:
+            theyears = [ year ]
+        elif year.lower() != "all":
+            raise RuntimeError("FATAL: requested year not found.")
 
-                    for iV in thevars:
-                        if "plots" in iV: continue
-                        if not os.path.isdir(inpath + "/" + iY + "/" + iV + "/sigextr_fit"): continue
 
-                        tasks.append( (inpath, iY, iV) )
+        for iY in theyears:
+            thevars = next(os.walk(inpath + "/" + iY))[1]
+
+            if    variable.lower() != "all" and variable in thevars:
+                thevars = [ variable ]
+            elif variable.lower() != "all":
+                raise RuntimeError("FATAL: requested year not found.")
+
+            for iV in thevars:
+                if "plots" in iV or "tables" in iV: continue
+                if not os.path.isdir(inpath + "/" + iY + "/" + iV + "/sigextr_fit"): continue
+
+                tasks.append( (inpath, iY, iV) )
+
         #print tasks
         if nthreads > 1:
             pool = Pool(nthreads)
@@ -403,10 +473,12 @@ if __name__=="__main__":
 
         for iP in range(int(math.ceil(len(tasks) / float(nthreads)))):
             pool = Pool(nthreads)
-            pool.map(compileFunctionFile, tasks[iP*nthreads:(iP + 1)*(nthreads) if (iP + 1)*nthreads < len(tasks) else len(tasks)])
+            pool.map(compileFunctionFile,
+                     tasks[iP*nthreads:(iP + 1)*(nthreads) if (iP + 1)*nthreads < len(tasks) else len(tasks)])
             pool.close()
             pool.join()
             del pool
+
     elif step == 2:
         print "> Preparing to submit the cards for the fit..."
 
@@ -438,6 +510,7 @@ if __name__=="__main__":
                 ExecuteOrSubmitTask(task)
                 #sys.exit()
                 #calculate = False
+
     else:
         print "> Producing final cards..."
         tasks = []
@@ -468,13 +541,13 @@ if __name__=="__main__":
                 raise RuntimeError("FATAL: the variable requested is not in the provided input folder.")
 
             for iV in thevars:
-                if "plots" in iV: continue
+                if "plots" in iV or "table" in iV: continue
                 if not os.path.isdir(inpath + "/" + iY + "/" + iV + "/sigextr_fit"): continue
 
 
                 tasks.append( (inpath, iY, iV, "") )
                 for iS in vl.systMap:
-                    if "_" in iS:
+                    if "_" in iS and iY != "run2":
                         if iS.split("_")[-1].isdigit():
                             if iY not in iS.split("_")[-1]:
                                 continue
