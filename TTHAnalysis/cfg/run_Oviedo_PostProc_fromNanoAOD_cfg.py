@@ -94,10 +94,12 @@ if analysis == "main":
     ]])
     DatasetsAndTriggers.append( ("DoubleMuon", triggerGroups_dict["Trigger_2m"][year] + triggerGroups_dict["Trigger_3m"][year]) )
     DatasetsAndTriggers.append( ("EGamma",     triggerGroups_dict["Trigger_2e"][year] + triggerGroups_dict["Trigger_3e"][year] + triggerGroups_dict["Trigger_1e"][year]) if year == 2018 else
-                                ("DoubleEG",   triggerGroups_dict["Trigger_2e"][year] + triggerGroups_dict["Trigger_3e"][year]) )
+                               ("DoubleEG",   triggerGroups_dict["Trigger_2e"][year] + triggerGroups_dict["Trigger_3e"][year]) )
     DatasetsAndTriggers.append( ("MuonEG",     triggerGroups_dict["Trigger_em"][year] + triggerGroups_dict["Trigger_mee"][year] + triggerGroups_dict["Trigger_mme"][year]) )
     DatasetsAndTriggers.append( ("SingleMuon", triggerGroups_dict["Trigger_1m"][year]) )
     DatasetsAndTriggers.append( ("SingleElectron", triggerGroups_dict["Trigger_1e"][year]) if year != 2018 else (None,None) )
+    DatasetsAndTriggers.append( ("MET", triggerGroups_dict["Trigger_MET"][year] ))
+    DatasetsAndTriggers.append( ("JetHT", triggerGroups_dict["Trigger_JetHT"][year] ))
 elif analysis == "frqcd":
     mcSamples = byCompName(mcSamples_, [
         #"QCD_Mu15", "QCD_Pt(20|30|50|80|120|170)to.*_Mu5", 
@@ -163,6 +165,7 @@ if getHeppyOption("justSummary"):
     printSummary(selectedComponents)
     sys.exit(0)
 
+
 from CMGTools.TTHAnalysis.tools.nanoAOD.oviedo_postproc_modules import *
 
 from PhysicsTools.NanoAODTools.postprocessing.framework.postprocessor import PostProcessor
@@ -175,10 +178,14 @@ branchsel_in = os.environ['CMSSW_BASE']+"/src/CMGTools/TTHAnalysis/python/tools/
 branchsel_out = None
 
 
+#POSTPROCESSOR = PostProcessor(None, [], modules = modules,
+#        cut = cut, prefetch = True, longTermCache = False,
+#        branchsel = branchsel_in, compression = compression)
 POSTPROCESSOR = PostProcessor(None, [], modules = modules,
-        cut = cut, prefetch = True, longTermCache = False,
+        cut = cut, prefetch = False, longTermCache = False,
         branchsel = branchsel_in, compression = compression)
 
+print("hasta aqui")
 test = getHeppyOption("test")
 if test == "94X-MC":
     TTLep_pow = kreator.makeMCComponent("TTLep_pow", "/TTTo2L2Nu_mtop166p5_TuneCP5_PSweights_13TeV-powheg-pythia8/RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1/MINIAODSIM", "CMS", ".*root", 831.76*((3*0.108)**2) )

@@ -275,9 +275,14 @@ triggerGroups=dict(
         2018 : lambda ev : ev.Trigger_2lss or ev.Trigger_3e or ev.Trigger_3m or ev.Trigger_mee or ev.Trigger_mme,
     },
     Trigger_MET={
-        2016 : lambda ev : _fires(ev,'HLT_PFMET120_PFMHT120_IDTight'),
-        2017 : lambda ev : _fires(ev,'HLT_PFMET120_PFMHT120_IDTight'),
-        2018 : lambda ev : _fires(ev,'HLT_PFMET120_PFMHT120_IDTight'),
+        2016 : lambda ev : _fires(ev,'HLT_MET200') or _fires(ev,'HLT_PFMET300') or _fires(ev,'HLT_PFMET170_HBHECleaned') or _fires(ev,'HLT_PFMET120_PFMHT120_IDTight'), 
+        2017 : lambda ev : _fires(ev,'HLT_PFMET140_PFMHT140_IDTight'),
+        2018 : lambda ev : _fires(ev,'HLT_PFMET120_PFMHT120_IDTight') or _fires(ev,'HLT_DiJet110_35_Mjj650_PFMET110') or   _fires(ev,'HLT_PFMET120_PFMHT120_IDTight') or _fires(ev,'HLT_PFMET250_HBHECleaned') or _fires(ev,'HLT_PFMET200_HBHE_BeamHaloCleaned') or _fires(ev,'HLT_PFMETTypeOne140_PFMHT140_IDTight') or _fires(ev,'HLT_PFMETTypeOne200_HBHE_BeamHaloCleaned') or _fires(ev,'HLT_TripleJet110_35_35_Mjj650_PFMET110') or _fires(ev,'HLT_CaloMET350_HBHECleaned'),
+    },
+     Trigger_JetHT={
+       2016: lambda ev : _fires(ev,'HLT_PFHT400_SixJet30_DoubleBTagCSV_p056') or _fires(ev,'HLT_PFHT900') or _fires(ev,'HLT_PFHT650_WideJetMJJ900DEtaJJ1p5') or  _fires(ev,'HLT_CaloJet500_NoJetID'),
+       2017: lambda ev : _fires(ev,'HLT_PF_Jet500') or _fires(ev,'HLT_CaloJet500_NoJetID') or _fires(ev,'HLT_AK8PFJet500'),
+       2018: lambda ev : _fires(ev,'HLT_CaloJet500_NoJetID') or _fires(ev,'HLT_AK8PFJet400_TrimMass30') or _fires(ev,'HLT_AK8PFJet_500') or _fires(ev,'HLT_PFJet500') or _fires(ev,'HLT_PFHT1050'),
     }
 )
 
@@ -328,6 +333,16 @@ triggerGroups_dict=dict(
         2017 :  ['HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ'],
         2018 :  ['HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ'],
     },
+    Trigger_MET={
+        2016 : ['HLT_MET200','HLT_PFMET300','HLT_PFMET170_HBHECleaned','HLT_PFMET120_PFMHT120_IDTight'],
+        2017 : ['HLT_PFMET140_PFMHT140_IDTight'],
+        2018 : ['HLT_DiJet110_35_Mjj650_PFMET110','HLT_PFMET120_PFMHT120_IDTight','HLT_PFMET250_HBHECleaned','HLT_PFMET200_HBHE_BeamHaloCleaned','HLT_PFMETTypeOne140_PFMHT140_IDTight','HLT_PFMETTypeOne200_HBHE_BeamHaloCleaned','HLT_TripleJet110_35_35_Mjj650_PFMET110','HLT_CaloMET350_HBHECleaned']
+    },
+   Trigger_JetHT={
+        2016 : ['HLT_PFHT400_SixJet30_DoubleBTagCSV_p056','HLT_PFHT900','HLT_PFHT650_WideJetMJJ900DEtaJJ1p5','HLT_CaloJet500_NoJetID'],
+        2017 : ['HLT_PF_Jet500','HLT_CaloJet500_NoJetID','HLT_AK8PFJet500'],
+        2018 : ['HLT_CaloJet500_NoJetID','HLT_AK8PFJet400_TrimMass30','HLT_AK8PFJet500','HLT_PFJet500','HLT_PFHT1050'],
+},
 )
 
 
@@ -345,8 +360,9 @@ Trigger_mme  = lambda : EvtTagger('Trigger_mme',[ lambda ev : triggerGroups['Tri
 Trigger_2lss = lambda : EvtTagger('Trigger_2lss',[ lambda ev : triggerGroups['Trigger_2lss'][ev.year](ev) ])
 Trigger_3l   = lambda : EvtTagger('Trigger_3l',[ lambda ev : triggerGroups['Trigger_3l'][ev.year](ev) ])
 Trigger_MET  = lambda : EvtTagger('Trigger_MET',[ lambda ev : triggerGroups['Trigger_MET'][ev.year](ev) ])
+Trigger_JetHT  = lambda : EvtTagger('Trigger_JetHT',[ lambda ev : triggerGroups['Trigger_JetHT'][ev.year](ev) ])
 
-triggerSequence = [Trigger_1e,Trigger_1m,Trigger_2e,Trigger_2m,Trigger_em,Trigger_3e,Trigger_3m,Trigger_mee,Trigger_mme,Trigger_2lss,Trigger_3l ,Trigger_MET]
+triggerSequence = [Trigger_1e,Trigger_1m,Trigger_2e,Trigger_2m,Trigger_em,Trigger_3e,Trigger_3m,Trigger_mee,Trigger_mme,Trigger_2lss,Trigger_3l,Trigger_MET,Trigger_JetHT]
 
 
 from CMGTools.TTHAnalysis.tools.BDT_eventReco_cpp import BDT_eventReco

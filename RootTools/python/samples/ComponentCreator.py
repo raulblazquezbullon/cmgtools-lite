@@ -163,10 +163,11 @@ class ComponentCreator(object):
         try:
             files = getDatasetFromCache('Local%{path}%{pattern}.pck'.format(path = path.replace('/','_'), pattern = pattern))
         except IOError:
-            files = [ x for x in eostools.listFiles(path,True) if re.match(pattern,x) ] 
+            files = [ x for x in eostools.listFiles(path,True) if re.match(pattern,x) ]  
             if len(files) == 0:
                 raise RuntimeError, "ERROR making component %s: no files found under %s matching '%s'" % (name,path,pattern)
             writeDatasetToCache('Local%{path}%{pattern}.pck'.format(path = path.replace('/','_'), pattern = pattern), files)
+        print(files, type(files))
         return files
 
     def makeMCComponentFromLocal(self,name,dataset,path,pattern=".*root",xSec=1):
@@ -199,7 +200,22 @@ class ComponentCreator(object):
         component.run_range = run_range
         component.splitFactor = 100
         return component
-
+    def makeDataComponentFromLocal(self,name,dataset,path,folders,pattern,year,black_list,json=None,run_range=None,triggers=[],vetoTriggers=[],jsonFilter=False): #clara
+        component = cfg.DataComponent(
+            #dataset = dataset,
+            name = name,
+            files = self.getFilesFromOviedo(name,path,folders,pattern,black_list),
+            intLumi = 1,
+            triggers = triggers,
+            json = (json if jsonFilter else None)
+            )
+        component.json = json
+        component.year = year
+        component.vetoTriggers = vetoTriggers
+        component.dataset = dataset
+        component.run_range = run_range
+        component.splitFactor = 100
+        return component
     def getFiles(self, dataset, user, pattern, useAAA=False, run_range=None, json=None, unsafe = False):
         # print 'getting files for', dataset,user,pattern
         ds = createDataset( user, dataset, pattern, readcache=True, run_range=run_range, json=json, unsafe = unsafe )
@@ -209,7 +225,25 @@ class ComponentCreator(object):
            print('aaa') 
            mapping = 'root://cms-xrd-global.cern.ch/%s'
         return [ mapping % f for f in files]
-
+    def getFilesFromOviedo(self,name,path,folders,pattern=".*root",black_list=[]):
+        from CMGTools.Production.dataset import getDatasetFromCache, writeDatasetToCache
+        folders = folders.split(",")
+        files = []
+        for folder in folders:
+            pathi = path % folder;
+            try:
+               files_i = getDatasetFromCache('Local%{path}%{pattern}.pck'.format(path = pathi.replace('/','_'), pattern = pattern))
+            except IOError:
+               files_i = [ x for x in eostools.listFiles(pathi,True) if re.match(pattern,x) and x not in black_list ] 
+               if len(files_i) == 0:
+                  raise RuntimeError, "ERROR making component %s: no files found under %s matching '%s'" % (name,pathi,pattern)
+               writeDatasetToCache('Local%{path}%{pattern}.pck'.format(path = pathi.replace('/','_'), pattern = pattern), files_i)
+            for f in files_i:
+                
+                if f in black_list: continue 
+                #print(f)
+                files.append(f) 
+        return files
     def getPrimaryDatasetEntries(self, dataset, user, pattern, useAAA=False, run_range=None):
         # print 'getting files for', dataset,user,pattern
         ds = createDataset( user, dataset, pattern, True, run_range=run_range )

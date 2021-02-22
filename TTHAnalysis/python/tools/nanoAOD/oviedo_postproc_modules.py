@@ -83,6 +83,86 @@ def _fires(ev, path):
 
 triggerGroups=dict(
     Trigger_1e={
+        2016 : lambda ev : _fires(ev,'HLT_Ele27_WPTight_Gsf') or _fires(ev,'HLT_Ele105_CaloIdVT_GsfTrkIdT') or _fires(ev,'HLT_Ele115_CaloIdVT_GsfTrkIdT'),
+        2017 : lambda ev : _fires(ev,'HLT_Ele32_WPTight_Gsf') or _fires(ev,'HLT_Ele35_WPTight_Gsf') or _fires(ev,'HLT_Ele115_CaloIdVT_GsfTrkIdT'),
+        2018 : lambda ev : _fires(ev,'HLT_Ele32_WPTight_Gsf') or _fires(ev, 'HLT_Ele115_CaloIdVT_GsfTrkIdT'), #or _fires(ev, 'HLT_Photon200')
+    },
+    Trigger_1m={
+        2016 : lambda ev : _fires(ev,'HLT_IsoMu24') or _fires(ev,'HLT_IsoTkMu24') or _fires(ev,'HLT_Mu50') or _fires(ev,'HLT_TkMu50') or _fires(ev,'HLT_Mu45_eta2p1'),
+        2017 : lambda ev : _fires(ev,'HLT_IsoMu24') or _fires(ev,'HLT_IsoMu27') or _fires(ev,'HLT_IsoMu24_eta2p1') or _fires(ev,'HLT_Mu50') or  _fires(ev,'HLT_OldMu100') or   _fires(ev,'HLT_TkMu100'),
+        2018 : lambda ev : _fires(ev,'HLT_IsoMu24') or _fires(ev, 'HLT_IsoMu27') or _fires(ev, 'HLT_Mu50') or _fires(ev, 'HLT_OldMu100') or _fires(ev, 'HLT_TkMu100'),
+    },
+    Trigger_2e={
+        2016 : lambda ev : _fires(ev,'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ') or _fires(ev,'HLT_DoubleEle33_CaloIdL_GsfTrkIdVL') or _fires(ev,'HLT_DoubleEle33_CaloIdL_GsfTrkIdVL_MW'),
+        2017 : lambda ev : _fires(ev,'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL') or _fires(ev,'HLT_DoubleEle33_CaloIdL_MW'),
+        2018 : lambda ev : _fires(ev,'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL') or _fires(ev, 'HLT_DoubleEle25_CaloIdL_MW'),
+    },
+    Trigger_2m={
+        2016 : lambda ev : _fires(ev,'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL') or _fires(ev,'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL') or  _fires(ev,'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ') or _fires(ev,'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ') or _fires(ev,'HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL') or _fires(ev,'HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ') or _fires(ev,'HLT_Mu30_TkMu11'),
+        2017 : lambda ev : _fires(ev,'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8') or _fires(ev,'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8') or _fires(ev,'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL') or _fires(ev,'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ') or _fires(ev,'HLT_Mu37_TkMu27'),
+        2018 : lambda ev : _fires(ev,'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8') or _fires(ev, 'HLT_Mu37_TkMu27'),
+    },
+    Trigger_em={
+        2016 :  lambda ev : _fires(ev, 'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL') or _fires(ev,'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ') \
+        or _fires(ev, 'HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL') or _fires(ev,'HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ') or _fires(ev,'HLT_Mu30_Ele30_CaloIdL_GsfTrkIdVL') or _fires(ev,'HLT_Mu33_Ele33_CaloIdL_GsfTrkIdVL'), 
+        2017 :  lambda ev : _fires(ev,'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL')\
+        or _fires(ev,'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ')\
+        or _fires(ev,'HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ')\
+        or _fires(ev,'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ')\
+        or  _fires(ev,'HLT_Mu27_Ele37_CaloIdL_MW')\
+        or  _fires(ev,'HLT_Mu37_Ele27_CaloIdL_MW'),\
+        2018 :  lambda ev : _fires(ev,'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL')\
+        or _fires(ev,'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ')\
+	or _fires(ev, 'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ')\
+	or _fires(ev, 'HLT_Mu27_Ele37_CaloIdL_MW')\
+	or _fires(ev, 'HLT_Mu37_Ele27_CaloIdL_MW')\
+        or _fires(ev,'HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ'),
+    },
+    Trigger_3e={
+        2016 : lambda ev : _fires(ev,'HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL'),
+        2017 : lambda ev : _fires(ev,'HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL'),
+        2018 : lambda ev : _fires(ev,'HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL'), # prescaled in the two years according to https://twiki.cern.ch/twiki/bin/view/CMS/EgHLTRunIISummary#2018
+    },
+    Trigger_3m={
+        2016 : lambda ev : _fires(ev,'HLT_TripleMu_12_10_5'),
+        2017 : lambda ev : _fires(ev,'HLT_TripleMu_10_5_5_DZ') or _fires(ev,'HLT_TripleMu_5_3_3_Mass3p8to60_DZ') or _fires(ev,'HLT_TripleMu_12_10_5'),			
+        2018 : lambda ev : _fires(ev,'HLT_TripleMu_12_10_5') or _fires(ev, 'HLT_TripleMu_5_3_3_Mass3p8to60_DZ'),
+    },
+    Trigger_mee={
+        2016 : lambda ev : _fires(ev,'HLT_Mu8_DiEle12_CaloIdL_TrackIdL'),
+        2017 : lambda ev : _fires(ev,'HLT_Mu8_DiEle12_CaloIdL_TrackIdL'),
+        2018 : lambda ev : _fires(ev,'HLT_Mu8_DiEle12_CaloIdL_TrackIdL'),
+    },
+    Trigger_mme={
+        2016 : lambda ev : _fires(ev,'HLT_DiMu9_Ele9_CaloIdL_TrackIdL'),
+        2017 : lambda ev : _fires(ev,'HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ'),
+        2018 : lambda ev : _fires(ev,'HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ'),
+    },
+    Trigger_2lss={
+        2016 : lambda ev : ev.Trigger_1e or ev.Trigger_1m or ev.Trigger_2e or ev.Trigger_2m or ev.Trigger_em,
+        2017 : lambda ev : ev.Trigger_1e or ev.Trigger_1m or ev.Trigger_2e or ev.Trigger_2m or ev.Trigger_em,
+        2018 : lambda ev : ev.Trigger_1e or ev.Trigger_1m or ev.Trigger_2e or ev.Trigger_2m or ev.Trigger_em,
+    },
+    Trigger_3l={
+        2016 : lambda ev : ev.Trigger_2lss or ev.Trigger_3e or ev.Trigger_3m or ev.Trigger_mee or ev.Trigger_mme,
+        2017 : lambda ev : ev.Trigger_2lss or ev.Trigger_3e or ev.Trigger_3m or ev.Trigger_mee or ev.Trigger_mme,
+        2018 : lambda ev : ev.Trigger_2lss or ev.Trigger_3e or ev.Trigger_3m or ev.Trigger_mee or ev.Trigger_mme,
+    },
+    Trigger_MET={
+        2016 : lambda ev : _fires(ev,'HLT_MET200') or _fires(ev,'HLT_PFMET300') or _fires(ev,'HLT_PFMET170_HBHECleaned') or  _fires(ev,'HLT_PFMET120_PFMHT120_IDTight'), 
+        2017 : lambda ev : _fires(ev,'HLT_PFMET140_PFMHT140_IDTight'),
+        2018 : lambda ev : _fires(ev,'HLT_PFMET120_PFMHT120_IDTight') or _fires(ev,'HLT_DiJet110_35_Mjj650_PFMET110') or _fires(ev,'HLT_PFMET250_HBHECleaned') or _fires(ev,'HLT_PFMET200_HBHE_BeamHaloCleaned') or _fires(ev,'HLT_PFMETTypeOne140_PFMHT140_IDTight') or _fires(ev,'HLT_PFMETTypeOne200_HBHE_BeamHaloCleaned') or _fires(ev,'HLT_TripleJet110_35_35_Mjj650_PFMET110') or _fires(ev,'HLT_CaloMET350_HBHECleaned'),
+    },
+    Trigger_JetHT={
+       2016: lambda ev : _fires(ev,'HLT_PFHT400_SixJet30_DoubleBTagCSV_p056') or _fires(ev,'HLT_PFHT900') or _fires(ev,'HLT_PFHT650_WideJetMJJ900DEtaJJ1p5') or  _fires(ev,'HLT_CaloJet500_NoJetID'),
+       2017: lambda ev : _fires(ev,'HLT_PF_Jet500') or _fires(ev,'HLT_CaloJet500_NoJetID') or _fires(ev,'HLT_AK8PFJet500'),
+       2018: lambda ev : _fires(ev,'HLT_CaloJet500_NoJetID') or _fires(ev,'HLT_AK8PFJet400_TrimMass30') or _fires(ev,'HLT_AK8PFJet_500') or _fires(ev,'HLT_PFJet500') or _fires(ev,'HLT_PFHT1050'),
+    },
+)
+
+'''
+triggerGroups=dict(
+    Trigger_1e={
         2016 : lambda ev : _fires(ev,'HLT_Ele27_WPTight_Gsf') or _fires(ev,'HLT_Ele25_eta2p1_WPTight_Gsf') or _fires(ev,'HLT_Ele27_eta2p1_WPLoose_Gsf'),
         2017 : lambda ev : _fires(ev,'HLT_Ele32_WPTight_Gsf') or _fires(ev,'HLT_Ele35_WPTight_Gsf'),
         2018 : lambda ev : _fires(ev,'HLT_Ele32_WPTight_Gsf'),
@@ -149,33 +229,33 @@ triggerGroups=dict(
         2018 : lambda ev : _fires(ev,'HLT_PFMET120_PFMHT120_IDTight'),
     }
 )
-
+'''
 
 triggerGroups_dict=dict(
     Trigger_1e={
-        2016 :  ['HLT_Ele27_WPTight_Gsf' , 'HLT_Ele25_eta2p1_WPTight_Gsf' , 'HLT_Ele27_eta2p1_WPLoose_Gsf'],
-        2017 :  ['HLT_Ele32_WPTight_Gsf' , 'HLT_Ele35_WPTight_Gsf'],
-        2018 :  ['HLT_Ele32_WPTight_Gsf'],
+        2016 :  ['HLT_Ele27_WPTight_Gsf' , 'HLT_Ele105_CaloIdVT_GsfTrkIdT' , 'HLT_Ele115_CaloIdVT_GsfTrkIdT'],
+        2017 :  ['HLT_Ele32_WPTight_Gsf' , 'HLT_Ele35_WPTight_Gsf','HLT_Ele115_CaloIdVT_GsfTrkIdT'],
+        2018 :  ['HLT_Ele32_WPTight_Gsf','HLT_Ele115_CaloIdVT_GsfTrkIdT'],
     },
     Trigger_1m={
-        2016 :  ['HLT_IsoMu24' , 'HLT_IsoTkMu24' , 'HLT_IsoMu22_eta2p1' , 'HLT_IsoTkMu22_eta2p1' , 'HLT_IsoMu22' , 'HLT_IsoTkMu22'],
-        2017 :  ['HLT_IsoMu24' , 'HLT_IsoMu27'],
-        2018 :  ['HLT_IsoMu24'],
+        2016 :  ['HLT_IsoMu24' , 'HLT_IsoTkMu24' ,'HLT_IsoTkMu24', 'HLT_Mu50','HLT_TkMu50','HLT_TkMu50'],
+        2017 :  ['HLT_IsoMu24' , 'HLT_IsoMu27','HLT_IsoMu24_eta2p1','HLT_Mu50','HLT_OldMu100','HLT_TkMu100'],
+        2018 :  ['HLT_IsoMu24','HLT_IsoMu27','HLT_Mu50','HLT_OldMu100','HLT_TkMu100'],
     },
     Trigger_2e={
-        2016 :  ['HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ'],
-        2017 :  ['HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL'],
-        2018 :  ['HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL'],
+        2016 :  ['HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ','HLT_DoubleEle33_CaloIdL_GsfTrkIdVL','HLT_DoubleEle33_CaloIdL_GsfTrkIdVL_MW'],
+        2017 :  ['HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL','HLT_DoubleEle33_CaloIdL_MW'],
+        2018 :  ['HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL','HLT_DoubleEle25_CaloIdL_MW'],
     },
     Trigger_2m={
-        2016 :  ['HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL' , 'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL' ,  'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ' , 'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ'],
-        2017 :  ['HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8' , 'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8'],
-        2018 :  ['HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8'],
+        2016 :  ['HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL' , 'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL' ,  'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ' , 'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ','HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL','HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ','HLT_Mu30_TkMu11'],
+        2017 :  ['HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8' , 'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8','HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL'],
+        2018 :  ['HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8','HLT_Mu37_TkMu27'],
     },
     Trigger_em={
-        2016 :   ['HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL' , 'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ', 'HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL' , 'HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ'],
-        2017 :   ['HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL', 'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ'        , 'HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ'        , 'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ'],
-        2018 :   ['HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL', 'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ'        , 'HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ'],
+        2016 :   ['HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL' , 'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ', 'HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL' , 'HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ','HLT_Mu30_Ele30_CaloIdL_GsfTrkIdVL','HLT_Mu33_Ele33_CaloIdL_GsfTrkIdVL'],
+        2017 :   ['HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL', 'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ'        , 'HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ'        , 'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ','HLT_Mu27_Ele37_CaloIdL_MW','HLT_Mu37_Ele27_CaloIdL_MW'],
+        2018 :   ['HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL','HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ','HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ','HLT_Mu27_Ele37_CaloIdL_MW','HLT_Mu37_Ele27_CaloIdL_MW','HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ'],
     },
     Trigger_3e={
         2016 :  ['HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL'],
@@ -184,8 +264,8 @@ triggerGroups_dict=dict(
     },
     Trigger_3m={
         2016 :  ['HLT_TripleMu_12_10_5'],
-        2017 :  ['HLT_TripleMu_12_10_5'],
-        2018 :  ['HLT_TripleMu_12_10_5'],
+        2017 :  ['HLT_TripleMu_10_5_5_DZ','HLT_TripleMu_5_3_3_Mass3p8to60_DZ','HLT_TripleMu_12_10_5'],
+        2018 :  ['HLT_TripleMu_12_10_5','HLT_TripleMu_5_3_3_Mass3p8to60_DZ'],
     },
     Trigger_mee={
         2016 :  ['HLT_Mu8_DiEle12_CaloIdL_TrackIdL'],
@@ -197,9 +277,65 @@ triggerGroups_dict=dict(
         2017 :  ['HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ'],
         2018 :  ['HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ'],
     },
+    Trigger_MET={
+        2016 : ['HLT_MET200','HLT_PFMET300','HLT_PFMET170_HBHECleaned','HLT_PFMET120_PFMHT120_IDTight'],
+        2017 : ['HLT_PFMET140_PFMHT140_IDTight'],
+        2018 : ['HLT_DiJet110_35_Mjj650_PFMET110','HLT_PFMET120_PFMHT120_IDTight','HLT_PFMET250_HBHECleaned','HLT_PFMET200_HBHE_BeamHaloCleaned','HLT_PFMETTypeOne140_PFMHT140_IDTight','HLT_PFMETTypeOne200_HBHE_BeamHaloCleaned','HLT_TripleJet110_35_35_Mjj650_PFMET110','HLT_CaloMET350_HBHECleaned']
+    },
+    Trigger_JetHT={
+        2016 : ['HLT_PFHT400_SixJet30_DoubleBTagCSV_p056','HLT_PFHT900','HLT_PFHT650_WideJetMJJ900DEtaJJ1p5','HLT_CaloJet500_NoJetID'],
+        2017 : ['HLT_PF_Jet500','HLT_CaloJet500_NoJetID','HLT_AK8PFJet500'],
+        2018 : ['HLT_CaloJet500_NoJetID','HLT_AK8PFJet400_TrimMass30','HLT_AK8PFJet500','HLT_PFJet500','HLT_PFHT1050'],
+},
 )
 
-
+#triggerGroups_dict=dict(
+#    Trigger_1e={
+#        2016 :  ['HLT_Ele27_WPTight_Gsf' , 'HLT_Ele25_eta2p1_WPTight_Gsf' , 'HLT_Ele27_eta2p1_WPLoose_Gsf'],
+#        2017 :  ['HLT_Ele32_WPTight_Gsf' , 'HLT_Ele35_WPTight_Gsf'],
+#        2018 :  ['HLT_Ele32_WPTight_Gsf'],
+#    },
+#    Trigger_1m={
+#        2016 :  ['HLT_IsoMu24' , 'HLT_IsoTkMu24' , 'HLT_IsoMu22_eta2p1' , 'HLT_IsoTkMu22_eta2p1' , 'HLT_IsoMu22' , 'HLT_IsoTkMu22'],
+#        2017 :  ['HLT_IsoMu24' , 'HLT_IsoMu27'],
+#        2018 :  ['HLT_IsoMu24'],
+#    },
+#    Trigger_2e={
+#        2016 :  ['HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ'],
+#        2017 :  ['HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL'],
+#        2018 :  ['HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL'],
+#    },
+#    Trigger_2m={
+#        2016 :  ['HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL' , 'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL' ,  'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ' , 'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ'],
+#        2017 :  ['HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8' , 'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8'],
+#        2018 :  ['HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8'],
+#    },
+#    Trigger_em={
+#        2016 :   ['HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL' , 'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ', 'HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL' , 'HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ'],
+#        2017 :   ['HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL', 'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ'        , 'HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ'        , 'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ'],
+#        2018 :   ['HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL', 'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ'        , 'HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ'],
+#    },
+#    Trigger_3e={
+#        2016 :  ['HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL'],
+#        2017 :  ['HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL'],
+#        2018 :  ['HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL'], # prescaled in the two years according to https://twiki.cern.ch/twiki/bin/view/CMS/EgHLTRunIISummary#2018
+#    },
+#    Trigger_3m={
+#        2016 :  ['HLT_TripleMu_12_10_5'],
+#        2017 :  ['HLT_TripleMu_12_10_5'],
+#        2018 :  ['HLT_TripleMu_12_10_5'],
+#    },
+#    Trigger_mee={
+#        2016 :  ['HLT_Mu8_DiEle12_CaloIdL_TrackIdL'],
+#        2017 :  ['HLT_Mu8_DiEle12_CaloIdL_TrackIdL'],
+#        2018 :  ['HLT_Mu8_DiEle12_CaloIdL_TrackIdL'],
+#    },
+#    Trigger_mme={
+#        2016 :  ['HLT_DiMu9_Ele9_CaloIdL_TrackIdL'   ],
+#        2017 :  ['HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ'],
+#        2018 :  ['HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ'],
+#    },
+#)
 from CMGTools.TTHAnalysis.tools.evtTagger import EvtTagger
 
 Trigger_1e   = lambda : EvtTagger('Trigger_1e',[ lambda ev : triggerGroups['Trigger_1e'][ev.year](ev) ])

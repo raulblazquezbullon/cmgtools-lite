@@ -6,10 +6,43 @@ json='/nfs/fanae/user/clara/ttW_Top/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/cfg/Ce
 
 #---------------------------RunB 2017 25Oct2019
 
+#DoubleMuon_Run2018_25Oct2019_D = kreator.makeDataComponentFromLocal("DoubleMuon_Run2018_25Oct2019_D", "/DoubleMuon/palencia-TopNanoAODv6-1-2_2018-831765d0aa9cd559fee11ff659127d4e/USER", "/pool/phedex/TOPnanoAODv6/2018/DoubleMuon/TopNanoAODv6-1-2_2018/%s/","200624_140340", ".*root", 2018,  json=json)
+#//cms-xrd-global.cern.ch//store/user/piedavid/topNanoAOD/v6-1-1/2017/DoubleMuon/TopNanoAODv6-1-1_2017/200615_080544/0000/tree_1.root -Run2017B
+
+
+DoubleMuon_Run2017B_25Oct2019 = kreator.makeDataComponentFromLocal("DoubleMuon_Run2017B_25Oct2019","/DoubleMuon/piedavid-Run2017B-31Mar2018-v1_TopNanoAODv6-1-1_2017-9721c24ccc7f925c513e24ff74941177/USER", "/pool/phedex/TOPnanoAODv6/2017/DoubleMuon/TopNanoAODv6-1-1_2017/%s/","200615_080544",".*root", 2017, [],json=json)
+SingleElectron_Run2017B_25Oct2019 = kreator.makeDataComponentFromLocal("SingleElectron_Run2017B_25Oct2019","/SingleMuon/piedavid-Run2017B-31Mar2018-v1_TopNanoAODv6-1-1_2017-9721c24ccc7f925c513e24ff74941177/USER", "/pool/phedex/TOPnanoAODv6/2017/SingleElectron/TopNanoAODv6-1-1_2017/%s/","200615_081218,200618_083110",".*root", 2017,[], json=json)
+MuonEG_Run2017B_25Oct2019 = kreator.makeDataComponentFromLocal("MuonEG_Run2017B_25Oct2019","/MuonEG/piedavid-Run2017B-31Mar2018-v1_TopNanoAODv6-1-1_2017-9721c24ccc7f925c513e24ff74941177/USER", "/pool/phedex/TOPnanoAODv6/2017/MuonEG/TopNanoAODv6-1-1_2017/%s/","200615_081001",".*root", 2017,[], json=json)
+DoubleEG_Run2017B_25Oct2019 = kreator.makeDataComponentFromLocal("DoubleEG_Run2017B_25Oct2019","/DoubleEG/piedavid-Run2017B-31Mar2018-v1_TopNanoAODv6-1-1_2017-9721c24ccc7f925c513e24ff74941177/USER", "/pool/phedex/TOPnanoAODv6/2017/DoubleEG/TopNanoAODv6-1-1_2017/%s/","200615_080330,200623_063733",".*root", 2017,[], json=json)
+SingleMuon_Run2017B_25Oct2019 = kreator.makeDataComponentFromLocal("SingleMuon_Run2017B_25Oct2019","/SingleMuon/piedavid-Run2017B-31Mar2018-v1_TopNanoAODv6-1-1_2017-9721c24ccc7f925c513e24ff74941177/USER", "/pool/phedex/TOPnanoAODv6/2017/SingleMuon/TopNanoAODv6-1-1_2017/%s/","200612_180815,200617_193431,200626_210802,200703_065221,200706_172229",".*root", 2017,[], json=json)
+
+DoubleMuon_Run2017C_25Oct2019 = kreator.makeDataComponentFromLocal("DoubleMuon_Run2017C_25Oct2019","/DoubleMuon/piedavid-Run2017C-31Mar2018-v1_TopNanoAODv6-1-1_2017-9721c24ccc7f925c513e24ff74941177/USER", "/pool/phedex/TOPnanoAODv6/2017/DoubleMuon/TopNanoAODv6-1-1_2017/%s/","200615_080609",".*root", 2017,[], json=json)
+SingleElectron_Run2017C_25Oct2019 = kreator.makeDataComponentFromLocal("SingleElectron_Run2017C_25Oct2019","/SingleMuon/piedavid-Run2017C-31Mar2018-v1_TopNanoAODv6-1-1_2017-9721c24ccc7f925c513e24ff74941177/USER", "/pool/phedex/TOPnanoAODv6/2017/SingleElectron/TopNanoAODv6-1-1_2017/%s/","200615_081246,200705_103129",".*root", 2017, ['/pool/phedex/TOPnanoAODv6/2017/SingleElectron/TopNanoAODv6-1-1_2017/200615_081246/0000/tree_10.root','/pool/phedex/TOPnanoAODv6/2017/SingleElectron/TopNanoAODv6-1-1_2017/200615_081246/0000/tree_97.root','/pool/phedex/TOPnanoAODv6/2017/SingleElectron/TopNanoAODv6-1-1_2017/200615_081246/0000/tree_8.root','/pool/phedex/TOPnanoAODv6/2017/SingleElectron/TopNanoAODv6-1-1_2017/200615_081246/0000/tree_9.root','/pool/phedex/TOPnanoAODv6/2017/SingleElectron/TopNanoAODv6-1-1_2017/200615_081246/0000/tree_92.root','/pool/phedex/TOPnanoAODv6/2017/SingleElectron/TopNanoAODv6-1-1_2017/200615_081246/0000/tree_93.root','/pool/phedex/TOPnanoAODv6/2017/SingleElectron/TopNanoAODv6-1-1_2017/200615_081246/0000/tree_96.root','/pool/phedex/TOPnanoAODv6/2017/SingleElectron/TopNanoAODv6-1-1_2017/200615_081246/0000/tree_94.root','/pool/phedex/TOPnanoAODv6/2017/SingleElectron/TopNanoAODv6-1-1_2017/200615_081246/0000/tree_95.root'], json=json)
+MuonEG_Run2017C_25Oct2019 = kreator.makeDataComponentFromLocal("MuonEG_Run2017C_25Oct2019","/MuonEG/piedavid-Run2017C-31Mar2018-v1_TopNanoAODv6-1-1_2017-9721c24ccc7f925c513e24ff74941177/USER", "/pool/phedex/TOPnanoAODv6/2017/MuonEG/TopNanoAODv6-1-1_2017/%s/","200615_081027,200630_170320",".*root", 2017,[], json=json)
+DoubleEG_Run2017C_25Oct2019 = kreator.makeDataComponentFromLocal("DoubleEG_Run2017C_25Oct2019","/DoubleEG/piedavid-Run2017C-31Mar2018-v1_TopNanoAODv6-1-1_2017-9721c24ccc7f925c513e24ff74941177/USER", "/pool/phedex/TOPnanoAODv6/2017/DoubleEG/TopNanoAODv6-1-1_2017/%s/","200615_080356,200626_140118",".*root", 2017, ['/pool/phedex/TOPnanoAODv6/2017/DoubleEG/TopNanoAODv6-1-1_2017/200615_080356/0000/tree_140.root','/pool/phedex/TOPnanoAODv6/2017/DoubleEG/TopNanoAODv6-1-1_2017/200615_080356/0000/tree_139.root','/pool/phedex/TOPnanoAODv6/2017/DoubleEG/TopNanoAODv6-1-1_2017/200615_080356/0000/tree_65.root','/pool/phedex/TOPnanoAODv6/2017/DoubleEG/TopNanoAODv6-1-1_2017/200615_080356/0000/tree_66.root','/pool/phedex/TOPnanoAODv6/2017/DoubleEG/TopNanoAODv6-1-1_2017/200615_080356/0000/tree_68.root','/pool/phedex/TOPnanoAODv6/2017/DoubleEG/TopNanoAODv6-1-1_2017/200615_080356/0000/tree_69.root','/pool/phedex/TOPnanoAODv6/2017/DoubleEG/TopNanoAODv6-1-1_2017/200615_080356/0000/tree_64.root','/pool/phedex/TOPnanoAODv6/2017/DoubleEG/TopNanoAODv6-1-1_2017/200615_080356/0000/tree_67.root'], json=json)
+SingleMuon_Run2017C_25Oct2019 = kreator.makeDataComponentFromLocal("SingleMuon_Run2017C_25Oct2019","/SingleMuon/piedavid-Run2017C-31Mar2018-v1_TopNanoAODv6-1-1_2017-9721c24ccc7f925c513e24ff74941177/USER", "/pool/phedex/TOPnanoAODv6/2017/SingleMuon/TopNanoAODv6-1-1_2017/%s/","200612_180842,200616_075722,200617_193103",".*root", 2017, [],json=json)
+
+DoubleMuon_Run2017D_25Oct2019 = kreator.makeDataComponentFromLocal("DoubleMuon_Run2017D_25Oct2019","/DoubleMuon/piedavid-Run2017D-31Mar2018-v1_TopNanoAODv6-1-1_2017-9721c24ccc7f925c513e24ff74941177/USER", "/pool/phedex/TOPnanoAODv6/2017/DoubleMuon/TopNanoAODv6-1-1_2017/%s/","200615_080634",".*root", 2017, [],json=json)
+SingleElectron_Run2017D_25Oct2019 = kreator.makeDataComponentFromLocal("SingleElectron_Run2017D_25Oct2019","/SingleMuon/piedavid-Run2017D-31Mar2018-v1_TopNanoAODv6-1-1_2017-9721c24ccc7f925c513e24ff74941177/USER", "/pool/phedex/TOPnanoAODv6/2017/SingleElectron/TopNanoAODv6-1-1_2017/%s/","200615_081311",".*root", 2017,[], json=json)
+MuonEG_Run2017D_25Oct2019 = kreator.makeDataComponentFromLocal("MuonEG_Run2017D_25Oct2019","/MuonEG/piedavid-Run2017D-31Mar2018-v1_TopNanoAODv6-1-1_2017-9721c24ccc7f925c513e24ff74941177/USER", "/pool/phedex/TOPnanoAODv6/2017/MuonEG/TopNanoAODv6-1-1_2017/%s/","200615_081058",".*root", 2017,[], json=json)
+DoubleEG_Run2017D_25Oct2019 = kreator.makeDataComponentFromLocal("DoubleEG_Run2017D_25Oct2019","/DoubleEG/piedavid-Run2017D-31Mar2018-v1_TopNanoAODv6-1-1_2017-9721c24ccc7f925c513e24ff74941177/USER", "/pool/phedex/TOPnanoAODv6/2017/DoubleEG/TopNanoAODv6-1-1_2017/%s/","200615_080422",".*root", 2017,[], json=json)
+SingleMuon_Run2017D_25Oct2019 = kreator.makeDataComponentFromLocal("SingleMuon_Run2017D_25Oct2019","/SingleMuon/piedavid-Run2017D-31Mar2018-v1_TopNanoAODv6-1-1_2017-9721c24ccc7f925c513e24ff74941177/USER", "/pool/phedex/TOPnanoAODv6/2017/SingleMuon/TopNanoAODv6-1-1_2017/%s/","200612_180908,200616_125843,200618_065222",".*root", 2017,[], json=json)
+
+DoubleMuon_Run2017E_25Oct2019 = kreator.makeDataComponentFromLocal("DoubleMuon_Run2017E_25Oct2019","/DoubleMuon/piedavid-Run2017E-31Mar2018-v1_TopNanoAODv6-1-1_2017-9721c24ccc7f925c513e24ff74941177/USER", "/pool/phedex/TOPnanoAODv6/2017/DoubleMuon/TopNanoAODv6-1-1_2017/%s/","200615_080700,200701_111735",".*root", 2017,[], json=json)
+SingleElectron_Run2017E_25Oct2019 = kreator.makeDataComponentFromLocal("SingleElectron_Run2017E_25Oct2019","/SingleMuon/piedavid-Run2017E-31Mar2018-v1_TopNanoAODv6-1-1_2017-9721c24ccc7f925c513e24ff74941177/USER", "/pool/phedex/TOPnanoAODv6/2017/SingleElectron/TopNanoAODv6-1-1_2017/%s/","200708_183037,200615_081338,200706_213909",".*root", 2017,["/pool/phedex/TOPnanoAODv6/2017/SingleElectron/TopNanoAODv6-1-1_2017/200615_081338/0000/tree_2.root"], json=json)
+MuonEG_Run2017E_25Oct2019 = kreator.makeDataComponentFromLocal("MuonEG_Run2017E_25Oct2019","/MuonEG/piedavid-Run2017E-31Mar2018-v1_TopNanoAODv6-1-1_2017-9721c24ccc7f925c513e24ff74941177/USER", "/pool/phedex/TOPnanoAODv6/2017/MuonEG/TopNanoAODv6-1-1_2017/%s/","200621_100822,200615_081126",".*root", 2017,[], json=json)
+DoubleEG_Run2017E_25Oct2019 = kreator.makeDataComponentFromLocal("DoubleEG_Run2017E_25Oct2019","/DoubleEG/piedavid-Run2017E-31Mar2018-v1_TopNanoAODv6-1-1_2017-9721c24ccc7f925c513e24ff74941177/USER", "/pool/phedex/TOPnanoAODv6/2017/DoubleEG/TopNanoAODv6-1-1_2017/%s/","200615_080448,200630_165927",".*root", 2017,['/pool/phedex/TOPnanoAODv6/2017/DoubleEG/TopNanoAODv6-1-1_2017/200615_080448/0000/tree_2.root','/pool/phedex/TOPnanoAODv6/2017/DoubleEG/TopNanoAODv6-1-1_2017/200615_080448/0000/tree_3.root','/pool/phedex/TOPnanoAODv6/2017/DoubleEG/TopNanoAODv6-1-1_2017/200615_080448/0000/tree_4.root'], json=json)
+SingleMuon_Run2017E_25Oct2019 = kreator.makeDataComponentFromLocal("SingleMuon_Run2017E_25Oct2019","/SingleMuon/piedavid-Run2017E-31Mar2018-v1_TopNanoAODv6-1-1_2017-9721c24ccc7f925c513e24ff74941177/USER", "/pool/phedex/TOPnanoAODv6/2017/SingleMuon/TopNanoAODv6-1-1_2017/%s/","200612_180934,200618_064605,200621_100329,200625_175859,200709_065419,200712_102213,200714_073726",".*root", 2017,[], json=json)
+
+DoubleMuon_Run2017F_25Oct2019 = kreator.makeDataComponentFromLocal("DoubleMuon_Run2017F_25Oct2019","/DoubleMuon/piedavid-Run2017F-31Mar2018-v1_TopNanoAODv6-1-1_2017-9721c24ccc7f925c513e24ff74941177/USER", "/pool/phedex/TOPnanoAODv6/2017/DoubleMuon/TopNanoAODv6-1-1_2017/%s/","200615_080726",".*root", 2017,[], json=json)
+SingleElectron_Run2017F_25Oct2019 = kreator.makeDataComponentFromLocal("SingleElectron_Run2017F_25Oct2019","/SingleMuon/piedavid-Run2017F-31Mar2018-v1_TopNanoAODv6-1-1_2017-9721c24ccc7f925c513e24ff74941177/USER", "/pool/phedex/TOPnanoAODv6/2017/SingleElectron/TopNanoAODv6-1-1_2017/%s/","200615_081411,200706_064535",".*root", 2017,[], json=json)
+MuonEG_Run2017F_25Oct2019 = kreator.makeDataComponentFromLocal("MuonEG_Run2017F_25Oct2019","/MuonEG/piedavid-Run2017F-31Mar2018-v1_TopNanoAODv6-1-1_2017-9721c24ccc7f925c513e24ff74941177/USER", "/pool/phedex/TOPnanoAODv6/2017/MuonEG/TopNanoAODv6-1-1_2017/%s/","200615_081152,200619_103726",".*root", 2017,[], json=json)
+DoubleEG_Run2017F_25Oct2019 = kreator.makeDataComponentFromLocal("DoubleEG_Run2017F_25Oct2019","/DoubleEG/piedavid-Run2017F-31Mar2018-v1_TopNanoAODv6-1-1_2017-9721c24ccc7f925c513e24ff74941177/USER", "/pool/phedex/TOPnanoAODv6/2017/DoubleEG/TopNanoAODv6-1-1_2017/%s/","200615_080514,200630_165949",".*root", 2017,[], json=json)
+SingleMuon_Run2017F_25Oct2019 = kreator.makeDataComponentFromLocal("SingleMuon_Run2017F_25Oct2019","/SingleMuon/piedavid-Run2017F-31Mar2018-v1_TopNanoAODv6-1-1_2017-9721c24ccc7f925c513e24ff74941177/USER", "/pool/phedex/TOPnanoAODv6/2017/SingleMuon/TopNanoAODv6-1-1_2017/%s/","200612_181001,200616_075843,200618_193612,200707_065515,200709_092717,200712_102031,200713_082251",".*root", 2017,[], json=json)
 
 
 
-
+'''
 DoubleMuon_Run2017B_25Oct2019 = kreator.makeMyPrivateDataComponent("DoubleMuon_Run2017B_25Oct2019", "/DoubleMuon/piedavid-Run2017B-31Mar2018-v1_TopNanoAODv6-1-1_2017-9721c24ccc7f925c513e24ff74941177/USER", "PRIVATE", ".*root", 'phys03',  json=json, useAAA=True)
 MuonEG_Run2017B_25Oct2019= kreator.makeMyPrivateDataComponent("MuonEG_Run2017B_25Oct2019", "/MuonEG/piedavid-Run2017B-31Mar2018-v1_TopNanoAODv6-1-1_2017-9721c24ccc7f925c513e24ff74941177/USER", "PRIVATE", ".*root", 'phys03',  json=json, useAAA=True)
 DoubleEG_Run2017B_25Oct2019 = kreator.makeMyPrivateDataComponent("DoubleEG_Run2017B_25Oct2019", "/DoubleEG/piedavid-Run2017B-31Mar2018-v1_TopNanoAODv6-1-1_2017-9721c24ccc7f925c513e24ff74941177/USER", "PRIVATE", ".*root", 'phys03',  json=json, useAAA=True)
@@ -47,7 +80,7 @@ DoubleEG_Run2017F_25Oct2019 = kreator.makeMyPrivateDataComponent("DoubleEG_Run20
 SingleMuon_Run2017F_25Oct2019 = kreator.makeMyPrivateDataComponent("SingleMuon_Run2017F_25Oct2019", "/SingleMuon/piedavid-Run2017F-31Mar2018-v1_TopNanoAODv6-1-1_2017-9721c24ccc7f925c513e24ff74941177/USER", "PRIVATE", ".*root", 'phys03',  json=json, useAAA=True)
 SingleElectron_Run2017F_25Oct2019 = kreator.makeMyPrivateDataComponent("SingleElectron_Run2017F_25Oct2019", "/SingleElectron/piedavid-Run2017F-31Mar2018-v1_TopNanoAODv6-1-1_2017-9721c24ccc7f925c513e24ff74941177/USER", "PRIVATE", ".*root", 'phys03',  json=json, useAAA=True)
 
-
+'''
 DoubleMuon = [
     DoubleMuon_Run2017B_25Oct2019,
     DoubleMuon_Run2017C_25Oct2019,
@@ -92,8 +125,10 @@ SingleElectron = [
 
 
 
-dataSamples_Runs =  DoubleMuon + MuonEG + DoubleEG + SingleMuon + SingleElectron
+#dataSamples_Runs =  #DoubleMuon + DoubleEG 
+#dataSamples_Runs = MuonEG + SingleMuon + SingleElectron
 
+dataSamples_Runs =[DoubleMuon_Run2017C_25Oct2019]
 ### ---------------------------------------------------------------------
 
 dataSamples = dataSamples_Runs 
