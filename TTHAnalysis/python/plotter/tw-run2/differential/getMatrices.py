@@ -16,7 +16,9 @@ vl.SetUpWarnings()
 markersize  = 0.8
 
 
-def GetAndPlotResponseMatrix(var, key, theresponseh, theparticleh, thepath):
+def GetAndPlotResponseMatrix(iY, var, key, theresponseh, theparticleh, thepath):
+    thelumi = vl.TotalLumi if iY == "run2" else vl.LumiDict[int(iY)]
+    scaleval = 1/thelumi/1000
     #print "\n[GetAndPlotResponseMatrix]"
     particlebins = vl.varList[var]["bins_particle"]
     detectorbins = vl.varList[var]["bins_detector"]
@@ -35,6 +37,9 @@ def GetAndPlotResponseMatrix(var, key, theresponseh, theparticleh, thepath):
             hGen.SetBinError(i, j, theparticleh.GetBinError(i))
 
     overlap = None
+
+    #htemp.Scale(scaleval); hGen.Scale(scaleval)
+
     htemp.Divide(hGen); del hGen;
 
     if var == "Fiducial":
@@ -401,7 +406,7 @@ def CalculateAndPlotResponseMatrices(tsk):
         if key == "":
             GetAndPlotPuritiesAndStabilities(iV, responsedict[key], hParticle, detectorparticledict[key], detectordict[key], tmpoutpath)
 
-        hResponse, theoverlap = GetAndPlotResponseMatrix(iV, key, responsedict[key], hParticle, tmpoutpath)
+        hResponse, theoverlap = GetAndPlotResponseMatrix(iY, iV, key, responsedict[key], hParticle, tmpoutpath)
 
         if theoverlap != None:
             SaveOverlap(theoverlap, tmpoutpath)
@@ -470,7 +475,7 @@ if __name__=="__main__":
             raise RuntimeError("FATAL: the variable requested is not in the provided input folder.")
 
         for iV in thevars:
-            if "plots" in iV or "table" in iV: continue
+            if "plots" in iV or "table" in iV or "control" in iV: continue
             tasks.append( (inpath, iY, iV) )
 
     if nthreads > 1:

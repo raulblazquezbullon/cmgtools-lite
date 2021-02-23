@@ -7,9 +7,11 @@ import warnings as wr
 import os
 
 # === ESSENTIAL PARAMETERS OF THE ANALYSIS. CHANGING THIS APPLIES TO EVERYTHING. ===
-nuncs       = 3         # Number of uncs. shown in the relative uncertainty plots
+nuncs       = 5         # Number of uncs. shown in the relative uncertainty plots
 nBinsForBDT = 4         # Number of bins for the BDT discr. distribution used for the signal extraction procedure
                         #   for the differential analysis when using maximum-likelihood fits.
+diffControlReg = "3j2t" # Control region used in the differential signal extraction step
+
 unifttbar   = True      # Force the BDT disc. distrib. bins to hace the same amount of ttbar events.
 asimov      = True      # Use of Asimov dataset or data
 doxsec      = True      # Show events or diff. cross section in final results
@@ -264,6 +266,52 @@ varList['Lep1Lep2Jet1_M'] = {
     "legpos_particlefidbinunc": (.4, .615, .58, .9),
     "yaxismax_ratio_fidnorm" : 2.5,
 }
+
+
+varList['Lep1Lep2Jet1_M_control'] = {
+    #'xaxis'       : 'm(#ell_{1}, #ell_{2}, j) (GeV)',
+    'xaxis'       : '#it{m}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j}) (GeV)',
+    'printname'   : '\\invmassvar (\\GeV)',
+    'printnamenodim':'\\invmassvar',
+    'mathprintname': '\\invmassvar',
+    'yaxis_particle'       : 'd#sigma/d(#it{m}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (pb)',
+    'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(#it{m}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (adim.)',
+    'yaxisfidbin' : '(1/#sigma_{fid.})d#sigma/d(#it{m}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (1/GeV)',
+    'yaxisnorm'   : 'd#sigma/d(#it{m}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (pb/GeV)',
+    'yaxis_unc'   : 'Relative uncertainty (adim.)',
+
+
+    'bins_particle'  : [50., 130., 170., 200., 250., 325., 400.],
+    'bins_detector' : [0., 120., 180., 240., 300., 360., 420., 480., 540., 600.],
+
+    'descbinning' : [0., 600.],
+    'ndescbins'   : 16,
+    'legpos'      : (0.75, 0.55, 0.95, 0.93),
+    'legposdesc'  : (0.7, 0.55, 0.90, 0.93),
+    "var_detector"         : 'min(max(Lep1Lep2Jet1_M, 0.), 599.)',
+    'var_response'         : 'Lep1Lep2Jet1_M',
+    'var_particle'         : 'min(max(DressLep1Lep2Jet1_M, 0.), 599.)',
+    'legpos_detectorunc' : "TC",
+    'legpos_particlefidunc'  : "TC",
+    'legpos_particleunc'  : "TL",
+    'legpos_particlefidbinunc': (.45, .615, .63, .9),
+    'legpos_particlefidbin': (.52, .9, .72, .65),
+    "legpos_particle"   : (.52, .9, .72, .65),
+    'txtsize_covdetector': 0.5,
+    'txtsize_covparticle': 1.5,
+    'txtangle_covparticle': 35,
+    'txtsize_covparticlefidbin': 1.3,
+    'txtangle_covparticlefidbin': 35,
+    "yaxisuplimitunf": 0.15,
+    "yaxismax_particlefidunc" : 0.7,
+    "yaxismax_particlefidbinunc" : 0.7,
+    "yaxismax_unf" : 1.55,
+    "yaxismax_particlebin": 0.004,
+    "legpos_particlebinunc" : (.18, .5, .31, .785),
+    "legpos_particlefidbinunc": (.4, .615, .58, .9),
+    "yaxismax_ratio_fidnorm" : 2.5,
+}
+
 
 varList['Lep1Lep2Jet1_MATLAS'] = {
     #'xaxis'       : 'm(#ell_{1}, #ell_{2}, j) (GeV)',
@@ -892,55 +940,55 @@ systMap = {
     'triggereff_2017' : True,
     'triggereff_2018' : True,
     'ttbar_matching' : {'tw'      : False,
-                    'ttbar'   : True,
-                    'dy'      : False,
-                    'nonworz' : False,
-                    'vvttv'   : False},
-    'ue'           : {'tw'      : False,
-                    'ttbar'   : True,
-                    'dy'      : False,
-                    'nonworz' : False,
-                    'vvttv'   : False},
-    'isr_ttbar' : {'tw'      : False,
-                    'ttbar'   : True,
-                    'dy'      : False,
-                    'nonworz' : False,
-                    'vvttv'   : False},
-    'isr_tw' : {'tw'       : True,
-                    'ttbar'   : False,
-                    'dy'      : False,
-                    'nonworz' : False,
-                    'vvttv'   : False},
-    'fsr_ttbar' : {'tw'      : False,
-                    'ttbar'   : True,
-                    'dy'      : False,
-                    'nonworz' : False,
-                    'vvttv'   : False},
-    'fsr_tw' : {'tw'       : True,
-                    'ttbar'   : False,
-                    'dy'      : False,
-                    'nonworz' : False,
-                    'vvttv'   : False},
-    'ttbar_scales' : {'tw'      : False,
-                    'ttbar'   : True,
-                    'dy'      : False,
-                    'nonworz' : False,
-                    'vvttv'   : False},
-    'tw_scales' : {'tw'       : True,
-                    'ttbar'   : False,
-                    'dy'      : False,
-                    'nonworz' : False,
-                    'vvttv'   : False},
-    'topptrew'   : {'tw'      : False,
-                    'ttbar'   : True,
-                    'dy'      : False,
-                    'nonworz' : False,
-                    'vvttv'   : False},
-    'colour_rec' : {'tw'      : False,
-                    'ttbar'   : True,
-                    'dy'      : False,
-                    'nonworz' : False,
-                    'vvttv'   : False},
+                        'ttbar'   : True,
+                        'dy'      : False,
+                        'nonworz' : False,
+                        'vvttv'   : False},
+    'ue'           : {  'tw'      : False,
+                        'ttbar'   : True,
+                        'dy'      : False,
+                        'nonworz' : False,
+                        'vvttv'   : False},
+    'isr_ttbar' : {     'tw'      : False,
+                        'ttbar'   : True,
+                        'dy'      : False,
+                        'nonworz' : False,
+                        'vvttv'   : False},
+    'isr_tw' : {        'tw'       : True,
+                        'ttbar'   : False,
+                        'dy'      : False,
+                        'nonworz' : False,
+                        'vvttv'   : False},
+    'fsr_ttbar' : {     'tw'      : False,
+                        'ttbar'   : True,
+                        'dy'      : False,
+                        'nonworz' : False,
+                        'vvttv'   : False},
+    'fsr_tw' : {        'tw'       : True,
+                        'ttbar'   : False,
+                        'dy'      : False,
+                        'nonworz' : False,
+                        'vvttv'   : False},
+    'ttbar_scales' : {  'tw'      : False,
+                        'ttbar'   : True,
+                        'dy'      : False,
+                        'nonworz' : False,
+                        'vvttv'   : False},
+    'tw_scales' : {    'tw'       : True,
+                        'ttbar'   : False,
+                        'dy'      : False,
+                        'nonworz' : False,
+                        'vvttv'   : False},
+    'topptrew'   : {    'tw'      : False,
+                        'ttbar'   : True,
+                        'dy'      : False,
+                        'nonworz' : False,
+                        'vvttv'   : False},
+    'colour_rec' : {    'tw'      : False,
+                        'ttbar'   : True,
+                        'dy'      : False,
+                        'nonworz' : False,
+                        'vvttv'   : False},
 }
 
 
@@ -1184,3 +1232,6 @@ ProfileSystsThatAreNotPresentAllYears = {
 
 
 ProcessesNames = {"tw", "ttbar", "dy", "nonworz", "vvttv"}
+
+ControlRegionVariableDict = {"3j2t" : "Lep1Lep2Jet1_M_control",
+}

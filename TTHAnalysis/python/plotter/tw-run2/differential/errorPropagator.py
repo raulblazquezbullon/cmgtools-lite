@@ -370,7 +370,7 @@ def drawTheRelUncPlot(listWithHistos, thedict, thePlot, yaxismax = "auto", doSym
 
     # Begin drawing; first the total, systematic and statistical lines
     thePlot.addHisto(hincmax,  'hist',      'Total',      'L')
-    thePlot.addHisto(hincsyst, 'hist,same', 'Systematic', 'L')
+    thePlot.addHisto(hincsyst, 'hist,same', 'Systematic' if not doFit else "Not fit", 'L')
 
     hincstat = None
     for i in range(len(uncList)):

@@ -98,16 +98,17 @@ class beautifulUnfPlot:
                     asymhisto.GetYaxis().SetTitle( self.yaxis_unclabel )
                 elif not vl.doxsec or "detector" in self.name:
                     asymhisto.GetYaxis().SetTitle( 'Events' )
-                elif "fiducial" in self.name and not "norm" in self.name:
+                elif "fid" in self.name and not "bin" in self.name:
                     asymhisto.GetYaxis().SetTitle( vl.varList[self.var]['yaxisfid'] )
-                elif "norm" in self.name and "fiducial" in self.name:
+                elif "fid" in self.name and "bin" in self.name:
                     asymhisto.GetYaxis().SetTitle( vl.varList[self.var]['yaxisfidbin'] )
-                elif "bin" in self.var:
+                elif "bin" in self.name:
                     asymhisto.GetYaxis().SetTitle( vl.varList[self.var]['yaxisbin'] )
                 else:
                     asymhisto.GetYaxis().SetTitle( vl.varList[self.var]['yaxis_particle'] )
             
-            asymhisto.GetXaxis().SetRangeUser(histo.GetXaxis().GetBinLowEdge(1), histo.GetXaxis().GetBinUpEdge(histo.GetNbinsX()))
+            asymhisto.GetXaxis().SetRangeUser(histo.GetXaxis().GetBinLowEdge(1),
+                                              histo.GetXaxis().GetBinUpEdge(histo.GetNbinsX()))
             
             asymhisto.GetXaxis().SetTitleFont(43)
             asymhisto.GetXaxis().SetTitleSize(22)
