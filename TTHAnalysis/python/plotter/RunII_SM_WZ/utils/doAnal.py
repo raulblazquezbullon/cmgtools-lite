@@ -17,6 +17,10 @@ pr.add_option("--cut", dest = "cut", type="string", default = "RunII_SM_WZ/2018/
 pr.add_option("--mca", dest = "mca", type="string", default = "RunII_SM_WZ/2018/mca_wz.txt", help = "Input mcafile")
 pr.add_option("--plots", dest = "plots", type="string", default = "RunII_SM_WZ/2018/plots_wz.txt", help = "Input plotfile")
 pr.add_option("-j", dest = "jobs", type="int", default = None, help = "Number of simultaneous jobs for multithreaded procedures")
+pr.add_option("--var", dest = "var", type="string", default = None, help = "Variable for cards")
+pr.add_option("--binning", dest = "binning", type="string", default = None, help = "Binning for cards")
+pr.add_option("--card", dest = "cardname", type="string", default = "", help = "Output cards name")
+pr.add_option("--submit", dest="submit"  , action="store_true", default=False, help = "Also produce submit command")
 
 #Output formats
 (options, args) = pr.parse_args()
@@ -124,10 +128,24 @@ if "plot" in doWhat:
 
 if "cards" in doWhat:
 
-    var = "\"4*(LepW_pdgId < 0) + (abs(LepZ1_pdgId)+abs(LepZ2_pdgId)+abs(LepW_pdgId)-33)/2\""
-    binning = "\"8,-0.5,7.5\""
+    var = options.var if options.var else  "\"4*(LepW_pdgId < 0) + (abs(LepZ1_pdgId)+abs(LepZ2_pdgId)+abs(LepW_pdgId)-33)/2\""
+    binning = options.binning if options.binning else "\"8,-0.5,7.5\""
 
-    print "python makeShapeCardsSusy.py RunII_SM_WZ/{year}/mca_wz_v5.txt RunII_SM_WZ/{year}/cuts_wzsm.txt {var} {binning} RunII_SM_WZ/{year}/systs_wz.txt  --tree treeProducerSusyMultilepton -P /pool/ciencias/HeppyTrees/RA7/nanoAODv5_{year}_skimWZ/ --Fs {{P}}/leptonPtCorrections/ {prefiringTrees} --Fs {{P}}/leptonJetReCleanerWZSM/ --Fs {{P}}/leptonBuilderWZSM/ --Fs {{P}}/jet25Cleaned/ {triggerTrees} --FMCs {{P}}/leptonMatcher/ --FMCs {{P}}/bTagEventWeights/ --FMCs {{P}}/bosonPolarization/ --FMCs {{P}}/bosonPolarizationGEN/  -L RunII_SM_WZ/functionsSF.cc -L RunII_SM_WZ/functionsMCMatch.cc -L RunII_SM_WZ/functionsWZ.cc -W 'getLeptonSF_v4(0,0,{year},LepSel_pt[0],LepSel_eta[0],LepSel_pdgId[0])*getLeptonSF_v4(0,0,{year},LepSel_pt[1],LepSel_eta[1],LepSel_pdgId[1])*getLeptonSF_v4(0,0,{year},LepSel_pt[2],LepSel_eta[2],LepSel_pdgId[2])*puWeight*bTagWeightDeepCSVT_nom{prefiringWeights}' --obj Events -j 32 -l {lumi} -f  -E SRWZ -o {year} --od ./cards/ --ms --neg --plotgroup data_fakes+=promptsub --xp data --plotgroup data_fakes_fakes_Dn+=promptsub_fakes_Dn --plotgroup data_fakes_fakes_Up+=promptsub_fakes_Up".format(var=var,binning=binning,year=options.year,prefiringTrees=prefiringTrees[options.year],prefiringWeights=prefiringWeights[options.year],triggerTrees=triggerTrees[options.year],lumi=lumi[options.year])
-    
-
+    extraSF = ""
+    cuts    = " -E SRWZ "
+    output  = ""
+    if "ZZ" in doWhat:
+      extraSF = "*getLeptonSF_v4(0,0,{year},LepSel_pt[3],LepSel_eta[3],LepSel_pdgId[3])".format(year=options.year)
+      cuts = " -X ^AllTight -E ZZTight -E CRZZnomet "
+      output = "ZZ"
+    if "TT" in doWhat:
+      cuts   = " -E CRTT "
+      output = "TTZ"
+    if "Xg" in doWhat:
+      cuts = " -E CRconv  "
+      output = "Xg"
+    if not options.submit:
+      print "python makeShapeCardsSusy.py RunII_SM_WZ/{year}/mca_wz_v5.txt RunII_SM_WZ/{year}/cuts_wzsm.txt {var} {binning} RunII_SM_WZ/{year}/systs_wz.txt  --tree treeProducerSusyMultilepton -P /pool/ciencias/HeppyTrees/RA7/nanoAODv5_{year}_skimWZ/ --Fs {{P}}/leptonPtCorrections/ {prefiringTrees} --Fs {{P}}/leptonJetReCleanerWZSM/ --Fs {{P}}/leptonBuilderWZSM/ --Fs {{P}}/jet25Cleaned/ {triggerTrees} --FMCs {{P}}/leptonMatcher/ --FMCs {{P}}/bTagEventWeights/ --Fs {{P}}/bosonPolarization/ --FMCs {{P}}/bosonPolarizationGEN/  -L RunII_SM_WZ/functionsSF.cc -L RunII_SM_WZ/functionsMCMatch.cc -L RunII_SM_WZ/functionsWZ.cc -W \'getLeptonSF_v4(0,0,{year},LepSel_pt[0],LepSel_eta[0],LepSel_pdgId[0])*getLeptonSF_v4(0,0,{year},LepSel_pt[1],LepSel_eta[1],LepSel_pdgId[1])*getLeptonSF_v4(0,0,{year},LepSel_pt[2],LepSel_eta[2],LepSel_pdgId[2]){extrasf}*puWeight*bTagWeightDeepCSVT_nom{prefiringWeights}\' --obj Events -j {jobs} -l {lumi} -f  {cut}  -o {year}{cardname} --od ./{outname}{output}/ --ms --neg --plotgroup data_fakes+=promptsub  --plotgroup data_fakes_fakes_Dn+=promptsub_fakes_Dn --plotgroup data_fakes_fakes_Up+=promptsub_fakes_Up --noNegVar --hardZero".format(var=var,binning=binning,year=options.year,prefiringTrees=prefiringTrees[options.year],prefiringWeights=prefiringWeights[options.year],triggerTrees=triggerTrees[options.year],lumi=lumi[options.year],extrasf=extraSF,cut=cuts,output=output,outname=options.outname, jobs=options.jobs,cardname=options.cardname)
+    else:
+      print "sbatch -c 16 -p batch --wrap  \"python makeShapeCardsSusy.py RunII_SM_WZ/{year}/mca_wz_v5.txt RunII_SM_WZ/{year}/cuts_wzsm.txt {var} {binning} RunII_SM_WZ/{year}/systs_wz.txt  --tree treeProducerSusyMultilepton -P /pool/ciencias/HeppyTrees/RA7/nanoAODv5_{year}_skimWZ/ --Fs {{P}}/leptonPtCorrections/ {prefiringTrees} --Fs {{P}}/leptonJetReCleanerWZSM/ --Fs {{P}}/leptonBuilderWZSM/ --Fs {{P}}/jet25Cleaned/ {triggerTrees} --FMCs {{P}}/leptonMatcher/ --FMCs {{P}}/bTagEventWeights/ --Fs {{P}}/bosonPolarization/ --FMCs {{P}}/bosonPolarizationGEN/  -L RunII_SM_WZ/functionsSF.cc -L RunII_SM_WZ/functionsMCMatch.cc -L RunII_SM_WZ/functionsWZ.cc -W \'getLeptonSF_v4(0,0,{year},LepSel_pt[0],LepSel_eta[0],LepSel_pdgId[0])*getLeptonSF_v4(0,0,{year},LepSel_pt[1],LepSel_eta[1],LepSel_pdgId[1])*getLeptonSF_v4(0,0,{year},LepSel_pt[2],LepSel_eta[2],LepSel_pdgId[2]){extrasf}*puWeight*bTagWeightDeepCSVT_nom{prefiringWeights}\' --obj Events -j {jobs} -l {lumi} -f  {cut}  -o {year}{cardname} --od ./{outname}{output}/ --ms --neg --plotgroup data_fakes+=promptsub  --plotgroup data_fakes_fakes_Dn+=promptsub_fakes_Dn --plotgroup data_fakes_fakes_Up+=promptsub_fakes_Up --noNegVar --hardZero \"".format(var=var,binning=binning,year=options.year,prefiringTrees=prefiringTrees[options.year],prefiringWeights=prefiringWeights[options.year],triggerTrees=triggerTrees[options.year],lumi=lumi[options.year],extrasf=extraSF,cut=cuts,output=output,outname=options.outname, jobs=options.jobs,cardname=options.cardname)
 
