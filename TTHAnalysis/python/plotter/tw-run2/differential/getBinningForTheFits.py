@@ -35,9 +35,9 @@ def PythonListToString(theL):
 
 
 def ExecuteOrSubmitTask(tsk):
-    prod, year, variable, asimov, nthreads, outpath, region, noUnc, useFibre, extra, pretend, queue, thebin = tsk
+    prod, year, variable, asimov, nthreads, outpath, region, noUnc, useFibre, extra, pretend, queue, thebin, theunc = tsk
     if queue == "":
-        thecomm = CardsCommand(prod, year, variable, asimov, nthreads, outpath, region, noUnc, useFibre, extra, thebin)
+        thecomm = CardsCommand(prod, year, variable, asimov, nthreads, outpath, region, noUnc, useFibre, extra, thebin, theunc)
         print "Command: " + thecomm
 
         if not pretend:
@@ -51,7 +51,7 @@ def ExecuteOrSubmitTask(tsk):
                                     queue   = queue,
                                     jobname = "CMGTcardsforunfoldingwithfits",
                                     logpath = logpath.format(p = prod, y = yr),
-                                    command = CardsCommand(prod, year, variable, asimov, nthreads, outpath, region, noUnc, useFibre, extra, thebin))
+                                    command = CardsCommand(prod, year, variable, asimov, nthreads, outpath, region, noUnc, useFibre, extra, thebin, theunc))
 
         print "Command: " + thecomm
         if not pretend:
@@ -60,7 +60,7 @@ def ExecuteOrSubmitTask(tsk):
     return
 
 
-def CardsCommand(prod, year, var, isAsimov, nthreads, outpath, region, noUnc, useFibre, extra, ibin):
+def CardsCommand(prod, year, var, isAsimov, nthreads, outpath, region, noUnc, useFibre, extra_, ibin, iunc):
     mcafile_   = "tw-run2/mca-tw.txt"
     cutsfile_  = "tw-run2/differential/cuts-differential-pure1j1t/cuts-detector-1j1t.txt"
 
@@ -75,10 +75,20 @@ def CardsCommand(prod, year, var, isAsimov, nthreads, outpath, region, noUnc, us
         os.system("mkdir -p " + outpath_)
 
     bins_      = PythonListToString([i + 0.5 for i in range(vl.nBinsForBDT + 1)]) if "forExtr" in region else "1000,-1,1"
-    variable_  = "tmvaBDT_1j1b" if "forExtr" not in region else "theBDT_bin{i}(tmvaBDT_1j1b)".format(i = ibin)
-    name_      = "--binname " + region + "_bin" + str(ibin)
+    variable_  = "tmvaBDT_1j1b" if "forExtr" not in region else "theBDT_bin{i}_unc{u}(tmvaBDT_1j1b)".format(i = ibin, u = iunc)
+    name_      = "--binname " + region + "_bin" + str(ibin) + ("_PRE" + iunc if iunc != "" else "")
 
-    extra += ' -A "^1btag" "bin{b}" "{cut}" '.format(b = ibin, cut = "(" + str(vl.varList[var]["bins_detector"][ibin]) + "<=" + vl.varList[var]["var_detector"] + ") && (" + vl.varList[var]["var_detector"] + "<" + str(vl.varList[var]["bins_detector"][ibin + 1]) + ")")
+    extra_ += ' -A "^1btag" "bin{b}" "{cut}"'.format(b = ibin, cut = "(" + str(vl.varList[var]["bins_detector"][ibin]) + "<=" + vl.varList[var]["var_detector"] + ") && (" + vl.varList[var]["var_detector"] + "<" + str(vl.varList[var]["bins_detector"][ibin + 1]) + ")")
+
+    if "histos" in region:
+        extra_ += " --xp dy,vvttv,nonworz"
+
+    if iunc != "":
+        restofuncs = []
+        for el,listofyears in vl.ProfileSystsThatAreNotPresentAllYears.iteritems():
+            if year in listofyears or year == "run2":
+                restofuncs.append(el)
+        extra_ += " --su " + iunc.replace("Up", "").replace("Down", "") + "," + ",".join([el for el in vl.ProfileSysts if "norm" in el]) + "," + ",".join(restofuncs)
 
     comm = commandscaff.format(outpath      = outpath_,
                                friends      = friends_,
@@ -94,7 +104,7 @@ def CardsCommand(prod, year, var, isAsimov, nthreads, outpath, region, noUnc, us
                                uncs      = "--unc tw-run2/uncs-tw.txt --amc" if not noUnc else "--amc",
                                name      = name_,
                                func      = "tw-run2/functions_tw.cc" if "forExtr" not in region else (outpath_ + "/rebin_functions_{y}_{v}.cc".format(y = year, v = var)),
-                               extra     = extra + ("--xp dy,vvttv,nonworz" if "histos" in region else ""))
+                               extra     = extra_)
     return comm
 
 
@@ -138,10 +148,15 @@ def createFunctionFileForVariable(tsk):
             listofuncsthataffecttheproc.append(key)
 
     for iU in listofuncsthataffecttheproc:
-        for iB in range(ndetebins):
-            #print iB
-            Base = Base + addFunctionOfBin(path + "/rebinhistos/histos_bin" + str(iB) + ".root", proc, iB, iU)
-            #print Base
+        listofvars = ["Up", "Down"]
+        if iU == "":
+            listofvars = [""]
+
+        for iVar in listofvars:
+            for iB in range(ndetebins):
+                #print iB
+                Base = Base + addFunctionOfBin(path + "/rebinhistos/histos_bin" + str(iB) + ".root", proc, iB, iU + iVar)
+                #print Base
 
     print "> Saving file"
     outputF = open(path + "/rebinhistos/rebin_functions_{y}_{v}.cc".format(y = iY, v = iV), 'w')
@@ -171,7 +186,7 @@ def addFunctionOfBin(fpath, theproc, thebin, theunc):
 
     count = 0
     thefile = r.TFile.Open(fpath, "READ")
-    print fpath, "x_" + theproc + ("_" + theunc if theunc != "" else "")
+    #print fpath, "x_" + theproc + ("_" + theunc if theunc != "" else "")
     thehisto = thefile.Get("x_" + theproc + ("_" + theunc if theunc != "" else ""))
     thehisto.GetQuantiles(nq, yq, xq)
     thefile.Close(); del thefile
@@ -195,7 +210,39 @@ def getVariedHisto(inpath, iV, thenom, theunc, theproc, thevar, thebin):
     #print "### Creating varied normalisation", theunc, "unc. for nominal", thenom, "and variation", thevar
     for y in ["2016", "2017", "2018"]:
 
-        filetoopen = (inpath + "/" + y + "/" + iV + "/sigextr_fit/rebinhistos/forExtr_bin{b}.root".format(b = thebin)) if "control" not in thebin else (inpath + "/" + y + "/" + iV + "/controlReg.root")
+
+        hasthissystitsowncard = False
+        listofuncsthataffecttheproc = []
+        if iY != "run2":
+            skip = False
+            for y in ["2016", "2017", "2018"]:
+                if  y in key and iY != y:
+                    skip = True
+
+            for y in [["16", "17"], ["16", "18"], ["17", "18"]]:
+                if "".join(y) in key and not any([sub in iY for sub in y]):
+                    skip = True
+
+            if skip:
+                continue
+
+        if isinstance(el, dict):
+            if el["tw" if not vl.unifttbar else "ttbar"]:
+                listofuncsthataffecttheproc.append(key)
+        elif el:
+            listofuncsthataffecttheproc.append(key)
+
+        if thenom.replace("Up", "").replace("Down", "") in listofuncsthataffecttheproc:
+            hasthissystitsowncard = True
+
+        filetoopen = None
+
+        if   control in thebin:
+            filetoopen = (inpath + "/" + y + "/" + iV + "/controlReg.root")
+        elif hasthissystitsowncard:
+            filetoopen = inpath + "/" + y + "/" + iV + "/sigextr_fit/rebinhistos/forExtr_bin{b}_PRE{u}.root".format(b = thebin, u = theunc + thevar)
+        else:
+            filetoopen = inpath + "/" + y + "/" + iV + "/sigextr_fit/rebinhistos/forExtr_bin{b}.root".format(b = thebin)
 
         #print "### file", filetoopen
 
@@ -253,10 +300,27 @@ def createCardsForEachSys(tsk):
 
     validfirstentries = {"*", "#", "bin", "observation", "shapes"}
 
-    #if syst != "elecidsfUp": return
+    listofuncsthataffecttheproc = []
+    hasthissystitsowncard = False
+    for s,el in vl.systMap.iteritems():
+        if isinstance(el, dict):
+            if el["tw" if not vl.unifttbar else "ttbar"]:
+                listofuncsthataffecttheproc.append(s)
+        elif el:
+            listofuncsthataffecttheproc.append(s)
+
+    if syst.replace("Up", "").replace("Down", "") in listofuncsthataffecttheproc:
+        hasthissystitsowncard = True
+
+    txtfiletoopen  = path + "/forExtr_bin{b}.txt"
+    rootfiletoopen = path + "/forExtr_bin{b}.root"
+    if hasthissystitsowncard:
+        txtfiletoopen  = path + "/forExtr_bin{b}_PRE" + syst + ".txt"
+        rootfiletoopen = path + "/forExtr_bin{b}_PRE" + syst + ".root"
+
 
     for iB in range(len(vl.varList[iV]["bins_detector"]) - 1):
-        readF = open(path + "/forExtr_bin{b}.txt".format(b = iB), 'r')
+        readF = open(txtfiletoopen.format(b = iB), 'r')
 
         presentprocesses = []
 
@@ -269,8 +333,11 @@ def createCardsForEachSys(tsk):
                     for el in vl.ProfileSysts:
                         tmpline = tmpline.replace(el, el + "_" + str(iB))
 
-                if "shapes" in tmpline and iY == "run2":
-                    tmpline = tmpline.replace("forExtr_bin{b}.root".format(b = iB), "forExtr_bin{b}_run2.root".format(b = iB))
+                if "shapes" in tmpline:
+                    if   iY == "run2":
+                        tmpline = tmpline.replace("forExtr_bin{b}.root".format(b = iB), "forExtr_bin{b}_run2.root".format(b = iB))
+                    elif hasthissystitsowncard:
+                        tmpline = tmpline.replace("forExtr_bin{b}.root".format(b = iB), rootfiletoopen.format(b = iB))
 
                 outtext += tmpline
             elif len(entries) > 1:
@@ -313,7 +380,7 @@ def createCardsForEachSys(tsk):
                     else:
                         puresys = syst.replace("Up", "").replace("Down", "")
                         tmpline = deepcopy(line)
-                        thef = r.TFile(path + "/forExtr_bin{b}.root".format(b = iB), "READ")
+                        thef = r.TFile(rootfiletoopen.format(b = iB), "READ")
 
                         #print tmpline, entries[presentprocesses.index("nonworz") + 1], thef.Get("x_nonworz_" + syst).Integral()
                         #print "pre:", tmpline
@@ -364,20 +431,32 @@ def createCardsForEachSys(tsk):
             for key in therootfile.GetListOfKeys():
                 copyname = key.GetName()
                 isaproc  = False; isaprofiledunc = False;
-                theproc = deepcopy(copyname.split("_")[1])
+                theproc  = deepcopy(copyname.split("_")[1])
+                theunc   = None
+                pureunc  = None
+
                 if (copyname.split("_")[1] in vl.ProcessesNames and
                    len(copyname.split("_")) <= 2) or copyname == "x_data_obs":
                     isaproc = True
+                else:
+                    theunc  = "_".join(key.GetName().split("_")[2:])
+                    pureunc = theunc.replace("Up", "").replace("Down", "")
 
                 for el in vl.ProfileSysts:
                     if el in copyname:
                         isaprofiledunc = True
                     if not usesamenuis:
                         copyname = copyname.replace(el, el + "_" + str(iB))
-                tmpdictofthings[copyname] = deepcopy(therootfile.Get(key.GetName()).Clone(copyname))
+
+                if (not isaproc and pureunc in listofuncsthataffecttheproc):
+                    secondrootfile = r.TFile.Open(path + "/forExtr_bin{b}_PRE{u}.root".format(b = iB, u = theunc), "READ")
+                    tmpdictofthings[copyname] = deepcopy(secondrootfile.Get(key.GetName()).Clone(copyname))
+                    secondrootfile.Close(); del secondrootfile
+                else:
+                    tmpdictofthings[copyname] = deepcopy(therootfile.Get(key.GetName()).Clone(copyname))
 
 
-                # We have to create new files!
+                # We have to create new histograms!
                 if not isaproc and not isaprofiledunc and "data" not in copyname:
                     for iU in vl.ProfileSystsThatAreNotPresentAllYears:
                         newnam = copyname + "_" + iU
@@ -659,7 +738,7 @@ if __name__=="__main__":
             for yr in theyears:
                 for var in thevars:
                     for theb in range(len(vl.varList[var]["bins_detector"]) - 1):
-                        tasks.append( (prod, yr, var, asimov, nthreads, outpath, reg, noUnc, useFibre, extra, pretend, queue, theb) )
+                        tasks.append( (prod, yr, var, asimov, nthreads, outpath, reg, noUnc, useFibre, extra, pretend, queue, theb, "") )
 
         #print tasks
         calculate = True
@@ -745,11 +824,35 @@ if __name__=="__main__":
 
         for reg in theregs:
             for yr in theyears:
+                listofuncsthataffecttheproc = []
+                for key,el in vl.systMap.iteritems():
+                    if yr != "run2":
+                        skip = False
+                        for y in ["2016", "2017", "2018"]:
+                            if  y in key and yr != y:
+                                skip = True
+
+                        for y in [["16", "17"], ["16", "18"], ["17", "18"]]:
+                            if "".join(y) in key and not any([sub in yr for sub in y]):
+                                skip = True
+
+                        if skip:
+                            continue
+
+                    if isinstance(el, dict):
+                        if el["tw" if not vl.unifttbar else "ttbar"]:
+                            listofuncsthataffecttheproc.append(key)
+                    elif el:
+                        listofuncsthataffecttheproc.append(key)
                 for var in thevars:
                     for theb in range(len(vl.varList[var]["bins_detector"]) - 1):
-                        tasks.append( (prod, yr, var, asimov, nthreads, outpath, reg, noUnc, useFibre, extra, pretend, queue, theb) )
+                        #tasks.append( (prod, yr, var, asimov, nthreads, outpath, reg, noUnc, useFibre, extra, pretend, queue, theb, "") )
 
-        #print tasks
+                        for theu in listofuncsthataffecttheproc:
+                            tasks.append( (prod, yr, var, asimov, nthreads, outpath, reg, noUnc, useFibre, extra, pretend, queue, theb, theu + "Up") )
+                            tasks.append( (prod, yr, var, asimov, nthreads, outpath, reg, noUnc, useFibre, extra, pretend, queue, theb, theu + "Down") )
+
+
         calculate = True
         print "> Executing..."
         for task in tasks:
