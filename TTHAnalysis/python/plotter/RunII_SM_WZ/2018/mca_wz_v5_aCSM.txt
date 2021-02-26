@@ -1,6 +1,6 @@
 ## Data
 ## -----------------------------------------------------------
-#incl_data      : + ; IncludeMca="RunII_SM_WZ/2018/includes/mca_data_2018_nanoAODv5.txt"
+incl_data      : + ; IncludeMca="RunII_SM_WZ/2018/includes/mca_data_2018_nanoAODv5.txt"
 
 ## Signals
 incl_signal         : + ; IncludeMca="RunII_SM_WZ/2018/includes/mca_WZ_ACSM_nanoAODv5.txt"
@@ -189,4 +189,8 @@ incl_signal_muscale_Dn        : + ; IncludeMca="RunII_SM_WZ/2018/includes/mca_WZ
 #Fake rates
 incl_fakes_Up  : + ; IncludeMca="RunII_SM_WZ/2018/includes/mca_datafakes_nanoAODv5_frup.txt",  SkipMe=True
 incl_fakes_Dn  : + ; IncludeMca="RunII_SM_WZ/2018/includes/mca_datafakes_nanoAODv5_frdn.txt",  SkipMe=True
+
+#ISR
+incl_signal_isr_Up        : + ; IncludeMca="RunII_SM_WZ/2018/includes/mca_WZ_ACSM_nanoAODv5.txt", AddWeight="ISRUp(nJetClean25)", SkipMe=True, PostFix="_isr_Up"
+incl_signal_isr_Dn        : + ; IncludeMca="RunII_SM_WZ/2018/includes/mca_WZ_ACSM_nanoAODv5.txt", AddWeight="ISRDn(nJetClean25)", SkipMe=True, PostFix="_isr_Dn"
 

@@ -43,3 +43,5 @@ LepSFMu_ML            : prompt_.*|diboson.*|convs          : .* : lepSFMu : temp
 LepSFEl_ML            : prompt_.*|diboson.*|convs          : .* : lepSFEl : templates
 LepSFMuStat2018_ML    : prompt_.*|diboson.*|convs          : .* : lepSFMuStat2018 : templates
 LepSFElStat2018_ML    : prompt_.*|diboson.*|convs          : .* : lepSFElStat2018 : templates
+
+ISR18 : prompt_WZ : .* : isr : templates

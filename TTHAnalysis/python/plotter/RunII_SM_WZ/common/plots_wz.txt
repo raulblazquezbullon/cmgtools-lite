@@ -3,7 +3,7 @@
 pol_cosWfromFT_Dn : cos_ThetaWDn_HE :  10,-1,1  ; XTitle="q_{W} cos(#theta_{W}^{Dn})", Legend='TL', LegendCutoff=5e-3, MoreY=1.8
 pol_cosZfromFT_Dn : cos_ThetaZDn_HE :  10,-1,1  ; XTitle="cos(#theta_{Z})", Legend='TL', LegendCutoff=5e-3, MoreY=1.8
 Wpt : LepW_pt : [25,30,35,40,50,60,70,80,90,100,110,120,130,140,160,180,200,250,300] : 40,-200,200 ; XTitle="p_{T}(l_{W}) [GeV]", Legend="TL", legendCutoff=1e-2
-Zpt : sump4(0, LepZ1_pt,LepZ1_eta,LepZ1_phi,LepZ1_mass,LepZ2_pt,LepZ2_eta,LepZ2_phi,LepZ2_mass) : [0,5,10,15,20,25,30,40,50,60,70,80,90,100,110,120,130,140,160,180,200,250,300]  ; XTitle="p_{T}^{Z} [GeV]", Legend="TL", legendCutoff=1e-2
+Zpt : sump4(0, LepZ1_pt,LepZ1_eta,LepZ1_phi,LepZ1_mass,LepZ2_pt,LepZ2_eta,LepZ2_phi,LepZ2_mass) : [0,5,10,15,20,25,30,40,50,60,70,80,90,100,110,120,130,140,160,180,200,250,300]  ; XTitle="p_{T}^{Z} [GeV]", Legend="TL", legendCutoff=2e-3
 nJetClean25 : nJetClean25 : [0,1,2,3,4,5] ; XTitle="N_{jet} (p_{T} #geq 25 GeV)", LegendCutoff=5e-3, Logy=True, YMax=500000, YMin=1e-1, MoreY=10.0
 nJetClean25more : nJetClean25 : 9,-0.5,8.5 ; XTitle="N_{jet} (p_{T} #geq 25 GeV)", LegendCutoff=5e-3, Logy=True, YMax=500000, YMin=1, MoreY=10.0, Legend="TL"
 jetptclean : JetClean25_pt[0] : [25,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,210,230,250,270,290,400] ; XTitle="Leading jet p_{T} [GeV]", LegendCutoff=5e-3, Logy=True, YMax=50000, YMin=10
@@ -35,7 +35,7 @@ lepZ1_phi         : LepZ1_phi         : 10,-3.15,3.15; YTitle="Leptons", XTitle=
 lepZ2_phi         : LepZ2_phi         : 10,-3.15,3.15; YTitle="Leptons", XTitle="#phi(l_{Z2})", LegendCutoff=5e-3, YMin=1, YMax=500000000, Logy
 lepW_phi         : LepW_phi         : 10,-3.15,3.15; YTitle="Leptons", XTitle="#phi(l_{W})"     , LegendCutoff=5e-3, YMin=1, YMax=50000000, Logy
 
-Zpt :  sump4(0, LepZ1_pt, LepZ1_eta, LepZ1_phi, LepZ1_mass, LepZ2_pt , LepZ2_eta, LepZ2_phi, LepZ2_mass) : 10,0,400 ; XTitle="p_{T}^{Z} [GeV]", Legend="TR", LegendCutoff=5e-3, MoreY=1.5
+Zpt :  sump4(0, LepZ1_pt, LepZ1_eta, LepZ1_phi, LepZ1_mass, LepZ2_pt , LepZ2_eta, LepZ2_phi, LepZ2_mass) : 10,0,400 ; XTitle="p_{T}^{Z} [GeV]", Legend="TR", LegendCutoff=2e-3, MoreY=1.5
 Zeta :  sump4(1, LepZ1_pt, LepZ1_eta, LepZ1_phi, LepZ1_mass, LepZ2_pt , LepZ2_eta, LepZ2_phi, LepZ2_mass) : 10,-5,5 ; XTitle="#eta^{Z}", Legend="TR", legendCutoff=1e-2
 Zphi :  sump4(2, LepZ1_pt, LepZ1_eta, LepZ1_phi, LepZ1_mass, LepZ2_pt , LepZ2_eta, LepZ2_phi, LepZ2_mass) : 10,-3.14,3.14 ; XTitle="#phi^{Z}", Legend="TR", legendCutoff=1e-2
 
