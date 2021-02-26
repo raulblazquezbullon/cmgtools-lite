@@ -7,7 +7,7 @@ import warnings as wr
 import os
 
 # === ESSENTIAL PARAMETERS OF THE ANALYSIS. CHANGING THIS APPLIES TO EVERYTHING. ===
-nuncs       = 5         # Number of uncs. shown in the relative uncertainty plots
+nuncs       = 3         # Number of uncs. shown in the relative uncertainty plots
 nBinsForBDT = 4         # Number of bins for the BDT discr. distribution used for the signal extraction procedure
                         #   for the differential analysis when using maximum-likelihood fits.
 diffControlReg = "3j2t" # Control region used in the differential signal extraction step
