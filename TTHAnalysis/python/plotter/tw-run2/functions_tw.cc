@@ -13,11 +13,15 @@ int getnJetnBJet(int nJ, int nBJ) {
 
   if      (nJ == 0)             bin = 0;
   else if (nJ == 1 && nBJ == 0) bin = 1;
-  else if (nJ == 1 && nBJ >= 1) bin = 2;
+  else if (nJ == 1 && nBJ == 1) bin = 2;
   else if (nJ == 2 && nBJ == 0) bin = 3;
   else if (nJ == 2 && nBJ == 1) bin = 4;
-  else if (nJ == 2 && nBJ >= 2) bin = 5;
-  else if (nJ >= 3 && nBJ >= 0) bin = 6;
+  else if (nJ == 2 && nBJ == 2) bin = 5;
+  else if (nJ == 3 && nBJ == 0) bin = 6;
+  else if (nJ == 3 && nBJ == 1) bin = 7;
+  else if (nJ == 3 && nBJ == 2) bin = 8;
+  else if (nJ == 3 && nBJ == 3) bin = 9;
+  else if (nJ >= 4 && nBJ >= 0) bin = 10;
   return bin;
 }
 
