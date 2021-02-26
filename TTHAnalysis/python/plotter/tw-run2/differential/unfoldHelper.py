@@ -920,8 +920,7 @@ if __name__ == "__main__":
             raise RuntimeError("FATAL: the variable requested is not in the provided input folder.")
 
         for iV in thevars:
-            if "plots" in iV: continue
-            if "table" in iV: continue
+            if "plots" in iV or "table" in iV or "control" in iV: continue
             #if "Fiducial" in iV: continue
             #if "Lep1_Pt" not in iV: continue
             #if "Lep1Lep2_DPhi" not in iV: continue
