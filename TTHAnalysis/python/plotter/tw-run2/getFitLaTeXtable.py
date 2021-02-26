@@ -336,7 +336,7 @@ translateDict = {
     "lumi"        : "\\qquad Integrated luminosity",
     "prefiring"   : "\\qquad 2016 and 2017 prefiring detector fix",
     "ttbar_norm"  : "\\qquad t$\\bar{\\mathrm{t}}$",
-    "nonworz_norm": "\\qquad Non-W/Z leptons",
+    "nonworz_norm": "\\qquad Non-W/Z",
     "dy_norm"     : "\\qquad Drell-Yan",
     "vvttv_norm"  : "\\qquad VVt$\\bar{\\mathrm{t}}$V",
     "matching"    : "\\qquad Matrix element/PS matching",

@@ -282,17 +282,28 @@ void trainBDtW_1j1t(TString outputdir, TString outputbasedir = "/pool/phedex/use
   //===============Optimización MaxDepth=========================================
 
   //===============Optimización Learning rate=========================================
-  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_2000_0.001",
-      "!H:!V:NTrees=2000:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.001:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
-  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_2000_0.005",
-      "!H:!V:NTrees=2000:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.005:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
-  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_2000_0.01",
-      "!H:!V:NTrees=2000:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.01:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
-  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_2000_0.05",
-      "!H:!V:NTrees=2000:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.05:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
-  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_2000_0.1",
-      "!H:!V:NTrees=2000:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.1:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_2000_0.001",
+//      "!H:!V:NTrees=2000:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.001:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_2000_0.005",
+//      "!H:!V:NTrees=2000:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.005:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_2000_0.01",
+//      "!H:!V:NTrees=2000:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.01:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_2000_0.05",
+//      "!H:!V:NTrees=2000:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.05:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_2000_0.1",
+//      "!H:!V:NTrees=2000:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.1:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
   //===============Optimización Learning rate=========================================
+
+  //===============Optimización Overtraining=========================================
+  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_1000_0.01_3_MinNodeSize5",
+      "!H:!V:NTrees=1000:MinNodeSize=5%:BoostType=Grad:Shrinkage=0.01:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=3" );
+  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_1000_0.01_2_MinNodeSize5",
+      "!H:!V:NTrees=1000:MinNodeSize=5%:BoostType=Grad:Shrinkage=0.01:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=2" );
+  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_1000_0.01_3_MinNodeSize2.5",
+      "!H:!V:NTrees=1000:MinNodeSize=2.5%:BoostType=Grad:Shrinkage=0.01:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=3" );
+  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_500_0.01_3_MinNodeSize5",
+      "!H:!V:NTrees=500:MinNodeSize=5%:BoostType=Grad:Shrinkage=0.01:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=3" );
+  //===============Optimización Overtraining=========================================
 
 
   // Allow Using Fisher discriminant in node splitting for (strong) linearly correlated variables

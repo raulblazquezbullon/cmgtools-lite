@@ -28,7 +28,7 @@ smallb2j1t = "tmvaBDT_2j1b_smallb_ttbar"
 #smallb2j1t = "tmvaBDT_2j1b_smallb_ttbar"
 
 # Card maker command
-commandscaff =  "python makeShapeCardsNew.py --tree NanoAOD tw-run2/mca-tw.txt tw-run2/cuts-tw-{region}.txt '{BDTfunction}' '{Nbins}' -P {prodpath} {friendtrees} --od {directory} -l 35.92,41.53,59.74 -f -L tw-run2/functions_tw.cc --neg --threshold 0.01 -W 'MuonIDSF * MuonISOSF * ElecRECOSF * ElecIDSF * TrigSF * puWeight * bTagWeight * PrefireWeight' --year 2016,2017,2018 --unc tw-run2/uncs-tw.txt --amc --asimov s+b --split-factor=-1 -j 32 --AP"
+commandscaff =  "python makeShapeCardsNew.py --tree NanoAOD tw-run2/mca-tw.txt tw-run2/cuts-tw-{region}.txt '{BDTfunction}' '{Nbins}' -P {prodpath} {friendtrees} --od {directory} -l 35.92,41.53,59.74 -f -L tw-run2/functions_tw.cc --neg --threshold 0.01 -W 'MuonIDSF * MuonISOSF * ElecRECOSF * ElecIDSF * TrigSF * puWeight * bTagWeight * PrefireWeight' --year 2016,2017,2018 --unc tw-run2/uncs-tw.txt --amc --asimov s+b --split-factor=-1 -j 32 --AP --storeAll --notMinimumFill --notVarsChanges"
 
 slurmscaff   = 'sbatch -c 32 -p batch -J Cards_{region} -e /pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions/2020-09-20/run2/logs/plots/log.%j.%x.err -o /pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions/2020-09-20/run2/logs/plots/log.%j.%x.out --wrap "{command}"'
 
