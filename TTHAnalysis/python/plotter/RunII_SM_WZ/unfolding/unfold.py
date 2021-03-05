@@ -401,10 +401,58 @@ class Unfolder(object):
         
         self.response_nom = copy.deepcopy(ROOT.TH2D(file_handle.Get('x_prompt_altWZ_%s' % 'Pow')))
         self.response_alt = copy.deepcopy(ROOT.TH2D(file_handle.Get('x_prompt_altWZ_%s' % 'aMC')))
+        
+        for ix in range(0, self.response_nom.GetNbinsX()+1):
+            iy = self.response_nom.GetNbinsY()
+            self.response_nom.SetBinContent(ix, iy, self.response_nom.GetBinContent(ix, iy) + self.response_nom.GetBinContent(ix, iy+1))
+            binerr=ROOT.TMath.Sqrt(self.response_nom.GetBinError(ix, iy)*self.response_nom.GetBinError(ix, iy) + self.response_nom.GetBinError(ix, iy+1)*self.response_nom.GetBinError(ix, iy+1) )
+            self.response_nom.SetBinError(ix, iy, binerr)
+            self.response_nom.SetBinContent(ix, iy+1, 0)
+            self.response_nom.SetBinError(ix, iy+1, 0)
+
+        for ix in range(0, self.response_alt.GetNbinsX()+1):
+            iy = self.response_alt.GetNbinsY()
+            self.response_alt.SetBinContent(ix, iy, self.response_alt.GetBinContent(ix, iy) + self.response_alt.GetBinContent(ix, iy+1))
+            binerr=ROOT.TMath.Sqrt(self.response_alt.GetBinError(ix, iy)*self.response_alt.GetBinError(ix, iy) + self.response_alt.GetBinError(ix, iy+1)*self.response_alt.GetBinError(ix, iy+1) )
+            self.response_alt.SetBinError(ix, iy, binerr)
+            self.response_alt.SetBinContent(ix, iy+1, 0)
+            self.response_alt.SetBinError(ix, iy+1, 0)
+
+        #for iy in range(0, self.response_nom.GetNbinsY()+1):
+        #    ix = self.response_nom.GetNbinsX()
+        #    self.response_nom.SetBinContent(ix, iy, self.response_nom.GetBinContent(ix, iy) + self.response_nom.GetBinContent(ix+1, iy))
+        #    binerr=ROOT.TMath.Sqrt(self.response_nom.GetBinError(ix, iy)*self.response_nom.GetBinError(ix, iy) + self.response_nom.GetBinError(ix+1, iy)*self.response_nom.GetBinError(ix+1, iy) )
+        #    self.response_nom.SetBinError(ix, iy, binerr)
+        #    self.response_nom.SetBinContent(ix+1, iy, 0)
+        #    self.response_nom.SetBinError(ix+1, iy, 0)
+        #
+        #for iy in range(0, self.response_alt.GetNbinsY()+1):
+        #    ix = self.response_alt.GetNbinsX()
+        #    self.response_alt.SetBinContent(ix, iy, self.response_alt.GetBinContent(ix, iy) + self.response_alt.GetBinContent(ix+1, iy))
+        #    binerr=ROOT.TMath.Sqrt(self.response_alt.GetBinError(ix, iy)*self.response_alt.GetBinError(ix, iy) + self.response_alt.GetBinError(ix+1, iy)*self.response_alt.GetBinError(ix+1, iy) )
+        #    self.response_alt.SetBinError(ix, iy, binerr)
+        #    self.response_alt.SetBinContent(ix+1, iy, 0)
+        #    self.response_alt.SetBinError(ix+1, iy, 0)
+
+
         if self.checkLO: self.response_inc = copy.deepcopy(ROOT.TH2D(file_handle.Get('x_prompt_altWZ_%s' % 'Inc')))
 
-        self.dataTruth_nom = copy.deepcopy(ROOT.TH1D(self.response_nom.ProjectionY('dataTruth_nom', 0, self.response_nom.GetNbinsX())))
-        self.dataTruth_alt = copy.deepcopy(ROOT.TH1D(self.response_alt.ProjectionY('dataTruth_alt', 0, self.response_alt.GetNbinsX())))
+        self.dataTruthBiasVector_nom = copy.deepcopy(ROOT.TH1D(self.response_nom.ProjectionY('dataTruthBiasVector_nom', 0, self.response_nom.GetNbinsX())))
+        self.dataTruthBiasVector_alt = copy.deepcopy(ROOT.TH1D(self.response_alt.ProjectionY('dataTruthBiasVector_alt', 0, self.response_alt.GetNbinsX())))
+
+        # Open the true gen shapes
+        folder=os.path.join(self.inputDir, 'responses_genshapes/%s_%s_fitWZonly_%s%s/common/' % (self.year,self.finalState, self.var, self.charge) )
+        print('Opening file: %sWZSR_%s.input.root' % (folder, self.year))
+        file_handle = ROOT.TFile.Open('%sWZSR_%s.input.root' % (folder, self.year)) # This contains both Powheg (nominal) and aMCatNLO (alternative, for uncertainty caused by the modelling) shapes
+        #file_handle_inc = ROOT.TFile.Open('%sWZSR_%s.input.root' % (folder, self.year))
+        
+        genshape_nom = copy.deepcopy(ROOT.TH2D(file_handle.Get('x_prompt_altWZ_%s' % 'Pow')))
+        genshape_alt = copy.deepcopy(ROOT.TH2D(file_handle.Get('x_prompt_altWZ_%s' % 'aMC')))
+        
+        self.dataTruth_nom = copy.deepcopy(ROOT.TH1D(genshape_nom.ProjectionY('dataTruth_nom', 0, genshape_nom.GetNbinsX())))
+        self.dataTruth_alt = copy.deepcopy(ROOT.TH1D(genshape_alt.ProjectionY('dataTruth_alt', 0, genshape_alt.GetNbinsX())))
+        ###
+
         if self.checkLO: self.dataTruth_inc = copy.deepcopy(ROOT.TH1D(self.response_inc.ProjectionY('dataTruth_inc', 0, self.response_inc.GetNbinsX())))
 
         print('Response binsX %d, binsY %d' % (self.response_nom.GetNbinsX(), self.response_nom.GetNbinsY()))
@@ -700,23 +748,22 @@ class Unfolder(object):
         # kDensityModeNone (no scale factors, matrix L is similar to unity matrix), kDensityModeBinWidth (scale factors from multidimensional bin width), kDensityModeUser (scale factors from user function in TUnfoldBinning), kDensityModeBinWidthAndUser (scale factors from multidimensional bin width and user function)
 
         # First do it with no regularization
-        print('NOW I AM DOING UNFOLDING WITHOUT REGULARIZATION')
+        print('NOW I AM DOING UNFOLDING WITHOUT REGULARIZATION, FOR THE VARIABLE ', self.var)
         label='noreg'
         self.set_unfolding(key)
         self.do_scan()
         self.print_unfolding_results(key, label)
-     
-        print('NOW I AM DOING UNFOLDING WITH REGULARIZATION')
-        # Now add simple regularization on the amplitude
-        self.logTauX=ROOT.TSpline3() # TSpline*
-        self.logTauY=ROOT.TSpline3() # TSpline*
-        self.lCurve=ROOT.TGraph(0) # TGraph*
-        self.logTauCurvature=ROOT.TSpline3() # TSpline*
-        self.regmode=ROOT.TUnfold.kRegModeCurvature
-        label='regamp'
-        self.set_unfolding(key)
-        self.do_scan()
-        self.print_unfolding_results(key, label)
+        #mimimi print('NOW I AM DOING UNFOLDING WITH REGULARIZATION, FOR THE VARIABLE ', self.var)
+        #mimimi # Now add simple regularization on the amplitude
+        #mimimi self.logTauX=ROOT.TSpline3() # TSpline*
+        #mimimi self.logTauY=ROOT.TSpline3() # TSpline*
+        #mimimi self.lCurve=ROOT.TGraph(0) # TGraph*
+        #mimimi self.logTauCurvature=ROOT.TSpline3() # TSpline*
+        #mimimi self.regmode=ROOT.TUnfold.kRegModeCurvature
+        #mimimi label='regamp'
+        #mimimi self.set_unfolding(key)
+        #mimimi self.do_scan()
+        #mimimi self.print_unfolding_results(key, label)
 
      
     def set_unfolding(self, key):
@@ -778,7 +825,7 @@ class Unfolder(object):
 
         # Bias term! It corresponds to the distribution I expect to see after unfolding (e.g. the true Zpt distribution)
         if self.bias != 0:
-            self.unfold.SetBias(self.dataTruth_nom)
+            self.unfold.SetBias(self.dataTruthBiasVector_nom)
 
         # Alternative matrix:
         if   key == 'nom':
@@ -831,8 +878,9 @@ class Unfolder(object):
     def print_unfolding_results(self, key, label):
         # Print results
         print('Best tau: %d' % self.unfold.GetTau())
-        print('chi^2: %d+%d/%d' %(self.unfold.GetChi2A(), self.unfold.GetChi2L(), self.unfold.GetNdf() ) )
+        print('chi^2: (%d+%d)/%d' %(self.unfold.GetChi2A(), self.unfold.GetChi2L(), self.unfold.GetNdf() ) )
         print('chi^2(syst): %d' % self.unfold.GetChi2Sys())
+        
         
         print('ibest: %d, type %s' % ( self.iBest, type(self.iBest)))
         # Visualize best choice of tau
@@ -853,6 +901,7 @@ class Unfolder(object):
             vy.append(y)
             bestLcurve = ROOT.TGraph(1, vx, vy)
             bestLogTauLogChi2 = ROOT.TGraph(1, vt, vx);
+            pass
         
         # Retrieve results as histograms
         histMunfold=self.unfold.GetOutput('%s(unfold,stat+bgrerr)' %self.var) # Unfolded result
@@ -1173,11 +1222,16 @@ class Unfolder(object):
             self.response_nom.SetTitle('Response Matrix (powheg)')
             self.response_nom.GetZaxis().SetLabelOffset(0.01);
             self.response_nom.Draw("colz")
+            print('ATTENTION OVERFLOW PRINTING PORCHIDDIO')
+            for ix in range(0, self.response_nom.GetNbinsX()+1):
+                print('NbinsX=', self.response_nom.GetNbinsX(),', X bin', ix, ': overflow bin ', self.response_nom.GetNbinsY()+1, ' has content ', self.response_nom.GetBinContent(ix, self.response_nom.GetNbinsY()+1))
+
         elif 'alt' in key:
             self.response_alt.Scale(1./self.response_alt.Integral())
             self.response_alt.SetTitle('Response Matrix (amcatnlo)')
             self.response_alt.GetZaxis().SetLabelOffset(0.01);
             self.response_alt.Draw('colz')
+
         elif 'inc' in key:
             if self.checkLO: 
                 self.response_inc.Scale(1./self.response_inc.Integral())
@@ -1587,10 +1641,10 @@ class Unfolder(object):
         dtratio=copy.deepcopy(dt)
         dtratio.SetName("ratio_%s"%dtratio.GetName())
         dtratio.Divide(dt)
-        dtratio.GetXaxis().SetTitleSize(0.045)
-        dtratio.GetYaxis().SetTitleSize(0.045)
-        dtratio.GetXaxis().SetLabelSize(0.035)
-        dtratio.GetYaxis().SetLabelSize(0.035)
+        dtratio.GetXaxis().SetTitleSize(0.06)
+        dtratio.GetYaxis().SetTitleSize(0.06)
+        dtratio.GetXaxis().SetLabelSize(0.05)
+        dtratio.GetYaxis().SetLabelSize(0.05)
         dtratio.GetXaxis().SetTitleOffset(1.1)
         dtratio.GetYaxis().SetTitleOffset(1.6)
         dtratio.GetYaxis().SetTitle("Relative ratio to POWHEG")
@@ -1606,6 +1660,13 @@ class Unfolder(object):
         if not self.onlyMC:
             husratio.Draw("E2 SAME")
         
+
+        # Ratio of whatever con error to POWHEG:
+        hutratio=copy.deepcopy(hut)
+        hutratio.SetName("ratio_%s"%hutratio.GetName())
+        hutratio.Divide(dt)
+        hutratio.Draw("E2 SAME")
+
         # Ratio amcatnlo to POWHEG
         dt_altratio=copy.deepcopy(dt_alt)
         dt_altratio.SetName("ratio_%s"%dt_altratio.GetName())
@@ -1613,6 +1674,9 @@ class Unfolder(object):
         dt_altratio.Draw("SAME E HIST")
 
         enterTheMatrixratio.Draw("SAME PE>")
+        if self.logx:
+            ROOT.gPad.SetLogx()
+
         moneyplot.SaveAs(os.path.join(self.outputDir, '3_differentialXsec_%s_%s_%s.pdf' % (label, key, self.var)))
         moneyplot.SaveAs(os.path.join(self.outputDir, '3_differentialXsec_%s_%s_%s.png' % (label, key, self.var)))
         moneyplot.SaveAs(os.path.join(self.outputDir, '3_differentialXsec_%s_%s_%s.C' % (label, key, self.var)))

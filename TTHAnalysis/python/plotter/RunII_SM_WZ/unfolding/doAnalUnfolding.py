@@ -107,8 +107,10 @@ class Steer:
             iXTitle=iPack[1]
             iOut=iPack[2]
             iYTitle='Events'
-            if not self.singlevar in iOut:
-                continue
+            
+            if self.singlevar:
+                if not self.singlevar in iOut:
+                    continue
 
             for iChan, iChanCut in self.chanCuts.items():
                 print('mkdir -p {outdir}/{year}_{chan}_fitWZonly_{thevar}/'.format(outdir=self.outputDir, year=self.year,chan=iChan, cut=iChanCut, thevar=iOut))
@@ -146,8 +148,9 @@ class Steer:
                 iXTitle=iPack[1]
                 iOut=iPack[2]
                 iYTitle='Events'
-                if not self.singlevar in iOut:
-                    continue
+                if self.singlevar:
+                    if not self.singlevar in iOut:
+                        continue
 
                 for iChan, iChanCut in self.chanCuts.items():
                     print('mkdir -p {outdir}/{year}_{chan}_fitWZonly_{thevar}_{iWhat}/'.format(outdir=self.outputDir, year=self.year,chan=iChan, cut=iChanCut,thevar=iOut, iWhat=iWhat) )
@@ -168,7 +171,7 @@ class Steer:
     # End of prepareInputs()
 
 
-    def prepareResponses(self):
+    def prepareResponses(self, genshapes=False):
 
         print('Blah')
 
@@ -198,20 +201,22 @@ class Steer:
             iYTitle=iPack[2]
             iOut=iPack[3]
             print('echo \"{iShape}, range {iRange}\"'.format(iShape=iShape,iRange=iRange))
-            if not self.singlevar in iOut:
-                continue
+            if self.singlevar:
+                if not self.singlevar in iOut:
+                    continue
             
             for iChan, iChanCut in self.chanCuts.items():
                 print('mkdir -p {outdir}/responses/{year}_{chan}_fitWZonly_{iOut}/'.format(outdir=self.outputDir, year=self.year,chan=iChan, cut=iChanCut, iOut=iOut))
                 if self.year=='runII':
                     print('mkdir -p {outdir}/responses/{year}_{chan}_fitWZonly_{iOut}/common/'.format(outdir=self.outputDir, year=self.year,chan=iChan, cut=iChanCut, iOut=iOut))
                     print('mkdir -p {outdir}/responses/{year}_{chan}_fitWZonly_{iOut}/prompt_altWZ_Pow/'.format(outdir=self.outputDir, year=self.year,chan=iChan, cut=iChanCut, iOut=iOut))
-                    print('hadd -f {outdir}/responses/{year}_{chan}_fitWZonly_{iOut}/common/WZSR_{year}.input.root temp2016/responses/2016_{chan}_fitWZonly_{iOut}/common/WZSR_2016.input.root temp2017/responses/2017_{chan}_fitWZonly_{iOut}/common/WZSR_2017.input.root temp2018/responses/2018_{chan}_fitWZonly_{iOut}/common/WZSR_2018.input.root '.format(outdir=self.outputDir,year=self.year,chan=iChan, iOut=iOut))
+                    #print('hadd -f {outdir}/responses/{year}_{chan}_fitWZonly_{iOut}/common/WZSR_{year}.input.root temp2016/responses/2016_{chan}_fitWZonly_{iOut}/common/WZSR_2016.input.root temp2017/responses/2017_{chan}_fitWZonly_{iOut}/common/WZSR_2017.input.root temp2018/responses/2018_{chan}_fitWZonly_{iOut}/common/WZSR_2018.input.root '.format(outdir=self.outputDir,year=self.year,chan=iChan, iOut=iOut))
+                    print('hadd -f {outdir}/responses{dogenshapesname}/{year}_{chan}_fitWZonly_{iOut}/common/WZSR_{year}.input.root temp2016/responses{dogenshapesname}/2016_{chan}_fitWZonly_{iOut}/common/WZSR_2016.input.root temp2017/responses{dogenshapesname}/2017_{chan}_fitWZonly_{iOut}/common/WZSR_2017.input.root temp2018/responses{dogenshapesname}/2018_{chan}_fitWZonly_{iOut}/common/WZSR_2018.input.root '.format(outdir=self.outputDir,year=self.year,chan=iChan, iOut=iOut,dogenshapesname='_genshapes' if genshapes else ''))
                     print('cp temp2016/responses/2016_{chan}_fitWZonly_{iOut}/prompt_altWZ_Pow/WZSR_2016.card.txt {outdir}/responses/{year}_{chan}_fitWZonly_{iOut}/prompt_altWZ_Pow/WZSR_{year}.card.txt'.format(outdir=self.outputDir,year=self.year,chan=iChan, iOut=iOut))
 
                 else:
                     requestJet='-E onejet' if 'JetPt' in iOut else ''
-                    perchan = ' --od {outdir}/responses/{year}_{chan}_fitWZonly_{iOut}/ --bin {chan} -E SRWZ {requestJet} {cut} '.format(outdir=self.outputDir, year=self.year,chan=iChan, requestJet=requestJet, cut=iChanCut, iOut=iOut)
+                    perchan = ' --od {outdir}/responses{dogenshapesname}/{year}_{chan}_fitWZonly_{iOut}/ --bin {chan} {dogenshapes} {requestJet} {cut} '.format(outdir=self.outputDir, year=self.year,chan=iChan, requestJet=requestJet, dogenshapes='-X SR' if genshapes else '', cut=iChanCut, iOut=iOut, dogenshapesname='_genshapes' if genshapes else '')
                     print('sbatch -p {queue} -c {nthreads} --wrap "python makeShapeCardsSusy.py RunII_SM_WZ/unfolding/mca_unfolding_{year}.txt RunII_SM_WZ/{year}/cuts_fiducial.txt \'{iShape}\' \'{iRange}\' RunII_SM_WZ/{year}/systs_wz.txt  --tree treeProducerSusyMultilepton -P /pool/cienciasrw/HeppyTrees/RA7/nanoAODv5_{year}_unSkimmed_estructure/ --FMCs {{P}}/leptonMatcher   --Fs {{P}}/leptonPtCorrections/ {prefiringTrees} {pileupTrees} --Fs {{P}}/leptonJetReCleanerWZSM/ --Fs {{P}}/leptonBuilderWZSM/  --Fs {{P}}/jet25Cleaned/ {triggerTrees} --FMCs {{P}}/bTagEventWeights/ --FMCs {{P}}/lepgenVarsWZSM/ --Fs {{P}}/bosonPolarization/ -L RunII_SM_WZ/functionsSF.cc -L RunII_SM_WZ/functionsMCMatch.cc -L RunII_SM_WZ/functionsWZ.cc -W \'getLeptonSF_v4(0,0,{year},LepSel_pt[0],LepSel_eta[0],LepSel_pdgId[0])*getLeptonSF_v4(0,0,{year},LepSel_pt[1],LepSel_eta[1],LepSel_pdgId[1])*getLeptonSF_v4(0,0,{year},LepSel_pt[2],LepSel_eta[2],LepSel_pdgId[2])*{pileupWeights}*bTagWeightDeepCSVT_nom{prefiringWeights}\' --obj Events -j {nthreads} -l {lumi} -f  -E SRWZ {perchan} {chargecut} --neglist promptsub --asimov --autoMCStats  --XTitle \\"{iXTitle}\\" --YTitle \\"{iYTitle}\\" -o WZSR_{year}" '.format(queue=self.queue,year=self.year,prefiringTrees=prefiringTrees[self.year],prefiringWeights=prefiringWeights[self.year],triggerTrees=triggerTrees[self.year],lumi=lumi[self.year],pileupTrees=pileupTrees[self.year],pileupWeights=pileupWeights[self.year], perchan=perchan, nthreads=self.nthreads,iShape=iShape, iRange=iRange, iXTitle=iXTitle, iYTitle=iYTitle, chargecut=iChanCut) )
 
                     #print('rm -r {baseoutputdir}incl_fitWZonly_{iout}/'.format(baseoutputdir=baseoutputdir,iout=iOut))
@@ -230,19 +235,21 @@ class Steer:
                 iOut=iPack[3]
                 
                 print('echo \"{iShape}, range {iRange}\"'.format(iShape=iShape,iRange=iRange))
-                if not self.singlevar in iOut:
-                    continue
+                if self.singlevar:
+                    if not self.singlevar in iOut:
+                        continue
 
                 for iChan, iChanCut in self.chanCuts.items():
                     print('mkdir -p {outdir}/responses/{year}_{chan}_fitWZonly_{iout}_{chargeinfo}/'.format(outdir=self.outputDir, year=self.year,chan=iChan, cut=iChanCut, iout=iOut,chargeinfo=iWhat))
                     if self.year=='runII':
                         print('mkdir -p {outdir}/responses/{year}_{chan}_fitWZonly_{iOut}_{chargeinfo}/common/'.format(outdir=self.outputDir, year=self.year,chan=iChan, cut=iChanCut, iOut=iOut, chargeinfo=iWhat))
                         print('mkdir -p {outdir}/responses/{year}_{chan}_fitWZonly_{iOut}_{chargeinfo}/prompt_altWZ_Pow/'.format(outdir=self.outputDir, year=self.year,chan=iChan, cut=iChanCut, iOut=iOut, chargeinfo=iWhat))
-                        print('hadd -f {outdir}/responses/{year}_{chan}_fitWZonly_{iOut}_{chargeinfo}/common/WZSR_{year}.input.root temp2016/responses/2016_{chan}_fitWZonly_{iOut}_{chargeinfo}/common/WZSR_2016.input.root temp2017/responses/2017_{chan}_fitWZonly_{iOut}_{chargeinfo}/common/WZSR_2017.input.root temp2018/responses/2018_{chan}_fitWZonly_{iOut}_{chargeinfo}/common/WZSR_2018.input.root '.format(outdir=self.outputDir,year=self.year,chan=iChan, iOut=iOut, chargeinfo=iWhat))
+                        #print('hadd -f {outdir}/responses/{year}_{chan}_fitWZonly_{iOut}_{chargeinfo}/common/WZSR_{year}.input.root temp2016/responses/2016_{chan}_fitWZonly_{iOut}_{chargeinfo}/common/WZSR_2016.input.root temp2017/responses/2017_{chan}_fitWZonly_{iOut}_{chargeinfo}/common/WZSR_2017.input.root temp2018/responses/2018_{chan}_fitWZonly_{iOut}_{chargeinfo}/common/WZSR_2018.input.root '.format(outdir=self.outputDir,year=self.year,chan=iChan, iOut=iOut, chargeinfo=iWhat))
+                        print('hadd -f {outdir}/responses{dogenshapesname}/{year}_{chan}_fitWZonly_{iOut}_{chargeinfo}/common/WZSR_{year}.input.root temp2016/responses{dogenshapesname}/2016_{chan}_fitWZonly_{iOut}_{chargeinfo}/common/WZSR_2016.input.root temp2017/responses{dogenshapesname}/2017_{chan}_fitWZonly_{iOut}_{chargeinfo}/common/WZSR_2017.input.root temp2018/responses{dogenshapesname}/2018_{chan}_fitWZonly_{iOut}_{chargeinfo}/common/WZSR_2018.input.root '.format(outdir=self.outputDir,year=self.year,chan=iChan, iOut=iOut, chargeinfo=iWhat, dogenshapesname='_genshapes' if genshapes else ''))
                         print('cp temp2016/responses/2016_{chan}_fitWZonly_{iOut}_{chargeinfo}/prompt_altWZ_Pow/WZSR_2016.card.txt {outdir}/responses/{year}_{chan}_fitWZonly_{iOut}_{chargeinfo}/prompt_altWZ_Pow/WZSR_{year}.card.txt'.format(outdir=self.outputDir,year=self.year,chan=iChan, iOut=iOut, chargeinfo=iWhat))
                     else:
                         requestJet='-E onejet' if 'JetPt' in iOut else ''
-                        perchan = ' --od {outdir}/responses/{year}_{chan}_fitWZonly_{iout}_{chargeinfo}/ --bin {chan} -E SRWZ {requestJet} {cut} '.format(outdir=self.outputDir, year=self.year,chan=iChan, requestJet=requestJet, cut=iChanCut, iout=iOut,chargeinfo=iWhat)
+                        perchan = ' --od {outdir}/responses{dogenshapesname}/{year}_{chan}_fitWZonly_{iout}_{chargeinfo}/ --bin {chan} {dogenshapes} {requestJet} {cut} '.format(outdir=self.outputDir, year=self.year,chan=iChan, requestJet=requestJet, dogenshapes='-X SR' if genshapes else '', cut=iChanCut, iout=iOut,chargeinfo=iWhat, dogenshapesname='_genshapes' if genshapes else '')
                     
                         print('sbatch -p {queue} -c {nthreads} --wrap "python makeShapeCardsSusy.py RunII_SM_WZ/unfolding/mca_unfolding_{year}.txt RunII_SM_WZ/{year}/cuts_fiducial.txt \'{iShape}\' \'{iRange}\' RunII_SM_WZ/{year}/systs_wz.txt  --tree treeProducerSusyMultilepton -P /pool/cienciasrw/HeppyTrees/RA7/nanoAODv5_{year}_unSkimmed_estructure/ --FMCs {{P}}/leptonMatcher/ --Fs {{P}}/leptonPtCorrections/ {prefiringTrees} {pileupTrees} --Fs {{P}}/leptonJetReCleanerWZSM/ --Fs {{P}}/leptonBuilderWZSM/  --Fs {{P}}/jet25Cleaned/ {triggerTrees} --FMCs {{P}}/bTagEventWeights/ --FMCs {{P}}/lepgenVarsWZSM/ --Fs {{P}}/bosonPolarization/ -L RunII_SM_WZ/functionsSF.cc -L RunII_SM_WZ/functionsMCMatch.cc -L RunII_SM_WZ/functionsWZ.cc -W \'getLeptonSF_v4(0,0,{year},LepSel_pt[0],LepSel_eta[0],LepSel_pdgId[0])*getLeptonSF_v4(0,0,{year},LepSel_pt[1],LepSel_eta[1],LepSel_pdgId[1])*getLeptonSF_v4(0,0,{year},LepSel_pt[2],LepSel_eta[2],LepSel_pdgId[2])*{pileupWeights}*bTagWeightDeepCSVT_nom{prefiringWeights}\' --obj Events -j {nthreads} -l {lumi} -f  -E SRWZ {perchan} {chargecut} --neglist promptsub --autoMCStats --asimov  --XTitle \\"{iXTitle}\\" --YTitle \\"{iYTitle}\\" -o WZSR_{year}" '.format(queue=self.queue,year=self.year,prefiringTrees=prefiringTrees[self.year],prefiringWeights=prefiringWeights[self.year],triggerTrees=triggerTrees[self.year],lumi=lumi[self.year],pileupTrees=pileupTrees[self.year],pileupWeights=pileupWeights[self.year], perchan=perchan, nthreads=self.nthreads, iShape=iShape, iRange=iRange, iXTitle=iXTitle, iYTitle=iYTitle, chargecut=iCut) )
 
@@ -324,6 +331,8 @@ def bad(what):
         ret=False
     if 'responses' in what:
         ret=False
+    if 'genshapes' in what:
+        ret=False
     if 'unfolding' in what:
         ret=False
     return ret
@@ -344,6 +353,8 @@ def main(args):
         anal.prepareInputs()
     if 'responses' in args.what:
         anal.prepareResponses()
+    if 'genshapes' in args.what:
+        anal.prepareResponses(genshapes=True)
     if 'unfolding' in args.what:
         anal.doTheUnfolding()
 
