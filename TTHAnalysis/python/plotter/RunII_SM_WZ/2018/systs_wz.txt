@@ -43,5 +43,9 @@ LepSFElStat2018_ML    : prompt_.*|convs          : .* : lepSFElStat2018 : templa
 
 scaleNorm  : prompt_WZ : .* : scale : envelope : 6   # 7 point 1/2 scale varations
 pdfNorm    : prompt_WZ : .* : pdf   : quad : 30 # NNPDF31 is 30 hessian replicas (2017/2018, weight 0 is nominal 1-30 are variations)
+scaleNorm  : prompt_altWZ.* : .* : scale : envelope : 6   # 7 point 1/2 scale varations
+pdfNorm    : prompt_altWZ.* : .* : pdf   : quad : 30 # NNPDF31 is 30 hessian replicas (2017/2018, weight 0 is nominal 1-30 are variations)
+
 ISR18 : prompt_WZ : .* : isr : templates
+ISR18 : prompt_altWZ.* : .* : isr : templates
 #poltaus  : prompt_WZ_Wf.* : .* : taus :  templates
