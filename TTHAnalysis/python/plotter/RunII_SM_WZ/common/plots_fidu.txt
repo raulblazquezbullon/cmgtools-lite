@@ -1,0 +1,18 @@
+## basic lepton observables
+## ----------------------------------------------------------
+
+pol_cosWfromFT_Dn : cos_genThetaWDn_HE :  10,-1,1  ; XTitle="Gen q_{W}*cos(#theta_{W}^{Dn})", Legend='TL', LegendCutoff=5e-3, MoreY=2.0
+pol_cosZfromFT_Dn : cos_genThetaZDn_HE :  10,-1,1  ; XTitle="Gen cos(#theta_{Z})", Legend='TL', LegendCutoff=5e-3, MoreY=2.0
+nJet              : Sum$(GenJet_pt>25&&abs(GenJet_eta)<2.5&&deltaR(GenJet_eta,GenJet_phi,genLepZ1_eta,genLepZ1_phi)>0.5&&deltaR(GenJet_eta,GenJet_phi,genLepZ2_eta,genLepZ2_phi)>0.5&&deltaR(GenJet_eta,GenJet_phi,genLepW_eta,genLepW_phi)>0.5) : 6,-0.5,5.5 ; XTitle="Gen N_{jet}", Legend='TR', LegendCutoff=5e-3, MoreY=2.0
+
+Z1pt : genLepZ1_pt : 20,0,200 : 40,-200,200 ; XTitle="p_{T}(lep. Z1) [GeV]", Legend="TL", legendCutoff=1e-2
+Z2pt : genLepZ2_pt : 20,0,200 : 40,-200,200 ; XTitle="p_{T}(lep. Z2) [GeV]", Legend="TL", legendCutoff=1e-2
+Wpt : genLepW_pt : 20,0,200 : 40,-200,200 ; XTitle="p_{T}(lep. W) [GeV]", Legend="TL", legendCutoff=1e-2
+
+Zpt : sump4(0, genLepZ1_pt,genLepZ1_eta,genLepZ1_phi,genLepZ1_mass,genLepZ2_pt,genLepZ2_eta,genLepZ2_phi,genLepZ2_mass) : 30,0,300  ; XTitle="Gen p_{T}^{Z} [GeV]", Legend="TL", legendCutoff=1e-2
+m3lmet_Meas : m3Lmet_gen : [100,200,300,400,500,1000,1500,3000] ; XTitle="Gen m_{WZ} [GeV]", LegendCutoff=1e-8, YTitle='Events/bin', Logy, YMin=0.1, YMax=100000000, IncludeOverflows=False
+mll_3l      : mll_3l_gen : 30,75,105 ; XTitle="Gen m_{ll} [GeV]", LegendCutoff=1e-8, YTitle='Events/bin', Logy, YMin=0.1, YMax=100000000, IncludeOverflows=False
+
+flavor3l   : (abs(genLepZ1_pdgId[0])+abs(genLepZ2_pdgId[1])+abs(genLepW_pdgId[2])-33)/2  : 4,-0.5,3.5 ; XTitle="flavor", xBinLabels="eee\,ee#mu\,e#mu#mu\,#mu#mu#mu", Legend="TL", LegendCutoff5e-3, MoreY=3.0
+
+one : 1 : 1,0.5,1.5 ; XTitle="Yields"

@@ -122,6 +122,15 @@ bool allPrompt(int idl1, int idl2, int idl3, int idl4, int idt1, int idt2, int n
   }
 }
 
+int unused4(int id1, int id2, int ord){
+    int idx = 0;
+    for (int i = 0; i< 4; i ++){
+        if (i == id1 || i == id2){continue;}
+        else idx++;
+        if (idx == ord) return i;
+    }
+    return -1;
+}
 
 
 void functionsMCMatch() {}

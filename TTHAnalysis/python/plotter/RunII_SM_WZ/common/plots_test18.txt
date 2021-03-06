@@ -1,0 +1,4 @@
+## basic lepton observables
+## ----------------------------------------------------------
+passSR   : ( (bTagWeightDeepCSVT_nom*weight_PrefiringJets*weight_PrefiringPhotons*(getLeptonSF_v4(0,0,2017,LepSel_pt[0],LepSel_eta[0],LepSel_pdgId[0])*getLeptonSF_v4(0,0,2017,LepSel_pt[1],LepSel_eta[1],LepSel_pdgId[1])*getLeptonSF_v4(0,0,2017,LepSel_pt[2],LepSel_eta[2],LepSel_pdgId[2]))) >= rndm && nLepSel >= 3 &&  LepZ1_pt >= 25  && LepZ2_pt >= 10  && LepW_pt >= 25   && abs(LepSel_pdgId[0]) < 15 && abs(LepSel_pdgId[1]) < 15 && abs(LepSel_pdgId[2]) < 15 && nOSSF_3l >= 1 && (minMllSFOS_Mini > 12 || minMllSFOS_Mini == -1)  &&  m3L >= 100 &&  MET_pt_central  > 30 && abs(mll_3l - 91.16) < 15 && nLepGood < 4  && nBJetTight25_Mini == 0 && LepSel_isTight[0] &&  LepSel_isTight[1] && LepSel_isTight[2])!=0 : 2,-0.5,1.5 ; XTitle="flavor", Legend="TL", LegendCutoff=5e-3, MoreY=3.0
+

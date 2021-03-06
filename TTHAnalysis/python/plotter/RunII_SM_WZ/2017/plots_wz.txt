@@ -50,6 +50,18 @@ metCRWZ    : MET_pt_central    : 5,0,200   ; XTitle="p_{T}^{miss}  (GeV)"       
 htJet30j   : htJet30j       : 20,0,200    ; XTitle="H_{T}(jet p_{T} > 30) [GeV]" , LegendCutoff=1e-4, Logy, YMax=50000, YMin=1e-1
 nJet30     : nJet30_Mini         : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5] ; XTitle="N(jet\, p_{T} > 30)"         , LegendCutoff=1e-4, Logy, YMax=50000, YMin=1e-1
 nBJet25    : nBJetTight25_Mini  : 1,-1,1  ; XTitle="N(b-jet\, p_{T} > 25\, DCSVT)", LegendCutoff=1e-4, Logy, YMax=100000, YMin=1
+nJet25PUID0 :  Sum$(Jet_pt[iJSel_Mini] >= 25 && abs(Jet_eta[iJSel_Mini]) < 2.5 && Jet_jetId[iJSel_Mini] >= 2)  : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5] ; XTitle="N(jet\, p_{T} > 25)"         , LegendCutoff5e-3, Logy, YMax=50000, YMin=1e-1
+
+nJet25PUID4 :  Sum$(Jet_pt[iJSel_Mini] >= 25 && (Jet_puId[iJSel_Mini] >= 4 || Jet_pt[iJSel_Mini] >= 50) && abs(Jet_eta[iJSel_Mini]) < 4.7 && Jet_jetId[iJSel_Mini] >= 2)  : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5] ; XTitle="N(jet\, p_{T} > 25\, PUID L)"         , LegendCutoff5e-3, Logy, YMax=50000, YMin=1e-1
+
+nJet25PUID6 :  Sum$(Jet_pt[iJSel_Mini] >= 25 && (Jet_puId[iJSel_Mini] >= 6 || Jet_pt[iJSel_Mini] >= 50) && abs(Jet_eta[iJSel_Mini]) < 4.7 && Jet_jetId[iJSel_Mini] >= 2)  : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5] ; XTitle="N(jet\, p_{T} > 25\, PUID M)"         , LegendCutoff5e-3, Logy, YMax=50000, YMin=1e-1
+
+nJet25PUID7 :  Sum$(Jet_pt[iJSel_Mini] >= 25 && (Jet_puId[iJSel_Mini] >= 7 || Jet_pt[iJSel_Mini] >= 50) && abs(Jet_eta[iJSel_Mini]) < 4.7 && Jet_jetId[iJSel_Mini] >= 2)  : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5] ; XTitle="N(jet\, p_{T} > 25\, PUID T)"         , LegendCutoff5e-3, Logy, YMax=50000, YMin=1e-1
+
+nJet25PUID8 :  Sum$(Jet_pt[iJSel_Mini] >= 25 && (Jet_puId[iJSel_Mini] >= 8 || Jet_pt[iJSel_Mini] >= 50) && abs(Jet_eta[iJSel_Mini]) < 4.7 && Jet_jetId[iJSel_Mini] >= 2)  : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5] ; XTitle="N(jet\, p_{T} > 25\, PUID impossible)"         , LegendCutoff5e-3, Logy, YMax=50000, YMin=1e-1
+
+
+
 
 m3l        : m3L            : 10,0,500    ; XTitle="m_{3L} (GeV)"                , LegendCutoff=1e-4, Logy, Legend="TL", YMin=1, YMax=100000, Legend="TR"
 mll3l      : mll_3l        : 15,75,105    ; XTitle="M_{ll} (GeV)"                , LegendCutoff=1e-4, Logy, YMin=1, YMax=5000000, Legend="TR"

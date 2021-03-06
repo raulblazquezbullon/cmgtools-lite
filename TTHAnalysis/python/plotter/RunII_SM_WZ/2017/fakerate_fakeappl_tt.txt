@@ -1,4 +1,5 @@
-weight : EWK3L_fakeTransfer(3, EWK3L_fakeRate(LepSel_pt[0],LepSel_eta[0],LepSel_pdgId[0],1), !(LepSel_isTight[0]), EWK3L_fakeRate(LepSel_pt[1],LepSel_eta[1],LepSel_pdgId[1],1), !(LepSel_isTight[1]), EWK3L_fakeRate(LepSel_pt[2],LepSel_eta[2],LepSel_pdgId[2],1), !(LepSel_isTight[2]))
+weight : EWK3L_fakeTransfer(3, EWK3L_fakeRate(LepSel_pt[0],LepSel_eta[0],LepSel_pdgId[0],1), !(LepSel_isTight[0]), EWK3L_fakeRate(LepSel_pt[1],LepSel_eta[1],LepSel_pdgId[1],1), !(LepSel_isTight[1]), EWK3L_fakeRate(LepSel_pt[2],LepSel_eta[2],LepSel_pdgId[2],1), !(LepSel_isTight[2]),abs(LepW_pdgId)==11)
+
 
 cut-change : allTight : !allTight
 

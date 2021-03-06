@@ -50,6 +50,14 @@ incl_signal_elscale_Dn        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfold
 incl_signal_muscale_Up        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2017_signal.txt", ExtraFakeRate="RunII_SM_WZ/common/fakerate_standard_muonScaleUp.txt", SkipMe=True, PostFix="_muscale_Up"
 incl_signal_muscale_Dn        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2017_signal.txt", ExtraFakeRate="RunII_SM_WZ/common/fakerate_standard_muonScaleDn.txt", SkipMe=True, PostFix="_muscale_Dn"
 
+#Theo
+incl_signal_theo : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2017_pdf.txt"
+
+#ISR
+incl_signal_isr_Up        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2017_signal.txt"", AddWeight="ISRUp(nJetClean25)", SkipMe=True, PostFix="_isr_Up"
+incl_signal_isr_Dn        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2017_signal.txt"", AddWeight="ISRDn(nJetClean25)", SkipMe=True, PostFix="_isr_Dn"
+
+
 ### ## bTag ##
 ### incl_prompts_bTag_HF_Up        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2017_signal.txt", AddWeight="bTagWeightDeepCSVT_HF_Up/bTagWeightDeepCSVT_nom", SkipMe=True, PostFix="_bTagHF_Up"
 ### incl_prompts_bTag_HF_Dn        : + ; IncludeMca="RunII_SM_WZ/unfolding/mca_unfolding_2017_signal.txt", AddWeight="bTagWeightDeepCSVT_HF_Dn/bTagWeightDeepCSVT_nom", SkipMe=True, PostFix="_bTagHF_Dn"

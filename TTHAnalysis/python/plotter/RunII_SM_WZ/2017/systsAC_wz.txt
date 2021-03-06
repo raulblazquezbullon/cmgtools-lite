@@ -13,18 +13,19 @@ lumi_calib_ML      : prompt_.*|diboson.*|convs   : .*                : 1.003
 #Bias comes from ref trigger which follows the same strat, so correlated:
 trigeffbias_ML    : prompt_.*|diboson.*|convs   : .*                : 1.005
 #Uncertainty from statistics our own measurement, so decorrelated:
-trigeffstat_2017_ML    : prompt_.*|diboson.*|convs   : .*                : 0.992/1.004
-
+trigeffstat_2017_ML    : prompt_.*|diboson.*|convs   : .*                : 0.996/1.002
 
 
 ############## NORMALIZATION
-normfakes_ML      : fakes_.*                           : .*                : 1.3
-normconvs_ML      : convs                              : .*                : 1.2
-normZZ_ML     : prompt_.*ZZ                        : .*                : 1.1
+normfakes_ML      : .*fakes.*                           : .*                : 1.3
+shapefakes_ML    : .*fakes.*                           : .* : fakes : templates
+
+#normconvs_ML      : convs                              : .*                : 1.12
+#normZZ_ML     : prompt_.*ZZ                        : .*                : 1.06
 normVVV_ML    : prompt_VVV                         : .*                : 1.5
 normVH_ML     : prompt_VH                          : .*                : 1.25
-normtZq_ML    : prompt_TZQ                         : .*                : 1.35
-normTTX_ML    : prompt_TT.*                        : .*                : 1.15
+#normtZq_ML    : prompt_TZQ                         : .*                : 1.35
+#normTTX_ML    : prompt_TT.*                        : .*                : 1.15
 normWZ_EWK    : prompt_WZ_EWK.* : .* : 1.2
 
 
@@ -36,7 +37,7 @@ JES2017_ML           : prompt_.*|diboson.*|convs          : .* : jesuncorr      
 MuScale_ML       : prompt_.*|diboson.*|convs          : .* : muscale    : templates
 ElScale_ML       : prompt_.*|diboson.*|convs          : .* : elscale    : templates
 
-PUW_ML           : prompt_.*|diboson.*|sig_.*   : .* : puw        : templates
+PUW_ML           : prompt_.*|diboson.*|convs|sig_.*   : .* : puw        : templates
 btag_HF_ML       : prompt_.*|diboson.*|convs          : .* : bTagHF     : templates
 btag_LF_ML       : prompt_.*|diboson.*|convs          : .* : bTagLF     : templates
 
@@ -45,3 +46,4 @@ LepSFEl_ML            : prompt_.*|diboson.*|convs          : .* : lepSFEl : temp
 LepSFMuStat2017_ML    : prompt_.*|diboson.*|convs          : .* : lepSFMuStat2017 : templates
 LepSFElStat2017_ML    : prompt_.*|diboson.*|convs          : .* : lepSFElStat2017 : templates
 
+ISR17 : prompt_WZ : .* : isr : templates
