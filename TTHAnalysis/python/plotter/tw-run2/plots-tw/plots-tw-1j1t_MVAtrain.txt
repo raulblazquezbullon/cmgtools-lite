@@ -28,3 +28,7 @@ tmvaBDT_1j1b_20bins  : getBDtW20bins(tmvaBDT_1j1b) : [0.5,1.5,2.5,3.5,4.5,5.5, 6
 #lep1lep2jet1_c_scalar              : Lep1Lep2Jet1_Cscalar             : 20,0,1                                 ; LegendCutoff=0, IncludeUnderflow=False, XTitle="C_{scalar} (#it{e}^{#pm}\, #it{#mu}^{#mp}\, #it{j}) (adim.)"
 
 tot_weight: 1 : 1,0.5,1.5; XTitle = "Selected events", LegendCutoff=0, MoreY=2.0
+
+twoDPlotCentralityVSJetLoose                  : twoDPlotCentrality_Jetloose(Lep1Lep2Jet1_C, JetLoose1_Pt)              : [0.5,1.5,2.5,3.5,4.5,5.5, 6.5, 7.5, 8.5, 9.5, 10.5, 11.5, 12.5, 13.5, 14.5, 15.5, 16.5] ; LegendCutoff=0, MoreY=1.2, XTitle=''
+
+

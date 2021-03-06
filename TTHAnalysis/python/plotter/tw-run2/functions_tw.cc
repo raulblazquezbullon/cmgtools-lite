@@ -235,6 +235,33 @@ Float_t getBDtWOther12bins2018(Double_t BDT){
 void functions_tw() {}
 
 
+Float_t twoDPlotCentrality_Jetloose(Double_t Cent, Double_t Loose) {
+  if      (Cent < 0.25 && Loose < 8.5)       return 1;
+  else if (Cent < 0.25 && Loose < 17.)       return 2;
+  else if (Cent < 0.25 && Loose < 25.5)      return 3;
+  else if (Cent < 0.25 && Loose < 34)        return 4;
+  
+  else if (Cent < 0.5 && Loose < 8.5)        return 5;
+  else if (Cent < 0.5 && Loose < 17.)        return 6;
+  else if (Cent < 0.5 && Loose < 25.5)       return 7;
+  else if (Cent < 0.5 && Loose < 34)         return 8;
+
+  else if (Cent < 0.75 && Loose < 8.5)       return 9;
+  else if (Cent < 0.75 && Loose < 17.)       return 10;
+  else if (Cent < 0.75 && Loose < 25.5)      return 11;
+  else if (Cent < 0.75 && Loose < 34)        return 12;
+  
+  else if (Cent < 1. && Loose < 8.5)         return 13;
+  else if (Cent < 1. && Loose < 17.)         return 14;
+  else if (Cent < 1. && Loose < 25.5)        return 15;
+  else if (Cent < 1. && Loose < 34)          return 16;
+  
+  else return -20;
+}
+
+
+
+
 //////////////////////////////////////////////
 
 
