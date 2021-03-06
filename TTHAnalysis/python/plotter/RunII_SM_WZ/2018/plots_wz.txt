@@ -133,3 +133,7 @@ phistarZ : phistar(LepZ1_eta, LepZ1_phi, LepZ2_eta, LepZ2_phi) : 20, -4, 4 ; XTi
 #DeltaRPL: sqrt((deltaPhi(sump4(2, LepW_pt, LepW_eta, LepW_phi, LepW_mass, MET_pt_nom, 0, MET_phi, 0),LepW_phi))^2 +abs(sump4(1, LepW_pt, LepW_eta, LepW_phi, LepW_mass, MET_pt_nom, 0, MET_phi, 0)-LepW_eta)^2) : [0.0, 0.3105, 0.45899999999999996, 0.5984999999999999, 0.738, 0.8909999999999999, 1.071, 1.3005, 1.638, 2.2455, 4.5]; XTitle="#DeltaR^{+}", Legend='TL', LegendCutoff=1e-5, MoreY=2.5 
 #DeltaRMn: sqrt((deltaPhi(sump4(2, LepW_pt, LepW_eta, LepW_phi, LepW_mass, MET_pt_nom, 0, MET_phi, 0),LepW_phi))^2 +abs(sump4(1, LepW_pt, LepW_eta, LepW_phi, LepW_mass, MET_pt_nom, 0, MET_phi, 0)-LepW_eta)^2) : [0.0, 0.3105, 0.45899999999999996, 0.5984999999999999, 0.738, 0.8909999999999999, 1.071, 1.3005, 1.638, 2.2455, 4.5]; XTitle="#DeltaR^{-}", Legend='TL', LegendCutoff=1e-5, MoreY=2.5 
 
+
+genZ_pt     : sump4(0, genLepZ1_pt,genLepZ1_eta,genLepZ1_phi,genLepZ1_mass,genLepZ2_pt,genLepZ2_eta,genLepZ2_phi,genLepZ2_mass) : [0,75,150,250,400,1000]    ; YTitle="Events", XTitle="p_{T\}(Z) gen from assignments"   , IncludeOverflows=False, IncludeOverflow=True, LegendCutoff=1e-4, Logy, YMin=1e-1, YMax=50000
+genW_pt     : genLepW_pt : [0,75,150,250,400,1000]    ; YTitle="Events", XTitle="p_{T\}(Z) gen from assignments"   , IncludeOverflows=False, IncludeOverflow=True, LegendCutoff=1e-4, Logy, YMin=1e-1, YMax=50000
+
