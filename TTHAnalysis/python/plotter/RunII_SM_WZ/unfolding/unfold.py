@@ -363,16 +363,18 @@ class Unfolder(object):
         pdfDn_2d   = copy.deepcopy(ROOT.TH2D(file_handle.Get('x_prompt_altWZ_%s_pdfNormDown' % 'Pow')))
         scaleDn_2d = copy.deepcopy(ROOT.TH2D(file_handle.Get('x_prompt_altWZ_%s_scaleNormDown' % 'Pow')))
 
-        pdfUp_1d   = copy.deepcopy(ROOT.TH1D(pdfUp_2d.ProjectionY('pdfUp_1d', 0, pdfUp_2d.GetNbinsX())))
-        scaleUp_1d = copy.deepcopy(ROOT.TH1D(scaleUp_2d.ProjectionY('scaleUp_1d', 0, scaleUp_2d.GetNbinsX())))
+        pdfUp_1d   = copy.deepcopy(ROOT.TH1D(pdfUp_2d.ProjectionY('pdfUp_1d', 0, pdfUp_2d.GetNbinsX()+1)))
+        scaleUp_1d = copy.deepcopy(ROOT.TH1D(scaleUp_2d.ProjectionY('scaleUp_1d', 0, scaleUp_2d.GetNbinsX()+1)))
 
-        pdfDn_1d   = copy.deepcopy(ROOT.TH1D(pdfDn_2d.ProjectionY('pdfDn_1d', 0, pdfDn_2d.GetNbinsX())))
-        scaleDn_1d = copy.deepcopy(ROOT.TH1D(scaleDn_2d.ProjectionY('scaleDn_1d', 0, scaleDn_2d.GetNbinsX())))
+        pdfDn_1d   = copy.deepcopy(ROOT.TH1D(pdfDn_2d.ProjectionY('pdfDn_1d', 0, pdfDn_2d.GetNbinsX()+1)))
+        scaleDn_1d = copy.deepcopy(ROOT.TH1D(scaleDn_2d.ProjectionY('scaleDn_1d', 0, scaleDn_2d.GetNbinsX()+1)))
+
+        print('THEORY VARIATIONS: nominal integral', self.dataTruth_nom.Integral(), 'pdfup integral', pdfUp_1d.Integral(), 'pdfdn integral', pdfDn_1d.Integral(), 'scaleup integral', scaleUp_1d.Integral(), 'scaledn integral', scaleDn_1d.Integral())
 
         # Create target histograms and sum quadratically, no need of filling bin errors (unused)
         self.dataTruth_nom_up = copy.deepcopy(ROOT.TH1D(self.dataTruth_nom))
         self.dataTruth_nom_dn = copy.deepcopy(ROOT.TH1D(self.dataTruth_nom))
-        
+
         for ibin in range(1, self.dataTruth_nom.GetNbinsX()+1):
             deltaPdfUp= pdfUp_1d.GetBinContent(ibin)-self.dataTruth_nom.GetBinContent(ibin)
             deltaScaleUp = scaleUp_1d.GetBinContent(ibin)-self.dataTruth_nom.GetBinContent(ibin)
@@ -1247,7 +1249,6 @@ class Unfolder(object):
         #outputti.cd()
         #ROOT.gStyle.SetPadBorderMode(0)
         #ROOT.gPad.SetRightMargin(0.1)   
-        
         if 'nom' in key:
             self.response_nom.Scale(1./self.response_nom.Integral())
             self.response_nom.SetTitle('Response Matrix (powheg)')
