@@ -350,15 +350,48 @@ class Unfolder(object):
             c.IsA().Destructor(c)
 
 
-    def get_truth_theory_variations(self, datacardReader):
+    def get_truth_theory_variations(self, datacardReader, file_handle):
         '''
         Get the envelope of scale and pdf variations, separately
         All the other uncertainties are acquired later via datacardReader.getNormAndShapeSysts
         Maybe I should check that I am not double counting
         '''
+        
+        pdfUp_2d   = copy.deepcopy(ROOT.TH2D(file_handle.Get('x_prompt_altWZ_%s_pdfNormUp' % 'Pow')))
+        scaleUp_2d = copy.deepcopy(ROOT.TH2D(file_handle.Get('x_prompt_altWZ_%s_scaleNormUp' % 'Pow')))
+
+        pdfDn_2d   = copy.deepcopy(ROOT.TH2D(file_handle.Get('x_prompt_altWZ_%s_pdfNormDown' % 'Pow')))
+        scaleDn_2d = copy.deepcopy(ROOT.TH2D(file_handle.Get('x_prompt_altWZ_%s_scaleNormDown' % 'Pow')))
+
+        pdfUp_1d   = copy.deepcopy(ROOT.TH1D(pdfUp_2d.ProjectionY('pdfUp_1d', 0, pdfUp_2d.GetNbinsX())))
+        scaleUp_1d = copy.deepcopy(ROOT.TH1D(scaleUp_2d.ProjectionY('scaleUp_1d', 0, scaleUp_2d.GetNbinsX())))
+
+        pdfDn_1d   = copy.deepcopy(ROOT.TH1D(pdfDn_2d.ProjectionY('pdfDn_1d', 0, pdfDn_2d.GetNbinsX())))
+        scaleDn_1d = copy.deepcopy(ROOT.TH1D(scaleDn_2d.ProjectionY('scaleDn_1d', 0, scaleDn_2d.GetNbinsX())))
+
+        # Create target histograms and sum quadratically, no need of filling bin errors (unused)
+        self.dataTruth_nom_up = copy.deepcopy(ROOT.TH1D(self.dataTruth_nom))
+        self.dataTruth_nom_dn = copy.deepcopy(ROOT.TH1D(self.dataTruth_nom))
+        
+        for ibin in range(1, self.dataTruth_nom.GetNbinsX()+1):
+            deltaPdfUp= pdfUp_1d.GetBinContent(ibin)-self.dataTruth_nom.GetBinContent(ibin)
+            deltaScaleUp = scaleUp_1d.GetBinContent(ibin)-self.dataTruth_nom.GetBinContent(ibin)
+
+            deltaPdfDn= pdfDn_1d.GetBinContent(ibin)-self.dataTruth_nom.GetBinContent(ibin)
+            deltaScaleDn = scaleDn_1d.GetBinContent(ibin)-self.dataTruth_nom.GetBinContent(ibin)
+
+            varUp = ROOT.TMath.Sqrt(deltaPdfUp*deltaPdfUp + deltaScaleUp*deltaScaleUp)
+            varDn = ROOT.TMath.Sqrt(deltaPdfDn*deltaPdfDn + deltaScaleDn*deltaScaleDn)
+
+            self.dataTruth_nom_up.SetBinContent(ibin, self.dataTruth_nom.GetBinContent(ibin)+varUp)
+            self.dataTruth_nom_dn.SetBinContent(ibin, self.dataTruth_nom.GetBinContent(ibin)-varDn)
+
+        print('THEORY VARIATIONS: nominal integral', self.dataTruth_nom.Integral(), 'nomup integral', self.dataTruth_nom_up.Integral(), 'nomdn integral', self.dataTruth_nom_dn.Integral())
+        return
+
+        # Old (when they were encoded as lnN, in 2016)
         self.unsymNormSystsDn, self.unsymNormSystsUp = datacardReader.getUnsymNormSysts()
-        if self.debug:
-            print('HEY', self.unsymNormSystsDn, self.unsymNormSystsUp)
+        print('================================================================= HEY', self.unsymNormSystsDn, self.unsymNormSystsUp)
         self.dataTruth_nom_up = copy.deepcopy(ROOT.TH1D(self.dataTruth_nom))
         self.dataTruth_nom_dn = copy.deepcopy(ROOT.TH1D(self.dataTruth_nom))
         factorUp=0.0
@@ -366,14 +399,12 @@ class Unfolder(object):
         for [sysName, sysValue] in self.unsymNormSystsUp:
             sysValue=float(sysValue)
             if ('scaleNorm' in sysName) or ('pdfNorm' in sysName):
-                if self.debug:
-                    print('UP: adding ', sysValue*sysValue, 'to total unc because of ', sysName)
+                print('UP: adding ', sysValue*sysValue, 'to total unc because of ', sysName)
                 factorUp += sysValue*sysValue
         for [sysName, sysValue] in self.unsymNormSystsDn:
             sysValue=float(sysValue)
             if ('scaleNorm' in sysName) or ('pdfNorm' in sysName):
-                if self.debug:
-                    print('DN: adding ', sysValue*sysValue, 'to total unc because of ', sysName)
+                print('DN: adding ', sysValue*sysValue, 'to total unc because of ', sysName)
                 factorDn += sysValue*sysValue
 
         factorUp=ROOT.TMath.Sqrt(factorUp)
@@ -470,7 +501,7 @@ class Unfolder(object):
         datacardReader = DatacardReader(os.path.join(self.inputDir, 'responses/{year}_{finalState}_fitWZonly_{var}{charge}/prompt_altWZ_Pow/WZSR_{year}.card.txt'.format(year=self.year, finalState=self.finalState, var=self.var,charge=self.charge)), self.year, 'prompt_altWZ_Pow')
         self.normSystsList, self.shapeSystsList = datacardReader.getNormAndShapeSysts()
         # Get theory variations
-        self.get_truth_theory_variations(datacardReader)
+        self.get_truth_theory_variations(datacardReader, file_handle)
 
 
     def print_responses(self):
@@ -1310,6 +1341,14 @@ class Unfolder(object):
                 dt_inc.SetBinError(  ibin,dt_inc.GetBinError(ibin)  /dt_inc.GetBinWidth(ibin))
 
 
+        # Alphanumeric labels for Njet
+        if "Njet" in self.var:
+            dt.GetXaxis().SetBinLabel(1, "=0")
+            dt.GetXaxis().SetBinLabel(2, "=1")
+            dt.GetXaxis().SetBinLabel(3, "=2")
+            dt.GetXaxis().SetBinLabel(4, "=3")
+            dt.GetXaxis().SetBinLabel(5, "#geq 4")
+            
 
         dt.Scale(1./dt.Integral()) # Normalize to 1
         dt_nom_up.Scale(factorUp/dt_nom_up.Integral())
@@ -1326,6 +1365,9 @@ class Unfolder(object):
         if ('MWZ' in self.var) or ('Njets' in self.var) or ('pol' in self.var):
             ROOT.gPad.SetLogy()
             dt.SetMaximum(100*dt.GetMaximum())
+        if 'pol' in self.var:
+            dt.SetMinimum(0.01*dt.GetMinimum())
+
         ROOT.gPad.SetLogy()
         dt.SetMaximum(100*dt.GetMaximum())
         #dt.GetXaxis().SetTitleSize(0.045)
@@ -1359,6 +1401,7 @@ class Unfolder(object):
         hmu.Scale(1./hmu.Integral())
         hmu.SetFillStyle(2001)
         hmu.SetFillColor(ROOT.kAzure-9)
+        hmu.SetFillColorAlpha(ROOT.kAzure-9, 0.50);
         hmu.SetLineWidth(0)
         if not self.onlyMC:
             hmu.Draw('SAME E2')
@@ -1387,6 +1430,9 @@ class Unfolder(object):
         # Add theoretical uncertainties on the nominal prediction
         # HERE HERE HERE
         dterr=ROOT.TGraphAsymmErrors(dt)
+        dterr.SetName("dterr%s"%dterr.GetName())
+        dterrratio=ROOT.TGraphAsymmErrors(dt)
+        dterrratio.SetName("ratio_%s"%dterrratio.GetName())
         for ipoint in range(0, dterr.GetN()+1):
             print(dt.GetBinCenter(ipoint), dt.GetBinLowEdge(ipoint), dt.GetBinLowEdge(ipoint+1))
             dterr.SetPoint(ipoint, dt.GetBinCenter(ipoint), dt.GetBinContent(ipoint)) 
@@ -1398,6 +1444,11 @@ class Unfolder(object):
             #dterr.SetPointEYlow (ipoint, 0.94*dt.GetBinContent(ipoint))
             #print(dt.GetBinContent(ipoint), 0.94*dt.GetBinContent(ipoint), 1.06*dt.GetBinContent(ipoint))
             print(dt.GetBinContent(ipoint), dt_nom_up.GetBinContent(ipoint), dt_nom_dn.GetBinContent(ipoint))
+            dterrratio.SetPoint(ipoint, dt.GetBinCenter(ipoint), dt.GetBinContent(ipoint)/dt.GetBinContent(ipoint) if dt.GetBinContent(ipoint)!=0 else 0) 
+            dterrratio.SetPointEYhigh(ipoint, (dt_nom_up.GetBinContent(ipoint)-dt.GetBinContent(ipoint))/dt.GetBinContent(ipoint) if dt.GetBinContent(ipoint)!=0 else (dt_nom_up.GetBinContent(ipoint)-dt.GetBinContent(ipoint)))
+            dterrratio.SetPointEYlow (ipoint, (dt.GetBinContent(ipoint)-dt_nom_dn.GetBinContent(ipoint))/dt.GetBinContent(ipoint) if dt.GetBinContent(ipoint)!=0 else (dt.GetBinContent(ipoint)-dt_nom_dn.GetBinContent(ipoint)))
+            dterrratio.SetPointEXhigh(ipoint, dt.GetBinLowEdge(ipoint+1)-dt.GetBinCenter(ipoint))
+            dterrratio.SetPointEXlow(ipoint,  dt.GetBinCenter(ipoint)-dt.GetBinLowEdge(ipoint))
             
         for ipoint in range(0, dterr.GetN()):
             print(ipoint, dt.GetBinContent(ipoint), dterr.GetY()[ipoint], dterr.GetErrorYlow(ipoint), dterr.GetErrorYhigh(ipoint))
@@ -1405,6 +1456,9 @@ class Unfolder(object):
         dterr.SetLineColor(dt.GetLineColor())
         dterr.SetFillColor(dt.GetLineColor())
         dterr.SetFillStyle(3001)
+        dterrratio.SetLineColor(dt.GetLineColor())
+        dterrratio.SetFillColor(dt.GetLineColor())
+        dterrratio.SetFillStyle(3001)
         if not self.onlyMC:
             hus.Draw('SAME PE')
         dterr.Draw('2 SAME')
@@ -1628,7 +1682,7 @@ class Unfolder(object):
         p2.cd()
 
         # Reference is nominal POWHEG prediction, i.e. dt
-
+        enterTheMatrixratio=None
         # Ratio MATRIX to POWHEG
         if self.matrix:
             enterTheMatrixratio=copy.deepcopy(enterTheMatrix)
@@ -1641,17 +1695,19 @@ class Unfolder(object):
         dtratio=copy.deepcopy(dt)
         dtratio.SetName("ratio_%s"%dtratio.GetName())
         dtratio.Divide(dt)
-        dtratio.GetXaxis().SetTitleSize(0.06)
-        dtratio.GetYaxis().SetTitleSize(0.06)
-        dtratio.GetXaxis().SetLabelSize(0.05)
-        dtratio.GetYaxis().SetLabelSize(0.05)
+        dtratio.GetXaxis().SetTitleSize(0.1)
+        dtratio.GetYaxis().SetTitleSize(0.1)
+        dtratio.GetXaxis().SetLabelSize(0.08)
+        dtratio.GetYaxis().SetLabelSize(0.07)
         dtratio.GetXaxis().SetTitleOffset(1.1)
-        dtratio.GetYaxis().SetTitleOffset(1.6)
-        dtratio.GetYaxis().SetTitle("Relative ratio to POWHEG")
+        dtratio.GetYaxis().SetTitleOffset(0.6)
+        dtratio.GetYaxis().SetTitle("Ratio to POWHEG")
         dtratio.SetMinimum(0.5)
         dtratio.SetMaximum(1.5)
         dtratio.Draw("E HIST")
 
+        # Uncertainty in powheg
+        dterrratio.Draw("2 SAME")
 
         # Ratio Unfolded data to POWHEG:
         husratio=copy.deepcopy(hus)
@@ -1661,11 +1717,26 @@ class Unfolder(object):
             husratio.Draw("E2 SAME")
         
 
+        dtratio.SetMinimum(0.8*husratio.GetMinimum() if husratio.GetMaximum()<3. else 0.)
+        dtratio.SetMaximum(1.2*husratio.GetMaximum() if husratio.GetMaximum()<3. else 3.)
+
+
         # Ratio of whatever con error to POWHEG:
         hutratio=copy.deepcopy(hut)
         hutratio.SetName("ratio_%s"%hutratio.GetName())
         hutratio.Divide(dt)
         hutratio.Draw("E2 SAME")
+
+        # Ratio of the total uncertainty to POWHEG:
+        hmuratio=copy.deepcopy(hmu)
+        hmuratio.SetName("ratio_%s"%hmuratio.GetName())
+        hmuratio.Divide(dt)
+        if not self.onlyMC:
+            hmuratio.Draw('SAME E2')
+
+        dterrratio.Draw("2 SAME")
+
+        dtratio.Draw("E HIST SAME")
 
         # Ratio amcatnlo to POWHEG
         dt_altratio=copy.deepcopy(dt_alt)
@@ -1673,7 +1744,10 @@ class Unfolder(object):
         dt_altratio.Divide(dt)
         dt_altratio.Draw("SAME E HIST")
 
-        enterTheMatrixratio.Draw("SAME PE>")
+        # Replot to avoid it to be covered by bands
+        husratio.Draw("2 SAME")
+        if self.matrix:
+            enterTheMatrixratio.Draw("SAME PE>")
         if self.logx:
             ROOT.gPad.SetLogx()
 
@@ -1724,8 +1798,8 @@ def main(args):
         'MWZ'       : ['M(WZ) [GeV]'             , 'M_{WZ}'             ],
         'Wpt'       : ['p_{T}^{W} [GeV]'          , 'p_{T}^{W}'          ],
         'Njets'      : ['N_{jets}'                 , 'N_{jets}^{gen}'    ],
-        'Wpol'      : ['q#cdot cos(#theta_{W}^{Dn})'     , 'q#cdot cos(#theta_{W}^{Dn})' ],
-        'Zpol'      : ['cos(#theta_{Z}^{Dn})'     , 'cos(#theta_{Z}^{Dn})' ],
+        'Wpol'      : ['q cos(#theta_{W}^{Dn})'     , 'q cos(#theta_{W}^{Dn})' ],
+        'Zpol'      : ['cos(#theta_{Z}^{Dn})'     , 'cos( #theta_{Z}^{Dn})' ],
         
         }
     
