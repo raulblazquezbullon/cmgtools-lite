@@ -1625,10 +1625,13 @@ class Unfolder(object):
 
             # Convert to TGraphAsymErrors to then add the error bars
             enterTheMatrix=ROOT.TGraphAsymmErrors(mfb)
+            emr=ROOT.TGraphAsymmErrors(mfb)
+            emr.SetName("ratio_%s"%emr.GetName())
             mfbInt=mfb.Integral()
             for ipoint in range(0, enterTheMatrix.GetN()+1):
                 #print(mfb.GetBinCenter(ipoint), mfb.GetBinLowEdge(ipoint), mfb.GetBinLowEdge(ipoint+1), mfb.GetBinContent(ipoint), mfb.GetBinContent(ipoint)/mfbInt)
                 enterTheMatrix.SetPoint(ipoint, mfb.GetBinCenter(ipoint), mfb.GetBinContent(ipoint)/mfbInt) 
+                emr.SetPoint(ipoint, mfb.GetBinCenter(ipoint), mfb.GetBinContent(ipoint)/mfbInt/dt.GetBinContent(ipoint) if dt.GetBinContent(ipoint)!=0 else mfb.GetBinContent(ipoint)/mfbInt)
                 estatup = (mfbStatUp.GetBinContent(ipoint) - mfb.GetBinContent(ipoint))/mfbInt
                 estatdn = (mfbStatDn.GetBinContent(ipoint) - mfb.GetBinContent(ipoint))/mfbInt
                 esystup = (mfbSystUp.GetBinContent(ipoint) - mfb.GetBinContent(ipoint))/mfbInt
@@ -1644,6 +1647,11 @@ class Unfolder(object):
                 enterTheMatrix.SetPointEYlow (ipoint,edn)
                 enterTheMatrix.SetPointEXhigh(ipoint, 0.) # I don't want to crowd too much the plot
                 enterTheMatrix.SetPointEXlow(ipoint,  0.) # I don't want to crowd too much the plot
+                emr.SetPointEYhigh(ipoint,eup/dt.GetBinContent(ipoint) if dt.GetBinContent(ipoint) !=0 else eup)
+                emr.SetPointEYlow (ipoint,edn/dt.GetBinContent(ipoint) if dt.GetBinContent(ipoint) !=0 else edn
+)
+                emr.SetPointEXhigh(ipoint, 0.) # I don't want to crowd too much the plot
+                emr.SetPointEXlow(ipoint,  0.) # I don't want to crowd too much the plot
                 
             enterTheMatrix.SetMarkerStyle(ROOT.kFullFourTrianglesPlus)
             enterTheMatrix.SetMarkerSize(3)
@@ -1686,10 +1694,19 @@ class Unfolder(object):
         enterTheMatrixratio=None
         # Ratio MATRIX to POWHEG
         if self.matrix:
-            enterTheMatrixratio=copy.deepcopy(enterTheMatrix)
-            enterTheMatrixratio.SetName("ratio_%s"%enterTheMatrixratio.GetName())
-            enterTheMatrixratio.Draw("AI")
-            enterTheMatrixratio.Divide(enterTheMatrixratio.GetHistogram(), dt)
+            enterTheMatrixratio=copy.deepcopy(emr)
+            #emr=copy.deepcopy(enterTheMatrix)
+            #emr.SetName("ratio_%s"%emr.GetName())
+            #emr.Draw("AI")
+            #enterTheMatrixratio=emr.GetHistogram()
+            #enterTheMatrixratio.Divide(dt)
+            #print('BINS', enterTheMatrixratio.GetNbinsX(), dt.GetNbinsX(), emr.GetN())
+            enterTheMatrixratio.SetMarkerStyle(ROOT.kFullFourTrianglesPlus)
+            enterTheMatrixratio.SetMarkerSize(3)
+            enterTheMatrixratio.SetLineColor(ROOT.kMagenta)
+            enterTheMatrixratio.SetMarkerColor(ROOT.kMagenta)
+            for i in range(0, enterTheMatrixratio.GetN()):
+                print('ENTER THE FUCKING MATRIX RATIO:', enterTheMatrixratio.Eval(mfb.GetBinCenter(i)), enterTheMatrix.Eval(mfb.GetBinCenter(i)), dt.GetBinContent(i))
         
 
         # Ratio POWHEG to POWHEG (for visualization purposes)
