@@ -418,20 +418,21 @@ finalMVA_4l = lambda : FinalMVA_4L()
 #                                                   os.environ["CMSSW_BASE"]+"/src/CMGTools/TTHAnalysis/data/leptonMVA/ttw/TMVA_BDTG_TOP%s.weights.xml"),"2016",training="Ghent_MVA_2016", label="FriendTTW")
 
 from PhysicsTools.NanoAODTools.postprocessing.modules.btv.btagSFProducer import btagSFProducer
+from PhysicsTools.NanoAODTools.postprocessing.modules.btv.btagSFProducer_nojes import btagSFProducer_nojes
 
 
-btagSF2016_dj_allVars = lambda : btagSFProducer("Legacy2016",'deepjet',collName="JetSel_Recl",storeOutput=False,perJesComponents=True)
+btagSF2016_dj_allVars = lambda : btagSFProducer("Legacy2016",'deepjet',collName="JetSel_Recl",storeOutput=True,perJesComponents=False)
 btagSF2017_dj_allVars = lambda : btagSFProducer("2017",'deepjet',collName="JetSel_Recl",storeOutput=False,perJesComponents=True)
 btagSF2018_dj_allVars = lambda : btagSFProducer("2018",'deepjet',collName="JetSel_Recl",storeOutput=False,perJesComponents=True)
 
-btagSF2016_dj = lambda : btagSFProducer("Legacy2016",'deepjet',collName="JetSel_Recl",storeOutput=False)
-btagSF2017_dj = lambda : btagSFProducer("2017",'deepjet',collName="JetSel_Recl",storeOutput=False)
-btagSF2018_dj = lambda : btagSFProducer("2018",'deepjet',collName="JetSel_Recl",storeOutput=False)
+btagSF2016_dj = lambda : btagSFProducer_nojes("Legacy2016",'deepjet',verbose=2,collName="JetSel_Recl",storeOutput=False)
+btagSF2017_dj = lambda : btagSFProducer_nojes("2017",'deepjet',collName="JetSel_Recl",storeOutput=False)
+btagSF2018_dj = lambda : btagSFProducer_nojes("2018",'deepjet',collName="JetSel_Recl",storeOutput=False)
 
+from CMGTools.TTHAnalysis.tools.nanoAOD.BtagSFs_new import BtagSFs_new
 from CMGTools.TTHAnalysis.tools.nanoAOD.BtagSFs import BtagSFs
-bTagSFs = lambda : BtagSFs("JetSel_Recl",
+bTagSFs = lambda : BtagSFs_new("JetSel_Recl",
                            corrs = {"" : 1.},
-                           #corrs={  "AbsoluteScale": 1., "AbsoluteStat":0., "FlavorQCD":1.,"Fragmentation":1.,"PileUpDataMC":0.5,"PileUpPtBB":0.5,"PileUpPtEC1":0.5,"PileUpPtEC2":0.5,"PileUpPtHF":0.5,"PileUpPtRef":0.5,"RelativeFSR":0.5,"RelativeJEREC1":0., "RelativeJEREC2":0., "RelativeJERHF":0.5,"RelativePtBB":0.5,"RelativePtEC1":0.,"RelativePtEC2":0.,"RelativePtHF":0.5, "RelativeBal":0.5, "RelativeStatEC":0., "RelativeStatFSR":0., "RelativeStatHF":0.,"SinglePionECAL":1., "SinglePionHCAL": 1., "TimePtEta":0., "AbsoluteMPFBias": 1.} # relative sample not there 
                        )
 
 bTagSFs_allvars = lambda : BtagSFs("JetSel_Recl",
@@ -445,7 +446,7 @@ scaleFactorSequence_2016 = [btagSF2016_dj,bTagSFs]
 scaleFactorSequence_2017 = [btagSF2017_dj,bTagSFs] 
 scaleFactorSequence_2018 = [btagSF2018_dj,bTagSFs]
 
-scaleFactorSequence_allVars_2016 = [btagSF2016_dj_allVars,bTagSFs_allvars] 
+scaleFactorSequence_allVars_2016 = [btagSF2016_dj_allVars] 
 scaleFactorSequence_allVars_2017 = [btagSF2017_dj_allVars,bTagSFs_allvars] 
 scaleFactorSequence_allVars_2018 = [btagSF2018_dj_allVars,bTagSFs_allvars]
 

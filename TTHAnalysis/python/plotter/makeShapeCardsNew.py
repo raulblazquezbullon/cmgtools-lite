@@ -20,6 +20,7 @@ parser.add_option("--categorize-by-ranges", dest="categ_ranges", type="string", 
 parser.add_option("--regularize", dest="regularize", action="store_true", default=False, help="Regularize templates")
 parser.add_option("--threshold", dest="threshold", type=float, default=0.0, help="Minimum event yield to consider processes")
 parser.add_option("--filter", dest="filter", type="string", default=None, help="File with list of processes to be removed from the datacards")
+parser.add_option("--fakeName", dest="fakeName", type="string", default=None, help="Apply this name to fake histogram")
 (options, args) = parser.parse_args()
 options.weight = True
 options.final  = True
@@ -35,6 +36,7 @@ if binname[0] in "1234567890": raise RuntimeError("Bins should start with a lett
 outdir  = options.outdir+"/" if options.outdir else ""
 if not os.path.exists(outdir): os.mkdir(outdir)
 
+
 report={}
 if options.infile:
     infile = ROOT.TFile(outdir+binname+".bare.root","read")
@@ -49,6 +51,7 @@ else:
     else:
        report = mca.getPlotsRaw("x", args[2], args[3], cuts.allCuts(), nodata=options.asimov) 
     for p,h in report.iteritems(): h.cropNegativeBins(threshold=1e-5)
+
 
 if options.savefile:
     savefile = ROOT.TFile(outdir+binname+".bare.root","recreate")
@@ -71,6 +74,16 @@ if options.asimov:
     report['data_obs'] = HistoWithNuisances(tomerge)
 else:
     report['data_obs'] = report['data'].Clone("x_data_obs") 
+
+print(report)
+if options.fakeName:
+   report[options.fakeName] = report.pop("data_fakes")
+   
+   for p,h in report.iteritems(): 
+       if p == options.fakeName:
+          h.SetName("x_"+options.fakeName)
+print(report)
+
 
 if options.categ:
     allreports = dict()
@@ -127,14 +140,20 @@ for binname, report in allreports.iteritems():
     if b not in allyields: continue
     if allyields[b] <= options.threshold: continue
     procs.append(b); iproc[b] = i+1
+  print(procs)
+  if options.fakeName:
+     iproc[options.fakeName] = iproc[procs[-1]] +1
+     procs.append(options.fakeName); 
   #for p in procs: print "%-10s %10.4f" % (p, allyields[p])
-
+  
   systs = {}
   for name in nuisances:
     effshape = {}
     isShape = False
     for p in procs:
+        print(p)
         h = report[p]
+        
         n0 = h.Integral()
         if h.hasVariation(name):
             if isShape or h.isShapeVariation(name):
