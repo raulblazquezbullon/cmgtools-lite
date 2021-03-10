@@ -4,9 +4,9 @@ cut-change: LepGood_isLepTight_Recl\[iLepFO_Recl\[2\]\]: 1
 weight: fakeRateWeight_3l(fetchFR_i(LepGood_conePt[iLepFO_Recl[0]],LepGood_eta[iLepFO_Recl[0]],LepGood_pdgId[iLepFO_Recl[0]],year-2016), LepGood_isLepTight_Recl[iLepFO_Recl[0]], \
                           fetchFR_i(LepGood_conePt[iLepFO_Recl[1]],LepGood_eta[iLepFO_Recl[1]],LepGood_pdgId[iLepFO_Recl[1]],year-2016), LepGood_isLepTight_Recl[iLepFO_Recl[1]], \
                           fetchFR_i(LepGood_conePt[iLepFO_Recl[2]],LepGood_eta[iLepFO_Recl[2]],LepGood_pdgId[iLepFO_Recl[2]],year-2016), LepGood_isLepTight_Recl[iLepFO_Recl[2]] )
-load-histo: FR_mu_i00 : $DATA/fakerate_Ghent/fake_rate_data_2016.root : h_tight_mu  : 2016
-load-histo: FR_el_i00 : $DATA/fakerate_Ghent/fake_rate_data_2016.root : h_tight_e   : 2016
-load-histo: FR_mu_i01 : $DATA/fakerate_Ghent/fake_rate_data_2017.root : h_tight_mu  : 2017
-load-histo: FR_el_i01 : $DATA/fakerate_Ghent/fake_rate_data_2017.root : h_tight_e   : 2017
-load-histo: FR_mu_i02 : $DATA/fakerate_Ghent/fake_rate_data_2018.root : h_tight_mu  : 2018
-load-histo: FR_el_i02 : $DATA/fakerate_Ghent/fake_rate_data_2018.root : h_tight_e   : 2018
+load-histo: FR_mu_i00 : $DATA/fakerate_Ghent/fakeRateMaps_Luka/fakeRateMap_data_muon_2016_mT.root : fakeRate_muon_2016  : 2016
+load-histo: FR_el_i00 : $DATA/fakerate_Ghent/fakeRateMaps_Luka/fakeRateMap_data_electron_2016_mT.root : fakeRate_electron_2016   : 2016
+load-histo: FR_mu_i01 : $DATA/fakerate_Ghent/fakeRateMaps_Luka/fakeRateMap_data_muon_2017_mT.root : fakeRate_muon_2017  : 2017
+load-histo: FR_el_i01 : $DATA/fakerate_Ghent/fakeRateMaps_Luka/fakeRateMap_data_electron_2017_mT.root : fakeRate_electron_2017   : 2017
+load-histo: FR_mu_i02 : $DATA/fakerate_Ghent/fakeRateMaps_Luka/fakeRateMap_data_muon_2018_mT.root : fakeRate_muon_2018 : 2018
+load-histo: FR_el_i02 : $DATA/fakerate_Ghent/fakeRateMaps_Luka/fakeRateMap_data_electron_2018_mT.root : fakeRate_electron_2018   : 2018
