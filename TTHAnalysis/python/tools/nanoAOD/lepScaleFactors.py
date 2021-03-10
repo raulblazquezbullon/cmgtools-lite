@@ -1,6 +1,7 @@
 from PhysicsTools.NanoAODTools.postprocessing.framework.eventloop import Module
 from PhysicsTools.NanoAODTools.postprocessing.framework.datamodel import Collection 
 from copy import deepcopy
+import math
 import ROOT
 import os 
 
@@ -8,8 +9,8 @@ class lepScaleFactors(Module):
     def __init__(self):
         self.looseToTight  = {} 
         self.recoToLoose   = {} 
-        self.looseToTightUncertainties_eta = {}
-        self.looseToTightUncertainties_pt  = {} 
+        self.looseToTightUncertainties = {}
+        
 
         for fl in ['e','m']:
             for chan in ['2lss','3l']:
@@ -22,12 +23,12 @@ class lepScaleFactors(Module):
                     if fl=="e":
                        self.looseToTight['%s,%s,%s'%(year,fl,chan)] = self.loadHisto(os.environ['CMSSW_BASE'] + '/src/CMGTools/TTHAnalysis/data/leptonSF_ttW/%s/egammaEffi.txt_EGM2D.root'%(year), "EGamma_SF2D")
                        #eta is x axis pt is y axis
-                       self.looseToTightUncertainties_eta['%s,%s'%(year, fl)] = self.loadHisto(os.environ['CMSSW_BASE'] + '/src/CMGTools/TTHAnalysis/data/leptonSF_ttW/%s/egammaEffi.txt_EGM2D_unc.root'%(year), "SF_TotUnc_eta")
-                       self.looseToTightUncertainties_pt['%s,%s'%(year, fl)] = self.loadHisto(os.environ['CMSSW_BASE'] + '/src/CMGTools/TTHAnalysis/data/leptonSF_ttW/%s/egammaEffi.txt_EGM2D_unc.root'%(year), "SF_TotUnc_pt")
+                       self.looseToTightUncertainties['%s,%s'%(year, fl)] = self.loadErrorHisto(os.environ['CMSSW_BASE'] + '/src/CMGTools/TTHAnalysis/data/leptonSF_ttW/%s/egammaEffi.txt_EGM2D.root'%(year))
+                       
                     else:
-                       self.looseToTight['%s,%s,%s'%(year,fl,chan)] = self.loadHisto(os.environ['CMSSW_BASE'] + '/src/CMGTools/TTHAnalysis/data/leptonSF_ttW/%s/muonTOPLeptonMVATight%s.root'%(year,year), "SF")
-                       self.looseToTightUncertainties_eta['%s,%s'%(year, fl)] = self.loadHisto(os.environ['CMSSW_BASE'] + '/src/CMGTools/TTHAnalysis/data/leptonSF_ttW/%s/muonTOPLeptonMVATight%s.root'%(year,year), "SFTotUnc").ProjectionX()
-                       self.looseToTightUncertainties_pt['%s,%s'%(year, fl)] = self.loadHisto(os.environ['CMSSW_BASE'] + '/src/CMGTools/TTHAnalysis/data/leptonSF_ttW/%s/muonTOPLeptonMVATight%s.root'%(year,year), "SFTotUnc").ProjectionY()
+                       self.looseToTight['%s,%s,%s'%(year,fl,chan)] = self.loadHisto(os.environ['CMSSW_BASE'] + '/src/CMGTools/TTHAnalysis/data/leptonSF_ttW/%s/muonTOPLeptonMVAMedium040%s.root'%(year,year), "SF")
+                       self.looseToTightUncertainties['%s,%s'%(year, fl)] = self.loadHisto(os.environ['CMSSW_BASE'] + '/src/CMGTools/TTHAnalysis/data/leptonSF_ttW/%s/muonTOPLeptonMVAMedium040%s.root'%(year,year), "SFTotUnc")
+                      
                        
 
                     #self.recoToLoose['%s,%s'%(year, fl)] = self.loadHisto(os.environ['CMSSW_BASE'] + '/src/CMGTools/TTHAnalysis/data/leptonSF/TnP_loose_%s_%s.root'%(fl2, year), "EGamma_SF2D")
@@ -54,26 +55,29 @@ class lepScaleFactors(Module):
         tf.Close()
         return ret
    
-    def loadErrorHisto(self, fil, hist):
+    def loadErrorHisto(self, fil):
         tf = ROOT.TFile.Open(fil)
         if not tf: raise RuntimeError("No such file %s"%fil)
         hist_sys = tf.Get("sys")
         hist_stat = tf.Get("stat")
+       
         
-        if not hist_sys: raise RuntimeError("No such object %s  sys in %s"%(hist,fil))
-        if not hist_stat: raise RuntimeError("No such object %s stat in %s"%(hist,fil))
         hist_sys_c = deepcopy(hist_sys)
         hist_stat_c = deepcopy(hist_stat)
+        
+
         tf.Close()
-        if hist == "eta":
-           hist_sys_eta = hist_sys_c.ProjectionX()
-           hist_stat_eta = hist_stat_c.ProjectionX()
-           ret = 0
-        elif hist == "pt": 
-           hist_sys_pt = hist_pt_c.ProjectionY()
-           hist_stat_pt = hist_pt_c.ProjectionY()
-           ret =0 #hacer bin a bin
-        return ret
+        hist_tot = hist_sys_c.Clone()
+        hist_tot.Reset()
+        nbinpt =hist_tot.GetNbinsY()
+        nbineta =hist_tot.GetNbinsX()
+        for i in range(1,nbineta+1):
+            for j in range(1,nbinpt+1):
+                sys= hist_sys_c.GetBinContent(i,j)
+                stat= hist_stat_c.GetBinContent(i,j)
+                totalun = math.sqrt(sys*sys + stat*stat)
+                hist_tot.SetBinContent(i,j,totalun)
+        return hist_tot
     
     def beginFile(self, inputFile, outputFile, inputTree, wrappedOutputTree):
         self.out = wrappedOutputTree
@@ -99,14 +103,12 @@ class lepScaleFactors(Module):
         out = hist.GetBinContent(etabin,ptbin)
 
 
-        hist_ptunc  = self.looseToTightUncertainties_pt['%d,%s'%(year, 'e' if abs(lep.pdgId) == 11 else 'm')]
-        ptbin = max(1, min(hist_ptunc.GetNbinsX(), hist_ptunc.FindBin( lep.pt)))
-        err_pt = hist_ptunc.GetBinContent(ptbin) 
-        hist_etaunc = self.looseToTightUncertainties_eta['%d,%s'%(year, 'e' if abs(lep.pdgId) == 11 else 'm')]
-        etabin = max(1, min(hist_etaunc.GetNbinsX(), hist_etaunc.FindBin( abs(lep.eta))))
-        err_eta = hist_etaunc.GetBinContent(etabin) 
-
-        error = max(abs(err_pt-1), abs(err_eta-1))
+        hist_unc  = self.looseToTightUncertainties['%d,%s'%(year, 'e' if abs(lep.pdgId) == 11 else 'm')]
+        ptbin_e = max(1, min(hist_unc.GetNbinsY(), hist_unc.GetYaxis().FindBin( lep.pt)))
+        etabin_e = max(1, min(hist_unc.GetNbinsX(), hist_unc.GetXaxis().FindBin( abs(lep.eta))))
+        error = hist_unc.GetBinContent(etabin_e,ptbin_e) 
+        
+        
         if abs(lep.pdgId) == 13: 
             var = +1 if var_str == '_mu_loosetotight_up' else -1 if var_str == '_mu_loosetotight_dn' else 0
             out = out +var*error
