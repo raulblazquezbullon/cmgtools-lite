@@ -188,7 +188,7 @@ def calculateNormalisedValues(inpath, iY, iV):
 
 
 def PlotParticleFidLevelResults(thedict, inpath, iY, varName, notff):
-    nominal_withErrors = ep.propagateHistoAsym(thedict, doSym = vl.doSym)
+    nominal_withErrors = ep.propagateHisto(thedict, doSym = vl.doSym)
     plot               = bp.beautifulUnfPlot(varName + "_particlefid", varName)
     plot.doRatio       = True
     plot.doFit         = notff
@@ -335,7 +335,7 @@ def PlotParticleFidBinLevelResults(thedict, inpath, iY, varName, notff):
     for key in thedict: thedict[key].Write()
     savetfile2.Close(); del savetfile2
 
-    nominal_withErrors = ep.propagateHistoAsym(thedict, doSym = vl.doSym)
+    nominal_withErrors = ep.propagateHisto(thedict, doSym = vl.doSym)
     plot               = bp.beautifulUnfPlot(varName + "_particlefidbin", varName)
     plot.doRatio       = True
     plot.doFit         = notff
@@ -489,7 +489,7 @@ def PlotParticleBinLevelResults(thedict, inpath, iY, varName, notff):
     for key in thedict: thedict[key].Write()
     savetfile.Close()
 
-    nominal_withErrors = ep.propagateHistoAsym(thedict, doSym = vl.doSym)
+    nominal_withErrors = ep.propagateHisto(thedict, doSym = vl.doSym)
     plot               = bp.beautifulUnfPlot(varName + "_particlebin", varName)
     plot.doRatio       = True
     plot.doFit         = notff
