@@ -431,6 +431,7 @@ btagSF2018_dj = lambda : btagSFProducer_nojes("2018",'deepjet',collName="JetSel_
 
 from CMGTools.TTHAnalysis.tools.nanoAOD.BtagSFs_new import BtagSFs_new
 from CMGTools.TTHAnalysis.tools.nanoAOD.BtagSFs import BtagSFs
+from CMGTools.TTHAnalysis.tools.nanoAOD.btag_weighter  import btag_weighter 
 bTagSFs = lambda : BtagSFs_new("JetSel_Recl",
                            corrs = {"" : 1.},
                        )
@@ -445,6 +446,21 @@ leptonSFs = lambda : lepScaleFactors()
 scaleFactorSequence_2016 = [btagSF2016_dj,bTagSFs] 
 scaleFactorSequence_2017 = [btagSF2017_dj,bTagSFs] 
 scaleFactorSequence_2018 = [btagSF2018_dj,bTagSFs]
+
+btagSFpath = os.environ['CMSSW_BASE'] + "/src/PhysicsTools/NanoAODTools/data/btagSF/"
+btagEffpath =  os.environ['CMSSW_BASE'] + "/src/CMGTools/TTHAnalysis/data/btag/ttW/"
+
+btagWeights_2016 = lambda : btag_weighter(btagSFpath + "DeepJet_2016LegacySF_V1_YearCorrelation-V1.csv",  btagEffpath+"bTag_Eff_" , 'deepjet', year = 2016,SFmeasReg = "comb",
+                 minptlow = 20, minpthigh = 999., maxeta = 2.5,
+                 jecvars = "", lepenvars = "",correlations = True,
+                 debug = False)
+btagWeights_2017 = lambda : btag_weighter(btagSFpath + "DeepFlavour_94XSF_V3_B_F_comb_YearCorrelation-V1.csv",  btagEffpath+"bTag_Eff_" , 'deepjet', year = 2017,SFmeasReg = "comb",
+                 minptlow = 20, minpthigh = 999., maxeta = 2.5,
+                 jecvars = "", lepenvars = "",correlations = True)
+
+btagWeights_2018 = lambda : btag_weighter(btagSFpath + "DeepJet_102XSF_V1_YearCorrelation-V1.csv",  btagEffpath+"bTag_Eff_" , 'deepjet', year = 2018,SFmeasReg = "comb",
+                 minptlow = 20, minpthigh = 999., maxeta = 2.5,
+                 jecvars = "", lepenvars = "",correlations = True)
 
 scaleFactorSequence_allVars_2016 = [btagSF2016_dj_allVars] 
 scaleFactorSequence_allVars_2017 = [btagSF2017_dj_allVars,bTagSFs_allvars] 
