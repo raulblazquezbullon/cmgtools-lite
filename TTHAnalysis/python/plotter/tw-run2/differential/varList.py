@@ -1205,6 +1205,7 @@ UncsColourMap = {
     'nonworz_norm'        : r.kMagenta-4,
     'dy_norm'             : r.kMagenta,
 }
+UncsColourMap["colour"] = UncsColourMap["colour_rec"]
 
 ColorMapList = [
     r.TColor.GetColor("#a6cee3"),
@@ -1297,7 +1298,7 @@ SysNameTranslator = {
     'nonworz_norm'        : "Non-W/Z norm.",
     'dy_norm'             : "DY norm.",
 }
-
+SysNameTranslator["colour"] = SysNameTranslator["colour_rec"]
 
 # LaTeX puro (tablas)
 PrintSysNameTranslator = {
