@@ -37,9 +37,15 @@ python makeShapeCardsNew.py --tree NanoAOD wwbb-2018/mca-tw-wwbb.txt wwbb-2018/c
 
 
 
-# DETECTOR (Señal)
+# DETECTOR (Señal+fiducial)
 
 python makeShapeCardsNew.py --tree NanoAOD wwbb-2018/mca-tw-wwbb.txt wwbb-2018/cuts-differential/cuts-wwbb-detector-2j2t.txt "GenJet_pt[iDressSelJet[0]]" "[0,100]" -P /pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions/2020-09-20/2018 --Fs {P}/0_yeartag --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --od ./wwbb-2018/cards-differential/ --s2v -l 59.74  -f -L tw-run2/functions_tw.cc --neg --threshold 0.01 -W "MuonIDSF * MuonISOSF * ElecIDSF * ElecRECOSF * TrigSF * puWeight * bTagWeight * PrefireWeight" --year 2018  --amc --asimov s+b
+
+
+
+# DETECTOR (Señal)
+
+python makeShapeCardsNew.py --tree NanoAOD wwbb-2018/mca-tw-wwbb.txt wwbb-2018/cuts-differential/cuts-wwbb-signal-2j2t.txt "GenJet_pt[iDressSelJet[0]]" "[0,100]" -P /pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions/2020-09-20/2018 --Fs {P}/0_yeartag --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --od ./wwbb-2018/cards-differential/ --s2v -l 59.74  -f -L tw-run2/functions_tw.cc --neg --threshold 0.01 -W "MuonIDSF * MuonISOSF * ElecIDSF * ElecRECOSF * TrigSF * puWeight * bTagWeight * PrefireWeight" --year 2018  --amc --asimov s+b
 
 
 
