@@ -20,7 +20,7 @@ from yearlyStuff import *
 # This is needed for multiprocessing.Pool, and cannot be into the class (<type 'instancemethod'> is not pickable)
 def runner(cmd):
     print(cmd)
-    os.system(cmd)
+    #os.system(cmd)
     
 
 
@@ -64,7 +64,7 @@ class Steer:
             'JetClean25_pt[0]' : ['[25,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,210,230,250,270,290,400]','Reco p\_\{T\}(leading jet) [GeV]','LeadJetPt'],
             'm3Lmet' :  ['[100,140,160,180,200,250,300,400,600,1000,3000]','Reco M\_\{WZ\} [GeV]','MWZ'],
             'LepW_pt' : ['[25,30,35,40,50,60,70,80,90,100,110,120,130,140,160,180,200,250,300]','Reco p\_\{T\}(W) [GeV]','Wpt'],
-            'nJet25_Mini'   : ['[0,1,2,3,4,5]', 'Reco N\_\{jets\}', 'Njets'], 
+            'nJetClean25'   : ['[0,1,2,3,4,5]', 'Reco N\_\{jets\}', 'Njets'], 
             'cos_ThetaWDn_HE'   : ['[-1,-0.75,-0.5,-0.25,0.0,0.25,0.5,0.75,1.0]', 'cos(#theta_{W}^{Dn})', 'Wpol'],
             'cos_ThetaZDn_HE'   : ['[-1,-0.9,-0.8,-0.7,-0.6,-0.5,-0.4,-0.3,-0.2,-0.1,0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0]', 'cos(#theta_{Z}^{Dn})', 'Zpol'],
         }
@@ -72,20 +72,20 @@ class Steer:
             'sump4(0, genLepZ1_pt,genLepZ1_eta,genLepZ1_phi,genLepZ1_mass,genLepZ2_pt,genLepZ2_eta,genLepZ2_phi,genLepZ2_mass):sump4(0,LepZ1_pt,LepZ1_eta,LepZ1_phi,LepZ1_mass,LepZ2_pt,LepZ2_eta,LepZ2_phi,LepZ2_mass)' : ['[0,5,10,15,20,25,30,40,50,60,70,80,90,100,110,120,130,140,160,180,200,250,300]*[0,10,20,30,50,70,90,110,130,160,200,300]','Reco p\_\{T\}(Z) [GeV]','Gen p\_\{T\}(Z) [GeV]','Zpt'],
 
             # HIG 'sump4(0, genLepZ1_pt,genLepZ1_eta,genLepZ1_phi,genLepZ1_mass,genLepZ2_pt,genLepZ2_eta,genLepZ2_phi,genLepZ2_mass):sump4(0,LepZ1_pt,LepZ1_eta,LepZ1_phi,LepZ1_mass,LepZ2_pt,LepZ2_eta,LepZ2_phi,LepZ2_mass)' : ['[0,5,10,15,20,25,30,40,50,60,70,80,90,100,110,120,130,140,160,180,200,250,400,1000]*[0,75,150,250,400,1000]','Reco p\_\{T\}(Z) [GeV]','Gen p\_\{T\}(Z) [GeV]','Zpt'],
-            #'GenJet_pt[Jet_genJetIdx[iJSel_Mini[0]]]:JetClean25_pt[0]' : ['[25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100,105,110,115,120,125,130,135,140,145,150,155,160,165,170,175,180,185,190,200,210,220,230,240,250,260,270,280,290,300]*[25,35,45,55,65,75,85,95,105,115,125,135,145,155,165,175,185,200,220,240,260,280,300]','Reco p\_\{T\}(leading jet) [GeV]','Gen p\_\{T\}(leading jet) [GeV]','LeadJetPt'],
-            #'GenJet_pt[Jet_genJetIdx[iJSel_Mini[0]]]:JetClean25_pt[0]' : ['[25,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,220,240,260,280,300,350,400]*[25,50,70,90,110,130,150,170,190,220,260,300,400]','Reco p\_\{T\}(leading jet) [GeV]','Gen p\_\{T\}(leading jet) [GeV]','LeadJetPt'],
-            'GenJet_pt[Jet_genJetIdx[iJSel_Mini[0]]]:JetClean25_pt[0]' : ['[25,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,210,230,250,270,290,400]*[25,50,70,90,110,130,150,170,190,230,270,400]','Reco p\_\{T\}(leading jet) [GeV]','Gen p\_\{T\}(leading jet) [GeV]','LeadJetPt'],
+            #'GenJet_pt[JetClean25_genJetIdx[0]]:JetClean25_pt[0]' : ['[25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100,105,110,115,120,125,130,135,140,145,150,155,160,165,170,175,180,185,190,200,210,220,230,240,250,260,270,280,290,300]*[25,35,45,55,65,75,85,95,105,115,125,135,145,155,165,175,185,200,220,240,260,280,300]','Reco p\_\{T\}(leading jet) [GeV]','Gen p\_\{T\}(leading jet) [GeV]','LeadJetPt'],
+            #'GenJet_pt[JetClean25_genJetIdx[0]]:JetClean25_pt[0]' : ['[25,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,220,240,260,280,300,350,400]*[25,50,70,90,110,130,150,170,190,220,260,300,400]','Reco p\_\{T\}(leading jet) [GeV]','Gen p\_\{T\}(leading jet) [GeV]','LeadJetPt'],
+            'GenJet_pt[JetClean25_genJetIdx[0]]:JetClean25_pt[0]' : ['[25,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,210,230,250,270,290,400]*[25,50,70,90,110,130,150,170,190,230,270,400]','Reco p\_\{T\}(leading jet) [GeV]','Gen p\_\{T\}(leading jet) [GeV]','LeadJetPt'],
             'm3Lmet_gen:m3Lmet' : ['[100,140,160,180,200,250,300,400,600,1000,3000]*[100,160,200,300,600,3000]','Reco M\_\{WZ\} [GeV]','Gen M\_\{WZ\} [GeV]','MWZ'],
             'genLepW_pt:LepW_pt' : ['[25,30,35,40,50,60,70,80,90,100,110,120,130,140,160,180,200,250,300]*[25,35,50,70,90,110,130,160,200,300]','Reco p\_\{T\}(W) [GeV]','Gen p\_\{T\}(W) [GeV]','Wpt'],
 
             # HIG 'genLepW_pt:LepW_pt' : ['[25,30,35,40,50,60,70,80,90,100,110,120,130,140,160,180,200,250,400,1000]*[0,75,150,250,400,1000]','Reco p\_\{T\}(W) [GeV]','Gen p\_\{T\}(W) [GeV]','Wpt'],
 
 
-            'Sum\\$(GenJet_pt>25&&abs(GenJet_eta)<2.5&&deltaR(GenJet_eta,GenJet_phi,genLepZ1_eta,genLepZ1_phi)>0.5&&deltaR(GenJet_eta,GenJet_phi,genLepZ2_eta,genLepZ2_phi)>0.5&&deltaR(GenJet_eta,GenJet_phi,genLepW_eta,genLepW_phi)>0.5):nJet25_Mini'   : ['[0,1,2,3,4,5]*[0,1,2,3,4,5]', 'Reco N\_\{jets\}', 'Gen N\_\{jets\}', 'Njets'], # Not sure that genLepW is what we want
+            'Sum\\$(GenJet_pt>25&&abs(GenJet_eta)<2.5&&deltaR(GenJet_eta,GenJet_phi,genLepZ1_eta,genLepZ1_phi)>0.5&&deltaR(GenJet_eta,GenJet_phi,genLepZ2_eta,genLepZ2_phi)>0.5&&deltaR(GenJet_eta,GenJet_phi,genLepW_eta,genLepW_phi)>0.5):nJetClean25'   : ['[0,1,2,3,4,5]*[0,1,2,3,4]', 'Reco N\_\{jets\}', 'Gen N\_\{jets\}', 'Njets'], # Not sure that genLepW is what we want
             'cos_genThetaWDn_HE:cos_ThetaWDn_HE' : ['[-1,-0.75,-0.5,-0.25,0.0,0.25,0.5,0.75,1.0]*[-1,-0.5,0.0,0.5,1.0]','Reco cos(#theta_{W}^{Dn})','Gen cos(#theta_{W}^{Dn})', 'Wpol' ],
             'cos_genThetaZDn_HE:cos_ThetaZDn_HE' : ['[-1,-0.9,-0.8,-0.7,-0.6,-0.5,-0.4,-0.3,-0.2,-0.1,0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0]*[-1,-0.8,-0.6,-0.4,-0.2,0.0,0.2,0.4,0.6,0.8,1.0]','Reco cos(#theta_{Z}^{Dn})','Gen cos(#theta_{Z}^{Dn})', 'Zpol' ],
             # HE helicity frame, CS collins-soper
-            # Dn / Up --> CS lo mismo (se cancelan cosas y se resuelve analiticamente, para HE no (a nivel reco recosntruyes 4mom W, y te falta pz neutrino (dos soluciones)
+             # Dn / Up --> CS lo mismo (se cancelan cosas y se resuelve analiticamente, para HE no (a nivel reco recosntruyes 4mom W, y te falta pz neutrino (dos soluciones)
         }
 
     def prepareInputs(self):
@@ -272,13 +272,6 @@ class Steer:
         for charge in [ '_none', '_plus', '_minus' ]:
             for fs in [ 'incl', 'eee', 'eem', 'mme', 'mmm']:
                 if not base:
-                    # No bias, area constraint     
-                    ret.append('sbatch -p {queue} -c {nthreads} --wrap "python {executable} -i {outputdir} -y {year} {singlevar} -f {fs} --charge {charge}  -b 0 -a -o {year}/unfold_nobias/{fs}{charge}/data -c common/WZSR_{year}.input.root -r {thematrix} >& logs/{year}_nobias_{charge}_data_{fs}.log"'.format(queue=self.queue,outputdir=self.outputDir,year=self.year,singlevar=singlevar,executable=executable,fs=fs,nthreads=self.nthreads,charge=charge,thematrix=thematrix))
-                    ret.append('sbatch -p {queue} -c {nthreads} --wrap "python {executable} -i {outputdir} -y {year} {singlevar} -f {fs} --charge {charge}  -b 0 -a -o {year}/unfold_nobias/{fs}{charge}/mcclosure -c common/WZSR_{year}.input.root -r --closure {thematrix} >& logs/{year}_nobias_{charge}_mcclosure_{fs}.log"'.format(queue=self.queue,outputdir=self.outputDir,year=self.year,singlevar=singlevar,executable=executable,fs=fs,nthreads=self.nthreads,charge=charge,thematrix=thematrix))
-
-                    # No bias, no area constraint
-                    ret.append('sbatch -p {queue} -c {nthreads} --wrap "python {executable} -i {outputdir} -y {year} {singlevar} -f {fs} --charge {charge}  -b 0 -o {year}/unfold_nobias_noconstraintarea/{fs}{charge}/data -c common/WZSR_{year}.input.root -r {thematrix} >& logs/{year}_nobias_{charge}_noconstraintarea_data_{fs}.log"'.format(queue=self.queue,outputdir=self.outputDir,year=self.year,singlevar=singlevar,executable=executable,fs=fs,nthreads=self.nthreads,charge=charge,thematrix=thematrix))
-                    ret.append('sbatch -p {queue} -c {nthreads} --wrap "python {executable} -i {outputdir} -y {year} {singlevar} -f {fs} --charge {charge}  -b 0 -o {year}/unfold_nobias_noconstraintarea/{fs}{charge}/mcclosure -c common/WZSR_{year}.input.root -r --closure {thematrix} >& logs/{year}_nobias_{charge}_noconstraintarea_mcclosure_{fs}.log"'.format(queue=self.queue,outputdir=self.outputDir,year=self.year,singlevar=singlevar,executable=executable,fs=fs,nthreads=self.nthreads,charge=charge,thematrix=thematrix))
             
                     # Bias 1, area constraint
                     ret.append('sbatch -p {queue} -c {nthreads} --wrap "python {executable} -i {outputdir} -y {year} {singlevar} -f {fs} --charge {charge}  -b 1.0 -a -o {year}/unfold_1p0bias/{fs}{charge}/data -c common/WZSR_{year}.input.root -r {thematrix} >& logs/{year}_1p0bias_{charge}_data_{fs}.log"'.format(queue=self.queue,outputdir=self.outputDir,year=self.year,singlevar=singlevar,executable=executable,fs=fs,nthreads=self.nthreads,charge=charge,thematrix=thematrix))
@@ -293,10 +286,18 @@ class Steer:
                     ret.append('sbatch -p {queue} -c {nthreads} --wrap "python {executable} -i {outputdir} -y {year} {singlevar} -f {fs} --charge {charge}  -b 1.13 -o {year}/unfold_nnlobias_noconstraintarea/{fs}{charge}/mcclosure -c common/WZSR_{year}.input.root {thematrix} -r --closure >& logs/{year}_nnlobias_{charge}_noconstraintarea_mcclosure_{fs}.log"'.format(queue=self.queue,outputdir=self.outputDir,year=self.year,singlevar=singlevar,executable=executable,fs=fs,nthreads=self.nthreads,charge=charge,thematrix=thematrix))
 
                 else:
+                    # No bias, area constraint     
+                    ret.append('sbatch -p {queue} -c {nthreads} --wrap "python {executable} -i {outputdir} -y {year} {singlevar} -f {fs} --charge {charge}  -b 0 -a -o {year}/unfold_nobias/{fs}{charge}/data -c common/WZSR_{year}.input.root -r {thematrix} >& logs/{year}_nobias_{charge}_data_{fs}.log"'.format(queue=self.queue,outputdir=self.outputDir,year=self.year,singlevar=singlevar,executable=executable,fs=fs,nthreads=self.nthreads,charge=charge,thematrix=thematrix))
+                    ret.append('sbatch -p {queue} -c {nthreads} --wrap "python {executable} -i {outputdir} -y {year} {singlevar} -f {fs} --charge {charge}  -b 0 -a -o {year}/unfold_nobias/{fs}{charge}/mcclosure -c common/WZSR_{year}.input.root -r --closure {thematrix} >& logs/{year}_nobias_{charge}_mcclosure_{fs}.log"'.format(queue=self.queue,outputdir=self.outputDir,year=self.year,singlevar=singlevar,executable=executable,fs=fs,nthreads=self.nthreads,charge=charge,thematrix=thematrix))
+
+                    # No bias, no area constraint
+                    ret.append('sbatch -p {queue} -c {nthreads} --wrap "python {executable} -i {outputdir} -y {year} {singlevar} -f {fs} --charge {charge}  -b 0 -o {year}/unfold_nobias_noconstraintarea/{fs}{charge}/data -c common/WZSR_{year}.input.root -r {thematrix} >& logs/{year}_nobias_{charge}_noconstraintarea_data_{fs}.log"'.format(queue=self.queue,outputdir=self.outputDir,year=self.year,singlevar=singlevar,executable=executable,fs=fs,nthreads=self.nthreads,charge=charge,thematrix=thematrix))
+                    ret.append('sbatch -p {queue} -c {nthreads} --wrap "python {executable} -i {outputdir} -y {year} {singlevar} -f {fs} --charge {charge}  -b 0 -o {year}/unfold_nobias_noconstraintarea/{fs}{charge}/mcclosure -c common/WZSR_{year}.input.root -r --closure {thematrix} >& logs/{year}_nobias_{charge}_noconstraintarea_mcclosure_{fs}.log"'.format(queue=self.queue,outputdir=self.outputDir,year=self.year,singlevar=singlevar,executable=executable,fs=fs,nthreads=self.nthreads,charge=charge,thematrix=thematrix))
+
                     # Bias 1, area constraint
                     ret.append('sbatch -p {queue} -c {nthreads} --wrap "python {executable} -i {outputdir} -y {year} {singlevar} -f {fs} --charge {charge}  -b 1.0 -a -o {year}/unfold_1p0bias/{fs}{charge}/data -c common/WZSR_{year}.input.root -r {thematrix} >& logs/{year}_1p0bias_{charge}_data_{fs}.log"'.format(queue=self.queue,outputdir=self.outputDir,year=self.year,singlevar=singlevar,executable=executable,fs=fs,nthreads=self.nthreads,charge=charge,thematrix=thematrix))
                     ret.append('sbatch -p {queue} -c {nthreads} --wrap "python {executable} -i {outputdir} -y {year} {singlevar} -f {fs} --charge {charge}  -b 1.0 -a -o {year}/unfold_1p0bias/{fs}{charge}/mcclosure -c common/WZSR_{year}.input.root -r --closure {thematrix} >& logs/{year}_1p0bias_{charge}_mcclosure_{fs}.log"'.format(queue=self.queue,outputdir=self.outputDir,year=self.year,singlevar=singlevar,executable=executable,fs=fs,nthreads=self.nthreads,charge=charge,thematrix=thematrix))
-                
+                    
                     # Bias 1, no area constraint
                     ret.append('sbatch -p {queue} -c {nthreads} --wrap "python {executable} -i {outputdir} -y {year} {singlevar} -f {fs} --charge {charge}  -b 1.0 -o {year}/unfold_1p0bias_noconstraintarea/{fs}{charge}/data -c common/WZSR_{year}.input.root -r {thematrix} >& logs/{year}_1p0bias_{charge}_noconstraintarea_data_{fs}.log"'.format(queue=self.queue,outputdir=self.outputDir,year=self.year,singlevar=singlevar,executable=executable,fs=fs,nthreads=self.nthreads,charge=charge,thematrix=thematrix))
                     ret.append('sbatch -p {queue} -c {nthreads} --wrap "python {executable} -i {outputdir} -y {year} {singlevar} -f {fs} --charge {charge}  -b 1.0 -o {year}/unfold_1p0bias_noconstraintarea/{fs}{charge}/mcclosure -c common/WZSR_{year}.input.root -r --closure {thematrix} >& logs/{year}_1p0bias_{charge}_noconstraintarea_mcclosure_{fs}.log"'.format(queue=self.queue,outputdir=self.outputDir,year=self.year,singlevar=singlevar,executable=executable,fs=fs,nthreads=self.nthreads,charge=charge,thematrix=thematrix))
