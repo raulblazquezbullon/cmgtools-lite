@@ -98,7 +98,7 @@ def PlotDetectorLevelResults(inpath, iY, iV, thedict):
         thedict[key].Scale(scaleval)
 
     #### 1) Plot result plot
-    nominal_withErrors  = ep.propagateHistoAsym(thedict, doSym = vl.doSym)
+    nominal_withErrors  = ep.propagateHisto(thedict, doSym = vl.doSym)
 
     #for iB in range(1, nominal_withErrors[0].GetNbinsX() + 1):
         #print nominal_withErrors[0].GetBinContent(iB), nominal_withErrors[0].GetBinError(iB)

@@ -24,7 +24,6 @@ class DataContainer:
         self.folderpath       = folderpath_
         self.fileName         = self.folderpath + "/" + inputsfilename_
         self.fileNameResponse = self.folderpath + "/" + matricesfilename_
-        self.systListResp     = []
         self.listOfSysts      = []
         self.responseMatrices = {}
         self.unfoldingInputs  = {}
@@ -66,7 +65,6 @@ class DataContainer:
             elif 'R' + vl.varList[self.var]['var_response'] + '_' in key.GetName():
                 #sysName = '_'.join(key.GetName().split('_')[1:])
                 sysName = key.GetName().replace("R" + vl.varList[self.var]['var_response'] + '_', "")
-                self.systListResp.append(sysName)
                 self.responseMatrices[sysName] = deepcopy(key.ReadObj())
 
         # Getting background (events not passing the fiducial selection, but passing reco)
@@ -91,7 +89,7 @@ class DataContainer:
         if '' not in self.responseMatrices:
             raise RuntimeError("The nominal response matrix is not present in the provided rootfile.")
         
-        #if verbose: print "Printy thingy. listOfSysts:\n", self.listOfSysts, "\nsystListResp:\n", self.systListResp
+        #if verbose: print "Printy thingy. listOfSysts:\n", self.listOfSysts
 
 
         #print self.var, self.year
@@ -108,6 +106,98 @@ class DataContainer:
         #for key in self.bkgs:
             #print key
         #sys.exit()
+
+
+        if "fit" in self.fileName:
+            wr.warn("WARNING: a fit input has been added. Therefore, we will add in quadrature additional uncertainties per internalised ones to consider the effects on the response matrices, neglecting its possible correlations with the effects on the variables. This is not statistically correct.")
+
+            for iU,el in vl.ModifiedProfileSystsThatAreNotPresentAllYears.iteritems():
+                if self.year != "run2":
+                    if self.year not in el:
+                        continue
+
+                self.listOfSysts.append("resp_" + iU + "Up")
+                self.listOfSysts.append("resp_" + iU + "Down")
+                self.unfoldingInputs["resp_" + iU + "Up"]    = deepcopy(self.unfoldingInputs[""].Clone("data_resp_" + iU + "Up"))
+                self.unfoldingInputs["resp_" + iU + "Down"]  = deepcopy(self.unfoldingInputs[""].Clone("data_resp_" + iU + "Down"))
+                self.responseMatrices["resp_" + iU + "Up"]   = deepcopy(self.responseMatrices[iU + "Up"].Clone("resp_" + iU + "Up"))
+                self.responseMatrices["resp_" + iU + "Down"] = deepcopy(self.responseMatrices[iU + "Down"].Clone("resp_" + iU + "Down"))
+                self.covmatInput["resp_" + iU + "Up"]        = deepcopy(self.covmatInput[""].Clone("resp_" + iU + "Up"))
+                self.covmatInput["resp_" + iU + "Down"]      = deepcopy(self.covmatInput[""].Clone("resp_" + iU + "Down"))
+                self.bkgs["resp_" + iU + "Up"]               = deepcopy(self.bkgs[iU + "Up"].Clone("resp_" + iU + "Up"))
+                self.bkgs["resp_" + iU + "Down"]             = deepcopy(self.bkgs[iU + "Down"].Clone("resp_" + iU + "Down"))
+
+            #### NOTE: esto esta muy bien, pero no es del todo correcto, es una gochada, es mejor hacer un unf. cada vez con cada incertidumbre y sus fondos y luego sumar cuadraticamente.
+            #### A ver, gochada ser, ye igual, pero es menos gochada (polos fondos). Este codigo queda aqui pa por si acaso.
+            #histostosumUp = []; histostosumDown = []
+            #for iU in listofuncsthataffecttheproc:
+                #histostosumUp.append(deepcopy(self.responseMatrices[iU + "Up"].Clone(iU + "_responseUp")))
+                #histostosumDown.append(deepcopy(thenominal.Clone(iU + "_responseDown")))
+
+                #for iB in range(1, thenominal.GetNbinsX() + 1):
+                    #for jB in range(1, thenominal.GetNbinsY() + 1):
+                        #histostosumUp[-1].SetBinContent(histostosumUp[-1].GetBinContent(iB, jB) - thenominal.GetBinContent(iB, jB))
+                        #histostosumDown[-1].SetBinContent(histostosumDown[-1].GetBinContent(iB, jB) - self.responseMatrices[iU + "Down"].GetBinContent(iB, jB))
+                        #upval   = histostosumUp[-1].GetBinContent(iB, jB)
+                        #upunc   = histostosumUp[-1].GetBinError(  iB, jB)
+                        #downval = histostosumDown[-1].GetBinContent(iB, jB)
+                        #downunc = histostosumDown[-1].GetBinError(  iB, jB)
+                        #if upval < 0:
+                            #if downval + upval > 0:
+                                #histostosumUp[-1].SetBinContent(iB, jB, 0)
+                                #histostosumUp[-1].SetBinError(  iB, jB, 0)
+                            #elif downval < 0:
+                                #histostosumUp[-1].SetBinContent(  iB, jB, abs(downval))
+                                #histostosumUp[-1].SetBinError(    iB, jB, downunc)
+                                #histostosumDown[-1].SetBinContent(iB, jB, abs(upval))
+                                #histostosumDown[-1].SetBinError(  iB, jB, upunc)
+                            #else:
+                                #histostosumUp[-1].SetBinContent(  iB, jB, 0)
+                                #histostosumUp[-1].SetBinError(    iB, jB, 0)
+                                #histostosumDown[-1].SetBinContent(iB, jB, abs(upval))
+                                #histostosumDown[-1].SetBinError(  iB, jB, upunc)
+                        #elif downval < 0:
+                            #if downval + upval > 0:
+                                #histostosumDown[-1].SetBinContent(iB, jB, 0)
+                                #histostosumDown[-1].SetBinError(  iB, jB, 0)
+                            #elif upval < 0:
+                                #histostosumDown[-1].SetBinContent(iB, jB, abs(upval))
+                                #histostosumDown[-1].SetBinError(  iB, jB, upunc)
+                                #histostosumUp[-1].SetBinContent(  iB, jB, abs(downval))
+                                #histostosumUp[-1].SetBinError(    iB, jB, downunc)
+                            #else:
+                                #histostosumDown[-1].SetBinContent(iB, jB, 0)
+                                #histostosumDown[-1].SetBinError(  iB, jB, 0)
+                                #histostosumUp[-1].SetBinContent(  iB, jB, abs(downval))
+                                #histostosumUp[-1].SetBinError(    iB, jB, downunc)
+
+                #histostosumUp  [-1].Multiply(histostosumUp[-1])
+                #histostosumDown[-1].Multiply(histostosumDown[-1])
+
+            #uncup   = deepcopy(histostosumUp[0].Clone("fitresponseUp"))
+            #uncdown = deepcopy(histostosumDown[0].Clone("fitresponseDown"))
+            #for i in range(1, len(histostosumUp)):
+                #uncup.Add(histostosumUp[i])
+                #uncdown.Add(histostosumDown[i])
+
+            #for iB in range(1, thenominal.GetNbinsX() + 1):
+                #for jB in range(1, thenominal.GetNbinsY() + 1):
+                    #uncup.SetBinError(  iB, jB, 1/(2 * r.TMath.Sqrt(uncup.GetBinContent(iB, jB)))*uncup.GetBinError(iB, jB) )
+                    #uncup.SetBinContent(iB, jB, thenominal.GetBinContent(iB, jB) + r.TMath.Sqrt(uncup.GetBinContent(iB, jB)))
+                    #uncdown.SetBinError(  iB, jB, 1/(2 * r.TMath.Sqrt(uncdown.GetBinContent(iB, jB)))*uncdown.GetBinError(iB, jB) )
+                    #uncdown.SetBinContent(iB, jB, (thenominal.GetBinContent(iB, jB) - r.TMath.Sqrt(uncdown.GetBinContent(iB, jB))) if (thenominal.GetBinContent(iB, jB) - r.TMath.Sqrt(uncdown.GetBinContent(iB, jB))) >= 0 else 0 )
+
+            #self.responseMatrices["fitresponseUp"]   = deepcopy(uncup)
+            #self.responseMatrices["fitresponseDown"] = deepcopy(uncdown)
+            #self.listOfSysts.append("fitresponseUp")
+            #self.listOfSysts.append("fitresponseDown")
+            #self.unfoldingInputs["fitresponseUp"]   = deepcopy(self.unfoldingInputs[""].Clone("data_fitresponseUp"))
+            #self.unfoldingInputs["fitresponseDown"] = deepcopy(self.unfoldingInputs[""].Clone("data_fitresponseDown"))
+            #self.bkgs["fitresponseUp"]   = deepcopy(self.bkgs[""].Clone("fitresponseUp"))
+            #self.bkgs["fitresponseDown"] = deepcopy(self.bkgs[""].Clone("fitresponseDown"))
+            #self.covmatInput["fitresponseUp"]   = deepcopy(self.covmatInput[""].Clone("fitresponseUp"))
+            #self.covmatInput["fitresponseDown"] = deepcopy(self.covmatInput[""].Clone("fitresponseDown"))
+
         return
     
 
@@ -124,10 +214,11 @@ class DataContainer:
             return self.unfoldingInputs[nuis], self.responseMatrices[""], self.bkgs[""], retcovmat
         else:
             return self.unfoldingInputs[nuis], self.responseMatrices[nuis], self.bkgs[nuis], retcovmat
+            #return self.unfoldingInputs[nuis], self.responseMatrices[""], self.bkgs[nuis], retcovmat
 
 
     def getResponse(self, nuis):
-        if nuis not in self.systListResp:
+        if nuis not in self.responseMatrices:
             RuntimeError("%s is not in the list of varied response matrices nor in the blacklist of systs. w/o associated response matrices."%nuis)
         return self.responseMatrices[nuis]
 
@@ -362,7 +453,6 @@ class Unfolder():
         self.folderpath       = folderpath_
         self.year             = year
         self.Data             = DataContainer(var, self.folderpath, inputsfilename_, matricesfilename_, year)
-        self.systListResp     = self.Data.systListResp
         self.sysList          = self.Data.listOfSysts
         self.helpers          = { nuis : UnfolderHelper(self.var, nuis, self.year) for nuis in self.sysList }
         self.helpers['']      = UnfolderHelper(self.var, '', self.year)
@@ -675,8 +765,8 @@ class Unfolder():
             savetfile.Close()
         
 
-        if not self.wearedoingasimov: nominal_withErrors = ep.propagateHistoAsym(allHistos, vl.doSym)
-        else:                         nominal_withErrors = ep.propagateHistoAsym(allHistos, vl.doSym)
+        if not self.wearedoingasimov: nominal_withErrors = ep.propagateHisto(allHistos, vl.doSym)
+        else:                         nominal_withErrors = ep.propagateHisto(allHistos, vl.doSym)
         plot                 = bp.beautifulUnfPlot(self.var + "_asimov"  if self.wearedoingasimov else self.var, self.var)
         plot.doRatio         = True
         plot.doFit           = self.usingFitInput

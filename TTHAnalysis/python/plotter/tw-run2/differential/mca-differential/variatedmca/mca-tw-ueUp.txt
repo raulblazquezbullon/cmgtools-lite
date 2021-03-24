@@ -1,0 +1,25 @@
+### Nominal samples
+
+incl_2016_tw      : + ; years="2016",IncludeMca="tw-run2/mca-tw-includes/mca-2016-tw.txt"
+ttbar : Tree_TTTo2L2Nu_TuneCP5up_PSweights_1 + Tree_TTTo2L2Nu_TuneCP5up_PSweights_10 + Tree_TTTo2L2Nu_TuneCP5up_PSweights_11 + Tree_TTTo2L2Nu_TuneCP5up_PSweights_12 + Tree_TTTo2L2Nu_TuneCP5up_PSweights_13 + Tree_TTTo2L2Nu_TuneCP5up_PSweights_14 + Tree_TTTo2L2Nu_TuneCP5up_PSweights_15 + Tree_TTTo2L2Nu_TuneCP5up_PSweights_16 + Tree_TTTo2L2Nu_TuneCP5up_PSweights_17 + Tree_TTTo2L2Nu_TuneCP5up_PSweights_2 + Tree_TTTo2L2Nu_TuneCP5up_PSweights_3 + Tree_TTTo2L2Nu_TuneCP5up_PSweights_4 + Tree_TTTo2L2Nu_TuneCP5up_PSweights_5 + Tree_TTTo2L2Nu_TuneCP5up_PSweights_6 + Tree_TTTo2L2Nu_TuneCP5up_PSweights_7 + Tree_TTTo2L2Nu_TuneCP5up_PSweights_8 + Tree_TTTo2L2Nu_TuneCP5up_PSweights_9 + Tree_TTTo2L2Nu_TuneCP5up_PSweights_ext1_0 + Tree_TTTo2L2Nu_TuneCP5up_PSweights_ext1_1 + Tree_TTTo2L2Nu_TuneCP5up_PSweights_ext1_2 + Tree_TTTo2L2Nu_TuneCP5up_PSweights_ext1_3 + Tree_TTTo2L2Nu_TuneCP5up_PSweights_ext1_4 + Tree_TTTo2L2Nu_TuneCP5up_PSweights_ext1_5 + Tree_TTTo2L2Nu_TuneCP5up_PSweights_ext1_6 + Tree_TTTo2L2Nu_TuneCP5up_PSweights_ext1_7 + Tree_TTTo2L2Nu_TuneCP5up_PSweights_ext1_8 : 88.28769753; years="2016",genSumWeightName="genEventSumw_"
+
+incl_2016_dy      : + ; years="2016",IncludeMca="tw-run2/mca-tw-includes/mca-2016-dy.txt"
+incl_2016_vvttv   : + ; years="2016",IncludeMca="tw-run2/mca-tw-includes/mca-2016-vvttv.txt"
+incl_2016_nonworz : + ; years="2016",IncludeMca="tw-run2/mca-tw-includes/mca-2016-nonworz.txt"
+incl_2016_data    : + ; years="2016",IncludeMca="tw-run2/mca-tw-includes/mca-2016-data.txt"
+
+incl_2017_tw      : + ; years="2017",IncludeMca="tw-run2/mca-tw-includes/mca-2017-tw.txt"
+ttbar : Tree_TTTo2L2Nu_TuneCP5up_PSweights_0 + Tree_TTTo2L2Nu_TuneCP5up_PSweights_1 + Tree_TTTo2L2Nu_TuneCP5up_PSweights_ext1_0 + Tree_TTTo2L2Nu_TuneCP5up_PSweights_ext1_1 + Tree_TTTo2L2Nu_TuneCP5up_PSweights_ext1_2 + Tree_TTTo2L2Nu_TuneCP5up_PSweights_ext1_3 + Tree_TTTo2L2Nu_TuneCP5up_PSweights_ext1_4 + Tree_TTTo2L2Nu_TuneCP5up_PSweights_ext1_5 + Tree_TTTo2L2Nu_TuneCP5up_PSweights_ext1_6 + Tree_TTTo2L2Nu_TuneCP5up_PSweights_ext1_7 + Tree_TTTo2L2Nu_TuneCP5up_PSweights_ext1_8 : 88.28769753; years="2017",genSumWeightName="genEventSumw_"
+
+incl_2017_dy      : + ; years="2017",IncludeMca="tw-run2/mca-tw-includes/mca-2017-dy.txt"
+incl_2017_vvttv   : + ; years="2017",IncludeMca="tw-run2/mca-tw-includes/mca-2017-vvttv.txt"
+incl_2017_nonworz : + ; years="2017",IncludeMca="tw-run2/mca-tw-includes/mca-2017-nonworz.txt"
+incl_2017_data    : + ; years="2017",IncludeMca="tw-run2/mca-tw-includes/mca-2017-data.txt"
+
+incl_2018_tw      : + ; years="2018",IncludeMca="tw-run2/mca-tw-includes/mca-2018-tw.txt"
+ttbar : Tree_TTTo2L2Nu_TuneCP5up_0 + Tree_TTTo2L2Nu_TuneCP5up_1 + Tree_TTTo2L2Nu_TuneCP5up_2 + Tree_TTTo2L2Nu_TuneCP5up_3 + Tree_TTTo2L2Nu_TuneCP5up_4 + Tree_TTTo2L2Nu_TuneCP5up_5 + Tree_TTTo2L2Nu_TuneCP5up_ext1_0 + Tree_TTTo2L2Nu_TuneCP5up_ext1_1 + Tree_TTTo2L2Nu_TuneCP5up_ext1_2 + Tree_TTTo2L2Nu_TuneCP5up_ext1_3 + Tree_TTTo2L2Nu_TuneCP5up_ext1_4 + Tree_TTTo2L2Nu_TuneCP5up_ext1_5 + Tree_TTTo2L2Nu_TuneCP5up_ext1_6 + Tree_TTTo2L2Nu_TuneCP5up_ext1_7 : 88.28769753; years="2018",genSumWeightName="genEventSumw_"
+
+incl_2018_dy      : + ; years="2018",IncludeMca="tw-run2/mca-tw-includes/mca-2018-dy.txt"
+incl_2018_vvttv   : + ; years="2018",IncludeMca="tw-run2/mca-tw-includes/mca-2018-vvttv.txt"
+incl_2018_nonworz : + ; years="2018",IncludeMca="tw-run2/mca-tw-includes/mca-2018-nonworz.txt"
+incl_2018_data    : + ; years="2018",IncludeMca="tw-run2/mca-tw-includes/mca-2018-data.txt"

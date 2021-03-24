@@ -123,7 +123,8 @@ def CardsCommand(prod, year, var, isAsimov, nthreads, outpath, region, noUnc, us
                                asimovornot = "--asimov s+b" if isAsimov else "",
                                mcafile   = mcafile_,
                                cutsfile  = cutsfile_,
-                               uncs      = "" if region == "particle" else "--unc tw-run2/uncs-tw.txt --amc" if not noUnc else "--amc",
+                               #uncs      = "" if region == "particle" else "--unc tw-run2/uncs-tw.txt --amc" if not noUnc else "--amc",
+                               uncs      = "" if region == "particle" else "--unc tw-run2/differential/uncs-tw-modified.txt --amc" if not noUnc else "--amc",
                                name      = name_,
                                weights   = weights_,
                                extra     = extra)
@@ -164,7 +165,8 @@ if __name__=="__main__":
     doPureReg = args.doPureReg
 
     theregs  = ["detector", "particle", "detectorparticleResponse", "detectorparticlebutdetector",
-                "detectorparticle", "nonfiducial", "forExtr", "controlReg"]
+                "detectorparticle", "nonfiducial"]#, "forExtr", "controlReg"]
+                #"detectorparticle", "nonfiducial", "forExtr", "controlReg"]
     thevars  = vl.varList["Names"]["Variables"]
     theyears = ["2016", "2017", "2018", "run2"]
     tasks    = []

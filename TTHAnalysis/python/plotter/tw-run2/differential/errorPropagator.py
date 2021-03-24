@@ -90,32 +90,7 @@ def propagateQuantity(nom, varDict, case = 0):
     return math.sqrt(tot)
 
 
-def propagateHisto( nom, varDict, doEnv = False ):
-    out = nom.Clone(nom.GetName() + '_unc')
-    
-    if doEnv:
-        for bin in range(1, out.GetNbinsX() + 1):
-            err     = out.GetBinError(bin)          # <== Fit unc. taken here
-            cont    = out.GetBinContent(bin)
-            tmpDict = dict([ (key, histo.GetBinContent(bin)) for (key, histo) in varDict.iteritems()])
-            tmpunc  = 0.
-            for (key, histo) in varDict.iteritems():
-                if key in vl.varList['Names']['colorSysts']:
-                    if tmpunc < GetMaxUnc(cont, tmpDict[key], tmpDict[key]):
-                        tmpunc = GetMaxUnc(cont, tmpDict[key], tmpDict[key])
-                    del tmpDict[key]
-            out.SetBinError(bin, quadSum([propagateQuantity(cont, tmpDict), err, math.sqrt(tmpunc)]))
-    else:
-        for bin in range(1, out.GetNbinsX() + 1):
-            err     = out.GetBinError(bin)          # <== Fit unc. taken here
-            cont    = out.GetBinContent(bin)
-            tmpDict = dict([ (key, histo.GetBinContent(bin)) for (key, histo) in varDict.iteritems()])
-            out.SetBinError( bin, quadSum([propagateQuantity(cont, tmpDict), err]))
-    return out
-
-
-def propagateHistoAsym(varDict, doSym = False):
-    ### Introducimos la simetrizacion aqui porque en la otra no esta todo lo nuevo.
+def propagateHisto(varDict, doSym = False):
     outUp   = deepcopy(varDict[""].Clone(varDict[""].GetName() + 'uncUp'))
     outDown = deepcopy(varDict[""].Clone(varDict[""].GetName() + 'uncDown'))
 
@@ -124,12 +99,29 @@ def propagateHistoAsym(varDict, doSym = False):
         cont    = outUp.GetBinContent(bin)
         tmpDict = dict([(key, histo.GetBinContent(bin)) for (key, histo) in varDict.iteritems() if key != ""])
 
+        envelopesUp = []; envelopesDown = []
+        for iU in vl.UncertaintiesToEnvelope:
+            tmpuncUp    = 0.
+            tmpuncDown  = 0.
+            for key,histo in varDict.iteritems():
+                if (iU + "_") in key:
+                    tmpunc  = tmpDict[key] - cont
+                    if tmpunc > tmpuncUp:
+                        tmpuncUp    = tmpunc
+                    elif tmpunc < tmpuncDown:
+                        tmpuncDown  = tmpunc
+                    del tmpDict[key]
+            envelopesUp.append(tmpuncUp)
+            envelopesDown.append(tmpuncDown)
+
         if doSym:
-            totsymunc = quadSum([propagateQuantity(cont, tmpDict, 0), err])
+            envelopes = [vl.mean([envelopesUp[i], abs(envelopesDown[i])]) for i in range(len(envelopesUp)) ]
+            totsymunc = quadSum([propagateQuantity(cont, tmpDict, 0), err] + envelopes)
             outUp.SetBinError(bin, totsymunc); outDown.SetBinError(bin, totsymunc)
         else:
-            outUp.SetBinError(  bin, quadSum([propagateQuantity(cont, tmpDict, +1), err]))
-            outDown.SetBinError(bin, quadSum([propagateQuantity(cont, tmpDict, -1), err]))
+            outUp.SetBinError(  bin, quadSum([propagateQuantity(cont, tmpDict, +1), err] + envelopesUp))
+            outDown.SetBinError(bin, quadSum([propagateQuantity(cont, tmpDict, -1), err] + envelopesDown))
+
         #print "bin", bin, "inc", totsymunc, varDict[""].GetBinContent(bin), varDict["jesUp"].GetBinContent(bin) - varDict[""].GetBinContent(bin), varDict["jesDown"].GetBinContent(bin) - varDict[""].GetBinContent(bin)
     return [outUp, outDown]
 
@@ -162,29 +154,89 @@ def maximumHisto(histo1, histo2):
 
 
 def getUncList(varDict, doFit = True, doSym = False):
-    if doFit:    medDict = [('Fit',         varDict[""])]
-    else:        medDict = [('Statistical', varDict[""])]
+    tmpDict = deepcopy(varDict)
+    medList = [("Fit" if doFit else "Statistical", tmpDict[""])]
+    outList = []
 
-    outDict = []
+    #histUp  = [[] for i in range(nom.GetNbinsX())]
+    #histDown= [[] for i in range(nom.GetNbinsX())]
+    #for var in tmpDict:
+        #if var == 'asimov': continue
+        #hist    = nom.Clone(nom.GetName() + var)
+        #variat  = 0.
+        #for bin in range(1, nom.GetNbinsX() + 1):
+            #variat = nom.GetBinContent(bin) - tmpDict[var].GetBinContent(bin)
+            ##if 'fsr' in var or 'FSR' in var or 'isr' in var or 'ISR' in var: variat/(2**(1/2))
+            #if doEnv and var in vl.varList['Names']['colorSysts']:
+                #if (variat >= 0):
+                    #if abs(variat) >= nom.GetBinContent(bin): histDown[bin - 1].append(nom.GetBinContent(bin))
+                    #else:                                     histDown[bin - 1].append(abs(variat))
+                #else: histUp[bin - 1].append(abs(variat))
+            #else:
+                #if abs(variat) >= nom.GetBinContent(bin): hist.SetBinError(bin, nom.GetBinContent(bin))
+                #else:                                     hist.SetBinError(bin, abs(variat))
+        #if not doEnv or var not in vl.varList['Names']['colorSysts']:
+            #medList.append( (var,hist) )
+
+    #if doEnv:
+        #finalhistUp     = nom.Clone(nom.GetName() + 'ColorRUp')
+        #finalhistDown   = nom.Clone(nom.GetName() + 'ColorRDown')
+        #for bin in range(1, nom.GetNbinsX() + 1):
+            #finalhistUp.SetBinError(bin, max(histUp[bin - 1] + [0]))
+            #finalhistDown.SetBinError(bin, max(histDown[bin - 1] + [0]))
+        #medList.append(('ColorRUp', finalhistUp))
+        #medList.append(('ColorRDown', finalhistDown))
 
     if not doSym:
-        for var in varDict:
+        if len(vl.UncertaintiesToEnvelope):
+            for iUE in vl.UncertaintiesToEnvelope:
+                histUp   = deepcopy(tmpDict[""].Clone(tmpDict[""].GetName() + iUE + "Up"))
+                histDown = deepcopy(tmpDict[""].Clone(tmpDict[""].GetName() + iUE + "Down"))
+                init = False
+                for var in varDict:
+                    if iUE in var:
+                        for iB in range(1, tmpDict[var].GetNbinsX() + 1):
+                            if not init:
+                                histUp.SetBinError(iB, 0)
+                                histDown.SetBinError(iB, 0)
+                            tmpunc  = tmpDict[var].GetBinError(iB) - tmpDict[""].GetBinError(iB)
+                            if tmpunc > histUp.GetBinError(iB):
+                                histUp.SetBinError(iB, tmpunc)
+                            elif abs(tmpunc) > histDown.GetBinError(iB):
+                                if abs(tmpunc) > histDown.GetBinContent(iB):
+                                    histDown.SetBinError(iB, histDown.GetBinContent(iB))
+                                else:
+                                    histDown.SetBinError(iB, abs(tmpunc))
+
+                        if not init: init = True
+                        del tmpDict[var]
+
+                if not init:
+                    raise RuntimeError("FATAL: an envelope for the " + iUE + " unc. was required, but not a single uncertainty source compatible with such scaffold was found.")
+
+                medList.append( (iUE + "Up", deepcopy(histUp)) )
+                medList.append( (iUE + "Down", deepcopy(histDown)) )
+
+
+        for var in tmpDict:
             if var == '': continue
-            hist    = deepcopy(varDict[""].Clone(varDict[""].GetName() + var))
-            variat  = 0.
-            for bin in range(1, varDict[""].GetNbinsX() + 1):
-                variat = varDict[""].GetBinContent(bin) - varDict[var].GetBinContent(bin)
+            hist   = deepcopy(tmpDict[""].Clone(tmpDict[""].GetName() + var))
 
-                if abs(variat) >= varDict[""].GetBinContent(bin): hist.SetBinError(bin, varDict[""].GetBinContent(bin))
-                else:                                             hist.SetBinError(bin, abs(variat))
+            for bin in range(1, tmpDict[""].GetNbinsX() + 1):
+                variat = tmpDict[""].GetBinContent(bin) - tmpDict[var].GetBinContent(bin)
 
-            medDict.append( (var, hist) )
+                if abs(variat) >= tmpDict[""].GetBinContent(bin) and "Down" in var:
+                    hist.SetBinError(bin, tmpDict[""].GetBinContent(bin))
+                else:
+                    hist.SetBinError(bin, abs(variat))
 
-        medDict.sort(key = lambda x : MeanUncertaintyHisto(x[1]), reverse = True)
-        #medDict.sort(key = lambda x : maxRelativeError(x[1]), reverse = True)
-        #medDict.sort(key = lambda x : relativeErrorHist(x[1]).GetBinContent(1), reverse = True)
+            medList.append( (var, hist) )
 
-        #for el in medDict:
+        medList.sort(key = lambda x : MeanUncertaintyHisto(x[1]), reverse = True)
+        #medList.sort(key = lambda x : maxRelativeError(x[1]), reverse = True)
+        #medList.sort(key = lambda x : relativeErrorHist(x[1]).GetBinContent(1), reverse = True)
+
+        #for el in medList:
             #print el
 
         #sys.exit()
@@ -192,47 +244,80 @@ def getUncList(varDict, doFit = True, doSym = False):
         #### NOTE: this does not support one sided variations, except from statistical ones: ALL SYST. VARS.
         #          SHOULD HAVE UP AND DOWN VARIATIONS!
 
-        for key in medDict:
+        for key in medList:
             done = False
-            for el in outDict:
+            for el in outList:
                 if key[0].replace('Up', '').replace('Down', '') == el[0]:
                     done = True
             if done: continue
 
             if 'Down' in key[0]:
-                for key2 in medDict:
+                for key2 in medList:
                     if key2[0] == key[0].replace('Down','Up'):
                         hist = maximumHisto(key[1], key2[1])
-                        outDict.append( (key[0].replace('Down',''), hist) )
+                        outList.append( (key[0].replace('Down',''), hist) )
                         break
             elif 'Up' in key[0]:
-                for key2 in medDict:
+                for key2 in medList:
                     if key2[0] == key[0].replace('Up','Down'):
                         hist = maximumHisto(key[1], key2[1])
-                        outDict.append( (key[0].replace('Up', ''), hist) )
+                        outList.append( (key[0].replace('Up', ''), hist) )
             else: # We expect only the fit unc. or statistical uncertainty to arrive here
-                outDict.append( (key[0].replace('_',''), key[1]) )
+                outList.append( (key[0].replace('_',''), key[1]) )
 
     else: #### Symmetric uncertainties
-        for var in varDict:
-            if "Up" in var:
-                hist    = deepcopy(varDict[""].Clone(varDict[""].GetName() + var.replace("Up", "")))
-                variat  = 0.
-                for bin in range(1, varDict[""].GetNbinsX() + 1):
-                    variat = math.sqrt(GetSymUnc(varDict[""].GetBinContent(bin), varDict[var].GetBinContent(bin), varDict[var.replace("Up", "Down")].GetBinContent(bin)))
+        if len(vl.UncertaintiesToEnvelope):
+            for iUE in vl.UncertaintiesToEnvelope:
+                histUp   = deepcopy(tmpDict[""].Clone(tmpDict[""].GetName() + iUE))
+                histDown = deepcopy(tmpDict[""].Clone(tmpDict[""].GetName() + iUE + "Down"))
+                init = False
+                for var in varDict:
+                    print var
+                    if iUE in var:
+                        for iB in range(1, tmpDict[var].GetNbinsX() + 1):
+                            if not init:
+                                histUp.SetBinError(iB, 0)
+                                histDown.SetBinError(iB, 0)
+                            tmpunc  = tmpDict[var].GetBinError(iB) - tmpDict[""].GetBinError(iB)
+                            if tmpunc > histUp.GetBinError(iB):
+                                histUp.SetBinError(iB, tmpunc)
+                            elif abs(tmpunc) > histDown.GetBinError(iB):
+                                histDown.SetBinError(iB, abs(tmpunc))
 
-                    if abs(variat) >= varDict[""].GetBinContent(bin): hist.SetBinError(bin, varDict[""].GetBinContent(bin))
+                        if not init: init = True
+                        del tmpDict[var]
+
+                if not init:
+                    raise RuntimeError("FATAL: an envelope for the " + iUE + " unc. was required, but not a single uncertainty source compatible with such scaffold was found.")
+
+                for iB in range(1, tmpDict[var].GetNbinsX() + 1):
+                    theaverage = vl.mean([histUp.GetBinError(iB), histDown.GetBinError(iB)])
+                    histUp.SetBinError(iB, theaverage if theaverage < histUp.GetBinContent(iB) else histUp.GetBinContent(iB))
+
+                medList.append( (iUE, deepcopy(histUp)) )
+
+        for var in tmpDict:
+            if "Up" in var:
+                hist    = deepcopy(tmpDict[""].Clone(tmpDict[""].GetName() + var.replace("Up", "")))
+                variat  = 0.
+                for bin in range(1, tmpDict[""].GetNbinsX() + 1):
+                    if var.replace("Up", "Down") in tmpDict:
+                        variat = math.sqrt(GetSymUnc(tmpDict[""].GetBinContent(bin), tmpDict[var].GetBinContent(bin), tmpDict[var.replace("Up", "Down")].GetBinContent(bin)))
+                    else:
+                        raise RuntimeError("FATAL: unexpectedly, a one-sided uncertainty that is not the nominal one has been found, " + var + ", after calculating all the applicable envelopes.")
+
+                    if abs(variat) >= tmpDict[""].GetBinContent(bin): hist.SetBinError(bin, tmpDict[""].GetBinContent(bin))
                     else:                                             hist.SetBinError(bin, abs(variat))
 
                     #print var, hist.GetBinContent(bin), hist.GetBinError(bin)
 
-                medDict.append( (var.replace("Up", ""), hist) )
+                medList.append( (var.replace("Up", ""), hist) )
 
-        medDict.sort(key = lambda x : MeanUncertaintyHisto(x[1]), reverse = True)
-        #medDict.sort(key = lambda x : maxRelativeError(x[1]), reverse = True)
-        #medDict.sort(key = lambda x : relativeErrorHist(x[1]).GetBinContent(1), reverse = True)
+        medList.sort(key = lambda x : MeanUncertaintyHisto(x[1]), reverse = True)
+        #medList.sort(key = lambda x : maxRelativeError(x[1]), reverse = True)
+        #medList.sort(key = lambda x : relativeErrorHist(x[1]).GetBinContent(1), reverse = True)
 
-        #for el in medDict:
+        #for el in medList:
             #print el
 
         #sys.exit()
@@ -240,30 +325,30 @@ def getUncList(varDict, doFit = True, doSym = False):
         #### NOTE: this does not support one sided variations, except from statistical ones: ALL SYST. VARS.
         #          SHOULD HAVE UP AND DOWN VARIATIONS!
 
-        #for key in medDict:
+        #for key in medList:
             #done = False
-            #for el in outDict:
+            #for el in outList:
                 #if key[0].replace('Up', '').replace('Down', '') == el[0]:
                     #done = True
             #if done: continue
 
             #if 'Down' in key[0]:
-                #for key2 in medDict:
+                #for key2 in medList:
                     #if key2[0] == key[0].replace('Down','Up'):
                         #hist = maximumHisto(key[1], key2[1])
-                        #outDict.append( (key[0].replace('Down',''), hist) )
+                        #outList.append( (key[0].replace('Down',''), hist) )
                         #break
             #elif 'Up' in key[0]:
-                #for key2 in medDict:
+                #for key2 in medList:
                     #if key2[0] == key[0].replace('Up','Down'):
                         #hist = maximumHisto(key[1], key2[1])
-                        #outDict.append( (key[0].replace('Up', ''), hist) )
+                        #outList.append( (key[0].replace('Up', ''), hist) )
             #else: # We expect only the fit unc. or statistical uncertainty to arrive here
-                #outDict.append( (key[0].replace('_',''), key[1]) )
+                #outList.append( (key[0].replace('_',''), key[1]) )
 
-        outDict = medDict
+        outList = medList
 
-    return map( lambda x : (x[0], relativeErrorHist(x[1])), outDict)
+    return map( lambda x : (x[0], relativeErrorHist(x[1])), outList)
 
 
 def SetTheStatsUncs(histo):
@@ -407,11 +492,11 @@ def drawTheRelUncPlot(listWithHistos, thedict, thePlot, yaxismax = "auto", doSym
             uncList[iS][1].SetLineStyle( 4 )
         else:
             #uncList[iS][1].SetLineColor( vl.ColorMapList[iS] )
-            uncList[iS][1].SetLineColor( vl.UncsColourMap[uncList[iS][0].lower()] )
+            uncList[iS][1].SetLineColor( vl.UncsColourMap[uncList[iS][0].lower().replace("resp_", "")] )
             uncList[iS][1].SetLineWidth( 2 )
 
         uncList[iS][1].SetFillColorAlpha(r.kBlue, 0.)
-        thePlot.addHisto(uncList[iS][1], 'H,same', vl.SysNameTranslator[uncList[iS][0].lower()], 'L')
+        thePlot.addHisto(uncList[iS][1], 'H,same', vl.SysNameTranslator[uncList[iS][0].lower().replace("resp_", "")] + (" (resp.)" if "resp" in uncList[iS][0].lower() else ""), 'L')
         #thePlot.addHisto(uncList[iS][1], 'H,same', uncList[iS][0], 'L')
         plottedsysts += 1
 
