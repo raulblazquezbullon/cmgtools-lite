@@ -154,7 +154,8 @@ def doTinyCmsPrelim(textLeft="_default_",textRight="_default_",hasExpo=False,tex
     textLeft = textLeft.replace("%(lumi)",lumitext)
     textRight = textRight.replace("%(lumi)",lumitext)
     if textLeft not in ['', None]:
-        doSpam(textLeft, (.28 if hasExpo else 0.07 if doWide else .16)+xoffs, .955, .60+xoffs, .995, align=12, textSize=textSize)
+        #doSpam(textLeft, (.28 if hasExpo else 0.07 if doWide else .16)+xoffs, .955, .60+xoffs, .995, align=12, textSize=textSize)
+        doSpam(textLeft, (.28 if hasExpo else 0.16 if doWide else .16)+xoffs, .855, .60+xoffs, .895, align=12, textSize=textSize)
     if textRight not in ['', None]:
         doSpam(textRight,(0.5 if doWide else .58)+xoffs, .955, .98+xoffs, .995, align=32, textSize=textSize)
 
@@ -441,10 +442,10 @@ def doRatioHists(pspec,pmap,total,maxRange,fixRange=False,fitRatio=None,errorsOn
     if (rmax > 2 and rmax <= 2.4): rmax = 2.4
     unity.SetMarkerStyle(1);
     unity.SetMarkerColor(ROOT.kBlue-7);
-    unityErr.SetFillStyle(1001);
-    unityErr.SetFillColor(ROOT.kCyan);
-    unityErr.SetMarkerStyle(1);
-    unityErr.SetMarkerColor(ROOT.kCyan);
+    unityErr.SetFillStyle(3244);
+    unityErr.SetFillColor(ROOT.kGray+2);
+    unityErr.SetMarkerStyle(0);
+    #unityErr.SetMarkerColor(ROOT.kCyan);
     unityErr0.SetFillStyle(1001);
     unityErr0.SetFillColor(ROOT.kBlue-7);
     unityErr0.SetMarkerStyle(1);
@@ -458,12 +459,12 @@ def doRatioHists(pspec,pmap,total,maxRange,fixRange=False,fitRatio=None,errorsOn
         fitTGraph(ratio,order=fitRatio)
         unityErr.SetFillStyle(3013);
         unityErr0.SetFillStyle(3013);
-        if errorsOnRef:
-            unityErr0.Draw("E2 SAME");
-    else:
-        if errorsOnRef:
-            unityErr0.Draw("E2 SAME");
-    unity.Draw("AXIS SAME");
+#        if errorsOnRef:
+#            unityErr0.Draw("E2 SAME");
+#    else:
+#        if errorsOnRef:
+#            unityErr0.Draw("E2 SAME");
+    #unity.Draw("AXIS SAME");
     rmin = float(pspec.getOption("RMin",rmin))
     rmax = float(pspec.getOption("RMax",rmax))
     unity.GetYaxis().SetRangeUser(rmin,rmax);
@@ -476,7 +477,8 @@ def doRatioHists(pspec,pmap,total,maxRange,fixRange=False,fitRatio=None,errorsOn
     unity.GetYaxis().SetNdivisions(yndiv)
     unity.GetYaxis().SetTitleFont(42)
     unity.GetYaxis().SetTitleSize(0.14)
-    offset = 0.32 if doWide else 0.62
+    #offset = 0.32 if doWide else 0.62
+    offset = 0.41 if doWide else 0.62 ###
     unity.GetYaxis().SetTitleOffset(offset)
     unity.GetYaxis().SetLabelFont(42)
     unity.GetYaxis().SetLabelSize(0.11)
@@ -486,7 +488,8 @@ def doRatioHists(pspec,pmap,total,maxRange,fixRange=False,fitRatio=None,errorsOn
     total.GetXaxis().SetLabelOffset(999) ## send them away
     total.GetXaxis().SetTitleOffset(999) ## in outer space
     total.GetYaxis().SetTitleSize(0.06)
-    total.GetYaxis().SetTitleOffset(0.75 if doWide else 1.48)
+    #total.GetYaxis().SetTitleOffset(0.75 if doWide else 1.48)
+    total.GetYaxis().SetTitleOffset(1.25 if doWide else 1.48) ###
     total.GetYaxis().SetLabelSize(0.05)
     total.GetYaxis().SetLabelOffset(0.007)
     binlabels = pspec.getOption("xBinLabels","")
@@ -505,7 +508,7 @@ def doRatioHists(pspec,pmap,total,maxRange,fixRange=False,fitRatio=None,errorsOn
     line = ROOT.TLine(unity.GetXaxis().GetXmin(),1,unity.GetXaxis().GetXmax(),1)
     line.SetLineWidth(2);
     line.SetLineColor(58);
-    line.Draw("L")
+    #line.Draw("L")
     for ratio in ratios:
         ratio.Draw("E SAME" if ratio.ClassName() != "TGraphAsymmErrors" else "PZ SAME");
     leg0 = ROOT.TLegend(0.12 if doWide else 0.2, 0.84, 0.25 if doWide else 0.45, 0.94)
@@ -866,7 +869,7 @@ class PlotMaker:
 
                 # define aspect ratio
                 doWide = True if self._options.wideplot or pspec.getOption("Wide",False) else False
-                plotformat = (1200,600) if doWide else (600,600)
+                plotformat = (750,600) if doWide else (600,600)
                 sf = 20./plotformat[0]
                 ROOT.gStyle.SetPadLeftMargin(600.*0.18/plotformat[0])
 
@@ -892,14 +895,14 @@ class PlotMaker:
                 if not makeCanvas and not self._options.printPlots: return
                 doRatio = self._options.showRatio and ('data' in pmap or (plotmode != "stack")) and ("TH2" not in total.ClassName())
                 islog = pspec.hasOption('Logy'); 
-                if doRatio: ROOT.gStyle.SetPaperSize(20.,sf*(plotformat[1]+150))
-                else:       ROOT.gStyle.SetPaperSize(20.,sf*plotformat[1])
+                if doRatio: ROOT.gStyle.SetPaperSize(20.,sf*(plotformat[1]+150)) ####
+                else:       ROOT.gStyle.SetPaperSize(20.,sf*plotformat[1])   ####
                 # create canvas
                 height = plotformat[1]+150 if doRatio else plotformat[1]
                 c1 = ROOT.TCanvas(outputName+"_canvas", outputName, plotformat[0], height)
                 c1.SetTopMargin(c1.GetTopMargin()*options.topSpamSize);
                 topsize = 0.12*600./height if doRatio else 0.06*600./height
-                if self._options.doOfficialCMS: c1.SetTopMargin(topsize*1.2 if doWide else topsize)
+                if self._options.doOfficialCMS: c1.SetTopMargin(topsize*1.2 if doWide else topsize) ####
                 c1.Draw()
                 p1, p2 = c1, None # high and low panes
                 # set borders, if necessary create subpads
@@ -913,12 +916,17 @@ class PlotMaker:
                     p2.SetTopMargin(0 if options.attachRatioPanel else 0.06);
                     p2.SetBottomMargin(0.3);
                     p2.SetFillStyle(0);
+                    #p2.Update()
                     p2.Draw();
+                    #p2.cd();  ###
                     p1.cd();
                 else:
                     c1.SetWindowSize(plotformat[0] + (plotformat[0] - c1.GetWw()), plotformat[1] + (plotformat[1] - c1.GetWh()));
                 p1.SetLogy(islog)
                 p1.SetLogz(True if pspec.hasOption('Logz') else False)
+                p2.SetGridy(True) ####Grid lines
+                p2.SetGridx(True) ###
+                c1.Modified()
                 if pspec.hasOption('Logx'):
                     p1.SetLogx(True)
                     if p2: p2.SetLogx(True)
