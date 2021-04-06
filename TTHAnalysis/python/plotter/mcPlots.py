@@ -141,7 +141,9 @@ def doSpam(text,x1,y1,x2,y2,align=12,fill=False,textSize=0.033,_noDelete={}):
     return cmsprel
 
 def doTinyCmsPrelim(textLeft="_default_",textRight="_default_",hasExpo=False,textSize=0.033,lumi=None, xoffs=0, options=None, doWide=False):
-    if textLeft  == "_default_": textLeft  = options.lspam
+    if textLeft  == "_default_": 
+        textLeft  = options.lspam
+        textLeftPosition = options.lspamPosition
     if textRight == "_default_": textRight = options.rspam
     if lumi      == None       : lumi      = sum(map(float, options.lumi.split(',')))
     if   lumi > 3.54e+1: lumitext = "%.0f fb^{-1}" % lumi
@@ -154,8 +156,8 @@ def doTinyCmsPrelim(textLeft="_default_",textRight="_default_",hasExpo=False,tex
     textLeft = textLeft.replace("%(lumi)",lumitext)
     textRight = textRight.replace("%(lumi)",lumitext)
     if textLeft not in ['', None]:
-        #doSpam(textLeft, (.28 if hasExpo else 0.07 if doWide else .16)+xoffs, .955, .60+xoffs, .995, align=12, textSize=textSize)
-        doSpam(textLeft, (.28 if hasExpo else 0.16 if doWide else .16)+xoffs, .855, .60+xoffs, .895, align=12, textSize=textSize)
+        doSpam(textLeft, (.28 if hasExpo else 0.07 if doWide else textLeftPosition[0])+xoffs, textLeftPosition[0], textLeftPosition[0]+xoffs, textLeftPosition[0], align=12, textSize=textSize)
+          
     if textRight not in ['', None]:
         doSpam(textRight,(0.5 if doWide else .58)+xoffs, .955, .98+xoffs, .995, align=32, textSize=textSize)
 
@@ -442,13 +444,13 @@ def doRatioHists(pspec,pmap,total,maxRange,fixRange=False,fitRatio=None,errorsOn
     if (rmax > 2 and rmax <= 2.4): rmax = 2.4
     unity.SetMarkerStyle(1);
     unity.SetMarkerColor(ROOT.kBlue-7);
-    unityErr.SetFillStyle(3244);
-    unityErr.SetFillColor(ROOT.kGray+2);
-    unityErr.SetMarkerStyle(0);
-    #unityErr.SetMarkerColor(ROOT.kCyan);
-    unityErr0.SetFillStyle(1001);
+    unityErr.SetFillStyle(options.TotalUncRatioStyle[0]);
+    unityErr.SetFillColor(ROOT.kCyan);
+    unityErr.SetMarkerStyle(options.TotalUncRatioStyle[1]);
+    unityErr.SetMarkerColor(ROOT.kCyan);
+    unityErr0.SetFillStyle(options.StatUncRatioStyle[0]);
     unityErr0.SetFillColor(ROOT.kBlue-7);
-    unityErr0.SetMarkerStyle(1);
+    unityErr0.SetMarkerStyle(options.StatUncRatioStyle[1]);
     unityErr0.SetMarkerColor(ROOT.kBlue-7);
     ROOT.gStyle.SetErrorX(0.5);
     unity.Draw("AXIS");
@@ -459,12 +461,12 @@ def doRatioHists(pspec,pmap,total,maxRange,fixRange=False,fitRatio=None,errorsOn
         fitTGraph(ratio,order=fitRatio)
         unityErr.SetFillStyle(3013);
         unityErr0.SetFillStyle(3013);
-#        if errorsOnRef:
-#            unityErr0.Draw("E2 SAME");
-#    else:
-#        if errorsOnRef:
-#            unityErr0.Draw("E2 SAME");
-    #unity.Draw("AXIS SAME");
+        if errorsOnRef and not options.noStatUncOnRatio:
+            unityErr0.Draw("E2 SAME");
+    else:
+        if errorsOnRef and not options.noStatUncOnRatio:
+            unityErr0.Draw("E2 SAME");
+    unity.Draw("AXIS SAME");
     rmin = float(pspec.getOption("RMin",rmin))
     rmax = float(pspec.getOption("RMax",rmax))
     unity.GetYaxis().SetRangeUser(rmin,rmax);
@@ -477,8 +479,7 @@ def doRatioHists(pspec,pmap,total,maxRange,fixRange=False,fitRatio=None,errorsOn
     unity.GetYaxis().SetNdivisions(yndiv)
     unity.GetYaxis().SetTitleFont(42)
     unity.GetYaxis().SetTitleSize(0.14)
-    #offset = 0.32 if doWide else 0.62
-    offset = 0.41 if doWide else 0.62 ###
+    offset = 0.32 if doWide else options.YTitleOffset[0]
     unity.GetYaxis().SetTitleOffset(offset)
     unity.GetYaxis().SetLabelFont(42)
     unity.GetYaxis().SetLabelSize(0.11)
@@ -488,8 +489,7 @@ def doRatioHists(pspec,pmap,total,maxRange,fixRange=False,fitRatio=None,errorsOn
     total.GetXaxis().SetLabelOffset(999) ## send them away
     total.GetXaxis().SetTitleOffset(999) ## in outer space
     total.GetYaxis().SetTitleSize(0.06)
-    #total.GetYaxis().SetTitleOffset(0.75 if doWide else 1.48)
-    total.GetYaxis().SetTitleOffset(1.25 if doWide else 1.48) ###
+    total.GetYaxis().SetTitleOffset(0.75 if doWide else options.YTitleOffset[1])
     total.GetYaxis().SetLabelSize(0.05)
     total.GetYaxis().SetLabelOffset(0.007)
     binlabels = pspec.getOption("xBinLabels","")
@@ -508,7 +508,8 @@ def doRatioHists(pspec,pmap,total,maxRange,fixRange=False,fitRatio=None,errorsOn
     line = ROOT.TLine(unity.GetXaxis().GetXmin(),1,unity.GetXaxis().GetXmax(),1)
     line.SetLineWidth(2);
     line.SetLineColor(58);
-    #line.Draw("L")
+    if not options.NotDrawRatioLine:
+        line.Draw("L")
     for ratio in ratios:
         ratio.Draw("E SAME" if ratio.ClassName() != "TGraphAsymmErrors" else "PZ SAME");
     leg0 = ROOT.TLegend(0.12 if doWide else 0.2, 0.84, 0.25 if doWide else 0.45, 0.94)
@@ -869,7 +870,7 @@ class PlotMaker:
 
                 # define aspect ratio
                 doWide = True if self._options.wideplot or pspec.getOption("Wide",False) else False
-                plotformat = (750,600) if doWide else (600,600)
+                plotformat = (1200,600) if doWide else (options.CanvasSize[0],options.CanvasSize[1])
                 sf = 20./plotformat[0]
                 ROOT.gStyle.SetPadLeftMargin(600.*0.18/plotformat[0])
 
@@ -895,14 +896,14 @@ class PlotMaker:
                 if not makeCanvas and not self._options.printPlots: return
                 doRatio = self._options.showRatio and ('data' in pmap or (plotmode != "stack")) and ("TH2" not in total.ClassName())
                 islog = pspec.hasOption('Logy'); 
-                if doRatio: ROOT.gStyle.SetPaperSize(20.,sf*(plotformat[1]+150)) ####
-                else:       ROOT.gStyle.SetPaperSize(20.,sf*plotformat[1])   ####
+                if doRatio: ROOT.gStyle.SetPaperSize(20.,sf*(plotformat[1]+150))
+                else:       ROOT.gStyle.SetPaperSize(20.,sf*plotformat[1])
                 # create canvas
                 height = plotformat[1]+150 if doRatio else plotformat[1]
                 c1 = ROOT.TCanvas(outputName+"_canvas", outputName, plotformat[0], height)
                 c1.SetTopMargin(c1.GetTopMargin()*options.topSpamSize);
                 topsize = 0.12*600./height if doRatio else 0.06*600./height
-                if self._options.doOfficialCMS: c1.SetTopMargin(topsize*1.2 if doWide else topsize) ####
+                if self._options.doOfficialCMS: c1.SetTopMargin(topsize*1.2 if doWide else topsize)
                 c1.Draw()
                 p1, p2 = c1, None # high and low panes
                 # set borders, if necessary create subpads
@@ -916,17 +917,12 @@ class PlotMaker:
                     p2.SetTopMargin(0 if options.attachRatioPanel else 0.06);
                     p2.SetBottomMargin(0.3);
                     p2.SetFillStyle(0);
-                    #p2.Update()
                     p2.Draw();
-                    #p2.cd();  ###
                     p1.cd();
                 else:
                     c1.SetWindowSize(plotformat[0] + (plotformat[0] - c1.GetWw()), plotformat[1] + (plotformat[1] - c1.GetWh()));
                 p1.SetLogy(islog)
                 p1.SetLogz(True if pspec.hasOption('Logz') else False)
-                p2.SetGridy(True) ####Grid lines
-                p2.SetGridx(True) ###
-                c1.Modified()
                 if pspec.hasOption('Logx'):
                     p1.SetLogx(True)
                     if p2: p2.SetLogx(True)
@@ -1154,7 +1150,8 @@ def addPlotMakerOptions(parser, addAlsoMCAnalysis=True):
     if addAlsoMCAnalysis: addMCAnalysisOptions(parser)
     parser.add_option("--ss",  "--scale-signal", dest="signalPlotScale", default=1.0, type="float", help="scale the signal in the plots by this amount");
     #parser.add_option("--lspam", dest="lspam",   type="string", default="CMS Simulation", help="Spam text on the right hand side");
-    parser.add_option("--lspam", dest="lspam",   type="string", default="#bf{CMS} #it{Preliminary}", help="Spam text on the right hand side");
+    parser.add_option("--lspam", dest="lspam",   type="string", default="#bf{CMS} #it{Preliminary}", help="Spam text on the left hand side");
+    parser.add_option("--lspamPosition", dest="lspamPosition", type="float", nargs=4, default=(.16,.955,.60,.995), help="Position of the lspam: (x1,y1,x2,y2)")
     parser.add_option("--rspam", dest="rspam",   type="string", default="%(lumi) (13 TeV)", help="Spam text on the right hand side");
     parser.add_option("--addspam", dest="addspam", type = "string", default=None, help="Additional spam text on the top left side, in the frame");
     parser.add_option("--topSpamSize", dest="topSpamSize",   type="float", default=1.2, help="Zoom factor for the top spam");
@@ -1174,6 +1171,7 @@ def addPlotMakerOptions(parser, addAlsoMCAnalysis=True):
     parser.add_option("--ratioYNDiv", dest="ratioYNDiv", type="int", default=505, help="Y axis divisions in the ratio histogram.")
     parser.add_option("--noErrorBandOnRatio", dest="errorBandOnRatio", action="store_false", default=True, help="Do not show the error band on the reference in the ratio plots")
     parser.add_option("--noStatTotLegendOnRatio", dest="showStatTotLegend", action="store_false", default=True, help="Do not show the legend in the ratio plots")
+    parser.add_option("--noStatUncOnRatio", dest="noStatUncOnRatio", action="store_true", default=False, help="Do not show the stat unc in the ratio plots")
     parser.add_option("--attachRatioPanel", dest="attachRatioPanel", action="store_true", default=False, help="Attach the ratio panel to the main plot, without a white spacer in between")
     parser.add_option("--fitRatio", dest="fitRatio", type="int", default=None, help="Fit the ratio with a polynomial of the specified order")
     parser.add_option("--scaleSigToData", dest="scaleSignalToData", action="store_true", default=False, help="Scale all signal processes so that the overall event yield matches the observed one")
@@ -1182,6 +1180,8 @@ def addPlotMakerOptions(parser, addAlsoMCAnalysis=True):
     parser.add_option("--fitData", dest="fitData", action="store_true", default=False, help="Perform a fit to the data")
     parser.add_option("--preFitData", dest="preFitData", type="string", default=None, help="Perform a pre-fit to the data using the specified distribution, then plot the rest")
     parser.add_option("--maxRatioRange", dest="maxRatioRange", type="float", nargs=2, default=(0.0, 5.0), help="Min and max for the ratio")
+    parser.add_option("--TotalUncRatioStyle", dest="TotalUncRatioStyle", type="int", nargs=2, default=(1001, 1), help="Marker and fill style for the total unc band in the ratio plot: (SetFillStyle,SetMarkerStyle)")
+    parser.add_option("--StatUncRatioStyle", dest="StatUncRatioStyle", type="int", nargs=2, default=(1001, 1), help="Marker and fill style for the stat unc band in the ratio plot: (SetFillStyle,SetMarkerStyle)")
     parser.add_option("--fixRatioRange", dest="fixRatioRange", action="store_true", default=False, help="Fix the ratio range to --maxRatioRange")
     parser.add_option("--doStatTests", dest="doStatTests", type="string", default=None, help="Do this stat test: chi2p (Pearson chi2), chi2l (binned likelihood equivalent of chi2)")
     parser.add_option("--plotmode", dest="plotmode", type="string", default="stack", help="Show as stacked plot (stack), a non-stacked comparison (nostack) and a non-stacked comparison of normalized shapes (norm)")
@@ -1198,6 +1198,7 @@ def addPlotMakerOptions(parser, addAlsoMCAnalysis=True):
     parser.add_option("--toleranceForDiff", dest="toleranceForDiff", default=0.0, type="float", help="set numerical tollerance to define when two histogram bins are considered different");
     parser.add_option("--pseudoData", dest="pseudoData", type="string", default=None, help="If set to 'background' or 'all', it will plot also a pseudo-dataset made from background (or signal+background) with Poisson fluctuations in each bin.")
     parser.add_option("--wide", dest="wideplot", action="store_true", default=False, help="Draw a wide canvas")
+    parser.add_option("--CanvasSize", dest="CanvasSize", type="int", nargs=2, default=(600, 600), help="Canvas size: (pixels along X, pixels along Y)")
     parser.add_option("--elist", dest="elist", action="store_true", default='auto', help="Use elist (on by default if making more than 2 plots)")
     parser.add_option("--no-elist", dest="elist", action="store_false", default='auto', help="Don't elist (which are on by default if making more than 2 plots)")
     #if not parser.has_option("--yrange"): parser.add_option("--yrange", dest="yrange", default=None, nargs=2, type='float', help="Y axis range");
@@ -1206,6 +1207,8 @@ def addPlotMakerOptions(parser, addAlsoMCAnalysis=True):
     parser.add_option("--legendHeader", dest="legendHeader", type="string", default=None, help="Put a header to the legend")
     parser.add_option("--legendColumns", dest="legendColumns", type="int", default=1, help="Number of columns in the legend")
     parser.add_option("--ratioOffset", dest="ratioOffset", type="float", default=0.0, help="Put an offset between ratio and main pad")
+    parser.add_option("--YTitleOffset", dest="YTitleOffset", type="float", nargs=2, default=(0.62, 1.48), help="Offset for the Y axis title in the principal pad and ratio pad: (OffsetPpal, OffsetRatio)")
+    parser.add_option("--NotDrawRatioLine", dest="NotDrawRatioLine", action="store_true", default=False, help="Not draw horizontal line at y=1 in ratio plot")
     parser.add_option("--noCms", dest="doOfficialCMS", action="store_false", default=True, help="Use official tool to write CMS spam")
     parser.add_option("--cmsprel", dest="cmsprel", type="string", default="Preliminary", help="Additional text (Simulation, Preliminary, Internal)")
     parser.add_option("--cmssqrtS", dest="cmssqrtS", type="string", default="13 TeV", help="Sqrt of s to be written in the official CMS text.")
@@ -1245,5 +1248,3 @@ if __name__ == "__main__":
     plotter = PlotMaker(outfile,options)
     plotter.run(mca,cuts,plots)
     outfile.Close()
-
-
