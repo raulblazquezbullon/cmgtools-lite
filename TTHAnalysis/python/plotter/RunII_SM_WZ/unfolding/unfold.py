@@ -21,7 +21,8 @@ import root_numpy
 
 CMS_lumi.lumi_13TeV = "35.9 fb^{-1}"
 # PAS: CMS_lumi.extraText = "Preliminary"
-CMS_lumi.extraText = ""
+CMS_lumi.extraText = "Preliminary"
+#CMS_lumi.extraText = ""
 CMS_lumi.lumi_sqrtS = "13 TeV"
 CMS_lumi.lumiTextSize     = 0.80
 CMS_lumi.lumiTextOffset   = 0.2
@@ -160,6 +161,7 @@ class Unfolder(object):
         self.fancyvar=fancyvar
         self.diffvar=diffvar
         self.debug=debug
+        self.normToOne=True
         self.checkLO=args.checkLO
         self.logx = False if self.var is not 'MWZ' else True
         self.unfold=None
@@ -171,6 +173,13 @@ class Unfolder(object):
             "2018" : '59.8 fb^{-1}',
             "runII": '137.2 fb^{-1}',
             }
+        self.lumi_per_year_n={
+            "2016" : 35.9,
+            "2017" : 41.5,
+            "2018" : 59.8,
+            "runII": 137.2,
+            }
+
         CMS_lumi.lumi_13TeV = lumi_per_year[self.year]
         self.response_nom=None
         self.response_alt=None
@@ -230,16 +239,24 @@ class Unfolder(object):
         print('Opening file %s.' % utils.get_file_from_glob(os.path.join(folder, '%s_%s_fitWZonly_%s%s/%s' % (self.year, self.finalState, self.var, self.charge, self.combineInput) ) if folder else self.combineInput) )
         file_handle = ROOT.TFile.Open(utils.get_file_from_glob(os.path.join(folder,  '%s_%s_fitWZonly_%s%s/%s' % (self.year, self.finalState, self.var, self.charge, self.combineInput)) if folder else self.combineInput))
         data   = copy.deepcopy(file_handle.Get('x_data'))
-        signal = copy.deepcopy(file_handle.Get('x_prompt_WZ'))
+        # this is the original one: signal = copy.deepcopy(file_handle.Get('x_prompt_WZ'))
+        # this is test A: signal = copy.deepcopy(file_handle.Get('x_prompt_asimovWZ'))
+        # this is test A: signalforasimov = copy.deepcopy(file_handle.Get('x_prompt_asimovWZ'))
         bkg    = copy.deepcopy(self.get_total_bkg_as_hist(file_handle, 'list'))   
         # bkg    = copy.deepcopy(self.get_total_bkg_as_hist(file_handle, 'sum'))
         # Background subtraction is dealt with in self.set_unfolding by using the TUnfoldDensityClass dedicated method
 
+        # Load the response matrices
+        # load now to pick asimov from profiling
+        self.get_responses()
+        signal          = copy.deepcopy(ROOT.TH1D(self.response_nom.ProjectionX('damnSignal', 0, self.response_nom.GetNbinsX()+1)))
+        signalforasimov = copy.deepcopy(ROOT.TH1D(self.response_nom.ProjectionX('damnAsimov', 0, self.response_nom.GetNbinsX()+1)))
+        
         if self.debug:
             print('Before subtraction. Data: %f, Bkg: %f, Signal: %f' % (data.Integral(), bkg.Integral(), signal.Integral()))  
         #data.Add(bkg, -1)
         if self.closure:
-            data=self.getDataFromClosure(signal, bkg)
+            data=self.getDataFromClosure(signalforasimov, bkg)
             
         self.data=data
         self.mc=signal
@@ -253,8 +270,6 @@ class Unfolder(object):
         else: 
             print('bins of input bkg: %d' % self.bkg.GetNbinsX()   ) 
             
-        # Load the response matrices
-        self.get_responses()
         # Easily rebin if needed
         #self.rebin_all(4)
         print('All inputs have been correctly loaded.')
@@ -265,10 +280,12 @@ class Unfolder(object):
         This is NOT the Asimov dataset, which doesn't have any statistical fluctuation
         '''
         hout=copy.deepcopy(hin)
+        hout.SetName("datafromclosure")
         for ibkg in bkg:
             hout.Add(ibkg)
 
         for ibin in range(0, hout.GetNbinsX()+2):
+            continue # no randomization
             g=ROOT.TRandom3(0) # Random seed
             c=g.Gaus(hout.GetBinContent(ibin), hout.GetBinError(ibin))
             e=hout.GetBinError(ibin)*c/hout.GetBinContent(ibin) if hout.GetBinContent(ibin)!=0 else 0
@@ -350,24 +367,37 @@ class Unfolder(object):
             c.IsA().Destructor(c)
 
 
-    def get_truth_theory_variations(self, datacardReader, file_handle):
+    def get_truth_theory_variations(self, file_handle_gs):
         '''
         Get the envelope of scale and pdf variations, separately
         All the other uncertainties are acquired later via datacardReader.getNormAndShapeSysts
         Maybe I should check that I am not double counting
         '''
+        print("Getting theory variations from ", file_handle_gs)
         
-        pdfUp_2d   = copy.deepcopy(ROOT.TH2D(file_handle.Get('x_prompt_altWZ_%s_pdfNormUp' % 'Pow')))
-        scaleUp_2d = copy.deepcopy(ROOT.TH2D(file_handle.Get('x_prompt_altWZ_%s_scaleNormUp' % 'Pow')))
-
-        pdfDn_2d   = copy.deepcopy(ROOT.TH2D(file_handle.Get('x_prompt_altWZ_%s_pdfNormDown' % 'Pow')))
-        scaleDn_2d = copy.deepcopy(ROOT.TH2D(file_handle.Get('x_prompt_altWZ_%s_scaleNormDown' % 'Pow')))
-
+        pdfUp_2d   = copy.deepcopy(ROOT.TH2D(file_handle_gs.Get('x_prompt_altWZ_%s_pdfNormUp' % 'Pow')))
+        scaleUp_2d = copy.deepcopy(ROOT.TH2D(file_handle_gs.Get('x_prompt_altWZ_%s_scaleNormUp' % 'Pow')))
+        
+        pdfDn_2d   = copy.deepcopy(ROOT.TH2D(file_handle_gs.Get('x_prompt_altWZ_%s_pdfNormDown' % 'Pow')))
+        scaleDn_2d = copy.deepcopy(ROOT.TH2D(file_handle_gs.Get('x_prompt_altWZ_%s_scaleNormDown' % 'Pow')))
+        
         pdfUp_1d   = copy.deepcopy(ROOT.TH1D(pdfUp_2d.ProjectionY('pdfUp_1d', 0, pdfUp_2d.GetNbinsX()+1)))
         scaleUp_1d = copy.deepcopy(ROOT.TH1D(scaleUp_2d.ProjectionY('scaleUp_1d', 0, scaleUp_2d.GetNbinsX()+1)))
-
+        
         pdfDn_1d   = copy.deepcopy(ROOT.TH1D(pdfDn_2d.ProjectionY('pdfDn_1d', 0, pdfDn_2d.GetNbinsX()+1)))
         scaleDn_1d = copy.deepcopy(ROOT.TH1D(scaleDn_2d.ProjectionY('scaleDn_1d', 0, scaleDn_2d.GetNbinsX()+1)))
+
+        #pdfUp_2d   = copy.deepcopy(ROOT.TH2D(file_handle_gs.Get('x_prompt_altWZ_%s' % 'Pow')))
+        #scaleUp_2d = copy.deepcopy(ROOT.TH2D(file_handle_gs.Get('x_prompt_altWZ_%s' % 'Pow')))
+        #
+        #pdfDn_2d   = copy.deepcopy(ROOT.TH2D(file_handle_gs.Get('x_prompt_altWZ_%s' % 'Pow')))
+        #scaleDn_2d = copy.deepcopy(ROOT.TH2D(file_handle_gs.Get('x_prompt_altWZ_%s' % 'Pow')))
+        #
+        #pdfUp_1d   = copy.deepcopy(ROOT.TH1D(pdfUp_2d.ProjectionY('pdfUp_1d', 0, pdfUp_2d.GetNbinsX()+1)))
+        #scaleUp_1d = copy.deepcopy(ROOT.TH1D(scaleUp_2d.ProjectionY('scaleUp_1d', 0, scaleUp_2d.GetNbinsX()+1)))
+        #
+        #pdfDn_1d   = copy.deepcopy(ROOT.TH1D(pdfDn_2d.ProjectionY('pdfDn_1d', 0, pdfDn_2d.GetNbinsX()+1)))
+        #scaleDn_1d = copy.deepcopy(ROOT.TH1D(scaleDn_2d.ProjectionY('scaleDn_1d', 0, scaleDn_2d.GetNbinsX()+1)))
 
         print('THEORY VARIATIONS: nominal integral', self.dataTruth_nom.Integral(), 'pdfup integral', pdfUp_1d.Integral(), 'pdfdn integral', pdfDn_1d.Integral(), 'scaleup integral', scaleUp_1d.Integral(), 'scaledn integral', scaleDn_1d.Integral())
 
@@ -389,37 +419,36 @@ class Unfolder(object):
             self.dataTruth_nom_dn.SetBinContent(ibin, self.dataTruth_nom.GetBinContent(ibin)-varDn)
 
         print('THEORY VARIATIONS: nominal integral', self.dataTruth_nom.Integral(), 'nomup integral', self.dataTruth_nom_up.Integral(), 'nomdn integral', self.dataTruth_nom_dn.Integral())
-        return
-
-        # Old (when they were encoded as lnN, in 2016)
-        self.unsymNormSystsDn, self.unsymNormSystsUp = datacardReader.getUnsymNormSysts()
-        print('================================================================= HEY', self.unsymNormSystsDn, self.unsymNormSystsUp)
-        self.dataTruth_nom_up = copy.deepcopy(ROOT.TH1D(self.dataTruth_nom))
-        self.dataTruth_nom_dn = copy.deepcopy(ROOT.TH1D(self.dataTruth_nom))
-        factorUp=0.0
-        factorDn=0.0
-        for [sysName, sysValue] in self.unsymNormSystsUp:
-            sysValue=float(sysValue)
-            if ('scaleNorm' in sysName) or ('pdfNorm' in sysName):
-                print('UP: adding ', sysValue*sysValue, 'to total unc because of ', sysName)
-                factorUp += sysValue*sysValue
-        for [sysName, sysValue] in self.unsymNormSystsDn:
-            sysValue=float(sysValue)
-            if ('scaleNorm' in sysName) or ('pdfNorm' in sysName):
-                print('DN: adding ', sysValue*sysValue, 'to total unc because of ', sysName)
-                factorDn += sysValue*sysValue
-
-        factorUp=ROOT.TMath.Sqrt(factorUp)
-        factorDn=ROOT.TMath.Sqrt(factorDn)
-        if self.debug:
-            print("PORCHODIO")
-            print('Factorup', factorUp, '; FactorDn', factorDn)
-            print('nomup integral', self.dataTruth_nom_up.Integral(), 'nomdn integral', self.dataTruth_nom_dn.Integral())
-            # They will be present once we include them in the nano
-        if factorUp != 0: self.dataTruth_nom_up.Scale(factorUp)
-        if factorDn != 0: self.dataTruth_nom_dn.Scale(factorDn)
-        if self.debug:
-            print('AFTER SCALING: nomup integral', self.dataTruth_nom_up.Integral(), 'nomdn integral', self.dataTruth_nom_dn.Integral())
+       
+        ## Old (when they were encoded as lnN, in 2016)
+        #self.unsymNormSystsDn, self.unsymNormSystsUp = datacardReader.getUnsymNormSysts()
+        #print('================================================================= HEY', self.unsymNormSystsDn, self.unsymNormSystsUp)
+        #self.dataTruth_nom_up = copy.deepcopy(ROOT.TH1D(self.dataTruth_nom))
+        #self.dataTruth_nom_dn = copy.deepcopy(ROOT.TH1D(self.dataTruth_nom))
+        #factorUp=0.0
+        #factorDn=0.0
+        #for [sysName, sysValue] in self.unsymNormSystsUp:
+        #    sysValue=float(sysValue)
+        #    if ('scaleNorm' in sysName) or ('pdfNorm' in sysName):
+        #        print('UP: adding ', sysValue*sysValue, 'to total unc because of ', sysName)
+        #        factorUp += sysValue*sysValue
+        #for [sysName, sysValue] in self.unsymNormSystsDn:
+        #    sysValue=float(sysValue)
+        #    if ('scaleNorm' in sysName) or ('pdfNorm' in sysName):
+        #        print('DN: adding ', sysValue*sysValue, 'to total unc because of ', sysName)
+        #        factorDn += sysValue*sysValue
+        #
+        #factorUp=ROOT.TMath.Sqrt(factorUp)
+        #factorDn=ROOT.TMath.Sqrt(factorDn)
+        #if self.debug:
+        #    print("PORCHODIO")
+        #    print('Factorup', factorUp, '; FactorDn', factorDn)
+        #    print('nomup integral', self.dataTruth_nom_up.Integral(), 'nomdn integral', self.dataTruth_nom_dn.Integral())
+        #    # They will be present once we include them in the nano
+        #if factorUp != 0: self.dataTruth_nom_up.Scale(factorUp)
+        #if factorDn != 0: self.dataTruth_nom_dn.Scale(factorDn)
+        #if self.debug:
+        #    print('AFTER SCALING: nomup integral', self.dataTruth_nom_up.Integral(), 'nomdn integral', self.dataTruth_nom_dn.Integral())
 
     def get_responses(self):
         '''
@@ -435,37 +464,45 @@ class Unfolder(object):
         self.response_nom = copy.deepcopy(ROOT.TH2D(file_handle.Get('x_prompt_altWZ_%s' % 'Pow')))
         self.response_alt = copy.deepcopy(ROOT.TH2D(file_handle.Get('x_prompt_altWZ_%s' % 'aMC')))
         
-        for ix in range(0, self.response_nom.GetNbinsX()+1):
-            iy = self.response_nom.GetNbinsY()
-            self.response_nom.SetBinContent(ix, iy, self.response_nom.GetBinContent(ix, iy) + self.response_nom.GetBinContent(ix, iy+1))
-            binerr=ROOT.TMath.Sqrt(self.response_nom.GetBinError(ix, iy)*self.response_nom.GetBinError(ix, iy) + self.response_nom.GetBinError(ix, iy+1)*self.response_nom.GetBinError(ix, iy+1) )
-            self.response_nom.SetBinError(ix, iy, binerr)
-            self.response_nom.SetBinContent(ix, iy+1, 0)
-            self.response_nom.SetBinError(ix, iy+1, 0)
-
-        for ix in range(0, self.response_alt.GetNbinsX()+1):
-            iy = self.response_alt.GetNbinsY()
-            self.response_alt.SetBinContent(ix, iy, self.response_alt.GetBinContent(ix, iy) + self.response_alt.GetBinContent(ix, iy+1))
-            binerr=ROOT.TMath.Sqrt(self.response_alt.GetBinError(ix, iy)*self.response_alt.GetBinError(ix, iy) + self.response_alt.GetBinError(ix, iy+1)*self.response_alt.GetBinError(ix, iy+1) )
-            self.response_alt.SetBinError(ix, iy, binerr)
-            self.response_alt.SetBinContent(ix, iy+1, 0)
-            self.response_alt.SetBinError(ix, iy+1, 0)
-
-        #for iy in range(0, self.response_nom.GetNbinsY()+1):
-        #    ix = self.response_nom.GetNbinsX()
-        #    self.response_nom.SetBinContent(ix, iy, self.response_nom.GetBinContent(ix, iy) + self.response_nom.GetBinContent(ix+1, iy))
-        #    binerr=ROOT.TMath.Sqrt(self.response_nom.GetBinError(ix, iy)*self.response_nom.GetBinError(ix, iy) + self.response_nom.GetBinError(ix+1, iy)*self.response_nom.GetBinError(ix+1, iy) )
-        #    self.response_nom.SetBinError(ix, iy, binerr)
-        #    self.response_nom.SetBinContent(ix+1, iy, 0)
-        #    self.response_nom.SetBinError(ix+1, iy, 0)
-        #
-        #for iy in range(0, self.response_alt.GetNbinsY()+1):
-        #    ix = self.response_alt.GetNbinsX()
-        #    self.response_alt.SetBinContent(ix, iy, self.response_alt.GetBinContent(ix, iy) + self.response_alt.GetBinContent(ix+1, iy))
-        #    binerr=ROOT.TMath.Sqrt(self.response_alt.GetBinError(ix, iy)*self.response_alt.GetBinError(ix, iy) + self.response_alt.GetBinError(ix+1, iy)*self.response_alt.GetBinError(ix+1, iy) )
-        #    self.response_alt.SetBinError(ix, iy, binerr)
-        #    self.response_alt.SetBinContent(ix+1, iy, 0)
-        #    self.response_alt.SetBinError(ix+1, iy, 0)
+        # meh for ix in range(0, self.response_nom.GetNbinsX()+1):
+        # meh     iy = self.response_nom.GetNbinsY()
+        # meh     #self.response_nom.SetBinContent(ix, iy, self.response_nom.GetBinContent(ix, iy) + self.response_nom.GetBinContent(ix, iy+1))
+        # meh     #binerr=ROOT.TMath.Sqrt(self.response_nom.GetBinError(ix, iy)*self.response_nom.GetBinError(ix, iy) + self.response_nom.GetBinError(ix, iy+1)*self.response_nom.GetBinError(ix, iy+1) )
+        # meh     #self.response_nom.SetBinError(ix, iy, binerr)
+        # meh     self.response_nom.SetBinContent(ix, iy+1, 0)
+        # meh     self.response_nom.SetBinError(ix, iy+1, 0)
+        # meh     self.response_nom.SetBinContent(ix, 0, 0)
+        # meh     self.response_nom.SetBinError(ix, 0, 0)
+        # meh 
+        # meh for ix in range(0, self.response_alt.GetNbinsX()+1):
+        # meh     iy = self.response_alt.GetNbinsY()
+        # meh     #self.response_alt.SetBinContent(ix, iy, self.response_alt.GetBinContent(ix, iy) + self.response_alt.GetBinContent(ix, iy+1))
+        # meh     #binerr=ROOT.TMath.Sqrt(self.response_alt.GetBinError(ix, iy)*self.response_alt.GetBinError(ix, iy) + self.response_alt.GetBinError(ix, iy+1)*self.response_alt.GetBinError(ix, iy+1) )
+        # meh     #self.response_alt.SetBinError(ix, iy, binerr)
+        # meh     self.response_alt.SetBinContent(ix, iy+1, 0)
+        # meh     self.response_alt.SetBinError(ix, iy+1, 0)
+        # meh     self.response_alt.SetBinContent(ix, 0, 0)
+        # meh     self.response_alt.SetBinError(ix, 0, 0)
+        # meh 
+        # meh for iy in range(0, self.response_nom.GetNbinsY()+1):
+        # meh     ix = self.response_nom.GetNbinsX()
+        # meh #    self.response_nom.SetBinContent(ix, iy, self.response_nom.GetBinContent(ix, iy) + self.response_nom.GetBinContent(ix+1, iy))
+        # meh #    binerr=ROOT.TMath.Sqrt(self.response_nom.GetBinError(ix, iy)*self.response_nom.GetBinError(ix, iy) + self.response_nom.GetBinError(ix+1, iy)*self.response_nom.GetBinError(ix+1, iy) )
+        # meh #    self.response_nom.SetBinError(ix, iy, binerr)
+        # meh     self.response_nom.SetBinContent(ix+1, iy, 0)
+        # meh     self.response_nom.SetBinError(ix+1, iy, 0)
+        # meh     self.response_nom.SetBinContent(0, iy, 0)
+        # meh     self.response_nom.SetBinError(0, iy, 0)
+        # meh #
+        # meh for iy in range(0, self.response_alt.GetNbinsY()+1):
+        # meh     ix = self.response_alt.GetNbinsX()
+        # meh #    self.response_alt.SetBinContent(ix, iy, self.response_alt.GetBinContent(ix, iy) + self.response_alt.GetBinContent(ix+1, iy))
+        # meh #    binerr=ROOT.TMath.Sqrt(self.response_alt.GetBinError(ix, iy)*self.response_alt.GetBinError(ix, iy) + self.response_alt.GetBinError(ix+1, iy)*self.response_alt.GetBinError(ix+1, iy) )
+        # meh #    self.response_alt.SetBinError(ix, iy, binerr)
+        # meh     self.response_alt.SetBinContent(ix+1, iy, 0)
+        # meh     self.response_alt.SetBinError(ix+1, iy, 0)
+        # meh     self.response_alt.SetBinContent(0, iy, 0)
+        # meh     self.response_alt.SetBinError(0, iy, 0)
 
 
         if self.checkLO: self.response_inc = copy.deepcopy(ROOT.TH2D(file_handle.Get('x_prompt_altWZ_%s' % 'Inc')))
@@ -474,13 +511,14 @@ class Unfolder(object):
         self.dataTruthBiasVector_alt = copy.deepcopy(ROOT.TH1D(self.response_alt.ProjectionY('dataTruthBiasVector_alt', 0, self.response_alt.GetNbinsX())))
 
         # Open the true gen shapes
-        folder=os.path.join(self.inputDir, 'responses_genshapes/%s_%s_fitWZonly_%s%s/common/' % (self.year,self.finalState, self.var, self.charge) )
-        print('Opening file: %sWZSR_%s.input.root' % (folder, self.year))
-        file_handle = ROOT.TFile.Open('%sWZSR_%s.input.root' % (folder, self.year)) # This contains both Powheg (nominal) and aMCatNLO (alternative, for uncertainty caused by the modelling) shapes
+        folder_genshapes=os.path.join(self.inputDir, 'responses_genshapes/%s_%s_fitWZonly_%s%s/common/' % (self.year,self.finalState, self.var, self.charge) )
+        print('Opening file: %sWZSR_%s.input.root' % (folder_genshapes, self.year))
+        file_handle_genshapes = ROOT.TFile.Open('%sWZSR_%s.input.root' % (folder_genshapes, self.year)) # This contains both Powheg (nominal) and aMCatNLO (alternative, for uncertainty caused by the modelling) shapes
         #file_handle_inc = ROOT.TFile.Open('%sWZSR_%s.input.root' % (folder, self.year))
         
-        genshape_nom = copy.deepcopy(ROOT.TH2D(file_handle.Get('x_prompt_altWZ_%s' % 'Pow')))
-        genshape_alt = copy.deepcopy(ROOT.TH2D(file_handle.Get('x_prompt_altWZ_%s' % 'aMC')))
+        genshape_nom = copy.deepcopy(ROOT.TH2D(file_handle_genshapes.Get('x_prompt_altWZ_%s' % 'Pow')))
+        genshape_alt = copy.deepcopy(ROOT.TH2D(file_handle_genshapes.Get('x_prompt_altWZ_%s' % 'aMC')))
+        
         
         self.dataTruth_nom = copy.deepcopy(ROOT.TH1D(genshape_nom.ProjectionY('dataTruth_nom', 0, genshape_nom.GetNbinsX())))
         self.dataTruth_alt = copy.deepcopy(ROOT.TH1D(genshape_alt.ProjectionY('dataTruth_alt', 0, genshape_alt.GetNbinsX())))
@@ -503,7 +541,7 @@ class Unfolder(object):
         datacardReader = DatacardReader(os.path.join(self.inputDir, 'responses/{year}_{finalState}_fitWZonly_{var}{charge}/prompt_altWZ_Pow/WZSR_{year}.card.txt'.format(year=self.year, finalState=self.finalState, var=self.var,charge=self.charge)), self.year, 'prompt_altWZ_Pow')
         self.normSystsList, self.shapeSystsList = datacardReader.getNormAndShapeSysts()
         # Get theory variations
-        self.get_truth_theory_variations(datacardReader, file_handle)
+        self.get_truth_theory_variations(file_handle_genshapes)
 
 
     def print_responses(self):
@@ -546,10 +584,22 @@ class Unfolder(object):
             resp_nom=copy.deepcopy(ROOT.TH2D(self.response_nom))
             resp_alt=copy.deepcopy(ROOT.TH2D(self.response_alt))
             resp_inc=copy.deepcopy(ROOT.TH2D(self.response_inc))if self.checkLO else None
-
-            resp_nom.Scale(1./resp_nom.Integral())
-            resp_alt.Scale(1./resp_alt.Integral())
-            if self.checkLO: resp_inc.Scale(1./resp_inc.Integral())
+            
+            # Normalize by lines
+            for iy in range(1, resp_nom.GetNbinsY()):
+                sumy=0
+                for ix in range(1,resp_nom.GetNbinsX()):
+                    sumy+=resp_nom.GetBinContent(ix, iy)
+                    print('NORM BY LINES: added', resp_nom.GetBinContent(ix,iy), 'to ', sumy)
+                
+                for ix in range(1, resp_nom.GetNbinsX()):
+                    newbc=resp_nom.GetBinContent(ix,iy)/sumy
+                    print('APPLY NORM BY LINES: old', resp_nom.GetBinContent(ix,iy))
+                    resp_nom.SetBinContent(ix,iy, newbc )
+                    print('APPLY NORM BY LINES: new', resp_nom.GetBinContent(ix,iy))
+            #resp_nom.Scale(1./resp_nom.Integral())
+            #resp_alt.Scale(1./resp_alt.Integral())
+            #if self.checkLO: resp_inc.Scale(1./resp_inc.Integral())
             resp_nom.GetXaxis().SetTitle('Reco %s' % self.fancyvar)
             resp_alt.GetXaxis().SetTitle('Reco %s' % self.fancyvar)
             if self.checkLO: resp_inc.GetXaxis().SetTitle('Reco %s' % self.fancyvar)
@@ -557,37 +607,37 @@ class Unfolder(object):
             resp_alt.GetYaxis().SetTitle('Gen %s' % self.fancyvar)
             if self.checkLO: resp_inc.GetYaxis().SetTitle('Gen %s' % self.fancyvar)
 
-            # Compute stability fractions plots that we never used (remnant of when we wanted to imitate the 2015 analysis (Vukovukovuko!)
-            diagonalSum_nom=0
-            diagonalSum_alt=0
-            diagonalSum_inc=0
-            odbN_nom=0
-            odbN_alt=0
-            odbN_inc=0
-            for ibin in range(0, resp_nom.GetNbinsX()+2):
-                # Am I taking the overflow diagonal one as well? Must check
-                # must use FindBin, but I need the maximum first
-                diagonalSum_nom+= resp_nom.GetBinContent(ibin, ibin)
-                diagonalSum_alt+= resp_alt.GetBinContent(ibin, ibin)
-                if self.checkLO: diagonalSum_inc+= resp_inc.GetBinContent(ibin, ibin)
-                
-                for jbin in range(0, resp_nom.GetNbinsY()+2):
-                    if ibin != jbin:
-                        if resp_nom.GetBinContent(ibin, jbin) != 0: odbN_nom+=1
-                        if resp_alt.GetBinContent(ibin, jbin) != 0: odbN_alt+=1
-                        if self.checkLO: 
-                            if resp_inc.GetBinContent(ibin, jbin) != 0: odbN_inc+=1
-
-            oodFraction_nom=(1-diagonalSum_nom) 
-            oodFraction_alt=(1-diagonalSum_alt)
-            oodFraction_inc=(1-diagonalSum_inc)
-            odbFraction_nom = odbN_nom/(resp_nom.GetNbinsX()*resp_nom.GetNbinsY())
-            odbFraction_alt = odbN_alt/(resp_alt.GetNbinsX()*resp_alt.GetNbinsY())
-            if self.checkLO: odbFraction_inc = odbN_inc/(resp_inc.GetNbinsX()*resp_inc.GetNbinsY())
-            print('Overall fraction of out-of-diagonal events | Fraction of out-of-diagonal filled bins:')
-            print('\t nom: %0.3f | %0.3f = %d/%d' % (oodFraction_nom, odbFraction_nom, odbN_nom, (resp_nom.GetNbinsX()*resp_nom.GetNbinsY())))
-            print('\t alt: %0.3f | %0.3f = %d/%d' % (oodFraction_alt, odbFraction_alt, odbN_alt, (resp_alt.GetNbinsX()*resp_alt.GetNbinsY())))
-            if self.checkLO: print('\t inc: %0.3f | %0.3f = %d/%d' % (oodFraction_inc, odbFraction_inc, odbN_inc, (resp_inc.GetNbinsX()*resp_inc.GetNbinsY())))
+            #### Compute stability fractions plots that we never used (remnant of when we wanted to imitate the 2015 analysis (Vukovukovuko!)
+            ###diagonalSum_nom=0
+            ###diagonalSum_alt=0
+            ###diagonalSum_inc=0
+            ###odbN_nom=0
+            ###odbN_alt=0
+            ###odbN_inc=0
+            ###for ibin in range(0, resp_nom.GetNbinsX()+2):
+            ###    # Am I taking the overflow diagonal one as well? Must check
+            ###    # must use FindBin, but I need the maximum first
+            ###    diagonalSum_nom+= resp_nom.GetBinContent(ibin, ibin)
+            ###    diagonalSum_alt+= resp_alt.GetBinContent(ibin, ibin)
+            ###    if self.checkLO: diagonalSum_inc+= resp_inc.GetBinContent(ibin, ibin)
+            ###    
+            ###    for jbin in range(0, resp_nom.GetNbinsY()+2):
+            ###        if ibin != jbin:
+            ###            if resp_nom.GetBinContent(ibin, jbin) != 0: odbN_nom+=1
+            ###            if resp_alt.GetBinContent(ibin, jbin) != 0: odbN_alt+=1
+            ###            if self.checkLO: 
+            ###                if resp_inc.GetBinContent(ibin, jbin) != 0: odbN_inc+=1
+            ###
+            ###oodFraction_nom=(1-diagonalSum_nom) 
+            ###oodFraction_alt=(1-diagonalSum_alt)
+            ###oodFraction_inc=(1-diagonalSum_inc)
+            ###odbFraction_nom = odbN_nom/(resp_nom.GetNbinsX()*resp_nom.GetNbinsY())
+            ###odbFraction_alt = odbN_alt/(resp_alt.GetNbinsX()*resp_alt.GetNbinsY())
+            ###if self.checkLO: odbFraction_inc = odbN_inc/(resp_inc.GetNbinsX()*resp_inc.GetNbinsY())
+            ###print('Overall fraction of out-of-diagonal events | Fraction of out-of-diagonal filled bins:')
+            ###print('\t nom: %0.3f | %0.3f = %d/%d' % (oodFraction_nom, odbFraction_nom, odbN_nom, (resp_nom.GetNbinsX()*resp_nom.GetNbinsY())))
+            ###print('\t alt: %0.3f | %0.3f = %d/%d' % (oodFraction_alt, odbFraction_alt, odbN_alt, (resp_alt.GetNbinsX()*resp_alt.GetNbinsY())))
+            ###if self.checkLO: print('\t inc: %0.3f | %0.3f = %d/%d' % (oodFraction_inc, odbFraction_inc, odbN_inc, (resp_inc.GetNbinsX()*resp_inc.GetNbinsY())))
             resp_nom.Draw('COLZ')
             utils.saveCanva(c, os.path.join(self.outputDir, '1_responseMatrixAsPdf_%s_Nom' % self.var))
             c.Clear()
@@ -715,15 +765,16 @@ class Unfolder(object):
         # 2016
         print('WARNING: you will want to check this for 2017 and 20180')
 
-        if file_handle.Get('x_prompt_hZZ') :        totbkg.append(copy.deepcopy(file_handle.Get('x_prompt_hZZ')  ))
-        if file_handle.Get('x_prompt_ZZ')  :        totbkg.append(copy.deepcopy(file_handle.Get('x_prompt_ZZ')   ))
-        if file_handle.Get('x_prompt_ggZZ'):        totbkg.append(copy.deepcopy(file_handle.Get('x_prompt_ggZZ') ))
-        if file_handle.Get('x_prompt_TTX') :        totbkg.append(copy.deepcopy(file_handle.Get('x_prompt_TTX')  ))
-        if file_handle.Get('x_prompt_TZQ') :        totbkg.append(copy.deepcopy(file_handle.Get('x_prompt_TZQ')  ))
-        if file_handle.Get('x_prompt_VH')  :        totbkg.append(copy.deepcopy(file_handle.Get('x_prompt_VH')   ))
-        if file_handle.Get('x_prompt_VVV') :        totbkg.append(copy.deepcopy(file_handle.Get('x_prompt_VVV')  ))
-        if file_handle.Get('x_prompt_TTXX'):        totbkg.append(copy.deepcopy(file_handle.Get('x_prompt_TTXX') ))
-        if file_handle.Get('x_convs')      :        totbkg.append(copy.deepcopy(file_handle.Get('x_convs')       ))
+        if file_handle.Get('x_prompt_hZZ')    :        totbkg.append(copy.deepcopy(file_handle.Get('x_prompt_hZZ')    ))
+        if file_handle.Get('x_prompt_ZZ')     :        totbkg.append(copy.deepcopy(file_handle.Get('x_prompt_ZZ')     ))
+        if file_handle.Get('x_prompt_ggZZ')   :        totbkg.append(copy.deepcopy(file_handle.Get('x_prompt_ggZZ')   ))
+        if file_handle.Get('x_prompt_TTX')    :        totbkg.append(copy.deepcopy(file_handle.Get('x_prompt_TTX')    ))
+        if file_handle.Get('x_prompt_TZQ')    :        totbkg.append(copy.deepcopy(file_handle.Get('x_prompt_TZQ')    ))
+        if file_handle.Get('x_prompt_VH')     :        totbkg.append(copy.deepcopy(file_handle.Get('x_prompt_VH')     ))
+        if file_handle.Get('x_prompt_VVV')    :        totbkg.append(copy.deepcopy(file_handle.Get('x_prompt_VVV')    ))
+        if file_handle.Get('x_prompt_TTXX')   :        totbkg.append(copy.deepcopy(file_handle.Get('x_prompt_TTXX')   ))
+        if file_handle.Get('x_convs')         :        totbkg.append(copy.deepcopy(file_handle.Get('x_convs')         ))
+        if file_handle.Get('x_prompt_WZ_EWK') :        totbkg.append(copy.deepcopy(file_handle.Get('x_prompt_WZ_EWK') ))
         fakesFromData=True
         if fakesFromData:
             if file_handle.Get('x_data_fakes')   :        totbkg.append(copy.deepcopy(file_handle.Get('x_data_fakes')    ))
@@ -786,17 +837,17 @@ class Unfolder(object):
         self.set_unfolding(key)
         self.do_scan()
         self.print_unfolding_results(key, label)
-        #mimimi print('NOW I AM DOING UNFOLDING WITH REGULARIZATION, FOR THE VARIABLE ', self.var)
-        #mimimi # Now add simple regularization on the amplitude
-        #mimimi self.logTauX=ROOT.TSpline3() # TSpline*
-        #mimimi self.logTauY=ROOT.TSpline3() # TSpline*
-        #mimimi self.lCurve=ROOT.TGraph(0) # TGraph*
-        #mimimi self.logTauCurvature=ROOT.TSpline3() # TSpline*
-        #mimimi self.regmode=ROOT.TUnfold.kRegModeCurvature
-        #mimimi label='regamp'
-        #mimimi self.set_unfolding(key)
-        #mimimi self.do_scan()
-        #mimimi self.print_unfolding_results(key, label)
+        print('NOW I AM DOING UNFOLDING WITH REGULARIZATION, FOR THE VARIABLE ', self.var)
+        # Now add simple regularization on the amplitude
+        self.logTauX=ROOT.TSpline3() # TSpline*
+        self.logTauY=ROOT.TSpline3() # TSpline*
+        self.lCurve=ROOT.TGraph(0) # TGraph*
+        self.logTauCurvature=ROOT.TSpline3() # TSpline*
+        self.regmode=ROOT.TUnfold.kRegModeCurvature
+        label='regamp'
+        self.set_unfolding(key)
+        self.do_scan()
+        self.print_unfolding_results(key, label)
 
      
     def set_unfolding(self, key):
@@ -829,29 +880,40 @@ class Unfolder(object):
         # Now I should do subtraction using the class. I assign a 10% error on each background. This will have to be set automatically
         scale_bgr=1.0
         dscale_bgr=0.05
+        print("HELLO THERE", self.var)
         for iBkg in self.bkg:
             # raise Exception('MUST UPDATE THE UNCERTAINTIES FOR THE BACKGROUND SUBTRACTION (or better get them from the datacardReader grepping for theory or whatever the name is)')
             # Cannot. These must be hardcoded because they come from the postfit of the inclusive. Or I could build a configuration file, but that's the same concept.
             # At least hardcoded values here call for attention, an anonymous file loaded would be too unconspicuous (*un is the archaic form, so I like it more than *in)
-            # ZZ => 7%, ttX= > 15%, tZq=> 35%, convs=>12%, VH 25, VBS 25, VVV 50
-            print('Background %s has bins %d' % (iBkg.GetName(), iBkg.GetNbinsX()) )
-            if 'convs' in iBkg.GetName():
-                dscale_bgr=0.12
-            elif 'rares_ttX' in iBkg.GetName():
-                dscale_bgr=0.15
-            elif 'rares_VVV' in iBkg.GetName():
-                dscale_bgr=0.5
-            elif 'rares_VH' in iBkg.GetName():
-                dscale_bgr=0.25
-            elif 'rares_VBS' in iBkg.GetName():
-                dscale_bgr=0.25
-            elif 'rares_tZq' in iBkg.GetName():
-                dscale_bgr=0.35
-            elif 'fakes_appldata' in iBkg.GetName():
-                dscale_bgr=0.3
-            elif 'prompt_ZZH' in iBkg.GetName():
-                dscale_bgr=0.07
-            self.unfold.SubtractBackground(iBkg,iBkg.GetName(),scale_bgr,dscale_bgr);
+            # ZZ => 6%, ttX= > 15%, tZq=> 35%, convs=>12%, VH 25, VBS 25, VVV 50
+            #print('Background %s has bins %d' % (iBkg.GetName(), iBkg.GetNbinsX()) )
+
+            dscales_backgrounds = {
+                'x_prompt_hZZ'    : 0.06,   
+                'x_prompt_ZZ'     : 0.06,
+                'x_prompt_ggZZ'   : 0.06,
+                'x_prompt_TTX'    : 0.12,
+                'x_prompt_TZQ'    : 0.30,
+                'x_prompt_VH'     : 0.25,
+                'x_prompt_VVV'    : 0.5,
+                'x_convs'         : 0.11,
+                'x_prompt_WZ_EWK' : 0.25,
+                'x_data_fakes'    : 0.3,
+            }
+            scale_bgr=1.
+            if 'x_prompt_ZZ' in iBkg.GetName():
+                scale_bgr=1.06
+            elif 'x_convs' in iBkg.GetName():
+                scale_bgr=0.95
+            elif 'x_prompt_TTX' in iBkg.GetName():
+                scale_bgr=1.02
+            elif 'x_prompt_TZQ' in iBkg.GetName():
+                scale_bgr=1.35
+            else:
+                scale_bgr=1.
+                
+            print("HELLO THERE, I AM SUBTRACTING THE BACKGROUND ", iBkg.GetName() , ' WITH INTEGRAL ', iBkg.Integral())
+            self.unfold.SubtractBackground(iBkg,iBkg.GetName(),scale_bgr,dscales_backgrounds[iBkg.GetName()]);
 
         # Add systematic uncertainties
         self.add_systematic_uncertainties()
@@ -943,7 +1005,9 @@ class Unfolder(object):
         histEmatTotal=self.unfold.GetEmatrixTotal('Error matrix (total errors)') # Total error matrix. Migration matrix uncorrelated and correlated syst errors added in quadrature to the data statistical errors
         
         
-        histDetNormBgrTotal=self.unfold.GetBackground("Total background (normalized)")
+        histDetNormBgrTotal=self.unfold.GetBackground("bgr total normalized")#"Total background (normalized)")
+        print("HELLO THERE, THE INTEGRAL OF THE TOTAL BKG FROM TUNFOLD IS ", histDetNormBgrTotal.Integral())
+        print("HELLO THERE, THE INTEGRAL WITH WIDTH OF THE TOTAL BKG FROM TUNFOLD IS ", histDetNormBgrTotal.Integral("width"))
 
         print('Bins of unfolded distribution: %d' % histMunfold.GetNbinsX() )
         print('Bins of folded back distribution: %d' % histMdetFold.GetNbinsX() )
@@ -1051,6 +1115,9 @@ class Unfolder(object):
         self.data.GetYaxis().SetTitle('Events')
         self.data.GetYaxis().SetTitleOffset(1.6)
         self.data.DrawCopy("E")
+        datafromunf=self.unfold.GetInput("input distribution")
+        datafromunf.SetLineColor(4)
+        datafromunf.SetLineWidth(2)
         self.mc.SetMinimum(0.0)
         self.mc.SetLineColor(ROOT.kBlue)
         self.mc.SetLineWidth(3)
@@ -1062,6 +1129,7 @@ class Unfolder(object):
         self.mc.Draw("SAME HIST")
         #histDetNormBgr1.Draw("SAME HIST");
         bkgStacked.Draw("SAME HIST")
+        datafromunf.Draw("E HIST SAME")
 
         leg_1 = ROOT.TLegend(0.4,0.7,0.9,0.9)
         leg_1.SetTextSize(0.04)
@@ -1071,6 +1139,7 @@ class Unfolder(object):
         else:
             leg_1.AddEntry(self.data, 'Data', 'p')
         leg_1.AddEntry(self.mc, 'Exp. signal', 'lf')
+        leg_1.AddEntry(datafromunf, 'Data from unfold class', 'l')
         leg_1.AddEntry(bkgStacked, 'Exp. signal+background', 'l')
         leg_1.Draw()
 
@@ -1097,7 +1166,7 @@ class Unfolder(object):
         self.dataTruth_nom.GetYaxis().SetTitle('Events')
         self.dataTruth_nom.GetYaxis().SetTitleSize(0.035)
         self.dataTruth_nom.GetYaxis().SetLabelSize(0.035)
-        self.dataTruth_nom.DrawNormalized("E HIST")
+        self.dataTruth_nom.Draw("E HIST")
         # Unfolded data with total error
         histUnfoldTotal.SetMarkerColor(ROOT.kBlue)
         histUnfoldTotal.SetLineColor(ROOT.kBlue)
@@ -1105,15 +1174,15 @@ class Unfolder(object):
         histUnfoldTotal.SetMarkerStyle(ROOT.kFullCircle)
         # Outer error: total error
         histUnfoldTotal.SetTitle('Unfolded space')
-        histUnfoldTotal.DrawNormalized('PESAME')
+        histUnfoldTotal.Draw('PESAME')
         # Middle error: stat+bgr
         histMunfold.SetLineColor(ROOT.kBlue+2)
         histMunfold.SetLineWidth(2)
-        histMunfold.DrawNormalized('SAME E1')
+        histMunfold.Draw('SAME E1')
         # Inner error: stat only
         histUnfoldStat.SetLineColor(ROOT.kBlue+4)
         histUnfoldStat.SetLineWidth(3)
-        histUnfoldStat.DrawNormalized('SAME E1')
+        histUnfoldStat.Draw('SAME E1')
         ###histDensityGenData.SetLineColor(kRed)
         ##histDensityGenData.Draw("SAME")
         ##histDensityGenMC.Draw("SAME HIST")
@@ -1140,27 +1209,28 @@ class Unfolder(object):
         #output.cd(3)
         # Data
         subdata=self.sub_bkg_by_hand()
-        subdata.SetLineColor(ROOT.kBlack-3)
-        subdata.SetLineWidth(3)
+        subdata.SetLineColor(ROOT.kBlack)
+        subdata.SetLineWidth(2)
         subdata.SetTitle('Folded space')
         #self.data.SetTitle('Folded space')
         #self.data.Draw('PE')
         subdata.GetXaxis().SetTitle('Reco %s' % self.fancyvar)
         subdata.GetYaxis().SetTitle('Events')
-        subdata.Draw('PE')
+        subdata.SetMarkerSize(3)
         # MC folded back
         histMdetFold.SetLineColor(ROOT.kRed+1)
         histMdetFold.SetLineWidth(3)
-        histMdetFold.Draw('SAME')
         # Original folded MC
-        self.mc.Draw("SAME HIST")
+        self.mc.Draw("HIST")
+        subdata.Draw('PE SAME')
+        histMdetFold.Draw('SAME')
         #bkgStacked.Draw("SAME HIST")
         #histInput=self.unfold.GetInput("Minput",";mass(det)")
         #histInput.SetLineColor(ROOT.kRed)
         #histInput.SetLineWidth(3)
         #histInput.Draw("SAME")
-        leg_3 = ROOT.TLegend(0.4,0.7,0.9,0.9)
-        leg_3.SetTextSize(0.04)
+        leg_3 = ROOT.TLegend(0.5,0.7,0.9,0.9)
+        leg_3.SetTextSize(0.03)
         leg_3.SetBorderSize(0)
         #leg_3.AddEntry(self.data, 'Data', 'pe')
         if self.closure:
@@ -1169,7 +1239,7 @@ class Unfolder(object):
             leg_3.AddEntry(subdata, 'Data-bkg', 'pe')
         leg_3.AddEntry(histMdetFold, 'MC folded back', 'l')
         #leg_3.AddEntry(bkgStacked, 'Exp. signal+background', 'l')
-        leg_3.AddEntry(self.mc, 'Exp. signal', 'l')
+        leg_3.AddEntry(self.mc, 'Exp. signal', 'lf')
         leg_3.AddEntry(histUnfoldStat, '#frac{#chi^{2}}{NDOF}(D-b, MCf.b.)=%0.3f' % subdata.Chi2Test(histMdetFold, 'CHI2/NDF WW'), '')
         #leg_3.AddEntry(histInput, 'Input', 'la')
         leg_3.Draw()
@@ -1185,6 +1255,7 @@ class Unfolder(object):
         # Data-bkg by hand
         subdata.Draw('pe')
         self.mc.Draw('SAME HIST')
+        subdata.Draw('pe SAME')
         histInput=self.unfold.GetInput("Minput",";mass(det)")
         histInput.SetLineColor(ROOT.kRed)
         histInput.SetLineWidth(3)
@@ -1257,6 +1328,10 @@ class Unfolder(object):
             print('ATTENTION OVERFLOW PRINTING PORCHIDDIO')
             for ix in range(0, self.response_nom.GetNbinsX()+1):
                 print('NbinsX=', self.response_nom.GetNbinsX(),', X bin', ix, ': overflow bin ', self.response_nom.GetNbinsY()+1, ' has content ', self.response_nom.GetBinContent(ix, self.response_nom.GetNbinsY()+1))
+                print('NbinsX=', self.response_nom.GetNbinsX(),', X bin', ix, ': underflow bin ', 0, ' has content ', self.response_nom.GetBinContent(ix, 0))
+            for iy in range(0, self.response_nom.GetNbinsY()+1):
+                print('NbinsY=', self.response_nom.GetNbinsY(), ' Y bin', iy, ': overflow bin ', self.response_nom.GetNbinsX()+1, ' has content ', self.response_nom.GetBinContent(self.response_nom.GetNbinsX()+1, iy))
+                print('NbinsY=', self.response_nom.GetNbinsY(), ' Y bin', iy, ': underflow bin ', 0, ' has content ', self.response_nom.GetBinContent(0, iy))
 
         elif 'alt' in key:
             self.response_alt.Scale(1./self.response_alt.Integral())
@@ -1270,6 +1345,8 @@ class Unfolder(object):
                 self.response_inc.SetTitle('Response Matrix (pythia)')
                 self.response_inc.GetZaxis().SetLabelOffset(0.01);
                 self.response_inc.Draw('colz')
+        base_extratext= CMS_lumi.extraText
+        CMS_lumi.extraText = "Simulation" if CMS_lumi.extraText=="" else "Preliminary Simulation" 
         CMS_lumi.CMS_lumi(output, 4, 0, aLittleExtra=0.08)
         ROOT.gPad.Update()
         if '*' in self.produceOnlyPlot or '2_p7' in self.produceOnlyPlot:
@@ -1277,6 +1354,7 @@ class Unfolder(object):
             output.SaveAs(os.path.join(self.outputDir, '2_p7_unfold_%s_%s_%s.png' % (label, key, self.var)))
             output.SaveAs(os.path.join(self.outputDir, '2_p7_unfold_%s_%s_%s.C'   % (label, key, self.var)))
         output.Clear()
+        CMS_lumi.extraText=base_extratext
         #output.cd(8)
         ROOT.gPad.SetRightMargin(0.15)
         histCorr.SetTitle('Correlation matrix')
@@ -1314,8 +1392,16 @@ class Unfolder(object):
         # Normalize properly for differential xsec
         # Data truth
         dt=copy.deepcopy(self.dataTruth_nom)
+        dt.SetLineWidth(2)
+        dt.SetMarkerSize(0)
         dt_alt=copy.deepcopy(self.dataTruth_alt)
+        dt_alt.SetLineWidth(2)
+        dt_alt.SetMarkerSize(0)
         dt_inc=copy.deepcopy(self.dataTruth_inc)if self.checkLO else None
+        if self.checkLO:
+            dt_inc.SetLineWidth(2)
+            dt_inc.SetMarkerSize(0)
+
         # # Rewrite the nom_up and dn
         # self.dataTruth_nom_up=copy.deepcopy(dt)
         # self.dataTruth_nom_dn=copy.deepcopy(dt)
@@ -1327,6 +1413,7 @@ class Unfolder(object):
         factorUp=dt_nom_up.Integral()/dt.Integral()
         factorDn=dt_nom_dn.Integral()/dt.Integral()
         for ibin in range(0, dt.GetNbinsX()+2):
+            continue # remove bin width
             dt.SetBinContent(ibin,dt.GetBinContent(ibin)/dt.GetBinWidth(ibin))
             dt.SetBinError(ibin,dt.GetBinError(ibin)/dt.GetBinWidth(ibin))
             dt_nom_up.SetBinContent(ibin,dt_nom_up.GetBinContent(ibin)/dt.GetBinWidth(ibin))
@@ -1347,19 +1434,24 @@ class Unfolder(object):
             dt.GetXaxis().SetBinLabel(1, "=0")
             dt.GetXaxis().SetBinLabel(2, "=1")
             dt.GetXaxis().SetBinLabel(3, "=2")
-            dt.GetXaxis().SetBinLabel(4, "=3")
-            dt.GetXaxis().SetBinLabel(5, "#geq 4")
+            dt.GetXaxis().SetBinLabel(4, "#geq 3")
+            #dt.GetXaxis().SetBinLabel(5, "#geq 4")
             
 
-        dt.Scale(1./dt.Integral()) # Normalize to 1
-        dt_nom_up.Scale(factorUp/dt_nom_up.Integral())
-        dt_nom_dn.Scale(factorDn/dt_nom_dn.Integral())
+        if self.normToOne:
+            dt.Scale(1./dt.Integral()) # Normalize to 1
+            dt_nom_up.Scale(factorUp/dt_nom_up.Integral())
+            dt_nom_dn.Scale(factorDn/dt_nom_dn.Integral())
 
         print('YADDA2 ', dt.Integral(), dt_nom_dn.Integral(), dt_nom_up.Integral()) 
-        dt_alt.Scale(1./dt_alt.Integral())
-        if self.checkLO: dt_inc.Scale(1./dt_inc.Integral())
+        if self.normToOne:
+            dt_alt.Scale(1./dt_alt.Integral())
+            if self.checkLO: dt_inc.Scale(1./dt_inc.Integral())
         dt.GetXaxis().SetTitle('%s' % self.fancyvar)
-        dt.GetYaxis().SetTitle('(d#sigma/d%s)/#sigma' % self.diffvar)
+        if self.normToOne:
+            dt.GetYaxis().SetTitle('(d#sigma/d%s)/#sigma' % self.diffvar)
+        else:
+            dt.GetYaxis().SetTitle('(d#sigma/d%s)' % self.diffvar)
         dt.SetMaximum(1.2*dt.GetMaximum())
         if self.logx:
             ROOT.gPad.SetLogx()
@@ -1377,16 +1469,25 @@ class Unfolder(object):
         dt.GetYaxis().SetTitleSize(0.045)
         dt.GetXaxis().SetTitleOffset(1.35)
         dt.GetYaxis().SetTitleOffset(1.6)
+        # Normalize POWHEG to its fiducial cross section
+        if not self.normToOne:
+            dt.Scale(250./dt.Integral())
+            dt_alt.Scale(250./dt_alt.Integral())
+
+        print(self.var, "MANNAGGIA AL CLERO data truth bins ", dt.GetNbinsX(), " from ", dt.GetXaxis().GetBinLowEdge(1), " to ", dt.GetXaxis().GetBinUpEdge(dt.GetNbinsX()))
+
         dt.Draw('E HIST')
         # Unfolded data with total error
         hut=copy.deepcopy(histUnfoldTotal)
         for ibin in range(1, hut.GetNbinsX()+1):
+            continue # remove bin width
             print('bin %d has content %f and width %f for a final content of %f. Bin error is %f' %(ibin, hut.GetBinContent(ibin), hut.GetBinWidth(ibin), hut.GetBinContent(ibin)/hut.GetBinWidth(ibin), hut.GetBinError(ibin)))
             hut.SetBinContent(ibin,hut.GetBinContent(ibin)/hut.GetBinWidth(ibin))
             hut.SetBinError(ibin,hut.GetBinError(ibin)/hut.GetBinWidth(ibin))
             print('after: bin content %f, bin error %f' % (hut.GetBinContent(ibin), hut.GetBinError(ibin)))
         print('hut integral before: %f' % hut.Integral())
-        hut.Scale(1./hut.Integral())
+        if self.normToOne:
+            hut.Scale(1./hut.Integral())
         print('hut integral after: %f' % hut.Integral())
         theunf=copy.deepcopy(hut)
         # Outer error: total error
@@ -1397,9 +1498,11 @@ class Unfolder(object):
         # Middle error: stat+bgr
         hmu=copy.deepcopy(histMunfold)
         for ibin in range(1, hmu.GetNbinsX()+1):
+            continue # remove bin width
             hmu.SetBinContent(ibin,hmu.GetBinContent(ibin)/hmu.GetBinWidth(ibin))
             hmu.SetBinError(ibin,hmu.GetBinError(ibin)/hmu.GetBinWidth(ibin))
-        hmu.Scale(1./hmu.Integral())
+        if self.normToOne:
+            hmu.Scale(1./hmu.Integral())
         hmu.SetFillStyle(2001)
         hmu.SetFillColor(ROOT.kAzure-9)
         hmu.SetFillColorAlpha(ROOT.kAzure-9, 0.50);
@@ -1409,9 +1512,11 @@ class Unfolder(object):
         # Inner error: stat only
         hus=copy.deepcopy(histUnfoldStat)
         for ibin in range(0, hus.GetNbinsX()+1):
+            continue # remove bin width
             hus.SetBinContent(ibin,hus.GetBinContent(ibin)/hus.GetBinWidth(ibin))
             hus.SetBinError(ibin,hus.GetBinError(ibin)/hus.GetBinWidth(ibin))
-        hus.Scale(1./hus.Integral())
+        if self.normToOne:
+            hus.Scale(1./hus.Integral())
         #hus.SetFillStyle(2001)
         #hus.SetFillColor(ROOT.kAzure-4)
         hus.SetLineColor(ROOT.kBlack)
@@ -1564,6 +1669,7 @@ class Unfolder(object):
                 mpredSystDn.SetName('matrix_nnlo_SystDn_pred_%s_%s_%s'%(self.finalState,self.charge,self.var)) # Just to be extra careful
             
 
+            print('MATRIX INTEGRAL:', mpred.Integral())
             #mpred       .Scale(1./      mpred.Integral())
             #mpredStatUp .Scale(1./mpred.Integral())
             #mpredStatDn .Scale(1./mpred.Integral())
@@ -1600,38 +1706,57 @@ class Unfolder(object):
 
             # Do total
             
-            # Divide by bin width and scale
+            # Divide by bin width and scale ---> Not necessary, MATRIX has already the binwidth configured in whatever
+            sumbyhand=0
             for ibin in range(0, mfb.GetNbinsX()+1):
-                mfb.SetBinContent(ibin,mfb.GetBinContent(ibin)/mfb.GetBinWidth(ibin))
-                mfb.SetBinError(ibin,mfb.GetBinError(ibin)/mfb.GetBinWidth(ibin))
-
-                mfbStatUp.SetBinContent(ibin,mfbStatUp.GetBinContent(ibin)/mfbStatUp.GetBinWidth(ibin))
-                mfbStatUp.SetBinError(ibin,mfbStatUp.GetBinError(ibin)/mfbStatUp.GetBinWidth(ibin))
-
-                mfbStatDn.SetBinContent(ibin,mfbStatDn.GetBinContent(ibin)/mfbStatDn.GetBinWidth(ibin))
-                mfbStatDn.SetBinError(ibin,mfbStatDn.GetBinError(ibin)/mfbStatDn.GetBinWidth(ibin))
-
-                mfbSystUp.SetBinContent(ibin,mfbSystUp.GetBinContent(ibin)/mfbSystUp.GetBinWidth(ibin))
-                mfbSystUp.SetBinError(ibin,mfbSystUp.GetBinError(ibin)/mfbSystUp.GetBinWidth(ibin))
-
-                mfbSystDn.SetBinContent(ibin,mfbSystDn.GetBinContent(ibin)/mfbSystDn.GetBinWidth(ibin))
-                mfbSystDn.SetBinError(ibin,mfbSystDn.GetBinError(ibin)/mfbSystDn.GetBinWidth(ibin))
+                continue # remove bin width
+                #continue
+                #if 'LeadJetPt' in self.var or 'MWZ' in self.var or 'Wpt' in self.var or 'Zpt' in self.var:
+                #    continue
+                mfb.SetBinContent(ibin,mfb.GetBinContent(ibin)/mfb.GetBinWidth(ibin)/mpred.GetNbinsX())
+                mfb.SetBinError(ibin,mfb.GetBinError(ibin)/mfb.GetBinWidth(ibin)    /mpred.GetNbinsX())
+                sumbyhand+=mfb.GetBinContent(ibin)
+                print("MATRIX BIN ", ibin, " has content ", mfb.GetBinContent(ibin))
+                mfbStatUp.SetBinContent(ibin,mfbStatUp.GetBinContent(ibin)/mfbStatUp.GetBinWidth(ibin)/mpred.GetNbinsX())
+                mfbStatUp.SetBinError(ibin,mfbStatUp.GetBinError(ibin)/mfbStatUp.GetBinWidth(ibin)    /mpred.GetNbinsX())
             
-            #mfb.Scale(1./mfb.Integral())
-            #mfbStatUp.Scale(1./mfbStatUp.Integral())
-            #mfbStatDn.Scale(1./mfbStatDn.Integral())
-            #mfbSystUp.Scale(1./mfbSystUp.Integral())
-            #mfbSystDn.Scale(1./mfbSystDn.Integral())
+                mfbStatDn.SetBinContent(ibin,mfbStatDn.GetBinContent(ibin)/mfbStatDn.GetBinWidth(ibin)/mpred.GetNbinsX())
+                mfbStatDn.SetBinError(ibin,mfbStatDn.GetBinError(ibin)/mfbStatDn.GetBinWidth(ibin)    /mpred.GetNbinsX())
+            
+                mfbSystUp.SetBinContent(ibin,mfbSystUp.GetBinContent(ibin)/mfbSystUp.GetBinWidth(ibin)/mpred.GetNbinsX())
+                mfbSystUp.SetBinError(ibin,mfbSystUp.GetBinError(ibin)/mfbSystUp.GetBinWidth(ibin)    /mpred.GetNbinsX())
+            
+                mfbSystDn.SetBinContent(ibin,mfbSystDn.GetBinContent(ibin)/mfbSystDn.GetBinWidth(ibin)/mpred.GetNbinsX())
+                mfbSystDn.SetBinError(ibin,mfbSystDn.GetBinError(ibin)/mfbSystDn.GetBinWidth(ibin)    /mpred.GetNbinsX())
+            
+            mfb.Scale(      mpred.Integral("width")/mfb.Integral())
+            mfbStatUp.Scale(mpred.Integral("width")/mfbStatUp.Integral())
+            mfbStatDn.Scale(mpred.Integral("width")/mfbStatDn.Integral())
+            mfbSystUp.Scale(mpred.Integral("width")/mfbSystUp.Integral())
+            mfbSystDn.Scale(mpred.Integral("width")/mfbSystDn.Integral())
+            print(self.var, "MATRIX INTEGRAL FROM INTEGRAL WITH WIDTH: ", mpred.Integral("width"))
+            print(self.var, "MATRIX INTEGRAL REBINNED FROM INTEGRAL WITH WIDTH: ", mfb.Integral("width"))
+            print(self.var, "MATRIX INTEGRAL REBINNED FROM INTEGRAL WITHOUT WIDTH: ", mfb.Integral())
+            print(self.var, "MATRIX INTEGRAL, NUMBER OF BINS: ", mpred.GetNbinsX(), mfb.GetNbinsX())
+            print(self.var, "MATRIX INTEGRAL FIXED FROM SUM OF BINS TIMES BIN WIDTH: ", sumbyhand*mpred.Integral("width")/mfb.Integral())
+            print(self.var, "DT integral", dt.Integral())
+            print(self.var, "DT integral with width", dt.Integral("width"))
+            print(self.var, "DT integral divided by nbins", dt.Integral()/dt.GetNbinsX())
+            print(self.var, "DT integral with width divided by nbins", dt.Integral("width")/dt.GetNbinsX())
+
+            ## Rescale MATRIX by luminosity
+            #mfb.Scale(self.lumi_per_year_n[self.year]*1000.)
 
             # Convert to TGraphAsymErrors to then add the error bars
             enterTheMatrix=ROOT.TGraphAsymmErrors(mfb)
             emr=ROOT.TGraphAsymmErrors(mfb)
             emr.SetName("ratio_%s"%emr.GetName())
-            mfbInt=mfb.Integral()
+            mfbInt= mfb.Integral() if self.normToOne else 1.
             for ipoint in range(0, enterTheMatrix.GetN()+1):
                 #print(mfb.GetBinCenter(ipoint), mfb.GetBinLowEdge(ipoint), mfb.GetBinLowEdge(ipoint+1), mfb.GetBinContent(ipoint), mfb.GetBinContent(ipoint)/mfbInt)
                 enterTheMatrix.SetPoint(ipoint, mfb.GetBinCenter(ipoint), mfb.GetBinContent(ipoint)/mfbInt) 
                 emr.SetPoint(ipoint, mfb.GetBinCenter(ipoint), mfb.GetBinContent(ipoint)/mfbInt/dt.GetBinContent(ipoint) if dt.GetBinContent(ipoint)!=0 else mfb.GetBinContent(ipoint)/mfbInt)
+                ### if reference is matrix emr.SetPoint(ipoint, mfb.GetBinCenter(ipoint), 1.)
                 estatup = (mfbStatUp.GetBinContent(ipoint) - mfb.GetBinContent(ipoint))/mfbInt
                 estatdn = (mfbStatDn.GetBinContent(ipoint) - mfb.GetBinContent(ipoint))/mfbInt
                 esystup = (mfbSystUp.GetBinContent(ipoint) - mfb.GetBinContent(ipoint))/mfbInt
@@ -1647,8 +1772,8 @@ class Unfolder(object):
                 enterTheMatrix.SetPointEYlow (ipoint,edn)
                 enterTheMatrix.SetPointEXhigh(ipoint, 0.) # I don't want to crowd too much the plot
                 enterTheMatrix.SetPointEXlow(ipoint,  0.) # I don't want to crowd too much the plot
-                emr.SetPointEYhigh(ipoint,eup/dt.GetBinContent(ipoint) if dt.GetBinContent(ipoint) !=0 else eup)
-                emr.SetPointEYlow (ipoint,edn/dt.GetBinContent(ipoint) if dt.GetBinContent(ipoint) !=0 else edn
+                emr.SetPointEYhigh(ipoint,eup/mfb.GetBinContent(ipoint) if mfb.GetBinContent(ipoint) !=0 else eup)
+                emr.SetPointEYlow (ipoint,edn/mfb.GetBinContent(ipoint) if mfb.GetBinContent(ipoint) !=0 else edn
 )
                 emr.SetPointEXhigh(ipoint, 0.) # I don't want to crowd too much the plot
                 emr.SetPointEXlow(ipoint,  0.) # I don't want to crowd too much the plot
@@ -1664,6 +1789,13 @@ class Unfolder(object):
         ###histDensityGenData.SetLineColor(kRed)
         ##histDensityGenData.Draw("SAME")
         ##histDensityGenMC.Draw("SAME HIST")
+
+        if not self.normToOne:
+            hus.Scale(298.9/hus.Integral())
+            hmu.Scale(298.9/hmu.Integral())
+            hut.Scale(298.9/hut.Integral())
+
+
         leg_money = ROOT.TLegend(0.4,0.6,0.9,0.9) if (not 'Njets' in self.var) else ROOT.TLegend(0.2,0.6,0.7,0.9)
         leg_money.SetTextSize(0.025)
         leg_money.SetBorderSize(0)
@@ -1690,7 +1822,7 @@ class Unfolder(object):
         # Ratio plot
         p2.cd()
 
-        # Reference is nominal POWHEG prediction, i.e. dt
+        # If reference is MATRIX, it's mfb
         enterTheMatrixratio=None
         # Ratio MATRIX to POWHEG
         if self.matrix:
@@ -1712,7 +1844,7 @@ class Unfolder(object):
         # Ratio POWHEG to POWHEG (for visualization purposes)
         dtratio=copy.deepcopy(dt)
         dtratio.SetName("ratio_%s"%dtratio.GetName())
-        dtratio.Divide(dt)
+        dtratio.Divide(dt)#mfb)
         dtratio.GetXaxis().SetTitleSize(0.1)
         dtratio.GetYaxis().SetTitleSize(0.1)
         dtratio.GetXaxis().SetLabelSize(0.08)
@@ -1720,6 +1852,8 @@ class Unfolder(object):
         dtratio.GetXaxis().SetTitleOffset(1.1)
         dtratio.GetYaxis().SetTitleOffset(0.6)
         dtratio.GetYaxis().SetTitle("Ratio to POWHEG")
+        dtratio.SetLineWidth(2)
+        dtratio.SetMarkerSize(0)
         dtratio.SetMinimum(0.5)
         dtratio.SetMaximum(1.5)
         dtratio.Draw("E HIST")
@@ -1730,7 +1864,7 @@ class Unfolder(object):
         # Ratio Unfolded data to POWHEG:
         husratio=copy.deepcopy(hus)
         husratio.SetName("ratio_%s"%husratio.GetName())
-        husratio.Divide(dt)
+        husratio.Divide(dt)#mfb)
         if not self.onlyMC:
             husratio.Draw("E2 SAME")
         
@@ -1742,13 +1876,13 @@ class Unfolder(object):
         # Ratio of whatever con error to POWHEG:
         hutratio=copy.deepcopy(hut)
         hutratio.SetName("ratio_%s"%hutratio.GetName())
-        hutratio.Divide(dt)
+        hutratio.Divide(dt)#mfb)
         hutratio.Draw("E2 SAME")
 
         # Ratio of the total uncertainty to POWHEG:
         hmuratio=copy.deepcopy(hmu)
         hmuratio.SetName("ratio_%s"%hmuratio.GetName())
-        hmuratio.Divide(dt)
+        hmuratio.Divide(dt)#mfb)
         if not self.onlyMC:
             hmuratio.Draw('SAME E2')
 
@@ -1759,7 +1893,9 @@ class Unfolder(object):
         # Ratio amcatnlo to POWHEG
         dt_altratio=copy.deepcopy(dt_alt)
         dt_altratio.SetName("ratio_%s"%dt_altratio.GetName())
-        dt_altratio.Divide(dt)
+        dt_altratio.Divide(dt)#mfb)
+        dt_altratio.SetLineWidth(2)
+        dt_altratio.SetMarkerSize(0)
         dt_altratio.Draw("SAME E HIST")
 
         # Replot to avoid it to be covered by bands
@@ -1792,8 +1928,12 @@ class Unfolder(object):
 
     def sub_bkg_by_hand(self):
         subdata=copy.deepcopy(ROOT.TH1D(self.data))
-        for i in range(1,len(self.bkg)):
+        sumofbkgs=0
+        for i in range(0,len(self.bkg)):
+            print("HELLO THERE, subtracting by hand background ", self.bkg[i].GetName() , "with integral ", self.bkg[i].Integral())
+            sumofbkgs+=self.bkg[i].Integral()
             subdata.Add(self.bkg[i], -1)
+        print("HELLO THERE, I have subtracted backgrounds to data for a total background yield of ", sumofbkgs)
         return subdata
 
 
