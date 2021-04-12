@@ -1,13 +1,9 @@
 #!/usr/bin/env python
 #from tree2yield import *
-# from CMGTools.TTHAnalysis.plotter.tree2yield import *
-# from CMGTools.TTHAnalysis.plotter.projections import *
-# from CMGTools.TTHAnalysis.plotter.figuresOfMerit import FOM_BY_NAME
-# from CMGTools.TTHAnalysis.plotter.histoWithNuisances import *
-from tree2yield import *
-from projections import *
-from figuresOfMerit import FOM_BY_NAME
-from histoWithNuisances import *
+from CMGTools.TTHAnalysis.plotter.tree2yield import *
+from CMGTools.TTHAnalysis.plotter.projections import *
+from CMGTools.TTHAnalysis.plotter.figuresOfMerit import FOM_BY_NAME
+from CMGTools.TTHAnalysis.plotter.histoWithNuisances import *
 import pickle, re, random, time
 from copy import copy, deepcopy
 from collections import defaultdict
@@ -242,7 +238,7 @@ class MCAnalysis:
             cnames = [ x.strip() for x in field[1].split("+") ]
             total_w = 0.; to_norm = False; ttys = [];
             genWeightName = extra["genWeightName"] if "genWeightName" in extra else "genWeight"
-            genSumWeightName = extra["genSumWeightName"] if "genSumWeightName" in extra else "genEventSumw"  #for nanoAODv6 this should be genEventSumw_
+            genSumWeightName = extra["genSumWeightName"] if "genSumWeightName" in extra else "genEventSumw_"  #for nanoAODv6 this should be genEventSumw_
             is_w = -1
             pname0 = pname
             for cname in cnames:
@@ -376,7 +372,7 @@ class MCAnalysis:
                     for tty in ttys: tty.setScaleFactor("%s*%g" % (scale, 1000.0/total_w))
                 else:
                     if total_w != 0: raise RuntimeError, "Weights from pck file shoulnd't be there for NanoAOD for %s " % pname
-                    self._groupsToNormalize.append( (ttys, genSumWeightName if is_w == 1 else "genEventCount", scale) )
+                    self._groupsToNormalize.append( (ttys, genSumWeightName if is_w == 1 else "genEventCount_", scale) )
                     
             #for tty in ttys: tty.makeTTYVariations()
         #if len(self._signals) == 0: raise RuntimeError, "No signals!"
@@ -543,9 +539,22 @@ class MCAnalysis:
             h.buildEnvelopes() 
             h.buildEnvelopesRMS()
 
+        #print "\nANTES", ret
+
         ## add variations from alternate samples
         if self.variationsFile:
             buildVariationsFromAlternative(self.variationsFile, ret)
+            buildVariationsFromAlternativesWithEnvelope(self.variationsFile, ret)
+
+        ## remove samples used for systematics
+        toremove = []
+        for key in ret:
+            if "syst" in key:
+                toremove.append(key)
+        for rem in toremove:
+            print " - Erasing " + rem
+            ret.pop(rem)
+        #print "\nLLUEU", ret
 
         rescales = []
         self.compilePlotScaleMap(self._options.plotscalemap,rescales)
