@@ -37,11 +37,11 @@ lepMasses = lambda : ttHLeptonCombMasses( [ ("Muon",muonSelection), ("Electron",
 from CMGTools.TTHAnalysis.tools.nanoAOD.yearTagger import yearTag
 from CMGTools.TTHAnalysis.tools.nanoAOD.xsecTagger import xsecTag
 from CMGTools.TTHAnalysis.tools.nanoAOD.lepJetBTagAdder import lepJetBTagCSV, lepJetBTagDeepCSV, lepJetBTagDeepFlav, lepJetBTagDeepFlavC
-from PhysicsTools.NanoAODTools.postprocessing.modules.common.puWeightProducer import puWeight_2017, puAutoWeight_2017
-from PhysicsTools.NanoAODTools.postprocessing.modules.common.PrefireCorr import prefCorr_2017
-from PhysicsTools.NanoAODTools.postprocessing.modules.common.muonScaleResProducer import muonScaleRes2017
+from PhysicsTools.NanoAODTools.postprocessing.modules.common.puWeightProducer import puWeight_2017G, puAutoWeight_2017G
+from PhysicsTools.NanoAODTools.postprocessing.modules.common.PrefireCorr import prefCorr_2017G
+from PhysicsTools.NanoAODTools.postprocessing.modules.common.muonScaleResProducer import muonScaleRes2017G
 
-WZ5TeV_sequence_step1 = [lepSkim, lepMerge, yearTag, xsecTag, lepJetBTagCSV, lepJetBTagDeepCSV, lepJetBTagDeepFlav, lepMasses, puWeight_2017, prefCorr_2017]
+WZ5TeV_sequence_step1 = [lepSkim, lepMerge, yearTag, xsecTag, lepJetBTagCSV, lepJetBTagDeepCSV, lepJetBTagDeepFlav, lepMasses, puWeight_2017G, prefCorr_2017G]
 
 ##add weights
 
@@ -179,7 +179,7 @@ mcPromptGamma = lambda : ObjTagger('mcPromptGamma','LepGood', [lambda l : (l.gen
 mcMatch_seq   = [ isMatchRightCharge, mcMatchId ,mcPromptGamma]
 
 
-from PhysicsTools.NanoAODTools.postprocessing.modules.jme.jetmetUncertainties import jetmetUncertainties2016All,jetmetUncertainties2017All,jetmetUncertainties2018All#,jetmetUncertainties20175TeV,jetmetUncertainties20175TeVData quitar:descomentar
+from PhysicsTools.NanoAODTools.postprocessing.modules.jme.jetmetUncertainties import jetmetUncertainties2016All,jetmetUncertainties2017All,jetmetUncertainties2018All,jetmetUncertainties20175TeV,jetmetUncertainties20175TeVData
 from PhysicsTools.NanoAODTools.postprocessing.modules.jme.jetmetHelperRun2 import * 
 
 from CMGTools.TTHAnalysis.tools.nanoAOD.jetmetGrouper import jetMetCorrelate2016, jetMetCorrelate2017, jetMetCorrelate2018
@@ -193,8 +193,8 @@ jme2016 = [jetmetUncertainties2016All,jetMetCorrelations2016]
 jme2017 = [jetmetUncertainties2017All,jetMetCorrelations2017]
 jme2018 = [jetmetUncertainties2018All,jetMetCorrelations2018]
 
-jme2017_5TeV = createJMECorrector(True, "2017", "F", "Total", False, "AK4PFchs", False) #quitar: estaba era G
-jme2017_5TeV_Data = createJMECorrector(False, "2017", "F", "Total", False, "AK4PFchs", False)
+jme2017_5TeV = createJMECorrector(True, "2017", "G", "Total", False, "AK4PFchs", False)
+jme2017_5TeV_Data = createJMECorrector(False, "2017", "G", "Total", False, "AK4PFchs", False)
 
 def _fires(ev, path):
     if "/hasfiredtriggers_cc.so" not in ROOT.gSystem.GetLibraries():
