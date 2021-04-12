@@ -41,9 +41,8 @@ class PlotFile:
                 (line,more) = line.split(";")[:2]
                 more = more.replace("\\,",";")
                 for setting in [f.strip().replace(";",",") for f in more.split(',')]:
-                    setting = setting.replace("==","_____")
                     if "=" in setting: 
-                        (key,val) = [f.strip().replace("_____","==") for f in setting.split("=")]
+                        (key,val) = [f.strip() for f in setting.split("=")]
                         try:
                             extra[key] = eval(val)
                         except:
@@ -674,10 +673,6 @@ class PlotMaker:
             for pspec in pspecs:
                 print "    plot: ",pspec.name
                 pmap = mca.getPlots(pspec,cut,makeSummary=True,closeTreeAfter=True)
-
-                #print pmap
-                #sys.exit()
-
                 #
                 # blinding policy
                 blind = pspec.getOption('Blinded','None') if 'data' in pmap else 'None'
@@ -798,7 +793,6 @@ class PlotMaker:
 
     def printOnePlot(self,mca,pspec,pmapIn,mytotal=None,makeCanvas=True,outputDir=None,printDir=None,xblind=[9e99,-9e99],extraProcesses=[],plotmode="auto",outputName=None):
                 pmap = dict( (k, h if isinstance(h,HistoWithNuisances) else HistoWithNuisances(h)) for (k,h) in pmapIn.iteritems() )
-                #print(pmap)
                 options = self._options
                 if printDir == None: printDir=self._options.printDir
                 if outputDir == None: outputDir = self._dir
