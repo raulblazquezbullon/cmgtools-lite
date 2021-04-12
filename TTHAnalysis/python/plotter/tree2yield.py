@@ -16,11 +16,17 @@ ROOT.gSystem.Load("libpng") # otherwise we may end up with a bogus version
 
 import copy
 
-from CMGTools.TTHAnalysis.plotter.cutsFile import CutsFile
-from CMGTools.TTHAnalysis.plotter.mcCorrections import *
-from CMGTools.TTHAnalysis.plotter.fakeRate import *
-from CMGTools.TTHAnalysis.plotter.uncertaintyFile import *
-from CMGTools.TTHAnalysis.plotter.histoWithNuisances import HistoWithNuisances, cropNegativeBins
+# from CMGTools.TTHAnalysis.plotter.cutsFile import CutsFile
+# from CMGTools.TTHAnalysis.plotter.mcCorrections import *
+# from CMGTools.TTHAnalysis.plotter.fakeRate import *
+# from CMGTools.TTHAnalysis.plotter.uncertaintyFile import *
+# from CMGTools.TTHAnalysis.plotter.histoWithNuisances import HistoWithNuisances, cropNegativeBins
+
+from cutsFile import CutsFile
+from mcCorrections import *
+from fakeRate import *
+from uncertaintyFile import *
+from histoWithNuisances import HistoWithNuisances, cropNegativeBins
 
 if "/functions_cc.so" not in ROOT.gSystem.GetLibraries(): 
     ROOT.gROOT.ProcessLine(".L %s/src/CMGTools/TTHAnalysis/python/plotter/functions.cc+" % os.environ['CMSSW_BASE']);
