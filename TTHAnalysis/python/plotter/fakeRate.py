@@ -77,4 +77,3 @@ class FakeRate:
         else:
             _loads[hist] = ((fname,hname), txtfilename)
         ROOT.loadFRHisto(hist,fname,hname)
-
