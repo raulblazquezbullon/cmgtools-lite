@@ -1237,5 +1237,3 @@ if __name__ == "__main__":
     plotter = PlotMaker(outfile,options)
     plotter.run(mca,cuts,plots)
     outfile.Close()
-
-
