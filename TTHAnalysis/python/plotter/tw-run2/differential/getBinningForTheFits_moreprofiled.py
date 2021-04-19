@@ -664,7 +664,7 @@ def CheckProducedCardsByTask(task):
 
     ch = "forExtr_bin" + str(ibin) + ("_PRE" + iunc if iunc != "" else "") + ".root"
 
-    chkpath = outpath + "/" + year + "/" + var + "/sigextr_fit/rebinhistos/" + ch
+    chkpath = outpath + "/" + year + "/" + variable + "/sigextr_fit/rebinhistos/" + ch
 
     #print chkpath
 
@@ -939,8 +939,8 @@ if __name__=="__main__":
                 #if str(task) == "('2020-09-20', '2016', 'Lep1_Pt', True, 32, 'temp_2021_03_08_nuevoshistos/differential', 'forExtr', False, True, '', False, 'batch', 0, 'ttbar_scales_00Up')":
                     #calculate = True
 
-                #if calculate:
-                    #ExecuteOrSubmitTask(task)
+                if calculate:
+                    ExecuteOrSubmitTask(task)
                     #sys.exit()
                     #calculate = False
         else:

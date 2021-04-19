@@ -198,7 +198,7 @@ vvttv_norm   : vvttv   : .* : normSymm : 1.5
 dy_norm      : dy      : .* : normSymm : 1.5
 nonworz_norm : nonworz : .* : normSymm : 1.5
 
-#
+
 ## --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #### PDF
 ### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -209,23 +209,23 @@ nonworz_norm : nonworz : .* : normSymm : 1.5
 ##### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ##### Matrix element factorisation and renormalisation scales
 ##### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#ttbar_scales : ttbar : .* : envelope ; FakeRates=['tw-run2/frs-scales/fr-muR_0p5_muF_0p5.txt'\,'tw-run2/frs-scales/fr-muR_1p0_muF_2p0.txt'\,'tw-run2/frs-scales/fr-muR_2p0_muF_1p0.txt'\,'tw-run2/frs-scales/fr-muR_0p5_muF_1p0.txt'\,'tw-run2/frs-scales/fr-muR_1p0_muF_0p5.txt'\,'tw-run2/frs-scales/fr-muR_2p0_muF_2p0.txt']
-#tw_scales    : tw    : .* : envelope ; FakeRates=['tw-run2/frs-scales/fr-muR_0p5_muF_0p5.txt'\,'tw-run2/frs-scales/fr-muR_1p0_muF_2p0.txt'\,'tw-run2/frs-scales/fr-muR_2p0_muF_1p0.txt'\,'tw-run2/frs-scales/fr-muR_0p5_muF_1p0.txt'\,'tw-run2/frs-scales/fr-muR_1p0_muF_0p5.txt'\,'tw-run2/frs-scales/fr-muR_2p0_muF_2p0.txt']
+##ttbar_scales : ttbar : .* : envelope ; FakeRates=['tw-run2/frs-scales/fr-muR_0p5_muF_0p5.txt'\,'tw-run2/frs-scales/fr-muR_1p0_muF_2p0.txt'\,'tw-run2/frs-scales/fr-muR_2p0_muF_1p0.txt'\,'tw-run2/frs-scales/fr-muR_0p5_muF_1p0.txt'\,'tw-run2/frs-scales/fr-muR_1p0_muF_0p5.txt'\,'tw-run2/frs-scales/fr-muR_2p0_muF_2p0.txt']
+##tw_scales    : tw    : .* : envelope ; FakeRates=['tw-run2/frs-scales/fr-muR_0p5_muF_0p5.txt'\,'tw-run2/frs-scales/fr-muR_1p0_muF_2p0.txt'\,'tw-run2/frs-scales/fr-muR_2p0_muF_1p0.txt'\,'tw-run2/frs-scales/fr-muR_0p5_muF_1p0.txt'\,'tw-run2/frs-scales/fr-muR_1p0_muF_0p5.txt'\,'tw-run2/frs-scales/fr-muR_2p0_muF_2p0.txt']
 #
 #
-##ttbar_scales_00 : ttbar : .* : templateSymmAdditive ; FakeRate='tw-run2/frs-scales/fr-muR_0p5_muF_0p5.txt'
-##ttbar_scales_01 : ttbar : .* : templateSymmAdditive ; FakeRate='tw-run2/frs-scales/fr-muR_0p5_muF_1p0.txt'
-##ttbar_scales_10 : ttbar : .* : templateSymmAdditive ; FakeRate='tw-run2/frs-scales/fr-muR_1p0_muF_0p5.txt'
-##ttbar_scales_12 : ttbar : .* : templateSymmAdditive ; FakeRate='tw-run2/frs-scales/fr-muR_1p0_muF_2p0.txt'
-##ttbar_scales_21 : ttbar : .* : templateSymmAdditive ; FakeRate='tw-run2/frs-scales/fr-muR_2p0_muF_1p0.txt'
-##ttbar_scales_22 : ttbar : .* : templateSymmAdditive ; FakeRate='tw-run2/frs-scales/fr-muR_2p0_muF_2p0.txt'
+#ttbar_scales_00 : ttbar : .* : templateSymmAdditive ; FakeRate='tw-run2/frs-scales/fr-muR_0p5_muF_0p5.txt'
+#ttbar_scales_01 : ttbar : .* : templateSymmAdditive ; FakeRate='tw-run2/frs-scales/fr-muR_0p5_muF_1p0.txt'
+#ttbar_scales_10 : ttbar : .* : templateSymmAdditive ; FakeRate='tw-run2/frs-scales/fr-muR_1p0_muF_0p5.txt'
+#ttbar_scales_12 : ttbar : .* : templateSymmAdditive ; FakeRate='tw-run2/frs-scales/fr-muR_1p0_muF_2p0.txt'
+#ttbar_scales_21 : ttbar : .* : templateSymmAdditive ; FakeRate='tw-run2/frs-scales/fr-muR_2p0_muF_1p0.txt'
+#ttbar_scales_22 : ttbar : .* : templateSymmAdditive ; FakeRate='tw-run2/frs-scales/fr-muR_2p0_muF_2p0.txt'
 #
-##tw_scales_00    : tw    : .* : templateSymmAdditive ; FakeRate='tw-run2/frs-scales/fr-muR_0p5_muF_0p5.txt'
-##tw_scales_01    : tw    : .* : templateSymmAdditive ; FakeRate='tw-run2/frs-scales/fr-muR_0p5_muF_1p0.txt'
-##tw_scales_10    : tw    : .* : templateSymmAdditive ; FakeRate='tw-run2/frs-scales/fr-muR_1p0_muF_0p5.txt'
-##tw_scales_12    : tw    : .* : templateSymmAdditive ; FakeRate='tw-run2/frs-scales/fr-muR_1p0_muF_2p0.txt'
-##tw_scales_21    : tw    : .* : templateSymmAdditive ; FakeRate='tw-run2/frs-scales/fr-muR_2p0_muF_1p0.txt'
-##tw_scales_22    : tw    : .* : templateSymmAdditive ; FakeRate='tw-run2/frs-scales/fr-muR_2p0_muF_2p0.txt'
+#tw_scales_00    : tw    : .* : templateSymmAdditive ; FakeRate='tw-run2/frs-scales/fr-muR_0p5_muF_0p5.txt'
+#tw_scales_01    : tw    : .* : templateSymmAdditive ; FakeRate='tw-run2/frs-scales/fr-muR_0p5_muF_1p0.txt'
+#tw_scales_10    : tw    : .* : templateSymmAdditive ; FakeRate='tw-run2/frs-scales/fr-muR_1p0_muF_0p5.txt'
+#tw_scales_12    : tw    : .* : templateSymmAdditive ; FakeRate='tw-run2/frs-scales/fr-muR_1p0_muF_2p0.txt'
+#tw_scales_21    : tw    : .* : templateSymmAdditive ; FakeRate='tw-run2/frs-scales/fr-muR_2p0_muF_1p0.txt'
+#tw_scales_22    : tw    : .* : templateSymmAdditive ; FakeRate='tw-run2/frs-scales/fr-muR_2p0_muF_2p0.txt'
 #
 #
 ###### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -115,6 +115,12 @@ class DataContainer:
                 if self.year != "run2":
                     if self.year not in el:
                         continue
+                if not "lumi" in iU.lower():
+                    if isinstance(vl.systMap[iU], dict): #### OJIIIISIMO QUE ESTI YE EL SYSTMAP NO EL MODIFIEEEEEEEEED!!!!!!!!!!!
+                        if not vl.systMap[iU]["tw"]:
+                            continue
+                    elif not vl.systMap[iU]:
+                        continue
 
                 self.listOfSysts.append("resp_" + iU + "Up")
                 self.listOfSysts.append("resp_" + iU + "Down")
@@ -255,6 +261,9 @@ class UnfolderHelper:
             self.tunfolder.SetInput(self.unfInput, 0., 0., self.inputcovmat)
         else:
             self.tunfolder.SetInput(self.unfInput)
+
+        #print self.unfInput.GetBinContent(1), self.bkg.GetBinContent(1)
+        #sys.exit()
 
         self.tunfolder.SubtractBackground(self.bkg, "Events outside the fiducial region")
         return
@@ -727,42 +736,42 @@ class Unfolder():
             allHistos[key].Scale(scaleval)
         
 
-        if not self.wearedoingasimov:
-            #if not os.path.isfile('temp/{var}_/ClosureTest_{var}.root'.format(var = self.var)):
-                #raise RuntimeError('The rootfile with the generated information does not exist')
-            #tmptfile = r.TFile.Open('temp/{var}_/ClosureTest_{var}.root'.format(var = self.var))
-            ##tmptfile2 = r.TFile.Open('temp/{var}_/ClosureTest_recobinning_{var}.root'.format(var = self.var))
-            #tru = deepcopy(tmptfile.Get('tW'))
-            ##tru2 = deepcopy(tmptfile2.Get('tW'))
-            ##tru2.Scale(thelumi*1000)
-            #for bin in range(1, allHistos['asimov'].GetNbinsX() + 1):
-                ##print "\nasimov:", allHistos['asimov'].GetBinContent(bin)
-                ##print "verdad:", tru.GetBinContent(bin)
-                #allHistos['asimov'].SetBinError(bin,   abs(allHistos['asimov'].GetBinContent(bin) - tru.GetBinContent(bin)))
-                ##allHistos['asimov'].SetBinContent(bin, nominal.GetBinContent(bin))
-                ##print "errorin:", allHistos['asimov'].GetBinError(bin)
-                ##print "nominal:", nominal.GetBinContent(bin)
-                ##print "relativo", round(allHistos['asimov'].GetBinError(bin)/allHistos['asimov'].GetBinContent(bin)*100, 1)
-                ##print "ratio:", allHistos['asimov'].GetBinContent(bin)/tru.GetBinContent(bin)
-            ##for bin in range(1, tru2.GetNbinsX() + 1):
-                ##print "verdad2:", tru2.GetBinContent(bin)
-            ##tmptfile2.Close()
-            #tmptfile.Close()
-            #del tru
-        
-            savetfile = r.TFile(self.folderpath + "/particleOutput.root", "recreate")
-            for key in allHistos:
-                allHistos[key].Write()
+        #if not self.wearedoingasimov:
+        #if not os.path.isfile('temp/{var}_/ClosureTest_{var}.root'.format(var = self.var)):
+            #raise RuntimeError('The rootfile with the generated information does not exist')
+        #tmptfile = r.TFile.Open('temp/{var}_/ClosureTest_{var}.root'.format(var = self.var))
+        ##tmptfile2 = r.TFile.Open('temp/{var}_/ClosureTest_recobinning_{var}.root'.format(var = self.var))
+        #tru = deepcopy(tmptfile.Get('tW'))
+        ##tru2 = deepcopy(tmptfile2.Get('tW'))
+        ##tru2.Scale(thelumi*1000)
+        #for bin in range(1, allHistos['asimov'].GetNbinsX() + 1):
+            ##print "\nasimov:", allHistos['asimov'].GetBinContent(bin)
+            ##print "verdad:", tru.GetBinContent(bin)
+            #allHistos['asimov'].SetBinError(bin,   abs(allHistos['asimov'].GetBinContent(bin) - tru.GetBinContent(bin)))
+            ##allHistos['asimov'].SetBinContent(bin, nominal.GetBinContent(bin))
+            ##print "errorin:", allHistos['asimov'].GetBinError(bin)
+            ##print "nominal:", nominal.GetBinContent(bin)
+            ##print "relativo", round(allHistos['asimov'].GetBinError(bin)/allHistos['asimov'].GetBinContent(bin)*100, 1)
+            ##print "ratio:", allHistos['asimov'].GetBinContent(bin)/tru.GetBinContent(bin)
+        ##for bin in range(1, tru2.GetNbinsX() + 1):
+            ##print "verdad2:", tru2.GetBinContent(bin)
+        ##tmptfile2.Close()
+        #tmptfile.Close()
+        #del tru
 
-            covnom.Scale(scaleval**2)
-            covnom.Write()
-            #covitwo = deepcopy(self.helpers[''].tunfolder.GetEmatrixInput("CovMatInput"))
-            #covitwo.Scale(scaleval**2)
-            #covitwo.Write()
-            #covithree = deepcopy(self.helpers[''].tunfolder.GetEmatrixSysUncorr("CovMatResponse"))
-            #covithree.Scale(scaleval**2)
-            #covithree.Write()
-            savetfile.Close()
+        savetfile = r.TFile(self.folderpath + "/particleOutput.root", "recreate")
+        for key in allHistos:
+            allHistos[key].Write()
+
+        covnom.Scale(scaleval**2)
+        covnom.Write()
+        #covitwo = deepcopy(self.helpers[''].tunfolder.GetEmatrixInput("CovMatInput"))
+        #covitwo.Scale(scaleval**2)
+        #covitwo.Write()
+        #covithree = deepcopy(self.helpers[''].tunfolder.GetEmatrixSysUncorr("CovMatResponse"))
+        #covithree.Scale(scaleval**2)
+        #covithree.Write()
+        savetfile.Close()
         
 
         if not self.wearedoingasimov: nominal_withErrors = ep.propagateHisto(allHistos, vl.doSym)

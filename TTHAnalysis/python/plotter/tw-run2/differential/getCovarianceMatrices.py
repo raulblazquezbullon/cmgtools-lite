@@ -19,8 +19,8 @@ vl.SetUpWarnings()
 CMS_lumi.writeExtraText = 1
 
 def printCovarianceMatrix(tsk):
-    inpath, iY, var, ty = tsk
-
+    inpath, iY, var, ty, nofidufile = tsk
+    print inpath, iY, var, ty
     fidornot = "fid" in ty
     binornot = "bin" in ty
     ty = ty.replace("fid", "").replace("bin", "")
@@ -40,7 +40,7 @@ def printCovarianceMatrix(tsk):
     scaleval = 1/thelumi/1000 if vl.doxsec else 1
     if vl.doxsec and ty == 'detector': nominal.Scale(scaleval)
     
-    varMat  = {}
+    varMat  = {}; doneenvs = []
     for key in tfile.GetListOfKeys():
         if key.GetName() == "data_" or "asimov" in key.GetName() or key.GetName() == var or key.GetName() == "nom0" or key.GetName() == "nom1":
             continue
@@ -53,20 +53,52 @@ def printCovarianceMatrix(tsk):
                 #varMat[key.GetName().replace("data_", "").replace(var + "_", "")] = deepcopy(ep.getCovarianceFromVar(nominal, key.ReadObj(), var, ty))
             else:
                 tmphistoup = deepcopy(key.ReadObj().Clone("tmphistoup"))
+                tmphistodw = None
+                isEnv      = None
 
-                for key2 in tfile.GetListOfKeys():
-                    if key2.GetName() == key.GetName().replace("Up", "Down"):
-                        tmphistodw = deepcopy(key2.ReadObj().Clone("tmphistodw"))
-                
+                for iU in vl.UncertaintiesToEnvelope:
+                    if iU in key.GetName():
+                        isEnv = iU
+
+                if isEnv:
+                    if isEnv in doneenvs: continue
+                    doneenvs.append(isEnv)
+                    tmphistodw = deepcopy(nominal.Clone("tmphistodw"))
+                    nbins = tmphistoup.GetNbinsX()
+                    for iB in range(1, nbins + 1):
+                        if tmphistoup.GetBinContent(iB) - nominal.GetBinContent(binin) >= 0:
+                            tmphistoup.SetBinContent(iB, tmphistoup.GetBinContent(iB))
+                        else:
+                            tmphistoup.SetBinContent(iB, nominal.GetBinContent(iB))
+                            tmphistodw.SetBinContent(iB, tmphistoup.GetBinContent(iB))
+                    doneentries = [key.GetName()]
+                    for key2 in tfile.GetListOfKeys():
+                        if isEnv in key2.GetName() and key2.GetName() not in doneentries:
+                            for iB in range(1, nbins + 1):
+                                if key.ReadObj().GetBinContent(iB) > tmphistoup.GetBinContent(binin):
+                                    tmphistoup.SetBinContent(iB, key.ReadObj().GetBinContent(iB))
+                                elif key.ReadObj().GetBinContent(iB) < tmphistodw.GetBinContent(binin):
+                                    tmphistodw.SetBinContent(iB, key.ReadObj().GetBinContent(iB))
+
+                else:
+                    for key2 in tfile.GetListOfKeys():
+                        if key2.GetName() == key.GetName().replace("Up", "Down"):
+                            tmphistodw = deepcopy(key2.ReadObj().Clone("tmphistodw"))
+
+                    if not tmphistodw:
+                        print "Variation", key.GetName(), "is asymmetrical."
+                        tmphistodw = deepcopy(tmphistoup.Clone("tmphistodw"))
+
                 varsup  = [abs(tmphistoup.GetBinContent(binin) - nominal.GetBinContent(binin)) for binin in range(1, nominal.GetNbinsX() + 1)]
                 varsdw  = [abs(tmphistodw.GetBinContent(binin) - nominal.GetBinContent(binin)) for binin in range(1, nominal.GetNbinsX() + 1)]
                 varsfin = [(varsup[binin] + varsdw[binin])/2 for binin in range(nominal.GetNbinsX())]
                 for binin in range(1, nominal.GetNbinsX() + 1):
                     tmphistoup.SetBinContent(binin, nominal.GetBinContent(binin) + varsfin[binin - 1])
                 del varsup, varsdw, varsfin, tmphistodw
-                varMat[key.GetName().replace("data_", "").replace(var + "_", "")] = deepcopy(ep.getCovarianceFromVar(nominal, tmphistoup, var, iY, ty))
+
+                varMat[key.GetName().replace("data_", "").replace(var + "_", "") if not isEnv else var + "_" + isEnv] = deepcopy(ep.getCovarianceFromVar(nominal, tmphistoup, var, iY, ty))
                 del tmphistoup
-    
+    #sys.exit()
     #colup = deepcopy(nominal.Clone("ColorRUp"))
     #coldn = deepcopy(nominal.Clone("ColorRDown"))
     
@@ -96,7 +128,7 @@ def printCovarianceMatrix(tsk):
     
     binning  = array('f', vl.varList[var]['bins_detector'] if ty == "detector" else vl.varList[var]['bins_particle'])
     
-    if fidornot: # We must calculate the (complete) covariance matrix for the statistical uncertainties for this case, as it is not directly providen by doFiducial.py nor TUnfold.
+    if fidornot and not nofidufile: # We must calculate the (complete) covariance matrix for the statistical uncertainties for this case, as it is not directly providen by doFiducial.py nor TUnfold.
         ffid = r.TFile.Open(inpath + "/" + iY + "/Fiducial/particleOutput.root", "read")
         fvar = r.TFile.Open(pathtothings + "/particleOutput.root",               "read")
 
@@ -128,6 +160,39 @@ def printCovarianceMatrix(tsk):
         #for bin in range(1, nominal.GetNbinsX() + 1):
             #print "bin", bin, newmat.GetBinContent(bin, bin)
         ffid.Close(); fvar.Close(); del ffid, fvar, dfid, dxs, newmat;
+
+    elif fidornot: # We must calculate the (complete) covariance matrix for the statistical uncertainties for this case, as it is not directly providen by doFiducial.py nor TUnfold.
+        fvar = r.TFile.Open(pathtothings + "/particleOutput.root",               "read")
+
+        newmat = r.TH2F('newmat', '', nominal.GetNbinsX(), binning, nominal.GetNbinsX(), binning)
+
+        dxs = deepcopy(fvar.Get(var).Clone("dxs"))
+        covm = deepcopy(fvar.Get("CovMat").Clone("covm"))
+
+        for key in fvar.GetListOfKeys():
+            if key.GetName() != var: continue
+            dfid = r.TH1D(fvar.Get(var))
+
+            for bin in range(1, dfid.GetNbinsX() + 1):
+                dfid.SetBinContent(bin, sum([fvar.Get(var).GetBinContent(i) for i in range(1, fvar.Get(var).GetNbinsX() + 1)]))
+                dfid.SetBinError(bin,   r.TMath.Sqrt(sum([fvar.Get("CovMat").GetBinContent(i, j) for i in range(1, fvar.Get("CovMat").GetNbinsX() + 1) for j in range(1, fvar.Get("CovMat").GetNbinsX() + 1) ])))
+        #print "\nFiducial"
+        for bin1 in range(1, nominal.GetNbinsX() + 1):
+            for bin2 in range(1, nominal.GetNbinsX() + 1):
+                goodunc = (covm.GetBinContent(bin1, bin2) / dfid.GetBinContent(bin1)**2 +
+                           dxs.GetBinContent(bin1) * dxs.GetBinContent(bin2) * dfid.GetBinError(bin1)**2 / dfid.GetBinContent(bin1)**4 -
+                           dxs.GetBinContent(bin2) / dfid.GetBinContent(bin1)**3 * sum([covm.GetBinContent(bin1, j) for j in range(1, dxs.GetNbinsX() + 1)]) -
+                           dxs.GetBinContent(bin1) / dfid.GetBinContent(bin1)**3 * sum([covm.GetBinContent(bin2, j) for j in range(1, dxs.GetNbinsX() + 1)]) )
+                #if bin1 == bin2: print "bin", bin1, goodunc
+                newmat.SetBinContent(bin1, bin2, goodunc)
+
+        if binornot:
+            newmat.Scale(1, "width"); # THIS IS A COVARIANCE!! Constants that apply to the random variable apply SQUARED to the covariance (and variance)! NOTE: when you have a 2D histo, the scale is already done "two times".
+            #print "\nFiducialnorm"
+        varMat["statistical"] = deepcopy(newmat.Clone("statistical"))
+        #for bin in range(1, nominal.GetNbinsX() + 1):
+            #print "bin", bin, newmat.GetBinContent(bin, bin)
+        fvar.Close(); del fvar, dfid, dxs, newmat;
     
     if ty == "detector":
         newmat = r.TH2F('newmat', '', nominal.GetNbinsX(), binning, nominal.GetNbinsX(), binning)
@@ -232,6 +297,7 @@ if __name__=="__main__":
     parser.add_argument('--extraArgs', '-e', metavar = 'extra',      dest = "extra",    required = False, default = "")
     parser.add_argument('--nthreads',  '-j', metavar = 'nthreads',   dest = "nthreads", required = False, default = 0, type = int)
     parser.add_argument('--pretend',   '-p', action  = "store_true", dest = "pretend",  required = False, default = False)
+    parser.add_argument('--notFiduFile', '-nf', action  = "store_true", dest = "notfidufile", required = False, default = False)
 
     args     = parser.parse_args()
     year     = args.year
@@ -240,6 +306,7 @@ if __name__=="__main__":
     pretend  = args.pretend
     inpath   = args.inpath
     variable = args.variable
+    notFiduFile = args.notfidufile
 
     #### First, find the tasks
     tasks = []
@@ -260,9 +327,12 @@ if __name__=="__main__":
                 thevars = next(os.walk(inpath + "/" + iY))[1]
                 for iV in thevars:
                     if "plots" in iV or "Fiducial" in iV or "table" in iV: continue
+                    if iY != "run2": continue
 
-                    for t in ["detector", "particle", "particlefid", "particlebin", "particlefidbin"]:
-                        tasks.append( (inpath, iY, iV, t) )
+                    #for t in ["detector", "particle", "particlefid", "particlebin", "particlefidbin"]:
+                    #for t in ["particle", "particlefidbin"]:
+                    for t in ["particlefidbin"]:
+                        tasks.append( (inpath, iY, iV, t, notFiduFile) )
 
     vl.SetUpWarnings()
     if nthreads > 1:

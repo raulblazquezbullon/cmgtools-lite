@@ -272,7 +272,7 @@ def getUncList(varDict, doFit = True, doSym = False):
                 histDown = deepcopy(tmpDict[""].Clone(tmpDict[""].GetName() + iUE + "Down"))
                 init = False
                 for var in varDict:
-                    print var
+                    #print var
                     if iUE in var:
                         for iB in range(1, tmpDict[var].GetNbinsX() + 1):
                             if not init:
@@ -290,7 +290,7 @@ def getUncList(varDict, doFit = True, doSym = False):
                 if not init:
                     raise RuntimeError("FATAL: an envelope for the " + iUE + " unc. was required, but not a single uncertainty source compatible with such scaffold was found.")
 
-                for iB in range(1, tmpDict[var].GetNbinsX() + 1):
+                for iB in range(1, tmpDict[""].GetNbinsX() + 1):
                     theaverage = vl.mean([histUp.GetBinError(iB), histDown.GetBinError(iB)])
                     histUp.SetBinError(iB, theaverage if theaverage < histUp.GetBinContent(iB) else histUp.GetBinContent(iB))
 
