@@ -264,4 +264,3 @@ class UncertaintyFile:
     def add(self,uncertainty):
         if uncertainty.name in [u.name for u in self._uncertainty]: raise RuntimeError, 'Uncertainty with name %s is already present' % uncertainty.name
         self._uncertainty.append(uncertainty)
- 

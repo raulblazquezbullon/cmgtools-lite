@@ -93,7 +93,8 @@ def getvalueandincstrings(histo, b):
     ndeczeros = 0
     numofdecs = 0
 
-    if "e" in (valstring + incstring): raise RuntimeError("Scientific notation detected: case not supported.")
+    if "e" in (valstring + incstring):
+        raise RuntimeError("Scientific notation detected: case not supported. Histo name: " + histo.GetName() + ", value: " + valstring + ", unc.: " + incstring)
 
     if "." in incstring:
         incparts = incstring.split(".")

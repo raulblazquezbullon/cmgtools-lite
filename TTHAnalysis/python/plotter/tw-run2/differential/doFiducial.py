@@ -326,7 +326,7 @@ def PlotParticleFidLevelResults(thedict, inpath, iY, varName, notff):
 
 #### POR BIN Y NORMALIZAOS
 def PlotParticleFidBinLevelResults(thedict, inpath, iY, varName, notff):
-    print "> Now let's obtain the same plots normalised but also divided by the bin's width!!"
+    print "> Obtaining plots normalised to fiducial cross section and to bin's width for variable " + varName
 
     for key in thedict:
         thedict[key].Scale(1, "width")
@@ -349,8 +349,8 @@ def PlotParticleFidBinLevelResults(thedict, inpath, iY, varName, notff):
     nominal_withErrors[0].SetLineColor(0)
     nominal_withErrors[0].SetFillStyle(1001)
 
-    if varName != "Fiducial":
-        tex.saveLaTeXfromhisto(thedict[""], varName, path = inpath + "/" + iY + "/tables", errhisto = nominal_withErrors[0], ty = "particlefidbin")
+    #if varName != "Fiducial":
+        #tex.saveLaTeXfromhisto(thedict[""], varName, path = inpath + "/" + iY + "/tables", errhisto = nominal_withErrors[0], ty = "particlefidbin")
 
     if "yaxismax_particlefidbin" in vl.varList[varName]:
         plot.yaxisuplimit = vl.varList[varName]["yaxismax_particlefidbin"]

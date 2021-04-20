@@ -19,7 +19,8 @@ friendsscaff  = "--Fs {P}/0_yeartag --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning
 slurmscaff    = "sbatch -c {nth} -p {queue} -J {jobname} -e {logpath}/log.%j.%x.err -o {logpath}/log.%j.%x.out --wrap '{command}'"
 
 #commandscaff  = '''python makeShapeCardsNew.py --tree NanoAOD {mcafile} {cutsfile} "{variable}" "{bins}" {samplespaths} {friends} --od {outpath} -l {lumi} {nth} -f -L {func} --neg -W "{w}" --year {year} {asimovornot} {uncs} {extra} {name} --AP --storeAll --notMinimumFill --notVarsChanges'''
-commandscaff  = '''python makeShapeCardsNew.py --tree NanoAOD {mcafile} {cutsfile} "{variable}" "{bins}" {samplespaths} {friends} --od {outpath} -l {lumi} {nth} -f -L {func} --neg -W "{w}" --year {year} {asimovornot} {uncs} {extra} {name} --AP --storeAll --notVarsChanges'''
+#commandscaff  = '''python makeShapeCardsNew.py --tree NanoAOD {mcafile} {cutsfile} "{variable}" "{bins}" {samplespaths} {friends} --od {outpath} -l {lumi} {nth} -f -L {func} --neg -W "{w}" --year {year} {asimovornot} {uncs} {extra} {name} --AP --storeAll --notVarsChanges'''
+commandscaff  = '''python makeShapeCardsNew.py --tree NanoAOD {mcafile} {cutsfile} "{variable}" "{bins}" {samplespaths} {friends} --od {outpath} -l {lumi} {nth} -f -L {func} --neg -W "{w}" --year {year} {asimovornot} {uncs} {extra} {name} --AP --storeAll --notVarsChanges --threshold 0.0001'''
 
 theweights    = "MuonIDSF * MuonISOSF * ElecIDSF * ElecRECOSF * TrigSF * puWeight * bTagWeight * PrefireWeight"
 minchunkbytes = 1000
@@ -663,7 +664,7 @@ def CheckProducedCardsByTask(task):
 
     ch = "forExtr_bin" + str(ibin) + ("_PRE" + iunc if iunc != "" else "") + ".root"
 
-    chkpath = outpath + "/" + year + "/" + var + "/sigextr_fit/rebinhistos/" + ch
+    chkpath = outpath + "/" + year + "/" + variable + "/sigextr_fit/rebinhistos/" + ch
 
     #print chkpath
 
@@ -938,8 +939,8 @@ if __name__=="__main__":
                 #if str(task) == "('2020-09-20', '2016', 'Lep1_Pt', True, 32, 'temp_2021_03_08_nuevoshistos/differential', 'forExtr', False, True, '', False, 'batch', 0, 'ttbar_scales_00Up')":
                     #calculate = True
 
-                #if calculate:
-                    #ExecuteOrSubmitTask(task)
+                if calculate:
+                    ExecuteOrSubmitTask(task)
                     #sys.exit()
                     #calculate = False
         else:
@@ -1004,6 +1005,7 @@ if __name__=="__main__":
                     if not "scales" in iS and not "colour" in iS:
                         tasks.append( (inpath, iY, iV, samenuis, iS + "Down") )
         #print tasks
+        #for el in tasks: print el
         #sys.exit()
         print "> Executing..."
         if nthreads > 1:

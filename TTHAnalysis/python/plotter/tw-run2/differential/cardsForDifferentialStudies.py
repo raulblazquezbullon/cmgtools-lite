@@ -120,11 +120,12 @@ def CardsCommand(prod, year, var, isAsimov, nthreads, outpath, region, noUnc, us
                                bins      = bins_,
                                nth       = nth_,
                                year      = year if year != "run2" else "2016,2017,2018",
-                               asimovornot = "--asimov s+b" if isAsimov else "",
+                               asimovornot = "--asimov s+b" if isAsimov else "--asimov s+b" if region != "forExtr" else "",
                                mcafile   = mcafile_,
                                cutsfile  = cutsfile_,
                                #uncs      = "" if region == "particle" else "--unc tw-run2/uncs-tw.txt --amc" if not noUnc else "--amc",
-                               uncs      = "" if region == "particle" else "--unc tw-run2/differential/uncs-tw-modified.txt --amc" if not noUnc else "--amc",
+                               #uncs      = "" if region == "particle" else "--unc tw-run2/differential/uncs-tw-modified.txt --amc" if not noUnc else "--amc",
+                               uncs      = ("" if region == "particle" else "--unc tw-run2/differential/uncs-tw-modified-toeslesescales.txt --amc" if not noUnc and not doPure else "--unc tw-run2/differential/uncs-tw-modified.txt --amc" if not noUnc else "--amc"),
                                name      = name_,
                                weights   = weights_,
                                extra     = extra)
@@ -166,6 +167,7 @@ if __name__=="__main__":
 
     theregs  = ["detector", "particle", "detectorparticleResponse", "detectorparticlebutdetector",
                 "detectorparticle", "nonfiducial"]#, "forExtr", "controlReg"]
+                #"detectorparticle", "nonfiducial", "forExtr"]
                 #"detectorparticle", "nonfiducial", "forExtr", "controlReg"]
     thevars  = vl.varList["Names"]["Variables"]
     theyears = ["2016", "2017", "2018", "run2"]
@@ -199,7 +201,7 @@ if __name__=="__main__":
                 for var in thevars:
                     tasks.append( (prod, yr, var, asimov, nthreads, outpath, reg + ("pure1j1t" * doPureReg), noUnc, useFibre, extra, pretend, queue) )
 
-    print tasks
+    #print tasks
     calculate = True
     for task in tasks:
         print "\nProcessing " + str(task) + "\n"

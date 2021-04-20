@@ -1,0 +1,10 @@
+channel   : channel                : [0.5,1.5,2.5,3.5]                      ; IncludeUnderflow=False, XTitle='Channel', xBinLabels="e#mu\,#mu#mu\,ee"
+
+lep1_pt   : LepGood_pt_corrAll[0]  : 20,0,200             ; IncludeUnderflow=False, XTitle="Leading lepton p_{T} (GeV)"
+lep1_eta  : LepGood_eta[0]         : 30,-2.4,2.4           ; IncludeUnderflow=False, XTitle="Leading lepton #eta"
+
+lep2_pt   : LepGood_pt_corrAll[1]  : 15,0,150             ; IncludeUnderflow=False, XTitle="Subleading lepton p_{T} (GeV)"
+lep2_eta  : LepGood_eta[1]         : 30,-2.4,2.4           ; IncludeUnderflow=False, XTitle="Subleading lepton #eta"
+
+
+met          : METgood_pt          : 30,0,300              ; IncludeUnderflow=False, XTitle="p_{T}^{miss} (GeV)"

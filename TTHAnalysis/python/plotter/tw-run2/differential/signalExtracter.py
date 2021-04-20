@@ -251,8 +251,8 @@ if __name__=="__main__":
             for iY in theyears:
                 thevars = next(os.walk(inpath + "/" + iY))[1]
                 for iV in thevars:
-                    if "plots" in iV: continue
-                    #if "Fiducial" not in iV: continue
+                    if "plots" in iV or "tables" in iV: continue
+                    #if "Fiducial" in iV: continue
                     tasks.append( (inpath, iY, iV) )
 
     #tasks = [ (inpath, "2016", "Lep1_Pt") ]
