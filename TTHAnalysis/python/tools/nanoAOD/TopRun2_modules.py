@@ -288,12 +288,20 @@ from CMGTools.TTHAnalysis.tools.nanoAOD.btag_weighter               import btag_
 from CMGTools.TTHAnalysis.tools.nanoAOD.jetmetGrouper               import groups as jecGroups
 
 ## b-tagging
-btagEffpath = os.environ['CMSSW_BASE'] + "/src/CMGTools/TTHAnalysis/data/TopRun2/btagging/"
-btagSFpath  = os.environ['CMSSW_BASE'] + "/src/PhysicsTools/NanoAODTools/data/btagSF/"
+# Old (pre-new correlations)
+#btagEffpath = os.environ['CMSSW_BASE'] + "/src/CMGTools/TTHAnalysis/data/TopRun2/btagging/"
+#btagSFpath  = os.environ['CMSSW_BASE'] + "/src/PhysicsTools/NanoAODTools/data/btagSF/"
 
-btagWeights_2016 = lambda : btag_weighter(btagSFpath + "DeepJet_2016LegacySF_V1.csv",  btagEffpath + "BtagMCSF.root", 'deepjet', year = 2016)
-btagWeights_2017 = lambda : btag_weighter(btagSFpath + "DeepFlavour_94XSF_V3_B_F.csv", btagEffpath + "BtagMCSF.root", 'deepjet', year = 2017)
-btagWeights_2018 = lambda : btag_weighter(btagSFpath + "DeepJet_102XSF_V1.csv",        btagEffpath + "BtagMCSF.root", 'deepjet', year = 2018)
+#btagWeights_2016 = lambda : btag_weighter(btagSFpath + "DeepJet_2016LegacySF_V1.csv",  btagEffpath + "BtagMCSF.root", 'deepjet', year = 2016)
+#btagWeights_2017 = lambda : btag_weighter(btagSFpath + "DeepFlavour_94XSF_V3_B_F.csv", btagEffpath + "BtagMCSF.root", 'deepjet', year = 2017)
+#btagWeights_2018 = lambda : btag_weighter(btagSFpath + "DeepJet_102XSF_V1.csv",        btagEffpath + "BtagMCSF.root", 'deepjet', year = 2018)
+
+# New
+btagpath = os.environ['CMSSW_BASE'] + "/src/CMGTools/TTHAnalysis/data/TopRun2/btagging"
+
+btagWeights_2016 = lambda : btag_weighter(btagpath + "/" + "DeepJet_2016LegacySF_V1_YearCorrelation-V1.csv",       btagpath + "/" + "BtagMCSF.root", 'deepjet', year = 2016)
+btagWeights_2017 = lambda : btag_weighter(btagpath + "/" + "DeepFlavour_94XSF_V3_B_F_comb_YearCorrelation-V1.csv", btagpath + "/" + "BtagMCSF.root", 'deepjet', SFmeasReg = "comb", year = 2017)  #### TEMPORAL
+btagWeights_2018 = lambda : btag_weighter(btagpath + "/" + "DeepJet_102XSF_V1_YearCorrelation-V1.csv",             btagpath + "/" + "BtagMCSF.root", 'deepjet', year = 2018)
 
 
 # Cleaning
