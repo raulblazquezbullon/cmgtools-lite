@@ -74,19 +74,34 @@ class lepScaleFactors_TopRun2(Module):
         self.leptonSF["e"][2018]["recotight"] = self.loadHisto(self.basepathlep + "Electron_2018_RECO.root", "EGamma_SF2D")
 
         # Trigger elmu
-        self.triggerSF[ch.ElMu][2016] = self.loadHisto(self.basepathtrig + "TriggerSFfromReza.root", "trigSF2016_ElMu")
-        self.triggerSF[ch.ElMu][2017] = self.loadHisto(self.basepathtrig + "TriggerSFfromReza.root", "trigSF2017_ElMu")
-        self.triggerSF[ch.ElMu][2018] = self.loadHisto(self.basepathtrig + "TriggerSFfromReza.root", "trigSF2018_ElMu")
+        # old (pre 2021-01)
+        #self.triggerSF[ch.ElMu][2016] = self.loadHisto(self.basepathtrig + "TriggerSFfromReza.root", "trigSF2016_ElMu")
+        #self.triggerSF[ch.ElMu][2017] = self.loadHisto(self.basepathtrig + "TriggerSFfromReza.root", "trigSF2017_ElMu")
+        #self.triggerSF[ch.ElMu][2018] = self.loadHisto(self.basepathtrig + "TriggerSFfromReza.root", "trigSF2018_ElMu")
+        # new (post 2021-01)
+        self.triggerSF[ch.ElMu][2016] = self.loadHisto(self.basepathtrig + "TriggerSFfromReza_2016.root", "h2D_SF_emu_lepABpt_FullError")
+        self.triggerSF[ch.ElMu][2017] = self.loadHisto(self.basepathtrig + "TriggerSFfromReza_2017.root", "h2D_SF_emu_lepABpt_FullError")
+        self.triggerSF[ch.ElMu][2018] = self.loadHisto(self.basepathtrig + "TriggerSFfromReza_2018.root", "h2D_SF_emu_lepABpt_FullError")
 
         # Trigger elel
-        self.triggerSF[ch.Elec][2016] = self.loadHisto(self.basepathtrig + "TriggerSFfromReza.root", "trigSF2016_Elec")
-        self.triggerSF[ch.Elec][2017] = self.loadHisto(self.basepathtrig + "TriggerSFfromReza.root", "trigSF2017_Elec")
-        self.triggerSF[ch.Elec][2018] = self.loadHisto(self.basepathtrig + "TriggerSFfromReza.root", "trigSF2018_Elec")
+        # old (pre 2021-01)
+        #self.triggerSF[ch.Elec][2016] = self.loadHisto(self.basepathtrig + "TriggerSFfromReza.root", "trigSF2016_Elec")
+        #self.triggerSF[ch.Elec][2017] = self.loadHisto(self.basepathtrig + "TriggerSFfromReza.root", "trigSF2017_Elec")
+        #self.triggerSF[ch.Elec][2018] = self.loadHisto(self.basepathtrig + "TriggerSFfromReza.root", "trigSF2018_Elec")
+        # new (post 2021-01)
+        self.triggerSF[ch.Elec][2016] = self.loadHisto(self.basepathtrig + "TriggerSFfromReza_2016.root", "h2D_SF_ee_lepABpt_FullError")
+        self.triggerSF[ch.Elec][2017] = self.loadHisto(self.basepathtrig + "TriggerSFfromReza_2017.root", "h2D_SF_ee_lepABpt_FullError")
+        self.triggerSF[ch.Elec][2018] = self.loadHisto(self.basepathtrig + "TriggerSFfromReza_2018.root", "h2D_SF_ee_lepABpt_FullError")
 
         # Trigger mumu
-        self.triggerSF[ch.Muon][2016] = self.loadHisto(self.basepathtrig + "TriggerSFfromReza.root", "trigSF2016_Muon")
-        self.triggerSF[ch.Muon][2017] = self.loadHisto(self.basepathtrig + "TriggerSFfromReza.root", "trigSF2017_Muon")
-        self.triggerSF[ch.Muon][2018] = self.loadHisto(self.basepathtrig + "TriggerSFfromReza.root", "trigSF2018_Muon")
+        # old (pre 2021-01)
+        #self.triggerSF[ch.Muon][2016] = self.loadHisto(self.basepathtrig + "TriggerSFfromReza.root", "trigSF2016_Muon")
+        #self.triggerSF[ch.Muon][2017] = self.loadHisto(self.basepathtrig + "TriggerSFfromReza.root", "trigSF2017_Muon")
+        #self.triggerSF[ch.Muon][2018] = self.loadHisto(self.basepathtrig + "TriggerSFfromReza.root", "trigSF2018_Muon")
+        # new (post 2021-01)
+        self.triggerSF[ch.Muon][2016] = self.loadHisto(self.basepathtrig + "TriggerSFfromReza_2016.root", "h2D_SF_mumu_lepABpt_FullError")
+        self.triggerSF[ch.Muon][2017] = self.loadHisto(self.basepathtrig + "TriggerSFfromReza_2017.root", "h2D_SF_mumu_lepABpt_FullError")
+        self.triggerSF[ch.Muon][2018] = self.loadHisto(self.basepathtrig + "TriggerSFfromReza_2018.root", "h2D_SF_mumu_lepABpt_FullError")
         print("[lepScaleFactors_TopRun2::constructor] - Finished loading histograms")
         return
 
@@ -182,7 +197,12 @@ class lepScaleFactors_TopRun2(Module):
             trigsf = 1
             #if len(leps) > 1 and chan != ch.NoChan:
             if event.nLepGood > 1 and chan != ch.NoChan:
-                trigsf *= self.getTrigSF(leps[0].pt_corrAll, leps[1].pt_corrAll, var, chan, year, ev = event)
+                if chan == ch.ElMu:
+                    trigsf *= self.getTrigSFdependingOnFlavour((leps[0].pt_corrAll, leps[0].pdgId),
+                                                               (leps[1].pt_corrAll, leps[1].pdgId),
+                                                               var, chan, year, ev = event)
+                else:
+                    trigsf *= self.getTrigSF(leps[0].pt_corrAll, leps[1].pt_corrAll, var, chan, year, ev = event)
 
             self.out.fillBranch('TrigSF' + var, trigsf)
 
@@ -219,7 +239,16 @@ class lepScaleFactors_TopRun2(Module):
                     # triggers
                     trigsf = 1
                     if len(varleps) > 1 and getattr(event, "channel" + sys) != ch.NoChan:
-                        trigsf *= self.getTrigSF(getattr(varleps[0], "pt" + sys), getattr(varleps[1], "pt" + sys), var, getattr(event, "channel" + sys), year, ev = event)
+                        if getattr(event, "channel" + sys) == ch.ElMu:
+                            trigsf *= self.getTrigSFdependingOnFlavour((getattr(varleps[0], "pt" + sys), varleps[0].pdgId),
+                                                                       (getattr(varleps[1], "pt" + sys), varleps[1].pdgId),
+                                                                       var, getattr(event, "channel" + sys),
+                                                                       year, ev = event)
+                        else:
+                            trigsf *= self.getTrigSF(getattr(varleps[0], "pt" + sys),
+                                                     getattr(varleps[1], "pt" + sys),
+                                                     var, getattr(event, "channel" + sys),
+                                                     year, ev = event)
 
                     self.out.fillBranch('TrigSF' + sys, trigsf)
 
@@ -254,7 +283,7 @@ class lepScaleFactors_TopRun2(Module):
     def getTrigSF(self, pt1, pt2, var, fl, yr, ev = None):
         # NOTE: it will always use as the first lepton the one with largest pt
         hist = self.triggerSF[fl][yr]
-        tmppt1 = max([pt1, pt2]); tmppt2 = min([pt1, pt2])
+        tmppt1 = min(max([pt1, pt2]), 499.); tmppt2 = min(min([pt1, pt2]), 499.)
         pt1bin = max(1, min(hist.GetNbinsX(), hist.GetXaxis().FindBin(tmppt1)))
         pt2bin = max(1, min(hist.GetNbinsY(), hist.GetYaxis().FindBin(tmppt2)))
 
@@ -269,6 +298,28 @@ class lepScaleFactors_TopRun2(Module):
             #print "dict:", self.triggerSF
 
             #print "======================================\n"
+
+        out = hist.GetBinContent(pt1bin, pt2bin)
+        if   "up" in var.lower():
+            out += hist.GetBinError(pt1bin, pt2bin)
+        elif "dn" in var.lower():
+            out -= hist.GetBinError(pt1bin, pt2bin)
+
+        return out
+
+
+    def getTrigSFdependingOnFlavour(self, l1tp, l2tp, var, fl, yr, ev = None):
+        # NOTE: X -> electron, Y -> muon
+        hist = self.triggerSF[fl][yr]
+
+        if abs(l1tp[1]) == 11:
+            elpt = min(l1tp[0], 499.)
+            mupt = min(l2tp[0], 499.)
+        else:
+            elpt = min(l2tp[0], 499.)
+            mupt = min(l1tp[0], 499.)
+        pt1bin = max(1, min(hist.GetNbinsX(), hist.GetXaxis().FindBin(elpt)))
+        pt2bin = max(1, min(hist.GetNbinsY(), hist.GetYaxis().FindBin(mupt)))
 
         out = hist.GetBinContent(pt1bin, pt2bin)
         if   "up" in var.lower():

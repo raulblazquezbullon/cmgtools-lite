@@ -36,6 +36,47 @@ def _fires(ev, path):
     else :
         return getattr(r, 'fires_%s_%d'%(path, ev.year))( ev.run, getattr(ev, path) )
 
+#### Old, pre 2021-01
+#triggerGroups = dict(
+    #Trigger_1e = {
+        #2016 : lambda ev : _fires(ev, 'HLT_Ele27_WPTight_Gsf'),
+        #2017 : lambda ev : _fires(ev, 'HLT_Ele35_WPTight_Gsf'),
+        #2018 : lambda ev : _fires(ev, 'HLT_Ele32_WPTight_Gsf'),
+    #},
+    #Trigger_1m = {
+        #2016 : lambda ev : (   _fires(ev, 'HLT_IsoMu24')
+                            #or _fires(ev, 'HLT_IsoTkMu24')),
+        #2017 : lambda ev :     _fires(ev, 'HLT_IsoMu27'),
+        #2018 : lambda ev :     _fires(ev, 'HLT_IsoMu24'),
+    #},
+    #Trigger_2e = {
+        #2016 : lambda ev : _fires(ev, 'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ'),
+        #2017 : lambda ev : _fires(ev, 'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL'),
+        #2018 : lambda ev : _fires(ev, 'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL'),
+    #},
+    #Trigger_2m = {
+        #2016 : lambda ev : ((   _fires(ev, 'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL')
+                             #or _fires(ev, 'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL'))
+                            #if (ev.datatag == tags.mc or ev.run <= 280385) else
+
+                            #(  _fires(ev, 'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ')
+                            #or _fires(ev, 'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ'))),
+        #2017 : lambda ev :     _fires(ev, 'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8'),
+        #2018 : lambda ev :     _fires(ev, 'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8'),
+    #},
+    #Trigger_em = {
+        #2016 : lambda ev : ((  _fires(ev, 'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL')
+                            #or _fires(ev, "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL"))
+                            #if (ev.datatag == tags.mc or ev.run <= 280385) else
+
+                            #(  _fires(ev, 'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ')
+                            #or _fires(ev, "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ"))),
+        #2017 : lambda ev : (   _fires(ev, 'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL')
+                            #or _fires(ev, 'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ')),
+        #2018 : lambda ev : (   _fires(ev, 'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL')
+                            #or _fires(ev, 'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ')),
+    #},
+#)
 
 triggerGroups = dict(
     Trigger_1e = {
@@ -50,9 +91,13 @@ triggerGroups = dict(
         2018 : lambda ev :     _fires(ev, 'HLT_IsoMu24'),
     },
     Trigger_2e = {
-        2016 : lambda ev : _fires(ev, 'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ'),
-        2017 : lambda ev : _fires(ev, 'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL'),
-        2018 : lambda ev : _fires(ev, 'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL'),
+        2016 : lambda ev : (   _fires(ev, 'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ')
+                            or _fires(ev, 'HLT_DoubleEle33_CaloIdL_MW')
+                            or _fires(ev, 'HLT_DoubleEle33_CaloIdL_GsfTrkIdVL')),
+        2017 : lambda ev : (   _fires(ev, 'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL')
+                            or _fires(ev, 'HLT_DoubleEle33_CaloIdL_MW')),
+        2018 : lambda ev : (   _fires(ev, 'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL')
+                            or _fires(ev, 'HLT_DoubleEle25_CaloIdL_MW')),
     },
     Trigger_2m = {
         2016 : lambda ev : ((   _fires(ev, 'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL')
@@ -77,7 +122,6 @@ triggerGroups = dict(
                             or _fires(ev, 'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ')),
     },
 )
-
 
 from CMGTools.TTHAnalysis.tools.evtTagger import EvtTagger
 Trigger_1e = lambda : EvtTagger('Trigger_1e',  [ lambda ev : triggerGroups['Trigger_1e'][ev.year](ev) ])
