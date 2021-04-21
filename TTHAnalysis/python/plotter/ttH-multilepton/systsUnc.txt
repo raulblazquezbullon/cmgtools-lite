@@ -254,11 +254,6 @@ BR_hww	       : .*_hww       : .* : normSymm : 1.0154
 BR_hzz	       : .*_hzz       : .* : normSymm : 1.0154
 BR_htt	       : .*_htt       : .* : normSymm : 1.0165
 
-# shape theoretical uncertainties (private to this channel)
-CMS_ttW_nonprompt_norm_2016: $FRData : .* : normSymm : 1.20;year="2016"
-CMS_ttW_nonprompt_norm_2017: $FRData : .* : normSymm : 1.20;year="2017"
-CMS_ttW_nonprompt_norm_2018: $FRData : .* : normSymm : 1.20;year="2018"
-
 
 
 #CMS_ttW_FRe_norm : $FRData  : .*3l.* : templateAsymm; FakeRates=["ttH-multilepton/fakerate-vars/fakeRate-3l-frdata-e-up.txt"\,"ttH-multilepton/fakerate-vars/fakeRate-3l-frdata-e-down.txt"], \
