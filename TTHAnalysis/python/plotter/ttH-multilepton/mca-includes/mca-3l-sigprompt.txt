@@ -1,5 +1,5 @@
 
-TTW+     : TTWToLNu : 0.1960 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ;  FillColor=ROOT.kGreen-5, Label="ttW   ", years="2016\,2017" #naming difference they are amcatnlo_fxfx also
+TTW+     : TTWToLNu_PSW : 0.1960: LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ;  FillColor=ROOT.kGreen-5, Label="ttW   ", years="2016\,2017" #naming difference they are amcatnlo_fxfx also
 TTW+     : TTWToLNu_fxfx : 0.1960 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ;  FillColor=ROOT.kGreen-5, Label="ttW   ", years="2018"
 TTW+     : TTWToLNu_EWK : 0.0491*(1-0.6741) : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kGreen-5, Label="ttW "
 
