@@ -1,0 +1,13 @@
+### Nominal samples
+
+incl_2018_tw      : + ; years="2018",IncludeMca="ttbar-run2/mca-tw-includes/mca-2018-tw.txt"
+incl_2018_ttbar   : + ; years="2018",IncludeMca="ttbar-run2/mca-tw-includes/mca-2018-ttbar.txt"
+incl_2018_dy      : + ; years="2018",IncludeMca="ttbar-run2/mca-tw-includes/mca-2018-dy.txt"
+incl_2018_vvttv   : + ; years="2018",IncludeMca="ttbar-run2/mca-tw-includes/mca-2018-vvttv.txt"
+incl_2018_nonworz : + ; years="2018",IncludeMca="ttbar-run2/mca-tw-includes/mca-2018-nonworz.txt"
+incl_2018_data    : + ; years="2018",IncludeMca="ttbar-run2/mca-tw-includes/mca-2018-data.txt"
+
+
+### Uncertainties
+# ttbar
+#incl_2018_ttbar_uncs : + ; years="2018",IncludeMca="tw-run2/mca-tw-includes/mca-2018-ttbar-uncs.txt",SkipMe=True

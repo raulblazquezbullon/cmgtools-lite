@@ -99,7 +99,7 @@ def GeneralExecutioner(task):
 
 
 def PlottingCommand(prod, year, nthreads, outpath, selplot, region, ratio, extra, useFibre, doUncs):
-    mcafile_   = "ttbar-run2/mca-ttbar-2016.txt"
+    mcafile_   = "ttbar-run2/mca-ttbar-%s.txt"%year
     cutsfile_  = "ttbar-run2/cuts-ttbar-BS.txt"#.format(reg = region if ("_" not in region) else region.split("_")[0] if ("differential" not in region) else region)
     plotsfile_ = "ttbar-run2/plots-ttbar/plots-ttbar-BS.txt"#{reg}.txt".format(reg = region)
 
@@ -151,7 +151,7 @@ if __name__=="__main__":
     parser.add_argument('--select-plot','--sP',action = "append",   dest = "selplot", required = False, default = [])
     parser.add_argument('--pretend',   '-p', action = "store_true", dest = "pretend", required = False, default = False)
     parser.add_argument('--outpath',   '-o', metavar = 'outpath',   dest = "outpath", required = False, default = "./temp/varplots")
-    parser.add_argument('--region',    '-r', metavar = 'region',    dest = "region",  required = False, default = "1j1t")
+    parser.add_argument('--region',    '-r', metavar = 'region',    dest = "region",  required = False, default = "BS")
     parser.add_argument('--maxRatioRange', "-R", metavar = 'ratiorange', dest = "ratiorange", required = False, default = "0.8 1.2")
     parser.add_argument('--createSoftLinks', action = "store_true", dest = "createSL", required = False, default = False)
     parser.add_argument('--useFibre',  "-f", action = "store_true", dest = "useFibre", required = False, default = False)

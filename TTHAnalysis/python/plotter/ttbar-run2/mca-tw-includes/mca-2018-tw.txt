@@ -1,0 +1,5 @@
+tw : Tree_tW_5f_noFullHad_TuneCP5_ext1_0 : 19.4674104 ; genSumWeightName="genEventSumw_",FillColor=798
+#tw+ : Tree_tW_5f_inclusiveDecays_TuneCP5_ext1_0 + Tree_tW_5f_inclusiveDecays_TuneCP5_ext1_1 + Tree_tW_5f_inclusiveDecays_TuneCP5_ext1_2 + Tree_tW_5f_inclusiveDecays_TuneCP5_ext1_3 + Tree_tW_5f_inclusiveDecays_TuneCP5_ext1_4 + Tree_tW_5f_inclusiveDecays_TuneCP5_ext1_5 + Tree_tW_5f_inclusiveDecays_TuneCP5_ext1_6 + Tree_tW_5f_inclusiveDecays_TuneCP5_ext1_7 : 35.85 ; genSumWeightName="genEventSumw_",FillColor=798
+
+tw : Tree_tbarW_5f_noFullHad_TuneCP5_ext_0 : 19.4674104 ; genSumWeightName="genEventSumw_",FillColor=798
+#tw+ : Tree_tbarW_5f_inclusiveDecays_TuneCP5_ext1_0 + Tree_tbarW_5f_inclusiveDecays_TuneCP5_ext1_1 + Tree_tbarW_5f_inclusiveDecays_TuneCP5_ext1_2 + Tree_tbarW_5f_inclusiveDecays_TuneCP5_ext1_3 + Tree_tbarW_5f_inclusiveDecays_TuneCP5_ext1_4 + Tree_tbarW_5f_inclusiveDecays_TuneCP5_ext1_5 : 35.85 ; genSumWeightName="genEventSumw_",FillColor=798
