@@ -62,4 +62,3 @@ print "echo impacts 4 \# plotImpacts.py -i impacts.json -o impacts --per-page 20
 ### for i in `cat catlist.txt | grep 2lss`; do python postFitPlots.py ttH-multilepton/mca-2lss-mcdata-frdata.txt ttH-multilepton/mca-2lss-mcdata-frdata.txt local/2lss_SR_data_frdata_b${i}/all/2lss_3l_plots.root kinMVA_2lss_bins combineUnblMar01/fits/standard/mlfit.root ttH_$i --lspam '#bf{CMS} #it{Preliminary}' --showMCError; done
 ### 
 ### for i in `cat catlist.txt | grep 3l`; do python postFitPlots.py ttH-multilepton/mca-3l-mcdata-frdata.txt ttH-multilepton/mca-3l-mcdata-frdata.txt local/3l_SR_data_frdata_b${i}/2lss_3l_plots.root kinMVA_3l_bins combineUnblMar01/fits/standard/mlfit.root ttH_$i --lspam '#bf{CMS} #it{Preliminary}' --showMCError; done
-

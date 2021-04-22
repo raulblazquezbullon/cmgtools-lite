@@ -1228,4 +1228,3 @@ def roofitizeReport(histoWithNuisanceMap, workspace=None, xvarName="x", density=
             h.setupRooFit(roofit)
     # and return the context
     return roofit
-    

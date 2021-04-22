@@ -21,7 +21,7 @@
 using namespace TMVA;
 
 
-void trainBDtW_1j1t(TString outputdir, TString outputbasedir = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/mvas/", TString inputdir = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/productions/2020-07-03/", TString outputFileName = "tmvaBDT_1j1t.root", TString myMethodList = "", TString twname = "tw.root", TString tbarwname = "tbarw.root", TString ttbarname = "ttbar.root") {
+void trainBDtW_1j1t(TString outputdir, TString outputbasedir = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/mvas/", TString inputdir = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/productions/2020-09-20/", TString outputFileName = "tmvaBDT_1j1t.root", TString myMethodList = "", TString twname = "tw.root", TString tbarwname = "tbarw.root", TString ttbarname = "ttbar.root") {
   // This loads the library
   TMVA::Tools::Instance();
 
@@ -79,19 +79,78 @@ void trainBDtW_1j1t(TString outputdir, TString outputbasedir = "/pool/phedex/use
   cout << "> Adding input variables" << endl;
 
   loader->AddVariable("train_nloosejets"                 , "N(loose jet)"                                                           , ""   , 'I');
-//   loader->AddVariable("nLooseFwd"                  , "n_{jet}^{20}_fwd"                                                       , ""   , 'I');
-  loader->AddVariable("train_nbloosejets"                , "N(loose b-jet)"                                                         , ""   , 'I');
-  loader->AddVariable("train_lep1lep2jet1met_pt"         , "p_{T} (#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j}, #it{p}_{T}^{miss})"        , "GeV", 'F');
-  loader->AddVariable("train_httot"                      , "H_{T}"                                                                  , "GeV", 'F');
+  //loader->AddVariable("train_nbloosejets"                , "N(loose b-jet)"                                                         , ""   , 'I');
+  //loader->AddVariable("train_lep1lep2jet1met_pt"         , "p_{T} (#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j}, #it{p}_{T}^{miss})"        , "GeV", 'F');
+  //loader->AddVariable("train_httot"                      , "H_{T}"                                                                  , "GeV", 'F');
   loader->AddVariable("train_jet1_pt"                    , "Jet p_{T}"                                                              , "GeV", 'F');
   loader->AddVariable("train_loosejet1_pt"               , "Loose jet p_{T}"                                                        , "GeV", 'F');
-  loader->AddVariable("train_lep1lep2jet1met_ptOVERhttot", "p_{T} (#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j}, #it{p}_{T}^{miss}) / H_{T}", ""   , 'F');
+  //loader->AddVariable("train_lep1lep2jet1met_ptOVERhttot", "p_{T} (#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j}, #it{p}_{T}^{miss}) / H_{T}", ""   , 'F');
   loader->AddVariable("train_lep1lep2jet1met_m"          , "m (#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j}, #it{p}_{T}^{miss})"            , "GeV", 'F');
+  //----Prueba variable C------
   loader->AddVariable("train_lep1lep2jet1_c"             , "C (#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})"                               , ""   , 'F');
-  loader->AddVariable("train_htlepOVERhttot"             , "(p_{T}(e)^{#pm} + p_{T}(#mu)^{#mp}) / H_{T}"                            , ""   , 'F');
+  //loader->AddVariable("train_lep1lep2jet1_cscalar"             , "C_{scalar} (#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})"                               , ""   , 'F');
+  //----Prueba variable C------
+//  loader->AddVariable("train_htlepOVERhttot"             , "(p_{T}(e)^{#pm} + p_{T}(#mu)^{#mp}) / H_{T}"                            , ""   , 'F');
   loader->AddVariable("train_lep1lep2jet1_pt"            , "#it{p}_{T} (#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j}, p_{T}^{miss})"        , "GeV", 'F');
-//   loader->AddVariable("nBLooseCentral + nBLooseFwd"          , "nBLoose"                                                                , ""   , 'I' );
+  // =====New Input variables=========
+//  loader->AddVariable("train_lep1jet1_dr"                , "#DeltaR (#it{l_{1}}^{#pm}, #it{j_{1}})"                              , "", 'F');
+//  loader->AddVariable("train_lep1jet1_m"                 , "m (#it{l_{1}}^{#pm}, #it{j_{1}})"                                    , "GeV", 'F');
+//  loader->AddVariable("train_lep1_eta","Leading lepton #eta","",'F'); 
+//  loader->AddVariable("train_lep1lep2_pt"                , "#it{p}_{T} (#it{e}^{#pm}, #it{#mu}^{#mp})"                              , "GeV", 'F');
+//  loader->AddVariable("train_lep2jet1_m"                 , "m (#it{l_{2}}^{#pm}, #it{j_{1}})"                                    , "GeV", 'F');
+        
+        
+        
+  //loader->AddVariable("train_lep1jet1_pt"                , "#it{p}_{T} (#it{l_{1}}^{#pm}, #it{j_{1}})"                           , "GeV", 'F');
+  //loader->AddVariable("train_lep1lep2_deta"              , "#Delta#eta (#it{e}^{#pm}, #it{#mu}^{#mp})"                              , "", 'F');
+  //loader->AddVariable("train_lep1lep2_dr"                , "#DeltaR (#it{e}^{#pm}, #it{#mu}^{#mp})"                                 , "", 'F');
+  //loader->AddVariable("train_lep1lep2jet1_m"             , "m (#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j_{1}})"                           , "GeV", 'F');
+  //loader->AddVariable("train_lep2jet1_pt"                , "#it{p}_{T} (#it{l_{2}}^{#pm}, #it{j_{1}})"                           , "GeV", 'F');
 
+  
+  //loader->AddVariable("train_jet2_pt","train_jet2_pt","",'F');                                    
+  //loader->AddVariable("train_lep12jet12_dr","train_lep12jet12_dr","",'F');                        
+  //loader->AddVariable("train_lep12jet12met_dr","train_lep12jet12met_dr","a",'F');                  
+  //loader->AddVariable("train_lep1lep2jet1met_mt","train_lep1lep2jet1met_mt","",'F');              
+  //loader->AddVariable("train_lep1lep2jet1_e","train_lep1lep2jet1_e","",'F');                      
+  //loader->AddVariable("train_lep1jet2_m","train_lep1jet2_m","",'F');                              
+  //loader->AddVariable("train_lepjet11lep2_dr","train_lepjet11lep2_dr","",'F');                   
+  //loader->AddVariable("train_lepjet11lep2_dphi","train_lepjet11lep2_dphi","",'F');                
+  //loader->AddVariable("train_lepjet11lep2_deta","train_lepjet11lep2_deta","",'F');                
+  //loader->AddVariable("train_lep1jetjet21_dr","train_lep1jetjet21_dr","",'F');                    
+  //loader->AddVariable("train_lep1jetjet21_dphi","train_lep1jetjet21_dphi","",'F');                
+  //loader->AddVariable("train_lep1jetjet21_deta","train_lep1jetjet21_deta","",'F');                
+  //loader->AddVariable("train_met_pt","train_met_pt","",'F');                                      
+  //loader->AddVariable("train_met_phi","train_met_phi","",'F');                                    
+  //loader->AddVariable("train_nfwdjet","train_nfwdjet","",'I');                                    
+  //loader->AddVariable("train_nloosefwdjet","train_nloosefwdjet","",'I');                          
+  //loader->AddVariable("train_lep1lep2_ptsum","train_lep1lep2_ptsum","",'F');                      
+  //loader->AddVariable("train_lep1lep2_dphi","train_lep1lep2_dphi","",'F');                        
+  //loader->AddVariable("train_lep1lep2_m","train_lep1lep2_m","",'F');                              
+  //loader->AddVariable("train_lep1_pt","train_lep1_pt","",'F');                                                                     
+  //loader->AddVariable("train_lep1_phi","train_lep1_phi","",'F');                                  
+  //loader->AddVariable("train_lep1_m","train_lep1_m","",'F');                                      
+  //loader->AddVariable("train_lep2_pt","train_lep2_pt","",'F');                                    
+  //loader->AddVariable("train_lep2_eta","train_lep2_eta","",'F');                                  
+  //loader->AddVariable("train_lep2_phi","train_lep2_phi","",'F');                                  
+  //loader->AddVariable("train_lep2_m","train_lep2_m","",'F');                                      
+  //loader->AddVariable("train_jet1_eta","train_jet1_eta","",'F');                                  
+  //loader->AddVariable("train_jet1_phi","train_jet1_phi","",'F');                                  
+  //loader->AddVariable("train_jet1_m","train_jet1_m","",'F');                                      
+  //loader->AddVariable("train_jet2_eta","train_jet2_eta","",'F');                                  
+  //loader->AddVariable("train_jet2_phi","train_jet2_phi","",'F');                                  
+  //loader->AddVariable("train_jet2_m","train_jet2_m","",'F');                                      
+//  loader->AddVariable("train_loosejet1_eta","train_loosejet1_eta","",'F');                        
+//  loader->AddVariable("train_loosejet1_phi","train_loosejet1_phi","",'F');                        
+//  loader->AddVariable("train_loosejet1_m","train_loosejet1_m","",'F');                            
+//  loader->AddVariable("train_fwdjet1_pt","train_fwdjet1_pt","",'F');                              
+//  loader->AddVariable("train_fwdjet1_eta","train_fwdjet1_eta","",'F');                            
+//  loader->AddVariable("train_fwdjet1_phi","train_fwdjet1_phi","",'F');                            
+//  loader->AddVariable("train_fwdjet1_m","train_fwdjet1_m","",'F');                                
+//  loader->AddVariable("train_fwdloosejet1_pt","train_fwdloosejet1_pt","",'F');                    
+//  loader->AddVariable("train_fwdloosejet1_eta","train_fwdloosejet1_eta","",'F');                  
+//  loader->AddVariable("train_fwdloosejet1_phi","train_fwdloosejet1_phi","",'F');                  
+//  loader->AddVariable("train_fwdloosejet1_m","train_fwdloosejet1_m","",'F');  
 
 
   ////// MVA SETTINGS ===========================================================================
@@ -115,7 +174,7 @@ void trainBDtW_1j1t(TString outputdir, TString outputbasedir = "/pool/phedex/use
 
   ////// INPUT SETTINGS ===========================================================================
   cout << "> Adding files" << endl;
-  TChain* SItree = new TChain("Friends", "SignalTree");
+  TChain* SItree = new TChain("Friends", "SignalTree");  
   SItree->Add(inputdir + "/2016/x_mvatrain/" + twname);
   SItree->Add(inputdir + "/2016/x_mvatrain/" + tbarwname);
   SItree->Add(inputdir + "/2017/x_mvatrain/" + twname);
@@ -127,29 +186,50 @@ void trainBDtW_1j1t(TString outputdir, TString outputbasedir = "/pool/phedex/use
   TTtree->Add(inputdir + "/2016/x_mvatrain/" + ttbarname);
   TTtree->Add(inputdir + "/2017/x_mvatrain/" + ttbarname);
   TTtree->Add(inputdir + "/2018/x_mvatrain/" + ttbarname);
+  
+  //========Drell-Yann training only=================================================================
+//  TString DY_50 = "dy_50.root";
+//  TString DY_10to50 = "dy_10to50.root";
+//  TTtree->Add(inputdir + "/2016/x_mvatrain/" + DY_50);
+//  TTtree->Add(inputdir + "/2017/x_mvatrain/" + DY_50);
+//  TTtree->Add(inputdir + "/2018/x_mvatrain/" + DY_50);  
+//  TTtree->Add(inputdir + "/2016/x_mvatrain/" + DY_10to50);
+//  TTtree->Add(inputdir + "/2017/x_mvatrain/" + DY_10to50);
+//  TTtree->Add(inputdir + "/2018/x_mvatrain/" + DY_10to50);
+  //========Drell-Yann training only=================================================================
 
   Double_t sigWeight = 1.0;
   Double_t bkgWeight = 1.0;
   loader->AddSignalTree(    SItree, sigWeight);
   loader->AddBackgroundTree(TTtree, bkgWeight);
 
-  // "genWeight * MuonSF * ElecSF * TrigSF * puWeight * bTagWeight * PrefireWeight"
+
 
   loader->SetSignalWeightExpression(    "allweights");
   loader->SetBackgroundWeightExpression("allweights");
 
-  // (pass_trigger * Flag_goodVertices * Flag_globalSuperTightHalo2016Filter * Flag_HBHENoiseFilter * Flag_HBHENoiseIsoFilter * Flag_EcalDeadCellTriggerPrimitiveFilter * Flag_BadPFMuonFilter) * ((channel == 1) && (nLepGood >= 2) && (LepGood_pt_corrAll[0] > 25) && (LepGood_pt_corrAll[1] > 20) && isSS == 0 && (minMllAFAS_Recl > 20) ) * ((nJetSel30_Recl == 1) && (nBJetSelMedium30_Recl == 1))
 
-  TCut mycuts = "((njets == 1) && (nbjets == 1))";
-  TCut mycutb = "((njets == 1) && (nbjets == 1))";
+  TCut mycuts = "((njets == 1) && (nbjets == 1) && (channel == 1))";
+  TCut mycutb = "((njets == 1) && (nbjets == 1) && (channel == 1))";
 
+//========Cortes sin el channel cut=============
+//  TCut mycuts = "((njets == 1) && (nbjets == 1))";
+//  TCut mycutb = "((njets == 1) && (nbjets == 1))";
+//========Cortes sin el channel cut=============
 
+//  loader->PrepareTrainingAndTestTree(mycuts,
+//                                     mycutb,
+//                                     "nTrain_Signal=0:nTrain_Background=0:SplitMode=Random:NormMode=NumEvents:!V:nTest_Background=0");
 
+  //========70% training and 30% testing======
+  double bkgtrain = (TTtree->GetEntries("((njets == 1) && (nbjets == 1) && (channel == 1))"))*0.7;
+  double sigtrain = (SItree->GetEntries("((njets == 1) && (nbjets == 1) && (channel == 1))"))*0.7;
   loader->PrepareTrainingAndTestTree(mycuts,
                                      mycutb,
-                                     "nTrain_Signal=0:nTrain_Background=0:SplitMode=Random:NormMode=NumEvents:!V:nTest_Background=0");
+                                     "nTrain_Signal="+to_string(sigtrain)+":nTrain_Background="+to_string(bkgtrain)+":SplitMode=Random:NormMode=NumEvents:!V:nTest_Background=0:nTest_Signal=0");  
+  //========70% training and 30% testing======
 
-
+  cout << "EVENTOS BKG TOT: " << (TTtree->GetEntries("((njets == 1) && (nbjets == 1) && (channel == 1))")) << " EVENTOS BKG *0.7: " << (TTtree->GetEntries("((njets == 1) && (nbjets == 1) && (channel == 1))"))*0.7 << endl;
   cout << "> Booking method" << endl;
 
   // factory->BookMethod( loader, TMVA::Types::kBDT, "8TeVSetup",
@@ -162,8 +242,68 @@ void trainBDtW_1j1t(TString outputdir, TString outputbasedir = "/pool/phedex/use
   // 			"!H:!V:NTrees=1000:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.01:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
   // factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_500_0.01",
   // 			"!H:!V:NTrees=500:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.01:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
-  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_2000_0.01",
-      "!H:!V:NTrees=2000:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.01:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
+  
+  //--Modelo default----
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_2000_0.01",
+//      "!H:!V:NTrees=2000:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.01:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
+  //--Modelo default----
+
+  //===============Optimización NTrees=========================================
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_100_0.01",
+//      "!H:!V:NTrees=100:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.01:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_400_0.01",
+//      "!H:!V:NTrees=400:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.01:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_700_0.01",
+//      "!H:!V:NTrees=700:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.01:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" ); 
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_1000_0.01",
+//      "!H:!V:NTrees=1000:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.01:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_1250_0.01",
+//      "!H:!V:NTrees=1250:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.01:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_1500_0.01",
+//      "!H:!V:NTrees=1500:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.01:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" ); 
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_1750_0.01",
+//      "!H:!V:NTrees=1750:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.01:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_2000_0.01",
+//      "!H:!V:NTrees=2000:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.01:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );     
+  //===============Optimización NTrees=========================================
+
+
+  //===============Optimización MaxDepth=========================================
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_2000_0.01_2",
+//      "!H:!V:NTrees=2000:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.01:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=2" );
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_2000_0.01_4",
+//      "!H:!V:NTrees=2000:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.01:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_2000_0.01_6",
+//      "!H:!V:NTrees=2000:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.01:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=6" );
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_2000_0.01_8",
+//      "!H:!V:NTrees=2000:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.01:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=8" );
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_2000_0.01_10",
+//      "!H:!V:NTrees=2000:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.01:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=10" );
+  //===============Optimización MaxDepth=========================================
+
+  //===============Optimización Learning rate=========================================
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_2000_0.001",
+//      "!H:!V:NTrees=2000:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.001:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_2000_0.005",
+//      "!H:!V:NTrees=2000:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.005:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_2000_0.01",
+//      "!H:!V:NTrees=2000:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.01:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_2000_0.05",
+//      "!H:!V:NTrees=2000:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.05:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_2000_0.1",
+//      "!H:!V:NTrees=2000:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.1:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
+  //===============Optimización Learning rate=========================================
+
+  //===============Optimización Overtraining=========================================
+  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_1000_0.01_3_MinNodeSize5",
+      "!H:!V:NTrees=1000:MinNodeSize=5%:BoostType=Grad:Shrinkage=0.01:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=3" );
+  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_1000_0.01_2_MinNodeSize5",
+      "!H:!V:NTrees=1000:MinNodeSize=5%:BoostType=Grad:Shrinkage=0.01:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=2" );
+  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_1000_0.01_3_MinNodeSize2.5",
+      "!H:!V:NTrees=1000:MinNodeSize=2.5%:BoostType=Grad:Shrinkage=0.01:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=3" );
+  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_500_0.01_3_MinNodeSize5",
+      "!H:!V:NTrees=500:MinNodeSize=5%:BoostType=Grad:Shrinkage=0.01:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=3" );
+  //===============Optimización Overtraining=========================================
 
 
   // Allow Using Fisher discriminant in node splitting for (strong) linearly correlated variables
@@ -198,3 +338,37 @@ void trainBDtW_1j1t(TString outputdir, TString outputbasedir = "/pool/phedex/use
   // Launch the GUI for the root macros
   if (!gROOT->IsBatch()) TMVAGui( outputFileName );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    
+
+
+
+
+
+
+
+
+
+
+
+

@@ -13,11 +13,12 @@ jet1_e    : Jet1_E                         : 14,10,250             ; IncludeUnde
 jet1_phi  : Jet_phi[iJetSel30_Recl[0]]     : 40,-3.14,3.14  ; IncludeUnderflow=False, LegendCutoff=0,  XTitle="Leading jet #varphi (rad)"
 jet1_btag : Jet_btagDeepFlavB[iJetSel30_Recl[0]] : 20,0,1  ; IncludeUnderflow=False, LegendCutoff=0,  XTitle="Leading jet DeepFlavour b-tagging discr. (adim.)"
 
-jet2_pt   : Jet2_Pt                        : 8,30,190     ; IncludeUnderflow=False, LegendCutoff=0,  XTitle="Subleading jet p_{T} (GeV)"
-jet2_eta  : Jet_eta[iJetSel30_Recl[1]]     : 15,-2.4,2.4   ; IncludeUnderflow=False, LegendCutoff=0,  XTitle="Subleading jet #eta"
-jet2_m    : $DATA{Jet_mass[iJetSel30_Recl[1]]} $MC{Jet_mass_nom[iJetSel30_Recl[1]]}    : 12,0,60       ; IncludeUnderflow=False, LegendCutoff=0,  XTitle="Subleading jet mass (GeV)"
-jet2_phi  : Jet_phi[iJetSel30_Recl[1]]     : 40,-3.14,3.14  ; IncludeUnderflow=False, LegendCutoff=0,  XTitle="Subleading jet #varphi (rad)"
-jet2_btag : Jet_btagDeepFlavB[iJetSel30_Recl[1]] : 20,0,1  ; IncludeUnderflow=False, LegendCutoff=0,  XTitle="Subleading jet DeepFlavour b-tagging discr. (adim.)"
+jet2_pt   : Jet2_Pt      : 8,30,190     ; IncludeUnderflow=False, LegendCutoff=0, XTitle="Subleading jet p_{T} (GeV)"
+jet2_pt_rebin   : Jet2_Pt      : 16,30,190     ; IncludeUnderflow=False, LegendCutoff=0, XTitle="Subleading jet p_{T} (GeV)"
+jet2_eta  : Jet_eta[iJetSel30_Recl[1]]     : 15,-2.4,2.4   ; IncludeUnderflow=False, LegendCutoff=0, XTitle="Subleading jet #eta"
+jet2_m    : $DATA{Jet_mass[iJetSel30_Recl[1]]} $MC{Jet_mass_nom[iJetSel30_Recl[1]]}    : 12,0,60       ; IncludeUnderflow=False, LegendCutoff=0, XTitle="Subleading jet mass (GeV)"
+jet2_phi  : Jet_phi[iJetSel30_Recl[1]]     : 40,-3.14,3.14  ; IncludeUnderflow=False, LegendCutoff=0, XTitle="Subleading jet #varphi (rad)"
+jet2_btag : Jet_btagDeepFlavB[iJetSel30_Recl[1]] : 20,0,1  ; IncludeUnderflow=False, LegendCutoff=0, XTitle="Subleading jet DeepFlavour b-tagging discr. (adim.)"
 
 #jetfwd1_pt   : $DATA{Jet_pt[iFwdJetSel30_Recl[0]]} $MC{Jet_pt_nom[iFwdJetSel30_Recl[0]]}  : 13,20,150   ; IncludeUnderflow=False, LegendCutoff=0,  XTitle="Leading forward jet p_{T} (GeV)"
 #jetfwd1_eta  : Jet_eta[iFwdJetSel30_Recl[0]] : 15,-5.0,5.0 ; IncludeUnderflow=False, LegendCutoff=0,  XTitle="Leading forward jet #eta"
@@ -79,3 +80,5 @@ lepjet11lep2_deta  : LepJet11Lep2_DEta   : 20,0,5   ; IncludeUnderflow=False, Le
 lep1lepjet21_dr    : Lep1LepJet21_DR     : 20,0,5   ; IncludeUnderflow=False, LegendCutoff=0,  XTitle="\\Delta R (\\ell_{1}\,jet\\ell_{2}) (adim.)"
 lep1lepjet21_dphi  : Lep1LepJet21_DPhi   : 10,0,1   ; IncludeUnderflow=False, LegendCutoff=0,  XTitle="\\Delta\\it{\\varphi}(\\ell_{1}\,jet\\ell_{2})/\\it{\\pi}"
 lep1lepjet21_deta  : Lep1LepJet21_DEta   : 20,0,5   ; IncludeUnderflow=False, LegendCutoff=0,  XTitle="\\Delta\\it{\\varphi}(\\ell_{1}\,jet\\ell_{2})/\\it{\\pi}"
+
+tot_weight: 1 : 1,0.5,1.5; XTitle = "Selected events", LegendCutoff=0, MoreY=2.0

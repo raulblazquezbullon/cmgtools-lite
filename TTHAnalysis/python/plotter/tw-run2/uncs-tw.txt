@@ -163,11 +163,13 @@ btagging_2016:   $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_btag_Up/
 btagging_1718:   $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_btag_Up/bTagWeight'\,'bTagWeight_btag_Dn/bTagWeight'], year="2017"
 btagging_1718:   $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_btag_Up/bTagWeight'\,'bTagWeight_btag_Dn/bTagWeight'], year="2018"
 mistagging_2016: $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_Up/bTagWeight'\,'bTagWeight_mistag_Dn/bTagWeight'], year="2016"
+
 mistagging_1718: $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_Up/bTagWeight'\,'bTagWeight_mistag_Dn/bTagWeight'], year="2017"
 mistagging_1718: $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_Up/bTagWeight'\,'bTagWeight_mistag_Dn/bTagWeight'], year="2018"
 
 #btagging_1617:   $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_btag_Up/bTagWeight'\,'bTagWeight_btag_Dn/bTagWeight'], year="2016"
 #btagging_1617:   $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_btag_Up/bTagWeight'\,'bTagWeight_btag_Dn/bTagWeight'], year="2017"
+
 #btagging_2018:   $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_btag_Up/bTagWeight'\,'bTagWeight_btag_Dn/bTagWeight'], year="2018"
 #mistagging_1617: $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_Up/bTagWeight'\,'bTagWeight_mistag_Dn/bTagWeight'], year="2016"
 #mistagging_1617: $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_Up/bTagWeight'\,'bTagWeight_mistag_Dn/bTagWeight'], year="2017"
@@ -229,7 +231,6 @@ fsr_ttbar : ttbar : .* : templateAsymm; AddWeights=['PSWeight[3]'\,'PSWeight[1]'
 
 isr_tw    : tw    : .* : templateAsymm; AddWeights=['PSWeight[2]'\,'PSWeight[0]']
 fsr_tw    : tw    : .* : templateAsymm; AddWeights=['PSWeight[3]'\,'PSWeight[1]']
-
 
 ##### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ##### Top pT reweighting

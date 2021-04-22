@@ -381,6 +381,7 @@ class TreeToYield:
                 #print "unctype:", var.unc_type
             if var == None: 
                 exprs = [(expr,0)]
+
             else:
                 exprs = [('(%s)*(%s)'%(fr._altNorm if (fr and fr._altNorm) else '1',expr), idx) for idx,fr in enumerate(var.fakerate) ]
 
