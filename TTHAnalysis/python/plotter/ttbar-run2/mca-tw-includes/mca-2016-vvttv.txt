@@ -1,5 +1,5 @@
 # WW
-vvttv : Tree_WWTo2L2Nu_0 : 12.178 ; genSumWeightName="genEventSumw_",FillColor=390,Label="VV+t#bar{t}V"
+vvttv : Tree_WWTo2L2Nu_0 : 12.178 ; genSumWeightName="genEventSumw_",FillColor=390
 #vvttv : Tree_WWToLNuQQ_0 + Tree_WWToLNuQQ_ext1_0 :
 
 
@@ -14,7 +14,8 @@ vvttv : Tree_WZTo3LNu_TuneCUETP8M1_0 + Tree_WZTo3LNu_TuneCUETP8M1_ext1_0 + Tree_
 # ZZ
 vvttv : Tree_ZZTo2L2Nu_0 + Tree_ZZTo2L2Nu_1 + Tree_ZZTo2L2Nu_ext1_0 + Tree_ZZTo2L2Nu_ext1_1 + Tree_ZZTo2L2Nu_ext1_10 + Tree_ZZTo2L2Nu_ext1_2 + Tree_ZZTo2L2Nu_ext1_3 + Tree_ZZTo2L2Nu_ext1_4 + Tree_ZZTo2L2Nu_ext1_5 + Tree_ZZTo2L2Nu_ext1_6 + Tree_ZZTo2L2Nu_ext1_7 + Tree_ZZTo2L2Nu_ext1_8 + Tree_ZZTo2L2Nu_ext1_9 : 0.564 ; genSumWeightName="genEventSumw_",FillColor=390
 
-vvttv : Tree_ZZTo2L2Q_0 : 3.28 ; genSumWeightName="genEventSumw_",FillColor=390
+#vvttv : Tree_ZZTo2L2Q_0 : 3.28 ; genSumWeightName="genEventSumw_",FillColor=390
+vvttv : Tree_ZZTo2L2Q_0 + Tree_ZZTo2L2Q_amcatnloFXFX_madspin_0 + Tree_ZZTo2L2Q_amcatnloFXFX_madspin_1 + Tree_ZZTo2L2Q_amcatnloFXFX_madspin_2 : 3.28 ; genSumWeightName="genEventSumw_",FillColor=390
 
 vvttv : Tree_ZZTo4L_0 + Tree_ZZTo4L_ext1_0 + Tree_ZZTo4L_ext1_1 + Tree_ZZTo4L_ext1_10 + Tree_ZZTo4L_ext1_11 + Tree_ZZTo4L_ext1_12 + Tree_ZZTo4L_ext1_2 + Tree_ZZTo4L_ext1_3 + Tree_ZZTo4L_ext1_4 + Tree_ZZTo4L_ext1_5 + Tree_ZZTo4L_ext1_6 + Tree_ZZTo4L_ext1_7 + Tree_ZZTo4L_ext1_8 + Tree_ZZTo4L_ext1_9 : 1.256 ; genSumWeightName="genEventSumw_",FillColor=390
 
