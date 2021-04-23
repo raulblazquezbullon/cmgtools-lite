@@ -298,10 +298,9 @@ from CMGTools.TTHAnalysis.tools.nanoAOD.jetmetGrouper               import group
 
 # New
 btagpath = os.environ['CMSSW_BASE'] + "/src/CMGTools/TTHAnalysis/data/TopRun2/btagging"
-
-btagWeights_2016 = lambda : btag_weighter(btagpath + "/" + "DeepJet_2016LegacySF_V1_YearCorrelation-V1.csv",       btagpath + "/" + "BtagMCSF.root", 'deepjet', year = 2016)
-btagWeights_2017 = lambda : btag_weighter(btagpath + "/" + "DeepFlavour_94XSF_V3_B_F_comb_YearCorrelation-V1.csv", btagpath + "/" + "BtagMCSF.root", 'deepjet', SFmeasReg = "comb", year = 2017)  #### TEMPORAL
-btagWeights_2018 = lambda : btag_weighter(btagpath + "/" + "DeepJet_102XSF_V1_YearCorrelation-V1.csv",             btagpath + "/" + "BtagMCSF.root", 'deepjet', year = 2018)
+btagWeights_2016 = lambda : btag_weighter(btagpath + "/" + "DeepJet_2016LegacySF_V1_YearCorrelation-V1.csv",        btagpath + "/" + "BtagMCSF.root", 'deepjet', year = 2016)
+btagWeights_2017 = lambda : btag_weighter(btagpath + "/" + "DeepJet_DeepFlavour2017_mujets_YearCorrelation-V1.csv", btagpath + "/" + "BtagMCSF.root", 'deepjet', year = 2017)
+btagWeights_2018 = lambda : btag_weighter(btagpath + "/" + "DeepJet_102XSF_V1_YearCorrelation-V1.csv",              btagpath + "/" + "BtagMCSF.root", 'deepjet', year = 2018)
 
 
 # Cleaning
