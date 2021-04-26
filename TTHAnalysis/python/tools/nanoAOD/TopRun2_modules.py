@@ -212,8 +212,6 @@ IDDict["jets"] = {
                       #and l.tightId == 1 )
 muonID = lambda l : ( abs(l.eta) < IDDict["muons"]["eta"] and l.corrected_pt > IDDict["muons"]["pt"] and l.pfRelIso04_all < IDDict["muons"]["isorelpf"]
                       and l.tightId == 1 )
-#muonID_validacion = lambda l : ( abs(l.eta) < IDDict["muons"]["eta"] and l.pt > IDDict["muons"]["pt"] and l.pfRelIso04_all < IDDict["muons"]["isorelpf"]
-                      #and l.tightId == 1 ) #### VALIDACION CRAMONAL
 
 elecID = lambda l : ( (abs(l.eta) < IDDict["elecs"]["eta2"] and (abs(l.eta) < IDDict["elecs"]["eta0"] or abs(l.eta) > IDDict["elecs"]["eta1"]) )
                        and l.pt > IDDict["elecs"]["pt"] and l.cutBased >= 4 and l.lostHits <= 1
@@ -261,9 +259,6 @@ from PhysicsTools.NanoAODTools.postprocessing.modules.common.collectionMerger im
 lepMerge = lambda : collectionMerger(input = ["Electron", "Muon"],
                                      output = "LepGood",
                                      selector = dict(Muon = muonID, Electron = elecID))
-#lepMerge_validacion = lambda : collectionMerger(input = ["Electron", "Muon"],
-                                     #output = "LepGood",
-                                     #selector = dict(Muon = muonID_validacion, Electron = elecID))
 
 lepMerge_muenUp = lambda : collectionMerger(input = ["Electron", "Muon"],
                                             output = "LepGoodmuUp",
@@ -335,14 +330,6 @@ cleaning_mc = lambda : pythonCleaningTopRun2(label = "Recl",
                                              #variations = ['jesTotal', 'jer'] + ['jes%s'%v for v in jecGroups]
 )
 
-#cleaning_mc_validacion = lambda : pythonCleaningTopRun2(label = "Recl",
-                                             #jetPts = [IDDict["jets"]["pt"], IDDict["jets"]["pt2"]],
-                                             #jetPtNoisyFwd = IDDict["jets"]["ptfwdnoise"],
-                                             #jecvars   = [],
-                                             #lepenvars = [],
-                                             #isMC = False,
-#)
-
 cleaning_data = lambda : pythonCleaningTopRun2(label = "Recl",
                                                jetPts = [IDDict["jets"]["pt"], IDDict["jets"]["pt2"]],
                                                jetPtNoisyFwd = IDDict["jets"]["ptfwdnoise"],
@@ -356,9 +343,6 @@ eventVars_mc = lambda : EventVars_tWRun2('', 'Recl',
                                         #jecvars = ['jesTotal', 'jer'] + ['jes%s'%v for v in jecGroups])
                                          jecvars = ['jesTotal', 'jer'],
                                          lepvars = ['mu'])
-#eventVars_mc_validacion = lambda : EventVars_tWRun2('', 'Recl',
-                                         #jecvars = [],
-                                         #lepvars = [], isMC = False)
 eventVars_data = lambda : EventVars_tWRun2('', 'Recl', isMC = False,
                                            #jecvars = ['jesTotal', 'jer'] + ['jes%s'%v for v in jecGroups])
                                            jecvars = [],
@@ -382,7 +366,6 @@ addMC         = lambda : addDataTag(tags.mc)
 addMC_ttbar   = lambda : addDataTag(tags.mc, isTop = True)
 
 from CMGTools.TTHAnalysis.tools.addJetPtCorr import addJetPtCorr
-
 addJetPtCorrAll = lambda : addJetPtCorr()
 
 addYearTag_2016_mc         = [addYear_2016, addMC        ]#, addJetPtCorrAll]
@@ -414,7 +397,6 @@ addYearTag_2018_muoneg     = [addYear_2018, addMuonEG    ]#, addJetPtCorrAll]
 from CMGTools.TTHAnalysis.tools.addRochester import addRochester
 #from CMGTools.TTHAnalysis.tools.addRochesterValid import addRochesterValid
 addRoch_mc = lambda : addRochester()
-#addRoch_mc_validacion = lambda : addRochesterValid()
 addRoch_data = lambda : addRochester(isMC = False)
 
 from CMGTools.TTHAnalysis.tools.nanoAOD.selectParticleAndPartonInfo import selectParticleAndPartonInfo
@@ -426,7 +408,6 @@ theDressAndPartInfo = lambda : selectParticleAndPartonInfo(dresslepSel_         
 
 #lepMerge_roch_mc   = [lepMerge, lepMerge_muenUp, lepMerge_muenDn, lepMerge_elenUp, lepMerge_elenDn, addRoch_mc, theDressAndPartInfo] ### FIXME: este es el "bueno"
 lepMerge_roch_mc   = [lepMerge, lepMerge_muenUp, lepMerge_muenDn, addRoch_mc, theDressAndPartInfo]
-#lepMerge_roch_mc_validacion   = [lepMerge_validacion, addRoch_mc_validacion, theDressAndPartInfo]
 lepMerge_roch_data = [lepMerge, addRoch_data]
 
 
@@ -448,7 +429,6 @@ from CMGTools.TTHAnalysis.tools.particleAndPartonVars_tWRun2 import particleAndP
 theDressAndPartVars = lambda : particleAndPartonVars_tWRun2()
 
 varstrigger_mc   = [eventVars_mc, theDressAndPartVars] + triggerSeq
-#varstrigger_mc_validacion = [eventVars_mc_validacion, theDressAndPartVars] + triggerSeq
 varstrigger_data = [eventVars_data] + triggerSeq
 
 
@@ -474,19 +454,6 @@ sfSeq_mvatrain_2018 = [leptrigSFs, btagWeights_2018, addTopPtWeight, addSeparati
 sfSeq_mvatrain_ent_2016 = [leptrigSFs, btagWeights_2016, addTopPtWeight, addSeparationIndex_mva_ent]
 sfSeq_mvatrain_ent_2017 = [leptrigSFs, btagWeights_2017, addTopPtWeight, addSeparationIndex_mva_ent]
 sfSeq_mvatrain_ent_2018 = [leptrigSFs, btagWeights_2018, addTopPtWeight, addSeparationIndex_mva_ent]
-
-
-#### TEMPORAL
-#addYearTag_2016_mc_validacion         = [addYear_2016, addMC        ]
-#addYearTag_2016_singlemuon_validacion = [addYear_2016, addSingleMuon]
-#addYearTag_2016_singleelec_validacion = [addYear_2016, addSingleElec]
-#addYearTag_2016_doublemuon_validacion = [addYear_2016, addDoubleMuon]
-#addYearTag_2016_doubleeg_validacion   = [addYear_2016, addDoubleEG  ]
-#addYearTag_2016_muoneg_validacion     = [addYear_2016, addMuonEG    ]
-
-
-
-
 
 
 # %%%%%%%%%%%%%%%%%%%%%%%%%% WWbb
