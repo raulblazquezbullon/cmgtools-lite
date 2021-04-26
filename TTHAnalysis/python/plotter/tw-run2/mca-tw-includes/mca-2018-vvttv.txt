@@ -1,5 +1,5 @@
 # WW
-vvttv : Tree_WWTo2L2Nu_NNPDF31_TuneCP5_0 + Tree_WWTo2L2Nu_NNPDF31_TuneCP5_1 + Tree_WWTo2L2Nu_NNPDF31_TuneCP5_2 + Tree_WWTo2L2Nu_NNPDF31_TuneCP5_3 : 12.178 ; genSumWeightName="genEventSumw_",FillColor=390,Label="VV+t#bar{t}V"
+vvttv : Tree_WWTo2L2Nu_NNPDF31_TuneCP5_0 + Tree_WWTo2L2Nu_NNPDF31_TuneCP5_1 + Tree_WWTo2L2Nu_NNPDF31_TuneCP5_2 + Tree_WWTo2L2Nu_NNPDF31_TuneCP5_3 : 12.178 ; genSumWeightName="genEventSumw_",FillColor=390
 
 #vvttv : Tree_WWToLNuQQ_0 + Tree_WWToLNuQQ_ext1_0 :
 
