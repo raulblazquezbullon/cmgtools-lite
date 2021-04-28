@@ -275,7 +275,8 @@ CMS_ttW_FRe_pt : $FRData  : .*3l.* : templateAsymm; FakeRates=["ttH-multilepton/
         RemoveFakeRate="ttH-multilepton/fakeRate-3l-frdata.txt", DoesNotChangeEventSelection=True
 CMS_ttW_FRe_eta : $FRData  : .*3l.* : templateAsymm; FakeRates=["ttH-multilepton/fakerate-vars/fakeRate-3l-frdata-e-eta1.txt"\,"ttH-multilepton/fakerate-vars/fakeRate-3l-frdata-e-eta2.txt"], \
         RemoveFakeRate="ttH-multilepton/fakeRate-3l-frdata.txt", DoesNotChangeEventSelection=True
-CMS_ttW_FRm_env : $FRData  : .*3l.* : templateAsymm; FakeRates=["ttH-multilepton/fakerate-vars/fakeRate-3l-frdata-m-up.txt"\,"ttH-multilepton/fakerate-vars/fakeRate-3l-frdata-m-down.txt"], \#        RemoveFakeRate="ttH-multilepton/fakeRate-3l-frdata.txt", DoesNotChangeEventSelection=True
+CMS_ttW_FRm_env : $FRData  : .*3l.* : templateAsymm; FakeRates=["ttH-multilepton/fakerate-vars/fakeRate-3l-frdata-m-up.txt"\,"ttH-multilepton/fakerate-vars/fakeRate-3l-frdata-m-down.txt"], \
+        RemoveFakeRate="ttH-multilepton/fakeRate-3l-frdata.txt", DoesNotChangeEventSelection=True
 CMS_ttW_FRm_pt : $FRData  : .*3l.* : templateAsymm; FakeRates=["ttH-multilepton/fakerate-vars/fakeRate-3l-frdata-m-pt1.txt"\,"ttH-multilepton/fakerate-vars/fakeRate-3l-frdata-m-pt2.txt"], \
         RemoveFakeRate="ttH-multilepton/fakeRate-3l-frdata.txt", DoesNotChangeEventSelection=True
 CMS_ttW_FRm_eta : $FRData  : .*3l.* : templateAsymm; FakeRates=["ttH-multilepton/fakerate-vars/fakeRate-3l-frdata-m-eta1.txt"\,"ttH-multilepton/fakerate-vars/fakeRate-3l-frdata-m-eta2.txt"], \
