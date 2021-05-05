@@ -1,2 +1,2 @@
 weight : Alt$(LHEPdfWeight[17],1)
-alt-norm : Alt$(LHEPdfSumw_[17]/LHEScaleSumw_[4]*genEventSumw_,genEventSumw_)
+alt-norm : Alt$(LHEPdfSumw_[17]/LHEScaleSumw_[4],1)
