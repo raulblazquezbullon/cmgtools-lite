@@ -108,6 +108,8 @@ class EventVars_tWRun2(Module):
                               #("isSS", "O"),
                               #("channel", "B"),
                               ("channel", "I"),
+                              ("datatag", "I"),
+                              ("isTop", "I"),
 
                               #### Variables that are not susceptible to JEC variations that need a nominal value
                               # (note that being in the lepenergyvars list does not give this!)
@@ -215,13 +217,37 @@ class EventVars_tWRun2(Module):
             if type(var) == tuple:
                 if var[0] == "channel":
                     allret["channel"] = ch.NoChan
+                elif var[0] == "isTop":
+                    allret["isTop"] = 0
+                elif var[0] == "datatag":
+                    allret["datatag"] = tags.NoTag
                 else:
                     allret[var[0]] = -99
             else:
                 allret[var] = -99
                 allret[var] = -99
 
+        thesample = ""
+        for i in range(event.nDatasetName):
+            thesample += str(event.DatasetName_name[i])
 
+        if event.isData:
+            if   "muoneg"     in thesample.lower():
+                allret["datatag"] = tags.muoneg
+            elif "singlemuon" in thesample.lower():
+                allret["datatag"] = tags.singlemuon
+            elif "singleelec" in thesample.lower():
+                allret["datatag"] = tags.singleelec
+            elif "doublemuon" in thesample.lower():
+                allret["datatag"] = tags.doublemuon
+            elif "doubleeg" in thesample.lower():
+                allret["datatag"] = tags.doubleeg
+        elif "ttto2l2nu" in thesample.lower():
+            allret["datatag"] = tags.mc
+            allret["isTop"]   = 1
+        else:
+            allret["datatag"] = tags.mc
+        print allret["isTop"]
         # Nominal variables and those susceptible to JEC enter in this if-statement.
         for iL in range(len(leps)):
             for jL in range(iL + 1, len(leps)):
@@ -253,16 +279,20 @@ class EventVars_tWRun2(Module):
             for delta,sys in self.systsJEC.iteritems():
                 allret["METgood_pt"  + sys] = -99
                 allret["METgood_phi" + sys] = -99
-                if event.datatag != tags.mc:
-                    allret["METgood_pt"  + sys] = event.MET_pt
-                    allret["METgood_phi" + sys] = event.MET_phi
-                elif event.datatag != tags.NoTag:
+                if event.isData:
                     if event.year == 2017:
-                        allret["METgood_pt"  + sys] = getattr(event, 'METFixEE2017_pt{v}'.format( v = sys if sys != "" else "_nom"))
-                        allret["METgood_phi" + sys] = getattr(event, 'METFixEE2017_phi{v}'.format(v = sys if sys != "" else "_nom"))
+                        allret["METgood_pt"  + sys] = event.METFixEE2017_pt
+                        allret["METgood_phi" + sys] = event.METFixEE2017_phi
                     else:
-                        allret["METgood_pt"  + sys] = getattr(event, 'MET_pt{v}'.format( v = sys if sys != "" else "_nom"))
-                        allret["METgood_phi" + sys] = getattr(event, 'MET_phi{v}'.format(v = sys if sys != "" else "_nom"))
+                        allret["METgood_pt"  + sys] = event.MET_pt
+                        allret["METgood_phi" + sys] = event.MET_phi
+                else:
+                    if event.year == 2017:
+                        allret["METgood_pt"  + sys] = getattr(event, 'METFixEE2017_T1_pt{v}'.format( v = sys if sys != "" else ""))
+                        allret["METgood_phi" + sys] = getattr(event, 'METFixEE2017_T1_phi{v}'.format(v = sys if sys != "" else ""))
+                    else:
+                        allret["METgood_pt"  + sys] = getattr(event, 'MET_T1_pt{v}'.format( v = sys if sys != "" else ""))
+                        allret["METgood_phi" + sys] = getattr(event, 'MET_T1_phi{v}'.format(v = sys if sys != "" else ""))
 
                 met_4m.SetPtEtaPhiM(allret["METgood_pt" + sys], 0, allret["METgood_phi" + sys], 0)
 
@@ -274,7 +304,7 @@ class EventVars_tWRun2(Module):
                 jets_4m = [j.p4() for j in jets]
 
                 jetjecsysscaff = (sys if sys != "" else self.nominaljecscaff)
-                if event.datatag != tags.mc: jetjecsysscaff = ""
+                if event.isData: jetjecsysscaff = ""
 
                 for i in range(len(jets_4m)):
                     jets_4m[i].SetPtEtaPhiM(getattr(jets[i], "pt" + jetjecsysscaff), jets_4m[i].Eta(),
@@ -359,7 +389,7 @@ class EventVars_tWRun2(Module):
                 jets_4m = [j.p4() for j in jets]
 
                 jetjecsysscaff = self.nominaljecscaff
-                if event.datatag != tags.mc: jetjecsysscaff = ""
+                if event.isData: jetjecsysscaff = ""
 
                 for i in range(len(jets_4m)):
                     jets_4m[i].SetPtEtaPhiM(getattr(jets[i], "pt" + jetjecsysscaff), jets_4m[i].Eta(),

@@ -280,8 +280,6 @@ leptrigSFs = lambda : lepScaleFactors_TopRun2()
 
 #### JET TREATMENTS ###
 from CMGTools.TTHAnalysis.tools.nanoAOD.btag_weighter               import btag_weighter
-from CMGTools.TTHAnalysis.tools.nanoAOD.jetmetGrouper               import groups as jecGroups
-
 ## b-tagging
 # Old (pre-new correlations)
 #btagEffpath = os.environ['CMSSW_BASE'] + "/src/CMGTools/TTHAnalysis/data/TopRun2/btagging/"
@@ -304,6 +302,20 @@ btagWeights_2018 = lambda : btag_weighter(btagpath + "/" + "DeepJet_102XSF_V1_Ye
 #from CMGTools.TTHAnalysis.tools.nanoAOD.cleaningTopRun2 import cleaningTopRun2
 from CMGTools.TTHAnalysis.tools.nanoAOD.pythonCleaningTopRun2 import pythonCleaningTopRun2
 
+jecGroups = {'HF'                 : ['PileUpPtHF', 'RelativeJERHF', 'RelativePtHF'],
+             'BBEC1_year'         : ['RelativeJEREC1', 'RelativePtEC1', 'RelativeStatEC'],
+             'FlavorQCD'          : ['FlavorQCD'],
+             'RelativeSample_year': ['RelativeSample'],
+             'EC2'                : ['PileUpPtEC2'],
+             'HF_year'            : ['RelativeStatHF'],
+             'RelativeBal'        : ['RelativeBal'],
+             'Absolute_year'      : ['AbsoluteStat', 'RelativeStatFSR', 'TimePtEta'],
+             'BBEC1'              : ['PileUpPtBB', 'PileUpPtEC1', 'RelativePtBB'],
+             'EC2_year'           : ['RelativeJEREC2', 'RelativePtEC2'],
+             'Absolute'           : ['AbsoluteMPFBias', 'AbsoluteScale', 'Fragmentation', 'PileUpDataMC',
+                                     'PileUpPtRef', 'RelativeFSR', 'SinglePionECAL', 'SinglePionHCAL'],
+}
+
 #cleaning_mc = lambda : cleaningTopRun2(label = "Recl",
                                        #jetPts = [IDDict["jets"]["pt"], IDDict["jets"]["pt2"]],
                                        #jetPtNoisyFwd = IDDict["jets"]["ptfwdnoise"], isMC = True,
@@ -320,40 +332,79 @@ from CMGTools.TTHAnalysis.tools.nanoAOD.pythonCleaningTopRun2 import pythonClean
 #)
 
 
-cleaning_mc = lambda : pythonCleaningTopRun2(label = "Recl",
+cleaning_mc_mod2016 = lambda : pythonCleaningTopRun2(label  = "Recl",
                                              jetPts = [IDDict["jets"]["pt"], IDDict["jets"]["pt2"]],
                                              jetPtNoisyFwd = IDDict["jets"]["ptfwdnoise"],
-                                             jecvars   = ['jesTotal', 'jer'],
+                                             jecvars   = ['jesTotal', 'jer'] + ['jes%s'%v for v in jecGroups] + ["jer%i"%i for i in range(6)],
                                              lepenvars = ["mu"],
-                                             isMC = True,
-                                             #debug = True,
-                                             #variations = ['jesTotal', 'jer'] + ['jes%s'%v for v in jecGroups]
+                                             isMC      = True,
+                                             #debug     = True,
+                                             year_     = 2016,
+)
+cleaning_mc_mod2017 = lambda : pythonCleaningTopRun2(label  = "Recl",
+                                             jetPts = [IDDict["jets"]["pt"], IDDict["jets"]["pt2"]],
+                                             jetPtNoisyFwd = IDDict["jets"]["ptfwdnoise"],
+                                             jecvars   = ['jesTotal', 'jer'] + ['jes%s'%v for v in jecGroups] + ["jer%i"%i for i in range(6)],
+                                             lepenvars = ["mu"],
+                                             isMC      = True,
+                                             #debug     = True,
+                                             year_     = 2017,
+)
+cleaning_mc_mod2018 = lambda : pythonCleaningTopRun2(label  = "Recl",
+                                             jetPts = [IDDict["jets"]["pt"], IDDict["jets"]["pt2"]],
+                                             jetPtNoisyFwd = IDDict["jets"]["ptfwdnoise"],
+                                             jecvars   = ['jesTotal', 'jer'] + ['jes%s'%v for v in jecGroups] + ["jer%i"%i for i in range(6)],
+                                             lepenvars = ["mu"],
+                                             isMC      = True,
+                                             year_     = 2018,
+                                             #debug     = True,
 )
 
-cleaning_data = lambda : pythonCleaningTopRun2(label = "Recl",
+cleaning_data_mod2016 = lambda : pythonCleaningTopRun2(label = "Recl",
                                                jetPts = [IDDict["jets"]["pt"], IDDict["jets"]["pt2"]],
                                                jetPtNoisyFwd = IDDict["jets"]["ptfwdnoise"],
                                                jecvars   = [], lepenvars = [], isMC = False,
+                                               year_     = 2016,
 )
-
-
-#### EVENT VARIABLES ###
-from CMGTools.TTHAnalysis.tools.eventVars_tWRun2 import EventVars_tWRun2
-eventVars_mc = lambda : EventVars_tWRun2('', 'Recl',
-                                        #jecvars = ['jesTotal', 'jer'] + ['jes%s'%v for v in jecGroups])
-                                         jecvars = ['jesTotal', 'jer'],
-                                         lepvars = ['mu'])
-eventVars_data = lambda : EventVars_tWRun2('', 'Recl', isMC = False,
-                                           #jecvars = ['jesTotal', 'jer'] + ['jes%s'%v for v in jecGroups])
-                                           jecvars = [],
-                                           lepvars = [])
-
+cleaning_data_mod2017 = lambda : pythonCleaningTopRun2(label = "Recl",
+                                               jetPts = [IDDict["jets"]["pt"], IDDict["jets"]["pt2"]],
+                                               jetPtNoisyFwd = IDDict["jets"]["ptfwdnoise"],
+                                               jecvars   = [], lepenvars = [], isMC = False,
+                                               year_     = 2017,
+)
+cleaning_data_mod2018 = lambda : pythonCleaningTopRun2(label = "Recl",
+                                               jetPts = [IDDict["jets"]["pt"], IDDict["jets"]["pt2"]],
+                                               jetPtNoisyFwd = IDDict["jets"]["ptfwdnoise"],
+                                               jecvars   = [], lepenvars = [], isMC = False,
+                                               year_     = 2018,
+)
 
 #### Add year
 from CMGTools.TTHAnalysis.tools.addYear import addYear
 addYear_2016 = lambda : addYear(2016)
 addYear_2017 = lambda : addYear(2017)
 addYear_2018 = lambda : addYear(2018)  #### NOTE: this also adds the PrefireWeight as a branch for this year
+
+#### FIX PORQUE SOY FATISIMU
+cleaning_mc_2016   = [cleaning_mc_mod2016,   addYear_2016]
+cleaning_mc_2017   = [cleaning_mc_mod2017,   addYear_2017]
+cleaning_mc_2018   = [cleaning_mc_mod2018,   addYear_2018]
+cleaning_data_2016 = [cleaning_data_mod2016, addYear_2016]
+cleaning_data_2017 = [cleaning_data_mod2017, addYear_2017]
+cleaning_data_2018 = [cleaning_data_mod2018, addYear_2018]
+
+
+
+#### EVENT VARIABLES ###
+from CMGTools.TTHAnalysis.tools.eventVars_tWRun2 import EventVars_tWRun2
+eventVars_mc = lambda : EventVars_tWRun2('', 'Recl',
+                                         jecvars = ['jesTotal', 'jer'] + ['jes%s'%v for v in jecGroups] + ["jer%i"%i for i in range(6)],
+                                         #jecvars = ['jesTotal', 'jer'],
+                                         lepvars = ['mu'])
+eventVars_data = lambda : EventVars_tWRun2('', 'Recl', isMC = False,
+                                           jecvars = [],
+                                           lepvars = [])
+
 
 #### Add data tag
 from CMGTools.TTHAnalysis.tools.addDataTag import addDataTag
@@ -426,10 +477,13 @@ createMVAMiniTree = lambda : createTrainingMiniTree_tWRun2()
 
 
 from CMGTools.TTHAnalysis.tools.particleAndPartonVars_tWRun2 import particleAndPartonVars_tWRun2
+from CMGTools.TTHAnalysis.tools.nanoAOD.jetMetGrouper_TopRun2 import jetMetCorrelate2016_TopRun2,jetMetCorrelate2017_TopRun2,jetMetCorrelate2018_TopRun2
 theDressAndPartVars = lambda : particleAndPartonVars_tWRun2()
 
-varstrigger_mc   = [eventVars_mc, theDressAndPartVars] + triggerSeq
-varstrigger_data = [eventVars_data] + triggerSeq
+varstrigger_mc_2016 = [jetMetCorrelate2016_TopRun2, eventVars_mc, theDressAndPartVars] + triggerSeq
+varstrigger_mc_2017 = [jetMetCorrelate2017_TopRun2, eventVars_mc, theDressAndPartVars] + triggerSeq
+varstrigger_mc_2018 = [jetMetCorrelate2018_TopRun2, eventVars_mc, theDressAndPartVars] + triggerSeq
+varstrigger_data    = [eventVars_data] + triggerSeq
 
 
 from CMGTools.TTHAnalysis.tools.nanoAOD.TopPtWeight import TopPtWeight
