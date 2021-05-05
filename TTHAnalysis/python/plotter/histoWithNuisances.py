@@ -757,8 +757,10 @@ class HistoWithNuisances:
         self._rooFit["templates"] = templates
         self._rooFit["scaleFactors"] = {}
 
+
     def buildEnvelopes(self):
         for var in self.getVariationList():
+            if "pdf" in var.lower(): continue
             if len( self.getVariation(var) ) < 3: continue
             up   = _cloneNoDir( self.central, self.central.GetName() + 'envUp' )
             down = _cloneNoDir( self.central, self.central.GetName() + 'envDown' )
@@ -769,27 +771,58 @@ class HistoWithNuisances:
                     minDn = self.central.GetBinContent( ibin ) 
                     for hvar in self.getVariation(var):
                         cont = hvar.GetBinContent(ibin)
-                        if cont-maxUp > 0: maxUp = cont
-                        if cont-minDn < 0: minDn = cont
+                        if cont-maxUp >= 0: maxUp = cont
+                        else:               minDn = cont
                     up.SetBinContent( ibin, maxUp ) 
                     down.SetBinContent( ibin, minDn ) 
             del self.variations[var]
             self.addVariation( var, 'up', up)
             self.addVariation( var, 'down', down)
 
-    def buildEnvelopesRMS(self):
+
+    def buildEnvelopesForPDFs(self):
         for var in self.getVariationList():
-            if len( self.getVariation(var) ) < 30: continue #this is probably wrong here, but should prevent for computing this for nothing else but PDF....
+            if "pdf" not in var.lower(): continue
+            #### NOTE: we will assume that ALL the entries, except the last two, correspond with
+            # the variations of the PDF weights, and the last two are the ones that relate with
+            # the alphaS uncertainties. You should NOT consider the nominal variation here (although,
+            # hopefully and a priori, it should not affect the result).
             up   = _cloneNoDir( self.central, self.central.GetName() + 'envUp' )
             down = _cloneNoDir( self.central, self.central.GetName() + 'envDown' )
-            for x in range(1, self.central.GetNbinsX()+1):
-                for y in range(1,self.central.GetNbinsY()+1):
-                    ibin  = self.central.GetBin(x,y)
-                    delta   = 0
-                    for hvar in self.getVariation(var):
-                        delta = delta+hvar.GetBinContent(ibin)*hvar.GetBinContent(ibin)
-                    up.SetBinContent( ibin, sqrt(delta)) 
-                    down.SetBinContent( ibin, sqrt(delta)) 
+            nvars = self.getVariation(var)
+            if "hessian" in var.lower():
+                for x in range(1, self.central.GetNbinsX() + 1):
+                    for y in range(1, self.central.GetNbinsY() + 1):
+                        ibin    = self.central.GetBin(x, y)
+                        nomVal  = self.central.GetBinContent(ibin)
+                        deltaUp = 0; deltaDn = 0
+                        for iV in range(nvars - 2):
+                            cont = self.getVariation(var)[iV].GetBinContent(ibin)
+                            if cont >= nomVal: deltaUp += (cont - nomVal)**2
+                            else:              deltaDn += (nomVal - cont)**2
+
+                        alphaSunc = (self.getVariation(var)[nvars - 1].GetBinContent(ibin) - self.getVariation(var)[nvars - 2].GetBinContent(ibin)) / 2.
+
+                        up.SetBinContent(  ibin, nomVal + sqrt(deltaUp + alphaSunc**2))
+                        down.SetBinContent(ibin, nomVal - sqrt(deltaDn + alphaSunc**2))
+            elif "mc" in var.lower():
+                for x in range(1, self.central.GetNbinsX() + 1):
+                    for y in range(1, self.central.GetNbinsY() + 1):
+                        ibin    = self.central.GetBin(x, y)
+                        nomVal  = self.central.GetBinContent(ibin)
+                        deltaUp = 0; deltaDn = 0
+                        for iV in range(nvars - 2):
+                            cont = self.getVariation(var)[iV].GetBinContent(ibin)
+                            if cont >= nomVal: deltaUp += (cont - nomVal)**2
+                            else:              deltaDn += (nomVal - cont)**2
+
+                        alphaSunc = (self.getVariation(var)[nvars - 1].GetBinContent(ibin) - self.getVariation(var)[nvars - 2].GetBinContent(ibin)) / 2.
+
+                        up.SetBinContent(  ibin, nomVal + sqrt(deltaUp/(nvars - 2) + alphaSunc**2))
+                        down.SetBinContent(ibin, nomVal - sqrt(deltaDn/(nvars - 2) + alphaSunc**2))
+            else:
+                raise RuntimeError("FATAL: an uncertainty detected as pdf did not specify which kind of set was (either hessian or mc); this is not implemented.")
+
             del self.variations[var]
             self.addVariation( var, 'up', up)
             self.addVariation( var, 'down', down)

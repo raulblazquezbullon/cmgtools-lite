@@ -537,7 +537,7 @@ class MCAnalysis:
         ## construct envelope variations if any
         for p,h in ret.iteritems():
             h.buildEnvelopes() 
-            h.buildEnvelopesRMS()
+            h.buildEnvelopesForPDFs()
 
         #print "\nANTES", ret
 
