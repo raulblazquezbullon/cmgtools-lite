@@ -92,7 +92,8 @@ varList['LogTauCurv'] = varList['LCurvature']
 
 varList['Names'] = {
     #'Variables'   : ["Lep1_Pt", "Jet1_Pt", "Lep1Lep2_DPhi", "Lep1Lep2Jet1MET_Pz", "Lep1Lep2Jet1MET_Mt", "Lep1Lep2Jet1_M"],
-    'Variables'   : ["Lep1_Pt", "Jet1_Pt", "Lep1Lep2_DPhi", "Lep1Lep2Jet1MET_Pz", "Lep1Lep2Jet1MET_Mt", "Lep1Lep2Jet1_M", "Fiducial"],
+    #'Variables'   : ["Lep1_Pt", "Jet1_Pt", "Lep1Lep2_DPhi", "Lep1Lep2Jet1MET_Pz", "Lep1Lep2Jet1MET_Mt", "Lep1Lep2Jet1_M", "Fiducial"],
+    'Variables'   : ["Lep1_Pt", "Jet1_Pt", "Lep1Lep2_DPhi", "Lep1Lep2Jet1MET_Pz", "Lep1Lep2Jet1MET_Mt", "Lep1Lep2Jet1_M"],
     'ExpSysts'    : ["JESUp", "JESDown", "JERUp", "ElecEffUp", "ElecEffDown", "MuonEffUp", #   DO NOT MOVE THE FIRST THREE TO OTHER
                      "MuonEffDown", "TrigUp", "TrigDown", "PUUp", "PUDown", "BtagUp",      # POSITION: it will affect the calculus
                      #"BtagDown", "MistagUp", "MistagDown"],                                # of the response matrices.
@@ -1524,5 +1525,5 @@ WeightsToChange = {
 
 #UncertaintiesToEnvelope = {"ttbar_scales", "tw_scales", "colour"}
 #UncertaintiesToEnvelope = {"ttbar_scales", "tw_scales"}
-UncertaintiesToEnvelope = {"colour"}
-#UncertaintiesToEnvelope = {}
+#UncertaintiesToEnvelope = {"colour"}
+UncertaintiesToEnvelope = {}

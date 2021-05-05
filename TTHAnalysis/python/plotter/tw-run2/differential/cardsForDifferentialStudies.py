@@ -71,14 +71,14 @@ def ExecuteOrSubmitTask(tsk):
     return
 
 
-def CardsCommand(prod, year, var, isAsimov, nthreads, outpath, region, noUnc, useFibre, extra):
+def CardsCommand(prod, year, var, isAsimov, nthreads, outpath, region, noUnc, useFibre, extra_):
     doPure = False
     if "pure1j1t" in region:
         doPure = True
         region = region.replace("pure1j1t", "")
 
-    mcafile_   = "tw-run2/differential/mca-differential/mca-tw-diff.txt" if "forExtr" not in region and "control" not in region else "tw-run2/mca-tw.txt"
-    cutsfile_  = "tw-run2/differential/cuts-differential{pureornot}/cuts-{reg}-{njnt}.txt".format(reg = region.replace("Response", "") if ("forExtr" not in region and "but" not in region and "control" not in region) else "detectorparticle" if "but" in region else "detector",
+    mcafile_   = "tw-run2/differential/mca-differential/mca-tw-diff.txt" if "forExtr" not in region and "control" not in region and region != "nonfiducialAll" else "tw-run2/mca-tw.txt"
+    cutsfile_  = "tw-run2/differential/cuts-differential{pureornot}/cuts-{reg}-{njnt}.txt".format(reg = region.replace("Response", "").replace("All", "") if ("forExtr" not in region and "but" not in region and "control" not in region) else "detectorparticle" if "but" in region else "detector",
                                                                                                   pureornot = "-pure1j1t" if doPure else "",
                                                                                                   njnt = "1j1t" if "control" not in region else vl.diffControlReg )
 
@@ -92,7 +92,7 @@ def CardsCommand(prod, year, var, isAsimov, nthreads, outpath, region, noUnc, us
     if not os.path.isdir(outpath_):
         os.system("mkdir -p " + outpath_)
 
-    thebins = (vl.varList[var]["bins_detector"] if (region == "detector" or region == "detectorparticlebutdetector" or region == "nonfiducial" or "forExtr" in region or "control" in region) else
+    thebins = (vl.varList[var]["bins_detector"] if (region == "detector" or region == "detectorparticlebutdetector" or "nonfiducial" in region or "forExtr" in region or "control" in region) else
                vl.varList[var]["bins_particle"] if (region == "particle" or region == "detectorparticle") else
               (vl.varList[var]["bins_particle"], vl.varList[var]["bins_detector"]) )
 
@@ -102,15 +102,16 @@ def CardsCommand(prod, year, var, isAsimov, nthreads, outpath, region, noUnc, us
     else:
         bins_ = PythonListToString(thebins[0]) + "*" + PythonListToString(thebins[1])
 
-    variable_  = (vl.varList[var]["var_detector"] if (region == "detector" or region == "detectorparticlebutdetector" or region == "nonfiducial" or "forExtr" in region or "control" in region) else
+    variable_  = (vl.varList[var]["var_detector"] if (region == "detector" or region == "detectorparticlebutdetector" or "nonfiducial" in region or "forExtr" in region or "control" in region) else
                   vl.varList[var]["var_particle"] if (region == "particle" or region == "detectorparticle") else
                   #vl.varList[var]["var_particle"] + ":" + vl.varList[var]["var_detector"])
                   vl.varList[var]["var_detector"] + ":" + vl.varList[var]["var_particle"])
     name_      = "--binname " + region
     weights_   = (nomweight if (region == "detector" or "forExtr" in region or region == "detectorparticlebutdetector" or "control" in region) else
-                  nomweight if region == "detectorparticleResponse" or region == "nonfiducial" else
+                  nomweight if region == "detectorparticleResponse" or "nonfiducial" in region else
                   #nomweight if region == "detectorparticleResponse" else
                   genweight)
+
 
     comm = commandscaff.format(outpath      = outpath_,
                                friends      = friends_,
@@ -120,15 +121,15 @@ def CardsCommand(prod, year, var, isAsimov, nthreads, outpath, region, noUnc, us
                                bins      = bins_,
                                nth       = nth_,
                                year      = year if year != "run2" else "2016,2017,2018",
-                               asimovornot = "--asimov s+b" if isAsimov else "--asimov s+b" if region != "forExtr" else "",
+                               asimovornot = "--asimov s+b" if isAsimov or region == "nonfiducialAll" else "--asimov s+b" if region != "forExtr" else "",
                                mcafile   = mcafile_,
                                cutsfile  = cutsfile_,
-                               #uncs      = "" if region == "particle" else "--unc tw-run2/uncs-tw.txt --amc" if not noUnc else "--amc",
+                               uncs      = "" if region == "particle" else "--unc tw-run2/uncs-tw.txt --amc" if not noUnc else "--amc",
                                #uncs      = "" if region == "particle" else "--unc tw-run2/differential/uncs-tw-modified.txt --amc" if not noUnc else "--amc",
-                               uncs      = ("" if region == "particle" else "--unc tw-run2/differential/uncs-tw-modified-toeslesescales.txt --amc" if not noUnc and not doPure else "--unc tw-run2/differential/uncs-tw-modified.txt --amc" if not noUnc else "--amc"),
+                               #uncs      = ("" if region == "particle" else "--unc tw-run2/differential/uncs-tw-modified-toeslesescales.txt --amc" if not noUnc and not doPure else "--unc tw-run2/differential/uncs-tw-modified.txt --amc" if not noUnc else "--amc"),
                                name      = name_,
                                weights   = weights_,
-                               extra     = extra)
+                               extra     = extra_)
 
     return comm
 

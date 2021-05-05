@@ -397,7 +397,7 @@ def drawTheRelUncPlot(listWithHistos, thedict, thePlot, yaxismax = "auto", doSym
     uncList = getUncList(thedict, doFit, doSym)
 
     #for el in uncList:
-        #print el
+    #    print el
 
     #sys.exit()
     # Calculate the total uncertainty histogram and the total systematic one
@@ -481,10 +481,11 @@ def drawTheRelUncPlot(listWithHistos, thedict, thePlot, yaxismax = "auto", doSym
     plottedsysts = 0
     maxnumofuncs = vl.nuncs
 
-    while plottedsysts < maxnumofuncs and plottedsysts <= len(uncList):
+    while plottedsysts < maxnumofuncs and plottedsysts < len(uncList):
         if "Stat" in uncList[iS][0] or "Fit" in uncList[iS][0]:
             #print "holi", iS
             iS += 1
+            if len(uncList) == 1: break
             continue
 
         if "lumi" in uncList[iS][0].lower():
