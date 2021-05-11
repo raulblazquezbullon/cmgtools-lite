@@ -57,8 +57,8 @@ class errs(enum.IntEnum):
 
 minitnamedict = {
     "ttbar"     : ["TTTo2L2Nu_division2"],
-    "tw"        : ["tW", "tW_division2"],
-    "tbarw"     : ["tbarW", "tbarW_division2"],
+    "tw"        : ["tW", "tW_central"],
+    "tbarw"     : ["tbarW", "tbarW_central"],
     #"dy_10to50" : ["DYJetsToLL_M_10to50", "DYJetsToLL_M_10to50_MLM"],
     #"dy_50"     : ["DYJetsToLL_M_50"],
     }
@@ -648,34 +648,34 @@ sampledict[2018] = {
 }
 
 trainsampledict = {}; trainsampledict[2016] = {}; trainsampledict[2017] = {}; trainsampledict[2018] = {}
-#trainsampledict[2016] = {
-    #### ttbar
-    #"TTTo2L2Nu_division2" : sampledict[2016]["TTTo2L2Nu_division2"],
+trainsampledict[2016] = {
+    ### ttbar
+    "TTTo2L2Nu_division2" : sampledict[2016]["TTTo2L2Nu_division2"],
 
-    #### tW
-    #"tW"    : sampledict[2016]["tW"],
-    #"tbarW" : sampledict[2016]["tbarW"],
-#}
-
-
-#trainsampledict[2017] = {
-    #### ttbar
-    #"TTTo2L2Nu_division2" : sampledict[2017]["TTTo2L2Nu_division2"],
-
-    #### tW
-    #"tW"    : sampledict[2017]["tW"],
-    #"tbarW" : sampledict[2017]["tbarW"],
-#}
+    ### tW
+    "tW_central" : sampledict[2016]["tW_central"],
+    "tbarW"      : sampledict[2016]["tbarW"],
+}
 
 
-#trainsampledict[2018] = {
-    #### ttbar
-    #"TTTo2L2Nu_division2" : sampledict[2018]["TTTo2L2Nu_division2"],
+trainsampledict[2017] = {
+    ### ttbar
+    "TTTo2L2Nu_division2" : sampledict[2017]["TTTo2L2Nu_division2"],
 
-    #### tW
-    #"tW"    : sampledict[2018]["tW"],
-    #"tbarW" : sampledict[2018]["tbarW"],
-#}
+    ### tW
+    "tW_central"    : sampledict[2017]["tW_central"],
+    "tbarW_central" : sampledict[2017]["tbarW_central"],
+}
+
+
+trainsampledict[2018] = {
+    ### ttbar
+    "TTTo2L2Nu_division2" : sampledict[2018]["TTTo2L2Nu_division2"],
+
+    ### tW
+    "tW"    : sampledict[2018]["tW"],
+    "tbarW" : sampledict[2018]["tbarW"],
+}
 
 
 def getFriendsFolder(dataset, basepath, step_friends):
@@ -740,12 +740,14 @@ def SendDatasetJobs(task):
 
     elif step == 4 and not isData:
         print dataset
-        if any([dataset.replace("*", "") in iD if type(iD) == str else any([dataset.replace("*", "") in jD for jD in iD]) for key,iD in trainsampledict[year].iteritems()] +
-               [iD.replace("*", "") in dataset  if type(iD) == str else any([jD.replace("*", "") in dataset in jD for jD in iD]) for key,iD in trainsampledict[year].iteritems()]):
-            if "noFullHad" in dataset: module_  = "sfSeq_mvatrain_ent_{y}".format(y = year)
-            else:                      module_  = "sfSeq_mvatrain_{y}".format(y = year)
-        else:
-            module_  = "sfSeq_{y}".format(y = year)
+        #if any([dataset.replace("*", "") in iD if type(iD) == str else any([dataset.replace("*", "") in jD for jD in iD]) for key,iD in trainsampledict[year].iteritems()] +
+               #[iD.replace("*", "") in dataset  if type(iD) == str else any([jD.replace("*", "") in dataset in jD for jD in iD]) for key,iD in trainsampledict[year].iteritems()]):
+            #if "noFullHad" in dataset: module_  = "sfSeq_mvatrain_ent_{y}".format(y = year)
+            #else:                      module_  = "sfSeq_mvatrain_{y}".format(y = year)
+        #else:
+            #module_  = "sfSeq_{y}".format(y = year)
+
+        module_  = "sfSeq_{y}".format(y = year)
         #friends_ +=       friendpref + getFriendsFolder(dataset, friendsbasepath, 0) + friendsuff
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 1) + friendsuff
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 2) + friendsuff
