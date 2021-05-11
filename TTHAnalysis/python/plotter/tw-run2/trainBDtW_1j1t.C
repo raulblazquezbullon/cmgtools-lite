@@ -21,7 +21,7 @@
 using namespace TMVA;
 
 
-void trainBDtW_1j1t(TString outputdir, TString outputbasedir = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/mvas/", TString inputdir = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/productions/2020-09-20/", TString outputFileName = "tmvaBDT_1j1t.root", TString myMethodList = "", TString twname = "tw.root", TString tbarwname = "tbarw.root", TString ttbarname = "ttbar.root") {
+void trainBDtW_1j1t(TString outputdir, TString outputbasedir = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/mvas/", TString inputdir = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/productions/2021-04-23/", TString outputFileName = "tmvaBDT_1j1t.root", TString myMethodList = "", TString twname = "tw.root", TString tbarwname = "tbarw.root", TString ttbarname = "ttbar.root") {
   // This loads the library
   TMVA::Tools::Instance();
 
@@ -244,8 +244,8 @@ void trainBDtW_1j1t(TString outputdir, TString outputbasedir = "/pool/phedex/use
   // 			"!H:!V:NTrees=500:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.01:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
   
   //--Modelo default----
-//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_2000_0.01",
-//      "!H:!V:NTrees=2000:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.01:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
+  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_2000_0.01",
+      "!H:!V:NTrees=2000:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.01:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
   //--Modelo default----
 
   //===============Optimización NTrees=========================================
@@ -295,14 +295,14 @@ void trainBDtW_1j1t(TString outputdir, TString outputbasedir = "/pool/phedex/use
   //===============Optimización Learning rate=========================================
 
   //===============Optimización Overtraining=========================================
-  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_1000_0.01_3_MinNodeSize5",
-      "!H:!V:NTrees=1000:MinNodeSize=5%:BoostType=Grad:Shrinkage=0.01:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=3" );
-  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_1000_0.01_2_MinNodeSize5",
-      "!H:!V:NTrees=1000:MinNodeSize=5%:BoostType=Grad:Shrinkage=0.01:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=2" );
-  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_1000_0.01_3_MinNodeSize2.5",
-      "!H:!V:NTrees=1000:MinNodeSize=2.5%:BoostType=Grad:Shrinkage=0.01:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=3" );
-  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_500_0.01_3_MinNodeSize5",
-      "!H:!V:NTrees=500:MinNodeSize=5%:BoostType=Grad:Shrinkage=0.01:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=3" );
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_1000_0.01_3_MinNodeSize5",
+//      "!H:!V:NTrees=1000:MinNodeSize=5%:BoostType=Grad:Shrinkage=0.01:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=3" );
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_1000_0.01_2_MinNodeSize5",
+//      "!H:!V:NTrees=1000:MinNodeSize=5%:BoostType=Grad:Shrinkage=0.01:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=2" );
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_1000_0.01_3_MinNodeSize2.5",
+//      "!H:!V:NTrees=1000:MinNodeSize=2.5%:BoostType=Grad:Shrinkage=0.01:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=3" );
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_500_0.01_3_MinNodeSize5",
+//      "!H:!V:NTrees=500:MinNodeSize=5%:BoostType=Grad:Shrinkage=0.01:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=3" );
   //===============Optimización Overtraining=========================================
 
 
