@@ -261,7 +261,7 @@ tw_matching    : $tWProc : .* : altSample : syst_tw_matching_up    : syst_tw_mat
 ### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ### Colour reconnection schemes
 ### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-colour_rec : ttbar   : .* : altSampleEnv : ['syst_ttbar_colour_erdon'\,'syst_ttbar_colour_cr1'\,'syst_ttbar_colour_cr2'] : symm
+#colour_rec : ttbar   : .* : altSampleEnv : ['syst_ttbar_colour_erdon'\,'syst_ttbar_colour_cr1'\,'syst_ttbar_colour_cr2'] : symm
 colour_rec : $tWProc : .* : altSampleEnv : ['syst_tw_colour_erdon'\,'syst_tw_colour_cr1'\,'syst_tw_colour_cr2']          : symm
 
 
