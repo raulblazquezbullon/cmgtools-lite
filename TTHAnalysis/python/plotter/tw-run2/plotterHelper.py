@@ -17,8 +17,8 @@ mcpath       = "/pool/phedex/nanoAODv6v7"
 mcpathdiv    = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/misc/2021_04_nuevasdivisiones"
 datapath     = "/pool/phedex/nanoAODv6v7"
 
-logpath      = friendspath + "/{p}/{y}/logs/plots"
-#logpath = "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/plot_logs"
+#logpath      = friendspath + "/{p}/{y}/logs/plots"
+logpath = "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/plot_logs"
 
 #mcpathdiv    = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/misc/divisiones/"
 #logpath      = friendspath + "/{p}/{y}/logs/plots"
@@ -123,11 +123,11 @@ def PlottingCommand(prod, year, nthreads, outpath, selplot, region, ratio, extra
     ratio_      = "--maxRatioRange " + ratio
     nameregion_ = ""
     if "_" not in region and "nojets" not in region:
-        nameregion_ = "+" + region.replace("t", "b").replace("plus", "+")
+        nameregion_ = region.replace("t", "b").replace("plus", "+")
     elif "differential" in region and "nojets" not in region:
-        nameregion_ = "+" + region.split("_")[0].replace("t", "b").replace("plus", "+") + "+0j_{{loose}}"
+        nameregion_ = region.split("_")[0].replace("t", "b").replace("plus", "+") + "+0j_{loose}"
     elif "MVA" in region and "nojets" not in region:
-        nameregion_ = "+" + region.split("_")[0].replace("t", "b").replace("plus", "+") + "+0j_{{loose}}"
+        nameregion_ = region.split("_")[0].replace("t", "b").replace("plus", "+")
 
     comm = commandscaff.format(outpath      = outpath_,
                                friends      = friends_,
@@ -170,7 +170,6 @@ if __name__=="__main__":
     parser.add_argument('--pretend',   '-p', action = "store_true", dest = "pretend", required = False, default = False)
     parser.add_argument('--outpath',   '-o', metavar = 'outpath',   dest = "outpath", required = False, default = "./temp/varplots")
     parser.add_argument('--region',    '-r', metavar = 'region',    dest = "region",  required = False, default = "1j1t")
-    parser.add_argument('--regionName',    '-n', metavar = 'regionName',    dest = "regionName",  required = False, default = "1j1b")
     parser.add_argument('--maxRatioRange', "-R", metavar = 'ratiorange', dest = "ratiorange", required = False, default = "0.8 1.2")
     parser.add_argument('--createSoftLinks', action = "store_true", dest = "createSL", required = False, default = False)
     parser.add_argument('--useFibre',  "-f", action = "store_true", dest = "useFibre", required = False, default = False)
