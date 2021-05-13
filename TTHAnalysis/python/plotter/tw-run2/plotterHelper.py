@@ -125,9 +125,9 @@ def PlottingCommand(prod, year, nthreads, outpath, selplot, region, ratio, extra
     if "_" not in region and "nojets" not in region:
         nameregion_ = "+" + region.replace("t", "b").replace("plus", "+")
     elif "differential" in region and "nojets" not in region:
-        nameregion_ = "+" + region.split("_")[0].replace("t", "b").replace("plus", "+") + "+0j_{{loose}}"
+        nameregion_ = "+" + region.split("_")[0].replace("t", "b").replace("plus", "+") + "+0j_{loose}"
     elif "MVA" in region and "nojets" not in region:
-        nameregion_ = "+" + region.split("_")[0].replace("t", "b").replace("plus", "+") + "+0j_{{loose}}"
+        nameregion_ = "+" + region.split("_")[0].replace("t", "b").replace("plus", "+")
 
     comm = commandscaff.format(outpath      = outpath_,
                                friends      = friends_,

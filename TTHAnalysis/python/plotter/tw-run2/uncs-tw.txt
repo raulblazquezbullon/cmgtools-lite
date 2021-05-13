@@ -8,211 +8,211 @@ $alias : tWProc : tw
 $alias : tWandttbar : tw|ttbar
 
 
-## =========================================================================================================================================================================
-#### SYSTEMATIC UNCERTAINTIES
-## =========================================================================================================================================================================
-## %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-#### EXPERIMENTAL
-## %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+# =========================================================================================================================================================================
+### SYSTEMATIC UNCERTAINTIES
+# =========================================================================================================================================================================
+# %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+### EXPERIMENTAL
+# %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Luminosity (from https://twiki.cern.ch/twiki/bin/view/CMS/TWikiLUM#LumiComb)
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+lumi_2016 : $AllBkg : .* : normSymm : 1.022; year="2016"
+lumi_2017 : $AllBkg : .* : normSymm : 1.020; year="2017"
+lumi_2018 : $AllBkg : .* : normSymm : 1.015; year="2018"
+
+lumi_XY   : $AllBkg : .* : normSymm : 1.009; year="2016"
+lumi_XY   : $AllBkg : .* : normSymm : 1.008; year="2017"
+lumi_XY   : $AllBkg : .* : normSymm : 1.020; year="2018"
+
+lumi_LS   : $AllBkg : .* : normSymm : 1.003; year="2017"
+lumi_LS   : $AllBkg : .* : normSymm : 1.002; year="2018"
+
+lumi_BBD  : $AllBkg : .* : normSymm : 1.004; year="2016"
+lumi_BBD  : $AllBkg : .* : normSymm : 1.004; year="2017"
+
+lumi_DB   : $AllBkg : .* : normSymm : 1.005; year="2016"
+lumi_DB   : $AllBkg : .* : normSymm : 1.005; year="2017"
+
+lumi_BCC  : $AllBkg : .* : normSymm : 1.003; year="2017"
+lumi_BCC  : $AllBkg : .* : normSymm : 1.002; year="2018"
+
+lumi_GS   : $AllBkg : .* : normSymm : 1.004; year="2016"
+lumi_GS   : $AllBkg : .* : normSymm : 1.001; year="2017"
+
+
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Pile-up reweighting
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+pileup : $AllBkg : .* : templateAsymm; AddWeights=['puWeightUp/puWeight'\,'puWeightDown/puWeight']
+
+
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Trigger efficiencies
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+triggereff_2016 : $AllBkg : .* : templateAsymm; AddWeights=['TrigSF_Up/TrigSF'\,'TrigSF_Dn/TrigSF'], year="2016"
+triggereff_2017 : $AllBkg : .* : templateAsymm; AddWeights=['TrigSF_Up/TrigSF'\,'TrigSF_Dn/TrigSF'], year="2017"
+triggereff_2018 : $AllBkg : .* : templateAsymm; AddWeights=['TrigSF_Up/TrigSF'\,'TrigSF_Dn/TrigSF'], year="2018"
+
+
 ## --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-## Luminosity (from https://twiki.cern.ch/twiki/bin/view/CMS/TWikiLUM#LumiComb)
+## Electron efficiencies
 ## --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#lumi_2016 : $AllBkg : .* : normSymm : 1.022; year="2016"
-#lumi_2017 : $AllBkg : .* : normSymm : 1.020; year="2017"
-#lumi_2018 : $AllBkg : .* : normSymm : 1.015; year="2018"
-#
-#lumi_XY   : $AllBkg : .* : normSymm : 1.009; year="2016"
-#lumi_XY   : $AllBkg : .* : normSymm : 1.008; year="2017"
-#lumi_XY   : $AllBkg : .* : normSymm : 1.020; year="2018"
-#
-#lumi_LS   : $AllBkg : .* : normSymm : 1.003; year="2017"
-#lumi_LS   : $AllBkg : .* : normSymm : 1.002; year="2018"
-#
-#lumi_BBD  : $AllBkg : .* : normSymm : 1.004; year="2016"
-#lumi_BBD  : $AllBkg : .* : normSymm : 1.004; year="2017"
-#
-#lumi_DB   : $AllBkg : .* : normSymm : 1.005; year="2016"
-#lumi_DB   : $AllBkg : .* : normSymm : 1.005; year="2017"
-#
-#lumi_BCC  : $AllBkg : .* : normSymm : 1.003; year="2017"
-#lumi_BCC  : $AllBkg : .* : normSymm : 1.002; year="2018"
-#
-#lumi_GS   : $AllBkg : .* : normSymm : 1.004; year="2016"
-#lumi_GS   : $AllBkg : .* : normSymm : 1.001; year="2017"
-#
-#
+### Combined
+#eleceff: $AllBkg : .* : templateAsymm; AddWeights=['ElecSF_Up/ElecSF'\,'ElecSF_Dn/ElecSF']
+
+elecidsf:   $AllBkg : .* : templateAsymm; AddWeights=['ElecIDSF_Up/ElecIDSF'\,'ElecIDSF_Dn/ElecIDSF']
+elecrecosf: $AllBkg : .* : templateAsymm; AddWeights=['ElecRECOSF_Up/ElecRECOSF'\,'ElecRECOSF_Dn/ElecRECOSF']
+
+
 ## --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-## Pile-up reweighting
+## Muon efficiencies
 ## --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#pileup : $AllBkg : .* : templateAsymm; AddWeights=['puWeightUp/puWeight'\,'puWeightDown/puWeight']
-#
-#
+### Combined
+#muoneff: $AllBkg : .* : templateAsymm; AddWeights=['MuonSF_Up/MuonSF'\,'MuonSF_Dn/MuonSF']
+
+muonidsf_stat_2016 : $AllBkg : .* : templateAsymm; AddWeights=['MuonIDSF_statUp/MuonIDSF'\,'MuonIDSF_statDn/MuonIDSF'], year="2016"
+muonidsf_stat_2017 : $AllBkg : .* : templateAsymm; AddWeights=['MuonIDSF_statUp/MuonIDSF'\,'MuonIDSF_statDn/MuonIDSF'], year="2017"
+muonidsf_stat_2018 : $AllBkg : .* : templateAsymm; AddWeights=['MuonIDSF_statUp/MuonIDSF'\,'MuonIDSF_statDn/MuonIDSF'], year="2018"
+muonidsf_syst      : $AllBkg : .* : templateAsymm; AddWeights=['MuonIDSF_systUp/MuonIDSF'\,'MuonIDSF_systDn/MuonIDSF']
+
+muonisosf_stat_2016 : $AllBkg : .* : templateAsymm; AddWeights=['MuonISOSF_statUp/MuonISOSF'\,'MuonISOSF_statDn/MuonISOSF'], year="2016"
+muonisosf_stat_2017 : $AllBkg : .* : templateAsymm; AddWeights=['MuonISOSF_statUp/MuonISOSF'\,'MuonISOSF_statDn/MuonISOSF'], year="2017"
+muonisosf_stat_2018 : $AllBkg : .* : templateAsymm; AddWeights=['MuonISOSF_statUp/MuonISOSF'\,'MuonISOSF_statDn/MuonISOSF'], year="2018"
+muonisosf_syst      : $AllBkg : .* : templateAsymm; AddWeights=['MuonISOSF_systUp/MuonISOSF'\,'MuonISOSF_systDn/MuonISOSF']
+
+
 ## --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-## Trigger efficiencies
+## JECs
 ## --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#triggereff_2016 : $AllBkg : .* : templateAsymm; AddWeights=['TrigSF_Up/TrigSF'\,'TrigSF_Dn/TrigSF'], year="2016"
-#triggereff_2017 : $AllBkg : .* : templateAsymm; AddWeights=['TrigSF_Up/TrigSF'\,'TrigSF_Dn/TrigSF'], year="2017"
-#triggereff_2018 : $AllBkg : .* : templateAsymm; AddWeights=['TrigSF_Up/TrigSF'\,'TrigSF_Dn/TrigSF'], year="2018"
-#
-#
-### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-### Electron efficiencies
-### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#### Combined
-##eleceff: $AllBkg : .* : templateAsymm; AddWeights=['ElecSF_Up/ElecSF'\,'ElecSF_Dn/ElecSF']
-#
-#elecidsf:   $AllBkg : .* : templateAsymm; AddWeights=['ElecIDSF_Up/ElecIDSF'\,'ElecIDSF_Dn/ElecIDSF']
-#elecrecosf: $AllBkg : .* : templateAsymm; AddWeights=['ElecRECOSF_Up/ElecRECOSF'\,'ElecRECOSF_Dn/ElecRECOSF']
-#
-#
-### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-### Muon efficiencies
-### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#### Combined
-##muoneff: $AllBkg : .* : templateAsymm; AddWeights=['MuonSF_Up/MuonSF'\,'MuonSF_Dn/MuonSF']
-#
-#muonidsf_stat_2016 : $AllBkg : .* : templateAsymm; AddWeights=['MuonIDSF_statUp/MuonIDSF'\,'MuonIDSF_statDn/MuonIDSF'], year="2016"
-#muonidsf_stat_2017 : $AllBkg : .* : templateAsymm; AddWeights=['MuonIDSF_statUp/MuonIDSF'\,'MuonIDSF_statDn/MuonIDSF'], year="2017"
-#muonidsf_stat_2018 : $AllBkg : .* : templateAsymm; AddWeights=['MuonIDSF_statUp/MuonIDSF'\,'MuonIDSF_statDn/MuonIDSF'], year="2018"
-#muonidsf_syst      : $AllBkg : .* : templateAsymm; AddWeights=['MuonIDSF_systUp/MuonIDSF'\,'MuonIDSF_systDn/MuonIDSF']
-#
-#muonisosf_stat_2016 : $AllBkg : .* : templateAsymm; AddWeights=['MuonISOSF_statUp/MuonISOSF'\,'MuonISOSF_statDn/MuonISOSF'], year="2016"
-#muonisosf_stat_2017 : $AllBkg : .* : templateAsymm; AddWeights=['MuonISOSF_statUp/MuonISOSF'\,'MuonISOSF_statDn/MuonISOSF'], year="2017"
-#muonisosf_stat_2018 : $AllBkg : .* : templateAsymm; AddWeights=['MuonISOSF_statUp/MuonISOSF'\,'MuonISOSF_statDn/MuonISOSF'], year="2018"
-#muonisosf_syst      : $AllBkg : .* : templateAsymm; AddWeights=['MuonISOSF_systUp/MuonISOSF'\,'MuonISOSF_systDn/MuonISOSF']
-#
-#
-### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-### JECs
-### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-### Combined JES
-##jes : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesUp.txt'\,'tw-run2/frs-jecs/fr-jesDn.txt']
-#
-### Separate (and reduced) JES
-#jes_HF            : $AllBkg : .* : templateAsymm; \
-#            FakeRates=['tw-run2/frs-jecs/fr-jesHFUp.txt'\,'tw-run2/frs-jecs/fr-jesHFDown.txt']
-#jes_BBEC1_2016    : $AllBkg : .* : templateAsymm; \
-#            FakeRates=['tw-run2/frs-jecs/fr-jesBBEC1_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesBBEC1_yearDown.txt'], year="2016"
-#jes_BBEC1_2017    : $AllBkg : .* : templateAsymm; \
-#            FakeRates=['tw-run2/frs-jecs/fr-jesBBEC1_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesBBEC1_yearDown.txt'], year="2017"
-#jes_BBEC1_2018    : $AllBkg : .* : templateAsymm; \
-#            FakeRates=['tw-run2/frs-jecs/fr-jesBBEC1_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesBBEC1_yearDown.txt'], year="2018"
-#jes_FlavorQCD     : $AllBkg : .* : templateAsymm; \
-#            FakeRates=['tw-run2/frs-jecs/fr-jesFlavorQCDUp.txt'\,'tw-run2/frs-jecs/fr-jesFlavorQCDDown.txt'],
-#jes_RelativeSample_2016 : $AllBkg : .* : templateAsymm; \
-#            FakeRates=['tw-run2/frs-jecs/fr-jesRelativeSample_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesRelativeSample_yearDown.txt'], year="2016"
-#jes_RelativeSample_2017 : $AllBkg : .* : templateAsymm; \
-#            FakeRates=['tw-run2/frs-jecs/fr-jesRelativeSample_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesRelativeSample_yearDown.txt'], year="2017"
-#jes_RelativeSample_2018 : $AllBkg : .* : templateAsymm; \
-#            FakeRates=['tw-run2/frs-jecs/fr-jesRelativeSample_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesRelativeSample_yearDown.txt'], year="2018"
-#jes_EC2           : $AllBkg : .* : templateAsymm; \
-#            FakeRates=['tw-run2/frs-jecs/fr-jesEC2Up.txt'\,'tw-run2/frs-jecs/fr-jesEC2Down.txt']
-#jes_HF_2016       : $AllBkg : .* : templateAsymm; \
-#            FakeRates=['tw-run2/frs-jecs/fr-jesHF_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesHF_yearDown.txt'], year="2016"
-#jes_HF_2017       : $AllBkg : .* : templateAsymm; \
-#            FakeRates=['tw-run2/frs-jecs/fr-jesHF_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesHF_yearDown.txt'], year="2017"
-#jes_HF_2018       : $AllBkg : .* : templateAsymm; \
-#            FakeRates=['tw-run2/frs-jecs/fr-jesHF_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesHF_yearDown.txt'], year="2018"
-#jes_RelativeBal   : $AllBkg : .* : templateAsymm; \
-#            FakeRates=['tw-run2/frs-jecs/fr-jesRelativeBalUp.txt'\,'tw-run2/frs-jecs/fr-jesRelativeBalDown.txt']
-#jes_Absolute_2016 : $AllBkg : .* : templateAsymm; \
-#            FakeRates=['tw-run2/frs-jecs/fr-jesAbsolute_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesAbsolute_yearDown.txt'], year="2016"
-#jes_Absolute_2017 : $AllBkg : .* : templateAsymm; \
-#            FakeRates=['tw-run2/frs-jecs/fr-jesAbsolute_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesAbsolute_yearDown.txt'], year="2017"
-#jes_Absolute_2018 : $AllBkg : .* : templateAsymm; \
-#            FakeRates=['tw-run2/frs-jecs/fr-jesAbsolute_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesAbsolute_yearDown.txt'], year="2018"
-#jes_BBEC1         : $AllBkg : .* : templateAsymm; \
-#            FakeRates=['tw-run2/frs-jecs/fr-jesBBEC1Up.txt'\,'tw-run2/frs-jecs/fr-jesBBEC1Down.txt'],
-#jes_EC2_2016      : $AllBkg : .* : templateAsymm; \
-#            FakeRates=['tw-run2/frs-jecs/fr-jesEC2_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesEC2_yearDown.txt'], year="2016"
-#jes_EC2_2017      : $AllBkg : .* : templateAsymm; \
-#            FakeRates=['tw-run2/frs-jecs/fr-jesEC2_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesEC2_yearDown.txt'], year="2017"
-#jes_EC2_2018      : $AllBkg : .* : templateAsymm; \
-#            FakeRates=['tw-run2/frs-jecs/fr-jesEC2_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesEC2_yearDown.txt'], year="2018"
-#jes_Absolute      : $AllBkg : .* : templateAsymm; \
-#            FakeRates=['tw-run2/frs-jecs/fr-jesAbsoluteUp.txt'\,'tw-run2/frs-jecs/fr-jesAbsoluteDown.txt']
-#
-#
-#### Not symmetrising
-##jer_2016 : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jerUp.txt'\,'tw-run2/frs-jecs/fr-jerDn.txt'], year="2016"
-##jer_2017 : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jerUp.txt'\,'tw-run2/frs-jecs/fr-jerDn.txt'], year="2017"
-##jer_2018 : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jerUp.txt'\,'tw-run2/frs-jecs/fr-jerDn.txt'], year="2018"
-#
-#### Symmetrising down
-#jer_2016 : $AllBkg : .* : templateSymmAdditive; FakeRate='tw-run2/frs-jecs/fr-jerDn.txt', year="2016"
-#jer_2017 : $AllBkg : .* : templateSymmAdditive; FakeRate='tw-run2/frs-jecs/fr-jerDn.txt', year="2017"
-#jer_2018 : $AllBkg : .* : templateSymmAdditive; FakeRate='tw-run2/frs-jecs/fr-jerDn.txt', year="2018"
-#
-## If we don't use MET, we don't need this unc.:
-## unclenergy : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-unclUp.txt'\,'tw-run2/frs-jecs/fr-unclDn.txt']
-#
-#
-### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-### b-tagging and mistagging
-### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-##btagging:   $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_btag_Up/bTagWeight'\,'bTagWeight_btag_Dn/bTagWeight']
-##mistagging: $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_Up/bTagWeight'\,'bTagWeight_mistag_Dn/bTagWeight']
-#
-##btagging_2016:   $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_btag_Up/bTagWeight'\,'bTagWeight_btag_Dn/bTagWeight'], year="2016"
-##btagging_2017:   $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_btag_Up/bTagWeight'\,'bTagWeight_btag_Dn/bTagWeight'], year="2017"
-##btagging_2018:   $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_btag_Up/bTagWeight'\,'bTagWeight_btag_Dn/bTagWeight'], year="2018"
-##mistagging_2016: $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_Up/bTagWeight'\,'bTagWeight_mistag_Dn/bTagWeight'], year="2016"
-##mistagging_2017: $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_Up/bTagWeight'\,'bTagWeight_mistag_Dn/bTagWeight'], year="2017"
-##mistagging_2018: $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_Up/bTagWeight'\,'bTagWeight_mistag_Dn/bTagWeight'], year="2018"
-#
+## Combined JES
+#jes : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesUp.txt'\,'tw-run2/frs-jecs/fr-jesDn.txt']
+
+## Separate (and reduced) JES
+jes_HF            : $AllBkg : .* : templateAsymm; \
+            FakeRates=['tw-run2/frs-jecs/fr-jesHFUp.txt'\,'tw-run2/frs-jecs/fr-jesHFDown.txt']
+jes_BBEC1_2016    : $AllBkg : .* : templateAsymm; \
+            FakeRates=['tw-run2/frs-jecs/fr-jesBBEC1_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesBBEC1_yearDown.txt'], year="2016"
+jes_BBEC1_2017    : $AllBkg : .* : templateAsymm; \
+            FakeRates=['tw-run2/frs-jecs/fr-jesBBEC1_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesBBEC1_yearDown.txt'], year="2017"
+jes_BBEC1_2018    : $AllBkg : .* : templateAsymm; \
+            FakeRates=['tw-run2/frs-jecs/fr-jesBBEC1_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesBBEC1_yearDown.txt'], year="2018"
+jes_FlavorQCD     : $AllBkg : .* : templateAsymm; \
+            FakeRates=['tw-run2/frs-jecs/fr-jesFlavorQCDUp.txt'\,'tw-run2/frs-jecs/fr-jesFlavorQCDDown.txt'],
+jes_RelativeSample_2016 : $AllBkg : .* : templateAsymm; \
+            FakeRates=['tw-run2/frs-jecs/fr-jesRelativeSample_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesRelativeSample_yearDown.txt'], year="2016"
+jes_RelativeSample_2017 : $AllBkg : .* : templateAsymm; \
+            FakeRates=['tw-run2/frs-jecs/fr-jesRelativeSample_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesRelativeSample_yearDown.txt'], year="2017"
+jes_RelativeSample_2018 : $AllBkg : .* : templateAsymm; \
+            FakeRates=['tw-run2/frs-jecs/fr-jesRelativeSample_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesRelativeSample_yearDown.txt'], year="2018"
+jes_EC2           : $AllBkg : .* : templateAsymm; \
+            FakeRates=['tw-run2/frs-jecs/fr-jesEC2Up.txt'\,'tw-run2/frs-jecs/fr-jesEC2Down.txt']
+jes_HF_2016       : $AllBkg : .* : templateAsymm; \
+            FakeRates=['tw-run2/frs-jecs/fr-jesHF_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesHF_yearDown.txt'], year="2016"
+jes_HF_2017       : $AllBkg : .* : templateAsymm; \
+            FakeRates=['tw-run2/frs-jecs/fr-jesHF_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesHF_yearDown.txt'], year="2017"
+jes_HF_2018       : $AllBkg : .* : templateAsymm; \
+            FakeRates=['tw-run2/frs-jecs/fr-jesHF_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesHF_yearDown.txt'], year="2018"
+jes_RelativeBal   : $AllBkg : .* : templateAsymm; \
+            FakeRates=['tw-run2/frs-jecs/fr-jesRelativeBalUp.txt'\,'tw-run2/frs-jecs/fr-jesRelativeBalDown.txt']
+jes_Absolute_2016 : $AllBkg : .* : templateAsymm; \
+            FakeRates=['tw-run2/frs-jecs/fr-jesAbsolute_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesAbsolute_yearDown.txt'], year="2016"
+jes_Absolute_2017 : $AllBkg : .* : templateAsymm; \
+            FakeRates=['tw-run2/frs-jecs/fr-jesAbsolute_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesAbsolute_yearDown.txt'], year="2017"
+jes_Absolute_2018 : $AllBkg : .* : templateAsymm; \
+            FakeRates=['tw-run2/frs-jecs/fr-jesAbsolute_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesAbsolute_yearDown.txt'], year="2018"
+jes_BBEC1         : $AllBkg : .* : templateAsymm; \
+            FakeRates=['tw-run2/frs-jecs/fr-jesBBEC1Up.txt'\,'tw-run2/frs-jecs/fr-jesBBEC1Down.txt'],
+jes_EC2_2016      : $AllBkg : .* : templateAsymm; \
+            FakeRates=['tw-run2/frs-jecs/fr-jesEC2_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesEC2_yearDown.txt'], year="2016"
+jes_EC2_2017      : $AllBkg : .* : templateAsymm; \
+            FakeRates=['tw-run2/frs-jecs/fr-jesEC2_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesEC2_yearDown.txt'], year="2017"
+jes_EC2_2018      : $AllBkg : .* : templateAsymm; \
+            FakeRates=['tw-run2/frs-jecs/fr-jesEC2_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesEC2_yearDown.txt'], year="2018"
+jes_Absolute      : $AllBkg : .* : templateAsymm; \
+            FakeRates=['tw-run2/frs-jecs/fr-jesAbsoluteUp.txt'\,'tw-run2/frs-jecs/fr-jesAbsoluteDown.txt']
+
+
+### Not symmetrising
+#jer_2016 : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jerUp.txt'\,'tw-run2/frs-jecs/fr-jerDn.txt'], year="2016"
+#jer_2017 : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jerUp.txt'\,'tw-run2/frs-jecs/fr-jerDn.txt'], year="2017"
+#jer_2018 : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jerUp.txt'\,'tw-run2/frs-jecs/fr-jerDn.txt'], year="2018"
+
+### Symmetrising down
+jer_2016 : $AllBkg : .* : templateSymmAdditive; FakeRate='tw-run2/frs-jecs/fr-jerDn.txt', year="2016"
+jer_2017 : $AllBkg : .* : templateSymmAdditive; FakeRate='tw-run2/frs-jecs/fr-jerDn.txt', year="2017"
+jer_2018 : $AllBkg : .* : templateSymmAdditive; FakeRate='tw-run2/frs-jecs/fr-jerDn.txt', year="2018"
+
+# If we don't use MET, we don't need this unc.:
+# unclenergy : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-unclUp.txt'\,'tw-run2/frs-jecs/fr-unclDn.txt']
+
+
+## --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## b-tagging and mistagging
+## --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#btagging:   $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_btag_Up/bTagWeight'\,'bTagWeight_btag_Dn/bTagWeight']
+#mistagging: $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_Up/bTagWeight'\,'bTagWeight_mistag_Dn/bTagWeight']
+
 #btagging_2016:   $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_btag_Up/bTagWeight'\,'bTagWeight_btag_Dn/bTagWeight'], year="2016"
-#btagging_1718:   $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_btag_Up/bTagWeight'\,'bTagWeight_btag_Dn/bTagWeight'], year="2017"
-#btagging_1718:   $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_btag_Up/bTagWeight'\,'bTagWeight_btag_Dn/bTagWeight'], year="2018"
+#btagging_2017:   $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_btag_Up/bTagWeight'\,'bTagWeight_btag_Dn/bTagWeight'], year="2017"
+#btagging_2018:   $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_btag_Up/bTagWeight'\,'bTagWeight_btag_Dn/bTagWeight'], year="2018"
 #mistagging_2016: $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_Up/bTagWeight'\,'bTagWeight_mistag_Dn/bTagWeight'], year="2016"
-#mistagging_1718: $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_Up/bTagWeight'\,'bTagWeight_mistag_Dn/bTagWeight'], year="2017"
-#mistagging_1718: $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_Up/bTagWeight'\,'bTagWeight_mistag_Dn/bTagWeight'], year="2018"
-#
-##btagging_1617:   $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_btag_Up/bTagWeight'\,'bTagWeight_btag_Dn/bTagWeight'], year="2016"
-##btagging_1617:   $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_btag_Up/bTagWeight'\,'bTagWeight_btag_Dn/bTagWeight'], year="2017"
-##btagging_2018:   $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_btag_Up/bTagWeight'\,'bTagWeight_btag_Dn/bTagWeight'], year="2018"
-##mistagging_1617: $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_Up/bTagWeight'\,'bTagWeight_mistag_Dn/bTagWeight'], year="2016"
-##mistagging_1617: $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_Up/bTagWeight'\,'bTagWeight_mistag_Dn/bTagWeight'], year="2017"
-##mistagging_2018: $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_Up/bTagWeight'\,'bTagWeight_mistag_Dn/bTagWeight'], year="2018"
-#
-#### New scheme
-## btagging_corr:   $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_btag_correlatedUp/bTagWeight'\,'bTagWeight_btag_correlatedDown/bTagWeight']
-## btagging_2016:   $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_btag_uncorrelatedUp/bTagWeight'\,'bTagWeight_btag_uncorrelatedDown/bTagWeight'], year="2016"
-## btagging_2017:   $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_btag_uncorrelatedUp/bTagWeight'\,'bTagWeight_btag_uncorrelatedDown/bTagWeight'], year="2017"
-## btagging_2018:   $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_btag_uncorrelatedUp/bTagWeight'\,'bTagWeight_btag_uncorrelatedDown/bTagWeight'], year="2018"
-## mistagging_corr: $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_correlatedUp/bTagWeight'\,'bTagWeight_mistag_correlatedDown/bTagWeight']
-## mistagging_2016: $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_uncorrelatedUp/bTagWeight'\,'bTagWeight_mistag_uncorrelatedDown/bTagWeight'], year="2016"
-## mistagging_2017: $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_uncorrelatedUp/bTagWeight'\,'bTagWeight_mistag_uncorrelatedDown/bTagWeight'], year="2017"
-## mistagging_2017: $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_uncorrelatedUp/bTagWeight'\,'bTagWeight_mistag_uncorrelatedDown/bTagWeight'], year="2018"
-#
-#
-#
-### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-### L1 ECAL prefiring
-### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#prefiring_2016 : $AllBkg : .* : templateAsymm; AddWeights=['PrefireWeight_Up/PrefireWeight'\,'PrefireWeight_Down/PrefireWeight'], year="2016"
-#prefiring_2017 : $AllBkg : .* : templateAsymm; AddWeights=['PrefireWeight_Up/PrefireWeight'\,'PrefireWeight_Down/PrefireWeight'], year="2017"
-#
-### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-### Muon energy corrections (Rochester corrections)
-### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#muonen_2016 : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-lepenergies/fr-muonEnergyUp.txt'\,'tw-run2/frs-lepenergies/fr-muonEnergyDn.txt'], year="2016"
-#muonen_2017 : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-lepenergies/fr-muonEnergyUp.txt'\,'tw-run2/frs-lepenergies/fr-muonEnergyDn.txt'], year="2017"
-#muonen_2018 : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-lepenergies/fr-muonEnergyUp.txt'\,'tw-run2/frs-lepenergies/fr-muonEnergyDn.txt'], year="2018"
-#
-#
-## %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-#### MODELLING
-## %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+#mistagging_2017: $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_Up/bTagWeight'\,'bTagWeight_mistag_Dn/bTagWeight'], year="2017"
+#mistagging_2018: $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_Up/bTagWeight'\,'bTagWeight_mistag_Dn/bTagWeight'], year="2018"
+
+btagging_2016:   $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_btag_Up/bTagWeight'\,'bTagWeight_btag_Dn/bTagWeight'], year="2016"
+btagging_1718:   $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_btag_Up/bTagWeight'\,'bTagWeight_btag_Dn/bTagWeight'], year="2017"
+btagging_1718:   $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_btag_Up/bTagWeight'\,'bTagWeight_btag_Dn/bTagWeight'], year="2018"
+mistagging_2016: $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_Up/bTagWeight'\,'bTagWeight_mistag_Dn/bTagWeight'], year="2016"
+mistagging_1718: $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_Up/bTagWeight'\,'bTagWeight_mistag_Dn/bTagWeight'], year="2017"
+mistagging_1718: $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_Up/bTagWeight'\,'bTagWeight_mistag_Dn/bTagWeight'], year="2018"
+
+#btagging_1617:   $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_btag_Up/bTagWeight'\,'bTagWeight_btag_Dn/bTagWeight'], year="2016"
+#btagging_1617:   $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_btag_Up/bTagWeight'\,'bTagWeight_btag_Dn/bTagWeight'], year="2017"
+#btagging_2018:   $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_btag_Up/bTagWeight'\,'bTagWeight_btag_Dn/bTagWeight'], year="2018"
+#mistagging_1617: $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_Up/bTagWeight'\,'bTagWeight_mistag_Dn/bTagWeight'], year="2016"
+#mistagging_1617: $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_Up/bTagWeight'\,'bTagWeight_mistag_Dn/bTagWeight'], year="2017"
+#mistagging_2018: $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_Up/bTagWeight'\,'bTagWeight_mistag_Dn/bTagWeight'], year="2018"
+
+### New scheme
+# btagging_corr:   $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_btag_correlatedUp/bTagWeight'\,'bTagWeight_btag_correlatedDown/bTagWeight']
+# btagging_2016:   $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_btag_uncorrelatedUp/bTagWeight'\,'bTagWeight_btag_uncorrelatedDown/bTagWeight'], year="2016"
+# btagging_2017:   $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_btag_uncorrelatedUp/bTagWeight'\,'bTagWeight_btag_uncorrelatedDown/bTagWeight'], year="2017"
+# btagging_2018:   $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_btag_uncorrelatedUp/bTagWeight'\,'bTagWeight_btag_uncorrelatedDown/bTagWeight'], year="2018"
+# mistagging_corr: $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_correlatedUp/bTagWeight'\,'bTagWeight_mistag_correlatedDown/bTagWeight']
+# mistagging_2016: $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_uncorrelatedUp/bTagWeight'\,'bTagWeight_mistag_uncorrelatedDown/bTagWeight'], year="2016"
+# mistagging_2017: $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_uncorrelatedUp/bTagWeight'\,'bTagWeight_mistag_uncorrelatedDown/bTagWeight'], year="2017"
+# mistagging_2017: $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_uncorrelatedUp/bTagWeight'\,'bTagWeight_mistag_uncorrelatedDown/bTagWeight'], year="2018"
+
+
+
 ## --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-## Background normalisation
+## L1 ECAL prefiring
 ## --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-## From TOP-19-003
-#ttbar_norm   : ttbar   : .* : normSymm : 1.04
-#vvttv_norm   : vvttv   : .* : normSymm : 1.5
-#dy_norm      : dy      : .* : normSymm : 1.5
-#nonworz_norm : nonworz : .* : normSymm : 1.5
-#
-#
+prefiring_2016 : $AllBkg : .* : templateAsymm; AddWeights=['PrefireWeight_Up/PrefireWeight'\,'PrefireWeight_Down/PrefireWeight'], year="2016"
+prefiring_2017 : $AllBkg : .* : templateAsymm; AddWeights=['PrefireWeight_Up/PrefireWeight'\,'PrefireWeight_Down/PrefireWeight'], year="2017"
+
+## --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## Muon energy corrections (Rochester corrections)
+## --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+muonen_2016 : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-lepenergies/fr-muonEnergyUp.txt'\,'tw-run2/frs-lepenergies/fr-muonEnergyDn.txt'], year="2016"
+muonen_2017 : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-lepenergies/fr-muonEnergyUp.txt'\,'tw-run2/frs-lepenergies/fr-muonEnergyDn.txt'], year="2017"
+muonen_2018 : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-lepenergies/fr-muonEnergyUp.txt'\,'tw-run2/frs-lepenergies/fr-muonEnergyDn.txt'], year="2018"
+
+
+# %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+### MODELLING
+# %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Background normalisation
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# From TOP-19-003
+ttbar_norm   : ttbar   : .* : normSymm : 1.04
+vvttv_norm   : vvttv   : .* : normSymm : 1.5
+dy_norm      : dy      : .* : normSymm : 1.5
+nonworz_norm : nonworz : .* : normSymm : 1.5
+
+
 ## --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ### PDF
 ## --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -230,11 +230,11 @@ tw_scales    : $tWProc : .* : envelope ; FakeRates=['tw-run2/frs-scales/fr-muR_0
 ###### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ###### ISR/FSR
 ###### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#isr_ttbar : ttbar : .* : templateAsymm; AddWeights=['PSWeight[2]'\,'PSWeight[0]']
-#fsr_ttbar : ttbar : .* : templateAsymm; AddWeights=['PSWeight[3]'\,'PSWeight[1]']
-#
-#isr_tw    : $tWProc : .* : templateAsymm; AddWeights=['PSWeight[2]'\,'PSWeight[0]']
-#fsr_tw    : $tWProc : .* : templateAsymm; AddWeights=['PSWeight[3]'\,'PSWeight[1]']
+isr_ttbar : ttbar : .* : templateAsymm; AddWeights=['PSWeight[2]'\,'PSWeight[0]']
+fsr_ttbar : ttbar : .* : templateAsymm; AddWeights=['PSWeight[3]'\,'PSWeight[1]']
+
+isr_tw    : $tWProc : .* : templateAsymm; AddWeights=['PSWeight[2]'\,'PSWeight[0]']
+fsr_tw    : $tWProc : .* : templateAsymm; AddWeights=['PSWeight[3]'\,'PSWeight[1]']
 
 ##### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ##### Top pT reweighting
@@ -252,37 +252,37 @@ topptrew : ttbar : .* : templateSymmAdditive ; AddWeight='TopPtWeight'
 ##### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-##### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-##### ME/PS matching (hDamp parameter)
-##### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#### ME/PS matching (hDamp parameter)
+#### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #ttbar_matching : ttbar   : .* : altSample : syst_ttbar_matching_up : syst_ttbar_matching_dn
-#tw_matching    : $tWProc : .* : altSample : syst_tw_matching_up    : syst_tw_matching_dn
-#
-#### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#### Colour reconnection schemes
-#### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#colour_rec : ttbar   : .* : altSampleEnv : ['syst_ttbar_colour_erdon'\,'syst_ttbar_colour_cr1'\,'syst_ttbar_colour_cr2'] : symm
-#colour_rec : $tWProc : .* : altSampleEnv : ['syst_tw_colour_erdon'\,'syst_tw_colour_cr1'\,'syst_tw_colour_cr2']          : symm
-#
-#
+tw_matching    : $tWProc : .* : altSample : syst_tw_matching_up    : syst_tw_matching_dn
+
 ### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-### Underlying event (tuning)
+### Colour reconnection schemes
 ### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+colour_rec : ttbar   : .* : altSampleEnv : ['syst_ttbar_colour_erdon'\,'syst_ttbar_colour_cr1'\,'syst_ttbar_colour_cr2'] : symm
+colour_rec : $tWProc : .* : altSampleEnv : ['syst_tw_colour_erdon'\,'syst_tw_colour_cr1'\,'syst_tw_colour_cr2']          : symm
+
+
+## --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## Underlying event (tuning)
+## --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #ue : ttbar   : .* : altSample : syst_ttbar_ue_up : syst_ttbar_ue_dn
-#ue : $tWProc : .* : altSample : syst_tw_ue_up    : syst_tw_ue_dn
-#
-#### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#### Top quark mass
-#### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-##mtop : ttbar   : .* : altSample : syst_ttbar_mtop_up : syst_ttbar_mtop_dn : : 3 ; year="2016"
-#mtop : ttbar   : .* : altSample : syst_ttbar_mtop_up : syst_ttbar_mtop_dn       ; year="2017"
-#mtop : ttbar   : .* : altSample : syst_ttbar_mtop_up : syst_ttbar_mtop_dn       ; year="2018"
-#mtop : $tWProc : .* : altSample : syst_tw_mtop_up    : syst_tw_mtop_dn          ; year="2017"
-#
-#
-#### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#### tW DR/DS
-#### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#ds : $tWProc : .* : altSample : syst_ds : : symm
+ue : $tWProc : .* : altSample : syst_tw_ue_up    : syst_tw_ue_dn
+
+### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+### Top quark mass
+### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#mtop : ttbar   : .* : altSample : syst_ttbar_mtop_up : syst_ttbar_mtop_dn : : 3 ; year="2016"
+mtop : ttbar   : .* : altSample : syst_ttbar_mtop_up : syst_ttbar_mtop_dn       ; year="2017"
+mtop : ttbar   : .* : altSample : syst_ttbar_mtop_up : syst_ttbar_mtop_dn       ; year="2018"
+mtop : $tWProc : .* : altSample : syst_tw_mtop_up    : syst_tw_mtop_dn          ; year="2017"
+
+
+### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+### tW DR/DS
+### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ds : $tWProc : .* : altSample : syst_ds : : symm
 
 
