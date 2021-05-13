@@ -40,8 +40,8 @@ class btag_weighter(Module):
             for i, var in enumerate(lepenvars):
                 self.systsLepEn[i+1]    = "_%sUp"%var
                 self.systsLepEn[-(i+1)] = "_%sDown"%var
-        if self.correlations:
-            for i, var in enumerate(['correlated', 'uncorrelated']):
+        if self.splitCorr:
+            for i, var in enumerate(['btag_correlated', 'mistag_correlated', 'btag_uncorrelated', 'mistag_uncorrelated']):
                 self.systsCorr[i+1]    = "_%sUp"%var
                 self.systsCorr[-(i+1)] = "_%sDown"%var
 
@@ -103,9 +103,8 @@ class btag_weighter(Module):
         self.wrappedOutputTree.branch("bTagWeight" + self.label + "_mistag_Up", "F")
         self.wrappedOutputTree.branch("bTagWeight" + self.label + "_mistag_Dn", "F")
 
-        if self.splitCorr:
-            for delta,corrVar in self.systsLepEn.iteritems():
-                self.wrappedOutputTree.branch("bTagWeight" + self.label + corrVar , "F")
+        for delta,corrVar in self.systsCorr.iteritems():
+            self.wrappedOutputTree.branch("bTagWeight" + self.label + corrVar , "F")
 
         for delta,jecVar in self.systsJEC.iteritems():
             self.wrappedOutputTree.branch("bTagWeight" + self.label + jecVar , "F")
@@ -256,14 +255,14 @@ class btag_weighter(Module):
                 self.ret["bTagWeight" + self.label + "_mistag_Dn"] = sysLFdn / ( mcNoTag * mcTag )
 
                 if self.splitCorr:
-                    self.ret["bTagWeight" + self.label + "_btag_correlatedUp"]     = sysHFupCorr   / ( mcNoTag * mcTag )
-                    self.ret["bTagWeight" + self.label + "_btag_correlatedDn"]     = sysHFdnCorr   / ( mcNoTag * mcTag )
-                    self.ret["bTagWeight" + self.label + "_mistag_correlatedUp"]   = sysLFupCorr   / ( mcNoTag * mcTag )
-                    self.ret["bTagWeight" + self.label + "_mistag_correlatedDn"]   = sysLFdnCorr   / ( mcNoTag * mcTag )
-                    self.ret["bTagWeight" + self.label + "_btag_uncorrelatedUp"]   = sysHFupUncorr / ( mcNoTag * mcTag )
-                    self.ret["bTagWeight" + self.label + "_btag_uncorrelatedDn"]   = sysHFdnUncorr / ( mcNoTag * mcTag )
-                    self.ret["bTagWeight" + self.label + "_mistag_uncorrelatedUp"] = sysLFupUncorr / ( mcNoTag * mcTag )
-                    self.ret["bTagWeight" + self.label + "_mistag_uncorrelatedDn"] = sysLFdnUncorr / ( mcNoTag * mcTag )
+                    self.ret["bTagWeight" + self.label + "_btag_correlatedUp"]       = sysHFupCorr   / ( mcNoTag * mcTag )
+                    self.ret["bTagWeight" + self.label + "_btag_correlatedDown"]     = sysHFdnCorr   / ( mcNoTag * mcTag )
+                    self.ret["bTagWeight" + self.label + "_mistag_correlatedUp"]     = sysLFupCorr   / ( mcNoTag * mcTag )
+                    self.ret["bTagWeight" + self.label + "_mistag_correlatedDown"]   = sysLFdnCorr   / ( mcNoTag * mcTag )
+                    self.ret["bTagWeight" + self.label + "_btag_uncorrelatedUp"]     = sysHFupUncorr / ( mcNoTag * mcTag )
+                    self.ret["bTagWeight" + self.label + "_btag_uncorrelatedDown"]   = sysHFdnUncorr / ( mcNoTag * mcTag )
+                    self.ret["bTagWeight" + self.label + "_mistag_uncorrelatedUp"]   = sysLFupUncorr / ( mcNoTag * mcTag )
+                    self.ret["bTagWeight" + self.label + "_mistag_uncorrelatedDown"] = sysLFdnUncorr / ( mcNoTag * mcTag )
 
 
                 for ldelta,lepVar in self.systsLepEn.iteritems():
