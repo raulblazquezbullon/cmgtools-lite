@@ -570,7 +570,7 @@ def doStatTests(total,data,test,legendCorner):
 
 
 legend_ = None;
-def doLegend(pmap,mca,corner="TR",textSize=0.035,cutoff=1e-2,cutoffSignals=True,mcStyle="F",legWidth=0.18,legBorder=True,signalPlotScale=None,totalError=None,header="",doWide=False,columns=1):
+def doLegend(pmap,mca,corner="TR",textSize=0.035,cutoff=1e-2,cutoffSignals=True,mcStyle="F",legWidth=0.18,legBorder=True,signalPlotScale=None,totalError=None,header="",doWide=False,columns=1,DrawHorizontalErrBarInLegend=True):
         if (corner == None): return
         total = sum([x.Integral() for x in pmap.itervalues()])
         sigEntries = []; bgEntries = []
@@ -620,8 +620,11 @@ def doLegend(pmap,mca,corner="TR",textSize=0.035,cutoff=1e-2,cutoffSignals=True,
         leg.SetTextSize(textSize)
         leg.SetNColumns(columns)
         entries = []
-        if 'data' in pmap: 
-            entries.append((pmap['data'].raw(), mca.getProcessOption('data','Label','Data', noThrow=True), 'LPE'))
+        if 'data' in pmap:
+            if DrawHorizontalErrBarInLegend: 
+                entries.append((pmap['data'].raw(), mca.getProcessOption('data','Label','Data', noThrow=True), 'LPE'))
+            else:
+                entries.append((pmap['data'].raw(), mca.getProcessOption('data','Label','Data', noThrow=True), 'PE'))
         for (plot,label,style) in sigEntries: entries.append((plot.raw(),label,style))
         for (plot,label,style) in  bgEntries: entries.append((plot.raw(),label,style))
         if totalError:  entries.append((totalError,"Total unc.","F"))
@@ -960,6 +963,7 @@ class PlotMaker:
                 if options.showMCError:
                     totalError = doShadedUncertainty(total)
                 is2D = total.InheritsFrom("TH2")
+                DrawHorizontalErrBarInLegendFlag = True
                 if 'data' in pmap: 
                     if options.poisson and not is2D:
                         pdata = getDataPoissonErrors(pmap['data'], True, True)
@@ -969,6 +973,7 @@ class PlotMaker:
                             for i in range(total.GetNbinsX()):
                                 if total.GetBinWidth(i+1) != binWidth:
                                     flag = False
+                            DrawHorizontalErrBarInLegendFlag = not(flag * options.noXErrData)
                             if flag and options.noXErrData:
                                 for i in range(pdata.GetN()):
                                     pdata.SetPointEXlow(i,0)
@@ -1013,7 +1018,7 @@ class PlotMaker:
                                   textSize=( (0.045 if doRatio else 0.022) if options.legendFontSize <= 0 else options.legendFontSize ),
                                   legWidth=pspec.getOption('LegendWidth',options.legendWidth), legBorder=options.legendBorder, signalPlotScale=options.signalPlotScale,
                                   header=self._options.legendHeader if self._options.legendHeader else pspec.getOption("LegendHeader", ""),
-                                  doWide=doWide, totalError=totalError, columns = pspec.getOption('LegendColumns',options.legendColumns))
+                                  doWide=doWide, totalError=totalError, columns = pspec.getOption('LegendColumns',options.legendColumns),DrawHorizontalErrBarInLegend= DrawHorizontalErrBarInLegendFlag)
                 if self._options.doOfficialCMS:
                     CMS_lumi.lumi_13TeV = "%.1f fb^{-1}" % self._options.lumi
                     CMS_lumi.extraText  = self._options.cmsprel

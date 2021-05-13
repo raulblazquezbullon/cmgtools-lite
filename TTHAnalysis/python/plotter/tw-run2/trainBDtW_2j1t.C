@@ -21,7 +21,7 @@
 using namespace TMVA;
 
 
-void trainBDtW_2j1t(TString outputdir, TString outputbasedir = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/mvas/", TString inputdir = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/productions/2020-09-20/", TString outputFileName = "tmvaBDT_2j1t.root", TString myMethodList = "", TString twname = "tw.root", TString tbarwname = "tbarw.root", TString ttbarname = "ttbar.root") {
+void trainBDtW_2j1t(TString outputdir, TString outputbasedir = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/mvas/", TString inputdir = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/productions/2021-04-23/", TString outputFileName = "tmvaBDT_2j1t.root", TString myMethodList = "", TString twname = "tw.root", TString tbarwname = "tbarw.root", TString ttbarname = "ttbar.root") {
   // This loads the library
   TMVA::Tools::Instance();
 
@@ -206,8 +206,8 @@ void trainBDtW_2j1t(TString outputdir, TString outputbasedir = "/pool/phedex/use
 
 
 
-//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_200_005_4",
-//      "NTrees=200:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.05:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
+  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_200_005_4",
+      "NTrees=200:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.05:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
   
   //====================Metodos Nuevos=================================== Learning rate opt
 //  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_200_0001_4",
@@ -257,8 +257,8 @@ void trainBDtW_2j1t(TString outputdir, TString outputbasedir = "/pool/phedex/use
 //  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_200_005_10",
 //      "NTrees=200:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.05:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=10" );
   //==Overtraining fixing
-  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_150_005_2_MinNodeSize5",
-      "NTrees=150:MinNodeSize=5%:BoostType=Grad:Shrinkage=0.05:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=2" );
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_150_005_2_MinNodeSize5",
+//      "NTrees=150:MinNodeSize=5%:BoostType=Grad:Shrinkage=0.05:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=2" );
   //====================Metodos Nuevos===================================
   
   
