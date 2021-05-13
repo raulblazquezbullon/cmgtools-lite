@@ -258,6 +258,12 @@ class MCAnalysis:
                     if os.path.exists(treepath+"/"+cname) or (treename == "NanoAOD" and os.path.isfile(treepath+"/"+cname+".root")):
                         basepath = treepath
                         break
+                    elif "*" in cname:
+                        tmprootf = glob("{p}/{f}.root".format(p = treepath, f = cname))
+                        if len(tmprootf):
+                            basepath = treepath
+                            break
+
                 if not basepath:
                     raise RuntimeError("%s -- ERROR: %s process not found in paths (%s)" % (__name__, cname, repr(options.path)))
 
@@ -276,7 +282,9 @@ class MCAnalysis:
                     # Heppy calls the tree just 'tree.root'
                     rootfile = "%s/%s/%s/tree.root" % (basepath, cname, treename)
                     rootfile = open(rootfile+".url","r").readline().strip()
+
                 pckfile = basepath+"/%s/skimAnalyzerCount/SkimReport.pck" % cname
+
                 if treename == "NanoAOD":
                     objname = "Events"
                     pckfile = None
@@ -285,6 +293,8 @@ class MCAnalysis:
                         rootfiles = glob("%s/%s/*.root" % (basepath, cname))
                     elif os.path.isfile(rootfile):
                         rootfiles = [ rootfile ]
+                    elif "*" in cname:
+                        rootfiles = glob("{p}/{f}.root".format(p = basepath, f = cname))
                     elif os.path.isfile(rootfile+".root"):
                         rootfiles = [ rootfile+".root" ]
                     else:
@@ -293,7 +303,7 @@ class MCAnalysis:
                     rootfiles = [ rootfile ]
                 
                 for rootfile in rootfiles:
-                    mycname = cname if len(rootfiles) == 1 else cname + "-" + os.path.basename(rootfile).replace(".root","") 
+                    mycname = cname if len(rootfiles) == 1 and "*" not in cname else cname + "-" + os.path.basename(rootfile).replace(".root","") if "*" not in cname else os.path.basename(rootfile).replace(".root","")
                     tty = TreeToYield(rootfile, basepath, options, settings=extra, name=pname, cname=mycname, objname=objname, variation_inputs=variations.values(), nanoAOD=(treename == "NanoAOD")); 
                     tty.pckfile = pckfile
                     ttys.append(tty)
