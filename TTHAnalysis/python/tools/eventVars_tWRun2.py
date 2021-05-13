@@ -247,7 +247,7 @@ class EventVars_tWRun2(Module):
             allret["isTop"]   = 1
         else:
             allret["datatag"] = tags.mc
-        print allret["isTop"]
+
         # Nominal variables and those susceptible to JEC enter in this if-statement.
         for iL in range(len(leps)):
             for jL in range(iL + 1, len(leps)):

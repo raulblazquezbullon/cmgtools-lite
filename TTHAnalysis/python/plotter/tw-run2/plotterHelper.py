@@ -11,8 +11,11 @@ r.gROOT.SetBatch(True)
 friendspath  = "/pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions"
 datasamples  = ["SingleMuon", "SingleElec", "DoubleMuon", "DoubleEG", "MuonEG", "LowEGJet", "HighEGJet", "EGamma"]
 
-mcpath       = "/pool/ciencias/nanoAODv6/29jan2020_MC"
-datapath     = "/pool/ciencias/nanoAODv6/13jan2020"
+#mcpath       = "/pool/ciencias/nanoAODv6/29jan2020_MC"
+#datapath     = "/pool/ciencias/nanoAODv6/13jan2020"
+mcpath       = "/pool/phedex/nanoAODv6v7"
+mcpathdiv    = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/misc/2021_04_nuevasdivisiones"
+datapath     = "/pool/phedex/nanoAODv6v7"
 
 logpath      = friendspath + "/{p}/{y}/logs/plots"
 #logpath = "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/plot_logs"
@@ -26,8 +29,8 @@ logpath      = friendspath + "/{p}/{y}/logs/plots"
 #friendsscaff = "--Fs {P}/0_yeartag --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --Fs {P}/5_mvas"
 #friendsscaff = "--Fs {P}/0_yeartag --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --Fs {P}/5_mvas_new"
 #friendsscaff = "--Fs {P}/0_yeartag --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --Fs {P}/5_mvas_bkp20200807"
-#friendsscaff = "--Fs {P}/0_yeartag --Fs {P}/1_lepmerge_roch_bkp --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors" ### Nueva, dejando la incorporacion del quinto ftree opcional
-friendsscaff = "--Fs {P}/0_yeartag --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors" ### Nueva, dejando la incorporacion del quinto ftree opcional
+#friendsscaff = "--Fs {P}/0_yeartag --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors_bkp" ### Nueva, dejando la incorporacion del quinto ftree opcional
+friendsscaff = "--Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors_bkp" ### Nueva, dejando la incorporacion del quinto ftree opcional
 
 #commandscaff = "python mcPlots.py --tree NanoAOD --pdir {outpath} {friends} {samplespaths} -f -l {lumi} {nth} --year {year} --maxRatioRange 0.8 1.2 --ratioYNDiv 210 --showRatio --attachRatioPanel --fixRatioRange --legendColumns 3 --legendWidth 0.52 --legendFontSize 0.042 --noCms --topSpamSize 1.1 --lspam '#scale[1.1]{{#bf{{CMS}}}} #scale[0.9]{{#it{{Preliminary}}}}' --showMCError -W 'MuonSF * ElecSF * TrigSF * puWeight * bTagWeight{extraweights}' -L tw-run2/functions_tw.cc {selplot} {mcafile} {cutsfile} {plotsfile} {extra}"
 
@@ -44,7 +47,7 @@ lumidict      = {2016 : 35.92, 2017 : 41.53, 2018 : 59.74}
 
 
 def GeneralExecutioner(task):
-    prod, year, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend, useFibre, doUncs, regionName = task
+    prod, year, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend, useFibre, doUncs = task
 
     if not os.path.isdir(outpath + "/" + str(year)) and not pretend:
         os.system("mkdir -p " + outpath + "/" + str(year))
@@ -59,12 +62,12 @@ def GeneralExecutioner(task):
                                         queue   = queue,
                                         jobname = jobname_,
                                         logpath = logpath.format(y = year, p = prod),
-                                        command = PlottingCommand(prod, year, nthreads, outpath, selplot, reg, ratiorange, extra, useFibre, doUncs, regionName))
+                                        command = PlottingCommand(prod, year, nthreads, outpath, selplot, reg, ratiorange, extra, useFibre, doUncs))
             print "Command:", submitcomm
             if not pretend: os.system(submitcomm)
     else:
         for reg in region.split(","):
-            execcomm = PlottingCommand(prod, year, nthreads, outpath, selplot, reg, ratiorange, extra, useFibre, doUncs, regionName)
+            execcomm = PlottingCommand(prod, year, nthreads, outpath, selplot, reg, ratiorange, extra, useFibre, doUncs)
             print "Command:", execcomm
             if not pretend: os.system(execcomm)
 
@@ -105,19 +108,26 @@ def GeneralExecutioner(task):
     #return comm
 
 
-def PlottingCommand(prod, year, nthreads, outpath, selplot, region, ratio, extra, useFibre, doUncs, nameRegion):
-    mcafile_   = "tw-run2/mca-tw.txt"
-    cutsfile_  = "tw-run2/cuts-tw-{reg}.txt".format(reg = region if ("_" not in region) else region.split("_")[0] if ("differential" not in region) else region)
-    plotsfile_ = "tw-run2/plots-tw/plots-tw-{reg}.txt".format(reg = region)
+def PlottingCommand(prod, year, nthreads, outpath, selplot, region, ratio, extra, useFibre, doUncs):
+    mcafile_    = "tw-run2/mca-tw.txt"
+    cutsfile_   = "tw-run2/cuts-tw-{reg}.txt".format(reg = region if ("_" not in region) else region.split("_")[0] if ("differential" not in region) else region)
+    plotsfile_  = "tw-run2/plots-tw/plots-tw-{reg}.txt".format(reg = region)
 
     samplespaths_ = "-P " + friendspath + "/" + prod + ("/" + year) * (year != "run2")
     if useFibre: samplespaths_ = samplespaths_.replace("phedexrw", "phedex").replace("cienciasrw", "ciencias")
 
-    nth_       = "" if nthreads == 0 else ("--split-factor=-1 -j " + str(nthreads))
-    friends_   = friendsscaff + (" --Fs {P}/5_mvas" * ("MVA" in region))
-    outpath_   = outpath + "/" + year + "/" + (region if "_" not in region else (region.split("_")[0] + "/" + region.split("_")[1]))
-    selplot_   = " ".join( [ "--sP {p}".format(p = sp) for sp in selplot ] ) if len(selplot) else ""
-    ratio_     = "--maxRatioRange " + ratio
+    nth_        = "" if nthreads == 0 else ("--split-factor=-1 -j " + str(nthreads))
+    friends_    = friendsscaff + (" --Fs {P}/5_mvas" * ("MVA" in region))
+    outpath_    = outpath + "/" + year + "/" + (region if "_" not in region else (region.split("_")[0] + "/" + region.split("_")[1]))
+    selplot_    = " ".join( [ "--sP {p}".format(p = sp) for sp in selplot ] ) if len(selplot) else ""
+    ratio_      = "--maxRatioRange " + ratio
+    nameregion_ = ""
+    if "_" not in region and "nojets" not in region:
+        nameregion_ = "+" + region.replace("t", "b").replace("plus", "+")
+    elif "differential" in region and "nojets" not in region:
+        nameregion_ = "+" + region.split("_")[0].replace("t", "b").replace("plus", "+") + "+0j_{{loose}}"
+    elif "MVA" in region and "nojets" not in region:
+        nameregion_ = "+" + region.split("_")[0].replace("t", "b").replace("plus", "+") + "+0j_{{loose}}"
 
     comm = commandscaff.format(outpath      = outpath_,
                                friends      = friends_,
@@ -131,7 +141,7 @@ def PlottingCommand(prod, year, nthreads, outpath, selplot, region, ratio, extra
                                plotsfile = plotsfile_,
                                ratio     = ratio_,
                                extra     = ("--unc tw-run2/uncs-tw.txt ") * doUncs + extra,
-                               nameregion = nameRegion)
+                               nameregion = nameregion_)
 
     return comm
 
@@ -179,7 +189,6 @@ if __name__=="__main__":
     pretend  = args.pretend
     outpath  = args.outpath
     region   = args.region
-    regionName   = args.regionName
     createSL = args.createSL
     useFibre = args.useFibre
     ratiorange = args.ratiorange
@@ -207,12 +216,12 @@ if __name__=="__main__":
             if not os.path.islink(destdir + "/" + sam):
                 os.system(SLcommscaff.format(realdataset = mcpathdiv + "/ttbar/" + str(year) + "/" + sam,
                                              symlink = destdir + "/" + sam))
-        if int(year) == 2016:
-            mcsampleslist = os.listdir(mcpathdiv + "/tw_incl/" + str(year))
-            for sam in mcsampleslist:
-                if not os.path.islink(destdir + "/" + sam):
-                    os.system(SLcommscaff.format(realdataset = mcpathdiv + "/tw_incl/" + str(year) + "/" + sam,
-                                                symlink = destdir + "/" + sam))
+        #if int(year) == 2016:
+            #mcsampleslist = os.listdir(mcpathdiv + "/tw_incl/" + str(year))
+            #for sam in mcsampleslist:
+                #if not os.path.islink(destdir + "/" + sam):
+                    #os.system(SLcommscaff.format(realdataset = mcpathdiv + "/tw_incl/" + str(year) + "/" + sam,
+                                                #symlink = destdir + "/" + sam))
 
         #### Later, data
         print "> Creating data symbolic links..."
@@ -236,7 +245,7 @@ if __name__=="__main__":
 
             if cont:
                 for y in ["2016", "2017", "2018", "run2"]:
-                    GeneralExecutioner( (prod, y, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend, useFibre, doUncs, regionName) )
+                    GeneralExecutioner( (prod, y, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend, useFibre, doUncs) )
         else:
             cont = False
             if   pretend:
@@ -245,12 +254,12 @@ if __name__=="__main__":
                 cont = True
 
             if cont:
-                GeneralExecutioner( (prod, year, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend, useFibre, doUncs, regionName) )
+                GeneralExecutioner( (prod, year, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend, useFibre, doUncs) )
     else:
         print "> Local execution chosen."
         if year == "all":
             print "   - All three years and the combination will be plotted."
             for y in ["2016", "2017", "2018", "run2"]:
-                GeneralExecutioner( (prod, y, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend, useFibre, doUncs, regionName) )
+                GeneralExecutioner( (prod, y, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend, useFibre, doUncs) )
         else:
-            GeneralExecutioner( (prod, year, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend, useFibre, doUncs, regionName) )
+            GeneralExecutioner( (prod, year, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend, useFibre, doUncs) )

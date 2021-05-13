@@ -61,7 +61,7 @@ minitnamedict = {
     "tbarw"     : ["tbarW", "tbarW_central"],
     #"dy_10to50" : ["DYJetsToLL_M_10to50", "DYJetsToLL_M_10to50_MLM"],
     #"dy_50"     : ["DYJetsToLL_M_50"],
-    }
+}
 
 
 sampledict  = {}
@@ -130,7 +130,7 @@ sampledict[2016] = {
     "ZZTo2L2Nu"         : ["ZZTo2L2Nu_13TeV_powheg_pythia8_central_",
                            "ZZTo2L2Nu_13TeV_powheg_pythia8_ext1_central_"],
     "ZZTo2L2Q"          : "ZZTo2L2Q_TuneCUETP8M1_13TeV_amcatnloFXFX_madspin_pythia8_central_",
-    "ZZTo4L"            : "ZZTo4L_DoubleScattering_13TeV-pythia8_central_",
+    "ZZTo4L_DoubleScatt" : "ZZTo4L_DoubleScattering_13TeV-pythia8_central_",
 
     #### ttW
     "TTWJetsToLNu" : "TTWJetsToLNu_TuneCP5_PSweights_13TeV-amcatnloFXFX-madspin-pythia8_topnano_",
@@ -188,16 +188,17 @@ sampledict[2016] = {
 
     ##### ttbar
     ## hdamp
-    "TTTo2L2Nu_hdampUp"     : ["TTTo2L2Nu_hdampUP_TuneCP5_PSweights_13TeV-powheg-pythia8_central_*",
-                               "TTTo2L2Nu_hdampUP_TuneCP5_PSweights_13TeV-powheg-pythia8_ext1_central_*"],
+    "TTTo2L2Nu_hdampUp"     : ["TTTo2L2Nu_hdampUP_TuneCP5_PSweights_13TeV-powheg-pythia8_central_*", #### FALTA
+                               "TTTo2L2Nu_hdampUP_TuneCP5_PSweights_13TeV-powheg-pythia8_ext1_central_*", #### FALTA
+                               "TTTo2L2Nu_hdampUP_TuneCP5_PSweights_13TeV-powheg-pythia8_ext2_central_*"], #### FALTA
     "TTTo2L2Nu_hdampDown"   : ["TTTo2L2Nu_hdampDOWN_TuneCP5_PSweights_13TeV-powheg-pythia8_central_*",
                                "TTTo2L2Nu_hdampDOWN_TuneCP5_PSweights_13TeV-powheg-pythia8_ext1_central_*",
                                "TTTo2L2Nu_hdampDOWN_TuneCP5_PSweights_13TeV-powheg-pythia8_ext2_central_*"],
 
     ## mtop
-    "TTTo2L2Nu_mtop1695" : "TTTo2L2Nu_TuneCP5_PSweights_mtop1695_13TeV-powheg-pythia8_central_",
-    "TTTo2L2Nu_mtop1695" : "TTTo2L2Nu_TuneCP5_PSweights_mtop1755_13TeV-powheg-pythia8_central_",
-    "TTTo2L2Nu_mtop1695" : "TTTo2L2Nu_TuneCP5_PSweights_mtop1755_13TeV-powheg-pythia8_ext1_central_",
+    "TTTo2L2Nu_mtop1695" : "TTTo2L2Nu_TuneCP5_PSweights_mtop1695_13TeV-powheg-pythia8_central_",   #### FALTA
+    "TTTo2L2Nu_mtop1755" : ["TTTo2L2Nu_TuneCP5_PSweights_mtop1755_13TeV-powheg-pythia8_central_*", #### FALTA
+                            "TTTo2L2Nu_TuneCP5_PSweights_mtop1755_13TeV-powheg-pythia8_ext1_central_*"], #### FALTA
 
     ## CR
     "TTTo2L2Nu_CR1"   : ["TTTo2L2Nu_TuneCP5CR1_QCDbased_PSweights_13TeV-powheg-pythia8_central_*",
@@ -311,8 +312,8 @@ sampledict[2017] = {
     "ZZTo2L2Nu" : "ZZTo2L2Nu_13TeV_powheg_pythia8_central_",
     "ZZTo2L2Q"  : ["ZZTo2L2Q_13TeV_amcatnloFXFX_madspin_pythia8_topnano_*",
                    "ZZTo2L2Q_TuneCP5_13TeV_amcatnloFXFX_madspin_pythia8_central_*"],
-    "ZZTo4L"    : ["ZZTo4L_13TeV_powheg_pythia8_topnano_*",
-                   "ZZTo4L_TuneCP5_DoubleScattering_13TeV-pythia8_central_*"],
+    "ZZTo4L"    : "ZZTo4L_13TeV_powheg_pythia8_topnano_",
+    "ZZTo4L_DoubleScatt" : "ZZTo4L_TuneCP5_DoubleScattering_13TeV-pythia8_central_",
 
     #### ttW
     "TTWJetsToLNu" : ["TTWJetsToLNu_TuneCP5_PSweights_13TeV-amcatnloFXFX-madspin-pythia8_topnano_*",
@@ -399,6 +400,7 @@ sampledict[2017] = {
     ## hdamp
     "TTTo2L2Nu_hdampUp"     : ["TTTo2L2Nu_hdampUP_TuneCP5_PSweights_13TeV-powheg-pythia8_central_*",
                                "TTTo2L2Nu_hdampUP_TuneCP5_PSweights_13TeV-powheg-pythia8_ext1_central_*",
+                               "TTTo2L2Nu_hdampUP_TuneCP5_PSweights_13TeV-powheg-pythia8_ext2_central_*", #### FALTA
                                "TTTo2L2Nu_hdampUP_TuneCP5_PSweights_13TeV-powheg-pythia8_ext3_central_*",],
     "TTTo2L2Nu_hdampDown"   : ["TTTo2L2Nu_hdampDOWN_TuneCP5_PSweights_13TeV-powheg-pythia8_central_*",
                                "TTTo2L2Nu_hdampDOWN_TuneCP5_PSweights_13TeV-powheg-pythia8_ext1_central_*",
@@ -408,7 +410,8 @@ sampledict[2017] = {
     "TTTo2L2Nu_UEUp"   : ["TTTo2L2Nu_TuneCP5up_PSweights_13TeV-powheg-pythia8_central_*",
                           "TTTo2L2Nu_TuneCP5up_PSweights_13TeV-powheg-pythia8_ext1_central_*",
                           "TTTo2L2Nu_TuneCP5up_PSweights_13TeV-powheg-pythia8_ext2_central_*",],
-    "TTTo2L2Nu_UEDown" : ["TTTo2L2Nu_TuneCP5down_PSweights_13TeV-powheg-pythia8_ext1_central_*",
+    "TTTo2L2Nu_UEDown" : ["TTTo2L2Nu_TuneCP5down_PSweights_13TeV-powheg-pythia8_central_*", #### FALTA
+                          "TTTo2L2Nu_TuneCP5down_PSweights_13TeV-powheg-pythia8_ext1_central_*",
                           "TTTo2L2Nu_TuneCP5down_PSweights_13TeV-powheg-pythia8_ext2_central_*"],
 
     ## mtop
@@ -431,7 +434,8 @@ sampledict[2017] = {
                          "TTTo2L2Nu_TuneCP5CR1_QCDbased_PSweights_13TeV-powheg-pythia8_ext1_central_*",
                          "TTTo2L2Nu_TuneCP5CR1_QCDbased_PSweights_13TeV-powheg-pythia8_ext2_central_*",],
     "TTTo2L2Nu_CR2"   : ["TTTo2L2Nu_TuneCP5CR2_GluonMove_PSweights_13TeV-powheg-pythia8_central_*",
-                         "TTTo2L2Nu_TuneCP5CR2_GluonMove_PSweights_13TeV-powheg-pythia8_ext1_central_*",],
+                         "TTTo2L2Nu_TuneCP5CR2_GluonMove_PSweights_13TeV-powheg-pythia8_ext1_central_*",
+                         "TTTo2L2Nu_TuneCP5CR2_GluonMove_PSweights_13TeV-powheg-pythia8_ext2_central_*",], #### FALTA
     "TTTo2L2Nu_erdON" : ["TTTo2L2Nu_TuneCP5_erdON_13TeV-powheg-pythia8_central_*",
                          "TTTo2L2Nu_TuneCP5_erdON_13TeV-powheg-pythia8_ext1_central_*",
                          "TTTo2L2Nu_TuneCP5_erdON_13TeV-powheg-pythia8_ext2_central_*",],
@@ -539,8 +543,8 @@ sampledict[2018] = {
     ## ttZ
     "TTZToLL_M_1to10"  : "TTZToLL_M-1to10_TuneCP5_13TeV-amcatnlo-pythia8_topnano_",
     "TTZToLLNuNu_M_10" : "TTZToLLNuNu_M-10_TuneCP5_13TeV-amcatnlo-pythia8_topnano_",
-    "TTZToQQ"          : "TTZToQQ_TuneCP5_13TeV-amcatnlo-pythia8_topnano_",
-    "TTZToQQ"          : "TTZToQQ_TuneCP5_13TeV-amcatnlo-pythia8_central_",
+    "TTZToQQ"          : ["TTZToQQ_TuneCP5_13TeV-amcatnlo-pythia8_topnano_*",
+                          "TTZToQQ_TuneCP5_13TeV-amcatnlo-pythia8_central_*"],
 
     #### ttGamma
     "TTGamma_Dilept"     : "TTGamma_Dilept_TuneCP5_13TeV-madgraph-pythia8_topnano_",

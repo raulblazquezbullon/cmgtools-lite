@@ -279,28 +279,6 @@ leptrigSFs = lambda : lepScaleFactors_TopRun2()
 
 
 #### JET TREATMENTS ###
-from CMGTools.TTHAnalysis.tools.nanoAOD.btag_weighter               import btag_weighter
-## b-tagging
-# Old (pre-new correlations)
-#btagEffpath = os.environ['CMSSW_BASE'] + "/src/CMGTools/TTHAnalysis/data/TopRun2/btagging/"
-#btagSFpath  = os.environ['CMSSW_BASE'] + "/src/PhysicsTools/NanoAODTools/data/btagSF/"
-
-#btagWeights_2016 = lambda : btag_weighter(btagSFpath + "DeepJet_2016LegacySF_V1.csv",  btagEffpath + "BtagMCSF.root", 'deepjet', year = 2016)
-#btagWeights_2017 = lambda : btag_weighter(btagSFpath + "DeepFlavour_94XSF_V3_B_F.csv", btagEffpath + "BtagMCSF.root", 'deepjet', year = 2017)
-#btagWeights_2018 = lambda : btag_weighter(btagSFpath + "DeepJet_102XSF_V1.csv",        btagEffpath + "BtagMCSF.root", 'deepjet', year = 2018)
-
-# New
-btagpath = os.environ['CMSSW_BASE'] + "/src/CMGTools/TTHAnalysis/data/TopRun2/btagging"
-btagWeights_2016 = lambda : btag_weighter(btagpath + "/" + "DeepJet_2016LegacySF_V1_YearCorrelation-V1.csv",        btagpath + "/" + "BtagMCSF.root", 'deepjet', year = 2016)
-btagWeights_2017 = lambda : btag_weighter(btagpath + "/" + "DeepJet_DeepFlavour2017_mujets_YearCorrelation-V1.csv", btagpath + "/" + "BtagMCSF.root", 'deepjet', year = 2017)
-btagWeights_2018 = lambda : btag_weighter(btagpath + "/" + "DeepJet_102XSF_V1_YearCorrelation-V1.csv",              btagpath + "/" + "BtagMCSF.root", 'deepjet', year = 2018)
-
-
-# Cleaning
-#from CMGTools.TTHAnalysis.tools.combinedObjectTaggerForCleaningTopRun2     import CombinedObjectTaggerForCleaningTopRun2
-#from CMGTools.TTHAnalysis.tools.nanoAOD.fastCombinedObjectRecleanerTopRun2 import fastCombinedObjectRecleanerTopRun2
-#from CMGTools.TTHAnalysis.tools.nanoAOD.cleaningTopRun2 import cleaningTopRun2
-from CMGTools.TTHAnalysis.tools.nanoAOD.pythonCleaningTopRun2 import pythonCleaningTopRun2
 
 jecGroups = {'HF'                 : ['PileUpPtHF', 'RelativeJERHF', 'RelativePtHF'],
              'BBEC1_year'         : ['RelativeJEREC1', 'RelativePtEC1', 'RelativeStatEC'],
@@ -315,6 +293,44 @@ jecGroups = {'HF'                 : ['PileUpPtHF', 'RelativeJERHF', 'RelativePtH
              'Absolute'           : ['AbsoluteMPFBias', 'AbsoluteScale', 'Fragmentation', 'PileUpDataMC',
                                      'PileUpPtRef', 'RelativeFSR', 'SinglePionECAL', 'SinglePionHCAL'],
 }
+
+from CMGTools.TTHAnalysis.tools.nanoAOD.btag_weighter               import btag_weighter
+## b-tagging
+# Old (pre-new correlations)
+#btagEffpath = os.environ['CMSSW_BASE'] + "/src/CMGTools/TTHAnalysis/data/TopRun2/btagging/"
+#btagSFpath  = os.environ['CMSSW_BASE'] + "/src/PhysicsTools/NanoAODTools/data/btagSF/"
+
+#btagWeights_2016 = lambda : btag_weighter(btagSFpath + "DeepJet_2016LegacySF_V1.csv",  btagEffpath + "BtagMCSF.root", 'deepjet', year = 2016)
+#btagWeights_2017 = lambda : btag_weighter(btagSFpath + "DeepFlavour_94XSF_V3_B_F.csv", btagEffpath + "BtagMCSF.root", 'deepjet', year = 2017)
+#btagWeights_2018 = lambda : btag_weighter(btagSFpath + "DeepJet_102XSF_V1.csv",        btagEffpath + "BtagMCSF.root", 'deepjet', year = 2018)
+
+# New
+btagpath = os.environ['CMSSW_BASE'] + "/src/CMGTools/TTHAnalysis/data/TopRun2/btagging"
+btagWeights_2016 = lambda : btag_weighter(btagpath + "/" + "DeepJet_2016LegacySF_V1_YearCorrelation-V1.csv",
+                                          btagpath + "/" + "BtagMCSF.root",
+                                          'deepjet',
+                                          jecvars   = ['jesTotal', 'jer'] + ['jes%s'%v for v in jecGroups] + ["jer%i"%i for i in range(6)],
+                                          splitCorrelations = True,
+                                          year = 2016)
+btagWeights_2017 = lambda : btag_weighter(btagpath + "/" + "DeepJet_DeepFlavour2017_mujets_YearCorrelation-V1.csv",
+                                          btagpath + "/" + "BtagMCSF.root",
+                                          'deepjet',
+                                          jecvars   = ['jesTotal', 'jer'] + ['jes%s'%v for v in jecGroups] + ["jer%i"%i for i in range(6)],
+                                          splitCorrelations = True,
+                                          year = 2017)
+btagWeights_2018 = lambda : btag_weighter(btagpath + "/" + "DeepJet_102XSF_V1_YearCorrelation-V1.csv",
+                                          btagpath + "/" + "BtagMCSF.root",
+                                          'deepjet',
+                                          jecvars   = ['jesTotal', 'jer'] + ['jes%s'%v for v in jecGroups] + ["jer%i"%i for i in range(6)],
+                                          splitCorrelations = True,
+                                          year = 2018)
+
+
+# Cleaning
+#from CMGTools.TTHAnalysis.tools.combinedObjectTaggerForCleaningTopRun2     import CombinedObjectTaggerForCleaningTopRun2
+#from CMGTools.TTHAnalysis.tools.nanoAOD.fastCombinedObjectRecleanerTopRun2 import fastCombinedObjectRecleanerTopRun2
+#from CMGTools.TTHAnalysis.tools.nanoAOD.cleaningTopRun2 import cleaningTopRun2
+from CMGTools.TTHAnalysis.tools.nanoAOD.pythonCleaningTopRun2 import pythonCleaningTopRun2
 
 #cleaning_mc = lambda : cleaningTopRun2(label = "Recl",
                                        #jetPts = [IDDict["jets"]["pt"], IDDict["jets"]["pt2"]],
@@ -497,9 +513,13 @@ addSeparationIndex_nomva   = lambda : addSeparationIndex(isThisSampleForMVA = Fa
 addSeparationIndex_mva     = lambda : addSeparationIndex(isThisSampleForMVA = True, applicationProp = applicationProportion)
 addSeparationIndex_mva_ent = lambda : addSeparationIndex(isThisSampleForMVA = True, isEntire = True, applicationProp = applicationProportion)
 
-sfSeq_2016 = [leptrigSFs, btagWeights_2016, addTopPtWeight, addSeparationIndex_nomva]
-sfSeq_2017 = [leptrigSFs, btagWeights_2017, addTopPtWeight, addSeparationIndex_nomva]
-sfSeq_2018 = [leptrigSFs, btagWeights_2018, addTopPtWeight, addSeparationIndex_nomva]
+#sfSeq_2016 = [leptrigSFs, btagWeights_2016, addTopPtWeight, addSeparationIndex_nomva]
+#sfSeq_2017 = [leptrigSFs, btagWeights_2017, addTopPtWeight, addSeparationIndex_nomva]
+#sfSeq_2018 = [leptrigSFs, btagWeights_2018, addTopPtWeight, addSeparationIndex_nomva]
+
+sfSeq_2016 = [leptrigSFs, btagWeights_2016, addTopPtWeight]
+sfSeq_2017 = [leptrigSFs, btagWeights_2017, addTopPtWeight]
+sfSeq_2018 = [leptrigSFs, btagWeights_2018, addTopPtWeight]
 
 sfSeq_mvatrain_2016 = [leptrigSFs, btagWeights_2016, addTopPtWeight, addSeparationIndex_mva]
 sfSeq_mvatrain_2017 = [leptrigSFs, btagWeights_2017, addTopPtWeight, addSeparationIndex_mva]

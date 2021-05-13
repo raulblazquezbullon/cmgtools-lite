@@ -92,8 +92,8 @@ class Uncertainty:
                 raise RuntimeError("A set of FakeRates are needed for envelopeRMS")
             self.fakerate = [ FakeRate( fr, loadFilesNow=False, year=self._options.year) for fr in self.extra['FakeRates'] ]
         elif self.unc_type=='altSample':
-            if len(self.args) != 2: 
-                raise RuntimeError("altSample requires exactly two arguments")
+            if len(self.args) < 2:
+                raise RuntimeError("altSample requires at least two arguments")
             if self.binmatchstr != ".*":
                 raise RuntimeError("altSample affects all bins by construction")
         elif self.unc_type=='altSampleEnv':
