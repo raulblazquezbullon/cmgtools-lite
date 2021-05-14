@@ -17,7 +17,8 @@ lumidictone   = {2016 : 35.92, 2017 : 41.53, 2018 : 59.74}
 #lumidictone   = {2016 : 1.0,   2017 : 1.0,   2018 : 1.0}
 
 
-friendsscaff  = "--Fs {P}/0_yeartag --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --Fs {P}/5_mvas"
+#friendsscaff  = "--Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors_bkp --Fs {P}/5_mvas"
+friendsscaff  = "--Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors_bkp"
 
 slurmscaff    = "sbatch -c {nth} -p {queue} -J {jobname} -e {logpath}/log.%j.%x.err -o {logpath}/log.%j.%x.out --wrap '{command}'"
 
@@ -71,7 +72,7 @@ def ExecuteOrSubmitTask(tsk):
     return
 
 
-def CardsCommand(prod, year, var, isAsimov, nthreads, outpath, region, noUnc, useFibre, extra_):
+def CardsCommand(prod, year, var, isAsimov, nthreads, outpath, region, noUnc, useFibre, extra):
     doPure = False
     if "pure1j1t" in region:
         doPure = True
@@ -112,6 +113,9 @@ def CardsCommand(prod, year, var, isAsimov, nthreads, outpath, region, noUnc, us
                   #nomweight if region == "detectorparticleResponse" else
                   genweight)
 
+    extra_ = extra
+    if region not in ["detector", "particle"]:
+        extra_ += " --xp twds,twherwig"
 
     comm = commandscaff.format(outpath      = outpath_,
                                friends      = friends_,

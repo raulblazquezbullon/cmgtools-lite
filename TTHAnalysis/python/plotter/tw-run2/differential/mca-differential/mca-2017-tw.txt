@@ -1,20 +1,10 @@
-#### Buena, pero una no tien psweights
-##tw+ : Tree_tW_5f_noFullHad_TuneCP5_0 + Tree_tW_5f_noFullHad_TuneCP5_PSweights_pyth_0 : 19.4674104 ; genSumWeightName="genEventSumw_",FillColor=798
+tw+ : ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8*topnano*                   : xsec ; FillColor=798
+tw+ : ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8*topnano* + ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_PSweights_13TeV-powheg-pythia8*topnano* : xsec ; FillColor=798
 
-#### Asi que andamos con esta
-tw+ : Tree_tW_5f_noFullHad_TuneCP5_PSweights_pyth_0 : 19.4674104 ; genSumWeightName="genEventSumw_",FillColor=798
+twds : ST_tW_antitop_5f_DS_NoFullyHadronicDecays_TuneCP5_PSweights_13TeV-powheg-pythia8*central* : 2976577/(4983000/35.85 + 2976577/19.4674104) ;
+twds : ST_tW_top_5f_DS_NoFullyHadronicDecays_TuneCP5_PSweights_13TeV-powheg-pythia8*central*     : 2780949/(4920000/35.85 + 2780949/19.4674104) ;
+twds : ST_tW_top_5f_DS_inclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8*central*           : 4983000/(4983000/35.85 + 2976577/19.4674104) ;
+twds : ST_tW_antitop_5f_DS_inclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8*central*       : 4920000/(4920000/35.85 + 2780949/19.4674104) ;
 
-#tw+ : Tree_tW_5f_inclusiveDecays_TuneCP5_0 + Tree_tW_5f_inclusiveDecays_TuneCP5_1 + Tree_tW_5f_inclusiveDecays_TuneCP5_2 + Tree_tW_5f_inclusiveDecays_TuneCP5_3 + Tree_tW_5f_inclusiveDecays_TuneCP5_4 + Tree_tW_5f_inclusiveDecays_TuneCP5_5 + Tree_tW_5f_inclusiveDecays_TuneCP5_6 + Tree_tW_5f_inclusiveDecays_TuneCP5_PSweights_pythia8new_0 + Tree_tW_5f_inclusiveDecays_TuneCP5_PSweights_pythia8new_1 : 35.85 ; genSumWeightName="genEventSumw_",FillColor=798 #### pythia8new CORRUPTOS
-
-#tw+ : Tree_tW_5f_inclusiveDecays_TuneCP5_0 + Tree_tW_5f_inclusiveDecays_TuneCP5_1 + Tree_tW_5f_inclusiveDecays_TuneCP5_2 + Tree_tW_5f_inclusiveDecays_TuneCP5_3 + Tree_tW_5f_inclusiveDecays_TuneCP5_4 + Tree_tW_5f_inclusiveDecays_TuneCP5_5 + Tree_tW_5f_inclusiveDecays_TuneCP5_6 : 35.85 ; genSumWeightName="genEventSumw_",FillColor=798
-
-
-#### Buena, pero una no tien psweights
-##tw+ : Tree_tbarW_5f_noFullHad_TuneCP5_0 + Tree_tbarW_5f_noFullHad_TuneCP5_PSweights_0 : 19.4674104 ; genSumWeightName="genEventSumw_",FillColor=798
-
-#### Asi que andamos con esta
-tw+ : Tree_tbarW_5f_noFullHad_TuneCP5_PSweights_0 : 19.4674104 ; genSumWeightName="genEventSumw_",FillColor=798
-
-#tw+ : Tree_tbarW_5f_inclusiveDecays_TuneCP5_0 + Tree_tbarW_5f_inclusiveDecays_TuneCP5_1 + Tree_tbarW_5f_inclusiveDecays_TuneCP5_2 + Tree_tbarW_5f_inclusiveDecays_TuneCP5_3 + Tree_tbarW_5f_inclusiveDecays_TuneCP5_4 + Tree_tbarW_5f_inclusiveDecays_TuneCP5_5 + Tree_tbarW_5f_inclusiveDecays_TuneCP5_6 +  Tree_tbarW_5f_inclusiveDecays_TuneCP5_7 + Tree_tbarW_5f_inclusiveDecays_TuneCP5_PSweights_pythia_0 + Tree_tbarW_5f_inclusiveDecays_TuneCP5_PSweights_pythia_1 + Tree_tbarW_5f_inclusiveDecays_TuneCP5_PSweights_pythia_2 + Tree_tbarW_5f_inclusiveDecays_TuneCP5_PSweights_pythia_3 + Tree_tbarW_5f_inclusiveDecays_TuneCP5_PSweights_pythia_4 + Tree_tbarW_5f_inclusiveDecays_TuneCP5_PSweights_pythia_5 : 35.85 ; genSumWeightName="genEventSumw_",FillColor=798 #### el 0 CORRUPTO
-
-#tw+ : Tree_tbarW_5f_inclusiveDecays_TuneCP5_1 + Tree_tbarW_5f_inclusiveDecays_TuneCP5_2 + Tree_tbarW_5f_inclusiveDecays_TuneCP5_3 + Tree_tbarW_5f_inclusiveDecays_TuneCP5_4 + Tree_tbarW_5f_inclusiveDecays_TuneCP5_5 + Tree_tbarW_5f_inclusiveDecays_TuneCP5_6 +  Tree_tbarW_5f_inclusiveDecays_TuneCP5_7 + Tree_tbarW_5f_inclusiveDecays_TuneCP5_PSweights_pythia_0 + Tree_tbarW_5f_inclusiveDecays_TuneCP5_PSweights_pythia_1 + Tree_tbarW_5f_inclusiveDecays_TuneCP5_PSweights_pythia_2 + Tree_tbarW_5f_inclusiveDecays_TuneCP5_PSweights_pythia_3 + Tree_tbarW_5f_inclusiveDecays_TuneCP5_PSweights_pythia_4 + Tree_tbarW_5f_inclusiveDecays_TuneCP5_PSweights_pythia_5 : 35.85 ; genSumWeightName="genEventSumw_",FillColor=798
+twherwig : ST_tW_top_5f_NoFullyHadronicDecays_TuneCH3_13TeV-powheg-herwig7_central_*             : xsec ; FillColor=798,genSumWeightName="genEventSumw"
+twherwig : ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCH3_13TeV-powheg-herwig7_central_*         : xsec ; FillColor=798,genSumWeightName="genEventSumw"

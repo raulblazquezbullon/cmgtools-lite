@@ -275,8 +275,8 @@ ue : $tWProc : .* : altSample : syst_tw_ue_up    : syst_tw_ue_dn
 ### Top quark mass
 ### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #mtop : ttbar   : .* : altSample : syst_ttbar_mtop_up : syst_ttbar_mtop_dn : : 3 ; year="2016"
-mtop : ttbar   : .* : altSample : syst_ttbar_mtop_up : syst_ttbar_mtop_dn       ; year="2017"
-mtop : ttbar   : .* : altSample : syst_ttbar_mtop_up : syst_ttbar_mtop_dn       ; year="2018"
+#mtop : ttbar   : .* : altSample : syst_ttbar_mtop_up : syst_ttbar_mtop_dn       ; year="2017"
+#mtop : ttbar   : .* : altSample : syst_ttbar_mtop_up : syst_ttbar_mtop_dn       ; year="2018"
 mtop : $tWProc : .* : altSample : syst_tw_mtop_up    : syst_tw_mtop_dn          ; year="2017"
 
 

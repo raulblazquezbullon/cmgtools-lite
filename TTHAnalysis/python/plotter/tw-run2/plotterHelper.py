@@ -17,8 +17,8 @@ mcpath       = "/pool/phedex/nanoAODv6v7"
 mcpathdiv    = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/misc/2021_04_nuevasdivisiones"
 datapath     = "/pool/phedex/nanoAODv6v7"
 
-#logpath      = friendspath + "/{p}/{y}/logs/plots"
-logpath = "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/plot_logs"
+logpath      = friendspath + "/{p}/{y}/logs/plots"
+#logpath = "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/plot_logs"
 
 #mcpathdiv    = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/misc/divisiones/"
 #logpath      = friendspath + "/{p}/{y}/logs/plots"
