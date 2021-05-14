@@ -480,7 +480,7 @@ lepMerge_roch_data = [lepMerge, addRoch_data]
 
 #### BDT
 from CMGTools.TTHAnalysis.tools.nanoAOD.MVA_tWRun2 import MVA_tWRun2
-MVAProc_mc   = lambda : MVA_tWRun2()
+MVAProc_mc   = lambda : MVA_tWRun2(jecvars = ['jesTotal', 'jer'] + ['jes%s'%v for v in jecGroups] + ["jer%i"%i for i in range(6)])
 MVAProc_data = lambda : MVA_tWRun2(isData = True)
 
 mvas_mc   = [MVAProc_mc]
