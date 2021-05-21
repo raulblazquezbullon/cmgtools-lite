@@ -101,7 +101,7 @@ if __name__=="__main__":
         paso = (190-30)/bins
         for i in np.arange(30,191,paso):
             listabins.append(i) 
-        BDTfunction = "Jet_pt_corr[iJetSel30_Recl[1]]"
+        BDTfunction = "Jet2_Pt"
         outpath = outpath + "/2j2t%sbins"%(bins)
     
     if not os.path.isdir(outpath):
