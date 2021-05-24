@@ -14,18 +14,14 @@ import numpy as np
 
 #### Settings
 friendspath  = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/productions/"
-friendtrees = "--Fs {P}/0_yeartag --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --Fs {P}/5_mvas"
+friendtrees = "--Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --Fs {P}/5_mvas"
 
 
-BDT_1j1t_path = "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2021-01-21_nuevoSmallBin/run2/1j1t/MVAtrain/plots-tw-1j1t_MVAtrain.root" 
+BDT_1j1t_path = "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2021-05-13/SmallBin/run2/1j1t/MVAtrain/plots-tw-1j1t_MVAtrain.root" 
 smallb1j1t = "tmvaBDT_1j1b_smallb_ttbar"
-BDT_2j1t_path = "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2021-01-21_nuevoSmallBin/run2/2j1t/MVAtrain/plots-tw-2j1t_MVAtrain.root" 
+BDT_2j1t_path = "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2021-05-13/SmallBin/run2/2j1t/MVAtrain/plots-tw-2j1t_MVAtrain.root" 
 smallb2j1t = "tmvaBDT_2j1b_smallb_ttbar"
 
-#BDT_1j1t_path = "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2020-11-27_oldBDT/smallbinning/run2/1j1t/MVAtrain/plots-tw-1j1t_MVAtrain.root" 
-#smallb1j1t = "tmvaBDT_1j1b_smallb_ttbar"
-#BDT_2j1t_path = "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2020-11-27_oldBDT/smallbinning/run2/2j1t/MVAtrain/plots-tw-2j1t_MVAtrain.root" 
-#smallb2j1t = "tmvaBDT_2j1b_smallb_ttbar"
 
 # Card maker command
 commandscaff =  "python makeShapeCardsNew.py --tree NanoAOD tw-run2/mca-tw.txt tw-run2/cuts-tw-{region}.txt '{BDTfunction}' '{Nbins}' -P {prodpath} {friendtrees} --od {directory} -l 35.92,41.53,59.74 -f -L tw-run2/functions_tw.cc --neg --threshold 0.01 -W 'MuonIDSF * MuonISOSF * ElecRECOSF * ElecIDSF * TrigSF * puWeight * bTagWeight * PrefireWeight' --year 2016,2017,2018 --unc tw-run2/uncs-tw.txt --amc --asimov s+b --split-factor=-1 -j 32 --AP --storeAll --notMinimumFill --notVarsChanges"
