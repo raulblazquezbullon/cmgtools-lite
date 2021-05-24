@@ -1,7 +1,7 @@
 # WW
 vvttv : WWTo2L2Nu_NNPDF31_TuneCP5_13TeV-powheg-pythia8_topnano_* : xsec ; FillColor=390
 vvttv : WWTo2L2Nu_DoubleScattering_13TeV-pythia8_topnano_*  : xsec ; FillColor=390
-vvttv : WWTo1L1Nu2Q_13TeV_amcatnloFXFX_madspin_pythia8_topnano_* : xsec ; FillColor=390
+#vvttv : WWTo1L1Nu2Q_13TeV_amcatnloFXFX_madspin_pythia8_topnano_* : xsec ; FillColor=390
 vvttv : WWToLNuQQ_NNPDF31_TuneCP5_13TeV-powheg-pythia8_topnano_* : xsec ; FillColor=390
 
 # WZ
@@ -23,6 +23,7 @@ vvttv : TTWJetsToQQ_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8_topnano_*  : xsec
 vvttv : TTZToLL_M-1to10_TuneCP5_13TeV-amcatnlo-pythia8_topnano_*  : xsec ; FillColor=390
 vvttv : TTZToLLNuNu_M-10_TuneCP5_13TeV-amcatnlo-pythia8_topnano_*  : xsec ; FillColor=390
 #vvttv : TTZToQQ_TuneCP5_13TeV-amcatnlo-pythia8_topnano_* + TTZToQQ_TuneCP5_13TeV-amcatnlo-pythia8_central_*  : xsec ; FillColor=390
+vvttv : TTZToQQ_TuneCP5_13TeV-amcatnlo-pythia8_central_*  : xsec ; FillColor=390
 
 # TTGamma
 vvttv : TTGamma_Dilept_TuneCP5_13TeV-madgraph-pythia8_topnano_*     : xsec ; FillColor=390

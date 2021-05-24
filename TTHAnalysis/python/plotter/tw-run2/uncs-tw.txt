@@ -230,11 +230,11 @@ tw_scales    : $tWProc : .* : envelope ; FakeRates=['tw-run2/frs-scales/fr-muR_0
 ###### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ###### ISR/FSR
 ###### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-isr_ttbar : ttbar : .* : templateAsymm; AddWeights=['PSWeight[2]'\,'PSWeight[0]']
-fsr_ttbar : ttbar : .* : templateAsymm; AddWeights=['PSWeight[3]'\,'PSWeight[1]']
+isr_ttbar : ttbar : .* : templateAsymm; AddWeights=['Alt$(PSWeight[8],PSWeight[2])'\,'Alt$(PSWeight[6],PSWeight[0])']
+fsr_ttbar : ttbar : .* : templateAsymm; AddWeights=['Alt$(PSWeight[9],PSWeight[3])'\,'Alt$(PSWeight[7],PSWeight[1])']
 
-isr_tw    : $tWProc : .* : templateAsymm; AddWeights=['PSWeight[2]'\,'PSWeight[0]']
-fsr_tw    : $tWProc : .* : templateAsymm; AddWeights=['PSWeight[3]'\,'PSWeight[1]']
+isr_tw    : $tWProc : .* : templateAsymm; AddWeights=['Alt$(PSWeight[8],PSWeight[2])'\,'Alt$(PSWeight[6],PSWeight[0])']
+fsr_tw    : $tWProc : .* : templateAsymm; AddWeights=['Alt$(PSWeight[9],PSWeight[3])'\,'Alt$(PSWeight[7],PSWeight[1])']
 
 ##### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ##### Top pT reweighting
