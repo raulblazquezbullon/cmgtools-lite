@@ -817,8 +817,8 @@ class HistoWithNuisances:
                     minDn = self.central.GetBinContent( ibin ) 
                     for hvar in self.getVariation(var):
                         cont = hvar.GetBinContent(ibin)
-                        if cont-maxUp >= 0: maxUp = cont
-                        else:               minDn = cont
+                        if cont-maxUp > 0: maxUp = cont
+                        if cont-minDn < 0: minDn = cont
                     up.SetBinContent( ibin, maxUp ) 
                     down.SetBinContent( ibin, minDn ) 
             del self.variations[var]
