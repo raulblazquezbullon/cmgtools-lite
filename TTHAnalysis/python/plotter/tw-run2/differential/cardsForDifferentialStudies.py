@@ -18,7 +18,7 @@ lumidictone   = {2016 : 35.92, 2017 : 41.53, 2018 : 59.74}
 
 
 #friendsscaff  = "--Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors_bkp --Fs {P}/5_mvas"
-friendsscaff  = "--Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors_bkp"
+friendsscaff  = "--Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors"
 
 slurmscaff    = "sbatch -c {nth} -p {queue} -J {jobname} -e {logpath}/log.%j.%x.err -o {logpath}/log.%j.%x.out --wrap '{command}'"
 
@@ -61,7 +61,7 @@ def ExecuteOrSubmitTask(tsk):
 
         thecomm = slurmscaff.format(nth     = nthreads,
                                     queue   = queue,
-                                    jobname = "CMGTcardsforunfolding",
+                                    jobname = "CMGTcardsforunfolding_" + variable + "_" + region,
                                     logpath = logpath.format(p = prod, y = yr),
                                     command = CardsCommand(prod, year, variable, asimov, nthreads, outpath, region, noUnc, useFibre, extra))
 
@@ -171,6 +171,7 @@ if __name__=="__main__":
     doPureReg = args.doPureReg
 
     theregs  = ["detector", "particle", "detectorparticleResponse", "detectorparticlebutdetector",
+    #theregs  = ["detector", "detectorparticleResponse", "detectorparticlebutdetector",
                 "detectorparticle", "nonfiducial"]#, "forExtr", "controlReg"]
                 #"detectorparticle", "nonfiducial", "forExtr"]
                 #"detectorparticle", "nonfiducial", "forExtr", "controlReg"]

@@ -14,7 +14,7 @@ vl.SetUpWarnings()
 friendspath   = "/pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions"
 logpath       = friendspath + "/{p}/{y}/logs/cards_differential"
 #friendsscaff  = "--Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors_bkp --Fs {P}/5_mvas"
-friendsscaff  = "--Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors_bkp"
+friendsscaff  = "--Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors"
 
 slurmscaff    = "sbatch -c {nth} -p {queue} -J {jobname} -e {logpath}/log.%j.%x.err -o {logpath}/log.%j.%x.out --wrap '{command}'"
 
@@ -184,9 +184,9 @@ def CardsCommand(prod, year, var, isAsimov, nthreads, outpath, noUnc, useFibre, 
 
 
 def CheckProducedCardsByTask(task):
-    prod, year, variable, isAsimov, nthreads, outpath, region, noUnc, useFibre, extra, pretend, queue, ibin = task
+    prod, year, variable, asimov, nthreads, outpath, noUnc, useFibre, extra, pretend, queue, thebin = task
 
-    ch = "forExtr_bin" + str(ibin) + ".root"
+    ch = "card_bin" + str(thebin) + ".root"
 
     chkpath = outpath + "/" + year + "/" + variable + "/sigextr_fit_combine/bincards/" + ch
 
@@ -315,7 +315,9 @@ if __name__=="__main__":
 
         tasks    = []
 
-        if variable.lower() != "all":
+        if "," in variable:
+            thevars = variable.split(",")
+        elif variable.lower() != "all":
             thevars = [ variable ]
 
         if year.lower() != "all":
@@ -357,13 +359,31 @@ if __name__=="__main__":
             #calculate = False
             for task in tasks:
                 print "    - Processing " + str(task)
-                #if str(task) == "('2020-09-20', '2016', 'Lep1_Pt', True, 32, 'temp_2021_03_08_nuevoshistos/differential', 'forExtr', False, True, '', False, 'batch', 0, 'ttbar_scales_00Up')":
+                #if str(task) == "('2021-04-23', 'run2', 'Lep1_Pt', False, 12, 'temp_2021_05_13_diferencialcombine/differential/', False, True, '', False, '', 0)":
+                    #print "OJOCUIDAOOOOOOOOOOOOOO"
+                    #continue
                     #calculate = True
 
                 if calculate:
                     ExecuteOrSubmitTask(task)
                     #sys.exit()
                     #calculate = False
+
+        else:
+            print "> Beginning the checks on produced cards..."
+            taskstoredo = []
+            for task in tasks:
+                if not CheckProducedCardsByTask(task):
+                    taskstoredo.append(task)
+
+            if not len(taskstoredo):
+                print "> Everything is ok!"
+            else:
+                print "> The following cards should be remade:"
+                for el in taskstoredo: print el
+
+                if vl.confirm("\n> Do you want to redo these cards?"):
+                    for el in taskstoredo: ExecuteOrSubmitTask(el)
 
     else: # preparing final cards
         tasks = []
