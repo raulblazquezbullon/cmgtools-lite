@@ -86,7 +86,7 @@ muonisosf_syst      : $AllBkg : .* : templateAsymm; AddWeights=['MuonISOSF_systU
 ## JECs
 ## --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ## Combined JES
-#jes : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesUp.txt'\,'tw-run2/frs-jecs/fr-jesDn.txt']
+jes : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesUp.txt'\,'tw-run2/frs-jecs/fr-jesDn.txt']
 
 ## Separate (and reduced) JES
 jes_HF            : $AllBkg : .* : templateAsymm; \
@@ -222,7 +222,7 @@ nonworz_norm : nonworz : .* : normSymm : 1.5
 #### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #### Matrix element factorisation and renormalisation scales
 #### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-ttbar_scales : ttbar : .* : envelope ; FakeRates=['tw-run2/frs-scales/fr-muR_0p5_muF_0p5.txt'\,'tw-run2/frs-scales/fr-muR_1p0_muF_2p0.txt'\,'tw-run2/frs-scales/fr-muR_2p0_muF_1p0.txt'\,'tw-run2/frs-scales/fr-muR_0p5_muF_1p0.txt'\,'tw-run2/frs-scales/fr-muR_1p0_muF_0p5.txt'\,'tw-run2/frs-scales/fr-muR_2p0_muF_2p0.txt']
+ttbar_scales : ttbar   : .* : envelope ; FakeRates=['tw-run2/frs-scales/fr-muR_0p5_muF_0p5.txt'\,'tw-run2/frs-scales/fr-muR_1p0_muF_2p0.txt'\,'tw-run2/frs-scales/fr-muR_2p0_muF_1p0.txt'\,'tw-run2/frs-scales/fr-muR_0p5_muF_1p0.txt'\,'tw-run2/frs-scales/fr-muR_1p0_muF_0p5.txt'\,'tw-run2/frs-scales/fr-muR_2p0_muF_2p0.txt']
 
 tw_scales    : $tWProc : .* : envelope ; FakeRates=['tw-run2/frs-scales/fr-muR_0p5_muF_0p5.txt'\,'tw-run2/frs-scales/fr-muR_1p0_muF_2p0.txt'\,'tw-run2/frs-scales/fr-muR_2p0_muF_1p0.txt'\,'tw-run2/frs-scales/fr-muR_0p5_muF_1p0.txt'\,'tw-run2/frs-scales/fr-muR_1p0_muF_0p5.txt'\,'tw-run2/frs-scales/fr-muR_2p0_muF_2p0.txt']
 
@@ -262,20 +262,20 @@ topptrew : ttbar : .* : templateSymmAdditive ; AddWeight='TopPtWeight'
 #### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #### ME/PS matching (hDamp parameter)
 #### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#ttbar_matching : ttbar   : .* : altSample : syst_ttbar_matching_up : syst_ttbar_matching_dn
+ttbar_matching : ttbar   : .* : altSample : syst_ttbar_matching_up : syst_ttbar_matching_dn
 #tw_matching    : $tWProc : .* : altSample : syst_tw_matching_up    : syst_tw_matching_dn
 
 #### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #### Colour reconnection schemes
 #### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-##colour_rec : ttbar   : .* : altSampleEnv : ['syst_ttbar_colour_erdon'\,'syst_ttbar_colour_cr1'\,'syst_ttbar_colour_cr2'] : symm
+colour_rec : ttbar   : .* : altSampleEnv : ['syst_ttbar_colour_erdon'\,'syst_ttbar_colour_cr1'\,'syst_ttbar_colour_cr2'] : symm
 #colour_rec : $tWProc : .* : altSampleEnv : ['syst_tw_colour_erdon'\,'syst_tw_colour_cr1'\,'syst_tw_colour_cr2']          : symm
 
 
 ### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ### Underlying event (tuning)
 ### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-##ue : ttbar   : .* : altSample : syst_ttbar_ue_up : syst_ttbar_ue_dn
+ue : ttbar   : .* : altSample : syst_ttbar_ue_up : syst_ttbar_ue_dn
 #ue : $tWProc : .* : altSample : syst_tw_ue_up    : syst_tw_ue_dn
 
 #### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
