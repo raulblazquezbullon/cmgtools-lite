@@ -339,24 +339,24 @@ translateDict = {
     "nonworz_norm": "\\qquad Non-W/Z",
     "dy_norm"     : "\\qquad Drell-Yan",
     "vvttv_norm"  : "\\qquad VVt$\\bar{\\mathrm{t}}$V",
-    "matching"    : "\\qquad Matrix element/PS matching",
+    #"matching"    : "\\qquad Matrix element/PS matching",
     "ttbar_scales": "\\qquad t$\\bar{\\mathrm{t}}$ $\\mu_{R}$ and $\\mu_{F}$ scales",
     "tw_scales"   : "\\qquad tW $\\mu_{R}$ and $\\mu_{F}$ scales",
     "isr"         : "\\qquad Initial state radiation",
     "fsr"         : "\\qquad Final state radiation",
-    "colour"      : "\\qquad Colour reconnection",
-    "ue"          : "\\qquad Underlying event",
+    #"colour"      : "\\qquad Colour reconnection",
+    #"ue"          : "\\qquad Underlying event",
     "toppt"       : "\\qquad Top $p_{T}$ reweighting",
     "stat"        : "Statistical",
 }
 
 
-sysforsum = ['mc_stat', 'jes', "jer", 'trigger', 'pileup', 'elec', "muon", 'btag', 'mistag', 'prefiring', 'ttbar_norm', 'nonworz_norm', 'dy_norm' , 'vvttv_norm', "matching", "ttbar_scales", "tw_scales","isr", "fsr", "colour", "ue", "toppt"]
+sysforsum = ['mc_stat', 'jes', "jer", 'trigger', 'pileup', 'elec', "muon", 'btag', 'mistag', 'prefiring', 'ttbar_norm', 'nonworz_norm', 'dy_norm' , 'vvttv_norm', "ttbar_scales", "tw_scales","isr", "fsr", "toppt"]
 
 orderOfTheUncs = ["_syst", "_systexp",
                     "trigger", "elec", "muon", "jes", "jer","btag", "mistag", "pileup",
                   "_systmod",
-                    "ttbar_scales","tw_scales", "ue", "matching", "isr", "fsr", "colour", "toppt",
+                    "ttbar_scales","tw_scales", "isr", "fsr", "toppt",
                   "_systnorm",
                     "ttbar_norm", "vvttv_norm", "dy_norm", "nonworz_norm", 
                   "_mc_stat",

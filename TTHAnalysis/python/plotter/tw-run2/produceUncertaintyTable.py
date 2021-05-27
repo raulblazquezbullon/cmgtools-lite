@@ -13,12 +13,28 @@ systsGroup = {
         "prop_binch1_bin7",
         "prop_binch1_bin8",
         "prop_binch1_bin9",
+        "prop_binch1_bin10",
+        "prop_binch1_bin11",
+        "prop_binch1_bin12",
+        "prop_binch1_bin13",
+        "prop_binch1_bin14",
+        "prop_binch1_bin15",
+        "prop_binch1_bin16",
+        "prop_binch1_bin17",
+        "prop_binch1_bin18",
+        "prop_binch1_bin19",
         "prop_binch2_bin0",
         "prop_binch2_bin1",
         "prop_binch2_bin2",
         "prop_binch2_bin3",
         "prop_binch2_bin4",
         "prop_binch2_bin5",
+        "prop_binch2_bin6",
+        "prop_binch2_bin7",
+        "prop_binch2_bin8",
+        "prop_binch2_bin9",
+        "prop_binch2_bin10",
+        "prop_binch2_bin11",
         "prop_binch3_bin0",
         "prop_binch3_bin1",
         "prop_binch3_bin2",
@@ -27,12 +43,40 @@ systsGroup = {
         "prop_binch3_bin5",
         "prop_binch3_bin6",
         "prop_binch3_bin7",
+        "prop_binch3_bin8",
+        "prop_binch3_bin9",
+        "prop_binch3_bin10",
+        "prop_binch3_bin11",
+        "prop_binch3_bin12",
+        "prop_binch3_bin13",
+        "prop_binch3_bin14",
+        "prop_binch3_bin15",
     ],
 
     #### Systematic
     # Experimental
     'jes': [
-        "jes",
+        "jes_HF",
+        "jes_HF_2016",
+        "jes_HF_2017",
+        "jes_HF_2018",
+        "jes_BBEC1",
+        "jes_BBEC1_2016",
+        "jes_BBEC1_2017",
+        "jes_BBEC1_2018",
+        "jes_FlavorQCD",
+        "jes_RelativeSample_2016",
+        "jes_RelativeSample_2017",
+        "jes_RelativeSample_2018",
+        "jes_EC2",
+        "jes_EC2_2016",
+        "jes_EC2_2017",
+        "jes_EC2_2018",
+        "jes_RelativeBal",
+        "jes_Absolute",
+        "jes_Absolute_2016",
+        "jes_Absolute_2017",
+        "jes_Absolute_2018",
     ],
     'jer': [
         "jer_2016",
@@ -103,12 +147,13 @@ systsGroup = {
     ],
 
     # Modelling
-    #'pdf' : [
-        #"pdf",
-    #],
-    'matching' : [
-        "ttbar_matching",
-    ],
+#    'pdf' : [
+#        "pdfhessian",
+#    ],
+#    'matching' : [
+#        "ttbar_matching",
+#        "tw_matching",
+#    ],
     'ttbar_scales' : [
         "ttbar_scales",
     ],
@@ -123,26 +168,28 @@ systsGroup = {
         "fsr_ttbar",
         "fsr_tw",
     ],
-    'colour' : [
-        "colour_rec",
-    ],
-    'ue' : [
-        "ue",
-    ],
+#    'colour' : [
+#        "colour_rec",
+#    ],
+#    'ue' : [
+#        "ue",
+#    ],
     'toppt' : [
         "topptrew",
     ],
-    #'mtop' : [
-    #],
-    #'ds' : [
-    #],
+#    'mtop' : [
+#        "mtop",
+#    ],
+#    'ds' : [
+#        "ds",
+#    ],
 }
 
 POIs   = ["r"]
 
 
 
-groupList   = ['mc_stat', 'jes', "jer", 'trigger', 'pileup', 'elec', "muon", 'btag', 'mistag', 'lumi', 'prefiring', 'ttbar_norm', 'nonworz_norm', 'dy_norm' , 'vvttv_norm', "matching", "ttbar_scales", "tw_scales","isr", "fsr", "colour", "ue", "toppt"]
+groupList   = ['mc_stat', 'jes', "jer", 'trigger', 'pileup', 'elec', "muon", 'btag', 'mistag', 'lumi', 'prefiring', 'ttbar_norm', 'nonworz_norm', 'dy_norm' , 'vvttv_norm', "ttbar_scales", "tw_scales","isr", "fsr", "toppt"]
 
 
 basecommand = '\ncombineTool.py -M MultiDimFit --algo grid --points 100 --rMin 0 --rMax 3 --floatOtherPOIs=1 -m 125  --split-points 1 --setParameters r=1 -t -1 --expectSignal=1 --job-mode SGE --saveInactivePOI 1 '
