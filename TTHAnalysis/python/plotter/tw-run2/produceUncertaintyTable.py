@@ -265,8 +265,7 @@ if __name__ == "__main__":
             thecomm = "plot1DScan.py higgsCombinenominal_{p}.MultiDimFit.mH125.root --others {l1} --breakdown {l2},stat --POI {p} ".format(
                 p  = poi,
                 l1 = ' '.join(fileList),
-                l2 = ','.join(groupList),
-                p  = poi)
+                l2 = ','.join(groupList))
             print "Command:", thecomm
             if not pretend: os.system(thecomm)
 
