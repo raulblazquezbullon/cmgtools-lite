@@ -192,7 +192,7 @@ POIs   = ["r"]
 groupList   = ['mc_stat', 'jes', "jer", 'trigger', 'pileup', 'elec', "muon", 'btag', 'mistag', 'lumi', 'prefiring', 'ttbar_norm', 'nonworz_norm', 'dy_norm' , 'vvttv_norm', "ttbar_scales", "tw_scales","isr", "fsr", "toppt"]
 
 
-basecommand = '\ncombineTool.py -M MultiDimFit {algosettings} --rMin 0 --rMax 3 --floatOtherPOIs=1 -m 125  --split-points 1 --setParameters r=1 -t -1 --expectSignal=1  --saveInactivePOI 1 {parallel} {queue} {extra}'
+basecommand = '\ncombineTool.py -M MultiDimFit {algosettings} --rMin 0 --rMax 3 --floatOtherPOIs=1 -m 125 --split-points 1 --setParameters r=1 -t -1 --expectSignal=1 --saveInactivePOI 1 {parallel} {queue} {extra}'
 
 
 
@@ -230,7 +230,7 @@ if __name__ == "__main__":
             gridcomm = basecommand.format(algosettings = "--algo none",
                                           queue        = "",
                                           parallel     = "",
-                                          extra        = '-n bestfit_{p} --saveWorkspace {card} -P {p}'.format(p = poi, card = thecard)
+                                          extra        = '-n bestfit_{p} --saveWorkspace {card} -P {p}'.format(p = poi, card = thecard))
             print "Command:", gridcomm
             if not pretend: os.system(gridcomm)
 
