@@ -190,13 +190,11 @@ POIs   = ["r"]
 
 
 
-#groupList   = ['mc_stat', 'jes', "jer", 'trigger', 'pileup', 'elec', "muon", 'btag', 'mistag', 'lumi', 'prefiring', 'ttbar_norm', 'nonworz_norm', 'dy_norm' , 'vvttv_norm', "ttbar_scales", "tw_scales","isr", "fsr", "toppt"]
-groupList   = ['mc_stat','jes', "jer", 'trigger', 'pileup', 'elec', "muon", 'btag', 'mistag', 'lumi', 'prefiring',
-               'ttbar_norm', 'nonworz_norm', 'dy_norm' , 'vvttv_norm', "ttbar_scales", "tw_scales","isr",
-               "fsr", "toppt"]
+groupList   = ['mc_stat', 'jes', "jer", 'trigger', 'pileup', 'elec', "muon", 'btag', 'mistag', 'lumi', 'prefiring',
+               'ttbar_norm', 'nonworz_norm', 'dy_norm' , 'vvttv_norm', "ttbar_scales", "tw_scales","isr", "fsr", "toppt"]
 
 
-basecommand = 'combineTool.py -M MultiDimFit {algosettings} --rMin 0 --rMax 3 --floatOtherPOIs=1 -m 125 --split-points 1 --setParameters r=1 -t -1 --expectSignal=1 --saveInactivePOI 1 {parallel} {queue} {extra}'
+basecommand = 'combineTool.py -M MultiDimFit {algosettings} --rMin 0 --rMax 3 --floatOtherPOIs=1 -m 125 --split-points 1 --setParameters r=1 -t -1 --expectSignal=1 --saveInactivePOI 1 {parallel} {queue} {extra} --robustHesse 1 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --robustFit 1'
 
 
 
@@ -206,7 +204,7 @@ if __name__ == "__main__":
     parser.add_argument('--inpath',    '-i',  metavar = 'inpath',     dest = "inpath",   required = False, default = "./temp/cards/combinada.root")
     parser.add_argument('--step',      '-s',  metavar = 'step',       dest = "step",     required = False, default = 0, type = int)
     parser.add_argument('--pretend',   '-p',  action  = "store_true", dest = "pretend",  required = False, default = False)
-    parser.add_argument('--nToys',     '-t',  metavar = 'ntoys',      dest = "ntoys",    required = False, default = 100, type = int)
+    parser.add_argument('--nPoints',   '-P',  metavar = 'npoints',    dest = "npoints",  required = False, default = 100, type = int)
     parser.add_argument('--queue',     '-q',  action  = "store_true", dest = "queue",    required = False, default = False)
     parser.add_argument('--ncores',    '-j',  metavar = 'ncores',     dest = "ncores",   required = False, default = None)
 
@@ -214,7 +212,7 @@ if __name__ == "__main__":
     pretend  = args.pretend
     thecard  = args.inpath
     step     = args.step
-    ntoys    = args.ntoys
+    npoints    = args.npoints
     doBatch  = args.queue
     ncores   = args.ncores
 
@@ -224,7 +222,7 @@ if __name__ == "__main__":
         for poi in POIs:
             cumulative      = [x for x in ["r"] if x != poi]
 
-            nomcomm = basecommand.format(algosettings = "--algo grid --points " + str(ntoys),
+            nomcomm = basecommand.format(algosettings = "--algo grid --points " + str(npoints),
                                          queue        = "" if not doBatch else "--job-mode slurm --task-name nominal_" + poi,
                                          parallel     = "" if not ncores  else "--parallel " + str(ncores),
                                          extra        = '-n nominal_{p} {card} -P {p} {c}'.format(p = poi, card = thecard, c = ",".join(cumulative)))
@@ -240,7 +238,7 @@ if __name__ == "__main__":
 
             for group in groupList:
                 cumulative += systsGroup[group]
-                thecomm = basecommand.format(algosettings = "--algo grid --points " + str(ntoys),
+                thecomm = basecommand.format(algosettings = "--algo grid --points " + str(npoints),
                                              queue        = "" if not doBatch else "--job-mode slurm --task-name " + group + "_" + poi,
                                              parallel     = "" if not ncores  else "--parallel " + str(ncores),
                                              extra        = '-P {p} -n {g}_{p} higgsCombinebestfit_{p}.MultiDimFit.mH125.root --snapshotName MultiDimFit --freezeParameters {c}'.format(p = poi, g = group, c = ",".join(cumulative)))
