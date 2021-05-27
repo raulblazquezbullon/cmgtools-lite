@@ -191,7 +191,7 @@ POIs   = ["r"]
 
 
 #groupList   = ['mc_stat', 'jes', "jer", 'trigger', 'pileup', 'elec', "muon", 'btag', 'mistag', 'lumi', 'prefiring', 'ttbar_norm', 'nonworz_norm', 'dy_norm' , 'vvttv_norm', "ttbar_scales", "tw_scales","isr", "fsr", "toppt"]
-groupList   = ['jes', "jer", 'trigger', 'pileup', 'elec', "muon", 'btag', 'mistag', 'lumi', 'prefiring',
+groupList   = ['mc_stat','jes', "jer", 'trigger', 'pileup', 'elec', "muon", 'btag', 'mistag', 'lumi', 'prefiring',
                'ttbar_norm', 'nonworz_norm', 'dy_norm' , 'vvttv_norm', "ttbar_scales", "tw_scales","isr",
                "fsr", "toppt"]
 
@@ -265,8 +265,7 @@ if __name__ == "__main__":
             thecomm = "plot1DScan.py higgsCombinenominal_{p}.MultiDimFit.mH125.root --others {l1} --breakdown {l2},stat --POI {p} ".format(
                 p  = poi,
                 l1 = ' '.join(fileList),
-                l2 = ','.join(groupList),
-                p  = poi)
+                l2 = ','.join(groupList))
             print "Command:", thecomm
             if not pretend: os.system(thecomm)
 
