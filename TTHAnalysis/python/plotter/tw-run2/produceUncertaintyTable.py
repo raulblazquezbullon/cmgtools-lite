@@ -194,7 +194,7 @@ groupList   = ['mc_stat', 'jes', "jer", 'trigger', 'pileup', 'elec', "muon", 'bt
                'ttbar_norm', 'nonworz_norm', 'dy_norm' , 'vvttv_norm', "ttbar_scales", "tw_scales","isr", "fsr", "toppt"]
 
 
-basecommand = 'combineTool.py -M MultiDimFit {algosettings} --rMin 0 --rMax 3 --floatOtherPOIs=1 -m 125 --split-points 1 --setParameters r=1 -t -1 --expectSignal=1 --saveInactivePOI 1 {parallel} {queue} {extra} --robustHesse 1 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --robustFit 1'
+basecommand = 'combineTool.py -M MultiDimFit {algosettings} --rMin 0 --rMax 3 --floatOtherPOIs=1 -m 125 --split-points 1 --setParameters r=1 -t -1 --expectSignal=1 --saveInactivePOI 1 {parallel} {queue} {extra} --robustHesse 1 --cminDefaultMinimizerStrategy 0 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --robustFit 1'
 
 
 
