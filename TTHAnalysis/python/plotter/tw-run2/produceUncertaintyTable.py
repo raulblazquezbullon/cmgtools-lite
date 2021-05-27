@@ -222,7 +222,7 @@ if __name__ == "__main__":
 
             nomcomm = basecommand.format(algosettings = "--algo grid --points " + str(ntoys),
                                          queue        = "" if not doBatch else "--job-mode slurm --task-name nominal_" + poi,
-                                         parallel     = "" if not ncores  else "--paralell " + str(ncores),
+                                         parallel     = "" if not ncores  else "--parallel " + str(ncores),
                                          extra        = '-n nominal_{p} {card} -P {p} {c}'.format(p = poi, card = thecard, c = ",".join(cumulative)))
             print "Command:", nomcomm
             if not pretend: os.system(nomcomm)
@@ -238,7 +238,7 @@ if __name__ == "__main__":
                 cumulative += systsGroup[group]
                 thecomm = basecommand.format(algosettings = "--algo grid --points " + str(ntoys),
                                              queue        = "" if not doBatch else "--job-mode slurm --task-name " + group + "_" + poi,
-                                             parallel     = "" if not ncores  else "--paralell " + str(ncores),
+                                             parallel     = "" if not ncores  else "--parallel " + str(ncores),
                                              extra        = '-P {p} -n {g}_{p} higgsCombinebestfit_{p}.MultiDimFit.mH125.root --snapshotName MultiDimFit --freezeParameters {c}'.format(p = poi, g = group, c = ",".join(cumulative)))
                 print "Command:", thecomm
                 if not pretend: os.system(thecomm)
