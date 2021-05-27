@@ -421,8 +421,8 @@ def doRatioHists(pspec,pmap,total,maxRange,fixRange=False,fitRatio=None,errorsOn
         e,n = unity.GetBinError(b), unity.GetBinContent(b)
         unity.SetBinContent(b, 1 if n > 0 else 0)
         unity.SetBinError(b, 0)
-        if not errorsOnRef: 
-            raise RuntimeError("Not implemented yet with histoWithNuisances")
+        #if not errorsOnRef: 
+        #   raise RuntimeError("Not implemented yet with histoWithNuisances")
     rmin = min(1-2*unityErr.GetErrorYlow(b)  for b in xrange(unityErr.GetN())) if unityErr.GetN() else 1
     rmax = max(1+2*unityErr.GetErrorYhigh(b) for b in xrange(unityErr.GetN())) if unityErr.GetN() else 1
     for ratio in ratios:
@@ -451,6 +451,9 @@ def doRatioHists(pspec,pmap,total,maxRange,fixRange=False,fitRatio=None,errorsOn
     unityErr0.SetMarkerColor(ROOT.kBlue-7);
     ROOT.gStyle.SetErrorX(0.5);
     unity.Draw("AXIS");
+    if not errorsOnRef:
+       unityErr.SetFillColor(0);
+       unityErr0.SetFillColor(0);
     if errorsOnRef:
         unityErr.Draw("E2");
     if fitRatio != None and len(ratios) == 1:
