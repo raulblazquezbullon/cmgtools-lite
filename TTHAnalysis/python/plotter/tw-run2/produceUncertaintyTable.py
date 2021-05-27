@@ -56,6 +56,7 @@ systsGroup = {
     #### Systematic
     # Experimental
     'jes': [
+        #"jes",
         "jes_HF",
         "jes_HF_2016",
         "jes_HF_2017",
@@ -189,10 +190,13 @@ POIs   = ["r"]
 
 
 
-groupList   = ['mc_stat', 'jes', "jer", 'trigger', 'pileup', 'elec', "muon", 'btag', 'mistag', 'lumi', 'prefiring', 'ttbar_norm', 'nonworz_norm', 'dy_norm' , 'vvttv_norm', "ttbar_scales", "tw_scales","isr", "fsr", "toppt"]
+#groupList   = ['mc_stat', 'jes', "jer", 'trigger', 'pileup', 'elec', "muon", 'btag', 'mistag', 'lumi', 'prefiring', 'ttbar_norm', 'nonworz_norm', 'dy_norm' , 'vvttv_norm', "ttbar_scales", "tw_scales","isr", "fsr", "toppt"]
+groupList   = ['jes', "jer", 'trigger', 'pileup', 'elec', "muon", 'btag', 'mistag', 'lumi', 'prefiring',
+               'ttbar_norm', 'nonworz_norm', 'dy_norm' , 'vvttv_norm', "ttbar_scales", "tw_scales","isr",
+               "fsr", "toppt"]
 
 
-basecommand = '\ncombineTool.py -M MultiDimFit {algosettings} --rMin 0 --rMax 3 --floatOtherPOIs=1 -m 125 --split-points 1 --setParameters r=1 -t -1 --expectSignal=1 --saveInactivePOI 1 {parallel} {queue} {extra}'
+basecommand = 'combineTool.py -M MultiDimFit {algosettings} --rMin 0 --rMax 3 --floatOtherPOIs=1 -m 125 --split-points 1 --setParameters r=1 -t -1 --expectSignal=1 --saveInactivePOI 1 {parallel} {queue} {extra}'
 
 
 
@@ -244,22 +248,27 @@ if __name__ == "__main__":
                 if not pretend: os.system(thecomm)
     elif step == 1:
         for poi in POIs:
-            fileList        = [ ]
-            nomcomm = 'hadd higgsCombinenominal_%s.MultiDimFit.mH125.root higgsCombinenominal_%s.POINTS.*.MultiDimFit.mH125.root'%(poi, poi)
+            fileList        = []
+            nomcomm = 'hadd higgsCombinenominal_{p}.MultiDimFit.mH125.root higgsCombinenominal_{p}.POINTS.*.MultiDimFit.mH125.root'.format(p = poi)
             print "Command:", nomcomm
             if not pretend: os.system(nomcomm)
 
             for gr in groupList:
-                tmpcomm = 'hadd higgsCombine%s.MultiDimFit.mH125.root higgsCombine%s.POINTS.*.MultiDimFit.mH125.root'%(gr+'_'+poi,gr+'_'+poi)
-                fileList.append( "'higgsCombine%s.MultiDimFit.mH125.root:Freeze += %s:%d'"%(gr+'_'+poi,gr,groupList.index(gr)))
+                tmpcomm = 'hadd higgsCombine{gp}.MultiDimFit.mH125.root higgsCombine{gp}.POINTS.*.MultiDimFit.mH125.root'.format(gp = gr + '_' + poi)
+                fileList.append( "'higgsCombine{gp}.MultiDimFit.mH125.root:Freeze += {g}:{i}'".format(gp = gr + '_' + poi,
+                                                                                                      g  = gr,
+                                                                                                      i  = groupList.index(gr)))
+
                 print "Command:", tmpcomm
                 if not pretend: os.system(tmpcomm)
 
-            thecomm = 'plot1DScan.py higgsCombinenominal_%s.MultiDimFit.mH125.root --others '%poi +' '.join( fileList ) +' --breakdown '  + ','.join(groupList) +',stat'  + " --POI %s "%poi
+            thecomm = "plot1DScan.py higgsCombinenominal_{l}.MultiDimFit.mH125.root --others --breakdown {l2},stat --POI {p} ".format(l  = poi + ' '.join( fileList ),
+                                                                                                                                      l2 = ','.join(groupList),
+                                                                                                                                      p  = poi)
             print "Command:", thecomm
             if not pretend: os.system(thecomm)
 
-            thecomm = 'mv scan.pdf scan_%s.pdf; mv scan.png scan_%s.png'%(poi, poi)
+            thecomm = 'mv scan.pdf scan_{p}.pdf; mv scan.png scan_{p}.png'.format(p = poi)
             print 'Command:', thecomm
             if not pretend: os.system(thecomm)
 
