@@ -6,8 +6,8 @@ r.PyConfig.IgnoreCommandLineOptions = True
 r.gROOT.SetBatch(True)
 
 friendspath  = "/pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions"
-#logpath      = friendspath + "/{p}/{y}/logs/plots"
-logpath = "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/plot_logs"
+logpath      = friendspath + "/{p}/{y}/logs/plots"
+#logpath = "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/plot_logs"
 lumidict      = {2016 : 35.92, 2017 : 41.53, 2018 : 59.74}
 
 
