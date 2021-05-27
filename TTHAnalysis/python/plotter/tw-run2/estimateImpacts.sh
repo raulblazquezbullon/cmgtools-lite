@@ -87,7 +87,7 @@ combineTool.py -M Impacts -d $HERE/${DATACARD} --doInitialFit --robustFit 1 --cm
 echo "Second Stage: fit scan for each nuisance parameter"
 echo "--------------------------------------------------"
 
-combineTool.py -M Impacts -d $HERE/${DATACARD} --robustFit 1 --cminDefaultMinimizerStrategy 0 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000--doFits $ASIMOV $EXTRA -m 1 -n $PREFIX
+combineTool.py -M Impacts -d $HERE/${DATACARD} --robustFit 1 --cminDefaultMinimizerStrategy 0 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --doFits $ASIMOV $EXTRA -m 1 -n $PREFIX
 
 echo "Third Stage: collect outputs"
 echo "----------------------------"
