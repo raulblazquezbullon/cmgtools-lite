@@ -50,7 +50,10 @@ SingleElectron_Run2017F_25Oct2019 = kreator.makeDataComponentFromLocal("SingleEl
 MuonEG_Run2017F_25Oct2019 = kreator.makeDataComponentFromLocal("MuonEG_Run2017F_25Oct2019","/MuonEG/piedavid-Run2017F-31Mar2018-v1_TopNanoAODv6-1-1_2017-9721c24ccc7f925c513e24ff74941177/USER", "/pool/phedex/TOPnanoAODv6/2017/MuonEG/TopNanoAODv6-1-1_2017/%s/","200615_081152,200619_103726",".*root", 2017,[], json=json)
 DoubleEG_Run2017F_25Oct2019 = kreator.makeDataComponentFromLocal("DoubleEG_Run2017F_25Oct2019","/DoubleEG/piedavid-Run2017F-31Mar2018-v1_TopNanoAODv6-1-1_2017-9721c24ccc7f925c513e24ff74941177/USER", "/pool/phedex/TOPnanoAODv6/2017/DoubleEG/TopNanoAODv6-1-1_2017/%s/","200615_080514,200630_165949",".*root", 2017,[], json=json)
 SingleMuon_Run2017F_25Oct2019 = kreator.makeDataComponentFromLocal("SingleMuon_Run2017F_25Oct2019","/SingleMuon/piedavid-Run2017F-31Mar2018-v1_TopNanoAODv6-1-1_2017-9721c24ccc7f925c513e24ff74941177/USER", "/pool/phedex/TOPnanoAODv6/2017/SingleMuon/TopNanoAODv6-1-1_2017/%s/","200612_181001,200616_075843,200618_193612,200707_065515,200709_092717,200712_102031,200713_082251",".*root", 2017,[], json=json)
+
 MET_Run2017F_25Oct2019 = kreator.makeDataComponentFromLocal("MET_Run2017F_25Oct2019","/MET/piedavid-Run2017F-31Mar2018-v1_TopNanoAODv6-1-1_2017-9721c24ccc7f925c513e24ff74941177/USER", "/pool/phedex/TOPnanoAODv6/2017/MET/TopNanoAODv6-1-1_2017/%s/","200616_080021,200719_082941,200720_230426,200612_135514,200723_070713,200619_065213,200713_080108,200715_204332,200710_070249",".*root", 2017,[], json=json)
+
+#MET_Run2017F_25Oct2019 = kreator.makeDataComponentFromLocal("MET_Run2017F_25Oct2019","/MET/piedavid-Run2017F-31Mar2018-v1_TopNanoAODv6-1-1_2017-9721c24ccc7f925c513e24ff74941177/USER", "/pool/phedex/TOPnanoAODv6/2017/MET/TopNanoAODv6-1-1_2017/%s/","200710_070249",".*root", 2017,[], json=json)
 JetHT_Run2017F_25Oct2019 = kreator.makeDataComponentFromLocal("JetHT_Run2017F_25Oct2019","/JetHT/piedavid-Run2017F-31Mar2018-v1_TopNanoAODv6-1-1_2017-9721c24ccc7f925c513e24ff74941177/USER", "/pool/phedex/TOPnanoAODv6/2017/JetHT/TopNanoAODv6-1-1_2017/%s/","200702_114054,200624_073529,200708_113000,200615_080936",".*root", 2017,[], json=json)
 
 
@@ -153,7 +156,7 @@ JetHT = [
 ]
 #dataSamples_Runs =  #DoubleMuon + DoubleEG 
 #dataSamples_Runs = MuonEG + SingleMuon + SingleElectron
-#dataSamples_Runs =[DoubleMuon_Run2017C_25Oct2019]
+#dataSamples_Runs =DoubleMuon
 
 dataSamples_Runs = MET + JetHT
 ### ---------------------------------------------------------------------

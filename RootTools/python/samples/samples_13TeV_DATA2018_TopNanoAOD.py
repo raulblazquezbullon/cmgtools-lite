@@ -123,16 +123,16 @@ MuonEG = [
 
 MET = [
   MET_Run2018_25Oct2019_ABC,
-  #MET_Run2018_25Oct2019_D,
+  MET_Run2018_25Oct2019_D,
 ]
 
 JetHT = [
   JetHT_Run2018_25Oct2019_ABC,
-  JetHT_Run2018_25Oct2019_D,
+  #JetHT_Run2018_25Oct2019_D,
 ]
 
 #dataSamples_Runs =  DoubleMuon + MuonEG + EGamma + SingleMuon
-dataSamples_Runs = MET #+ JetHT
+dataSamples_Runs = MET + JetHT
 ### ---------------------------------------------------------------------
 
 dataSamples = dataSamples_Runs 

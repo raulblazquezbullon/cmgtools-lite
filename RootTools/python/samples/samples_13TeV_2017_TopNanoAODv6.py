@@ -343,12 +343,22 @@ Ts = [
 
 # ====== T(T) + BOSON =====
 
+
 TTGJets     = kreator.makeMyPrivateMCComponent("TTGJets",    "/TTGJets_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/piedavid-TopNanoAODv6-1-1_2017-a11761155c05d04d6fed5a2401fa93e8/USER", "PRIVATE", ".*root", 'phys03', 4.09, fracNegWeights=0.306, useAAA=True)
+TTGamma_Singlep     = kreator.makeMyPrivateMCComponent("TTGamma_Singlep",    "/TTGamma_SingleLept_TuneCP5_PSweights_13TeV-madgraph-pythia8/piedavid-TopNanoAODv6-1-1_2017-a11761155c05d04d6fed5a2401fa93e8/USER", "PRIVATE", ".*root", 'phys03',10.08166 , fracNegWeights=0.306, useAAA=True)
+TTGamma_Dilep     = kreator.makeMyPrivateMCComponent("TTGamma_Dilep",    "/TTGamma_Dilept_TuneCP5_PSweights_13TeV-madgraph-pythia8/piedavid-TopNanoAODv6-1-1_2017-a11761155c05d04d6fed5a2401fa93e8/USER", "PRIVATE", ".*root", 'phys03',2.41592 , fracNegWeights=0.306, useAAA=True)
 #TTGJets_ext     = kreator.makeMyPrivateMCComponent("TTGJets_ext",    "/TTGJets_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/RunIIFall17NanoAODv4-PU2017_12Apr2018_Nano14Dec2018_102X_mc2017_realistic_v6_ext1-v1/NANOAODSIM", "PRIVATE", ".*root", 'phys03', 4.09, fracNegWeights=0.306, useAAA=True)
 
 TGJets_lep = kreator.makeMyPrivateMCComponent("TGJets_lep", "/TGJets_leptonDecays_TuneCP5_PSweights_13TeV-amcatnlo-pythia8/piedavid-TopNanoAODv6-1-1_2017-a11761155c05d04d6fed5a2401fa93e8/USER", "PRIVATE", ".*root", 'phys03', 1.018, fracNegWeights=0.411, useAAA=True) # leptonic top decays only
 TTWToLNu = kreator.makeMyPrivateMCComponent("TTWToLNu", "/TTWJetsToLNu_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/piedavid-TopNanoAODv6-1-1_2017-a11761155c05d04d6fed5a2401fa93e8/USER", "PRIVATE", ".*root",'phys03', 0.2043, fracNegWeights=0.227, useAAA=True)
+TTWToLNu_PSW = kreator.makeMyPrivateMCComponent("TTWToLNu_PSW", "/TTWJetsToLNu_TuneCP5_PSweights_13TeV-amcatnloFXFX-madspin-pythia8/piedavid-TopNanoAODv6-1-2_2017-a11761155c05d04d6fed5a2401fa93e8/USER", "PRIVATE", ".*root",'phys03', 0.2043, fracNegWeights=0.227, useAAA=True)
+ 
 TTWToLNu_EWK = kreator.makeMyPrivateMCComponent("TTWToLNu_EWK", "/TTWJetsToLNu_EWK_5f_NLO/piedavid-TopNanoAODv6-1-1_2017-a11761155c05d04d6fed5a2401fa93e8/USER", "PRIVATE", ".*root",'phys03', 0.491, fracNegWeights=0.227, useAAA=True)
+
+TTW_CR_1 =  kreator.makeMyPrivateMCComponent("TTW_CR_1", "/TTWJetsToLNu_TuneCP5CR1_QCDbased_PSweights_13TeV-amcatnloFXFX-madspin-pythia8/piedavid-TopNanoAODv6-1-2_2017-a11761155c05d04d6fed5a2401fa93e8/USER", "PRIVATE", ".*root",'phys03', 0.227,  useAAA=True)
+TTW_CR_2 =  kreator.makeMyPrivateMCComponent("TTW_CR_2", "/TTWJetsToLNu_TuneCP5CR2_GluonMove_PSweights_13TeV-amcatnloFXFX-madspin-pythia8/piedavid-TopNanoAODv6-1-2_2017-a11761155c05d04d6fed5a2401fa93e8/USER", "PRIVATE", ".*root",'phys03', 0.227,  useAAA=True)
+
+
 
 #TTW_LO = kreator.makeMyPrivateMCComponent("TTW_LO", "/ttWJets_TuneCP5_13TeV_madgraphMLM_pythia8/RunIIFall17NanoAODv4-PU2017_12Apr2018_Nano14Dec2018_102X_mc2017_realistic_v6-v1/NANOAODSIM", "PRIVATE", ".*root", 'phys03',  0.6105 , useAAA=True)
 #TTW_LO_ext1 = kreator.makeMyPrivateMCComponent("TTW_LO_ext1", "/ttWJets_TuneCP5_13TeV_madgraphMLM_pythia8/RunIIFall17NanoAODv4-PU2017_12Apr2018_Nano14Dec2018_102X_mc2017_realistic_v6_ext1-v1/NANOAODSIM", "PRIVATE", ".*root", 'phys03',  0.6105 , useAAA=True)
@@ -382,13 +392,18 @@ TTXs = [ TTGJets, #TTGJets_ext,
          TGJets_lep,
          TTWToLNu_EWK,
          TTWToLNu,# TTW_LO, TTW_LO_ext1, 
+         TTWToLNu_PSW,
          TTZToLLNuNu, #TTZToLLNuNu_amc_psw, 
          #TTZ_LO, #TTZ_LO_ext1, 
          TTZToLLNuNu_m1to10, 
          TZQToLL, tWll,
          THQ, THW,
          #TTH_pow, TTHnobb_fxfx, 
-         TTHnobb_pow]# TTHtautau_pow,  ]
+         TTHnobb_pow,
+         TTW_CR_2,
+         TTW_CR_1,
+         TTGamma_Singlep,
+         TTGamma_Dilep ]# TTHtautau_pow,  ]
 
 # ====== TT + DIBOSON, 4-top =====
 
