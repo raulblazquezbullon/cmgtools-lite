@@ -56,7 +56,7 @@ systsGroup = {
     #### Systematic
     # Experimental
     'jes': [
-        #"jes",
+#        "jes",
         "jes_HF",
         "jes_HF_2016",
         "jes_HF_2017",
@@ -190,8 +190,10 @@ POIs   = ["r"]
 
 
 
-groupList   = ['mc_stat', 'jes', "jer", 'trigger', 'pileup', 'elec', "muon", 'btag', 'mistag', 'lumi', 'prefiring',
-               'ttbar_norm', 'nonworz_norm', 'dy_norm' , 'vvttv_norm', "ttbar_scales", "tw_scales","isr", "fsr", "toppt"]
+#groupList   = ['mc_stat', 'jes', 'jer', 'trigger', 'pileup', 'elec', 'muon', 'btag', 'mistag', 'lumi', 'prefiring',
+#               'ttbar_norm', 'nonworz_norm', 'dy_norm' , 'vvttv_norm', 'ttbar_scales', 'tw_scales', 'isr', 'fsr', 'toppt']
+groupList   = ['mc_stat', 'jes', 'jer', 'trigger', 'elec', 'muon', 'btag', 'mistag', 'lumi', 'prefiring',
+               'ttbar_norm', 'nonworz_norm', 'dy_norm' , 'vvttv_norm', 'ttbar_scales', 'tw_scales', 'isr', 'fsr', 'toppt']
 
 
 basecommand = 'combineTool.py -M MultiDimFit {algosettings} --rMin 0 --rMax 3 --floatOtherPOIs=1 -m 125 --split-points 1 --setParameters r=1 -t -1 --expectSignal=1 --saveInactivePOI 1 {parallel} {queue} {extra} --cminDefaultMinimizerStrategy 0 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --robustFit 1'
