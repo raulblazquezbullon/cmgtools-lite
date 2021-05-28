@@ -1527,3 +1527,5 @@ WeightsToChange = {
 #UncertaintiesToEnvelope = {"ttbar_scales", "tw_scales"}
 #UncertaintiesToEnvelope = {"colour"}
 UncertaintiesToEnvelope = {}
+
+VariatedSamplesUncertaintySources = { "ue", "colour_rec", "tw_matching", "mtop", "ds"}
