@@ -408,49 +408,71 @@ def PlotParticleFidBinLevelResults(thedict, inpath, iY, varName, notff):
 
     tru.Divide(htmp)
     tru.Scale(1, "width")
-    tmptfile.Close();  del tmptfile, htmp
+    del htmp
 
-    #if not os.path.isfile('temp/{var}_/ClosureTest_aMCatNLO_{var}.root'.format(var = varName)):
-        #raise RuntimeError('The rootfile with the generated information from an aMCatNLO sample does not exist.')
-    #tmptfile2 = r.TFile.Open('temp/{var}_/ClosureTest_aMCatNLO_{var}.root'.format(var = varName))
-    #aMCatNLO = deepcopy(tmptfile2.Get('tW').Clone('aMCatNLO'))
-    #aMCatNLO.SetLineWidth(2)
-    #aMCatNLO.SetLineColor(r.kAzure)
-    #aMCatNLO.SetLineStyle(2)
-    #tmptfile22 = r.TFile.Open('temp/Fiducial_/ClosureTest_aMCatNLO_Fiducial.root')
-    #htmp   = r.TH1F(aMCatNLO)
-    #for bin in range(1, tru.GetNbinsX() + 1):
-        #htmp.SetBinContent(bin, tmptfile22.Get('tW').GetBinContent(1))
-        #htmp.SetBinError(bin, tmptfile22.Get('tW').GetBinError(1))
-    #aMCatNLO.Divide(htmp)
-    #aMCatNLO.Scale(1, "width")
-    #tmptfile2.Close(); tmptfile22.Close(); del tmptfile2, tmptfile22, htmp
+    tru_DS = deepcopy(tmptfile.Get('x_twds').Clone('tru_DS'))
+    tru_DS.SetLineWidth(2)
+    tru_DS.SetLineColor(r.kGreen)
+    tru_DS.Scale(scaleval)
+    tru_DS.SetMarkerSize(0)
+    htmp = deepcopy(tru_DS.Clone("htmp"))
+    fiduval = None; fiduunc = None
 
-    #if not os.path.isfile('temp/{var}_/ClosureTest_DS_{var}.root'.format(var = varName)):
-        #raise RuntimeError('The rootfile with the generated information with the DS variation does not exist.')
-    #tmptfile3 = r.TFile.Open('temp/{var}_/ClosureTest_DS_{var}.root'.format(var = varName))
-    #hDS = deepcopy(tmptfile3.Get('tW').Clone('hDS'))
-    #hDS.SetLineWidth(2)
-    #hDS.SetLineColor(r.kGreen)
-    #tmptfile33 = r.TFile.Open('temp/Fiducial_/ClosureTest_DS_Fiducial.root')
-    #htmp   = r.TH1F(hDS)
-    #for bin in range(1, tru.GetNbinsX() + 1):
-        #htmp.SetBinContent(bin, tmptfile33.Get('tW').GetBinContent(1))
-        #htmp.SetBinError(bin, tmptfile33.Get('tW').GetBinError(1))
-    #hDS.Divide(htmp)
-    #hDS.Scale(1, "width")
-    #tmptfile3.Close(); tmptfile33.Close(); del tmptfile3, tmptfile33, htmp
+    if not notff:
+        tmptfile11 = r.TFile.Open(inpath + "/" + iY + '/Fiducial/particle.root')
+        fiduval = tmptfile11.Get('x_twds').GetBinContent(1) * scaleval
+        fiduunc = tmptfile11.Get('x_twds').GetBinError(1)   * scaleval
+        tmptfile11.Close(); del tmptfile11
+    else:
+        fiduval = sum([htmp.GetBinContent(i) for i in range(1, htmp.GetNbinsX() + 1)])
+        fiduunc = r.TMath.Sqrt(sum([htmp.GetBinError(i)**2 for i in range(1, htmp.GetNbinsX() + 1)]))
+
+    for bin in range(1, htmp.GetNbinsX() + 1):
+        htmp.SetBinContent(bin, fiduval)
+        htmp.SetBinError(  bin, fiduunc)
+
+    tru_DS.Divide(htmp)
+    tru_DS.Scale(1, "width")
+    del htmp
+
+    tru_herwig = deepcopy(tmptfile.Get('x_twherwig').Clone('tru_herwig'))
+    tru_herwig.SetLineWidth(2)
+    tru_herwig.SetLineColor(r.kMagenta+1)
+    tru_herwig.Scale(scaleval)
+    tru_herwig.SetMarkerSize(0)
+    htmp = deepcopy(tru_herwig.Clone("htmp"))
+    fiduval = None; fiduunc = None
+
+    if not notff:
+        tmptfile11 = r.TFile.Open(inpath + "/" + iY + '/Fiducial/particle.root')
+        fiduval = tmptfile11.Get('x_twherwig').GetBinContent(1) * scaleval
+        fiduunc = tmptfile11.Get('x_twherwig').GetBinError(1)   * scaleval
+        tmptfile11.Close(); del tmptfile11
+    else:
+        fiduval = sum([htmp.GetBinContent(i) for i in range(1, htmp.GetNbinsX() + 1)])
+        fiduunc = r.TMath.Sqrt(sum([htmp.GetBinError(i)**2 for i in range(1, htmp.GetNbinsX() + 1)]))
+
+    for bin in range(1, htmp.GetNbinsX() + 1):
+        htmp.SetBinContent(bin, fiduval)
+        htmp.SetBinError(  bin, fiduunc)
+
+    tru_herwig.Divide(htmp)
+    tru_herwig.Scale(1, "width")
+    del htmp
+    tmptfile.Close(); del tmptfile
+
 
     savetfile2 = r.TFile(inpath + "/" + iY + "/" + varName + "/particlefidbinOutput.root", "update")
     tru.Write()
-    #aMCatNLO.Write()
-    #hDS.Write()
+    tru_DS.Write()
+    tru_herwig.Write()
     savetfile2.Close()
 
 
     plot.addHisto(nominal_withErrors, 'hist',    'Uncertainty',              'F', 'unc')
     plot.addHisto(tru,                'L,same',  'tW Powheg DR + Pythia8',   'L', 'mc')
-    #plot.addHisto(hDS,                'L,same',  'tW Powheg DS + Pythia8',   'L', 'mc')
+    plot.addHisto(tru_DS,             'L,same',  'tW Powheg DS + Pythia8',   'L', 'mc')
+    plot.addHisto(tru_herwig,         'L,same',  'tW Powheg DR + Herwig7',   'L', 'mc')
     #plot.addHisto(aMCatNLO,           'L,same',  'tW aMC@NLO DR + Pythia8',  'L', 'mc')
     plot.addHisto(thedict[""],        'P,E,same{s}'.format(s = ",X0" if "equalbinsunf" in vl.varList[varName] else ""), vl.labellegend,           'PEL','data')
     plot.saveCanvas(legloc)
@@ -540,39 +562,37 @@ def PlotParticleBinLevelResults(thedict, inpath, iY, varName, notff):
     tru.Scale(scaleval)
     tru.SetMarkerSize(0)
     tru.Scale(1, "width")
+
+    tru_DS = deepcopy(tmptfile.Get('x_twds').Clone('tru_DS'))
+    tru_DS.SetLineWidth(2)
+    tru_DS.SetLineColor(r.kGreen)
+    tru_DS.Scale(scaleval)
+    tru_DS.SetMarkerSize(0)
+    tru_DS.Scale(1, "width")
+
+    tru_herwig = deepcopy(tmptfile.Get('x_twherwig').Clone('tru_herwig'))
+    tru_herwig.SetLineWidth(2)
+    tru_herwig.SetLineColor(r.kMagenta+1)
+    tru_herwig.Scale(scaleval)
+    tru_herwig.SetMarkerSize(0)
+    tru_herwig.Scale(1, "width")
+
     tmptfile.Close(); del tmptfile
-
-    #if not os.path.isfile('temp/{var}_/ClosureTest_aMCatNLO_{var}.root'.format(var = varName)):
-        #raise RuntimeError('The rootfile with the generated information from an aMCatNLO sample does not exist.')
-    #tmptfile2 = r.TFile.Open('temp/{var}_/ClosureTest_aMCatNLO_{var}.root'.format(var = varName))
-    #aMCatNLO = deepcopy(tmptfile2.Get('tW').Clone('aMCatNLO'))
-    #aMCatNLO.SetLineWidth(2)
-    #aMCatNLO.SetLineColor(r.kAzure)
-    #aMCatNLO.SetLineStyle(2)
-    #aMCatNLO.Scale(1, "width")
-    #tmptfile2.Close(); del tmptfile2
-
-    #if not os.path.isfile('temp/{var}_/ClosureTest_DS_{var}.root'.format(var = varName)):
-        #raise RuntimeError('The rootfile with the generated information with the DS variation does not exist.')
-    #tmptfile3 = r.TFile.Open('temp/{var}_/ClosureTest_DS_{var}.root'.format(var = varName))
-    #hDS = deepcopy(tmptfile3.Get('tW').Clone('hDS'))
-    #hDS.SetLineWidth(2)
-    #hDS.SetLineColor(r.kGreen)
-    #hDS.Scale(1, "width")
-    #tmptfile3.Close(); del tmptfile3
 
 
     savetfile2 = r.TFile(inpath + "/" + iY + "/" + varName + "/particlebinOutput.root", "update")
     tru.Write()
+    tru_DS.Write()
+    tru_herwig.Write()
     #aMCatNLO.Write()
-    #hDS.Write()
     savetfile2.Close(); del savetfile2
 
     if nominal_withErrors[0].GetMaximum() <= tru.GetMaximum(): nominal_withErrors[0].SetMaximum(tru.GetMaximum())
 
     plot.addHisto(nominal_withErrors, 'hist',   'Uncertainty',              'F', 'unc')
     plot.addHisto(tru,                'L,same', 'tW Powheg DR + Pythia8',   'L', 'mc')
-    #plot.addHisto(hDS,                'L,same', 'tW Powheg DS + Pythia8',   'L', 'mc')
+    plot.addHisto(tru_DS,             'L,same', 'tW Powheg DS + Pythia8',   'L', 'mc')
+    plot.addHisto(tru_hwerig,         'L,same', 'tW Powheg DR + Herwig7',   'L', 'mc')
     #plot.addHisto(aMCatNLO,           'L,same', 'tW aMC@NLO DR + Pythia8',  'L', 'mc')
     plot.addHisto(thedict[""],            'P,E,same',vl.labellegend,          'PEL', 'data')
     plot.saveCanvas(legloc)
@@ -639,25 +659,48 @@ if __name__ == "__main__":
     vetolist = ["plots", "Fiducial", "control", "tables"]
 
     #### First, find the tasks
-    tasks = []
-    if year == "all":
-        if variable == "all":
-            theyears = []
-            presentyears = next(os.walk(inpath))[1]
-            if "2016" in presentyears:
-                theyears.append("2016")
-            if "2017" in presentyears:
-                theyears.append("2017")
-            if "2018" in presentyears:
-                theyears.append("2018")
-            if "run2" in presentyears:
-                theyears.append("run2")
 
-            for iY in theyears:
-                thevars = next(os.walk(inpath + "/" + iY))[1]
-                for iV in thevars:
-                    if any( [el in iV for el in vetolist] ): continue
-                    tasks.append( (inpath, iY, iV, notFiduFile) )
+
+    tasks = []
+    theyears = []
+    presentyears = next(os.walk(inpath))[1]
+
+    if "2016" in presentyears:
+        theyears.append("2016")
+    if "2017" in presentyears:
+        theyears.append("2017")
+    if "2018" in presentyears:
+        theyears.append("2018")
+    if "run2" in presentyears:
+        theyears.append("run2")
+
+    if year.lower() != "all" and year in presentyears:
+        theyears = [ year ]
+    elif year.lower() != "all":
+        raise RuntimeError("FATAL: the year requested is not in the provided input folder.")
+
+    for iY in theyears:
+        thevars = next(os.walk(inpath + "/" + iY))[1]
+
+        if variable.lower() != "all" and variable in thevars:
+            thevars = [ variable ]
+        elif variable.lower() != "all":
+            raise RuntimeError("FATAL: the variable requested is not in the provided input folder.")
+
+        theyears = []
+        presentyears = next(os.walk(inpath))[1]
+        if "2016" in presentyears:
+            theyears.append("2016")
+        if "2017" in presentyears:
+            theyears.append("2017")
+        if "2018" in presentyears:
+            theyears.append("2018")
+        if "run2" in presentyears:
+            theyears.append("run2")
+
+        for iV in thevars:
+            if any( [el in iV for el in vetolist] ): continue
+            tasks.append( (inpath, iY, iV, notFiduFile) )
 
     #tasks = [ (inpath, "2016", "Lep1Lep2Jet1MET_Mt") ]
 
