@@ -13,7 +13,7 @@ nBinsForBDT = 4         # Number of bins for the BDT discr. distribution used fo
 diffControlReg = "3j2t" # Control region used in the differential signal extraction step
 
 unifttbar   = True      # Force the BDT disc. distrib. bins to hace the same amount of ttbar events.
-asimov      = False      # Use of Asimov dataset or data
+asimov      = True      # Use of Asimov dataset or data
 doxsec      = True      # Show events or diff. cross section in final results
 doPre       = True      # Show or not show the "Preliminary" in the plots
 doSym       = True      # Symmetrise the uncertainties or not
@@ -416,8 +416,8 @@ varList['Jet1_Pt'] = {
     "yaxisuplimitunf": 0.20,
     "yaxismax_particlefidbin": 0.029,
     "yaxismax_particlefid" : 1.8,
-    "yaxismax_particlefidbinunc" : 1.2,
-    #"yaxismax_particlefidbinunc" : 0.5,
+    #"yaxismax_particlefidbinunc" : 1.2,
+    "yaxismax_particlefidbinunc" : 0.5,
     "yaxismax_unf" : 2.3,
     "yaxismax_particlebinunc": 1.8,
     "yaxismax_particlebin": 0.010,
@@ -491,8 +491,8 @@ varList['Lep1_Pt'] = {
     "yaxisuplimitunf": 0.2,
     "yaxismax_particlefidbin": 0.025,
     "yaxismax_particlefid" : 1.1,
-    "yaxismax_particlefidbinunc" : 0.8,
-    #"yaxismax_particlefidbinunc" : 0.5,
+    #"yaxismax_particlefidbinunc" : 0.8,
+    "yaxismax_particlefidbinunc" : 0.5,
     "yaxismax_unf" : 1.35,
     "yaxismax_particlebin": 0.0085,
     "legpos_particlebinunc" : "TL",
@@ -648,8 +648,8 @@ varList['Lep1Lep2_DPhi'] = {
     "equalbinsunf" : True,
     "equalbinsfol" : True,
     "yaxismax_particlefid" : 0.4,
-    #"yaxismax_particlefidbinunc" : 0.5,
-    "yaxismax_particlefidbinunc" : 0.35,
+    "yaxismax_particlefidbinunc" : 0.5,
+    #"yaxismax_particlefidbinunc" : 0.35,
     "yaxismax_particlefidbin" : 1.7,
     "yaxismax_unf" : 1,
     #'legpos_particlebin':(.18, .75, .36, .52),

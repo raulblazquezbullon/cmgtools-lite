@@ -419,7 +419,9 @@ def makeFit(task):
             if verbose:
                 print "    - Erasing old combined card..."
             os.system("rm " + inpath + "/" + year + "/" + varName + "/sigextr_fit_combine/finalcard.txt")
-        os.system(mergecomm)
+        outstat = os.system(mergecomm)
+        if outstat:
+            raise RuntimeError("FATAL: combineCards.py failed to execute for variable {v} of year {y}.".format(v = varName, y = year))
 
 
     physicsModel = 'text2workspace.py -m 125 -P HiggsAnalysis.CombinedLimit.PhysicsModel:multiSignalModel '
@@ -439,9 +441,13 @@ def makeFit(task):
             if verbose:
                 print "    - Erasing old fit result..."
             os.system("rm " + inpath + "/" + year + "/" + varName + "/sigextr_fit_combine/fit_output.root")
-        os.system(physicsModel)
+        outstat = os.system(physicsModel)
+        if outstat:
+            raise RuntimeError("FATAL: text2workspace.py failed to execute for variable {v} of year {y}.".format(v = varName, y = year))
 
     fitoutpath = inpath + "/" + year + "/" + varName + "/sigextr_fit_combine/fitdiagnostics"
+
+    #### AGREGAR --cminDefaultMinimizerStrategy 0   ?????????? y quitar robusthesse
 
     combinecomm = 'combine  -M FitDiagnostics --out {outdir} {infile} --saveWorkspace -n {y}_{var} --robustHesse 1 --robustFit 1 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --saveShapes'.format(
         y      = year,
@@ -455,7 +461,9 @@ def makeFit(task):
 
     #sys.exit()
     if not pretend:
-        os.system(combinecomm)
+        outstat = os.system(combinecomm)
+        if outstat:
+            raise RuntimeError("FATAL: combine failed to execute for variable {v} of year {y}.".format(v = varName, y = year))
 
     #sys.exit()
     if not os.path.isfile('higgsCombine{y}_{var}.FitDiagnostics.mH120.root'.format(y = year, var = varName)):

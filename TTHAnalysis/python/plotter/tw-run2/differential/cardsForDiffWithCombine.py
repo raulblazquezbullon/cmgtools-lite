@@ -247,6 +247,8 @@ def createCardsForEachSys(tsk):
                 tmpline = deepcopy(line)
                 outtext += tmpline
             elif len(entries) > 1:
+                if entries[0] == "jes": continue
+
                 if   ("shape" in entries[1]):
                     outtext += line
                 elif ("lnN"   in entries[1] and "norm" in entries[0]):
