@@ -71,10 +71,7 @@ def produceAdHocMCAandUncsfiles(thepath, they, thev):
     with open("./tw-run2/differential/mca_scaffold.txt", "r") as scaff:
         for line in scaff:
             if "TOREPLACE" in line:
-                if they != "run2":
-                    outmain += line.replace("TOREPLACE2016", thepath + "/mca-tw-" + they + ".txt").replace("TOREPLACE2017", thepath + "/mca-tw-" + they + ".txt").replace("TOREPLACE2018", thepath + "/mca-tw-" + they + ".txt")
-                else:
-                    outmain += line.replace("TOREPLACE2016", thepath + "/mca-tw-2016.txt").replace("TOREPLACE2017", thepath + "/mca-tw-2017.txt").replace("TOREPLACE2018", thepath + "/mca-tw-2018.txt")
+                outmain += line.replace("TOREPLACE2016", thepath + "/mca-tw-2016.txt").replace("TOREPLACE2017", thepath + "/mca-tw-2017.txt").replace("TOREPLACE2018", thepath + "/mca-tw-2018.txt").replace("TOREPLACESYS2016", thepath + "/mca-tw-2016-uncs.txt").replace("TOREPLACESYS2017", thepath + "/mca-tw-2017-uncs.txt").replace("TOREPLACESYS2018", thepath + "/mca-tw-2018-uncs.txt")
             else:
                 outmain += line
 
@@ -102,6 +99,24 @@ def produceAdHocMCAandUncsfiles(thepath, they, thev):
             foutyear = open(thepath + "/" + "mca-tw-{y}.txt".format(y = iY), "w")
             foutyear.write(outyear)
             foutyear.close(); del foutyear
+
+            # now systs
+            outyear = ""
+            with open(pathtooriginalmca + "/mca-{y}-tw-uncs.txt".format(y = iY), "r") as scaff:
+                for line in scaff:
+                    tmpline = line.strip()
+                    if tmpline == "":       continue
+                    elif tmpline[0] == "#": continue
+
+                    for iB in range(len(vl.varList[thev]["bins_particle"]) - 1):
+                        tmpcut = "(" + str(vl.varList[thev]["bins_particle"][iB]) + "<=" + vl.varList[thev]["var_particle"] + ") && (" + vl.varList[thev]["var_particle"] + "<" + str(vl.varList[thev]["bins_particle"][iB + 1]) + ")"
+                        outyear += tmpline.replace(";", ": " + cutstring + " && " + tmpcut + " ;").replace(tmpline.split(":")[0].replace(" ", ""), tmpline.split(":")[0].replace(" ", "") + "_partbin{b}".format(b = iB)) + "\n"
+
+                    outyear += tmpline.replace(";", ": (!(" + cutstring + ")) ;").replace(tmpline.split(":")[0].replace(" ", ""), tmpline.split(":")[0].replace(" ", "") + "_bkg") + "\n"
+
+            foutyear = open(thepath + "/" + "mca-tw-{y}-uncs.txt".format(y = iY), "w")
+            foutyear.write(outyear)
+            foutyear.close(); del foutyear
     else:
         outyear = ""
         with open(pathtooriginalmca + "/mca-{y}-tw.txt".format(y = they), "r") as scaff:
@@ -116,7 +131,21 @@ def produceAdHocMCAandUncsfiles(thepath, they, thev):
 
                 outyear += tmpline.replace(";", ": (!(" + cutstring + ")) ;").replace("tw+", "tw_bkg") + "\n"
 
-        foutyear = open(thepath + "/" + "mca-tw-{y}.txt".format(y = they), "w")
+        # now systs
+        outyear = ""
+        with open(pathtooriginalmca + "/mca-{y}-tw-uncs.txt".format(y = they), "r") as scaff:
+            for line in scaff:
+                tmpline = line.strip()
+                if tmpline == "":       continue
+                elif tmpline[0] == "#": continue
+
+                for iB in range(len(vl.varList[thev]["bins_particle"]) - 1):
+                    tmpcut = "(" + str(vl.varList[thev]["bins_particle"][iB]) + "<=" + vl.varList[thev]["var_particle"] + ") && (" + vl.varList[thev]["var_particle"] + "<" + str(vl.varList[thev]["bins_particle"][iB + 1]) + ")"
+                    outyear += tmpline.replace(";", ": " + cutstring + " && " + tmpcut + " ;").replace(tmpline.split(":")[0].replace(" ", ""), tmpline.split(":")[0].replace(" ", "") + "_partbin{b}".format(b = iB)) + "\n"
+
+                outyear += tmpline.replace(";", ": (!(" + cutstring + ")) ;").replace(tmpline.split(":")[0].replace(" ", ""), tmpline.split(":")[0].replace(" ", "") + "_bkg") + "\n"
+
+        foutyear = open(thepath + "/" + "mca-tw-{y}-uncs.txt".format(y = they), "w")
         foutyear.write(outyear)
         foutyear.close(); del foutyear
 
@@ -126,7 +155,24 @@ def produceAdHocMCAandUncsfiles(thepath, they, thev):
             if "alias" in line:
                 outuncs += line.replace("tw", "|".join(["tw_bkg"] + ["tw_partbin{b}".format(b = iB) for iB in range(len(vl.varList[thev]["bins_particle"]) - 1)]))
             else:
-                outuncs += line
+                tmpline = line.strip()
+                if tmpline.split(":")[0].replace(" ", "") in vl.VariatedSamplesUncertaintySources and "$tWProc" in tmpline.split(":")[1]:
+                    for iB in range(len(vl.varList[thev]["bins_particle"]) - 1):
+                        twotimestmpline = tmpline.replace("$tWProc", "tw_partbin{b}".format(b = iB)) + "\n"
+                        for substr in tmpline.split(":"):
+                            if "syst" in substr:
+                                tmpsubstr = substr.replace("'", "").replace(" ", "").replace("[", "").replace("]", "")
+                                if "\," in tmpsubstr:
+                                    for secsubstr in tmpsubstr.split("\,"):
+                                        twotimestmpline = twotimestmpline.replace(secsubstr, secsubstr + "_partbin{b}".format(b = iB))
+                                else:
+                                    twotimestmpline = twotimestmpline.replace(tmpsubstr, tmpsubstr + "_partbin{b}".format(b = iB))
+                        outuncs += twotimestmpline
+
+
+
+                else:
+                    outuncs += line
 
     foutuncs = open(thepath + "/" + "tw-uncs-adhoc.txt", "w")
     foutuncs.write(outuncs)
