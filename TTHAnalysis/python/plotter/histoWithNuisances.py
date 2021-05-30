@@ -70,11 +70,11 @@ def _isNullHistogram(h):
 
 
 def buildVariationsFromAlternativesWithEnvelope(uncfile, ret):
+    toremove = []
     for var in uncfile.uncertainty():
         if var.unc_type != 'altSampleEnv': continue # now only adding the alternative samples
         thelist = var.args[0].replace("[", "").replace("]", "").replace("'", "").split("\,")
         hasBeenApplied = False
-        toremove = []
         for k, p in ret.iteritems():
             if not var.procmatch().match(k): continue
 
@@ -117,18 +117,19 @@ def buildVariationsFromAlternativesWithEnvelope(uncfile, ret):
             p.addVariation(var.name, 'up'  , up)
             p.addVariation(var.name, 'down', down)
 
-            toremove.extend( [el for el in thelist])
+            toremove.extend( [el for el in thelist if el not in toremove])
             hasBeenApplied = True
 
-        for rem in toremove:
-            if rem in ret: ret.pop(rem)
+    for rem in toremove:
+        if rem in ret: ret.pop(rem)
+    return
 
 
 def buildVariationsFromAlternative(uncfile, ret):
+    toremove = []
     for var in uncfile.uncertainty():
         if var.unc_type != 'altSample': continue # now only adding the alternative samples
         hasBeenApplied=False
-        toremove=[]
         for k,p in ret.iteritems(): 
             if not var.procmatch().match(k): continue
 
@@ -160,7 +161,8 @@ def buildVariationsFromAlternative(uncfile, ret):
                     down.SetBinContent(ibin, (p.central.GetBinContent(ibin) - thedif) if (p.central.GetBinContent(ibin) - thedif) >= 0 else 0 )
                 p.addVariation( var.name, 'up'  , up)
                 p.addVariation( var.name, 'down', down)
-                toremove.extend( [var.args[0]] )
+                if var.args[0] not in toremove:
+                    toremove.extend( [var.args[0]] )
                 hasBeenApplied = True
 
             elif dolinear:
@@ -176,16 +178,23 @@ def buildVariationsFromAlternative(uncfile, ret):
                     down.SetBinContent(ibin, (p.central.GetBinContent(ibin) - thedifdn) if ret[var.args[1]].raw().GetBinContent(ibin) < p.central.GetBinContent(ibin) else (p.central.GetBinContent(ibin) + thedifdn) )
                 p.addVariation( var.name, 'up'  , up)
                 p.addVariation( var.name, 'down', down)
-                toremove.extend( [var.args[0], var.args[1]] )
+
+                if var.args[0] not in toremove:
+                    toremove.extend( [var.args[0]] )
+                if var.args[1] not in toremove:
+                    toremove.extend( [var.args[1]] )
                 hasBeenApplied = True
             else:
                 p.addVariation( var.name, 'up'  , ret[var.args[0]].raw())
                 p.addVariation( var.name, 'down', ret[var.args[1]].raw())
-                toremove.extend( [var.args[0], var.args[1]] )
+                if var.args[0] not in toremove:
+                    toremove.extend( [var.args[0]] )
+                if var.args[1] not in toremove:
+                    toremove.extend( [var.args[1]] )
                 hasBeenApplied = True
-        #print toremove
-        for rem in toremove: 
-            if rem in ret: ret.pop(rem)
+    #print toremove
+    for rem in toremove:
+        if rem in ret: ret.pop(rem)
     return
 
 
