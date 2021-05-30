@@ -11,7 +11,6 @@ r.gROOT.SetBatch(True)
 
 friendspath   = "/pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions"
 logpath       = friendspath + "/{p}/{y}/logs/cards_differential"
-friendfolders = ["0_yeartag", "1_lepmerge_roch", "2_cleaning", "3_varstrigger", "4_scalefactors", "5_mvas"]
 lumidict      = {2016 : 35.92, 2017 : 41.53, 2018 : 59.74}
 lumidictone   = {2016 : 35.92, 2017 : 41.53, 2018 : 59.74}
 #lumidictone   = {2016 : 1.0,   2017 : 1.0,   2018 : 1.0}
