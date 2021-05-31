@@ -173,7 +173,7 @@ def getTasks(outdir):
                 if any([subel in iH for subel in ["stat", "syst"]]): continue
                 alltasks.append( (theH,
                                   outdir + "/" + str(y),
-                                  "leptonSF_" + ty + "_" + str(y),
+                                  "leptonSF_" + ty + "_" + iH.replace(",", "_") + "_" + str(y),
                                    axisdict["lepton"][ty]["x"],
                                    axisdict["lepton"][ty]["y"]) )
 
@@ -181,7 +181,7 @@ def getTasks(outdir):
         for iC in [ch.ElMu]:
             alltasks.append( (SFdict["trigger"][iC][y],
                               outdir + "/" + str(y),
-                              "triggerSF_" + str(iC) + "_" + str(y),
+                              "triggerSF_" + str(iC).replace("ch.", "") + "_" + str(y),
                               axisdict["trigger"]["x"],
                               axisdict["trigger"]["y"]
                               ) )
@@ -208,7 +208,7 @@ if __name__=="__main__":
 
     tasks    = getTasks(outfolder)
 
-    print(tasks)
+    #print(tasks)
     #sys.exit()
 
     if ncores > 1:
