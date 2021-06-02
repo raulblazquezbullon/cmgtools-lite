@@ -110,12 +110,15 @@ systsGroup = {
         "muonisosf_syst",
     ],
     'btag': [
-        "btagging_1718",
         "btagging_2016",
+        "btagging_2017",
+        "btagging_2018",
+        "btagging_corr",
     ],
     'mistag': [
-        "mistagging_1718",
         "mistagging_2016",
+        "mistagging_2017", ###Add 2018
+        "mistagging_corr",
     ],
     'lumi': [
         "lumi_2016",
@@ -148,13 +151,13 @@ systsGroup = {
     ],
 
     # Modelling
-#    'pdf' : [
-#        "pdfhessian",
-#    ],
-#    'matching' : [
-#        "ttbar_matching",
-#        "tw_matching",
-#    ],
+    'pdf' : [
+        "pdfhessian",
+    ],
+    'matching' : [
+        "ttbar_matching",
+        "tw_matching",
+    ],
     'ttbar_scales' : [
         "ttbar_scales",
     ],
@@ -169,32 +172,29 @@ systsGroup = {
         "fsr_ttbar",
         "fsr_tw",
     ],
-#    'colour' : [
-#        "colour_rec",
-#    ],
-#    'ue' : [
-#        "ue",
-#    ],
+    'colour' : [
+        "colour_rec",
+    ],
+    'ue' : [
+        "ue",
+    ],
     'toppt' : [
         "topptrew",
     ],
-#    'mtop' : [
-#        "mtop",
-#    ],
-#    'ds' : [
-#        "ds",
-#    ],
+    'mtop' : [
+        "mtop",
+    ],
+    'ds' : [
+        "ds",
+    ],
 }
 
 POIs   = ["r"]
 
 
 
-#groupList   = ['mc_stat', 'jes', 'jer', 'trigger', 'pileup', 'elec', 'muon', 'btag', 'mistag', 'lumi', 'prefiring',
-#               'ttbar_norm', 'nonworz_norm', 'dy_norm' , 'vvttv_norm', 'ttbar_scales', 'tw_scales', 'isr', 'fsr', 'toppt']
-groupList   = ['mc_stat', 'jes', 'jer', 'trigger', 'elec', 'muon', 'btag', 'mistag', 'lumi', 'prefiring',
-               'ttbar_norm', 'nonworz_norm', 'dy_norm' , 'vvttv_norm', 'ttbar_scales', 'tw_scales', 'isr', 'fsr', 'toppt']
-
+groupList   = ['fsr','pileup','dy_norm','colour','jes','matching','ttbar_norm','elec','nonworz_norm','btag','ue','toppt','tw_scales',
+              'vvttv_norm','mc_stat','isr','ttbar_scales','lumi','pdf','mistag','ds','jer','trigger','prefiring','muon','mtop']
 
 basecommand = 'combineTool.py -M MultiDimFit {algosettings} --rMin 0 --rMax 3 --floatOtherPOIs=1 -m 125 --split-points 1 --setParameters r=1 -t -1 --expectSignal=1 --saveInactivePOI 1 {parallel} {queue} {extra} --cminDefaultMinimizerStrategy 0 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --robustFit 1'
 

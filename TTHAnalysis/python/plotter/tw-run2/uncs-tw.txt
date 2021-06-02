@@ -182,7 +182,7 @@ btagging_2018:   $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_btag_unc
 mistagging_corr: $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_correlatedUp/bTagWeight'\,'bTagWeight_mistag_correlatedDown/bTagWeight']
 mistagging_2016: $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_uncorrelatedUp/bTagWeight'\,'bTagWeight_mistag_uncorrelatedDown/bTagWeight'], year="2016"
 mistagging_2017: $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_uncorrelatedUp/bTagWeight'\,'bTagWeight_mistag_uncorrelatedDown/bTagWeight'], year="2017"
-mistagging_2017: $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_uncorrelatedUp/bTagWeight'\,'bTagWeight_mistag_uncorrelatedDown/bTagWeight'], year="2018"
+mistagging_2018: $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_uncorrelatedUp/bTagWeight'\,'bTagWeight_mistag_uncorrelatedDown/bTagWeight'], year="2018"
 
 
 
@@ -263,7 +263,7 @@ topptrew : ttbar : .* : templateSymmAdditive ; AddWeight='TopPtWeight'
 #### ME/PS matching (hDamp parameter)
 #### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ttbar_matching : ttbar   : .* : altSample : syst_ttbar_matching_up : syst_ttbar_matching_dn
-tw_matching    : $tWProc : .* : altSample : syst_tw_matching_up    : syst_tw_matching_dn
+#tw_matching    : $tWProc : .* : altSample : syst_tw_matching_up    : syst_tw_matching_dn
 
 #### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #### Colour reconnection schemes

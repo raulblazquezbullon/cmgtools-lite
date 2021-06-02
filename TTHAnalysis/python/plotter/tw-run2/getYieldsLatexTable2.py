@@ -36,7 +36,7 @@ def round_to_reference(x, y):
 
 def getYieldLaTeXtables(RegionsandPath, ProcessesDict):
     for region in RegionsandPath:
-        table = "\\begin{tabular}{|l|l|l|l|l|} \n \hline \n%25s & %10s & %10s & %10s & %10s \\\ \hline \n" %("Process", "Yields", "Stat. Unc", "Sys. Unc", "Total Unc")
+        table = "\\begin{tabular}{ccccc} \n \hline \n%25s & %10s & %10s & %10s & %10s \\\ \hline \n" %("Process", "Yields", "Stat. Unc", "Sys. Unc", "Total Unc")
         YieldsFile = open(RegionsandPath[region],"r")
         totalYields = 0
         StatUncTotalYields = 0
@@ -77,9 +77,9 @@ def getYieldLaTeXtables(RegionsandPath, ProcessesDict):
         StatUncTotalYields = str(round_to_reference(StatUncTotalYields, StatUncTotalYields))
         SysUncTotalYields = str(round_to_reference(SysUncTotalYields, SysUncTotalYields))
         TotUncTotalYields = str(round_to_reference(TotUncTotalYields, TotUncTotalYields))
-        table = table + "%25s & %10s & %10s & %10s & %10s \\\ \hline \n" %("Total", totalYields, StatUncTotalYields, SysUncTotalYields, TotUncTotalYields)
+        table = table + "%25s & %10s & %10s & %10s & %10s \\\ \n" %("\textbf{Total}", totalYields, StatUncTotalYields, SysUncTotalYields, TotUncTotalYields)
         #Data
-        table = table + "%25s & %10s & %10s & %10s & %10s \\\ \hline \n" %("Data", yieldsData, statUncData, "", "")
+        table = table + "%25s & %10s & %10s & %10s & %10s \\\ \hline \n" %("\textbf{Data}", yieldsData, statUncData, "", "")
         table = table + "\end{tabular} \n"
         
         LatexTable = open(region + "_Table.tex","w")
