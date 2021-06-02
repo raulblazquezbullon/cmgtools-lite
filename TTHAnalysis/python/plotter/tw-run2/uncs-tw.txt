@@ -263,7 +263,7 @@ topptrew : ttbar : .* : templateSymmAdditive ; AddWeight='TopPtWeight'
 #### ME/PS matching (hDamp parameter)
 #### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ttbar_matching : ttbar   : .* : altSample : syst_ttbar_matching_up : syst_ttbar_matching_dn
-#tw_matching    : $tWProc : .* : altSample : syst_tw_matching_up    : syst_tw_matching_dn
+####tw_matching    : $tWProc : .* : altSample : syst_tw_matching_up    : syst_tw_matching_dn ### NOT RECOMMENDED
 
 #### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #### Colour reconnection schemes
