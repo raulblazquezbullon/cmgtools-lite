@@ -61,7 +61,7 @@ def GeneralExecutioner(task):
             os.system("mkdir -p " + logpath.format(y = year, p = prod))
 
         for reg in region.split(","):
-            jobname_   = "CMGTplotter_{y}_{p}_{s}".format(y = year, p = prod, s = "all" if not len(selplot) else ".".join(selplot))
+            jobname_   = "CMGTplotter_{y}_{r}_{s}".format(y = year, r = reg, s = "all" if not len(selplot) else ".".join(selplot))
             submitcomm = slurmscaff.format(nth  = nthreads,
                                         queue   = queue,
                                         jobname = jobname_,
