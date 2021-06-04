@@ -86,7 +86,7 @@ muonisosf_syst      : $AllBkg : .* : templateAsymm; AddWeights=['MuonISOSF_systU
 ## JECs
 ## --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ## Combined JES
-jes : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesUp.txt'\,'tw-run2/frs-jecs/fr-jesDn.txt']
+#jes : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesUp.txt'\,'tw-run2/frs-jecs/fr-jesDn.txt']
 
 ## Separate (and reduced) JES
 jes_HF            : $AllBkg : .* : templateAsymm; \

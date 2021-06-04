@@ -338,7 +338,7 @@ translateDict = {
     "ttbar_norm"  : "\\qquad t$\\bar{\\mathrm{t}}$",
     "nonworz_norm": "\\qquad Non-W/Z",
     "dy_norm"     : "\\qquad Drell-Yan",
-    "vvttv_norm"  : "\\qquad VVt$\\bar{\\mathrm{t}}$V",
+    "vvttv_norm"  : "\\qquad VV$+\\mathrm{t}\\bar{\\mathrm{t}}$V",
     "pdf"         : "\\qquad PDFs",
     "matching"    : "\\qquad Matrix element/PS matching",
     "ttbar_scales": "\\qquad t$\\bar{\\mathrm{t}}$ $\\mu_{R}$ and $\\mu_{F}$ scales",
@@ -432,7 +432,7 @@ def getFitUncsLaTeXtable(path = "./", inname = "outputfit.txt", outname = "uncta
         elif i == "_systnorm":
             tmprow = ["\\quad  Background normalisation", "", ""]
         elif i == "_mc_stat":
-            tmprow = ["  " + translateDict["mc_stat"], round(infodict["mc_stat"]["ave"], 1), round(infodict["mc_stat"]["up"], 1), round(infodict["mc_stat"]["down"]) ]
+            tmprow = ["  " + translateDict["mc_stat"], round(infodict["mc_stat"]["ave"], 1), round(infodict["mc_stat"]["up"], 1), round(infodict["mc_stat"]["down"],1) ]
         elif i == "_totalsyst":
             tmprow = ["\\textbf{{Total systematic (excl. lum.)}}", round(infodict["totalsyst"]["ave"], 1), round(infodict["totalsyst"]["up"], 1), round(infodict["totalsyst"]["down"], 1)]
         elif i == "_lumi":
@@ -448,7 +448,7 @@ def getFitUncsLaTeXtable(path = "./", inname = "outputfit.txt", outname = "uncta
         #print tmprow
 
     #sys.exit()
-    finallatextab = tb.tabulate(table, headers = headers, tablefmt = "latex_raw")
+    finallatextab = tb.tabulate(table, headers = headers, tablefmt = "latex_raw", floatfmt=".1f")
 
     substr = "".join(["l"] + ["l" for x in range(len(headers) - 1)])
     finallatextab = finallatextab.replace(substr, "".join(["l|"] + ["c|" for x in range(len(headers) - 2)] + ["c"] ))

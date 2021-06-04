@@ -156,7 +156,6 @@ systsGroup = {
     ],
     'matching' : [
         "ttbar_matching",
-        "tw_matching",
     ],
     'ttbar_scales' : [
         "ttbar_scales",
@@ -209,6 +208,7 @@ if __name__ == "__main__":
     parser.add_argument('--nPoints',   '-P',  metavar = 'npoints',    dest = "npoints",  required = False, default = 100, type = int)
     parser.add_argument('--queue',     '-q',  action  = "store_true", dest = "queue",    required = False, default = False)
     parser.add_argument('--ncores',    '-j',  metavar = 'ncores',     dest = "ncores",   required = False, default = None)
+    parser.add_argument('--grUnc',     '-g',  metavar = 'grUnc',      dest = "grUnc",    required = False, default = None)
 
     args     = parser.parse_args()
     pretend  = args.pretend
@@ -217,8 +217,13 @@ if __name__ == "__main__":
     npoints    = args.npoints
     doBatch  = args.queue
     ncores   = args.ncores
+    grUnc   = args.grUnc
 
     thepath  = "/".join(thecard.split("/")[:-1])
+    
+    if grUnc:
+        groupList = []
+        groupList.append(grUnc)
 
     if step == 0:
         for poi in POIs:
