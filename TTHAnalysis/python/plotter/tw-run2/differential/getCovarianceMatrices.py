@@ -20,7 +20,7 @@ CMS_lumi.writeExtraText = 1
 
 def printCovarianceMatrix(tsk):
     inpath, iY, var, ty, nofidufile = tsk
-    print inpath, iY, var, ty
+    #print inpath, iY, var, ty
     fidornot = "fid" in ty
     binornot = "bin" in ty
     ty = ty.replace("fid", "").replace("bin", "")
@@ -86,7 +86,7 @@ def printCovarianceMatrix(tsk):
                             tmphistodw = deepcopy(key2.ReadObj().Clone("tmphistodw"))
 
                     if not tmphistodw:
-                        print "Variation", key.GetName(), "is asymmetrical."
+                        #print "Variation", key.GetName(), "is asymmetrical."
                         tmphistodw = deepcopy(tmphistoup.Clone("tmphistodw"))
 
                 varsup  = [abs(tmphistoup.GetBinContent(binin) - nominal.GetBinContent(binin)) for binin in range(1, nominal.GetNbinsX() + 1)]
@@ -330,8 +330,8 @@ if __name__=="__main__":
                     if iY != "run2": continue
 
                     #for t in ["detector", "particle", "particlefid", "particlebin", "particlefidbin"]:
-                    #for t in ["particle", "particlefidbin"]:
-                    for t in ["particlefidbin"]:
+                    for t in ["particle", "particlefidbin"]:
+                    #for t in ["particlefidbin"]:
                         tasks.append( (inpath, iY, iV, t, notFiduFile) )
 
     vl.SetUpWarnings()

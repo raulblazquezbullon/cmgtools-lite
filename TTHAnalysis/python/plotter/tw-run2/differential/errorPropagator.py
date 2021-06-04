@@ -455,54 +455,55 @@ def drawTheRelUncPlot(listWithHistos, thedict, thePlot, yaxismax = "auto", doSym
 
     # Begin drawing; first the total, systematic and statistical lines
     thePlot.addHisto(hincmax,  'hist',      'Total',      'L')
-    thePlot.addHisto(hincsyst, 'hist,same', 'Systematic' if not doFit else "Not fit", 'L')
-
     hincstat = None
-    for i in range(len(uncList)):
-        if "Stat" in uncList[i][0]:
-            uncList[i][1].SetLineColor(r.kBlack)
-            uncList[i][1].SetLineStyle( 2 )
+    if not vl.onlyTotal:
+        thePlot.addHisto(hincsyst, 'hist,same', 'Systematic' if not doFit else "Not fit", 'L')
 
-            hincstat = deepcopy(uncList[i][1].Clone("hincstat"))
+        for i in range(len(uncList)):
+            if "Stat" in uncList[i][0]:
+                uncList[i][1].SetLineColor(r.kBlack)
+                uncList[i][1].SetLineStyle( 2 )
 
-            uncList[i][1].SetFillColorAlpha(r.kBlue, 0.)
-            thePlot.addHisto(uncList[i][1], 'hist,same', "Statistical", 'L')
-        if "Fit" in uncList[i][0]:
-            uncList[i][1].SetLineColor(r.kBlack)
-            uncList[i][1].SetLineStyle( 2 )
+                hincstat = deepcopy(uncList[i][1].Clone("hincstat"))
 
-            hincstat = deepcopy(uncList[i][1].Clone("hincfit"))
+                uncList[i][1].SetFillColorAlpha(r.kBlue, 0.)
+                thePlot.addHisto(uncList[i][1], 'hist,same', "Statistical", 'L')
+            if "Fit" in uncList[i][0]:
+                uncList[i][1].SetLineColor(r.kBlack)
+                uncList[i][1].SetLineStyle( 2 )
 
-            uncList[i][1].SetFillColorAlpha(r.kBlue, 0.)
-            thePlot.addHisto(uncList[i][1], 'hist,same', vl.SysNameTranslator[uncList[i][0].lower()], 'L')
+                hincstat = deepcopy(uncList[i][1].Clone("hincfit"))
 
-    # And now, the rest of the lines are up to vl.nuncs of the most dominant systematic sources
-    iS = 0
-    plottedsysts = 0
-    maxnumofuncs = vl.nuncs
+                uncList[i][1].SetFillColorAlpha(r.kBlue, 0.)
+                thePlot.addHisto(uncList[i][1], 'hist,same', vl.SysNameTranslator[uncList[i][0].lower()], 'L')
 
-    while plottedsysts < maxnumofuncs and plottedsysts < len(uncList):
-        if "Stat" in uncList[iS][0] or "Fit" in uncList[iS][0]:
-            #print "holi", iS
+        # And now, the rest of the lines are up to vl.nuncs of the most dominant systematic sources
+        iS = 0
+        plottedsysts = 0
+        maxnumofuncs = vl.nuncs
+
+        while plottedsysts < maxnumofuncs and plottedsysts < len(uncList):
+            if "Stat" in uncList[iS][0] or "Fit" in uncList[iS][0]:
+                #print "holi", iS
+                iS += 1
+                if len(uncList) == 1: break
+                continue
+
+            if "lumi" in uncList[iS][0].lower():
+                uncList[iS][1].SetLineColor(r.kBlack)
+                uncList[iS][1].SetLineStyle( 4 )
+            else:
+                #uncList[iS][1].SetLineColor( vl.ColorMapList[iS] )
+                uncList[iS][1].SetLineColor( vl.UncsColourMap[uncList[iS][0].lower().replace("resp_", "")] )
+                uncList[iS][1].SetLineWidth( 2 )
+
+            uncList[iS][1].SetFillColorAlpha(r.kBlue, 0.)
+            thePlot.addHisto(uncList[iS][1], 'H,same', vl.SysNameTranslator[uncList[iS][0].lower().replace("resp_", "")] + (" (resp.)" if "resp" in uncList[iS][0].lower() else ""), 'L')
+            #thePlot.addHisto(uncList[iS][1], 'H,same', uncList[iS][0], 'L')
+            plottedsysts += 1
+
+            #print iS, uncList[iS][0]
             iS += 1
-            if len(uncList) == 1: break
-            continue
-
-        if "lumi" in uncList[iS][0].lower():
-            uncList[iS][1].SetLineColor(r.kBlack)
-            uncList[iS][1].SetLineStyle( 4 )
-        else:
-            #uncList[iS][1].SetLineColor( vl.ColorMapList[iS] )
-            uncList[iS][1].SetLineColor( vl.UncsColourMap[uncList[iS][0].lower().replace("resp_", "")] )
-            uncList[iS][1].SetLineWidth( 2 )
-
-        uncList[iS][1].SetFillColorAlpha(r.kBlue, 0.)
-        thePlot.addHisto(uncList[iS][1], 'H,same', vl.SysNameTranslator[uncList[iS][0].lower().replace("resp_", "")] + (" (resp.)" if "resp" in uncList[iS][0].lower() else ""), 'L')
-        #thePlot.addHisto(uncList[iS][1], 'H,same', uncList[iS][0], 'L')
-        plottedsysts += 1
-
-        #print iS, uncList[iS][0]
-        iS += 1
 
 
     return (uncList, hincstat, hincsyst, hincmax)

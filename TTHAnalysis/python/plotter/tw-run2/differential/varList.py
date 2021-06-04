@@ -19,6 +19,8 @@ doPre       = True      # Show or not show the "Preliminary" in the plots
 doSym       = True      # Symmetrise the uncertainties or not
 doReg       = False     # Regularise distributions (general setting, can be overrrided for each variable separately)
 doArea      = False     # Apply area constraint in unfolding (general setting, can be overrrided for each variable separately)
+onlyTotal   = True      # Only show total unc. line in the differential relative unc. plots.
+
 
 # === OTHER IMPORTANT DEFINITIONS ===
 LumiDict    = {2016 : 35.92,

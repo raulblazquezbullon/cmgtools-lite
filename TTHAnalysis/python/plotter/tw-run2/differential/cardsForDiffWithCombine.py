@@ -284,19 +284,48 @@ def createCardsForEachSys(tsk):
     for iB in range(len(vl.varList[iV]["bins_detector"]) - 1):
         readF = open(txtfiletoopen.format(b = iB), 'r')
 
-        presentprocesses = []
-
-        outtext = ""
+        outtext = ""; theprocs = []
         for line in readF:
             entries = line.split()
             if entries[0] in validfirstentries or entries[0][0] == "#":
                 tmpline = deepcopy(line)
+
+                if   "process" in entries[0] and not len(theprocs):
+                    for iP in range(1, len(entries)):
+                        theprocs.append(entries[iP])
+                elif "shapes" in entries[0]:
+                    tmpline = tmpline.replace("card_bin{b}.root".format(b = iB),
+                                              "finalcard_bin{b}_year{y}.root".format(b = iB, y = iY))
+
                 outtext += tmpline
             elif len(entries) > 1:
-                if entries[0] == "jes": continue
+                if entries[0] == "jes" or entries[0] == "tw_matching": continue
 
                 if   ("shape" in entries[1]):
-                    outtext += line
+                    goodline = ["shape"]
+                    ##Check to see whether there are zero evs. in any of the variations in any bin
+                    tmpRfile = r.TFile(rootfiletoopen.format(b = iB), "READ")
+                    for iP in range(2, len(entries)):
+                        toforget = False
+                        if "1" in entries[iP]:
+                            #print "x_" + theprocs[iP - 2] + "_" + entries[0].replace(" ", "")
+                            histoUp = tmpRfile.Get("x_" + theprocs[iP - 2] + "_" + entries[0].replace(" ", "") + "Up")
+                            histoDn = tmpRfile.Get("x_" + theprocs[iP - 2] + "_" + entries[0].replace(" ", "") + "Down")
+                            for jB in range(1, histoUp.GetNbinsX() + 1):
+                                if all([histoUp.GetBinContent(jB) < 1e-5, histoDn.GetBinContent(jB) < 1e-5]):
+                                    toforget = True
+                                    break
+                                if any([histoUp.GetBinContent(jB) < 1e-5, histoDn.GetBinContent(jB) < 1e-5]):
+                                    towarn = True
+                                    break
+
+                        if toforget:
+                            goodline.append("-")
+                        else:
+                            goodline.append(entries[iP])
+
+                    tmpRfile.Close(); del tmpRfile
+                    outtext += " ".join([entries[0]] + goodline) + "\n"
                 elif ("lnN"   in entries[1] and "norm" in entries[0]):
                     outtext += line
                 else:
@@ -306,14 +335,63 @@ def createCardsForEachSys(tsk):
                     #print " ".join([entries[0]] + goodline)
                     outtext += " ".join([entries[0]] + goodline) + "\n"
 
-
         readF.close()
-        #if len(presentprocesses) < 5:
-            #print outtext
+        #print theprocs
         outF  = open(path + "/finalcard_bin{b}_year{y}.txt".format(b = iB, y = iY), 'w')
         outF.write(outtext)
         outF.close()
-    return
+
+        print "    - Creating new rootfile card for bin", iB
+        therootfile = r.TFile.Open(rootfiletoopen.format(b = iB), "READ")
+        tmpdictofthings = {}
+        copyname = ""; theproc = ""
+        for key in therootfile.GetListOfKeys():
+            copyname = key.GetName()
+            isaproc  = False
+            if len(copyname.split("_")) >= 3:
+                theproc  = deepcopy(copyname.split("_")[1] if ("bkg" not in copyname.split("_")[2] and "partbin" not in copyname.split("_")[2]) else "_".join(copyname.split("_")[1:3]))
+            else:
+                theproc  = deepcopy(copyname.split("_")[1])
+            #print theproc
+
+            if (copyname.split("_")[1] in vl.ProcessesNames and
+                len(copyname.split("_")) <= 2) or copyname == "x_data_obs":
+                isaproc = True
+            #else:
+                #theunc  = "_".join(copyname.split("_")[2:])
+                #pureunc = theunc.replace("Up", "").replace("Down", "")
+
+            if any([therootfile.Get(copyname).GetBinContent(jB) < 1e-5 for jB in range(1, therootfile.Get(copyname).GetNbinsX() + 1)]):
+                if isaproc:
+                    raise RuntimeError("FATAL: less than 1e-5 found in process " + theproc)
+                othervar = therootfile.Get(key.GetName().replace("Up" if "Up" in copyname else "Down", "Down" if "Up" in copyname else "Up"))
+                if any([(therootfile.Get(copyname).GetBinContent(jB) <= 0 and othervar.GetBinContent(jB) <= 0) for jB in range(1, therootfile.Get(copyname).GetNbinsX() + 1)]):
+                    continue
+                newhisto = deepcopy(therootfile.Get(copyname).Clone(copyname))
+                nomproc  = therootfile.Get("x_" + theproc)
+                for jB in range(1, newhisto.GetNbinsX() + 1):
+                    if newhisto.GetBinContent(jB) < 1e-5:
+                        if othervar.GetBinContent(jB) <= 1e-5:
+                            newhisto.SetBinContent(jB, 1e-5)
+                        else:
+                            thevar = othervar.GetBinContent(jB) - nomproc.GetBinContent(jB)
+                            if abs(thevar) >= nomproc.GetBinContent(jB):
+                                newhisto.SetBinContent(jB, 1e-5)
+                            else:
+                                newhisto.SetBinContent(jB, max(nomproc.GetBinContent(jB) - thevar, 1e-5))
+
+                tmpdictofthings[copyname] = deepcopy(newhisto)
+            else:
+                tmpdictofthings[copyname] = deepcopy(therootfile.Get(key.GetName()).Clone(copyname))
+
+        therootfile.Close(); del therootfile
+
+        theoutrootfile = r.TFile.Open(path + "/finalcard_bin{b}_year{y}.root".format(b = iB, y = iY), "RECREATE")
+        for key in tmpdictofthings:
+            tmpdictofthings[key].Write()
+        theoutrootfile.Close(); del theoutrootfile
+    towarndict = {}
+    return towarndict
 
 
 
