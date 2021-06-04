@@ -166,8 +166,6 @@ def GiveMeMyGoodGOFTests(tsk):
     if   ty == "particle":
         f1 = r.TFile.Open(pathtothings + "/particleOutput.root",        "read")
         f2 = r.TFile.Open(pathtothings + "/particle.root",              "read")
-        #f3 = r.TFile.Open(pathtothings + "{vr}_/ClosureTest_DS_{vr}.root".format(vr = var),       "read")
-        #f4 = r.TFile.Open(pathtothings + "{vr}_/ClosureTest_aMCatNLO_{vr}.root".format(vr = var), "read")
         f5 = r.TFile.Open(pathtothings + "/CovMat_particle.root",       "read")
     elif ty == "particlefidbin":
         f1 = r.TFile.Open(pathtothings + "/particlefidbinOutput.root",  "read")
@@ -180,13 +178,13 @@ def GiveMeMyGoodGOFTests(tsk):
     hDataCov  = deepcopy(f5.Get("finalmat").Clone("hDataCov"))
     if ty == "particle":
         hDR       = deepcopy(f2.Get("x_tw").Clone("hDR"))
-        #hDS       = deepcopy(f3.Get("tW").Clone("hDS"))
-        #haMCatNLO = deepcopy(f4.Get("tW").Clone("haMCatNLO"))
+        hDS       = deepcopy(f2.Get("x_twds").Clone("hDS"))
+        hHerwig   = deepcopy(f2.Get("x_twherwig").Clone("hHerwig"))
         f1.Close(); f2.Close();  f5.Close() #f3.Close(); f4.Close();
     elif ty == "particlefidbin":
         hDR       = deepcopy(f1.Get("tru").Clone("hDR"))
-        #hDS       = deepcopy(f1.Get("hDS").Clone("hDS"))
-        #haMCatNLO = deepcopy(f1.Get("aMCatNLO").Clone("haMCatNLO"))
+        hDS       = deepcopy(f1.Get("tru_DS").Clone("hDS"))
+        hHerwig   = deepcopy(f1.Get("tru_herwig").Clone("hHerwig"))
         f1.Close(); f5.Close()
     
     hData.SetFillColor(r.kWhite)
@@ -219,8 +217,9 @@ def GiveMeMyGoodGOFTests(tsk):
             #if i != j: continue
             covmat[i-1, j-1] = hDataCov.GetBinContent(i, j)
     
-    DRcovmat       = np.diag(np.array([hDR.GetBinError(bin)**2       for bin in range(1, hDR.GetNbinsX() + 1)], dtype = np.double))
-    #DScovmat       = np.diag(np.array([hDS.GetBinError(bin)**2       for bin in range(1, hDS.GetNbinsX() + 1)], dtype = np.double))
+    DRcovmat       = np.diag(np.array([hDR.GetBinError(bin)**2       for bin in range(1, hDR.GetNbinsX() + 1)],     dtype = np.double))
+    DScovmat       = np.diag(np.array([hDS.GetBinError(bin)**2       for bin in range(1, hDS.GetNbinsX() + 1)],     dtype = np.double))
+    Herwigcovmat   = np.diag(np.array([hHerwig.GetBinError(bin)**2   for bin in range(1, hHerwig.GetNbinsX() + 1)], dtype = np.double))
     #aMCatNLOcovmat = np.diag(np.array([haMCatNLO.GetBinError(bin)**2 for bin in range(1, haMCatNLO.GetNbinsX() + 1)], dtype = np.double))
     
     #covmat         *= 10000**2
@@ -238,10 +237,14 @@ def GiveMeMyGoodGOFTests(tsk):
         "hist"   : deepcopy(hDR),
         "covmat" : deepcopy(DRcovmat)
     }
-    #coses["DS"] = {
-        #"hist"   : deepcopy(hDS),
-        #"covmat" : deepcopy(DScovmat)
-    #}
+    coses["DS"] = {
+        "hist"   : deepcopy(hDS),
+        "covmat" : deepcopy(DScovmat)
+    }
+    coses["Herwig"] = {
+        "hist"   : deepcopy(hHerwig),
+        "covmat" : deepcopy(Herwigcovmat)
+    }
     #coses["aMCatNLO"] = {
         #"hist"   : deepcopy(haMCatNLO),
         #"covmat" : deepcopy(aMCatNLOcovmat)
@@ -363,21 +366,24 @@ def GiveMeMyGoodGOFTests(tsk):
     #hDS.GetYaxis().SetRangeUser(0, 1.1 * max( [hDS.GetMaximum(), hDR.GetMaximum(), haMCatNLO.GetMaximum(), hData.GetMaximum()] ))
     hDR.GetYaxis().SetRangeUser(0, 1.1 * max( [hDR.GetMaximum(), hData.GetMaximum()] ))
     
-    plot.addHisto(hDR,       'hist',      'tW Powheg',  'L', 'mc')
-    #plot.addHisto(hDS,       'hist,same', 'tW DS',      'L', 'mc')
+    plot.addHisto(hDR,       'hist',      'tW Powheg+Pythia8 DR',  'L', 'mc')
+    plot.addHisto(hDS,       'hist,same', 'tW Powheg+Pythia8 DS',  'L', 'mc')
+    plot.addHisto(hHerwig,   'hist,same', 'tW Powheg+Herwig7 DR',  'L', 'mc')
     #plot.addHisto(haMCatNLO, 'hist,same', 'tW aMC@NLO', 'L', 'mc')
     plot.addHisto(hData,     'hist,same', 'Data',       'L', 'mc')
     
     l1 = r.TLatex(0.65, 0.650, '#scale[0.4]{DR - p-val.:                %4.10f}'%coses["DR"]["p-value"])
     l2 = r.TLatex(0.65, 0.625, '#scale[0.4]{DR - stat.:                 %4.10f}'%coses["DR"]["statistic"])
-    #l3 = r.TLatex(0.65, 0.600, '#scale[0.4]{DS - p-val.:                %4.10f}'%coses["DS"]["p-value"])
-    #l4 = r.TLatex(0.65, 0.575, '#scale[0.4]{DS - stat.:                 %4.10f}'%coses["DS"]["statistic"])
-    #l5 = r.TLatex(0.65, 0.550, '#scale[0.4]{aMC@NLO - p-val.: %4.10f}'%coses["aMCatNLO"]["p-value"])
-    #l6 = r.TLatex(0.65, 0.525, '#scale[0.4]{aMC@NLO - stat.:  %4.10f}'%coses["aMCatNLO"]["statistic"])
+    l3 = r.TLatex(0.65, 0.600, '#scale[0.4]{DS - p-val.:                %4.10f}'%coses["DS"]["p-value"])
+    l4 = r.TLatex(0.65, 0.575, '#scale[0.4]{DS - stat.:                 %4.10f}'%coses["DS"]["statistic"])
+    l5 = r.TLatex(0.65, 0.550, '#scale[0.4]{Herwig - p-val.:            %4.10f}'%coses["Herwig"]["p-value"])
+    l6 = r.TLatex(0.65, 0.525, '#scale[0.4]{Herwig - stat.:             %4.10f}'%coses["Herwig"]["statistic"])
+    #l7 = r.TLatex(0.65, 0.550, '#scale[0.4]{aMC@NLO - p-val.: %4.10f}'%coses["aMCatNLO"]["p-value"])
+    #l8 = r.TLatex(0.65, 0.525, '#scale[0.4]{aMC@NLO - stat.:  %4.10f}'%coses["aMCatNLO"]["statistic"])
     
-    l1.SetNDC(True); l2.SetNDC(True); #l3.SetNDC(True); l4.SetNDC(True); l5.SetNDC(True); l6.SetNDC(True)
+    l1.SetNDC(True); l2.SetNDC(True); l3.SetNDC(True); l4.SetNDC(True); l5.SetNDC(True); l6.SetNDC(True)
 
-    l1.Draw('same'); l2.Draw('same'); #l3.Draw('same'); l4.Draw('same'); l5.Draw('same'); l6.Draw('same')
+    l1.Draw('same'); l2.Draw('same'); l3.Draw('same'); l4.Draw('same'); l5.Draw('same'); l6.Draw('same')
     
     plot.saveCanvas("TR")
     del plot
@@ -388,8 +394,7 @@ def GiveMeMyGoodGOFTests(tsk):
     outtxt += "Variable: {vr} \n".format(vr = var)
     outtxt += "=========================================\n"
 
-    #for key in ["DR", "DS", "aMCatNLO"]:
-    for key in ["DR"]:
+    for key in ["DR", "DS", "Herwig"]:
         outtxt += key + " / p-value: "        + str(coses[key]["p-value"])   + "\n"
         outtxt += key + " / test statistic: " + str(coses[key]["statistic"]) + "\n"
 
@@ -399,8 +404,10 @@ def GiveMeMyGoodGOFTests(tsk):
 
     print '\nDR - p-val.:',    coses["DR"]["p-value"]
     print 'DR - stat.:',       coses["DR"]["statistic"]
-    #print 'DS - p-val.:',      coses["DS"]["p-value"]
-    #print 'DS - stat.:',       coses["DS"]["statistic"]
+    print 'DS - p-val.:',      coses["DS"]["p-value"]
+    print 'DS - stat.:',       coses["DS"]["statistic"]
+    print 'Herwig - p-val.:',  coses["Herwig"]["p-value"]
+    print 'Herwig - stat.:',   coses["Herwig"]["statistic"]
     #print 'aMC@NLO - p-val.:', coses["aMCatNLO"]["p-value"]
     #print 'aMC@NLO - stat.:',  coses["aMCatNLO"]["statistic"], "\n"
     del coses
@@ -427,6 +434,7 @@ if __name__ == "__main__":
     variable = args.variable
 
     #### First, find the tasks
+    vetolist = ["plots", "Fiducial", "control", "tables"]
     tasks = []
     if year == "all":
         if variable == "all":
@@ -442,11 +450,13 @@ if __name__ == "__main__":
                 theyears.append("run2")
 
             for iY in theyears:
+                if iY != "run2": continue
                 thevars = next(os.walk(inpath + "/" + iY))[1]
                 for iV in thevars:
-                    if "plots" in iV or "Fiducial" in iV or "table" in iV: continue
+                    if any(el in iV for el in vetolist): continue
 
-                    for t in ["particle", "particlefidbin"]:
+                    #for t in ["particle", "particlefidbin"]:
+                    for t in ["particlefidbin"]:
                         tasks.append( (inpath, iY, iV, t) )
 
     #tasks = [ (inpath, "2016", "Lep1_Pt") ]

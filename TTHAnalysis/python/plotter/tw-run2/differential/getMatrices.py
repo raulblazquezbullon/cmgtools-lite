@@ -108,9 +108,9 @@ def GetAndPlotResponseMatrix(iY, var, key, theresponseh, theparticleh, thepath):
     r.gStyle.SetLabelSize(22, "XYZ")
     r.gPad.Update()
     c.SaveAs(thepath + "/R_" + var + "_" + key + ".png")
-    c.SaveAs(thepath + "/R_" + var + "_" + key + ".eps")
+    #c.SaveAs(thepath + "/R_" + var + "_" + key + ".eps")
     c.SaveAs(thepath + "/R_" + var + "_" + key + ".pdf")
-    c.SaveAs(thepath + "/R_" + var + "_" + key + ".root")
+    #c.SaveAs(thepath + "/R_" + var + "_" + key + ".root")
     c.Close(); del c, plot
 
 
@@ -123,9 +123,9 @@ def GetAndPlotResponseMatrix(iY, var, key, theresponseh, theparticleh, thepath):
     r.gStyle.SetLabelSize(22, "XYZ")
     r.gPad.Update()
     c.SaveAs(thepath + "/Rnonumb_" + var + "_" + key + ".png")
-    c.SaveAs(thepath + "/Rnonumb_" + var + "_" + key + ".eps")
+    #c.SaveAs(thepath + "/Rnonumb_" + var + "_" + key + ".eps")
     c.SaveAs(thepath + "/Rnonumb_" + var + "_" + key + ".pdf")
-    c.SaveAs(thepath + "/Rnonumb_" + var + "_" + key + ".root")
+    #c.SaveAs(thepath + "/Rnonumb_" + var + "_" + key + ".root")
     c.Close(); del c, plot
     return htemp, overlap
 
@@ -254,7 +254,7 @@ def GetAndPlotPuritiesAndStabilities(var, theresponseh, theparticleh, thedetecto
 
     c.SaveAs(thepath + "/PurStab_" + var + ".png")
     c.SaveAs(thepath + "/PurStab_" + var + ".pdf")
-    c.SaveAs(thepath + "/PurStab_" + var + ".root")
+    #c.SaveAs(thepath + "/PurStab_" + var + ".root")
     c.Close(); del c, hStab, plot
 
 
@@ -283,7 +283,7 @@ def GetAndPlotPuritiesAndStabilities(var, theresponseh, theparticleh, thedetecto
 
     c.SaveAs(thepath + "/PurStabwoeff_" + var + ".png")
     c.SaveAs(thepath + "/PurStabwoeff_" + var + ".pdf")
-    c.SaveAs(thepath + "/PurStabwoeff_" + var + ".root")
+    #c.SaveAs(thepath + "/PurStabwoeff_" + var + ".root")
     c.Close(); del c, hStab_woeff, plot
     return
 
@@ -314,7 +314,7 @@ def GetAndPlotNonFiducialHisto(var, theunc, thefiducialh, thepath):
     r.gPad.Update()
     c.SaveAs(thepath + "/F_" + var + "_" + theunc + ".png")
     c.SaveAs(thepath + "/F_" + var + "_" + theunc + ".pdf")
-    c.SaveAs(thepath + "/F_" + var + "_" + theunc + ".root")
+    #c.SaveAs(thepath + "/F_" + var + "_" + theunc + ".root")
     c.Close(); del c
     return hNonFid
 
@@ -365,8 +365,8 @@ def CalculateAndPlotResponseMatrices(tsk):
 
         #if "mistagging" in tmpnam: continue #### ?????????????????????????????????????????????????????????????????????????
 
-
-        if "data" in tmpnam: continue
+        if any([el in tmpnam for el in ["ds", "data", "herwig"]]):
+            continue
 
         if "Up" not in tmpnam and "Down" not in tmpnam: # It is the nominal value!
             #print tmpnam
