@@ -947,3 +947,12 @@ float triggerSF_ttH(int pdgid1, float pt1, int pdgid2, float pt2, int nlep, int 
   }
   else return 1.;
 }
+float triggerSF_ttH(int pdgid1, float pt1, int pdgid2, float pt2, int nlep, int year, int var=0){
+  if (nlep == 3){
+    if (year == 2016) return 0.994*(1 + var*0.003);//0.994 +- 0.003
+    else if (year == 2017) return 0.991*(1 + var*0.006);//0.991 +- 0.006
+    else  return 0.997*(1 + var*0.003);//0.997 +- 0.003
+    
+  }
+  else return 1.;
+}

@@ -76,12 +76,20 @@ CMS_ttW18_trigger_ee      : $PromptFromMC : .*2lss.* : templateSymm; Normalize=F
 CMS_ttW18_trigger_em      : $PromptFromMC : .*2lss.* : templateSymm; Normalize=False, AddWeight='ttH_2lss_ifflav(LepGood1_pdgId\,LepGood2_pdgId\,1.0\,1.01\,1.0)', year="2018"
 CMS_ttW18_trigger_mm      : $PromptFromMC : .*2lss.* : templateSymm; Normalize=False, AddWeight='ttH_2lss_ifflav(LepGood1_pdgId\,LepGood2_pdgId\,1.0\,1.0\,1.01)', year="2018"
 
-CMS_ttW16_trigger_3l      : $PromptFromMC : .*3l.* : normSymm : 1.01; year="2016"
-CMS_ttW17_trigger_3l      : $PromptFromMC : .*3l.* : normSymm : 1.01; year="2017"
-CMS_ttW18_trigger_3l      : $PromptFromMC : .*3l.* : normSymm : 1.01; year="2018"
-CMS_ttW16_trigger_3l      : $PromptFromMC : .*4l.* : normSymm : 1.01; year="2016"
-CMS_ttW17_trigger_3l      : $PromptFromMC : .*4l.* : normSymm : 1.01; year="2017"
-CMS_ttW18_trigger_3l      : $PromptFromMC : .*4l.* : normSymm : 1.01; year="2018"
+#stat only
+CMS_ttW16_trigger_3l      : $PromptFromMC : .*3l.* : normSymm : 1.003; year="2016"
+CMS_ttW17_trigger_3l      : $PromptFromMC : .*3l.* : normSymm : 1.006; year="2017"
+CMS_ttW18_trigger_3l      : $PromptFromMC : .*3l.* : normSymm : 1.003; year="2018"
+CMS_ttW16_trigger_3l      : $PromptFromMC : .*4l.* : normSymm : 1.003; year="2016"
+CMS_ttW17_trigger_3l      : $PromptFromMC : .*4l.* : normSymm : 1.006; year="2017"
+CMS_ttW18_trigger_3l      : $PromptFromMC : .*4l.* : normSymm : 1.003; year="2018"
+
+CMS_ttWcorr_trigger_3l      : $PromptFromMC : .*3l.* : normSymm : 1.006; year="2016" #systematic part 1-SF
+CMS_ttWcorr_trigger_3l      : $PromptFromMC : .*4l.* : normSymm : 1.006; year="2016" #systematic part 1-SF
+CMS_ttWcorr_trigger_3l      : $PromptFromMC : .*3l.* : normSymm : 1.009; year="2017" #systematic part 1-SF
+CMS_ttWcorr_trigger_3l      : $PromptFromMC : .*4l.* : normSymm : 1.009; year="2017" #systematic part 1-SF
+CMS_ttWcorr_trigger_3l      : $PromptFromMC : .*3l.* : normSymm : 1.003; year="2018" #systematic part 1-SF
+CMS_ttWcorr_trigger_3l      : $PromptFromMC : .*4l.* : normSymm : 1.003; year="2018" #systematic part 1-SF
 
 CMS_ttW_pileup : $PromptFromMC : .* : templateAsymm; AddWeights=['puWeightUp/puWeight'\,'puWeightDown/puWeight']
 
@@ -334,7 +342,7 @@ ISR_ttW : TTW : .*:templateAsymm;AddWeights=['PSWeight[6]'\,'PSWeight[8]']
 FSR_ttW : TTW : .*:templateAsymm;AddWeights=['PSWeight[7]'\,'PSWeight[9]']
 
 #color recognection
-Colour_rec : TTW : .* :  altSampleEnv : ['syst_ttw_colour_qcd'\,'syst_ttw_colour_gluonmove'] : symm
+#Colour_rec : TTW : .* :  altSampleEnv : ['syst_ttw_colour_qcd'\,'syst_ttw_colour_gluonmove'] : symm
 
 # Charge flip uncertainty
 CMS_ttW_QF     : data_flips  : .* : normSymm : 1.3
