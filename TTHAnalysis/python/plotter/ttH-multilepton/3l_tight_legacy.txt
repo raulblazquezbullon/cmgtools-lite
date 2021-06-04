@@ -3,7 +3,7 @@ trilep: nLepFO>=3
 exclusive: nLepTight <= 3
 cleanup: minMllAFAS > 12
 trigger: Trigger_3l
-filters: Flag_goodVertices && Flag_globalSuperTightHalo2016Filter && Flag_HBHENoiseFilter && Flag_HBHENoiseIsoFilter && Flag_EcalDeadCellTriggerPrimitiveFilter && Flag_BadPFMuonFilter && (Flag_ecalBadCalibFilterV2 || (year == 2016))
+filters: Flag_goodVertices && Flag_globalSuperTightHalo2016Filter && Flag_HBHENoiseFilter && Flag_HBHENoiseIsoFilter && Flag_EcalDeadCellTriggerPrimitiveFilter && Flag_BadPFMuonFilter &&  (Flag_ecalBadCalibFilterV2 || (year == 2016)) $DATA{&& Flag_eeBadScFilter}
 pt251515: LepGood1_conePt>25 && LepGood2_conePt>15 && LepGood3_conePt>15
 TTT: LepGood1_isLepTight && LepGood2_isLepTight && LepGood3_isLepTight
 
@@ -34,6 +34,9 @@ eq3J: nJet25==3;        Disable=True
 gt3J: nJet25>3;	Disable=True
 eq1B: nBJetMedium25==1; Disable=True
 eq2B: nBJetMedium25==2; Disable=True
+eg1or2B: nBJetMedium25==1 || nBJetMedium25==2; Disable=True
+gt2J: nJet25>2;	Disable=True
+gt1J: nJet25>1;	Disable=True
 pos: (LepGood1_charge + LepGood2_charge + LepGood3_charge) > 0; Disable=True
 neg: (LepGood1_charge + LepGood2_charge + LepGood3_charge) < 0; Disable=True
 
