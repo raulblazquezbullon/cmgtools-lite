@@ -17,6 +17,15 @@ def _runIt(args):
 
         pp.run()
 
+def _runFIt(args):
+    D, options = args
+    for P in options.path:
+        d = D.replace("{P}",P)
+        if not os.path.exists(d): continue
+        os.system("python %s --elist %s %s %s  > /dev/null" % (skimFTrees, options.elist, outdir, d + " --new" * options.skipExisting))
+    print "Skimmed %s" % os.path.basename(D)
+    return
+
 if __name__ == "__main__":
     from optparse import OptionParser
     parser = OptionParser(usage="%prog [options] mc.txt cuts.txt outputDir")
@@ -79,18 +88,21 @@ if __name__ == "__main__":
         else:             mycut = cuts.pop()
         src = fname + fname2friends[fname]
         tasks.append((src,outdir,mycut,options))
-    if options.jobs == 0: 
+    if options.jobs == 0:
         map(_runIt, tasks)
     else:
         from multiprocessing import Pool
         Pool(options.jobs).map(_runIt, tasks)
+
     if options.skimFriends and not (options.pretend or options.justcount):
         skimFTrees = os.path.expandvars("$CMSSW_BASE/src/CMGTools/TTHAnalysis/python/plotter/skimFTreesNew.py")
         if not os.path.isfile(skimFTrees): raise RuntimeError("missing skimFTreesNew")
+        print "> Skimming ftrees..."
+        tasks = []
         for D in options.friendTreesSimple + options.friendTreesMCSimple + options.friendTreesDataSimple:
-            for P in options.path:
-                d = D.replace("{P}",P)
-                if not os.path.exists(d): continue
-                os.system("python %s --elist %s %s %s  > /dev/null" % (skimFTrees, options.elist, outdir, d))
-            print "Skimmed %s" % os.path.basename(D)
-
+            tasks.append( (D, options) )
+        if options.jobs == 0:
+            map(_runFIt, tasks)
+        else:
+            from multiprocessing import Pool
+            Pool(options.jobs).map(_runFIt, tasks)

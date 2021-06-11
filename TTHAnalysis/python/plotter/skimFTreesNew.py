@@ -51,6 +51,9 @@ for dset in dsets:
         print ""; continue
     fsel = ROOT.TFile.Open(args[0]+'/'+toDataset[dset]+'.root')
     if not fsel: raise RuntimeError("Error opening %s"  % args[0]+'/'+toDataset[dset]+'.root')
+
+    if not fsel.Get("Events").GetEntries(): continue
+
     elist = fsel.Get(options.elist)
     if not elist:
         fsel.ls()
