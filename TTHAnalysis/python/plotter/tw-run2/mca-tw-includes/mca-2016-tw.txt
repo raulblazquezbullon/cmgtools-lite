@@ -1,2 +1,6 @@
 tw+ : ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_PSweights_13TeV-powheg-pythia8*central* : xsec ; FillColor=798
 tw+ : ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_PSweights_13TeV-powheg-pythia8*central*     : xsec ; FillColor=798
+
+#### temporal pa skimmear
+#twherwig : ST_tW_antitop_5f_NoFullyHadronicDecays_TuneEE5C_13TeV-powheg-herwigpp_central_*            : xsec ; FillColor=798,genSumWeightName="genEventSumw"
+#twherwig : ST_tW_top_5f_NoFullyHadronicDecays_TuneEE5C_13TeV-powheg-herwigpp_central_*                : xsec ; FillColor=798,genSumWeightName="genEventSumw"

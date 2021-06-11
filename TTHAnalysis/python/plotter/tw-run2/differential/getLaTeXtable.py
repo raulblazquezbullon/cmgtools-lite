@@ -259,9 +259,9 @@ def getcondnumLaTeXtable(path, variables, outname = "condnum", addasimov = False
                 thegoodname = sublines[0].replace("Up", "").replace("Down", "")
 
                 #print thegoodname
-
+                if "tw_matching" in thegoodname or thegoodname == "jes": continue
                 if not "lumi" in thegoodname:
-                    listofsysts.append(vl.PrintSysNameTranslator[thegoodname] + " " + ("Up" if "Up" in sublines[0] else "Down"))
+                    listofsysts.append(vl.PrintSysNameTranslator[thegoodname] + " " + ("Up" if "Up" in sublines[0] else "Down" if not "nominal" in thegoodname else ""))
                 else:
                     listofsysts.append(thegoodname.replace("_", "\\_") + " " + ("Up" if "Up" in sublines[0] else "Down" if "nominal" not in sublines[0].lower() else ""))
 
@@ -355,7 +355,7 @@ def getcondnumLaTeXtable(path, variables, outname = "condnum", addasimov = False
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(usage = "python nanoAOD_checker.py [options]", description = "Checker tool for the outputs of nanoAOD production (NOT postprocessing)", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('--inpath',    '-i', metavar = 'inpath',     dest = "inpath",   required = True,  default = "./temp/differential")
-    parser.add_argument('--type',      '-t', metavar = 'thetype',    dest = "thetype",  required = True,  default = "condnumtable")
+    parser.add_argument('--type',      '-t', metavar = 'thetype',    dest = "thetype",  required = False, default = "condnumtable")
     parser.add_argument('--year',      '-y', metavar = 'year',       dest = "year",     required = False, default = "all")
     parser.add_argument('--variable',  '-v', metavar = 'variable',   dest = "variable", required = False, default = "all")
 

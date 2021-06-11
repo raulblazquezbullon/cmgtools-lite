@@ -1,2 +1,5 @@
 tw+ : ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_*topnano_*     : xsec ; FillColor=798
 tw+ : ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_*topnano_* : xsec ; FillColor=798
+
+#twherwig : ST_tW_top_5f_NoFullyHadronicDecays_TuneCH3_13TeV-powheg-herwig7_central_*       : xsec ; FillColor=798,genSumWeightName="genEventSumw"
+#twherwig : ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCH3_13TeV-powheg-herwig7_central_*   : xsec ; FillColor=798,genSumWeightName="genEventSumw"

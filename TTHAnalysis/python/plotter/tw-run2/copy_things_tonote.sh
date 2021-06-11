@@ -4,8 +4,10 @@ plotter="/nfs/fanae/user/vrbouza/Proyectos/tw_run2/desarrollo/CMSSW_10_4_0/src/C
 slash="/"
 
 #tmpfolder="temp_2021_02_03_plotstotal"
-tmpfolder="temp_2021_05_31"
+# tmpfolder="temp_2021_05_31"
 # tmpfolder="temp_2021_03_15_run2contodaslasposiblesinternalizadas" # pa tener casi todas internalizadas
+# tmpfolder="temp_2021_05_28_diffcontodo"
+tmpfolder="temp_2021_06_02_plotstodosalgunacosamas"
 prefix=$plotter/$tmpfolder/
 
 outfolder="/nfs/fanae/user/vrbouza/Proyectos/tw_run2/documentacion/AN-20-118"
@@ -18,15 +20,15 @@ regs="1j1t 2j1t 2j2t"
 sfplots="btaggingEff_B_ btaggingEff_C_ btaggingEff_L_ leptonSF_e_idtight_ leptonSF_e_recotight_ leptonSF_m_idtight_ leptonSF_m_iso_ triggerSF_ElMu_"
 sfplots2016="btaggingEff_B_2016 btaggingEff_C_2016 btaggingEff_L_2016 leptonSF_e_idtight_2016 leptonSF_e_recotight_2016 leptonSF_m_idtight_BCDEF_2016 leptonSF_m_idtight_GH_2016 leptonSF_m_iso_BCDEF_2016 leptonSF_m_iso_GH_2016 triggerSF_ElMu_2016"
 
-for p in $sfplots2016; do
-    cp $prefix/SFhistos/2016/$p.pdf $outfolder/figures/mccorrections/
-done;
-
-for p in $sfplots; do
-    for y in 2017 2018; do
-        cp $prefix/SFhistos/$y/$p$y.pdf $outfolder/figures/mccorrections/
-    done;
-done;
+# for p in $sfplots2016; do
+#     cp $prefix/SFhistos/2016/$p.pdf $outfolder/figures/mccorrections/
+# done;
+#
+# for p in $sfplots; do
+#     for y in 2017 2018; do
+#         cp $prefix/SFhistos/$y/$p$y.pdf $outfolder/figures/mccorrections/
+#     done;
+# done;
 
 # for v in $vars; do
 # #     for y in $years; do
@@ -40,8 +42,8 @@ done;
 # #     cp $prefix/differential/run2/detectorplots/$v\_detector.pdf $outfolder/figures/diffresults/run2/
 # #     cp $prefix/differential/run2/detectorplots/$v\uncs_detector.pdf $outfolder/figures/diffresults/run2/
 #
-#     cp $prefix/differential/run2/particleplots/$v.pdf $outfolder/figures/diffresults/run2/
-#     cp $prefix/differential/run2/particleplots/$v\uncs.pdf $outfolder/figures/diffresults/run2/
+# #     cp $prefix/differential/run2/particleplots/$v.pdf $outfolder/figures/diffresults/run2/
+# #     cp $prefix/differential/run2/particleplots/$v\uncs.pdf $outfolder/figures/diffresults/run2/
 #
 #     cp $prefix/differential/run2/particlefidbinplots/$v\_particlefidbin.pdf $outfolder/figures/diffresults/run2/
 #     cp $prefix/differential/run2/particlefidbinplots/$v\uncs_particlefidbin.pdf $outfolder/figures/diffresults/run2/
@@ -51,16 +53,16 @@ done;
 #     cp $prefix/differential/run2/$v/CovMatplots/Cov_$v\_particlefidbin.pdf $outfolder/figures/diffresults/run2/
 # done;
 #
-# # for y in $years; do
-# #     mkdir -p $outfolder/figures/unfolding/$y
-# #     cp $prefix/differential/$y/tables/condnum.tex $outfolder/figures/unfolding/$y/
-# # done;
+# for y in $years; do
+#     mkdir -p $outfolder/figures/unfolding/$y
+#     cp $prefix/differential/$y/tables/condnum.tex $outfolder/figures/unfolding/$y/
+# done;
 # capitaldiffvars=("Lep1_Pt Jet1_Pt Lep1Lep2_DPhi Lep1Lep2Jet1MET_Pz Lep1Lep2Jet1_M Lep1Lep2Jet1MET_Mt")
 # for v in $capitaldiffvars; do
 #     cp $prefix/differential/run2/tables/$v\_particle.tex $outfolder/figures/unfolding/run2/
 #     cp $prefix/differential/run2/tables/$v\_particlefidbin.tex $outfolder/figures/unfolding/run2/
 # done;
-
+#
 # return
 # diffvars=("lep1_pt jet1_pt lep1lep2_dphi lep1lep2jet1met_pz lep1lep2jet1_m lep1lep2jet1met_mt")
 # for v in $diffvars; do
@@ -68,16 +70,16 @@ done;
 #     cp $prefix/varplots/run2/1j1t/differential/$v.pdf $outfolder/figures/eventselection/run2/1j1t/differential/
 #     cp $prefix/varplots/run2/1j1t/$v.pdf $outfolder/figures/eventselection/run2/1j1t/
 # done;
-# #
-# varsforplots=("lep1_pt jet1_pt lep1lep2_pt lep1lep2_ptsum lep1lep2_dphi lep1lep2_m")
-# for v in $varsforplots; do
-#     for r in $regs; do
-#         mkdir -p $outfolder/figures/eventselection/run2/$r
-#         cp $prefix/varplots/run2/$r/$v.pdf $outfolder/figures/eventselection/run2/$r/
-#     done;
-# done;
+# # #
+varsforplots=("lep1_pt jet1_pt lep1lep2_pt lep1lep2_ptsum lep1lep2_dphi lep1lep2_m")
+for v in $varsforplots; do
+    for r in $regs; do
+        mkdir -p $outfolder/figures/eventselection/run2/$r
+        cp $prefix/varplots/run2/$r/$v.pdf $outfolder/figures/eventselection/run2/$r/
+    done;
+done;
 #
-# cp $prefix/varplots/run2/1j1t/nloosejets.pdf $outfolder/figures/eventselection/run2/1j1t/
+cp $prefix/varplots/run2/1j1t/nloosejets.pdf $outfolder/figures/eventselection/run2/1j1t/
 # mkdir -p $outfolder/figures/eventselection/run2/nojets/
 # cp $prefix/varplots/run2/nojets/nJetnBJet.pdf $outfolder/figures/eventselection/run2/nojets/
 
