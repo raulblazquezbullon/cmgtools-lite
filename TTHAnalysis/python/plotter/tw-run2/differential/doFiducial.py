@@ -349,8 +349,8 @@ def PlotParticleFidBinLevelResults(thedict, inpath, iY, varName, notff):
     nominal_withErrors[0].SetLineColor(0)
     nominal_withErrors[0].SetFillStyle(1001)
 
-    #if varName != "Fiducial":
-        #tex.saveLaTeXfromhisto(thedict[""], varName, path = inpath + "/" + iY + "/tables", errhisto = nominal_withErrors[0], ty = "particlefidbin")
+    if varName != "Fiducial":
+        tex.saveLaTeXfromhisto(thedict[""], varName, path = inpath + "/" + iY + "/tables", errhisto = nominal_withErrors[0], ty = "particlefidbin")
 
     if "yaxismax_particlefidbin" in vl.varList[varName]:
         plot.yaxisuplimit = vl.varList[varName]["yaxismax_particlefidbin"]
