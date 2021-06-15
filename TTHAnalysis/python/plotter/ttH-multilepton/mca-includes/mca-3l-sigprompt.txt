@@ -1,40 +1,42 @@
 
-TTW+     : TTWToLNu_PSW : 0.1960: LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ;  FillColor=ROOT.kGreen-5, Label="ttW   ", years="2016\,2017" #naming difference they are amcatnlo_fxfx also
-TTW+     : TTWToLNu_fxfx : 0.1960 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ;  FillColor=ROOT.kGreen-5, Label="ttW   ", years="2018"
-TTW+     : TTWToLNu_EWK : 0.0491*(1-0.6741) : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kGreen-5, Label="ttW "
+TTW+     : TTWToLNu_PSW : 0.1960: LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ;  FillColor=ROOT.kPink-1, Label="ttW   ", years="2016\,2017" #naming difference they are amcatnlo_fxfx also
+TTW+     : TTWToLNu_fxfx : 0.1960 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ;  FillColor=ROOT.kPink-1, Label="ttW   ", years="2018"
+TTW+     : TTWToLNu_EWK : 0.0491*(1-0.6741) : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kPink-1, Label="ttW "
 
 
-TTH   : TTHnobb_pow : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0; FillColor=ROOT.kOrange+10
+TTZ     : TTZToLLNuNu : 0.281 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ;  FillColor=ROOT.kOrange-2, Label="ttZ "
+
+TTZ     : TTZToLLNuNu_m1to10 : 0.082 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ;  FillColor=ROOT.kOrange-2, Label="ttZ "
+#TTZ	: TTLep_pow_part1 + TTLep_pow_part2  + TTLep_pow_part3 + TTLep_pow_part4 + TTLep_pow_part5 + TTLep_pow_part6 + TTLep_pow_part7 + TTLep_pow_part8 + TTLep_pow_part9 + TTLep_pow_part10 : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kOrange-2,  years = "2016", Label="ttZ "
+#TTZ	: TTLep_pow : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kOrange-2,  years = "2017\,2018", Label="ttZ " #now included in convs
+#TTZ   	: TTSemi_pow : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kOrange-2, Label="ttZ "
+
+TTH   : TTHnobb_pow : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0; FillColor=ROOT.kGray
 
 
-TTZ     : TTZToLLNuNu : 0.281 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ;  FillColor=ROOT.kSpring+2, Label="ttZ "
+Rares: GGHZZ4L : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kSpring-7
+Rares : qqHZZ4L : 0.0010099 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kSpring-7 
+Rares: VHToNonbb : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kSpring-7
+Rares: TTTT_P8M2T4 : 0.008213 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kSpring-7, years="2016"
+Rares: TTTT : 0.008213 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kSpring-7, years="2017\,2018"
+Rares: TZQToLL : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kSpring-7
+Rares: tWll : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kSpring-7
+Rares: WWTo2L2Nu_DPS: 0.223 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kSpring-7
+Rares: WpWpJJ : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kSpring-7
+Rares: WWW : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kSpring-7
+Rares: WZG : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kSpring-7
+Rares: WWZ : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kSpring-7
+Rares: WZZ : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kSpring-7
+Rares: ZZZ : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kSpring-7
+Rares: THQ : 0.02313  : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0; FillColor=ROOT.kSpring-7
+Rares: THW : 0.005087 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0; FillColor=ROOT.kSpring-7
+Rares: TTWW_LO : 0.006981 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kSpring-7, years= "2016"
+Rares: TTWW : 0.006981 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kSpring-7, years= "2017\,2018"
 
-TTZ     : TTZToLLNuNu_m1to10 : 0.082 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ;  FillColor=ROOT.kSpring+2, Label="ttZ "
-#TTZ	: TTLep_pow_part1 + TTLep_pow_part2  + TTLep_pow_part3 + TTLep_pow_part4 + TTLep_pow_part5 + TTLep_pow_part6 + TTLep_pow_part7 + TTLep_pow_part8 + TTLep_pow_part9 + TTLep_pow_part10 : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kSpring+2,  years = "2016", Label="ttZ "
-#TTZ	: TTLep_pow : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kSpring+2,  years = "2017\,2018", Label="ttZ " #now included in convs
-#TTZ   	: TTSemi_pow : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kSpring+2, Label="ttZ "
 
-WZ	: WZTo3LNu_fxfx : 4.43 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0  ;  FillColor=ROOT.kViolet-4
-ZZ      : ZZTo4L : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ;  FillColor=ROOT.kViolet-3
-#ZZ      : DYJetsToLL_M10to50_LO : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kViolet-3
-#ZZ      : DYJetsToLL_M50 : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kViolet-3
+WZ	: WZTo3LNu_fxfx : 4.43 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0  ;  FillColor=ROOT.kOrange+8
+ZZ      : ZZTo4L : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ;  FillColor=ROOT.kOrange+3
+#ZZ      : DYJetsToLL_M10to50_LO : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kOrange+3
+#ZZ      : DYJetsToLL_M50 : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kOrange+3
 
-Rares: GGHZZ4L : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kAzure-9
-Rares : qqHZZ4L : 0.0010099 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kAzure-9 
-Rares: VHToNonbb : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kAzure-9
-Rares: TTTT_P8M2T4 : 0.008213 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kAzure-9, years="2016"
-Rares: TTTT : 0.008213 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kAzure-9, years="2017\,2018"
-Rares: TZQToLL : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kAzure-9
-Rares: tWll : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kAzure-9
-Rares: WWTo2L2Nu_DPS: 0.223 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kAzure-9
-Rares: WpWpJJ : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kAzure-9
-Rares: WWW : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kAzure-9
-Rares: WZG : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kAzure-9
-Rares: WWZ : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kAzure-9
-Rares: WZZ : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kAzure-9
-Rares: ZZZ : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kAzure-9
-Rares: THQ : 0.02313  : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0; FillColor=ROOT.kAzure-9
-Rares: THW : 0.005087 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0; FillColor=ROOT.kAzure-9
-Rares: TTWW_LO : 0.006981 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kAzure-9, years= "2016"
-Rares: TTWW : 0.006981 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kAzure-9, years= "2017\,2018"
 
