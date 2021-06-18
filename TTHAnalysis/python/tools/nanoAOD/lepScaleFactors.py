@@ -89,10 +89,10 @@ class lepScaleFactors(Module):
         for var in ',_el_loosetotight_up,_el_loosetotight_dn,_mu_loosetotight_up,_mu_loosetotight_dn'.split(','):
             # self.out.branch('leptonSF_2lss%s'%var,'F')
             self.out.branch('leptonSF_3l%s'%var,'F')
-            #self.out.branch('leptonSF_4l%s'%var,'F')
-        #for var in ',_up,_dn'.split(','):
-        #    self.out.branch('triggerSF_2lss%s'%var,'F')
-        #    self.out.branch('triggerSF_3l%s'%var,'F')
+            self.out.branch('leptonSF_4l%s'%var,'F')
+        for var in ',_up,_dn'.split(','):
+            #self.out.branch('triggerSF_2lss%s'%var,'F')
+            self.out.branch('triggerSF_3l%s'%var,'F')
 
   
 
@@ -162,6 +162,22 @@ class lepScaleFactors(Module):
         leps = [all_leps[chosen[i]] for i in xrange(nFO)]
         
         # trigger efficiency
+        trilepSF =  {"2016":{'central':[0.878,0.997,0.996],'up':[0.081,0.005,0.002],'dn':[0.142,0.012,0.004]},"2017":{'central':[1.02,1.003,0.988],'up':[0.012,0.001,0.005],'dn':[0.236,0.024,0.008]},"2018":{'central':[0.935,0.99, 0.998],'up':[0.06,0.008,0.002],'dn':[0.147,0.017,0.003]}}
+        
+        dic = trilepSF[str(year)]
+
+        if leps[0].conePt< 40:
+            self.out.fillBranch('triggerSF_3l', dic["central"][0])
+            self.out.fillBranch('triggerSF_3l_up', dic["central"][0] + dic["up"][0])
+            self.out.fillBranch('triggerSF_3l_dn', dic["central"][0]- dic["dn"][0])
+        elif leps[0].conePt >= 40 and leps[0].conePt <80 :
+            self.out.fillBranch('triggerSF_3l', dic["central"][1])
+            self.out.fillBranch('triggerSF_3l_up',dic["central"][1]+ dic["up"][1])
+            self.out.fillBranch('triggerSF_3l_dn',dic["central"][1]- dic["dn"][1])
+        else:
+            self.out.fillBranch('triggerSF_3l',dic["central"][2])
+            self.out.fillBranch('triggerSF_3l_up', dic["central"][2]+dic["up"][2])
+            self.out.fillBranch('triggerSF_3l_dn', dic["central"][2]-dic["dn"][2])
         '''
         if year == 2016:
             for var, shift in zip(',_up,_dn'.split(','),[0,1,-1]):
@@ -203,19 +219,19 @@ class lepScaleFactors(Module):
         for var in ',_el_loosetotight_up,_el_loosetotight_dn,_mu_loosetotight_up,_mu_loosetotight_dn'.split(','):
             #leptonSF_2lss = 1
             leptonSF_3l   = 1
-            #leptonSF_4l   = 1
+            leptonSF_4l   = 1
             #if len(leps) >= 2:
             #    leptonSF_2lss = self.getLooseToTight(leps[0],var,year,2) * self.getLooseToTight(leps[1],var,year,2)
                 #leptonSF_2lss = leptonSF_2lss * self.getRecoToLoose(leps[0],var,year) * self.getRecoToLoose(leps[1],var,year)
             if len(leps) >= 3:
                 leptonSF_3l   = self.getLooseToTight(leps[0],var,year,3) * self.getLooseToTight(leps[1],var,year,3) * self.getLooseToTight(leps[2],var,year,3)
                 #leptonSF_3l   = leptonSF_3l *  self.getRecoToLoose(leps[0],var,year) * self.getRecoToLoose(leps[1],var,year) * self.getRecoToLoose(leps[2],var,year)
-            #if len(leps) >= 4: 
-            #    leptonSF_4l   = self.getLooseToTight(leps[0],'',year,3) * self.getLooseToTight(leps[1],'',year,3) * self.getLooseToTight(leps[2],'',year,3) * self.getLooseToTight(leps[3],'',year,3)
+            if len(leps) >= 4: 
+                leptonSF_4l   = self.getLooseToTight(leps[0],'',year,3) * self.getLooseToTight(leps[1],'',year,3) * self.getLooseToTight(leps[2],'',year,3) * self.getLooseToTight(leps[3],'',year,3)
                 #leptonSF_4l   = leptonSF_4l *  self.getRecoToLoose(leps[0],var,year) * self.getRecoToLoose(leps[1],var,year) * self.getRecoToLoose(leps[2],var,year) * self.getRecoToLoose(leps[3],var,year)
             #self.out.fillBranch('leptonSF_2lss%s'%var, leptonSF_2lss)
             self.out.fillBranch('leptonSF_3l%s'%var  , leptonSF_3l)
-            #self.out.fillBranch('leptonSF_4l%s'%var  , leptonSF_4l)
+            self.out.fillBranch('leptonSF_4l%s'%var  , leptonSF_4l)
         
 
         return True
