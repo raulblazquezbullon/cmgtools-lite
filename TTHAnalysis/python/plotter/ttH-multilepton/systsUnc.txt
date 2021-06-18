@@ -9,7 +9,7 @@ $alias : ttHX : $ttH|$tHq|$tHW
 $alias : ttV  : TT[WZ]|TTWW
 $alias : ZH   : ZH|ZH_h[a-z]+
 $alias : WH   : WH|WH_h[a-z]+
-$alias : PromptFromMC : $ttHX|$ttV|$ZH|$WH|Rares|TTG|WZ|ZZ|EWK  
+$alias : PromptFromMC : $ttHX|$ttV|$ZH|$WH|Rares|TTG|Conversions|WZ|ZZ|EWK  
 $alias : FRData : data_fakes|.*_promptsub
 $alias : FRAll  : data_fakes|.*_promptsub|TT_FR_QCD
 $alias : FRMC   :  .*_mcfakes
@@ -19,26 +19,13 @@ lumi_13TeV_2016		: $PromptFromMC : .* : normSymm : 1.010; year="2016"
 lumi_13TeV_2017		: $PromptFromMC : .* : normSymm : 1.020; year="2017"
 lumi_13TeV_2018		: $PromptFromMC : .* : normSymm : 1.015; year="2018"
 
-lumi_13TeV_XY		: $PromptFromMC : .* : normSymm : 1.005; year="2016"
-lumi_13TeV_XY		: $PromptFromMC : .* : normSymm : 1.008; year="2017"
-lumi_13TeV_XY		: $PromptFromMC : .* : normSymm : 1.020; year="2018"
+lumi_13TeV_correlated   : $PromptFromMC : .* : normSymm : 1.006; year="2016"
+lumi_13TeV_correlated   : $PromptFromMC : .* : normSymm : 1.009; year="2017"
+lumi_13TeV_correlated   : $PromptFromMC : .* : normSymm : 1.020; year="2018"
 
-lumi_13TeV_LS		: $PromptFromMC : .* : normSymm : 1.003; year="2016"
-lumi_13TeV_LS		: $PromptFromMC : .* : normSymm : 1.003; year="2017"
-lumi_13TeV_LS		: $PromptFromMC : .* : normSymm : 1.002; year="2018"
+lumi_13TeV_1718         : $PromptFromMC : .* : normSymm : 1.006; year="2017"
+lumi_13TeV_1718         : $PromptFromMC : .* : normSymm : 1.002; year="2018"
 
-
-lumi_13TeV_BBE		: $PromptFromMC : .* : normSymm : 1.006; year="2017" 
-lumi_13TeV_BBE		: $PromptFromMC : .* : normSymm : 1.002; year="2018"
-
-
-lumi_13TeV_BCC 		: $PromptFromMC : .* : normSymm : 1.002; year="2016"
-lumi_13TeV_BCC 		: $PromptFromMC : .* : normSymm : 1.003; year="2017"
-lumi_13TeV_BCC 		: $PromptFromMC : .* : normSymm : 1.002; year="2018" 
-
-lumi_13TeV_GS 		: $PromptFromMC : .* : normSymm : 1.001; year="2016"
-lumi_13TeV_GS 		: $PromptFromMC : .* : normSymm : 1.001; year="2017"
-lumi_13TeV_GS 		: $PromptFromMC : .* : normSymm : 1.001; year="2018"
 
 
 # lepton efficiencies
@@ -77,19 +64,14 @@ CMS_ttW18_trigger_em      : $PromptFromMC : .*2lss.* : templateSymm; Normalize=F
 CMS_ttW18_trigger_mm      : $PromptFromMC : .*2lss.* : templateSymm; Normalize=False, AddWeight='ttH_2lss_ifflav(LepGood1_pdgId\,LepGood2_pdgId\,1.0\,1.0\,1.01)', year="2018"
 
 #stat only
-CMS_ttW16_trigger_3l      : $PromptFromMC : .*3l.* : normSymm : 1.003; year="2016"
-CMS_ttW17_trigger_3l      : $PromptFromMC : .*3l.* : normSymm : 1.006; year="2017"
-CMS_ttW18_trigger_3l      : $PromptFromMC : .*3l.* : normSymm : 1.003; year="2018"
-CMS_ttW16_trigger_3l      : $PromptFromMC : .*4l.* : normSymm : 1.003; year="2016"
-CMS_ttW17_trigger_3l      : $PromptFromMC : .*4l.* : normSymm : 1.006; year="2017"
-CMS_ttW18_trigger_3l      : $PromptFromMC : .*4l.* : normSymm : 1.003; year="2018"
+CMS_ttW16_trigger_3l      : $PromptFromMC : .*3l.* :templateAsymm ; AddWeights=['triggerSF_3l_up/triggerSF_3l'\,'triggerSF_3l_dn/triggerSF_3l'], year="2016"
+CMS_ttW17_trigger_3l      : $PromptFromMC : .*3l.* :templateAsymm ; AddWeights=['triggerSF_3l_up/triggerSF_3l'\,'triggerSF_3l_dn/triggerSF_3l'], year="2017"
+CMS_ttW18_trigger_3l      : $PromptFromMC : .*3l.* :templateAsymm ; AddWeights=['triggerSF_3l_up/triggerSF_3l'\,'triggerSF_3l_dn/triggerSF_3l'], year="2018"
+CMS_ttW16_trigger_3l      : $PromptFromMC : .*4l.* :templateAsymm ; AddWeights=['triggerSF_3l_up/triggerSF_3l'\,'triggerSF_3l_dn/triggerSF_3l'], year="2016"
+CMS_ttW17_trigger_3l      : $PromptFromMC : .*4l.* :templateAsymm ; AddWeights=['triggerSF_3l_up/triggerSF_3l'\,'triggerSF_3l_dn/triggerSF_3l'], year="2017"
+CMS_ttW18_trigger_3l      : $PromptFromMC : .*4l.* :templateAsymm ; AddWeights=['triggerSF_3l_up/triggerSF_3l'\,'triggerSF_3l_dn/triggerSF_3l'], year="2018"
 
-CMS_ttWcorr_trigger_3l      : $PromptFromMC : .*3l.* : normSymm : 1.006; year="2016" #systematic part 1-SF
-CMS_ttWcorr_trigger_3l      : $PromptFromMC : .*4l.* : normSymm : 1.006; year="2016" #systematic part 1-SF
-CMS_ttWcorr_trigger_3l      : $PromptFromMC : .*3l.* : normSymm : 1.009; year="2017" #systematic part 1-SF
-CMS_ttWcorr_trigger_3l      : $PromptFromMC : .*4l.* : normSymm : 1.009; year="2017" #systematic part 1-SF
-CMS_ttWcorr_trigger_3l      : $PromptFromMC : .*3l.* : normSymm : 1.003; year="2018" #systematic part 1-SF
-CMS_ttWcorr_trigger_3l      : $PromptFromMC : .*4l.* : normSymm : 1.003; year="2018" #systematic part 1-SF
+
 
 CMS_ttW_pileup : $PromptFromMC : .* : templateAsymm; AddWeights=['puWeightUp/puWeight'\,'puWeightDown/puWeight']
 
@@ -236,14 +218,14 @@ CMS_ttW_ZZ_lnU  : ZZ : .*          : normSymm : 3.0 ; lnU=True
 
 # Other normalizations
 QCDscale_Rares		: Rares : .* : normSymm : 1.5
-CMS_ttW_Convs_norm		: Convs : .* : normSymm : 1.3
+CMS_ttW_Convs_norm		: Conversions : .* : normSymm : 1.3
 
 
 # common theoretical uncertainties (fully correlated everywhere)
 # note: pdf_gg is entered as 1/kappa since it has to be anti-correlated with Hgg
 QCDscale_ttH   : $ttH  : .* : normAsymm : 0.929 : 1.076 
 QCDscale_ttZ   : TTZ   : .* : normAsymm : 0.905 : 1.086
-QCDscale_ttG  : TTG  : .* : normSymm : 1.2  #placeholder
+QCDscale_ttG   : TTG  : .* : normSymm : 1.08   # 7.5 percent pdf + 3 q2
 #CMS_ttW_WH_norm    : $WH   : .* : normAsymm : 0.950 : 1.070
 #CMS_ttW_ZH_norm    : $ZH   : .* : normAsymm : 0.962 : 1.031
 pdf_Higgs_ttH  : $ttH  : .* : normSymm : 1.024
@@ -343,6 +325,8 @@ FSR_ttW : TTW : .*:templateAsymm;AddWeights=['PSWeight[7]'\,'PSWeight[9]']
 
 #color recognection
 #Colour_rec : TTW : .* :  altSampleEnv : ['syst_ttw_colour_qcd'\,'syst_ttw_colour_gluonmove'] : symm
+Colour_rec : TTW : .* :   normSymm : 1.01  # 1 per-cent extracted from comparing in one inclusive bin
+
 
 # Charge flip uncertainty
 CMS_ttW_QF     : data_flips  : .* : normSymm : 1.3
