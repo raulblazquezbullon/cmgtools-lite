@@ -7,9 +7,10 @@ submit = '''sbatch -c %d -p short  --wrap '{command}' '''%nCores
 if   'cmsco01.cern.ch' in os.environ['HOSTNAME']: ORIGIN="/data/peruzzi";
 elif 'cmsphys10' in os.environ['HOSTNAME']:       ORIGIN="/data1/g/gpetrucc"; 
 elif 'gpetrucc-vm2.cern.ch' in os.environ['HOSTNAME']:       ORIGIN="/data/gpetrucc"; 
-elif 'fanae' in os.environ['HOSTNAME']:       ORIGIN="/pool/ciencias/HeppyTrees/EdgeZ/TTH/"; 
-elif 'gae' in os.environ['HOSTNAME']:       ORIGIN="/pool/ciencias/HeppyTrees/EdgeZ/TTH/"; 
+elif 'fanae' in os.environ['HOSTNAME']:       ORIGIN="/pool/phedexrw/userstorage/clara/NanoAOD/"; 
+elif 'gae' in os.environ['HOSTNAME']:       ORIGIN="/pool/phedexrw/userstorage/clara/NanoAOD/"; 
 else: ORIGIN="/afs/cern.ch/work/p/peruzzi"; 
+
 
 if len(sys.argv) < 4: 
     print 'Sytaxis is %s [outputdir] [year] [region] [other]'%sys.argv[0]
@@ -19,9 +20,9 @@ YEAR=sys.argv[2]
 REGION=sys.argv[3]
 OTHER=sys.argv[4:] if len(sys.argv) > 4 else ''
 
-if   YEAR in '2016': LUMI="35.9"
-elif YEAR in '2017': LUMI="41.4"
-elif YEAR in '2018': LUMI="59.7"
+if   YEAR in '2016': LUMI="36.33"
+elif YEAR in '2017': LUMI="41.53"
+elif YEAR in '2018': LUMI="59.74"
 else:
     raise RuntimeError("Wrong year %s"%YEAR)
 
@@ -31,13 +32,13 @@ OPTIONS=" --tree NanoAOD --s2v -j {J} -l {LUMI} -f --WA prescaleFromSkim --split
 os.system("test -d cards/{OUTNAME} || mkdir -p cards/{OUTNAME}".format(OUTNAME=OUTNAME))
 OPTIONS="{OPTIONS} --od cards/{OUTNAME} ".format(OPTIONS=OPTIONS, OUTNAME=OUTNAME)
 #T2L="-P {ORIGIN}/NanoTrees_TTH_091019_v6pre_skim2lss/{YEAR} --FMCs {{P}}/0_jmeUnc_v1  --Fs  {{P}}/1_recl/ --FMCs {{P}}/2_scalefactors --Fs {{P}}/3_tauCount --Fs {{P}}/6_mva3l --Fs {{P}}/6_mva2lss_new/  --Fs {{P}}/6_mva4l --xf TTTW --xf TTWH".format(ORIGIN=ORIGIN, YEAR=YEAR)
-T2L="-P {ORIGIN}/NanoTrees_TTH_090120_091019_v6_skim2lss/{YEAR} --FMCs {{P}}/0_jmeUnc_v1 --FDs {{P}}/1_recl --FMCs {{P}}/1_recl_allvars --FMCs {{P}}/2_btag_SFs --FMCs {{P}}/2_scalefactors_lep_fixed --Fs {{P}}/3_tauCount --Fs {{P}}/4_evtVars --Fs {{P}}/5_BDThtt_reco_new_blah --Fs {{P}}/6_mva2lss --Fs {{P}}/6_mva3l --Fs {{P}}/6_mva4l  --xf TTTW --xf TTWH".format(ORIGIN=ORIGIN, YEAR=YEAR)
+T2L="-P {ORIGIN}/Top_Nanov6_03_Nov_skim_enero/{YEAR} -P {ORIGIN}/Top_Nanov6_20jan_skim/{YEAR} --FMCs {{P}}/0_jmeUnc_v1 --FDs {{P}}/1_recl_enero --FMCs {{P}}/1_recl_allvars --FMCs {{P}}/2_btag_SFs_fix11m --FMCs {{P}}/2_scalefactors_triglep --Fs {{P}}/3_tauCount --Fs {{P}}/4_evtVars --xf TTTW --xf TTWH".format(ORIGIN=ORIGIN, YEAR=YEAR)
 T3L=T2L
 T4L=T2L
 
 SYSTS="--unc ttH-multilepton/systsUnc.txt --amc --xu CMS_ttHl_TTZ_lnU,CMS_ttHl_TTW_lnU"
 MCAOPTION=""
-MCAOPTION="-splitdecays"
+#MCAOPTION="-splitdecays"
 ASIMOV="--asimov signal"
 #ASIMOV="" 
 SCRIPT= "makeShapeCardsNew.py"
@@ -151,20 +152,20 @@ if REGION == "3l_SVA_scan":
    
 
 if  REGION == "cr_3l":
-    OPT_3L='{T3L} {OPTIONS} -W "L1PreFiringWeight_Nom*puWeight*btagSF_shape*triggerSF_ttH(LepGood1_pdgId, LepGood1_conePt, LepGood2_pdgId, LepGood2_conePt, 3, year)*leptonSF_3l"'.format(T3L=T3L,OPTIONS=OPTIONS)
+    OPT_3L='{T3L} {OPTIONS} -W "L1PreFiringWeight_Nom*puWeight*bTagWeight*leptonSF_3l*triggerSF_3l"'.format(T3L=T3L,OPTIONS=OPTIONS)
     CATPOSTFIX="_cr"
-    OPT_3L="{OPT_3L} -I ^Zveto -X ^2j -X ^2b1B -E ^underflowVeto3l".format(OPT_3L=OPT_3L)
+    OPT_3L="{OPT_3L} -I ^Zveto -E ^underflowVeto3l".format(OPT_3L=OPT_3L)
     CATFUNC="ttH_3l_ifflav(LepGood1_pdgId,LepGood2_pdgId,LepGood3_pdgId)"
     CATBINS="[0.5,1.5,2.5,3.5,4.5]"
     CATNAMES=",".join( map( lambda x : x+CATPOSTFIX, 'eee,eem,emm,mmm'.split(',')))
-    TORUN = '''python {SCRIPT} {DOFILE} ttH-multilepton/mca-3l-{MCASUFFIX}{MCAOPTION}.txt ttH-multilepton/3l_tight.txt {FUNCTION_CR_3L} {SYSTS} {OPT_3L} --binname ttH_cr_3l_{YEAR} --categorize "{CATFUNC}" {CATBINS} {CATNAMES} --year {YEAR}'''.format( SCRIPT=SCRIPT, DOFILE=DOFILE, MCASUFFIX=MCASUFFIX,MCAOPTION=MCAOPTION,FUNCTION_CR_3L=FUNCTION_CR_3L,SYSTS=SYSTS,OPT_3L=OPT_3L,YEAR=YEAR,CATFUNC=CATFUNC,CATBINS=CATBINS,CATNAMES=CATNAMES)
+    TORUN = '''python {SCRIPT} {DOFILE} ttH-multilepton/mca-3l-{MCASUFFIX}{MCAOPTION}.txt ttH-multilepton/3l_tight_legacy.txt {FUNCTION_CR_3L} {SYSTS} {OPT_3L} --binname ttW_cr_3l_{YEAR} --categorize "{CATFUNC}" {CATBINS} {CATNAMES} --year {YEAR} --fakeName nonprompt'''.format( SCRIPT=SCRIPT, DOFILE=DOFILE, MCASUFFIX=MCASUFFIX,MCAOPTION=MCAOPTION,FUNCTION_CR_3L=FUNCTION_CR_3L,SYSTS=SYSTS,OPT_3L=OPT_3L,YEAR=YEAR,CATFUNC=CATFUNC,CATBINS=CATBINS,CATNAMES=CATNAMES)
     print submit.format(command=TORUN)
 
 if REGION == "cr_4l":
-    OPT_4L='{T4L} {OPTIONS} -W "L1PreFiringWeight_Nom*puWeight*btagSF_shape*leptonSF_4l*triggerSF_ttH(LepGood1_pdgId, LepGood1_conePt, LepGood2_pdgId, LepGood2_conePt, 3, year)"'.format(T4L=T4L,OPTIONS=OPTIONS)
-    OPT_4L="{OPT_4L} -I ^Zveto -X ^2j -X ^2b1B -E ^underflowVeto4l".format(OPT_4L=OPT_4L)
+    OPT_4L='{T4L} {OPTIONS} -W "L1PreFiringWeight_Nom*puWeight*bTagWeight*leptonSF_4l*triggerSF_3l"'.format(T4L=T4L,OPTIONS=OPTIONS)
+    OPT_4L="{OPT_4L} -I ^Zveto  -E ^underflowVeto4l".format(OPT_4L=OPT_4L)
     CATPOSTFIX="_cr_4l";
-    TORUN = 'python {SCRIPT} {DOFILE} ttH-multilepton/mca-4l-{MCASUFFIX}{MCAOPTION}.txt ttH-multilepton/4l_tight.txt {FUNCTION_CR_4L} {SYSTS} {OPT_4L} --binname ttH{CATPOSTFIX}_{YEAR} --year {YEAR}'.format(SCRIPT=SCRIPT, DOFILE=DOFILE,MCASUFFIX=MCASUFFIX,MCAOPTION=MCAOPTION, FUNCTION_CR_4L=FUNCTION_CR_4L,SYSTS=SYSTS,OPT_4L=OPT_4L,CATPOSTFIX=CATPOSTFIX,YEAR=YEAR)
+    TORUN = 'python {SCRIPT} {DOFILE} ttH-multilepton/mca-4l-{MCASUFFIX}{MCAOPTION}.txt ttH-multilepton/4l_tight.txt {FUNCTION_CR_4L} {SYSTS} {OPT_4L} --binname ttW{CATPOSTFIX}_{YEAR} --year {YEAR} '.format(SCRIPT=SCRIPT, DOFILE=DOFILE,MCASUFFIX=MCASUFFIX,MCAOPTION=MCAOPTION, FUNCTION_CR_4L=FUNCTION_CR_4L,SYSTS=SYSTS,OPT_4L=OPT_4L,CATPOSTFIX=CATPOSTFIX,YEAR=YEAR)
     print submit.format(command=TORUN)
         
 if REGION=="4l": 

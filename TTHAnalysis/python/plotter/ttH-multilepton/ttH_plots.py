@@ -6,41 +6,44 @@ import os
 ODIR=sys.argv[1]
 YEAR=sys.argv[2]
 lumis = {
-    '2016': '35.9',
-    '2017': '41.4',
-    '2018': '59.7',
-    'all' : '35.9,41.4,59.7',
+    '2016': '36.66',
+    '2017': '41.53',
+    '2018': '59.74',
+    'all' : '36.66,41.53,59.74',
 }
 
 
 submit = '{command}' 
-#dowhat = "plots" 
+dowhat = "plots" 
 #dowhat = "dumps" 
-dowhat = "yields" 
+#dowhat = "yields" 
 #dowhat = "ntuple" # syntax: python ttH-multilepton/ttH_plots.py no 2lss_SR_extr outfile_{cname}.root --sP var1,var2,...
 dojeccomps=True
 P0="/eos/cms/store/cmst3/group/tthlep/peruzzi/"
 #if 'cmsco01'   in os.environ['HOSTNAME']: P0="/data1/peruzzi"
 nCores = 10
+P0D=""
 if 'fanae' in os.environ['HOSTNAME']:
-    nCores = 4
-    #submit = 'sbatch -c %d -p batch  --wrap "{command}"'%nCores
+    nCores = 32
+    submit = 'sbatch -c %d -p batch  --wrap "{command}"'%nCores
 #    P0     = "/pool/ciencias/HeppyTrees/EdgeZ/TTH/"
-    P0     =  "/pool/phedex/userstorage/clara/NanoAOD/Top_Nanov6_03_Nov_skim2lss_new"
+    P0     =  "/pool/phedex/userstorage/clara/NanoAOD/Top_Nanov6_03_Nov_skim_enero"
+    P0D    =  "/pool/phedex/userstorage/clara/NanoAOD/Top_Nanov6_20jan_skim"
 if 'gae' in os.environ['HOSTNAME']: 
-    P0     = "/pool/ciencias/HeppyTrees/EdgeZ/TTH/"
+    P0     = "/pool/phedex/userstorage/clara/NanoAOD/Top_Nanov6_03_Nov_skim_enero"
+    P0D    =  "/pool/phedex/userstorage/clara/NanoAOD/Top_Nanov6_20jan_skim"
 
 if 'cism.ucl.ac.be' in os.environ['HOSTNAME']:
     P0 = "/nfs/user/pvischia/tth/v5pre/"
 
 #TREESALL = "--xf THQ_LHE,THW_LHE,TTTW,TTWH --FMCs {P}/0_jmeUnc_v1 --FDs {P}/1_recl --FMCs {P}/1_recl_allvars --FMCs {P}/2_btag_SFs --FMCs {P}/2_scalefactors_lep_fixed --Fs {P}/3_tauCount --Fs {P}/4_evtVars  --Fs {P}/5_BDThtt_reco_new_blah --Fs {P}/6_mva2lss --Fs {P}/6_mva3l --Fs {P}/6_mva4l  "  #_new
 
-TREESALL = "--xf THQ_LHE,THW_LHE,TTTW,TTWH --FMCs {P}/0_jmeUnc_v2 --FDs {P}/1_recl --FMCs {P}/1_recl_allvars --FMCs {P}/2_btag_SFs --FMCs {P}/2_scalefactors_lep --Fs {P}/3_tauCount --Fs {P}/4_evtVars"  #_even newer
+TREESALL = "--FMCs {P}/0_jmeUnc_v1 --FDs {P}/1_recl_enero --FMCs {P}/1_recl_allvars --FMCs {P}/2_btag_SFs_fix11m --FMCs {P}/2_scalefactors_triglep --Fs {P}/3_tauCount --Fs {P}/4_evtVars  --xf TTTW --xf TTWH"  #_even newer
 
 YEARDIR=YEAR if YEAR != 'all' else ''
 TREESONLYFULL     = "-P "+P0+"/NanoTrees_TTH_090120_091019_v6/%s "%(YEARDIR,)         
 #TREESONLYSKIM     = "-P "+P0+"/NanoTrees_TTH_090120_091019_v6_skim2lss/%s "%(YEARDIR,)
-TREESONLYSKIM     = "-P "+P0+"/%s "%(YEARDIR,)
+TREESONLYSKIM     = "-P "+P0+"/%s "%(YEARDIR,)+" -P "+P0D+"/%s "%(YEARDIR,)
 TREESONLYMEMZVETO = "-P "+P0+"/NanoTrees_TTH_090120_091019_v6/%s "%(YEARDIR,)         
 TREESONLYMEMZPEAK = "-P "+P0+"/NanoTrees_TTH_090120_091019_v6/%s "%(YEARDIR,)         
 
@@ -57,8 +60,8 @@ def base(selection):
     CORE+=" -f -j %d -l %s -L ttH-multilepton/functionsTTH.cc --tree NanoAOD --mcc ttH-multilepton/lepchoice-ttH-FO.txt --split-factor=-1 --WA prescaleFromSkim --year %s  --mcc ttH-multilepton/mcc-METFixEE2017.txt"%(nCores, lumis[YEAR],YEAR if YEAR!='all' else '2016,2017,2018')# --neg" --s2v 
     RATIO= " --maxRatioRange 0.0  1.99 --ratioYNDiv 505 "
     RATIO2=" --showRatio --attachRatioPanel --fixRatioRange "
-    LEGEND=" --legendColumns 2 --legendWidth 0.25 "
-    LEGEND2=" --legendFontSize 0.042 "
+    LEGEND=" --legendColumns 3 --legendWidth 0.6 "
+    LEGEND2=" --legendFontSize 0.03 "
     SPAM=" --noCms --topSpamSize 1.1 --lspam '#scale[1.1]{#bf{CMS}} #scale[0.9]{#it{Preliminary}}' "
     if dowhat == "plots": CORE+=RATIO+RATIO2+LEGEND+LEGEND2+SPAM+"  --showMCError --rebin 4 --xP 'nT_.*' --xP 'debug_.*'"
 
@@ -70,14 +73,14 @@ def base(selection):
         if dowhat == "plots": GO=GO.replace(RATIO,  " --maxRatioRange 0.6  1.99 --ratioYNDiv 210 ")
         GO += " --binname 2lss "
     elif selection=='3l':
-        GO="%s ttH-multilepton/mca-3l-mc.txt ttH-multilepton/3l_tight.txt "%CORE
-        GO="%s -W 'L1PreFiringWeight_Nom*puWeight*btagSF_shape*leptonSF_3l*triggerSF_ttH(LepGood1_pdgId, LepGood1_conePt, LepGood2_pdgId, LepGood2_conePt, 3, year)'"%GO
+        GO="%s ttH-multilepton/mca-3l-mc.txt ttH-multilepton/3l_tight_legacy.txt "%CORE
+        GO="%s -W 'L1PreFiringWeight_Nom*puWeight*bTagWeight*leptonSF_3l*triggerSF_3l'"%GO
         if dowhat in ["plots","ntuple"]: GO+=" ttH-multilepton/2lss_3l_plots.txt --xP '^(2|4)lep_.*' --xP '^lep4_.*' --xP 'kinMVA_2lss_.*' "
         if dowhat == "plots": GO=GO.replace(LEGEND, " --legendColumns 3 --legendWidth 0.42 ")
         GO += " --binname 3l "
     elif selection=='4l':
         GO="%s ttH-multilepton/mca-4l-mc.txt ttH-multilepton/4l_tight.txt "%CORE
-        GO="%s -W 'L1PreFiringWeight_Nom*puWeight*btagSF_shape*leptonSF_4l*triggerSF_ttH(LepGood1_pdgId, LepGood1_conePt, LepGood2_pdgId, LepGood2_conePt, 3, year)'"%GO
+        GO="%s -W 'L1PreFiringWeight_Nom*puWeight*bTagWeight*leptonSF_4l*triggerSF_3l'"%GO
         if dowhat in ["plots","ntuple"]: GO+=" ttH-multilepton/2lss_3l_plots.txt --xP '^(2|3)lep_.*' --xP '^lep(1|2|3|4)_.*' --xP 'kinMVA_.*' "
         if dowhat == "plots": GO=GO.replace(LEGEND, " --legendColumns 2 --legendWidth 0.3 ")
         if dowhat == "plots": GO=GO.replace(RATIO,  " --maxRatioRange 0.0  2.99 --ratioYNDiv 505 ")
@@ -518,7 +521,7 @@ if __name__ == '__main__':
 
     if 'cr_3l' in torun:
         x = base('3l')
-        x = add(x,"-I 'Zveto' -X ^2j -X ^2b1B -E ^underflowVeto3l ")
+        x = add(x,"-I 'Zveto' -E ^underflowVeto3l ")
         if '_data' in torun: 
             x = x.replace('mca-3l-mc.txt','mca-3l-mcdata.txt')
         if '_frdata' in torun:
@@ -530,11 +533,26 @@ if __name__ == '__main__':
             x = add(x,"--unc ttH-multilepton/systsUnc.txt  --xu CMS_ttHl_TTZ_lnU,CMS_ttHl_TTW_lnU")
             if '_postfit' in torun:
                 x = add(x, "--aefr fitDiagnostics.root fit_s --aefrl Postfit --peg-process TTZ r_ttZ --peg-process TTW r_ttW")
-
-        runIt(x,'%s'%torun,plots)
+        if 'bybin' in torun:
+            
+            plots = ['lep1_conePt','lep2_conePt','lep3_conePt', 'lep1_eta', 'lep2_eta', 'lep3_eta', 'jet1_pt','jet2_pt','3lep_m3l']
+            x = add(x,"-A tauveto bin1 'ttH_3l_clasifier(nJet25, nBJetMedium25)==1' ")
+           
+            x = add(x,'--pdir %s/%s/cr_3l_data_frdata_unc_bybin/bin1'%(ODIR,YEAR))
+            for i in range(1,13) :
+               
+               if i==1:
+                  runIt(x,'%s'%torun,plots)
+               else:
+                  print("--pdir %s/%s/cr_3l_data_frdata_unc_bybin"%(ODIR,YEAR))
+                  x = x.replace('--pdir %s/%s/cr_3l_data_frdata_unc_bybin/bin%s'%(ODIR,YEAR,str(i-1)),'--pdir %s/%s/cr_3l_data_frdata_unc_bybin/bin%s'%(ODIR,YEAR,str(i)))
+                  x = x.replace("-A tauveto bin"+str(i-1)+" 'ttH_3l_clasifier(nJet25, nBJetMedium25)=="+str(i-1)+"'","-A tauveto bin"+str(i)+" 'ttH_3l_clasifier(nJet25, nBJetMedium25)=="+str(i)+"'")
+                  runIt(x,'%s'%torun,plots)
+        else:
+            runIt(x,'%s'%torun,plots)
     if 'cr_4l' in torun:
         x = base('4l')
-        x = add(x,"-I ^Zveto -X ^2b1B -X ^2j -E ^underflowVeto4l ")
+        x = add(x,"-I ^Zveto  -E ^underflowVeto4l ")
         if '_data' in torun: 
             x = x.replace('mca-4l-mc.txt','mca-4l-mcdata.txt')
         if '_frdata' in torun:

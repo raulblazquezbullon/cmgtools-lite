@@ -36,9 +36,9 @@ CMS_eff_ttW_muID : $PromptFromMC : .*3l.*    : templateAsymm ; AddWeights=['lept
 CMS_eff_ttW_elID : $PromptFromMC : .*3l.*    : templateAsymm ; AddWeights=['leptonSF_3l_el_loosetotight_up/leptonSF_3l'\,'leptonSF_3l_el_loosetotight_dn/leptonSF_3l'], year="2017"
 CMS_eff_ttW_muID : $PromptFromMC : .*3l.*    : templateAsymm ; AddWeights=['leptonSF_3l_mu_loosetotight_up/leptonSF_3l'\,'leptonSF_3l_mu_loosetotight_dn/leptonSF_3l'], year="2018"
 CMS_eff_ttW_elID : $PromptFromMC : .*3l.*    : templateAsymm ; AddWeights=['leptonSF_3l_el_loosetotight_up/leptonSF_3l'\,'leptonSF_3l_el_loosetotight_dn/leptonSF_3l'], year="2018"	     
-CMS_eff_ttW_muID : $PromptFromMC : .*4l.*    : templateAsymm ; AddWeights=['leptonSF_3l_mu_loosetotight_up/leptonSF_4l'\,'leptonSF_3l_mu_loosetotight_dn/leptonSF_4l'], year="2016"
-CMS_eff_ttW_elID : $PromptFromMC : .*4l.*    : templateAsymm ; AddWeights=['leptonSF_3l_el_loosetotight_up/leptonSF_4l'\,'leptonSF_3l_el_loosetotight_dn/leptonSF_4l'], year="2016"
-CMS_eff_ttW_muID : $PromptFromMC : .*4l.*    : templateAsymm ; AddWeights=['leptonSF_3l_mu_loosetotight_up/leptonSF_4l'\,'leptonSF_3l_mu_loosetotight_dn/leptonSF_4l'], year="2017"
+CMS_eff_ttW_muID : $PromptFromMC : .*4l.*    : templateAsymm ; AddWeights=['leptonSF_4l_mu_loosetotight_up/leptonSF_4l'\,'leptonSF_4l_mu_loosetotight_dn/leptonSF_4l'], year="2016"
+CMS_eff_ttW_elID : $PromptFromMC : .*4l.*    : templateAsymm ; AddWeights=['leptonSF_4l_el_loosetotight_up/leptonSF_4l'\,'leptonSF_4l_el_loosetotight_dn/leptonSF_4l'], year="2016"
+CMS_eff_ttW_muID : $PromptFromMC : .*4l.*    : templateAsymm ; AddWeights=['leptonSF_4l_mu_loosetotight_up/leptonSF_4l'\,'leptonSF_4l_mu_loosetotight_dn/leptonSF_4l'], year="2017"
 CMS_eff_ttW_elID : $PromptFromMC : .*4l.*    : templateAsymm ; AddWeights=['leptonSF_3l_el_loosetotight_up/leptonSF_4l'\,'leptonSF_3l_el_loosetotight_dn/leptonSF_4l'], year="2017"
 CMS_eff_ttW_muID : $PromptFromMC : .*4l.*    : templateAsymm ; AddWeights=['leptonSF_3l_mu_loosetotight_up/leptonSF_4l'\,'leptonSF_3l_mu_loosetotight_dn/leptonSF_4l'], year="2018"
 CMS_eff_ttW_elID : $PromptFromMC : .*4l.*    : templateAsymm ; AddWeights=['leptonSF_3l_el_loosetotight_up/leptonSF_4l'\,'leptonSF_3l_el_loosetotight_dn/leptonSF_4l'], year="2018"	     
@@ -325,7 +325,7 @@ FSR_ttW : TTW : .*:templateAsymm;AddWeights=['PSWeight[7]'\,'PSWeight[9]']
 
 #color recognection
 #Colour_rec : TTW : .* :  altSampleEnv : ['syst_ttw_colour_qcd'\,'syst_ttw_colour_gluonmove'] : symm
-Colour_rec : TTW : .* :   normSymm : 1.01  # 1 per-cent extracted from comparing in one inclusive bin
+ColourRec_ttW_ACCEPT : TTW : .* :   normSymm : 1.01  # 1 per-cent extracted from comparing in one inclusive bin
 
 
 # Charge flip uncertainty
