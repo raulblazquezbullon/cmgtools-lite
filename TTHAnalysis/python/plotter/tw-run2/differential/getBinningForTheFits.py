@@ -13,7 +13,6 @@ vl.SetUpWarnings()
 friendspath   = "/pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions"
 logpath       = friendspath + "/{p}/{y}/logs/cards_differential"
 friendfolders = ["0_yeartag", "1_lepmerge_roch", "2_cleaning", "3_varstrigger", "4_scalefactors", "5_mvas"]
-lumidict      = {2016 : 35.92, 2017 : 41.53, 2018 : 59.74}
 friendsscaff  = "--Fs {P}/0_yeartag --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --Fs {P}/5_mvas"
 
 slurmscaff    = "sbatch -c {nth} -p {queue} -J {jobname} -e {logpath}/log.%j.%x.err -o {logpath}/log.%j.%x.out --wrap '{command}'"
@@ -36,9 +35,9 @@ def PythonListToString(theL):
 
 
 def ExecuteOrSubmitTask(tsk):
-    prod, year, variable, asimov, nthreads, outpath, region, noUnc, useFibre, extra, pretend, queue, thebin = tsk
+    prod, year, variable, asimov, nthreads, outpath, region, noUnc, useFibre, extra, pretend, queue, thebin, theunc = tsk
     if queue == "":
-        thecomm = CardsCommand(prod, year, variable, asimov, nthreads, outpath, region, noUnc, useFibre, extra, thebin)
+        thecomm = CardsCommand(prod, year, variable, asimov, nthreads, outpath, region, noUnc, useFibre, extra, thebin, theunc)
         print "Command: " + thecomm
 
         if not pretend:
@@ -52,7 +51,7 @@ def ExecuteOrSubmitTask(tsk):
                                     queue   = queue,
                                     jobname = "CMGTcardsforunfoldingwithfits",
                                     logpath = logpath.format(p = prod, y = yr),
-                                    command = CardsCommand(prod, year, variable, asimov, nthreads, outpath, region, noUnc, useFibre, extra, thebin))
+                                    command = CardsCommand(prod, year, variable, asimov, nthreads, outpath, region, noUnc, useFibre, extra, thebin, theunc))
 
         print "Command: " + thecomm
         if not pretend:
@@ -61,8 +60,8 @@ def ExecuteOrSubmitTask(tsk):
     return
 
 
-def CardsCommand(prod, year, var, isAsimov, nthreads, outpath, region, noUnc, useFibre, extra, ibin):
-    mcafile_   = "tw-run2/differential/mca-differential/mca-twttbar-diff.txt" if "forExtr" not in region else "tw-run2/mca-tw.txt"
+def CardsCommand(prod, year, var, isAsimov, nthreads, outpath, region, noUnc, useFibre, extra_, ibin, iunc):
+    mcafile_   = "tw-run2/mca-tw.txt"
     cutsfile_  = "tw-run2/differential/cuts-differential-pure1j1t/cuts-detector-1j1t.txt"
 
     samplespaths_ = "-P " + friendspath + "/" + prod + ("/" + year) * (year != "run2")
@@ -76,15 +75,25 @@ def CardsCommand(prod, year, var, isAsimov, nthreads, outpath, region, noUnc, us
         os.system("mkdir -p " + outpath_)
 
     bins_      = PythonListToString([i + 0.5 for i in range(vl.nBinsForBDT + 1)]) if "forExtr" in region else "1000,-1,1"
-    variable_  = "tmvaBDT_1j1b" if "forExtr" not in region else "theBDT_bin{i}(tmvaBDT_1j1b)".format(i = ibin)
-    name_      = "--binname " + region + "_bin" + str(ibin)
+    variable_  = "tmvaBDT_1j1b" if "forExtr" not in region else "theBDT_bin{i}_unc{u}(tmvaBDT_1j1b)".format(i = ibin, u = iunc)
+    name_      = "--binname " + region + "_bin" + str(ibin) + ("_PRE" + iunc if iunc != "" else "")
 
-    extra += ' -A "^1btag" "bin{b}" "{cut}"'.format(b = ibin, cut = "(" + str(vl.varList[var]["bins_detector"][ibin]) + "<=" + vl.varList[var]["var_detector"] + ") && (" + vl.varList[var]["var_detector"] + "<" + str(vl.varList[var]["bins_detector"][ibin + 1]) + ")")
+    extra_ += ' -A "^1btag" "bin{b}" "{cut}"'.format(b = ibin, cut = "(" + str(vl.varList[var]["bins_detector"][ibin]) + "<=" + vl.varList[var]["var_detector"] + ") && (" + vl.varList[var]["var_detector"] + "<" + str(vl.varList[var]["bins_detector"][ibin + 1]) + ")")
+
+    if "histos" in region:
+        extra_ += " --xp dy,vvttv,nonworz"
+
+    if iunc != "":
+        restofuncs = []
+        for el,listofyears in vl.ProfileSystsThatAreNotPresentAllYears.iteritems():
+            if year in listofyears or year == "run2":
+                restofuncs.append(el)
+        extra_ += " --su " + iunc.replace("Up", "").replace("Down", "") + "," + ",".join([el for el in vl.ProfileSysts if "norm" in el]) + "," + ",".join(restofuncs)
 
     comm = commandscaff.format(outpath      = outpath_,
                                friends      = friends_,
                                samplespaths = samplespaths_,
-                               lumi      = (lumidict[int(year)] if year != "run2" else str(lumidict[2016]) + "," + str(lumidict[2017]) + "," + str(lumidict[2018])),
+                               lumi      = (vl.LumiDict[int(year)] if year != "run2" else str(vl.LumiDict[2016]) + "," + str(vl.LumiDict[2017]) + "," + str(vl.LumiDict[2018])),
                                variable  = variable_,
                                bins      = bins_,
                                nth       = nth_,
@@ -92,10 +101,10 @@ def CardsCommand(prod, year, var, isAsimov, nthreads, outpath, region, noUnc, us
                                asimovornot = "--asimov s+b" if isAsimov else "",
                                mcafile   = mcafile_,
                                cutsfile  = cutsfile_,
-                               uncs      = "" if not "forExtr" in region else "--unc tw-run2/uncs-tw.txt --amc" if not noUnc else "--amc",
+                               uncs      = "--unc tw-run2/uncs-tw.txt --amc" if not noUnc else "--amc",
                                name      = name_,
                                func      = "tw-run2/functions_tw.cc" if "forExtr" not in region else (outpath_ + "/rebin_functions_{y}_{v}.cc".format(y = year, v = var)),
-                               extra     = extra)
+                               extra     = extra_)
     return comm
 
 
@@ -103,11 +112,11 @@ def createFunctionFileForVariable(tsk):
     inpath, iY, iV = tsk
 
     path = inpath + "/" + iY + "/" + iV + "/sigextr_fit"
-    nameofhisto = "x_ttbar"
+    proc = "ttbar"
 
     if not vl.unifttbar:
         print '> Uniform tW distribution of the BDT discriminant\n'
-        nameofhisto = "x_tw"
+        proc = "tw"
     else:
         print '> Uniform ttbar distribution of the BDT discriminant\n'
 
@@ -116,10 +125,38 @@ def createFunctionFileForVariable(tsk):
 
     ndetebins = len(vl.varList[iV]["bins_detector"]) - 1
     #print Base
-    for iB in range(ndetebins):
-        #print iB
-        Base = Base + addFunctionOfBin(path + "/rebinhistos/histos_bin" + str(iB) + ".root", nameofhisto, iB)
-        #print Base
+
+    listofuncsthataffecttheproc = [""]
+    for key,el in vl.systMap.iteritems():
+        if iY != "run2":
+            skip = False
+            for y in ["2016", "2017", "2018"]:
+                if  y in key and iY != y:
+                    skip = True
+
+            for y in [["16", "17"], ["16", "18"], ["17", "18"]]:
+                if "".join(y) in key and not any([sub in iY for sub in y]):
+                    skip = True
+
+            if skip:
+                continue
+
+        if isinstance(el, dict):
+            if el[proc]:
+                listofuncsthataffecttheproc.append(key)
+        elif el:
+            listofuncsthataffecttheproc.append(key)
+
+    for iU in listofuncsthataffecttheproc:
+        listofvars = ["Up", "Down"]
+        if iU == "":
+            listofvars = [""]
+
+        for iVar in listofvars:
+            for iB in range(ndetebins):
+                #print iB
+                Base = Base + addFunctionOfBin(path + "/rebinhistos/histos_bin" + str(iB) + ".root", proc, iB, iU + iVar)
+                #print Base
 
     print "> Saving file"
     outputF = open(path + "/rebinhistos/rebin_functions_{y}_{v}.cc".format(y = iY, v = iV), 'w')
@@ -140,7 +177,7 @@ def compileFunctionFile(tsk):
 
 
 
-def addFunctionOfBin(fpath, histoname, thebin):
+def addFunctionOfBin(fpath, theproc, thebin, theunc):
     nq  = vl.nBinsForBDT  # Number of bins in which to divide the BDT distribution.
     xq  = array('d', [0]*nq)
     yq  = array('d', [0]*nq)
@@ -149,26 +186,111 @@ def addFunctionOfBin(fpath, histoname, thebin):
 
     count = 0
     thefile = r.TFile.Open(fpath, "READ")
-    thehisto = thefile.Get(histoname)
+    #print fpath, "x_" + theproc + ("_" + theunc if theunc != "" else "")
+    thehisto = thefile.Get("x_" + theproc + ("_" + theunc if theunc != "" else ""))
     thehisto.GetQuantiles(nq, yq, xq)
     thefile.Close(); del thefile
 
     outtxt = '''\n
-Float_t theBDT_bin{iB}(Double_t BDT) {{
+Float_t theBDT_bin{iB}_unc{u}(Double_t BDT) {{
   if      (BDT < {val})\t return 1;
-'''.format(val = yq[0], iB = thebin)
+'''.format(val = yq[0], iB = thebin, u = theunc)
 
     subBin = 2
     for i in range(1, nq - 1):
-        outtxt += '  else if (BDT < %f)\t return %d;\n'%(yq[i],subBin)
+        outtxt += '  else if (BDT < %f)\t return %d;\n'%(yq[i], subBin)
         subBin += 1
 
     outtxt += '  else                       return %d;\n} \n'%subBin
     return outtxt
 
 
+def getVariedHisto(inpath, iV, thenom, theunc, theproc, thevar, thebin):
+    outh = None; tmpname  = thenom + "_" + theunc + "_" + str(thebin) + thevar
+    #print "### Creating varied normalisation", theunc, "unc. for nominal", thenom, "and variation", thevar
+    for y in ["2016", "2017", "2018"]:
+
+
+        hasthissystitsowncard = False
+        listofuncsthataffecttheproc = []
+        if iY != "run2":
+            skip = False
+            for y in ["2016", "2017", "2018"]:
+                if  y in key and iY != y:
+                    skip = True
+
+            for y in [["16", "17"], ["16", "18"], ["17", "18"]]:
+                if "".join(y) in key and not any([sub in iY for sub in y]):
+                    skip = True
+
+            if skip:
+                continue
+
+        if isinstance(el, dict):
+            if el["tw" if not vl.unifttbar else "ttbar"]:
+                listofuncsthataffecttheproc.append(key)
+        elif el:
+            listofuncsthataffecttheproc.append(key)
+
+        if thenom.replace("Up", "").replace("Down", "") in listofuncsthataffecttheproc:
+            hasthissystitsowncard = True
+
+        filetoopen = None
+
+        if   control in thebin:
+            filetoopen = (inpath + "/" + y + "/" + iV + "/controlReg.root")
+        elif hasthissystitsowncard:
+            filetoopen = inpath + "/" + y + "/" + iV + "/sigextr_fit/rebinhistos/forExtr_bin{b}_PRE{u}.root".format(b = thebin, u = theunc + thevar)
+        else:
+            filetoopen = inpath + "/" + y + "/" + iV + "/sigextr_fit/rebinhistos/forExtr_bin{b}.root".format(b = thebin)
+
+        #print "### file", filetoopen
+
+        rf_oftheyear = r.TFile(filetoopen, "READ")
+
+        if not rf_oftheyear:
+            raise RuntimeError("FATAL: file " + filetoopen + " does not exist, it is corrupt or it is not accessible.")
+
+        nametoconsider = thenom
+        for iY in ["2016", "2017", "2018"]:
+            if iY in nametoconsider and iY != y:
+                nametoconsider = "x_" + theproc
+
+        for iY in [["16", "17"], ["16", "18"], ["17", "18"]]:
+            if "".join(iY) in nametoconsider and not any([sub in y for sub in iY]):
+                nametoconsider = "x_" + theproc
+
+        #print "name", nametoconsider
+
+        if rf_oftheyear.Get(nametoconsider):
+            # This check is done for the case where one year does not have contributions from this process
+
+            #raise RuntimeError("FATAL: object " + nametoconsider + " not found in file " + filetoopen)
+
+            if y in vl.ProfileSystsThatAreNotPresentAllYears[theunc]:
+                htmp    = deepcopy(rf_oftheyear.Get(nametoconsider).Clone(tmpname))
+                sf      = rf_oftheyear.Get("x_" + theproc + "_" + theunc + thevar).Integral() / rf_oftheyear.Get("x_" + theproc).Integral()
+                htmp.Scale(sf)
+                if not outh:
+                    outh = deepcopy(htmp)
+                else:
+                    outh.Add(htmp)
+                del htmp
+            elif outh:
+                outh.Add(rf_oftheyear.Get(nametoconsider))
+            else:
+                outh = deepcopy(rf_oftheyear.Get(nametoconsider).Clone(tmpname))
+        rf_oftheyear.Close(); del rf_oftheyear
+
+
+    if not outh:
+        raise RuntimeError("FATAL: no combined histogram could be constructed for the nominal " + thenom + " and the unc. " + theunc + " of the process " + theproc + " of the variable " + iV + " of the bin number " + thebin + " of the variation " + thevar)
+
+    return outh
+
+
 def createCardsForEachSys(tsk):
-    inpath, iY, iV, syst = tsk
+    inpath, iY, iV, usesamenuis, syst = tsk
     print "    - Creating individual cards for variable " + iV + " of year " + iY + " for syst. " + syst
 
     path = inpath + "/" + iY + "/" + iV + "/sigextr_fit/rebinhistos"
@@ -178,10 +300,27 @@ def createCardsForEachSys(tsk):
 
     validfirstentries = {"*", "#", "bin", "observation", "shapes"}
 
-    #if syst != "elecidsfUp": return
+    listofuncsthataffecttheproc = []
+    hasthissystitsowncard = False
+    for s,el in vl.systMap.iteritems():
+        if isinstance(el, dict):
+            if el["tw" if not vl.unifttbar else "ttbar"]:
+                listofuncsthataffecttheproc.append(s)
+        elif el:
+            listofuncsthataffecttheproc.append(s)
+
+    if syst.replace("Up", "").replace("Down", "") in listofuncsthataffecttheproc:
+        hasthissystitsowncard = True
+
+    txtfiletoopen  = path + "/forExtr_bin{b}.txt"
+    rootfiletoopen = path + "/forExtr_bin{b}.root"
+    if hasthissystitsowncard:
+        txtfiletoopen  = path + "/forExtr_bin{b}_PRE" + syst + ".txt"
+        rootfiletoopen = path + "/forExtr_bin{b}_PRE" + syst + ".root"
+
 
     for iB in range(len(vl.varList[iV]["bins_detector"]) - 1):
-        readF = open(path + "/forExtr_bin{b}.txt".format(b = iB), 'r')
+        readF = open(txtfiletoopen.format(b = iB), 'r')
 
         presentprocesses = []
 
@@ -190,11 +329,15 @@ def createCardsForEachSys(tsk):
             entries = line.split()
             if entries[0] in validfirstentries.union(vl.ProfileSysts):
                 tmpline = deepcopy(line)
-                for el in vl.ProfileSysts:
-                    tmpline = tmpline.replace(el, el + "_" + str(iB))
+                if not usesamenuis:
+                    for el in vl.ProfileSysts:
+                        tmpline = tmpline.replace(el, el + "_" + str(iB))
 
-                if "shapes" in tmpline and iY == "run2":
-                    tmpline = tmpline.replace("forExtr_bin{b}.root".format(b = iB), "forExtr_bin{b}_run2.root".format(b = iB))
+                if "shapes" in tmpline:
+                    if   iY == "run2":
+                        tmpline = tmpline.replace("forExtr_bin{b}.root".format(b = iB), "forExtr_bin{b}_run2.root".format(b = iB))
+                    elif hasthissystitsowncard:
+                        tmpline = tmpline.replace("forExtr_bin{b}.root".format(b = iB), rootfiletoopen.format(b = iB))
 
                 outtext += tmpline
             elif len(entries) > 1:
@@ -237,7 +380,7 @@ def createCardsForEachSys(tsk):
                     else:
                         puresys = syst.replace("Up", "").replace("Down", "")
                         tmpline = deepcopy(line)
-                        thef = r.TFile(path + "/forExtr_bin{b}.root".format(b = iB), "READ")
+                        thef = r.TFile(rootfiletoopen.format(b = iB), "READ")
 
                         #print tmpline, entries[presentprocesses.index("nonworz") + 1], thef.Get("x_nonworz_" + syst).Integral()
                         #print "pre:", tmpline
@@ -281,14 +424,48 @@ def createCardsForEachSys(tsk):
         #break
 
         if iY == "run2" and syst == "": #### We need to modify the rootfiles!
-            print "    - Creating new rootfile card."
+            print "    - Creating new rootfile card for bin", iB
             therootfile = r.TFile.Open(path + "/forExtr_bin{b}.root".format(b = iB), "READ")
             tmpdictofthings = {}
+            copyname = ""; theproc = ""
             for key in therootfile.GetListOfKeys():
                 copyname = key.GetName()
+                isaproc  = False; isaprofiledunc = False;
+                theproc  = deepcopy(copyname.split("_")[1])
+                theunc   = None
+                pureunc  = None
+
+                if (copyname.split("_")[1] in vl.ProcessesNames and
+                   len(copyname.split("_")) <= 2) or copyname == "x_data_obs":
+                    isaproc = True
+                else:
+                    theunc  = "_".join(key.GetName().split("_")[2:])
+                    pureunc = theunc.replace("Up", "").replace("Down", "")
+
                 for el in vl.ProfileSysts:
-                    copyname = copyname.replace(el, el + "_" + str(iB))
-                tmpdictofthings[copyname] = deepcopy(therootfile.Get(key.GetName()).Clone(copyname))
+                    if el in copyname:
+                        isaprofiledunc = True
+                    if not usesamenuis:
+                        copyname = copyname.replace(el, el + "_" + str(iB))
+
+                if (not isaproc and pureunc in listofuncsthataffecttheproc):
+                    secondrootfile = r.TFile.Open(path + "/forExtr_bin{b}_PRE{u}.root".format(b = iB, u = theunc), "READ")
+                    tmpdictofthings[copyname] = deepcopy(secondrootfile.Get(key.GetName()).Clone(copyname))
+                    secondrootfile.Close(); del secondrootfile
+                else:
+                    tmpdictofthings[copyname] = deepcopy(therootfile.Get(key.GetName()).Clone(copyname))
+
+
+                # We have to create new histograms!
+                if not isaproc and not isaprofiledunc and "data" not in copyname:
+                    for iU in vl.ProfileSystsThatAreNotPresentAllYears:
+                        newnam = copyname + "_" + iU
+                        if not usesamenuis:
+                            newnam += "_" + str(iB)
+                        #print "# Creating variations for the normalisation unc.", iU, "for nominal", copyname
+
+                        tmpdictofthings[newnam + "Up"]   = deepcopy(getVariedHisto(inpath, iV, copyname, iU, theproc, "Up", str(iB)))
+                        tmpdictofthings[newnam + "Down"] = deepcopy(getVariedHisto(inpath, iV, copyname, iU, theproc, "Down", str(iB)))
             therootfile.Close(); del therootfile
 
             theoutrootfile = r.TFile.Open(path + "/forExtr_bin{b}_run2.root".format(b = iB), "RECREATE")
@@ -299,12 +476,160 @@ def createCardsForEachSys(tsk):
     return
 
 
+def prepareCardsForControlRegion(tsk):
+    inpath, iY, iV, usesamenuis, syst = tsk
+    print "    - Preparing card for the control region of year " + iY + " for unc. " + syst
+
+    path = inpath + "/" + iY + "/" + iV
+
+    validfirstentries = {"*", "#", "bin", "observation", "shapes"}
+
+    readF = open(path + "/controlReg.txt", 'r')
+
+    presentprocesses = []
+    outtext = ""
+
+    for line in readF:
+        entries = line.split()
+        if entries[0] in validfirstentries.union(vl.ProfileSysts):
+            tmpline = deepcopy(line)
+            if not usesamenuis:
+                for el in vl.ProfileSysts:
+                    tmpline = tmpline.replace(el, el + "_control")
+
+            if "shapes" in tmpline and iY == "run2":
+                tmpline = tmpline.replace("controlReg.root", "controlReg_run2.root")
+
+            outtext += tmpline
+        elif len(entries) > 1:
+            if ("lnN" in entries[1]):
+                outtext += line
+            elif "process" in entries[0]:
+                if entries[1].isdigit():
+                    outtext += line
+                else:
+                    tmpline = deepcopy(line)
+                    puresys = syst.replace("Up", "").replace("Down", "")
+                    if "tw" in tmpline:
+                        presentprocesses.append("tw")
+                    if "ttbar" in tmpline:
+                        presentprocesses.append("ttbar")
+                    if "dy" in tmpline:
+                        presentprocesses.append("dy")
+                    if "vvttv" in tmpline:
+                        presentprocesses.append("vvttv")
+                    if "nonworz" in tmpline:
+                        presentprocesses.append("nonworz")
+                    if not puresys == "":
+                        if not isinstance(vl.systMap[puresys], dict):
+                            tmpline = tmpline.replace("tw", "tw_" + syst).replace("ttbar", "ttbar_" + syst).replace("dy", "dy_" + syst).replace("vvttv", "vvttv_" + syst).replace("nonworz", "nonworz_" + syst)
+                        elif not puresys == "":
+                            if vl.systMap[puresys]["tw"]:
+                                tmpline = tmpline.replace("tw", "tw_" + syst)
+                            if vl.systMap[puresys]["ttbar"]:
+                                tmpline = tmpline.replace("ttbar", "ttbar_" + syst)
+                            if vl.systMap[puresys]["dy"]:
+                                tmpline = tmpline.replace("dy", "dy_" + syst)
+                            if vl.systMap[puresys]["vvttv"]:
+                                tmpline = tmpline.replace("vvttv", "vvttv_" + syst)
+                            if vl.systMap[puresys]["nonworz"]:
+                                tmpline = tmpline.replace("nonworz", "nonworz_" + syst)
+                    outtext += tmpline
+            elif "rate" in entries[0]:
+                if syst == "":
+                    outtext += line
+                else:
+                    puresys = syst.replace("Up", "").replace("Down", "")
+                    tmpline = deepcopy(line)
+                    thef = r.TFile(path + "/controlReg.root", "READ")
+
+                    #print tmpline, entries[presentprocesses.index("nonworz") + 1], thef.Get("x_nonworz_" + syst).Integral()
+                    #print "pre:", tmpline
+
+                    #print syst
+                    if not isinstance(vl.systMap[puresys], dict):
+                        if "tw" in presentprocesses:
+                            tmpline = tmpline.replace(entries[presentprocesses.index("tw") + 1], str(round(thef.Get("x_tw_"      + syst).Integral(), 3)))
+                        if "ttbar" in presentprocesses:
+                            tmpline = tmpline.replace(entries[presentprocesses.index("ttbar") + 1], str(round(thef.Get("x_ttbar_"   + syst).Integral(), 3)))
+                        if "dy" in presentprocesses:
+                            tmpline = tmpline.replace(entries[presentprocesses.index("dy") + 1], str(round(thef.Get("x_dy_"      + syst).Integral(), 3)))
+                        if "vvttv" in presentprocesses:
+                            tmpline = tmpline.replace(entries[presentprocesses.index("vvttv") + 1], str(round(thef.Get("x_vvttv_"   + syst).Integral(), 3)))
+                        if "nonworz" in presentprocesses:
+                            tmpline = tmpline.replace(entries[presentprocesses.index("nonworz") + 1], str(round(thef.Get("x_nonworz_" + syst).Integral(), 3)))
+                    else:
+                        if "tw" in presentprocesses and vl.systMap[puresys]["tw"]:
+                            tmpline = tmpline.replace(entries[presentprocesses.index("tw") + 1], str(round(thef.Get("x_tw_"      + syst).Integral(), 3)))
+                        if "ttbar" in presentprocesses and vl.systMap[puresys]["ttbar"]:
+                            tmpline = tmpline.replace(entries[presentprocesses.index("ttbar") + 1], str(round(thef.Get("x_ttbar_"   + syst).Integral(), 3)))
+                        if "dy" in presentprocesses and vl.systMap[puresys]["dy"]:
+                            tmpline = tmpline.replace(entries[presentprocesses.index("dy") + 1], str(round(thef.Get("x_dy_"      + syst).Integral(), 3)))
+                        if "vvttv" in presentprocesses and vl.systMap[puresys]["vvttv"]:
+                            tmpline = tmpline.replace(entries[presentprocesses.index("vvttv") + 1], str(round(thef.Get("x_vvttv_"   + syst).Integral(), 3)))
+                        if "nonworz" in presentprocesses and vl.systMap[puresys]["nonworz"]:
+                            tmpline = tmpline.replace(entries[presentprocesses.index("nonworz") + 1], str(round(thef.Get("x_nonworz_" + syst).Integral(), 3)))
+
+                    thef.Close(); del thef
+
+                    #print "post:", tmpline
+                    outtext += tmpline
+
+
+    readF.close()
+    #if len(presentprocesses) < 5:
+        #print outtext
+    outF  = open(path + "/controlReg_{s}.txt".format(s = syst), 'w')
+    outF.write(outtext)
+    outF.close()
+    #break
+
+    if iY == "run2" and syst == "": #### We need to modify the rootfiles!
+        print "    - Creating new rootfile card"
+        therootfile = r.TFile.Open(path + "/controlReg.root", "READ")
+        tmpdictofthings = {}
+        copyname = ""; theproc = ""
+        for key in therootfile.GetListOfKeys():
+            copyname = key.GetName()
+            isaproc  = False; isaprofiledunc = False;
+            theproc = deepcopy(copyname.split("_")[1])
+            if (copyname.split("_")[1] in vl.ProcessesNames and
+                len(copyname.split("_")) <= 2) or copyname == "x_data_obs":
+                isaproc = True
+
+            for el in vl.ProfileSysts:
+                if el in copyname:
+                    isaprofiledunc = True
+                if not usesamenuis:
+                    copyname = copyname.replace(el, el + "_control")
+            tmpdictofthings[copyname] = deepcopy(therootfile.Get(key.GetName()).Clone(copyname))
+
+
+            # We have to create new files!
+            if not isaproc and not isaprofiledunc and "data" not in copyname:
+                for iU in vl.ProfileSystsThatAreNotPresentAllYears:
+                    newnam = copyname + "_" + iU
+                    if not usesamenuis:
+                        newnam += "_control"
+                    #print "# Creating variations for the normalisation unc.", iU, "for nominal", copyname
+
+                    tmpdictofthings[newnam + "Up"]   = deepcopy(getVariedHisto(inpath, iV, copyname, iU, theproc, "Up", "control"))
+                    tmpdictofthings[newnam + "Down"] = deepcopy(getVariedHisto(inpath, iV, copyname, iU, theproc, "Down", "control"))
+        therootfile.Close(); del therootfile
+
+        theoutrootfile = r.TFile.Open(path + "/controlReg_run2.root", "RECREATE")
+        for key in tmpdictofthings:
+            tmpdictofthings[key].Write()
+        theoutrootfile.Close(); del theoutrootfile
+
+    return
+
 
 
 if __name__=="__main__":
     parser = argparse.ArgumentParser(usage = "python nanoAOD_checker.py [options]", description = "Checker tool for the outputs of nanoAOD production (NOT postprocessing)", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('--inpath',    '-i', metavar = 'inpath',     dest = "inpath",   required = False, default = "./temp/differential/")
-    parser.add_argument('--step',      '-s', metavar = 'step',       dest = "step",     required = True,  default = 0, type = int)
+    parser.add_argument('--step',      '-s', metavar = 'step',       dest = "step",     required = False,  default = 0, type = int)
     parser.add_argument('--year',      '-y', metavar = 'year',       dest = "year",     required = False, default = "all")
     parser.add_argument('--variable',  '-v', metavar = 'variable',   dest = "variable", required = False, default = "all")
     parser.add_argument('--extraArgs', '-e', metavar = 'extra',      dest = "extra",    required = False, default = "")
@@ -313,9 +638,11 @@ if __name__=="__main__":
     parser.add_argument('--production','-P', metavar = "prod",       dest = "prod",     required = True)
     parser.add_argument('--queue',     '-q', metavar = 'queue',      dest = "queue",    required = False, default = "")
     parser.add_argument('--outpath',   '-o', metavar = 'outpath',    dest = "outpath",  required = False, default = "./temp/differential/cards")
-    parser.add_argument('--nounc',     '-u', action  = "store_true", dest = "nounc",    required = False, default = False)
+    parser.add_argument('--nounc',     '-nu', action  = "store_true", dest = "nounc",    required = False, default = False)
     parser.add_argument('--asimov',    '-a', action  = "store_true", dest = "asimov",   required = False, default = False)
     parser.add_argument('--useFibre',  '-f', action  = "store_true", dest = "useFibre", required = False, default = False)
+    parser.add_argument('--prepareControl', '-c', action  = "store_true", dest = "prepctrl", required = False, default = False)
+    parser.add_argument('--sameNuisances', '-sn', action  = "store_true", dest = "samenuis", required = False, default = False)
 
 
     args     = parser.parse_args()
@@ -332,32 +659,92 @@ if __name__=="__main__":
     asimov   = args.asimov
     variable = args.variable
     useFibre = args.useFibre
+    prepctrl = args.prepctrl
+    samenuis = args.samenuis
 
     thevars  = vl.varList["Names"]["Variables"]
     theyears = ["2016", "2017", "2018", "run2"]
-    if   step == 0:
+    vetolist = ["plots", "Fiducial", "control", "tables"]
+
+    if prepctrl:
+        print "> Preparing control region cards..."
+        tasks = []
+        theyears = []
+        presentyears = next(os.walk(inpath))[1]
+
+        if "2016" in presentyears:
+            theyears.append("2016")
+        if "2017" in presentyears:
+            theyears.append("2017")
+        if "2018" in presentyears:
+            theyears.append("2018")
+        if "run2" in presentyears:
+            theyears.append("run2")
+
+
+        if year.lower() != "all" and year in presentyears:
+            theyears = [ year ]
+        elif year.lower() != "all":
+            raise RuntimeError("FATAL: the year requested is not in the provided input folder.")
+
+        for iY in theyears:
+            thevars = next(os.walk(inpath + "/" + iY))[1]
+
+            if ("controlReg" + vl.diffControlReg) not in thevars:
+                raise RuntimeError("FATAL: the expected control region folder, controlReg" + vl.diffControlReg + ", has not been found in the folder of year " + iY + ".")
+
+            tasks.append( (inpath, iY, "controlReg" + vl.diffControlReg, samenuis, "") )
+            for iS in vl.systMap:
+                if "_" in iS and iY != "run2":
+                    if iS.split("_")[-1].isdigit():
+                        if iY not in iS.split("_")[-1]:
+                            continue
+                tasks.append( (inpath, iY, "controlReg" + vl.diffControlReg, samenuis, iS + "Up") )
+                tasks.append( (inpath, iY, "controlReg" + vl.diffControlReg, samenuis, iS + "Down") )
+
+        #print tasks
+        #sys.exit()
+        print "> Executing..."
+        if nthreads > 1:
+            pool = Pool(nthreads)
+            pool.map(prepareCardsForControlRegion, tasks)
+            pool.close()
+            pool.join()
+        else:
+            for tsk in tasks:
+                prepareCardsForControlRegion(tsk)
+        print "> Done!"
+
+
+    elif   step == 0:
         print "> Producing necessary initial histograms..."
 
         theregs  = ["histos"]
         tasks    = []
 
         if variable.lower() != "all":
-            thevars = [ variable ]
+            if "," in variable:
+                thevars = variable.split(",")
+            else:
+                thevars = [ variable ]
 
         if year.lower() != "all":
-            theyears = [ year ]
-
+            if "," in year:
+                theyears = year.split(",")
+            else:
+                theyears = [ year ]
 
         for reg in theregs:
             for yr in theyears:
                 for var in thevars:
                     for theb in range(len(vl.varList[var]["bins_detector"]) - 1):
-                        tasks.append( (prod, yr, var, asimov, nthreads, outpath, reg, noUnc, useFibre, extra, pretend, queue, theb) )
+                        tasks.append( (prod, yr, var, asimov, nthreads, outpath, reg, noUnc, useFibre, extra, pretend, queue, theb, "") )
 
         #print tasks
         calculate = True
+        print "> Executing..."
         for task in tasks:
-            print "\nProcessing " + str(task) + "\n"
+            print "    - Processing " + str(task)
 
             #if str(task) == "('2020-09-20', 'run2', 'Lep1Lep2_DPhi', True, 16, 'temp_2021_01_22_fitdiftodas/differential', 'forExtr', False, True, '', False, '')":
                 #calculate = True
@@ -368,29 +755,40 @@ if __name__=="__main__":
     elif step == 1:
         print "> Creating function files..."
         tasks = []
-        if year == "all":
-            if variable == "all":
-                theyears = []
-                presentyears = next(os.walk(inpath))[1]
+        theyears = []
+        presentyears = next(os.walk(inpath))[1]
 
-                if "2016" in presentyears:
-                    theyears.append("2016")
-                if "2017" in presentyears:
-                    theyears.append("2017")
-                if "2018" in presentyears:
-                    theyears.append("2018")
-                if "run2" in presentyears:
-                    theyears.append("run2")
+        if "2016" in presentyears:
+            theyears.append("2016")
+        if "2017" in presentyears:
+            theyears.append("2017")
+        if "2018" in presentyears:
+            theyears.append("2018")
+        if "run2" in presentyears:
+            theyears.append("run2")
 
-                for iY in theyears:
-                    thevars = next(os.walk(inpath + "/" + iY))[1]
+        if   year.lower() != "all" and year in theyears:
+            theyears = [ year ]
+        elif year.lower() != "all":
+            raise RuntimeError("FATAL: requested year not found.")
 
-                    for iV in thevars:
-                        if "plots" in iV: continue
-                        if not os.path.isdir(inpath + "/" + iY + "/" + iV + "/sigextr_fit"): continue
 
-                        tasks.append( (inpath, iY, iV) )
+        for iY in theyears:
+            thevars = next(os.walk(inpath + "/" + iY))[1]
+
+            if    variable.lower() != "all" and variable in thevars:
+                thevars = [ variable ]
+            elif variable.lower() != "all":
+                raise RuntimeError("FATAL: requested year not found.")
+
+            for iV in thevars:
+                if any([el in iV for el in vetolist]): continue
+                if not os.path.isdir(inpath + "/" + iY + "/" + iV + "/sigextr_fit"): continue
+
+                tasks.append( (inpath, iY, iV) )
+
         #print tasks
+        print "> Executing..."
         if nthreads > 1:
             pool = Pool(nthreads)
             pool.map(createFunctionFileForVariable, tasks)
@@ -401,12 +799,17 @@ if __name__=="__main__":
             for tsk in tasks:
                 createFunctionFileForVariable(tsk)
 
+        if nthreads < 2:
+            nthreads = 1
+
         for iP in range(int(math.ceil(len(tasks) / float(nthreads)))):
             pool = Pool(nthreads)
-            pool.map(compileFunctionFile, tasks[iP*nthreads:(iP + 1)*(nthreads) if (iP + 1)*nthreads < len(tasks) else len(tasks)])
+            pool.map(compileFunctionFile,
+                     tasks[iP*nthreads:(iP + 1)*(nthreads) if (iP + 1)*nthreads < len(tasks) else len(tasks)])
             pool.close()
             pool.join()
             del pool
+
     elif step == 2:
         print "> Preparing to submit the cards for the fit..."
 
@@ -421,14 +824,39 @@ if __name__=="__main__":
 
         for reg in theregs:
             for yr in theyears:
+                listofuncsthataffecttheproc = []
+                for key,el in vl.systMap.iteritems():
+                    if yr != "run2":
+                        skip = False
+                        for y in ["2016", "2017", "2018"]:
+                            if  y in key and yr != y:
+                                skip = True
+
+                        for y in [["16", "17"], ["16", "18"], ["17", "18"]]:
+                            if "".join(y) in key and not any([sub in yr for sub in y]):
+                                skip = True
+
+                        if skip:
+                            continue
+
+                    if isinstance(el, dict):
+                        if el["tw" if not vl.unifttbar else "ttbar"]:
+                            listofuncsthataffecttheproc.append(key)
+                    elif el:
+                        listofuncsthataffecttheproc.append(key)
                 for var in thevars:
                     for theb in range(len(vl.varList[var]["bins_detector"]) - 1):
-                        tasks.append( (prod, yr, var, asimov, nthreads, outpath, reg, noUnc, useFibre, extra, pretend, queue, theb) )
+                        #tasks.append( (prod, yr, var, asimov, nthreads, outpath, reg, noUnc, useFibre, extra, pretend, queue, theb, "") )
 
-        #print tasks
+                        for theu in listofuncsthataffecttheproc:
+                            tasks.append( (prod, yr, var, asimov, nthreads, outpath, reg, noUnc, useFibre, extra, pretend, queue, theb, theu + "Up") )
+                            tasks.append( (prod, yr, var, asimov, nthreads, outpath, reg, noUnc, useFibre, extra, pretend, queue, theb, theu + "Down") )
+
+
         calculate = True
+        print "> Executing..."
         for task in tasks:
-            print "\nProcessing " + str(task) + "\n"
+            print "    - Processing " + str(task)
 
             #if str(task) == "('2020-09-20', 'run2', 'Lep1Lep2_DPhi', True, 16, 'temp_2021_01_22_fitdiftodas/differential', 'forExtr', False, True, '', False, 'batch', 8)":
                 #calculate = True
@@ -438,6 +866,7 @@ if __name__=="__main__":
                 ExecuteOrSubmitTask(task)
                 #sys.exit()
                 #calculate = False
+
     else:
         print "> Producing final cards..."
         tasks = []
@@ -468,20 +897,21 @@ if __name__=="__main__":
                 raise RuntimeError("FATAL: the variable requested is not in the provided input folder.")
 
             for iV in thevars:
-                if "plots" in iV: continue
+                if "plots" in iV or "table" in iV: continue
                 if not os.path.isdir(inpath + "/" + iY + "/" + iV + "/sigextr_fit"): continue
 
 
-                tasks.append( (inpath, iY, iV, "") )
+                tasks.append( (inpath, iY, iV, samenuis, "") )
                 for iS in vl.systMap:
-                    if "_" in iS:
+                    if "_" in iS and iY != "run2":
                         if iS.split("_")[-1].isdigit():
                             if iY not in iS.split("_")[-1]:
                                 continue
-                    tasks.append( (inpath, iY, iV, iS + "Up") )
-                    tasks.append( (inpath, iY, iV, iS + "Down") )
+                    tasks.append( (inpath, iY, iV, samenuis, iS + "Up") )
+                    tasks.append( (inpath, iY, iV, samenuis, iS + "Down") )
         #print tasks
         #sys.exit()
+        print "> Executing..."
         if nthreads > 1:
             pool = Pool(nthreads)
             pool.map(createCardsForEachSys, tasks)

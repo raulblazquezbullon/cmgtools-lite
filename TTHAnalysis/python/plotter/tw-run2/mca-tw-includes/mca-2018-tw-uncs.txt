@@ -1,21 +1,46 @@
-ttbar_matching_up : Tree_TTTo2L2Nu_hdampUP_TuneCP5_0 + Tree_TTTo2L2Nu_hdampUP_TuneCP5_1 + Tree_TTTo2L2Nu_hdampUP_TuneCP5_2 + Tree_TTTo2L2Nu_hdampUP_TuneCP5_3 + Tree_TTTo2L2Nu_hdampUP_TuneCP5_4 + Tree_TTTo2L2Nu_hdampUP_TuneCP5_ext1_0 + Tree_TTTo2L2Nu_hdampUP_TuneCP5_ext1_1 + Tree_TTTo2L2Nu_hdampUP_TuneCP5_ext1_2 + Tree_TTTo2L2Nu_hdampUP_TuneCP5_ext1_3 + Tree_TTTo2L2Nu_hdampUP_TuneCP5_ext1_4 + Tree_TTTo2L2Nu_hdampUP_TuneCP5_ext1_5 + Tree_TTTo2L2Nu_hdampUP_TuneCP5_ext1_6 + Tree_TTTo2L2Nu_hdampUP_TuneCP5_ext1_7 : 88.28769753; genSumWeightName="genEventSumw_"
+#syst_tw_matching_up  : ST_tW_antitop_5f_hdampup_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_*central*   : xsec ;
+#syst_tw_matching_up  : ST_tW_top_5f_hdampup_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_*central*       : xsec ;
+#syst_tw_matching_dn  : ST_tW_antitop_5f_hdampdown_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_*central* : xsec ;
+#syst_tw_matching_dn  : ST_tW_top_5f_hdampdown_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_*central*     : xsec ;
 
-ttbar_matching_dn : Tree_TTTo2L2Nu_hdampDOWN_TuneCP5_0 + Tree_TTTo2L2Nu_hdampDOWN_TuneCP5_1 + Tree_TTTo2L2Nu_hdampDOWN_TuneCP5_2 + Tree_TTTo2L2Nu_hdampDOWN_TuneCP5_3 + Tree_TTTo2L2Nu_hdampDOWN_TuneCP5_4 + Tree_TTTo2L2Nu_hdampDOWN_TuneCP5_5 + Tree_TTTo2L2Nu_hdampDOWN_TuneCP5_6 + Tree_TTTo2L2Nu_hdampDOWN_TuneCP5_ext1_0 + Tree_TTTo2L2Nu_hdampDOWN_TuneCP5_ext1_1 + Tree_TTTo2L2Nu_hdampDOWN_TuneCP5_ext1_2 + Tree_TTTo2L2Nu_hdampDOWN_TuneCP5_ext1_3 + Tree_TTTo2L2Nu_hdampDOWN_TuneCP5_ext1_4 + Tree_TTTo2L2Nu_hdampDOWN_TuneCP5_ext1_5 + Tree_TTTo2L2Nu_hdampDOWN_TuneCP5_ext1_6 + Tree_TTTo2L2Nu_hdampDOWN_TuneCP5_ext1_7 + Tree_TTTo2L2Nu_hdampDOWN_TuneCP5_ext1_8 : 88.28769753; genSumWeightName="genEventSumw_"
+syst_tw_colour_erdon : ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_erdON_13TeV-powheg-pythia8_*central*     : xsec ;
+syst_tw_colour_erdon : ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_erdON_13TeV-powheg-pythia8_*central*         : xsec ;
+syst_tw_colour_cr1   : ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5CR1_13TeV-powheg-pythia8_*central*        : xsec ;
+syst_tw_colour_cr1   : ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5CR1_13TeV-powheg-pythia8_*central*            : xsec ;
+syst_tw_colour_cr2   : ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5CR2_13TeV-powheg-pythia8_*central*        : xsec ;
+syst_tw_colour_cr2   : ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5CR2_13TeV-powheg-pythia8_*central*            : xsec ;
 
-colour_erdon      : Tree_TTTo2L2Nu_TuneCP5_erdON_0 + Tree_TTTo2L2Nu_TuneCP5_erdON_1 + Tree_TTTo2L2Nu_TuneCP5_erdON_2 + Tree_TTTo2L2Nu_TuneCP5_erdON_3 + Tree_TTTo2L2Nu_TuneCP5_erdON_ext1_0 + Tree_TTTo2L2Nu_TuneCP5_erdON_ext1_1 + Tree_TTTo2L2Nu_TuneCP5_erdON_ext1_10 + Tree_TTTo2L2Nu_TuneCP5_erdON_ext1_2 + Tree_TTTo2L2Nu_TuneCP5_erdON_ext1_3 + Tree_TTTo2L2Nu_TuneCP5_erdON_ext1_4 + Tree_TTTo2L2Nu_TuneCP5_erdON_ext1_5 + Tree_TTTo2L2Nu_TuneCP5_erdON_ext1_6 + Tree_TTTo2L2Nu_TuneCP5_erdON_ext1_7 + Tree_TTTo2L2Nu_TuneCP5_erdON_ext1_8 + Tree_TTTo2L2Nu_TuneCP5_erdON_ext1_9 : 88.28769753; genSumWeightName="genEventSumw_"
+# ue nofullyhad
+syst_tw_ue_up        : ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5up_13TeV-powheg-pythia8_*central*         : 2804765/(4796000/35.85 + 2804765/19.4674104) ;
+syst_tw_ue_up        : ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5up_13TeV-powheg-pythia8_*central*             : 2879787/(5000000/35.85 + 2879787/19.4674104) ;
+syst_tw_ue_dn        : ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5down_13TeV-powheg-pythia8_*central*       : 2927828/(4985000/35.85 + 2927828/19.4674104) ;
+syst_tw_ue_dn        : ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5down_13TeV-powheg-pythia8_*central*           : 2848199/(4984000/35.85 + 2848199/19.4674104) ;
 
-colour_qcd        : Tree_TTTo2L2Nu_TuneCP5CR1_QCDbased_0 + Tree_TTTo2L2Nu_TuneCP5CR1_QCDbased_1 + Tree_TTTo2L2Nu_TuneCP5CR1_QCDbased_10 + Tree_TTTo2L2Nu_TuneCP5CR1_QCDbased_11 + Tree_TTTo2L2Nu_TuneCP5CR1_QCDbased_12 + Tree_TTTo2L2Nu_TuneCP5CR1_QCDbased_13 + Tree_TTTo2L2Nu_TuneCP5CR1_QCDbased_2 + Tree_TTTo2L2Nu_TuneCP5CR1_QCDbased_3 + Tree_TTTo2L2Nu_TuneCP5CR1_QCDbased_4 + Tree_TTTo2L2Nu_TuneCP5CR1_QCDbased_5 + Tree_TTTo2L2Nu_TuneCP5CR1_QCDbased_6 + Tree_TTTo2L2Nu_TuneCP5CR1_QCDbased_7 + Tree_TTTo2L2Nu_TuneCP5CR1_QCDbased_8 + Tree_TTTo2L2Nu_TuneCP5CR1_QCDbased_9 : 88.28769753; genSumWeightName="genEventSumw_"
+# ue inclusive
+syst_tw_ue_up        : ST_tW_antitop_5f_inclusiveDecays_TuneCP5up_13TeV-powheg-pythia8_*central*     : 4796000/(4796000/35.85 + 2804765/19.4674104) ;
+syst_tw_ue_up        : ST_tW_top_5f_inclusiveDecays_TuneCP5up_PSweights_13TeV-powheg-pythia8_*central*         : 5000000/(5000000/35.85 + 2879787/19.4674104) ;
+syst_tw_ue_dn        : ST_tW_antitop_5f_inclusiveDecays_TuneCP5down_13TeV-powheg-pythia8_*central*   : 4985000/(4985000/35.85 + 2927828/19.4674104) ;
+syst_tw_ue_dn        : ST_tW_top_5f_inclusiveDecays_TuneCP5down_PSweights_13TeV-powheg-pythia8_*central*       : 4984000/(4984000/35.85 + 2848199/19.4674104) ;
 
-colour_gluonmove  : Tree_TTTo2L2Nu_TuneCP5CR2_GluonMove_0 + Tree_TTTo2L2Nu_TuneCP5CR2_GluonMove_1 + Tree_TTTo2L2Nu_TuneCP5CR2_GluonMove_2 + Tree_TTTo2L2Nu_TuneCP5CR2_GluonMove_3 + Tree_TTTo2L2Nu_TuneCP5CR2_GluonMove_4 + Tree_TTTo2L2Nu_TuneCP5CR2_GluonMove_5 + Tree_TTTo2L2Nu_TuneCP5CR2_GluonMove_6 + Tree_TTTo2L2Nu_TuneCP5CR2_GluonMove_7 + Tree_TTTo2L2Nu_TuneCP5CR2_GluonMove_8 : 88.28769753; genSumWeightName="genEventSumw_"
+# mtop nofullyhad
+syst_tw_mtop_up      : ST_tW_antitop_5f_NoFullyHadronicDecays_mtop1735_TuneCP5_13TeV-powheg-pythia8*central* : 2949324/(7971000/35.85 + 2949324/19.4674104) ; genSumWeightName="genEventSumw"
+syst_tw_mtop_up      : ST_tW_top_5f_NoFullyHadronicDecays_mtop1735_TuneCP5_13TeV-powheg-pythia8*central*     : 2862717/(7888000/35.85 + 2862717/19.4674104) ; genSumWeightName="genEventSumw"
+syst_tw_mtop_dn      : ST_tW_antitop_5f_NoFullyHadronicDecays_mtop1715_TuneCP5_13TeV-powheg-pythia8*central* : 2866971/(7869000/35.85 + 2866971/19.4674104) ; genSumWeightName="genEventSumw"
+syst_tw_mtop_dn      : ST_tW_top_5f_NoFullyHadronicDecays_mtop1715_TuneCP5_13TeV-powheg-pythia8*central*     : 2960887/(7924000/35.85 + 2960887/19.4674104) ; genSumWeightName="genEventSumw"
 
-ue_up             : Tree_TTTo2L2Nu_TuneCP5up_0 + Tree_TTTo2L2Nu_TuneCP5up_1 + Tree_TTTo2L2Nu_TuneCP5up_2 + Tree_TTTo2L2Nu_TuneCP5up_3 + Tree_TTTo2L2Nu_TuneCP5up_4 + Tree_TTTo2L2Nu_TuneCP5up_5 + Tree_TTTo2L2Nu_TuneCP5up_ext1_0 + Tree_TTTo2L2Nu_TuneCP5up_ext1_1 + Tree_TTTo2L2Nu_TuneCP5up_ext1_2 + Tree_TTTo2L2Nu_TuneCP5up_ext1_3 + Tree_TTTo2L2Nu_TuneCP5up_ext1_4 + Tree_TTTo2L2Nu_TuneCP5up_ext1_5 + Tree_TTTo2L2Nu_TuneCP5up_ext1_6 + Tree_TTTo2L2Nu_TuneCP5up_ext1_7 : 88.28769753; genSumWeightName="genEventSumw_"
+# mtop inclusive
+syst_tw_mtop_up      : ST_tW_antitop_5f_inclusiveDecays_mtop1735_TuneCP5_PSweights_13TeV-powheg-pythia8*central*       : 7971000/(7971000/35.85 + 2949324/19.4674104) ;
+syst_tw_mtop_up      : ST_tW_top_5f_inclusiveDecays_mtop1735_TuneCP5_PSweights_13TeV-powheg-pythia8*central*           : 7888000/(7888000/35.85 + 2862717/19.4674104) ;
+syst_tw_mtop_dn      : ST_tW_antitop_5f_inclusiveDecays_mtop1715_TuneCP5_PSweights_13TeV-powheg-pythia8*central*       : 7869000/(7869000/35.85 + 2866971/19.4674104) ;
+syst_tw_mtop_dn      : ST_tW_top_5f_inclusiveDecays_mtop1715_TuneCP5_PSweights_13TeV-powheg-pythia8*central*           : 7924000/(7924000/35.85 + 2960887/19.4674104) ;
 
-ue_dn             : Tree_TTTo2L2Nu_TuneCP5down_0 + Tree_TTTo2L2Nu_TuneCP5down_1 + Tree_TTTo2L2Nu_TuneCP5down_2 + Tree_TTTo2L2Nu_TuneCP5down_3 + Tree_TTTo2L2Nu_TuneCP5down_4 + Tree_TTTo2L2Nu_TuneCP5down_ext1_0 + Tree_TTTo2L2Nu_TuneCP5down_ext1_1 + Tree_TTTo2L2Nu_TuneCP5down_ext1_2 + Tree_TTTo2L2Nu_TuneCP5down_ext1_3 + Tree_TTTo2L2Nu_TuneCP5down_ext1_4 + Tree_TTTo2L2Nu_TuneCP5down_ext1_5 + Tree_TTTo2L2Nu_TuneCP5down_ext1_6 + Tree_TTTo2L2Nu_TuneCP5down_ext1_7 : 88.28769753; genSumWeightName="genEventSumw_"
+# ds nofullyhad
+#syst_tw_ds           : ST_tW_antitop_5f_DS_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8*central*         : 2964435/(4788000/35.85 + 2964435/19.4674104) ;
+#syst_tw_ds           : ST_tW_top_5f_DS_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8*central*             : 2959372/(4998056/35.85 + 2959372/19.4674104) ;
+syst_tw_ds           : ST_tW_antitop_5f_DS_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8*central*         : xsec ;
+syst_tw_ds           : ST_tW_top_5f_DS_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8*central*             : xsec ;
 
-mtop_up           : Tree_TTTo2L2Nu_mtop173p5_TuneCP5_0.root + Tree_TTTo2L2Nu_mtop173p5_TuneCP5_1.root : 88.28769753; genSumWeightName="genEventSumw_"
-
-mtop_dn           : Tree_TTTo2L2Nu_mtop171p5_TuneCP5_0 + Tree_TTTo2L2Nu_mtop171p5_TuneCP5_1 + Tree_TTTo2L2Nu_mtop171p5_TuneCP5_2 + Tree_TTTo2L2Nu_mtop171p5_TuneCP5_3 + Tree_TTTo2L2Nu_mtop171p5_TuneCP5_4 + Tree_TTTo2L2Nu_mtop171p5_TuneCP5_5 : 88.28769753; genSumWeightName="genEventSumw_"
-
-
-
-
+# ds inclusive
+#syst_tw_ds           : ST_tW_top_5f_DS_inclusiveDecays_TuneCP5_13TeV-powheg-pythia8*central*                   : 4788000/(4788000/35.85 + 2964435/19.4674104) ;
+#syst_tw_ds           : ST_tW_antitop_5f_DS_inclusiveDecays_TuneCP5_13TeV-powheg-pythia8*central*               : 4998056/(4998056/35.85 + 2959372/19.4674104) ;
+ST_tW_top_5f_inclusiveDecays_TuneCP5up_13TeV-powheg-pythia8_

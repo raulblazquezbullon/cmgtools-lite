@@ -338,6 +338,7 @@ class TreeToYield:
         self._friends = []
         if self._tfile: self._tfile.Close()
         self._tfile = None
+
     def _listFriendTrees(self):
         friendOpts = self._options.friendTrees[:]
         friendOpts += (self._options.friendTreesData if self._isdata else self._options.friendTreesMC)
@@ -349,7 +350,9 @@ class TreeToYield:
             friendOpts += [ ('Friends', d+"/{cname}_Friend.root") for d in friendSimpleOpts]
         else:
             friendOpts += [ ('sf/t', d+"/evVarFriend_{cname}.root") for d in friendSimpleOpts]
-        return [ (tname,fname.format(name=self._name, cname=self._cname, P=self._basepath)) for (tname,fname) in friendOpts ]
+
+        return [ (tname, fname.format(name=self._name, cname=self._cname, P=self._basepath)) for (tname, fname) in friendOpts ]
+
     def checkFriendTrees(self, checkFiles=False):
         ok = True
         for (tn,fn) in self._listFriendTrees():
@@ -381,6 +384,7 @@ class TreeToYield:
                 #print "unctype:", var.unc_type
             if var == None: 
                 exprs = [(expr,0)]
+
             else:
                 exprs = [('(%s)*(%s)'%(fr._altNorm if (fr and fr._altNorm) else '1',expr), idx) for idx,fr in enumerate(var.fakerate) ]
 

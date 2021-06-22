@@ -11,13 +11,13 @@ r.gROOT.SetBatch(True)
 
 friendspath   = "/pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions"
 logpath       = friendspath + "/{p}/{y}/logs/cards_differential"
-friendfolders = ["0_yeartag", "1_lepmerge_roch", "2_cleaning", "3_varstrigger", "4_scalefactors", "5_mvas"]
 lumidict      = {2016 : 35.92, 2017 : 41.53, 2018 : 59.74}
 lumidictone   = {2016 : 35.92, 2017 : 41.53, 2018 : 59.74}
 #lumidictone   = {2016 : 1.0,   2017 : 1.0,   2018 : 1.0}
 
 
-friendsscaff  = "--Fs {P}/0_yeartag --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --Fs {P}/5_mvas"
+#friendsscaff  = "--Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors_bkp --Fs {P}/5_mvas"
+friendsscaff  = "--Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors"
 
 slurmscaff    = "sbatch -c {nth} -p {queue} -J {jobname} -e {logpath}/log.%j.%x.err -o {logpath}/log.%j.%x.out --wrap '{command}'"
 
@@ -60,7 +60,7 @@ def ExecuteOrSubmitTask(tsk):
 
         thecomm = slurmscaff.format(nth     = nthreads,
                                     queue   = queue,
-                                    jobname = "CMGTcardsforunfolding",
+                                    jobname = "CMGTcardsforunfolding_" + variable + "_" + region,
                                     logpath = logpath.format(p = prod, y = yr),
                                     command = CardsCommand(prod, year, variable, asimov, nthreads, outpath, region, noUnc, useFibre, extra))
 
@@ -77,20 +77,22 @@ def CardsCommand(prod, year, var, isAsimov, nthreads, outpath, region, noUnc, us
         doPure = True
         region = region.replace("pure1j1t", "")
 
-    mcafile_   = "tw-run2/differential/mca-differential/mca-tw-diff.txt" if "forExtr" not in region else "tw-run2/mca-tw.txt"
-    cutsfile_  = "tw-run2/differential/cuts-differential{pureornot}/cuts-{reg}-1j1t.txt".format(reg = region.replace("Response", "") if ("forExtr" not in region and "but" not in region) else "detectorparticle" if "but" in region else "detector", pureornot = "-pure1j1t" if doPure else "")
+    mcafile_   = "tw-run2/differential/mca-differential/mca-tw-diff.txt" if "forExtr" not in region and "control" not in region and region != "nonfiducialAll" else "tw-run2/mca-tw.txt"
+    cutsfile_  = "tw-run2/differential/cuts-differential{pureornot}/cuts-{reg}-{njnt}.txt".format(reg = region.replace("Response", "").replace("All", "") if ("forExtr" not in region and "but" not in region and "control" not in region) else "detectorparticle" if "but" in region else "detector",
+                                                                                                  pureornot = "-pure1j1t" if doPure else "",
+                                                                                                  njnt = "1j1t" if "control" not in region else vl.diffControlReg )
 
     samplespaths_ = "-P " + friendspath + "/" + prod + ("/" + year) * (year != "run2")
     if useFibre: samplespaths_ = samplespaths_.replace("phedexrw", "phedex").replace("cienciasrw", "ciencias")
 
     nth_       = "" if nthreads == 0 else ("--split-factor=-1 -j " + str(nthreads))
     friends_   = friendsscaff
-    outpath_   = outpath + "/" + year + "/" + var
+    outpath_   = outpath + "/" + year + "/" + (var if "control" not in region else ("controlReg" + vl.diffControlReg))
 
     if not os.path.isdir(outpath_):
         os.system("mkdir -p " + outpath_)
 
-    thebins = (vl.varList[var]["bins_detector"] if (region == "detector" or region == "detectorparticlebutdetector" or region == "nonfiducial" or "forExtr" in region) else
+    thebins = (vl.varList[var]["bins_detector"] if (region == "detector" or region == "detectorparticlebutdetector" or "nonfiducial" in region or "forExtr" in region or "control" in region) else
                vl.varList[var]["bins_particle"] if (region == "particle" or region == "detectorparticle") else
               (vl.varList[var]["bins_particle"], vl.varList[var]["bins_detector"]) )
 
@@ -100,15 +102,19 @@ def CardsCommand(prod, year, var, isAsimov, nthreads, outpath, region, noUnc, us
     else:
         bins_ = PythonListToString(thebins[0]) + "*" + PythonListToString(thebins[1])
 
-    variable_  = (vl.varList[var]["var_detector"] if (region == "detector" or region == "detectorparticlebutdetector" or region == "nonfiducial" or "forExtr" in region) else
+    variable_  = (vl.varList[var]["var_detector"] if (region == "detector" or region == "detectorparticlebutdetector" or "nonfiducial" in region or "forExtr" in region or "control" in region) else
                   vl.varList[var]["var_particle"] if (region == "particle" or region == "detectorparticle") else
                   #vl.varList[var]["var_particle"] + ":" + vl.varList[var]["var_detector"])
                   vl.varList[var]["var_detector"] + ":" + vl.varList[var]["var_particle"])
     name_      = "--binname " + region
-    weights_   = (nomweight if (region == "detector" or "forExtr" in region or region == "detectorparticlebutdetector") else
-                  nomweight if region == "detectorparticleResponse" or region == "nonfiducial" else
+    weights_   = (nomweight if (region == "detector" or "forExtr" in region or region == "detectorparticlebutdetector" or "control" in region) else
+                  nomweight if region == "detectorparticleResponse" or "nonfiducial" in region else
                   #nomweight if region == "detectorparticleResponse" else
                   genweight)
+
+    extra_ = extra
+    if region not in ["detector", "particle"]:
+        extra_ += " --xp twds,twherwig"
 
     comm = commandscaff.format(outpath      = outpath_,
                                friends      = friends_,
@@ -118,13 +124,15 @@ def CardsCommand(prod, year, var, isAsimov, nthreads, outpath, region, noUnc, us
                                bins      = bins_,
                                nth       = nth_,
                                year      = year if year != "run2" else "2016,2017,2018",
-                               asimovornot = "--asimov s+b" if isAsimov else "",
+                               asimovornot = "--asimov s+b" if isAsimov or region == "nonfiducialAll" else "--asimov s+b" if region != "forExtr" else "",
                                mcafile   = mcafile_,
                                cutsfile  = cutsfile_,
                                uncs      = "" if region == "particle" else "--unc tw-run2/uncs-tw.txt --amc" if not noUnc else "--amc",
+                               #uncs      = "" if region == "particle" else "--unc tw-run2/differential/uncs-tw-modified.txt --amc" if not noUnc else "--amc",
+                               #uncs      = ("" if region == "particle" else "--unc tw-run2/differential/uncs-tw-modified-toeslesescales.txt --amc" if not noUnc and not doPure else "--unc tw-run2/differential/uncs-tw-modified.txt --amc" if not noUnc else "--amc"),
                                name      = name_,
                                weights   = weights_,
-                               extra     = extra)
+                               extra     = extra_)
 
     return comm
 
@@ -139,7 +147,7 @@ if __name__=="__main__":
     parser.add_argument('--pretend',   '-p', action  = "store_true", dest = "pretend",  required = False, default = False)
     parser.add_argument('--outpath',   '-o', metavar = 'outpath',    dest = "outpath",  required = False, default = "./temp/differential/cards")
     parser.add_argument('--region',    '-r', metavar = 'region',     dest = "region",   required = False, default = "all")
-    parser.add_argument('--nounc',     '-u', action  = "store_true", dest = "nounc",    required = False, default = False)
+    parser.add_argument('--nounc',     '-nu', action  = "store_true", dest = "nounc",    required = False, default = False)
     parser.add_argument('--variable',  '-v', metavar = 'variable',   dest = "variable", required = False, default = "Lep1Lep2_DPhi")
     parser.add_argument('--asimov',    '-a', action  = "store_true", dest = "asimov",   required = False, default = False)
     parser.add_argument('--useFibre',  '-f', action  = "store_true", dest = "useFibre", required = False, default = False)
@@ -162,28 +170,43 @@ if __name__=="__main__":
     doPureReg = args.doPureReg
 
     theregs  = ["detector", "particle", "detectorparticleResponse", "detectorparticlebutdetector",
-                "detectorparticle", "nonfiducial", "forExtr"]
-                #"detectorparticle", "nonfiducial"]
+    #theregs  = ["detector", "detectorparticleResponse", "detectorparticlebutdetector",
+                "detectorparticle", "nonfiducial"]#, "forExtr", "controlReg"]
+                #"detectorparticle", "nonfiducial", "forExtr"]
+                #"detectorparticle", "nonfiducial", "forExtr", "controlReg"]
     thevars  = vl.varList["Names"]["Variables"]
     theyears = ["2016", "2017", "2018", "run2"]
     tasks    = []
 
     if variable.lower() != "all":
-        thevars = [ variable ]
+        if "," in variable:
+            thevars = variable.split(",")
+        else:
+            thevars = [ variable ]
 
     if region.lower() != "all":
-        theregs = [ region ]
+        if "," in region:
+            theregs = region.split(",")
+        else:
+            theregs = [ region ]
 
     if year.lower() != "all":
-        theyears = [ year ]
+        if "," in year:
+            theyears = year.split(",")
+        else:
+            theyears = [ year ]
 
 
     for reg in theregs:
-        for var in thevars:
-            for yr in theyears:
-                tasks.append( (prod, yr, var, asimov, nthreads, outpath, reg + "pure1j1t" * doPureReg, noUnc, useFibre, extra, pretend, queue) )
+        for yr in theyears:
+            if reg == "controlReg":
+                var = vl.ControlRegionVariableDict[vl.diffControlReg]
+                tasks.append( (prod, yr, var, asimov, nthreads, outpath, reg, noUnc, useFibre, extra, pretend, queue) )
+            else:
+                for var in thevars:
+                    tasks.append( (prod, yr, var, asimov, nthreads, outpath, reg + ("pure1j1t" * doPureReg), noUnc, useFibre, extra, pretend, queue) )
 
-    print tasks
+    #print tasks
     calculate = True
     for task in tasks:
         print "\nProcessing " + str(task) + "\n"

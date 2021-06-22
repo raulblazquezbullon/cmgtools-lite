@@ -8,6 +8,7 @@ sys.path.append('{cmsswpath}/src/CMGTools/TTHAnalysis/python/plotter/tw-run2/dif
 import errorPropagator as ep
 import beautifulUnfoldingPlots as bp
 import varList as vl
+import getLaTeXtable as tex
 
 r.gROOT.SetBatch(True)
 
@@ -97,7 +98,7 @@ def PlotDetectorLevelResults(inpath, iY, iV, thedict):
         thedict[key].Scale(scaleval)
 
     #### 1) Plot result plot
-    nominal_withErrors  = ep.propagateHistoAsym(thedict, doSym = vl.doSym)
+    nominal_withErrors  = ep.propagateHisto(thedict, doSym = vl.doSym)
 
     #for iB in range(1, nominal_withErrors[0].GetNbinsX() + 1):
         #print nominal_withErrors[0].GetBinContent(iB), nominal_withErrors[0].GetBinError(iB)
@@ -117,6 +118,9 @@ def PlotDetectorLevelResults(inpath, iY, iV, thedict):
     nominal_withErrors[0].SetFillColorAlpha(r.kBlue, 0.35)
     nominal_withErrors[0].SetLineColor(0)
     nominal_withErrors[0].SetFillStyle(1001)
+
+    if iV != "Fiducial":
+        tex.saveLaTeXfromhisto(thedict[""], iV, path = inpath + "/" + iY + "/tables", errhisto = nominal_withErrors[0], ty = "detector")
 
     if "legpos_detector" in vl.varList[iV]: legloc = vl.varList[iV]["legpos_detector"]
     else:                                   legloc = "TR"
@@ -247,8 +251,8 @@ if __name__=="__main__":
             for iY in theyears:
                 thevars = next(os.walk(inpath + "/" + iY))[1]
                 for iV in thevars:
-                    if "plots" in iV: continue
-                    #if "Fiducial" not in iV: continue
+                    if "plots" in iV or "tables" in iV: continue
+                    #if "Fiducial" in iV: continue
                     tasks.append( (inpath, iY, iV) )
 
     #tasks = [ (inpath, "2016", "Lep1_Pt") ]

@@ -36,6 +36,47 @@ def _fires(ev, path):
     else :
         return getattr(r, 'fires_%s_%d'%(path, ev.year))( ev.run, getattr(ev, path) )
 
+#### Old, pre 2021-01
+#triggerGroups = dict(
+    #Trigger_1e = {
+        #2016 : lambda ev : _fires(ev, 'HLT_Ele27_WPTight_Gsf'),
+        #2017 : lambda ev : _fires(ev, 'HLT_Ele35_WPTight_Gsf'),
+        #2018 : lambda ev : _fires(ev, 'HLT_Ele32_WPTight_Gsf'),
+    #},
+    #Trigger_1m = {
+        #2016 : lambda ev : (   _fires(ev, 'HLT_IsoMu24')
+                            #or _fires(ev, 'HLT_IsoTkMu24')),
+        #2017 : lambda ev :     _fires(ev, 'HLT_IsoMu27'),
+        #2018 : lambda ev :     _fires(ev, 'HLT_IsoMu24'),
+    #},
+    #Trigger_2e = {
+        #2016 : lambda ev : _fires(ev, 'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ'),
+        #2017 : lambda ev : _fires(ev, 'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL'),
+        #2018 : lambda ev : _fires(ev, 'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL'),
+    #},
+    #Trigger_2m = {
+        #2016 : lambda ev : ((   _fires(ev, 'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL')
+                             #or _fires(ev, 'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL'))
+                            #if (ev.datatag == tags.mc or ev.run <= 280385) else
+
+                            #(  _fires(ev, 'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ')
+                            #or _fires(ev, 'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ'))),
+        #2017 : lambda ev :     _fires(ev, 'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8'),
+        #2018 : lambda ev :     _fires(ev, 'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8'),
+    #},
+    #Trigger_em = {
+        #2016 : lambda ev : ((  _fires(ev, 'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL')
+                            #or _fires(ev, "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL"))
+                            #if (ev.datatag == tags.mc or ev.run <= 280385) else
+
+                            #(  _fires(ev, 'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ')
+                            #or _fires(ev, "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ"))),
+        #2017 : lambda ev : (   _fires(ev, 'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL')
+                            #or _fires(ev, 'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ')),
+        #2018 : lambda ev : (   _fires(ev, 'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL')
+                            #or _fires(ev, 'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ')),
+    #},
+#)
 
 triggerGroups = dict(
     Trigger_1e = {
@@ -50,9 +91,13 @@ triggerGroups = dict(
         2018 : lambda ev :     _fires(ev, 'HLT_IsoMu24'),
     },
     Trigger_2e = {
-        2016 : lambda ev : _fires(ev, 'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ'),
-        2017 : lambda ev : _fires(ev, 'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL'),
-        2018 : lambda ev : _fires(ev, 'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL'),
+        2016 : lambda ev : (   _fires(ev, 'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ')
+                            or _fires(ev, 'HLT_DoubleEle33_CaloIdL_MW')
+                            or _fires(ev, 'HLT_DoubleEle33_CaloIdL_GsfTrkIdVL')),
+        2017 : lambda ev : (   _fires(ev, 'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL')
+                            or _fires(ev, 'HLT_DoubleEle33_CaloIdL_MW')),
+        2018 : lambda ev : (   _fires(ev, 'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL')
+                            or _fires(ev, 'HLT_DoubleEle25_CaloIdL_MW')),
     },
     Trigger_2m = {
         2016 : lambda ev : ((   _fires(ev, 'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL')
@@ -77,7 +122,6 @@ triggerGroups = dict(
                             or _fires(ev, 'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ')),
     },
 )
-
 
 from CMGTools.TTHAnalysis.tools.evtTagger import EvtTagger
 Trigger_1e = lambda : EvtTagger('Trigger_1e',  [ lambda ev : triggerGroups['Trigger_1e'][ev.year](ev) ])
@@ -168,8 +212,6 @@ IDDict["jets"] = {
                       #and l.tightId == 1 )
 muonID = lambda l : ( abs(l.eta) < IDDict["muons"]["eta"] and l.corrected_pt > IDDict["muons"]["pt"] and l.pfRelIso04_all < IDDict["muons"]["isorelpf"]
                       and l.tightId == 1 )
-#muonID_validacion = lambda l : ( abs(l.eta) < IDDict["muons"]["eta"] and l.pt > IDDict["muons"]["pt"] and l.pfRelIso04_all < IDDict["muons"]["isorelpf"]
-                      #and l.tightId == 1 ) #### VALIDACION CRAMONAL
 
 elecID = lambda l : ( (abs(l.eta) < IDDict["elecs"]["eta2"] and (abs(l.eta) < IDDict["elecs"]["eta0"] or abs(l.eta) > IDDict["elecs"]["eta1"]) )
                        and l.pt > IDDict["elecs"]["pt"] and l.cutBased >= 4 and l.lostHits <= 1
@@ -217,9 +259,6 @@ from PhysicsTools.NanoAODTools.postprocessing.modules.common.collectionMerger im
 lepMerge = lambda : collectionMerger(input = ["Electron", "Muon"],
                                      output = "LepGood",
                                      selector = dict(Muon = muonID, Electron = elecID))
-#lepMerge_validacion = lambda : collectionMerger(input = ["Electron", "Muon"],
-                                     #output = "LepGood",
-                                     #selector = dict(Muon = muonID_validacion, Electron = elecID))
 
 lepMerge_muenUp = lambda : collectionMerger(input = ["Electron", "Muon"],
                                             output = "LepGoodmuUp",
@@ -240,16 +279,51 @@ leptrigSFs = lambda : lepScaleFactors_TopRun2()
 
 
 #### JET TREATMENTS ###
+
+jecGroups = {'HF'                 : ['PileUpPtHF', 'RelativeJERHF', 'RelativePtHF'],
+             'BBEC1_year'         : ['RelativeJEREC1', 'RelativePtEC1', 'RelativeStatEC'],
+             'FlavorQCD'          : ['FlavorQCD'],
+             'RelativeSample_year': ['RelativeSample'],
+             'EC2'                : ['PileUpPtEC2'],
+             'HF_year'            : ['RelativeStatHF'],
+             'RelativeBal'        : ['RelativeBal'],
+             'Absolute_year'      : ['AbsoluteStat', 'RelativeStatFSR', 'TimePtEta'],
+             'BBEC1'              : ['PileUpPtBB', 'PileUpPtEC1', 'RelativePtBB'],
+             'EC2_year'           : ['RelativeJEREC2', 'RelativePtEC2'],
+             'Absolute'           : ['AbsoluteMPFBias', 'AbsoluteScale', 'Fragmentation', 'PileUpDataMC',
+                                     'PileUpPtRef', 'RelativeFSR', 'SinglePionECAL', 'SinglePionHCAL'],
+}
+
 from CMGTools.TTHAnalysis.tools.nanoAOD.btag_weighter               import btag_weighter
-from CMGTools.TTHAnalysis.tools.nanoAOD.jetmetGrouper               import groups as jecGroups
-
 ## b-tagging
-btagEffpath = os.environ['CMSSW_BASE'] + "/src/CMGTools/TTHAnalysis/data/TopRun2/btagging/"
-btagSFpath  = os.environ['CMSSW_BASE'] + "/src/PhysicsTools/NanoAODTools/data/btagSF/"
+# Old (pre-new correlations)
+#btagEffpath = os.environ['CMSSW_BASE'] + "/src/CMGTools/TTHAnalysis/data/TopRun2/btagging/"
+#btagSFpath  = os.environ['CMSSW_BASE'] + "/src/PhysicsTools/NanoAODTools/data/btagSF/"
 
-btagWeights_2016 = lambda : btag_weighter(btagSFpath + "DeepJet_2016LegacySF_V1.csv",  btagEffpath + "BtagMCSF.root", 'deepjet', year = 2016)
-btagWeights_2017 = lambda : btag_weighter(btagSFpath + "DeepFlavour_94XSF_V3_B_F.csv", btagEffpath + "BtagMCSF.root", 'deepjet', year = 2017)
-btagWeights_2018 = lambda : btag_weighter(btagSFpath + "DeepJet_102XSF_V1.csv",        btagEffpath + "BtagMCSF.root", 'deepjet', year = 2018)
+#btagWeights_2016 = lambda : btag_weighter(btagSFpath + "DeepJet_2016LegacySF_V1.csv",  btagEffpath + "BtagMCSF.root", 'deepjet', year = 2016)
+#btagWeights_2017 = lambda : btag_weighter(btagSFpath + "DeepFlavour_94XSF_V3_B_F.csv", btagEffpath + "BtagMCSF.root", 'deepjet', year = 2017)
+#btagWeights_2018 = lambda : btag_weighter(btagSFpath + "DeepJet_102XSF_V1.csv",        btagEffpath + "BtagMCSF.root", 'deepjet', year = 2018)
+
+# New
+btagpath = os.environ['CMSSW_BASE'] + "/src/CMGTools/TTHAnalysis/data/TopRun2/btagging"
+btagWeights_2016 = lambda : btag_weighter(btagpath + "/" + "DeepJet_2016LegacySF_V1_YearCorrelation-V1.csv",
+                                          btagpath + "/" + "BtagMCSF.root",
+                                          'deepjet',
+                                          jecvars   = ['jesTotal', 'jer'] + ['jes%s'%v for v in jecGroups] + ["jer%i"%i for i in range(6)],
+                                          splitCorrelations = True,
+                                          year = 2016)
+btagWeights_2017 = lambda : btag_weighter(btagpath + "/" + "DeepJet_DeepFlavour2017_mujets_YearCorrelation-V1.csv",
+                                          btagpath + "/" + "BtagMCSF.root",
+                                          'deepjet',
+                                          jecvars   = ['jesTotal', 'jer'] + ['jes%s'%v for v in jecGroups] + ["jer%i"%i for i in range(6)],
+                                          splitCorrelations = True,
+                                          year = 2017)
+btagWeights_2018 = lambda : btag_weighter(btagpath + "/" + "DeepJet_102XSF_V1_YearCorrelation-V1.csv",
+                                          btagpath + "/" + "BtagMCSF.root",
+                                          'deepjet',
+                                          jecvars   = ['jesTotal', 'jer'] + ['jes%s'%v for v in jecGroups] + ["jer%i"%i for i in range(6)],
+                                          splitCorrelations = True,
+                                          year = 2018)
 
 
 # Cleaning
@@ -274,51 +348,79 @@ from CMGTools.TTHAnalysis.tools.nanoAOD.pythonCleaningTopRun2 import pythonClean
 #)
 
 
-cleaning_mc = lambda : pythonCleaningTopRun2(label = "Recl",
+cleaning_mc_mod2016 = lambda : pythonCleaningTopRun2(label  = "Recl",
                                              jetPts = [IDDict["jets"]["pt"], IDDict["jets"]["pt2"]],
                                              jetPtNoisyFwd = IDDict["jets"]["ptfwdnoise"],
-                                             jecvars   = ['jesTotal', 'jer'],
+                                             jecvars   = ['jesTotal', 'jer'] + ['jes%s'%v for v in jecGroups] + ["jer%i"%i for i in range(6)],
                                              lepenvars = ["mu"],
-                                             isMC = True,
-                                             #debug = True,
-                                             #variations = ['jesTotal', 'jer'] + ['jes%s'%v for v in jecGroups]
+                                             isMC      = True,
+                                             #debug     = True,
+                                             year_     = 2016,
+)
+cleaning_mc_mod2017 = lambda : pythonCleaningTopRun2(label  = "Recl",
+                                             jetPts = [IDDict["jets"]["pt"], IDDict["jets"]["pt2"]],
+                                             jetPtNoisyFwd = IDDict["jets"]["ptfwdnoise"],
+                                             jecvars   = ['jesTotal', 'jer'] + ['jes%s'%v for v in jecGroups] + ["jer%i"%i for i in range(6)],
+                                             lepenvars = ["mu"],
+                                             isMC      = True,
+                                             #debug     = True,
+                                             year_     = 2017,
+)
+cleaning_mc_mod2018 = lambda : pythonCleaningTopRun2(label  = "Recl",
+                                             jetPts = [IDDict["jets"]["pt"], IDDict["jets"]["pt2"]],
+                                             jetPtNoisyFwd = IDDict["jets"]["ptfwdnoise"],
+                                             jecvars   = ['jesTotal', 'jer'] + ['jes%s'%v for v in jecGroups] + ["jer%i"%i for i in range(6)],
+                                             lepenvars = ["mu"],
+                                             isMC      = True,
+                                             year_     = 2018,
+                                             #debug     = True,
 )
 
-#cleaning_mc_validacion = lambda : pythonCleaningTopRun2(label = "Recl",
-                                             #jetPts = [IDDict["jets"]["pt"], IDDict["jets"]["pt2"]],
-                                             #jetPtNoisyFwd = IDDict["jets"]["ptfwdnoise"],
-                                             #jecvars   = [],
-                                             #lepenvars = [],
-                                             #isMC = False,
-#)
-
-cleaning_data = lambda : pythonCleaningTopRun2(label = "Recl",
+cleaning_data_mod2016 = lambda : pythonCleaningTopRun2(label = "Recl",
                                                jetPts = [IDDict["jets"]["pt"], IDDict["jets"]["pt2"]],
                                                jetPtNoisyFwd = IDDict["jets"]["ptfwdnoise"],
                                                jecvars   = [], lepenvars = [], isMC = False,
+                                               year_     = 2016,
 )
-
-
-#### EVENT VARIABLES ###
-from CMGTools.TTHAnalysis.tools.eventVars_tWRun2 import EventVars_tWRun2
-eventVars_mc = lambda : EventVars_tWRun2('', 'Recl',
-                                        #jecvars = ['jesTotal', 'jer'] + ['jes%s'%v for v in jecGroups])
-                                         jecvars = ['jesTotal', 'jer'],
-                                         lepvars = ['mu'])
-#eventVars_mc_validacion = lambda : EventVars_tWRun2('', 'Recl',
-                                         #jecvars = [],
-                                         #lepvars = [], isMC = False)
-eventVars_data = lambda : EventVars_tWRun2('', 'Recl', isMC = False,
-                                           #jecvars = ['jesTotal', 'jer'] + ['jes%s'%v for v in jecGroups])
-                                           jecvars = [],
-                                           lepvars = [])
-
+cleaning_data_mod2017 = lambda : pythonCleaningTopRun2(label = "Recl",
+                                               jetPts = [IDDict["jets"]["pt"], IDDict["jets"]["pt2"]],
+                                               jetPtNoisyFwd = IDDict["jets"]["ptfwdnoise"],
+                                               jecvars   = [], lepenvars = [], isMC = False,
+                                               year_     = 2017,
+)
+cleaning_data_mod2018 = lambda : pythonCleaningTopRun2(label = "Recl",
+                                               jetPts = [IDDict["jets"]["pt"], IDDict["jets"]["pt2"]],
+                                               jetPtNoisyFwd = IDDict["jets"]["ptfwdnoise"],
+                                               jecvars   = [], lepenvars = [], isMC = False,
+                                               year_     = 2018,
+)
 
 #### Add year
 from CMGTools.TTHAnalysis.tools.addYear import addYear
 addYear_2016 = lambda : addYear(2016)
 addYear_2017 = lambda : addYear(2017)
 addYear_2018 = lambda : addYear(2018)  #### NOTE: this also adds the PrefireWeight as a branch for this year
+
+#### FIX PORQUE SOY FATISIMU
+cleaning_mc_2016   = [cleaning_mc_mod2016,   addYear_2016]
+cleaning_mc_2017   = [cleaning_mc_mod2017,   addYear_2017]
+cleaning_mc_2018   = [cleaning_mc_mod2018,   addYear_2018]
+cleaning_data_2016 = [cleaning_data_mod2016, addYear_2016]
+cleaning_data_2017 = [cleaning_data_mod2017, addYear_2017]
+cleaning_data_2018 = [cleaning_data_mod2018, addYear_2018]
+
+
+
+#### EVENT VARIABLES ###
+from CMGTools.TTHAnalysis.tools.eventVars_tWRun2 import EventVars_tWRun2
+eventVars_mc = lambda : EventVars_tWRun2('', 'Recl',
+                                         jecvars = ['jesTotal', 'jer'] + ['jes%s'%v for v in jecGroups] + ["jer%i"%i for i in range(6)],
+                                         #jecvars = ['jesTotal', 'jer'],
+                                         lepvars = ['mu'])
+eventVars_data = lambda : EventVars_tWRun2('', 'Recl', isMC = False,
+                                           jecvars = [],
+                                           lepvars = [])
+
 
 #### Add data tag
 from CMGTools.TTHAnalysis.tools.addDataTag import addDataTag
@@ -331,7 +433,6 @@ addMC         = lambda : addDataTag(tags.mc)
 addMC_ttbar   = lambda : addDataTag(tags.mc, isTop = True)
 
 from CMGTools.TTHAnalysis.tools.addJetPtCorr import addJetPtCorr
-
 addJetPtCorrAll = lambda : addJetPtCorr()
 
 addYearTag_2016_mc         = [addYear_2016, addMC        ]#, addJetPtCorrAll]
@@ -363,7 +464,6 @@ addYearTag_2018_muoneg     = [addYear_2018, addMuonEG    ]#, addJetPtCorrAll]
 from CMGTools.TTHAnalysis.tools.addRochester import addRochester
 #from CMGTools.TTHAnalysis.tools.addRochesterValid import addRochesterValid
 addRoch_mc = lambda : addRochester()
-#addRoch_mc_validacion = lambda : addRochesterValid()
 addRoch_data = lambda : addRochester(isMC = False)
 
 from CMGTools.TTHAnalysis.tools.nanoAOD.selectParticleAndPartonInfo import selectParticleAndPartonInfo
@@ -375,13 +475,12 @@ theDressAndPartInfo = lambda : selectParticleAndPartonInfo(dresslepSel_         
 
 #lepMerge_roch_mc   = [lepMerge, lepMerge_muenUp, lepMerge_muenDn, lepMerge_elenUp, lepMerge_elenDn, addRoch_mc, theDressAndPartInfo] ### FIXME: este es el "bueno"
 lepMerge_roch_mc   = [lepMerge, lepMerge_muenUp, lepMerge_muenDn, addRoch_mc, theDressAndPartInfo]
-#lepMerge_roch_mc_validacion   = [lepMerge_validacion, addRoch_mc_validacion, theDressAndPartInfo]
 lepMerge_roch_data = [lepMerge, addRoch_data]
 
 
 #### BDT
 from CMGTools.TTHAnalysis.tools.nanoAOD.MVA_tWRun2 import MVA_tWRun2
-MVAProc_mc   = lambda : MVA_tWRun2()
+MVAProc_mc   = lambda : MVA_tWRun2(jecvars = ['jesTotal', 'jer'] + ['jes%s'%v for v in jecGroups] + ["jer%i"%i for i in range(6)])
 MVAProc_data = lambda : MVA_tWRun2(isData = True)
 
 mvas_mc   = [MVAProc_mc]
@@ -394,11 +493,13 @@ createMVAMiniTree = lambda : createTrainingMiniTree_tWRun2()
 
 
 from CMGTools.TTHAnalysis.tools.particleAndPartonVars_tWRun2 import particleAndPartonVars_tWRun2
+from CMGTools.TTHAnalysis.tools.nanoAOD.jetMetGrouper_TopRun2 import jetMetCorrelate2016_TopRun2,jetMetCorrelate2017_TopRun2,jetMetCorrelate2018_TopRun2
 theDressAndPartVars = lambda : particleAndPartonVars_tWRun2()
 
-varstrigger_mc   = [eventVars_mc, theDressAndPartVars] + triggerSeq
-#varstrigger_mc_validacion = [eventVars_mc_validacion, theDressAndPartVars] + triggerSeq
-varstrigger_data = [eventVars_data] + triggerSeq
+varstrigger_mc_2016 = [jetMetCorrelate2016_TopRun2, eventVars_mc, theDressAndPartVars] + triggerSeq
+varstrigger_mc_2017 = [jetMetCorrelate2017_TopRun2, eventVars_mc, theDressAndPartVars] + triggerSeq
+varstrigger_mc_2018 = [jetMetCorrelate2018_TopRun2, eventVars_mc, theDressAndPartVars] + triggerSeq
+varstrigger_data    = [eventVars_data] + triggerSeq
 
 
 from CMGTools.TTHAnalysis.tools.nanoAOD.TopPtWeight import TopPtWeight
@@ -412,9 +513,13 @@ addSeparationIndex_nomva   = lambda : addSeparationIndex(isThisSampleForMVA = Fa
 addSeparationIndex_mva     = lambda : addSeparationIndex(isThisSampleForMVA = True, applicationProp = applicationProportion)
 addSeparationIndex_mva_ent = lambda : addSeparationIndex(isThisSampleForMVA = True, isEntire = True, applicationProp = applicationProportion)
 
-sfSeq_2016 = [leptrigSFs, btagWeights_2016, addTopPtWeight, addSeparationIndex_nomva]
-sfSeq_2017 = [leptrigSFs, btagWeights_2017, addTopPtWeight, addSeparationIndex_nomva]
-sfSeq_2018 = [leptrigSFs, btagWeights_2018, addTopPtWeight, addSeparationIndex_nomva]
+#sfSeq_2016 = [leptrigSFs, btagWeights_2016, addTopPtWeight, addSeparationIndex_nomva]
+#sfSeq_2017 = [leptrigSFs, btagWeights_2017, addTopPtWeight, addSeparationIndex_nomva]
+#sfSeq_2018 = [leptrigSFs, btagWeights_2018, addTopPtWeight, addSeparationIndex_nomva]
+
+sfSeq_2016 = [leptrigSFs, btagWeights_2016, addTopPtWeight]
+sfSeq_2017 = [leptrigSFs, btagWeights_2017, addTopPtWeight]
+sfSeq_2018 = [leptrigSFs, btagWeights_2018, addTopPtWeight]
 
 sfSeq_mvatrain_2016 = [leptrigSFs, btagWeights_2016, addTopPtWeight, addSeparationIndex_mva]
 sfSeq_mvatrain_2017 = [leptrigSFs, btagWeights_2017, addTopPtWeight, addSeparationIndex_mva]
@@ -423,19 +528,6 @@ sfSeq_mvatrain_2018 = [leptrigSFs, btagWeights_2018, addTopPtWeight, addSeparati
 sfSeq_mvatrain_ent_2016 = [leptrigSFs, btagWeights_2016, addTopPtWeight, addSeparationIndex_mva_ent]
 sfSeq_mvatrain_ent_2017 = [leptrigSFs, btagWeights_2017, addTopPtWeight, addSeparationIndex_mva_ent]
 sfSeq_mvatrain_ent_2018 = [leptrigSFs, btagWeights_2018, addTopPtWeight, addSeparationIndex_mva_ent]
-
-
-#### TEMPORAL
-#addYearTag_2016_mc_validacion         = [addYear_2016, addMC        ]
-#addYearTag_2016_singlemuon_validacion = [addYear_2016, addSingleMuon]
-#addYearTag_2016_singleelec_validacion = [addYear_2016, addSingleElec]
-#addYearTag_2016_doublemuon_validacion = [addYear_2016, addDoubleMuon]
-#addYearTag_2016_doubleeg_validacion   = [addYear_2016, addDoubleEG  ]
-#addYearTag_2016_muoneg_validacion     = [addYear_2016, addMuonEG    ]
-
-
-
-
 
 
 # %%%%%%%%%%%%%%%%%%%%%%%%%% WWbb

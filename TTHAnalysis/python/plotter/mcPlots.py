@@ -134,14 +134,16 @@ def doSpam(text,x1,y1,x2,y2,align=12,fill=False,textSize=0.033,_noDelete={}):
     cmsprel.SetLineStyle(2);
     cmsprel.SetLineColor(0);
     cmsprel.SetTextAlign(align);
-    cmsprel.SetTextFont(42);
+    cmsprel.SetTextFont(options.spamFont);
     cmsprel.AddText(text);
     cmsprel.Draw("same");
     _noDelete[text] = cmsprel; ## so it doesn't get deleted by PyROOT
     return cmsprel
 
 def doTinyCmsPrelim(textLeft="_default_",textRight="_default_",hasExpo=False,textSize=0.033,lumi=None, xoffs=0, options=None, doWide=False):
-    if textLeft  == "_default_": textLeft  = options.lspam
+    if textLeft  == "_default_": 
+        textLeft  = options.lspam
+        textLeftPosition = options.lspamPosition
     if textRight == "_default_": textRight = options.rspam
     if lumi      == None       : lumi      = sum(map(float, options.lumi.split(',')))
     if   lumi > 3.54e+1: lumitext = "%.0f fb^{-1}" % lumi
@@ -153,8 +155,11 @@ def doTinyCmsPrelim(textLeft="_default_",textRight="_default_",hasExpo=False,tex
     lumitext = "%.1f fb^{-1}" % float(lumi)
     textLeft = textLeft.replace("%(lumi)",lumitext)
     textRight = textRight.replace("%(lumi)",lumitext)
+    if options.noExpoShift:
+        hasExpo = False
     if textLeft not in ['', None]:
-        doSpam(textLeft, (.28 if hasExpo else 0.07 if doWide else .16)+xoffs, .955, .60+xoffs, .995, align=12, textSize=textSize)
+        doSpam(textLeft, (.28 if hasExpo else 0.07 if doWide else textLeftPosition[0])+xoffs, textLeftPosition[1], textLeftPosition[2]+xoffs, textLeftPosition[3], align=12, textSize=textSize)
+          
     if textRight not in ['', None]:
         doSpam(textRight,(0.5 if doWide else .58)+xoffs, .955, .98+xoffs, .995, align=32, textSize=textSize)
 
@@ -389,9 +394,9 @@ def doRatioHists(pspec,pmap,total,maxRange,fixRange=False,fitRatio=None,errorsOn
             # do this first
             total.GetXaxis().SetLabelOffset(999) ## send them away
             total.GetXaxis().SetTitleOffset(999) ## in outer space
-            total.GetYaxis().SetTitleSize(0.06)
+            total.GetYaxis().SetTitleSize(options.labelsSize if options.labelsSize!=-1.0 else 0.06)
             total.GetYaxis().SetTitleOffset(0.75 if doWide else 1.48)
-            total.GetYaxis().SetLabelSize(0.05)
+            total.GetYaxis().SetLabelSize(options.labelsSize if options.labelsSize!=-1.0 else 0.05)
             total.GetYaxis().SetLabelOffset(0.007)
             # then we can overwrite total with background
             numkey = 'signal'
@@ -441,14 +446,14 @@ def doRatioHists(pspec,pmap,total,maxRange,fixRange=False,fitRatio=None,errorsOn
     if (rmax > 2 and rmax <= 2.4): rmax = 2.4
     unity.SetMarkerStyle(1);
     unity.SetMarkerColor(ROOT.kBlue-7);
-    unityErr.SetFillStyle(1001);
-    unityErr.SetFillColor(ROOT.kCyan);
-    unityErr.SetMarkerStyle(1);
-    unityErr.SetMarkerColor(ROOT.kCyan);
-    unityErr0.SetFillStyle(1001);
-    unityErr0.SetFillColor(ROOT.kBlue-7);
-    unityErr0.SetMarkerStyle(1);
-    unityErr0.SetMarkerColor(ROOT.kBlue-7);
+    unityErr.SetFillStyle(options.TotalUncRatioStyle[0]);
+    unityErr.SetFillColor(options.TotalUncRatioColor[0]);
+    unityErr.SetMarkerStyle(options.TotalUncRatioStyle[1]);
+    unityErr.SetMarkerColor(options.TotalUncRatioColor[1]);
+    unityErr0.SetFillStyle(options.StatUncRatioStyle[0]);
+    unityErr0.SetFillColor(options.StatUncRatioColor[0]);
+    unityErr0.SetMarkerStyle(options.StatUncRatioStyle[1]);
+    unityErr0.SetMarkerColor(options.StatUncRatioColor[1]);
     ROOT.gStyle.SetErrorX(0.5);
     unity.Draw("AXIS");
     if errorsOnRef:
@@ -458,43 +463,43 @@ def doRatioHists(pspec,pmap,total,maxRange,fixRange=False,fitRatio=None,errorsOn
         fitTGraph(ratio,order=fitRatio)
         unityErr.SetFillStyle(3013);
         unityErr0.SetFillStyle(3013);
-        if errorsOnRef:
+        if errorsOnRef and not options.noStatUncOnRatio:
             unityErr0.Draw("E2 SAME");
     else:
-        if errorsOnRef:
+        if errorsOnRef and not options.noStatUncOnRatio:
             unityErr0.Draw("E2 SAME");
     unity.Draw("AXIS SAME");
     rmin = float(pspec.getOption("RMin",rmin))
     rmax = float(pspec.getOption("RMax",rmax))
     unity.GetYaxis().SetRangeUser(rmin,rmax);
-    unity.GetXaxis().SetTitleFont(42)
-    unity.GetXaxis().SetTitleSize(0.14)
-    unity.GetXaxis().SetTitleOffset(1.0)
-    unity.GetXaxis().SetLabelFont(42)
-    unity.GetXaxis().SetLabelSize(0.1)
+    unity.GetXaxis().SetTitleFont(options.labelsFont)
+    unity.GetXaxis().SetTitleSize(options.labelsSize if options.labelsSize!=-1.0 else 0.14)
+    unity.GetXaxis().SetTitleOffset(options.XTitleOffsetRatio)
+    unity.GetXaxis().SetLabelFont(options.labelsFont)
+    unity.GetXaxis().SetLabelSize(options.labelsSize if options.labelsSize!=-1.0 else 0.1)
     unity.GetXaxis().SetLabelOffset(0.015)
     unity.GetYaxis().SetNdivisions(yndiv)
-    unity.GetYaxis().SetTitleFont(42)
-    unity.GetYaxis().SetTitleSize(0.14)
-    offset = 0.32 if doWide else 0.62
+    unity.GetYaxis().SetTitleFont(options.labelsFont)
+    unity.GetYaxis().SetTitleSize(options.labelsSize if options.labelsSize!=-1.0 else 0.14)
+    offset = 0.32 if doWide else options.YTitleOffset[1]
     unity.GetYaxis().SetTitleOffset(offset)
-    unity.GetYaxis().SetLabelFont(42)
-    unity.GetYaxis().SetLabelSize(0.11)
+    unity.GetYaxis().SetLabelFont(options.labelsFont)
+    unity.GetYaxis().SetLabelSize(options.labelsSize if options.labelsSize!=-1.0 else 0.11)
     unity.GetYaxis().SetLabelOffset(0.01)
     unity.GetYaxis().SetDecimals(True) 
     unity.GetYaxis().SetTitle(ylabel)
     total.GetXaxis().SetLabelOffset(999) ## send them away
     total.GetXaxis().SetTitleOffset(999) ## in outer space
-    total.GetYaxis().SetTitleSize(0.06)
-    total.GetYaxis().SetTitleOffset(0.75 if doWide else 1.48)
-    total.GetYaxis().SetLabelSize(0.05)
+    total.GetYaxis().SetTitleSize(options.labelsSize if options.labelsSize!=-1.0 else 0.06)
+    total.GetYaxis().SetTitleOffset(0.75 if doWide else options.YTitleOffset[0])
+    total.GetYaxis().SetLabelSize(options.labelsSize if options.labelsSize!=-1.0 else 0.05)
     total.GetYaxis().SetLabelOffset(0.007)
     binlabels = pspec.getOption("xBinLabels","")
     if binlabels != "" and len(binlabels.split(",")) == unity.GetNbinsX():
         blist = binlabels.split(",")
         for i in range(1,unity.GetNbinsX()+1): 
             unity.GetXaxis().SetBinLabel(i,blist[i-1]) 
-        unity.GetXaxis().SetLabelSize(0.15*(textSize/0.035))
+        unity.GetXaxis().SetLabelSize(options.labelsSize if options.labelsSize!=-1.0 else 0.15*(textSize/0.035))
     #ratio.SetMarkerSize(0.7*ratio.GetMarkerSize()) # no it is confusing
     binlabels = pspec.getOption("xBinLabels","")
     if binlabels != "" and len(binlabels.split(",")) == unity.GetNbinsX():
@@ -505,14 +510,15 @@ def doRatioHists(pspec,pmap,total,maxRange,fixRange=False,fitRatio=None,errorsOn
     line = ROOT.TLine(unity.GetXaxis().GetXmin(),1,unity.GetXaxis().GetXmax(),1)
     line.SetLineWidth(2);
     line.SetLineColor(58);
-    line.Draw("L")
+    if not options.NotDrawRatioLine:
+        line.Draw("L")
     for ratio in ratios:
         ratio.Draw("E SAME" if ratio.ClassName() != "TGraphAsymmErrors" else "PZ SAME");
     leg0 = ROOT.TLegend(0.12 if doWide else 0.2, 0.84, 0.25 if doWide else 0.45, 0.94)
     leg0.SetFillColor(0)
     leg0.SetShadowColor(0)
     leg0.SetLineColor(0)
-    leg0.SetTextFont(42)
+    leg0.SetTextFont(options.legendFont)
     leg0.SetTextSize(textSize*0.7/0.3)
     leg0.AddEntry(unityErr0, "stat. unc.", "F")
     if showStatTotLegend: leg0.Draw()
@@ -520,7 +526,7 @@ def doRatioHists(pspec,pmap,total,maxRange,fixRange=False,fitRatio=None,errorsOn
     leg1.SetFillColor(0)
     leg1.SetShadowColor(0)
     leg1.SetLineColor(0)
-    leg1.SetTextFont(42)
+    leg1.SetTextFont(options.legendFont)
     leg1.SetTextSize(textSize*0.7/0.3)
     leg1.AddEntry(unityErr, "total unc.", "F")
     if showStatTotLegend: leg1.Draw()
@@ -564,7 +570,7 @@ def doStatTests(total,data,test,legendCorner):
 
 
 legend_ = None;
-def doLegend(pmap,mca,corner="TR",textSize=0.035,cutoff=1e-2,cutoffSignals=True,mcStyle="F",legWidth=0.18,legBorder=True,signalPlotScale=None,totalError=None,header="",doWide=False,columns=1):
+def doLegend(pmap,mca,corner="TR",textSize=0.035,cutoff=1e-2,cutoffSignals=True,mcStyle="F",legWidth=0.18,legBorder=True,signalPlotScale=None,totalError=None,header="",doWide=False,columns=1,DrawHorizontalErrBarInLegend=True):
         if (corner == None): return
         total = sum([x.Integral() for x in pmap.itervalues()])
         sigEntries = []; bgEntries = []
@@ -604,15 +610,21 @@ def doLegend(pmap,mca,corner="TR",textSize=0.035,cutoff=1e-2,cutoffSignals=True,
         leg = ROOT.TLegend(x1,y1,x2,y2)
         leg.SetFillColor(0)
         leg.SetShadowColor(0)
+        if options.transparentLegend:
+            leg.SetFillStyle(0)
+            leg.SetBorderSize(0)
         if header: leg.SetHeader(header.replace("\#", "#"))       
         if not legBorder:
             leg.SetLineColor(0)
-        leg.SetTextFont(42)
+        leg.SetTextFont(options.legendFont)
         leg.SetTextSize(textSize)
         leg.SetNColumns(columns)
         entries = []
-        if 'data' in pmap: 
-            entries.append((pmap['data'].raw(), mca.getProcessOption('data','Label','Data', noThrow=True), 'LPE'))
+        if 'data' in pmap:
+            if DrawHorizontalErrBarInLegend: 
+                entries.append((pmap['data'].raw(), mca.getProcessOption('data','Label','Data', noThrow=True), 'LPE'))
+            else:
+                entries.append((pmap['data'].raw(), mca.getProcessOption('data','Label','Data', noThrow=True), 'PE'))
         for (plot,label,style) in sigEntries: entries.append((plot.raw(),label,style))
         for (plot,label,style) in  bgEntries: entries.append((plot.raw(),label,style))
         if totalError:  entries.append((totalError,"Total unc.","F"))
@@ -858,7 +870,7 @@ class PlotMaker:
                     blist = binlabels.split(",")
                     for i in range(1,total.GetNbinsX()+1): 
                         total.GetXaxis().SetBinLabel(i,blist[i-1]) 
-                        total.GetYaxis().SetLabelSize(0.05)
+                        total.GetYaxis().SetLabelSize(options.labelsSize if options.labelsSize!=-1.0 else 0.05)
 
                 if not self._options.emptyStack and stack.GetNhists() == 0:
                     print "ERROR: for %s, all histograms are empty\n " % pspec.name
@@ -866,23 +878,23 @@ class PlotMaker:
 
                 # define aspect ratio
                 doWide = True if self._options.wideplot or pspec.getOption("Wide",False) else False
-                plotformat = (1200,600) if doWide else (600,600)
+                plotformat = (1200,600) if doWide else (options.CanvasSize[0],options.CanvasSize[1])
                 sf = 20./plotformat[0]
                 ROOT.gStyle.SetPadLeftMargin(600.*0.18/plotformat[0])
 
                 stack.Draw("GOFF")
                 ytitle = "Events" if not self._options.printBinning else "Events / %s" %(self._options.printBinning)
-                total.GetXaxis().SetTitleFont(42)
-                total.GetXaxis().SetTitleSize(0.05)
+                total.GetXaxis().SetTitleFont(options.labelsFont)
+                total.GetXaxis().SetTitleSize(options.labelsSize if options.labelsSize!=-1.0 else 0.05)
                 total.GetXaxis().SetTitleOffset(1.1)
-                total.GetXaxis().SetLabelFont(42)
-                total.GetXaxis().SetLabelSize(0.05)
+                total.GetXaxis().SetLabelFont(options.labelsFont)
+                total.GetXaxis().SetLabelSize(options.labelsSize if options.labelsSize!=-1.0 else 0.05)
                 total.GetXaxis().SetLabelOffset(0.007)
-                total.GetYaxis().SetTitleFont(42)
-                total.GetYaxis().SetTitleSize(0.05)
+                total.GetYaxis().SetTitleFont(options.labelsFont)
+                total.GetYaxis().SetTitleSize(options.labelsSize if options.labelsSize!=-1.0 else 0.05)
                 total.GetYaxis().SetTitleOffset(0.9 if doWide else 2.0)
-                total.GetYaxis().SetLabelFont(42)
-                total.GetYaxis().SetLabelSize(0.05)
+                total.GetYaxis().SetLabelFont(options.labelsFont)
+                total.GetYaxis().SetLabelSize(options.labelsSize if options.labelsSize!=-1.0 else 0.05)
                 total.GetYaxis().SetLabelOffset(0.007)
                 total.GetYaxis().SetTitle(pspec.getOption('YTitle',ytitle))
                 total.GetXaxis().SetTitle(pspec.getOption('XTitle',outputName))
@@ -898,6 +910,9 @@ class PlotMaker:
                 height = plotformat[1]+150 if doRatio else plotformat[1]
                 c1 = ROOT.TCanvas(outputName+"_canvas", outputName, plotformat[0], height)
                 c1.SetTopMargin(c1.GetTopMargin()*options.topSpamSize);
+                if options.LeftRightMargins[0]!= -1.0 and options.LeftRightMargins[1]!= -1.0:
+                    c1.SetLeftMargin(options.LeftRightMargins[0])
+                    c1.SetRightMargin(options.LeftRightMargins[1])
                 topsize = 0.12*600./height if doRatio else 0.06*600./height
                 if self._options.doOfficialCMS: c1.SetTopMargin(topsize*1.2 if doWide else topsize)
                 c1.Draw()
@@ -905,14 +920,20 @@ class PlotMaker:
                 # set borders, if necessary create subpads
                 if doRatio:
                     c1.SetWindowSize(plotformat[0] + (plotformat[0] - c1.GetWw()), (plotformat[1]+150 + (plotformat[1]+150 - c1.GetWh())));
-                    p1 = ROOT.TPad("pad1","pad1",0,0.30,1,1);
+                    p1 = ROOT.TPad("pad1","pad1",options.PrincipalPadDimensions[0],options.PrincipalPadDimensions[1],options.PrincipalPadDimensions[2],options.PrincipalPadDimensions[3]);
                     p1.SetTopMargin(p1.GetTopMargin()*options.topSpamSize);
                     p1.SetBottomMargin(0 if options.attachRatioPanel else 0.025);
+                    if options.LeftRightMargins[0]!= -1.0 and options.LeftRightMargins[1]!= -1.0:
+                        p1.SetLeftMargin(options.LeftRightMargins[0])
+                        p1.SetRightMargin(options.LeftRightMargins[1])
                     p1.Draw();
-                    p2 = ROOT.TPad("pad2","pad2",0,0,1,0.30);
+                    p2 = ROOT.TPad("pad2","pad2",options.RatioPadDimensions[0],options.RatioPadDimensions[1],options.RatioPadDimensions[2],options.RatioPadDimensions[3]);
                     p2.SetTopMargin(0 if options.attachRatioPanel else 0.06);
-                    p2.SetBottomMargin(0.3);
+                    p2.SetBottomMargin(options.BottomMarginRatio);
                     p2.SetFillStyle(0);
+                    if options.LeftRightMargins[0]!= -1.0 and options.LeftRightMargins[1]!= -1.0:
+                        p2.SetLeftMargin(options.LeftRightMargins[0])
+                        p2.SetRightMargin(options.LeftRightMargins[1])
                     p2.Draw();
                     p1.cd();
                 else:
@@ -942,9 +963,23 @@ class PlotMaker:
                 if options.showMCError:
                     totalError = doShadedUncertainty(total)
                 is2D = total.InheritsFrom("TH2")
+                DrawHorizontalErrBarInLegendFlag = True
                 if 'data' in pmap: 
                     if options.poisson and not is2D:
                         pdata = getDataPoissonErrors(pmap['data'], True, True)
+                        if options.noXErrData or options.printBinUnity:
+                            binWidth = total.GetBinWidth(1)
+                            flag = True 
+                            for i in range(total.GetNbinsX()):
+                                if total.GetBinWidth(i+1) != binWidth:
+                                    flag = False
+                            DrawHorizontalErrBarInLegendFlag = not(flag * options.noXErrData)
+                            if flag and options.noXErrData:
+                                for i in range(pdata.GetN()):
+                                    pdata.SetPointEXlow(i,0)
+                                    pdata.SetPointEXhigh(i,0)
+                            if flag and options.printBinUnity and total.GetXaxis().GetTitle().find("GeV")!=-1:
+                                total.GetYaxis().SetTitle("Events / " + str(int(round(binWidth))) + " GeV")
                         pdata.Draw("PZ SAME")
                         pmap['data'].poissonGraph = pdata ## attach it so it doesn't get deleted
                     else:
@@ -970,7 +1005,7 @@ class PlotMaker:
                     if pspec.getOption('Legend','TR')=="TL":
                         doSpam(options.addspam, .68, .855, .9, .895, align=32, textSize=(0.045 if doRatio else 0.033)*options.topSpamSize)
                     else:
-                        doSpam(options.addspam, .23, .855, .6, .895, align=12, textSize=(0.045 if doRatio else 0.033)*options.topSpamSize)
+                        doSpam(options.addspam, options.addspamPosition[0], options.addspamPosition[1], options.addspamPosition[2], options.addspamPosition[3], align=options.addspamAlignment, textSize=(0.045 if doRatio else 0.033)*options.topSpamSize)
                 legendCutoff = pspec.getOption('LegendCutoff', 1e-5 if c1.GetLogy() else 1e-2)
                 if plotmode == "norm": legendCutoff = 0 
                 if plotmode == "stack":
@@ -983,7 +1018,7 @@ class PlotMaker:
                                   textSize=( (0.045 if doRatio else 0.022) if options.legendFontSize <= 0 else options.legendFontSize ),
                                   legWidth=pspec.getOption('LegendWidth',options.legendWidth), legBorder=options.legendBorder, signalPlotScale=options.signalPlotScale,
                                   header=self._options.legendHeader if self._options.legendHeader else pspec.getOption("LegendHeader", ""),
-                                  doWide=doWide, totalError=totalError, columns = pspec.getOption('LegendColumns',options.legendColumns))
+                                  doWide=doWide, totalError=totalError, columns = pspec.getOption('LegendColumns',options.legendColumns),DrawHorizontalErrBarInLegend= DrawHorizontalErrBarInLegendFlag)
                 if self._options.doOfficialCMS:
                     CMS_lumi.lumi_13TeV = "%.1f fb^{-1}" % self._options.lumi
                     CMS_lumi.extraText  = self._options.cmsprel
@@ -1146,9 +1181,13 @@ def addPlotMakerOptions(parser, addAlsoMCAnalysis=True):
     if addAlsoMCAnalysis: addMCAnalysisOptions(parser)
     parser.add_option("--ss",  "--scale-signal", dest="signalPlotScale", default=1.0, type="float", help="scale the signal in the plots by this amount");
     #parser.add_option("--lspam", dest="lspam",   type="string", default="CMS Simulation", help="Spam text on the right hand side");
-    parser.add_option("--lspam", dest="lspam",   type="string", default="#bf{CMS} #it{Preliminary}", help="Spam text on the right hand side");
+    parser.add_option("--lspam", dest="lspam",   type="string", default="#bf{CMS} #it{Preliminary}", help="Spam text on the left hand side");
+    parser.add_option("--noExpoShift", dest="noExpoShift", action="store_true", default=False, help="Remove shift on the lspam due to the (x10^a) text in high yield plots")
+    parser.add_option("--lspamPosition", dest="lspamPosition", type="float", nargs=4, default=(.16,.955,.60,.995), help="Position of the lspam: (x1,y1,x2,y2)")
     parser.add_option("--rspam", dest="rspam",   type="string", default="%(lumi) (13 TeV)", help="Spam text on the right hand side");
     parser.add_option("--addspam", dest="addspam", type = "string", default=None, help="Additional spam text on the top left side, in the frame");
+    parser.add_option("--addspamPosition", dest="addspamPosition", type="float", nargs=4, default=(.23, .855, .6, .895), help="Position of the addspam: (x1,y1,x2,y2)")
+    parser.add_option("--addspamAlignment", dest="addspamAlignment", type="int", default=12, help="Alignment of the addspam")
     parser.add_option("--topSpamSize", dest="topSpamSize",   type="float", default=1.2, help="Zoom factor for the top spam");
     parser.add_option("--print", dest="printPlots", type="string", default="png,pdf,txt", help="print out plots in this format or formats (e.g. 'png,pdf,txt')");
     parser.add_option("--pdir", "--print-dir", dest="printDir", type="string", default="plots", help="print out plots in this directory");
@@ -1166,6 +1205,7 @@ def addPlotMakerOptions(parser, addAlsoMCAnalysis=True):
     parser.add_option("--ratioYNDiv", dest="ratioYNDiv", type="int", default=505, help="Y axis divisions in the ratio histogram.")
     parser.add_option("--noErrorBandOnRatio", dest="errorBandOnRatio", action="store_false", default=True, help="Do not show the error band on the reference in the ratio plots")
     parser.add_option("--noStatTotLegendOnRatio", dest="showStatTotLegend", action="store_false", default=True, help="Do not show the legend in the ratio plots")
+    parser.add_option("--noStatUncOnRatio", dest="noStatUncOnRatio", action="store_true", default=False, help="Do not show the stat unc in the ratio plots")
     parser.add_option("--attachRatioPanel", dest="attachRatioPanel", action="store_true", default=False, help="Attach the ratio panel to the main plot, without a white spacer in between")
     parser.add_option("--fitRatio", dest="fitRatio", type="int", default=None, help="Fit the ratio with a polynomial of the specified order")
     parser.add_option("--scaleSigToData", dest="scaleSignalToData", action="store_true", default=False, help="Scale all signal processes so that the overall event yield matches the observed one")
@@ -1174,6 +1214,10 @@ def addPlotMakerOptions(parser, addAlsoMCAnalysis=True):
     parser.add_option("--fitData", dest="fitData", action="store_true", default=False, help="Perform a fit to the data")
     parser.add_option("--preFitData", dest="preFitData", type="string", default=None, help="Perform a pre-fit to the data using the specified distribution, then plot the rest")
     parser.add_option("--maxRatioRange", dest="maxRatioRange", type="float", nargs=2, default=(0.0, 5.0), help="Min and max for the ratio")
+    parser.add_option("--TotalUncRatioStyle", dest="TotalUncRatioStyle", type="int", nargs=2, default=(1001, 1), help="Marker and fill style for the total unc band in the ratio plot: (SetFillStyle,SetMarkerStyle)")
+    parser.add_option("--StatUncRatioStyle", dest="StatUncRatioStyle", type="int", nargs=2, default=(1001, 1), help="Marker and fill style for the stat unc band in the ratio plot: (SetFillStyle,SetMarkerStyle)")
+    parser.add_option("--TotalUncRatioColor", dest="TotalUncRatioColor", type="int", nargs=2, default=(432, 432), help="Fill and marker colour for the total unc band in the ratio plot: (SetFillColor,SetMarkerColor)")
+    parser.add_option("--StatUncRatioColor", dest="StatUncRatioColor", type="int", nargs=2, default=(593, 593), help="Fill and marker colour for the stat unc band in the ratio plot: (SetFillColor,SetMarkerColor)")
     parser.add_option("--fixRatioRange", dest="fixRatioRange", action="store_true", default=False, help="Fix the ratio range to --maxRatioRange")
     parser.add_option("--doStatTests", dest="doStatTests", type="string", default=None, help="Do this stat test: chi2p (Pearson chi2), chi2l (binned likelihood equivalent of chi2)")
     parser.add_option("--plotmode", dest="plotmode", type="string", default="stack", help="Show as stacked plot (stack), a non-stacked comparison (nostack) and a non-stacked comparison of normalized shapes (norm)")
@@ -1186,10 +1230,16 @@ def addPlotMakerOptions(parser, addAlsoMCAnalysis=True):
     parser.add_option("--legendWidth", dest="legendWidth", type="float", default=0.25, help="Width of the legend")
     parser.add_option("--legendBorder", dest="legendBorder", type="int", default=0, help="Use a border in the legend (1=yes, 0=no)")
     parser.add_option("--legendFontSize", dest="legendFontSize", type="float", default=0.055, help="Font size in the legend (if <=0, use the default)")
+    parser.add_option("--labelsSize", dest="labelsSize", type="float", default=-1.0, help="Text size for the axis labels and titles")
+    parser.add_option("--labelsFont", dest="labelsFont", type="int", default=42, help="Text font for the axis labels and titles")
+    parser.add_option("--spamFont", dest="spamFont", type="int", default=42, help="Spam text font")
+    parser.add_option("--legendFont", dest="legendFont", type="int", default=42, help="Text font for the legend")
+    parser.add_option("--transparentLegend", dest="transparentLegend", action="store_true", default=False, help="Print the legend of the principal pad with the transparent fill style")
     parser.add_option("--flagDifferences", dest="flagDifferences", action="store_true", default=False, help="Flag plots that are different (when using only two processes, and plotmode nostack")
     parser.add_option("--toleranceForDiff", dest="toleranceForDiff", default=0.0, type="float", help="set numerical tollerance to define when two histogram bins are considered different");
     parser.add_option("--pseudoData", dest="pseudoData", type="string", default=None, help="If set to 'background' or 'all', it will plot also a pseudo-dataset made from background (or signal+background) with Poisson fluctuations in each bin.")
     parser.add_option("--wide", dest="wideplot", action="store_true", default=False, help="Draw a wide canvas")
+    parser.add_option("--CanvasSize", dest="CanvasSize", type="int", nargs=2, default=(600, 600), help="Canvas size: (pixels along X, pixels along Y)")
     parser.add_option("--elist", dest="elist", action="store_true", default='auto', help="Use elist (on by default if making more than 2 plots)")
     parser.add_option("--no-elist", dest="elist", action="store_false", default='auto', help="Don't elist (which are on by default if making more than 2 plots)")
     #if not parser.has_option("--yrange"): parser.add_option("--yrange", dest="yrange", default=None, nargs=2, type='float', help="Y axis range");
@@ -1198,10 +1248,19 @@ def addPlotMakerOptions(parser, addAlsoMCAnalysis=True):
     parser.add_option("--legendHeader", dest="legendHeader", type="string", default=None, help="Put a header to the legend")
     parser.add_option("--legendColumns", dest="legendColumns", type="int", default=1, help="Number of columns in the legend")
     parser.add_option("--ratioOffset", dest="ratioOffset", type="float", default=0.0, help="Put an offset between ratio and main pad")
+    parser.add_option("--YTitleOffset", dest="YTitleOffset", type="float", nargs=2, default=(1.48,0.62), help="Offset for the Y axis title in the principal pad and ratio pad: (OffsetPrincipalPad, OffsetRatioPad)")
+    parser.add_option("--XTitleOffsetRatio", dest="XTitleOffsetRatio", type="float", default=1.0, help="Offset for the X axis title in the ratio pad")
+    parser.add_option("--PrincipalPadDimensions", dest="PrincipalPadDimensions", type="float", nargs=4, default=(0,0.30,1,1), help="Dimensions of the principal pad: (xlow, ylow, xup, yup)")
+    parser.add_option("--RatioPadDimensions", dest="RatioPadDimensions", type="float", nargs=4, default=(0,0,1,0.30), help="Dimensions of the ratio pad: (xlow, ylow, xup, yup)")
+    parser.add_option("--LeftRightMargins", dest="LeftRightMargins", type="float", nargs=2, default=(-1.0, -1.0), help="Left and right margins for the canvas: (LeftMargin, RightMargin)")
+    parser.add_option("--BottomMarginRatio", dest="BottomMarginRatio", type="float", default=0.3, help="Bottom margin for the ratio")
+    parser.add_option("--NotDrawRatioLine", dest="NotDrawRatioLine", action="store_true", default=False, help="Not draw horizontal line at y=1 in ratio plot")
     parser.add_option("--noCms", dest="doOfficialCMS", action="store_false", default=True, help="Use official tool to write CMS spam")
     parser.add_option("--cmsprel", dest="cmsprel", type="string", default="Preliminary", help="Additional text (Simulation, Preliminary, Internal)")
     parser.add_option("--cmssqrtS", dest="cmssqrtS", type="string", default="13 TeV", help="Sqrt of s to be written in the official CMS text.")
     parser.add_option("--printBin", dest="printBinning", type="string", default=None, help="Write 'Events/xx' instead of 'Events' on the y axis")
+    parser.add_option("--printBinUnity", dest="printBinUnity", action="store_true", default=False, help="Write Events/xx GeV on the y axis for equal bin size histograms (necessary GeV unity in the X axis)")
+    parser.add_option("--noXErrData", dest="noXErrData", action="store_true", default=False, help="Don't plot x error in data for histograms with equal bin size")
 
 if __name__ == "__main__":
     from optparse import OptionParser
@@ -1237,5 +1296,3 @@ if __name__ == "__main__":
     plotter = PlotMaker(outfile,options)
     plotter.run(mca,cuts,plots)
     outfile.Close()
-
-

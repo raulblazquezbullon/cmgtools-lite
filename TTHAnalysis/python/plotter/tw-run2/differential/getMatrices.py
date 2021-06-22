@@ -16,7 +16,9 @@ vl.SetUpWarnings()
 markersize  = 0.8
 
 
-def GetAndPlotResponseMatrix(var, key, theresponseh, theparticleh, thepath):
+def GetAndPlotResponseMatrix(iY, var, key, theresponseh, theparticleh, thepath):
+    thelumi = vl.TotalLumi if iY == "run2" else vl.LumiDict[int(iY)]
+    scaleval = 1/thelumi/1000
     #print "\n[GetAndPlotResponseMatrix]"
     particlebins = vl.varList[var]["bins_particle"]
     detectorbins = vl.varList[var]["bins_detector"]
@@ -35,6 +37,9 @@ def GetAndPlotResponseMatrix(var, key, theresponseh, theparticleh, thepath):
             hGen.SetBinError(i, j, theparticleh.GetBinError(i))
 
     overlap = None
+
+    #htemp.Scale(scaleval); hGen.Scale(scaleval)
+
     htemp.Divide(hGen); del hGen;
 
     if var == "Fiducial":
@@ -103,9 +108,9 @@ def GetAndPlotResponseMatrix(var, key, theresponseh, theparticleh, thepath):
     r.gStyle.SetLabelSize(22, "XYZ")
     r.gPad.Update()
     c.SaveAs(thepath + "/R_" + var + "_" + key + ".png")
-    c.SaveAs(thepath + "/R_" + var + "_" + key + ".eps")
+    #c.SaveAs(thepath + "/R_" + var + "_" + key + ".eps")
     c.SaveAs(thepath + "/R_" + var + "_" + key + ".pdf")
-    c.SaveAs(thepath + "/R_" + var + "_" + key + ".root")
+    #c.SaveAs(thepath + "/R_" + var + "_" + key + ".root")
     c.Close(); del c, plot
 
 
@@ -118,9 +123,9 @@ def GetAndPlotResponseMatrix(var, key, theresponseh, theparticleh, thepath):
     r.gStyle.SetLabelSize(22, "XYZ")
     r.gPad.Update()
     c.SaveAs(thepath + "/Rnonumb_" + var + "_" + key + ".png")
-    c.SaveAs(thepath + "/Rnonumb_" + var + "_" + key + ".eps")
+    #c.SaveAs(thepath + "/Rnonumb_" + var + "_" + key + ".eps")
     c.SaveAs(thepath + "/Rnonumb_" + var + "_" + key + ".pdf")
-    c.SaveAs(thepath + "/Rnonumb_" + var + "_" + key + ".root")
+    #c.SaveAs(thepath + "/Rnonumb_" + var + "_" + key + ".root")
     c.Close(); del c, plot
     return htemp, overlap
 
@@ -206,7 +211,7 @@ def GetAndPlotPuritiesAndStabilities(var, theresponseh, theparticleh, thedetecto
         hPur.SetBinContent(j, purities[j - 1])
 
     #print " > Plotting first purities and stabilities plot..."
-    c = r.TCanvas('c', "Purities and stabilities of " + var)
+    c = r.TCanvas('c', "Purities and stabilities of " + var, 600, 600)
     plot = c.GetPad(0);
     #plot.SetPad(0.0, 0.23, 1.0, 1.0);
     plot.SetTopMargin(0.06); plot.SetRightMargin(0.05); plot.SetLeftMargin(0.1); plot.SetBottomMargin(0.12)
@@ -249,12 +254,12 @@ def GetAndPlotPuritiesAndStabilities(var, theresponseh, theparticleh, thedetecto
 
     c.SaveAs(thepath + "/PurStab_" + var + ".png")
     c.SaveAs(thepath + "/PurStab_" + var + ".pdf")
-    c.SaveAs(thepath + "/PurStab_" + var + ".root")
+    #c.SaveAs(thepath + "/PurStab_" + var + ".root")
     c.Close(); del c, hStab, plot
 
 
     #print " > Plotting second purities and stabilities plot..."
-    c = r.TCanvas('c', "Purities and stabilities of " + var)
+    c = r.TCanvas('c', "Purities and stabilities of " + var, 600, 600)
     plot = c.GetPad(0);
     #plot.SetPad(0.0, 0.23, 1.0, 1.0);
     plot.SetTopMargin(0.06); plot.SetRightMargin(0.05); plot.SetLeftMargin(0.1); plot.SetBottomMargin(0.12)
@@ -278,7 +283,7 @@ def GetAndPlotPuritiesAndStabilities(var, theresponseh, theparticleh, thedetecto
 
     c.SaveAs(thepath + "/PurStabwoeff_" + var + ".png")
     c.SaveAs(thepath + "/PurStabwoeff_" + var + ".pdf")
-    c.SaveAs(thepath + "/PurStabwoeff_" + var + ".root")
+    #c.SaveAs(thepath + "/PurStabwoeff_" + var + ".root")
     c.Close(); del c, hStab_woeff, plot
     return
 
@@ -309,7 +314,7 @@ def GetAndPlotNonFiducialHisto(var, theunc, thefiducialh, thepath):
     r.gPad.Update()
     c.SaveAs(thepath + "/F_" + var + "_" + theunc + ".png")
     c.SaveAs(thepath + "/F_" + var + "_" + theunc + ".pdf")
-    c.SaveAs(thepath + "/F_" + var + "_" + theunc + ".root")
+    #c.SaveAs(thepath + "/F_" + var + "_" + theunc + ".root")
     c.Close(); del c
     return hNonFid
 
@@ -360,8 +365,8 @@ def CalculateAndPlotResponseMatrices(tsk):
 
         #if "mistagging" in tmpnam: continue #### ?????????????????????????????????????????????????????????????????????????
 
-
-        if "data" in tmpnam: continue
+        if any([el in tmpnam for el in ["ds", "data", "herwig"]]):
+            continue
 
         if "Up" not in tmpnam and "Down" not in tmpnam: # It is the nominal value!
             #print tmpnam
@@ -401,7 +406,7 @@ def CalculateAndPlotResponseMatrices(tsk):
         if key == "":
             GetAndPlotPuritiesAndStabilities(iV, responsedict[key], hParticle, detectorparticledict[key], detectordict[key], tmpoutpath)
 
-        hResponse, theoverlap = GetAndPlotResponseMatrix(iV, key, responsedict[key], hParticle, tmpoutpath)
+        hResponse, theoverlap = GetAndPlotResponseMatrix(iY, iV, key, responsedict[key], hParticle, tmpoutpath)
 
         if theoverlap != None:
             SaveOverlap(theoverlap, tmpoutpath)
@@ -444,28 +449,34 @@ if __name__=="__main__":
 
     #### First, find the tasks
     tasks = []
-    if year == "all":
-        if variable == "all":
-            theyears = []
-            presentyears = next(os.walk(inpath))[1]
+    theyears = []
+    presentyears = next(os.walk(inpath))[1]
 
-            if "2016" in presentyears:
-                theyears.append("2016")
-            if "2017" in presentyears:
-                theyears.append("2017")
-            if "2018" in presentyears:
-                theyears.append("2018")
-            if "run2" in presentyears:
-                theyears.append("run2")
+    if "2016" in presentyears:
+        theyears.append("2016")
+    if "2017" in presentyears:
+        theyears.append("2017")
+    if "2018" in presentyears:
+        theyears.append("2018")
+    if "run2" in presentyears:
+        theyears.append("run2")
 
-            for iY in theyears:
-                thevars = next(os.walk(inpath + "/" + iY))[1]
+    if year.lower() != "all" and year in presentyears:
+        theyears = [ year ]
+    elif year.lower() != "all":
+        raise RuntimeError("FATAL: the year requested is not in the provided input folder.")
 
-                for iV in thevars:
-                    if "plots" in iV: continue
-                    #if "Pz" not in iV: continue
+    for iY in theyears:
+        thevars = next(os.walk(inpath + "/" + iY))[1]
 
-                    tasks.append( (inpath, iY, iV) )
+        if variable.lower() != "all" and variable in thevars:
+            thevars = [ variable ]
+        elif variable.lower() != "all":
+            raise RuntimeError("FATAL: the variable requested is not in the provided input folder.")
+
+        for iV in thevars:
+            if "plots" in iV or "table" in iV or "control" in iV: continue
+            tasks.append( (inpath, iY, iV) )
 
     if nthreads > 1:
         pool = Pool(nthreads)
@@ -475,3 +486,5 @@ if __name__=="__main__":
     else:
         for tsk in tasks:
             CalculateAndPlotResponseMatrices(tsk)
+
+    print("\n> Done!")

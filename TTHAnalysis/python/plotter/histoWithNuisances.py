@@ -70,11 +70,11 @@ def _isNullHistogram(h):
 
 
 def buildVariationsFromAlternativesWithEnvelope(uncfile, ret):
+    toremove = []
     for var in uncfile.uncertainty():
         if var.unc_type != 'altSampleEnv': continue # now only adding the alternative samples
         thelist = var.args[0].replace("[", "").replace("]", "").replace("'", "").split("\,")
         hasBeenApplied = False
-        toremove = []
         for k, p in ret.iteritems():
             if not var.procmatch().match(k): continue
 
@@ -117,31 +117,86 @@ def buildVariationsFromAlternativesWithEnvelope(uncfile, ret):
             p.addVariation(var.name, 'up'  , up)
             p.addVariation(var.name, 'down', down)
 
-            toremove.extend( [el for el in thelist])
+            toremove.extend( [el for el in thelist if el not in toremove])
             hasBeenApplied = True
 
-        for rem in toremove:
-            if rem in ret: ret.pop(rem)
+    for rem in toremove:
+        if rem in ret: ret.pop(rem)
+    return
 
 
-def buildVariationsFromAlternative( uncfile, ret):
+def buildVariationsFromAlternative(uncfile, ret):
+    toremove = []
     for var in uncfile.uncertainty():
         if var.unc_type != 'altSample': continue # now only adding the alternative samples
         hasBeenApplied=False
-        toremove=[]
         for k,p in ret.iteritems(): 
             if not var.procmatch().match(k): continue
+
+            dosymm   = False
+            dolinear = False
+            normval = 1.
+            if len(var.args) > 2:
+                if var.args[2] == "symm":
+                    dosymm = True
+                if len(var.args) > 3:
+                    dolinear = True
+                    normval = float(var.args[3])
+
             if hasBeenApplied:
-                raise RuntimeError("variation %s is being applied to at least two processes"%var.name)
-            if var.args[0] not in ret or var.args[1] not in ret:
-                raise RuntimeError("Alternative sample (%s,%s) has not been processed, available samples are %s"%(var.args[0], var.args[1], ','.join(k for k in ret)))
-            p.addVariation( var.name, 'up'  , ret[var.args[0]].raw())
-            p.addVariation( var.name, 'down', ret[var.args[1]].raw())
-            toremove.extend( [var.args[0], var.args[1]])
-            hasBeenApplied=True
-        #print toremove
-        for rem in toremove: 
-            if rem in ret: ret.pop(rem)
+                raise RuntimeError("Variation %s is being applied to at least two processes"%var.name)
+            if   var.args[0] not in ret:
+                raise RuntimeError("The first alternative sample, %s, has not been processed. Available samples are %s"%(var.args[0], ', '.join(k for k in ret)))
+            elif var.args[1] not in ret and not dosymm:
+                raise RuntimeError("The second alternative sample, %s, has not been processed and a symmetrisation has not been requested. Available samples are %s"%(var.args[1], ', '.join(k for k in ret)))
+
+            if   dosymm:
+                up   = _cloneNoDir( p.central, var.name + 'Up' )
+                down = _cloneNoDir( p.central, var.name + 'Down' )
+
+                for ibin in range(1, p.central.GetNbinsX() + 1):
+                    thedif = abs(ret[var.args[0]].raw().GetBinContent(ibin) - p.central.GetBinContent(ibin))/normval
+
+                    up.SetBinContent(  ibin, p.central.GetBinContent(ibin) + thedif )
+                    down.SetBinContent(ibin, (p.central.GetBinContent(ibin) - thedif) if (p.central.GetBinContent(ibin) - thedif) >= 0 else 0 )
+                p.addVariation( var.name, 'up'  , up)
+                p.addVariation( var.name, 'down', down)
+                if var.args[0] not in toremove:
+                    toremove.extend( [var.args[0]] )
+                hasBeenApplied = True
+
+            elif dolinear:
+                print "\t- Assumming linear desviations for uncertainty", var.name
+                up   = _cloneNoDir( p.central, var.name + 'Up' )
+                down = _cloneNoDir( p.central, var.name + 'Down' )
+
+                for ibin in range(1, p.central.GetNbinsX() + 1):
+                    thedifup = abs(ret[var.args[0]].raw().GetBinContent(ibin) - p.central.GetBinContent(ibin))/normval
+                    thedifdn = abs(ret[var.args[1]].raw().GetBinContent(ibin) - p.central.GetBinContent(ibin))/normval
+
+                    up.SetBinContent(  ibin, (p.central.GetBinContent(ibin) + thedifup) if ret[var.args[0]].raw().GetBinContent(ibin) >= p.central.GetBinContent(ibin) else (p.central.GetBinContent(ibin) - thedifup) )
+                    down.SetBinContent(ibin, (p.central.GetBinContent(ibin) - thedifdn) if ret[var.args[1]].raw().GetBinContent(ibin) < p.central.GetBinContent(ibin) else (p.central.GetBinContent(ibin) + thedifdn) )
+                p.addVariation( var.name, 'up'  , up)
+                p.addVariation( var.name, 'down', down)
+
+                if var.args[0] not in toremove:
+                    toremove.extend( [var.args[0]] )
+                if var.args[1] not in toremove:
+                    toremove.extend( [var.args[1]] )
+                hasBeenApplied = True
+            else:
+                p.addVariation( var.name, 'up'  , ret[var.args[0]].raw())
+                p.addVariation( var.name, 'down', ret[var.args[1]].raw())
+                if var.args[0] not in toremove:
+                    toremove.extend( [var.args[0]] )
+                if var.args[1] not in toremove:
+                    toremove.extend( [var.args[1]] )
+                hasBeenApplied = True
+    #print toremove
+    for rem in toremove:
+        if rem in ret: ret.pop(rem)
+    return
+
 
 class RooFitContext:
     def __init__(self,workspace):
@@ -757,8 +812,10 @@ class HistoWithNuisances:
         self._rooFit["templates"] = templates
         self._rooFit["scaleFactors"] = {}
 
+
     def buildEnvelopes(self):
         for var in self.getVariationList():
+            if "pdf" in var.lower(): continue
             if len( self.getVariation(var) ) < 3: continue
             up   = _cloneNoDir( self.central, self.central.GetName() + 'envUp' )
             down = _cloneNoDir( self.central, self.central.GetName() + 'envDown' )
@@ -777,19 +834,50 @@ class HistoWithNuisances:
             self.addVariation( var, 'up', up)
             self.addVariation( var, 'down', down)
 
-    def buildEnvelopesRMS(self):
+
+    def buildEnvelopesForPDFs(self):
         for var in self.getVariationList():
-            if len( self.getVariation(var) ) < 30: continue #this is probably wrong here, but should prevent for computing this for nothing else but PDF....
+            if "pdf" not in var.lower(): continue
+            #### NOTE: we will assume that ALL the entries, except the last two, correspond with
+            # the variations of the PDF weights, and the last two are the ones that relate with
+            # the alphaS uncertainties. You should NOT consider the nominal variation here (although,
+            # hopefully and a priori, it should not affect the result).
             up   = _cloneNoDir( self.central, self.central.GetName() + 'envUp' )
             down = _cloneNoDir( self.central, self.central.GetName() + 'envDown' )
-            for x in range(1, self.central.GetNbinsX()+1):
-                for y in range(1,self.central.GetNbinsY()+1):
-                    ibin  = self.central.GetBin(x,y)
-                    delta   = 0
-                    for hvar in self.getVariation(var):
-                        delta = delta+hvar.GetBinContent(ibin)*hvar.GetBinContent(ibin)
-                    up.SetBinContent( ibin, sqrt(delta)) 
-                    down.SetBinContent( ibin, sqrt(delta)) 
+            nvars = len(self.getVariation(var))
+            if "hessian" in var.lower():
+                for x in range(1, self.central.GetNbinsX() + 1):
+                    for y in range(1, self.central.GetNbinsY() + 1):
+                        ibin    = self.central.GetBin(x, y)
+                        nomVal  = self.central.GetBinContent(ibin)
+                        deltaUp = 0; deltaDn = 0
+                        for iV in range(nvars - 2):
+                            cont = self.getVariation(var)[iV].GetBinContent(ibin)
+                            if cont >= nomVal: deltaUp += (cont - nomVal)**2
+                            else:              deltaDn += (nomVal - cont)**2
+
+                        alphaSunc = (self.getVariation(var)[nvars - 1].GetBinContent(ibin) - self.getVariation(var)[nvars - 2].GetBinContent(ibin)) / 2.
+
+                        up.SetBinContent(  ibin, nomVal + sqrt(deltaUp + alphaSunc**2))
+                        down.SetBinContent(ibin, nomVal - sqrt(deltaDn + alphaSunc**2))
+            elif "mc" in var.lower():
+                for x in range(1, self.central.GetNbinsX() + 1):
+                    for y in range(1, self.central.GetNbinsY() + 1):
+                        ibin    = self.central.GetBin(x, y)
+                        nomVal  = self.central.GetBinContent(ibin)
+                        deltaUp = 0; deltaDn = 0
+                        for iV in range(nvars - 2):
+                            cont = self.getVariation(var)[iV].GetBinContent(ibin)
+                            if cont >= nomVal: deltaUp += (cont - nomVal)**2
+                            else:              deltaDn += (nomVal - cont)**2
+
+                        alphaSunc = (self.getVariation(var)[nvars - 1].GetBinContent(ibin) - self.getVariation(var)[nvars - 2].GetBinContent(ibin)) / 2.
+
+                        up.SetBinContent(  ibin, nomVal + sqrt(deltaUp/(nvars - 2) + alphaSunc**2))
+                        down.SetBinContent(ibin, nomVal - sqrt(deltaDn/(nvars - 2) + alphaSunc**2))
+            else:
+                raise RuntimeError("FATAL: an uncertainty detected as pdf did not specify which kind of set was (either hessian or mc); this is not implemented.")
+
             del self.variations[var]
             self.addVariation( var, 'up', up)
             self.addVariation( var, 'down', down)
@@ -1228,4 +1316,3 @@ def roofitizeReport(histoWithNuisanceMap, workspace=None, xvarName="x", density=
             h.setupRooFit(roofit)
     # and return the context
     return roofit
-    

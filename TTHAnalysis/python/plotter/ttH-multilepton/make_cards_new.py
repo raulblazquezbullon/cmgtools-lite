@@ -31,7 +31,11 @@ OPTIONS=" --tree NanoAOD --s2v -j {J} -l {LUMI} -f --WA prescaleFromSkim --split
 os.system("test -d cards/{OUTNAME} || mkdir -p cards/{OUTNAME}".format(OUTNAME=OUTNAME))
 OPTIONS="{OPTIONS} --od cards/{OUTNAME} ".format(OPTIONS=OPTIONS, OUTNAME=OUTNAME)
 #T2L="-P {ORIGIN}/NanoTrees_TTH_091019_v6pre_skim2lss/{YEAR} --FMCs {{P}}/0_jmeUnc_v1  --Fs  {{P}}/1_recl/ --FMCs {{P}}/2_scalefactors --Fs {{P}}/3_tauCount --Fs {{P}}/6_mva3l --Fs {{P}}/6_mva2lss_new/  --Fs {{P}}/6_mva4l --xf TTTW --xf TTWH".format(ORIGIN=ORIGIN, YEAR=YEAR)
-T2L="-P {ORIGIN}/NanoTrees_TTH_090120_091019_v6_skim2lss/{YEAR} --FMCs {{P}}/0_jmeUnc_v1 --FDs {{P}}/1_recl --FMCs {{P}}/1_recl_allvars --FMCs {{P}}/2_btag_SFs --FMCs {{P}}/2_scalefactors_lep_fixed --Fs {{P}}/3_tauCount --Fs {{P}}/4_evtVars --Fs {{P}}/5_BDThtt_reco_new_blah --Fs {{P}}/6_mva2lss --Fs {{P}}/6_mva3l --Fs {{P}}/6_mva4l  --xf TTTW --xf TTWH".format(ORIGIN=ORIGIN, YEAR=YEAR)
+
+#T2L="-P {ORIGIN}/NanoTrees_TTH_090120_v6_triggerFix_skim2lss/{YEAR} -P {ORIGIN}/NanoTrees_TTH_091019_v6pre_skim2lss/{YEAR} --FMCs {{P}}/0_jmeUnc_v1_sources  --FMCs {{P}}/1_recl_sources --FDs {{P}}/1_recl --FMCs {{P}}/2_scalefactors_jecAllVars --FMCs {{P}}/2_scalefactors_lep --Fs {{P}}/3_tauCount --Fs {{P}}/6_mva3l_updated/ --FMCs {{P}}/6_mva2lss_allVars/ --FDs {{P}}/6_mva2lss  --Fs {{P}}/6_mva4l --xf TTTW --xf TTWH".format(ORIGIN=ORIGIN, YEAR=YEAR)
+
+T2L="-P {ORIGIN}/NanoTrees_TTH_090120_091019_v6_skim2lss/{YEAR} --FMCs {{P}}/0_jmeUnc_v1 --FDs {{P}}/1_recl --FMCs {{P}}/1_recl_allvars --FMCs {{P}}/2_btag_SFs --FMCs {{P}}/2_scalefactors_lep_fixed --Fs {{P}}/3_tauCount --Fs {{P}}/4_evtVars --Fs {{P}}/6_mva2lss --Fs {{P}}/6_mva3l --Fs {{P}}/6_mva4l  --xf TTTW --xf TTWH".format(ORIGIN=ORIGIN, YEAR=YEAR)
+
 T3L=T2L
 T4L=T2L
 
@@ -52,7 +56,12 @@ if 'unblind' in OTHER:
     ASIMOV=""
 
 print "We are using the asimov dataset"
+
+#---mio---
+OPTIONS2="{OPTIONS} -L ttH-multilepton/functionsTTH.cc --mcc ttH-multilepton/lepchoice-ttH-FO.txt --mcc ttH-multilepton/mcc-METFixEE2017.txt {ASIMOV} --threshold 0.01".format(OPTIONS=OPTIONS,ASIMOV=ASIMOV)
+#---mio---
 OPTIONS="{OPTIONS} -L ttH-multilepton/functionsTTH.cc --mcc ttH-multilepton/lepchoice-ttH-FO.txt --mcc ttH-multilepton/mcc-METFixEE2017.txt {PROMPTSUB} --neg   --threshold 0.01 {ASIMOV} --filter ttH-multilepton/filter-processes.txt ".format(OPTIONS=OPTIONS,PROMPTSUB=PROMPTSUB,ASIMOV=ASIMOV) # neg necessary for subsequent rebin #  
+
 CATPOSTFIX=""
 
 FUNCTION_2L="ttH_catIndex_2lss_MVA(LepGood1_pdgId,LepGood2_pdgId,DNN_2lss_predictions_ttH,DNN_2lss_predictions_ttW,DNN_2lss_predictions_tHQ,DNN_2lss_predictions_Rest)"
@@ -89,6 +98,21 @@ if REGION == "2lss_SVA":
     CATPOSTFIX=""
     TORUN='''python {SCRIPT} {DOFILE} ttH-multilepton/mca-2lss-{MCASUFFIX}{MCAOPTION}.txt ttH-multilepton/2lss_tight.txt {FUNCTION_SVA_2L} {SYSTS} {OPT_2L} --binname ttH_2lss_{YEAR} --categorize {CATFUNC} {CATBINS} {CATNAMES}  --year {YEAR};'''.format(SCRIPT=SCRIPT, DOFILE=DOFILE, MCASUFFIX=MCASUFFIX, MCAOPTION=MCAOPTION, FUNCTION_SVA_2L=FUNCTION_SVA_2L, SYSTS=SYSTS, OPT_2L=OPT_2L, CATFUNC=CATFUNC,CATNAMES=CATNAMES, CATBINS=CATBINS,YEAR=YEAR)
     print submit.format(command=TORUN)
+    
+#---------Carta propia------------
+if REGION == "2lss_mio":
+    CATFUNC=1
+    CATBINS="[0.5,1.5]"
+    CATNAMES="" 
+    OPT_2L='{T2L} {OPTIONS2} -W "L1PreFiringWeight_Nom*puWeight*btagSF_shape*leptonSF_2lss*triggerSF_ttH(LepGood1_pdgId, LepGood1_conePt, LepGood2_pdgId, LepGood2_conePt, 2, year)"'.format(T2L=T2L, OPTIONS2=OPTIONS2)
+    CATPOSTFIX=""
+    MCASUFFIX="mcdata"
+    MCAOPTION=""
+    FUNCTION_SVA_2L=''' 1 [0.5,1.5]'''
+    CORTES="-E ^2b1B -E ^4j"
+    TORUN='''python {SCRIPT} {DOFILE} ttH-multilepton/mca-2lss-{MCASUFFIX}{MCAOPTION}.txt ttH-multilepton/2lss_tight.txt {FUNCTION_SVA_2L} {SYSTS} {OPT_2L} --binname ttH_2lss_{YEAR} --year {YEAR} {CORTES}'''.format(SCRIPT=SCRIPT, DOFILE=DOFILE, MCASUFFIX=MCASUFFIX, MCAOPTION=MCAOPTION, FUNCTION_SVA_2L=FUNCTION_SVA_2L, SYSTS=SYSTS, OPT_2L=OPT_2L, CATFUNC=CATFUNC,CATNAMES=CATNAMES, CATBINS=CATBINS,YEAR=YEAR, CORTES=CORTES)
+    print submit.format(command=TORUN)    
+#---------Carta propia------------
 
 if REGION == "2lss_SVA_scan":
     CATFUNC='''"ttH_catIndex_2lss_SVA_soft(LepGood1_pdgId,LepGood2_pdgId,LepGood1_charge,nJet25)"'''
@@ -109,7 +133,7 @@ if REGION == "2lss_3j_SVA":
     CATPOSTFIX=""
     TORUN='''python {SCRIPT} {DOFILE} ttH-multilepton/mca-2lss-{MCASUFFIX}{MCAOPTION}.txt ttH-multilepton/2lss_tight.txt {FUNCTION_SVA_2L} {SYSTS} {OPT_2L} --binname ttH_2lss_3j_{YEAR} --categorize {CATFUNC} {CATBINS} {CATNAMES}  --year {YEAR};'''.format(SCRIPT=SCRIPT, DOFILE=DOFILE, MCASUFFIX=MCASUFFIX, MCAOPTION=MCAOPTION, FUNCTION_SVA_2L=FUNCTION_SVA_2L, SYSTS=SYSTS, OPT_2L=OPT_2L, CATFUNC=CATFUNC,CATNAMES=CATNAMES, CATBINS=CATBINS,YEAR=YEAR)
     print submit.format(command=TORUN)
-    
+
 
 if REGION == "3l":
     OPT_3L='{T3L} {OPTIONS} -W "L1PreFiringWeight_Nom*puWeight*btagSF_shape*triggerSF_ttH(LepGood1_pdgId, LepGood1_conePt, LepGood2_pdgId, LepGood2_conePt, 3, year)*leptonSF_3l"'.format(T3L=T3L, OPTIONS=OPTIONS)

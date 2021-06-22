@@ -12,7 +12,7 @@ class btag_weighter(Module):
                  label = "", isFastSim = False, year = 2017, SFmeasReg = "mujets",
                  minptlow = 20, minpthigh = 30, maxeta = 2.4,
                  jecvars = ["jesTotal", "jer"], lepenvars = ["mu"],
-                 debug = False):
+                 splitCorrelations = False, debug = False):
 
         self.algo      = algo
         self.wp        = wp
@@ -23,11 +23,13 @@ class btag_weighter(Module):
         self.minpthigh = minpthigh
         self.maxeta    = maxeta
         self.branchflavour = branchflavour
-        self.branchbtag   = branchbtag
-        self.debug     = debug
+        self.splitCorr     = splitCorrelations
+        self.branchbtag    = branchbtag
+        self.debug         = debug
 
         self.systsJEC   = {0: ""}
         self.systsLepEn = {}
+        self.systsCorr  = {}
         self.nominaljecscaff = "_nom"
 
         if   len(jecvars):
@@ -38,7 +40,10 @@ class btag_weighter(Module):
             for i, var in enumerate(lepenvars):
                 self.systsLepEn[i+1]    = "_%sUp"%var
                 self.systsLepEn[-(i+1)] = "_%sDown"%var
-
+        if self.splitCorr:
+            for i, var in enumerate(['btag_correlated', 'mistag_correlated', 'btag_uncorrelated', 'mistag_uncorrelated']):
+                self.systsCorr[i+1]    = "_%sUp"%var
+                self.systsCorr[-(i+1)] = "_%sDown"%var
 
         self.cutdict = {}
         self.cutdict["csvv2"] = {}; self.cutdict["deepcsv"] = {}; self.cutdict["deepjet"] = {}
@@ -60,6 +65,12 @@ class btag_weighter(Module):
         vector = r.vector('string')()
         vector.push_back("up")
         vector.push_back("down")
+
+        if self.splitCorr:
+            vector.push_back("up_correlated")
+            vector.push_back("down_correlated")
+            vector.push_back("up_uncorrelated")
+            vector.push_back("down_uncorrelated")
 
         ## load POG stuff
         ## in reader instance: 1 = medium wp
@@ -92,11 +103,15 @@ class btag_weighter(Module):
         self.wrappedOutputTree.branch("bTagWeight" + self.label + "_mistag_Up", "F")
         self.wrappedOutputTree.branch("bTagWeight" + self.label + "_mistag_Dn", "F")
 
+        for delta,corrVar in self.systsCorr.iteritems():
+            self.wrappedOutputTree.branch("bTagWeight" + self.label + corrVar , "F")
+
         for delta,jecVar in self.systsJEC.iteritems():
             self.wrappedOutputTree.branch("bTagWeight" + self.label + jecVar , "F")
 
         for delta,lepVar in self.systsLepEn.iteritems():
             self.wrappedOutputTree.branch("bTagWeight" + self.label + lepVar , "F")
+
         return
 
 
@@ -122,8 +137,17 @@ class btag_weighter(Module):
             sysLFup   = 1
             sysLFdn   = 1
 
-            self.jets    = [self.all_jets[getattr(event, 'iJetSel30{v}_Recl'.format(v = jecVar))[j]]
-                        for j in xrange(min([getattr(event, 'nJetSel30{v}_Recl'.format(v = jecVar)), 5]))]
+            sysHFupCorr   = 1
+            sysHFdnCorr   = 1
+            sysLFupCorr   = 1
+            sysLFdnCorr   = 1
+            sysHFupUncorr = 1
+            sysHFdnUncorr = 1
+            sysLFupUncorr = 1
+            sysLFdnUncorr = 1
+
+            self.jets = [self.all_jets[getattr(event, 'iJetSel30{v}_Recl'.format(v = jecVar))[j]]
+                         for j in xrange(min([getattr(event, 'nJetSel30{v}_Recl'.format(v = jecVar)), 5]))]
 
             jetjecsysscaff = (jecVar if jecVar != "" else self.nominaljecscaff)
 
@@ -157,11 +181,31 @@ class btag_weighter(Module):
                         sysLFup *= eff*SF[0]
                         sysLFdn *= eff*SF[0]
 
+                        if self.splitCorr:
+                            sysHFupCorr   *= eff*SF[3]
+                            sysHFdnCorr   *= eff*SF[4]
+                            sysHFupUncorr *= eff*SF[5]
+                            sysHFdnUncorr *= eff*SF[6]
+                            sysLFupCorr   *= eff*SF[0]
+                            sysLFdnCorr   *= eff*SF[0]
+                            sysLFupUncorr *= eff*SF[0]
+                            sysLFdnUncorr *= eff*SF[0]
                     elif jecVar == "":
                         sysHFup *= eff*SF[0]
                         sysHFdn *= eff*SF[0]
                         sysLFup *= eff*SF[1]
                         sysLFdn *= eff*SF[2]
+
+                        if self.splitCorr:
+                            sysHFupCorr   *= eff*SF[0]
+                            sysHFdnCorr   *= eff*SF[0]
+                            sysHFupUncorr *= eff*SF[0]
+                            sysHFdnUncorr *= eff*SF[0]
+                            sysLFupCorr   *= eff*SF[3]
+                            sysLFdnCorr   *= eff*SF[4]
+                            sysLFupUncorr *= eff*SF[5]
+                            sysLFdnUncorr *= eff*SF[6]
+
                 else:
                     mcNoTag   *= (1 - eff      )
                     dataNoTag *= (1 - eff*SF[0])
@@ -172,11 +216,31 @@ class btag_weighter(Module):
                         sysLFup *= (1 - eff*SF[0])
                         sysLFdn *= (1 - eff*SF[0])
 
+                        if self.splitCorr:
+                            sysHFupCorr   *= (1 - eff*SF[3])
+                            sysHFdnCorr   *= (1 - eff*SF[4])
+                            sysHFupUncorr *= (1 - eff*SF[5])
+                            sysHFdnUncorr *= (1 - eff*SF[6])
+                            sysLFupCorr   *= (1 - eff*SF[0])
+                            sysLFdnCorr   *= (1 - eff*SF[0])
+                            sysLFupUncorr *= (1 - eff*SF[0])
+                            sysLFdnUncorr *= (1 - eff*SF[0])
+
                     elif jecVar == "":
                         sysHFup *= (1 - eff*SF[0])
                         sysHFdn *= (1 - eff*SF[0])
                         sysLFup *= (1 - eff*SF[1])
                         sysLFdn *= (1 - eff*SF[2])
+
+                        if self.splitCorr:
+                            sysHFupCorr   *= (1 - eff*SF[0])
+                            sysHFdnCorr   *= (1 - eff*SF[0])
+                            sysHFupUncorr *= (1 - eff*SF[0])
+                            sysHFdnUncorr *= (1 - eff*SF[0])
+                            sysLFupCorr   *= (1 - eff*SF[3])
+                            sysLFdnCorr   *= (1 - eff*SF[4])
+                            sysLFupUncorr *= (1 - eff*SF[5])
+                            sysLFdnUncorr *= (1 - eff*SF[6])
 
             central = (dataNoTag * dataTag ) / ( mcNoTag * mcTag )
 
@@ -189,6 +253,17 @@ class btag_weighter(Module):
                 self.ret["bTagWeight" + self.label + "_btag_Dn"]   = sysHFdn / ( mcNoTag * mcTag )
                 self.ret["bTagWeight" + self.label + "_mistag_Up"] = sysLFup / ( mcNoTag * mcTag )
                 self.ret["bTagWeight" + self.label + "_mistag_Dn"] = sysLFdn / ( mcNoTag * mcTag )
+
+                if self.splitCorr:
+                    self.ret["bTagWeight" + self.label + "_btag_correlatedUp"]       = sysHFupCorr   / ( mcNoTag * mcTag )
+                    self.ret["bTagWeight" + self.label + "_btag_correlatedDown"]     = sysHFdnCorr   / ( mcNoTag * mcTag )
+                    self.ret["bTagWeight" + self.label + "_mistag_correlatedUp"]     = sysLFupCorr   / ( mcNoTag * mcTag )
+                    self.ret["bTagWeight" + self.label + "_mistag_correlatedDown"]   = sysLFdnCorr   / ( mcNoTag * mcTag )
+                    self.ret["bTagWeight" + self.label + "_btag_uncorrelatedUp"]     = sysHFupUncorr / ( mcNoTag * mcTag )
+                    self.ret["bTagWeight" + self.label + "_btag_uncorrelatedDown"]   = sysHFdnUncorr / ( mcNoTag * mcTag )
+                    self.ret["bTagWeight" + self.label + "_mistag_uncorrelatedUp"]   = sysLFupUncorr / ( mcNoTag * mcTag )
+                    self.ret["bTagWeight" + self.label + "_mistag_uncorrelatedDown"] = sysLFdnUncorr / ( mcNoTag * mcTag )
+
 
                 for ldelta,lepVar in self.systsLepEn.iteritems():
                     mcTag     = 1
@@ -256,18 +331,33 @@ class btag_weighter(Module):
     def getSF(self, pt, eta, mcFlavour):
         flavour    = self.pogFlavor(mcFlavour)
         pt_cutoff  = max(20. , min(999., pt))
-        eta_cutoff = min(2.39, abs(eta))
+        eta_cutoff = min(2.39 if flavour == 2 else 2.49, abs(eta))
 
         theReader  = [self.reader_b, self.reader_c, self.reader_l][flavour]
 
         SF   = theReader.eval_auto_bounds("central", flavour, eta_cutoff, pt_cutoff)
         SFup = theReader.eval_auto_bounds("up",      flavour, eta_cutoff, pt_cutoff)
         SFdn = theReader.eval_auto_bounds("down",    flavour, eta_cutoff, pt_cutoff)
-        return [SF, SFup, SFdn]
+
+        if not self.splitCorr:
+            return [SF, SFup, SFdn]
+        else:
+            SFupCorr   = theReader.eval_auto_bounds("up_correlated",     flavour, eta_cutoff, pt_cutoff)
+            SFdnCorr   = theReader.eval_auto_bounds("down_correlated",   flavour, eta_cutoff, pt_cutoff)
+            SFupUncorr = theReader.eval_auto_bounds("up_uncorrelated",   flavour, eta_cutoff, pt_cutoff)
+            SFdnUncorr = theReader.eval_auto_bounds("down_uncorrelated", flavour, eta_cutoff, pt_cutoff)
+
+            return [SF, SFup, SFdn, SFupCorr, SFdnCorr, SFupUncorr, SFdnUncorr]
 
 
     def pogFlavor(self, hadronFlavor):
-        match = {5:0, 4:1, 0:2}
+        match = {5:0, # b
+                 4:1, # c
+                 0:2, # l
+                 1:2, # l
+                 2:2, # l
+                 3:2, # l
+        }
         if hadronFlavor in match.keys(): return match[hadronFlavor]
         return 2
 
