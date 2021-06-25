@@ -81,6 +81,7 @@ sampledict[2016] = {
     ##### tW
     ## Inclusive
     "tW_central" : "ST_tW_top_5f_inclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8_central_",
+    "tW"         : "ST_tW_top_5f_inclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8_topnano_",
     "tbarW"      : "ST_tW_antitop_5f_inclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8_topnano_",
 
     ## No fully hadronic
