@@ -529,6 +529,15 @@ sfSeq_mvatrain_ent_2016 = [leptrigSFs, btagWeights_2016, addTopPtWeight, addSepa
 sfSeq_mvatrain_ent_2017 = [leptrigSFs, btagWeights_2017, addTopPtWeight, addSeparationIndex_mva_ent]
 sfSeq_mvatrain_ent_2018 = [leptrigSFs, btagWeights_2018, addTopPtWeight, addSeparationIndex_mva_ent]
 
+##### HEM16/17 Issue
+#from PhysicsTools.NanoAODTools.postprocessing.modules.jme.jetmetHelperRun2 import *
+#HEMuncsMod = createJMECorrector(dataYear      = 2018,
+#                                       jesUncert     = "Total",
+#                                       metBranchName = "MET",
+#                                       applyHEMfix   = True,
+#                                       saveMETUncs = [],)
+#
+#hemunc_mc_2018 = [HEMuncsMod]
 
 # %%%%%%%%%%%%%%%%%%%%%%%%%% WWbb
 # TODO

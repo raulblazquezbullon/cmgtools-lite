@@ -6,7 +6,7 @@ r.PyConfig.IgnoreCommandLineOptions = True
 r.gROOT.SetBatch(True)
 
 friendspath  = "/pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions"
-logpath      = friendspath + "/{p}/{y}/logs/plots"
+logpath      = friendspath + "/{p}/{y}/logs/cards_inclusive"
 #logpath = "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/plot_logs"
 lumidict      = {2016 : 35.92, 2017 : 41.53, 2018 : 59.74}
 
@@ -18,10 +18,53 @@ slurmscaff   = "sbatch -c {nth} -p {queue} -J {jobname} -e {logpath}/log.%j.%x.e
 commandscaff = '''python makeShapeCardsNew.py --tree NanoAOD {mcafile} {cutsfile} "{variable}" "{bins}" {samplespaths} {friends} --od {outpath} -l {lumi} {nth} -f -L tw-run2/functions_tw.cc --neg --threshold 0.01 -W "MuonIDSF * MuonISOSF * ElecIDSF * ElecRECOSF * TrigSF * puWeight * bTagWeight * PrefireWeight" --year {year} {asimovornot} {uncs} {extra} --AP --storeAll --notMinimumFill --notVarsChanges'''
 
 
+
+def GeneralExecutioner(task):
+    prod, year, variable, bines, asimov, nthreads, outpath, region, queue, extra, pretend, useFibre, noUnc = task
+
+    if not os.path.isdir(outpath + "/" + str(year)) and not pretend:
+        os.system("mkdir -p " + outpath + "/" + str(year))
+
+    if queue != "":
+        if not os.path.isdir(logpath.format(y = year, p = prod)) and not pretend:
+            os.system("mkdir -p " + logpath.format(y = year, p = prod))
+
+        jobname_   = "Card_{r}_{y}".format(y = year, r = region)
+        submitcomm = slurmscaff.format(nth  = nthreads,
+                                    queue   = queue,
+                                    jobname = jobname_,
+                                    logpath = logpath.format(y = year, p = prod),
+                                    command = CardsCommand(prod, year, variable, bines, asimov, nthreads, outpath, region, noUnc, useFibre, extra))
+        print "Command:", submitcomm
+        if not pretend: os.system(submitcomm)
+    else:
+        execcomm = CardsCommand(prod, year, variable, bines, asimov, nthreads, outpath, region, noUnc, useFibre, extra)
+        print "Command:", execcomm
+        if not pretend: os.system(execcomm)
+
+
+    return
+
+
+
+
+
+
+def confirm(message = "Do you wish to continue?"):
+    """
+    Ask user to enter y(es) or n(o) (case-insensitive).
+    :return: True if the answer is Y.
+    :rtype: bool
+    """
+    answer = ""
+    while answer not in ["y", "n", "yes", "no"]:
+        answer = raw_input(message + " [Y/N]\n").lower()
+    return answer[0] == "y"
+
+
 def CardsCommand(prod, year, var, bines, isAsimov, nthreads, outpath, region, noUnc, useFibre, extra):
     mcafile_   = "tw-run2/mca-tw.txt"
     cutsfile_  = "tw-run2/cuts-tw-{reg}.txt".format( reg = region)
-    plotsfile_ = "tw-run2/plots-tw-{reg}.txt".format(reg = region)
 
     samplespaths_ = "-P " + friendspath + "/" + prod + ("/" + year) * (year != "run2")
     if useFibre: samplespaths_ = samplespaths_.replace("phedexrw", "phedex").replace("cienciasrw", "ciencias")
@@ -80,4 +123,17 @@ if __name__ == "__main__":
     asimov   = args.asimov
     useFibre = args.useFibre
 
-    print CardsCommand(prod, year, variable, bines, asimov, nthreads, outpath, region, noUnc, useFibre, extra)
+    if queue != "":
+        print "> Card job will be sent to the cluster."
+        cont = False
+        if pretend:
+            cont = True
+        elif confirm("One job will be sent to queue {q} with {j} requested threads in year {y}. Do you want to continue?".format(q = queue, j = nthreads, y = year)):
+            cont = True
+
+        if cont:
+            GeneralExecutioner( (prod, year, variable, bines, asimov, nthreads, outpath, region, queue, extra, pretend, useFibre, noUnc) )
+
+    else:
+        print "> Local execution chosen."
+        GeneralExecutioner( (prod, year, variable, bines, asimov, nthreads, outpath, region, queue, extra, pretend, useFibre, noUnc) )

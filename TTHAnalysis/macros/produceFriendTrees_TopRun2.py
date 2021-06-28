@@ -10,7 +10,8 @@ r.gROOT.SetBatch(True)
 #### Settings
 friendspath = "/pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions"
 #prodname    = "2020-09-20" # tras la prueba, todo aparentemente en orden; BUENA
-prodname    = "2021-04-23" # tras el nuevo postprocesado de abril de 2021
+#prodname    = "2021-04-23" # tras el nuevo postprocesado de abril de 2021
+prodname    = "2021-06-09" # prod tras el nuevo postprocesado de abril de 2021 y tras hacer un skim
 
 
 datasamples  = ["SingleMuon", "SingleElec", "DoubleMuon", "DoubleEG", "MuonEG", "LowEGJet", "HighEGJet", "EGamma"]
@@ -22,11 +23,16 @@ mcpathdiv    = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/misc/2021_04_
 #datapath     = "/pool/ciencias/nanoAODv6/13jan2020"
 datapath     = "/pool/phedex/nanoAODv6v7"
 
+#--temporal--
+mcpath = friendspath + "/" + "2021-06-09/" 
+mcpathdiv = mcpath
+datapath = mcpath
+
 logpath      = friendspath + "/" + prodname + "/{y}/{step_prefix}/logs"
 commandscaff = "python prepareEventVariablesFriendTree.py -t NanoAOD {inpath} {outpath} -I CMGTools.TTHAnalysis.tools.nanoAOD.TopRun2_modules {module} {friends} {dataset} -N {chunksize} {cluster} {ex}"
 clusterscaff = "--log {logdir} --name {jobname} -q {queue} --env oviedo"
 
-friendfolders = {0 : "0_yeartag",
+friendfolders = {0 : "0_jecuncs",
                  1 : "1_lepmerge_roch",
                  2 : "2_cleaning",
                  3 : "3_varstrigger",
@@ -712,6 +718,10 @@ def SendDatasetJobs(task):
     comm = ""; module_ = ""; friends_ = ""
 
     if   step == 0:
+#        if year != 2018:
+#            raise RuntimeError("FATAL: No HEM uncertainty for 2016 and 2017")
+#        else:
+#            module_  = "hemunc_mc_2018"
         raise RuntimeError("FATAL: step 0 is disabled. Begin with step 1.")
         #module_ = "addYearTag_{y}_{ty}".format(y  = year,
                                                #ty = ("mc_ttbar"   if not isData and "ttto2l2nu" in dataset.lower() else
