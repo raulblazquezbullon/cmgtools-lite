@@ -6,7 +6,7 @@ nJetnBJet : getnJetnBJet(nJetSel30_Recl, nBJetSelMedium30_Recl) : [-0.5,0.5,1.5,
 
 njets     : nJetSel30_Recl            : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5] ; IncludeUnderflow=False, LegendCutoff=0,  XTitle='N(jet)', XNDiv=6, xBinLabels="0\,1\,2\,3\,4\,#geq 5"
 nbjets    : nBJetSelMedium30_Recl     : [-0.5,0.5,1.5,2.5,3.5]             ; IncludeUnderflow=False, LegendCutoff=0,  XTitle='N(b-jet)', XNDiv=5, xBinLabels="0\,1\,2\,#geq 3", MoreY=1.7
-nloosejets     : nJetSel20_Recl    : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5] ; IncludeUnderflow=False, LegendCutoff=0,  XTitle='N(loose jet)', XNDiv=6, xBinLabels="0\,1\,2\,3\,4\,#geq 5"
+nloosejets: nJetSel20_Recl : [-0.5,0.5,1.5,2.5,3.5] ; LegendCutoff=0, XTitle='N(loose jet)', XNDiv=5, xBinLabels="0\,1\,2\,#geq 3"
 
 nfwdjets       : nFwdJetSel30_Recl : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5] ; IncludeUnderflow=False, LegendCutoff=0,  XTitle='N(forward jet)', XNDiv=5, xBinLabels="2\,3\,4\,#geq 5"
 nfwdloosejets  : nFwdJetSel20_Recl : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5] ; IncludeUnderflow=False, LegendCutoff=0,  XTitle='N(forward loose jet)', XNDiv=5, xBinLabels="2\,3\,4\,#geq 5"

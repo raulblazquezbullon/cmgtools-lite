@@ -26,7 +26,8 @@ logpath      = friendspath + "/" + prodname + "/{y}/{step_prefix}/logs"
 commandscaff = "python prepareEventVariablesFriendTree.py -t NanoAOD {inpath} {outpath} -I CMGTools.TTHAnalysis.tools.nanoAOD.TopRun2_modules {module} {friends} {dataset} -N {chunksize} {cluster} {ex}"
 clusterscaff = "--log {logdir} --name {jobname} -q {queue} --env oviedo"
 
-friendfolders = {0 : "0_yeartag",
+friendfolders = {0 : "0_lumijson",
+                 #0 : "0_yeartag",
                  1 : "1_lepmerge_roch",
                  2 : "2_cleaning",
                  3 : "3_varstrigger",
@@ -712,19 +713,10 @@ def SendDatasetJobs(task):
 
     comm = ""; module_ = ""; friends_ = ""
 
-    if   step == 0:
-        raise RuntimeError("FATAL: step 0 is disabled. Begin with step 1.")
-        #module_ = "addYearTag_{y}_{ty}".format(y  = year,
-                                               #ty = ("mc_ttbar"   if not isData and "ttto2l2nu" in dataset.lower() else
-                                                     #"mc"         if not isData else
-                                                     #"singlemuon" if "singlemuon" in dataset.lower() else
-                                                     #"singleelec"
-                                                     #if ("singleelec" in dataset.lower() or "egamma" in dataset.lower()) else
-                                                     #"doublemuon" if "doublemuon" in dataset.lower() else
-                                                     #"doubleeg"   if "doubleeg"   in dataset.lower() else
-                                                     #"muoneg")
-                                              #)
-        #friends_ = ""
+    if   step == 0 and isData:
+        #raise RuntimeError("FATAL: step 0 is disabled. Begin with step 1.")
+        module_ = "apply_json_{y}".format(y  = year)
+        friends_ = ""
 
     elif step == 1:
         module_  = "lepMerge_roch_" + ("mc" if not isData else "data")
@@ -1067,7 +1059,7 @@ def CheckLotsOfMergedDatasets(dataset, year, step, queue, extra, ncores):
         tasks = []
         for dat in sampledict[year]:
             isData = any(ext in dat for ext in datasamples)
-            if not isData or (isData and step != 4):
+            if ((not isData and step != 0) or (isData and step != 4)):
                 tasks.append( (dat, year, step) )
         if ncores > 1:
             pool = Pool(ncores)
@@ -1119,7 +1111,7 @@ def CheckLotsOfChunks(dataset, year, step, queue, extra, ncores, mva, nthreads):
         thedict = trainsampledict[year] if mva else sampledict[year]
         for dat in thedict:
             isData = any(ext in dat for ext in datasamples)
-            if not isData or (isData and step != 4):
+            if (not isData and step != 0) or (isData and step != 4):
                 tasks.append( (dat, year, step) )
         if ncores > 1:
             pool = Pool(ncores)
@@ -1217,8 +1209,8 @@ if __name__=="__main__":
     mva      = (step == "mvatrain")
     erasech  = args.eraseCh
 
-    if step == 0:
-        raise RuntimeError("FATAL: step 0 is disabled. Begin with step 1.")
+    #if step == 0:
+        #raise RuntimeError("FATAL: step 0 is disabled. Begin with step 1.")
 
     if erasech:
         print "\n====== ATTENTION!!!!!! ======"

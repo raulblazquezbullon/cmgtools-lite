@@ -129,7 +129,8 @@ def buildVariationsFromAlternative(uncfile, ret, theY):
     toremove = []
     for var in uncfile.uncertainty():
         if var.unc_type != 'altSample': continue # now only adding the alternative samples
-        if var.year() not in theY: continue
+        if var.year():
+            if var.year() not in theY: continue
         hasBeenApplied=False
         for k,p in ret.iteritems(): 
             if not var.procmatch().match(k): continue
@@ -250,7 +251,9 @@ def buildPDFVariationsFromAlternativeSample(uncfile, ret, theY):
         if var.unc_type != 'altSamplePDFEnv': continue # now only adding the alternative samples
         altsamp = var.args[0].replace("[", "").replace("]", "").replace("'", "").split("\,")[0]
         thenam =  var.name
-        if var.year() not in theY or thenam in uncsprocessed: continue
+        if thenam in uncsprocessed: continue
+        if var.year():
+            if var.year() not in theY: continue 
         uncsprocessed.append(thenam)
         hasBeenApplied = False
         up      = None
@@ -258,7 +261,7 @@ def buildPDFVariationsFromAlternativeSample(uncfile, ret, theY):
         central = None
         for k, p in ret.iteritems():
             if not k == altsamp: continue
-            print k
+            #print k
 
             if hasBeenApplied:
                 raise RuntimeError("FATAL: variation %s is being applied to at least two processes."%var.name)
@@ -270,7 +273,7 @@ def buildPDFVariationsFromAlternativeSample(uncfile, ret, theY):
         
         for k, p in ret.iteritems():
             if not var.procmatch().match(k): continue
-            print k, p.variations
+            #print k, p.variations
                 
             for i in range(1, p.central.GetNbinsX() + 1):
                 currdifup = 0
@@ -938,7 +941,7 @@ class HistoWithNuisances:
         up   = _cloneNoDir( self.central, self.central.GetName() + 'envUp' )
         down = _cloneNoDir( self.central, self.central.GetName() + 'envDown' )
         nvars = len(self.getVariation(var))
-        print nvars
+        #print nvars
         if "hessian" in var.lower():
             for x in range(1, self.central.GetNbinsX() + 1):
                 for y in range(1, self.central.GetNbinsY() + 1):

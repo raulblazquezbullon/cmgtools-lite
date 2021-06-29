@@ -294,6 +294,19 @@ jecGroups = {'HF'                 : ['PileUpPtHF', 'RelativeJERHF', 'RelativePtH
                                      'PileUpPtRef', 'RelativeFSR', 'SinglePionECAL', 'SinglePionHCAL'],
 }
 
+from CMGTools.TTHAnalysis.tools.nanoAOD.apply_json import apply_json
+pathtojsons = "/nfs/fanae/user/vrbouza/Proyectos/produccciones_nanoAOD/2021_04_05_postprocesadoRERECOtWRun2/CMSSW_10_2_22/src/PhysicsTools/NanoAODTools/macros/lumijson/"
+
+json2016 = "Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt"
+json2017 = "Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON_v1.txt"
+json2018 = "Cert_314472-325175_13TeV_17SeptEarlyReReco2018ABC_PromptEraD_Collisions18_JSON.txt"
+
+apply_json_2016 = lambda : apply_json(pathtojsons + "/" + json2016)
+apply_json_2017 = lambda : apply_json(pathtojsons + "/" + json2017)
+apply_json_2018 = lambda : apply_json(pathtojsons + "/" + json2018)
+
+
+
 from CMGTools.TTHAnalysis.tools.nanoAOD.btag_weighter               import btag_weighter
 ## b-tagging
 # Old (pre-new correlations)
