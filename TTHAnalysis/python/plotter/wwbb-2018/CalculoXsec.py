@@ -15,16 +15,16 @@ brtw          = 2*3*0.11**2
 k             = 1.0695
 lumi          = 59740
 
-Nbg           = 9810.97811829 # senal no fiducial
+Nbg           = 10559.0913982 # senal no fiducial
 Nwwbb         = sigmawwbb*lumi*k
 Nttbar        = brttbar*sigmattbar*lumi
 Ntw           = brtw*sigmatw*lumi
 Ntot          = Nwwbb + Nttbar + Ntw
 
-Nsigfid       = 56014.2447648 #N(signal + fiducial)
-Nfiduc        = 186374.128393
+Nsigfid       = 56433.3896762 #N(signal + fiducial)
+Nfiduc        = 125474.632481
 #Nsignal      = 66610.4578863
-Nsignal       = 67058.96      # From plots .txt
+Nsignal       = 66992.4810744      # From plots .txt
 
 efic          = Nsigfid/Nfiduc
 #acept         = Nfiduc/(Nwwbb + Nttbar + Ntw)
@@ -47,30 +47,6 @@ sigmabrasim       = (Nsignal  - 658.00 - 154.33 - 104.53 - Nbg)/(br*lumi*efic*ac
 
 
 
-
-
-#print(Nsignalasim-Nbgasim)
-print('xsec (ASIMOV)          = ' + str(sigmaasim))
-print('xsec(BR) (ASIMOV)      = ' + str(sigmabrasim))
-print('sumaxsec               = ' + str(sumaxsec))
-print(' ')
-print('BR                     = ' + str(br))
-print(' ')
-print('Eficiencia (ASIMOV)    = ' + str(eficasim))
-print('Aceptancia (ASIMOV)    = ' + str(aceptasim))
-print(' ')
-print('Nwwbb (ASIMOV)         = ' + str(Nwwbbasim))
-print('Nttbar (ASIMOV)        = ' + str(Nttbarasim))
-print('Ntw (ASIMOV)           = ' + str(Ntwasim))
-print('Ntot (ASIMOV)          = ' + str(Ntotasim))
-
-print(' ')
-print(' ')
-print(' ')
-print('-------------------------------------')
-print(' ')
-print(' ')
-print(' ')
 
 
 ######## DATOS
