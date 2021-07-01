@@ -111,6 +111,7 @@ jes_EC2_2017            : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-
 jes_EC2_2018            : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesEC2_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesEC2_yearDown.txt'], year="2018"
 jes_Absolute            : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesAbsoluteUp.txt'\,'tw-run2/frs-jecs/fr-jesAbsoluteDown.txt']
 
+#HEMcheck                 : $AllBkg : .* : templateSymmAdditive; AddWeight='abs(isThisEventVetoed - 1)'
 
 ### Not symmetrising
 #jer_2016 : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jerUp.txt'\,'tw-run2/frs-jecs/fr-jerDn.txt'], year="2016"

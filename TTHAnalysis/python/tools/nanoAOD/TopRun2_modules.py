@@ -434,6 +434,8 @@ eventVars_data = lambda : EventVars_tWRun2('', 'Recl', isMC = False,
                                            jecvars = [],
                                            lepvars = [])
 
+from CMGTools.TTHAnalysis.tools.nanoAOD.altHEMcheck import altHEMcheck
+HEMcheck = lambda : altHEMcheck('', 'Recl')
 
 #### Add data tag
 from CMGTools.TTHAnalysis.tools.addDataTag import addDataTag
