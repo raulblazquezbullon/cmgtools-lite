@@ -11,17 +11,19 @@ r.gROOT.SetBatch(True)
 friendspath = "/pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions"
 #prodname    = "2020-09-20" # tras la prueba, todo aparentemente en orden; BUENA
 #prodname    = "2021-04-23" # tras el nuevo postprocesado de abril de 2021
-prodname    = "2021-06-09" # prod tras el nuevo postprocesado de abril de 2021 y tras hacer un skim
 
+prodname    = "2021-06-09" # tras el nuevo postprocesado de abril de 2021
 
 datasamples  = ["SingleMuon", "SingleElec", "DoubleMuon", "DoubleEG", "MuonEG", "LowEGJet", "HighEGJet", "EGamma"]
 
 #mcpath       = "/pool/ciencias/nanoAODv6/29jan2020_MC"
-mcpath       = "/pool/phedex/nanoAODv6v7"
+#mcpath       = "/pool/phedex/nanoAODv6v7"
+mcpath       = "/pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions/" + prodname + "/"
 #mcpathdiv    = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/misc/divisiones/"
-mcpathdiv    = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/misc/2021_04_nuevasdivisiones"
+#mcpathdiv    = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/misc/2021_04_nuevasdivisiones"
+mcpathdiv    = mcpath
 #datapath     = "/pool/ciencias/nanoAODv6/13jan2020"
-datapath     = "/pool/phedex/nanoAODv6v7"
+datapath     = mcpath
 
 #--temporal--
 mcpath = friendspath + "/" + "2021-06-09/" 
@@ -32,13 +34,14 @@ logpath      = friendspath + "/" + prodname + "/{y}/{step_prefix}/logs"
 commandscaff = "python prepareEventVariablesFriendTree.py -t NanoAOD {inpath} {outpath} -I CMGTools.TTHAnalysis.tools.nanoAOD.TopRun2_modules {module} {friends} {dataset} -N {chunksize} {cluster} {ex}"
 clusterscaff = "--log {logdir} --name {jobname} -q {queue} --env oviedo"
 
-friendfolders = {0 : "0_jecuncs",
+friendfolders = {0 : "0_lumijson",
+                 #0 : "0_yeartag",
                  1 : "1_lepmerge_roch",
                  2 : "2_cleaning",
                  3 : "3_varstrigger",
                  4 : "4_scalefactors",
                  5 : "5_mvas",
-                 #5 : "5_mvas_new",
+                 6 : "6_hemissue",
                  "mvatrain" : "x_mvatrain"
                 }
 
@@ -49,6 +52,7 @@ chunksizes    = {0          : 5000000,
                  3          : 500000,
                  4          : 500000,
                  5          : 250000,
+                 6          : 5000000,
                  "mvatrain" : 500000,
                  }
 minchunkbytes = 1000
@@ -87,6 +91,7 @@ sampledict[2016] = {
     ##### tW
     ## Inclusive
     "tW_central" : "ST_tW_top_5f_inclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8_central_",
+    "tW"         : "ST_tW_top_5f_inclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8_topnano_",
     "tbarW"      : "ST_tW_antitop_5f_inclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8_topnano_",
 
     ## No fully hadronic
@@ -717,23 +722,10 @@ def SendDatasetJobs(task):
 
     comm = ""; module_ = ""; friends_ = ""
 
-    if   step == 0:
-#        if year != 2018:
-#            raise RuntimeError("FATAL: No HEM uncertainty for 2016 and 2017")
-#        else:
-#            module_  = "hemunc_mc_2018"
-        raise RuntimeError("FATAL: step 0 is disabled. Begin with step 1.")
-        #module_ = "addYearTag_{y}_{ty}".format(y  = year,
-                                               #ty = ("mc_ttbar"   if not isData and "ttto2l2nu" in dataset.lower() else
-                                                     #"mc"         if not isData else
-                                                     #"singlemuon" if "singlemuon" in dataset.lower() else
-                                                     #"singleelec"
-                                                     #if ("singleelec" in dataset.lower() or "egamma" in dataset.lower()) else
-                                                     #"doublemuon" if "doublemuon" in dataset.lower() else
-                                                     #"doubleeg"   if "doubleeg"   in dataset.lower() else
-                                                     #"muoneg")
-                                              #)
-        #friends_ = ""
+    if   step == 0 and isData:
+        #raise RuntimeError("FATAL: step 0 is disabled. Begin with step 1.")
+        module_ = "apply_json_{y}".format(y  = year)
+        friends_ = ""
 
     elif step == 1:
         module_  = "lepMerge_roch_" + ("mc" if not isData else "data")
@@ -774,6 +766,12 @@ def SendDatasetJobs(task):
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 2) + friendsuff
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 3) + friendsuff
 
+    elif step == 6:
+        module_  = "HEMcheck"
+        #friends_ +=       friendpref + getFriendsFolder(dataset, friendsbasepath, 0) + friendsuff
+        friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 1) + friendsuff
+        friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 2) + friendsuff
+        friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 3) + friendsuff
     elif step == "mvatrain":
         module_  = "createMVAMiniTree"
         #friends_ +=       friendpref + getFriendsFolder(dataset, friendsbasepath, 0) + friendsuff
@@ -808,7 +806,8 @@ def GeneralSubmitter(task):
     dataset, year, step, queue, extra, pretend, nthreads = task
     for dataset_ in dataset.split(","):
         isData     = any(ext in dataset_ for ext in datasamples)
-        isDivision = ("division" in dataset_)
+        #isDivision = ("division" in dataset_)
+        isDivision = False
         inputpath_ = ((datapath if isData else mcpath) + "/" + str(year) + "/") if not isDivision else (mcpathdiv + "/" + ("ttbar" if "TTTo2L2Nu" in dataset_ else "tw_incl") + "/" + str(year) + "/")
         print inputpath_
 
@@ -861,7 +860,8 @@ def getNchunks(fileparts, year, step, folder):
 def CheckChunksByDataset(task):
     dataset, year, step = task
     isData     = any(ext in dataset for ext in datasamples)
-    isDivision = ("division" in dataset)
+    #isDivision = ("division" in dataset)
+    isDivision = False
     inputpath_ = ((datapath if isData else mcpath) + "/" + str(year) + "/") if not isDivision else (mcpathdiv + "/" + ("ttbar" if "TTTo2L2Nu" in dataset else "tw_incl") + "/" + str(year) + "/")
     basefolder = friendspath + "/" + prodname + "/" + str(year) + "/" + friendfolders[step]
 
@@ -928,7 +928,8 @@ def CheckMergedDataset(task):
     dataset, year, step = task
     isData     = any(ext in dataset for ext in datasamples)
 
-    isDivision = ("division" in dataset)
+    #isDivision = ("division" in dataset)
+    isDivision = False
     inputpath_ = ((datapath if isData else mcpath) + "/" + str(year) + "/") if not isDivision else (mcpathdiv + "/" + ("ttbar" if "TTTo2L2Nu" in dataset else "tw_incl") + "/" + str(year) + "/")
     basefolder = friendspath + "/" + prodname + "/" + str(year) + "/" + friendfolders[step]
 
@@ -1076,7 +1077,7 @@ def CheckLotsOfMergedDatasets(dataset, year, step, queue, extra, ncores):
         tasks = []
         for dat in sampledict[year]:
             isData = any(ext in dat for ext in datasamples)
-            if not isData or (isData and step != 4):
+            if ((not isData and step != 0) or (isData and step != 4)):
                 tasks.append( (dat, year, step) )
         if ncores > 1:
             pool = Pool(ncores)
@@ -1128,7 +1129,7 @@ def CheckLotsOfChunks(dataset, year, step, queue, extra, ncores, mva, nthreads):
         thedict = trainsampledict[year] if mva else sampledict[year]
         for dat in thedict:
             isData = any(ext in dat for ext in datasamples)
-            if not isData or (isData and step != 4):
+            if (not isData and step != 0) or (isData and step != 4):
                 tasks.append( (dat, year, step) )
         if ncores > 1:
             pool = Pool(ncores)
@@ -1165,7 +1166,8 @@ def CheckLotsOfChunks(dataset, year, step, queue, extra, ncores, mva, nthreads):
                 for part in fullpendingdict[d]:
                     for ch in fullpendingdict[d][part]:
                         isData     = any(ext in part for ext in datasamples)
-                        isDivision = ("division" in d)
+                        #isDivision = ("division" in d)
+                        isDivision = False
                         inputpath_ = ((datapath if isData else mcpath) + "/" + str(year) + "/") if not isDivision else (mcpathdiv + "/" + ("ttbar" if "TTTo2L2Nu" in d else "tw_incl") + "/" + str(year) + "/")
                         tasks.append( (part.replace(".root", ""), year, step, inputpath_, isData, queue, "-c {chk} ".format(chk = ch) + extra, False, False, nthreads) )
                         #sys.exit()
@@ -1226,8 +1228,8 @@ if __name__=="__main__":
     mva      = (step == "mvatrain")
     erasech  = args.eraseCh
 
-    if step == 0:
-        raise RuntimeError("FATAL: step 0 is disabled. Begin with step 1.")
+    #if step == 0:
+        #raise RuntimeError("FATAL: step 0 is disabled. Begin with step 1.")
 
     if erasech:
         print "\n====== ATTENTION!!!!!! ======"

@@ -14,7 +14,7 @@ vvttv : ZZTo2L2Q_13TeV_amcatnloFXFX_madspin_pythia8_topnano_* : xsec ;  FillColo
 vvttv : ZZTo4L_TuneCP5_13TeV_powheg_pythia8_topnano_*         : xsec ; FillColor=390
 
 # TTW
-vvttv : TTWJetsToLNu_EWK_5f_NLO_topnano_* : xsec ; FillColor=390
+#vvttv : TTWJetsToLNu_EWK_5f_NLO_topnano_* : xsec ; FillColor=390
 vvttv : TTWJetsToLNu_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8_topnano_* : xsec ; FillColor=390
 vvttv : TTWJetsToQQ_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8_topnano_*  : xsec ; FillColor=390
 
