@@ -117,6 +117,66 @@ print 'xsec (BR)            = ', xsecBR
 print ''
 print 'xsec (asimov)        = ', xsec_asimov
 print 'xsec (BR) (asimov)   = ', xsecBR_asimov
+print ''
+print '------------------'
+print ''
+
+# Xsec uncert up
+
+xsec_uncertup = ((bincontent + num_unc) - (bincontentsignofid + signofiducial_unc))/(L*(bincontentsigfid + sigfid_unc)/Nwwbb)
+xsecBR_uncertup = xsec_uncertup/BR
+xsec_asimov_uncertup = ((wwbb.GetBinContent(1) + wwbb.GetBinError(1)) - (bincontentsignofid + signofiducial_unc))/(L*(bincontentsigfid + sigfid_unc)/Nwwbb)
+xsecBR_asimov_uncertup = xsec_asimov_uncertup/BR
+
+print 'xsec (uncert up)                 = ', xsec_uncertup
+print 'xsec (BR) (uncert up)            = ', xsecBR_uncertup
+print ''
+print 'xsec (asimov) (uncert up)        = ', xsec_asimov_uncertup
+print 'xsec (BR) (asimov) (uncert up)   = ', xsecBR_asimov_uncertup
+print ''
+print '------------------'
+print ''
+
+print 'uncert up = |xsec - xsec_uncert_up|                     = ', abs(xsec - xsec_uncertup)
+print 'uncert up (BR) = |xsec(BR) - xsec_uncert_up(BR)|        = ', abs(xsecBR - xsecBR_uncertup)
+
+print ''
+print '------------------'
+print ''
+
+# Xsec uncer down
+
+xsec_uncertdown = ((bincontent - num_unc) - (bincontentsignofid - signofiducial_unc))/(L*(bincontentsigfid - sigfid_unc)/Nwwbb)
+xsecBR_uncertdown = xsec_uncertdown/BR
+xsec_asimov_uncertdown = ((wwbb.GetBinContent(1) - wwbb.GetBinError(1)) - (bincontentsignofid - signofiducial_unc))/(L*(bincontentsigfid - sigfid_unc)/Nwwbb)
+xsecBR_asimov_uncertdown = xsec_asimov_uncertdown/BR
+
+print 'xsec (uncert down)                 = ', xsec_uncertdown
+print 'xsec (BR) (uncert down)            = ', xsecBR_uncertdown
+print ''
+print 'xsec (asimov) (uncert down)        = ', xsec_asimov_uncertdown
+print 'xsec (BR) (asimov) (uncert down)   = ', xsecBR_asimov_uncertdown
+print ''
+print '------------------'
+print ''
+
+print 'uncert down = |xsec - xsec_uncert_down|                     = ', abs(xsec - xsec_uncertdown)
+print 'uncert down (BR) = |xsec(BR) - xsec_uncert_down(BR)|        = ', abs(xsecBR - xsecBR_uncertdown)
+
+print ''
+print '------------------'
+print '------------------'
+print ''
+
+final_unc = abs(xsec - xsec_uncertdown)
+
+print 'xsec     = ', "{0:.2f}".format(xsec) , '+-', "{0:.2f}".format(final_unc)
+
+print ''
+print '------------------'
+print '------------------'
+print ''
+
 
 
 out = r.TFile.Open("/nfs/fanae/user/sheylaag/TFG/desarrollo/cms/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/wwbb-2018/cards-differential/2021_06_28" + "/calculations.root", "recreate")
