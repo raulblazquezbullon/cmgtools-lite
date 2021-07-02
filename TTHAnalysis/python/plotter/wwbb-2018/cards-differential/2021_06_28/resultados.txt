@@ -1,3 +1,4 @@
+
 >>> Inicial:
 Data     =  72082.0
 WWbb     =  694500.0
@@ -39,4 +40,37 @@ xsec (BR)            =  885.808630574
 xsec (asimov)        =  56.2576074247
 xsec (BR) (asimov)   =  867.423328986
 
+------------------
+
+xsec (uncert up)                 =  57.5507160935
+xsec (BR) (uncert up)            =  887.361479177
+
+xsec (asimov) (uncert up)        =  56.2184712269
+xsec (BR) (asimov) (uncert up)   =  866.819896801
+
+------------------
+
+uncert up = |xsec - xsec_uncert_up|                     =  0.100711548996
+uncert up (BR) = |xsec(BR) - xsec_uncert_up(BR)|        =  1.552848603
+
+------------------
+
+xsec (uncert down)                 =  57.3488871276
+xsec (BR) (uncert down)            =  884.249523985
+
+xsec (asimov) (uncert down)        =  56.2969013416
+xsec (BR) (asimov) (uncert down)   =  868.029193007
+
+------------------
+
+uncert down = |xsec - xsec_uncert_down|                     =  0.101117416956
+uncert down (BR) = |xsec(BR) - xsec_uncert_down(BR)|        =  1.5591065893
+
+------------------
+------------------
+
+xsec     =  57.45 +- 0.10
+
+------------------
+------------------
 
