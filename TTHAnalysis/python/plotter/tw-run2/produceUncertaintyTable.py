@@ -119,7 +119,7 @@ systsGroup = {
         "mistagging_2016",
         "mistagging_2017",
         "mistagging_2018",
-        "mistagging_corr",
+        "mistagging_corr"
     ],
     'lumi': [
         "lumi_2016",
