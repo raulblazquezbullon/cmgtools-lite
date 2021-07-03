@@ -79,7 +79,7 @@ def plotVariationsFromOneProcess(tsk):
         c.GetPad(2).SetLeftMargin(0.16)
 
         c.cd(1)
-        #print thevar, theproc, iU
+#        print thevar, theproc, iU
         nominal = subdict[""]
         varup   = subdict[iU]["Up"]
         vardn   = subdict[iU]["Down"]
@@ -193,7 +193,7 @@ def plotVariations(tup, outname, ncores = -1):
 
     for key in rF.GetListOfKeys():
         tmpnam     = key.GetName()
-        if any([el in tmpnam for el in ["hincsyst", "hincmax", "canvas", "stack", "CovMat", "nom0", "nom1"]]): continue
+        if any([el in tmpnam for el in ["hincsyst", "hincmax", "canvas", "stack", "CovMat", "nom0", "nom1", "tot_weight"]]): continue
         if not thisisandiffrfile:
             if "data" in tmpnam: continue
 
@@ -217,11 +217,14 @@ def plotVariations(tup, outname, ncores = -1):
                          if ( (tmpnam.split("_")[1]).lower() not in vetostring )
                          else "_".join(tmpnam.split("_")[0:2]) )
 
+        #varprefix = "tmvaBDT_2j1b_12bins"
+        #varprefix = "jet2_pt_rebin"
+
         #cleanednam = "signal" * (thisisnotacard) + tmpnam.replace(tmpprefix, "")
         cleanednam = tmpnam.replace(varprefix + "_", "")
         if cleanednam[-1] == "_":
             cleanednam = cleanednam[:-1]
-        #print cleanednam
+        #print cleanednam, varprefix, tmpnam
 
         if varprefix not in histodict:
             histodict[varprefix] = {}
@@ -256,7 +259,7 @@ def plotVariations(tup, outname, ncores = -1):
     tasks = []
     for iV in histodict:
         for iP in histodict[iV]:
-            print iP
+            #print iP
             tasks.append( (iV, iP, histodict[iV][iP], outfolder) )
     if ncores < 2:
         for tsk in tasks:

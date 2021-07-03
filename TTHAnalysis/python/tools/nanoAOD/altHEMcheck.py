@@ -78,33 +78,27 @@ class altHEMcheck(Module):
             if type(var) == tuple:
                 allret[var[0]] = 0
 
-        if event.year == 2018:
-            thesample = ""
-            for i in range(event.nDatasetName):
-                thesample += str(event.DatasetName_name[i])
+        for i in range(len(leps)):
+            if abs(leps[i].pdgId) == 11:
+                if leps_4m[i].Pt() > 30:
+                    tmpeta = leps_4m[i].Eta()
+                    if tmpeta < -1.4 and tmpeta > -3.0:
+                        tmphi = leps_4m[i].Phi()
+                        if tmphi < -0.87 and tmphi > -1.57:
+                            allret["isThisEventVetoed"] = 1
+                            return allret
 
-            if "2018C" in thesample or "2018D" in thesample:
-                for i in range(len(leps)):
-                    if abs(leps[i].pdgId) == 11:
-                        if leps_4m[i].Pt() > 30:
-                            tmpeta = leps_4m[i].Eta()
-                            if tmpeta < -1.4 and tmpeta > -3.0:
-                                tmphi = leps_4m[i].Phi()
-                                if tmphi < -0.87 and tmphi > -1.57:
-                                    allret["isThisEventVetoed"] = 1
-                                    return allret
-
-                self.htmiss = None
-                for i in range(len(jets)):
-                    tmpeta = jets_4m[i].Eta()
-                    if tmpeta < -1.2 and tmpeta > -3.2:
-                        tmphi = jets_4m[i].Phi()
-                        if tmphi < -0.67 and tmphi > -1.77:
-                            if not self.htmiss:
-                                self.getHTmiss(leps_4m, jets_4m)
-                            if abs(jets_4m[i].DeltaPhi(self.htmiss)) < 0.5:
-                                allret["isThisEventVetoed"] = 1
-                                return allret
+        self.htmiss = None
+        for i in range(len(jets)):
+            tmpeta = jets_4m[i].Eta()
+            if tmpeta < -1.2 and tmpeta > -3.2:
+                tmphi = jets_4m[i].Phi()
+                if tmphi < -0.67 and tmphi > -1.77:
+                    if not self.htmiss:
+                        self.getHTmiss(leps_4m, jets_4m)
+                    if abs(jets_4m[i].DeltaPhi(self.htmiss)) < 0.5:
+                        allret["isThisEventVetoed"] = 1
+                        return allret
         return allret
         
         
