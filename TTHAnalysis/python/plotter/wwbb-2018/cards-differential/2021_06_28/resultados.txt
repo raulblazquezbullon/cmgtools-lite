@@ -1,3 +1,4 @@
+>>>>>>>> K = 1.13
 
 >>> Inicial:
 Data     =  72082.0
@@ -70,6 +71,87 @@ uncert down (BR) = |xsec(BR) - xsec_uncert_down(BR)|        =  1.5591065893
 ------------------
 
 xsec     =  57.45 +- 0.10
+
+------------------
+------------------
+
+
+
+
+
+>>>>>>>> K = 1.0695
+
+>>> Inicial:
+Data     =  72082.0
+WWbb     =  694500.0
+DY       =  147.0
+nonworz  =  3920.0
+vvttv    =  72433.0
+
+>>> Tras haber restado histogramas:
+Data             =  65294.5486628
+Data bin content =  68254.6130194
+WWbb bin content =  62945.5589012
+Num. uncert.     =  267.112090688
+
+------------------
+
+Data (sig. + fid.)             =  589771.0
+WWbb (sig. + fid.)             =  589771.0
+Data bin content (sig. + fid.) =  52972.3527186
+WWbb bin content (sig. + fid.) =  52972.3527186
+Sigfid. uncert.                =  106.515288294
+
+------------------
+
+Data (fiducial)             =  1182982.0
+Data bin content (fiducial) =  119013.066324
+Fiducial uncert.            =  167.235738022
+
+------------------
+
+WWbb (signal + no fiducial)             =  106327.0
+WWbb bin content (signal + no fiducial) =  9973.20618258
+Signal + no iducial uncert.            =  46.8516686777
+
+------------------
+
+xsec                 =  61.8251052831
+xsec (BR)            =  953.267319648
+
+xsec (asimov)        =  56.193243466
+xsec (BR) (asimov)   =  866.430915659
+
+------------------
+
+xsec (uncert up)                 =  61.9342226932
+xsec (BR) (uncert up)            =  954.949776322
+
+xsec (asimov) (uncert up)        =  56.1540694022
+xsec (BR) (asimov) (uncert up)   =  865.826899626
+
+------------------
+
+uncert up = |xsec - xsec_uncert_up|                     =  0.109117410081
+uncert up (BR) = |xsec(BR) - xsec_uncert_up(BR)|        =  1.6824566745
+
+------------------
+
+xsec (uncert down)                 =  61.7155481685
+xsec (BR) (uncert down)            =  951.57808327
+
+xsec (asimov) (uncert down)        =  56.2325753874
+xsec (BR) (asimov) (uncert down)   =  867.037365662
+
+------------------
+
+uncert down = |xsec - xsec_uncert_down|                     =  0.109557114547
+uncert down (BR) = |xsec(BR) - xsec_uncert_down(BR)|        =  1.68923637823
+
+------------------
+------------------
+
+xsec     =  61.83 +- 0.11
 
 ------------------
 ------------------
