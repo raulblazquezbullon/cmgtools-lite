@@ -218,11 +218,11 @@ class MCAnalysis:
             variations={}
             if self.variationsFile:
                 for var in self.variationsFile.uncertainty():
-                    if var.unc_type == 'altSample': continue # these will be added later
+                    if 'altSample' in var.unc_type: continue # these will be added later
                     if var.procmatch().match(pname) and var.binmatch().match(options.binname) and ( var.year() == None or options.year == var.year()) : 
                         #if var.name in variations:
-                        #    print "Variation %s overriden for process %s, new process pattern %r, bin %r (old had %r, %r)" % (
-                        #            var.name, pname, var.procpattern(), var.binpattern(), variations[var.name].procpattern(), variations[var.name].binpattern())
+                           #print "Variation %s overriden for process %s, new process pattern %r, bin %r (old had %r, %r)" % (
+                                   #var.name, pname, var.procpattern(), var.binpattern(), variations[var.name].procpattern(), variations[var.name].binpattern())
                         variations[var.name] = var
                 if 'NormSystematic' in extra:
                     del extra['NormSystematic']
@@ -545,16 +545,24 @@ class MCAnalysis:
         ret = dict([ (k,mergePlots(plotspec.name+"_"+k,v)) for k,v in mergemap.iteritems() ])
         
         ## construct envelope variations if any
-        for p,h in ret.iteritems():
-            h.buildEnvelopes() 
-            h.buildEnvelopesForPDFs()
-
-        #print "\nANTES", ret
-
-        ## add variations from alternate samples
         if self.variationsFile:
-            buildVariationsFromAlternative(self.variationsFile, ret)
+            for var in self.variationsFile.uncertainty():
+                if var.unc_type != 'envelope':           continue # now only calculating envelopes
+                if var.year():
+                    if var.year() not in self._options.year: continue
+                print "\n", var.name, var.year(), self._options.year
+                for p,h in ret.iteritems():
+                    if not var.procmatch().match(p): continue
+
+                    if "pdf" in var.name.lower():
+                        h.buildEnvelopesForPDFs(var.name)
+                    else:
+                        h.buildEnvelopes(var.name)
+
+            ## add variations from alternate samples
+            buildVariationsFromAlternative(self.variationsFile, ret, self._options.year)
             buildVariationsFromAlternativesWithEnvelope(self.variationsFile, ret)
+            buildPDFVariationsFromAlternativeSample(self.variationsFile, ret, self._options.year)
 
         ## remove samples used for systematics
         toremove = []

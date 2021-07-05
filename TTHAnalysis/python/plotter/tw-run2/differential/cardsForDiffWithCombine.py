@@ -14,7 +14,7 @@ vl.SetUpWarnings()
 friendspath   = "/pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions"
 logpath       = friendspath + "/{p}/{y}/logs/cards_differential"
 #friendsscaff  = "--Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors_bkp --Fs {P}/5_mvas"
-friendsscaff  = "--Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors"
+friendsscaff  = "--FDs {P}/0_lumijson --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --Fs {P}/6_hemissue"
 
 slurmscaff    = "sbatch -c {nth} -p {queue} -J {jobname} -e {logpath}/log.%j.%x.err -o {logpath}/log.%j.%x.out --wrap '{command}'"
 
@@ -168,9 +168,29 @@ def produceAdHocMCAandUncsfiles(thepath, they, thev):
                                 else:
                                     twotimestmpline = twotimestmpline.replace(tmpsubstr, tmpsubstr + "_partbin{b}".format(b = iB))
                         outuncs += twotimestmpline
+                        
+                    twotimestmpline = tmpline.replace("$tWProc", "tw_bkg") + "\n"
+                    for substr in tmpline.split(":"):
+                        if "syst" in substr:
+                            tmpsubstr = substr.replace("'", "").replace(" ", "").replace("[", "").replace("]", "")
+                            if "\," in tmpsubstr:
+                                for secsubstr in tmpsubstr.split("\,"):
+                                    twotimestmpline = twotimestmpline.replace(secsubstr, secsubstr + "_bkg")
+                            else:
+                                twotimestmpline = twotimestmpline.replace(tmpsubstr, tmpsubstr + "_bkg")
+                    outuncs += twotimestmpline
 
 
-
+                elif "pdf" in tmpline.split(":")[0] and "syst" in tmpline.split(":")[1] and "altSamplePDFEnv" not in tmpline.split(":")[3]:
+                    for iB in range(len(vl.varList[thev]["bins_particle"]) - 1):
+                        outuncs += tmpline.replace("syst_tw_pdf", "syst_tw_pdf_partbin{b}".format(b = iB)) + "\n"
+                    outuncs += tmpline.replace("syst_tw_pdf", "syst_tw_pdf_bkg") + "\n"
+                    
+                elif "pdf" in tmpline.split(":")[0] and "altSamplePDFEnv" in tmpline.split(":")[3]:
+                    for iB in range(len(vl.varList[thev]["bins_particle"]) - 1):
+                        outuncs += tmpline.replace("$tWProc", "tw_partbin{b}".format(b = iB)).replace("syst_tw_pdf", "syst_tw_pdf_partbin{b}".format(b = iB)) + "\n"
+                    outuncs += tmpline.replace("$tWProc", "tw_bkg").replace("syst_tw_pdf", "syst_tw_pdf_bkg") + "\n"
+                    
                 else:
                     outuncs += line
 
