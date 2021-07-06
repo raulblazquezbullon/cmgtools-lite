@@ -214,7 +214,7 @@ class TreeToYield:
     def makeTTYVariations(self):
         ttyVariations = {}
         for var in self.getVariations():
-            for direction in (['up','down'] if var.unc_type != "envelope" else ['var%d'%x for x in range(len(var.fakerate))]):
+            for direction in (['up','down'] if (var.unc_type != "envelope" and "pdfset" not in var.unc_type.lower()) else ['var%d'%x for x in range(len(var.fakerate))]):
                 tty2 = copy.copy(self)
                 tty2._name = tty2._name + '_%s_%s'%(var.name,direction)
                 tty2._isVariation = (var,direction)
@@ -390,10 +390,8 @@ class TreeToYield:
 
             for theExpr, idx in exprs:
                 if var: 
-                    if var.unc_type == 'envelope':
+                    if var.unc_type == 'envelope' or "pdfset" in var.unc_type.lower():
                         sign = 'var%d'%(idx ) 
-                    elif var.unc_type == 'envelopeRMS':
-                        sign = 'var_rms%d'%(idx ) 
                     else: 
                         sign = 'up' if idx == 0 else 'down'
                 if theExpr == None: theExpr = expr
@@ -542,7 +540,7 @@ class TreeToYield:
                     variations[var.name][1][sign] = tty2.getPlot(plotspec,cut,fsplit=fsplit,closeTreeAfter=False,noUncertainties=True)
                     tty2._isInit = False; tty2._tree = None
             for (var,variations) in variations.itervalues():
-                if var.unc_type != 'envelope':
+                if var.unc_type != 'envelope' and "pdfset" not in var.unc_type.lower():
                     if 'up'   not in variations: variations['up']    = var.getTrivial("up",  [nominal,None,None])
                     if 'down' not in variations: variations['down']  = var.getTrivial("down",  [nominal,variations['up'],None])
                     var.postProcess(nominal, [variations['up'], variations['down']])

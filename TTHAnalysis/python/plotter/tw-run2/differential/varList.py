@@ -1311,6 +1311,11 @@ SysNameTranslator["colour"] = SysNameTranslator["colour_rec"]
 PrintSysNameTranslator = {
     'asimov'              : "Asimov",
     'Nominal'             : "Nominal",
+    'lumi_corr'           : "Luminosity corr. (16, 17, 18)",
+    'lumi_corr1718'       : "Luminosity corr. (17, 18)",
+    'lumi_2016'           : "Luminosity uncorr. (2016)",
+    'lumi_2017'           : "Luminosity uncorr. (2017)",
+    'lumi_2018'           : "Luminosity uncorr. (2018)",
     'btagging'            : "B-tagging",
     #'btagging_2016'       : "B-tagging (2016)",
     'btagging_1718'       : "B-tagging (2017, 2018)",

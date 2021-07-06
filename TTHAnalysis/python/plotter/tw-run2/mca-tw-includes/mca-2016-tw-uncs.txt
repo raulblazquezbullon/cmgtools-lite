@@ -23,5 +23,5 @@ syst_tw_mtop_dn       : ST_tW_top_5f_NoFullyHadronicDecays_mtop1715_TuneCP5_PSwe
 syst_tw_ds            : ST_tW_antitop_5f_DS_NoFullyHadronicDecays_TuneCP5_PSweights_13TeV-powheg-pythia8*central*         : xsec ;
 syst_tw_ds            : ST_tW_top_5f_DS_NoFullyHadronicDecays_TuneCP5_PSweights_13TeV-powheg-pythia8*central*             : xsec ;
 
-syst_tw_pdf           : ST_tW_antitop_5f_inclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8_topnano*                  : xsec ;
-syst_tw_pdf           : ST_tW_top_5f_inclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8_topnano*                      : xsec ;
+syst_tw_pdf_2016      : ST_tW_antitop_5f_inclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8_topnano*                  : xsec ;
+syst_tw_pdf_2016      : ST_tW_top_5f_inclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8_topnano*                      : xsec ;

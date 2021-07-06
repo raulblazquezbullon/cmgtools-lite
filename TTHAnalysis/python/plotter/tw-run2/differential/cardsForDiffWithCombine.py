@@ -24,6 +24,7 @@ commandscaff  = '''python makeShapeCardsNew.py --tree NanoAOD {mcafile} {cutsfil
 theweights    = "MuonIDSF * MuonISOSF * ElecIDSF * ElecRECOSF * TrigSF * puWeight * bTagWeight * PrefireWeight"
 minchunkbytes = 1000
 redofiles     = True
+#redofiles     = False
 
 #### IMPORTANT NOTE: it is crucial to keep the xsec and lumi weights, although afterwards we
 # will have to divide by the second one. The first one is relevant becasue of the dividing of the files.
@@ -131,6 +132,9 @@ def produceAdHocMCAandUncsfiles(thepath, they, thev):
 
                 outyear += tmpline.replace(";", ": (!(" + cutstring + ")) ;").replace("tw+", "tw_bkg") + "\n"
 
+            foutyear = open(thepath + "/" + "mca-tw-{y}.txt".format(y = they), "w")
+            foutyear.write(outyear)
+            foutyear.close(); del foutyear
         # now systs
         outyear = ""
         with open(pathtooriginalmca + "/mca-{y}-tw-uncs.txt".format(y = they), "r") as scaff:
@@ -181,15 +185,15 @@ def produceAdHocMCAandUncsfiles(thepath, they, thev):
                     outuncs += twotimestmpline
 
 
-                elif "pdf" in tmpline.split(":")[0] and "syst" in tmpline.split(":")[1] and "altSamplePDFEnv" not in tmpline.split(":")[3]:
+                elif "pdf" in tmpline.split(":")[0] and "syst" in tmpline.split(":")[1] and "altSamplePDF" not in tmpline.split(":")[3]:
                     for iB in range(len(vl.varList[thev]["bins_particle"]) - 1):
-                        outuncs += tmpline.replace("syst_tw_pdf", "syst_tw_pdf_partbin{b}".format(b = iB)) + "\n"
-                    outuncs += tmpline.replace("syst_tw_pdf", "syst_tw_pdf_bkg") + "\n"
+                        outuncs += tmpline.replace("syst_tw_pdf_2016", "syst_tw_pdf_2016_partbin{b}".format(b = iB)).replace("syst_tw_pdf_2017", "syst_tw_pdf_2017_partbin{b}".format(b = iB)).replace("syst_tw_pdf_2018", "syst_tw_pdf_2018_partbin{b}".format(b = iB)) + "\n"
+                    outuncs += tmpline.replace("syst_tw_pdf_2016", "syst_tw_pdf_2016_bkg").replace("syst_tw_pdf_2017", "syst_tw_pdf_2017_bkg").replace("syst_tw_pdf_2018", "syst_tw_pdf_2018_bkg") + "\n"
                     
-                elif "pdf" in tmpline.split(":")[0] and "altSamplePDFEnv" in tmpline.split(":")[3]:
+                elif "pdf" in tmpline.split(":")[0] and "altSamplePDF" in tmpline.split(":")[3]:
                     for iB in range(len(vl.varList[thev]["bins_particle"]) - 1):
-                        outuncs += tmpline.replace("$tWProc", "tw_partbin{b}".format(b = iB)).replace("syst_tw_pdf", "syst_tw_pdf_partbin{b}".format(b = iB)) + "\n"
-                    outuncs += tmpline.replace("$tWProc", "tw_bkg").replace("syst_tw_pdf", "syst_tw_pdf_bkg") + "\n"
+                        outuncs += tmpline.replace("$tWProc", "tw_partbin{b}".format(b = iB)).replace("syst_tw_pdf_2016", "syst_tw_pdf_2016_partbin{b}".format(b = iB)).replace("syst_tw_pdf_2017", "syst_tw_pdf_2017_partbin{b}".format(b = iB)).replace("syst_tw_pdf_2018", "syst_tw_pdf_2018_partbin{b}".format(b = iB)) + "\n"
+                    outuncs += tmpline.replace("$tWProc", "tw_bkg").replace("syst_tw_pdf_2016", "syst_tw_pdf_2016_bkg").replace("syst_tw_pdf_2017", "syst_tw_pdf_2017_bkg").replace("syst_tw_pdf_2018", "syst_tw_pdf_2018_bkg") + "\n"
                     
                 else:
                     outuncs += line
@@ -217,6 +221,7 @@ def CardsCommand(prod, year, var, isAsimov, nthreads, outpath, noUnc, useFibre, 
     mcafile_   = outpath_ + "/" + "mca-total.txt"
     if not os.path.isfile(mcafile_) or redofiles:
         produceAdHocMCAandUncsfiles(outpath_, year, var)
+#    sys.exit()
 
     #bins_      = PythonListToString([i + 0.5 for i in range(vl.nBinsForBDT + 1)])
 
@@ -502,13 +507,13 @@ if __name__=="__main__":
                 print "> Launching jobs..."
 
             calculate = True
-            #calculate = False
+   #         calculate = False
             for task in tasks:
                 print "    - Processing " + str(task)
-                #if str(task) == "('2021-04-23', 'run2', 'Lep1_Pt', False, 12, 'temp_2021_05_13_diferencialcombine/differential/', False, True, '', False, '', 0)":
+  #              if str(task) == "('2021-06-09', 'run2', 'Lep1_Pt', True, 64, 'temp_2021_06_29_tolosplots/differential/', False, True, '', True, '', 0)":
                     #print "OJOCUIDAOOOOOOOOOOOOOO"
                     #continue
-                    #calculate = True
+ #                   calculate = True
 
                 if calculate:
                     ExecuteOrSubmitTask(task)
