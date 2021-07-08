@@ -945,7 +945,7 @@ class HistoWithNuisances:
             return
         nvars = len(self.getVariation(var))
         #print nvars
-        #if nvars == 2:
+        if nvars == 2:
             if self.getVariation(var)[0].GetName() == self.central.GetName() + 'envUp': # already processed, probably in a multi-year processing
                 #print "JOJOJO", self.getVariation(var)[0].GetName()
                 return

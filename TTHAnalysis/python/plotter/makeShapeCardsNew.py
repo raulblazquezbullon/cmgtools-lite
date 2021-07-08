@@ -48,9 +48,9 @@ if options.infile:
 else:
     if options.categ:
        cexpr, cbins, _ = options.categ
-       report = mca.getPlotsRaw("x", cexpr+":"+args[2], makeBinningProductString(args[3],cbins), cuts.allCuts(), nodata=options.asimov) 
+       report = mca.getPlotsRaw("x", cexpr+":"+args[2], makeBinningProductString(args[3],cbins), cuts.allCuts(), nodata=options.asimov, closeTreeAfter=True)
     else:
-       report = mca.getPlotsRaw("x", args[2], args[3], cuts.allCuts(), nodata=options.asimov) 
+       report = mca.getPlotsRaw("x", args[2], args[3], cuts.allCuts(), nodata=options.asimov, closeTreeAfter=True)
 
     if not options.notminimumfill:
         for p,h in report.iteritems(): h.cropNegativeBins(threshold=1e-5)

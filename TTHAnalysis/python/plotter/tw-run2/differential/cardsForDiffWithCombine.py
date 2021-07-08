@@ -210,7 +210,8 @@ def CardsCommand(prod, year, var, isAsimov, nthreads, outpath, noUnc, useFibre, 
     samplespaths_ = "-P " + friendspath + "/" + prod + ("/" + year) * (year != "run2")
     if useFibre: samplespaths_ = samplespaths_.replace("phedexrw", "phedex").replace("cienciasrw", "ciencias")
 
-    nth_       = "" if nthreads == 0 else ("--split-factor=-1 -j " + str(nthreads))
+    #nth_       = "" if nthreads == 0 else ("--split-factor=-1 -j " + str(nthreads))
+    nth_       = "" if nthreads == 0 else ("--split-factor=0 -j " + str(nthreads))
     friends_   = friendsscaff
     outpath_   = outpath + "/" + year + "/" + var + "/sigextr_fit_combine/bincards"
 
@@ -433,7 +434,7 @@ if __name__=="__main__":
     parser.add_argument('--outpath',   '-o', metavar = 'outpath',    dest = "outpath",  required = False, default = "./temp/differential")
     parser.add_argument('--nounc',     '-nu',action  = "store_true", dest = "nounc",    required = False, default = False)
     parser.add_argument('--useFibre',  '-f', action  = "store_true", dest = "useFibre", required = False, default = False)
-    parser.add_argument('--check',     '-c', action  = "store_true", dest = "check", required = False, default = False)
+    parser.add_argument('--check',     '-c', action  = "store_true", dest = "check",    required = False, default = False)
     parser.add_argument('--asimov',    '-a', action  = "store_true", dest = "asimov",   required = False, default = False)
 
 
