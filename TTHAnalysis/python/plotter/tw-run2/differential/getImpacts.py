@@ -42,7 +42,8 @@ def plotImpacts(inputjson, outputname, outputpath, npois):
     colour_groups = None
     units         = None
     mainPOI       = None
-    xaxistitlesize = 0.0275
+    xaxistitleoffset = 1
+    xaxistitlesize = 0.0265
 
     externalPullDef = False
 
@@ -127,10 +128,12 @@ def plotImpacts(inputjson, outputname, outputpath, npois):
             plot.Set(box, TextSize=0.02, BorderSize=0, FillColor=0, TextAlign=12, Margin=0.005)
             if i % 2 == 0:
                 box.SetFillColor(18)
-            if (n_params - i + page * show-3) <= 0:
+#            if (n_params - i + page * show - 3) <= 0:
+            if (n_params - i + page * show) <= 0:
                 box.AddText('-')
             else:
-                box.AddText('%i' % (n_params - i + page * show-3))
+#                box.AddText('%i' % (n_params - i + page * show-3))
+                box.AddText('%i' % (n_params - i + page * show))
             box.Draw()
             boxes.append(box)
 
@@ -143,8 +146,6 @@ def plotImpacts(inputjson, outputname, outputpath, npois):
             pads = plot.MultiRatioSplitColumns([pullsprop] + [(1. - pullsprop - 0.01)/npois] * npois, [0.] * (npois + 1), [0.] * (npois + 1))
             for iP in range(npois):
                 pads[iP + 1].SetGrid(1, 0)
-#            pads[2].SetGrid(1, 0)
-#            pads[3].SetGrid(1, 0)
         pads[0].SetGrid(1, 0)
         pads[0].SetTickx(1)
         pads[1].SetTickx(1)
@@ -230,7 +231,7 @@ def plotImpacts(inputjson, outputname, outputpath, npois):
                 i + 1, ('#color[%i]{%s}'% (col, pdata[p]['name'].encode('utf-8'))))
 
         # Style and draw the pulls histo
-        plot.Set(h_pulls.GetXaxis(), TitleSize = xaxistitlesize, LabelSize = 0.015, Title='(#hat{#theta}-#theta_{0})/#Delta#theta')
+        plot.Set(h_pulls.GetXaxis(), TitleSize = xaxistitlesize, LabelSize = 0.015, TitleOffset=xaxistitleoffset-0.09, Title='(#hat{#theta}-#theta_{0})/#Delta#theta')
         plot.Set(h_pulls.GetYaxis(), LabelSize = label_size, TickLength=0.0)
         h_pulls.GetYaxis().LabelsOption('v')
         h_pulls.Draw()
@@ -268,6 +269,7 @@ def plotImpacts(inputjson, outputname, outputpath, npois):
             plot.Set(h_impacts_list[-1].GetXaxis(), 
                      LabelSize  = 0.015, 
                      TitleSize  = xaxistitlesize, 
+                     TitleOffset=xaxistitleoffset,
                      Ndivisions = 505, 
                      Title      = '#Delta#hat{#mu_{%s}}'%(iP))
             plot.Set(h_impacts_list[-1].GetYaxis(), 
@@ -347,7 +349,7 @@ def plotImpacts(inputjson, outputname, outputpath, npois):
         if not doBlind:
             for iP in range(npois):
                 plot.DrawTitle(pads[iP + 1], '#hat{#mu_{%s}} = %s^{#plus%s}_{#minus%s}%s' % (
-                    iP, s_nom, s_hi, s_lo,
+                    iP, s_nom_list[iP], s_hi_list[iP], s_lo_list[iP],
                     '' if units is None else ' ' + units), 3, 0.27, 0.3)
                     
 
