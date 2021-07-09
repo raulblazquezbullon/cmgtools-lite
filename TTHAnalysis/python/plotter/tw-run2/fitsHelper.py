@@ -57,7 +57,7 @@ def makeFit(task):
             if outstat:
                 raise RuntimeError("FATAL: text2workspace.py failed to execute for year {y} and regions {r}.".format(y = year, r = region))
         
-        combcard_ = fitoutpath + "/" + combcardnam
+        combcard_ = fitoutpath + "/" + combcardnam.replace(".txt", ".root")
     else:
         combcard_ = fitoutpath + "/" + region + "/cuts-tw-" + region + ".txt"
         

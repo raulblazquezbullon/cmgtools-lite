@@ -49,7 +49,7 @@ fi
 
 if [  "$JOBS" = ""  ]; then
     JOBS=1
-    echo "Defaulting to 4 parallel jobs"
+    echo "Defaulting to 1 parallel job"
 fi
 
 if [ "$OUTPUT" = "" ]; then

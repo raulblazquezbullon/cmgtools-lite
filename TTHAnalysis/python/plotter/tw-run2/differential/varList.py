@@ -1568,3 +1568,22 @@ WeightsToChange = {
 UncertaintiesToEnvelope = {}
 
 VariatedSamplesUncertaintySources = { "ue", "colour_rec", "tw_matching", "mtop", "ds"}
+
+nuisanceColours = {
+    'Gaussian'          : 1,
+    'Poisson'           : 8,
+    'AsymmetricGaussian': 9,
+    'Unconstrained'     : 39,
+    'Unrecognised'      : 2
+}
+
+lo_colour = {
+    'default': 38,
+    'hesse'  : r.kOrange - 3,
+    'robust' : r.kGreen + 1
+}
+hi_colour = {
+    'default': 46,
+    'hesse'  : r.kBlue,
+    'robust' : r.kAzure - 5
+}
