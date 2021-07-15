@@ -375,50 +375,46 @@ def makeImpacts(task):
 
     impactsoutpath = inpath + "/" + year + "/" + varName + "/sigextr_fit_combine/impacts/"
 
-    #firstcomm = comm1.format(y      = year,
-                             #ncores = ("--parallel " + str(ncores)) if ncores else "",
-                             #asimov = "",
-                             #incard = "../fit_output.root",
-                             #outdir = "./",
-                             #var    = varName,
-                             #extra  = extra,
-                             #prefix = year + "_" + varName,
-                             #pois   = thepois,
-    #)
+    firstcomm = comm1.format(y      = year,
+                             ncores = ("--parallel " + str(ncores)) if ncores else "",
+                             asimov = "",
+                             incard = "../fit_output.root",
+                             outdir = "./",
+                             var    = varName,
+                             extra  = extra,
+                             prefix = year + "_" + varName,
+                             pois   = thepois,
+    )
 
-    #if verbose:
-        #print "First command:", firstcomm, "\n"
+    if verbose:
+        print "First command:", firstcomm, "\n"
 
-    #sys.exit()
-    #if not pretend:
-        #outstat = os.system("cd " + impactsoutpath + "; " + firstcomm + "; cd -")
-        #if outstat:
-            #raise RuntimeError("FATAL: first command failed to execute for variable {v} of year {y}.".format(v = varName,
-                                                                                                             #y = year))
+    if not pretend:
+        outstat = os.system("cd " + impactsoutpath + "; " + firstcomm + "; cd -")
+        if outstat:
+            raise RuntimeError("FATAL: first command failed to execute for variable {v} of year {y}.".format(v = varName,
+                                                                                                             y = year))
 
-    #sys.exit()
+    secondcomm = comm2.format(y      = year,
+                             ncores = ("--parallel " + str(ncores)) if ncores else "",
+                             asimov = "",
+                             incard = "../fit_output.root",
+                             outdir = "./",
+                             var    = varName,
+                             extra  = extra,
+                             prefix = year + "_" + varName,
+                             pois   = thepois,
+    )
 
-    #secondcomm = comm2.format(y      = year,
-                             #ncores = ("--parallel " + str(ncores)) if ncores else "",
-                             #asimov = "",
-                             #incard = "../fit_output.root",
-                             #outdir = "./",
-                             #var    = varName,
-                             #extra  = extra,
-                             #prefix = year + "_" + varName,
-                             #pois   = thepois,
-    #)
+    if verbose:
+        print "Second command:", secondcomm, "\n"
 
-    #if verbose:
-        #print "Second command:", secondcomm, "\n"
+    if not pretend:
+        outstat = os.system("cd " + impactsoutpath + "; " + secondcomm + "; cd -")
+        if outstat:
+            raise RuntimeError("FATAL: second command failed to execute for variable {v} of year {y}.".format(v = varName,
+                                                                                                              y = year))
 
-    #if not pretend:
-        #outstat = os.system("cd " + impactsoutpath + "; " + secondcomm + "; cd -")
-        #if outstat:
-            #raise RuntimeError("FATAL: second command failed to execute for variable {v} of year {y}.".format(v = varName,
-                                                                                                              #y = year))
-    #sys.exit()
-    """
     thirdcomm = comm3.format(y      = year,
                              ncores = ("--parallel " + str(ncores)) if ncores else "",
                              asimov = "",
@@ -437,8 +433,8 @@ def makeImpacts(task):
         outstat = os.system("cd " + impactsoutpath + "; " + thirdcomm + "; cd -")
         if outstat:
             raise RuntimeError("FATAL: third command failed to execute for variable {v} of year {y}.".format(v = varName,
-                                                                                                              y = year))
-    sys.exit()"""
+                                                                                                             y = year))
+
     
     plotImpacts(impactsoutpath + "/impacts{y}_{v}.json".format(y = year, v = varName), "impacts_{y}_{v}".format(y = year, v = varName), impactsoutpath, nparticlebins)
     
@@ -492,8 +488,13 @@ if __name__ == '__main__':
     for iY in theyears:
         thevars = next(os.walk(inpath + "/" + iY))[1]
 
-        if variable.lower() != "all" and variable in thevars:
+        if variable.lower() != "all" and variable in thevars and "," not in variable:
             thevars = [ variable ]
+        elif "," in variable:
+            if len(set(variable.split(",")) - set(thevars)):
+                raise RuntimeError("FATAL: one of the variables requested is not in the provided input folder.")
+            else:
+                thevars = variable.split(",")
         elif variable.lower() != "all":
             raise RuntimeError("FATAL: the variable requested is not in the provided input folder.")
 

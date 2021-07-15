@@ -47,7 +47,9 @@ commandscaff = "python mcPlots.py --tree NanoAOD --pdir {outpath} {friends} {sam
 
 
 slurmscaff   = 'sbatch -c {nth} -p {queue} -J {jobname} -e {logpath}/log.%j.%x.err -o {logpath}/log.%j.%x.out --wrap "{command}"'
-lumidict      = {2016 : 35.92, 2017 : 41.53, 2018 : 59.74}
+lumidict     = {2016 : 36.33, 
+                2017 : 41.53,
+                2018 : 59.74}
 
 
 def GeneralExecutioner(task):

@@ -23,7 +23,7 @@ onlyTotal   = True      # Only show total unc. line in the differential relative
 
 
 # === OTHER IMPORTANT DEFINITIONS ===
-LumiDict    = {2016 : 35.92,
+LumiDict    = {2016 : 36.33,
                2017 : 41.53,
                2018 : 59.74}
 TotalLumi   = LumiDict[2016] + LumiDict[2017] + LumiDict[2018] # In femtobarns
