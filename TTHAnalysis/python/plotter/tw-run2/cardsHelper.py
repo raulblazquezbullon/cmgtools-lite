@@ -52,6 +52,8 @@ def CardsCommand(prod, year, var, bines, isAsimov, nthreads, outpath, region, no
 
 def ExecuteOrSubmitTask(tsk):
     prod, year, variable, bines, asimov, nthreads, outpath, region, noUnc, useFibre, extra, pretend, queue = tsk
+    if not os.path.isdir(outpath + "/" + year + "/" + region):
+        os.system("mkdir -p " + outpath + "/" + year + "/" + region)
     if queue == "":
         thecomm = CardsCommand(prod, year, variable, bines, asimov, nthreads, outpath, region, noUnc, useFibre, extra)
         print "Command: " + thecomm
