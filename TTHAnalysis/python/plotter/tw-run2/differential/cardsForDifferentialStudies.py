@@ -11,10 +11,6 @@ r.gROOT.SetBatch(True)
 
 friendspath   = "/pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions"
 logpath       = friendspath + "/{p}/{y}/logs/cards_differential"
-lumidict      = {2016 : 35.92, 2017 : 41.53, 2018 : 59.74}
-lumidictone   = {2016 : 35.92, 2017 : 41.53, 2018 : 59.74}
-#lumidictone   = {2016 : 1.0,   2017 : 1.0,   2018 : 1.0}
-
 
 #friendsscaff  = "--Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors_bkp --Fs {P}/5_mvas"
 friendsscaff  = "--FDs {P}/0_lumijson --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --Fs {P}/6_hemissue"
@@ -119,7 +115,7 @@ def CardsCommand(prod, year, var, isAsimov, nthreads, outpath, region, noUnc, us
     comm = commandscaff.format(outpath      = outpath_,
                                friends      = friends_,
                                samplespaths = samplespaths_,
-                               lumi      = (lumidictone[int(year)] if year != "run2" else str(lumidictone[2016]) + "," + str(lumidictone[2017]) + "," + str(lumidictone[2018])) if "forExtr" not in region else (lumidict[int(year)] if year != "run2" else str(lumidict[2016]) + "," + str(lumidict[2017]) + "," + str(lumidict[2018])),
+                               lumi      = (vl.LumiDict[int(year)] if year != "run2" else str(vl.LumiDict[2016]) + "," + str(vl.LumiDict[2017]) + "," + str(vl.LumiDict[2018])) if "forExtr" not in region else (vl.LumiDict[int(year)] if year != "run2" else str(vl.LumiDict[2016]) + "," + str(vl.LumiDict[2017]) + "," + str(lumidict[2018])),
                                variable  = variable_,
                                bins      = bins_,
                                nth       = nth_,

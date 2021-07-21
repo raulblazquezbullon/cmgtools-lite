@@ -246,28 +246,30 @@ def buildVariationsFromAlternative(uncfile, ret, theY):
 
 def buildPDFVariationsFromAlternativeSample(uncfile, ret, theY):
     uncsprocessed = []
+    #print "construyendo"
     for var in uncfile.uncertainty():
         toremove = []
-        if var.unc_type != 'altSamplePDFEnv': continue # now only adding the alternative samples
-        altsamp = var.args[0].replace("[", "").replace("]", "").replace("'", "").split("\,")[0]
-        thenam =  var.name
+        if var.unc_type != 'altSamplePDF': continue # now only adding the alternative samples
+        altsamp   = var.args[0].replace("[", "").replace("]", "").replace("'", "").split("\,")[0]
+        altuncnam = var.args[1].replace("[", "").replace("]", "").replace("'", "").split("\,")[0]
+        thenam    =  var.name
+        #print "\n",thenam, altsamp, altuncnam
+
         if thenam in uncsprocessed: continue
         if var.year():
-            if var.year() not in theY: continue 
+            if var.year() not in theY: continue
+        #print "we process this one!"
         uncsprocessed.append(thenam)
-        hasBeenApplied = False
         up      = None
         down    = None
         central = None
+
         for k, p in ret.iteritems():
             if not k == altsamp: continue
             #print k
 
-            if hasBeenApplied:
-                raise RuntimeError("FATAL: variation %s is being applied to at least two processes."%var.name)
-
-            up      = _cloneNoDir( p.getVariation(var.name + "_alt")[0], var.name + 'Up'  )
-            down    = _cloneNoDir( p.getVariation(var.name + "_alt")[1], var.name + 'Down')
+            up      = _cloneNoDir( p.getVariation(altuncnam)[0], var.name + 'Up'  )
+            down    = _cloneNoDir( p.getVariation(altuncnam)[1], var.name + 'Down')
             central = _cloneNoDir( p.central, var.name + 'Central' )
         toremove.append(altsamp)
         
@@ -288,9 +290,8 @@ def buildPDFVariationsFromAlternativeSample(uncfile, ret, theY):
             p.addVariation( var.name, 'down', down)
             del central
 
-        hasBeenApplied = True
-
         for rem in toremove:
+            #print "trying to remove" + rem
             if rem in ret: ret.pop(rem)
     return
 
@@ -931,7 +932,7 @@ class HistoWithNuisances:
         return
 
 
-    def buildEnvelopesForPDFs(self, var):
+    def buildEnvelopesForPDFs(self, var, unc):
 
         #### NOTE: we will assume that ALL the entries, except the last two, correspond with
         # the variations of the PDF weights, and the last two are the ones that relate with
@@ -940,9 +941,16 @@ class HistoWithNuisances:
 
         up   = _cloneNoDir( self.central, self.central.GetName() + 'envUp' )
         down = _cloneNoDir( self.central, self.central.GetName() + 'envDown' )
+        if not var in self.variations:
+            return
         nvars = len(self.getVariation(var))
         #print nvars
-        if "hessian" in var.lower():
+        if nvars == 2:
+            if self.getVariation(var)[0].GetName() == self.central.GetName() + 'envUp': # already processed, probably in a multi-year processing
+                #print "JOJOJO", self.getVariation(var)[0].GetName()
+                return
+        
+        if "hessian" in unc.lower():
             for x in range(1, self.central.GetNbinsX() + 1):
                 for y in range(1, self.central.GetNbinsY() + 1):
                     ibin    = self.central.GetBin(x, y)
@@ -959,7 +967,7 @@ class HistoWithNuisances:
                     up.SetBinContent(  ibin, nomVal + sqrt(deltaUp + alphaSunc**2))
                     down.SetBinContent(ibin, nomVal - sqrt(deltaUp + alphaSunc**2))
 #                        down.SetBinContent(ibin, nomVal - sqrt(deltaDn + alphaSunc**2))
-        elif "mc" in var.lower():
+        elif "mc" in unc.lower():
             for x in range(1, self.central.GetNbinsX() + 1):
                 for y in range(1, self.central.GetNbinsY() + 1):
                     ibin    = self.central.GetBin(x, y)
@@ -976,7 +984,7 @@ class HistoWithNuisances:
                     down.SetBinContent(ibin, nomVal - sqrt(deltaDn/(nvars - 2) + alphaSunc**2))
         else:
             raise RuntimeError("FATAL: an uncertainty detected as pdf did not specify which kind of set was (either hessian or mc); this is not implemented.")
-
+                
         del self.variations[var]
         self.addVariation( var, 'up', up)
         self.addVariation( var, 'down', down)

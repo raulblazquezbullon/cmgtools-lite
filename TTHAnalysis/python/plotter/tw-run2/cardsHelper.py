@@ -8,7 +8,9 @@ r.gROOT.SetBatch(True)
 friendspath  = "/pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions"
 logpath      = friendspath + "/{p}/{y}/logs/cards_inclusive"
 #logpath = "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/plot_logs"
-lumidict      = {2016 : 35.92, 2017 : 41.53, 2018 : 59.74}
+lumidict     = {2016 : 36.33, 
+                2017 : 41.53,
+                2018 : 59.74}
 
 
 friendsscaff = "--FDs {P}/0_lumijson --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --Fs {P}/5_mvas --Fs {P}/6_hemissue"
@@ -110,7 +112,7 @@ def ExecuteOrSubmitTask(tsk):
 
         thecomm = slurmscaff.format(nth     = nthreads,
                                     queue   = queue,
-                                    jobname = "CMGTcards_" + year + "_" + region,
+                                    jobname = "CMGTcards_" + year + "_" + variable.replace("(", "").replace(")", "") + "_" + region,
                                     logpath = logpath.format(p = prod, y = yr),
                                     command = CardsCommand(prod, year, variable, bines, asimov, nthreads, outpath, region, noUnc, useFibre, extra))
 

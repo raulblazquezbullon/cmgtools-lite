@@ -88,6 +88,16 @@ class Uncertainty:
                 raise RuntimeError("A set of FakeRates are needed for envelope")
             #print "\n",self.name, self._procpattern, self._options.year,
             self.fakerate = [ FakeRate( fr, loadFilesNow=False, year=self._options.year) for fr in self.extra['FakeRates'] ]
+        elif self.unc_type=='HessianPDFset':
+            if 'FakeRates' not in self.extra:
+                raise RuntimeError("A set of FakeRates are needed for HessianPDFset")
+            #print "\n",self.name, self._procpattern, self._options.year,
+            self.fakerate = [ FakeRate( fr, loadFilesNow=False, year=self._options.year) for fr in self.extra['FakeRates'] ]
+        elif self.unc_type=='MCPDFset':
+            if 'FakeRates' not in self.extra:
+                raise RuntimeError("A set of FakeRates are needed for MCPDFset")
+            #print "\n",self.name, self._procpattern, self._options.year,
+            self.fakerate = [ FakeRate( fr, loadFilesNow=False, year=self._options.year) for fr in self.extra['FakeRates'] ]
         elif self.unc_type=='altSample':
             if len(self.args) < 2:
                 raise RuntimeError("altSample requires at least two arguments")
@@ -98,9 +108,9 @@ class Uncertainty:
                 raise RuntimeError("altSampleEnv requires at least one argument")
             if self.binmatchstr != ".*":
                 raise RuntimeError("altSample affects all bins by construction")
-        elif self.unc_type=='altSamplePDFEnv':
+        elif self.unc_type=='altSamplePDF':
             if len(self.args) < 1:
-                raise RuntimeError("altSamplePDFEnv requires at least one argument")
+                raise RuntimeError("altSamplePDF requires at least one argument")
             if self.binmatchstr != ".*":
                 raise RuntimeError("altSample affects all bins by construction")
         elif self.unc_type=='none':
@@ -186,7 +196,7 @@ class Uncertainty:
     def year(self):
         return self._year
     def getFR(self,sign):
-        if self.unc_type == 'envelope':
+        if self.unc_type == 'envelope' or "pdfset" in self.unc_type.lower():
             FR = self.fakerate[int('%s'%(sign.replace('var','')))]
         else: 
             FR = self.fakerate[0 if sign=='up' else 1]

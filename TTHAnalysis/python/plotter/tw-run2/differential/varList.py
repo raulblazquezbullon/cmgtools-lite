@@ -23,7 +23,7 @@ onlyTotal   = False      # Only show total unc. line in the differential relativ
 
 
 # === OTHER IMPORTANT DEFINITIONS ===
-LumiDict    = {2016 : 35.92,
+LumiDict    = {2016 : 36.33,
                2017 : 41.53,
                2018 : 59.74}
 TotalLumi   = LumiDict[2016] + LumiDict[2017] + LumiDict[2018] # In femtobarns
@@ -1359,6 +1359,11 @@ SysNameTranslator["colour"] = SysNameTranslator["colour_rec"]
 PrintSysNameTranslator = {
     'asimov'              : "Asimov",
     'Nominal'             : "Nominal",
+    'lumi_corr'           : "Luminosity corr. (16, 17, 18)",
+    'lumi_corr1718'       : "Luminosity corr. (17, 18)",
+    'lumi_2016'           : "Luminosity uncorr. (2016)",
+    'lumi_2017'           : "Luminosity uncorr. (2017)",
+    'lumi_2018'           : "Luminosity uncorr. (2018)",
     'btagging'            : "B-tagging",
     #'btagging_2016'       : "B-tagging (2016)",
     'btagging_1718'       : "B-tagging (2017, 2018)",
@@ -1611,3 +1616,22 @@ WeightsToChange = {
 UncertaintiesToEnvelope = {}
 
 VariatedSamplesUncertaintySources = { "ue", "colour_rec", "tw_matching", "mtop", "ds"}
+
+nuisanceColours = {
+    'Gaussian'          : 1,
+    'Poisson'           : 8,
+    'AsymmetricGaussian': 9,
+    'Unconstrained'     : 39,
+    'Unrecognised'      : 2
+}
+
+lo_colour = {
+    'default': 38,
+    'hesse'  : r.kOrange - 3,
+    'robust' : r.kGreen + 1
+}
+hi_colour = {
+    'default': 46,
+    'hesse'  : r.kBlue,
+    'robust' : r.kAzure - 5
+}
