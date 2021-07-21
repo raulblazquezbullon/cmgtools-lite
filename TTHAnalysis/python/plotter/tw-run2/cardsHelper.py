@@ -6,14 +6,14 @@ r.PyConfig.IgnoreCommandLineOptions = True
 r.gROOT.SetBatch(True)
 
 friendspath  = "/pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions"
-logpath      = friendspath + "/{p}/{y}/logs/plots"
-#logpath = "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/plot_logs"
+logpath      = friendspath + "/{p}/{y}/logs/cards_inclusive"
+
 lumidict     = {2016 : 36.33, 
                 2017 : 41.53,
                 2018 : 59.74}
 
 
-friendsscaff = "--FDs {P}/0_lumijson --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --Fs {P}/5_mvas --Fs {P}/6_hemissue"
+friendsscaff = "--FDs {P}/0_lumijson --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --Fs {P}/5_mvas_new --Fs {P}/6_hemissue"
 
 slurmscaff   = "sbatch -c {nth} -p {queue} -J {jobname} -e {logpath}/log.%j.%x.err -o {logpath}/log.%j.%x.out --wrap '{command}'"
 
@@ -28,7 +28,8 @@ def CardsCommand(prod, year, var, bines, isAsimov, nthreads, outpath, region, no
     samplespaths_ = "-P " + friendspath + "/" + prod + ("/" + year) * (year != "run2")
     if useFibre: samplespaths_ = samplespaths_.replace("phedexrw", "phedex").replace("cienciasrw", "ciencias")
 
-    nth_       = "" if nthreads == 0 else ("--split-factor=-1 -j " + str(nthreads))
+#    nth_       = "" if nthreads == 0 else ("--split-factor=-1 -j " + str(nthreads))
+    nth_       = "" if nthreads == 0 else ("--split-factor=0 -j " + str(nthreads))
     friends_   = friendsscaff
     outpath_   = outpath + "/" + year + "/" + region
 
@@ -114,7 +115,7 @@ if __name__ == "__main__":
 
     theregs  = ["1j1t", "2j1t", "2j2t"]
     thevars  = ["getBDtW20bins(tmvaBDT_1j1b)", "getBDtWOther12bins(tmvaBDT_2j1b)", "Jet2_Pt"]
-    thebins  = ["[0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5,10.5,11.5,12.5,13.5,14.5,16.5,17.5,18.5,19.5,20.5]",
+    thebins  = ["[0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5,10.5,11.5,12.5,13.5,14.5,15.5,16.5,17.5,18.5,19.5,20.5]",
                 "[0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5,10.5,11.5,12.5]",
                 "[30.,40.,50.,60.,70.,80.,90.,100.,110.,120.,130.,140.,150.,160.,170.,180.,190.]"]
     theyears = ["2016", "2017", "2018", "run2"]
