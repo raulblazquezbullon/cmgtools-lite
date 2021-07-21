@@ -10,12 +10,13 @@ logpath      = friendspath + "/{p}/{y}/logs/plots"
 
 slurmscaff   = "sbatch -c {nth} -p {queue} -J {jobname} -e {logpath}/log.%j.%x.err -o {logpath}/log.%j.%x.out --wrap '{command}'"
 
-#combinecomm = "combine -M FitDiagnostics --expectSignal 1 {combcard} -n {y}_{r} --robustFit 1 --justFit --cminDefaultMinimizerStrategy 0 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 {extra} >> {outfile}"
-combinecomm = "combine -M FitDiagnostics --expectSignal 1 {combcard} -n {y}_{r} --robustFit 1 --cminDefaultMinimizerStrategy 0 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --saveShapes --saveWorkspace --out {outdir} {extra} >> {outfile}"
+combinecomm = "combine -M FitDiagnostics --expectSignal 1 {combcard} -n {y}_{r} --robustFit 1 --justFit --cminDefaultMinimizerStrategy 0 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 {extra} >> {outfile}"
+#combinecomm = "combine -M FitDiagnostics --expectSignal 1 {combcard} -n {y}_{r} --robustFit 1 --cminDefaultMinimizerStrategy 0 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --saveShapes --saveWorkspace --out {outdir} {extra} >> {outfile}"
 
 
 def makeFit(task):
     year, region, inpath, verbose, pretend, extra = task
+    fitoutpath  = inpath + "/" + year
     if "," in region:
         cardList = []
         regionList = region.split(",")
@@ -23,8 +24,6 @@ def makeFit(task):
             cardList.append(iR + "/cuts-tw-" + iR + ".txt")
         
         combcardnam = 'combcard_{r}.txt'.format(r = region.replace(",", ""))
-        fitoutpath  = inpath + "/" + year
-        
         mergecomm = 'cd {path}; combineCards.py {allCards} > {outCard}; cd -'.format(allCards = ' '.join(cardList),
                                                                                      path     = fitoutpath,
                                                                                      outCard  = combcardnam)

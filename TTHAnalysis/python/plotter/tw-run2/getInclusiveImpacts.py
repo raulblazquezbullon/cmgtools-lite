@@ -25,10 +25,25 @@ def makeImpacts(task):
     
     impactsoutpath = inpath + "/" + iY + "/" + "/impacts_" + region
 
+    if "," not in region:
+        physicsModel = 'text2workspace.py -m 125 {infile} -o {outfile}'.format(infile  = inpath + "/" + iY + "/{r}/cuts-tw-{r}.txt".format(r = region),
+                                                                               outfile = inpath + "/" + iY + "/{r}/cuts-tw-{r}_ws.root".format(r = region),)
+        if verbose:
+            print "Text2Workspace command:", physicsModel, "\n"
+
+        if not pretend:
+            if os.path.isfile(inpath + "/" + iY + "/{r}/cuts-tw-{r}_ws.root".format(r = region)):
+                if verbose:
+                    print "    - Erasing old workspace..."
+                os.system("rm " + inpath + "/" + iY + "/{r}/cuts-tw-{r}_ws.root".format(r = region))
+            outstat = os.system(physicsModel)
+            if outstat:
+                raise RuntimeError("FATAL: text2workspace.py failed to execute for year {y} and regions {r}.".format(y = year, r = region))
+
     firstcomm = comm1.format(y      = year,
                              ncores = ("--parallel " + str(ncores)) if ncores else "",
                              asimov = "",
-                             incard = "../combcard_{r}.root".format(r = region.replace(",", "")),
+                             incard = "../combcard_{r}.root".format(r = region.replace(",", "")) if "," in region else "../{r}/cuts-tw-{r}_ws.root".format(r = region),
                              outdir = "./",
                              extra  = extra,
                              prefix = year + "_" + region.replace(",", ""),
@@ -37,20 +52,16 @@ def makeImpacts(task):
     if verbose:
         print "First command:", firstcomm, "\n"
 
-    #sys.exit()
-    """
     if not pretend:
         outstat = os.system("cd " + impactsoutpath + "; " + firstcomm + "; cd -")
         if outstat:
             raise RuntimeError("FATAL: first command failed to execute for region {r} of year {y}.".format(v = region,
                                                                                                            y = year))
 
-    #sys.exit()
-    """
     secondcomm = comm2.format(y      = year,
                              ncores = ("--parallel " + str(ncores)) if ncores else "",
                              asimov = "",
-                             incard = "../combcard_{r}.root".format(r = region.replace(",", "")),
+                             incard = "../combcard_{r}.root".format(r = region.replace(",", "")) if "," in region else "../{r}/cuts-tw-{r}_ws.root".format(r = region),
                              outdir = "./",
                              extra  = extra,
                              prefix = year + "_" + region.replace(",", ""),
@@ -59,18 +70,16 @@ def makeImpacts(task):
     if verbose:
         print "Second command:", secondcomm, "\n"
     
-    """
     if not pretend:
         outstat = os.system("cd " + impactsoutpath + "; " + secondcomm + "; cd -")
         if outstat:
             raise RuntimeError("FATAL: second command failed to execute for region {r} of year {y}.".format(v = region,
                                                                                                             y = year))
-    """
     
     thirdcomm = comm3.format(y      = year,
                              ncores = ("--parallel " + str(ncores)) if ncores else "",
                              asimov = "",
-                             incard = "../combcard_{r}.root".format(r = region.replace(",", "")),
+                             incard = "../combcard_{r}.root".format(r = region.replace(",", "")) if "," in region else "../{r}/cuts-tw-{r}_ws.root".format(r = region),
                              outdir = "./",
                              extra  = extra,
                              prefix = year + "_" + region.replace(",", ""),
@@ -79,19 +88,16 @@ def makeImpacts(task):
     if verbose:
         print "Third command:", thirdcomm, "\n"
     
-    """
     if not pretend:
         outstat = os.system("cd " + impactsoutpath + "; " + thirdcomm + "; cd -")
         if outstat:
             raise RuntimeError("FATAL: third command failed to execute for region {r} of year {y}.".format(v = region,
                                                                                                            y = year))
-    sys.exit()
-    """
     
     fourthcomm = comm4.format(y      = year,
                               ncores = ("--parallel " + str(ncores)) if ncores else "",
                               asimov = "",
-                              incard = "../combcard_{r}.root".format(r = region.replace(",", "")),
+                              incard = "../combcard_{r}.root".format(r = region.replace(",", "")) if "," in region else "../{r}/cuts-tw-{r}_ws.root".format(r = region),
                               outdir = "./",
                               extra  = extra,
                               prefix = year + "_" + region.replace(",", ""),
