@@ -2,13 +2,13 @@ nloosejets: nJetSel20_Recl : [-0.5,0.5,1.5,2.5,3.5] ; LegendCutoff=0, XTitle='N(
 #nbloosejets                 : nBJetSelMedium20_Recl       : [-0.5,0.5,1.5,2.5,3.5]                 ; LegendCutoff=0, MoreY=1.2, XTitle='N(loose b-jet)', XNDiv=5, xBinLabels="2\,3\,4\,5\,6\,#geq 7"
 jet1_pt                     : Jet1_Pt                     : 18,20,200                              ; LegendCutoff=0, MoreY=1.2, IncludeUnderflow=False, XTitle="Jet p_{T} (GeV)"
 loosejet1_pt                : JetLoose1_Pt                : 15,0,30                                ; LegendCutoff=0, MoreY=1.2, IncludeUnderflow=False, XTitle="Leading loose jet p_{T} (GeV)"
-#lep1lep2jet1_pt             : Lep1Lep2Jet1_Pt             : 20,0,250                               ; LegendCutoff=0, MoreY=1.2, IncludeUnderflow=False, XTitle="#it{p}_{T} (#it{e}^{#pm}\, #it{#mu}^{#mp}\, #it{j}) (GeV)"
+lep1lep2jet1_pt             : Lep1Lep2Jet1_Pt             : 20,0,250                               ; LegendCutoff=0, MoreY=1.2, IncludeUnderflow=False, XTitle="#it{p}_{T} (#it{e}^{#pm}\, #it{#mu}^{#mp}\, #it{j}) (GeV)"
 #lep1lep2jet1met_ptOVERhttot : Lep1Lep2Jet1MET_PtOverHTtot : 20,0,1                                 ; LegendCutoff=0, MoreY=1.2, IncludeUnderflow=False, XTitle="#it{p}_{T} (#it{e}^{#pm}\, #it{#mu}^{#mp}\, #it{j}\, p_{T}^{miss}) / H_{T} (adim)"
 lep1lep2jet1met_m           : Lep1Lep2Jet1MET_M           : 20,0,600                               ; LegendCutoff=0, MoreY=1.2, IncludeUnderflow=False, XTitle="m (#it{e}^{#pm}\, #it{#mu}^{#mp}\, #it{j}\, #it{p}_{T}^{miss}) (GeV)"
 #htlepOVERhttot              : Lep1_PtLep2_PtOverHTtot     : 20,0,1                                 ; LegendCutoff=0, MoreY=1.2, IncludeUnderflow=False, XTitle="(p_{T}(e)^{#pm} + p_{T}(#mu)^{#mp}) / H_{T} (adim.)"
 lep1lep2jet1_c              : Lep1Lep2Jet1_C              : 20,0,1                                 ; LegendCutoff=0, MoreY=1.2, IncludeUnderflow=False, XTitle="C (#it{e}^{#pm}\, #it{#mu}^{#mp}\, #it{j}) (adim.)"
 #httot                       : HTtot                       : 20,0,550                               ; LegendCutoff=0, MoreY=1.2, IncludeUnderflow=False, XTitle="H_{T} (GeV)"
-lep1lep2jet1met_pt          : Lep1Lep2Jet1MET_Pt          : 20,0,200                               ; LegendCutoff=0, MoreY=1.2, IncludeUnderflow=False, XTitle="#it{p}_{T} (#it{e}^{#pm}\, #it{#mu}^{#mp}\, #it{j}\, p_{T}^{miss}) (GeV)"
+#lep1lep2jet1met_pt          : Lep1Lep2Jet1MET_Pt          : 20,0,200                               ; LegendCutoff=0, MoreY=1.2, IncludeUnderflow=False, XTitle="#it{p}_{T} (#it{e}^{#pm}\, #it{#mu}^{#mp}\, #it{j}\, p_{T}^{miss}) (GeV)"
 
 #1j1b BDT
 tmvaBDT_1j1b        : tmvaBDT_1j1b          : 20,-1,1   ; LegendCutoff=0, IncludeUnderflow=False, XTitle="BDT discriminant (adim.)", MoreY=1.5

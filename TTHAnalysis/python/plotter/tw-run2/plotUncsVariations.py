@@ -193,7 +193,7 @@ def plotVariations(tup, outname, ncores = -1):
 
     for key in rF.GetListOfKeys():
         tmpnam     = key.GetName()
-        if any([el in tmpnam for el in ["hincsyst", "hincmax", "canvas", "stack", "CovMat", "nom0", "nom1", "tot_weight"]]): continue
+        if any([el in tmpnam for el in ["hincsyst", "hincmax", "canvas", "stack", "CovMat", "nom0", "nom1", "tot_weight","tmvaBDT_2j1b_12bins","tmvaBDT_2j1b_rebin","tmvaBDT_2j1b_smallb","tmvaBDT_1j1b_20bins","tmvaBDT_1j1b_rebin","tmvaBDT_1j1b_smallb"]]): continue
         if not thisisandiffrfile:
             if "data" in tmpnam: continue
 

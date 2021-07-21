@@ -6,10 +6,10 @@ from math import log10, floor
 
 
 translateDict = OrderedDict(
-    [("1j1b"                     , "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2021-06-01/InputVar/run2/1j1t/MVAtrain/jet1_pt.txt"),
-    ("1j1b_Differential"    , "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2021-06-01/Differential/differential/jet1_pt.txt"),
-    ("2j1b"                      , "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2021-06-01/InputVar/run2/2j1t/MVAtrain/jet2_pt.txt"),
-    ("2j2b"    , "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2021-06-01/FitPlots/run2/2j2t/jet2_pt_rebin.txt")]
+    [("1j1b"                     , "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2021-07-03/InputVar/run2/1j1t/MVAtrain/jet1_pt.txt"),
+    ("1j1b_Differential"    , "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2021-07-03/InputVar/run2/differential/jet1_pt.txt"),
+    ("2j1b"                      , "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2021-07-03/InputVar/run2/2j1t/MVAtrain/jet2_pt.txt"),
+    ("2j2b"    , "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2021-07-03/FitPlots/run2/2j2t/jet2_pt_rebin.txt")]
 )
 
 translateDict_processes = OrderedDict(
@@ -22,6 +22,7 @@ translateDict_processes = OrderedDict(
 )
 
 def round_to_reference(x, y):
+    y = 2
     if str(y)[0] == "1" or str(y)[0] == "0" and str(y)[2] == "1":
         if y>=2:
             return int(round(x, 1-int(floor(log10(y)))))

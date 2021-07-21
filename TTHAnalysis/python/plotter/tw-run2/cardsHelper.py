@@ -93,6 +93,10 @@ def CardsCommand(prod, year, var, bines, isAsimov, nthreads, outpath, region, no
 
 def ExecuteOrSubmitTask(tsk):
     prod, year, variable, bines, asimov, nthreads, outpath, region, noUnc, useFibre, extra, pretend, queue = tsk
+
+    if not os.path.isdir(outpath + "/" + str(year)) and not pretend:
+        os.system("mkdir -p " + outpath + "/" + str(year))
+    
     if queue == "":
         thecomm = CardsCommand(prod, year, variable, bines, asimov, nthreads, outpath, region, noUnc, useFibre, extra)
         print "Command: " + thecomm
@@ -106,7 +110,7 @@ def ExecuteOrSubmitTask(tsk):
 
         thecomm = slurmscaff.format(nth     = nthreads,
                                     queue   = queue,
-                                    jobname = "CMGTcards_" + year + "_" + variable + "_" + region,
+                                    jobname = "CMGTcards_" + year + "_" + region,
                                     logpath = logpath.format(p = prod, y = yr),
                                     command = CardsCommand(prod, year, variable, bines, asimov, nthreads, outpath, region, noUnc, useFibre, extra))
 
@@ -152,8 +156,8 @@ if __name__ == "__main__":
     #print CardsCommand(prod, year, variable, bines, asimov, nthreads, outpath, region, noUnc, useFibre, extra)
 
     theregs  = ["1j1t", "2j1t", "2j2t"]
-    thevars  = ["getBDtW20bins(tmvaBDT_1j1b)", "getBDtWOther12bins(tmvaBDT_2j1b)", "Jet2_Pt"]
-    thebins  = ["[0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5,10.5,11.5,12.5,13.5,14.5,16.5,17.5,18.5,19.5,20.5]",
+    thevars  = ["getBDtW20bins{year}(tmvaBDT_1j1b)", "getBDtWOther12bins{year}(tmvaBDT_2j1b)", "Jet2_Pt"]
+    thebins  = ["[0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5,10.5,11.5,12.5,13.5,14.5,15.5,16.5,17.5,18.5,19.5,20.5]",
                 "[0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5,10.5,11.5,12.5]",
                 "[30.,40.,50.,60.,70.,80.,90.,100.,110.,120.,130.,140.,150.,160.,170.,180.,190.]"]
     theyears = ["2016", "2017", "2018", "run2"]
@@ -179,7 +183,12 @@ if __name__ == "__main__":
 
     for yr in theyears:
         for i in range(len(theregs)):
-            tasks.append( (prod, yr, thevars[i], thebins[i], asimov, nthreads, outpath, theregs[i], noUnc, useFibre, extra, pretend, queue) )
+            if "{year}" in thevars[i] and yr != "run2":
+                tasks.append( (prod, yr, thevars[i].format(year = yr), thebins[i], asimov, nthreads, outpath, theregs[i], noUnc, useFibre, extra, pretend, queue) )
+            elif "{year}" in thevars[i] and yr == "run2":
+                tasks.append( (prod, yr, thevars[i].format(year = ""), thebins[i], asimov, nthreads, outpath, theregs[i], noUnc, useFibre, extra, pretend, queue) )
+            else:
+                tasks.append( (prod, yr, thevars[i], thebins[i], asimov, nthreads, outpath, theregs[i], noUnc, useFibre, extra, pretend, queue) )
 
     #print tasks
     calculate = True
