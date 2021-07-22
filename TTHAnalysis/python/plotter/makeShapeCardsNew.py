@@ -191,14 +191,14 @@ for binname, report in allreports.iteritems():
         for p,(hup,hdn) in effshape.iteritems():
             i0 = allyields[p]
             kup, kdn = hup.Integral()/i0, hdn.Integral()/i0
-            if abs(kup*kdn-1)<1e-5 and not options.storeall:
+            if abs(kup*kdn-1)<1e-5:
                 if abs(kup-1)>2e-4:
                     effyield[p] = "%.3f" % kup
                     isNorm = True
             else:
                 effyield[p] = "%.3f/%.3f" % (kdn,kup)
                 isNorm = True
-        if isNorm:
+        if isNorm or options.storeall:
             thedict = {}
             if options.storeall:
                 thedict = effshape
