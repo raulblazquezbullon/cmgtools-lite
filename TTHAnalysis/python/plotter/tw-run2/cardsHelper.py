@@ -114,7 +114,7 @@ if __name__ == "__main__":
     #print CardsCommand(prod, year, variable, bines, asimov, nthreads, outpath, region, noUnc, useFibre, extra)
 
     theregs  = ["1j1t", "2j1t", "2j2t"]
-    thevars  = ["getBDtW20bins(tmvaBDT_1j1b)", "getBDtWOther12bins(tmvaBDT_2j1b)", "Jet2_Pt"]
+    thevars  = ["getBDtW20bins(tmvaBDT_1j1b)", "getBDtWOther12bins(tmvaBDT_2j1b)", "min(max(Jet2_Pt, 30.), 189.)"]
     thebins  = ["[0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5,10.5,11.5,12.5,13.5,14.5,15.5,16.5,17.5,18.5,19.5,20.5]",
                 "[0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5,10.5,11.5,12.5]",
                 "[30.,40.,50.,60.,70.,80.,90.,100.,110.,120.,130.,140.,150.,160.,170.,180.,190.]"]

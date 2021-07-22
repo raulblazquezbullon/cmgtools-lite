@@ -3,7 +3,7 @@
 plotter="/nfs/fanae/user/vrbouza/Proyectos/tw_run2/desarrollo/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter"
 slash="/"
 
-tmpfolder="temp_2021_07_06_tododifarreglado"
+tmpfolder="temp_2021_07_21_todonuevo"
 prefix=$plotter/$tmpfolder/
 
 outfolder="/nfs/fanae/user/vrbouza/Proyectos/tw_run2/documentacion/AN-20-118"
@@ -26,7 +26,7 @@ sfplots2016="btaggingEff_B_2016 btaggingEff_C_2016 btaggingEff_L_2016 leptonSF_e
 #     done;
 # done;
 
-for v in $vars; do
+#for v in $vars; do
 #     for y in $years; do
 #         cp $prefix/differential/$y/$v/responseplots/PurStab_$v.pdf $outfolder/figures/unfolding/$y/
 #         cp $prefix/differential/$y/$v/responseplots/R_$v\_.pdf $outfolder/figures/unfolding/$y/
@@ -48,13 +48,13 @@ for v in $vars; do
      #cp $prefix/differential/run2/$v/CovMatplots/Cov_$v\_particle.pdf $outfolder/figures/diffresults/run2/
 #      cp $prefix/differential/run2/$v/CovMatplots/Cov_$v\_particlefidbin.pdf $outfolder/figures/diffresults/run2/
 
-     cp $prefix/differential/run2/$v/sigextr_fit_combine/impacts/impacts_run2_$v.pdf $outfolder/figures/diffresults/impacts/
-done;
+#     cp $prefix/differential/run2/$v/sigextr_fit_combine/impacts/impacts_run2_$v.pdf $outfolder/figures/diffresults/impacts/
+#done;
 #
 # for y in $years; do
 #    mkdir -p $outfolder/figures/unfolding/$y
 #     cp $prefix/differential/$y/tables/condnum.tex $outfolder/figures/unfolding/$y/
-# done;
+#done;
 # capitaldiffvars=("Lep1_Pt Jet1_Pt Lep1Lep2_DPhi Lep1Lep2Jet1MET_Pz Lep1Lep2Jet1_M Lep1Lep2Jet1MET_Mt")
 # for v in $capitaldiffvars; do
 #     cp $prefix/differential/run2/tables/$v\_particle.tex $outfolder/figures/unfolding/run2/
@@ -62,25 +62,41 @@ done;
 # done;
 #
 # return
-# diffvars=("lep1_pt jet1_pt lep1lep2_dphi lep1lep2jet1met_pz lep1lep2jet1_m lep1lep2jet1met_mt")
-# for v in $diffvars; do
-# #    mkdir -p $outfolder/figures/eventselection/run2/1j1t/differential/
-#     cp $prefix/varplots/run2/1j1t/differential/$v.pdf $outfolder/figures/eventselection/run2/1j1t/differential/
-#     cp $prefix/varplots/run2/1j1t/$v.pdf $outfolder/figures/eventselection/run2/1j1t/
-# done;
-#
 
-# varsforplots=("lep1_pt jet1_pt lep1lep2_pt lep1lep2_ptsum lep1lep2_dphi lep1lep2_m")
-# for v in $varsforplots; do
-#     for r in $regs; do
+cp $prefix/cards/run2/impacts_1j1t,2j1t,2j2t/impactsrun2_1j1t2j1t2j2t.pdf $outfolder/figures/inclsignalextr/Fit-figures/impactst1.pdf
+cp $prefix/varplots/run2/2j2t/jet2_pt_rebin.pdf $outfolder/figures/inclsignalextr/Fit-figures/
+
+
+train1j1tvars=("nloosejets jet1_pt loosejet1_pt lep1lep2jet1met_m lep1lep2jet1_c lep1lep2jet1_pt")
+for v in $train1j1tvars; do
+     cp $prefix/varplots/run2/1j1t/MVAtrain/$v.pdf $outfolder/figures/inclsignalextr/BDT-figures/1j1t/
+done;
+
+train2j1tvars=("jet2_pt lep1jet1_dr lep12jet12_dr")
+for v in $train2j1tvars; do
+     cp $prefix/varplots/run2/2j1t/MVAtrain/$v.pdf $outfolder/figures/inclsignalextr/BDT-figures/2j1t/
+done;
+
+
+diffvars=("lep1_pt jet1_pt lep1lep2_dphi lep1lep2jet1met_pz lep1lep2jet1_m lep1lep2jet1met_mt")
+for v in $diffvars; do
+#     mkdir -p $outfolder/figures/eventselection/run2/1j1t/differential/
+     cp $prefix/varplots/run2/1j1t/differential/$v.pdf $outfolder/figures/eventselection/run2/1j1t/differential/
+     cp $prefix/varplots/run2/1j1t/$v.pdf $outfolder/figures/eventselection/run2/1j1t/
+done;
+
+
+varsforplots=("lep1_pt jet1_pt lep1lep2_pt lep1lep2_ptsum lep1lep2_dphi lep1lep2_m")
+for v in $varsforplots; do
+    for r in $regs; do
 #         mkdir -p $outfolder/figures/eventselection/run2/$r
-#         cp $prefix/varplots/run2/$r/$v.pdf $outfolder/figures/eventselection/run2/$r/
-#     done;
-# done;
-#
-# cp $prefix/varplots/run2/1j1t/nloosejets.pdf $outfolder/figures/eventselection/run2/1j1t/
+        cp $prefix/varplots/run2/$r/$v.pdf $outfolder/figures/eventselection/run2/$r/
+    done;
+done;
+
+cp $prefix/varplots/run2/1j1t/nloosejets.pdf $outfolder/figures/eventselection/run2/1j1t/
 # # mkdir -p $outfolder/figures/eventselection/run2/nojets/
-# cp $prefix/varplots/run2/nojets/nJetnBJet.pdf $outfolder/figures/eventselection/run2/nojets/
+cp $prefix/varplots/run2/nojets/nJetnBJet.pdf $outfolder/figures/eventselection/run2/nojets/
 
 # #### PREVIA
 # tmpfolder="temp_2021_02_03_plotstotal"
