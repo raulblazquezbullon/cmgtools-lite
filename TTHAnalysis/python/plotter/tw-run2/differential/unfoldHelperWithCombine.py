@@ -465,184 +465,187 @@ def makeFit(task):
         if outstat:
             raise RuntimeError("FATAL: combine failed to execute for variable {v} of year {y}.".format(v = varName, y = year))
 
-    #sys.exit()
-    if not os.path.isfile('higgsCombine{y}_{var}.FitDiagnostics.mH120.root'.format(y = year, var = varName)):
-        raise RuntimeError("FATAL: no valid higgsCombine file found for variable {v} of year {y}.".format(v = varName, y = year))
+    if not pretend:
+        #sys.exit()
+        if not os.path.isfile('higgsCombine{y}_{var}.FitDiagnostics.mH120.root'.format(y = year, var = varName)):
+            raise RuntimeError("FATAL: no valid higgsCombine file found for variable {v} of year {y}.".format(v = varName, y = year))
+        else:
+            os.system("mv ./higgsCombine{y}_{var}.FitDiagnostics.mH120.root {fdir}".format(y = year, var = varName, fdir = fitoutpath + "/"))
+
+
+        # Ahora recogemos la virutilla
+        if not os.path.isfile(fitoutpath + '/fitDiagnostics{y}_{var}.root'.format(y = year, var = varName)):
+            raise RuntimeError("FATAL: no valid fitDiagnostics file found for variable {v} of year {y}. Maybe there was a problem with the fit.\n".format(v = varName, y = year))
+
+        if not os.path.isfile(fitoutpath + "/higgsCombine{y}_{var}.FitDiagnostics.mH120.root".format(y = year, var = varName)):
+            raise RuntimeError("FATAL: no valid higgsCombine file found for variable {v} of year {y}. Maybe there was a problem with the fit, and/or moving the file to its corresponding folder.\n".format(v = varName, y = year))
+
+        tfile     = r.TFile.Open(fitoutpath + '/fitDiagnostics{y}_{var}.root'.format(y = year, var = varName))
+        tfile2    = r.TFile.Open(fitoutpath + "/higgsCombine{y}_{var}.FitDiagnostics.mH120.root".format(y = year, var = varName))
+
+        fitsb     = tfile.Get('tree_fit_sb')
+        fitsb.GetEntry(0)
+        fitstatus = fitsb.fit_status
+
+        if   fitstatus == -1:
+            raise RuntimeError('Fit of variable {var} has not converged (fit status value: {fitv})'.format(var = varName, fitv = fitstatus))
+        elif fitstatus != 0:
+            wr.warn('Fit of variable {var} has a nonzero fit status value: {fitv}'.format(var = varName, fitv = fitstatus), UserWarning, stacklevel = 2)
+        elif verbose:
+            print "    - Fit status:", fitstatus
+
+        fitResult = tfile.Get('fit_s')
+        if verbose: fitResult.Print()
+        corrmat     = deepcopy(fitResult.correlationHist('corrmat'))
+
+        # Tambien necesitamos el workspace
+        w       = tfile2.Get('w')
+        poiList = r.RooArgList('poiList')
+        for i in range(nparticlebins):
+            var = w.var('r_tW_%d'%i)
+            poiList.add(var)
+
+        cov = fitResult.reducedCovarianceMatrix(poiList)
+
+        results = {}
+        count   = 0
+        for var in fitResult.floatParsFinal():
+            count += 1
+            results[var.GetName()] = [ var.getVal(), var.getErrorLo(), var.getErrorHi(), var.getError() ]
+            if count == fitResult.floatParsFinal().getSize(): break
+
+        #for el in results:
+            #if "r_tW" not in el: continue
+            #print el, "\t", round(results[el][0], 3), "\t", round(results[el][1], 4), "\t", round(results[el][2], 4), "\t", round(results[el][3], 4)
+
+        #sys.exit()
+
+        prefitdict  = {}; postfitdict = {}
+        for iB in range(ndetectorbins):
+            prefitdict[iB] = {}; postfitdict[iB] = {};
+            prefitfolder  = tfile.Get('shapes_prefit/ch{b}'.format(b = iB + 1))
+            postfitfolder = tfile.Get('shapes_fit_s/ch{b}' .format(b = iB + 1))
+            for key in prefitfolder.GetListOfKeys():
+                if "ttbar" in key.GetName():
+                    prefitdict[iB]["ttbar"]    = deepcopy(prefitfolder.Get(key.GetName()).Clone("ttbar"))
+                if "tw" in key.GetName():
+                    prefitdict[iB]["tw"]       = deepcopy(prefitfolder.Get(key.GetName()).Clone("tw"))
+                if "nonworz" in key.GetName():
+                    prefitdict[iB]["nonworz"]  = deepcopy(prefitfolder.Get(key.GetName()).Clone("nonworz"))
+                if "vvttv" in key.GetName():
+                    prefitdict[iB]["vvttv"]    = deepcopy(prefitfolder.Get(key.GetName()).Clone("vvttv"))
+                if "dy" in key.GetName():
+                    prefitdict[iB]["dy"]       = deepcopy(prefitfolder.Get(key.GetName()).Clone("dy"))
+                if "data" in key.GetName():
+                    prefitdict[iB]["data"]     = deepcopy(prefitfolder.Get(key.GetName()).Clone("data"))
+                    postfitdict[iB]["data"]    = deepcopy(prefitfolder.Get(key.GetName()).Clone("data_"))
+
+            for key in postfitfolder.GetListOfKeys():
+                if "ttbar" in key.GetName():
+                    postfitdict[iB]["ttbar"]   = deepcopy(postfitfolder.Get(key.GetName()).Clone("ttbar"))
+                if "tw" in key.GetName():
+                    postfitdict[iB]["tw"]      = deepcopy(postfitfolder.Get(key.GetName()).Clone("tw"))
+                if "nonworz" in key.GetName():
+                    postfitdict[iB]["nonworz"] = deepcopy(postfitfolder.Get(key.GetName()).Clone("nonworz"))
+                if "vvttv" in key.GetName():
+                    postfitdict[iB]["vvttv"]   = deepcopy(postfitfolder.Get(key.GetName()).Clone("vvttv"))
+                if "dy" in key.GetName():
+                    postfitdict[iB]["dy"]      = deepcopy(postfitfolder.Get(key.GetName()).Clone("dy"))
+
+        tfile2.Close(); tfile.Close()
+
+        #### SAVING
+        # Put results into histos
+        outHisto = r.TH1D('hFitResult_{var}'.format(var = varName),
+                        '', nparticlebins, array('d', vl.varList[varName]['bins_particle']))
+        uncInfo = deepcopy(outHisto.Clone('hFitResult_forPlotting_' + varName))
+
+        scaleval = 1
+        thelumi = vl.TotalLumi if year == "run2" else vl.LumiDict[int(iY)]
+        if vl.doxsec: scaleval = 1/thelumi/1000
+
+        signalname = "x_tw"
+        for i in range(1, nparticlebins + 1):
+            card = r.TFile.Open(inpath + "/" + year + "/" + varName + "/particle.root", "READ")
+            tmpint = card.Get(signalname).GetBinContent(i)
+            card.Close()
+
+            results['r_tW_%d'%(i-1)][0] *= tmpint * scaleval
+            results['r_tW_%d'%(i-1)][1] *= tmpint * scaleval
+            results['r_tW_%d'%(i-1)][2] *= tmpint * scaleval
+            results['r_tW_%d'%(i-1)][3] *= tmpint * scaleval
+
+            # The uncertainties here are symmetric...
+            outHisto.SetBinContent(i, results['r_tW_%d'%(i-1)][0])
+            outHisto.SetBinError  (i, results['r_tW_%d'%(i-1)][3])
+
+            # ...and these here are asymm.:
+            uncInfo.SetBinContent(i,   results['r_tW_%d'%(i-1)][1]) # Down
+            uncInfo.SetBinError  (i,   results['r_tW_%d'%(i-1)][2]) # Up
+
+
+        # Put covariance matrix into yield parametrization instead of cross section parametrization
+        # Also the thing should be in a th2
+        hCov    = r.TH2D('hCovar_{var}'.format(var = varName), '',
+                        nparticlebins, -0.5, nparticlebins - 0.5,
+                        nparticlebins, -0.5, nparticlebins - 0.5)
+
+        card    = r.TFile.Open(inpath + "/" + year + "/" + varName + "/particle.root", "READ")
+        for i in range(1, nparticlebins + 1):
+            tmpintx = card.Get(signalname).GetBinContent(i)
+            for j in range(1, nparticlebins + 1):
+                tmpinty = card.Get(signalname).GetBinContent(j)
+                normx = tmpintx * scaleval
+                normy = tmpinty * scaleval
+
+                cov[i-1][j-1] = cov[i-1][j-1] * normx * normy
+                hCov.SetBinContent( hCov.GetBin(i,j), cov[i-1][j-1] )
+
+        card.Close(); del card
+
+        #### PLOTTING
+        # Old srs plotting
+        #toKeep = []
+        #for p in [('r_tW','tW'), ('DY','DY'), ('VVttbarV','VV+ttV'), ('ttbar','t#bar{t}')]:
+            #graph = r.TGraphAsymmErrors(len(bins_detector)-1)
+            #graph.SetName(p[0])
+            #for i in range(1, len(bins_detector)):
+                #if '%s_%d'%(p[0],i) not in results:
+                    #graph.SetPoint( i-1, (bins_detector[i-1] + bins_detector[i])/2, 0)
+                    #graph.SetPointError( i-1, (bins_detector[i] - bins_detector[i-1])/2, (bins_detector[i] - bins_detector[i-1])/2, 0, 0)
+                #else:
+                    #graph.SetPoint( i-1, (bins_detector[i-1] + bins_detector[i])/2, results['%s_%d'%(p[0],i)][0])
+                    #graph.SetPointError( i-1, (bins_detector[i] - bins_detector[i-1])/2, (bins_detector[i] - bins_detector[i-1])/2,
+                                        #-results['%s_%d'%(p[0],i)][1], results['%s_%d'%(p[0],i)][2])
+            #toKeep.append( (graph, p[1]))
+
+        #plot = bp.beautifulUnfoldingPlots('srs_{var}'.format(var = varName))
+        #plot.addHistoInPad( len(toKeep), toKeep[0][0], 'AP', toKeep[0][1],'')
+        #plot.addTLatex(0.7,1-0.2, toKeep[0][1])
+        #plot.plotspath  = "results/srs/"
+        #for p in range( 1, len(toKeep)):
+            #plot.addHistoInPad( p+1, toKeep[p][0], 'AP', toKeep[p][1],'')
+            ##toKeep[p][0].GetYaxis().SetTitle('Post/pre')
+            ##toKeep[p][0].GetYaxis().CenterTitle(True)
+
+            #plot.addTLatex(0.7,1-1.23*float(p)/(len(toKeep)+1)-0.2, toKeep[p][1])
+        #setattr(plot,'noCMS',True)
+        #plot.saveCanvas('TR', '',False)
+
+        if not noPlots:
+            drawCorrMat(       corrmat,     inpath, year, varName)
+            drawCovMat(        hCov,        inpath, year, varName)
+            #drawPreAndPostFit( prefitdict,  inpath, year, varName, "pre")
+            #drawPreAndPostFit( postfitdict, inpath, year, varName, "post")
+            drawParticleResults(outHisto, uncInfo, hCov, inpath, year, varName, pretend)
+
+        #print "\nRESULTS:"
+        #for key in results: print key
+
+        print '\n> Variable', varName, 'fitted.\n'
+        return [year, varName, deepcopy(outHisto), uncInfo, hCov, corrmat]
     else:
-        os.system("mv ./higgsCombine{y}_{var}.FitDiagnostics.mH120.root {fdir}".format(y = year, var = varName, fdir = fitoutpath + "/"))
-
-
-    # Ahora recogemos la virutilla
-    if not os.path.isfile(fitoutpath + '/fitDiagnostics{y}_{var}.root'.format(y = year, var = varName)):
-        raise RuntimeError("FATAL: no valid fitDiagnostics file found for variable {v} of year {y}. Maybe there was a problem with the fit.\n".format(v = varName, y = year))
-
-    if not os.path.isfile(fitoutpath + "/higgsCombine{y}_{var}.FitDiagnostics.mH120.root".format(y = year, var = varName)):
-        raise RuntimeError("FATAL: no valid higgsCombine file found for variable {v} of year {y}. Maybe there was a problem with the fit, and/or moving the file to its corresponding folder.\n".format(v = varName, y = year))
-
-    tfile     = r.TFile.Open(fitoutpath + '/fitDiagnostics{y}_{var}.root'.format(y = year, var = varName))
-    tfile2    = r.TFile.Open(fitoutpath + "/higgsCombine{y}_{var}.FitDiagnostics.mH120.root".format(y = year, var = varName))
-
-    fitsb     = tfile.Get('tree_fit_sb')
-    fitsb.GetEntry(0)
-    fitstatus = fitsb.fit_status
-
-    if   fitstatus == -1:
-        raise RuntimeError('Fit of variable {var} has not converged (fit status value: {fitv})'.format(var = varName, fitv = fitstatus))
-    elif fitstatus != 0:
-        wr.warn('Fit of variable {var} has a nonzero fit status value: {fitv}'.format(var = varName, fitv = fitstatus), UserWarning, stacklevel = 2)
-    elif verbose:
-        print "    - Fit status:", fitstatus
-    
-    fitResult = tfile.Get('fit_s')
-    if verbose: fitResult.Print()
-    corrmat     = deepcopy(fitResult.correlationHist('corrmat'))
-
-    # Tambien necesitamos el workspace
-    w       = tfile2.Get('w')
-    poiList = r.RooArgList('poiList')
-    for i in range(nparticlebins):
-        var = w.var('r_tW_%d'%i)
-        poiList.add(var)
-
-    cov = fitResult.reducedCovarianceMatrix(poiList)
-
-    results = {}
-    count   = 0
-    for var in fitResult.floatParsFinal():
-        count += 1
-        results[var.GetName()] = [ var.getVal(), var.getErrorLo(), var.getErrorHi(), var.getError() ]
-        if count == fitResult.floatParsFinal().getSize(): break
-
-    #for el in results:
-        #if "r_tW" not in el: continue
-        #print el, "\t", round(results[el][0], 3), "\t", round(results[el][1], 4), "\t", round(results[el][2], 4), "\t", round(results[el][3], 4)
-
-    #sys.exit()
-
-    prefitdict  = {}; postfitdict = {}
-    for iB in range(ndetectorbins):
-        prefitdict[iB] = {}; postfitdict[iB] = {};
-        prefitfolder  = tfile.Get('shapes_prefit/ch{b}'.format(b = iB + 1))
-        postfitfolder = tfile.Get('shapes_fit_s/ch{b}' .format(b = iB + 1))
-        for key in prefitfolder.GetListOfKeys():
-            if "ttbar" in key.GetName():
-                prefitdict[iB]["ttbar"]    = deepcopy(prefitfolder.Get(key.GetName()).Clone("ttbar"))
-            if "tw" in key.GetName():
-                prefitdict[iB]["tw"]       = deepcopy(prefitfolder.Get(key.GetName()).Clone("tw"))
-            if "nonworz" in key.GetName():
-                prefitdict[iB]["nonworz"]  = deepcopy(prefitfolder.Get(key.GetName()).Clone("nonworz"))
-            if "vvttv" in key.GetName():
-                prefitdict[iB]["vvttv"]    = deepcopy(prefitfolder.Get(key.GetName()).Clone("vvttv"))
-            if "dy" in key.GetName():
-                prefitdict[iB]["dy"]       = deepcopy(prefitfolder.Get(key.GetName()).Clone("dy"))
-            if "data" in key.GetName():
-                prefitdict[iB]["data"]     = deepcopy(prefitfolder.Get(key.GetName()).Clone("data"))
-                postfitdict[iB]["data"]    = deepcopy(prefitfolder.Get(key.GetName()).Clone("data_"))
-
-        for key in postfitfolder.GetListOfKeys():
-            if "ttbar" in key.GetName():
-                postfitdict[iB]["ttbar"]   = deepcopy(postfitfolder.Get(key.GetName()).Clone("ttbar"))
-            if "tw" in key.GetName():
-                postfitdict[iB]["tw"]      = deepcopy(postfitfolder.Get(key.GetName()).Clone("tw"))
-            if "nonworz" in key.GetName():
-                postfitdict[iB]["nonworz"] = deepcopy(postfitfolder.Get(key.GetName()).Clone("nonworz"))
-            if "vvttv" in key.GetName():
-                postfitdict[iB]["vvttv"]   = deepcopy(postfitfolder.Get(key.GetName()).Clone("vvttv"))
-            if "dy" in key.GetName():
-                postfitdict[iB]["dy"]      = deepcopy(postfitfolder.Get(key.GetName()).Clone("dy"))
-
-    tfile2.Close(); tfile.Close()
-
-    #### SAVING
-    # Put results into histos
-    outHisto = r.TH1D('hFitResult_{var}'.format(var = varName),
-                      '', nparticlebins, array('d', vl.varList[varName]['bins_particle']))
-    uncInfo = deepcopy(outHisto.Clone('hFitResult_forPlotting_' + varName))
-
-    scaleval = 1
-    thelumi = vl.TotalLumi if year == "run2" else vl.LumiDict[int(iY)]
-    if vl.doxsec: scaleval = 1/thelumi/1000
-
-    signalname = "x_tw"
-    for i in range(1, nparticlebins + 1):
-        card = r.TFile.Open(inpath + "/" + year + "/" + varName + "/particle.root", "READ")
-        tmpint = card.Get(signalname).GetBinContent(i)
-        card.Close()
-        
-        results['r_tW_%d'%(i-1)][0] *= tmpint * scaleval
-        results['r_tW_%d'%(i-1)][1] *= tmpint * scaleval
-        results['r_tW_%d'%(i-1)][2] *= tmpint * scaleval
-        results['r_tW_%d'%(i-1)][3] *= tmpint * scaleval
-
-        # The uncertainties here are symmetric...
-        outHisto.SetBinContent(i, results['r_tW_%d'%(i-1)][0])
-        outHisto.SetBinError  (i, results['r_tW_%d'%(i-1)][3])
-
-        # ...and these here are asymm.:
-        uncInfo.SetBinContent(i,   results['r_tW_%d'%(i-1)][1]) # Down
-        uncInfo.SetBinError  (i,   results['r_tW_%d'%(i-1)][2]) # Up
-
-
-    # Put covariance matrix into yield parametrization instead of cross section parametrization
-    # Also the thing should be in a th2
-    hCov    = r.TH2D('hCovar_{var}'.format(var = varName), '',
-                     nparticlebins, -0.5, nparticlebins - 0.5,
-                     nparticlebins, -0.5, nparticlebins - 0.5)
-
-    card    = r.TFile.Open(inpath + "/" + year + "/" + varName + "/particle.root", "READ")
-    for i in range(1, nparticlebins + 1):
-        tmpintx = card.Get(signalname).GetBinContent(i)
-        for j in range(1, nparticlebins + 1):
-            tmpinty = card.Get(signalname).GetBinContent(j)
-            normx = tmpintx * scaleval
-            normy = tmpinty * scaleval
-        
-            cov[i-1][j-1] = cov[i-1][j-1] * normx * normy
-            hCov.SetBinContent( hCov.GetBin(i,j), cov[i-1][j-1] )
-
-    card.Close(); del card
-
-    #### PLOTTING
-    # Old srs plotting
-    #toKeep = []
-    #for p in [('r_tW','tW'), ('DY','DY'), ('VVttbarV','VV+ttV'), ('ttbar','t#bar{t}')]:
-        #graph = r.TGraphAsymmErrors(len(bins_detector)-1)
-        #graph.SetName(p[0])
-        #for i in range(1, len(bins_detector)):
-            #if '%s_%d'%(p[0],i) not in results:
-                #graph.SetPoint( i-1, (bins_detector[i-1] + bins_detector[i])/2, 0)
-                #graph.SetPointError( i-1, (bins_detector[i] - bins_detector[i-1])/2, (bins_detector[i] - bins_detector[i-1])/2, 0, 0)
-            #else:
-                #graph.SetPoint( i-1, (bins_detector[i-1] + bins_detector[i])/2, results['%s_%d'%(p[0],i)][0])
-                #graph.SetPointError( i-1, (bins_detector[i] - bins_detector[i-1])/2, (bins_detector[i] - bins_detector[i-1])/2,
-                                    #-results['%s_%d'%(p[0],i)][1], results['%s_%d'%(p[0],i)][2])
-        #toKeep.append( (graph, p[1]))
-
-    #plot = bp.beautifulUnfoldingPlots('srs_{var}'.format(var = varName))
-    #plot.addHistoInPad( len(toKeep), toKeep[0][0], 'AP', toKeep[0][1],'')
-    #plot.addTLatex(0.7,1-0.2, toKeep[0][1])
-    #plot.plotspath  = "results/srs/"
-    #for p in range( 1, len(toKeep)):
-        #plot.addHistoInPad( p+1, toKeep[p][0], 'AP', toKeep[p][1],'')
-        ##toKeep[p][0].GetYaxis().SetTitle('Post/pre')
-        ##toKeep[p][0].GetYaxis().CenterTitle(True)
-
-        #plot.addTLatex(0.7,1-1.23*float(p)/(len(toKeep)+1)-0.2, toKeep[p][1])
-    #setattr(plot,'noCMS',True)
-    #plot.saveCanvas('TR', '',False)
-
-    if not noPlots:
-        drawCorrMat(       corrmat,     inpath, year, varName)
-        drawCovMat(        hCov,        inpath, year, varName)
-        #drawPreAndPostFit( prefitdict,  inpath, year, varName, "pre")
-        #drawPreAndPostFit( postfitdict, inpath, year, varName, "post")
-        drawParticleResults(outHisto, uncInfo, hCov, inpath, year, varName, pretend)
-
-    #print "\nRESULTS:"
-    #for key in results: print key
-
-    print '\n> Variable', varName, 'fitted.\n'
-    return [year, varName, deepcopy(outHisto), uncInfo, hCov, corrmat]
+        return 0
 
 
 
@@ -756,4 +759,5 @@ if __name__ == '__main__':
             finalresults.append(makeFit(tsk))
             #sys.exit()
 
-    saveFinalResults(inpath, finalresults)
+    if not pretend:
+        saveFinalResults(inpath, finalresults)
