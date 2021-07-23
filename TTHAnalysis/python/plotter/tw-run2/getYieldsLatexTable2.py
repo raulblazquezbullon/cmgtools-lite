@@ -6,10 +6,10 @@ from math import log10, floor
 
 
 translateDict = OrderedDict(
-    [("1j1b"                     , "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2021-07-03/InputVar/run2/1j1t/MVAtrain/jet1_pt.txt"),
-    ("1j1b_Differential"    , "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2021-07-03/InputVar/run2/differential/jet1_pt.txt"),
-    ("2j1b"                      , "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2021-07-03/InputVar/run2/2j1t/MVAtrain/jet2_pt.txt"),
-    ("2j2b"    , "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2021-07-03/FitPlots/run2/2j2t/jet2_pt_rebin.txt")]
+    [("1j1b"                     , "/nfs/fanae/user/vrbouza/Proyectos/tw_run2/desarrollo/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp_2021_07_21_todonuevo/varplots/run2/1j1t/MVAtrain/jet1_pt.txt"),
+    ("1j1b_Differential"    , "/nfs/fanae/user/vrbouza/Proyectos/tw_run2/desarrollo/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp_2021_07_21_todonuevo/varplots/run2/1j1t/differential/jet1_pt.txt"),
+    ("2j1b"                      , "/nfs/fanae/user/vrbouza/Proyectos/tw_run2/desarrollo/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp_2021_07_21_todonuevo/varplots/run2/2j1t/MVAtrain/jet2_pt.txt"),
+    ("2j2b"    , "/nfs/fanae/user/vrbouza/Proyectos/tw_run2/desarrollo/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp_2021_07_21_todonuevo/varplots/run2/2j2t/jet2_pt_rebin.txt")]
 )
 
 translateDict_processes = OrderedDict(

@@ -123,7 +123,7 @@ def PlottingCommand(prod, year, nthreads, outpath, selplot, region, ratio, extra
     if useFibre: samplespaths_ = samplespaths_.replace("phedexrw", "phedex").replace("cienciasrw", "ciencias")
 
     nth_        = "" if nthreads == 0 else ("--split-factor=-1 -j " + str(nthreads))
-    friends_    = friendsscaff + (" --Fs {P}/5_mvas" * ("MVA" in region))
+    friends_    = friendsscaff + (" --Fs {P}/5_mvas_new" * ("MVA" in region))
     outpath_    = outpath + "/" + year + "/" + (region if "_" not in region else (region.split("_")[0] + "/" + region.split("_")[1]))
     selplot_    = " ".join( [ "--sP {p}".format(p = sp) for sp in selplot ] ) if len(selplot) else ""
     ratio_      = "--maxRatioRange " + ratio

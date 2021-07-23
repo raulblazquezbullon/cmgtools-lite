@@ -188,14 +188,15 @@ void trainBDtW_1j1t(TString outputdir, TString outputbasedir = "/pool/phedex/use
   TTtree->Add(inputdir + "/2018/x_mvatrain/" + ttbarname);
   
   //========Drell-Yann training only=================================================================
-//  TString DY_50 = "dy_50.root";
+  TString DY_50 = "dy_50.root";
 //  TString DY_10to50 = "dy_10to50.root";
-//  TTtree->Add(inputdir + "/2016/x_mvatrain/" + DY_50);
-//  TTtree->Add(inputdir + "/2017/x_mvatrain/" + DY_50);
-//  TTtree->Add(inputdir + "/2018/x_mvatrain/" + DY_50);  
-//  TTtree->Add(inputdir + "/2016/x_mvatrain/" + DY_10to50);
-//  TTtree->Add(inputdir + "/2017/x_mvatrain/" + DY_10to50);
-//  TTtree->Add(inputdir + "/2018/x_mvatrain/" + DY_10to50);
+  TString DY_path = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/productions/2021-06-09/";
+  TTtree->Add(DY_path + "/2016/x_mvatrain/" + DY_50);
+  TTtree->Add(DY_path + "/2017/x_mvatrain/" + DY_50);
+  TTtree->Add(DY_path + "/2018/x_mvatrain/" + DY_50);  
+//  TTtree->Add(DY_path + "/2016/x_mvatrain/" + DY_10to50);
+//  TTtree->Add(DY_path + "/2017/x_mvatrain/" + DY_10to50);
+//  TTtree->Add(DY_path + "/2018/x_mvatrain/" + DY_10to50);
   //========Drell-Yann training only=================================================================
 
   Double_t sigWeight = 1.0;
