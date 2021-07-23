@@ -64,6 +64,8 @@ sfplots2016="btaggingEff_B_2016 btaggingEff_C_2016 btaggingEff_L_2016 leptonSF_e
 # return
 
 cp $prefix/cards/run2/impacts_1j1t,2j1t,2j2t/impactsrun2_1j1t2j1t2j2t.pdf $outfolder/figures/inclsignalextr/Fit-figures/impactst1.pdf
+cp $prefix/varplots/run2/1j1t/MVAtrain/tmvaBDT_1j1b_20bins.pdf $outfolder/figures/inclsignalextr/Fit-figures/
+cp $prefix/varplots/run2/2j1t/MVAtrain/tmvaBDT_2j1b_12bins.pdf $outfolder/figures/inclsignalextr/Fit-figures/
 cp $prefix/varplots/run2/2j2t/jet2_pt_rebin.pdf $outfolder/figures/inclsignalextr/Fit-figures/
 
 

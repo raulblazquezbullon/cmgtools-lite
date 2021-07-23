@@ -68,7 +68,7 @@ def ExecuteOrSubmitTask(tsk):
 
         thecomm = slurmscaff.format(nth     = nthreads,
                                     queue   = queue,
-                                    jobname = "CMGTcards_" + year + "_" + variable.replace("(", "").replace(")", "") + "_" + region,
+                                    jobname = "CMGTcards_" + year + "_" + (variable.replace("(", "").replace(")", "") if not "min" in variable else "Jet2_Pt") + "_" + region,
                                     logpath = logpath.format(p = prod, y = yr),
                                     command = CardsCommand(prod, year, variable, bines, asimov, nthreads, outpath, region, noUnc, useFibre, extra))
 
