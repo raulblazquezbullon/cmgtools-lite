@@ -33,9 +33,10 @@ def plotImpacts(inputjson, outputname, outputpath, npois):
     left_margin   = 0.2
     pullsprop     = 0.37
     label_size    = 0.021
-    doCheckboxes  = False
     doBlind       = False
-    height        = 600
+    doEraseStatNuis = False
+    canv_width    = 700
+    canv_heigh    = 600
     per_page      = 30
     max_pages     = None
     cms_label     = "Internal"
@@ -58,8 +59,8 @@ def plotImpacts(inputjson, outputname, outputpath, npois):
     # Set the global plotting style
     plot.ModTDRStyle(l      = left_margin, 
                      b      = 0.10, 
-                     width  = (900 if doCheckboxes else 700), 
-                     height = height)
+                     width  = canv_width, 
+                     height = canv_height)
 
     # We will assume the first POI is the one to plot
     POIs = [ele['name'] for ele in data['POIs']]
@@ -77,15 +78,13 @@ def plotImpacts(inputjson, outputname, outputpath, npois):
                         reverse = True)
     
     # Delete stat. nuis.?
-    """for p in data['params']: 
-        print p
-        if p['name'].startswith('prop_binch'): 
-            print 'deleting', p
-            data['params'].remove(p)"""
+    if doEraseStatNuis:
+        for p in data['params']: 
+            print p
+            if p['name'].startswith('prop_binch'): 
+                print 'deleting', p
+                data['params'].remove(p)
     
-    if doCheckboxes:
-        cboxes = data['checkboxes']
-
     # Set the number of parameters per page (show) and the number of pages (n)
     show = per_page
     n    = int(math.ceil(float(len(data['params'])) / float(show)))
@@ -138,14 +137,10 @@ def plotImpacts(inputjson, outputname, outputpath, npois):
             boxes.append(box)
 
         # Crate and style the pads
-        if doCheckboxes:
-            raise RuntimeError("FATAL: not working")
-            pads = plot.MultiRatioSplitColumns([0.54, 0.24], [0., 0.], [0., 0.])
-            pads[2].SetGrid(1, 0)
-        else:
-            pads = plot.MultiRatioSplitColumns([pullsprop] + [(1. - pullsprop - 0.01)/npois] * npois, [0.] * (npois + 1), [0.] * (npois + 1))
-            for iP in range(npois):
-                pads[iP + 1].SetGrid(1, 0)
+#        pads = plot.MultiRatioSplitColumns([pullsprop] + [(1. - pullsprop - 0.01)/npois] * npois, [0.] * (npois + 1), [0.] * (npois + 1))
+        pads = plot.MultiRatioSplitColumns([(1. - pullsprop - 0.01)/npois] * npois * 2, [0.] * npois * 2, [0.] * npois * 2)
+        for iP in range(npois):
+            pads[iP + 1].SetGrid(1, 0)
         pads[0].SetGrid(1, 0)
         pads[0].SetTickx(1)
         pads[1].SetTickx(1)
@@ -203,12 +198,6 @@ def plotImpacts(inputjson, outputname, outputpath, npois):
                 g_impacts_hi_list[iP].SetPoint(i, 0, float(i) + 0.5)
                 g_impacts_lo_list[iP].SetPoint(i, 0, float(i) + 0.5)
             
-            if doCheckboxes:
-                pboxes = pdata[p]['checkboxes']
-                for pbox in pboxes:
-                    cboxes.index(pbox)
-                    g_check.SetPoint(g_check_i, cboxes.index(pbox) + 0.5, float(i) + 0.5)
-                    g_check_i += 1
             
             imp_list = []
             for nam in poiDict:
@@ -277,20 +266,6 @@ def plotImpacts(inputjson, outputname, outputpath, npois):
                      TickLength = 0.0)
             h_impacts_list[-1].Draw()
         print len(pads)
-        """
-        if doCheckboxes:
-            pads[2].cd()
-            h_checkboxes = r.TH2F(
-                "checkboxes", "checkboxes", len(cboxes), 0, len(cboxes), n_params, 0, n_params)
-            for i, cbox in enumerate(cboxes):
-                #h_checkboxes.GetXaxis().SetBinLabel(i+1, vl.SysNameTranslator[cbox])
-                h_checkboxes.GetXaxis().SetBinLabel(i+1, cbox)
-            plot.Set(h_checkboxes.GetXaxis(), LabelSize=0.03, LabelOffset=0.002)
-            h_checkboxes.GetXaxis().LabelsOption('v')
-            plot.Set(h_checkboxes.GetYaxis(), LabelSize=0, TickLength=0.0)
-            h_checkboxes.Draw()
-            # g_check.SetFillColor(r.kGreen)
-            g_check.Draw('PSAME')"""
 
         # Back to the first pad to draw the pulls graph
         pads[0].cd()

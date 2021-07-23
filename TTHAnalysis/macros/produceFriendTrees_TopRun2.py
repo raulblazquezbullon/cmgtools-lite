@@ -40,7 +40,7 @@ friendfolders = {0 : "0_lumijson",
                  2 : "2_cleaning",
                  3 : "3_varstrigger",
                  4 : "4_scalefactors",
-                 5 : "5_mvas",
+                 5 : "5_mvas_new",
                  6 : "6_hemissue",
                  "mvatrain" : "x_mvatrain"
                 }
@@ -665,31 +665,37 @@ sampledict[2018] = {
 trainsampledict = {}; trainsampledict[2016] = {}; trainsampledict[2017] = {}; trainsampledict[2018] = {}
 trainsampledict[2016] = {
     ### ttbar
-    "TTTo2L2Nu_division2" : sampledict[2016]["TTTo2L2Nu_division2"],
+#    "TTTo2L2Nu_division2" : sampledict[2016]["TTTo2L2Nu_division2"],
 
     ### tW
-    "tW_central" : sampledict[2016]["tW_central"],
-    "tbarW"      : sampledict[2016]["tbarW"],
+#    "tW_central"     : sampledict[2016]["tW_central"],
+#    "tbarW"          : sampledict[2016]["tbarW"],
+    
+    "DYJetsToLL_M_50" : sampledict[2016]["DYJetsToLL_M_50"],
 }
 
 
 trainsampledict[2017] = {
     ### ttbar
-    "TTTo2L2Nu_division2" : sampledict[2017]["TTTo2L2Nu_division2"],
+#    "TTTo2L2Nu_division2" : sampledict[2017]["TTTo2L2Nu_division2"],
 
     ### tW
-    "tW_central"    : sampledict[2017]["tW_central"],
-    "tbarW_central" : sampledict[2017]["tbarW_central"],
+#    "tW_central"     : sampledict[2017]["tW_central"],
+#    "tbarW_central"  : sampledict[2017]["tbarW_central"],
+    
+    "DYJetsToLL_M_50" : sampledict[2017]["DYJetsToLL_M_50"],
 }
 
 
 trainsampledict[2018] = {
     ### ttbar
-    "TTTo2L2Nu_division2" : sampledict[2018]["TTTo2L2Nu_division2"],
+#    "TTTo2L2Nu_division2" : sampledict[2018]["TTTo2L2Nu_division2"],
 
     ### tW
-    "tW"    : sampledict[2018]["tW"],
-    "tbarW" : sampledict[2018]["tbarW"],
+#    "tW"    : sampledict[2018]["tW"],
+#    "tbarW" : sampledict[2018]["tbarW"],
+    
+    "DYJetsToLL_M_50" : sampledict[2018]["DYJetsToLL_M_50"],
 }
 
 
@@ -760,7 +766,8 @@ def SendDatasetJobs(task):
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 3) + friendsuff
 
     elif step == 5:
-        module_  = "mvas_" + ("mc" if not isData else "data")
+        #module_  = "mvas_" + ("mc" if not isData else "data")
+        module_  = "mvas_" + ("mc" if not isData else "data") + "_pruebas"
         #friends_ +=       friendpref + getFriendsFolder(dataset, friendsbasepath, 0) + friendsuff
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 1) + friendsuff
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 2) + friendsuff

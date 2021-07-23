@@ -7,13 +7,13 @@ r.gROOT.SetBatch(True)
 
 friendspath  = "/pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions"
 logpath      = friendspath + "/{p}/{y}/logs/cards_inclusive"
-#logpath = "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/plot_logs"
+
 lumidict     = {2016 : 36.33, 
                 2017 : 41.53,
                 2018 : 59.74}
 
 
-friendsscaff = "--FDs {P}/0_lumijson --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --Fs {P}/5_mvas --Fs {P}/6_hemissue"
+friendsscaff = "--FDs {P}/0_lumijson --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --Fs {P}/5_mvas_new --Fs {P}/6_hemissue"
 
 slurmscaff   = "sbatch -c {nth} -p {queue} -J {jobname} -e {logpath}/log.%j.%x.err -o {logpath}/log.%j.%x.out --wrap '{command}'"
 
@@ -71,7 +71,8 @@ def CardsCommand(prod, year, var, bines, isAsimov, nthreads, outpath, region, no
     samplespaths_ = "-P " + friendspath + "/" + prod + ("/" + year) * (year != "run2")
     if useFibre: samplespaths_ = samplespaths_.replace("phedexrw", "phedex").replace("cienciasrw", "ciencias")
 
-    nth_       = "" if nthreads == 0 else ("--split-factor=-1 -j " + str(nthreads))
+#    nth_       = "" if nthreads == 0 else ("--split-factor=-1 -j " + str(nthreads))
+    nth_       = "" if nthreads == 0 else ("--split-factor=0 -j " + str(nthreads))
     friends_   = friendsscaff
     outpath_   = outpath + "/" + year + "/" + region
 
@@ -96,9 +97,9 @@ def CardsCommand(prod, year, var, bines, isAsimov, nthreads, outpath, region, no
 def ExecuteOrSubmitTask(tsk):
     prod, year, variable, bines, asimov, nthreads, outpath, region, noUnc, useFibre, extra, pretend, queue = tsk
 
-    if not os.path.isdir(outpath + "/" + str(year)) and not pretend:
-        os.system("mkdir -p " + outpath + "/" + str(year))
-    
+    if not os.path.isdir(outpath + "/" + year + "/" + region):
+        os.system("mkdir -p " + outpath + "/" + year + "/" + region)
+
     if queue == "":
         thecomm = CardsCommand(prod, year, variable, bines, asimov, nthreads, outpath, region, noUnc, useFibre, extra)
         print "Command: " + thecomm

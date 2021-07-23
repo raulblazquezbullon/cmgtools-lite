@@ -1,5 +1,6 @@
 import os, sys, enum
 import ROOT as r
+from copy import deepcopy
 
 class ch(enum.IntEnum):
     NoChan = 0
@@ -500,6 +501,29 @@ MVAProc_data = lambda : MVA_tWRun2(isData = True)
 
 mvas_mc   = [MVAProc_mc]
 mvas_data = [MVAProc_data]
+
+
+
+from CMGTools.TTHAnalysis.tools.nanoAOD.MVA_tWRun2_pruebas import MVA_tWRun2_pruebas
+MVAProc_mc_pruebas   = lambda : MVA_tWRun2_pruebas(isData = True, jecvars = ['jesTotal', 'jer'] + ['jes%s'%v for v in jecGroups] + ["jer%i"%i for i in range(6)])
+MVAProc_data_pruebas = lambda : MVA_tWRun2_pruebas(isData = True)
+
+
+#from CMGTools.TTHAnalysis.tools.nanoAOD.MVA_tWRun2_new import MVA_tWRun2_new
+# Standard import
+import importlib
+
+mvas_mc_pruebas = [lambda : getattr(importlib.import_module("CMGTools.TTHAnalysis.tools.nanoAOD.MVA_tWRun2_new"), "MVA_tWRun2_new_")()]
+
+tmpstr = """mvas_mc_pruebas.append(lambda : getattr(importlib.import_module("CMGTools.TTHAnalysis.tools.nanoAOD.MVA_tWRun2_new"), "MVA_tWRun2_new_{v}{sv}")() )"""
+
+for v in (['jesTotal', 'jer'] + ['jes%s'%v for v in jecGroups] + ["jer%i"%i for i in range(6)] + ["mu"]):
+    for sv in ["Up", "Down"]:
+        eval(tmpstr.format(v = v, sv = sv))
+        #mvas_mc_pruebas.append(  getattr(importlib.import_module("CMGTools.TTHAnalysis.tools.nanoAOD.MVA_tWRun2_new"), "MVA_tWRun2_new_" + v + sv)() )
+#print "aqui", mvas_mc_pruebas
+mvas_data_pruebas = lambda : getattr(importlib.import_module("CMGTools.TTHAnalysis.tools.nanoAOD.MVA_tWRun2_new"), "MVA_tWRun2_new_")()
+
 
 
 from CMGTools.TTHAnalysis.tools.nanoAOD.createTrainingMiniTree_tWRun2 import createTrainingMiniTree_tWRun2
