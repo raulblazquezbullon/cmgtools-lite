@@ -18,27 +18,9 @@ mcpathdiv    = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/misc/2021_04_
 datapath     = "/pool/phedex/nanoAODv6v7"
 
 logpath      = friendspath + "/{p}/{y}/logs/plots"
-#logpath = "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/plot_logs"
 
-#mcpathdiv    = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/misc/divisiones/"
-#logpath      = friendspath + "/{p}/{y}/logs/plots"
-
-
-#friendsscaff = "--Fs {fpath}/{p}/{y}/0_yeartag --Fs {fpath}/{p}/{y}/1_lepmerge_roch --Fs {fpath}/{p}/{y}/2_cleaning --Fs {fpath}/{p}/{y}/3_varstrigger --FMCs {fpath}/{p}/{y}/4_scalefactors --Fs {fpath}/{p}/{y}/5_mvas"
-
-#friendsscaff = "--Fs {P}/0_yeartag --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --Fs {P}/5_mvas"
-#friendsscaff = "--Fs {P}/0_yeartag --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --Fs {P}/5_mvas_new"
-#friendsscaff = "--Fs {P}/0_yeartag --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --Fs {P}/5_mvas_bkp20200807"
-#friendsscaff = "--Fs {P}/0_yeartag --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors_bkp" ### Nueva, dejando la incorporacion del quinto ftree opcional
-friendsscaff = "--FDs {P}/0_lumijson --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --Fs {P}/6_hemissue" ### Nueva, dejando la incorporacion del quinto ftree opcional
-
-#commandscaff = "python mcPlots.py --tree NanoAOD --pdir {outpath} {friends} {samplespaths} -f -l {lumi} {nth} --year {year} --maxRatioRange 0.8 1.2 --ratioYNDiv 210 --showRatio --attachRatioPanel --fixRatioRange --legendColumns 3 --legendWidth 0.52 --legendFontSize 0.042 --noCms --topSpamSize 1.1 --lspam '#scale[1.1]{{#bf{{CMS}}}} #scale[0.9]{{#it{{Preliminary}}}}' --showMCError -W 'MuonSF * ElecSF * TrigSF * puWeight * bTagWeight{extraweights}' -L tw-run2/functions_tw.cc {selplot} {mcafile} {cutsfile} {plotsfile} {extra}"
-
-# Pre-separar SF
-#commandscaff = "python mcPlots.py --tree NanoAOD --pdir {outpath} {friends} {samplespaths} -f -l {lumi} {nth} --year {year} {ratio} --ratioYNDiv 210 --showRatio --attachRatioPanel --fixRatioRange --legendColumns 3 --legendWidth 0.52 --legendFontSize 0.042 --noCms --topSpamSize 1.1 --lspam '#scale[1.1]{{#bf{{CMS}}}} #scale[0.9]{{#it{{Preliminary}}}}' --showMCError -W 'MuonSF * ElecSF * TrigSF * puWeight * bTagWeight * PrefireWeight' -L tw-run2/functions_tw.cc {selplot} {mcafile} {cutsfile} {plotsfile} {extra}"
-
-# Post-separar SF
-#commandscaff = "python mcPlots.py --tree NanoAOD --pdir {outpath} {friends} {samplespaths} -f -l {lumi} {nth} --year {year} {ratio} --ratioYNDiv 210 --showRatio --attachRatioPanel --fixRatioRange --legendColumns 3 --legendWidth 0.52 --legendFontSize 0.042 --noCms --topSpamSize 1.1 --lspam '#scale[1.1]{{#bf{{CMS}}}} #scale[0.9]{{#it{{Preliminary}}}}' --neg --showMCError -W 'MuonIDSF * MuonISOSF * ElecIDSF * ElecRECOSF * TrigSF * puWeight * bTagWeight * PrefireWeight' -L tw-run2/functions_tw.cc {selplot} {mcafile} {cutsfile} {plotsfile} {extra} --AP"
+#friendsscaff = "--FDs {P}/0_lumijson --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --Fs {P}/6_hemissue" ### Nueva, dejando la incorporacion del quinto ftree opcional
+friendsscaff = "--FDs {P}/0_lumijson --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors" ### Nueva, dejando la incorporacion del quinto ftree opcional
 
 commandscaff = "python mcPlots.py --tree NanoAOD --pdir {outpath} {friends} {samplespaths} -f -l {lumi} {nth} --year {year} {ratio} --showRatio --fixRatioRange --legendColumns 1 --legendWidth 0.07 --legendFontSize 0.039 --noCms --topSpamSize 1.1 --lspam '#splitline{{#scale[1.1]{{#bf{{CMS}}}}}}{{#scale[0.9]{{#it{{Preliminary}}}}}}' --neg --showMCError -W 'MuonIDSF * MuonISOSF * ElecIDSF * ElecRECOSF * TrigSF * puWeight * bTagWeight * PrefireWeight' -L tw-run2/functions_tw.cc {selplot} {mcafile} {cutsfile} {plotsfile} {extra} --AP --noStatTotLegendOnRatio --addspam 'e^{{#pm}}#mu^{{#mp}}{nameregion}' --lspamPosition 0.21 .845 .35 .885 --TotalUncRatioStyle 3244 0 --noStatUncOnRatio --YTitleOffset 2.1 2.1 --CanvasSize 600 450 --TotalUncRatioColor 920 920 --addspamPosition .41 .855 .6 .895 --transparentLegend --PrincipalPadDimensions 0.00 0.25 1.00 1.00 --RatioPadDimensions 0.00 0.00 1.00 0.25 --LeftRightMargins 0.16 0.03 --ratioYLabel 'Data/MC' --labelsSize 22 --labelsFont 43 --BottomMarginRatio 0.42 --XTitleOffsetRatio 4.8 --noXErrData --printBin 'bin' --printBinUnity --noExpoShift --no-elist --aefr temp_cards/2021-07-22_CardsUncPlanas/run2/fitDiagnosticsTest.root fit_s --aefrl Postfit" #--ratioYNDiv 210 --NotDrawRatioLine  --peg-process tw btagging_corr
 
@@ -47,7 +29,7 @@ commandscaff_blind = "python mcPlots.py --tree NanoAOD --pdir {outpath} {friends
 
 
 slurmscaff   = 'sbatch -c {nth} -p {queue} -J {jobname} -e {logpath}/log.%j.%x.err -o {logpath}/log.%j.%x.out --wrap "{command}"'
-lumidict     = {2016 : 36.33, 
+lumidict     = {2016 : 36.33,
                 2017 : 41.53,
                 2018 : 59.74}
 
@@ -82,42 +64,10 @@ def GeneralExecutioner(task):
 
 
 
-#### OLD
-#def PlottingCommand(prod, year, nthreads, outpath, selplot, region, extra):
-    #mcafile_   = "tw-run2/mca-tw-{y}.txt".format(y = year)
-    #cutsfile_  = "tw-run2/cuts-tw-{reg}.txt".format(reg = region)
-    #plotsfile_ = "tw-run2/plots-tw-{reg}.txt".format(reg = region)
-
-    #samplespaths_ = "-P " + mcpath + "/" + str(year) + " -P " + datapath + "/" + str(year)
-    #extraweights_ = "" if year == 2018 else " * PrefireWeight"
-
-    #nth_       = "" if nthreads == 0 else ("--split-factor=-1 -j " + str(nthreads))
-    #friends_   = friendsscaff.format(fpath = friendspath,
-                                     #p     = prod,
-                                     #y     = year)
-    #outpath_   = outpath + "/" + str(year) + "/" + region
-
-
-    #comm = commandscaff.format(outpath      = outpath_,
-                               #friends      = friends_,
-                               #samplespaths = samplespaths_,
-                               #lumi      = lumidict[year],
-                               #nth       = nth_,
-                               #year      = year,
-                               #extraweights = extraweights_,
-                               #selplot   = "" if selplot == "" else ("--sP " + selplot),
-                               #mcafile   = mcafile_,
-                               #cutsfile  = cutsfile_,
-                               #plotsfile = plotsfile_,
-                               #extra     = extra)
-
-    #return comm
-
-
 def PlottingCommand(prod, year, nthreads, outpath, selplot, region, ratio, extra, useFibre, doUncs):
     mcafile_    = "tw-run2/mca-tw.txt"
     cutsfile_   = "tw-run2/cuts-tw-{reg}.txt".format(reg = region if ("_" not in region) else region.split("_")[0] if ("differential" not in region) else region)
-    plotsfile_  = "tw-run2/plots-tw/plots-tw-{reg}.txt".format(reg = region)
+    plotsfile_  = "tw-run2/plots-tw/plots-tw-{reg}.txt".format(reg = region.replace("SF", ""))
 
     samplespaths_ = "-P " + friendspath + "/" + prod + ("/" + year) * (year != "run2")
     if useFibre: samplespaths_ = samplespaths_.replace("phedexrw", "phedex").replace("cienciasrw", "ciencias")
