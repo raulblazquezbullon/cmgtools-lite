@@ -236,7 +236,7 @@ class EventVars_tWRun2(Module):
                 allret["datatag"] = tags.muoneg
             elif "singlemuon" in thesample.lower():
                 allret["datatag"] = tags.singlemuon
-            elif "singleelec" in thesample.lower():
+            elif "singleelec" in thesample.lower() or "egamma" in thesample.lower():
                 allret["datatag"] = tags.singleelec
             elif "doublemuon" in thesample.lower():
                 allret["datatag"] = tags.doublemuon

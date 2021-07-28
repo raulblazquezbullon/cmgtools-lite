@@ -19,13 +19,12 @@ datapath     = "/pool/phedex/nanoAODv6v7"
 
 logpath      = friendspath + "/{p}/{y}/logs/plots"
 
-#friendsscaff = "--FDs {P}/0_lumijson --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --Fs {P}/6_hemissue" ### Nueva, dejando la incorporacion del quinto ftree opcional
-friendsscaff = "--FDs {P}/0_lumijson --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors" ### Nueva, dejando la incorporacion del quinto ftree opcional
+friendsscaff = "--FDs {P}/0_lumijson --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors"
 
-commandscaff = "python mcPlots.py --tree NanoAOD --pdir {outpath} {friends} {samplespaths} -f -l {lumi} {nth} --year {year} {ratio} --showRatio --fixRatioRange --legendColumns 1 --legendWidth 0.07 --legendFontSize 0.039 --noCms --topSpamSize 1.1 --lspam '#splitline{{#scale[1.1]{{#bf{{CMS}}}}}}{{#scale[0.9]{{#it{{Preliminary}}}}}}' --neg --showMCError -W 'MuonIDSF * MuonISOSF * ElecIDSF * ElecRECOSF * TrigSF * puWeight * bTagWeight * PrefireWeight' -L tw-run2/functions_tw.cc {selplot} {mcafile} {cutsfile} {plotsfile} {extra} --AP --noStatTotLegendOnRatio --addspam 'e^{{#pm}}#mu^{{#mp}}{nameregion}' --lspamPosition 0.21 .845 .35 .885 --TotalUncRatioStyle 3244 0 --noStatUncOnRatio --YTitleOffset 2.1 2.1 --CanvasSize 600 450 --TotalUncRatioColor 920 920 --addspamPosition .41 .855 .6 .895 --transparentLegend --PrincipalPadDimensions 0.00 0.25 1.00 1.00 --RatioPadDimensions 0.00 0.00 1.00 0.25 --LeftRightMargins 0.16 0.03 --ratioYLabel 'Data/MC' --labelsSize 22 --labelsFont 43 --BottomMarginRatio 0.42 --XTitleOffsetRatio 4.8 --noXErrData --printBin 'bin' --printBinUnity --noExpoShift --no-elist" #--ratioYNDiv 210 --NotDrawRatioLine
+commandscaff = "python mcPlots.py --tree NanoAOD --pdir {outpath} {friends} {samplespaths} -f -l {lumi} {nth} --year {year} {ratio} --showRatio --fixRatioRange --legendColumns 1 --legendWidth 0.07 --legendFontSize 0.039 --noCms --topSpamSize 1.1 --lspam '#splitline{{#scale[1.1]{{#bf{{CMS}}}}}}{{#scale[0.9]{{#it{{Preliminary}}}}}}' --neg --showMCError -W 'MuonIDSF * MuonISOSF * ElecIDSF * ElecRECOSF * TrigSF * puWeight * bTagWeight * PrefireWeight' -L tw-run2/functions_tw.cc {selplot} {mcafile} {cutsfile} {plotsfile} {extra} --AP --noStatTotLegendOnRatio --addspam '{nameregion}' --lspamPosition 0.21 .845 .35 .885 --TotalUncRatioStyle 3244 0 --noStatUncOnRatio --YTitleOffset 2.1 2.1 --CanvasSize 600 450 --TotalUncRatioColor 920 920 --addspamPosition .41 .855 .6 .895 --transparentLegend --PrincipalPadDimensions 0.00 0.25 1.00 1.00 --RatioPadDimensions 0.00 0.00 1.00 0.25 --LeftRightMargins 0.16 0.03 --ratioYLabel 'Data/MC' --labelsSize 22 --labelsFont 43 --BottomMarginRatio 0.42 --XTitleOffsetRatio 4.8 --noXErrData --printBin 'bin' --printBinUnity --noExpoShift --no-elist" #--ratioYNDiv 210 --NotDrawRatioLine
 
 # For blind plots
-#commandscaff = "python mcPlots.py --tree NanoAOD --pdir {outpath} {friends} {samplespaths} -f -l {lumi} {nth} --year {year} {ratio} --showRatio --fixRatioRange --legendColumns 1 --legendWidth 0.07 --legendFontSize 0.032 --noCms --topSpamSize 1.1 --lspam '#splitline{{#scale[1.1]{{#bf{{CMS}}}}}}{{#scale[0.9]{{#it{{Preliminary}}}}}}' --neg --showMCError -W 'MuonIDSF * MuonISOSF * ElecIDSF * ElecRECOSF * TrigSF * puWeight * bTagWeight * PrefireWeight' -L tw-run2/functions_tw.cc {selplot} {mcafile} {cutsfile} {plotsfile} {extra} --AP --noStatTotLegendOnRatio --addspam 'e^{{#pm}}#mu^{{#mp}}{nameregion}' --lspamPosition 0.21 .845 .35 .885 --TotalUncRatioStyle 3244 0 --noStatUncOnRatio --YTitleOffset 2.1 2.1 --TotalUncRatioColor 920 920 --addspamPosition .41 .855 .6 .895 --transparentLegend --LeftRightMargins 0.16 0.03  --labelsSize 22 --labelsFont 43 --BottomMarginRatio 0.42 --XTitleOffsetRatio 4.8 --noXErrData --printBin 'bin' --printBinUnity --noExpoShift --no-elist" #--ratioYNDiv 210 --NotDrawRatioLine
+commandblindscaff = "python mcPlots.py --tree NanoAOD --pdir {outpath} {friends} {samplespaths} -f -l {lumi} {nth} --year {year} {ratio} --showRatio --fixRatioRange --legendColumns 1 --legendWidth 0.07 --legendFontSize 0.032 --noCms --topSpamSize 1.1 --lspam '#splitline{{#scale[1.1]{{#bf{{CMS}}}}}}{{#scale[0.9]{{#it{{Preliminary}}}}}}' --neg --showMCError -W 'MuonIDSF * MuonISOSF * ElecIDSF * ElecRECOSF * TrigSF * puWeight * bTagWeight * PrefireWeight' -L tw-run2/functions_tw.cc {selplot} {mcafile} {cutsfile} {plotsfile} {extra} --AP --noStatTotLegendOnRatio --addspam 'e^{{#pm}}#mu^{{#mp}}{nameregion}' --lspamPosition 0.21 .845 .35 .885 --TotalUncRatioStyle 3244 0 --noStatUncOnRatio --YTitleOffset 2.1 2.1 --TotalUncRatioColor 920 920 --addspamPosition .41 .855 .6 .895 --transparentLegend --LeftRightMargins 0.16 0.03  --labelsSize 22 --labelsFont 43 --BottomMarginRatio 0.42 --XTitleOffsetRatio 4.8 --noXErrData --printBin 'bin' --printBinUnity --noExpoShift --no-elist" #--ratioYNDiv 210 --NotDrawRatioLine
 
 
 slurmscaff   = 'sbatch -c {nth} -p {queue} -J {jobname} -e {logpath}/log.%j.%x.err -o {logpath}/log.%j.%x.out --wrap "{command}"'
@@ -35,7 +34,7 @@ lumidict     = {2016 : 36.33,
 
 
 def GeneralExecutioner(task):
-    prod, year, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend, useFibre, doUncs = task
+    prod, year, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend, useFibre, doUncs, doBlind = task
 
     if not os.path.isdir(outpath + "/" + str(year)) and not pretend:
         os.system("mkdir -p " + outpath + "/" + str(year))
@@ -50,12 +49,12 @@ def GeneralExecutioner(task):
                                         queue   = queue,
                                         jobname = jobname_,
                                         logpath = logpath.format(y = year, p = prod),
-                                        command = PlottingCommand(prod, year, nthreads, outpath, selplot, reg, ratiorange, extra, useFibre, doUncs))
+                                        command = PlottingCommand(prod, year, nthreads, outpath, selplot, reg, ratiorange, extra, useFibre, doUncs, doBlind))
             print "Command:", submitcomm
             if not pretend: os.system(submitcomm)
     else:
         for reg in region.split(","):
-            execcomm = PlottingCommand(prod, year, nthreads, outpath, selplot, reg, ratiorange, extra, useFibre, doUncs)
+            execcomm = PlottingCommand(prod, year, nthreads, outpath, selplot, reg, ratiorange, extra, useFibre, doUncs, doBlind)
             print "Command:", execcomm
             if not pretend: os.system(execcomm)
 
@@ -64,7 +63,7 @@ def GeneralExecutioner(task):
 
 
 
-def PlottingCommand(prod, year, nthreads, outpath, selplot, region, ratio, extra, useFibre, doUncs):
+def PlottingCommand(prod, year, nthreads, outpath, selplot, region, ratio, extra, useFibre, doUncs, doBlind):
     mcafile_    = "tw-run2/mca-tw.txt"
     cutsfile_   = "tw-run2/cuts-tw-{reg}.txt".format(reg = region if ("_" not in region) else region.split("_")[0] if ("differential" not in region) else region)
     plotsfile_  = "tw-run2/plots-tw/plots-tw-{reg}.txt".format(reg = region.replace("SF", ""))
@@ -77,27 +76,29 @@ def PlottingCommand(prod, year, nthreads, outpath, selplot, region, ratio, extra
     outpath_    = outpath + "/" + year + "/" + (region if "_" not in region else (region.split("_")[0] + "/" + region.split("_")[1]))
     selplot_    = " ".join( [ "--sP {p}".format(p = sp) for sp in selplot ] ) if len(selplot) else ""
     ratio_      = "--maxRatioRange " + ratio
-    nameregion_ = ""
+    nameregion_ = "e^{{#pm}}#mu^{{#mp}}" if not "SF" in region else "e^{{#pm}}e^{{#mp}}+#mu^{{#pm}}#mu^{{#mp}}"
     if "_" not in region and "nojets" not in region:
         nameregion_ = "+" + region.replace("t", "b").replace("plus", "+")
     elif "differential" in region and "nojets" not in region:
         nameregion_ = "+" + region.split("_")[0].replace("t", "b").replace("plus", "+") + "+0j_{loose}"
     elif "MVA" in region and "nojets" not in region:
         nameregion_ = "+" + region.split("_")[0].replace("t", "b").replace("plus", "+")
-
-    comm = commandscaff.format(outpath      = outpath_,
-                               friends      = friends_,
-                               samplespaths = samplespaths_,
-                               lumi      = lumidict[int(year)] if year != "run2" else str(lumidict[2016]) + "," + str(lumidict[2017]) + "," + str(lumidict[2018]),
-                               nth       = nth_,
-                               year      = year if year != "run2" else "2016,2017,2018",
-                               selplot   = selplot_,
-                               mcafile   = mcafile_,
-                               cutsfile  = cutsfile_,
-                               plotsfile = plotsfile_,
-                               ratio     = ratio_,
-                               extra     = ("--unc tw-run2/uncs-tw.txt ") * doUncs + extra,
-                               nameregion = nameregion_)
+    
+    thecomm = commandscaff if not doBlind else commandblindscaff
+    
+    comm = thecomm.format(outpath      = outpath_,
+                          friends      = friends_,
+                          samplespaths = samplespaths_,
+                          lumi         = lumidict[int(year)] if year != "run2" else str(lumidict[2016]) + "," + str(lumidict[2017]) + "," + str(lumidict[2018]),
+                          nth          = nth_,
+                          year         = year if year != "run2" else "2016,2017,2018",
+                          selplot      = selplot_,
+                          mcafile      = mcafile_,
+                          cutsfile     = cutsfile_,
+                          plotsfile    = plotsfile_,
+                          ratio        = ratio_,
+                          extra        = ("--unc tw-run2/uncs-tw.txt ") * doUncs + extra,
+                          nameregion   = nameregion_)
 
     return comm
 
@@ -149,6 +150,7 @@ if __name__=="__main__":
     ratiorange = args.ratiorange
     doUncs = args.doUncs
     if args.blindornot: extra += " --xp data"
+    doBlind = args.blindornot
 
 
     if createSL:
@@ -200,7 +202,7 @@ if __name__=="__main__":
 
             if cont:
                 for y in ["2016", "2017", "2018", "run2"]:
-                    GeneralExecutioner( (prod, y, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend, useFibre, doUncs) )
+                    GeneralExecutioner( (prod, y, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend, useFibre, doUncs, doBlind) )
         else:
             cont = False
             if   pretend:
@@ -209,12 +211,12 @@ if __name__=="__main__":
                 cont = True
 
             if cont:
-                GeneralExecutioner( (prod, year, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend, useFibre, doUncs) )
+                GeneralExecutioner( (prod, year, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend, useFibre, doUncs, doBlind) )
     else:
         print "> Local execution chosen."
         if year == "all":
             print "   - All three years and the combination will be plotted."
             for y in ["2016", "2017", "2018", "run2"]:
-                GeneralExecutioner( (prod, y, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend, useFibre, doUncs) )
+                GeneralExecutioner( (prod, y, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend, useFibre, doUncs, doBlind) )
         else:
-            GeneralExecutioner( (prod, year, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend, useFibre, doUncs) )
+            GeneralExecutioner( (prod, year, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend, useFibre, doUncs, doBlind) )

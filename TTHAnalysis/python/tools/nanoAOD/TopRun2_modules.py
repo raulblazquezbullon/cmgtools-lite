@@ -141,10 +141,14 @@ remove_overlap_booleans = [ lambda ev : (
                             or (ev.channel == ch.Muon and (not ev.Trigger_2m) and ev.Trigger_1m))
                             if ev.datatag == tags.singlemuon else
 
-                            ((  ev.channel == ch.ElMu and (not ev.Trigger_em) and (not ev.Trigger_1m) and ev.Trigger_1e)
-                            or (ev.channel == ch.Elec and (not ev.Trigger_2e) and ev.Trigger_1e))
-                            if ev.datatag == tags.singleelec else
+                            (   ev.channel == ch.ElMu and (not ev.Trigger_em) and (not ev.Trigger_1m) and ev.Trigger_1e)
+                            or (ev.channel == ch.Elec and (not ev.Trigger_2e) and ev.Trigger_1e)
+                            if (ev.datatag == tags.singleelec and not ev.year == 2018) else
 
+                            (   ev.channel == ch.ElMu and (not ev.Trigger_em) and (not ev.Trigger_1m) and ev.Trigger_1e)
+                            or (ev.channel == ch.Elec and (ev.Trigger_2e or ev.Trigger_1e))
+                            if (ev.datatag == tags.singleelec and ev.year == 2018) else
+                            
                             (   ev.channel == ch.Muon and ev.Trigger_2m)
                             if ev.datatag == tags.doublemuon else
 
