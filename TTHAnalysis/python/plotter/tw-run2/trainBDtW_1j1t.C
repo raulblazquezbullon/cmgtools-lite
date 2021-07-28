@@ -99,7 +99,8 @@ void trainBDtW_1j1t(TString outputdir, TString outputbasedir = "/pool/phedex/use
 //  loader->AddVariable("train_lep1lep2_pt"                , "#it{p}_{T} (#it{e}^{#pm}, #it{#mu}^{#mp})"                              , "GeV", 'F');
 //  loader->AddVariable("train_lep2jet1_m"                 , "m (#it{l_{2}}^{#pm}, #it{j_{1}})"                                    , "GeV", 'F');
         
-        
+  loader->AddVariable("njets"                , "N jets"                              , "", 'F');
+  loader->AddVariable("nbjets"                 , "N b-tagged jets"                                    , "", 'F');  
         
   //loader->AddVariable("train_lep1jet1_pt"                , "#it{p}_{T} (#it{l_{1}}^{#pm}, #it{j_{1}})"                           , "GeV", 'F');
   //loader->AddVariable("train_lep1lep2_deta"              , "#Delta#eta (#it{e}^{#pm}, #it{#mu}^{#mp})"                              , "", 'F');
@@ -189,14 +190,14 @@ void trainBDtW_1j1t(TString outputdir, TString outputbasedir = "/pool/phedex/use
   
   //========Drell-Yann training only=================================================================
   TString DY_50 = "dy_50.root";
-//  TString DY_10to50 = "dy_10to50.root";
+  TString DY_10to50 = "dy_10to50.root";
   TString DY_path = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/productions/2021-06-09/";
   TTtree->Add(DY_path + "/2016/x_mvatrain/" + DY_50);
   TTtree->Add(DY_path + "/2017/x_mvatrain/" + DY_50);
   TTtree->Add(DY_path + "/2018/x_mvatrain/" + DY_50);  
-//  TTtree->Add(DY_path + "/2016/x_mvatrain/" + DY_10to50);
-//  TTtree->Add(DY_path + "/2017/x_mvatrain/" + DY_10to50);
-//  TTtree->Add(DY_path + "/2018/x_mvatrain/" + DY_10to50);
+  TTtree->Add(DY_path + "/2016/x_mvatrain/" + DY_10to50);
+  TTtree->Add(DY_path + "/2017/x_mvatrain/" + DY_10to50);
+  TTtree->Add(DY_path + "/2018/x_mvatrain/" + DY_10to50);
   //========Drell-Yann training only=================================================================
 
   Double_t sigWeight = 1.0;
@@ -210,21 +211,26 @@ void trainBDtW_1j1t(TString outputdir, TString outputbasedir = "/pool/phedex/use
   loader->SetBackgroundWeightExpression("allweights");
 
 
-  TCut mycuts = "((njets == 1) && (nbjets == 1) && (channel == 1))";
-  TCut mycutb = "((njets == 1) && (nbjets == 1) && (channel == 1))";
+//  TCut mycuts = "((njets == 1) && (nbjets == 1) && (channel == 1))";
+//  TCut mycutb = "((njets == 1) && (nbjets == 1) && (channel == 1))";
 
 //========Cortes sin el channel cut=============
 //  TCut mycuts = "((njets == 1) && (nbjets == 1))";
 //  TCut mycutb = "((njets == 1) && (nbjets == 1))";
 //========Cortes sin el channel cut=============
 
+//========Cortes region 1j1t,2j1t,2j2t=============
+  TCut mycuts = "((njets == 1 || njets == 2) && (nbjets == 1 || nbjets == 2) && (channel == 1))";
+  TCut mycutb = "((njets == 1 || njets == 2) && (nbjets == 1 || nbjets == 2) && (channel == 1))";
+//========Cortes region 1j1t,2j1t,2j2t=============
+
 //  loader->PrepareTrainingAndTestTree(mycuts,
 //                                     mycutb,
 //                                     "nTrain_Signal=0:nTrain_Background=0:SplitMode=Random:NormMode=NumEvents:!V:nTest_Background=0");
 
   //========70% training and 30% testing======
-  double bkgtrain = (TTtree->GetEntries("((njets == 1) && (nbjets == 1) && (channel == 1))"))*0.7;
-  double sigtrain = (SItree->GetEntries("((njets == 1) && (nbjets == 1) && (channel == 1))"))*0.7;
+  double bkgtrain = (TTtree->GetEntries("((njets == 1 || njets == 2) && (nbjets == 1 || nbjets == 2) && (channel == 1))"))*0.7;
+  double sigtrain = (SItree->GetEntries("((njets == 1 || njets == 2) && (nbjets == 1 || nbjets == 2) && (channel == 1))"))*0.7;
   loader->PrepareTrainingAndTestTree(mycuts,
                                      mycutb,
                                      "nTrain_Signal="+to_string(sigtrain)+":nTrain_Background="+to_string(bkgtrain)+":SplitMode=Random:NormMode=NumEvents:!V:nTest_Background=0:nTest_Signal=0");  
