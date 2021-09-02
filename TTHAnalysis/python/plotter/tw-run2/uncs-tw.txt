@@ -261,10 +261,12 @@ tw_scales    : $tWProc : .* : envelope ; FakeRates=['tw-run2/frs-scales/fr-muR_0
 
 
 isr_ttbar : ttbar   : .* : templateAsymm; FakeRates=['tw-run2/frs-PS/fr-isrUp.txt'\,'tw-run2/frs-PS/fr-isrDown.txt']
-fsr_ttbar : ttbar   : .* : templateAsymm; FakeRates=['tw-run2/frs-PS/fr-fsrUp.txt'\,'tw-run2/frs-PS/fr-fsrDown.txt']
-
 isr_tw    : $tWProc : .* : templateAsymm; FakeRates=['tw-run2/frs-PS/fr-isrUp.txt'\,'tw-run2/frs-PS/fr-isrDown.txt']
-fsr_tw    : $tWProc : .* : templateAsymm; FakeRates=['tw-run2/frs-PS/fr-fsrUp.txt'\,'tw-run2/frs-PS/fr-fsrDown.txt']
+
+#fsr_ttbar : ttbar   : .* : templateAsymm; FakeRates=['tw-run2/frs-PS/fr-fsrUp.txt'\,'tw-run2/frs-PS/fr-fsrDown.txt']
+#fsr_tw    : $tWProc : .* : templateAsymm; FakeRates=['tw-run2/frs-PS/fr-fsrUp.txt'\,'tw-run2/frs-PS/fr-fsrDown.txt']
+
+fsr        : $tWandttbar : .* : templateAsymm; FakeRates=['tw-run2/frs-PS/fr-fsrUp.txt'\,'tw-run2/frs-PS/fr-fsrDown.txt']
 
 ###### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ###### Top pT reweighting

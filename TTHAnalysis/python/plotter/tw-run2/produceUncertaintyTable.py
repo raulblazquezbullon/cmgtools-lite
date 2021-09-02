@@ -165,8 +165,7 @@ systsGroup = {
         "isr_tw",
     ],
     'fsr' : [
-        "fsr_ttbar",
-        "fsr_tw",
+        "fsr",
     ],
     'colour' : [
         "colour_rec",
@@ -295,8 +294,7 @@ systsGroup = {
 #        "tw_scales",
 #        "isr_ttbar",
 #        "isr_tw",
-#        "fsr_ttbar",
-#        "fsr_tw",
+#        "fsr",
 #        "colour_rec",
 #        "ue",
 #        "topptrew",

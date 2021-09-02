@@ -2,6 +2,7 @@ import os, sys, enum, argparse
 from multiprocessing import Pool
 import warnings as wr
 import ROOT as r
+import plot_postfit as ppf
 r.PyConfig.IgnoreCommandLineOptions = True
 r.gROOT.SetBatch(True)
 
@@ -15,7 +16,7 @@ combinecomm = "combine -M FitDiagnostics --expectSignal 1 {combcard} -n {y}_{r} 
 
 
 def makeFit(task):
-    year, region, inpath, verbose, pretend, extra = task
+    year, region, inpath, verbose, pretend, extra, doPrePostPlots = task
     fitoutpath  = inpath + "/" + year
     if "," in region:
         cardList = []
@@ -77,16 +78,24 @@ def makeFit(task):
             if verbose:
                 print "    - Erasing old fit result..."
             os.system("rm " + outfile_)
+        if doPrePostPlots:
+          comm = comm.replace("--justFit", "--saveShapes --saveWithUncertainties")
         outstat = os.system(comm)
         if outstat:
             raise RuntimeError("FATAL: Combine failed to execute for year {y} and region(s) {r}.".format(y = year, r = region))
             
-    
+          
     #sys.exit()
     if not os.path.isfile('higgsCombine{y}_{r}.FitDiagnostics.mH120.root'.format(y = year, r = region if "," not in region else region.replace(",", ""))):
         raise RuntimeError("FATAL: no valid higgsCombine file found for year {y} and region(s) {r}.".format(y = year, r = region))
     else:
         os.system("mv ./higgsCombine{y}_{r}.FitDiagnostics.mH120.root {fdir}".format(y = year, r = region if "," not in region else region.replace(",", ""), fdir = fitoutpath + "/"))
+        if os.path.isfile('fitDiagnostics{y}_{r}.root'.format(y = year, r = region if "," not in region else region.replace(",", ""))):
+          os.system("mv ./fitDiagnostics{y}_{r}.root {fdir}".format(y = year, r = region if "," not in region else region.replace(",", ""), fdir = fitoutpath + "/"))
+    
+    if doPrePostPlots:
+        ppf.producePlots(year, region if "," not in region else region.replace(",", ""), fitoutpath)
+
 
 
     # Ahora recogemos la virutilla
@@ -220,7 +229,7 @@ if __name__ == "__main__":
     parser.add_argument('--region',    '-r', metavar = 'region',        dest = "region",  required = False, default = "1j1t")
     parser.add_argument('--verbose',    '-V', action  = "store_true",   dest = "verbose",  required = False, default = False)
     parser.add_argument('--produceToys','-pT', metavar = 'producetoys', dest = "producetoys", required = False,  default = 0, type = int)
-
+    parser.add_argument('--plotsPrePost',   '-pp', action  = "store_true", dest = "plotsPrePost",  required = False, default = False)
 
     args     = parser.parse_args()
     year     = args.year
@@ -232,6 +241,7 @@ if __name__ == "__main__":
     queue    = args.queue
     verbose  = args.verbose
     producetoys = args.producetoys
+    plotsPrePost = args.plotsPrePost
     queue    = ""
     #print CardsCommand(prod, year, variable, bines, asimov, nthreads, outpath, region, noUnc, useFibre, extra)
 
@@ -264,7 +274,7 @@ if __name__ == "__main__":
     else:
         for yr in theyears:
             for rg in theregs:
-                tasks.append( (yr, rg, inpath, verbose, pretend, extra) )
+                tasks.append( (yr, rg, inpath, verbose, pretend, extra, plotsPrePost) )
         #print tasks
         for task in tasks:
             print "\nProcessing " + str(task) + "\n"
