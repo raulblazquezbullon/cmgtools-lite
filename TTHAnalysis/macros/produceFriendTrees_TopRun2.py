@@ -9,10 +9,9 @@ r.gROOT.SetBatch(True)
 
 #### Settings
 friendspath = "/pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions"
-#prodname    = "2020-09-20" # tras la prueba, todo aparentemente en orden; BUENA
-#prodname    = "2021-04-23" # tras el nuevo postprocesado de abril de 2021
 
-prodname    = "2021-06-09" # tras el nuevo postprocesado de abril de 2021
+#prodname    = "2021-04-23" # tras el nuevo postprocesado de abril de 2021
+prodname    = "2021-06-09" # con skim
 
 datasamples  = ["SingleMuon", "SingleElec", "DoubleMuon", "DoubleEG", "MuonEG", "LowEGJet", "HighEGJet", "EGamma"]
 
@@ -35,7 +34,7 @@ friendfolders = {0 : "0_lumijson",
                  2 : "2_cleaning",
                  3 : "3_varstrigger",
                  4 : "4_scalefactors",
-                 5 : "5_mvas_new",
+                 5 : "5_mvas",
                  6 : "6_hemissue",
                  "mvatrain" : "x_mvatrain"
                 }
@@ -61,11 +60,12 @@ class errs(enum.IntEnum):
 
 
 minitnamedict = {
-    "ttbar"     : ["TTTo2L2Nu_division2"],
-    "tw"        : ["tW", "tW_central"],
-    "tbarw"     : ["tbarW", "tbarW_central"],
+    #"ttbar"     : ["TTTo2L2Nu_division2"],
+    #"tw"        : ["tW", "tW_central"],
+    #"tbarw"     : ["tbarW", "tbarW_central"],
     #"dy_10to50" : ["DYJetsToLL_M_10to50", "DYJetsToLL_M_10to50_MLM"],
     #"dy_50"     : ["DYJetsToLL_M_50"],
+    "dy_50_LO"  : ["DYJetsToLL_M_50_MLM"],
 }
 
 
@@ -665,8 +665,9 @@ trainsampledict[2016] = {
     ### tW
 #    "tW_central"     : sampledict[2016]["tW_central"],
 #    "tbarW"          : sampledict[2016]["tbarW"],
-    
-    "DYJetsToLL_M_50" : sampledict[2016]["DYJetsToLL_M_50"],
+#    "DYJetsToLL_M_10to50" : sampledict[2016]["DYJetsToLL_M_10to50"],
+#    "DYJetsToLL_M_50"     : sampledict[2016]["DYJetsToLL_M_50"],
+    "DYJetsToLL_M_50_MLM" : sampledict[2016]["DYJetsToLL_M_50_MLM"],
 }
 
 
@@ -678,7 +679,9 @@ trainsampledict[2017] = {
 #    "tW_central"     : sampledict[2017]["tW_central"],
 #    "tbarW_central"  : sampledict[2017]["tbarW_central"],
     
-    "DYJetsToLL_M_50" : sampledict[2017]["DYJetsToLL_M_50"],
+#    "DYJetsToLL_M_10to50_MLM" : sampledict[2017]["DYJetsToLL_M_10to50_MLM"],
+#    "DYJetsToLL_M_50"         : sampledict[2017]["DYJetsToLL_M_50"],
+    "DYJetsToLL_M_50_MLM"     : sampledict[2017]["DYJetsToLL_M_50_MLM"],
 }
 
 
@@ -689,8 +692,10 @@ trainsampledict[2018] = {
     ### tW
 #    "tW"    : sampledict[2018]["tW"],
 #    "tbarW" : sampledict[2018]["tbarW"],
-    
-    "DYJetsToLL_M_50" : sampledict[2018]["DYJetsToLL_M_50"],
+
+#    "DYJetsToLL_M_10to50_MLM" : sampledict[2018]["DYJetsToLL_M_10to50_MLM"],
+#    "DYJetsToLL_M_50"         : sampledict[2018]["DYJetsToLL_M_50"],
+    "DYJetsToLL_M_50_MLM"     : sampledict[2018]["DYJetsToLL_M_50_MLM"],
 }
 
 
