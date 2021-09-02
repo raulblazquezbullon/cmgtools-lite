@@ -118,12 +118,8 @@ varList['Lep1Lep2Jet1MET_Mt'] = {
     'yaxisfidbin' : '(1/#sigma_{fid.})d#sigma/d(#it{m}_{T}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{p}_{T}^{miss}, #it{j})) (1/GeV)',
     'yaxisnorm'   : 'd#sigma/d(#it{m}_{T}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{p}_{T}^{miss}, #it{j})) (pb/GeV)',
     'yaxis_unc'   : 'Relative uncertainty (adim.)',
-    #'bins_particle'  : [0., 225., 325., 425., 500.],                         # usado en drafts, en nota, etc. (4 bins)
-    #'bins_detector' : [0., 225., 250., 275., 300., 325., 350., 425., 500.], # usado en drafts, en nota, etc. (4 bins)
 
-    #'bins_particle'  : [0., 220., 300., 325., 400., 500.], # propuesta (5 bins)
-    #'bins_detector' : [0., 220., 250., 260., 270., 280., 290., 300., 325., 400., 500.], # propuesta (5 bins) SELECCIONADA
-    'bins_particle' : [100., 220., 300., 325., 400., 500.], # propuesta (5 bins)
+    'bins_particle' : [100., 220., 280., 325., 400., 500.], # propuesta (5 bins)
     'bins_detector' : [100., 220., 250., 260., 270., 280., 290., 300., 325., 400., 500.], # propuesta (5 bins) SELECCIONADA
 
     #'bins_particle'  : [0., 220., 270., 300., 325., 400., 500.], # propuesta (6 bins)
@@ -138,14 +134,16 @@ varList['Lep1Lep2Jet1MET_Mt'] = {
     #'bins_particle'  : [0., 220., 240., 250., 260., 270., 280., 320., 400., 500.], # propuesta (9 bins)
     #'bins_detector' : [0., 220., 230., 240., 250., 255., 260., 265., 270., 275., 280., 285., 290., 300., 310., 320., 330., 400., 500.], # propuesta (9 bins)
 
-    #'bins_particle'  : [0., 220., 240., 250., 260., 270., 280., 300., 320., 400., 500.], # propuesta (10 bins)
-    #'bins_detector' : [0., 220., 230., 240., 250., 255., 260., 265., 270., 275., 280., 285., 290., 295., 300., 305., 310., 320., 330., 400., 500.], # propuesta (10 bins)
+#    'bins_particle' : [100., 200., 240., 280., 300., 320., 340., 380., 440., 500., 600.], # propuesta (10 bins particula, 23 bines detector)
+#    'bins_detector' : [100., 180., 200., 220., 240., 250., 260., 270., 280., 290., 300., 310., 320., 330., 340., 360., 380., 400., 420., 440., 460., 500., 550., 600.], # propuesta (10 bins particula, 23 bines detector)
 
     #'descbinning' : [0., 800.], ## TEMPORAL
     #'ndescbins'   : 20, ## TEMPORAL
     "var_detector"  : 'min(max(Lep1Lep2Jet1MET_Mt, 101.), 499.)',
+#    "var_detector"  : 'min(max(Lep1Lep2Jet1MET_Mt, 101.), 599.)',
     'var_response'  : 'Lep1Lep2Jet1MET_Mt',
     'var_particle'  : 'min(max(DressLep1Lep2Jet1MET_Mt, 101.), 499.)',
+    #'var_particle'  : 'min(max(DressLep1Lep2Jet1MET_Mt, 101.), 599.)',
     'legpos'      : (0.51, 0.55, 0.71, 0.93),
     #'legposdesc'  : (0.15, 0.425, 0.35, 0.81),
     "legposdesc"  : (0.65, 0.55, 0.85, 0.93),
@@ -179,7 +177,8 @@ varList['Lep1Lep2Jet1MET_Mt'] = {
     "legpos_particlebinunc" : "TC",
     "yaxismax_particlebin": 0.0038,
     #"yaxismax_ratio_fidnorm" : 4.0,
-    "yaxismax_ratio_fidnorm" : 2.5,
+#    "yaxismax_ratio_fidnorm" : 2.5,
+    "yaxismax_ratio_fidnorm" : 1.5,
     "yaxismax_ratio_norm" : 5.0,
     "yaxismax_particlefidbin": 0.0155,
 }
@@ -280,7 +279,8 @@ varList['Lep1Lep2Jet1_M'] = {
     "yaxismax_particlebin": 0.004,
     "legpos_particlebinunc" : (.18, .5, .31, .785),
     "legpos_particlefidbinunc": (.4, .615, .58, .9),
-    "yaxismax_ratio_fidnorm" : 2.5,
+#    "yaxismax_ratio_fidnorm" : 2.5,
+    "yaxismax_ratio_fidnorm" : 1.5,
 }
 
 
@@ -424,7 +424,8 @@ varList['Jet1_Pt'] = {
     "yaxismax_particlebinunc": 1.8,
     "yaxismax_particlebin": 0.010,
     "yaxismax_ratio_norm" : 3.5,
-    "yaxismax_ratio_fidnorm" : 2.5,
+#    "yaxismax_ratio_fidnorm" : 2.5,
+    "yaxismax_ratio_fidnorm" : 1.5,
 }
 
 varList['Lep1_Pt'] = {
@@ -498,7 +499,8 @@ varList['Lep1_Pt'] = {
     "yaxismax_unf" : 1.35,
     "yaxismax_particlebin": 0.0085,
     "legpos_particlebinunc" : "TL",
-    "yaxismax_ratio_fidnorm" : 2.5,
+#    "yaxismax_ratio_fidnorm" : 2.5,
+    "yaxismax_ratio_fidnorm" : 1.5,
 }
 
 varList['Fiducial'] = {
@@ -586,7 +588,8 @@ varList['Lep1Lep2Jet1MET_Pz'] = {
     "yaxismax_unf" : 1.3,
     "yaxismax_particlebin" : 0.002,
     "legpos_particlebinunc" : "TC",
-    "yaxismax_ratio_fidnorm" : 2.5,
+#    "yaxismax_ratio_fidnorm" : 2.5,
+    "yaxismax_ratio_fidnorm" : 1.5,
 }
 
 varList['Lep1Lep2_DPhi'] = {
@@ -657,7 +660,8 @@ varList['Lep1Lep2_DPhi'] = {
     #'legpos_particlebin':(.18, .75, .36, .52),
     'legpos_particlebin': (.35, 0.58950, .585, .9),
     "yaxismax_particlebin" : 0.85,
-    "yaxismax_ratio_fidnorm" : 2.5,
+#    "yaxismax_ratio_fidnorm" : 2.5,
+    "yaxismax_ratio_fidnorm" : 1.5,
 }
 
 #varList['E_LLB'] = {

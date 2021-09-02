@@ -14,7 +14,8 @@ vl.SetUpWarnings()
 friendspath   = "/pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions"
 logpath       = friendspath + "/{p}/{y}/logs/cards_differential"
 #friendsscaff  = "--Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors_bkp --Fs {P}/5_mvas"
-friendsscaff  = "--FDs {P}/0_lumijson --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --Fs {P}/6_hemissue"
+#friendsscaff  = "--FDs {P}/0_lumijson --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --Fs {P}/6_hemissue"
+friendsscaff  = "--FDs {P}/0_lumijson --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors"
 
 slurmscaff    = "sbatch -c {nth} -p {queue} -J {jobname} -e {logpath}/log.%j.%x.err -o {logpath}/log.%j.%x.out --wrap '{command}'"
 
@@ -42,9 +43,9 @@ def PythonListToString(theL):
 
 
 def ExecuteOrSubmitTask(tsk):
-    prod, year, variable, asimov, nthreads, outpath, noUnc, useFibre, extra, pretend, queue, thebin = tsk
+    prod, year, variable, asimov, nthreads, outpath, noUnc, useFibre, extra, pretend, queue = tsk
     if queue == "":
-        thecomm = CardsCommand(prod, year, variable, asimov, nthreads, outpath, noUnc, useFibre, extra, thebin)
+        thecomm = CardsCommand(prod, year, variable, asimov, nthreads, outpath, noUnc, useFibre, extra)
         print "Command: " + thecomm
 
         if not pretend:
@@ -56,9 +57,9 @@ def ExecuteOrSubmitTask(tsk):
 
         thecomm = slurmscaff.format(nth     = nthreads,
                                     queue   = queue,
-                                    jobname = "CMGTcardsForDiff_" + variable + "_" + year + "_b" + str(thebin),
+                                    jobname = "CMGTcardsForDiff_" + variable + "_" + year,
                                     logpath = logpath.format(p = prod, y = yr),
-                                    command = CardsCommand(prod, year, variable, asimov, nthreads, outpath, noUnc, useFibre, extra, thebin))
+                                    command = CardsCommand(prod, year, variable, asimov, nthreads, outpath, noUnc, useFibre, extra))
 
         print "Command: " + thecomm
         if not pretend:
@@ -205,7 +206,7 @@ def produceAdHocMCAandUncsfiles(thepath, they, thev):
     return
 
 
-def CardsCommand(prod, year, var, isAsimov, nthreads, outpath, noUnc, useFibre, extra_, ibin):
+def CardsCommand(prod, year, var, isAsimov, nthreads, outpath, noUnc, useFibre, extra_):
     cutsfile_  = "tw-run2/cuts-tw-1j1t_differential.txt"
 
     samplespaths_ = "-P " + friendspath + "/" + prod + ("/" + year) * (year != "run2")
@@ -219,40 +220,32 @@ def CardsCommand(prod, year, var, isAsimov, nthreads, outpath, noUnc, useFibre, 
     if not os.path.isdir(outpath_):
         os.system("mkdir -p " + outpath_)
 
-    #mcafile_   = "tw-run2/mca-tw.txt"
     mcafile_   = outpath_ + "/" + "mca-total.txt"
     if not os.path.isfile(mcafile_) or redofiles:
         produceAdHocMCAandUncsfiles(outpath_, year, var)
-#    sys.exit()
 
-    #bins_      = PythonListToString([i + 0.5 for i in range(vl.nBinsForBDT + 1)])
-
-    #variable_  = vl.varList[var]["var_detector"]
-    variable_  = (vl.varList[var]["bins_detector"][ibin] + vl.varList[var]["bins_detector"][ibin + 1])/2
-    bins_      = "[" + str(vl.varList[var]["bins_detector"][ibin]) + ", " + str(vl.varList[var]["bins_detector"][ibin + 1]) + "]"
-    name_      = "--binname card_bin" + str(ibin)
-
-    extra_ += ' -A "^1btag" "bin{b}" "{cut}"'.format(b   = ibin,
-                                                     cut = "(" + str(vl.varList[var]["bins_detector"][ibin]) + "<=" + vl.varList[var]["var_detector"] + ") && (" + vl.varList[var]["var_detector"] + "<" + str(vl.varList[var]["bins_detector"][ibin + 1]) + ")")
+    variable_  = vl.varList[var]["var_detector"]
+    bins_      = PythonListToString(vl.varList[var]["bins_detector"])
+    name_      = "--binname card_" + var
 
     theweights_ = theweights
 
     comm = commandscaff.format(outpath      = outpath_,
                                friends      = friends_,
                                samplespaths = samplespaths_,
-                               lumi      = (vl.LumiDict[int(year)] if year != "run2" else str(vl.LumiDict[2016]) + "," + str(vl.LumiDict[2017]) + "," + str(vl.LumiDict[2018])),
-                               variable  = variable_,
-                               bins      = bins_,
-                               nth       = nth_,
-                               year      = year if year != "run2" else "2016,2017,2018",
-                               asimovornot = "--asimov s+b",
-                               mcafile   = mcafile_,
-                               cutsfile  = cutsfile_,
-                               uncs      = "--unc {adhocu} --amc".format(adhocu = outpath_ + "/tw-uncs-adhoc.txt") if (not noUnc) else "--amc",
-                               name      = name_,
-                               func      = "tw-run2/functions_tw.cc",
-                               extra     = extra_,
-                               w         = theweights_,)
+                               lumi         = (vl.LumiDict[int(year)] if year != "run2" else str(vl.LumiDict[2016]) + "," + str(vl.LumiDict[2017]) + "," + str(vl.LumiDict[2018])),
+                               variable     = variable_,
+                               bins         = bins_,
+                               nth          = nth_,
+                               year         = year if year != "run2" else "2016,2017,2018",
+                               asimovornot  = "--asimov s+b",
+                               mcafile      = mcafile_,
+                               cutsfile     = cutsfile_,
+                               uncs         = "--unc {adhocu} --amc".format(adhocu = outpath_ + "/tw-uncs-adhoc.txt") if (not noUnc) else "--amc",
+                               name         = name_,
+                               func         = "tw-run2/functions_tw.cc",
+                               extra        = extra_,
+                               w            = theweights_,)
     return comm
 
 
@@ -495,8 +488,7 @@ if __name__=="__main__":
                 listofuncsthataffecttheproc.append(key)
             for var in thevars:
                 if "Fiducial" in var: continue
-                for theb in range(len(vl.varList[var]["bins_detector"]) - 1):
-                    tasks.append( (prod, yr, var, asimov, nthreads, outpath, noUnc, useFibre, extra, pretend, queue, theb) )
+                tasks.append( (prod, yr, var, asimov, nthreads, outpath, noUnc, useFibre, extra, pretend, queue) )
 
         #print tasks
         #for el in tasks: print el
@@ -538,51 +530,51 @@ if __name__=="__main__":
                 if vl.confirm("\n> Do you want to redo these cards?"):
                     for el in taskstoredo: ExecuteOrSubmitTask(el)
 
-    else: # preparing final cards
-        tasks = []
-        theyears = []
-        presentyears = next(os.walk(outpath))[1]
+    #else: # preparing final cards
+        #tasks = []
+        #theyears = []
+        #presentyears = next(os.walk(outpath))[1]
 
-        if "2016" in presentyears:
-            theyears.append("2016")
-        if "2017" in presentyears:
-            theyears.append("2017")
-        if "2018" in presentyears:
-            theyears.append("2018")
-        if "run2" in presentyears:
-            theyears.append("run2")
-
-
-        if year.lower() != "all" and year in presentyears:
-            theyears = [ year ]
-        elif year.lower() != "all":
-            raise RuntimeError("FATAL: the year requested is not in the provided input folder.")
-
-        for iY in theyears:
-            thevars = next(os.walk(outpath + "/" + iY))[1]
-
-            if variable.lower() != "all" and variable in thevars:
-                thevars = [ variable ]
-            elif variable.lower() != "all":
-                raise RuntimeError("FATAL: the variable requested is not in the provided input folder.")
-
-            for iV in thevars:
-                if "plots" in iV or "table" in iV: continue
-                if not os.path.isdir(outpath + "/" + iY + "/" + iV + "/sigextr_fit_combine"): continue
+        #if "2016" in presentyears:
+            #theyears.append("2016")
+        #if "2017" in presentyears:
+            #theyears.append("2017")
+        #if "2018" in presentyears:
+            #theyears.append("2018")
+        #if "run2" in presentyears:
+            #theyears.append("run2")
 
 
-                tasks.append( (outpath, iY, iV) )
-        #print tasks
-        #for el in tasks: print el
-        #sys.exit()
-        print "> Executing..."
-        if nthreads > 1:
-            pool = Pool(nthreads)
-            pool.map(createCardsForEachSys, tasks)
-            pool.close()
-            pool.join()
-        else:
-            for tsk in tasks:
-                createCardsForEachSys(tsk)
-        print "> Done!"
+        #if year.lower() != "all" and year in presentyears:
+            #theyears = [ year ]
+        #elif year.lower() != "all":
+            #raise RuntimeError("FATAL: the year requested is not in the provided input folder.")
+
+        #for iY in theyears:
+            #thevars = next(os.walk(outpath + "/" + iY))[1]
+
+            #if variable.lower() != "all" and variable in thevars:
+                #thevars = [ variable ]
+            #elif variable.lower() != "all":
+                #raise RuntimeError("FATAL: the variable requested is not in the provided input folder.")
+
+            #for iV in thevars:
+                #if "plots" in iV or "table" in iV: continue
+                #if not os.path.isdir(outpath + "/" + iY + "/" + iV + "/sigextr_fit_combine"): continue
+
+
+                #tasks.append( (outpath, iY, iV) )
+        ##print tasks
+        ##for el in tasks: print el
+        ##sys.exit()
+        #print "> Executing..."
+        #if nthreads > 1:
+            #pool = Pool(nthreads)
+            #pool.map(createCardsForEachSys, tasks)
+            #pool.close()
+            #pool.join()
+        #else:
+            #for tsk in tasks:
+                #createCardsForEachSys(tsk)
+        #print "> Done!"
 

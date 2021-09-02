@@ -472,7 +472,7 @@ def PlotParticleFidBinLevelResults(thedict, inpath, iY, varName, notff):
     plot.addHisto(nominal_withErrors, 'hist',    'Uncertainty',              'F', 'unc')
     plot.addHisto(tru,                'L,same',  'tW Powheg DR + Pythia8',   'L', 'mc')
     plot.addHisto(tru_DS,             'L,same',  'tW Powheg DS + Pythia8',   'L', 'mc')
-    plot.addHisto(tru_herwig,         'L,same',  'tW Powheg DR + Herwig7',   'L', 'mc')
+    plot.addHisto(tru_herwig,         'L,same',  'tW Powheg DR + Herwig',    'L', 'mc')
     #plot.addHisto(aMCatNLO,           'L,same',  'tW aMC@NLO DR + Pythia8',  'L', 'mc')
     plot.addHisto(thedict[""],        'P,E,same{s}'.format(s = ",X0" if "equalbinsunf" in vl.varList[varName] else ""), vl.labellegend,           'PEL','data')
     plot.saveCanvas(legloc)
