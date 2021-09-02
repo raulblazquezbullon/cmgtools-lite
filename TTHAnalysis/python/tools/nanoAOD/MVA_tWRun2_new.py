@@ -30,9 +30,10 @@ scaffconst = """def initCustom{var}(self):
     ]))
 
 
-    mvas_path = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/mvas/2021_05_nuevopostproc/"
-    path_tmvaBDT_1j1b = mvas_path + "/tmvaBDT_1j1t/weights/TMVAClassification_GradBoost_2000_0.01.weights.xml"
-    path_tmvaBDT_2j1b = mvas_path + "/tmvaBDT_2j1t/weights/TMVAClassification_GradBoost_200_005_4.weights.xml"
+    mvas_path_1j1t = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/mvas/2021_05_nuevopostproc/"
+    mvas_path_2j1t = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/mvas/2021_05_nuevopostproc/"
+    path_tmvaBDT_1j1b = mvas_path_1j1t + "/tmvaBDT_1j1t/weights/TMVAClassification_GradBoost_2000_0.01.weights.xml"
+    path_tmvaBDT_2j1b = mvas_path_2j1t + "/tmvaBDT_2j1t/weights/TMVAClassification_GradBoost_200_005_4.weights.xml"
 
     self.MVAs["tmvaBDT_1j1b" + "{var}"] = MVATool("BDT", path_tmvaBDT_1j1b, getattr(self, "vars_1j1t" + "{var}"))
     self.MVAs["tmvaBDT_2j1b" + "{var}"] = MVATool("BDT", path_tmvaBDT_2j1b, getattr(self, "vars_2j1t" + "{var}"))"""

@@ -263,8 +263,15 @@ class MCAnalysis:
                         if len(tmprootf):
                             basepath = treepath
                             break
-
-                if not basepath:
+                            
+                ignoreThisProc = False
+                if "IgnoreMeIfIdontExist" in extra:
+                    if extra["IgnoreMeIfIdontExist"]:
+                        ignoreThisProc = True
+                        
+                if not basepath and ignoreThisProc:
+                    continue
+                elif not basepath:
                     raise RuntimeError("%s -- ERROR: %s process not found in paths (%s)" % (__name__, cname, repr(options.path)))
 
                 rootfile = "%s/%s/%s/%s_tree.root" % (basepath, cname, treename, treename)
@@ -563,9 +570,17 @@ class MCAnalysis:
 
 
             ## add variations from alternate samples
+            #print var
             buildVariationsFromAlternative(self.variationsFile, ret, self._options.year)
             buildVariationsFromAlternativesWithEnvelope(self.variationsFile, ret)
             buildPDFVariationsFromAlternativeSample(self.variationsFile, ret, self._options.year)
+            for var in self.variationsFile.uncertainty():
+                for p,h in ret.iteritems():
+                    if not var.procmatch().match(p): continue
+                    print "\t-", p, var.name, var.year()
+                    #print var.name, p
+                    if "EstimateFromXbins" in var.extra:
+                        h.reviewVariations(var.name)
 
         ## remove samples used for systematics
         toremove = []

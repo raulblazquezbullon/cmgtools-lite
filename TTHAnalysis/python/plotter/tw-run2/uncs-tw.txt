@@ -18,30 +18,6 @@ $alias : tWandttbar : tw|ttbar
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Luminosity (from https://twiki.cern.ch/twiki/bin/view/CMS/TWikiLUM#LumiComb)
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#lumi_2016 : $AllBkg : .* : normSymm : 1.022; year="2016"
-#lumi_2017 : $AllBkg : .* : normSymm : 1.020; year="2017"
-#lumi_2018 : $AllBkg : .* : normSymm : 1.015; year="2018"
-
-#lumi_XY   : $AllBkg : .* : normSymm : 1.009; year="2016"
-#lumi_XY   : $AllBkg : .* : normSymm : 1.008; year="2017"
-#lumi_XY   : $AllBkg : .* : normSymm : 1.020; year="2018"
-
-#lumi_LS   : $AllBkg : .* : normSymm : 1.003; year="2017"
-#lumi_LS   : $AllBkg : .* : normSymm : 1.002; year="2018"
-
-#lumi_BBD  : $AllBkg : .* : normSymm : 1.004; year="2016"
-#lumi_BBD  : $AllBkg : .* : normSymm : 1.004; year="2017"
-
-#lumi_DB   : $AllBkg : .* : normSymm : 1.005; year="2016"
-#lumi_DB   : $AllBkg : .* : normSymm : 1.005; year="2017"
-
-#lumi_BCC  : $AllBkg : .* : normSymm : 1.003; year="2017"
-#lumi_BCC  : $AllBkg : .* : normSymm : 1.002; year="2018"
-
-#lumi_GS   : $AllBkg : .* : normSymm : 1.004; year="2016"
-#lumi_GS   : $AllBkg : .* : normSymm : 1.001; year="2017"
-
-### New luminosity
 lumi_2016     : $AllBkg : .* : normSymm : 1.01  ; year="2016"
 lumi_2017     : $AllBkg : .* : normSymm : 1.02  ; year="2017"
 lumi_2018     : $AllBkg : .* : normSymm : 1.015 ; year="2018"
@@ -201,7 +177,7 @@ muonen_2018 : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-lepenergies/
 # From TOP-19-003
 ttbar_norm   : ttbar   : .* : normSymm : 1.04
 vvttv_norm   : vvttv   : .* : normSymm : 1.5
-dy_norm      : dy      : .* : normSymm : 1.5
+dy_norm      : dy      : .* : normSymm : 1.1
 nonworz_norm : nonworz : .* : normSymm : 1.5
 
 
@@ -284,37 +260,99 @@ topptrew : ttbar : .* : templateSymmAdditive ; AddWeight='TopPtWeight'
 ##### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
+
+
+
+
+
 #### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #### ME/PS matching (hDamp parameter)
 #### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-ttbar_matching : ttbar   : .* : altSample : syst_ttbar_matching_up : syst_ttbar_matching_dn
+#ttbar_matching : ttbar   : .* : altSample : syst_ttbar_matching_up : syst_ttbar_matching_dn ;
 ####tw_matching    : $tWProc : .* : altSample : syst_tw_matching_up    : syst_tw_matching_dn ### NOT RECOMMENDED
 
 #### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #### Colour reconnection schemes
 #### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-colour_rec : ttbar   : .* : altSampleEnv : ['syst_ttbar_colour_erdon'\,'syst_ttbar_colour_cr1'\,'syst_ttbar_colour_cr2'] : symm
-colour_rec : $tWProc : .* : altSampleEnv : ['syst_tw_colour_erdon'\,'syst_tw_colour_cr1'\,'syst_tw_colour_cr2']          : symm
+#colour_rec : ttbar   : .* : altSampleEnv : ['syst_ttbar_colour_erdon'\,'syst_ttbar_colour_cr1'\,'syst_ttbar_colour_cr2'] : symm ;
+#colour_rec : $tWProc : .* : altSampleEnv : ['syst_tw_colour_erdon'\,'syst_tw_colour_cr1'\,'syst_tw_colour_cr2']          : symm ;
 
 
 ### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ### Underlying event (tuning)
 ### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-ue : ttbar   : .* : altSample : syst_ttbar_ue_up : syst_ttbar_ue_dn
-ue : $tWProc : .* : altSample : syst_tw_ue_up    : syst_tw_ue_dn
+#ue : ttbar   : .* : altSample : syst_ttbar_ue_up : syst_ttbar_ue_dn ;
+#ue : $tWProc : .* : altSample : syst_tw_ue_up    : syst_tw_ue_dn    ;
 
 #### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #### Top quark mass
 #### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-mtop : ttbar   : .* : altSample : syst_ttbar_mtop_2016_up : syst_ttbar_mtop_2016_dn : addothers : syst_ttbar_mtop_2016 : 3 ; year="2016"
-mtop : ttbar   : .* : altSample : syst_ttbar_mtop_2017_up : syst_ttbar_mtop_2017_dn : addothers                            ; year="2017"
-mtop : ttbar   : .* : altSample : syst_ttbar_mtop_2018_up : syst_ttbar_mtop_2018_dn : addothers                            ; year="2018"
-mtop : $tWProc : .* : altSample : syst_tw_mtop_up         : syst_tw_mtop_dn
+#mtop : ttbar   : .* : altSample : syst_ttbar_mtop_2016_up : syst_ttbar_mtop_2016_dn : addothers : syst_ttbar_mtop_2016 : 3 ; year="2016",
+#mtop : ttbar   : .* : altSample : syst_ttbar_mtop_2017_up : syst_ttbar_mtop_2017_dn : addothers                            ; year="2017",
+#mtop : ttbar   : .* : altSample : syst_ttbar_mtop_2018_up : syst_ttbar_mtop_2018_dn : addothers                            ; year="2018",
+#mtop : $tWProc : .* : altSample : syst_tw_mtop_up         : syst_tw_mtop_dn ;
+
+
+
+
+
+
+##### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+##### ME/PS matching (hDamp parameter)
+##### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ttbar_matching : ttbar   : .* : altSample : syst_ttbar_matching_up : syst_ttbar_matching_dn ; EstimateFromXbins=1
+#####tw_matching    : $tWProc : .* : altSample : syst_tw_matching_up    : syst_tw_matching_dn ### NOT RECOMMENDED
+
+
+
+##### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+##### Colour reconnection schemes
+##### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Previous, envelope
+#colour_rec : ttbar   : .* : altSampleEnv : ['syst_ttbar_colour_erdon'\,'syst_ttbar_colour_cr1'\,'syst_ttbar_colour_cr2'] : symm ; EstimateFromXbins=1
+#colour_rec : $tWProc : .* : altSampleEnv : ['syst_tw_colour_erdon'\,'syst_tw_colour_cr1'\,'syst_tw_colour_cr2']          : symm ; EstimateFromXbins=1
+
+# Current, w/o
+#colour_rec : ttbar   : .* : altSample : syst_ttbar_colour_erdon : : symm ; EstimateFromXbins=1
+#colour_rec : ttbar   : .* : altSample : syst_ttbar_colour_cr1   : : symm ; EstimateFromXbins=1
+#colour_rec : ttbar   : .* : altSample : syst_ttbar_colour_cr2   : : symm ; EstimateFromXbins=1
+#colour_rec : $tWProc : .* : altSample : syst_tw_colour_erdon    : : symm ; EstimateFromXbins=1
+#colour_rec : $tWProc : .* : altSample : syst_tw_colour_cr1      : : symm ; EstimateFromXbins=1
+#colour_rec : $tWProc : .* : altSample : syst_tw_colour_cr2      : : symm ; EstimateFromXbins=1
+
+colour_rec : ttbar   : .* : altSample : syst_ttbar_colour_erdon : : ; EstimateFromXbins=1
+colour_rec : ttbar   : .* : altSample : syst_ttbar_colour_cr1   : : ; EstimateFromXbins=1
+colour_rec : ttbar   : .* : altSample : syst_ttbar_colour_cr2   : : ; EstimateFromXbins=1
+colour_rec : $tWProc : .* : altSample : syst_tw_colour_erdon    : : ; EstimateFromXbins=1
+colour_rec : $tWProc : .* : altSample : syst_tw_colour_cr1      : : ; EstimateFromXbins=1
+colour_rec : $tWProc : .* : altSample : syst_tw_colour_cr2      : : ; EstimateFromXbins=1
+
+
+
+#### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#### Underlying event (tuning)
+#### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ue : ttbar   : .* : altSample : syst_ttbar_ue_up : syst_ttbar_ue_dn ; EstimateFromXbins=1
+ue : $tWProc : .* : altSample : syst_tw_ue_up    : syst_tw_ue_dn    ; EstimateFromXbins=1
+
+
+
+
+##### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+##### Top quark mass
+##### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+mtop : ttbar   : .* : altSample : syst_ttbar_mtop_2016_up : syst_ttbar_mtop_2016_dn : addothers : syst_ttbar_mtop_2016 : 3 ; year="2016", EstimateFromXbins=1
+mtop : ttbar   : .* : altSample : syst_ttbar_mtop_2017_up : syst_ttbar_mtop_2017_dn : addothers : syst_ttbar_mtop_2017 : 1 ; year="2017", EstimateFromXbins=1
+mtop : ttbar   : .* : altSample : syst_ttbar_mtop_2018_up : syst_ttbar_mtop_2018_dn : addothers : syst_ttbar_mtop_2018 : 1 ; year="2018", EstimateFromXbins=1
+mtop : $tWProc : .* : altSample : syst_tw_mtop_up         : syst_tw_mtop_dn ;  EstimateFromXbins=1
+
+
 
 
 #### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #### tW DR/DS
 #### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-ds : $tWProc : .* : altSample : syst_tw_ds : : symm
+#ds : $tWProc : .* : altSample : syst_tw_ds : : symm
+ds : $tWProc : .* : altSample : syst_tw_ds : :
 
 

@@ -10,3 +10,4 @@ syst_ttbar_ue_dn        : TTTo2L2Nu_TuneCP5down_PSweights_13TeV-powheg-pythia8*c
 
 syst_ttbar_mtop_2017_up : TTTo2L2Nu_mtop173p5_TuneCP5_PSweights_13TeV-powheg-pythia8*central*    : xsec ; genSumWeightName="genEventSumw"
 syst_ttbar_mtop_2017_dn : TTTo2L2Nu_mtop171p5_TuneCP5_PSweights_13TeV-powheg-pythia8*central*    : xsec ; genSumWeightName="genEventSumw"
+syst_ttbar_mtop_2017    : TTTo2L2Nudiv1_TuneCP5_13TeV-powheg-pythia8_topnano_* + TTTo2L2Nudiv1_TuneCP5_PSweights_13TeV-powheg-pythia8_topnano_* : 88.28769753 * 2 ;
