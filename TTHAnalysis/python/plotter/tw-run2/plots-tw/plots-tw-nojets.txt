@@ -52,6 +52,7 @@ puppimet_phi : PuppiMET_phi        : 40,-3.14,3.14         ; IncludeUnderflow=Fa
 lep1lep2_dphi : Lep1Lep2_DPhi      : 10,0,1   ; IncludeUnderflow=False, LegendCutoff=0,  XTitle="#Delta#it{#varphi}(#it{e}^{#pm}\, #it{#mu}^{#mp})/#it{#pi} (adim.)"
 lep1lep2_pt   : Lep1Lep2_Pt        : 20,0,200 ; IncludeUnderflow=False, LegendCutoff=0,  XTitle="p_{T}(\\ell_{1}\, \\ell_{2}) (GeV)"
 lep1lep2_m    : Mll                : 30,0,300 ; IncludeUnderflow=False, LegendCutoff=0,  XTitle="m(\\ell_{1}\, \\ell_{2}) (GeV)"
+lep1lep2_m_picu : Mll              : 40,20,100; IncludeUnderflow=False,IncludeOverflow=False,IncludeOverflows=False, LegendCutoff=0,  XTitle="m(\\ell_{1}\, \\ell_{2}) (GeV)"
 
 
 lep1lep2jet1met_pz : Lep1Lep2Jet1MET_Pz  : 18,0,450 ; IncludeUnderflow=False, LegendCutoff=0,  XTitle="#it{p}_{Z} (#it{e}^{#pm}\, #it{#mu}^{#mp}\, #it{j}) (GeV)"

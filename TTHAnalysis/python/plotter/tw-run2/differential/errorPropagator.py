@@ -419,13 +419,15 @@ def drawTheRelUncPlot(listWithHistos, thedict, thePlot, yaxismax = "auto", doSym
             incmax.append(max([listWithHistos[0].GetBinError(bin), listWithHistos[0].GetBinContent(bin)]))
         else:
             incmax.append(max([listWithHistos[0].GetBinError(bin), listWithHistos[1].GetBinError(bin)]))
-
-        if math.sqrt(listWithHistos[1].GetBinError(bin)**2 - thedict[""].GetBinError(bin)**2) > listWithHistos[0].GetBinContent(bin):
-            incsyst.append(max([math.sqrt(listWithHistos[0].GetBinError(bin)**2 - thedict[""].GetBinError(bin)**2),
-                                listWithHistos[0].GetBinContent(bin)]))
-        else:
-            incsyst.append(max([math.sqrt(listWithHistos[0].GetBinError(bin)**2 - thedict[""].GetBinError(bin)**2),
-                                math.sqrt(listWithHistos[1].GetBinError(bin)**2 - thedict[""].GetBinError(bin)**2)]))
+        try:
+            if math.sqrt(listWithHistos[1].GetBinError(bin)**2 - thedict[""].GetBinError(bin)**2) > listWithHistos[0].GetBinContent(bin):
+                incsyst.append(max([math.sqrt(listWithHistos[0].GetBinError(bin)**2 - thedict[""].GetBinError(bin)**2),
+                                    listWithHistos[0].GetBinContent(bin)]))
+            else:
+                incsyst.append(max([math.sqrt(listWithHistos[0].GetBinError(bin)**2 - thedict[""].GetBinError(bin)**2),
+                                    math.sqrt(listWithHistos[1].GetBinError(bin)**2 - thedict[""].GetBinError(bin)**2)]))
+        except ValueError:
+            raise RuntimeError("FATAL: the provided nominal/fit only unc. is larger that the total sum of all of them for bin {b}".format(b = bin))
 
         hincmax.SetBinContent(bin, incmax[bin-1] / hincmax.GetBinContent(bin))
         hincmax.SetBinError(bin, 0.)

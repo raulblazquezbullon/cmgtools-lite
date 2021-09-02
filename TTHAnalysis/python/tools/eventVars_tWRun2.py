@@ -12,6 +12,8 @@ from CMGTools.TTHAnalysis.treeReAnalyzer import Collection as CMGCollection
 from CMGTools.TTHAnalysis.tools.nanoAOD.friendVariableProducerTools import declareOutput, writeOutput
 from CMGTools.TTHAnalysis.tools.nanoAOD.TopRun2_modules import ch, tags
 
+mresta_ = 172.5 ** 2 - 80.379 ** 2
+
 
 class EventVars_tWRun2(Module):
     def __init__(self, label = "", recllabel = 'Recl', isMC = True,
@@ -28,8 +30,12 @@ class EventVars_tWRun2(Module):
                             "Lep1Lep2Jet1_E",
                             "Lep1Jet1_Pt",
                             "Lep1Jet1_M",
+                            "Lep1Jet1_DPhi",
                             "Lep2Jet1_Pt",
                             "Lep2Jet1_M",
+                            "Lep2Jet1_DPhi",
+                            "cosThetaStar1",
+                            "cosThetaStar2",
                             "Jet1_E",
                             "Jet1_Pt",
                             "Jet2_Pt",
@@ -76,8 +82,12 @@ class EventVars_tWRun2(Module):
                               "Lep1Lep2Jet1_E",
                               "Lep1Jet1_Pt",
                               "Lep1Jet1_M",
+                              "Lep1Jet1_DPhi",
                               "Lep2Jet1_Pt",
                               "Lep2Jet1_M",
+                              "Lep2Jet1_DPhi",
+                              "cosThetaStar1",
+                              "cosThetaStar2",
                               "Jet1_E",
                               "Jet1_Pt",
                               "Jet2_Pt",
@@ -338,8 +348,12 @@ class EventVars_tWRun2(Module):
                     allret["Lep1Lep2Jet1_E"              + sys] = (leps_4m[0] + leps_4m[1] + jets_4m[0]).E()
                     allret["Lep1Jet1_Pt"                 + sys] = (leps_4m[0] + jets_4m[0]).Pt()
                     allret["Lep1Jet1_M"                  + sys] = (leps_4m[0] + jets_4m[0]).M()
+                    allret["Lep1Jet1_DPhi"               + sys] = abs(leps_4m[0].Phi() - jets_4m[0].Phi()) / r.TMath.Pi()
+                    allret["cosThetaStar1"               + sys] = 2 * (allret["Lep1Jet1_M" + sys] ** (2) / mresta_) - 1
                     allret["Lep2Jet1_Pt"                 + sys] = (leps_4m[1] + jets_4m[0]).Pt()
                     allret["Lep2Jet1_M"                  + sys] = (leps_4m[1] + jets_4m[0]).M()
+                    allret["Lep2Jet1_DPhi"               + sys] = abs(leps_4m[1].Phi() - jets_4m[0].Phi()) / r.TMath.Pi()
+                    allret["cosThetaStar2"               + sys] = 2 * (allret["Lep2Jet1_M" + sys] ** (2) / mresta_) - 1
                     allret["Jet1_Pt"                     + sys] = jets_4m[0].Pt()
                     allret["Jet1_E"                      + sys] = jets_4m[0].E()
 
@@ -447,8 +461,12 @@ class EventVars_tWRun2(Module):
                     allret["Lep1Lep2Jet1_E"              + sys] = (leps_4m[0] + leps_4m[1] + jets_4m[0]).E()
                     allret["Lep1Jet1_Pt"                 + sys] = (leps_4m[0] + jets_4m[0]).Pt()
                     allret["Lep1Jet1_M"                  + sys] = (leps_4m[0] + jets_4m[0]).M()
+                    allret["Lep1Jet1_DPhi"               + sys] = abs(leps_4m[0].Phi() - jets_4m[0].Phi()) / r.TMath.Pi()
+                    allret["cosThetaStar1"               + sys] = 2 * (allret["Lep1Jet1_M" + sys] ** (2) / mresta_) - 1
                     allret["Lep2Jet1_Pt"                 + sys] = (leps_4m[1] + jets_4m[0]).Pt()
                     allret["Lep2Jet1_M"                  + sys] = (leps_4m[1] + jets_4m[0]).M()
+                    allret["Lep2Jet1_DPhi"               + sys] = abs(leps_4m[1].Phi() - jets_4m[0].Phi()) / r.TMath.Pi()
+                    allret["cosThetaStar2"               + sys] = 2 * (allret["Lep2Jet1_M" + sys] ** (2) / mresta_) - 1
                     allret["Jet1_Pt"                     + sys] = jets_4m[0].Pt()
                     allret["Jet1_E"                      + sys] = jets_4m[0].E()
 

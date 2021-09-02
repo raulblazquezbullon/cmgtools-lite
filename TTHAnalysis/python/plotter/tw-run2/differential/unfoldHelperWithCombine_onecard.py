@@ -13,6 +13,11 @@ import tdrstyle, CMS_lumi
 import getLaTeXtable as tex
 import errorPropagator as ep
 
+
+#### AGREGAR --cminDefaultMinimizerStrategy 0   ?????????? y quitar robusthesse
+#combinecommscaff = 'combine  -M FitDiagnostics --out {outdir} {infile} --saveWorkspace -n {y}_{var} --robustHesse 1 --robustFit 1 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --saveShapes'
+combinecommscaff = 'combine  -M FitDiagnostics --out {outdir} {infile} --saveWorkspace -n {y}_{var} --robustHesse 1 --cminDefaultMinimizerStrategy 0 --robustFit 1 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --saveShapes'
+
 def getBinFromLabel(hist, labx, laby):
     result = None
     for i in range(1, hist.GetXaxis().GetNbins()+1):
@@ -396,32 +401,13 @@ def makeFit(task):
     bins_particle = vl.varList[varName]['bins_particle']
     nparticlebins   = len(bins_particle) - 1
 
-    cardList = [ 'bincards/finalcard_bin{idx}_year{y}.txt'.format(var = varName, idx = idx, y = year) for idx in range(ndetectorbins)]
 
-    if doControl:
-        controlpath = "../../controlReg" + vl.diffControlReg
-        if not os.path.isdir(inpath + "/" + year + "/" + varName + "/sigextr_fit_combine/" + controlpath):
-            raise RuntimeError("FATAL: no valid folder found to add the control region information. Expected directory: {p}".format(p = inpath + "/" + year + "/" + varName + "/sigextr_fit_combine/" + controlpath))
+    #if doControl:
+        #controlpath = "../../controlReg" + vl.diffControlReg
+        #if not os.path.isdir(inpath + "/" + year + "/" + varName + "/sigextr_fit_combine/" + controlpath):
+            #raise RuntimeError("FATAL: no valid folder found to add the control region information. Expected directory: {p}".format(p = inpath + "/" + year + "/" + varName + "/sigextr_fit_combine/" + controlpath))
 
-        cardList.append( "controlReg=" + controlpath + "/controlReg.txt" )
-
-    mergecomm = 'cd {path}; combineCards.py {allCards} > {outCard}; cd -'.format(allCards = ' '.join(cardList),
-                                                                                 path     = inpath + "/" + year + "/" + varName + "/sigextr_fit_combine",
-                                                                                 var      = varName,
-                                                                                 outCard  = 'finalcard.txt')
-
-    if verbose:
-        print 'Cardlist:', cardList, "\n"
-        print "Merge cards command:", mergecomm, "\n"
-
-    if not pretend:
-        if os.path.isfile(inpath + "/" + year + "/" + varName + "/sigextr_fit_combine/finalcard.txt"):
-            if verbose:
-                print "    - Erasing old combined card..."
-            os.system("rm " + inpath + "/" + year + "/" + varName + "/sigextr_fit_combine/finalcard.txt")
-        outstat = os.system(mergecomm)
-        if outstat:
-            raise RuntimeError("FATAL: combineCards.py failed to execute for variable {v} of year {y}.".format(v = varName, y = year))
+        #cardList.append( "controlReg=" + controlpath + "/controlReg.txt" )
 
 
     physicsModel = 'text2workspace.py -m 125 -P HiggsAnalysis.CombinedLimit.PhysicsModel:multiSignalModel '
@@ -429,7 +415,7 @@ def makeFit(task):
     for idx in range(nparticlebins):
         physicsModel += "--PO 'map=.*/tw_partbin{iBp}:r_tW_{iBp}[1,0,20]' ".format(iBp  = idx)
 
-    physicsModel += '{infile} -o {outfile}'.format(infile  = inpath + "/" + year + "/" + varName + "/sigextr_fit_combine/finalcard.txt",
+    physicsModel += '{infile} -o {outfile}'.format(infile  = inpath + "/" + year + "/" + varName + "/sigextr_fit_combine/bincards/card_{v}.txt".format(v = varName),
                                                    outfile = inpath + "/" + year + "/" + varName + "/sigextr_fit_combine/fit_output.root",
                                                    var     = varName,)
 
@@ -447,9 +433,7 @@ def makeFit(task):
 
     fitoutpath = inpath + "/" + year + "/" + varName + "/sigextr_fit_combine/fitdiagnostics"
 
-    #### AGREGAR --cminDefaultMinimizerStrategy 0   ?????????? y quitar robusthesse
-
-    combinecomm = 'combine  -M FitDiagnostics --out {outdir} {infile} --saveWorkspace -n {y}_{var} --robustHesse 1 --robustFit 1 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --saveShapes'.format(
+    combinecomm = combinecommscaff.format(
         y      = year,
         outdir = fitoutpath,
         infile = inpath + "/" + year + "/" + varName + "/sigextr_fit_combine/fit_output.root",
@@ -521,43 +505,41 @@ def makeFit(task):
         #sys.exit()
 
         prefitdict  = {}; postfitdict = {}
-        for iB in range(ndetectorbins):
-            prefitdict[iB] = {}; postfitdict[iB] = {};
-            prefitfolder  = tfile.Get('shapes_prefit/ch{b}'.format(b = iB + 1))
-            postfitfolder = tfile.Get('shapes_fit_s/ch{b}' .format(b = iB + 1))
-            for key in prefitfolder.GetListOfKeys():
-                if "ttbar" in key.GetName():
-                    prefitdict[iB]["ttbar"]    = deepcopy(prefitfolder.Get(key.GetName()).Clone("ttbar"))
-                if "tw" in key.GetName():
-                    prefitdict[iB]["tw"]       = deepcopy(prefitfolder.Get(key.GetName()).Clone("tw"))
-                if "nonworz" in key.GetName():
-                    prefitdict[iB]["nonworz"]  = deepcopy(prefitfolder.Get(key.GetName()).Clone("nonworz"))
-                if "vvttv" in key.GetName():
-                    prefitdict[iB]["vvttv"]    = deepcopy(prefitfolder.Get(key.GetName()).Clone("vvttv"))
-                if "dy" in key.GetName():
-                    prefitdict[iB]["dy"]       = deepcopy(prefitfolder.Get(key.GetName()).Clone("dy"))
-                if "data" in key.GetName():
-                    prefitdict[iB]["data"]     = deepcopy(prefitfolder.Get(key.GetName()).Clone("data"))
-                    postfitdict[iB]["data"]    = deepcopy(prefitfolder.Get(key.GetName()).Clone("data_"))
+        prefitfolder  = tfile.Get('shapes_prefit/card_{v}'.format(v = varName))
+        postfitfolder = tfile.Get('shapes_fit_s/card_{v}' .format(v = varName))
+        for key in prefitfolder.GetListOfKeys():
+            if "ttbar" in key.GetName():
+                prefitdict["ttbar"]    = deepcopy(prefitfolder.Get(key.GetName()).Clone("ttbar"))
+            if "tw" in key.GetName():
+                prefitdict[key.GetName()] = deepcopy(prefitfolder.Get(key.GetName()).Clone(key.GetName()))
+            if "nonworz" in key.GetName():
+                prefitdict["nonworz"]  = deepcopy(prefitfolder.Get(key.GetName()).Clone("nonworz"))
+            if "vvttv" in key.GetName():
+                prefitdict["vvttv"]    = deepcopy(prefitfolder.Get(key.GetName()).Clone("vvttv"))
+            if "dy" in key.GetName():
+                prefitdict["dy"]       = deepcopy(prefitfolder.Get(key.GetName()).Clone("dy"))
+            if "data" in key.GetName():
+                prefitdict["data"]     = deepcopy(prefitfolder.Get(key.GetName()).Clone("data"))
+                postfitdict["data"]    = deepcopy(prefitfolder.Get(key.GetName()).Clone("data_"))
 
-            for key in postfitfolder.GetListOfKeys():
-                if "ttbar" in key.GetName():
-                    postfitdict[iB]["ttbar"]   = deepcopy(postfitfolder.Get(key.GetName()).Clone("ttbar"))
-                if "tw" in key.GetName():
-                    postfitdict[iB]["tw"]      = deepcopy(postfitfolder.Get(key.GetName()).Clone("tw"))
-                if "nonworz" in key.GetName():
-                    postfitdict[iB]["nonworz"] = deepcopy(postfitfolder.Get(key.GetName()).Clone("nonworz"))
-                if "vvttv" in key.GetName():
-                    postfitdict[iB]["vvttv"]   = deepcopy(postfitfolder.Get(key.GetName()).Clone("vvttv"))
-                if "dy" in key.GetName():
-                    postfitdict[iB]["dy"]      = deepcopy(postfitfolder.Get(key.GetName()).Clone("dy"))
+        for key in postfitfolder.GetListOfKeys():
+            if "ttbar" in key.GetName():
+                postfitdict["ttbar"]   = deepcopy(postfitfolder.Get(key.GetName()).Clone("ttbar"))
+            if "tw" in key.GetName():
+                postfitdict[key.GetName()] = deepcopy(postfitfolder.Get(key.GetName()).Clone(key.GetName()))
+            if "nonworz" in key.GetName():
+                postfitdict["nonworz"] = deepcopy(postfitfolder.Get(key.GetName()).Clone("nonworz"))
+            if "vvttv" in key.GetName():
+                postfitdict["vvttv"]   = deepcopy(postfitfolder.Get(key.GetName()).Clone("vvttv"))
+            if "dy" in key.GetName():
+                postfitdict["dy"]      = deepcopy(postfitfolder.Get(key.GetName()).Clone("dy"))
 
         tfile2.Close(); tfile.Close()
 
         #### SAVING
         # Put results into histos
         outHisto = r.TH1D('hFitResult_{var}'.format(var = varName),
-                        '', nparticlebins, array('d', vl.varList[varName]['bins_particle']))
+                          '', nparticlebins, array('d', vl.varList[varName]['bins_particle']))
         uncInfo = deepcopy(outHisto.Clone('hFitResult_forPlotting_' + varName))
 
         scaleval = 1

@@ -327,7 +327,11 @@ class beautifulUnfPlot:
             leg.Draw('same')
 
         if not hasattr(self, 'noCMS'):
-            CMS_lumi.lumi_13TeV = "%.1f fb^{-1}" %(self.displayedLumi)
+            if self.displayedLumi >= 10**2:
+                CMS_lumi.lumi_13TeV = "%.0f fb^{-1}" %(self.displayedLumi)
+            else:
+                CMS_lumi.lumi_13TeV = "%.1f fb^{-1}" %(self.displayedLumi)
+            
             if self.doPreliminary: CMS_lumi.extraText  = 'Preliminary'
             else:                  CMS_lumi.extraText  = ''
             #if self.doSupplementary: CMS_lumi.extraText  += 'Supplementary'
@@ -396,11 +400,11 @@ class beautifulUnfPlot:
             if "MT_LLMETB" in self.var: totalunc.GetXaxis().SetNdivisions(515, True)
             
             if   "yaxismax_ratio_fidnorm" in vl.varList[self.var] and "fiducialnorm" in self.var:
-                totalunc.GetYaxis().SetRangeUser(0, vl.varList[self.var]["yaxismax_ratio_fidnorm"])
+                totalunc.GetYaxis().SetRangeUser(0.5, vl.varList[self.var]["yaxismax_ratio_fidnorm"])
             elif "yaxismax_ratio_norm" in vl.varList[self.var] and "norm" in self.var:
-                totalunc.GetYaxis().SetRangeUser(0, vl.varList[self.var]["yaxismax_ratio_norm"])
+                totalunc.GetYaxis().SetRangeUser(0.5, vl.varList[self.var]["yaxismax_ratio_norm"])
             else:
-                totalunc.GetYaxis().SetRangeUser(0, 2.5)
+                totalunc.GetYaxis().SetRangeUser(0.5, 1.5)
 
             totalunc.GetYaxis().SetTitle('Pred./Data')
             totalunc.GetYaxis().SetTitleFont(43)
@@ -410,8 +414,8 @@ class beautifulUnfPlot:
             totalunc.GetYaxis().SetLabelFont(43)
             totalunc.GetYaxis().SetLabelSize(22)
             totalunc.GetYaxis().SetLabelOffset(0.007)
-            totalunc.GetYaxis().SetNdivisions(510, True)
-            if "LeadingJetPt_norm" in self.var or "MT_LLMETB_norm" in self.var or "MT_LLMETB_fiducialnorm" in self.var: totalunc.GetYaxis().SetNdivisions(505, False)
+            #totalunc.GetYaxis().SetNdivisions(510, True)
+            totalunc.GetYaxis().SetNdivisions(505, True)
             
             # Drawing
             self.canvas.cd(2)

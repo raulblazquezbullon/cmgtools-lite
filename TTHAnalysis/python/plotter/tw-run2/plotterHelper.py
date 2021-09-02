@@ -27,15 +27,14 @@ commandscaff = "python mcPlots.py --tree NanoAOD --pdir {outpath} {friends} {sam
 commandblindscaff = "python mcPlots.py --tree NanoAOD --pdir {outpath} {friends} {samplespaths} -f -l {lumi} {nth} --year {year} {ratio} --showRatio --fixRatioRange --legendColumns 1 --legendWidth 0.07 --legendFontSize 0.032 --noCms --topSpamSize 1.1 --lspam '#splitline{{#scale[1.1]{{#bf{{CMS}}}}}}{{#scale[0.9]{{#it{{Preliminary}}}}}}' --neg --showMCError -W 'MuonIDSF * MuonISOSF * ElecIDSF * ElecRECOSF * TrigSF * puWeight * bTagWeight * PrefireWeight' -L tw-run2/functions_tw.cc {selplot} {mcafile} {cutsfile} {plotsfile} {extra} --AP --noStatTotLegendOnRatio --addspam '{nameregion}' --lspamPosition 0.21 .845 .35 .885 --TotalUncRatioStyle 3244 0 --noStatUncOnRatio --YTitleOffset 2.1 2.1 --TotalUncRatioColor 920 920 --addspamPosition .41 .855 .6 .895 --transparentLegend --LeftRightMargins 0.16 0.03  --labelsSize 22 --labelsFont 43 --BottomMarginRatio 0.42 --XTitleOffsetRatio 4.8 --noXErrData --printBin 'bin' --printBinUnity --noExpoShift --no-elist" #--ratioYNDiv 210 --NotDrawRatioLine
 
 
-
-slurmscaff   = 'sbatch -c {nth} -p {queue} -J {jobname} -e {logpath}/log.%j.%x.err -o {logpath}/log.%j.%x.out --wrap "{command}"'
+slurmscaff   = 'sbatch {extraS} -c {nth} -p {queue} -J {jobname} -e {logpath}/log.%j.%x.err -o {logpath}/log.%j.%x.out --wrap "{command}"'
 lumidict     = {2016 : 36.33,
                 2017 : 41.53,
                 2018 : 59.74}
 
 
 def GeneralExecutioner(task):
-    prod, year, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend, useFibre, doUncs, doBlind = task
+    prod, year, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend, useFibre, doUncs, doBlind, extraslurm = task
 
     if not os.path.isdir(outpath + "/" + str(year)) and not pretend:
         os.system("mkdir -p " + outpath + "/" + str(year))
@@ -46,11 +45,12 @@ def GeneralExecutioner(task):
 
         for reg in region.split(","):
             jobname_   = "CMGTplotter_{y}_{r}_{s}".format(y = year, r = reg, s = "all" if not len(selplot) else ".".join(selplot))
-            submitcomm = slurmscaff.format(nth  = nthreads,
-                                        queue   = queue,
-                                        jobname = jobname_,
-                                        logpath = logpath.format(y = year, p = prod),
-                                        command = PlottingCommand(prod, year, nthreads, outpath, selplot, reg, ratiorange, extra, useFibre, doUncs, doBlind))
+            submitcomm = slurmscaff.format(extraS = extraslurm,
+                                          nth     = nthreads,
+                                          queue   = queue,
+                                          jobname = jobname_,
+                                          logpath = logpath.format(y = year, p = prod),
+                                          command = PlottingCommand(prod, year, nthreads, outpath, selplot, reg, ratiorange, extra, useFibre, doUncs, doBlind))
             print "Command:", submitcomm
             if not pretend: os.system(submitcomm)
     else:
@@ -66,24 +66,24 @@ def GeneralExecutioner(task):
 
 def PlottingCommand(prod, year, nthreads, outpath, selplot, region, ratio, extra, useFibre, doUncs, doBlind):
     mcafile_    = "tw-run2/mca-tw.txt"
-    cutsfile_   = "tw-run2/cuts-tw-{reg}.txt".format(reg = region if ("_" not in region) else region.split("_")[0] if ("differential" not in region) else region)
+    cutsfile_   = "tw-run2/cuts-tw-{reg}.txt".format(reg = region if ("_" not in region) else region.split("_")[0] if ("differential" not in region and "cut" not in region) else region)
     plotsfile_  = "tw-run2/plots-tw/plots-tw-{reg}.txt".format(reg = region.replace("SF", ""))
 
     samplespaths_ = "-P " + friendspath + "/" + prod + ("/" + year) * (year != "run2")
     if useFibre: samplespaths_ = samplespaths_.replace("phedexrw", "phedex").replace("cienciasrw", "ciencias")
 
     nth_        = "" if nthreads == 0 else ("--split-factor=-1 -j " + str(nthreads))
-    friends_    = friendsscaff + (" --Fs {P}/5_mvas_new" * ("MVA" in region))
+    friends_    = friendsscaff + (" --Fs {P}/5_mvas" * ("MVA" in region))
     outpath_    = outpath + "/" + year + "/" + (region if "_" not in region else (region.split("_")[0] + "/" + region.split("_")[1]))
     selplot_    = " ".join( [ "--sP {p}".format(p = sp) for sp in selplot ] ) if len(selplot) else ""
     ratio_      = "--maxRatioRange " + ratio
-    nameregion_ = "e^{{#pm}}#mu^{{#mp}}" if not "SF" in region else "e^{{#pm}}e^{{#mp}}+#mu^{{#pm}}#mu^{{#mp}}"
+    nameregion_ = "e^{#pm}#mu^{#mp}" if not "SF" in region else "e^{#pm}e^{#mp}+#mu^{#pm}#mu^{#mp}"
     if "_" not in region and "nojets" not in region:
-        nameregion_ = "+" + region.replace("t", "b").replace("plus", "+")
+        nameregion_ += "+" + region.replace("t", "b").replace("plus", "+")
     elif "differential" in region and "nojets" not in region:
-        nameregion_ = "+" + region.split("_")[0].replace("t", "b").replace("plus", "+") + "+0j_{loose}"
+        nameregion_ += "+" + region.split("_")[0].replace("t", "b").replace("plus", "+") + "+0j_{loose}"
     elif "MVA" in region and "nojets" not in region:
-        nameregion_ = "+" + region.split("_")[0].replace("t", "b").replace("plus", "+")
+        nameregion_ += "+" + region.split("_")[0].replace("t", "b").replace("plus", "+")
     
     thecomm = commandscaff if not doBlind else commandblindscaff
     
@@ -123,6 +123,7 @@ if __name__=="__main__":
     parser.add_argument('--year',      '-y', metavar = 'year',      dest = "year",    required = False, default = "2016")
     parser.add_argument('--queue',     '-q', metavar = 'queue',     dest = "queue",   required = False, default = "")
     parser.add_argument('--extraArgs', '-e', metavar = 'extra',     dest = "extra",   required = False, default = "")
+    parser.add_argument('--extraSlurmArgs','-eS',metavar='extraslurm',dest="extraslurm",required=False, default = "")
     parser.add_argument('--nthreads',  '-j', metavar = 'nthreads',  dest = "nthreads",required = False, default = 0, type = int)
     parser.add_argument('--select-plot','--sP',action = "append",   dest = "selplot", required = False, default = [])
     parser.add_argument('--pretend',   '-p', action = "store_true", dest = "pretend", required = False, default = False)
@@ -141,6 +142,7 @@ if __name__=="__main__":
     year     = args.year
     queue    = args.queue
     extra    = args.extra
+    extraslurm=args.extraslurm
     nthreads = args.nthreads
     selplot  = args.selplot
     pretend  = args.pretend
@@ -204,7 +206,7 @@ if __name__=="__main__":
 
             if cont:
                 for y in ["2016", "2017", "2018", "run2"]:
-                    GeneralExecutioner( (prod, y, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend, useFibre, doUncs, doBlind) )
+                    GeneralExecutioner( (prod, y, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend, useFibre, doUncs, doBlind, extraslurm) )
         else:
             cont = False
             if   pretend:
@@ -213,12 +215,12 @@ if __name__=="__main__":
                 cont = True
 
             if cont:
-                GeneralExecutioner( (prod, year, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend, useFibre, doUncs, doBlind) )
+                GeneralExecutioner( (prod, year, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend, useFibre, doUncs, doBlind, extraslurm) )
     else:
         print "> Local execution chosen."
         if year == "all":
             print "   - All three years and the combination will be plotted."
             for y in ["2016", "2017", "2018", "run2"]:
-                GeneralExecutioner( (prod, y, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend, useFibre, doUncs, doBlind) )
+                GeneralExecutioner( (prod, y, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend, useFibre, doUncs, doBlind, extraslurm) )
         else:
-            GeneralExecutioner( (prod, year, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend, useFibre, doUncs, doBlind) )
+            GeneralExecutioner( (prod, year, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend, useFibre, doUncs, doBlind, extraslurm) )
