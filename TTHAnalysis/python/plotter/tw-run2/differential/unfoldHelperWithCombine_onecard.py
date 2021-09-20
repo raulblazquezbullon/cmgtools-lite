@@ -15,8 +15,10 @@ import errorPropagator as ep
 
 
 #### AGREGAR --cminDefaultMinimizerStrategy 0   ?????????? y quitar robusthesse
-#combinecommscaff = 'combine  -M FitDiagnostics --out {outdir} {infile} --saveWorkspace -n {y}_{var} --robustHesse 1 --robustFit 1 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --saveShapes'
-combinecommscaff = 'combine  -M FitDiagnostics --out {outdir} {infile} --saveWorkspace -n {y}_{var} --robustHesse 1 --cminDefaultMinimizerStrategy 0 --robustFit 1 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --saveShapes'
+#combinecommscaff = 'combine  -M FitDiagnostics --out {outdir} {infile} --saveWorkspace -n {y}_{var} --saveShapes --robustHesse 1 --robustFit 1 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --saveShapes'
+combinecommscaff = 'combine  -M FitDiagnostics --out {outdir} {infile} --saveWorkspace -n {y}_{var} --saveShapes --robustHesse 1 --cminDefaultMinimizerStrategy 0 --robustFit 1 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --cminPreFit 3'
+#combinecommscaff = 'combine  -M FitDiagnostics --out {outdir} {infile} --saveWorkspace -n {y}_{var} --saveShapes --robustHesse 1 --stepSize 0.001 --cminDefaultMinimizerStrategy 1 --robustFit 1 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=50000000 --setRobustFitStrategy 1 --setRobustFitTolerance 0.0001'
+#combinecommscaff = 'combine  -M FitDiagnostics --out {outdir} {infile} --saveWorkspace -n {y}_{var} --saveShapes --robustHesse 1 --robustFit 1 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --setRobustFitTolerance 0.001 --setRobustFitStrategy 2 --stepSize 0.001 --setCrossingTolerance 0.001'
 
 def getBinFromLabel(hist, labx, laby):
     result = None
@@ -547,10 +549,9 @@ def makeFit(task):
         if vl.doxsec: scaleval = 1/thelumi/1000
 
         signalname = "x_tw"
+        card = r.TFile.Open(inpath + "/" + year + "/" + varName + "/particle.root", "READ")
         for i in range(1, nparticlebins + 1):
-            card = r.TFile.Open(inpath + "/" + year + "/" + varName + "/particle.root", "READ")
             tmpint = card.Get(signalname).GetBinContent(i)
-            card.Close()
 
             results['r_tW_%d'%(i-1)][0] *= tmpint * scaleval
             results['r_tW_%d'%(i-1)][1] *= tmpint * scaleval
@@ -562,9 +563,12 @@ def makeFit(task):
             outHisto.SetBinError  (i, results['r_tW_%d'%(i-1)][3])
 
             # ...and these here are asymm.:
-            uncInfo.SetBinContent(i,   results['r_tW_%d'%(i-1)][1]) # Down
+            uncInfo.SetBinContent(i,   abs(results['r_tW_%d'%(i-1)][1])) # Down
             uncInfo.SetBinError  (i,   results['r_tW_%d'%(i-1)][2]) # Up
+            
+            print i, results['r_tW_%d'%(i-1)][0], results['r_tW_%d'%(i-1)][3], results['r_tW_%d'%(i-1)][1], results['r_tW_%d'%(i-1)][2]
 
+        card.Close()
 
         # Put covariance matrix into yield parametrization instead of cross section parametrization
         # Also the thing should be in a th2

@@ -427,6 +427,7 @@ def drawTheRelUncPlot(listWithHistos, thedict, thePlot, yaxismax = "auto", doSym
                 incsyst.append(max([math.sqrt(listWithHistos[0].GetBinError(bin)**2 - thedict[""].GetBinError(bin)**2),
                                     math.sqrt(listWithHistos[1].GetBinError(bin)**2 - thedict[""].GetBinError(bin)**2)]))
         except ValueError:
+#            print listWithHistos[0].GetBinContent(bin), listWithHistos[0].GetBinError(bin), listWithHistos[1].GetBinContent(bin), listWithHistos[1].GetBinError(bin), thedict[""].GetBinContent(bin), thedict[""].GetBinError(bin)
             raise RuntimeError("FATAL: the provided nominal/fit only unc. is larger that the total sum of all of them for bin {b}".format(b = bin))
 
         hincmax.SetBinContent(bin, incmax[bin-1] / hincmax.GetBinContent(bin))

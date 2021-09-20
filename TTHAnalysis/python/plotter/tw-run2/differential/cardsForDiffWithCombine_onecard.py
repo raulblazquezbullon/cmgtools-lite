@@ -94,9 +94,9 @@ def produceAdHocMCAandUncsfiles(thepath, they, thev):
 
                     for iB in range(len(vl.varList[thev]["bins_particle"]) - 1):
                         tmpcut = "(" + str(vl.varList[thev]["bins_particle"][iB]) + "<=" + vl.varList[thev]["var_particle"] + ") && (" + vl.varList[thev]["var_particle"] + "<" + str(vl.varList[thev]["bins_particle"][iB + 1]) + ")"
-                        outyear += tmpline.replace(";", ": " + cutstring + " && " + tmpcut + " ;").replace("tw+", "tw_partbin{b}+".format(b = iB)) + "\n"
+                        outyear += tmpline.replace(";", ": " + cutstring + " && " + tmpcut + " ;").replace("tw+", "tw_partbin{b}+".format(b = iB)).replace("FillColor=798", "FillColor=" + str(vl.coloursForDiffWithCombine[iB + 1]) + ",Label='tW bin {b}'".format(b = iB + 1)) + "\n"
 
-                    outyear += tmpline.replace(";", ": (!(" + cutstring + ")) ;").replace("tw+", "tw_bkg") + "\n"
+                    outyear += tmpline.replace(";", ": (!(" + cutstring + ")) ;").replace("tw+", "tw_bkg").replace("FillColor=798", "FillColor=" + str(vl.coloursForDiffWithCombine[0]) + ",Label='tW bkg.'") + "\n"
 
             foutyear = open(thepath + "/" + "mca-tw-{y}.txt".format(y = iY), "w")
             foutyear.write(outyear)
@@ -129,9 +129,9 @@ def produceAdHocMCAandUncsfiles(thepath, they, thev):
 
                 for iB in range(len(vl.varList[thev]["bins_particle"]) - 1):
                     tmpcut = "(" + str(vl.varList[thev]["bins_particle"][iB]) + "<=" + vl.varList[thev]["var_particle"] + ") && (" + vl.varList[thev]["var_particle"] + "<" + str(vl.varList[thev]["bins_particle"][iB + 1]) + ")"
-                    outyear += tmpline.replace(";", ": " + cutstring + " && " + tmpcut + " ;").replace("tw+", "tw_partbin{b}+".format(b = iB)) + "\n"
+                    outyear += tmpline.replace(";", ": " + cutstring + " && " + tmpcut + " ;").replace("tw+", "tw_partbin{b}+".format(b = iB)).replace("FillColor=798", "FillColor=" + str(vl.coloursForDiffWithCombine[iB + 1]) + ",Label='tW bin {b}'".format(b = iB + 1)) + "\n"
 
-                outyear += tmpline.replace(";", ": (!(" + cutstring + ")) ;").replace("tw+", "tw_bkg") + "\n"
+                outyear += tmpline.replace(";", ": (!(" + cutstring + ")) ;").replace("tw+", "tw_bkg").replace("FillColor=798", "FillColor=" + str(vl.coloursForDiffWithCombine[0]) + ",Label='tW bkg.'") + "\n"
 
             foutyear = open(thepath + "/" + "mca-tw-{y}.txt".format(y = they), "w")
             foutyear.write(outyear)
@@ -155,7 +155,8 @@ def produceAdHocMCAandUncsfiles(thepath, they, thev):
         foutyear.close(); del foutyear
 
     outuncs = ""
-    with open("./tw-run2/uncs-tw.txt", "r") as scaff:
+    #with open("./tw-run2/uncs-tw.txt", "r") as scaff:
+    with open("./tw-run2/uncs-tw_1j1tdiff_lep1pt.txt", "r") as scaff:
         for line in scaff:
             if "alias" in line:
                 outuncs += line.replace("tw", "|".join(["tw_bkg"] + ["tw_partbin{b}".format(b = iB) for iB in range(len(vl.varList[thev]["bins_particle"]) - 1)]))

@@ -20,9 +20,9 @@ r.gROOT.SetBatch(True)
 #colour_syst    = ["ColourQCDbasedCRTuneerdON", "ColourGluonMoveCRTuneerdON", "ColourPowhegerdON", "ColourGluonMoveCRTune"]
 #colour_syst    = []
 
-vetolist       = ["UnfoldingInfo", "detector.root", "detectorparticleResponse.root", "nonfiducial", "particle.root", "particleOutput.root", "particlefidOutput.root", "particlefidbinOutput.root", "particlebinOutput.root". "higgsCombine", "combcard"]
+vetolist       = ["UnfoldingInfo", "detector.root", "detectorparticleResponse.root", "nonfiducial", "particle.root", "particleOutput.root", "particlefidOutput.root", "particlefidbinOutput.root", "particlebinOutput.root", "higgsCombine", "combcard"]
 #vetolist       = ["UnfoldingInfo", "detector", "nonfiducial", "particle.root"]
-foldervetolist = ["responseplots", "particleplots", "detectorplots", "impacts_"]
+foldervetolist = ["responseplots", "particleplots", "detectorplots", "impacts_", "sigextr_fit_combine"]
 
 
 def getOutSuffix(s):
@@ -59,10 +59,12 @@ def getFiles(path):
 
 def plotVariationsFromOneProcess(tsk):
     thevar, theproc, subdict, outpath = tsk
+    #if "partbin" in theproc:
+    #    print subdict
     for iU in subdict:
         if iU == "": continue
 
-        c = r.TCanvas("c", "", 600, 600)
+        c = r.TCanvas("c_" + theproc + "_" + iU, "", 600, 600)
 
         c.Divide(1, 2)
         c.GetPad(1).SetPad(*tuple([float(i) for i in "0.00, 0.25, 1.00, 1.00".split(',')]))
@@ -79,7 +81,7 @@ def plotVariationsFromOneProcess(tsk):
         c.GetPad(2).SetLeftMargin(0.16)
 
         c.cd(1)
-#        print thevar, theproc, iU
+        #print thevar, theproc, iU
         nominal = subdict[""]
         varup   = subdict[iU]["Up"]
         vardn   = subdict[iU]["Down"]
@@ -152,7 +154,8 @@ def plotVariationsFromOneProcess(tsk):
         ratioUp.GetXaxis().SetRangeUser(nominal.GetXaxis().GetBinLowEdge(1), nominal.GetXaxis().GetBinUpEdge(nominal.GetNbinsX()))
 
         #ratioUp.GetYaxis().SetRangeUser(0.8, 1.2)
-        ratioUp.GetYaxis().SetRangeUser(0.95, 1.05)
+        #ratioUp.GetYaxis().SetRangeUser(0.95, 1.05)
+        ratioUp.GetYaxis().SetRangeUser(0.9, 1.1)
         ratioUp.GetYaxis().SetTitle('Vars./Nom.')
         ratioUp.GetYaxis().SetTitleFont(43)
         ratioUp.GetYaxis().SetTitleSize(16)
@@ -186,14 +189,15 @@ def plotVariations(tup, outname, ncores = -1):
 
     print("\n> Reading file " + tup[1] + "/" + tup[0] + " ...")
     nplots = 0
-    #thisisnotacard = False
+    thisisnotacard = False
     varprefix = "x"
+    #varprefix = "lep1lep2jet1met_mt"
     vetostring = "ptcmtptoverhttotdetadphibtagdrpzptsum2j1b1j1brebin"
     thisisandiffrfile = "Output" in tup[0] or "detectorsignal_bs" in tup[0]
 
     for key in rF.GetListOfKeys():
         tmpnam     = key.GetName()
-        if any([el in tmpnam for el in ["hincsyst", "hincmax", "canvas", "stack", "CovMat", "nom0", "nom1", "tot_weight"]]): continue
+        if any([el in tmpnam for el in ["background", "hincsyst", "hincmax", "canvas", "stack", "CovMat", "nom0", "nom1", "tot_weight"]]): continue
         if not thisisandiffrfile:
             if "data" in tmpnam: continue
 
@@ -224,7 +228,8 @@ def plotVariations(tup, outname, ncores = -1):
         cleanednam = tmpnam.replace(varprefix + "_", "")
         if cleanednam[-1] == "_":
             cleanednam = cleanednam[:-1]
-        #print cleanednam, varprefix, tmpnam
+        #if "tw" in cleanednam.lower():
+            #print cleanednam, varprefix, tmpnam
 
         if varprefix not in histodict:
             histodict[varprefix] = {}
@@ -233,12 +238,16 @@ def plotVariations(tup, outname, ncores = -1):
             if cleanednam not in histodict[varprefix]:
                 histodict[varprefix][cleanednam] = {}
             #if "dy" in cleanednam:
-                #print tmpnam, cleanednam
+            #    print tmpnam, cleanednam
             histodict[varprefix][cleanednam][""] = deepcopy(rF.Get(tmpnam).Clone(cleanednam + "_" + varprefix))
         else:
-            tmpproc = cleanednam.split("_")[0]
-
-            tmpunc  = ("_".join( cleanednam.split("_")[1:] )).replace("Up", "").replace("Down", "")
+            if "partbin" in cleanednam or "bkg" in cleanednam:
+                tmpproc = "_".join(cleanednam.split("_")[:2])
+                tmpunc  = ("_".join( cleanednam.split("_")[2:] )).replace("Up", "").replace("Down", "")
+            else:
+                tmpproc = cleanednam.split("_")[0]
+                tmpunc  = ("_".join( cleanednam.split("_")[1:] )).replace("Up", "").replace("Down", "")
+            if "partbin" in tmpunc or "bkg" in tmpunc: continue
             tmpvar  = "Up" if "Up" in cleanednam else "Down" if "Down" in cleanednam else "OTHER"
 
             #print(varprefix, tmpnam, tmpproc, tmpunc, tmpvar)
@@ -259,6 +268,7 @@ def plotVariations(tup, outname, ncores = -1):
     tasks = []
     for iV in histodict:
         for iP in histodict[iV]:
+            if "signal" in iP or "background" in iP: continue
             #print iP
             tasks.append( (iV, iP, histodict[iV][iP], outfolder) )
     if ncores < 2:

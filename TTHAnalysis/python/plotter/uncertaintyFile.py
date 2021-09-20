@@ -32,9 +32,10 @@ class Uncertainty:
         lnU_byextra = extra != None and ('lnU' in extra) and bool(extra['lnU'])
         if lnU_byname != lnU_byextra: raise RuntimeError("Inconsistent declaration of %s: is it a lnU or not? by name %r, by options %r" % (name,lnU_byname,lnU_byextra))
         self.prepFR()
+        return
+
 
     def prepFR(self):
-
         if self.unc_type=='templateAsymm':
             if 'FakeRates' in self.extra:
                 self._nontrivialSelectionChange = True
@@ -116,6 +117,7 @@ class Uncertainty:
         elif self.unc_type=='none':
             pass
         else: raise RuntimeError, 'Uncertainty type "%s" not recognised' % self.unc_type
+        
         if 'RemoveFakeRate' in self.extra and self.extra['RemoveFakeRate']:
             self._nontrivialSelectionChange = True
             self.removeFR = self.extra['RemoveFakeRate']
@@ -125,6 +127,8 @@ class Uncertainty:
             self._nontrivialSelectionChange = False
         if 'year' in self.extra: 
             self._year = self.extra['year']
+        return
+        
     def isDummy(self):
         return  self.unc_type == 'none'
     def isTrivial(self,sign):

@@ -1381,6 +1381,7 @@ PrintSysNameTranslator = {
     "pdfhessian"          : "PDF + $\\alpha_{S}$",
     'isr_ttbar'           : "ISR (\\ttbar)",
     'isr_tw'              : "ISR (\\tw)",
+    'fsr'                 : "FSR (\\ttbar, \\tw)",
     'fsr_ttbar'           : "FSR (\\ttbar)",
     'fsr_tw'              : "FSR (\\tw)",
     'topptrew'            : "Top \pt rew.",
@@ -1590,4 +1591,19 @@ hi_colour = {
     'default': 46,
     'hesse'  : r.kBlue,
     'robust' : r.kAzure - 5
+}
+
+coloursForDiffWithCombine = {
+    'bkg': r.kOrange + 10, # bkg proc
+    0    : r.kOrange + 10, # bkg proc
+    1    : r.kOrange,
+    2    : r.kOrange - 1,
+    3    : r.kOrange - 2,
+    4    : r.kOrange - 3,
+    5    : r.kOrange - 4,
+    6    : r.kOrange - 5,
+    7    : r.kOrange - 6,
+    8    : r.kOrange - 7,
+    9    : r.kOrange - 8,
+    10   : r.kOrange - 9,
 }
