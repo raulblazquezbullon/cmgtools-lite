@@ -418,16 +418,16 @@ finalMVA_4l = lambda : FinalMVA_4L()
 #                                                   os.environ["CMSSW_BASE"]+"/src/CMGTools/TTHAnalysis/data/leptonMVA/ttw/TMVA_BDTG_TOP%s.weights.xml"),"2016",training="Ghent_MVA_2016", label="FriendTTW")
 
 from PhysicsTools.NanoAODTools.postprocessing.modules.btv.btagSFProducer import btagSFProducer
-from PhysicsTools.NanoAODTools.postprocessing.modules.btv.btagSFProducer_nojes import btagSFProducer_nojes
+#from PhysicsTools.NanoAODTools.postprocessing.modules.btv.btagSFProducer_nojes import btagSFProducer_nojes
 
 
 btagSF2016_dj_allVars = lambda : btagSFProducer("Legacy2016",'deepjet',collName="JetSel_Recl",storeOutput=True,perJesComponents=False)
 btagSF2017_dj_allVars = lambda : btagSFProducer("2017",'deepjet',collName="JetSel_Recl",storeOutput=False,perJesComponents=True)
 btagSF2018_dj_allVars = lambda : btagSFProducer("2018",'deepjet',collName="JetSel_Recl",storeOutput=False,perJesComponents=True)
 
-btagSF2016_dj = lambda : btagSFProducer_nojes("Legacy2016",'deepjet',verbose=2,collName="JetSel_Recl",storeOutput=False)
-btagSF2017_dj = lambda : btagSFProducer_nojes("2017",'deepjet',collName="JetSel_Recl",storeOutput=False)
-btagSF2018_dj = lambda : btagSFProducer_nojes("2018",'deepjet',collName="JetSel_Recl",storeOutput=False)
+#btagSF2016_dj = lambda : btagSFProducer_nojes("Legacy2016",'deepjet',verbose=2,collName="JetSel_Recl",storeOutput=False)
+#btagSF2017_dj = lambda : btagSFProducer_nojes("2017",'deepjet',collName="JetSel_Recl",storeOutput=False)
+#btagSF2018_dj = lambda : btagSFProducer_nojes("2018",'deepjet',collName="JetSel_Recl",storeOutput=False)
 
 #from CMGTools.TTHAnalysis.tools.nanoAOD.BtagSFs_new import BtagSFs_new
 #from CMGTools.TTHAnalysis.tools.nanoAOD.BtagSFs import BtagSFs
