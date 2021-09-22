@@ -18,7 +18,13 @@ friendsscaff = "--FDs {P}/0_lumijson --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleanin
 
 slurmscaff   = "sbatch -c {nth} -p {queue} -J {jobname} -e {logpath}/log.%j.%x.err -o {logpath}/log.%j.%x.out --wrap '{command}'"
 
-commandscaff = '''python makeShapeCardsNew.py --tree NanoAOD {mcafile} {cutsfile} "{variable}" "{bins}" {samplespaths} {friends} --od {outpath} -l {lumi} {nth} -f -L tw-run2/functions_tw.cc --neg --threshold 0.01 -W "MuonIDSF * MuonISOSF * ElecIDSF * ElecRECOSF * TrigSF * puWeight * bTagWeight * PrefireWeight" --year {year} {asimovornot} {uncs} {extra} --AP --storeAll --notMinimumFill --notVarsChanges'''
+listofforcedshape = "btagging_2016,btagging_2017,btagging_2018,btagging_corr,elecidsf,elecrecosf,fsr,isr_ttbar,isr_tw,jer_2016,jer_2017,jer_2018,jes_Absolute,jes_Absolute_2016,jes_Absolute_2017,jes_Absolute_2018,jes_BBEC1,jes_BBEC1_2016,jes_BBEC1_2017,jes_BBEC1_2018,jes_EC2,jes_EC2_2016,jes_EC2_2017,jes_EC2_2018,jes_FlavorQCD,jes_HF,jes_HF_2016,jes_HF_2017,jes_HF_2018,jes_RelativeBal,jes_RelativeSample_2016,jes_RelativeSample_2017,jes_RelativeSample_2018,lumi_2016,lumi_2017,lumi_2018,lumi_corr,lumi_corr1718,mistagging_2016,mistagging_2017,mistagging_2018,mistagging_corr,mtop,muonen_2016,muonen_2017,muonen_2018,muonidsf_stat_2016,muonidsf_stat_2017,muonidsf_stat_2018,muonidsf_syst,muonisosf_stat_2016,muonisosf_stat_2017,muonisosf_stat_2018,muonisosf_syst,pdfhessian,pileup,prefiring_2016,prefiring_2017,topptrew,triggereff_2016,triggereff_2017,triggereff_2018,ttbar_scales,tw_scales,ds,colour_rec_erdon,colour_rec_cr1,colour_rec_cr2"
+
+# ds: forzada para asegurarnos la asimetria
+
+#commandscaff = '''python makeShapeCardsNew.py --tree NanoAOD {mcafile} {cutsfile} "{variable}" "{bins}" {samplespaths} {friends} --od {outpath} -l {lumi} {nth} -f -L tw-run2/functions_tw.cc --neg --threshold 0.01 -W "MuonIDSF * MuonISOSF * ElecIDSF * ElecRECOSF * TrigSF * puWeight * bTagWeight * PrefireWeight" --year {year} {asimovornot} {uncs} {extra} --AP --storeAll --notMinimumFill --notVarsChanges'''
+
+commandscaff = '''python makeShapeCards_TopRun2.py --tree NanoAOD {mcafile} {cutsfile} "{variable}" "{bins}" {samplespaths} {friends} --od {outpath} -l {lumi} {nth} -f -L tw-run2/functions_tw.cc --neg --threshold 0.01 -W "MuonIDSF * MuonISOSF * ElecIDSF * ElecRECOSF * TrigSF * puWeight * bTagWeight * PrefireWeight" --year {year} {asimovornot} {uncs} {extra} --AP --storeAll'''
 
 
 
@@ -77,6 +83,7 @@ def CardsCommand(prod, year, var, bines, isAsimov, nthreads, outpath, region, no
     friends_   = friendsscaff
     outpath_   = outpath + "/" + year + "/" + region
 
+    extra_ = extra + " --forceShape {l}".format(l = listofforcedshape)
 
     comm = commandscaff.format(outpath      = outpath_,
                                friends      = friends_,
@@ -89,8 +96,8 @@ def CardsCommand(prod, year, var, bines, isAsimov, nthreads, outpath, region, no
                                asimovornot = "--asimov s+b" if isAsimov else "",
                                mcafile   = mcafile_,
                                cutsfile  = cutsfile_,
-                               uncs      = "--unc tw-run2/uncs-tw.txt --amc" if not noUnc else "--amc",
-                               extra     = extra)
+                               uncs      = "--unc tw-run2/uncs-tw_{r}mva.txt --amc".format(r = region) if not noUnc else "--amc",
+                               extra     = extra_)
 
     return comm
 

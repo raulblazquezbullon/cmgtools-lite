@@ -58,8 +58,13 @@ lep1lep2jet1_e     : Lep1Lep2Jet1_E      : 20,0,600 ; IncludeUnderflow=False, Le
 lep1jet1_pt        : Lep1Jet1_Pt         : 20,0,200 ; IncludeUnderflow=False, LegendCutoff=0,  XTitle="\\it{p}_{T} (\\ell_{1}\, \\it{j}) (GeV)"
 lep1jet1_m         : Lep1Jet1_M          : 20,0,200 ; IncludeUnderflow=False, LegendCutoff=0,  XTitle="m (\\ell_{1}\, \\it{j}) (GeV)"
 lep1jet1_dr        : Lep1Jet1_DR         : 20,0,5   ; IncludeUnderflow=False, LegendCutoff=0,  XTitle="\\Delta R (\\ell_{1}\, jet) (adim.)"
+lep1jet1_dphi      : Lep1Jet1_DPhi       : 10,0,1   ; IncludeUnderflow=False, LegendCutoff=0,  XTitle="\\Delta\\varphi(\\ell_{1}\,j)/\\pi (adim.)"
 lep2jet1_pt        : Lep2Jet1_Pt         : 20,0,200 ; IncludeUnderflow=False, LegendCutoff=0,  XTitle="\\it{p}_{T} (\\ell_{2}\, \\it{j}) (GeV)"
 lep2jet1_m         : Lep2Jet1_M          : 20,0,200 ; IncludeUnderflow=False, LegendCutoff=0,  XTitle="m (\\ell_{2}\, \\it{j}) (GeV)"
+lep2jet1_dphi      : Lep2Jet1_DPhi       : 10,0,1   ; IncludeUnderflow=False, LegendCutoff=0,  XTitle="\\Delta\\varphi(\\ell_{2}\,j)/\\pi (adim.)"
+
+costhetastar1      : cosThetaStar1       : 10,-1,1  ; IncludeUnderflow=False, LegendCutoff=0,  XTitle="cos(\\theta^{*})_{\\ell_{1}} (adim.)"
+costhetastar2      : cosThetaStar2       : 10,-1,1  ; IncludeUnderflow=False, LegendCutoff=0,  XTitle="cos(\\theta^{*})_{\\ell_{2}} (adim.)"
 
 lepjet11lep2_dr    : LepJet11Lep2_DR     : 20,0,5   ; IncludeUnderflow=False, LegendCutoff=0,  XTitle="\\Delta R (\\ell_{1}jet\, \\ell_{2}) (adim.)"
 lepjet11lep2_dphi  : LepJet11Lep2_DPhi   : 10,0,1   ; IncludeUnderflow=False, LegendCutoff=0,  XTitle="\\Delta\\it{\\varphi}(\\ell_{1}jet\, \\ell_{2})/\\it{\\pi}"

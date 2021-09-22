@@ -567,6 +567,11 @@ class MCAnalysis:
                         #for iV in h.variations:
                             #print iV
                         h.buildEnvelopesForPDFs(var.name, var.unc_type)
+                    
+                    if "fitOrder" in var.extra:
+                        h.fitRatioAndExtrapolate(var)
+                    elif "EstimateFromXbins" in var.extra and "altsample" not in var.unc_type.lower():
+                        h.estimateFromXbinsWOalt(var)
 
 
             ## add variations from alternate samples
@@ -577,9 +582,9 @@ class MCAnalysis:
             for var in self.variationsFile.uncertainty():
                 for p,h in ret.iteritems():
                     if not var.procmatch().match(p): continue
-                    print "\t-", p, var.name, var.year()
+                    #print "\t-", p, var.name, var.year()
                     #print var.name, p
-                    if "EstimateFromXbins" in var.extra:
+                    if "EstimateFromXbins" in var.extra and not "EstimateAsymm" in var.extra:
                         h.reviewVariations(var.name)
 
         ## remove samples used for systematics

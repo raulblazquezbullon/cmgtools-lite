@@ -2,7 +2,7 @@
 from math import sqrt,hypot,log,exp
 from copy import copy
 from array import array
-import ROOT
+import ROOT, sys
 
 def _cloneNoDir(hist,name=''):
     ret = hist.Clone(name)
@@ -1107,6 +1107,8 @@ class HistoWithNuisances:
     def reviewVariations(self, var):
         for iB in range(self.central.GetNbinsX() + 1):
             tmpnom = self.central.GetBinContent(iB)
+            isInverted = False
+            
             #print var
             #print self.variations
             tmpup  = self.getVariation(var)[0].GetBinContent(iB)
@@ -1118,9 +1120,16 @@ class HistoWithNuisances:
                 #self.getVariation(var)[1].SetBinContent(iB, tmpnom - newdiff if (tmpnom - newdiff) >= 0 else 0)
 
             newdiff = (abs(tmpup - tmpnom) + abs(tmpdn - tmpnom))/2
-            print var, self.getVariation(var)[0].GetName(), self.getVariation(var)[1].GetName(), tmpnom, tmpup, tmpdn
-            self.getVariation(var)[0].SetBinContent(iB, tmpnom + newdiff)
-            self.getVariation(var)[1].SetBinContent(iB, tmpnom - newdiff if (tmpnom - newdiff) >= 0 else 0)
+            #print var, self.getVariation(var)[0].GetName(), self.getVariation(var)[1].GetName(), tmpnom, tmpup, tmpdn
+            
+            if tmpup < tmpnom and tmpdn > tmpnom:
+                isInverted = True
+            if tmpup > tmpnom and tmpdn > tmpnom:
+                if tmpup < tmpdn:
+                    isInverted = True
+            
+            self.getVariation(var)[0].SetBinContent(iB, tmpnom + newdiff if not isInverted else tmpnom - newdiff)
+            self.getVariation(var)[1].SetBinContent(iB, tmpnom - newdiff if not isInverted else tmpnom + newdiff)
         return
 
 
@@ -1202,6 +1211,135 @@ class HistoWithNuisances:
         del self.variations[var]
         self.addVariation( var, 'up', up)
         self.addVariation( var, 'down', down)
+        return
+
+
+    def estimateFromXbinsWOalt(self, var):
+        isOneDim = True
+        if 'TH2' in self.central.ClassName():
+            isOneDim = False
+        elif "TH1" not in self.central.ClassName():
+            raise RuntimeError("FATAL: you are trying to obtain a histogram that is neither a 1D nor a 2D one and you are trying to estimate an uncertainty from only one bin. This is not supported.")
+
+        if isinstance(var.extra["EstimateFromXbins"], int):
+            tmpnbins = var.extra["EstimateFromXbins"]
+            if isOneDim:
+                tmpbins  = [self.central.GetBinLowEdge(1)]
+                thediff  = (self.central.GetBinLowEdge(self.central.GetNbinsX() + 1) - self.central.GetBinLowEdge(1))/tmpnbins
+                for iB in range(tmpnbins):
+                    tmpbins.append(self.central.GetBinLowEdge(1) + thediff * (iB + 1))
+            else:
+                if tmpnbins != 1:
+                    raise RuntimeError("FATAL: you are trying to estimate an uncertainty from a reduced number of bins for a 2D distribution and this is not supported if the number of bins is not one.")
+                factorx = self.central.GetNbinsX()
+                factory = self.central.GetNbinsY()
+
+        else:
+            if not isOneDim:
+                raise RuntimeError("FATAL: you are trying to estimate an uncertainty using an specific binning, but you are trying to obtain 2D histograms. This is not supported. You can however use the reduce factor.")
+            tmpbins = [float(el) for el in var.extra["EstimateFromXbins"].replace("[", "").replace("]", "").replace(" ", "").split(",")]
+            tmpnbins = len(tmpbins) - 1
+
+        if isOneDim:
+            newbins = array("d", tmpbins)
+            central_rebin = self.central.Rebin(tmpnbins, "central_rebin", newbins)
+            up_rebin = self.getVariation(var.name)[0].Rebin(tmpnbins, "up_rebin", newbins)
+        else:
+            central_rebin = self.central.Rebin2D(factorx, factory, "central_rebin")
+            up_rebin = self.getVariation(var.name)[0].Rebin2D(factorx, factory, "up_rebin")
+
+        nvars   = len(self.getVariation(var.name))
+        if nvars > 2:
+            raise RuntimeError("FATAL: not expected to estimate from X bins with more than two variations.")
+            
+        up   = _cloneNoDir( self.getVariation(var.name)[0], var.name + 'Up' )
+        if nvars == 2:
+            if isOneDim:
+                dn_rebin = self.getVariation(var.name)[1].Rebin(tmpnbins, "dn_rebin", newbins)
+            else:
+                dn_rebin = self.getVariation(var.name)[1].Rebin2D(factorx, factory, "dn_rebin")
+
+            down = _cloneNoDir( self.getVariation(var.name)[1], var.name + 'Down' )
+        else:
+            down = _cloneNoDir( self.central, var.name + 'Down' )
+            
+        for ibin in range(1, up.GetNbinsX() + 1):
+            newB     = central_rebin.FindBin(self.central.GetXaxis().GetBinCenter(ibin))
+            theratup = up_rebin.GetBinContent(newB) / central_rebin.GetBinContent(newB) if central_rebin.GetBinContent(newB) != 0 else 0
+            thedifup = self.central.GetBinContent(ibin) * abs(1 - theratup)
+            up.SetBinContent(  ibin, self.central.GetBinContent(ibin) + thedifup if (theratup >= 1. or theratup == 0) else self.central.GetBinContent(ibin) - thedifup )
+
+            if nvars == 2:
+                theratdn = dn_rebin.GetBinContent(newB) / central_rebin.GetBinContent(newB) if central_rebin.GetBinContent(newB) != 0 else 0
+                thedifdn = self.central.GetBinContent(ibin) * abs(1 - theratdn)
+                down.SetBinContent(ibin, self.central.GetBinContent(ibin) - thedifdn if (theratdn < 1.) else self.central.GetBinContent(ibin) + thedifdn )
+                
+        del self.variations[var.name]
+        self.addVariation( var.name, 'up'  , up)
+        self.addVariation( var.name, 'down', down)
+        return
+    
+    
+    def fitRatioAndExtrapolate(self, var):
+        up   = _cloneNoDir( self.central, var.name + 'Up' )
+        down = _cloneNoDir( self.central, var.name + 'Down' )
+        
+        if not var.name in self.variations:
+            return
+        
+        if not "fitOrder" in var.extra:
+            raise RuntimeError("FATAL: no order assigned to polynom to fit the variation {v}".format(v = var.name))
+
+        from CMGTools.TTHAnalysis.tools.plotDecorations import histToGraph
+        order = var.extra["fitOrder"]
+        nvars   = len(self.getVariation(var.name))
+        if nvars > 2:
+            raise RuntimeError("FATAL: not expected to fit more than two variations.")
+            
+        thefits = []
+        if nvars == 2:
+            for iB in range(1, up.GetNbinsX() + 1):
+                up.SetBinError(    iB, self.getVariation(var.name)[0].GetBinError(iB))
+                down.SetBinError(  iB, self.getVariation(var.name)[1].GetBinError(iB))
+        elif "symmAfterFit" not in var.extra:
+            for iB in range(1, up.GetNbinsX() + 1):
+                up.SetBinError(  iB, self.getVariation(var.name)[0].GetBinError(iB))
+        else:
+            for iB in range(1, up.GetNbinsX() + 1):
+                up.SetBinError(    iB, self.getVariation(var.name)[0].GetBinError(iB))
+                down.SetBinError(  iB, self.getVariation(var.name)[0].GetBinError(iB))
+        
+        for iV in self.getVariation(var.name):
+            iV.Divide(self.central)
+            graph = histToGraph(iV)
+            n = graph.GetN()
+            xmin = graph.GetX()[0]   - graph.GetErrorXlow(0);
+            xmax = graph.GetX()[n-1] + graph.GetErrorXhigh(n-1)
+            poly = ROOT.TF1("poly", "pol%d" % order, xmin, xmax)
+            resultptr = graph.Fit(poly, "QN0S EX0")
+            thefits.append(poly)
+        
+        if nvars == 2:
+            for iB in range(1, up.GetNbinsX() + 1):
+                up.SetBinContent(  iB, thefits[0].Eval(up.GetXaxis().GetBinCenter(iB)) * self.central.GetBinContent(iB))
+                down.SetBinContent(iB, thefits[1].Eval(up.GetXaxis().GetBinCenter(iB)) * self.central.GetBinContent(iB))
+                if "symmAfterFit" in var.extra:
+                    thevar = (abs(up.GetBinContent(iB) - self.central.GetBinContent(iB)) + abs(down.GetBinContent(iB) - self.central.GetBinContent(iB)))/2.
+                    up.SetBinContent(  iB, self.central.GetBinContent(iB) + thevar if up.GetBinContent(iB) > self.central.GetBinContent(iB) else self.central.GetBinContent(iB) - thevar if thevar < self.central.GetBinContent(iB) else 0.)
+                    down.SetBinContent(iB, self.central.GetBinContent(iB) + thevar if down.GetBinContent(iB) > self.central.GetBinContent(iB) else self.central.GetBinContent(iB) - thevar if thevar < self.central.GetBinContent(iB) else 0.)
+        elif "symmAfterFit" not in var.extra:
+            for iB in range(1, up.GetNbinsX() + 1):
+                up.SetBinContent(iB, thefits[0].Eval(up.GetXaxis().GetBinCenter(iB)) * self.central.GetBinContent(iB))
+        else:
+            for iB in range(1, up.GetNbinsX() + 1):
+                up.SetBinContent(  iB, thefits[0].Eval(up.GetXaxis().GetBinCenter(iB)) * self.central.GetBinContent(iB))
+                tmpdif = self.central.GetBinContent(iB) - up.GetBinContent(iB)
+                down.SetBinContent(iB, self.central.GetBinContent(iB) + tmpdif if abs(tmpdif) < self.central.GetBinContent(iB) else 0.)
+            
+            
+        del self.variations[var.name]
+        self.addVariation( var.name, 'up',   up)
+        self.addVariation( var.name, 'down', down)
         return
 
 
