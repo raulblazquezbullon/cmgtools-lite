@@ -234,20 +234,12 @@ tw_scales    : $tWProc : .* : envelope ; FakeRates=['tw-run2/frs-scales/fr-muR_0
 ####### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ####### ISR/FSR
 ####### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#isr_ttbar : ttbar : .* : templateAsymm; AddWeights=['Alt$(PSWeight[8]\,PSWeight[2])'\,'Alt$(PSWeight[6]\,PSWeight[0])']
-#fsr_ttbar : ttbar : .* : templateAsymm; AddWeights=['Alt$(PSWeight[9]\,PSWeight[3])'\,'Alt$(PSWeight[7]\,PSWeight[1])']
-#
-#isr_tw    : $tWProc : .* : templateAsymm; AddWeights=['Alt$(PSWeight[8]\,PSWeight[2])'\,'Alt$(PSWeight[6]\,PSWeight[0])']
-#fsr_tw    : $tWProc : .* : templateAsymm; AddWeights=['Alt$(PSWeight[9]\,PSWeight[3])'\,'Alt$(PSWeight[7]\,PSWeight[1])']
-
-
 isr_ttbar : ttbar   : .* : templateAsymm; FakeRates=['tw-run2/frs-PS/fr-isrUp.txt'\,'tw-run2/frs-PS/fr-isrDown.txt']
 isr_tw    : $tWProc : .* : templateAsymm; FakeRates=['tw-run2/frs-PS/fr-isrUp.txt'\,'tw-run2/frs-PS/fr-isrDown.txt']
 
-#fsr_ttbar : ttbar   : .* : templateAsymm; FakeRates=['tw-run2/frs-PS/fr-fsrUp.txt'\,'tw-run2/frs-PS/fr-fsrDown.txt']
-#fsr_tw    : $tWProc : .* : templateAsymm; FakeRates=['tw-run2/frs-PS/fr-fsrUp.txt'\,'tw-run2/frs-PS/fr-fsrDown.txt']
+fsr       : ttbar   : .* : templateAsymm; FakeRates=['tw-run2/frs-PS/fr-fsrUp.txt'\,'tw-run2/frs-PS/fr-fsrDown.txt'], EstimateFromXbins=1
+fsr       : $tWProc : .* : templateAsymm; FakeRates=['tw-run2/frs-PS/fr-fsrUp.txt'\,'tw-run2/frs-PS/fr-fsrDown.txt'], EstimateFromXbins=1
 
-fsr        : $tWandttbar : .* : templateAsymm; FakeRates=['tw-run2/frs-PS/fr-fsrUp.txt'\,'tw-run2/frs-PS/fr-fsrDown.txt']
 
 ###### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ###### Top pT reweighting
@@ -318,11 +310,18 @@ ttbar_matching : ttbar   : .* : altSample : syst_ttbar_matching_up : syst_ttbar_
 #colour_rec : $tWProc : .* : altSampleEnv : ['syst_tw_colour_erdon'\,'syst_tw_colour_cr1'\,'syst_tw_colour_cr2']          : symm ; EstimateFromXbins=1
 
 # Current, w/o
+#colour_rec : ttbar   : .* : altSample : syst_ttbar_colour_erdon : : symm ; EstimateFromXbins=1
+#colour_rec : ttbar   : .* : altSample : syst_ttbar_colour_cr1   : : symm ; EstimateFromXbins=1
+#colour_rec : ttbar   : .* : altSample : syst_ttbar_colour_cr2   : : symm ; EstimateFromXbins=1
+#colour_rec : $tWProc : .* : altSample : syst_tw_colour_erdon    : : symm ; EstimateFromXbins=1
+#colour_rec : $tWProc : .* : altSample : syst_tw_colour_cr1      : : symm ; EstimateFromXbins=1
+#colour_rec : $tWProc : .* : altSample : syst_tw_colour_cr2      : : symm ; EstimateFromXbins=1
+
 colour_rec_erdon : ttbar   : .* : altSample : syst_ttbar_colour_erdon : : ; EstimateFromXbins=1
-colour_rec_cr1   : ttbar   : .* : altSample : syst_ttbar_colour_cr1   : : ; EstimateFromXbins=1
+colour_rec_cr1   : ttbar   : .* : altSample : syst_ttbar_colour_cr1   : : ; fitOrder=1
 colour_rec_cr2   : ttbar   : .* : altSample : syst_ttbar_colour_cr2   : : ; EstimateFromXbins=1
 colour_rec_erdon : $tWProc : .* : altSample : syst_tw_colour_erdon    : : ; EstimateFromXbins=1
-colour_rec_cr1   : $tWProc : .* : altSample : syst_tw_colour_cr1      : : ; EstimateFromXbins=1
+colour_rec_cr1   : $tWProc : .* : altSample : syst_tw_colour_cr1      : : ; fitOrder=1
 colour_rec_cr2   : $tWProc : .* : altSample : syst_tw_colour_cr2      : : ; EstimateFromXbins=1
 
 

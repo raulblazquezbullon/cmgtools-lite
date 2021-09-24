@@ -102,9 +102,9 @@ jes_FlavorQCD           : $tWProc : .* : templateAsymm; FakeRates=['tw-run2/frs-
 jes_FlavorQCD           : vvttv|ttbar : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesFlavorQCDUp.txt'\,'tw-run2/frs-jecs/fr-jesFlavorQCDDown.txt'], fitOrder=3, symmAfterFit=1
 
 
-jes_RelativeBal         : $lowstat : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesRelativeBalUp.txt'\,'tw-run2/frs-jecs/fr-jesRelativeBalDown.txt'], EstimateFromXbins=1
+jes_RelativeBal         : $lowstat : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesRelativeBalUp.txt'\,'tw-run2/frs-jecs/fr-jesRelativeBalDown.txt']
 
-jes_RelativeBal         : $highstat : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesRelativeBalUp.txt'\,'tw-run2/frs-jecs/fr-jesRelativeBalDown.txt'], fitOrder=1, symmAfterFit=1
+jes_RelativeBal         : $highstat : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesRelativeBalUp.txt'\,'tw-run2/frs-jecs/fr-jesRelativeBalDown.txt']
 
 
 jes_RelativeSample_2016 : $lowstat : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesRelativeSample_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesRelativeSample_yearDown.txt'], year="2016", EstimateFromXbins=1
@@ -296,14 +296,13 @@ ue : $tWProc : .* : altSample : syst_tw_ue_up    : syst_tw_ue_dn    ; EstimateFr
 #mtop : ttbar   : .* : altSample : syst_ttbar_mtop_2016_up : syst_ttbar_mtop_2016_dn : addothers : syst_ttbar_mtop_2016 : 3 ; year="2016", EstimateFromXbins=1
 #mtop : ttbar   : .* : altSample : syst_ttbar_mtop_2017_up : syst_ttbar_mtop_2017_dn : addothers : syst_ttbar_mtop_2017 : 1 ; year="2017", EstimateFromXbins=1
 #mtop : ttbar   : .* : altSample : syst_ttbar_mtop_2018_up : syst_ttbar_mtop_2018_dn : addothers : syst_ttbar_mtop_2018 : 1 ; year="2018", EstimateFromXbins=1
-
 mtop : $tWProc : .* : altSample : syst_tw_mtop_up         : syst_tw_mtop_dn ;  EstimateFromXbins=1
 
 mtop : ttbar   : .* : altSample : syst_ttbar_mtop_2016_up : syst_ttbar_mtop_2016_dn : addothers : syst_ttbar_mtop_2016 : 3 ; year="2016", fitOrder=1, symmAfterFit=1
 mtop : ttbar   : .* : altSample : syst_ttbar_mtop_2017_up : syst_ttbar_mtop_2017_dn : addothers : syst_ttbar_mtop_2017 : 1 ; year="2017", fitOrder=1, symmAfterFit=1
 mtop : ttbar   : .* : altSample : syst_ttbar_mtop_2018_up : syst_ttbar_mtop_2018_dn : addothers : syst_ttbar_mtop_2018 : 1 ; year="2018", fitOrder=1, symmAfterFit=1
 
-#mtop   : ttbar   : .* : normSymm : 1.05
+
 
 #### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #### tW DR/DS

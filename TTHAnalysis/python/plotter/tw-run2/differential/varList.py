@@ -1572,7 +1572,7 @@ WeightsToChange = {
 #UncertaintiesToEnvelope = {"colour"}
 UncertaintiesToEnvelope = {}
 
-VariatedSamplesUncertaintySources = { "ue", "colour_rec", "tw_matching", "mtop", "ds"}
+VariatedSamplesUncertaintySources = { "ue", "colour_rec_erdon", "colour_rec_cr1", "colour_rec_cr2", "tw_matching", "mtop", "ds"}
 
 nuisanceColours = {
     'Gaussian'          : 1,

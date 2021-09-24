@@ -38,27 +38,29 @@ pileup : $AllBkg : .* : templateAsymm; AddWeights=['puWeightUp/puWeight'\,'puWei
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Trigger efficiencies
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-triggereff_2016 : $AllBkg : .* : templateAsymm; AddWeights=['TrigSF_Up/TrigSF'\,'TrigSF_Dn/TrigSF'], year="2016"
-triggereff_2017 : $AllBkg : .* : templateAsymm; AddWeights=['TrigSF_Up/TrigSF'\,'TrigSF_Dn/TrigSF'], year="2017"
-triggereff_2018 : $AllBkg : .* : templateAsymm; AddWeights=['TrigSF_Up/TrigSF'\,'TrigSF_Dn/TrigSF'], year="2018"
+triggereff_2016 : $lowstat    : .* : templateAsymm; AddWeights=['TrigSF_Up/TrigSF'\,'TrigSF_Dn/TrigSF'], year="2016", EstimateFromXbins=1
+triggereff_2016 : $highstat   : .* : templateAsymm; AddWeights=['TrigSF_Up/TrigSF'\,'TrigSF_Dn/TrigSF'], year="2016"
+
+triggereff_2017 : $lowstat    : .* : templateAsymm; AddWeights=['TrigSF_Up/TrigSF'\,'TrigSF_Dn/TrigSF'], year="2017", EstimateFromXbins=1
+triggereff_2017 : $highstat   : .* : templateAsymm; AddWeights=['TrigSF_Up/TrigSF'\,'TrigSF_Dn/TrigSF'], year="2017"
+
+triggereff_2018 : $lowstat    : .* : templateAsymm; AddWeights=['TrigSF_Up/TrigSF'\,'TrigSF_Dn/TrigSF'], year="2018", EstimateFromXbins=1
+triggereff_2018 : $highstat   : .* : templateAsymm; AddWeights=['TrigSF_Up/TrigSF'\,'TrigSF_Dn/TrigSF'], year="2018"
 
 
 ## --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ## Electron efficiencies
 ## --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ### Combined
-#eleceff: $AllBkg : .* : templateAsymm; AddWeights=['ElecSF_Up/ElecSF'\,'ElecSF_Dn/ElecSF']
+elecidsf:   $lowstat    : .* : templateAsymm; AddWeights=['ElecIDSF_Up/ElecIDSF'\,'ElecIDSF_Dn/ElecIDSF'], EstimateFromXbins=1
+elecidsf:   $highstat   : .* : templateAsymm; AddWeights=['ElecIDSF_Up/ElecIDSF'\,'ElecIDSF_Dn/ElecIDSF']
 
-elecidsf:   $AllBkg : .* : templateAsymm; AddWeights=['ElecIDSF_Up/ElecIDSF'\,'ElecIDSF_Dn/ElecIDSF']
-elecrecosf: $AllBkg : .* : templateAsymm; AddWeights=['ElecRECOSF_Up/ElecRECOSF'\,'ElecRECOSF_Dn/ElecRECOSF']
-
+elecrecosf: $AllBkg     : .* : templateAsymm; AddWeights=['ElecRECOSF_Up/ElecRECOSF'\,'ElecRECOSF_Dn/ElecRECOSF']
 
 ## --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ## Muon efficiencies
 ## --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ### Combined
-#muoneff: $AllBkg : .* : templateAsymm; AddWeights=['MuonSF_Up/MuonSF'\,'MuonSF_Dn/MuonSF']
-
 muonidsf_stat_2016 : $AllBkg : .* : templateAsymm; AddWeights=['MuonIDSF_statUp/MuonIDSF'\,'MuonIDSF_statDn/MuonIDSF'], year="2016"
 muonidsf_stat_2017 : $AllBkg : .* : templateAsymm; AddWeights=['MuonIDSF_statUp/MuonIDSF'\,'MuonIDSF_statDn/MuonIDSF'], year="2017"
 muonidsf_stat_2018 : $AllBkg : .* : templateAsymm; AddWeights=['MuonIDSF_statUp/MuonIDSF'\,'MuonIDSF_statDn/MuonIDSF'], year="2018"
@@ -68,6 +70,7 @@ muonisosf_stat_2016 : $AllBkg : .* : templateAsymm; AddWeights=['MuonISOSF_statU
 muonisosf_stat_2017 : $AllBkg : .* : templateAsymm; AddWeights=['MuonISOSF_statUp/MuonISOSF'\,'MuonISOSF_statDn/MuonISOSF'], year="2017"
 muonisosf_stat_2018 : $AllBkg : .* : templateAsymm; AddWeights=['MuonISOSF_statUp/MuonISOSF'\,'MuonISOSF_statDn/MuonISOSF'], year="2018"
 muonisosf_syst      : $AllBkg : .* : templateAsymm; AddWeights=['MuonISOSF_systUp/MuonISOSF'\,'MuonISOSF_systDn/MuonISOSF']
+
 
 
 ## --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -158,12 +161,13 @@ mistagging_2017: $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_u
 mistagging_2018: $AllBkg : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_uncorrelatedUp/bTagWeight'\,'bTagWeight_mistag_uncorrelatedDown/bTagWeight'], year="2018"
 
 
-
 ## --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ## L1 ECAL prefiring
 ## --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 prefiring_2016 : $AllBkg : .* : templateAsymm; AddWeights=['PrefireWeight_Up/PrefireWeight'\,'PrefireWeight_Down/PrefireWeight'], year="2016"
-prefiring_2017 : $AllBkg : .* : templateAsymm; AddWeights=['PrefireWeight_Up/PrefireWeight'\,'PrefireWeight_Down/PrefireWeight'], year="2017"
+
+prefiring_2017 : $lowstat : .* : templateAsymm; AddWeights=['PrefireWeight_Up/PrefireWeight'\,'PrefireWeight_Down/PrefireWeight'], year="2017", EstimateFromXbins=1
+prefiring_2017 : $highstat : .* : templateAsymm; AddWeights=['PrefireWeight_Up/PrefireWeight'\,'PrefireWeight_Down/PrefireWeight'], year="2017"
 
 ## --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ## Muon energy corrections (Rochester corrections)
@@ -318,11 +322,18 @@ ttbar_matching : ttbar   : .* : altSample : syst_ttbar_matching_up : syst_ttbar_
 #colour_rec : $tWProc : .* : altSampleEnv : ['syst_tw_colour_erdon'\,'syst_tw_colour_cr1'\,'syst_tw_colour_cr2']          : symm ; EstimateFromXbins=1
 
 # Current, w/o
+#colour_rec : ttbar   : .* : altSample : syst_ttbar_colour_erdon : : symm ; EstimateFromXbins=1
+#colour_rec : ttbar   : .* : altSample : syst_ttbar_colour_cr1   : : symm ; EstimateFromXbins=1
+#colour_rec : ttbar   : .* : altSample : syst_ttbar_colour_cr2   : : symm ; EstimateFromXbins=1
+#colour_rec : $tWProc : .* : altSample : syst_tw_colour_erdon    : : symm ; EstimateFromXbins=1
+#colour_rec : $tWProc : .* : altSample : syst_tw_colour_cr1      : : symm ; EstimateFromXbins=1
+#colour_rec : $tWProc : .* : altSample : syst_tw_colour_cr2      : : symm ; EstimateFromXbins=1
+
 colour_rec_erdon : ttbar   : .* : altSample : syst_ttbar_colour_erdon : : ; EstimateFromXbins=1
-colour_rec_cr1   : ttbar   : .* : altSample : syst_ttbar_colour_cr1   : : ; EstimateFromXbins=1
+colour_rec_cr1   : ttbar   : .* : altSample : syst_ttbar_colour_cr1   : : ; fitOrder=1
 colour_rec_cr2   : ttbar   : .* : altSample : syst_ttbar_colour_cr2   : : ; EstimateFromXbins=1
 colour_rec_erdon : $tWProc : .* : altSample : syst_tw_colour_erdon    : : ; EstimateFromXbins=1
-colour_rec_cr1   : $tWProc : .* : altSample : syst_tw_colour_cr1      : : ; EstimateFromXbins=1
+colour_rec_cr1   : $tWProc : .* : altSample : syst_tw_colour_cr1      : : ; fitOrder=1
 colour_rec_cr2   : $tWProc : .* : altSample : syst_tw_colour_cr2      : : ; EstimateFromXbins=1
 
 

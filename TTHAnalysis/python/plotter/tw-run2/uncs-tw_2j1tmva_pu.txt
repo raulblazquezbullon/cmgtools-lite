@@ -32,7 +32,9 @@ lumi_corr1718 : $AllBkg : .* : normSymm : 1.002 ; year="2018"
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Pile-up reweighting
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-pileup : $AllBkg : .* : templateAsymm; AddWeights=['puWeightUp/puWeight'\,'puWeightDown/puWeight']
+pileup : $lowstat    : .* : templateAsymm; AddWeights=['puWeightUp/puWeight'\,'puWeightDown/puWeight'], EstimateFromXbins=1
+pileup : vvttv       : .* : templateAsymm; AddWeights=['puWeightUp/puWeight'\,'puWeightDown/puWeight'], fitOrder=1, symmAfterFit=1
+pileup : $tWandttbar : .* : templateAsymm; AddWeights=['puWeightUp/puWeight'\,'puWeightDown/puWeight']
 
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -318,11 +320,18 @@ ttbar_matching : ttbar   : .* : altSample : syst_ttbar_matching_up : syst_ttbar_
 #colour_rec : $tWProc : .* : altSampleEnv : ['syst_tw_colour_erdon'\,'syst_tw_colour_cr1'\,'syst_tw_colour_cr2']          : symm ; EstimateFromXbins=1
 
 # Current, w/o
+#colour_rec : ttbar   : .* : altSample : syst_ttbar_colour_erdon : : symm ; EstimateFromXbins=1
+#colour_rec : ttbar   : .* : altSample : syst_ttbar_colour_cr1   : : symm ; EstimateFromXbins=1
+#colour_rec : ttbar   : .* : altSample : syst_ttbar_colour_cr2   : : symm ; EstimateFromXbins=1
+#colour_rec : $tWProc : .* : altSample : syst_tw_colour_erdon    : : symm ; EstimateFromXbins=1
+#colour_rec : $tWProc : .* : altSample : syst_tw_colour_cr1      : : symm ; EstimateFromXbins=1
+#colour_rec : $tWProc : .* : altSample : syst_tw_colour_cr2      : : symm ; EstimateFromXbins=1
+
 colour_rec_erdon : ttbar   : .* : altSample : syst_ttbar_colour_erdon : : ; EstimateFromXbins=1
-colour_rec_cr1   : ttbar   : .* : altSample : syst_ttbar_colour_cr1   : : ; EstimateFromXbins=1
+colour_rec_cr1   : ttbar   : .* : altSample : syst_ttbar_colour_cr1   : : ; fitOrder=1
 colour_rec_cr2   : ttbar   : .* : altSample : syst_ttbar_colour_cr2   : : ; EstimateFromXbins=1
 colour_rec_erdon : $tWProc : .* : altSample : syst_tw_colour_erdon    : : ; EstimateFromXbins=1
-colour_rec_cr1   : $tWProc : .* : altSample : syst_tw_colour_cr1      : : ; EstimateFromXbins=1
+colour_rec_cr1   : $tWProc : .* : altSample : syst_tw_colour_cr1      : : ; fitOrder=1
 colour_rec_cr2   : $tWProc : .* : altSample : syst_tw_colour_cr2      : : ; EstimateFromXbins=1
 
 
