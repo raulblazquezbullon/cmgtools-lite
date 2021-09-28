@@ -568,7 +568,7 @@ class MCAnalysis:
                             #print iV
                         h.buildEnvelopesForPDFs(var.name, var.unc_type)
                     
-                    if "fitOrder" in var.extra:
+                    if "fitOrder" in var.extra and "altSample" not in var.name:
                         h.fitRatioAndExtrapolate(var)
                     elif "EstimateFromXbins" in var.extra and "altsample" not in var.unc_type.lower():
                         h.estimateFromXbinsWOalt(var)
@@ -598,6 +598,15 @@ class MCAnalysis:
             ret.pop(rem)
         #print "\nLLUEU", ret
 
+        if self.variationsFile:
+            for var in self.variationsFile.uncertainty():
+                if var.year():
+                    if var.year() not in self._options.year: continue
+                for p,h in ret.iteritems():
+                    if not var.procmatch().match(p): continue
+                    if "fitOrder" in var.extra and "altsample" in var.unc_type.lower():
+                        h.fitRatioAndExtrapolate(var)
+        
         rescales = []
         self.compilePlotScaleMap(self._options.plotscalemap,rescales)
         for p,v in ret.items():

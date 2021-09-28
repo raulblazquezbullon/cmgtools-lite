@@ -93,9 +93,10 @@ def plotVariationsFromOneProcess(tsk):
         leg.SetFillColor(10)
         leg.SetFillStyle(0); # transparent legend!
 
-        nominal.SetLineColor(r.kBlack)
+        nominal.SetLineColor(r.kGray+1)
         nominal.SetFillStyle(0)
         nominal.SetStats(0)
+        nominal.SetLineWidth(2)
         nominal.SetTitle("")
         nominal.GetXaxis().SetTitle("BDT disc." if any([el in outpath for el in ["1j1t", "2j1t"]]) else "Subleading jet p_{T}")
         nominal.SetMaximum(-1111); varup.SetMaximum(-1111); vardn.SetMaximum(-1111);
@@ -103,21 +104,25 @@ def plotVariationsFromOneProcess(tsk):
         nominal.GetXaxis().SetLabelOffset(999)
         nominal.GetXaxis().SetLabelSize(0)
         nominal.GetXaxis().SetTitle(' ')
+        nominal.SetMarkerSize(0.)
         leg.AddEntry(nominal, "Nominal", "f")
 
-        varup.SetLineColor(r.kBlue)
-        varup.SetLineWidth(2)
+        varup.SetLineColor(r.kRed)
         varup.SetFillStyle(0)
+        varup.SetLineWidth(3)
+        varup.SetMarkerSize(0.)
         leg.AddEntry(varup, "Up", "f")
 
-        vardn.SetLineColor(r.kRed)
-        vardn.SetLineWidth(2)
+        vardn.SetLineColor(r.kBlue)
+        vardn.SetLineWidth(1)
         vardn.SetFillStyle(0)
+        vardn.SetMarkerSize(0.)
         leg.AddEntry(vardn, "Down", "f")
 
-        nominal.Draw("P,E")
-        varup.Draw("histsame")
-        vardn.Draw("histsame")
+        nominal.Draw("axis")
+        varup.Draw("histsameE")
+        nominal.Draw("P,E,same")
+        vardn.Draw("histsameE")
         leg.Draw("same")
 
         c.cd(2)
@@ -128,18 +133,23 @@ def plotVariationsFromOneProcess(tsk):
         for iB in range(1, ratioUp.GetNbinsX() + 1):
             try:
                 ratioUp.SetBinContent(iB, varup.GetBinContent(iB) / nominal.GetBinContent(iB))
+                ratioUp.SetBinError(iB, varup.GetBinError(iB) / nominal.GetBinContent(iB))
             except ZeroDivisionError:
                 ratioUp.SetBinContent(iB, 1)
+                ratioUp.SetBinError(iB, 0)
             try:
                 ratioDown.SetBinContent(iB, ratioDown.GetBinContent(iB) / nominal.GetBinContent(iB))
+                ratioDown.SetBinError(iB,   ratioDown.GetBinError(iB) / nominal.GetBinContent(iB))
             except ZeroDivisionError:
                 ratioDown.SetBinContent(iB, 1)
+                ratioDown.SetBinError(iB, 0)
 
             constant.SetBinContent(iB, 1)
-
+            constant.SetBinError(iB, nominal.GetBinError(iB)/nominal.GetBinContent(iB))
+            
         ratioUp.SetStats(0)
         ratioUp.SetTitle(" ")
-        ratioUp.SetLineColor(r.kBlue)
+        ratioUp.SetLineColor(r.kRed)
         ratioUp.SetLineWidth(2)
         ratioUp.SetFillStyle(0)
         ratioUp.GetXaxis().SetTitle(nominal.GetXaxis().GetTitle())
@@ -152,6 +162,7 @@ def plotVariationsFromOneProcess(tsk):
         ratioUp.GetXaxis().SetNdivisions(510, True)
         #ratioUp.GetXaxis().SetNdivisions(505, False)
         ratioUp.GetXaxis().SetRangeUser(nominal.GetXaxis().GetBinLowEdge(1), nominal.GetXaxis().GetBinUpEdge(nominal.GetNbinsX()))
+        ratioUp.SetLineWidth(5)
 
         #ratioUp.GetYaxis().SetRangeUser(0.8, 1.2)
         #ratioUp.GetYaxis().SetRangeUser(0.95, 1.05)
@@ -165,12 +176,16 @@ def plotVariationsFromOneProcess(tsk):
         ratioUp.GetYaxis().SetLabelSize(16)
         ratioUp.GetYaxis().SetLabelOffset(0.007)
         ratioUp.GetYaxis().SetNdivisions(505, True)
+        ratioUp.SetMarkerSize(0.)
+        
+        ratioDown.SetMarkerSize(0.)
+        ratioDown.SetLineColor(r.kBlue)
 
-        constant.SetLineWidth(1)
+        constant.SetLineWidth(3)
 
-        ratioUp.Draw("histsame")
-        ratioDown.Draw("histsame")
-        constant.Draw("histsame")
+        ratioUp.Draw("histsameEX0")
+        constant.Draw("histsameE")
+        ratioDown.Draw("histsameEX0")
 
         c.SaveAs(outpath + "/uncVar_" + thevar + "_" + theproc + "_" + iU + ".png")
         c.SaveAs(outpath + "/uncVar_" + thevar + "_" + theproc + "_" + iU + ".pdf")

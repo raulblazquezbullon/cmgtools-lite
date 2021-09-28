@@ -185,7 +185,11 @@ def produceAdHocMCAandUncsfiles(thepath, they, thev):
                                     twotimestmpline = twotimestmpline.replace(secsubstr, secsubstr + "_bkg")
                             else:
                                 twotimestmpline = twotimestmpline.replace(tmpsubstr, tmpsubstr + "_bkg")
-                    outuncs += twotimestmpline
+                    
+                    if "ds" not in tmpline.split(":")[0].replace(" ", ""):
+                        outuncs += twotimestmpline
+                    else:
+                        outuncs += twotimestmpline.replace("EstimateFromXbins=1, EstimateAsymm=1", "fitOrder=1")
 
 
                 elif "pdf" in tmpline.split(":")[0] and "syst" in tmpline.split(":")[1] and "altSamplePDF" not in tmpline.split(":")[3]:

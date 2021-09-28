@@ -97,6 +97,8 @@ def CardsCommand(prod, year, var, bines, isAsimov, nthreads, outpath, region, no
                                mcafile   = mcafile_,
                                cutsfile  = cutsfile_,
                                uncs      = "--unc tw-run2/uncs-tw_{r}mva.txt --amc".format(r = region) if not noUnc else "--amc",
+#                               uncs      = "--unc tw-run2/uncs-tw_{r}mva_todomenosrelativebal.txt --amc".format(r = region) if not noUnc else "--amc",
+                               #uncs      = "--unc tw-run2/uncs-tw.txt --amc" if not noUnc else "--amc",
                                extra     = extra_)
 
     return comm
