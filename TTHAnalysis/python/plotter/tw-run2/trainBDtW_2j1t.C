@@ -139,24 +139,24 @@ void trainBDtW_2j1t(TString outputdir, TString outputbasedir = "/pool/phedex/use
   TTtree->Add(inputdir + "/2018/x_mvatrain/" + ttbarname);
   
   //========Drell-Yann training only=================================================================
-  TChain* DYtree = new TChain("Friends", "DYBackgroundTree");
-  TString DY_50 = "dy_50_LO.root";
-//  TString DY_10to50 = "dy_10to50.root";
+  //TChain* DYtree = new TChain("Friends", "DYBackgroundTree");
+  TString DY_50 = "dy_50.root";
+  TString DY_10to50 = "dy_10to50.root";
   TString DY_path = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/productions/2021-06-09/";
-  DYtree->Add(DY_path + "/2016/x_mvatrain/" + DY_50);
-  DYtree->Add(DY_path + "/2017/x_mvatrain/" + DY_50);
-  DYtree->Add(DY_path + "/2018/x_mvatrain/" + DY_50);  
-//  TTtree->Add(DY_path + "/2016/x_mvatrain/" + DY_10to50);
-//  TTtree->Add(DY_path + "/2017/x_mvatrain/" + DY_10to50);
-//  TTtree->Add(DY_path + "/2018/x_mvatrain/" + DY_10to50);
+  TTtree->Add(DY_path + "/2016/x_mvatrain/" + DY_50);
+  TTtree->Add(DY_path + "/2017/x_mvatrain/" + DY_50);
+  TTtree->Add(DY_path + "/2018/x_mvatrain/" + DY_50);  
+  TTtree->Add(DY_path + "/2016/x_mvatrain/" + DY_10to50);
+  TTtree->Add(DY_path + "/2017/x_mvatrain/" + DY_10to50);
+  TTtree->Add(DY_path + "/2018/x_mvatrain/" + DY_10to50);
   //========Drell-Yann training only=================================================================
   
   Double_t sigWeight = 1.0;
   Double_t bkgWeight = 1.0;
-  Double_t DYbkgWeight = 5.0;
+  Double_t DYbkgWeight = 1.0;
   loader->AddSignalTree(    SItree, sigWeight);
   loader->AddBackgroundTree(TTtree, bkgWeight);
-  loader->AddBackgroundTree(DYtree, DYbkgWeight);
+  //loader->AddBackgroundTree(DYtree, DYbkgWeight);
 
   loader->SetSignalWeightExpression(    "allweights");
   loader->SetBackgroundWeightExpression("allweights");
@@ -172,7 +172,8 @@ void trainBDtW_2j1t(TString outputdir, TString outputbasedir = "/pool/phedex/use
   //loader->PrepareTrainingAndTestTree( mycuts,mycutb,"nTrain_Signal=0:nTrain_Background=0:SplitMode=Random:NormMode=NumEvents:!V:nTest_Background=0" );
   
   //========70% training and 30% testing======
-  double bkgtrain = (TTtree->GetEntries("((njets == 2) && (nbjets == 1) && (channel == 1))"))*0.7 + (DYtree->GetEntries("((njets == 1) && (nbjets == 1) && (channel == 1))"))*0.7;
+  //double bkgtrain = (TTtree->GetEntries("((njets == 2) && (nbjets == 1) && (channel == 1))"))*0.7 + (DYtree->GetEntries("((njets == 1) && (nbjets == 1) && (channel == 1))"))*0.7;
+  double bkgtrain = (TTtree->GetEntries("((njets == 2) && (nbjets == 1) && (channel == 1))"))*0.7;
   double sigtrain = (SItree->GetEntries("((njets == 2) && (nbjets == 1) && (channel == 1))"))*0.7;
   loader->PrepareTrainingAndTestTree(mycuts,
                                      mycutb,

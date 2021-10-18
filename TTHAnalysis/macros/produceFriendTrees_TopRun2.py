@@ -9,15 +9,18 @@ r.gROOT.SetBatch(True)
 
 #### Settings
 friendspath = "/pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions"
+#friendspath = "/pool/phedex/userstorage/asoto/Proyectos/tWRun2/" ###
 
 #prodname    = "2021-04-23" # tras el nuevo postprocesado de abril de 2021
 prodname    = "2021-06-09" # con skim
+#prodname = "SkimDY2021-10-12/div2/" ###
 
 datasamples  = ["SingleMuon", "SingleElec", "DoubleMuon", "DoubleEG", "MuonEG", "LowEGJet", "HighEGJet", "EGamma"]
 
 #mcpath       = "/pool/ciencias/nanoAODv6/29jan2020_MC"
 #mcpath       = "/pool/phedex/nanoAODv6v7"
 mcpath       = "/pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions/" + prodname + "/"
+#mcpath = friendspath + prodname ###
 #mcpathdiv    = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/misc/divisiones/"
 #mcpathdiv    = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/misc/2021_04_nuevasdivisiones"
 mcpathdiv    = mcpath
@@ -39,7 +42,8 @@ friendfolders = {0 : "0_lumijson",
                  2 : "2_cleaning",
                  3 : "3_varstrigger",
                  4 : "4_scalefactors",
-                 5 : "5_mvas",
+                 #5 : "5_mvas",
+                 5 : "5_mvas_DY_newWithDiv",
                  6 : "6_hemissue",
                  "mvatrain" : "x_mvatrain"
                 }
@@ -68,9 +72,9 @@ minitnamedict = {
     #"ttbar"     : ["TTTo2L2Nu_division2"],
     #"tw"        : ["tW", "tW_central"],
     #"tbarw"     : ["tbarW", "tbarW_central"],
-    #"dy_10to50" : ["DYJetsToLL_M_10to50", "DYJetsToLL_M_10to50_MLM"],
-    #"dy_50"     : ["DYJetsToLL_M_50"],
-    "dy_50_LO"  : ["DYJetsToLL_M_50_MLM"],
+    "dy_10to50" : ["DYJetsToLLdiv2_M_10to50", "DYJetsToLLdiv2_M_10to50_MLM"],
+    "dy_50"     : ["DYJetsToLLdiv2_M_50"],
+    #"dy_50_LO"  : ["DYJetsToLL_M_50_MLM"],
 }
 
 
@@ -116,14 +120,21 @@ sampledict[2016] = {
 
     ##### DY
     ## LO
-    "DYJetsToLL_M_10to50_MLM" : "DYJetsToLL_M-10to50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_central_",
-    "DYJetsToLL_M_50_MLM"     : ["DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_ext1_central_*",
-                                 "DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_ext2_central_*"],
+    "DYJetsToLLdiv1_M_10to50_MLM" : "DYJetsToLLdiv1_M-10to50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_central_",
+    "DYJetsToLLdiv1_M_50_MLM"     : ["DYJetsToLLdiv1_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_ext1_central_*",
+                                 "DYJetsToLLdiv1_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_ext2_central_*"],
 
+    "DYJetsToLLdiv2_M_10to50_MLM" : "DYJetsToLLdiv2_M-10to50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_central_",
+    "DYJetsToLLdiv2_M_50_MLM"     : ["DYJetsToLLdiv2_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_ext1_central_*",
+                                 "DYJetsToLLdiv2_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_ext2_central_*"],
     ## NLO
-    "DYJetsToLL_M_10to50" : ["DYJetsToLL_M-10to50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8_central_*",
-                             "DYJetsToLL_M-10to50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8_ext1_central_*"],
-    "DYJetsToLL_M_50"     : "DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8_central_",
+    "DYJetsToLLdiv1_M_10to50" : ["DYJetsToLLdiv1_M-10to50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8_central_*",
+                             "DYJetsToLLdiv1_M-10to50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8_ext1_central_*"],
+    "DYJetsToLLdiv1_M_50"     : "DYJetsToLLdiv1_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8_central_",
+
+    "DYJetsToLLdiv2_M_10to50" : ["DYJetsToLLdiv2_M-10to50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8_central_*",
+                             "DYJetsToLLdiv2_M-10to50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8_ext1_central_*"],
+    "DYJetsToLLdiv2_M_50"     : "DYJetsToLLdiv2_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8_central_",
 
     ##### WW
     "WWTo2L2Nu" : "WWTo2L2Nu_13TeV-powheg_central_",
@@ -294,16 +305,25 @@ sampledict[2017] = {
 
     #### DY
     # LO
-    "DYJetsToLL_M_10to50_MLM" : ["DYJetsToLL_M-10to50_TuneCP5_13TeV-madgraphMLM-pythia8_topnano_*",
-                                 "DYJetsToLL_M-10to50_TuneCP5_13TeV-madgraphMLM-pythia8_central_*",
-                                 "DYJetsToLL_M-10to50_TuneCP5_13TeV-madgraphMLM-pythia8_ext1_central_*"],
+    "DYJetsToLLdiv1_M_10to50_MLM" : ["DYJetsToLLdiv1_M-10to50_TuneCP5_13TeV-madgraphMLM-pythia8_topnano_*",
+                                 "DYJetsToLLdiv1_M-10to50_TuneCP5_13TeV-madgraphMLM-pythia8_central_*",
+                                 "DYJetsToLLdiv1_M-10to50_TuneCP5_13TeV-madgraphMLM-pythia8_ext1_central_*"],
+    "DYJetsToLLdiv1_M_50_MLM"     : "DYJetsToLLdiv1_M-50_TuneCP5_13TeV-madgraphMLM-pythia8_topnano_",
 
-    "DYJetsToLL_M_50_MLM"     : "DYJetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8_topnano_",
+    "DYJetsToLLdiv2_M_10to50_MLM" : ["DYJetsToLLdiv2_M-10to50_TuneCP5_13TeV-madgraphMLM-pythia8_topnano_*",
+                                 "DYJetsToLLdiv2_M-10to50_TuneCP5_13TeV-madgraphMLM-pythia8_central_*",
+                                 "DYJetsToLLdiv2_M-10to50_TuneCP5_13TeV-madgraphMLM-pythia8_ext1_central_*"],
+    "DYJetsToLLdiv2_M_50_MLM"     : "DYJetsToLLdiv2_M-50_TuneCP5_13TeV-madgraphMLM-pythia8_topnano_",
     # NLO
-    "DYJetsToLL_M_0to50"      : "DYJetsToLL_Pt-0To50_TuneCP5_13TeV-amcatnloFXFX-pythia8_central_",
-    "DYJetsToLL_M_50"         : ["DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8_central_*",
-                                 "DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8_ext1_central_*",
-                                 "DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8_ext3_central_*"],
+    "DYJetsToLLdiv1_M_0to50"      : "DYJetsToLLdiv1_Pt-0To50_TuneCP5_13TeV-amcatnloFXFX-pythia8_central_",
+    "DYJetsToLLdiv1_M_50"         : ["DYJetsToLLdiv1_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8_central_*",
+                                 "DYJetsToLLdiv1_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8_ext1_central_*",
+                                 "DYJetsToLLdiv1_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8_ext3_central_*"],
+
+    "DYJetsToLLdiv2_M_0to50"      : "DYJetsToLLdiv2_Pt-0To50_TuneCP5_13TeV-amcatnloFXFX-pythia8_central_",
+    "DYJetsToLLdiv2_M_50"         : ["DYJetsToLLdiv2_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8_central_*",
+                                 "DYJetsToLLdiv2_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8_ext1_central_*",
+                                 "DYJetsToLLdiv2_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8_ext3_central_*"],
 
     #### WW
     "WWTo2L2Nu" : ["WWTo2L2Nu_NNPDF31_TuneCP5_PSweights_13TeV-powheg-pythia8_topnano_*",
@@ -514,14 +534,19 @@ sampledict[2018] = {
 
     ##### DY
     ## LO
-    "DYJetsToLL_M_10to50_MLM" : ["DYJetsToLL_M-10to50_TuneCP5_13TeV-madgraphMLM-pythia8_topnano_*",
-                                 "DYJetsToLL_M-10to50_TuneCP5_13TeV-madgraphMLM-pythia8_central_*"],
-    "DYJetsToLL_M_50_MLM"     : "DYJetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8_topnano_",
+    "DYJetsToLLdiv1_M_10to50_MLM" : ["DYJetsToLLdiv1_M-10to50_TuneCP5_13TeV-madgraphMLM-pythia8_topnano_*",
+                                 "DYJetsToLLdiv1_M-10to50_TuneCP5_13TeV-madgraphMLM-pythia8_central_*"],
+    "DYJetsToLLdiv1_M_50_MLM"     : "DYJetsToLLdiv1_M-50_TuneCP5_13TeV-madgraphMLM-pythia8_topnano_",
 
+    "DYJetsToLLdiv2_M_10to50_MLM" : ["DYJetsToLLdiv2_M-10to50_TuneCP5_13TeV-madgraphMLM-pythia8_topnano_*",
+                                 "DYJetsToLLdiv2_M-10to50_TuneCP5_13TeV-madgraphMLM-pythia8_central_*"],
+    "DYJetsToLLdiv2_M_50_MLM"     : "DYJetsToLLdiv2_M-50_TuneCP5_13TeV-madgraphMLM-pythia8_topnano_",
     ## NLO
-    "DYJetsToLL_M_50" : ["DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8_topnano_*",
-                         "DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8_central_*"],
+    "DYJetsToLLdiv1_M_50" : ["DYJetsToLLdiv1_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8_topnano_*",
+                         "DYJetsToLLdiv1_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8_central_*"],
 
+    "DYJetsToLLdiv2_M_50" : ["DYJetsToLLdiv2_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8_topnano_*",
+                         "DYJetsToLLdiv2_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8_central_*"],
     ### WW
     "WWTo2L2Nu_DoubleScatt" : "WWTo2L2Nu_DoubleScattering_13TeV-pythia8_topnano_",
     "WWTo2L2Nu"             : "WWTo2L2Nu_NNPDF31_TuneCP5_13TeV-powheg-pythia8_topnano_",
@@ -670,9 +695,9 @@ trainsampledict[2016] = {
     ### tW
 #    "tW_central"     : sampledict[2016]["tW_central"],
 #    "tbarW"          : sampledict[2016]["tbarW"],
-#    "DYJetsToLL_M_10to50" : sampledict[2016]["DYJetsToLL_M_10to50"],
-#    "DYJetsToLL_M_50"     : sampledict[2016]["DYJetsToLL_M_50"],
-    "DYJetsToLL_M_50_MLM" : sampledict[2016]["DYJetsToLL_M_50_MLM"],
+    "DYJetsToLLdiv2_M_10to50" : sampledict[2016]["DYJetsToLLdiv2_M_10to50"],
+    "DYJetsToLLdiv2_M_50"     : sampledict[2016]["DYJetsToLLdiv2_M_50"],
+#    "DYJetsToLL_M_50_MLM" : sampledict[2016]["DYJetsToLL_M_50_MLM"],
 }
 
 
@@ -684,9 +709,9 @@ trainsampledict[2017] = {
 #    "tW_central"     : sampledict[2017]["tW_central"],
 #    "tbarW_central"  : sampledict[2017]["tbarW_central"],
     
-#    "DYJetsToLL_M_10to50_MLM" : sampledict[2017]["DYJetsToLL_M_10to50_MLM"],
-#    "DYJetsToLL_M_50"         : sampledict[2017]["DYJetsToLL_M_50"],
-    "DYJetsToLL_M_50_MLM"     : sampledict[2017]["DYJetsToLL_M_50_MLM"],
+    "DYJetsToLLdiv2_M_10to50_MLM" : sampledict[2017]["DYJetsToLLdiv2_M_10to50_MLM"],
+    "DYJetsToLLdiv2_M_50"         : sampledict[2017]["DYJetsToLLdiv2_M_50"],
+#    "DYJetsToLL_M_50_MLM"     : sampledict[2017]["DYJetsToLL_M_50_MLM"],
 }
 
 
@@ -698,9 +723,9 @@ trainsampledict[2018] = {
 #    "tW"    : sampledict[2018]["tW"],
 #    "tbarW" : sampledict[2018]["tbarW"],
 
-#    "DYJetsToLL_M_10to50_MLM" : sampledict[2018]["DYJetsToLL_M_10to50_MLM"],
-#    "DYJetsToLL_M_50"         : sampledict[2018]["DYJetsToLL_M_50"],
-    "DYJetsToLL_M_50_MLM"     : sampledict[2018]["DYJetsToLL_M_50_MLM"],
+    "DYJetsToLLdiv2_M_10to50_MLM" : sampledict[2018]["DYJetsToLLdiv2_M_10to50_MLM"],
+    "DYJetsToLLdiv2_M_50"         : sampledict[2018]["DYJetsToLLdiv2_M_50"],
+#    "DYJetsToLL_M_50_MLM"     : sampledict[2018]["DYJetsToLL_M_50_MLM"],
 }
 
 

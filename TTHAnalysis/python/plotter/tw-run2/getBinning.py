@@ -171,8 +171,8 @@ Float_t theBDT(Double_t BDT){
     return
 
 #New BDT January 2021
-getBinningForThatVariable("/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2021-09-22_DY5njetsfwd/SmallBin/run2/1j1t/MVAtrain/plots-tw-1j1t_MVAtrain.root", "tmvaBDT_1j1b_smallb_ttbar", 20)
-getBinningForThatVariable("/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2021-09-22_DY5njetsfwd/SmallBin/run2/2j1t/MVAtrain/plots-tw-2j1t_MVAtrain.root", "tmvaBDT_2j1b_smallb_ttbar", 12)
+getBinningForThatVariable("/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2021-10-14/SmallBin/run2/1j1t/MVAtrain/plots-tw-1j1t_MVAtrain.root", "tmvaBDT_1j1b_smallb_ttbar", 20)
+getBinningForThatVariable("/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2021-10-14/SmallBin/run2/2j1t/MVAtrain/plots-tw-2j1t_MVAtrain.root", "tmvaBDT_2j1b_smallb_ttbar", 12)
 
 #Old BDT first version of the note
 #getBinningForThatVariable("/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2020-12-17/MVA/run2/1j1t/MVAtrain/plots-tw-1j1t_MVAtrain.root", "tmvaBDT_1j1b_smallb_ttbar", 20)
