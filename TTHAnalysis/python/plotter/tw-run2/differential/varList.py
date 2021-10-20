@@ -13,13 +13,13 @@ nBinsForBDT = 4         # Number of bins for the BDT discr. distribution used fo
 diffControlReg = "3j2t" # Control region used in the differential signal extraction step
 
 unifttbar   = True      # Force the BDT disc. distrib. bins to hace the same amount of ttbar events.
-asimov      = False      # Use of Asimov dataset or data
+asimov      = True      # Use of Asimov dataset or data
 doxsec      = True      # Show events or diff. cross section in final results
 doPre       = True      # Show or not show the "Preliminary" in the plots
 doSym       = True      # Symmetrise the uncertainties or not
 doReg       = False     # Regularise distributions (general setting, can be overrrided for each variable separately)
 doArea      = False     # Apply area constraint in unfolding (general setting, can be overrrided for each variable separately)
-onlyTotal   = False      # Only show total unc. line in the differential relative unc. plots.
+onlyTotal   = True      # Only show total unc. line in the differential relative unc. plots.
 
 
 # === OTHER IMPORTANT DEFINITIONS ===
@@ -94,8 +94,8 @@ varList['LogTauCurv'] = varList['LCurvature']
 
 varList['Names'] = {
     #'Variables'   : ["Lep1_Pt", "Jet1_Pt", "Lep1Lep2_DPhi", "Lep1Lep2Jet1MET_Pz", "Lep1Lep2Jet1MET_Mt", "Lep1Lep2Jet1_M"],
-    'Variables'   : ["Lep1_Pt", "Jet1_Pt", "Lep1Lep2_DPhi", "Lep1Lep2Jet1MET_Pz", "Lep1Lep2Jet1MET_Mt", "Lep1Lep2Jet1_M", "Fiducial"],
-    #'Variables'   : ["Lep1_Pt", "Jet1_Pt", "Lep1Lep2_DPhi", "Lep1Lep2Jet1MET_Pz", "Lep1Lep2Jet1MET_Mt", "Lep1Lep2Jet1_M"],
+    #'Variables'   : ["Lep1_Pt", "Jet1_Pt", "Lep1Lep2_DPhi", "Lep1Lep2Jet1MET_Pz", "Lep1Lep2Jet1MET_Mt", "Lep1Lep2Jet1_M", "Fiducial"],
+    'Variables'   : ["Lep1_Pt", "Jet1_Pt", "Lep1Lep2_DPhi", "Lep1Lep2Jet1MET_Pz", "Lep1Lep2Jet1MET_Mt", "Lep1Lep2Jet1_M"],
     'ExpSysts'    : ["JESUp", "JESDown", "JERUp", "ElecEffUp", "ElecEffDown", "MuonEffUp", #   DO NOT MOVE THE FIRST THREE TO OTHER
                      "MuonEffDown", "TrigUp", "TrigDown", "PUUp", "PUDown", "BtagUp",      # POSITION: it will affect the calculus
                      #"BtagDown", "MistagUp", "MistagDown"],                                # of the response matrices.
@@ -419,7 +419,7 @@ varList['Jet1_Pt'] = {
     "yaxismax_particlefidbin": 0.029,
     "yaxismax_particlefid" : 1.8,
     #"yaxismax_particlefidbinunc" : 1.2,
-    "yaxismax_particlefidbinunc" : 1.1,
+    "yaxismax_particlefidbinunc" : 0.5,
     "yaxismax_unf" : 2.3,
     "yaxismax_particlebinunc": 1.8,
     "yaxismax_particlebin": 0.010,
@@ -493,9 +493,9 @@ varList['Lep1_Pt'] = {
     "txtangle_covparticlefidbin": 35,
     "yaxisuplimitunf": 0.2,
     "yaxismax_particlefidbin": 0.025,
-    "yaxismax_particlefid" : 1.2,
+    "yaxismax_particlefid" : 1.1,
     #"yaxismax_particlefidbinunc" : 0.8,
-    "yaxismax_particlefidbinunc" : 1.1,
+    "yaxismax_particlefidbinunc" : 0.5,
     "yaxismax_unf" : 1.35,
     "yaxismax_particlebin": 0.0085,
     "legpos_particlebinunc" : "TL",
@@ -650,10 +650,10 @@ varList['Lep1Lep2_DPhi'] = {
     'txtsize_covdetector': 1.75,
     "txtsize_covparticlefidbin": 1.6,
     'txtangle_covparticlefidbin': 45,
-    #"equalbinsunf" : True,
-    #"equalbinsfol" : True,
+    "equalbinsunf" : True,
+    "equalbinsfol" : True,
     "yaxismax_particlefid" : 0.4,
-    "yaxismax_particlefidbinunc" : 1.1,
+    "yaxismax_particlefidbinunc" : 0.5,
     #"yaxismax_particlefidbinunc" : 0.35,
     "yaxismax_particlefidbin" : 1.7,
     "yaxismax_unf" : 1,
