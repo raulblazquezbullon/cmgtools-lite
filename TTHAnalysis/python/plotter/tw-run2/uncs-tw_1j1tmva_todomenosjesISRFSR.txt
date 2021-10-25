@@ -34,9 +34,12 @@ lumi_corr1718 : $AllBkg : .* : normSymm : 1.002 ; year="2018"
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Pile-up reweighting
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-pileup : dy|nonworz|vvttv : .* : templateAsymm; AddWeights=['puWeightUp/puWeight'\,'puWeightDown/puWeight'], EstimateFromXbins=1
-pileup : ttbar            : .* : templateAsymm; AddWeights=['puWeightUp/puWeight'\,'puWeightDown/puWeight'], fitOrder=1, symmAfterFit=1
-pileup : $tWProc          : .* : templateAsymm; AddWeights=['puWeightUp/puWeight'\,'puWeightDown/puWeight'], EstimateFromXbins=1
+pileup : $lowstat    : .* : templateAsymm; AddWeights=['puWeightUp/puWeight'\,'puWeightDown/puWeight'], EstimateFromXbins=1
+pileup : vvttv       : .* : templateAsymm; AddWeights=['puWeightUp/puWeight'\,'puWeightDown/puWeight'], fitOrder=1
+pileup : $tWandttbar : .* : templateAsymm; AddWeights=['puWeightUp/puWeight'\,'puWeightDown/puWeight']
+
+
+
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Trigger efficiencies
@@ -83,71 +86,39 @@ jes_HF_2016             : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-
 jes_HF_2017             : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesHF_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesHF_yearDown.txt'], year="2017"
 jes_HF_2018             : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesHF_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesHF_yearDown.txt'], year="2018"
 
+jes_BBEC1               : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesBBEC1Up.txt'\,'tw-run2/frs-jecs/fr-jesBBEC1Down.txt']
+jes_BBEC1_2016          : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesBBEC1_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesBBEC1_yearDown.txt'], year="2016"
+jes_BBEC1_2017          : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesBBEC1_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesBBEC1_yearDown.txt'], year="2017"
+jes_BBEC1_2018          : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesBBEC1_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesBBEC1_yearDown.txt'], year="2018"
 
-jes_BBEC1               : $lowstat : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesBBEC1Up.txt'\,'tw-run2/frs-jecs/fr-jesBBEC1Down.txt'], EstimateFromXbins=1
-jes_BBEC1_2016          : $lowstat : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesBBEC1_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesBBEC1_yearDown.txt'], year="2016", EstimateFromXbins=1
-jes_BBEC1_2017          : $lowstat : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesBBEC1_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesBBEC1_yearDown.txt'], year="2017", EstimateFromXbins=1
-jes_BBEC1_2018          : $lowstat : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesBBEC1_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesBBEC1_yearDown.txt'], year="2018", EstimateFromXbins=1
+jes_FlavorQCD           : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesFlavorQCDUp.txt'\,'tw-run2/frs-jecs/fr-jesFlavorQCDDown.txt']
 
-jes_BBEC1               : $highstat : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesBBEC1Up.txt'\,'tw-run2/frs-jecs/fr-jesBBEC1Down.txt'], fitOrder=1, symmAfterFit=1
-jes_BBEC1_2016          : $highstat : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesBBEC1_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesBBEC1_yearDown.txt'], year="2016", fitOrder=1, symmAfterFit=1
-jes_BBEC1_2017          : $highstat : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesBBEC1_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesBBEC1_yearDown.txt'], year="2017", fitOrder=1, symmAfterFit=1
-jes_BBEC1_2018          : $highstat : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesBBEC1_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesBBEC1_yearDown.txt'], year="2018", fitOrder=1, symmAfterFit=1
-
-
-jes_FlavorQCD           : $lowstat : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesFlavorQCDUp.txt'\,'tw-run2/frs-jecs/fr-jesFlavorQCDDown.txt'], EstimateFromXbins=1
-
-jes_FlavorQCD           : $tWProc : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesFlavorQCDUp.txt'\,'tw-run2/frs-jecs/fr-jesFlavorQCDDown.txt'], fitOrder=1, symmAfterFit=1
-
-jes_FlavorQCD           : vvttv|ttbar : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesFlavorQCDUp.txt'\,'tw-run2/frs-jecs/fr-jesFlavorQCDDown.txt'], fitOrder=3, symmAfterFit=1
-
-
-jes_RelativeBal         : $lowstat : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesRelativeBalUp.txt'\,'tw-run2/frs-jecs/fr-jesRelativeBalDown.txt'], EstimateFromXbins=1
-
-jes_RelativeBal         : $highstat : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesRelativeBalUp.txt'\,'tw-run2/frs-jecs/fr-jesRelativeBalDown.txt'], fitOrder=1, symmAfterFit=1
-
-
-jes_RelativeSample_2016 : $lowstat : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesRelativeSample_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesRelativeSample_yearDown.txt'], year="2016", EstimateFromXbins=1
-jes_RelativeSample_2016 : $tWProc : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesRelativeSample_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesRelativeSample_yearDown.txt'], year="2016", fitOrder=1, symmAfterFit=1
-jes_RelativeSample_2016 : ttbar|vvttv   : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesRelativeSample_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesRelativeSample_yearDown.txt'], year="2016", EstimateFromXbins=1
-
-jes_RelativeSample_2017 : $lowstat : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesRelativeSample_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesRelativeSample_yearDown.txt'], year="2017", EstimateFromXbins=1
-jes_RelativeSample_2017 : $tWProc : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesRelativeSample_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesRelativeSample_yearDown.txt'], year="2017", fitOrder=1, symmAfterFit=1
-jes_RelativeSample_2017 : ttbar|vvttv : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesRelativeSample_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesRelativeSample_yearDown.txt'], year="2017", EstimateFromXbins=1
-
-jes_RelativeSample_2018 : $lowstat : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesRelativeSample_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesRelativeSample_yearDown.txt'], year="2018", EstimateFromXbins=1
-jes_RelativeSample_2018 : $tWProc : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesRelativeSample_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesRelativeSample_yearDown.txt'], year="2018", fitOrder=1, symmAfterFit=1
-jes_RelativeSample_2018 : ttbar|vvttv : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesRelativeSample_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesRelativeSample_yearDown.txt'], year="2018", fitOrder=3
-
+jes_RelativeBal         : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesRelativeBalUp.txt'\,'tw-run2/frs-jecs/fr-jesRelativeBalDown.txt']
+jes_RelativeSample_2016 : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesRelativeSample_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesRelativeSample_yearDown.txt'], year="2016"
+jes_RelativeSample_2017 : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesRelativeSample_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesRelativeSample_yearDown.txt'], year="2017"
+jes_RelativeSample_2018 : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesRelativeSample_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesRelativeSample_yearDown.txt'], year="2018"
 
 jes_EC2                 : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesEC2Up.txt'\,'tw-run2/frs-jecs/fr-jesEC2Down.txt']
 jes_EC2_2016            : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesEC2_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesEC2_yearDown.txt'], year="2016"
 jes_EC2_2017            : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesEC2_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesEC2_yearDown.txt'], year="2017"
 jes_EC2_2018            : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesEC2_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesEC2_yearDown.txt'], year="2018"
 
-jes_Absolute            : $lowstat  : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesAbsoluteUp.txt'\,'tw-run2/frs-jecs/fr-jesAbsoluteDown.txt'], EstimateFromXbins=1
-jes_Absolute            : $tWProc  : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesAbsoluteUp.txt'\,'tw-run2/frs-jecs/fr-jesAbsoluteDown.txt'], EstimateFromXbins=1
-jes_Absolute            : vvttv|ttbar : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesAbsoluteUp.txt'\,'tw-run2/frs-jecs/fr-jesAbsoluteDown.txt'], fitOrder=1, symmAfterFit=1
-
-
-jes_Absolute_2016       : dy|nonworz : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesAbsolute_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesAbsolute_yearDown.txt'], year="2016", EstimateFromXbins=1
-jes_Absolute_2016       : $tWProc : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesAbsolute_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesAbsolute_yearDown.txt'], year="2016", fitOrder=1, symmAfterFit=1
-jes_Absolute_2016       : ttbar|vvttv : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesAbsolute_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesAbsolute_yearDown.txt'], year="2016", fitOrder=1, symmAfterFit=1
-
-jes_Absolute_2017       : dy|nonworz : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesAbsolute_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesAbsolute_yearDown.txt'], year="2017", EstimateFromXbins=1
-jes_Absolute_2017       : $tWProc : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesAbsolute_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesAbsolute_yearDown.txt'], year="2017", fitOrder=1, symmAfterFit=1
-jes_Absolute_2017       : ttbar|vvttv : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesAbsolute_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesAbsolute_yearDown.txt'], year="2017", fitOrder=1, symmAfterFit=1
-
-jes_Absolute_2018       : dy|nonworz : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesAbsolute_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesAbsolute_yearDown.txt'], year="2018", EstimateFromXbins=1
-jes_Absolute_2018       : $tWandttbar : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesAbsolute_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesAbsolute_yearDown.txt'], year="2018", fitOrder=1, symmAfterFit=1
-jes_Absolute_2018       : vvttv : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesAbsolute_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesAbsolute_yearDown.txt'], year="2018", fitOrder=1, symmAfterFit=1
+jes_Absolute            : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesAbsoluteUp.txt'\,'tw-run2/frs-jecs/fr-jesAbsoluteDown.txt']
+jes_Absolute_2016       : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesAbsolute_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesAbsolute_yearDown.txt'], year="2016"
+jes_Absolute_2017       : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesAbsolute_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesAbsolute_yearDown.txt'], year="2017"
+jes_Absolute_2018       : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesAbsolute_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesAbsolute_yearDown.txt'], year="2018"
 
 #HEMcheck                 : $All : .* : templateSymmAdditive; AddWeight='abs(isThisEventVetoed - 1)', year="2018"
 
 
-jer_2016 : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jerUp.txt'\,'tw-run2/frs-jecs/fr-jerDn.txt'], year="2016", EstimateFromXbins=1
-jer_2017 : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jerUp.txt'\,'tw-run2/frs-jecs/fr-jerDn.txt'], year="2017", EstimateFromXbins=1
-jer_2018 : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jerUp.txt'\,'tw-run2/frs-jecs/fr-jerDn.txt'], year="2018", EstimateFromXbins=1
+jer_2016 : dy|nonworz|vvttv : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jerUp.txt'\,'tw-run2/frs-jecs/fr-jerDn.txt'], year="2016", EstimateFromXbins=1
+jer_2016 : $tWandttbar      : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jerUp.txt'\,'tw-run2/frs-jecs/fr-jerDn.txt'], year="2016", fitOrder=1, symmAfterFit=1
+
+jer_2017 : dy|nonworz|vvttv : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jerUp.txt'\,'tw-run2/frs-jecs/fr-jerDn.txt'], year="2017", EstimateFromXbins=1
+jer_2017 : $tWandttbar      : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jerUp.txt'\,'tw-run2/frs-jecs/fr-jerDn.txt'], year="2017", fitOrder=1, symmAfterFit=1
+
+jer_2018 : dy|nonworz|vvttv : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jerUp.txt'\,'tw-run2/frs-jecs/fr-jerDn.txt'], year="2018", EstimateFromXbins=1
+jer_2018 : $tWandttbar      : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jerUp.txt'\,'tw-run2/frs-jecs/fr-jerDn.txt'], year="2018", fitOrder=1, symmAfterFit=1
 
 
 ## If we don't use MET, we don't need this unc.:
@@ -161,26 +132,29 @@ btagging_corr:   $lowstat : .* : templateAsymm ; AddWeights=['bTagWeight_btag_co
 btagging_corr:   $highstat : .* : templateAsymm ; AddWeights=['bTagWeight_btag_correlatedUp/bTagWeight'\,'bTagWeight_btag_correlatedDown/bTagWeight']
 
 btagging_2016:   $lowstat : .* : templateAsymm ; AddWeights=['bTagWeight_btag_uncorrelatedUp/bTagWeight'\,'bTagWeight_btag_uncorrelatedDown/bTagWeight'], year="2016", EstimateFromXbins=1
-btagging_2016:   $highstat : .* : templateAsymm ; AddWeights=['bTagWeight_btag_uncorrelatedUp/bTagWeight'\,'bTagWeight_btag_uncorrelatedDown/bTagWeight'], year="2016", fitOrder=1, symmAfterFit=1
+btagging_2016:   $highstat : .* : templateAsymm ; AddWeights=['bTagWeight_btag_uncorrelatedUp/bTagWeight'\,'bTagWeight_btag_uncorrelatedDown/bTagWeight'], year="2016"
 
 btagging_2017:   $lowstat : .* : templateAsymm ; AddWeights=['bTagWeight_btag_uncorrelatedUp/bTagWeight'\,'bTagWeight_btag_uncorrelatedDown/bTagWeight'], year="2017", EstimateFromXbins=1
-btagging_2017:   $highstat : .* : templateAsymm ; AddWeights=['bTagWeight_btag_uncorrelatedUp/bTagWeight'\,'bTagWeight_btag_uncorrelatedDown/bTagWeight'], year="2017", fitOrder=1, symmAfterFit=1
+btagging_2017:   $highstat : .* : templateAsymm ; AddWeights=['bTagWeight_btag_uncorrelatedUp/bTagWeight'\,'bTagWeight_btag_uncorrelatedDown/bTagWeight'], year="2017"
 
 btagging_2018:   $lowstat : .* : templateAsymm ; AddWeights=['bTagWeight_btag_uncorrelatedUp/bTagWeight'\,'bTagWeight_btag_uncorrelatedDown/bTagWeight'], year="2018", EstimateFromXbins=1
-btagging_2018:   $highstat : .* : templateAsymm ; AddWeights=['bTagWeight_btag_uncorrelatedUp/bTagWeight'\,'bTagWeight_btag_uncorrelatedDown/bTagWeight'], year="2018", fitOrder=1, symmAfterFit=1
+btagging_2018:   $highstat : .* : templateAsymm ; AddWeights=['bTagWeight_btag_uncorrelatedUp/bTagWeight'\,'bTagWeight_btag_uncorrelatedDown/bTagWeight'], year="2018"
 
-mistagging_corr: dy|nonworz|vvttv : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_correlatedUp/bTagWeight'\,'bTagWeight_mistag_correlatedDown/bTagWeight'], EstimateFromXbins=1
-mistagging_corr: ttbar   : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_correlatedUp/bTagWeight'\,'bTagWeight_mistag_correlatedDown/bTagWeight']
-mistagging_corr: $tWProc : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_correlatedUp/bTagWeight'\,'bTagWeight_mistag_correlatedDown/bTagWeight'], EstimateFromXbins=1
+mistagging_corr: $lowstat    : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_correlatedUp/bTagWeight'\,'bTagWeight_mistag_correlatedDown/bTagWeight'], EstimateFromXbins=1
+mistagging_corr: $tWandttbar : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_correlatedUp/bTagWeight'\,'bTagWeight_mistag_correlatedDown/bTagWeight']
+mistagging_corr: vvttv       : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_correlatedUp/bTagWeight'\,'bTagWeight_mistag_correlatedDown/bTagWeight'], fitOrder=1
 
 mistagging_2016: $lowstat : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_uncorrelatedUp/bTagWeight'\,'bTagWeight_mistag_uncorrelatedDown/bTagWeight'], year="2016", EstimateFromXbins=1
-mistagging_2016: $highstat : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_uncorrelatedUp/bTagWeight'\,'bTagWeight_mistag_uncorrelatedDown/bTagWeight'], year="2016"
+mistagging_2016: $tWandttbar : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_uncorrelatedUp/bTagWeight'\,'bTagWeight_mistag_uncorrelatedDown/bTagWeight'], year="2016"
+mistagging_2016: vvttv : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_uncorrelatedUp/bTagWeight'\,'bTagWeight_mistag_uncorrelatedDown/bTagWeight'], year="2016", fitOrder=1, symmAfterFit=1
 
 mistagging_2017: $lowstat : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_uncorrelatedUp/bTagWeight'\,'bTagWeight_mistag_uncorrelatedDown/bTagWeight'], year="2017", EstimateFromXbins=1
-mistagging_2017: $highstat : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_uncorrelatedUp/bTagWeight'\,'bTagWeight_mistag_uncorrelatedDown/bTagWeight'], year="2017"
+mistagging_2017: $tWandttbar : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_uncorrelatedUp/bTagWeight'\,'bTagWeight_mistag_uncorrelatedDown/bTagWeight'], year="2017"
+mistagging_2017: vvttv : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_uncorrelatedUp/bTagWeight'\,'bTagWeight_mistag_uncorrelatedDown/bTagWeight'], year="2017", fitOrder=1, symmAfterFit=1
 
 mistagging_2018: $lowstat : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_uncorrelatedUp/bTagWeight'\,'bTagWeight_mistag_uncorrelatedDown/bTagWeight'], year="2018", EstimateFromXbins=1
-mistagging_2018: $highstat : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_uncorrelatedUp/bTagWeight'\,'bTagWeight_mistag_uncorrelatedDown/bTagWeight'], year="2018"
+mistagging_2018: $tWandttbar : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_uncorrelatedUp/bTagWeight'\,'bTagWeight_mistag_uncorrelatedDown/bTagWeight'], year="2018"
+mistagging_2018: vvttv : .* : templateAsymm ; AddWeights=['bTagWeight_mistag_uncorrelatedUp/bTagWeight'\,'bTagWeight_mistag_uncorrelatedDown/bTagWeight'], year="2018", fitOrder=1, symmAfterFit=1
 
 
 
@@ -195,9 +169,12 @@ prefiring_2017 : $highstat : .* : templateAsymm; AddWeights=['PrefireWeight_Up/P
 ## --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ## Muon energy corrections (Rochester corrections)
 ## --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-muonen_2016 : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-lepenergies/fr-muonEnergyUp.txt'\,'tw-run2/frs-lepenergies/fr-muonEnergyDn.txt'], year="2016"
-muonen_2017 : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-lepenergies/fr-muonEnergyUp.txt'\,'tw-run2/frs-lepenergies/fr-muonEnergyDn.txt'], year="2017"
-muonen_2018 : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-lepenergies/fr-muonEnergyUp.txt'\,'tw-run2/frs-lepenergies/fr-muonEnergyDn.txt'], year="2018"
+muonen_2016 : $lowstat : .* : templateAsymm; FakeRates=['tw-run2/frs-lepenergies/fr-muonEnergyUp.txt'\,'tw-run2/frs-lepenergies/fr-muonEnergyDn.txt'], year="2016", EstimateFromXbins=1
+muonen_2016 : $highstat : .* : templateAsymm; FakeRates=['tw-run2/frs-lepenergies/fr-muonEnergyUp.txt'\,'tw-run2/frs-lepenergies/fr-muonEnergyDn.txt'], year="2016"
+muonen_2017 : $lowstat : .* : templateAsymm; FakeRates=['tw-run2/frs-lepenergies/fr-muonEnergyUp.txt'\,'tw-run2/frs-lepenergies/fr-muonEnergyDn.txt'], year="2017", EstimateFromXbins=1
+muonen_2017 : $highstat : .* : templateAsymm; FakeRates=['tw-run2/frs-lepenergies/fr-muonEnergyUp.txt'\,'tw-run2/frs-lepenergies/fr-muonEnergyDn.txt'], year="2017"
+muonen_2018 : $lowstat : .* : templateAsymm; FakeRates=['tw-run2/frs-lepenergies/fr-muonEnergyUp.txt'\,'tw-run2/frs-lepenergies/fr-muonEnergyDn.txt'], year="2018", EstimateFromXbins=1
+muonen_2018 : $highstat : .* : templateAsymm; FakeRates=['tw-run2/frs-lepenergies/fr-muonEnergyUp.txt'\,'tw-run2/frs-lepenergies/fr-muonEnergyDn.txt'], year="2018"
 
 
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -241,11 +218,20 @@ tw_scales    : $tWProc : .* : envelope ; FakeRates=['tw-run2/frs-scales/fr-muR_0
 ####### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ####### ISR/FSR
 ####### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-isr_ttbar : ttbar   : .* : templateAsymm; FakeRates=['tw-run2/frs-PS/fr-isrUp.txt'\,'tw-run2/frs-PS/fr-isrDown.txt'], EstimateFromXbins=1
-isr_tw    : $tWProc : .* : templateAsymm; FakeRates=['tw-run2/frs-PS/fr-isrUp.txt'\,'tw-run2/frs-PS/fr-isrDown.txt'], fitOrder=1, symmAfterFit=1
+#isr_ttbar : ttbar : .* : templateAsymm; AddWeights=['Alt$(PSWeight[8]\,PSWeight[2])'\,'Alt$(PSWeight[6]\,PSWeight[0])']
+#fsr_ttbar : ttbar : .* : templateAsymm; AddWeights=['Alt$(PSWeight[9]\,PSWeight[3])'\,'Alt$(PSWeight[7]\,PSWeight[1])']
+#
+#isr_tw    : $tWProc : .* : templateAsymm; AddWeights=['Alt$(PSWeight[8]\,PSWeight[2])'\,'Alt$(PSWeight[6]\,PSWeight[0])']
+#fsr_tw    : $tWProc : .* : templateAsymm; AddWeights=['Alt$(PSWeight[9]\,PSWeight[3])'\,'Alt$(PSWeight[7]\,PSWeight[1])']
 
-fsr       : ttbar   : .* : templateAsymm; FakeRates=['tw-run2/frs-PS/fr-fsrUp.txt'\,'tw-run2/frs-PS/fr-fsrDown.txt'], fitOrder=3, symmAfterFit=1
-fsr       : $tWProc : .* : templateAsymm; FakeRates=['tw-run2/frs-PS/fr-fsrUp.txt'\,'tw-run2/frs-PS/fr-fsrDown.txt'], EstimateFromXbins=1
+
+isr_ttbar : ttbar   : .* : templateAsymm; FakeRates=['tw-run2/frs-PS/fr-isrUp.txt'\,'tw-run2/frs-PS/fr-isrDown.txt']
+isr_tw    : $tWProc : .* : templateAsymm; FakeRates=['tw-run2/frs-PS/fr-isrUp.txt'\,'tw-run2/frs-PS/fr-isrDown.txt']
+
+#fsr_ttbar : ttbar   : .* : templateAsymm; FakeRates=['tw-run2/frs-PS/fr-fsrUp.txt'\,'tw-run2/frs-PS/fr-fsrDown.txt']
+#fsr_tw    : $tWProc : .* : templateAsymm; FakeRates=['tw-run2/frs-PS/fr-fsrUp.txt'\,'tw-run2/frs-PS/fr-fsrDown.txt']
+
+fsr        : $tWandttbar : .* : templateAsymm; FakeRates=['tw-run2/frs-PS/fr-fsrUp.txt'\,'tw-run2/frs-PS/fr-fsrDown.txt']
 
 ###### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ###### Top pT reweighting
@@ -281,6 +267,9 @@ colour_rec_cr1   : $tWProc : .* : altSample : syst_tw_colour_cr1      : : ; Esti
 colour_rec_cr2   : $tWProc : .* : altSample : syst_tw_colour_cr2      : : ; EstimateFromXbins=1, EstimateAsymm=1
 
 
+
+
+
 #### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #### Underlying event (tuning)
 #### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -296,14 +285,8 @@ ue : $tWProc : .* : altSample : syst_tw_ue_up    : syst_tw_ue_dn    ; EstimateFr
 mtop : ttbar   : .* : altSample : syst_ttbar_mtop_2016_up : syst_ttbar_mtop_2016_dn : addothers : syst_ttbar_mtop_2016 : 3 ; year="2016", EstimateFromXbins=1
 mtop : ttbar   : .* : altSample : syst_ttbar_mtop_2017_up : syst_ttbar_mtop_2017_dn : addothers : syst_ttbar_mtop_2017 : 1 ; year="2017", EstimateFromXbins=1
 mtop : ttbar   : .* : altSample : syst_ttbar_mtop_2018_up : syst_ttbar_mtop_2018_dn : addothers : syst_ttbar_mtop_2018 : 1 ; year="2018", EstimateFromXbins=1
-
 mtop : $tWProc : .* : altSample : syst_tw_mtop_up         : syst_tw_mtop_dn ;  EstimateFromXbins=1
 
-#mtop : ttbar   : .* : altSample : syst_ttbar_mtop_2016_up : syst_ttbar_mtop_2016_dn : addothers : syst_ttbar_mtop_2016 : 3 ; year="2016", fitOrder=1, symmAfterFit=1
-#mtop : ttbar   : .* : altSample : syst_ttbar_mtop_2017_up : syst_ttbar_mtop_2017_dn : addothers : syst_ttbar_mtop_2017 : 1 ; year="2017", fitOrder=1, symmAfterFit=1
-#mtop : ttbar   : .* : altSample : syst_ttbar_mtop_2018_up : syst_ttbar_mtop_2018_dn : addothers : syst_ttbar_mtop_2018 : 1 ; year="2018", fitOrder=1, symmAfterFit=1
-
-#mtop   : ttbar   : .* : normSymm : 1.05
 
 #### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #### tW DR/DS

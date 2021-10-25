@@ -6,22 +6,23 @@ from math import log10, floor
 
 
 translateDict = OrderedDict(
-    [("1j1b"                     , "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2021-02-02_PlotsNoteV2/Plots_TotWeight/run2/1j1t/MVAtrain/tot_weight.txt"),
-    ("1j1b_Differential"    , "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2021-02-02_PlotsNoteV2/Plots_TotWeight/run2/1j1t/differential/tot_weight.txt"),
-    ("2j1b"                      , "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2021-02-02_PlotsNoteV2/Plots_TotWeight/run2/2j1t/MVAtrain/tot_weight.txt"),
-    ("2j2b"    , "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2021-02-02_PlotsNoteV2/Plots_TotWeight/run2/2j2t/tot_weight.txt")]
+    [("1j1b"                     , "/nfs/fanae/user/vrbouza/Proyectos/tw_run2/desarrollo/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp_2021_07_21_todonuevo/varplots/run2/1j1t/MVAtrain/jet1_pt.txt"),
+    ("1j1b_Differential"    , "/nfs/fanae/user/vrbouza/Proyectos/tw_run2/desarrollo/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp_2021_07_21_todonuevo/varplots/run2/1j1t/differential/jet1_pt.txt"),
+    ("2j1b"                      , "/nfs/fanae/user/vrbouza/Proyectos/tw_run2/desarrollo/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp_2021_07_21_todonuevo/varplots/run2/2j1t/MVAtrain/jet2_pt.txt"),
+    ("2j2b"    , "/nfs/fanae/user/vrbouza/Proyectos/tw_run2/desarrollo/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp_2021_07_21_todonuevo/varplots/run2/2j2t/jet2_pt_rebin.txt")]
 )
 
 translateDict_processes = OrderedDict(
-    [("tw"         , "tW"),
-    ("ttbar"       , "t$\\bar{\\mathrm{t}}$"),
-    ("dy"          , "Drell-Yan"),
-    ("vvttv"       , "VVt$\\bar{\\mathrm{t}}$V"),
-    ("nonworz"     , "Non-W/Z"),
+    [("tW"         , "tW"),
+    ("t\\bar{t}"       , "t$\\bar{\\mathrm{t}}$"),
+    ("DY"          , "Drell-Yan"),
+    ("VV+t\\bar{t}V"       , "VV$+\\mathrm{t}\\bar{\\mathrm{t}}$V"),
+    ("Non-W/Z"     , "Non-W/Z"),
     ("DATA"        , "Data")]
 )
 
 def round_to_reference(x, y):
+    y = 2
     if str(y)[0] == "1" or str(y)[0] == "0" and str(y)[2] == "1":
         if y>=2:
             return int(round(x, 1-int(floor(log10(y)))))
@@ -36,7 +37,7 @@ def round_to_reference(x, y):
 
 def getYieldLaTeXtables(RegionsandPath, ProcessesDict):
     for region in RegionsandPath:
-        table = "\\begin{tabular}{|l|l|l|l|l|} \n \hline \n%25s & %10s & %10s & %10s & %10s \\\ \hline \n" %("Process", "Yields", "Stat. Unc", "Sys. Unc", "Total Unc")
+        table = "\\begin{tabular}{ccccc} \n \hline \n%25s & %10s & %10s & %10s & %10s \\\ \hline \n" %("Process", "Yields", "Stat. Unc", "Sys. Unc", "Total Unc")
         YieldsFile = open(RegionsandPath[region],"r")
         totalYields = 0
         StatUncTotalYields = 0
@@ -77,9 +78,9 @@ def getYieldLaTeXtables(RegionsandPath, ProcessesDict):
         StatUncTotalYields = str(round_to_reference(StatUncTotalYields, StatUncTotalYields))
         SysUncTotalYields = str(round_to_reference(SysUncTotalYields, SysUncTotalYields))
         TotUncTotalYields = str(round_to_reference(TotUncTotalYields, TotUncTotalYields))
-        table = table + "%25s & %10s & %10s & %10s & %10s \\\ \hline \n" %("Total", totalYields, StatUncTotalYields, SysUncTotalYields, TotUncTotalYields)
+        table = table + "%25s & %10s & %10s & %10s & %10s \\\ \n" %("\\textbf{Total}", totalYields, StatUncTotalYields, SysUncTotalYields, TotUncTotalYields)
         #Data
-        table = table + "%25s & %10s & %10s & %10s & %10s \\\ \hline \n" %("Data", yieldsData, statUncData, "", "")
+        table = table + "%25s & %10s & %10s & %10s & %10s \\\ \hline \n" %("\\textbf{Data}", yieldsData, statUncData, "0", statUncData)
         table = table + "\end{tabular} \n"
         
         LatexTable = open(region + "_Table.tex","w")

@@ -232,6 +232,44 @@ Float_t getBDtWOther12bins2018(Double_t BDT){
   else                       return 12;
 }
 
+Float_t getBDtW20binsDYtrain(Double_t BDT){
+  if      (BDT < -0.461131   ) return 1;
+  else if (BDT < -0.394919) return 2;
+  else if (BDT < -0.349125) return 3;
+  else if (BDT < -0.308739) return 4;
+  else if (BDT < -0.274655) return 5;
+  else if (BDT < -0.243111) return 6;
+  else if (BDT < -0.208747) return 7;
+  else if (BDT < -0.169462) return 8;
+  else if (BDT < -0.126396) return 9;
+  else if (BDT < -0.083119) return 10;
+  else if (BDT < -0.040716) return 11;
+  else if (BDT < 0.003589) return 12;
+  else if (BDT < 0.051413) return 13;
+  else if (BDT < 0.104710) return 14;
+  else if (BDT < 0.160402) return 15;
+  else if (BDT < 0.209588) return 16;
+  else if (BDT < 0.248742) return 17;
+  else if (BDT < 0.286687) return 18;
+  else if (BDT < 0.331751) return 19;
+  else                       return 20;
+}
+
+Float_t getBDtWOther12binsDYtrain(Double_t BDT){
+  if      (BDT < -0.330890   ) return 1;
+  else if (BDT < -0.231538) return 2;
+  else if (BDT < -0.151656) return 3;
+  else if (BDT < -0.090348) return 4;
+  else if (BDT < -0.040016) return 5;
+  else if (BDT < 0.003993) return 6;
+  else if (BDT < 0.042737) return 7;
+  else if (BDT < 0.072441) return 8;
+  else if (BDT < 0.102874) return 9;
+  else if (BDT < 0.142115) return 10;
+  else if (BDT < 0.189464) return 11;
+  else                       return 12;
+} 
+
 void functions_tw() {}
 
 
@@ -260,8 +298,157 @@ Float_t twoDPlotCentrality_Jetloose(Double_t Cent, Double_t Loose) {
 }
 
 
+Float_t theBDT1j1t50Bins(Double_t BDT){
+  if      (BDT < -0.531042   ) return 1;
+  else if (BDT < -0.479714) return 2;
+  else if (BDT < -0.444680) return 3;
+  else if (BDT < -0.417266) return 4;
+  else if (BDT < -0.394919) return 5;
+  else if (BDT < -0.375505) return 6;
+  else if (BDT < -0.357687) return 7;
+  else if (BDT < -0.340590) return 8;
+  else if (BDT < -0.324245) return 9;
+  else if (BDT < -0.308739) return 10;
+  else if (BDT < -0.294251) return 11;
+  else if (BDT < -0.280919) return 12;
+  else if (BDT < -0.268479) return 13;
+  else if (BDT < -0.256045) return 14;
+  else if (BDT < -0.243111) return 15;
+  else if (BDT < -0.229731) return 16;
+  else if (BDT < -0.215857) return 17;
+  else if (BDT < -0.201288) return 18;
+  else if (BDT < -0.185763) return 19;
+  else if (BDT < -0.169462) return 20;
+  else if (BDT < -0.152500) return 21;
+  else if (BDT < -0.135079) return 22;
+  else if (BDT < -0.117613) return 23;
+  else if (BDT < -0.100375) return 24;
+  else if (BDT < -0.083119) return 25;
+  else if (BDT < -0.066092) return 26;
+  else if (BDT < -0.049102) return 27;
+  else if (BDT < -0.032019) return 28;
+  else if (BDT < -0.014546) return 29;
+  else if (BDT < 0.003589) return 30;
+  else if (BDT < 0.022231) return 31;
+  else if (BDT < 0.041702) return 32;
+  else if (BDT < 0.061454) return 33;
+  else if (BDT < 0.082721) return 34;
+  else if (BDT < 0.104710) return 35;
+  else if (BDT < 0.126753) return 36;
+  else if (BDT < 0.149253) return 37;
+  else if (BDT < 0.171045) return 38;
+  else if (BDT < 0.191027) return 39;
+  else if (BDT < 0.209588) return 40;
+  else if (BDT < 0.226284) return 41;
+  else if (BDT < 0.241344) return 42;
+  else if (BDT < 0.256110) return 43;
+  else if (BDT < 0.271176) return 44;
+  else if (BDT < 0.286687) return 45;
+  else if (BDT < 0.303926) return 46;
+  else if (BDT < 0.322116) return 47;
+  else if (BDT < 0.342286) return 48;
+  else if (BDT < 0.365327) return 49;
+  else                       return 50;
+}
+
+
+Float_t theBDT2j1t50Bins(Double_t BDT){
+  if      (BDT < -0.458603   ) return 1;
+  else if (BDT < -0.410638) return 2;
+  else if (BDT < -0.370660) return 3;
+  else if (BDT < -0.335971) return 4;
+  else if (BDT < -0.308089) return 5;
+  else if (BDT < -0.283007) return 6;
+  else if (BDT < -0.259459) return 7;
+  else if (BDT < -0.238437) return 8;
+  else if (BDT < -0.217556) return 9;
+  else if (BDT < -0.198267) return 10;
+  else if (BDT < -0.178844) return 11;
+  else if (BDT < -0.160835) return 12;
+  else if (BDT < -0.142957) return 13;
+  else if (BDT < -0.126047) return 14;
+  else if (BDT < -0.111767) return 15;
+  else if (BDT < -0.098790) return 16;
+  else if (BDT < -0.086138) return 17;
+  else if (BDT < -0.074262) return 18;
+  else if (BDT < -0.062037) return 19;
+  else if (BDT < -0.050358) return 20;
+  else if (BDT < -0.037997) return 21;
+  else if (BDT < -0.026170) return 22;
+  else if (BDT < -0.015013) return 23;
+  else if (BDT < -0.005175) return 24;
+  else if (BDT < 0.003993) return 25;
+  else if (BDT < 0.013115) return 26;
+  else if (BDT < 0.022612) return 27;
+  else if (BDT < 0.032432) return 28;
+  else if (BDT < 0.041368) return 29;
+  else if (BDT < 0.048798) return 30;
+  else if (BDT < 0.055777) return 31;
+  else if (BDT < 0.063245) return 32;
+  else if (BDT < 0.070276) return 33;
+  else if (BDT < 0.076870) return 34;
+  else if (BDT < 0.083596) return 35;
+  else if (BDT < 0.090751) return 36;
+  else if (BDT < 0.098622) return 37;
+  else if (BDT < 0.107260) return 38;
+  else if (BDT < 0.116337) return 39;
+  else if (BDT < 0.125368) return 40;
+  else if (BDT < 0.135073) return 41;
+  else if (BDT < 0.145428) return 42;
+  else if (BDT < 0.156100) return 43;
+  else if (BDT < 0.167529) return 44;
+  else if (BDT < 0.179105) return 45;
+  else if (BDT < 0.191644) return 46;
+  else if (BDT < 0.206098) return 47;
+  else if (BDT < 0.225493) return 48;
+  else if (BDT < 0.257985) return 49;
+  else                       return 50;
+}
+
+
+Float_t theBDTJetsFwd1j1t(Double_t BDT){
+  if      (BDT < -0.475125   ) return 1;
+  else if (BDT < -0.410723) return 2;
+  else if (BDT < -0.364908) return 3;
+  else if (BDT < -0.326503) return 4;
+  else if (BDT < -0.290441) return 5;
+  else if (BDT < -0.256767) return 6;
+  else if (BDT < -0.225924) return 7;
+  else if (BDT < -0.193938) return 8;
+  else if (BDT < -0.159188) return 9;
+  else if (BDT < -0.119522) return 10;
+  else if (BDT < -0.076750) return 11;
+  else if (BDT < -0.032553) return 12;
+  else if (BDT < 0.013334) return 13;
+  else if (BDT < 0.066104) return 14;
+  else if (BDT < 0.133339) return 15;
+  else if (BDT < 0.214572) return 16;
+  else if (BDT < 0.280748) return 17;
+  else if (BDT < 0.333961) return 18;
+  else if (BDT < 0.381680) return 19;
+  else                       return 20;
+}
+
+
+Float_t theBDTJetsFwd2j1t(Double_t BDT){
+  if      (BDT < -0.330890   ) return 1;
+  else if (BDT < -0.231538) return 2;
+  else if (BDT < -0.151656) return 3;
+  else if (BDT < -0.090348) return 4;
+  else if (BDT < -0.040016) return 5;
+  else if (BDT < 0.003993) return 6;
+  else if (BDT < 0.042737) return 7;
+  else if (BDT < 0.072441) return 8;
+  else if (BDT < 0.102874) return 9;
+  else if (BDT < 0.142115) return 10;
+  else if (BDT < 0.189464) return 11;
+  else                       return 12;
+}
 
 
 //////////////////////////////////////////////
+
+
+
 
 

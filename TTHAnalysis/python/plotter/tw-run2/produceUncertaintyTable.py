@@ -56,7 +56,7 @@ systsGroup = {
     #### Systematic
     # Experimental
     'jes': [
-        #"jes",
+#        "jes",
         "jes_HF",
         "jes_HF_2016",
         "jes_HF_2017",
@@ -110,23 +110,23 @@ systsGroup = {
         "muonisosf_syst",
     ],
     'btag': [
-        "btagging_1718",
         "btagging_2016",
+        "btagging_2017",
+        "btagging_2018",
+        "btagging_corr",
     ],
     'mistag': [
-        "mistagging_1718",
         "mistagging_2016",
+        "mistagging_2017",
+        "mistagging_2018",
+        "mistagging_corr",
     ],
     'lumi': [
         "lumi_2016",
         "lumi_2017",
         "lumi_2018",
-        "lumi_BBD",
-        "lumi_BCC",
-        "lumi_DB",
-        "lumi_GS",
-        "lumi_LS",
-        "lumi_XY",
+        "lumi_corr",
+        "lumi_corr1718",
     ],
     'prefiring' : [
         "prefiring_2016",
@@ -148,13 +148,12 @@ systsGroup = {
     ],
 
     # Modelling
-#    'pdf' : [
-#        "pdfhessian",
-#    ],
-#    'matching' : [
-#        "ttbar_matching",
-#        "tw_matching",
-#    ],
+    'pdf' : [
+        "pdfhessian",
+    ],
+    'matching' : [
+        "ttbar_matching",
+    ],
     'ttbar_scales' : [
         "ttbar_scales",
     ],
@@ -166,38 +165,170 @@ systsGroup = {
         "isr_tw",
     ],
     'fsr' : [
-        "fsr_ttbar",
-        "fsr_tw",
+        "fsr",
     ],
-#    'colour' : [
-#        "colour_rec",
-#    ],
-#    'ue' : [
-#        "ue",
-#    ],
+    'colour' : [
+        "colour_rec_erdon",
+        "colour_rec_cr1",
+        "colour_rec_cr2",
+    ],
+    'ue' : [
+        "ue",
+    ],
     'toppt' : [
         "topptrew",
     ],
-#    'mtop' : [
-#        "mtop",
-#    ],
-#    'ds' : [
-#        "ds",
-#    ],
+    'mtop' : [
+        "mtop",
+    ],
+    'ds' : [
+        "ds",
+    ],
 }
+
+systsGroup = {
+   'systematics': [        "prop_binch1_bin0",
+       "prop_binch1_bin1",
+       "prop_binch1_bin2",
+       "prop_binch1_bin3",
+       "prop_binch1_bin4",
+       "prop_binch1_bin5",
+       "prop_binch1_bin6",
+       "prop_binch1_bin7",
+       "prop_binch1_bin8",
+       "prop_binch1_bin9",
+       "prop_binch1_bin10",
+       "prop_binch1_bin11",
+       "prop_binch1_bin12",
+       "prop_binch1_bin13",
+       "prop_binch1_bin14",
+       "prop_binch1_bin15",
+       "prop_binch1_bin16",
+       "prop_binch1_bin17",
+       "prop_binch1_bin18",
+       "prop_binch1_bin19",
+       "prop_binch2_bin0",
+       "prop_binch2_bin1",
+       "prop_binch2_bin2",
+       "prop_binch2_bin3",
+       "prop_binch2_bin4",
+       "prop_binch2_bin5",
+       "prop_binch2_bin6",
+       "prop_binch2_bin7",
+       "prop_binch2_bin8",
+       "prop_binch2_bin9",
+       "prop_binch2_bin10",
+       "prop_binch2_bin11",
+       "prop_binch3_bin0",
+       "prop_binch3_bin1",
+       "prop_binch3_bin2",
+       "prop_binch3_bin3",
+       "prop_binch3_bin4",
+       "prop_binch3_bin5",
+       "prop_binch3_bin6",
+       "prop_binch3_bin7",
+       "prop_binch3_bin8",
+       "prop_binch3_bin9",
+       "prop_binch3_bin10",
+       "prop_binch3_bin11",
+       "prop_binch3_bin12",
+       "prop_binch3_bin13",
+       "prop_binch3_bin14",
+       "prop_binch3_bin15",
+       "jes_HF",
+       "jes_HF_2016",
+       "jes_HF_2017",
+       "jes_HF_2018",
+       "jes_BBEC1",
+       "jes_BBEC1_2016",
+       "jes_BBEC1_2017",
+       "jes_BBEC1_2018",
+       "jes_FlavorQCD",
+       "jes_RelativeSample_2016",
+       "jes_RelativeSample_2017",
+       "jes_RelativeSample_2018",
+       "jes_EC2",
+       "jes_EC2_2016",
+       "jes_EC2_2017",
+       "jes_EC2_2018",
+       "jes_RelativeBal",
+       "jes_Absolute",
+       "jes_Absolute_2016",
+       "jes_Absolute_2017",
+       "jes_Absolute_2018",
+       "jer_2016",
+       "jer_2017",
+       "jer_2018",
+       "triggereff_2016",
+       "triggereff_2017",
+       "triggereff_2018",
+       "pileup",
+       "elecidsf",
+       "elecrecosf",
+       "muonen_2016",
+       "muonen_2017",
+       "muonen_2018",
+       "muonidsf_stat_2016",
+       "muonidsf_stat_2017",
+       "muonidsf_stat_2018",
+       "muonidsf_syst",
+       "muonisosf_stat_2016",
+       "muonisosf_stat_2017",
+       "muonisosf_stat_2018",
+       "muonisosf_syst",
+       "btagging_2016",
+       "btagging_2017",
+       "btagging_2018",
+       "btagging_corr",
+       "mistagging_2016",
+       "mistagging_2017",
+       "mistagging_2018",
+       "mistagging_corr",
+       "prefiring_2016",
+       "prefiring_2017",
+       "ttbar_norm",
+       "nonworz_norm",
+       "dy_norm",
+       "vvttv_norm",
+       "pdfhessian",
+       "ttbar_matching",
+       "ttbar_scales",
+       "tw_scales",
+       "isr_ttbar",
+       "isr_tw",
+       "fsr",
+       "colour_rec",
+       "ue",
+       "topptrew",
+       "mtop",
+       "ds",],
+   'lumi': [
+       "lumi_2016",
+       "lumi_2017",
+       "lumi_2018",
+       "lumi_corr",
+       "lumi_corr1718",
+   ],     
+}
+
+
+
+
 
 POIs   = ["r"]
 
 
 
-groupList   = ['mc_stat', 'jes', "jer", 'trigger', 'pileup', 'elec', "muon", 'btag', 'mistag', 'lumi', 'prefiring',
-               'ttbar_norm', 'nonworz_norm', 'dy_norm' , 'vvttv_norm', "ttbar_scales", "tw_scales","isr", "fsr", "toppt"]
+groupList   = ['fsr','pileup','dy_norm','colour','jes','matching','ttbar_norm','elec','nonworz_norm','btag','ue','toppt','tw_scales',
+              'vvttv_norm','mc_stat','isr','ttbar_scales','lumi','pdf','mistag','ds','jer','trigger','prefiring','muon','mtop']
 
+groupList = ['systematics','lumi']
+
+#groupList   = ['lumi','ds','pileup','muon','dy_norm','colour','jes','matching','ttbar_norm','elec','nonworz_norm','btag','ue','ttbar_scales','tw_scales',
+              #'vvttv_norm','mc_stat','isr','mtop','pdf','mistag','fsr','toppt','jer','trigger','prefiring']
 
 basecommand = 'combineTool.py -M MultiDimFit {algosettings} --rMin 0 --rMax 3 --floatOtherPOIs=1 -m 125 --split-points 1 --setParameters r=1 -t -1 --expectSignal=1 --saveInactivePOI 1 {parallel} {queue} {extra} --cminDefaultMinimizerStrategy 0 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --robustFit 1'
-
-
-
+#basecommand = 'combineTool.py -M MultiDimFit {algosettings} --rMin 0 --rMax 3 --floatOtherPOIs=1 -m 125 --split-points 1 --saveInactivePOI 1 {parallel} {queue} {extra} --cminDefaultMinimizerStrategy 0 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --robustFit 1'
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(usage = "python nanoAOD_checker.py [options]", description = "Checker tool for the outputs of nanoAOD production (NOT postprocessing)", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
@@ -207,6 +338,7 @@ if __name__ == "__main__":
     parser.add_argument('--nPoints',   '-P',  metavar = 'npoints',    dest = "npoints",  required = False, default = 100, type = int)
     parser.add_argument('--queue',     '-q',  action  = "store_true", dest = "queue",    required = False, default = False)
     parser.add_argument('--ncores',    '-j',  metavar = 'ncores',     dest = "ncores",   required = False, default = None)
+    parser.add_argument('--grUnc',     '-g',  metavar = 'grUnc',      dest = "grUnc",    required = False, default = None)
 
     args     = parser.parse_args()
     pretend  = args.pretend
@@ -215,8 +347,13 @@ if __name__ == "__main__":
     npoints    = args.npoints
     doBatch  = args.queue
     ncores   = args.ncores
+    grUnc   = args.grUnc
 
     thepath  = "/".join(thecard.split("/")[:-1])
+    
+    if grUnc:
+        groupList = []
+        groupList.append(grUnc)
 
     if step == 0:
         for poi in POIs:

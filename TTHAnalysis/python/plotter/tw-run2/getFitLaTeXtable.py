@@ -338,25 +338,28 @@ translateDict = {
     "ttbar_norm"  : "\\qquad t$\\bar{\\mathrm{t}}$",
     "nonworz_norm": "\\qquad Non-W/Z",
     "dy_norm"     : "\\qquad Drell-Yan",
-    "vvttv_norm"  : "\\qquad VVt$\\bar{\\mathrm{t}}$V",
-    #"matching"    : "\\qquad Matrix element/PS matching",
+    "vvttv_norm"  : "\\qquad VV$+\\mathrm{t}\\bar{\\mathrm{t}}$V",
+    "pdf"         : "\\qquad PDFs",
+    "matching"    : "\\qquad Matrix element/PS matching",
     "ttbar_scales": "\\qquad t$\\bar{\\mathrm{t}}$ $\\mu_{R}$ and $\\mu_{F}$ scales",
     "tw_scales"   : "\\qquad tW $\\mu_{R}$ and $\\mu_{F}$ scales",
     "isr"         : "\\qquad Initial state radiation",
     "fsr"         : "\\qquad Final state radiation",
-    #"colour"      : "\\qquad Colour reconnection",
-    #"ue"          : "\\qquad Underlying event",
+    "colour"      : "\\qquad Colour reconnection",
+    "ue"          : "\\qquad Underlying event",
     "toppt"       : "\\qquad Top $p_{T}$ reweighting",
+    "mtop"        : "\\qquad Top quark mass",
+    "ds"          : "\\qquad DR-DS",
     "stat"        : "Statistical",
 }
 
 
-sysforsum = ['mc_stat', 'jes', "jer", 'trigger', 'pileup', 'elec', "muon", 'btag', 'mistag', 'prefiring', 'ttbar_norm', 'nonworz_norm', 'dy_norm' , 'vvttv_norm', "ttbar_scales", "tw_scales","isr", "fsr", "toppt"]
+sysforsum = ['mc_stat', 'jes', "jer", 'trigger', 'pileup', 'elec', "muon", 'btag', 'mistag', 'prefiring', 'ttbar_norm', 'nonworz_norm', 'dy_norm' , 'vvttv_norm', "pdf", "matching","ttbar_scales", "tw_scales","isr", "fsr", "colour", "ue", "toppt", "mtop", "ds"]
 
 orderOfTheUncs = ["_syst", "_systexp",
-                    "trigger", "elec", "muon", "jes", "jer","btag", "mistag", "pileup",
+                    "trigger", "elec", "muon", "jes", "jer","btag", "mistag", "pileup", "prefiring",
                   "_systmod",
-                    "ttbar_scales","tw_scales", "isr", "fsr", "toppt",
+                    "ttbar_scales","tw_scales", "isr", "fsr", "ue", "matching","toppt", "colour", "pdf", "ds", "mtop",
                   "_systnorm",
                     "ttbar_norm", "vvttv_norm", "dy_norm", "nonworz_norm", 
                   "_mc_stat",
@@ -429,7 +432,7 @@ def getFitUncsLaTeXtable(path = "./", inname = "outputfit.txt", outname = "uncta
         elif i == "_systnorm":
             tmprow = ["\\quad  Background normalisation", "", ""]
         elif i == "_mc_stat":
-            tmprow = ["  " + translateDict["mc_stat"], round(infodict["mc_stat"]["ave"], 1), round(infodict["mc_stat"]["up"], 1), round(infodict["mc_stat"]["down"]) ]
+            tmprow = ["  " + translateDict["mc_stat"], round(infodict["mc_stat"]["ave"], 1), round(infodict["mc_stat"]["up"], 1), round(infodict["mc_stat"]["down"],1) ]
         elif i == "_totalsyst":
             tmprow = ["\\textbf{{Total systematic (excl. lum.)}}", round(infodict["totalsyst"]["ave"], 1), round(infodict["totalsyst"]["up"], 1), round(infodict["totalsyst"]["down"], 1)]
         elif i == "_lumi":
@@ -445,7 +448,7 @@ def getFitUncsLaTeXtable(path = "./", inname = "outputfit.txt", outname = "uncta
         #print tmprow
 
     #sys.exit()
-    finallatextab = tb.tabulate(table, headers = headers, tablefmt = "latex_raw")
+    finallatextab = tb.tabulate(table, headers = headers, tablefmt = "latex_raw", floatfmt=".1f")
 
     substr = "".join(["l"] + ["l" for x in range(len(headers) - 1)])
     finallatextab = finallatextab.replace(substr, "".join(["l|"] + ["c|" for x in range(len(headers) - 2)] + ["c"] ))
