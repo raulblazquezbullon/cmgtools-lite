@@ -1,2 +1,2 @@
-dy : DYJetsToLL_M-10to50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8_*central* : xsec ; FillColor=852
-dy : DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8_*central*     : xsec ; FillColor=852
+dy : DYJetsToLLdiv1_M-10to50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8_*central* : xsec ; FillColor=852
+dy : DYJetsToLLdiv1_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8_*central*     : xsec ; FillColor=852
