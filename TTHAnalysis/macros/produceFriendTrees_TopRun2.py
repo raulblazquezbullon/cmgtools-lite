@@ -65,7 +65,7 @@ minitnamedict = {
     #"tbarw"     : ["tbarW", "tbarW_central"],
     #"dy_10to50" : ["DYJetsToLL_M_10to50", "DYJetsToLL_M_10to50_MLM"],
     #"dy_50"     : ["DYJetsToLL_M_50"],
-    "dy_50_LO"  : ["DYJetsToLL_M_50_MLM"],
+    #"dy_50_LO"  : ["DYJetsToLL_M_50_MLM"],
 }
 
 
@@ -101,6 +101,14 @@ sampledict[2016] = {
     "tbarW_noFullHad_herwig" : "ST_tW_antitop_5f_NoFullyHadronicDecays_TuneEE5C_13TeV-powheg-herwigpp_central_",
     "tW_noFullHad_herwig"    : "ST_tW_top_5f_NoFullyHadronicDecays_TuneEE5C_13TeV-powheg-herwigpp_central_",
 
+    ## Dilep aMC@NLO+Pythia8
+    "tW_dilep_DR"              : "ST_tW_Dilept_5f_DR_TuneCP5_13TeV-amcatnlo-pythia8_central_",
+    "tW_dilep_DR2"             : "ST_tW_Dilept_5f_DR2_TuneCP5_13TeV-amcatnlo-pythia8_central_",
+    "tW_dilep_DS"              : "ST_tW_Dilept_5f_DS_TuneCP5_13TeV-amcatnlo-pythia8_central_",
+    "tW_dilep_DS_runningBW"    : "ST_tW_Dilept_5f_DS_runningBW_TuneCP5_13TeV-amcatnlo-pythia8_central_",
+    "tW_dilep_DS_IS"           : "ST_tW_Dilept_5f_DS_IS_TuneCP5_13TeV-amcatnlo-pythia8_central_",
+    "tW_dilep_DS_IS_runningBW" : "ST_tW_Dilept_5f_DS_IS_runningBW_TuneCP5_13TeV-amcatnlo-pythia8_central_",
+
     ##### WJets
     ## LO
     "WJetsToLNu_MLM" : ["WJetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_central_*",
@@ -133,8 +141,8 @@ sampledict[2016] = {
     "WZTo1L1Nu2Q"          : "WZToLNu2Q_13TeV_powheg_pythia8_central_",
 
     ##### ZZ
-    "ZZTo2L2Nu"         : ["ZZTo2L2Nu_13TeV_powheg_pythia8_central_",
-                           "ZZTo2L2Nu_13TeV_powheg_pythia8_ext1_central_"],
+    "ZZTo2L2Nu"         : ["ZZTo2L2Nu_13TeV_powheg_pythia8_central_*",
+                           "ZZTo2L2Nu_13TeV_powheg_pythia8_ext1_central_*"],
     "ZZTo2L2Q"          : "ZZTo2L2Q_TuneCUETP8M1_13TeV_amcatnloFXFX_madspin_pythia8_central_",
     "ZZTo4L_DoubleScatt" : "ZZTo4L_DoubleScattering_13TeV-pythia8_central_",
 
@@ -274,6 +282,14 @@ sampledict[2017] = {
     ## Powheg + Herwig7
     "tW_herwig"    : "ST_tW_top_5f_NoFullyHadronicDecays_TuneCH3_13TeV-powheg-herwig7_central_",
     "tbarW_herwig" : "ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCH3_13TeV-powheg-herwig7_central_",
+
+    ## Dilep aMC@NLO+Pythia8
+    "tW_dilep_DR"              : "ST_tW_Dilept_5f_DR_TuneCP5_13TeV-amcatnlo-pythia8_central_",
+    "tW_dilep_DR2"             : "ST_tW_Dilept_5f_DR2_TuneCP5_13TeV-amcatnlo-pythia8_central_",
+    "tW_dilep_DS"              : "ST_tW_Dilept_5f_DS_TuneCP5_13TeV-amcatnlo-pythia8_central_",
+    "tW_dilep_DS_runningBW"    : "ST_tW_Dilept_5f_DS_runningBW_TuneCP5_13TeV-amcatnlo-pythia8_central_",
+    "tW_dilep_DS_IS"           : "ST_tW_Dilept_5f_DS_IS_TuneCP5_13TeV-amcatnlo-pythia8_central_",
+    "tW_dilep_DS_IS_runningBW" : "ST_tW_Dilept_5f_DS_IS_runningBW_TuneCP5_13TeV-amcatnlo-pythia8_central_",
 
     #### WJets
     # LO
@@ -457,7 +473,7 @@ sampledict[2017] = {
 
 
 sampledict[2018] = {
-    ##### Nominales
+    ###### Nominales
     ## ttbar
     ##"TTTo2L2Nu"        : "TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8_topnano_",
 
@@ -493,6 +509,14 @@ sampledict[2018] = {
     ### nofullyhad Powheg+Herwig7
     "tW_noFullHad_herwig"    : "ST_tW_top_5f_NoFullyHadronicDecays_TuneCH3_13TeV-powheg-herwig7_central_",
     "tbarW_noFullHad_herwig" : "ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCH3_13TeV-powheg-herwig7_central_",
+
+    ## Dilep aMC@NLO+Pythia8
+    "tW_dilep_DR"              : "ST_tW_Dilept_5f_DR_TuneCP5_13TeV-amcatnlo-pythia8_central_",
+    "tW_dilep_DR2"             : "ST_tW_Dilept_5f_DR2_TuneCP5_13TeV-amcatnlo-pythia8_central_",
+    "tW_dilep_DS"              : "ST_tW_Dilept_5f_DS_TuneCP5_13TeV-amcatnlo-pythia8_central_",
+    "tW_dilep_DS_runningBW"    : "ST_tW_Dilept_5f_DS_runningBW_TuneCP5_13TeV-amcatnlo-pythia8_central_",
+    "tW_dilep_DS_IS"           : "ST_tW_Dilept_5f_DS_IS_TuneCP5_13TeV-amcatnlo-pythia8_central_",
+    "tW_dilep_DS_IS_runningBW" : "ST_tW_Dilept_5f_DS_IS_runningBW_TuneCP5_13TeV-amcatnlo-pythia8_central_",
 
     #### WWbb
     "bb4l" : "b_bbar_4l_TuneCP5_13TeV-powheg-pythia8_central_",
@@ -681,7 +705,7 @@ trainsampledict[2017] = {
     
 #    "DYJetsToLL_M_10to50_MLM" : sampledict[2017]["DYJetsToLL_M_10to50_MLM"],
 #    "DYJetsToLL_M_50"         : sampledict[2017]["DYJetsToLL_M_50"],
-    "DYJetsToLL_M_50_MLM"     : sampledict[2017]["DYJetsToLL_M_50_MLM"],
+    #"DYJetsToLL_M_50_MLM"     : sampledict[2017]["DYJetsToLL_M_50_MLM"],
 }
 
 
@@ -695,7 +719,7 @@ trainsampledict[2018] = {
 
 #    "DYJetsToLL_M_10to50_MLM" : sampledict[2018]["DYJetsToLL_M_10to50_MLM"],
 #    "DYJetsToLL_M_50"         : sampledict[2018]["DYJetsToLL_M_50"],
-    "DYJetsToLL_M_50_MLM"     : sampledict[2018]["DYJetsToLL_M_50_MLM"],
+    #"DYJetsToLL_M_50_MLM"     : sampledict[2018]["DYJetsToLL_M_50_MLM"],
 }
 
 
