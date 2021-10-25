@@ -20,6 +20,7 @@ scaffconst = """def initCustom{var}(self):
         MVAVar("train_lep1lep2jet1_c",              func = lambda ev : getattr(ev, "Lep1Lep2Jet1_C"          + "{var}")),
         #MVAVar("train_htlepOVERhttot",              func = lambda ev : getattr(ev, "Lep1_PtLep2_PtOverHTtot" + "{var}")),
         MVAVar("train_lep1lep2jet1_pt",             func = lambda ev : getattr(ev, "Lep1Lep2Jet1_Pt"         + "{var}")),
+        #MVAVar("train_nfwdjet",                     func = lambda ev : getattr(ev, "nFwdJetSel30{var}_Recl")),
         ]))
 
     setattr(self, "vars_2j1t" + "{var}", ([
@@ -35,6 +36,16 @@ scaffconst = """def initCustom{var}(self):
 
     path_tmvaBDT_1j1b = mvas_path1 + "/tmvaBDT_1j1t/weights/TMVAClassification_GradBoost_2000_0.01.weights.xml"
     path_tmvaBDT_2j1b = mvas_path2 + "/tmvaBDT_2j1t/weights/TMVAClassification_GradBoost_200_005_4.weights.xml"
+
+    #mvas_path = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/mvas/2021_05_nuevopostproc/"
+    #mvas_path = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/mvas/2021_09_03_DYbueno/"
+    #mvas_path = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/mvas/2021_09_20_DYweight5/"
+    #mvas_path = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/mvas/2021_09_20_DYweight50/"
+    #path_tmvaBDT_1j1b = mvas_path + "/tmvaBDT_1j1t/weights/TMVAClassification_GradBoost_2000_0.01.weights.xml"
+    #path_tmvaBDT_2j1b = mvas_path + "/tmvaBDT_2j1t/weights/TMVAClassification_GradBoost_200_005_4.weights.xml"
+    #path_tmvaBDT_1j1b = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/mvas/2021_09_20_DYweight5NjetFWD/tmvaBDT_1j1t/weights/TMVAClassification_GradBoost_2000_0.01.weights.xml"
+    #path_tmvaBDT_2j1b = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/mvas/2021_05_nuevopostproc/tmvaBDT_2j1t/weights/TMVAClassification_GradBoost_200_005_4.weights.xml"
+>>>>>>> 8a97fed34b144d110ba6b36472150e2f91c30de0
 
     self.MVAs["tmvaBDT_1j1b" + "{var}"] = MVATool("BDT", path_tmvaBDT_1j1b, getattr(self, "vars_1j1t" + "{var}"))
     self.MVAs["tmvaBDT_2j1b" + "{var}"] = MVATool("BDT", path_tmvaBDT_2j1b, getattr(self, "vars_2j1t" + "{var}"))"""
