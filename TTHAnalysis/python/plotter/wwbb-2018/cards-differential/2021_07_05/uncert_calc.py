@@ -107,70 +107,75 @@ K = 1.0695
 BR = 2*(2*0.11**2 + 4*0.11*0.11*0.17)
 sigmawwbb = 52.54160211872024
 Nwwbb = sigmawwbb*L*K
-xsec = (bincontent - bincontentsignofid)/(L*bincontentsigfid/Nwwbb)
+xsec = (bincontent - (656+154+104+bincontentsignofid))/(L*bincontentsigfid/Nwwbb)
 xsecBR = xsec/BR
 xsec_asimov = (wwbb.GetBinContent(1) - bincontentsignofid)/(L*bincontentsigfid/Nwwbb)
 xsecBR_asimov = xsec_asimov/BR
 
 print 'xsec                 = ', xsec
+print 'Nobs xsec                 = ', (bincontent - bincontentsignofid)
 print 'xsec (BR)            = ', xsecBR
+print 'BR           = ', BR
+print 'efic           = ', bincontentsigfid/bincontentfid
+print 'acep           = ', bincontentfid/Nwwbb
+print 'Ndatos           = ', bincontent
+print 'fondos muestra           = ', bincontentsignofid
 print ''
 print 'xsec (asimov)        = ', xsec_asimov
+print 'Nobs xsec (asimov)        = ', (wwbb.GetBinContent(1) - bincontentsignofid)
 print 'xsec (BR) (asimov)   = ', xsecBR_asimov
 print ''
 print '------------------'
 print ''
 
-# Xsec uncert up
+# Xsec uncert 
 
-xsec_uncertup = ((bincontent + num_unc) - (bincontentsignofid + signofiducial_unc))/(L*(bincontentsigfid + sigfid_unc)/Nwwbb)
-xsecBR_uncertup = xsec_uncertup/BR
-xsec_asimov_uncertup = ((wwbb.GetBinContent(1) + wwbb.GetBinError(1)) - (bincontentsignofid + signofiducial_unc))/(L*(bincontentsigfid + sigfid_unc)/Nwwbb)
-xsecBR_asimov_uncertup = xsec_asimov_uncertup/BR
+xsec_uncert_nobs = ((bincontent + num_unc) - (bincontentsignofid))/(L*(bincontentsigfid)/Nwwbb)
+xsec_uncert_bg   = ((bincontent) - (bincontentsignofid + signofiducial_unc))/(L*(bincontentsigfid)/Nwwbb)
+xsec_uncert_eff  = ((bincontent) - (bincontentsignofid))/(L*(bincontentsigfid + sigfid_unc)/Nwwbb)
 
-print 'xsec (uncert up)                 = ', xsec_uncertup
-print 'xsec (BR) (uncert up)            = ', xsecBR_uncertup
+variat_xsec_nobs = abs(xsec_uncert_nobs - xsec)
+variat_xsec_bg   = abs(xsec_uncert_bg - xsec)
+variat_xsec_eff  = abs(xsec_uncert_eff - xsec)
+
+
+# Xsec uncert BR
+
+xsec_uncert_nobs_BR = ((bincontent + num_unc) - (bincontentsignofid))/(L*BR*(bincontentsigfid)/Nwwbb)
+xsec_uncert_bg_BR   = ((bincontent) - (bincontentsignofid + signofiducial_unc))/(L*BR*(bincontentsigfid)/Nwwbb)
+xsec_uncert_eff_BR  = ((bincontent) - (bincontentsignofid))/(L*BR*(bincontentsigfid + sigfid_unc)/Nwwbb)
+
+variat_xsec_nobs_BR = abs(xsec_uncert_nobs_BR - xsecBR)
+variat_xsec_bg_BR   = abs(xsec_uncert_bg_BR - xsecBR)
+variat_xsec_eff_BR  = abs(xsec_uncert_eff_BR - xsecBR)
+
+
+print 'variat_xsec_nobs                 = ', variat_xsec_nobs
+print 'variat_xsec_bg                   = ', variat_xsec_bg
+print 'variat_xsec_eff                  = ', variat_xsec_eff
 print ''
-print 'xsec (asimov) (uncert up)        = ', xsec_asimov_uncertup
-print 'xsec (BR) (asimov) (uncert up)   = ', xsecBR_asimov_uncertup
-print ''
-print '------------------'
-print ''
-
-print 'uncert up = |xsec - xsec_uncert_up|                     = ', abs(xsec - xsec_uncertup)
-print 'uncert up (BR) = |xsec(BR) - xsec_uncert_up(BR)|        = ', abs(xsecBR - xsecBR_uncertup)
-
-print ''
-print '------------------'
-print ''
-
-# Xsec uncer down
-
-xsec_uncertdown = ((bincontent - num_unc) - (bincontentsignofid - signofiducial_unc))/(L*(bincontentsigfid - sigfid_unc)/Nwwbb)
-xsecBR_uncertdown = xsec_uncertdown/BR
-xsec_asimov_uncertdown = ((wwbb.GetBinContent(1) - wwbb.GetBinError(1)) - (bincontentsignofid - signofiducial_unc))/(L*(bincontentsigfid - sigfid_unc)/Nwwbb)
-xsecBR_asimov_uncertdown = xsec_asimov_uncertdown/BR
-
-print 'xsec (uncert down)                 = ', xsec_uncertdown
-print 'xsec (BR) (uncert down)            = ', xsecBR_uncertdown
-print ''
-print 'xsec (asimov) (uncert down)        = ', xsec_asimov_uncertdown
-print 'xsec (BR) (asimov) (uncert down)   = ', xsecBR_asimov_uncertdown
+print 'variat_xsec_nobs_BR              = ', variat_xsec_nobs_BR
+print 'variat_xsec_bg_BR                = ', variat_xsec_bg_BR
+print 'variat_xsec_eff_BR               = ', variat_xsec_eff_BR
 print ''
 print '------------------'
 print ''
 
-print 'uncert down = |xsec - xsec_uncert_down|                     = ', abs(xsec - xsec_uncertdown)
-print 'uncert down (BR) = |xsec(BR) - xsec_uncert_down(BR)|        = ', abs(xsecBR - xsecBR_uncertdown)
+uncert    = (variat_xsec_nobs)**2 + (variat_xsec_bg)**2 + (variat_xsec_eff)**2
+uncert_BR = (variat_xsec_nobs_BR)**2 + (variat_xsec_bg_BR)**2 + (variat_xsec_eff_BR)**2
+
+print 'uncert                 = ', uncert
+print 'uncert_BR              = ', uncert_BR
+
+
 
 print ''
 print '------------------'
 print '------------------'
 print ''
 
-final_unc = abs(xsec - xsec_uncertdown)
-
-print 'xsec     = ', "{0:.2f}".format(xsec) , '+-', "{0:.2f}".format(final_unc)
+print 'xsec     = ', "{0:.2f}".format(xsec) , '+- 0.09 pb'
+print 'xsec_BR  = ', "{0:.0f}".format(xsecBR) , '+- 23 pb'
 
 print ''
 print '------------------'
