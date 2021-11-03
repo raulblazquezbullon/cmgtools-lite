@@ -24,12 +24,7 @@ r.gROOT.SetBatch(True)
 friendspath = "/pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions"
 #prodname    = "2020-09-20" # tras la prueba, todo aparentemente en orden; BUENA
 #prodname    = "2021-04-23" # tras el nuevo postprocesado de abril de 2021
-<<<<<<< HEAD
-#prodname     = "2021-04-23"
-#>>>>>>> 93e0d3eb8933b0ae49cf8d69e3b5f58e6427b70a
 
-=======
->>>>>>> 323ea633a12846194fb8f426ed282edcf30d1ef3
 
 prodname    = "2021-06-09" # tras el nuevo postprocesado de abril de 2021
 
