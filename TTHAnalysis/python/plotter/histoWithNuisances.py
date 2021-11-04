@@ -1124,7 +1124,7 @@ class HistoWithNuisances:
             
             if tmpup < tmpnom and tmpdn > tmpnom:
                 isInverted = True
-            if tmpup > tmpnom and tmpdn > tmpnom:
+            if (tmpup > tmpnom and tmpdn > tmpnom) or (tmpup < tmpnom and tmpdn < tmpnom):
                 if tmpup < tmpdn:
                     isInverted = True
             
