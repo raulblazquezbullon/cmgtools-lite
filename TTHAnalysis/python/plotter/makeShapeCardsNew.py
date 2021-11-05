@@ -75,14 +75,14 @@ if options.asimov:
 else:
     report['data_obs'] = report['data'].Clone("x_data_obs") 
 
-print(report)
+#print(report)
 if options.fakeName:
    report[options.fakeName] = report.pop("data_fakes")
    
    for p,h in report.iteritems(): 
        if p == options.fakeName:
           h.SetName("x_"+options.fakeName)
-print(report)
+#print(report)
 
 
 if options.categ:
@@ -140,7 +140,7 @@ for binname, report in allreports.iteritems():
     if b not in allyields: continue
     if allyields[b] <= options.threshold: continue
     procs.append(b); iproc[b] = i+1
-  print(procs)
+  #print(procs)
   if options.fakeName:
      iproc[options.fakeName] = iproc[procs[-1]] +1
      procs.append(options.fakeName); 
@@ -151,7 +151,7 @@ for binname, report in allreports.iteritems():
     effshape = {}
     isShape = False
     for p in procs:
-        print(p)
+        #print(p)
         h = report[p]
         
         n0 = h.Integral()
@@ -183,7 +183,6 @@ for binname, report in allreports.iteritems():
                     if variants[d].GetBinContent( bin )/h.raw().GetBinContent(bin) < 0.1: 
                         print "Warning: big shift in template for %s %s %s %s in bin %d: variation = %g"%( binname, p, name, d, bin, variants[d].GetBinContent( bin )/h.raw().GetBinContent(bin))
                         variants[d].SetBinContent( bin, 0.1*h.raw().GetBinContent(bin) )
-
             effshape[p] = variants 
     if isShape:
         if options.regularize: 
@@ -210,7 +209,6 @@ for binname, report in allreports.iteritems():
                 systs[name] = ("lnN", effyield, {})
   # make a new list with only the ones that have an effect
   nuisances = sorted(systs.keys())
-
   datacard = open(outdir+binname+".txt", "w"); 
   datacard.write("## Datacard for cut file %s\n"%args[1])
   datacard.write("shapes *        * %s.root x_$PROCESS x_$PROCESS_$SYSTEMATIC\n" % binname)

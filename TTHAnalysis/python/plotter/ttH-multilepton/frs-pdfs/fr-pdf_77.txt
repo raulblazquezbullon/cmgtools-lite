@@ -1,0 +1,2 @@
+weight : Alt$(LHEPdfWeight[77],1)
+alt-norm : Alt$(LHEPdfSumw_[77]/LHEScaleSumw_[4],1)

@@ -534,15 +534,21 @@ class MCAnalysis:
             mergemap[k].append(v)
         ret = dict([ (k,mergePlots(plotspec.name+"_"+k,v)) for k,v in mergemap.iteritems() ])
         
-        ## construct envelope variations if any
-        for p,h in ret.iteritems():
-            h.buildEnvelopes() 
         
-        ## add variations from alternate samples
         if self.variationsFile:
-            buildVariationsFromAlternative(self.variationsFile, ret)
-            buildVariationsFromAlternativesWithEnvelope(self.variationsFile, ret)
-
+           for var in self.variationsFile.uncertainty():
+               for p,h in ret.iteritems():
+                   if not var.procmatch().match(p): continue
+                   if var.unc_type == "envelope":
+                      print(var.name)
+                      h.buildEnvelopes(var.name) ## construct envelope variations if any
+                   elif "pdfset" in var.unc_type.lower(): #hessian pdf
+                      h.buildEnvelopesForPDFs(var.name)
+           ## add variations from alternate samples
+      
+           buildVariationsFromAlternative(self.variationsFile, ret)
+           buildVariationsFromAlternativesWithEnvelope(self.variationsFile, ret)
+            
         ## remove samples used for systematics
         toremove = []
         for key in ret:
@@ -552,7 +558,6 @@ class MCAnalysis:
             print " - Erasing " + rem
             ret.pop(rem)
         #print "\nLLUEU", ret
-     
         rescales = []
         self.compilePlotScaleMap(self._options.plotscalemap,rescales)
         for p,v in ret.items():
@@ -908,6 +913,8 @@ class MCAnalysis:
             ttys, _, scale = self._groupsToNormalize[igroup]
             for tty in ttys: 
                 tty.setScaleFactor("%s*%g" % (scale, 1000.0/total_w))
+                #tty.setScaleFactor("%s*%g" % (scale, 1.0))
+
                 for var in mergemap_vars[igroup]:
                     tty.setVarScaleFactor(var, "%s*%g" % (scale, 1000.0/mergemap_vars[igroup][var]))
         self._groupsToNormalize = []

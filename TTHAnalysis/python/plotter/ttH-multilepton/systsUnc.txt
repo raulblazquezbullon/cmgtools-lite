@@ -2,14 +2,15 @@
 
 
 ### Alias definitions. Careful to avoid trailing '.*' to avoid matching _promptsub
-$alias : ttH : TTH|TTH_h[a-z]+
-$alias : tHq : tHq|tHq_h[a-z]+
-$alias : tHW : tHW|tHW_h[a-z]+
+$alias : ttH : TTH
+$alias : tHq : tHq
+$alias : tHW : tHW
 $alias : ttHX : $ttH|$tHq|$tHW
-$alias : ttV  : TT[WZ]|TTWW
+$alias : ttV  : TT[WZ]
+$alias : ttVV : ttVV
 $alias : ZH   : ZH|ZH_h[a-z]+
 $alias : WH   : WH|WH_h[a-z]+
-$alias : PromptFromMC : $ttHX|$ttV|$ZH|$WH|Rares|TTG|Conversions|WZ|ZZ|EWK  
+$alias : PromptFromMC : $ttHX|$ttV|$ZH|$WH|Rares|TTG|Conversions|WZ|ZZ|EWK|tZq|ttVV|VVV 
 $alias : FRData : data_fakes|.*_promptsub
 $alias : FRAll  : data_fakes|.*_promptsub|TT_FR_QCD
 $alias : FRMC   :  .*_mcfakes
@@ -45,8 +46,8 @@ CMS_eff_ttW_elID : $PromptFromMC : .*4l.*    : templateAsymm ; AddWeights=['lept
               
 
 ## L1 ECAL prefiring
-CMS_ttW16_L1PreFiring : $PromptFromMC : .* : templateAsymm; AddWeights=['L1PreFiringWeight_Up/L1PreFiringWeight_Nom'\,'L1PreFiringWeight_Dn/L1PreFiringWeight_Nom'], year="2016"
-CMS_ttW17_L1PreFiring : $PromptFromMC : .* : templateAsymm; AddWeights=['L1PreFiringWeight_Up/L1PreFiringWeight_Nom'\,'L1PreFiringWeight_Dn/L1PreFiringWeight_Nom'], year="2017"
+CMS_ttW_L1PreFiring : $PromptFromMC : .* : templateAsymm; AddWeights=['L1PreFiringWeight_Up/L1PreFiringWeight_Nom'\,'L1PreFiringWeight_Dn/L1PreFiringWeight_Nom'], year="2016"
+CMS_ttW_L1PreFiring : $PromptFromMC : .* : templateAsymm; AddWeights=['L1PreFiringWeight_Up/L1PreFiringWeight_Nom'\,'L1PreFiringWeight_Dn/L1PreFiringWeight_Nom'], year="2017"
 
 
 
@@ -217,7 +218,10 @@ CMS_ttW_ZZ_lnU  : ZZ : .*          : normSymm : 3.0 ; lnU=True
 
 
 # Other normalizations
-QCDscale_Rares		: Rares : .* : normSymm : 1.5
+Norm_Rares		: Rares : .* : normSymm : 1.5
+QCDscale_tZq		: tZq   : .* : normSymm : 1.2
+QCDscale_ttVV		: $ttVV : .* : normSymm : 1.5
+QCDscale_VVV		: VVV   : .* : normSymm : 1.5
 CMS_ttW_Convs_norm		: Conversions : .* : normSymm : 1.3
 
 
@@ -226,12 +230,14 @@ CMS_ttW_Convs_norm		: Conversions : .* : normSymm : 1.3
 QCDscale_ttH   : $ttH  : .* : normAsymm : 0.929 : 1.076 
 QCDscale_ttZ   : TTZ   : .* : normAsymm : 0.905 : 1.086
 QCDscale_ttG   : TTG  : .* : normSymm : 1.08   # 7.5 percent pdf + 3 q2
+QCDscale_tHq   : $tHq  : .* : normAsymm : 0.933 : 1.041
+QCDscale_tHW   : $tHW  : .* : normAsymm : 0.939 : 1.046 
 #CMS_ttW_WH_norm    : $WH   : .* : normAsymm : 0.950 : 1.070
 #CMS_ttW_ZH_norm    : $ZH   : .* : normAsymm : 0.962 : 1.031
 pdf_Higgs_ttH  : $ttH  : .* : normSymm : 1.024
 pdf_gg         : TTZ   : .* : normSymm : 1.023
-#pdf_qg	       : $tHq  : .* : normSymm : 1.01
-#pdf_qg	       : $tHW  : .* : normSymm : 1.027
+pdf_Higgs_tHq  : $tHq  : .* : normSymm : 1.01
+pdf_Higgs_tHW  : $tHW  : .* : normSymm : 1.027
 #pdf_qqbar      : TTW   : .* : normSymm : 1.04
 #pdf_TTWW       : TTWW  : .* : normSymm : 1.03
 #pdf_WH	       : $WH   : .* : normSymm : 1.019
@@ -311,16 +317,21 @@ CMS_ttW18_Clos_e_shape : $FRAll  : .*2lss.*    : templateSymm ; Normalize=False,
 CMS_ttW18_Clos_e_shape : $FRAll  : .*3l.*    : templateSymm ; Normalize=False, AddWeight='if3(abs(LepGood1_conePt)==11\,lnN1D_p1(1.024\,LepGood1_conePt\,40\,120)\,1)*if3(abs(LepGood2_conePt)==11\,lnN1D_p1(1.024\,LepGood2_conePt\,40\,120)\,1)*if3(abs(LepGood3_conePt)==11\,lnN1D_p1(1.024\,LepGood3_conePt\,40\,120)\,1)', year="2018" 
 
 
-
+QCDpdf_ttW_ACCEPT : TTW  : .* : HessianPDFset; FakeRates=['ttH-multilepton/frs-pdfs/fr-pdf_0.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_1.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_2.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_3.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_4.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_5.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_6.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_7.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_8.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_9.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_10.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_11.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_12.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_13.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_14.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_15.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_16.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_17.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_18.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_19.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_20.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_21.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_22.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_23.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_24.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_25.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_26.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_27.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_28.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_29.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_30.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_31.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_32.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_33.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_34.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_35.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_36.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_37.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_38.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_39.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_40.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_41.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_42.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_43.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_44.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_45.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_46.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_47.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_48.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_49.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_50.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_51.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_52.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_53.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_54.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_55.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_56.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_57.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_58.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_59.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_60.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_61.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_62.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_63.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_64.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_65.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_66.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_67.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_68.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_69.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_70.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_71.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_72.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_73.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_74.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_75.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_76.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_77.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_78.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_79.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_80.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_81.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_82.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_83.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_84.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_85.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_86.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_87.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_88.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_89.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_90.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_91.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_92.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_93.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_94.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_95.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_96.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_97.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_98.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_99.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_100.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_101.txt'\,'ttH-multilepton/frs-pdfs/fr-pdf_102.txt']
 
 QCDscale_ttH_ACCEPT : $ttH : .* : envelope; FakeRates=['ttH-multilepton/frs-scales/fr-muR_2p0_muF_1p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_0p5_muF_1p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_1p0_muF_2p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_1p0_muF_0p5.txt'\,'ttH-multilepton/frs-scales/fr-muR_2p0_muF_2p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_0p5_muF_0p5.txt']
+QCDscale_tHq_ACCEPT : $tHq : .* : envelope; FakeRates=['ttH-multilepton/frs-scales/fr-muR_2p0_muF_1p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_0p5_muF_1p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_1p0_muF_2p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_1p0_muF_0p5.txt'\,'ttH-multilepton/frs-scales/fr-muR_2p0_muF_2p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_0p5_muF_0p5.txt']
+QCDscale_tHW_ACCEPT : $tHW : .* : envelope; FakeRates=['ttH-multilepton/frs-scales/fr-muR_2p0_muF_1p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_0p5_muF_1p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_1p0_muF_2p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_1p0_muF_0p5.txt'\,'ttH-multilepton/frs-scales/fr-muR_2p0_muF_2p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_0p5_muF_0p5.txt']
 QCDscale_ttZ_ACCEPT : TTZ  : .* : envelope; FakeRates=['ttH-multilepton/frs-scales/fr-muR_2p0_muF_1p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_0p5_muF_1p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_1p0_muF_2p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_1p0_muF_0p5.txt'\,'ttH-multilepton/frs-scales/fr-muR_2p0_muF_2p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_0p5_muF_0p5.txt'] 
 QCDscale_ttW_ACCEPT : TTW  : .* : envelope; FakeRates=['ttH-multilepton/frs-scales/fr-muR_2p0_muF_1p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_0p5_muF_1p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_1p0_muF_2p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_1p0_muF_0p5.txt'\,'ttH-multilepton/frs-scales/fr-muR_2p0_muF_2p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_0p5_muF_0p5.txt'] 
 QCDscale_Rares_ACCEPT : Rares : .* : envelope; FakeRates=['ttH-multilepton/frs-scales/fr-muR_2p0_muF_1p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_0p5_muF_1p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_1p0_muF_2p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_1p0_muF_0p5.txt'\,'ttH-multilepton/frs-scales/fr-muR_2p0_muF_2p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_0p5_muF_0p5.txt']
+QCDscale_ttVV_ACCEPT : $ttVV : .* : envelope; FakeRates=['ttH-multilepton/frs-scales/fr-muR_2p0_muF_1p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_0p5_muF_1p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_1p0_muF_2p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_1p0_muF_0p5.txt'\,'ttH-multilepton/frs-scales/fr-muR_2p0_muF_2p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_0p5_muF_0p5.txt']
+QCDscale_VVV_ACCEPT : VVV : .* : envelope; FakeRates=['ttH-multilepton/frs-scales/fr-muR_2p0_muF_1p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_0p5_muF_1p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_1p0_muF_2p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_1p0_muF_0p5.txt'\,'ttH-multilepton/frs-scales/fr-muR_2p0_muF_2p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_0p5_muF_0p5.txt']
 QCDscale_WZ_ACCEPT : WZ : .* : envelope; FakeRates=['ttH-multilepton/frs-scales/fr-muR_2p0_muF_1p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_0p5_muF_1p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_1p0_muF_2p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_1p0_muF_0p5.txt'\,'ttH-multilepton/frs-scales/fr-muR_2p0_muF_2p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_0p5_muF_0p5.txt']
 QCDscale_ZZ_ACCEPT : ZZ : .* : envelope; FakeRates=['ttH-multilepton/frs-scales/fr-muR_2p0_muF_1p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_0p5_muF_1p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_1p0_muF_2p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_1p0_muF_0p5.txt'\,'ttH-multilepton/frs-scales/fr-muR_2p0_muF_2p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_0p5_muF_0p5.txt']
 QCDscale_ttG_ACCEPT : TTG : .* : envelope; FakeRates=['ttH-multilepton/frs-scales/fr-muR_2p0_muF_1p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_0p5_muF_1p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_1p0_muF_2p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_1p0_muF_0p5.txt'\,'ttH-multilepton/frs-scales/fr-muR_2p0_muF_2p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_0p5_muF_0p5.txt']
 QCDscale_Conversions_ACCEPT: Conversions: .* : envelope; FakeRates=['ttH-multilepton/frs-scales/fr-muR_2p0_muF_1p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_0p5_muF_1p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_1p0_muF_2p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_1p0_muF_0p5.txt'\,'ttH-multilepton/frs-scales/fr-muR_2p0_muF_2p0.txt'\,'ttH-multilepton/frs-scales/fr-muR_0p5_muF_0p5.txt']
+
 
 ISR_ttW : TTW : .*:templateAsymm;AddWeights=['PSWeight[6]'\,'PSWeight[8]']
 FSR_ttW : TTW : .*:templateAsymm;AddWeights=['PSWeight[7]'\,'PSWeight[9]']
