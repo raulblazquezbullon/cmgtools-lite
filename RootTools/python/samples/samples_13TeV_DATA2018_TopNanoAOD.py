@@ -128,7 +128,7 @@ MET = [
 
 JetHT = [
   JetHT_Run2018_25Oct2019_ABC,
-  #JetHT_Run2018_25Oct2019_D,
+  JetHT_Run2018_25Oct2019_D,
 ]
 
 #dataSamples_Runs =  DoubleMuon + MuonEG + EGamma + SingleMuon

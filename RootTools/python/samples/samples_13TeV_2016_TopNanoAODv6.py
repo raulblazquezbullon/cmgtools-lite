@@ -64,6 +64,13 @@ THQ = kreator.makeMyPrivateMCComponent("THQ", "/THQ_Hincl_13TeV-madgraph-pythia8
 # GGH cross section from LHC Higgs XS WG: https://twiki.cern.ch/twiki/bin/view/LHCPhysics/CERNYellowReportPageAt1314TeV?rev=15
 GGHZZ4L = kreator.makeMyPrivateMCComponent("GGHZZ4L", "/GluGluHToZZTo4L_M125_13TeV_powheg2_JHUgenV6_pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 0.01212, useAAA=True) #43.92*2.76E-04)
 
+GGContinZZ2e2mu = kreator.makeMyPrivateMCComponent("GGContinZZ2e2mu", "/GluGluToContinToZZTo2e2mu_13TeV_MCFM701_pythia8/piedavid-TopNanoAODv6-1-2_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 0.0067, useAAA=True) 
+GGContinZZ2e2tau = kreator.makeMyPrivateMCComponent("GGContinZZ2e2tau", "/GluGluToContinToZZTo2e2tau_13TeV_MCFM701_pythia8/piedavid-TopNanoAODv6-1-2_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 0.0067, useAAA=True) 
+GGContinZZ2mu2tau = kreator.makeMyPrivateMCComponent("GGContinZZ2mu2tau", "/GluGluToContinToZZTo2mu2tau_13TeV_MCFM701_pythia8/piedavid-TopNanoAODv6-1-2_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 0.0067, useAAA=True) 
+GGContinZZ4mu = kreator.makeMyPrivateMCComponent("GGContinZZ4mu", "/GluGluToContinToZZTo4mu_13TeV_MCFM701_pythia8/piedavid-TopNanoAODv6-1-2_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 0.00334, useAAA=True) 
+GGContinZZ4e = kreator.makeMyPrivateMCComponent("GGContinZZ4e", "/GluGluToContinToZZTo4e_13TeV_MCFM701_pythia8/piedavid-TopNanoAODv6-1-2_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 0.00334, useAAA=True) 
+GGContinZZ4tau = kreator.makeMyPrivateMCComponent("GGContinZZ4tau", "/GluGluToContinToZZTo4tau_13TeV_MCFM701_pythia8/piedavid-TopNanoAODv6-1-2_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 0.00334, useAAA=True) 
+
 VHToNonbb = kreator.makeMyPrivateMCComponent("VHToNonbb", "/VHToNonbb_M125_13TeV_amcatnloFXFX_madspin_pythia8/balvarez-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 0.9561, fracNegWeights=0.26, useAAA=True)
 
 qqHZZ4L =  kreator.makeMyPrivateMCComponent("qqHZZ4L", "/VBF_HToZZTo4L_M125_13TeV_powheg2_JHUgenV6_pythia8/balvarez-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 0, useAAA=True)
@@ -77,6 +84,14 @@ VHToNonbb,
 qqHZZ4L,
 ]
 
+GG = [
+GGContinZZ2e2mu,
+GGContinZZ2e2tau,
+GGContinZZ2mu2tau,
+GGContinZZ4mu,
+GGContinZZ4e,
+GGContinZZ4tau
+]
 
 T_sch_lep = kreator.makeMyPrivateMCComponent("T_sch_lep", "/ST_s-channel_4f_leptonDecays_TuneCP5_PSweights_13TeV-amcatnlo-pythia8/schoef-TopNanoAODv6-1-2-6_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', (7.20+4.16)*0.108*3, fracNegWeights=0.188, useAAA=True)
 
@@ -504,18 +519,20 @@ TTW_CR_2
 #TTTT = kreator.makeMyPrivateMCComponent("TTTT", "/TTTT_TuneCUETP8M1_13TeV-amcatnlo-pythia8/RunIISummer16NanoAODv4-PUMoriond17_Nano14Dec2018_102X_mcRun2_asymptotic_v6-v1/NANOAODSIM", "PRIVATE", ".*root",'phys03', 0.009103, fracNegWeights=0.311, useAAA=True)
 TTTT_P8M2T4 = kreator.makeMyPrivateMCComponent("TTTT_P8M2T4", "/TTTT_TuneCUETP8M2T4_13TeV-amcatnlo-pythia8/schoef-TopNanoAODv6-1-2-6_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE", ".*root",'phys03', 0.009103, fracNegWeights=0.311, useAAA=True)
 TTWW_LO = kreator.makeMyPrivateMCComponent("TTWW_LO","/TTWW_TuneCUETP8M2T4_13TeV-madgraph-pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "PRIVATE",".*root",'phys03', 0.007936, useAAA=True) # XS from genXSAnalyzer
+TTWZ = kreator.makeMCComponentFromLocal("TTWZ","/TTWZ_TuneCUETP8M2T4_13TeV-madgraph-pythia8/schoef-TopNanoAODv6-1-1_2016-88146d75cb10601530484643de5f7795/USER", "/pool/phedex/TOPnanoAODv6/2016/TTWZ_TuneCUETP8M2T4_13TeV-madgraph-pythia8/%s/","211024",".*root",0.0038229 )
 
 Rares = [
 #TTTT,
 TTTT_P8M2T4,
 TTWW_LO,
+TTWZ
 ]
 
 #ewk
 
 ### ----------------------------- summary ----------------------------------------
 
-mcSamples = TTs + SingleTop + VJets +  DiBosons + TriBosons + TTV + Higgs + Rares #DYJetsM50HT + DYJetsM5to50HT + WJetsToLNuHT +  GJetsHT + ZJetsToNuNuHT + QCDPtEMEnriched + QCD_Mu5 + DYNJets + WJetsToLNuPT +WNJets +  + QCDHT + QCDPtbcToE + QCDPt  [QCD_Mu15] + EWKV2Jets
+mcSamples = GG +TTs + SingleTop + VJets +  DiBosons + TriBosons + TTV + Higgs + Rares #DYJetsM50HT + DYJetsM5to50HT + WJetsToLNuHT +  GJetsHT + ZJetsToNuNuHT + QCDPtEMEnriched + QCD_Mu5 + DYNJets + WJetsToLNuPT +WNJets +  + QCDHT + QCDPtbcToE + QCDPt  [QCD_Mu15] + EWKV2Jets
 
 samples = mcSamples
 

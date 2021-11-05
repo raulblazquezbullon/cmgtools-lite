@@ -355,13 +355,14 @@ TTTT = kreator.makeMyPrivateMCComponent("TTTT", "/TTTT_TuneCP5_13TeV-amcatnlo-py
 #TTWH = kreator.makeMyPrivateMCComponent("TTWH", "/TTWH_TuneCP5_13TeV-madgraph-pythia8/RunIIAutumn18NanoAODv4-Nano14Dec2018_102X_upgrade2018_realistic_v16_ext1-v1/NANOAODSIM",  "PRIVATE", ".*root", 'phys03', 0.00114, useAAA=True)
 #TTZH = kreator.makeMyPrivateMCComponent("TTZH", "/TTZH_TuneCP5_13TeV-madgraph-pythia8/RunIIAutumn18NanoAODv4-Nano14Dec2018_102X_upgrade2018_realistic_v16_ext1-v1/NANOAODSIM",  "PRIVATE", ".*root", 'phys03', 0.001138, useAAA=True)
 TTWW = kreator.makeMyPrivateMCComponent("TTWW", "/TTWW_TuneCP5_13TeV-madgraph-pythia8/balvarez-TopNanoAODv6-1-1_2018-0d1d4920f08f56d048ece029b873a2cc/USER",  "PRIVATE", ".*root", 'phys03', 0.011500, useAAA=True) # NLO xsec from YR4
+TTWZ = kreator.makeMyPrivateMCComponent("TTWZ", "/TTWZ_TuneCP5_13TeV-madgraph-pythia8/balvarez-TopNanoAODv6-1-1_2018-0d1d4920f08f56d048ece029b873a2cc/USER",  "PRIVATE", ".*root", 'phys03', 0.0038229, useAAA=True)
 #TTWW_ext2 = kreator.makeMyPrivateMCComponent("TTWW_ext2", "/TTWW_TuneCP5_13TeV-madgraph-pythia8/RunIIAutumn18NanoAODv4-Nano14Dec2018_102X_upgrade2018_realistic_v16_ext2-v1/NANOAODSIM",  "PRIVATE", ".*root", 'phys03', 0.011500, useAAA=True) # NLO xsec from YR4
 #TTHH = kreator.makeMyPrivateMCComponent("TTHH", "/TTHH_TuneCP5_13TeV-madgraph-pythia8/RunIIAutumn18NanoAODv4-Nano14Dec2018_102X_upgrade2018_realistic_v16_ext1-v1/NANOAODSIM",  "PRIVATE", ".*root", 'phys03', 0.0006666, useAAA=True)
 
 #TTTJ = kreator.makeMyPrivateMCComponent("TTTJ", "/TTTJ_TuneCP5_13TeV-madgraph-pythia8/RunIIAutumn18NanoAODv4-Nano14Dec2018_102X_upgrade2018_realistic_v16_ext1-v1/NANOAODSIM",  "PRIVATE", ".*root", 'phys03', 0.0003987, useAAA=True)
 #TTTW = kreator.makeMyPrivateMCComponent("TTTW", "/TTTW_TuneCP5_13TeV-madgraph-pythia8/RunIIAutumn18NanoAODv4-Nano14Dec2018_102X_upgrade2018_realistic_v16_ext1-v1/NANOAODSIM",  "PRIVATE", ".*root", 'phys03', 0.0007273, useAAA=True)
 
-TTXXs = [ TTTT, #TTWH, TTZH,
+TTXXs = [ TTTT,TTWZ, #TTWH, TTZH,
      TTWW,# TTWW_ext2, TTHH, TTTJ, TTTW ]
 ]
 # ===  DI-BOSONS
@@ -435,16 +436,32 @@ VHToNonbb = kreator.makeMyPrivateMCComponent("VHToNonbb", "/VHToNonbb_M125_13TeV
 
 qqHZZ4L =  kreator.makeMyPrivateMCComponent("qqHZZ4L", "/VBF_HToZZTo4L_M125_13TeV_powheg2_JHUGenV7011_pythia8/balvarez-TopNanoAODv6-1-1_2018-0d1d4920f08f56d048ece029b873a2cc/USER", "PRIVATE", ".*root",'phys03', 0, useAAA=True)
 
+GGContinZZ2e2mu = kreator.makeMyPrivateMCComponent("GGContinZZ2e2mu", "/GluGluToContinToZZTo2e2mu_13TeV_MCFM701_pythia8/balvarez-TopNanoAODv6-1-1_2018-0d1d4920f08f56d048ece029b873a2cc/USER", "PRIVATE", ".*root",'phys03', 0.0067, useAAA=True) 
+GGContinZZ2e2tau = kreator.makeMyPrivateMCComponent("GGContinZZ2e2tau", "/GluGluToContinToZZTo2e2tau_13TeV_MCFM701_pythia8/balvarez-TopNanoAODv6-1-1_2018-0d1d4920f08f56d048ece029b873a2cc/USER", "PRIVATE", ".*root",'phys03', 0.0067, useAAA=True) 
+GGContinZZ2mu2tau = kreator.makeMyPrivateMCComponent("GGContinZZ2mu2tau", "/GluGluToContinToZZTo2mu2tau_13TeV_MCFM701_pythia8/balvarez-TopNanoAODv6-1-1_2018-0d1d4920f08f56d048ece029b873a2cc/USER", "PRIVATE", ".*root",'phys03', 0.0067, useAAA=True) 
+GGContinZZ4mu = kreator.makeMyPrivateMCComponent("GGContinZZ4mu", "/GluGluToContinToZZTo4mu_13TeV_MCFM701_pythia8/balvarez-TopNanoAODv6-1-1_2018-0d1d4920f08f56d048ece029b873a2cc/USER", "PRIVATE", ".*root",'phys03', 0.00334, useAAA=True) 
+GGContinZZ4e = kreator.makeMyPrivateMCComponent("GGContinZZ4e", "/GluGluToContinToZZTo4e_13TeV_MCFM701_pythia8/balvarez-TopNanoAODv6-1-1_2018-0d1d4920f08f56d048ece029b873a2cc/USER", "PRIVATE", ".*root",'phys03', 0.00334, useAAA=True) 
+GGContinZZ4tau = kreator.makeMyPrivateMCComponent("GGContinZZ4tau", "/GluGluToContinToZZTo4tau_13TeV_MCFM701_pythia8/balvarez-TopNanoAODv6-1-1_2018-0d1d4920f08f56d048ece029b873a2cc/USER", "PRIVATE", ".*root",'phys03', 0.00334, useAAA=True) 
+
 Higgs = [
 GGHZZ4L,
 VHToNonbb, #VHToNonbb_ll,
 qqHZZ4L
 ]
 
+
+GG = [
+GGContinZZ2e2mu,
+GGContinZZ2e2tau,
+GGContinZZ2mu2tau,
+GGContinZZ4mu,
+GGContinZZ4e,
+GGContinZZ4tau
+]
 # ----------------------------- summary ----------------------------------------
 
 
-mcSamples = QCD_Mus + QCD_EMs + QCD_bcToE + Ws + DYs + VJetsQQHT + TTs + Ts + TTXs + TTXXs + DiBosons + TriBosons + Higgs # QCDPt + QCDHT + 
+mcSamples = QCD_Mus + QCD_EMs + QCD_bcToE + Ws + DYs + VJetsQQHT + TTs + Ts + TTXs + TTXXs + DiBosons + TriBosons + Higgs + GG # QCDPt + QCDHT + 
 
 
 samples = mcSamples

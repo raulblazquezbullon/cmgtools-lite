@@ -411,13 +411,14 @@ TTTT = kreator.makeMyPrivateMCComponent("TTTT", "/TTTT_TuneCP5_13TeV-amcatnlo-py
 #TTWH = kreator.makeMyPrivateMCComponent("TTWH", "/TTWH_TuneCP5_13TeV-madgraph-pythia8/RunIIFall17NanoAODv4-PU2017_12Apr2018_Nano14Dec2018_new_pmx_102X_mc2017_realistic_v6-v1/NANOAODSIM", "PRIVATE", ".*root", 'phys03', 0.00114, useAAA=True)
 #TTZH = kreator.makeMyPrivateMCComponent("TTZH", "/TTZH_TuneCP5_13TeV-madgraph-pythia8/RunIIFall17NanoAODv4-PU2017_12Apr2018_Nano14Dec2018_new_pmx_102X_mc2017_realistic_v6-v1/NANOAODSIM", "PRIVATE", ".*root", 'phys03', 0.001138, useAAA=True)
 TTWW = kreator.makeMyPrivateMCComponent("TTWW", "/TTWW_TuneCP5_13TeV-madgraph-pythia8/piedavid-TopNanoAODv6-1-1_2017-a11761155c05d04d6fed5a2401fa93e8/USER", "PRIVATE", ".*root", 'phys03', 0.011500, useAAA=True)
+TTWZ = kreator.makeMyPrivateMCComponent("TTWZ", "/TTWW_TuneCP5_13TeV-madgraph-pythia8/piedavid-TopNanoAODv6-1-1_2017-a11761155c05d04d6fed5a2401fa93e8/USER", "PRIVATE", ".*root", 'phys03', 0.0038229, useAAA=True)
 # NLO xsec from YR4
 #TTHH = kreator.makeMyPrivateMCComponent("TTHH", "/TTHH_TuneCP5_13TeV-madgraph-pythia8/RunIIFall17NanoAODv4-PU2017_12Apr2018_Nano14Dec2018_new_pmx_102X_mc2017_realistic_v6-v1/NANOAODSIM", "PRIVATE", ".*root", 'phys03', 0.0006666, useAAA=True)
 
 #TTTJ = kreator.makeMyPrivateMCComponent("TTTJ", "/TTTJ_TuneCP5_13TeV-madgraph-pythia8/RunIIFall17NanoAODv4-PU2017_12Apr2018_Nano14Dec2018_new_pmx_102X_mc2017_realistic_v6-v1/NANOAODSIM", "PRIVATE", ".*root", 'phys03', 0.0003987, useAAA=True)
 #TTTW = kreator.makeMyPrivateMCComponent("TTTW", "/TTTW_TuneCP5_13TeV-madgraph-pythia8/RunIIFall17NanoAODv4-PU2017_12Apr2018_Nano14Dec2018_new_pmx_102X_mc2017_realistic_v6-v1/NANOAODSIM", "PRIVATE", ".*root", 'phys03', 0.0007273, useAAA=True)
 
-TTXXs = [ TTTT,# TTWH, TTZH, 
+TTXXs = [ TTTT,TTWZ,# TTWH, TTZH, 
      TTWW,# TTHH, TTTJ, TTTW ]
 ]
 # ===  DI-BOSONS
@@ -486,6 +487,13 @@ TriBosons = [
 GGHZZ4L = kreator.makeMyPrivateMCComponent("GGHZZ4L", "/GluGluHToZZTo4L_M125_13TeV_powheg2_JHUGenV7011_pythia8/piedavid-TopNanoAODv6-1-1_2017-a11761155c05d04d6fed5a2401fa93e8/USER", "PRIVATE", ".*root", 'phys03', 0.01212, useAAA=True)
 # note: genXSecAna is incorrect because it doesn't know of the forced decay in pythia8. for the DiLeptonFilter sample, we take the filter efficiency from the ratio of the genXSecAna reports for the two samples
 
+GGContinZZ2e2mu = kreator.makeMyPrivateMCComponent("GGContinZZ2e2mu", "/GluGluToContinToZZTo2e2mu_13TeV_MCFM701_pythia8/piedavid-TopNanoAODv6-1-1_2017-a11761155c05d04d6fed5a2401fa93e8/USER", "PRIVATE", ".*root",'phys03', 0.0067, useAAA=True) 
+GGContinZZ2e2tau = kreator.makeMyPrivateMCComponent("GGContinZZ2e2tau", "/GluGluToContinToZZTo2e2tau_13TeV_MCFM701_pythia8/piedavid-TopNanoAODv6-1-1_2017-a11761155c05d04d6fed5a2401fa93e8/USER", "PRIVATE", ".*root",'phys03', 0.0067, useAAA=True) 
+GGContinZZ2mu2tau = kreator.makeMyPrivateMCComponent("GGContinZZ2mu2tau", "/GluGluToContinToZZTo2mu2tau_13TeV_MCFM701_pythia8/piedavid-TopNanoAODv6-1-1_2017-a11761155c05d04d6fed5a2401fa93e8/USER", "PRIVATE", ".*root",'phys03', 0.0067, useAAA=True) 
+GGContinZZ4mu = kreator.makeMyPrivateMCComponent("GGContinZZ4mu", "/GluGluToContinToZZTo4mu_13TeV_MCFM701_pythia8/piedavid-TopNanoAODv6-1-1_2017-a11761155c05d04d6fed5a2401fa93e8/USER", "PRIVATE", ".*root",'phys03', 0.00334, useAAA=True) 
+GGContinZZ4e = kreator.makeMyPrivateMCComponent("GGContinZZ4e", "/GluGluToContinToZZTo4e_13TeV_MCFM701_pythia8/piedavid-TopNanoAODv6-1-1_2017-a11761155c05d04d6fed5a2401fa93e8/USER", "PRIVATE", ".*root",'phys03', 0.00334, useAAA=True) 
+GGContinZZ4tau = kreator.makeMyPrivateMCComponent("GGContinZZ4tau", "/GluGluToContinToZZTo4tau_13TeV_MCFM701_pythia8/piedavid-TopNanoAODv6-1-1_2017-a11761155c05d04d6fed5a2401fa93e8/USER", "PRIVATE", ".*root",'phys03', 0.00334, useAAA=True) 
+
 VHToNonbb = kreator.makeMyPrivateMCComponent("VHToNonbb", "/VHToNonbb_M125_13TeV_amcatnloFXFX_madspin_pythia8/balvarez-TopNanoAODv6-1-1_2017-a11761155c05d04d6fed5a2401fa93e8/USER", "PRIVATE", ".*root",'phys03', 0.9561, fracNegWeights=0.26, useAAA=True)
 
 qqHZZ4L =  kreator.makeMyPrivateMCComponent("qqHZZ4L", "/VBF_HToZZTo4L_M125_13TeV_powheg2_JHUGenV7011_pythia8/balvarez-TopNanoAODv6-1-1_2017-a11761155c05d04d6fed5a2401fa93e8/USER", "PRIVATE", ".*root",'phys03', 0, useAAA=True)
@@ -496,10 +504,19 @@ VHToNonbb, #VHToNonbb_ll,
 qqHZZ4L,
 ]
 
+
+GG = [
+GGContinZZ2e2mu,
+GGContinZZ2e2tau,
+GGContinZZ2mu2tau,
+GGContinZZ4mu,
+GGContinZZ4e,
+GGContinZZ4tau
+]
 # ----------------------------- summary ----------------------------------------
 
 
-mcSamples =    QCD_Mus + QCD_EMs + Ws + DYs + VJetsQQHT + TTs + Ts + TTXs + TTXXs + DiBosons + TriBosons + Higgs # QCDPtFlat +QCDPt QCDHT +   + QCD_bcToE
+mcSamples =  GG+  QCD_Mus + QCD_EMs + Ws + DYs + VJetsQQHT + TTs + Ts + TTXs + TTXXs + DiBosons + TriBosons + Higgs # QCDPtFlat +QCDPt QCDHT +   + QCD_bcToE
 
 
 samples = mcSamples
