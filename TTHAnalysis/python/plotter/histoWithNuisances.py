@@ -402,11 +402,11 @@ def buildVariationsFromAlternative(uncfile, ret, theY):
                             newB   = central_rebin.FindBin(p.central.GetXaxis().GetBinCenter(ibin))
                             theratup = up_rebin.GetBinContent(newB) / central_rebin.GetBinContent(newB) if central_rebin.GetBinContent(newB) != 0 else 0
                             thedifup = p.central.GetBinContent(ibin) * abs(1 - theratup)
-                            up.SetBinContent(  ibin, p.central.GetBinContent(ibin) + thedifup )
+                            up.SetBinContent(  ibin, p.central.GetBinContent(ibin) + thedifup if theratup > 1 else p.central.GetBinContent(ibin) - thedifup)
                             if not onlyone:
                                 theratdn = dn_rebin.GetBinContent(newB) / central_rebin.GetBinContent(newB) if central_rebin.GetBinContent(newB) != 0 else 0
                                 thedifdn = p.central.GetBinContent(ibin) * abs(1 - theratdn)
-                                down.SetBinContent(ibin, p.central.GetBinContent(ibin) - thedifdn )
+                                down.SetBinContent(ibin, p.central.GetBinContent(ibin) - thedifdn if theratdn < 1 else p.central.GetBinContent(ibin) + thedifdn)
 
                     up.Add(  p.getVariation(var.name)[0])
                     down.Add(p.getVariation(var.name)[1])
@@ -419,12 +419,12 @@ def buildVariationsFromAlternative(uncfile, ret, theY):
                             newB     = central_rebin.FindBin(p.central.GetXaxis().GetBinCenter(ibin))
                             theratup = up_rebin.GetBinContent(newB) / central_rebin.GetBinContent(newB) if central_rebin.GetBinContent(newB) != 0 else 0
                             thedifup = p.central.GetBinContent(ibin) * abs(1 - theratup)
-                            up.SetBinContent(  ibin, p.central.GetBinContent(ibin) + thedifup )
+                            up.SetBinContent(  ibin, p.central.GetBinContent(ibin) + thedifup if theratup > 1 else p.central.GetBinContent(ibin) - thedifup)
 
                             if not onlyone:
                                 theratdn = dn_rebin.GetBinContent(newB) / central_rebin.GetBinContent(newB) if central_rebin.GetBinContent(newB) != 0 else 0
                                 thedifdn = p.central.GetBinContent(ibin) * abs(1 - theratdn)
-                                down.SetBinContent(ibin, p.central.GetBinContent(ibin) - thedifdn )
+                                down.SetBinContent(ibin, p.central.GetBinContent(ibin) - thedifdn if theratdn < 1 else p.central.GetBinContent(ibin) + thedifdn)
                     p.addVariation( var.name, 'up'  , up)
                     p.addVariation( var.name, 'down', down)
                 if var.args[0] not in toremove:
