@@ -1,2 +1,2 @@
-#nonworz : WJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8_*central*      : xsec ; FillColor=413
+nonworz : WJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8_*central*      : xsec ; FillColor=413
 nonworz : TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8_*central* : xsec ; FillColor=413
