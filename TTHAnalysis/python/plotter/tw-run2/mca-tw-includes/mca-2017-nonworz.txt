@@ -1,2 +1,5 @@
-nonworz : WJetsToLNu_0J_TuneCP5_13TeV-amcatnloFXFX-pythia8*central* + WJetsToLNu_1J_TuneCP5_13TeV-amcatnloFXFX-pythia8*central* + WJetsToLNu_2J_TuneCP5_13TeV-amcatnloFXFX-pythia8*central* : xsec ; FillColor=413
+nonworz : WJetsToLNu_0J_TuneCP5_13TeV-amcatnloFXFX-pythia8*central* : 53330.0 ; FillColor=413
+nonworz : WJetsToLNu_1J_TuneCP5_13TeV-amcatnloFXFX-pythia8*central* : 8875.0  ; FillColor=413
+nonworz : WJetsToLNu_2J_TuneCP5_13TeV-amcatnloFXFX-pythia8*central* : 3338.0  ; FillColor=413
+
 nonworz : TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8*central* : xsec ; FillColor=413
