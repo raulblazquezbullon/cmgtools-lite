@@ -1,0 +1,3 @@
+tw : Tree_tW_5f_noFullHad_TuneCP5_0 + Tree_tW_5f_noFullHad_TuneCP5_PSweights_pyth_0 : 19.4674104 ; genSumWeightName="genEventSumw_",FillColor=798
+
+tw : Tree_tbarW_5f_noFullHad_TuneCP5_0 + Tree_tbarW_5f_noFullHad_TuneCP5_PSweights_0 : 19.4674104 ; genSumWeightName="genEventSumw_",FillColor=798

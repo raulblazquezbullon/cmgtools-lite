@@ -8,12 +8,8 @@ r.PyConfig.IgnoreCommandLineOptions = True
 r.gROOT.SetBatch(True)
 
 #### Settings
-friendspath = "/pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions"
-#friendspath = "/pool/phedex/userstorage/asoto/Proyectos/tWRun2/" ###
-
 #prodname    = "2021-04-23" # tras el nuevo postprocesado de abril de 2021
 prodname    = "2021-06-09" # con skim
-#prodname = "SkimDY2021-10-12/div2/" ###
 
 datasamples  = ["SingleMuon", "SingleElec", "DoubleMuon", "DoubleEG", "MuonEG", "LowEGJet", "HighEGJet", "EGamma"]
 

@@ -1,0 +1,48 @@
+# Fiducial
+
+python makeShapeCardsNew.py --tree NanoAOD wwbb-2018/mca-tw-includes/mca-2018-wwbb.txt wwbb-2018/cuts-differential/cuts-wwbb-particle-fiducial-2j2t.txt "GenJet_pt[iDressSelJet[0]]" "[0,100]" -P /pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions/2021-06-09/2018 --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --od ./temp/cards/2018/2j2t -l 59.74 -f -L tw-run2/functions_tw.cc --neg --threshold 0.01 --year 2018 --amc --asimov s+b
+
+python makeShapeCardsNew.py --tree NanoAOD wwbb-2018/mca-tw-includes/mca-2018-wwbb-bg.txt wwbb-2018/cuts-differential/cuts-wwbb-particle-fiducial-2j2t.txt "GenJet_pt[iDressSelJet[0]]" "[0,100]" -P /pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions/2021-06-09/2018 --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --od ./temp/cards/2018/2j2t -l 59.74 -f -L tw-run2/functions_tw.cc --neg --threshold 0.01 --year 2018 --amc --split-factor=-1 -j 8
+
+python makeShapeCardsNew.py --tree NanoAOD wwbb-2018/mca-tw-includes/mca-2018-wwbb.txt wwbb-2018/cuts-differential/cuts-wwbb-particle-fiducial-2j2t.txt "Jet1_Pt" "[0,100]" -P /pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions/2021-06-09/2018 --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --od ./temp/cards/2018/2j2t -l 59.74 -f -L tw-run2/functions_tw.cc --neg --threshold 0.01 --year 2018 --amc --asimov s+b --split-factor=-1 -j 8
+
+# --split-factor=-1 -j 8
+
+
+
+
+
+# Señal + Fiducial
+
+python makeShapeCardsNew.py --tree NanoAOD wwbb-2018/mca-tw-includes/mca-2018-wwbb.txt wwbb-2018/cuts-differential/cuts-wwbb-detector-2j2t.txt "GenJet_pt[iDressSelJet[0]]" "[0,100]" -P /pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions/2021-06-09/2018 --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --od ./temp/cards/2018/2j2t -l 59.74 -f -L tw-run2/functions_tw.cc --neg --threshold 0.01 -W "MuonIDSF * MuonISOSF * ElecIDSF * ElecRECOSF * TrigSF * puWeight * bTagWeight * PrefireWeight" --year 2018 --amc --asimov s+b 
+
+python makeShapeCardsNew.py --tree NanoAOD wwbb-2018/mca-tw-includes/mca-2018-wwbb.txt wwbb-2018/cuts-differential/cuts-wwbb-detector-2j2t.txt "GenJet_pt[iDressSelJet[0]]" "[0,100]" -P /pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions/2021-06-09/2018 --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --od ./temp/cards/2018/2j2t -l 59.74 -f -L tw-run2/functions_tw.cc --neg --threshold 0.01 -W "MuonIDSF * MuonISOSF * ElecIDSF * ElecRECOSF * TrigSF * puWeight * bTagWeight * PrefireWeight" --year 2018 --amc --split-factor=-1 -j 8
+
+python makeShapeCardsNew.py --tree NanoAOD wwbb-2018/mca-tw-includes/mca-2018-wwbb.txt wwbb-2018/cuts-differential/cuts-wwbb-detector-2j2t.txt "Jet1_Pt" "[0,100]" -P /pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions/2021-06-09/2018 --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --od ./temp/cards/2018/2j2t -l 59.74 -f -L tw-run2/functions_tw.cc --neg --threshold 0.01 -W "MuonIDSF * MuonISOSF * ElecIDSF * ElecRECOSF * TrigSF * puWeight * bTagWeight * PrefireWeight" --year 2018 --amc --asimov s+b --split-factor=-1 -j 8
+
+
+
+
+# Señal
+
+#python makeShapeCardsNew.py --tree NanoAOD wwbb-2018/mca-tw-includes/mca-2018-wwbb.txt wwbb-2018/cuts-differential/cuts-wwbb-signal-2j2t.txt "GenJet_pt[iDressSelJet[0]]" "[0,100]" -P /pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions/2021-06-09/2018 --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --od ./temp/cards/2018/2j2t -l 59.74 -f -L tw-run2/functions_tw.cc --neg --threshold 0.01 -W "MuonIDSF * MuonISOSF * ElecIDSF * ElecRECOSF * TrigSF * puWeight * bTagWeight * PrefireWeight" --year 2018 --amc --asimov s+b
+
+
+# mca con señal y fondos
+python makeShapeCardsNew.py --tree NanoAOD wwbb-2018/mca-tw-includes/mca-2018-wwbb-bg.txt wwbb-2018/cuts-differential/cuts-wwbb-signal-2j2t.txt "Jet1_Pt" "[0,100]" -P /pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions/2021-06-09/2018 --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --od ./temp/cards/2018/2j2t -l 59.74 -f -L tw-run2/functions_tw.cc --neg --threshold 0.01 -W "MuonIDSF * MuonISOSF * ElecIDSF * ElecRECOSF * TrigSF * puWeight * bTagWeight * PrefireWeight" --year 2018 --amc --split-factor=-1 -j 8
+
+
+# Señal + No fiducial
+
+python makeShapeCardsNew.py --tree NanoAOD wwbb-2018/mca-tw-includes/mca-2018-wwbb.txt wwbb-2018/cuts-differential/cuts-wwbb-detector-nofiducial-2j2t.txt "GenJet_pt[iDressSelJet[0]]" "[0,100]" -P /pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions/2021-06-09/2018 --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --od ./temp/cards/2018/2j2t -l 59.74 -f -L tw-run2/functions_tw.cc --neg --threshold 0.01 -W "MuonIDSF * MuonISOSF * ElecIDSF * ElecRECOSF * TrigSF * puWeight * bTagWeight * PrefireWeight" --year 2018 --amc --asimov s+b  --split-factor=-1 -j 8
+
+python makeShapeCardsNew.py --tree NanoAOD wwbb-2018/mca-tw-includes/mca-2018-wwbb.txt wwbb-2018/cuts-differential/cuts-wwbb-detector-nofiducial-2j2t.txt "Jet1_Pt" "[0,100]" -P /pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions/2021-06-09/2018 --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --od ./temp/cards/2018/2j2t -l 59.74 -f -L tw-run2/functions_tw.cc --neg --threshold 0.01 -W "MuonIDSF * MuonISOSF * ElecIDSF * ElecRECOSF * TrigSF * puWeight * bTagWeight * PrefireWeight" --year 2018 --amc --asimov s+b  --split-factor=-1 -j 8
+
+python makeShapeCardsNew.py --tree NanoAOD wwbb-2018/mca-tw-includes/mca-2018-wwbb.txt wwbb-2018/cuts-differential/cuts-wwbb-detector-nofiducial-2j2t.txt "GenJet_pt[iDressSelJet[0]]" "[0,100]" -P /pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions/2021-06-09/2018 --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --od ./temp/cards/2018/2j2t -l 59.74 -f -L tw-run2/functions_tw.cc --neg --threshold 0.01 -W "MuonIDSF * MuonISOSF * ElecIDSF * ElecRECOSF * TrigSF * puWeight * bTagWeight * PrefireWeight" --year 2018 --amc --asimov s+b  --split-factor=-1 -j 8
+
+
+
+
+
+
+

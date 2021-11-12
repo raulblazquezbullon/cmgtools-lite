@@ -1,0 +1,32 @@
+# Cálculo de la sección eficaz
+
+#N_obs = N_total - N_fondo
+
+#A = fiducial / espacio de fases gen.
+
+#E = señal / fiducial
+
+
+
+
+N_obs = 70399 - (67 + 125 + 169) - 47925 = 22113
+*(...) from plots, 47676 from cards (background in WWbb)
+
+Fiducial = 50083.2508118
+
+Espacio fases gen. = 980942.394595
+
+Señal = 10515.9625057
+
+
+
+
+Aceptancia = 0.05105626089
+
+Eficiencia = 0.2099696472
+
+L = 59740
+
+--------------------------------
+
+SIGMA = 34.52843728

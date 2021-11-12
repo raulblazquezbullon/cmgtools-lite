@@ -1,0 +1,76 @@
+# WWbb
+
+wwbb : b_bbar_4l_TuneCP5_13TeV-powheg-pythia8_central_* : xsec * 1.0695 ; FillColor=ROOT.kViolet-5
+
+wwbb : ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_*topnano_*     : 19.4674104 : (Origchannel == 4 || Origchannel == 5 || Origchannel == 9) ; FillColor=ROOT.kViolet-5
+wwbb : ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_*topnano_* : 19.4674104 : (Origchannel == 4 || Origchannel == 5 || Origchannel == 9) ; FillColor=ROOT.kViolet-5
+
+wwbb : TTTo2L2Nudiv1_TuneCP5_13TeV-powheg-pythia8_topnano_* : 88.28769753 * 2 : (Origchannel == 4 || Origchannel == 5 || Origchannel == 9) ; FillColor=ROOT.kViolet-5
+
+
+
+
+# Data
+
+data : SingleMuon_Run2018*     ;
+data : MuonEG_Run2018*         ;
+
+
+
+
+# vvttv
+
+# WW
+vvttv : WWTo2L2Nu_NNPDF31_TuneCP5_13TeV-powheg-pythia8_topnano_* : xsec ; FillColor=390
+vvttv : WWTo2L2Nu_DoubleScattering_13TeV-pythia8_topnano_*  : xsec ; FillColor=390
+vvttv : WWToLNuQQ_NNPDF31_TuneCP5_13TeV-powheg-pythia8_topnano_* : xsec ; FillColor=390
+
+# WZ
+vvttv : WZTo1L1Nu2Q_13TeV_amcatnloFXFX_madspin_pythia8_topnano_* : xsec ; FillColor=390
+vvttv : WZTo2L2Q_13TeV_amcatnloFXFX_madspin_pythia8_topnano_*  : xsec ; FillColor=390
+vvttv : WZTo3LNu_TuneCP5_13TeV-powheg-pythia8_topnano_*         : xsec ; FillColor=390
+
+# ZZ
+vvttv : ZZTo2L2Nu_TuneCP5_13TeV_powheg_pythia8_topnano_*      : xsec ; FillColor=390
+vvttv : ZZTo2L2Q_13TeV_amcatnloFXFX_madspin_pythia8_topnano_* : xsec ;  FillColor=390
+vvttv : ZZTo4L_TuneCP5_13TeV_powheg_pythia8_topnano_*         : xsec ; FillColor=390
+
+# TTW
+vvttv : TTWJetsToLNu_EWK_5f_NLO_topnano_* : xsec ; FillColor=390
+vvttv : TTWJetsToLNu_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8_topnano_* : xsec ; FillColor=390
+vvttv : TTWJetsToQQ_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8_topnano_*  : xsec ; FillColor=390
+
+# TTZ
+vvttv : TTZToLL_M-1to10_TuneCP5_13TeV-amcatnlo-pythia8_topnano_*  : xsec ; FillColor=390
+vvttv : TTZToLLNuNu_M-10_TuneCP5_13TeV-amcatnlo-pythia8_topnano_*  : xsec ; FillColor=390
+vvttv : TTZToQQ_TuneCP5_13TeV-amcatnlo-pythia8_topnano_* + TTZToQQ_TuneCP5_13TeV-amcatnlo-pythia8_central_*  : xsec ; FillColor=390
+#vvttv : TTZToQQ_TuneCP5_13TeV-amcatnlo-pythia8_central_*  : xsec ; FillColor=390
+
+# TTGamma
+vvttv : TTGamma_Dilept_TuneCP5_13TeV-madgraph-pythia8_topnano_*     : xsec ; FillColor=390
+vvttv : TTGamma_SingleLept_TuneCP5_13TeV-madgraph-pythia8_topnano_* : xsec ; FillColor=390
+
+# VVV
+vvttv : WWW_4F_TuneCP5_13TeV-amcatnlo-pythia8_topnano_* : xsec ; FillColor=390
+vvttv : WZG_TuneCP5_13TeV-amcatnlo-pythia8_topnano_*    : xsec ; FillColor=390
+vvttv : WWG_TuneCP5_13TeV-amcatnlo-pythia8_central_*    : xsec ; FillColor=390
+vvttv : WWZ_TuneCP5_13TeV-amcatnlo-pythia8_topnano_*    : xsec ; FillColor=390
+vvttv : WZZ_TuneCP5_13TeV-amcatnlo-pythia8_topnano_*    : xsec ; FillColor=390
+vvttv : ZZZ_TuneCP5_13TeV-amcatnlo-pythia8_topnano_*    : xsec ; FillColor=390
+
+
+
+
+# nonworz
+
+nonworz : WJetsToLNu_*J_TuneCP5_13TeV-amcatnloFXFX-pythia8_central_* : xsec ; FillColor=413
+nonworz : TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8_topnano_* + TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8_central_* : xsec ; FillColor=413
+
+
+
+
+# DY
+
+dy : DYJetsToLL_M-10to50_TuneCP5_13TeV-madgraphMLM-pythia8_topnano_* + DYJetsToLL_M-10to50_TuneCP5_13TeV-madgraphMLM-pythia8_central_* : xsec ; FillColor=852
+
+dy : DYJetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8_topnano_* : xsec ; FillColor=852
