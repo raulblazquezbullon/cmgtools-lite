@@ -12,8 +12,9 @@ logpath      = friendspath + "/{p}/{y}/logs/plots"
 slurmscaff   = "sbatch -c {nth} -p {queue} -J {jobname} -e {logpath}/log.%j.%x.err -o {logpath}/log.%j.%x.out --wrap '{command}'"
 
 combinecomm = "combine -M FitDiagnostics --expectSignal 1 {combcard} -n {y}_{r} --robustFit 1 --justFit --cminDefaultMinimizerStrategy 0 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 {extra} >> {outfile}"
-#combinecomm = "combine -M FitDiagnostics --expectSignal 1 {combcard} -n {y}_{r} --robustFit 1 --cminDefaultMinimizerStrategy 0 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --saveShapes --saveWorkspace --out {outdir} {extra} >> {outfile}"
-
+#combinecomm = "combine -M FitDiagnostics --expectSignal 1 {combcard} -n {y}_{r} --robustFit 1 --cminDefaultMinimizerStrategy 0 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --saveShapes --plots --saveWorkspace {extra} >> {outfile}"
+#combinecomm = "combine -M FitDiagnostics {combcard} -n {y}_{r}  {extra} --cminDefaultMinimizerType GSLMultiMin --cminDefaultMinimizerAlgo BFGS2 --robustFit 1 --cminDefaultMinimizerStrategy 0 --cminPreScan --verbose 8 --justFit --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 -t 1 --expectSignal 1"
+#combinecomm = "combine -M FitDiagnostics {combcard} -n {y}_{r}  {extra} --cminDefaultMinimizerType GSLMultiMin --cminDefaultMinimizerAlgo BFGS2 --robustFit 1 --cminDefaultMinimizerStrategy 0"
 
 def makeFit(task):
     year, region, inpath, verbose, pretend, extra, doPrePostPlots = task

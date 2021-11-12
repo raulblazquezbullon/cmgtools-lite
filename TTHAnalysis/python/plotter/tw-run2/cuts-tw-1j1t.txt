@@ -13,3 +13,5 @@ metgood:    (channel == 1) || (METgood_pt > 40)
 
 1jet:       nJetSel30_Recl == 1;
 1btag:      nBJetSelMedium30_Recl == 1;
+
+#bdtcut:     getBDtW20bins(tmvaBDT_1j1b) >= 17;

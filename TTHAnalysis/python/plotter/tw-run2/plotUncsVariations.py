@@ -165,8 +165,8 @@ def plotVariationsFromOneProcess(tsk):
         ratioUp.SetLineWidth(5)
 
         #ratioUp.GetYaxis().SetRangeUser(0.8, 1.2)
-        #ratioUp.GetYaxis().SetRangeUser(0.95, 1.05)
-        ratioUp.GetYaxis().SetRangeUser(0.9, 1.1)
+        ratioUp.GetYaxis().SetRangeUser(0.95, 1.05)
+        #ratioUp.GetYaxis().SetRangeUser(0.9, 1.1)
         ratioUp.GetYaxis().SetTitle('Vars./Nom.')
         ratioUp.GetYaxis().SetTitleFont(43)
         ratioUp.GetYaxis().SetTitleSize(16)
@@ -183,9 +183,9 @@ def plotVariationsFromOneProcess(tsk):
 
         constant.SetLineWidth(3)
 
-        ratioUp.Draw("histsameEX0")
-        constant.Draw("histsameE")
-        ratioDown.Draw("histsameEX0")
+        ratioUp.Draw("histsameX0")
+        constant.Draw("histsame")
+        ratioDown.Draw("histsameX0")
 
         c.SaveAs(outpath + "/uncVar_" + thevar + "_" + theproc + "_" + iU + ".png")
         c.SaveAs(outpath + "/uncVar_" + thevar + "_" + theproc + "_" + iU + ".pdf")

@@ -129,7 +129,7 @@ nttbarfiles = 1
 #getBinningForThatVariable(thetree, "SergioBDT_2j1b", cut2j1b, 6)
 
 
-def getBinningForThatVariable(fpath, histoname, nq):
+def getBinningForThatVariable(fpath, histosname, nq):
     xq          = array('d', [0]*nq)
     yq          = array('d', [0]*nq)
     Base  ='''
@@ -144,7 +144,12 @@ def getBinningForThatVariable(fpath, histoname, nq):
 
     count = 0
     thefile = r.TFile.Open(fpath, "READ")
-    thehisto = thefile.Get(histoname)
+    theHistos = histosname.split("+")
+    thehisto = thefile.Get(theHistos[0])
+    if len(theHistos) > 1:
+        for histoname in theHistos[1:]:
+            thehisto.Add(thefile.Get(histoname))
+    
     thehisto.GetQuantiles(nq, yq, xq)
     thefile.Close(); del thefile
     Base = Base + '''\n /////////////////////// \n
@@ -153,7 +158,7 @@ Float_t theBDT(Double_t BDT){
 '''%(yq[0])
 
 
-    print "> Histoname", histoname, "with", nq, "bins"
+    print "> Histoname", histosname, "with", nq, "bins"
     if (printthings == 1):
         print "Bin 1:", yq[0]
         raw_input('Copy this string into your .C function and press enter.')
@@ -170,9 +175,9 @@ Float_t theBDT(Double_t BDT){
     print Base
     return
 
-#New BDT January 2021
-getBinningForThatVariable("/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2021-10-21_DYTrain/SmallBin/run2/1j1t/MVAtrain/plots-tw-1j1t_MVAtrain.root", "tmvaBDT_1j1b_smallb_ttbar", 20)
-getBinningForThatVariable("/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2021-10-21_DYTrain/SmallBin/run2/2j1t/MVAtrain/plots-tw-2j1t_MVAtrain.root", "tmvaBDT_2j1b_smallb_ttbar", 12)
+#New BDT January 2021  #########To rebin with more processes add name and + symbol in the second argument of the function, example: "tmvaBDT_1j1b_smallb_ttbar+tmvaBDT_1j1b_smallb_dy"
+getBinningForThatVariable("/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2021-10-21_DYTrain/SmallBin/run2/1j1t/MVAtrain/plots-tw-1j1t_MVAtrain.root", "tmvaBDT_1j1b_smallb_ttbar+tmvaBDT_1j1b_smallb_dy+tmvaBDT_1j1b_smallb_vvttv+tmvaBDT_1j1b_smallb_nonworz", 20)
+getBinningForThatVariable("/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2021-10-21_DYTrain/SmallBin/run2/2j1t/MVAtrain/plots-tw-2j1t_MVAtrain.root", "tmvaBDT_2j1b_smallb_ttbar+tmvaBDT_2j1b_smallb_dy+tmvaBDT_2j1b_smallb_vvttv+tmvaBDT_2j1b_smallb_nonworz", 12)
 
 #Old BDT first version of the note
 #getBinningForThatVariable("/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2020-12-17/MVA/run2/1j1t/MVAtrain/plots-tw-1j1t_MVAtrain.root", "tmvaBDT_1j1b_smallb_ttbar", 20)
