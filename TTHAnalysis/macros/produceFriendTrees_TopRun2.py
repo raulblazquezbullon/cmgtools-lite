@@ -15,8 +15,8 @@ datasamples  = ["SingleMuon", "SingleElec", "DoubleMuon", "DoubleEG", "MuonEG", 
 
 #mcpath       = "/pool/ciencias/nanoAODv6/29jan2020_MC"
 #mcpath       = "/pool/phedex/nanoAODv6v7"
-mcpath       = "/pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions/" + prodname + "/"
-#mcpath = friendspath + prodname ###
+friendspath  = "/pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions/"
+mcpath       = friendspath + prodname + "/"
 #mcpathdiv    = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/misc/divisiones/"
 #mcpathdiv    = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/misc/2021_04_nuevasdivisiones"
 mcpathdiv    = mcpath
