@@ -1,4 +1,1 @@
 ttbar : TTTo2L2Nudiv1_TuneCP5_13TeV-powheg-pythia8_topnano_* : 88.28769753 * 2 ; FillColor=633
-
-#### temporal pa skimmear
-#wwbb : b_bbar_4l_TuneCP5_13TeV-powheg-pythia8_central_* : xsec ; FillColor=633

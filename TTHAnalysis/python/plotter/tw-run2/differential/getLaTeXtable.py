@@ -128,6 +128,9 @@ def getvalueandincstrings(histo, b):
             finalincstring += "0"
         elif len(finalincstring) > len(finalvalstring):
             finalvalstring += "0"
+    else:
+        finalvalstring = str(histo.GetBinContent(b))
+        finalincstring = str(histo.GetBinError(b))
 
     return finalvalstring, finalincstring
 
