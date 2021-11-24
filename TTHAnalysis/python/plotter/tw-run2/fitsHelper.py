@@ -11,14 +11,22 @@ logpath      = friendspath + "/{p}/{y}/logs/plots"
 
 slurmscaff   = "sbatch -c {nth} -p {queue} -J {jobname} -e {logpath}/log.%j.%x.err -o {logpath}/log.%j.%x.out --wrap '{command}'"
 
-#combinecomm = "combine -M FitDiagnostics --expectSignal 1 {combcard} -n {y}_{r} --robustFit 1 --justFit --robustHesse 1 --cminDefaultMinimizerStrategy 0 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 {extra} >> {outfile}"
+combinecomm = "combine -M FitDiagnostics --expectSignal 1 {combcard} -n {y}_{r} --robustFit 1 --cminDefaultMinimizerStrategy 0 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 {extra} {plotsPrePost} {asimov} >> {outfile}"
 #combinecomm = "combine -M FitDiagnostics --expectSignal 1 {combcard} -n {y}_{r} --robustFit 1 --cminDefaultMinimizerStrategy 0 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --saveShapes --saveWorkspace --out {outdir} {extra} >> {outfile}"
 #combinecomm = "combine -M FitDiagnostics {combcard} -n {y}_{r} --robustFit 1 --cminDefaultMinimizerStrategy 0 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --saveShapes --saveWorkspace --out {outdir} {extra} >> {outfile}"
-combinecomm = "combine -M FitDiagnostics {combcard} -n {y}_{r} --robustFit 1 --cminDefaultMinimizerStrategy 0 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --saveShapes --saveWorkspace --out {outdir} {extra} >> {outfile}"
+#combinecomm = "combine -M FitDiagnostics {combcard} -n {y}_{r} --robustFit 1 --cminDefaultMinimizerStrategy 0 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --saveShapes --saveWorkspace --out {outdir} {extra} >> {outfile}"
+#combinecomm = "combine -M FitDiagnostics {combcard} -n {y}_{r} --robustFit 1 --justFit --cminDefaultMinimizerStrategy 0 {extra} >> {outfile} --minos all"
+#For expected
+#combinecomm = "combine -M FitDiagnostics -t -1 --setParameters r=1 --expectSignal=1 {combcard} -n {y}_{r} --robustFit 1 --justFit --cminDefaultMinimizerStrategy 0 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 {extra} >> {outfile}"
+#combinecomm = "combine -M FitDiagnostics {combcard} -n {y}_{r} --robustFit 1 --cminDefaultMinimizerStrategy 0 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=99999999999 --maxFailedSteps 1000000 --setRobustFitTolerance 0.0005 --stepSize 0.0008 --cminPreScan {extra} {plotsPrePost} {asimov} >> {outfile}"
+#combinecomm = "combine -M FitDiagnostics {combcard} -n {y}_{r} --robustFit 1 --rMax 0.95 --rMin 0.6 --cminDefaultMinimizerStrategy 0 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 {extra} {plotsPrePost} {asimov} >> {outfile}"
+#gofcomm = "combineTool.py -M GoodnessOfFit --expectSignal 1 {combcard} -n {y}_{r} --cminDefaultMinimizerStrategy 0 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --algo=saturated -t {nToys} --toysFreq -s -1 --parallel {nthreads} --job-mode SGE  --name {Jobname} >> {outfile}"
+#Expected
+gofcomm = "combineTool.py -M GoodnessOfFit --fixedSignalStrength=1 --expectSignal 1 {combcard} -n {y}_{r} --cminDefaultMinimizerStrategy 0 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --algo=saturated -t {nToys} -s -1 --parallel {nthreads} --job-mode SGE  --name {Jobname} >> {outfile}"
 
 
 def makeFit(task):
-    year, region, inpath, verbose, pretend, extra, doPrePostPlots = task
+    year, region, inpath, verbose, pretend, extra, doPrePostPlots, doAsimov, doGOF, nThreads, nToys = task
     fitoutpath  = inpath + "/" + year
     if "," in region:
         cardList = []
@@ -65,41 +73,66 @@ def makeFit(task):
         
     outfile_ = fitoutpath + "/fitOutput_{r}.txt".format(r = region if "," not in region else region.replace(",", ""))
         
-
-    comm = combinecomm.format(combcard = combcard_,
-                              outfile  = outfile_,
-                              outdir   = fitoutpath,
-                              extra    = extra,
-                              y        = year,
-                              r        = region if "," not in region else region.replace(",", ""))
-    if verbose:
-        print "Combine command:", comm, "\n"
-
-    if not pretend:
-        if os.path.isfile(outfile_):
-            if verbose:
-                print "    - Erasing old fit result..."
-            os.system("rm " + outfile_)
-        if doPrePostPlots:
-          comm = comm.replace("--justFit", "--saveShapes --saveWithUncertainties")
-        outstat = os.system(comm)
-        if outstat:
-            raise RuntimeError("FATAL: Combine failed to execute for year {y} and region(s) {r}.".format(y = year, r = region))
-            
-          
-    #sys.exit()
-    if not os.path.isfile('higgsCombine{y}_{r}.FitDiagnostics.mH120.root'.format(y = year, r = region if "," not in region else region.replace(",", ""))):
-        raise RuntimeError("FATAL: no valid higgsCombine file found for year {y} and region(s) {r}.".format(y = year, r = region))
-    else:
-        os.system("mv ./higgsCombine{y}_{r}.FitDiagnostics.mH120.root {fdir}".format(y = year, r = region if "," not in region else region.replace(",", ""), fdir = fitoutpath + "/"))
-        if os.path.isfile('fitDiagnostics{y}_{r}.root'.format(y = year, r = region if "," not in region else region.replace(",", ""))):
-          os.system("mv ./fitDiagnostics{y}_{r}.root {fdir}".format(y = year, r = region if "," not in region else region.replace(",", ""), fdir = fitoutpath + "/"))
     
-    if doPrePostPlots:
-        ppf.producePlots(year, region if "," not in region else region.replace(",", ""), fitoutpath)
+    if not doGOF:
+        comm = combinecomm.format(combcard = combcard_,
+                                  outfile  = outfile_,
+                                  y        = year,
+                                  r        = region if "," not in region else region.replace(",", ""),
+                                  plotsPrePost = "--saveShapes --saveWithUncertainties" if doPrePostPlots else "",
+                                  asimov   = "-t -1" if doAsimov else "",
+                                  extra    = extra)
+        if verbose:
+            print "Combine command:", comm, "\n"
+    
+        if not pretend:
+            if os.path.isfile(outfile_):
+                if verbose:
+                    print "    - Erasing old fit result..."
+                os.system("rm " + outfile_)
+                
+            outstat = os.system(comm)
+            if outstat:
+                raise RuntimeError("FATAL: Combine failed to execute for year {y} and region(s) {r}.".format(y = year, r = region))
+                
+              
+        #sys.exit()
+        if not os.path.isfile('higgsCombine{y}_{r}.FitDiagnostics.mH120.root'.format(y = year, r = region if "," not in region else region.replace(",", ""))):
+            raise RuntimeError("FATAL: no valid higgsCombine file found for year {y} and region(s) {r}.".format(y = year, r = region))
+        else:
+            os.system("mv ./higgsCombine{y}_{r}.FitDiagnostics.mH120.root {fdir}".format(y = year, r = region if "," not in region else region.replace(",", ""), fdir = fitoutpath + "/"))
+            if os.path.isfile('fitDiagnostics{y}_{r}.root'.format(y = year, r = region if "," not in region else region.replace(",", ""))):
+              os.system("mv ./fitDiagnostics{y}_{r}.root {fdir}".format(y = year, r = region if "," not in region else region.replace(",", ""), fdir = fitoutpath + "/"))
+        
+        if doPrePostPlots:
+            ppf.producePlots(year, region if "," not in region else region.replace(",", ""), fitoutpath)
 
-
-
+    if doGOF:
+        #Observed
+        comm = gofcomm.format(combcard = combcard_,
+                                  outfile  = outfile_,
+                                  outdir   = fitoutpath,
+                                  extra    = extra,
+                                  y        = year,
+                                  r        = region if "," not in region else region.replace(",", ""),
+                                  nToys    = nToys,
+                                  nthreads =  nThreads,
+                                  Jobname  = "GOFobserved").replace("-t " + str(nToys), "")
+        os.system(comm)
+        #Expected                          
+        comm = gofcomm.format(combcard = combcard_,
+                                  outfile  = outfile_,
+                                  outdir   = fitoutpath,
+                                  extra    = extra,
+                                  y        = year,
+                                  r        = region if "," not in region else region.replace(",", ""),
+                                  nToys    = nToys,
+                                  nthreads =  nThreads,
+                                  Jobname  = "GOFexpected")
+        os.system(comm)
+        #TODO: add the same options as in the fitdiagnostics to remove the extra files
+        
+                                                                
     # Ahora recogemos la virutilla
     #if not os.path.isfile(fitoutpath + '/fitDiagnostics{y}_{r}.root'.format(y = year, r = region if "," not in region else region.replace(",", ""))):
     #    raise RuntimeError("FATAL: no valid fitDiagnostics file found for year {y} and region(s) {r}. Maybe there was a problem with the fit.\n".format(y = year, r = region))
@@ -232,6 +265,8 @@ if __name__ == "__main__":
     parser.add_argument('--verbose',    '-V', action  = "store_true",   dest = "verbose",  required = False, default = False)
     parser.add_argument('--produceToys','-pT', metavar = 'producetoys', dest = "producetoys", required = False,  default = 0, type = int)
     parser.add_argument('--plotsPrePost',   '-pp', action  = "store_true", dest = "plotsPrePost",  required = False, default = False)
+    parser.add_argument('--asimov',   '-a', action  = "store_true", dest = "asimov",  required = False, default = False)
+    parser.add_argument('--gof',   '-g', action  = "store_true", dest = "gof",  required = False, default = False)#Option to make gof test
 
     args     = parser.parse_args()
     year     = args.year
@@ -244,7 +279,11 @@ if __name__ == "__main__":
     verbose  = args.verbose
     producetoys = args.producetoys
     plotsPrePost = args.plotsPrePost
+    asimov   = args.asimov
+    gof      = args.gof
+    
     queue    = ""
+    
     #print CardsCommand(prod, year, variable, bines, asimov, nthreads, outpath, region, noUnc, useFibre, extra)
 
     theyears = ["2016", "2017", "2018", "run2"]
@@ -262,22 +301,21 @@ if __name__ == "__main__":
 
 
     
-    if producetoys:
+#    if producetoys:
 #        for yr in theyears:
 #            for rg in theregs:
 #                ExecuteOrSubmitToy(sbatch --wrap "combine -M GenerateOnly -s "$i" -t 100 {morestuff}" ; done
 #            else:
-        pass                
+#        pass                
 
 
         
         
     
-    else:
-        for yr in theyears:
-            for rg in theregs:
-                tasks.append( (yr, rg, inpath, verbose, pretend, extra, plotsPrePost) )
-        #print tasks
-        for task in tasks:
-            print "\nProcessing " + str(task) + "\n"
-            makeFit(task)
+    for yr in theyears:
+        for rg in theregs:
+            tasks.append( (yr, rg, inpath, verbose, pretend, extra, plotsPrePost, asimov, gof, nthreads, producetoys) )
+    #print tasks
+    for task in tasks:
+        print "\nProcessing " + str(task) + "\n"
+        makeFit(task)

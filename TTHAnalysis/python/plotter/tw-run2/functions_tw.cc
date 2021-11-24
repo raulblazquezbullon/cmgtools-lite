@@ -57,64 +57,66 @@ float getSergioBDtWOther(double BDT) {
   else                      return 6;
 }
 
-
-float getBDtW(double BDT) {
-  if      (BDT < -0.394903   ) return 1;
-  else if (BDT < -0.308732) return 2;
-  else if (BDT < -0.243086) return 3;
-  else if (BDT < -0.169425) return 4;
-  else if (BDT < -0.083060) return 5;
-  else if (BDT < 0.003659) return 6;
-  else if (BDT < 0.104736) return 7;
-  else if (BDT < 0.209614) return 8;
-  else if (BDT < 0.286681) return 9;
+// BDTs with TOP-17-018 binning for Run2-------
+Float_t getBDtW10bins(Double_t BDT){
+  if      (BDT < -0.394919   ) return 1;
+  else if (BDT < -0.308739) return 2;
+  else if (BDT < -0.243111) return 3;
+  else if (BDT < -0.169462) return 4;
+  else if (BDT < -0.083119) return 5;
+  else if (BDT < 0.003589) return 6;
+  else if (BDT < 0.104710) return 7;
+  else if (BDT < 0.209588) return 8;
+  else if (BDT < 0.286687) return 9;
   else                       return 10;
-}
+} 
 
-float getBDtWOther(double BDT) {
-  if      (BDT < -0.231522   ) return 1;
-  else if (BDT < -0.090321) return 2;
-  else if (BDT < 0.004031) return 3;
-  else if (BDT < 0.072420) return 4;
-  else if (BDT < 0.142097) return 5;
+Float_t getBDtWOther6bins(Double_t BDT){
+  if      (BDT < -0.231538   ) return 1;
+  else if (BDT < -0.090348) return 2;
+  else if (BDT < 0.003993) return 3;
+  else if (BDT < 0.072441) return 4;
+  else if (BDT < 0.142115) return 5;
   else                       return 6;
-}
+} 
+// BDTs with TOP-17-018 binning for Run2-------
 
+// BDTs with New binning for Run2, 2016, 2017, 2018-------
 Float_t getBDtW20bins(Double_t BDT){
-  if      (BDT < -0.461123   ) return 1;
-  else if (BDT < -0.394903) return 2;
-  else if (BDT < -0.349115) return 3;
-  else if (BDT < -0.308732) return 4;
-  else if (BDT < -0.274641) return 5;
-  else if (BDT < -0.243086) return 6;
-  else if (BDT < -0.208713) return 7;
-  else if (BDT < -0.169425) return 8;
-  else if (BDT < -0.126347) return 9;
-  else if (BDT < -0.083060) return 10;
-  else if (BDT < -0.040647) return 11;
-  else if (BDT < 0.003659) return 12;
-  else if (BDT < 0.051473) return 13;
-  else if (BDT < 0.104736) return 14;
-  else if (BDT < 0.160423) return 15;
-  else if (BDT < 0.209614) return 16;
-  else if (BDT < 0.248757) return 17;
-  else if (BDT < 0.286681) return 18;
-  else if (BDT < 0.331748) return 19;
+  if      (BDT < -0.461131   ) return 1;
+  else if (BDT < -0.394919) return 2;
+  else if (BDT < -0.349125) return 3;
+  else if (BDT < -0.308739) return 4;
+  else if (BDT < -0.274655) return 5;
+  else if (BDT < -0.243111) return 6;
+  else if (BDT < -0.208747) return 7;
+  else if (BDT < -0.169462) return 8;
+  else if (BDT < -0.126396) return 9;
+  else if (BDT < -0.083119) return 10;
+  else if (BDT < -0.040716) return 11;
+  else if (BDT < 0.003589) return 12;
+  else if (BDT < 0.051413) return 13;
+  else if (BDT < 0.104710) return 14;
+  else if (BDT < 0.160402) return 15;
+  else if (BDT < 0.209588) return 16;
+  else if (BDT < 0.248742) return 17;
+  else if (BDT < 0.286687) return 18;
+  else if (BDT < 0.331751) return 19;
   else                       return 20;
 }
 
 Float_t getBDtWOther12bins(Double_t BDT){
-  if      (BDT < -0.330874   ) return 1;
-  else if (BDT < -0.231522) return 2;
-  else if (BDT < -0.151637) return 3;
-  else if (BDT < -0.090321) return 4;
-  else if (BDT < -0.039976) return 5;
-  else if (BDT < 0.004031) return 6;
-  else if (BDT < 0.042714) return 7;
-  else if (BDT < 0.072420) return 8;
-  else if (BDT < 0.102859) return 9;
-  else if (BDT < 0.142097) return 10;
-  else if (BDT < 0.189463) return 11;
+  if      (BDT < -0.330890   ) return 1;
+  else if (BDT < -0.231538) return 2;
+  else if (BDT < -0.151656) return 3;
+  else if (BDT < -0.090348) return 4;
+  else if (BDT < -0.040016) return 5;
+  else if (BDT < 0.003993) return 6;
+  else if (BDT < 0.042737) return 7;
+  else if (BDT < 0.072441) return 8;
+  else if (BDT < 0.102874) return 9;
+  else if (BDT < 0.142115) return 10;
+  else if (BDT < 0.189464) return 11;
   else                       return 12;
 }
 
@@ -231,44 +233,71 @@ Float_t getBDtWOther12bins2018(Double_t BDT){
   else if (BDT < 0.189104) return 11;
   else                       return 12;
 }
+// BDTs with New binning for Run2, 2016, 2017, 2018-------
 
+// BDTs with New binning for Run2 AND DY training (bkg. cte)------- 
 Float_t getBDtW20binsDYtrain(Double_t BDT){
-  if      (BDT < -0.402107   ) return 1;
-  else if (BDT < -0.329749) return 2;
-  else if (BDT < -0.280524) return 3;
-  else if (BDT < -0.237805) return 4;
-  else if (BDT < -0.197138) return 5;
-  else if (BDT < -0.159626) return 6;
-  else if (BDT < -0.126077) return 7;
-  else if (BDT < -0.092530) return 8;
-  else if (BDT < -0.055541) return 9;
-  else if (BDT < -0.015136) return 10;
-  else if (BDT < 0.025686) return 11;
-  else if (BDT < 0.069477) return 12;
-  else if (BDT < 0.115325) return 13;
-  else if (BDT < 0.159926) return 14;
-  else if (BDT < 0.199340) return 15;
-  else if (BDT < 0.235994) return 16;
-  else if (BDT < 0.274096) return 17;
-  else if (BDT < 0.317900) return 18;
-  else if (BDT < 0.369524) return 19;
+  if      (BDT < -0.409113   ) return 1;
+  else if (BDT < -0.333828) return 2;
+  else if (BDT < -0.283889) return 3;
+  else if (BDT < -0.240871) return 4;
+  else if (BDT < -0.199900) return 5;
+  else if (BDT < -0.162401) return 6;
+  else if (BDT < -0.128419) return 7;
+  else if (BDT < -0.094963) return 8;
+  else if (BDT < -0.058517) return 9;
+  else if (BDT < -0.018286) return 10;
+  else if (BDT < 0.022496) return 11;
+  else if (BDT < 0.066482) return 12;
+  else if (BDT < 0.112538) return 13;
+  else if (BDT < 0.157583) return 14;
+  else if (BDT < 0.197390) return 15;
+  else if (BDT < 0.234466) return 16;
+  else if (BDT < 0.272865) return 17;
+  else if (BDT < 0.316556) return 18;
+  else if (BDT < 0.368564) return 19;
   else                       return 20;
 }
 
 Float_t getBDtWOther12binsDYtrain(Double_t BDT){
-  if      (BDT < -0.275600   ) return 1;
-  else if (BDT < -0.185815) return 2;
-  else if (BDT < -0.113546) return 3;
-  else if (BDT < -0.052874) return 4;
-  else if (BDT < -0.011967) return 5;
-  else if (BDT < 0.013963) return 6;
-  else if (BDT < 0.033217) return 7;
-  else if (BDT < 0.053121) return 8;
-  else if (BDT < 0.075970) return 9;
-  else if (BDT < 0.104539) return 10;
-  else if (BDT < 0.144197) return 11;
+  if      (BDT < -0.275660   ) return 1;
+  else if (BDT < -0.185791) return 2;
+  else if (BDT < -0.113678) return 3;
+  else if (BDT < -0.053044) return 4;
+  else if (BDT < -0.012127) return 5;
+  else if (BDT < 0.013890) return 6;
+  else if (BDT < 0.033086) return 7;
+  else if (BDT < 0.052918) return 8;
+  else if (BDT < 0.075512) return 9;
+  else if (BDT < 0.104013) return 10;
+  else if (BDT < 0.143557) return 11;
   else                       return 12;
 } 
+// BDTs with New binning for Run2 AND DY training (bkg. cte)-------
+
+// BDTs with TOP-17-018 binning for Run2 AND DY training (bkg. cte)-------
+Float_t getBDtW10binsDYtrain(Double_t BDT){
+  if      (BDT < -0.333828   ) return 1;
+  else if (BDT < -0.240871) return 2;
+  else if (BDT < -0.162401) return 3;
+  else if (BDT < -0.094963) return 4;
+  else if (BDT < -0.018286) return 5;
+  else if (BDT < 0.066482) return 6;
+  else if (BDT < 0.157583) return 7;
+  else if (BDT < 0.234466) return 8;
+  else if (BDT < 0.316556) return 9;
+  else                       return 10;
+}
+
+Float_t getBDtWOther6binsDYtrain(Double_t BDT){
+  if      (BDT < -0.185791   ) return 1;
+  else if (BDT < -0.053044) return 2;
+  else if (BDT < 0.013890) return 3;
+  else if (BDT < 0.052918) return 4;
+  else if (BDT < 0.104013) return 5;
+  else                       return 6;
+} 
+// BDTs with TOP-17-018 binning for Run2 AND DY training (bkg. cte)-------
 
 void functions_tw() {}
 

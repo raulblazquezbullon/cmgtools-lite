@@ -16,7 +16,7 @@ lumidict     = {2016 : 36.33,
 #                2018 : 29.87}
 
 #friendsscaff = "--FDs {P}/0_lumijson --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --Fs {P}/5_mvas --Fs {P}/6_hemissue"
-friendsscaff = "--FDs {P}/0_lumijson --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --Fs {P}/5_mvas"
+friendsscaff = "--FDs {P}/0_lumijson --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --Fs {P}/5_mvas" #5_mvas_DY_newWithDiv
 
 slurmscaff   = "sbatch -c {nth} -p {queue} -J {jobname} -e {logpath}/log.%j.%x.err -o {logpath}/log.%j.%x.out --wrap '{command}'"
 
@@ -176,14 +176,16 @@ if __name__ == "__main__":
     #print CardsCommand(prod, year, variable, bines, asimov, nthreads, outpath, region, noUnc, useFibre, extra)
 
     theregs  = ["1j1t", "2j1t", "2j2t"]
-    thevars  = ["getBDtW20bins{year}(tmvaBDT_1j1b)", "getBDtWOther12bins{year}(tmvaBDT_2j1b)", "min(max(Jet2_Pt, 30.), 189.)"]
+    thevars  = ["getBDtW20bins{year}(tmvaBDT_1j1b)", "getBDtWOther12bins{year}(tmvaBDT_2j1b)", "min(max(Jet2_Pt, 30.), 189.)"] #Actual
+#    thevars  = ["getBDtW10bins{year}(tmvaBDT_1j1b)", "getBDtWOther6bins{year}(tmvaBDT_2j1b)", "min(max(Jet2_Pt, 30.), 189.)"] 
 #    thevars  = ["getBDtW20binsDYtrain{year}(tmvaBDT_1j1b)", "getBDtWOther12binsDYtrain{year}(tmvaBDT_2j1b)", "min(max(Jet2_Pt, 30.), 189.)"]
+#    thevars  = ["getBDtW10binsDYtrain{year}(tmvaBDT_1j1b)", "getBDtWOther6binsDYtrain{year}(tmvaBDT_2j1b)", "min(max(Jet2_Pt, 30.), 189.)"]
     thebins  = ["[0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5,10.5,11.5,12.5,13.5,14.5,15.5,16.5,17.5,18.5,19.5,20.5]",
                 "[0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5,10.5,11.5,12.5]",
                 "[30.,40.,50.,60.,70.,80.,90.,100.,110.,120.,130.,140.,150.,160.,170.,180.,190.]"]              
-#    thebins  = ["[16.5,17.5,18.5,19.5,20.5]",
-#                "[0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5,10.5,11.5,12.5]",
-#                "[30.,40.,50.,60.,70.,80.,90.,100.,110.,120.,130.,140.,150.,160.,170.,180.,190.]"]
+#    thebins  = ["[0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5,10.5]",
+#                "[1.5,2.5,3.5,4.5,5.5,6.5]",
+#                "[30.,50.,70.,90.,110.,130.,150.,170.,190.]"]
     theyears = ["2016", "2017", "2018", "run2"]
     tasks    = []
     
