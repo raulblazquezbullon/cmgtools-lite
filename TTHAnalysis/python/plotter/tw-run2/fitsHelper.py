@@ -20,7 +20,10 @@ combinecomm = "combine -M FitDiagnostics --expectSignal 1 {combcard} -n {y}_{r} 
 #combinecomm = "combine -M FitDiagnostics -t -1 --setParameters r=1 --expectSignal=1 {combcard} -n {y}_{r} --robustFit 1 --justFit --cminDefaultMinimizerStrategy 0 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 {extra} >> {outfile}"
 #combinecomm = "combine -M FitDiagnostics {combcard} -n {y}_{r} --robustFit 1 --cminDefaultMinimizerStrategy 0 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=99999999999 --maxFailedSteps 1000000 --setRobustFitTolerance 0.0005 --stepSize 0.0008 --cminPreScan {extra} {plotsPrePost} {asimov} >> {outfile}"
 #combinecomm = "combine -M FitDiagnostics {combcard} -n {y}_{r} --robustFit 1 --rMax 0.95 --rMin 0.6 --cminDefaultMinimizerStrategy 0 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 {extra} {plotsPrePost} {asimov} >> {outfile}"
-gofcomm = "combineTool.py -M GoodnessOfFit --expectSignal 1 {combcard} -n {y}_{r} --cminDefaultMinimizerStrategy 0 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --algo=saturated -t {nToys} --toysFreq -s -1 --parallel {nthreads} --job-mode SGE  --name {Jobname} >> {outfile}"
+#gofcomm = "combineTool.py -M GoodnessOfFit --expectSignal 1 {combcard} -n {y}_{r} --cminDefaultMinimizerStrategy 0 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --algo=saturated -t {nToys} --toysFreq -s -1 --parallel {nthreads} --job-mode SGE  --name {Jobname} >> {outfile}"
+#Expected
+gofcomm = "combineTool.py -M GoodnessOfFit --fixedSignalStrength=1 --expectSignal 1 {combcard} -n {y}_{r} --cminDefaultMinimizerStrategy 0 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --algo=saturated -t {nToys} -s -1 --parallel {nthreads} --job-mode SGE  --name {Jobname} >> {outfile}"
+
 
 def makeFit(task):
     year, region, inpath, verbose, pretend, extra, doPrePostPlots, doAsimov, doGOF, nThreads, nToys = task

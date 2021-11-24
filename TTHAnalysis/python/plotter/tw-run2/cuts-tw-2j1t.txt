@@ -11,3 +11,5 @@ metgood:    (channel == 1) || (METgood_pt > 40)
 
 2jet:       nJetSel30_Recl == 2;
 1btag:      nBJetSelMedium30_Recl == 1;
+
+#bdtcut:     getBDtWOther6binsDYtrain(tmvaBDT_2j1b) >= 2;
