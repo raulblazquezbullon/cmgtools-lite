@@ -73,9 +73,9 @@ minitnamedict = {
 sampledict  = {}
 sampledict[2016] = {}; sampledict[2017] = {}; sampledict[2018] = {}
 sampledict[2016] = {
-    #### Nominales
-    ### ttbar
-    # CP5
+    ##### Nominales
+    #### ttbar
+    ## CP5
     ###"TTTo2L2Nu"        : "TTTo2L2Nu_TuneCP5_PSweights_13TeV-powheg-pythia8_topnano_",
 
     "TTTo2L2Nu_division1" : "TTTo2L2Nudiv1_TuneCP5_PSweights_13TeV-powheg-pythia8_topnano_",
@@ -759,8 +759,8 @@ trainsampledict[2016] = {
     ### tW
 #    "tW_central"     : sampledict[2016]["tW_central"],
 #    "tbarW"          : sampledict[2016]["tbarW"],
-    "DYJetsToLLdiv2_M_10to50" : sampledict[2016]["DYJetsToLLdiv2_M_10to50"],
-    "DYJetsToLLdiv2_M_50"     : sampledict[2016]["DYJetsToLLdiv2_M_50"],
+    #"DYJetsToLLdiv2_M_10to50" : sampledict[2016]["DYJetsToLLdiv2_M_10to50"],
+    #"DYJetsToLLdiv2_M_50"     : sampledict[2016]["DYJetsToLLdiv2_M_50"],
 #    "DYJetsToLL_M_50_MLM" : sampledict[2016]["DYJetsToLL_M_50_MLM"],
 }
 
@@ -915,7 +915,6 @@ def GeneralSubmitter(task):
         #isDivision = ("division" in dataset_)
         isDivision = False
         inputpath_ = ((datapath if isData else mcpath) + "/" + str(year) + "/") if not isDivision else (mcpathdiv + "/" + ("ttbar" if "TTTo2L2Nu" in dataset_ else "tw_incl") + "/" + str(year) + "/")
-        print inputpath_
 
         if not os.path.isdir(logpath.format(step_prefix = friendfolders[step], y = year)):
             os.system("mkdir -p " + logpath.format(step_prefix = friendfolders[step], y = year))
