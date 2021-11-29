@@ -189,6 +189,11 @@ if __name__ == "__main__":
     theyears = ["2016", "2017", "2018", "run2"]
     tasks    = []
     
+    ########----1 Bin test-------#######
+    #thevars  = ["1", "1", "1"]
+    #thebins  = ["[0.5,1.5]","[0.5,1.5]","[0.5,1.5]"]
+    ########----1 Bin test-------#######
+    
     ########----Binning test-----#######
 #    theregs  = ["1j1t", "2j1t", "2j2t"]
 #    thevars  = ["theBDT500bins{year}(tmvaBDT_1j1b)", "theOtherBDT500bins{year}(tmvaBDT_2j1b)", "min(max(Jet2_Pt, 30.), 189.)"]
