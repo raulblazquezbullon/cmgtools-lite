@@ -16,10 +16,64 @@ r.TH1.AddDirectory(0)
 comm1 = "combineTool.py -M Impacts -d {incard} --doInitialFit --robustFit 1 {ncores} {asimov} {extra} -m 1 -n {prefix} --out {outdir} --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --cminDefaultMinimizerStrategy 0"
 comm2 = "combineTool.py -M Impacts -d {incard} --robustFit 1 --doFits {ncores} {asimov} {extra} -m 1 -n {prefix} --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --cminDefaultMinimizerStrategy 0"
 comm3 = "combineTool.py -M Impacts -d {incard} -o impacts{prefix}.json {ncores} {asimov} {extra} -m 1 -n {prefix} --robustFit 1 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --cminDefaultMinimizerStrategy 0"
-#comm1 = "combineTool.py -M Impacts -d {incard} --doInitialFit --robustFit 1 {ncores} {asimov} {extra} -m 1 -n {prefix} --out {outdir} --robustHesse 1 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000"
-#comm2 = "combineTool.py -M Impacts -d {incard} --robustFit 1 --doFits {ncores} {asimov} {extra} -m 1 -n {prefix} --robustHesse 1 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000"
-#comm3 = "combineTool.py -M Impacts -d {incard} -o impacts{prefix}.json {ncores} {asimov} {extra} -m 1 -n {prefix} --robustHesse 1 --robustFit 1 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000"
 comm4 = "plotImpacts.py -i impacts{prefix}.json -o impacts{prefix}"
+
+
+def confirm(message = "Do you wish to continue?"):
+    """
+    Ask user to enter y(es) or n(o) (case-insensitive).
+    :return: True if the answer is Y.
+    :rtype: bool
+    """
+    answer = ""
+    while answer not in ["y", "n", "yes", "no"]:
+        answer = raw_input(message + " [Y/N]\n").lower()
+    return answer[0] == "y"
+
+
+def checkNfits(tsk):
+    thepath, thename = tsk
+    failed = False
+
+    thef = r.TFile(thepath + "/" + thename, "READ")
+    if thef.limit.GetEntries() < 3:
+        failed = True
+    thef.Close(); del thef
+    return (failed, thename)
+
+
+def reviewThePreviousStepsFiles(thefolder, nth, verbose):
+    thelist  = os.listdir(thefolder)
+    thetasks = []
+    theres   = []
+    for el in thelist:
+        if "higgsCombine_" in el:
+            thetasks.append( (thefolder, el) )
+
+    if nth > 1:
+        pool = Pool(nth)
+        theres = pool.map(checkNfits, thetasks)
+        pool.close()
+        pool.join()
+    else:
+        for tsk in thetasks:
+            theres.append(checkNfits(tsk))
+
+    if any(theres[:][0]):
+        print "\n#######################################\nERROR!!\n#######################################\n\nOne or more fits to calculate the impacts have failed. In particular, the following parameters (either nuisances or POI) have one or more failed fits."
+        for el in theres:
+            if el[0]: print "\t- " + "_".join(el[1].replace("higgsCombine_", "").replace("paramFit_", "").replace("initialFit_", "").replace(".MultiDimFit.mH1.root", "").split("_")[2:])
+
+        print ""
+        if not confirm("Do you want to, in any case, create the impacts? Please, take into account that the nuisance or POI that has one or more failed fits will NOT be present in the impacts' plot."):
+            sys.exit()
+    elif verbose:
+        print "\t- No failed fits!"
+
+    return
+
+
+
 
 def makeImpacts(task):
     inpath, year, region, ncores, pretend, verbose, extra = task
@@ -53,7 +107,7 @@ def makeImpacts(task):
     )
 
     if verbose:
-        print "First command:", firstcomm, "\n"
+        print "\nFirst command:", firstcomm, "\n"
 
     if not pretend:
         outstat = os.system("cd " + impactsoutpath + "; " + firstcomm + "; cd -")
@@ -71,7 +125,7 @@ def makeImpacts(task):
     )
 
     if verbose:
-        print "Second command:", secondcomm, "\n"
+        print "\nSecond command:", secondcomm, "\n"
     
     if not pretend:
         outstat = os.system("cd " + impactsoutpath + "; " + secondcomm + "; cd -")
@@ -88,8 +142,15 @@ def makeImpacts(task):
                              prefix = year + "_" + region.replace(",", ""),
     )
 
+    if verbose and not pretend:
+        print "\nChecking whether any fit might have failed."
+
+    if not pretend:
+        reviewThePreviousStepsFiles(impactsoutpath, ncores if ncores else 1, verbose)
+
+
     if verbose:
-        print "Third command:", thirdcomm, "\n"
+        print "\nThird command:", thirdcomm, "\n"
     
     if not pretend:
         outstat = os.system("cd " + impactsoutpath + "; " + thirdcomm + "; cd -")
