@@ -12,6 +12,7 @@
 #include "TROOT.h"
 #include "TMVA/Types.h"
 #include "TMVA/TMVAGui.h"
+#include <algorithm>
 
 #if not defined(__CINT__) || defined(__MAKECINT__)
 #include "TMVA/Factory.h"
@@ -78,7 +79,8 @@ void trainBDtW_1j1t(TString outputdir, TString outputbasedir = "/pool/phedex/use
   ////// INPUT VARIABLES ===========================================================================
   cout << "> Adding input variables" << endl;
 
-//  loader->AddVariable("train_nloosejets"                 , "N(loose jet)"                                                           , ""   , 'I');
+/////  loader->AddVariable("min(train_nloosejets, 2)"                 , "N(loose jet)"                                                           , ""   , 'I');
+  loader->AddVariable("train_nloosejets"                 , "N(loose jet)"                                                           , ""   , 'I');
   //loader->AddVariable("train_nbloosejets"                , "N(loose b-jet)"                                                         , ""   , 'I');
   //loader->AddVariable("train_lep1lep2jet1met_pt"         , "p_{T} (#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j}, #it{p}_{T}^{miss})"        , "GeV", 'F');
   //loader->AddVariable("train_httot"                      , "H_{T}"                                                                  , "GeV", 'F');
