@@ -472,7 +472,10 @@ if __name__=="__main__":
             thevars = [ variable ]
 
         if year.lower() != "all":
-            theyears = [ year ]
+            if "," in year:
+                theyears = year.split(",")
+            else:
+                theyears = [ year ]
 
         for yr in theyears:
             listofuncsthataffecttheproc = []

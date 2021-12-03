@@ -15,11 +15,12 @@ import errorPropagator as ep
 
 
 #### AGREGAR --cminDefaultMinimizerStrategy 0   ?????????? y quitar robusthesse
-combinecommscaff = 'combine  -M FitDiagnostics --out {outdir} {infile} --saveWorkspace -n {y}_{var} --saveShapes --robustHesse 1 --robustFit 1 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --saveShapes'
+#combinecommscaff = 'combine  -M FitDiagnostics --out {outdir} {infile} --saveWorkspace -n {y}_{var} --saveShapes --robustHesse 1 --robustFit 1 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --saveShapes'
+
 #combinecommscaff = 'combine  -M FitDiagnostics --out {outdir} {infile} --saveWorkspace -n {y}_{var} --saveShapes --robustHesse 1 --cminDefaultMinimizerStrategy 0 --robustFit 1 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --cminPreFit 3'
 
 # Identico inclusiva
-#combinecommscaff = 'combine  -M FitDiagnostics --out {outdir} {infile} --saveWorkspace -n {y}_{var} --saveShapes --robustFit 1 --cminDefaultMinimizerStrategy 0 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000'
+combinecommscaff = 'combine  -M FitDiagnostics --out {outdir} {infile} {asimov} --saveWorkspace -n {y}_{var} --saveShapes --robustFit 1 --cminDefaultMinimizerStrategy 0 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000'
 
 #combinecommscaff = 'combine  -M FitDiagnostics --out {outdir} {infile} --saveWorkspace -n {y}_{var} --saveShapes --cminDefaultMinimizerStrategy 0 --robustFit 1 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --cminPreFit 3'
 #combinecommscaff = 'combine  -M FitDiagnostics --out {outdir} {infile} --saveWorkspace -n {y}_{var} --saveShapes --robustHesse 1 --stepSize 0.001 --cminDefaultMinimizerStrategy 1 --robustFit 1 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=50000000 --setRobustFitStrategy 1 --setRobustFitTolerance 0.0001'
@@ -400,7 +401,7 @@ def drawParticleResults(theres, theuncs, thecov, outdir, year, var, pretend):
 
 
 def makeFit(task):
-    inpath, year, varName, pretend, doControl, noPlots = task
+    inpath, year, varName, pretend, doControl, noPlots, useData = task
 
     print '\n> Fitting variable', varName, 'from year', year, '\n'
     bins_detector = vl.varList[varName]['bins_detector']
@@ -440,11 +441,19 @@ def makeFit(task):
 
     fitoutpath = inpath + "/" + year + "/" + varName + "/sigextr_fit_combine/fitdiagnostics"
 
+    asimov_ = ""
+    if not useData:
+        asimov_ =  "-t -1 --setParameters "
+        for idx in range(nparticlebins - 1):
+            asimov_ += "r_tW_{iBp}=1,".format(iBp = idx)
+        asimov_ += "r_tW_{iBp}=1".format(iBp = nparticlebins - 1)
+
     combinecomm = combinecommscaff.format(
         y      = year,
         outdir = fitoutpath,
         infile = inpath + "/" + year + "/" + varName + "/sigextr_fit_combine/fit_output.root",
-        var    = varName
+        var    = varName,
+        asimov = asimov_,
     )
 
     if verbose:
@@ -570,11 +579,12 @@ def makeFit(task):
             # ...and these here are asymm.:
             #uncInfo.SetBinContent(i,   abs(results['r_tW_%d'%(i-1)][1])) # Down
             #uncInfo.SetBinError  (i,   results['r_tW_%d'%(i-1)][2]) # Up
+
             ##### FORCED SYMM
             uncInfo.SetBinContent(i,   results['r_tW_%d'%(i-1)][3]) # sym
             uncInfo.SetBinError  (i,   results['r_tW_%d'%(i-1)][3]) # sym
             
-            print i, results['r_tW_%d'%(i-1)][0], results['r_tW_%d'%(i-1)][3], results['r_tW_%d'%(i-1)][1], results['r_tW_%d'%(i-1)][2]
+            #print i, results['r_tW_%d'%(i-1)][0], results['r_tW_%d'%(i-1)][3], results['r_tW_%d'%(i-1)][1], results['r_tW_%d'%(i-1)][2]
 
         card.Close()
 
@@ -686,6 +696,7 @@ if __name__ == '__main__':
     parser.add_argument('--verbose',    '-V', action  = "store_true", dest = "verbose",  required = False, default = False)
     parser.add_argument('--addControl', '-c', action  = "store_true", dest = "addctrl",  required = False, default = False)
     parser.add_argument('--noPlots',    '-np',action  = "store_true", dest = "noplots",  required = False, default = False)
+    parser.add_argument('--useData',    '-uD',action  = "store_true", dest = "usedata",  required = False, default = False)
 
 
     args     = parser.parse_args()
@@ -697,6 +708,7 @@ if __name__ == '__main__':
     verbose  = args.verbose
     addctrl  = args.addctrl
     noplots  = args.noplots
+    usedata  = args.usedata
 
 
     tasks = []
@@ -732,7 +744,7 @@ if __name__ == '__main__':
             if not os.path.isdir(inpath + "/" + iY + "/" + iV + "/sigextr_fit_combine"): continue
             if not os.path.isdir(inpath + "/" + iY + "/" + iV + "/sigextr_fit_combine/fitdiagnostics"):
                 os.system("mkdir -p " + inpath + "/" + iY + "/" + iV + "/sigextr_fit_combine/fitdiagnostics")
-            tasks.append( (inpath, iY, iV, pretend, addctrl, noplots) )
+            tasks.append( (inpath, iY, iV, pretend, addctrl, noplots, usedata) )
 
 
     finalresults = []
