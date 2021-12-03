@@ -76,7 +76,7 @@ def reviewThePreviousStepsFiles(thefolder, nth, verbose):
 
 
 def makeImpacts(task):
-    inpath, year, region, ncores, pretend, verbose, extra = task
+    inpath, year, region, ncores, pretend, verbose, extra, doobs = task
 
     print '\n> Creating impacts for region(s)', region, 'from year', year, '\n'
     
@@ -99,7 +99,7 @@ def makeImpacts(task):
 
     firstcomm = comm1.format(y      = year,
                              ncores = ("--parallel " + str(ncores)) if ncores else "",
-                             asimov = "",
+                             asimov = "" if doobs else "-t -1 --setParameters r=1",
                              incard = "../combcard_{r}.root".format(r = region.replace(",", "")) if "," in region else "../{r}/cuts-tw-{r}_ws.root".format(r = region),
                              outdir = "./",
                              extra  = extra,
@@ -117,7 +117,7 @@ def makeImpacts(task):
 
     secondcomm = comm2.format(y      = year,
                              ncores = ("--parallel " + str(ncores)) if ncores else "",
-                             asimov = "",
+                             asimov = "" if doobs else "-t -1 --setParameters r=1",
                              incard = "../combcard_{r}.root".format(r = region.replace(",", "")) if "," in region else "../{r}/cuts-tw-{r}_ws.root".format(r = region),
                              outdir = "./",
                              extra  = extra,
@@ -135,7 +135,7 @@ def makeImpacts(task):
     
     thirdcomm = comm3.format(y      = year,
                              ncores = ("--parallel " + str(ncores)) if ncores else "",
-                             asimov = "",
+                             asimov = "" if doobs else "-t -1 --setParameters r=1",
                              incard = "../combcard_{r}.root".format(r = region.replace(",", "")) if "," in region else "../{r}/cuts-tw-{r}_ws.root".format(r = region),
                              outdir = "./",
                              extra  = extra,
@@ -160,7 +160,7 @@ def makeImpacts(task):
     
     fourthcomm = comm4.format(y      = year,
                               ncores = ("--parallel " + str(ncores)) if ncores else "",
-                              asimov = "",
+                              asimov = "" if doobs else "-t -1 --setParameters r=1",
                               incard = "../combcard_{r}.root".format(r = region.replace(",", "")) if "," in region else "../{r}/cuts-tw-{r}_ws.root".format(r = region),
                               outdir = "./",
                               extra  = extra,
@@ -194,6 +194,7 @@ if __name__ == '__main__':
     parser.add_argument('--nthreads',   '-j', metavar = 'nthreads',   dest = "nthreads", required = False, default = 0, type = int)
     parser.add_argument('--pretend',    '-p', action  = "store_true", dest = "pretend",  required = False, default = False)
     parser.add_argument('--verbose',    '-V', action  = "store_true", dest = "verbose",  required = False, default = False)
+    parser.add_argument('--doObserved', '-O', action  = "store_true", dest = "doobs",    required = False, default = False)
 
 
     args     = parser.parse_args()
@@ -204,6 +205,7 @@ if __name__ == '__main__':
     verbose  = args.verbose
     region   = args.region
     extra    = args.extra
+    doObs    = args.doobs
 
 
     tasks = []
@@ -230,7 +232,7 @@ if __name__ == '__main__':
     for iY in theyears:
         if not os.path.isdir(inpath + "/" + iY + "/" + "/impacts_" + region):
             os.system("mkdir -p " + inpath + "/" + iY + "/" + "/impacts_" + region)
-        tasks.append( (inpath, iY, region, nthreads, pretend, verbose, extra) )
+        tasks.append( (inpath, iY, region, nthreads, pretend, verbose, extra, doObs) )
 
     #print tasks
     for task in tasks:
