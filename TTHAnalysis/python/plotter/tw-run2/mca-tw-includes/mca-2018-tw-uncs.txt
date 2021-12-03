@@ -43,4 +43,3 @@ syst_tw_ds           : ST_tW_top_5f_DS_NoFullyHadronicDecays_TuneCP5_13TeV-powhe
 # ds inclusive
 #syst_tw_ds           : ST_tW_top_5f_DS_inclusiveDecays_TuneCP5_13TeV-powheg-pythia8*central*                   : 4788000/(4788000/35.85 + 2964435/19.4674104) ;
 #syst_tw_ds           : ST_tW_antitop_5f_DS_inclusiveDecays_TuneCP5_13TeV-powheg-pythia8*central*               : 4998056/(4998056/35.85 + 2959372/19.4674104) ;
-
