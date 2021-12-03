@@ -127,6 +127,8 @@ def makeGOF(task):
     else:
         combcard_ = "../" + region + "/cuts-tw-" + region + ".txt"
 
+    if not os.path.isfile(combcard_):
+        raise RuntimeError("FATAL: no toys could be created as the card provided, {c}, doesn't exist.".format(c = combcard_))
 
     if not theQ:
         comm = "cd " + gofoutpath + "; " +  gofcomm.format(combcard  = combcard_,
