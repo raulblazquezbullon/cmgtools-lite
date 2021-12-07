@@ -317,7 +317,7 @@ def makeGOFplot(task):
 
     valToys = []
     valData = 0.
-
+    
     for ev in tData:
         valData = ev.limit
 

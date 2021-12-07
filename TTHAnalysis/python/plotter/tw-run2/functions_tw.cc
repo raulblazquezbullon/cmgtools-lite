@@ -299,6 +299,99 @@ Float_t getBDtWOther6binsDYtrain(Double_t BDT){
 } 
 // BDTs with TOP-17-018 binning for Run2 AND DY training (bkg. cte)-------
 
+
+Float_t getBDtW20binsSinNlooseJets(Double_t BDT){
+  if      (BDT < -0.427731   ) return 1;
+  else if (BDT < -0.367246) return 2;
+  else if (BDT < -0.334862) return 3;
+  else if (BDT < -0.307369) return 4;
+  else if (BDT < -0.278291) return 5;
+  else if (BDT < -0.245749) return 6;
+  else if (BDT < -0.208190) return 7;
+  else if (BDT < -0.169064) return 8;
+  else if (BDT < -0.130041) return 9;
+  else if (BDT < -0.090741) return 10;
+  else if (BDT < -0.049078) return 11;
+  else if (BDT < -0.003784) return 12;
+  else if (BDT < 0.046958) return 13;
+  else if (BDT < 0.101653) return 14;
+  else if (BDT < 0.159334) return 15;
+  else if (BDT < 0.209248) return 16;
+  else if (BDT < 0.248072) return 17;
+  else if (BDT < 0.286556) return 18;
+  else if (BDT < 0.332004) return 19;
+  else                       return 20;
+}
+
+Float_t getBDtW20binsSinNlooseJetsNiLooseJetPt(Double_t BDT){
+  if      (BDT < -0.313361   ) return 1;
+  else if (BDT < -0.223268) return 2;
+  else if (BDT < -0.162437) return 3;
+  else if (BDT < -0.120287) return 4;
+  else if (BDT < -0.088388) return 5;
+  else if (BDT < -0.062983) return 6;
+  else if (BDT < -0.040645) return 7;
+  else if (BDT < -0.021556) return 8;
+  else if (BDT < -0.004917) return 9;
+  else if (BDT < 0.009829) return 10;
+  else if (BDT < 0.023266) return 11;
+  else if (BDT < 0.036785) return 12;
+  else if (BDT < 0.051073) return 13;
+  else if (BDT < 0.065885) return 14;
+  else if (BDT < 0.081091) return 15;
+  else if (BDT < 0.096607) return 16;
+  else if (BDT < 0.112405) return 17;
+  else if (BDT < 0.129095) return 18;
+  else if (BDT < 0.152932) return 19;
+  else                       return 20;
+}
+
+Float_t getBDtW20binsNlooseJetsgeq2(Double_t BDT){
+  if      (BDT < -0.451396   ) return 1;
+  else if (BDT < -0.395811) return 2;
+  else if (BDT < -0.352117) return 3;
+  else if (BDT < -0.310493) return 4;
+  else if (BDT < -0.275779) return 5;
+  else if (BDT < -0.243778) return 6;
+  else if (BDT < -0.209595) return 7;
+  else if (BDT < -0.169978) return 8;
+  else if (BDT < -0.126541) return 9;
+  else if (BDT < -0.083200) return 10;
+  else if (BDT < -0.040710) return 11;
+  else if (BDT < 0.003604) return 12;
+  else if (BDT < 0.051621) return 13;
+  else if (BDT < 0.104359) return 14;
+  else if (BDT < 0.159861) return 15;
+  else if (BDT < 0.209395) return 16;
+  else if (BDT < 0.248753) return 17;
+  else if (BDT < 0.286788) return 18;
+  else if (BDT < 0.331792) return 19;
+  else                       return 20;
+}
+
+Float_t getBDtW20binsNlooseJetsgeq1(Double_t BDT){
+  if      (BDT < -0.427731   ) return 1;
+  else if (BDT < -0.367246) return 2;
+  else if (BDT < -0.334862) return 3;
+  else if (BDT < -0.307369) return 4;
+  else if (BDT < -0.278291) return 5;
+  else if (BDT < -0.245749) return 6;
+  else if (BDT < -0.208190) return 7;
+  else if (BDT < -0.169064) return 8;
+  else if (BDT < -0.130041) return 9;
+  else if (BDT < -0.090741) return 10;
+  else if (BDT < -0.049078) return 11;
+  else if (BDT < -0.003784) return 12;
+  else if (BDT < 0.046958) return 13;
+  else if (BDT < 0.101653) return 14;
+  else if (BDT < 0.159334) return 15;
+  else if (BDT < 0.209248) return 16;
+  else if (BDT < 0.248072) return 17;
+  else if (BDT < 0.286556) return 18;
+  else if (BDT < 0.332004) return 19;
+  else                       return 20;
+}
+
 void functions_tw() {}
 
 
