@@ -76,7 +76,7 @@ def reviewThePreviousStepsFiles(thefolder, nth, verbose):
 
 
 def makeImpacts(task):
-    inpath, year, region, ncores, pretend, verbose, extra, doobs = task
+    inpath, year, region, ncores, pretend, verbose, extra, doobs, doBlind = task
 
     print '\n> Creating impacts for region(s)', region, 'from year', year, '\n'
     
@@ -163,7 +163,7 @@ def makeImpacts(task):
                               asimov = "" if doobs else "-t -1 --setParameters r=1",
                               incard = "../combcard_{r}.root".format(r = region.replace(",", "")) if "," in region else "../{r}/cuts-tw-{r}_ws.root".format(r = region),
                               outdir = "./",
-                              extra  = extra,
+                              extra  = extra + (" --blind" * doBlind),
                               prefix = year + "_" + region.replace(",", ""),
     )
 
@@ -195,6 +195,7 @@ if __name__ == '__main__':
     parser.add_argument('--pretend',    '-p', action  = "store_true", dest = "pretend",  required = False, default = False)
     parser.add_argument('--verbose',    '-V', action  = "store_true", dest = "verbose",  required = False, default = False)
     parser.add_argument('--doObserved', '-O', action  = "store_true", dest = "doobs",    required = False, default = False)
+    parser.add_argument('--blindSignalStrength','-b',action="store_true",dest="blindmu", required = False, default = False)
 
 
     args     = parser.parse_args()
@@ -206,6 +207,7 @@ if __name__ == '__main__':
     region   = args.region
     extra    = args.extra
     doObs    = args.doobs
+    doBlind  = args.blindmu
 
 
     tasks = []
@@ -232,7 +234,7 @@ if __name__ == '__main__':
     for iY in theyears:
         if not os.path.isdir(inpath + "/" + iY + "/" + "/impacts_" + region):
             os.system("mkdir -p " + inpath + "/" + iY + "/" + "/impacts_" + region)
-        tasks.append( (inpath, iY, region, nthreads, pretend, verbose, extra, doObs) )
+        tasks.append( (inpath, iY, region, nthreads, pretend, verbose, extra, doObs, doBlind) )
 
     #print tasks
     for task in tasks:
