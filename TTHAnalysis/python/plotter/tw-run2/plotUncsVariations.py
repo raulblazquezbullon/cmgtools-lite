@@ -20,9 +20,9 @@ r.gROOT.SetBatch(True)
 #colour_syst    = ["ColourQCDbasedCRTuneerdON", "ColourGluonMoveCRTuneerdON", "ColourPowhegerdON", "ColourGluonMoveCRTune"]
 #colour_syst    = []
 
-vetolist       = ["UnfoldingInfo", "detector.root", "detectorparticleResponse.root", "nonfiducial", "particle.root", "particleOutput.root", "particlefidOutput.root", "particlefidbinOutput.root", "particlebinOutput.root", "higgsCombine", "combcard"]
+vetolist       = ["UnfoldingInfo", "detector.root", "detectorparticleResponse.root", "nonfiducial", "particle.root", "particleOutput.root", "particlefidOutput.root", "particlefidbinOutput.root", "particlebinOutput.root", "higgsCombine", "combcard", "fitDiagnostics"]
 #vetolist       = ["UnfoldingInfo", "detector", "nonfiducial", "particle.root"]
-foldervetolist = ["responseplots", "particleplots", "detectorplots", "impacts_", "sigextr_fit_combine"]
+foldervetolist = ["responseplots", "particleplots", "detectorplots", "impacts_", "sigextr_fit_combine", "GOF_", "GOFpost_"]
 
 
 def getOutSuffix(s):

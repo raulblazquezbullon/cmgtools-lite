@@ -580,6 +580,8 @@ class MCAnalysis:
             buildVariationsFromAlternativesWithEnvelope(self.variationsFile, ret)
             buildPDFVariationsFromAlternativeSample(self.variationsFile, ret, self._options.year)
             for var in self.variationsFile.uncertainty():
+                if var.year():
+                    if var.year() not in self._options.year: continue
                 for p,h in ret.iteritems():
                     if not var.procmatch().match(p): continue
                     #print "\t-", p, var.name, var.year()

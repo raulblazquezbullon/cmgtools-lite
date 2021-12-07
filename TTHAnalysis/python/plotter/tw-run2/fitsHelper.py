@@ -24,7 +24,7 @@ slurmscaff = 'sbatch {extraS} -p {queue} -J {jobname} -e {logpath}/log.%j.%x.err
 haddcomm      = "hadd {out} {inputs}"
 
 
-nToysPerChunk = 400
+nToysPerChunk = 200
 nThreshold    = 1000
 
 def makeFit(task):
@@ -84,7 +84,7 @@ def makeFit(task):
                               y        = year,
                               r        = region if "," not in region else region.replace(",", ""),
                               plotsPrePost = "--saveShapes --saveWithUncertainties" if doPrePostPlots else "",
-                              asimov   = "-t -1 --setParameters r=1" if doAsimov else "",
+                              asimov   = "-t -1" if doAsimov else "",
                               extra    = extra)
     if verbose:
         print "Combine command:", comm, "\n"
@@ -127,6 +127,8 @@ def makeGOF(task):
     else:
         combcard_ = "../" + region + "/cuts-tw-" + region + ".txt"
 
+    if not os.path.isfile(combcard_):
+        raise RuntimeError("FATAL: no toys could be created as the card provided, {c}, doesn't exist.".format(c = combcard_))
 
     if not theQ:
         comm = "cd " + gofoutpath + "; " +  gofcomm.format(combcard  = combcard_,
@@ -334,7 +336,7 @@ def makeGOFplot(task):
     minX = min(0., min(valToys))
     maxX = min(max(valToys), sorted(valToys)[len(valToys)/2] * 4) # To avoid skewing for exta high values
 
-    if valData > maxX: maxX = valData * 1.1
+    if valData > maxX * 0.9: maxX = valData * 1.1
 
     hToys = r.TH1F("hToys", "hToys", 100, minX, maxX)
 
