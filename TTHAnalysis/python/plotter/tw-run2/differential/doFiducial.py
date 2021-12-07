@@ -459,6 +459,165 @@ def PlotParticleFidBinLevelResults(thedict, inpath, iY, varName, notff):
     tru_herwig.Divide(htmp)
     tru_herwig.Scale(1, "width")
     del htmp
+
+
+    tru_aMC_dr = deepcopy(tmptfile.Get('x_twamcatnlo_dr').Clone('tru_aMC_dr'))
+    tru_aMC_dr.SetLineWidth(2)
+    tru_aMC_dr.SetLineColor(r.kAzure)
+    tru_aMC_dr.Scale(scaleval)
+    tru_aMC_dr.SetMarkerSize(0)
+    tru_aMC_dr.Scale(1, "width")
+    htmp = deepcopy(tru_aMC_dr.Clone("htmp"))
+    fiduval = None; fiduunc = None
+
+    if not notff:
+        tmptfile11 = r.TFile.Open(inpath + "/" + iY + '/Fiducial/particle.root')
+        fiduval = tmptfile11.Get('x_twamcatnlo_dr').GetBinContent(1) * scaleval
+        fiduunc = tmptfile11.Get('x_twamcatnlo_dr').GetBinError(1)   * scaleval
+        tmptfile11.Close(); del tmptfile11
+    else:
+        fiduval = sum([htmp.GetBinContent(i) for i in range(1, htmp.GetNbinsX() + 1)])
+        fiduunc = r.TMath.Sqrt(sum([htmp.GetBinError(i)**2 for i in range(1, htmp.GetNbinsX() + 1)]))
+
+    for bin in range(1, htmp.GetNbinsX() + 1):
+        htmp.SetBinContent(bin, fiduval)
+        htmp.SetBinError(  bin, fiduunc)
+
+    tru_aMC_dr.Divide(htmp)
+    tru_aMC_dr.Scale(1, "width")
+    del htmp
+
+    tru_aMC_dr2 = deepcopy(tmptfile.Get('x_twamcatnlo_dr2').Clone('tru_aMC_dr2'))
+    tru_aMC_dr2.SetLineWidth(2)
+    tru_aMC_dr2.SetLineColor(r.kAzure -1)
+    tru_aMC_dr2.Scale(scaleval)
+    tru_aMC_dr2.SetMarkerSize(0)
+    tru_aMC_dr2.Scale(1, "width")
+    htmp = deepcopy(tru_aMC_dr2.Clone("htmp"))
+    fiduval = None; fiduunc = None
+
+    if not notff:
+        tmptfile11 = r.TFile.Open(inpath + "/" + iY + '/Fiducial/particle.root')
+        fiduval = tmptfile11.Get('x_twamcatnlo_dr2').GetBinContent(1) * scaleval
+        fiduunc = tmptfile11.Get('x_twamcatnlo_dr2').GetBinError(1)   * scaleval
+        tmptfile11.Close(); del tmptfile11
+    else:
+        fiduval = sum([htmp.GetBinContent(i) for i in range(1, htmp.GetNbinsX() + 1)])
+        fiduunc = r.TMath.Sqrt(sum([htmp.GetBinError(i)**2 for i in range(1, htmp.GetNbinsX() + 1)]))
+
+    for bin in range(1, htmp.GetNbinsX() + 1):
+        htmp.SetBinContent(bin, fiduval)
+        htmp.SetBinError(  bin, fiduunc)
+
+    tru_aMC_dr2.Divide(htmp)
+    tru_aMC_dr2.Scale(1, "width")
+    del htmp
+
+    tru_aMC_ds = deepcopy(tmptfile.Get('x_twamcatnlo_ds').Clone('tru_aMC_ds'))
+    tru_aMC_ds.SetLineWidth(2)
+    tru_aMC_ds.SetLineColor(r.kOrange)
+    tru_aMC_ds.Scale(scaleval)
+    tru_aMC_ds.SetMarkerSize(0)
+    tru_aMC_ds.Scale(1, "width")
+    htmp = deepcopy(tru_aMC_ds.Clone("htmp"))
+    fiduval = None; fiduunc = None
+
+    if not notff:
+        tmptfile11 = r.TFile.Open(inpath + "/" + iY + '/Fiducial/particle.root')
+        fiduval = tmptfile11.Get('x_twamcatnlo_ds').GetBinContent(1) * scaleval
+        fiduunc = tmptfile11.Get('x_twamcatnlo_ds').GetBinError(1)   * scaleval
+        tmptfile11.Close(); del tmptfile11
+    else:
+        fiduval = sum([htmp.GetBinContent(i) for i in range(1, htmp.GetNbinsX() + 1)])
+        fiduunc = r.TMath.Sqrt(sum([htmp.GetBinError(i)**2 for i in range(1, htmp.GetNbinsX() + 1)]))
+
+    for bin in range(1, htmp.GetNbinsX() + 1):
+        htmp.SetBinContent(bin, fiduval)
+        htmp.SetBinError(  bin, fiduunc)
+
+    tru_aMC_ds.Divide(htmp)
+    tru_aMC_ds.Scale(1, "width")
+    del htmp
+
+    tru_aMC_ds_runn = deepcopy(tmptfile.Get('x_twamcatnlo_ds_runningBW').Clone('tru_aMC_ds_runn'))
+    tru_aMC_ds_runn.SetLineWidth(2)
+    tru_aMC_ds_runn.SetLineColor(r.kOrange - 5)
+    tru_aMC_ds_runn.Scale(scaleval)
+    tru_aMC_ds_runn.SetMarkerSize(0)
+    tru_aMC_ds_runn.Scale(1, "width")
+    htmp = deepcopy(tru_aMC_ds_runn.Clone("htmp"))
+    fiduval = None; fiduunc = None
+
+    if not notff:
+        tmptfile11 = r.TFile.Open(inpath + "/" + iY + '/Fiducial/particle.root')
+        fiduval = tmptfile11.Get('x_twamcatnlo_ds_runningBW').GetBinContent(1) * scaleval
+        fiduunc = tmptfile11.Get('x_twamcatnlo_ds_runningBW').GetBinError(1)   * scaleval
+        tmptfile11.Close(); del tmptfile11
+    else:
+        fiduval = sum([htmp.GetBinContent(i) for i in range(1, htmp.GetNbinsX() + 1)])
+        fiduunc = r.TMath.Sqrt(sum([htmp.GetBinError(i)**2 for i in range(1, htmp.GetNbinsX() + 1)]))
+
+    for bin in range(1, htmp.GetNbinsX() + 1):
+        htmp.SetBinContent(bin, fiduval)
+        htmp.SetBinError(  bin, fiduunc)
+
+    tru_aMC_ds_runn.Divide(htmp)
+    tru_aMC_ds_runn.Scale(1, "width")
+    del htmp
+
+    tru_aMC_ds_IS = deepcopy(tmptfile.Get('x_twamcatnlo_ds_is').Clone('tru_aMC_ds_IS'))
+    tru_aMC_ds_IS.SetLineWidth(2)
+    tru_aMC_ds_IS.SetLineColor(r.kViolet -4)
+    tru_aMC_ds_IS.Scale(scaleval)
+    tru_aMC_ds_IS.SetMarkerSize(0)
+    tru_aMC_ds_IS.Scale(1, "width")
+    htmp = deepcopy(tru_aMC_ds_IS.Clone("htmp"))
+    fiduval = None; fiduunc = None
+
+    if not notff:
+        tmptfile11 = r.TFile.Open(inpath + "/" + iY + '/Fiducial/particle.root')
+        fiduval = tmptfile11.Get('x_twamcatnlo_ds_is').GetBinContent(1) * scaleval
+        fiduunc = tmptfile11.Get('x_twamcatnlo_ds_is').GetBinError(1)   * scaleval
+        tmptfile11.Close(); del tmptfile11
+    else:
+        fiduval = sum([htmp.GetBinContent(i) for i in range(1, htmp.GetNbinsX() + 1)])
+        fiduunc = r.TMath.Sqrt(sum([htmp.GetBinError(i)**2 for i in range(1, htmp.GetNbinsX() + 1)]))
+
+    for bin in range(1, htmp.GetNbinsX() + 1):
+        htmp.SetBinContent(bin, fiduval)
+        htmp.SetBinError(  bin, fiduunc)
+
+    tru_aMC_ds_IS.Divide(htmp)
+    tru_aMC_ds_IS.Scale(1, "width")
+    del htmp
+
+    tru_aMC_ds_IS_runn = deepcopy(tmptfile.Get('x_twamcatnlo_ds_is_runningBW').Clone('tru_aMC_ds_IS_runn'))
+    tru_aMC_ds_IS_runn.SetLineWidth(2)
+    tru_aMC_ds_IS_runn.SetLineColor(r.kViolet - 1)
+    tru_aMC_ds_IS_runn.Scale(scaleval)
+    tru_aMC_ds_IS_runn.SetMarkerSize(0)
+    tru_aMC_ds_IS_runn.Scale(1, "width")
+    htmp = deepcopy(tru_aMC_ds_IS_runn.Clone("htmp"))
+    fiduval = None; fiduunc = None
+
+    if not notff:
+        tmptfile11 = r.TFile.Open(inpath + "/" + iY + '/Fiducial/particle.root')
+        fiduval = tmptfile11.Get('x_twamcatnlo_ds_is_runningBW').GetBinContent(1) * scaleval
+        fiduunc = tmptfile11.Get('x_twamcatnlo_ds_is_runningBW').GetBinError(1)   * scaleval
+        tmptfile11.Close(); del tmptfile11
+    else:
+        fiduval = sum([htmp.GetBinContent(i) for i in range(1, htmp.GetNbinsX() + 1)])
+        fiduunc = r.TMath.Sqrt(sum([htmp.GetBinError(i)**2 for i in range(1, htmp.GetNbinsX() + 1)]))
+
+    for bin in range(1, htmp.GetNbinsX() + 1):
+        htmp.SetBinContent(bin, fiduval)
+        htmp.SetBinError(  bin, fiduunc)
+
+    tru_aMC_ds_IS_runn.Divide(htmp)
+    tru_aMC_ds_IS_runn.Scale(1, "width")
+    del htmp
+
+
     tmptfile.Close(); del tmptfile
 
 
@@ -470,10 +629,15 @@ def PlotParticleFidBinLevelResults(thedict, inpath, iY, varName, notff):
 
 
     plot.addHisto(nominal_withErrors, 'hist',    'Uncertainty',              'F', 'unc')
-    plot.addHisto(tru,                'L,same',  'tW Powheg DR + Pythia8',   'L', 'mc')
-    plot.addHisto(tru_DS,             'L,same',  'tW Powheg DS + Pythia8',   'L', 'mc')
-    plot.addHisto(tru_herwig,         'L,same',  'tW Powheg DR + Herwig',    'L', 'mc')
-    #plot.addHisto(aMCatNLO,           'L,same',  'tW aMC@NLO DR + Pythia8',  'L', 'mc')
+    plot.addHisto(tru,                'L,same', 'tW PH DR + P8',          'L', 'mc')
+    plot.addHisto(tru_DS,             'L,same', 'tW PH DS + P8',          'L', 'mc')
+    plot.addHisto(tru_herwig,         'L,same', 'tW PH DR + H7',          'L', 'mc')
+    plot.addHisto(tru_aMC_dr,         'L,same', 'tW aMC DR + P8',         'L', 'mc')
+    plot.addHisto(tru_aMC_dr2,        'L,same', 'tW aMC DR2 + P8',        'L', 'mc')
+    plot.addHisto(tru_aMC_ds,         'L,same', 'tW aMC DS + P8',         'L', 'mc')
+    plot.addHisto(tru_aMC_ds_runn,    'L,same', 'tW aMC DS dyn. + P8',    'L', 'mc')
+    plot.addHisto(tru_aMC_ds_IS,      'L,same', 'tW aMC DS IS + P8',      'L', 'mc')
+    plot.addHisto(tru_aMC_ds_IS_runn, 'L,same', 'tW aMC DS IS dyn. + P8', 'L', 'mc')
     plot.addHisto(thedict[""],        'P,E,same{s}'.format(s = ",X0" if "equalbinsunf" in vl.varList[varName] else ""), vl.labellegend,           'PEL','data')
     plot.saveCanvas(legloc)
 
@@ -577,6 +741,48 @@ def PlotParticleBinLevelResults(thedict, inpath, iY, varName, notff):
     tru_herwig.SetMarkerSize(0)
     tru_herwig.Scale(1, "width")
 
+    tru_aMC_dr = deepcopy(tmptfile.Get('x_twamcatnlo_dr').Clone('tru_aMC_dr'))
+    tru_aMC_dr.SetLineWidth(2)
+    tru_aMC_dr.SetLineColor(r.kAzure)
+    tru_aMC_dr.Scale(scaleval)
+    tru_aMC_dr.SetMarkerSize(0)
+    tru_aMC_dr.Scale(1, "width")
+
+    tru_aMC_dr2 = deepcopy(tmptfile.Get('x_twamcatnlo_dr2').Clone('tru_aMC_dr2'))
+    tru_aMC_dr2.SetLineWidth(2)
+    tru_aMC_dr2.SetLineColor(r.kAzure -1)
+    tru_aMC_dr2.Scale(scaleval)
+    tru_aMC_dr2.SetMarkerSize(0)
+    tru_aMC_dr2.Scale(1, "width")
+
+    tru_aMC_ds = deepcopy(tmptfile.Get('x_twamcatnlo_ds').Clone('tru_aMC_ds'))
+    tru_aMC_ds.SetLineWidth(2)
+    tru_aMC_ds.SetLineColor(r.kTeal -1)
+    tru_aMC_ds.Scale(scaleval)
+    tru_aMC_ds.SetMarkerSize(0)
+    tru_aMC_ds.Scale(1, "width")
+
+    tru_aMC_ds_runn = deepcopy(tmptfile.Get('x_twamcatnlo_ds_runningBW').Clone('tru_aMC_ds_runn'))
+    tru_aMC_ds_runn.SetLineWidth(2)
+    tru_aMC_ds_runn.SetLineColor(r.kCyan+1)
+    tru_aMC_ds_runn.Scale(scaleval)
+    tru_aMC_ds_runn.SetMarkerSize(0)
+    tru_aMC_ds_runn.Scale(1, "width")
+
+    tru_aMC_ds_IS = deepcopy(tmptfile.Get('x_twamcatnlo_ds_is').Clone('tru_aMC_ds_IS'))
+    tru_aMC_ds_IS.SetLineWidth(2)
+    tru_aMC_ds_IS.SetLineColor(r.kAzure + 10)
+    tru_aMC_ds_IS.Scale(scaleval)
+    tru_aMC_ds_IS.SetMarkerSize(0)
+    tru_aMC_ds_IS.Scale(1, "width")
+
+    tru_aMC_ds_IS_runn = deepcopy(tmptfile.Get('x_twamcatnlo_ds_is_runningBW').Clone('tru_aMC_ds_IS_runn'))
+    tru_aMC_ds_IS_runn.SetLineWidth(2)
+    tru_aMC_ds_IS_runn.SetLineColor(r.kCyan -2)
+    tru_aMC_ds_IS_runn.Scale(scaleval)
+    tru_aMC_ds_IS_runn.SetMarkerSize(0)
+    tru_aMC_ds_IS_runn.Scale(1, "width")
+
     tmptfile.Close(); del tmptfile
 
 
@@ -589,11 +795,16 @@ def PlotParticleBinLevelResults(thedict, inpath, iY, varName, notff):
 
     if nominal_withErrors[0].GetMaximum() <= tru.GetMaximum(): nominal_withErrors[0].SetMaximum(tru.GetMaximum())
 
-    plot.addHisto(nominal_withErrors, 'hist',   'Uncertainty',              'F', 'unc')
-    plot.addHisto(tru,                'L,same', 'tW Powheg DR + Pythia8',   'L', 'mc')
-    plot.addHisto(tru_DS,             'L,same', 'tW Powheg DS + Pythia8',   'L', 'mc')
-    plot.addHisto(tru_hwerig,         'L,same', 'tW Powheg DR + Herwig7',   'L', 'mc')
-    #plot.addHisto(aMCatNLO,           'L,same', 'tW aMC@NLO DR + Pythia8',  'L', 'mc')
+    plot.addHisto(nominal_withErrors, 'hist',   'Uncertainty',                'F', 'unc')
+    plot.addHisto(tru,                'L,same', 'tW Powheg DR + P8',          'L', 'mc')
+    plot.addHisto(tru_DS,             'L,same', 'tW Powheg DS + P8',          'L', 'mc')
+    plot.addHisto(tru_hwerig,         'L,same', 'tW Powheg DR + H7',          'L', 'mc')
+    plot.addHisto(tru_aMC_dr,         'L,same', 'tW aMC@NLO DR + P8',         'L', 'mc')
+    plot.addHisto(tru_aMC_dr2,        'L,same', 'tW aMC@NLO DR2 + P8',        'L', 'mc')
+    plot.addHisto(tru_aMC_ds,         'L,same', 'tW aMC@NLO DS + P8',         'L', 'mc')
+    plot.addHisto(tru_aMC_ds_runn,    'L,same', 'tW aMC@NLO DS dyn. + P8',    'L', 'mc')
+    plot.addHisto(tru_aMC_ds_IS,      'L,same', 'tW aMC@NLO DS IS + P8',      'L', 'mc')
+    plot.addHisto(tru_aMC_ds_IS_runn, 'L,same', 'tW aMC@NLO DS IS dyn. + P8', 'L', 'mc')
     plot.addHisto(thedict[""],            'P,E,same',vl.labellegend,          'PEL', 'data')
     plot.saveCanvas(legloc)
 
