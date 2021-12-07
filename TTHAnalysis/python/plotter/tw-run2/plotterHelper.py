@@ -11,11 +11,9 @@ r.gROOT.SetBatch(True)
 friendspath  = "/pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions"
 datasamples  = ["SingleMuon", "SingleElec", "DoubleMuon", "DoubleEG", "MuonEG", "LowEGJet", "HighEGJet", "EGamma"]
 
-#mcpath       = "/pool/ciencias/nanoAODv6/29jan2020_MC"
-#datapath     = "/pool/ciencias/nanoAODv6/13jan2020"
 mcpath       = "/pool/phedex/nanoAODv6v7"
 mcpathdiv    = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/misc/2021_04_nuevasdivisiones"
-datapath     = "/pool/phedex/nanoAODv6v7"
+datapath     = mcpath
 
 logpath      = friendspath + "/{p}/{y}/logs/plots"
 
@@ -165,6 +163,7 @@ if __name__=="__main__":
         print "> Creating MC symbolic links..."
         mcsampleslist = os.listdir(mcpath + "/" + str(year))
         for sam in mcsampleslist:
+            #if "ST_tW_Dilept" not in sam: continue
             if not os.path.islink(destdir + "/" + sam):
                 os.system(SLcommscaff.format(realdataset = mcpath + "/" + str(year) + "/" + sam,
                                              symlink = destdir + "/" + sam))
