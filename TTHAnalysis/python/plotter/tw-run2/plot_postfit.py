@@ -32,6 +32,12 @@ dictRegions = {
     "ch3"      : "2j2b",
 }
 
+dictRegionsXaxisLabels = {
+    "ch1"      : "BDT output",
+    "ch2"      : "BDT output",
+    "ch3"      : "Subleading jet p_{T} (GeV)",
+}
+
 dictBinEdgesRegions = {
     "ch1"      : [0.5,20.5],
     "ch2"      : [0.5,12.5],
@@ -49,6 +55,12 @@ dictBinsCenterRegions = {
 #    "ch2"      : [2,3,4,5,6],
 #    "ch3"      : [35,55,75,95,115,135,155,175],
 }
+
+lumidict     = {"2016" : 36.33,
+                "2017" : 41.53,
+                "2018" : 59.74,
+                "run2" : 138}
+
 
 def doSpam(text,x1,y1,x2,y2,align=12,fill=False,textSize=0.033,_noDelete={}):
   cmsprel = r.TPaveText(x1,y1,x2,y2,"NDC");
@@ -225,7 +237,7 @@ def producePlots(year, region, path):
       hAuxForAxis.GetYaxis().SetLabelFont(43)
       hAuxForAxis.GetYaxis().SetTitle("data/MC")
       hAuxForAxis.GetYaxis().SetTitleOffset(2.1)
-      hAuxForAxis.GetXaxis().SetTitle("BDT output")
+      hAuxForAxis.GetXaxis().SetTitle(dictRegionsXaxisLabels[dire])
       hAuxForAxis.GetYaxis().SetTitleSize(22)
       hAuxForAxis.GetYaxis().SetTitleFont(43)
       hAuxForAxis.GetXaxis().SetTitleOffset(4.8)
@@ -244,7 +256,7 @@ def producePlots(year, region, path):
       doSpam('#splitline{#scale[1.1]{#bf{CMS}}}{#scale[0.9]{#it{Preliminary}}}',.21, .845, .35, .885,textSize = 22)
       keyname = key
       if keyname == "fit_s": keyname = "postfit"
-      doSpam("138 fb^{-1} (13 TeV)",0.58, .955, .98, .995,textSize = 22)
+      doSpam(str(lumidict[year]) + " fb^{-1} (13 TeV)",0.58, .955, .98, .995,textSize = 22)
 
       doSpam("e^{#pm}#mu^{#mp}+" + dictRegions[dire], .41, .855, .6, .895, textSize = 22)
 	

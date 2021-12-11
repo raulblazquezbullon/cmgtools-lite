@@ -176,8 +176,8 @@ Float_t theBDT(Double_t BDT){
     return
 
 #########To rebin with more processes add name and + symbol in the second argument of the function, example: "tmvaBDT_1j1b_smallb_ttbar+tmvaBDT_1j1b_smallb_dy"
-getBinningForThatVariable("/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2021-11-19_SmallBinning/SmallBin/run2/1j1t/MVAtrain/plots-tw-1j1t_MVAtrain.root", "tmvaBDT_1j1b_smallb_ttbar", 20)
-getBinningForThatVariable("/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2021-11-19_SmallBinning/SmallBin/run2/2j1t/MVAtrain/plots-tw-2j1t_MVAtrain.root", "tmvaBDT_2j1b_smallb_ttbar", 12)
+getBinningForThatVariable("/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2021-12-11_SmallBinPerYearAndForNewTrainingNlooseJetsGeq1/SmallBin/run2/1j1t/MVAtrain/plots-tw-1j1t_MVAtrain.root", "tmvaBDT_1j1b_smallb_ttbar", 20)
+getBinningForThatVariable("/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2021-12-11_SmallBinPerYearAndForNewTrainingNlooseJetsGeq1/SmallBin/run2/2j1t/MVAtrain/plots-tw-2j1t_MVAtrain.root", "tmvaBDT_2j1b_smallb_ttbar", 12)
 
 #DY train
 #getBinningForThatVariable("/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2021-11-19_SmallBinning_DYTrain/SmallBin/run2/1j1t/MVAtrain/plots-tw-1j1t_MVAtrain.root", "tmvaBDT_1j1b_smallb_ttbar+tmvaBDT_1j1b_smallb_dy+tmvaBDT_1j1b_smallb_vvttv+tmvaBDT_1j1b_smallb_nonworz", 10)

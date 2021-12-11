@@ -16,7 +16,7 @@ lumidict     = {2016 : 36.33,
 #                2018 : 29.87}
 
 #friendsscaff = "--FDs {P}/0_lumijson --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --Fs {P}/5_mvas --Fs {P}/6_hemissue"
-friendsscaff = "--FDs {P}/0_lumijson --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --Fs {P}/5_mvas" #5_mvas_DY_newWithDiv
+friendsscaff = "--FDs {P}/0_lumijson --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --Fs {P}/5_mvas_nloosejetgeq1" #5_mvas_DY_newWithDiv, 5_mvas
 
 slurmscaff   = "sbatch -c {nth} -p {queue} -J {jobname} -e {logpath}/log.%j.%x.err -o {logpath}/log.%j.%x.out --wrap '{command}'"
 
@@ -176,7 +176,7 @@ if __name__ == "__main__":
     #print CardsCommand(prod, year, variable, bines, asimov, nthreads, outpath, region, noUnc, useFibre, extra)
 
     theregs  = ["1j1t", "2j1t", "2j2t"]
-    thevars  = ["getBDtW20bins{year}(tmvaBDT_1j1b)", "getBDtWOther12bins{year}(tmvaBDT_2j1b)", "min(max(Jet2_Pt, 30.), 189.)"] #Actual
+    thevars  = ["getBDtW20bins{year}NlooseJetsgeq1(tmvaBDT_1j1b)", "getBDtWOther12bins{year}(tmvaBDT_2j1b)", "min(max(Jet2_Pt, 30.), 189.)"] #Actual
 #    thevars  = ["getBDtW10bins{year}(tmvaBDT_1j1b)", "getBDtWOther6bins{year}(tmvaBDT_2j1b)", "min(max(Jet2_Pt, 30.), 189.)"] 
 #    thevars  = ["getBDtW20binsDYtrain{year}(tmvaBDT_1j1b)", "getBDtWOther12binsDYtrain{year}(tmvaBDT_2j1b)", "min(max(Jet2_Pt, 30.), 189.)"]
 #    thevars  = ["getBDtW10binsDYtrain{year}(tmvaBDT_1j1b)", "getBDtWOther6binsDYtrain{year}(tmvaBDT_2j1b)", "min(max(Jet2_Pt, 30.), 189.)"]
@@ -193,6 +193,11 @@ if __name__ == "__main__":
     #thevars  = ["1", "1", "1"]
     #thebins  = ["[0.5,1.5]","[0.5,1.5]","[0.5,1.5]"]
     ########----1 Bin test-------#######
+    
+    ########----Variables test-------#######
+    #thevars  = ["Jet1_Pt", "Jet2_Pt", "Jet2_Pt"]
+    #thebins  = ["[30,100,200]","[30,100,200]","[30,100,200]"]
+    ########----Variables test-------#######
     
     ########----Binning test-----#######
 #    theregs  = ["1j1t", "2j1t", "2j2t"]

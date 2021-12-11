@@ -369,6 +369,8 @@ Float_t getBDtW20binsNlooseJetsgeq2(Double_t BDT){
   else                       return 20;
 }
 
+// New 1j1t BDT rebinning the NlooseJet variable to [0,1)
+
 Float_t getBDtW20binsNlooseJetsgeq1(Double_t BDT){
   if      (BDT < -0.427731   ) return 1;
   else if (BDT < -0.367246) return 2;
@@ -391,6 +393,76 @@ Float_t getBDtW20binsNlooseJetsgeq1(Double_t BDT){
   else if (BDT < 0.332004) return 19;
   else                       return 20;
 }
+
+Float_t getBDtW20bins2016NlooseJetsgeq1(Double_t BDT){
+  if      (BDT < -0.428426   ) return 1;
+  else if (BDT < -0.367051) return 2;
+  else if (BDT < -0.333737) return 3;
+  else if (BDT < -0.305153) return 4;
+  else if (BDT < -0.274867) return 5;
+  else if (BDT < -0.240125) return 6;
+  else if (BDT < -0.201256) return 7;
+  else if (BDT < -0.160735) return 8;
+  else if (BDT < -0.120610) return 9;
+  else if (BDT < -0.080385) return 10;
+  else if (BDT < -0.037021) return 11;
+  else if (BDT < 0.010902) return 12;
+  else if (BDT < 0.062069) return 13;
+  else if (BDT < 0.117818) return 14;
+  else if (BDT < 0.172495) return 15;
+  else if (BDT < 0.218046) return 16;
+  else if (BDT < 0.254037) return 17;
+  else if (BDT < 0.291707) return 18;
+  else if (BDT < 0.335131) return 19;
+  else                       return 20;
+}
+
+Float_t getBDtW20bins2017NlooseJetsgeq1(Double_t BDT){
+  if      (BDT < -0.426326   ) return 1;
+  else if (BDT < -0.366571) return 2;
+  else if (BDT < -0.334518) return 3;
+  else if (BDT < -0.307071) return 4;
+  else if (BDT < -0.278289) return 5;
+  else if (BDT < -0.245884) return 6;
+  else if (BDT < -0.208276) return 7;
+  else if (BDT < -0.169394) return 8;
+  else if (BDT < -0.130694) return 9;
+  else if (BDT < -0.091913) return 10;
+  else if (BDT < -0.050226) return 11;
+  else if (BDT < -0.005328) return 12;
+  else if (BDT < 0.045612) return 13;
+  else if (BDT < 0.100298) return 14;
+  else if (BDT < 0.158439) return 15;
+  else if (BDT < 0.208902) return 16;
+  else if (BDT < 0.247839) return 17;
+  else if (BDT < 0.286138) return 18;
+  else if (BDT < 0.331888) return 19;
+  else                       return 20;
+}
+
+Float_t getBDtW20bins2018NlooseJetsgeq1(Double_t BDT){
+  if      (BDT < -0.428349   ) return 1;
+  else if (BDT < -0.367836) return 2;
+  else if (BDT < -0.335734) return 3;
+  else if (BDT < -0.308777) return 4;
+  else if (BDT < -0.280193) return 5;
+  else if (BDT < -0.248608) return 6;
+  else if (BDT < -0.211925) return 7;
+  else if (BDT < -0.173383) return 8;
+  else if (BDT < -0.134813) return 9;
+  else if (BDT < -0.095817) return 10;
+  else if (BDT < -0.054926) return 11;
+  else if (BDT < -0.010567) return 12;
+  else if (BDT < 0.038875) return 13;
+  else if (BDT < 0.093388) return 14;
+  else if (BDT < 0.151555) return 15;
+  else if (BDT < 0.203792) return 16;
+  else if (BDT < 0.244592) return 17;
+  else if (BDT < 0.283701) return 18;
+  else if (BDT < 0.330070) return 19;
+  else                       return 20;
+}
+
 
 void functions_tw() {}
 
