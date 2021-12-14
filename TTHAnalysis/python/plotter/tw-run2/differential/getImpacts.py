@@ -13,9 +13,13 @@ import varList as vl
 r.PyConfig.IgnoreCommandLineOptions = True
 r.TH1.AddDirectory(0)
 
-comm1 = "combineTool.py -M Impacts -d {incard} --doInitialFit --robustFit 1 {ncores} {asimov} {extra} -m 1 -n {prefix} --out {outdir} --redefineSignalPOIs {pois} --floatOtherPOIs 1 --robustHesse 1 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000"
-comm2 = "combineTool.py -M Impacts -d {incard} --robustFit 1 --doFits {ncores} {asimov} {extra} -m 1 -n {prefix} --redefineSignalPOIs {pois} --robustHesse 1 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000"
-comm3 = "combineTool.py -M Impacts -d {incard} -o impacts{prefix}.json {ncores} {asimov} {extra} -m 1 -n {prefix} --redefineSignalPOIs {pois} --robustHesse 1 --robustFit 1 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000"
+#comm1 = "combineTool.py -M Impacts -d {incard} --doInitialFit --robustFit 1 {ncores} {asimov} {extra} -m 1 -n {prefix} --out {outdir} --redefineSignalPOIs {pois} --floatOtherPOIs 1 --robustHesse 1 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000"
+#comm2 = "combineTool.py -M Impacts -d {incard} --robustFit 1 --doFits {ncores} {asimov} {extra} -m 1 -n {prefix} --redefineSignalPOIs {pois} --robustHesse 1 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000"
+#comm3 = "combineTool.py -M Impacts -d {incard} -o impacts{prefix}.json {ncores} {asimov} {extra} -m 1 -n {prefix} --redefineSignalPOIs {pois} --robustHesse 1 --robustFit 1 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000"
+
+comm1 = "combineTool.py -M Impacts -d {incard} --doInitialFit --robustFit 1 {ncores} {asimov} {extra} -m 1 -n {prefix} --out {outdir} --redefineSignalPOIs {pois} --floatOtherPOIs 1 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --cminDefaultMinimizerStrategy 0"
+comm2 = "combineTool.py -M Impacts -d {incard} --robustFit 1 --doFits {ncores} {asimov} {extra} -m 1 -n {prefix} --redefineSignalPOIs {pois} --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --cminDefaultMinimizerStrategy 0"
+comm3 = "combineTool.py -M Impacts -d {incard} -o impacts{prefix}.json {ncores} {asimov} {extra} -m 1 -n {prefix} --redefineSignalPOIs {pois} --robustFit 1  --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --cminDefaultMinimizerStrategy 0"
 
 def GetRounded(nom, e_hi, e_lo):
     if e_hi < 0.0:
@@ -29,14 +33,14 @@ def GetRounded(nom, e_hi, e_lo):
     return (s_nom, s_hi, s_lo)
 
 
-def plotImpacts(inputjson, outputname, outputpath, npois):
+def plotImpacts(inputjson, outputname, outputpath, npois, doBlind):
     left_margin   = 0.2
     pullsprop     = 0.37
     label_size    = 0.021
-    doBlind       = False
     doEraseStatNuis = False
     canv_width    = 700
-    canv_heigh    = 600
+    #canv_width    = 900
+    canv_height   = 600
     per_page      = 30
     max_pages     = None
     cms_label     = "Internal"
@@ -64,18 +68,20 @@ def plotImpacts(inputjson, outputname, outputpath, npois):
 
     # We will assume the first POI is the one to plot
     POIs = [ele['name'] for ele in data['POIs']]
-    POI  = POIs[0]
-    if mainPOI:
-        POI = mainPOI
+    #POI  = POIs[0]
+    #if mainPOI:
+        #POI = mainPOI
 
     poiDict = {}
     for ele in data['POIs']:
-#        print ele
         poiDict[ele['name'].encode("utf-8").decode("utf-8")] = ele
     
-    # Sort parameters by largest absolute impact on this POI
-    data['params'].sort(key = lambda x: abs(x['impact_%s' % POI]),
-                        reverse = True)
+    #for el in data["params"]:
+        #if el["name"] == "dy_norm": print el
+    #sys.exit()
+
+    # Sort parameters by the average of the absolute impact on all POIs
+    data['params'].sort(key = lambda x: vl.mean([abs(x['impact_' + iP]) for iP in POIs]), reverse = True)
     
     # Delete stat. nuis.?
     if doEraseStatNuis:
@@ -137,8 +143,8 @@ def plotImpacts(inputjson, outputname, outputpath, npois):
             boxes.append(box)
 
         # Crate and style the pads
-#        pads = plot.MultiRatioSplitColumns([pullsprop] + [(1. - pullsprop - 0.01)/npois] * npois, [0.] * (npois + 1), [0.] * (npois + 1))
-        pads = plot.MultiRatioSplitColumns([(1. - pullsprop - 0.01)/npois] * npois * 2, [0.] * npois * 2, [0.] * npois * 2)
+        pads = plot.MultiRatioSplitColumns([pullsprop] + [(1. - pullsprop - 0.01)/npois] * npois, [0.] * (npois + 1), [0.] * (npois + 1))
+        #pads = plot.MultiRatioSplitColumns([(1. - pullsprop - 0.01)/npois] * npois * 2, [0.] * npois * 2, [0.] * npois * 2)
         for iP in range(npois):
             pads[iP + 1].SetGrid(1, 0)
         pads[0].SetGrid(1, 0)
@@ -159,6 +165,7 @@ def plotImpacts(inputjson, outputname, outputpath, npois):
         text_entries = []
         redo_boxes   = []
         print "\t- Beginning parameter analysis"
+        #### Pulls
         for p in xrange(n_params):
             i   = n_params - (p + 1)
             pre = pdata[p]['prefit']
@@ -326,7 +333,6 @@ def plotImpacts(inputjson, outputname, outputpath, npois):
                 plot.DrawTitle(pads[iP + 1], '#hat{#mu_{%s}} = %s^{#plus%s}_{#minus%s}%s' % (
                     iP, s_nom_list[iP], s_hi_list[iP], s_lo_list[iP],
                     '' if units is None else ' ' + units), 3, 0.27, 0.3)
-                    
 
         extra = ''
         if page == 0:
@@ -338,7 +344,7 @@ def plotImpacts(inputjson, outputname, outputpath, npois):
 
 
 def makeImpacts(task):
-    inpath, year, varName, ncores, pretend, verbose, extra = task
+    inpath, year, varName, ncores, pretend, verbose, extra, doobs, doblind = task
 
     print '\n> Creating impacts for variable', varName, 'from year', year, '\n'
     bins_detector = vl.varList[varName]['bins_detector']
@@ -348,11 +354,19 @@ def makeImpacts(task):
 
     thepois = ",".join( ["r_tW_" + str(i) for i in range(nparticlebins)] )
 
-    impactsoutpath = inpath + "/" + year + "/" + varName + "/sigextr_fit_combine/impacts/"
+    impactsoutpath = inpath + "/" + year + "/" + varName + "/sigextr_fit_combine/{o}Impacts/".format(o = "Obs" if doObs else "")
+
+    asimov_ = ""
+    if not doobs:
+        asimov_ =  "-t -1 --setParameters "
+        for idx in range(nparticlebins - 1):
+            asimov_ += "r_tW_{iBp}=1,".format(iBp = idx)
+        asimov_ += "r_tW_{iBp}=1".format(iBp = nparticlebins - 1)
+
 
     firstcomm = comm1.format(y      = year,
                              ncores = ("--parallel " + str(ncores)) if ncores else "",
-                             asimov = "",
+                             asimov = asimov_,
                              incard = "../fit_output.root",
                              outdir = "./",
                              var    = varName,
@@ -370,9 +384,9 @@ def makeImpacts(task):
             raise RuntimeError("FATAL: first command failed to execute for variable {v} of year {y}.".format(v = varName,
                                                                                                              y = year))
 
-    secondcomm = comm2.format(y      = year,
+    secondcomm = comm2.format(y     = year,
                              ncores = ("--parallel " + str(ncores)) if ncores else "",
-                             asimov = "",
+                             asimov = asimov_,
                              incard = "../fit_output.root",
                              outdir = "./",
                              var    = varName,
@@ -392,7 +406,7 @@ def makeImpacts(task):
 
     thirdcomm = comm3.format(y      = year,
                              ncores = ("--parallel " + str(ncores)) if ncores else "",
-                             asimov = "",
+                             asimov = asimov_,
                              incard = "../fit_output.root",
                              outdir = "./",
                              var    = varName,
@@ -411,7 +425,7 @@ def makeImpacts(task):
                                                                                                              y = year))
 
     
-    plotImpacts(impactsoutpath + "/impacts{y}_{v}.json".format(y = year, v = varName), "impacts_{y}_{v}".format(y = year, v = varName), impactsoutpath, nparticlebins)
+    plotImpacts(impactsoutpath + "/impacts{y}_{v}.json".format(y = year, v = varName), "impacts_{y}_{v}".format(y = year, v = varName), impactsoutpath, nparticlebins, doblind)
     
     print '\n> Variable', varName, "' impacts produced.\n"
     return
@@ -430,6 +444,8 @@ if __name__ == '__main__':
     parser.add_argument('--nthreads',   '-j', metavar = 'nthreads',   dest = "nthreads", required = False, default = 0, type = int)
     parser.add_argument('--pretend',    '-p', action  = "store_true", dest = "pretend",  required = False, default = False)
     parser.add_argument('--verbose',    '-V', action  = "store_true", dest = "verbose",  required = False, default = False)
+    parser.add_argument('--doObserved', '-O', action  = "store_true", dest = "doobs",    required = False, default = False)
+    parser.add_argument('--blindSignalStrength','-b',action="store_true",dest="blindmu", required = False, default = False)
 
 
     args     = parser.parse_args()
@@ -440,6 +456,8 @@ if __name__ == '__main__':
     variable = args.variable
     verbose  = args.verbose
     extra    = args.extra
+    doObs    = args.doobs
+    doBlind  = args.blindmu
 
 
     tasks = []
@@ -475,9 +493,9 @@ if __name__ == '__main__':
 
         for iV in thevars:
             if "plots" in iV or "Fiducial" in iV or "table" in iV: continue
-            if not os.path.isdir(inpath + "/" + iY + "/" + iV + "/sigextr_fit_combine/impacts"):
-                os.system("mkdir -p " + inpath + "/" + iY + "/" + iV + "/sigextr_fit_combine/impacts")
-            tasks.append( (inpath, iY, iV, nthreads, pretend, verbose, extra) )
+            if not os.path.isdir(inpath + "/" + iY + "/" + iV + "/sigextr_fit_combine/{o}Impacts".format(o = "Obs" if doObs else "")):
+                os.system("mkdir -p " + inpath + "/" + iY + "/" + iV + "/sigextr_fit_combine/{o}Impacts".format(o = "Obs" if doObs else ""))
+            tasks.append( (inpath, iY, iV, nthreads, pretend, verbose, extra, doObs, doBlind) )
 
     #print tasks
     for task in tasks:

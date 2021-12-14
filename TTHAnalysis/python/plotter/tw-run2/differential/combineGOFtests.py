@@ -13,7 +13,31 @@ haddcomm      = "hadd {out} {inputs}"
 
 
 nToysPerChunk = 200
+nToysPerJob   = 20
 nThreshold    = 1000
+
+
+def doSomeToysForMePlease(tsk):
+    thei, gofoutpath, combcard_, extra, year, region, toistodo, doPost, verbose, pretend = tsk
+
+    comm = "cd " + gofoutpath + "; " +  gofcomm.format(combcard  = combcard_,
+        extra     = extra,
+        y         = year,
+        r         = region + "_toy{i}".format(i = thei) if "," not in region else region.replace(",", "") + "_toy{i}".format(i = thei),
+        tois      = "-t " + str(toistodo) + " -s -1",
+        nthreads  = "",
+        queue     = "",
+        preorpost = "--fixedSignalStrength=1" if not doPost else "--toysFreq") + "; " + "cd -"
+
+    if verbose:
+        print "Toys GOF command:", comm, "\n"
+
+    if not pretend:
+        outstat = os.system(comm)
+        if outstat:
+            raise RuntimeError("FATAL: Combine failed to execute for year {y} and region(s) {r} during the nominal GOF test fit execution.".format(y = year, r = region))
+
+    return
 
 
 def makeGOF(task):
@@ -32,8 +56,8 @@ def makeGOF(task):
                               y         = year,
                               r         = thevar,
                               tois      = "",
-                              nthreads  = "--parallel " + str(nth) if nth else "",
-                              queue     = "--job-mode slurm --task-name CMGTGOFnom_{y}_{r}".format(y = year, r = thevar) if theQ else "",
+                              nthreads  = "",
+                              queue     = "",
                               preorpost = "--fixedSignalStrength=1" if not doPost else "") + "; " + "cd -"
         if verbose:
             print "Nominal GOF command:", comm, "\n"
@@ -41,25 +65,56 @@ def makeGOF(task):
         if not pretend:
             outstat = os.system(comm)
             if outstat:
-                raise RuntimeError("FATAL: Combine failed to execute for year {y} and variable {r} during the nominal GOF test fit execution.".format(y = year, r = thevar))
+                raise RuntimeError("FATAL: Combine failed to execute for year {y} and region(s) {r} during the nominal GOF test fit execution.".format(y = year, r = region))
+
+        nToyChunks = nToys // nToysPerJob
+        tmptasks = []
+        for i in range(nToyChunks):
+            tmptasks.append( (i, gofoutpath, combcard_, extra, year, thevar, nToysPerJob if i != nToyChunks - 1 else nToys - nToysPerJob * (nToyChunks - 1), doPost, verbose, pretend) )
+
+        if nth > 1:
+            pool = Pool(nth)
+            pool.map(doSomeToysForMePlease, tmptasks)
+            pool.close()
+            pool.join()
+            del pool
+        else:
+            for el in tmptasks:
+                doSomeToysForMePlease(el)
+
+        #comm = "cd " + gofoutpath + "; " +  gofcomm.format(combcard  = combcard_,
+                              #extra     = extra,
+                              #y         = year,
+                              #r         = thevar,
+                              #tois      = "",
+                              #nthreads  = "--parallel " + str(nth) if nth else "",
+                              #queue     = "--job-mode slurm --task-name CMGTGOFnom_{y}_{r}".format(y = year, r = thevar) if theQ else "",
+                              #preorpost = "--fixedSignalStrength=1" if not doPost else "") + "; " + "cd -"
+        #if verbose:
+            #print "Nominal GOF command:", comm, "\n"
+
+        #if not pretend:
+            #outstat = os.system(comm)
+            #if outstat:
+                #raise RuntimeError("FATAL: Combine failed to execute for year {y} and variable {r} during the nominal GOF test fit execution.".format(y = year, r = thevar))
 
 
-        comm = "cd " + gofoutpath + "; " +  gofcomm.format(combcard  = combcard_,
-                              extra     = extra,
-                              y         = year,
-                              r         = thevar + "_toy",
-                              tois      = "-t " + str(nToys),
-                              nthreads  = "--parallel " + str(nth) if nth else "",
-                              queue     = "--job-mode slurm --task-name CMGTGOFtoys_{y}_{r}".format(y = year, r = thevar) if theQ else "",
-                              preorpost = "--fixedSignalStrength=1" if not doPost else "--toysFreq") + "; " + "cd -"
+        #comm = "cd " + gofoutpath + "; " +  gofcomm.format(combcard  = combcard_,
+                              #extra     = extra,
+                              #y         = year,
+                              #r         = thevar + "_toy",
+                              #tois      = "-t " + str(nToys),
+                              #nthreads  = "--parallel " + str(nth) if nth else "",
+                              #queue     = "--job-mode slurm --task-name CMGTGOFtoys_{y}_{r}".format(y = year, r = thevar) if theQ else "",
+                              #preorpost = "--fixedSignalStrength=1" if not doPost else "--toysFreq") + "; " + "cd -"
 
-        if verbose:
-            print "Toys GOF command:", comm, "\n"
+        #if verbose:
+            #print "Toys GOF command:", comm, "\n"
 
-        if not pretend:
-            outstat = os.system(comm)
-            if outstat:
-                raise RuntimeError("FATAL: Combine failed to execute for year {y} and variable {r} during the nominal GOF test fit execution.".format(y = year, r = thevar))
+        #if not pretend:
+            #outstat = os.system(comm)
+            #if outstat:
+                #raise RuntimeError("FATAL: Combine failed to execute for year {y} and variable {r} during the nominal GOF test fit execution.".format(y = year, r = thevar))
     else:
         logpath = gofoutpath + "/slurmlogs"
         if not os.path.isdir(logpath):
