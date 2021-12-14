@@ -16,7 +16,7 @@ r.TH1.AddDirectory(0)
 comm1 = "combineTool.py -M Impacts -d {incard} --doInitialFit --robustFit 1 {ncores} {asimov} {extra} -m 1 -n {prefix} --out {outdir} --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --cminDefaultMinimizerStrategy 0"
 comm2 = "combineTool.py -M Impacts -d {incard} --robustFit 1 --doFits {ncores} {asimov} {extra} -m 1 -n {prefix} --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --cminDefaultMinimizerStrategy 0"
 comm3 = "combineTool.py -M Impacts -d {incard} -o impacts{prefix}.json {ncores} {asimov} {extra} -m 1 -n {prefix} --robustFit 1 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --cminDefaultMinimizerStrategy 0"
-comm4 = "plotImpacts.py -i impacts{prefix}.json -o impacts{prefix}"
+comm4 = "plotImpacts.py -i impacts{prefix}.json -o impacts{prefix} {bl}"
 
 
 def confirm(message = "Do you wish to continue?"):
@@ -76,11 +76,11 @@ def reviewThePreviousStepsFiles(thefolder, nth, verbose):
 
 
 def makeImpacts(task):
-    inpath, year, region, ncores, pretend, verbose, extra, doobs = task
+    inpath, year, region, ncores, pretend, verbose, extra, doobs, doBlind = task
 
     print '\n> Creating impacts for region(s)', region, 'from year', year, '\n'
     
-    impactsoutpath = inpath + "/" + iY + "/" + "/impacts_" + region
+    impactsoutpath = inpath + "/" + iY + "/" + ("Obs" * doObs) + "Impacts_" + region
 
     if "," not in region:
         physicsModel = 'text2workspace.py -m 125 {infile} -o {outfile}'.format(infile  = inpath + "/" + iY + "/{r}/cuts-tw-{r}.txt".format(r = region),
@@ -157,13 +157,13 @@ def makeImpacts(task):
         if outstat:
             raise RuntimeError("FATAL: third command failed to execute for region {r} of year {y}.".format(v = region,
                                                                                                            y = year))
-    
+
     fourthcomm = comm4.format(y      = year,
                               ncores = ("--parallel " + str(ncores)) if ncores else "",
                               asimov = "" if doobs else "-t -1 --setParameters r=1",
                               incard = "../combcard_{r}.root".format(r = region.replace(",", "")) if "," in region else "../{r}/cuts-tw-{r}_ws.root".format(r = region),
                               outdir = "./",
-                              extra  = extra,
+                              bl     = "--blind" if doBlind else "",
                               prefix = year + "_" + region.replace(",", ""),
     )
 
@@ -195,6 +195,7 @@ if __name__ == '__main__':
     parser.add_argument('--pretend',    '-p', action  = "store_true", dest = "pretend",  required = False, default = False)
     parser.add_argument('--verbose',    '-V', action  = "store_true", dest = "verbose",  required = False, default = False)
     parser.add_argument('--doObserved', '-O', action  = "store_true", dest = "doobs",    required = False, default = False)
+    parser.add_argument('--blindSignalStrength','-b',action="store_true",dest="blindmu", required = False, default = False)
 
 
     args     = parser.parse_args()
@@ -206,6 +207,7 @@ if __name__ == '__main__':
     region   = args.region
     extra    = args.extra
     doObs    = args.doobs
+    doBlind  = args.blindmu
 
 
     tasks = []
@@ -230,9 +232,9 @@ if __name__ == '__main__':
         raise RuntimeError("FATAL: you must provide a region, or various of them!")
         
     for iY in theyears:
-        if not os.path.isdir(inpath + "/" + iY + "/" + "/impacts_" + region):
-            os.system("mkdir -p " + inpath + "/" + iY + "/" + "/impacts_" + region)
-        tasks.append( (inpath, iY, region, nthreads, pretend, verbose, extra, doObs) )
+        if not os.path.isdir(inpath + "/" + iY + "/" + "/" + ("Obs" * doObs) + "Impacts_" + region):
+            os.system("mkdir -p " + inpath + "/" + iY + "/" + ("Obs" * doObs) + "Impacts_" + region)
+        tasks.append( (inpath, iY, region, nthreads, pretend, verbose, extra, doObs, doBlind) )
 
     #print tasks
     for task in tasks:

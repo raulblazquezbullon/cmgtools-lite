@@ -25,6 +25,7 @@ haddcomm      = "hadd {out} {inputs}"
 
 
 nToysPerChunk = 200
+nToysPerJob   = 20
 nThreshold    = 1000
 
 def makeFit(task):
@@ -115,6 +116,29 @@ def makeFit(task):
     return
 
 
+def doSomeToysForMePlease(tsk):
+    thei, gofoutpath, combcard_, extra, year, region, toistodo, doPost, verbose, pretend = tsk
+
+    comm = "cd " + gofoutpath + "; " +  gofcomm.format(combcard  = combcard_,
+        extra     = extra,
+        y         = year,
+        r         = region + "_toy{i}".format(i = thei) if "," not in region else region.replace(",", "") + "_toy{i}".format(i = thei),
+        tois      = "-t " + str(toistodo) + " -s -1",
+        nthreads  = "",
+        queue     = "",
+        preorpost = "--fixedSignalStrength=1" if not doPost else "--toysFreq") + "; " + "cd -"
+
+    if verbose:
+        print "Toys GOF command:", comm, "\n"
+
+    if not pretend:
+        outstat = os.system(comm)
+        if outstat:
+            raise RuntimeError("FATAL: Combine failed to execute for year {y} and region(s) {r} during the nominal GOF test fit execution.".format(y = year, r = region))
+
+    return
+
+
 def makeGOF(task):
     year, region, inpath, verbose, pretend, extra, doPost, nth, nToys, theQ, Eslurm = task
     fitoutpath = inpath + "/" + year
@@ -128,7 +152,9 @@ def makeGOF(task):
         combcard_ = "../" + region + "/cuts-tw-" + region + ".txt"
 
     if not os.path.isfile(gofoutpath + "/" + combcard_):
-        raise RuntimeError("FATAL: no toys could be created as the card provided, {c}, doesn't exist.".format(c = combcard_))
+
+        raise RuntimeError("FATAL: no toys could be created as the card provided, {c}, doesn't exist.".format(c = gofoutpath + "/" + combcard_))
+
 
     if not theQ:
         comm = "cd " + gofoutpath + "; " +  gofcomm.format(combcard  = combcard_,
@@ -137,7 +163,7 @@ def makeGOF(task):
                               r         = region if "," not in region else region.replace(",", ""),
                               tois      = "",
                               nthreads  = "--parallel " + str(nth) if nth else "",
-                              queue     = "--job-mode slurm --task-name CMGTGOFnom_{y}_{r}".format(y = year, r = region) if theQ else "",
+                              queue     = "",
                               preorpost = "--fixedSignalStrength=1" if not doPost else "") + "; " + "cd -"
         if verbose:
             print "Nominal GOF command:", comm, "\n"
@@ -148,22 +174,39 @@ def makeGOF(task):
                 raise RuntimeError("FATAL: Combine failed to execute for year {y} and region(s) {r} during the nominal GOF test fit execution.".format(y = year, r = region))
 
 
-        comm = "cd " + gofoutpath + "; " +  gofcomm.format(combcard  = combcard_,
-                              extra     = extra,
-                              y         = year,
-                              r         = region + "_toy" if "," not in region else region.replace(",", "") + "_toy",
-                              tois      = "-t " + str(nToys),
-                              nthreads  = "--parallel " + str(nth) if nth else "",
-                              queue     = "--job-mode slurm --task-name CMGTGOFtoys_{y}_{r}".format(y = year, r = region) if theQ else "",
-                              preorpost = "--fixedSignalStrength=1" if not doPost else "--toysFreq") + "; " + "cd -"
+        #comm = "cd " + gofoutpath + "; " +  gofcomm.format(combcard  = combcard_,
+                              #extra     = extra,
+                              #y         = year,
+                              #r         = region + "_toy" if "," not in region else region.replace(",", "") + "_toy",
+                              #tois      = "-t " + str(nToys),
+                              #nthreads  = "--parallel " + str(nth) if nth else "",
+                              #queue     = "",
+                              #preorpost = "--fixedSignalStrength=1" if not doPost else "--toysFreq") + "; " + "cd -"
 
-        if verbose:
-            print "Toys GOF command:", comm, "\n"
+        #if verbose:
+            #print "Toys GOF command:", comm, "\n"
 
-        if not pretend:
-            outstat = os.system(comm)
-            if outstat:
-                raise RuntimeError("FATAL: Combine failed to execute for year {y} and region(s) {r} during the nominal GOF test fit execution.".format(y = year, r = region))
+        #if not pretend:
+            #outstat = os.system(comm)
+            #if outstat:
+                #raise RuntimeError("FATAL: Combine failed to execute for year {y} and region(s) {r} during the nominal GOF test fit execution.".format(y = year, r = region))
+
+
+        nToyChunks = nToys // nToysPerJob
+        tmptasks = []
+        for i in range(nToyChunks):
+            tmptasks.append( (i, gofoutpath, combcard_, extra, year, region, nToysPerJob if i != nToyChunks - 1 else nToys - nToysPerJob * (nToyChunks - 1), doPost, verbose, pretend) )
+
+        if nth > 1:
+            pool = Pool(nth)
+            pool.map(doSomeToysForMePlease, tmptasks)
+            pool.close()
+            pool.join()
+            del pool
+        else:
+            for el in tmptasks:
+                doSomeToysForMePlease(el)
+
     else:
         logpath = gofoutpath + "/slurmlogs"
         if not os.path.isdir(logpath):
@@ -378,10 +421,10 @@ if __name__ == "__main__":
     parser.add_argument('--verbose',      '-V',  action  = "store_true",  dest = "verbose",      required = False, default = False)
     parser.add_argument('--nToys',        '-nT', metavar = 'ntoys',       dest = "ntoys",        required = False, default = 100, type = int)
     parser.add_argument('--plotsPrePost', '-pp', action  = "store_true",  dest = "plotsPrePost", required = False, default = False)
-    parser.add_argument('--useData',      '-uD', action  = "store_true",  dest = "usedata",       required = False, default = False)
+    parser.add_argument('--useData',      '-uD', action  = "store_true",  dest = "usedata",      required = False, default = False)
     parser.add_argument('--gofprefit',    '-gP', action  = "store_true",  dest = "gofprefit",    required = False, default = False) #Option to make gof test
     parser.add_argument('--gofpostfit',   '-gF', action  = "store_true",  dest = "gofpostfit",   required = False, default = False) #Option to make gof test
-    parser.add_argument('--gofplot',      '-gH', action  = "store_true",  dest = "gofhisto",   required = False, default = False) #Option to make gof test
+    parser.add_argument('--gofplot',      '-gH', action  = "store_true",  dest = "gofhisto",     required = False, default = False) #Option to make gof test
     parser.add_argument('--extraSlurmArgs','-eS',metavar = 'extraslurm',  dest = "extraslurm",   required = False, default = "")
 
     args     = parser.parse_args()
