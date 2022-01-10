@@ -19,3 +19,5 @@ tmvaBDT_2j1b_12bins  : getBDtWOther12bins(tmvaBDT_2j1b) : [0.5, 1.5, 2.5, 3.5, 4
 
 tot_weight: 1 : 1,0.5,1.5; XTitle = "Selected events", LegendCutoff=0, MoreY=2.0
 
+jet1_btag : Jet_btagDeepFlavB[iJetSel30_Recl[0]] : 20,0,1        ; IncludeUnderflow=False, LegendCutoff=0,  XTitle="Leading jet DeepFlavour b-tagging discr. (adim.)"
+jet2_btag : Jet_btagDeepFlavB[iJetSel30_Recl[1]] : 20,0,1  ; IncludeUnderflow=False, LegendCutoff=0,  XTitle="Subleading jet DeepFlavour b-tagging discr. (adim.)"

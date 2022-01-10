@@ -177,6 +177,7 @@ if __name__ == "__main__":
 
     theregs  = ["1j1t", "2j1t", "2j2t"]
     thevars  = ["getBDtW20bins{year}NlooseJetsgeq1(tmvaBDT_1j1b)", "getBDtWOther12bins{year}(tmvaBDT_2j1b)", "min(max(Jet2_Pt, 30.), 189.)"] #Actual
+#    thevars  = ["getBDtW20bins{year}NlooseJetsgeq1AndJetCut(tmvaBDT_1j1b)", "getBDtWOther12binsAndJetCut{year}(tmvaBDT_2j1b)", "min(max(Jet2_Pt, 30.), 189.)"]
 #    thevars  = ["getBDtW10bins{year}(tmvaBDT_1j1b)", "getBDtWOther6bins{year}(tmvaBDT_2j1b)", "min(max(Jet2_Pt, 30.), 189.)"] 
 #    thevars  = ["getBDtW20binsDYtrain{year}(tmvaBDT_1j1b)", "getBDtWOther12binsDYtrain{year}(tmvaBDT_2j1b)", "min(max(Jet2_Pt, 30.), 189.)"]
 #    thevars  = ["getBDtW10binsDYtrain{year}(tmvaBDT_1j1b)", "getBDtWOther6binsDYtrain{year}(tmvaBDT_2j1b)", "min(max(Jet2_Pt, 30.), 189.)"]
@@ -192,6 +193,16 @@ if __name__ == "__main__":
     ########----1 Bin test-------#######
     #thevars  = ["1", "1", "1"]
     #thebins  = ["[0.5,1.5]","[0.5,1.5]","[0.5,1.5]"]
+    ########----1 Bin test-------#######
+
+    ########----4 Bin test-------#######
+    #thevars  = ["getBDtW4bins{year}NlooseJetsgeq1(tmvaBDT_1j1b)", "getBDtWOther4bins{year}(tmvaBDT_2j1b)", "min(max(Jet2_Pt, 30.), 189.)"]
+    #thebins  = ["[0.5,1.5,2.5,3.5]","[0.5,1.5,2.5,3.5]","[30,70,110,150,190]"]
+    ########----1 Bin test-------#######
+    
+    ########----2 Bin test-------#######
+    #thevars  = ["getBDtW2bins{year}NlooseJetsgeq1(tmvaBDT_1j1b)", "getBDtWOther2bins{year}(tmvaBDT_2j1b)", "min(max(Jet2_Pt, 30.), 189.)"]
+    #thebins  = ["[0.5,1.5,2.5]","[0.5,1.5,2.5]","[30,60,190]"]
     ########----1 Bin test-------#######
     
     ########----Variables test-------#######
