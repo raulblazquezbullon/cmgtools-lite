@@ -1,8 +1,9 @@
-TTG  : TTGamma_Dilep : 1.495*1.4852 :  LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0  && LepGood4_mcMatchId!=0 ; FillColor=ROOT.kCyan-6
-TTG  : TTGamma_Singlep : 5.056*1.4852  :  LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 && LepGood4_mcMatchId!=0; FillColor=ROOT.kCyan-6
-TTG  : TGJets_lep      : 1.02          :LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 && LepGood4_mcMatchId!=0; FillColor=ROOT.kCyan-6
-Conversions   : TTGamma_Dilep : 1.495*1.616 : ((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1) || (LepGood3_mcMatchId==0 && LepGood3_mcPromptGamma==1) || (LepGood4_mcMatchId==0 && LepGood4_mcPromptGamma==1)) ; FillColor=ROOT.kOrange-1
-Conversions   : TTGamma_Singlep : 5.056*1.994  :((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1) || (LepGood3_mcMatchId==0 && LepGood3_mcPromptGamma==1) || (LepGood4_mcMatchId==0 && LepGood4_mcPromptGamma==1)); FillColor=ROOT.kOrange-1
+TTG  : TTGamma_Dilep : 1.495*1.4852 :  LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0  && LepGood4_mcMatchId!=0 ; FillColor=ROOT.kCyan-6, Label="t\\bar{t}\\gamma"
+TTG  : TTGamma_Singlep : 5.056*1.4852  :  LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 && LepGood4_mcMatchId!=0; FillColor=ROOT.kCyan-6, Label="t\\bar{t}\\gamma"
+TTG  : TGJets_lep      : 1.02          :LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 && LepGood4_mcMatchId!=0; FillColor=ROOT.kCyan-6, Label="t\\bar{t}\\gamma"
+
+Conversions   : TTGamma_Dilep : 1.495*1.616 : ((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1) || (LepGood3_mcMatchId==0 && LepGood3_mcPromptGamma==1) || (LepGood4_mcMatchId==0 && LepGood4_mcPromptGamma==1)) ; FillColor=ROOT.kOrange-1, Label="Conversions"
+Conversions   : TTGamma_Singlep : 5.056*1.994  :((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1) || (LepGood3_mcMatchId==0 && LepGood3_mcPromptGamma==1) || (LepGood4_mcMatchId==0 && LepGood4_mcPromptGamma==1)); FillColor=ROOT.kOrange-1, Label="Conversions"
  
 #Convs  : TTGJets :  4.215 : ((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1) || (LepGood3_mcMatchId==0 && LepGood3_mcPromptGamma==1) || (LepGood4_mcMatchId==0 && LepGood4_mcPromptGamma==1)) ; FillColor=ROOT.kOrange
 #Convs  : TTWToLNu_PSW : 0.1960 : ((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1) || (LepGood3_mcMatchId==0 && LepGood3_mcPromptGamma==1) || (LepGood4_mcMatchId==0 && LepGood4_mcPromptGamma==1)) ;  FillColor=ROOT.kOrange, years="2016\,2017"

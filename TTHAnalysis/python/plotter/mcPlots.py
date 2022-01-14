@@ -15,6 +15,17 @@ if "/fakeRate_cc.so" not in ROOT.gSystem.GetLibraries():
 
 SAFE_COLOR_LIST=[
 ROOT.kBlack, ROOT.kRed, ROOT.kGreen+2, ROOT.kBlue, ROOT.kMagenta+1, ROOT.kOrange+7, ROOT.kCyan+1, ROOT.kGray+2, ROOT.kViolet+5, ROOT.kSpring+5, ROOT.kAzure+1, ROOT.kPink+7, ROOT.kOrange+3, ROOT.kBlue+3, ROOT.kMagenta+3, ROOT.kRed+2,
+ROOT.TColor(1179, 204, 51, 63), #ttW
+ROOT.TColor(1181, 108, 74, 74), #tZq 
+ROOT.TColor(1180, 119, 217, 112), #Rares
+ROOT.TColor(1182, 171, 109, 35), #tH
+ROOT.TColor(1183, 102, 78, 136), #ttH
+ROOT.TColor(1184, 99, 180, 184), #ttZ
+ROOT.TColor(1185, 50, 80, 46), #ttG
+ROOT.TColor(1186, 206, 229, 208), #ZZ
+ROOT.TColor(1187, 249, 213, 167), #Conversions
+ROOT.TColor(1188, 255, 176, 133), #chargeMisID
+ROOT.TColor(1189, 144, 170, 203), #Nonprompt
 ]+range(11,40)
 def _unTLatex(string):
     return string.replace("#chi","x").replace("#mu","m").replace("#rightarrow","->")
@@ -373,6 +384,38 @@ def doNormFit(pspec,pmap,mca,saveScales=False):
     pspec.setLog("Fitting", fitlog)
     ROOT.RooMsgService.instance().setGlobalKillBelow(gKill)
     return postfit
+
+def doVerticalLines(total, linesFile):
+    # First, read configuration from linesFile
+    import imp
+    lines = imp.load_source("lines",linesFile)
+    tot_bins = total.GetNbinsX()
+    for item in lines.items: #List of dictionaries with the input
+      if item["mode"] == "range":
+        print "Drawing...", item["name"], tot_bins, item["before"],item["after"]
+        if item["before"] != 1:
+          x = total.GetBinLowEdge(item["before"])
+          y1 = item["y1"]
+          y2 = item["y2"]
+          print "before", x,y1,x,y2
+          bef = ROOT.TLine(x,y1,x,y2)
+          bef.SetLineStyle(item["style"])
+          bef.SetLineWidth(item["widht"])
+          bef.SetLineColor(item["color"])
+          bef.Draw("same")
+        if item["after"] != tot_bins:
+          x = total.GetBinLowEdge(item["after"]+1)
+          y1 = item["y1"]
+          y2 = item["y2"]
+          print "after", x,y1,x,y2
+          aft = ROOT.TLine(x,y1,x,y2)
+          aft.SetLineStyle(item["style"])
+          aft.SetLineWidth(item["widht"])
+          aft.SetLineColor(item["color"])
+          aft.Draw("same")
+      if item["mode"] == "text":
+          tl = ROOT.TLatex(item["x"], item["y"], item["text"])
+          tl.Draw("same")
 
 def doRatioHists(pspec,pmap,total,maxRange,fixRange=False,fitRatio=None,errorsOnRef=True,ratioNums="signal",ratioDen="background",ylabel="Data/pred.",yndiv=505,doWide=False,showStatTotLegend=False,textSize=0.035):
     numkeys = [ "data" ]
@@ -1019,12 +1062,53 @@ class PlotMaker:
                                 if p2: p2.SetFillColor(ROOT.kYellow-10)
                                 break
                 if makeCanvas and outputDir: outputDir.WriteTObject(c1)
+		if options.vertLines:
+                    #doVerticalLines(total, options.vertLines)
+                    # First, read configuration from linesFile
+                    import imp
+                    lines = imp.load_source("lines",options.vertLines)
+                    tot_bins = total.GetNbinsX()
+                    bef = [] 
+                    aft = [] 
+                    texts=[]
+                    for item in lines.items: #List of dictionaries with the input
+                        if item["mode"] == "range":
+                            print "Drawing...", item["name"], tot_bins, item["before"],item["after"]
+                            if item["before"] != 1:
+                               x = total.GetBinLowEdge(item["before"])
+                               y1 = item["y1"]
+                               y2 = item["y2"]
+                               print "before", x,y1,x,y2
+                               bef.append(ROOT.TLine(x,y1,x,y2))
+                               bef[-1].SetLineStyle(item["style"])
+                               bef[-1].SetLineWidth(item["widht"])
+                               bef[-1].SetLineColor(item["color"])
+                               bef[-1].Draw("same")
+                            if item["after"] != tot_bins:
+                               x = total.GetBinLowEdge(item["after"]+1)
+                               y1 = item["y1"]
+                               y2 = item["y2"]
+                               print "after", x,y1,x,y2
+                               aft.append(ROOT.TLine(x,y1,x,y2))
+                               aft[-1].SetLineStyle(item["style"])
+                               aft[-1].SetLineWidth(item["widht"])
+                               aft[-1].SetLineColor(item["color"])
+                               aft[-1].Draw("same")
+                        if item["mode"] == "text" and not("forceRatio" in item.keys()):
+                            print "Plotting in main...", item["name"]
+                            texts.append(ROOT.TLatex(item["x"], item["y"], item["text"]))
+                            if "angle" in item.keys(): texts[-1].SetTextAngle(item["angle"])
+                            texts[-1].SetTextSize(item["size"])
+                            if "color" in item.keys(): texts[-1].SetTextColor(item["color"])
+                            else: texts[-1].SetTextColor(ROOT.kBlue+3)
+                            texts[-1].Draw("same")
                 rdata,rnorm,rnorm2,rline = (None,None,None,None)
                 if doRatio:
                     p2.cd(); 
                     rdata,rnorm,rnorm2,rline = doRatioHists(pspec,pmap,total, maxRange=options.maxRatioRange, fixRange=options.fixRatioRange,
                                                             fitRatio=options.fitRatio, errorsOnRef=options.errorBandOnRatio, 
                                                             ratioNums=options.ratioNums, ratioDen=options.ratioDen, ylabel=options.ratioYLabel, yndiv=options.ratioYNDiv, doWide=doWide, showStatTotLegend=options.showStatTotLegend, textSize=options.legendFontSize)
+		     
                 if self._options.printPlots:
                     for ext in self._options.printPlots.split(","):
                         fdir = printDir;
@@ -1196,6 +1280,7 @@ def addPlotMakerOptions(parser, addAlsoMCAnalysis=True):
     parser.add_option("--legendHeader", dest="legendHeader", type="string", default=None, help="Put a header to the legend")
     parser.add_option("--legendColumns", dest="legendColumns", type="int", default=1, help="Number of columns in the legend")
     parser.add_option("--ratioOffset", dest="ratioOffset", type="float", default=0.0, help="Put an offset between ratio and main pad")
+    parser.add_option("--vertLines", dest="vertLines", type="string", default=None, help="Use this lines file to add additional lines and text to the plot (experimental)")
     parser.add_option("--noCms", dest="doOfficialCMS", action="store_false", default=True, help="Use official tool to write CMS spam")
     parser.add_option("--cmsprel", dest="cmsprel", type="string", default="Preliminary", help="Additional text (Simulation, Preliminary, Internal)")
     parser.add_option("--cmssqrtS", dest="cmssqrtS", type="string", default="13 TeV", help="Sqrt of s to be written in the official CMS text.")
