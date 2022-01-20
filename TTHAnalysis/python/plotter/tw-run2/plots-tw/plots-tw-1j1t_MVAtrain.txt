@@ -1,4 +1,5 @@
 nloosejets: nJetSel20_Recl : [-0.5,0.5,1.5,2.5,3.5] ; LegendCutoff=0, XTitle='N(loose jet)', XNDiv=5, xBinLabels="0\,1\,2\,#geq 3"
+nloosejetsrebin: nJetSel20_Recl : [-0.5,0.5,1.5] ; LegendCutoff=0, XTitle='N(loose jet)', XNDiv=3, xBinLabels="0\,#geq 1"
 nbloosejets                 : nBJetSelMedium20_Recl       : [-0.5,0.5,1.5,2.5,3.5]                 ; LegendCutoff=0, MoreY=1.2, XTitle='N(loose b-jet)', XNDiv=5, xBinLabels="2\,3\,4\,5\,6\,#geq 7"
 jet1_pt                     : Jet1_Pt                     : 18,20,200                              ; LegendCutoff=0, MoreY=1.2, IncludeUnderflow=False, XTitle="Jet p_{T} (GeV)"
 loosejet1_pt                : JetLoose1_Pt                : 15,0,30                                ; LegendCutoff=0, MoreY=1.2, IncludeUnderflow=False, XTitle="Leading loose jet p_{T} (GeV)"
@@ -26,5 +27,3 @@ tmvaBDT_1j1b_20bins  : getBDtW20binsNlooseJetsgeq1(tmvaBDT_1j1b) : [0.5,1.5,2.5,
 #tot_weight: 1 : 1,0.5,1.5; XTitle = "Selected events", LegendCutoff=0, MoreY=2.0
 
 #twoDPlotCentralityVSJetLoose                  : twoDPlotCentrality_Jetloose(Lep1Lep2Jet1_C, JetLoose1_Pt)              : [0.5,1.5,2.5,3.5,4.5,5.5, 6.5, 7.5, 8.5, 9.5, 10.5, 11.5, 12.5, 13.5, 14.5, 15.5, 16.5] ; LegendCutoff=0, MoreY=1.2, XTitle=''
-
-jet1_btag : Jet_btagDeepFlavB[iJetSel30_Recl[0]] : 20,0,1        ; IncludeUnderflow=False, LegendCutoff=0,  XTitle="Jet DeepFlavour b-tagging discr. (adim.)"
