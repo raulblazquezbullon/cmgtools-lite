@@ -30,13 +30,14 @@ VVV: WZZ : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcM
 VVV: ZZZ : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 && LepGood4_mcMatchId!=0 ; 				FillColor=ROOT.kViolet-4
 
 # ================================================================= TTVV ==================================
-TTVV: TTWW_LO : 0.01150 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 && LepGood4_mcMatchId!=0 ; 			FillColor=853, years= "2016", Label = "t\\bar{t}VV"
-TTVV: TTWW : 0.01150 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 && LepGood4_mcMatchId!=0; 			FillColor=853, years= "2017\,2018", Label = "t\\bar{t}VV"
-TTVV: TTWZ : 0.0038229 :LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 && LepGood4_mcMatchId!=0; 			FillColor=853, Label = "t\\bar{t}VV"
+ttVV: TTWW_LO : 0.01150 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 && LepGood4_mcMatchId!=0 ; 			FillColor=853, years= "2016", Label = "t\\bar{t}VV"
+ttVV: TTWW : 0.01150 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 && LepGood4_mcMatchId!=0; 			FillColor=853, years= "2017\,2018", Label = "t\\bar{t}VV"
+ttVV: TTWZ : 0.0038229 :LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 && LepGood4_mcMatchId!=0; 			FillColor=853, Label = "t\\bar{t}VV"
+
 
 # ================================================================= tH ==================================
-tHq: THQ : 0.07096 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 && LepGood4_mcMatchId!=0; 				FillColor=ROOT.kMagenta+3
-tHW: THW : 0.01561 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 && LepGood4_mcMatchId!=0; 				FillColor=ROOT.kBlue+3
+tHq: THQ : 0.02313 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 && LepGood4_mcMatchId!=0; 				FillColor=ROOT.kMagenta+3
+tHW: THW : 0.005087 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 && LepGood4_mcMatchId!=0; 				FillColor=ROOT.kBlue+3
 
 
 # ================================================================= WZ ==================================

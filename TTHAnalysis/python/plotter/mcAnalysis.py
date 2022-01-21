@@ -8,7 +8,7 @@ import pickle, re, random, time
 from copy import copy, deepcopy
 from collections import defaultdict
 from glob import glob
-
+from CMGTools.TTHAnalysis.plotter.histoWithNuisances import _cloneNoDir
 _T0 = long(ROOT.gSystem.Now())
 
 ## These must be defined as standalone functions, to allow runing them in parallel
@@ -124,6 +124,8 @@ class MCAnalysis:
                     if "=" in setting: 
                         (key,val) = [f.strip() for f in setting.split("=",1)]
                         extra[key] = eval(val)
+                        if key == "OnlyAsUnc" and not options.uncProcesses:
+                           extra["SkipMe"] = True
                     else: extra[setting] = True
             for k,v in addExtras.iteritems():
                 if k[-1] == ":": extra[k[:-1]] = v # forced overwrite
@@ -144,6 +146,7 @@ class MCAnalysis:
                     if k not in extra: extra[k] = v
             if len(field) <= 1: continue
             if "SkipMe" in extra and extra["SkipMe"] == True and not options.allProcesses: continue
+            if "OnlyAsUnc" in extra and extra["OnlyAsUnc"] == True and not options.uncProcesses: continue
             if "years"  in extra and options.year and options.year not in extra['years'].split(','): continue
             if 'PostFix' in extra:
                 hasPlus = (field[0][-1]=='+')
@@ -373,7 +376,7 @@ class MCAnalysis:
                 else:
                     if total_w != 0: raise RuntimeError, "Weights from pck file shoulnd't be there for NanoAOD for %s " % pname
                     self._groupsToNormalize.append( (ttys, genSumWeightName if is_w == 1 else "genEventCount", scale) )
-                    
+
             #for tty in ttys: tty.makeTTYVariations()
         #if len(self._signals) == 0: raise RuntimeError, "No signals!"
         #if len(self._backgrounds) == 0: raise RuntimeError, "No backgrounds!"
@@ -513,6 +516,17 @@ class MCAnalysis:
         return formatted_report
     def getPlotsRaw(self,name,expr,bins,cut,process=None,nodata=False,makeSummary=False,closeTreeAfter=False):
         return self.getPlots(PlotSpec(name,expr,bins,{}),cut,process=process,nodata=nodata,makeSummary=makeSummary,closeTreeAfter=closeTreeAfter)
+    def getPostFitPlots(self, filename, spec):
+        ret = {} 
+        tf = ROOT.TFile.Open(filename)
+        processes = [k for k in self._allData.iteritems()] +[('total',[None]),('background',[None])]
+        for proc,ttys in processes: 
+            hist = readHistoWithNuisances( tf, proc, [],mayBeMissing=True)
+            if hist: 
+                ret[proc] = _cloneNoDir( hist )
+                if ttys[-1]:
+                    ttys[-1]._stylePlot( ret[proc], spec)
+        return ret
     def getPlots(self,plotspec,cut,process=None,nodata=False,makeSummary=False,closeTreeAfter=False):
         if self._groupsToNormalize: self._normalizeGroups()
         allSig = []; allBg = []
@@ -534,21 +548,16 @@ class MCAnalysis:
             mergemap[k].append(v)
         ret = dict([ (k,mergePlots(plotspec.name+"_"+k,v)) for k,v in mergemap.iteritems() ])
         
-        
+        ## construct envelope variations if any
+        for p,h in ret.iteritems():
+            h.buildEnvelopes() 
+
+        print "previous ret:", ret
+        ## add variations from alternate samples
         if self.variationsFile:
-           for var in self.variationsFile.uncertainty():
-               for p,h in ret.iteritems():
-                   if not var.procmatch().match(p): continue
-                   if var.unc_type == "envelope":
-                      print(var.name)
-                      h.buildEnvelopes(var.name) ## construct envelope variations if any
-                   elif "pdfset" in var.unc_type.lower(): #hessian pdf
-                      h.buildEnvelopesForPDFs(var.name)
-           ## add variations from alternate samples
-      
-           buildVariationsFromAlternative(self.variationsFile, ret)
-           buildVariationsFromAlternativesWithEnvelope(self.variationsFile, ret)
-            
+            buildVariationsFromAlternative(self.variationsFile, ret)
+            buildVariationsFromAlternativesWithEnvelope(self.variationsFile, ret)
+
         ## remove samples used for systematics
         toremove = []
         for key in ret:
@@ -557,7 +566,8 @@ class MCAnalysis:
         for rem in toremove:
             print " - Erasing " + rem
             ret.pop(rem)
-        #print "\nLLUEU", ret
+        print "removed syst ret:", ret
+     
         rescales = []
         self.compilePlotScaleMap(self._options.plotscalemap,rescales)
         for p,v in ret.items():
@@ -584,7 +594,7 @@ class MCAnalysis:
 
         if self._options.externalFitResult:
             if not getattr(self,'_postFit',None):
-                efrfile = ROOT.TFile.Open(self._options.externalFitResult[0])
+                efrfile = ROOT.TFile.Open(self._options.externalFitResult[0], "recreate")
                 if not efrfile: raise IOError("Error, could not open %s" % self._options.externalFitResult[0])
                 fitResults = efrfile.Get(self._options.externalFitResult[1])
                 if not fitResults: raise IOError("Error, could not find %s in %s" % (self._options.externalFitResult[1], self._options.externalFitResult[0]))
@@ -913,8 +923,6 @@ class MCAnalysis:
             ttys, _, scale = self._groupsToNormalize[igroup]
             for tty in ttys: 
                 tty.setScaleFactor("%s*%g" % (scale, 1000.0/total_w))
-                #tty.setScaleFactor("%s*%g" % (scale, 1.0))
-
                 for var in mergemap_vars[igroup]:
                     tty.setVarScaleFactor(var, "%s*%g" % (scale, 1000.0/mergemap_vars[igroup][var]))
         self._groupsToNormalize = []
@@ -941,6 +949,7 @@ def addMCAnalysisOptions(parser,addTreeToYieldOnesToo=True):
     parser.add_option("--scale-process", dest="processesToScale", type="string", default=[], nargs=2, action="append", help="--scale-process X Y make X scale by Y (equivalent to add it in the mca.txt)");
     parser.add_option("--process-norm-syst", dest="processesToSetNormSystematic", type="string", default=[], nargs=2, action="append", help="--process-norm-syst X Y sets the NormSystematic of X to be Y (for plots, etc. Overrides mca.txt)");
     parser.add_option("--AP", "--all-processes", dest="allProcesses", action="store_true", help="Include also processes that are marked with SkipMe=True in the MCA.txt")
+    parser.add_option("--UP", "--unc-processes", dest="uncProcesses", action="store_true", help="Include uncertanty samples that are marked with OnlyAsUnc=True in the MCA.txt")
     parser.add_option("--year", dest="year", type="string", default ="" , help="If non void, only processes of that contain that year or none are processed ")
     parser.add_option("--use-cnames",  dest="useCnames", action="store_true", help="Use component names instead of process names (for debugging)")
     parser.add_option("--project", dest="project", type="string", help="Project to a scenario (e.g 14TeV_300fb_scenario2)")
@@ -956,6 +965,7 @@ def addMCAnalysisOptions(parser,addTreeToYieldOnesToo=True):
     parser.add_option("--aefr", "--alt-external-fitResults", dest="altExternalFitResults", type="string", default=[], nargs=2, action="append", help="External fitResult")
     parser.add_option("--aefrl", "--alt-external-fitResult-labels", dest="altExternalFitResultLabels", type="string", default=[], nargs=1, action="append", help="External fitResult")
     parser.add_option("--check-friends-first", dest="checkFriendsFirst", action="store_true", default=False, help="At start, check that all friends are available, and raise an error otherwise.");
+    parser.add_option("--externalPostfitPlot", dest="externalPostfitPlot", action="store", type="string", default=None, help="File to external postfit results"); 
 
 if __name__ == "__main__":
     from optparse import OptionParser
@@ -966,6 +976,7 @@ if __name__ == "__main__":
     tty = TreeToYield(args[0],options.path[0],options) if ".root" in args[0] else MCAnalysis(args[0],options)
     cf  = CutsFile(args[1],options)
     for cutFile in args[2:]:
+        print(args)
         temp = CutsFile(cutFile,options)
         for cut in temp.cuts():
             cf.add(cut[0],cut[1])
