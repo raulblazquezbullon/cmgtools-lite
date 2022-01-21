@@ -989,7 +989,6 @@ class PlotMaker:
 
                     p1.SetTopMargin(p1.GetTopMargin()*options.topSpamSize);
                     p1.SetBottomMargin(0 if options.attachRatioPanel else 0.025);
-#=============================	NEW FROM TU THONG ==============
                     p1.Range(10. ,0.3 , 200., 1.02)
                     p1.SetFillColor(0)
                     p1.SetFillStyle(0)
@@ -997,7 +996,6 @@ class PlotMaker:
                     p1.SetBorderSize(2)
                     p1.SetBottomMargin(0.05)
                     p1.SetTopMargin(0.1)
-#=============================	NEW FROM TU THONG ==============
                     p1.Draw();
 #                    p2 = ROOT.TPad("pad2","pad2",0,0,1,0.30);
                     p2 = ROOT.TPad("pad2","pad2",0.0025,0.0025,0.9975,0.3);
