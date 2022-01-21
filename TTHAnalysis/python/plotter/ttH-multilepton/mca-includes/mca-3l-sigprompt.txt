@@ -29,11 +29,11 @@ VVV: WZZ : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcM
 VVV: ZZZ : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ;			        FillColor=ROOT.kViolet-4
 # ================================================================= TTVV ==================================
 ttVV: TTWW_LO : 0.01150 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ;			FillColor=853, Label="t\\bar{t}VV",years= "2016"
-ttVV: TTWW : 0.01150 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; 			FillColor=853, Label="t\\bar{t}VV",years= "2017\,2018"
-ttVV: TTWZ : 0.0038229 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; 			FillColor=853, Label="t\\bar{t}VV"
+ttVV: TTWW : 0.01150    : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; 			FillColor=853, Label="t\\bar{t}VV",years= "2017\,2018"
+ttVV: TTWZ : 0.0038229  : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; 			FillColor=853, Label="t\\bar{t}VV"
 # ================================================================= tH ==================================
-tHq: THQ : 0.07096 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0; FillColor=ROOT.kMagenta+3
-tHW: THW : 0.01561 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0; FillColor=ROOT.kBlue+3
+tHq: THQ : 0.02313 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0; FillColor=ROOT.kMagenta+3
+tHW: THW : 0.005087 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0; FillColor=ROOT.kBlue+3
 
 # ================================================================= WZ ==================================
 WZ	: WZTo3LNu_fxfx : 4.42965 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0  ;  	FillColor=1186
