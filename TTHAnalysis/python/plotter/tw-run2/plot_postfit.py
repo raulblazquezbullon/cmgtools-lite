@@ -5,6 +5,8 @@ from copy import deepcopy
 #import tdrstyle, CMS_lumi
 r.gROOT.SetBatch(True)
 r.gStyle.SetOptStat(False)
+r.gStyle.SetPadTickX(1)
+r.gStyle.SetPadTickY(1)
 
 ColourMapForProcesses = {
     "tw"       : 798,
@@ -33,9 +35,15 @@ dictRegions = {
 }
 
 dictRegionsXaxisLabels = {
-    "ch1"      : "BDT output (Adim.)",
-    "ch2"      : "BDT output (Adim.)",
+    "ch1"      : "BDT discriminant (Adim.)",
+    "ch2"      : "BDT discriminant (Adim.)",
     "ch3"      : "Subleading jet p_{T} (GeV)",
+}
+
+dictRegionsYaxisLabels = {
+    "ch1"      : "Events / bin",
+    "ch2"      : "Events / bin",
+    "ch3"      : "Events / 10 GeV",
 }
 
 dictBinEdgesRegions = {
@@ -77,12 +85,21 @@ def doSpam(text,x1,y1,x2,y2,align=12,fill=False,textSize=0.033,_noDelete={}):
   return cmsprel
 
 def producePlots(year, region, path):
+  preFitHists = {}
+  preFitHistsUnc = {}
   for key in ["prefit", "fit_s"]:
     filename = path + "/fitDiagnostics{y}_{r}.root".format(y = year, r = region)
     outpath = path + "/plots_result_{y}_{r}/".format(y = year, r = region)
     #Directories with the pre or postfit results
     maindir = "shapes_%s" %(key)
     f = r.TFile.Open(filename)
+    # Extract the fit result
+    rooFit = f.Get("fit_s")
+    rooFitList = rooFit.floatParsFinal()
+    for param in rooFitList:
+      if param.GetName() == "r":
+        r_tW = param.getVal()
+        break
               
     # Change to the directory containing the prefit/postfit plots
     shapes = f.Get(maindir)
@@ -121,7 +138,7 @@ def producePlots(year, region, path):
       #We define the legend
       textSize = 0.039
       height = .20 + textSize*3
-      legend = r.TLegend(.85-0.07, .9-height, .9, .91)
+      legend = r.TLegend(.75-0.07, .9-height, .9, .91) #0.85 for the first number in the CMGTools plotter
       legend.SetBorderSize(0)
       legend.SetFillColor(0)
       legend.SetShadowColor(0)
@@ -132,6 +149,7 @@ def producePlots(year, region, path):
       
       #TotalHisto MC
       htotal = subdir.Get("total")
+
       # Get the data points
       gr = subdir.Get("data")
       dataNpoints = gr.GetN()
@@ -140,7 +158,7 @@ def producePlots(year, region, path):
       uncpointsHigh = gr.GetEYhigh()
       uncpointsLow = gr.GetEYlow()
       gr.SetMarkerStyle(8)
-      legend.AddEntry(gr,dictNames[gr.GetName()],"lep")
+      legend.AddEntry(gr,dictNames[gr.GetName()],"PE")
       # Get the data/MC
       ratio_hist = deepcopy(gr.Clone("ratiohist"))
       
@@ -153,24 +171,34 @@ def producePlots(year, region, path):
           ratio_hist.SetPoint(i,dictBinsCenterRegions[dire][i],datapointsY[i]/htotal.GetBinContent(i+1))
           ratio_hist.SetPointEYhigh(i,uncpointsHigh[i]/htotal.GetBinContent(i+1))
           ratio_hist.SetPointEYlow(i,uncpointsLow[i]/htotal.GetBinContent(i+1))
-          
+      if key == "prefit":        
+        ratioPreFit = r.TH1F("ratioPreFit_%s" %dire, "ratioPreFit_%s" %dire, len(dictBinsCenterRegions[dire]),dictBinEdgesRegions[dire][0],dictBinEdgesRegions[dire][1])
+        for bin in range(1, len(dictBinsCenterRegions[dire]) + 1):
+          ratioPreFit.SetBinContent(bin, datapointsY[bin - 1]/htotal.GetBinContent(bin))
+        
+        preFitHists[dire] = deepcopy(ratioPreFit)
+      
       for histoName in orderedProcesses:
-				
         h = subdir.Get(histoName) 
         h.GetXaxis().SetLabelSize(0)
         h.SetLineColor(1)
         h.SetLineWidth(1)
         h.SetFillColor(ColourMapForProcesses[histoName])
-        legend.AddEntry(h,dictNames[h.GetName()],"f")
         hstack.Add(h)
-	
+	    
+      for histoName in reversed(orderedProcesses):
+        h = subdir.Get(histoName) 
+        if histoName == "tw":
+          legend.AddEntry(h,dictNames[h.GetName()] + " (#mu = %1.2f)" %round(r_tW, 2),"f")
+        else:
+          legend.AddEntry(h,dictNames[h.GetName()],"f")
       p1.cd()
 					
       hstack.Draw("hist")
       hstack.GetXaxis().SetLabelSize(0)
       hstack.GetYaxis().SetTitleOffset(2.1)
       hstack.SetMaximum(hstack.GetMaximum()*1.5)
-      hstack.GetYaxis().SetTitle("Events")
+      hstack.GetYaxis().SetTitle(dictRegionsYaxisLabels[dire])
       hstack.GetYaxis().SetLabelSize(22)
       hstack.GetYaxis().SetLabelFont(43)
       hstack.GetYaxis().SetTitleSize(22)
@@ -183,13 +211,14 @@ def producePlots(year, region, path):
       legend.Draw("same")
       # now draw data
       gr.GetXaxis().SetLabelSize(0)
-      gr.Draw("p same")
+      gr.Draw("p E same")
       # now draw error bands
       htotal.SetFillStyle(3244)
       htotal.SetFillColor(r.kGray+2)
       htotal.SetMarkerStyle(0)
       htotal.SetMarkerColor(920)
-      legend.AddEntry(htotal,dictNames[htotal.GetName()],"f")
+      htotal.SetLineWidth(0)
+      legend.AddEntry(htotal,"Postfit unc." if key=="fit_s" else dictNames[htotal.GetName()],"f")
       htotal.Draw("E2 same")
       
       # Ratio plot
@@ -225,6 +254,9 @@ def producePlots(year, region, path):
       #htotalErr.SetFillColorAlpha(r.kCyan)
       htotalErr.SetBins(len(dictBinsCenterRegions[dire]),dictBinEdgesRegions[dire][0],dictBinEdgesRegions[dire][1])
 
+      if key == "prefit": 
+        preFitHistsUnc[dire] = deepcopy(htotalErr)
+
       #for i in range(1,htotalErr.GetNbinsX()+1):
       #  htotalErr.SetBins(i,dictBinsCenterRegions[dire][i-1]-0.5,dictBinsCenterRegions[dire][i-1]+0.5)
       #htotalErr.GetXaxis().SetRange(dictRangeRegions[dire][0],dictRangeRegions[dire][1])
@@ -244,19 +276,33 @@ def producePlots(year, region, path):
       hAuxForAxis.GetXaxis().SetTitleSize(22)
       hAuxForAxis.GetXaxis().SetTitleFont(43)
       hAuxForAxis.GetYaxis().SetRangeUser(0.8, 1.2)
-      hAuxForAxis.Draw("hist")
-      htotalErr.Draw("e2 same")
-      ratio_hist.Draw("pe1 same")
-	
+      hAuxForAxis.GetYaxis().SetNdivisions(505)
+      hAuxForAxis.Draw("axis")
+      if key == "fit_s":
+        preFitHistsUnc[dire].SetFillStyle(1001)
+        preFitHistsUnc[dire].SetFillColorAlpha(r.kAzure, 0.35)
+        preFitHistsUnc[dire].SetLineColor(r.kBlack)
+        preFitHistsUnc[dire].SetLineWidth(0)
+        legend.AddEntry(preFitHistsUnc[dire],"Prefit unc.","f")
+        preFitHistsUnc[dire].Draw("E2 same")	
+        preFitHists[dire].SetLineColor(2)
+        preFitHists[dire].SetLineWidth(2)
+        legend.AddEntry(preFitHists[dire],"Prefit Data/MC","l")
+        preFitHists[dire].Draw("same")
+      
+      ratio_hist.Draw("p E same")
+      htotalErr.Draw("e2 same")	
       lin.Draw("same L")	
 	
+
 	
-	
+
+      
       p1.cd()
       doSpam('#splitline{#scale[1.1]{#bf{CMS}}}{#scale[0.9]{#it{Preliminary}}}',.21, .845, .35, .885,textSize = 22)
       keyname = key
       if keyname == "fit_s": keyname = "postfit"
-      doSpam(str(lumidict[year]) + " fb^{-1} (13 TeV)",0.58, .955, .98, .995,textSize = 22)
+      doSpam(str(lumidict[year]) + " fb^{-1} (13 TeV)",0.7, .955, .98, .995,textSize = 22)
 
       doSpam("e^{#pm}#mu^{#mp}+" + dictRegions[dire], .41, .855, .6, .895, textSize = 22)
 	
