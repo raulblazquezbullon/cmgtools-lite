@@ -13,8 +13,6 @@ TTT: LepGood1_isLepTight && LepGood2_isLepTight && LepGood3_isLepTight
 # Signal region
 Zveto: abs(mZ1-91.2) > 10
 
-# Control region
-Zveto: !(abs(mZ1-91.2) > 10); Disable=True
 
 q1: abs(LepGood1_charge + LepGood2_charge + LepGood3_charge) == 1
 
@@ -37,9 +35,11 @@ eq2B: nBJetMedium25==2; Disable=True
 eg1or2B: nBJetMedium25==1 || nBJetMedium25==2; Disable=True
 gt2J: nJet25>2;	Disable=True
 gt1J: nJet25>1;	Disable=True
+lt1J: nJet25<=1;	Disable=True
+gt0J: nJet25>0;	Disable=True
 pos: (LepGood1_charge + LepGood2_charge + LepGood3_charge) > 0; Disable=True
 neg: (LepGood1_charge + LepGood2_charge + LepGood3_charge) < 0; Disable=True
-
+min_selection: (nJet25>=2 && nBJetMedium25>=1); Disable=True
 x2j: nJet25==2 ; Disable=True
 4j: nJet25>=4 ;  Disable=True
 gt2b: nBJetLoose25 >= 2 ; Disable=True	

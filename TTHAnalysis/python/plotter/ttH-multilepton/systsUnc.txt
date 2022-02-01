@@ -219,7 +219,7 @@ CMS_ttW_ZZ_lnU  : ZZ : .*          : normSymm : 3.0 ; lnU=True
 
 # Other normalizations
 Norm_Rares		: Rares : .* : normSymm : 1.5
-QCDscale_tZq		: tZq   : .* : normSymm : 1.2
+QCDscale_tZq		: tZq   : .* : normSymm : 1.1
 QCDscale_ttVV		: $ttVV : .* : normSymm : 1.5
 QCDscale_VVV		: VVV   : .* : normSymm : 1.5
 CMS_ttW_Convs_norm		: Conversions : .* : normSymm : 1.3
@@ -227,17 +227,20 @@ CMS_ttW_Convs_norm		: Conversions : .* : normSymm : 1.3
 
 # common theoretical uncertainties (fully correlated everywhere)
 # note: pdf_gg is entered as 1/kappa since it has to be anti-correlated with Hgg
-QCDscale_ttH   : $ttH  : .* : normAsymm : 0.929 : 1.076 
+#QCDscale_ttH   : $ttH  : .* : normAsymm : 0.929 : 1.076
+QCDscale_ttH   : $ttH  : .* : normSymm : 1.20 
 QCDscale_ttZ   : TTZ   : .* : normAsymm : 0.905 : 1.086
 QCDscale_ttG   : TTG  : .* : normSymm : 1.08   # 7.5 percent pdf + 3 q2
-QCDscale_tHq   : $tHq  : .* : normAsymm : 0.933 : 1.041
-QCDscale_tHW   : $tHW  : .* : normAsymm : 0.939 : 1.046 
+#QCDscale_tHq   : $tHq  : .* : normAsymm : 0.933 : 1.041
+#QCDscale_tHW   : $tHW  : .* : normAsymm : 0.939 : 1.046
+QCDscale_tHq   : $tHq  : .* : normSymm : 1.50 
+QCDscale_tHW   : $tHW  : .* : normSymm : 1.50
 #CMS_ttW_WH_norm    : $WH   : .* : normAsymm : 0.950 : 1.070
 #CMS_ttW_ZH_norm    : $ZH   : .* : normAsymm : 0.962 : 1.031
-pdf_Higgs_ttH  : $ttH  : .* : normSymm : 1.024
+#pdf_Higgs_ttH  : $ttH  : .* : normSymm : 1.024
 pdf_gg         : TTZ   : .* : normSymm : 1.023
-pdf_Higgs_tHq  : $tHq  : .* : normSymm : 1.01
-pdf_Higgs_tHW  : $tHW  : .* : normSymm : 1.027
+#pdf_Higgs_tHq  : $tHq  : .* : normSymm : 1.01
+#pdf_Higgs_tHW  : $tHW  : .* : normSymm : 1.027
 #pdf_qqbar      : TTW   : .* : normSymm : 1.04
 #pdf_TTWW       : TTWW  : .* : normSymm : 1.03
 #pdf_WH	       : $WH   : .* : normSymm : 1.019
