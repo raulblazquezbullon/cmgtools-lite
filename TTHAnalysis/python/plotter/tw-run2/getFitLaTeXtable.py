@@ -369,7 +369,7 @@ orderOfTheUncs = ["_syst", "_systexp",
                   "_total"]
 
 
-def getFitUncsLaTeXtable(path = "./", inname = "outputfit.txt", outname = "unctable"):
+def getFitUncsLaTeXtable(path = "./", inname = "outputfit_all.txt", outname = "unctable"):
     table   = []; headers = ["Source", "Average unc. (\%)", "Unc. up (\%)", "Unc. down (\%)"]
 
     # First, obtain the info from the txts

@@ -28,9 +28,9 @@ listofforcedshape = "btagging_2016,btagging_2017,btagging_2018,btagging_corr,ele
 
 #commandscaff = '''python makeShapeCardsNew.py --tree NanoAOD {mcafile} {cutsfile} "{variable}" "{bins}" {samplespaths} {friends} --od {outpath} -l {lumi} {nth} -f -L tw-run2/functions_tw.cc --neg --threshold 0.01 -W "MuonIDSF * MuonISOSF * ElecIDSF * ElecRECOSF * TrigSF * puWeight * bTagWeight * PrefireWeight" --year {year} {asimovornot} {uncs} {extra} --AP --storeAll --notMinimumFill --notVarsChanges'''
 
-commandscaff = '''python makeShapeCards_TopRun2.py --tree NanoAOD {mcafile} {cutsfile} "{variable}" "{bins}" {samplespaths} {friends} --od {outpath} -l {lumi} {nth} -f -L tw-run2/functions_tw.cc --neg --threshold 0.01 -W "MuonIDSF * MuonISOSF * ElecIDSF * ElecRECOSF * TrigSF * puWeight * bTagWeight * PrefireWeight" --year {year} {asimovornot} {uncs} {extra} --AP --storeAll'''
+commandscaff = '''python makeShapeCards_TopRun2.py --tree NanoAOD {mcafile} {cutsfile} "{variable}" "{bins}" {samplespaths} {friends} --od {outpath} -l {lumi} {nth} -f -L tw-run2/functions_tw.cc --neg --threshold 0.01 -W "MuonIDSF * MuonISOSF * ElecIDSF * ElecRECOSF * TrigSF * puWeight * bTagWeight * PrefireWeight" --year {year} {asimovornot} {uncs} {extra} --AP --storeAll''' # el que usamos ahora
 
-
+#commandscaff = '''python makeShapeCards_TopRun2.py --tree NanoAOD {mcafile} {cutsfile} "{variable}" "{bins}" {samplespaths} {friends} --od {outpath} -l {lumi} {nth} -f -L tw-run2/functions_tw.cc --neg --threshold 0.01 -W "MuonIDSF * MuonISOSF * ElecIDSF * ElecRECOSF * TrigSF * puWeight * bTagWeight * PrefireWeight * TopPtWeight" --year {year} {asimovornot} {uncs} {extra} --AP --storeAll'''
 
 def GeneralExecutioner(task):
     prod, year, variable, bines, asimov, nthreads, outpath, region, queue, extra, pretend, useFibre, noUnc = task
@@ -79,6 +79,7 @@ def confirm(message = "Do you wish to continue?"):
 
 def CardsCommand(prod, year, var, bines, isAsimov, nthreads, outpath, region, noUnc, useFibre, extra):
     mcafile_   = "tw-run2/mca-tw.txt"
+    #mcafile_   = "tw-run2/mca-ttbartw.txt"
     cutsfile_  = "tw-run2/cuts-tw-{reg}.txt".format( reg = region)
 
     samplespaths_ = "-P " + friendspath + "/" + prod + ("/" + year) * (year != "run2")
@@ -103,6 +104,7 @@ def CardsCommand(prod, year, var, bines, isAsimov, nthreads, outpath, region, no
                                mcafile   = mcafile_,
                                cutsfile  = cutsfile_,
                                uncs      = "--unc tw-run2/uncs-tw_{r}mva.txt --amc".format(r = region) if not noUnc else "--amc",
+                               #uncs      = "--unc tw-run2/uncs-tw_{r}mva_ttbartw.txt --amc".format(r = region) if not noUnc else "--amc",
                                #uncs      = "--unc tw-run2/uncs-tw_{r}mvaTodoSmoothMenosABSB-BEC1.txt --amc".format(r = region) if not noUnc else "--amc",
                                #uncs      = "--unc tw-run2/uncs-tw.txt --amc" if not noUnc else "--amc",
                                #uncs      = "--unc tw-run2/uncs-tw_nadasuavizado.txt --amc" if not noUnc else "--amc",

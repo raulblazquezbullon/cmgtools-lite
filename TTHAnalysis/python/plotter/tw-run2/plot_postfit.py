@@ -11,16 +11,19 @@ r.gStyle.SetPadTickY(1)
 ColourMapForProcesses = {
     "tw"       : 798,
     "ttbar"    : 633,
+#    "ttbartw"  : 633,
     "nonworz"  : 413,
     "vvttv"    : 390,
     "dy"       : 852
 }
 
 orderedProcesses = ["nonworz", "vvttv", "dy", "ttbar", "tw"]
+#orderedProcesses = ["nonworz", "vvttv", "dy", "ttbartw"]
 
 dictNames = {
     "tw"       : "tW",
     "ttbar"    : "t#bar{t}",
+#    "ttbartw"  : "t#bar{t}+tW",
     "nonworz"  : "Non-W/Z",
     "vvttv"    : "VV+t#bar{t}V",
     "dy"       : "DY",
