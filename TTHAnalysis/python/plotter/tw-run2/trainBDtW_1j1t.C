@@ -79,8 +79,8 @@ void trainBDtW_1j1t(TString outputdir, TString outputbasedir = "/pool/phedex/use
   ////// INPUT VARIABLES ===========================================================================
   cout << "> Adding input variables" << endl;
 
-/////  loader->AddVariable("min(train_nloosejets, 2)"                 , "N(loose jet)"                                                           , ""   , 'I');
-  loader->AddVariable("train_nloosejets"                 , "N(loose jet)"                                                           , ""   , 'I');
+  loader->AddVariable("min(train_nloosejets, 1)"                 , "N(loose jet)"                                                           , ""   , 'I');
+ //// loader->AddVariable("train_nloosejets"                 , "N(loose jet)"                                                           , ""   , 'I');
   //loader->AddVariable("train_nbloosejets"                , "N(loose b-jet)"                                                         , ""   , 'I');
   //loader->AddVariable("train_lep1lep2jet1met_pt"         , "p_{T} (#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j}, #it{p}_{T}^{miss})"        , "GeV", 'F');
   //loader->AddVariable("train_httot"                      , "H_{T}"                                                                  , "GeV", 'F');
@@ -260,6 +260,9 @@ void trainBDtW_1j1t(TString outputdir, TString outputbasedir = "/pool/phedex/use
   factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_2000_0.01",
       "!H:!V:NTrees=2000:MinNodeSize=0.5%:BoostType=Grad:Shrinkage=0.01:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
   //--Modelo default----
+
+//  factory->BookMethod( loader, TMVA::Types::kBDT, "AdaBoost_2000_0.01",
+//        "!H:!V:NTrees=2000:MinNodeSize=0.5%:BoostType=AdaBoost:Shrinkage=0.01:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=4" );
 
   //===============Optimización NTrees=========================================
 //  factory->BookMethod( loader, TMVA::Types::kBDT, "GradBoost_100_0.01",
