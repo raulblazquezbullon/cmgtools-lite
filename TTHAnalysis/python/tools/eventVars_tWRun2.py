@@ -10,7 +10,7 @@ from PhysicsTools.NanoAODTools.postprocessing.tools import deltaR,deltaPhi
 
 from CMGTools.TTHAnalysis.treeReAnalyzer import Collection as CMGCollection
 from CMGTools.TTHAnalysis.tools.nanoAOD.friendVariableProducerTools import declareOutput, writeOutput
-from CMGTools.TTHAnalysis.tools.nanoAOD.TopRun2_modules import ch, tags
+from CMGTools.TTHAnalysis.tools.nanoAOD.TopRun2_modules import ch, tags, emass
 
 mresta_ = 172.5 ** 2 - 80.379 ** 2
 
@@ -193,7 +193,7 @@ class EventVars_tWRun2(Module):
 
         for i in range(len(leps_4m)):
             leps_4m[i].SetPtEtaPhiM(leps[i].pt_corrAll, leps_4m[i].Eta(),
-                                    leps_4m[i].Phi(),   leps_4m[i].M())
+                                    leps_4m[i].Phi(),   leps_4m[i].M() if abs(leps[i].pdgId) != 11 else emass)
 
         coldirs    = {} #### NOTE: the keys begin always with "_"!
         coldirs_4m = {}
@@ -202,7 +202,7 @@ class EventVars_tWRun2(Module):
             coldirs_4m[var] = [l.p4() for l in coldirs[var]]
             for i in range(len(coldirs_4m[var])):
                 coldirs_4m[var][i].SetPtEtaPhiM(getattr(coldirs[var][i], "pt" + var), coldirs_4m[var][i].Eta(),
-                                                coldirs_4m[var][i].Phi(), coldirs_4m[var][i].M())
+                                                coldirs_4m[var][i].Phi(), coldirs_4m[var][i].M() if abs(coldirs[var][i].pdgId) != 11 else emass)
 
         all_jets = [j for j in Collection(event, "Jet")]
         jets     = []
@@ -396,7 +396,7 @@ class EventVars_tWRun2(Module):
 
                 for i in range(len(leps_4m)):
                     leps_4m[i].SetPtEtaPhiM(getattr(leps[i], "pt" + sys), leps_4m[i].Eta(),
-                                            leps_4m[i].Phi(),             leps_4m[i].M())
+                                            leps_4m[i].Phi(),             leps_4m[i].M() if abs(leps[i].pdgId) != 11 else emass)
 
                 jets    = [all_jets[getattr(event, 'iJetSel30{v}_Recl'.format(v = sys))[j]]
                            for j in xrange(min([getattr(event, 'nJetSel30{v}_Recl'.format(v = sys)), 5]))]

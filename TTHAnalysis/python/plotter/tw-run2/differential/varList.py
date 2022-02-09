@@ -494,7 +494,7 @@ varList['Lep1_Pt'] = {
     "yaxisuplimitunf": 0.2,
     "yaxismax_particlefidbin": 0.025,
     "yaxismax_particlefid" : 1.1,
-    "yaxismax_particlefidbinunc" : 0.8,
+    "yaxismax_particlefidbinunc" : 1.3,
     #"yaxismax_particlefidbinunc" : 0.5,
     "yaxismax_unf" : 1.35,
     "yaxismax_particlebin": 0.0085,
@@ -1450,6 +1450,8 @@ ProcessNameTranslator = {
     "dy"           : "Drell-Yan",
     "vvttv"        : "VV and \\ttbar V",
     "tw"           : "tW (signal)",
+    "data"         : "Data",
+    "total"        : "Postfit unc.",
 }
 ProcessNameTranslator["tW"]           = ProcessNameTranslator["tw"]
 ProcessNameTranslator["t#bar{t}"]     = ProcessNameTranslator["ttbar"]

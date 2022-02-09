@@ -1,6 +1,6 @@
 import ROOT as r
 import os
-import numpy as np 
+import numpy as np
 from copy import deepcopy
 #import tdrstyle, CMS_lumi
 r.gROOT.SetBatch(True)

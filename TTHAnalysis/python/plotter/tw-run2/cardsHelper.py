@@ -16,11 +16,19 @@ lumidict     = {2016 : 36.33,
 #                2018 : 29.87}
 
 #friendsscaff = "--FDs {P}/0_lumijson --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --Fs {P}/5_mvas --Fs {P}/6_hemissue"
-friendsscaff = "--FDs {P}/0_lumijson --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --Fs {P}/5_mvas" #5_mvas_DY_newWithDiv
+friendsscaff = "--FDs {P}/0_lumijson --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --Fs {P}/5_mvas"
+#friendsscaff = "--FDs {P}/0_lumijson --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning_puid --Fs {P}/3_varstrigger_puid --FMCs {P}/4_scalefactors_puid --Fs {P}/5_mvas_puid" #5_mvas_DY_newWithDiv
+#friendsscaff = "--FDs {P}/0_lumijson --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger_fixelecs --FMCs {P}/4_scalefactors --Fs {P}/5_mvas_fixelecs"
+#friendsscaff = "--FDs {P}/0_lumijson --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors_neweffs --Fs {P}/5_mvas_neweffs"
+#friendsscaff = "--FDs {P}/0_lumijson --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning_deepcsv --Fs {P}/3_varstrigger_deepcsv --FMCs {P}/4_scalefactors_deepcsv --Fs {P}/5_mvas_deepcsv"
 
 slurmscaff   = "sbatch -c {nth} -p {queue} -J {jobname} -e {logpath}/log.%j.%x.err -o {logpath}/log.%j.%x.out --wrap '{command}'"
 
 listofforcedshape = "btagging_2016,btagging_2017,btagging_2018,btagging_corr,elecidsf,elecrecosf,fsr,isr_ttbar,isr_tw,jer_2016,jer_2017,jer_2018,jes_Absolute,jes_Absolute_2016,jes_Absolute_2017,jes_Absolute_2018,jes_BBEC1,jes_BBEC1_2016,jes_BBEC1_2017,jes_BBEC1_2018,jes_EC2,jes_EC2_2016,jes_EC2_2017,jes_EC2_2018,jes_FlavorQCD,jes_HF,jes_HF_2016,jes_HF_2017,jes_HF_2018,jes_RelativeBal,jes_RelativeSample_2016,jes_RelativeSample_2017,jes_RelativeSample_2018,lumi_2016,lumi_2017,lumi_2018,lumi_corr,lumi_corr1718,mistagging_2016,mistagging_2017,mistagging_2018,mistagging_corr,mtop,muonen_2016,muonen_2017,muonen_2018,muonidsf_stat_2016,muonidsf_stat_2017,muonidsf_stat_2018,muonidsf_syst,muonisosf_stat_2016,muonisosf_stat_2017,muonisosf_stat_2018,muonisosf_syst,pdfhessian,pileup,prefiring_2016,prefiring_2017,topptrew,triggereff_2016,triggereff_2017,triggereff_2018,ttbar_scales,tw_scales,ds,colour_rec_erdon,colour_rec_cr1,colour_rec_cr2"
+
+
+#### TEMP PRUEBINA JETPUID
+#listofforcedshape = "btagging_2016,btagging_2017,btagging_2018,btagging_corr,elecidsf,elecrecosf,fsr,isr_ttbar,isr_tw,jer_2016,jer_2017,jer_2018,jes_Absolute,jes_Absolute_2016,jes_Absolute_2017,jes_Absolute_2018,jes_BBEC1,jes_BBEC1_2016,jes_BBEC1_2017,jes_BBEC1_2018,jes_EC2,jes_EC2_2016,jes_EC2_2017,jes_EC2_2018,jes_FlavorQCD,jes_HF,jes_HF_2016,jes_HF_2017,jes_HF_2018,jes_RelativeBal,jes_RelativeSample_2016,jes_RelativeSample_2017,jes_RelativeSample_2018,lumi_2016,lumi_2017,lumi_2018,lumi_corr,lumi_corr1718,mistagging_2016,mistagging_2017,mistagging_2018,mistagging_corr,mtop,muonen_2016,muonen_2017,muonen_2018,muonidsf_stat_2016,muonidsf_stat_2017,muonidsf_stat_2018,muonidsf_syst,muonisosf_stat_2016,muonisosf_stat_2017,muonisosf_stat_2018,muonisosf_syst,pdfhessian,pileup,prefiring_2016,prefiring_2017,topptrew,triggereff_2016,triggereff_2017,triggereff_2018,ttbar_scales,tw_scales,ds,colour_rec_erdon,colour_rec_cr1,colour_rec_cr2,puidtag_corr,puidtag_2016,puidtag_2017,puidtag_2018,puidmistag_corr,puidmistag_2016,puidmistag_2017,puidmistag_2018"
 #For 2016
 #listofforcedshape = "btagging_2016,btagging_corr,elecidsf,elecrecosf,fsr,isr_ttbar,isr_tw,jer_2016,jes_Absolute,jes_Absolute_2016,jes_BBEC1,jes_BBEC1_2016,jes_EC2,jes_EC2_2016,jes_FlavorQCD,jes_HF,jes_HF_2016,jes_RelativeBal,jes_RelativeSample_2016,lumi_2016,lumi_corr,mistagging_2016,mistagging_corr,mtop,muonen_2016,muonidsf_stat_2016,muonidsf_syst,muonisosf_stat_2016,muonisosf_syst,pdfhessian,pileup,prefiring_2016,topptrew,triggereff_2016,ttbar_scales,tw_scales,ds,colour_rec_erdon,colour_rec_cr1,colour_rec_cr2"
 
@@ -29,6 +37,7 @@ listofforcedshape = "btagging_2016,btagging_2017,btagging_2018,btagging_corr,ele
 #commandscaff = '''python makeShapeCardsNew.py --tree NanoAOD {mcafile} {cutsfile} "{variable}" "{bins}" {samplespaths} {friends} --od {outpath} -l {lumi} {nth} -f -L tw-run2/functions_tw.cc --neg --threshold 0.01 -W "MuonIDSF * MuonISOSF * ElecIDSF * ElecRECOSF * TrigSF * puWeight * bTagWeight * PrefireWeight" --year {year} {asimovornot} {uncs} {extra} --AP --storeAll --notMinimumFill --notVarsChanges'''
 
 commandscaff = '''python makeShapeCards_TopRun2.py --tree NanoAOD {mcafile} {cutsfile} "{variable}" "{bins}" {samplespaths} {friends} --od {outpath} -l {lumi} {nth} -f -L tw-run2/functions_tw.cc --neg --threshold 0.01 -W "MuonIDSF * MuonISOSF * ElecIDSF * ElecRECOSF * TrigSF * puWeight * bTagWeight * PrefireWeight" --year {year} {asimovornot} {uncs} {extra} --AP --storeAll'''
+#commandscaff = '''python makeShapeCards_TopRun2.py --tree NanoAOD {mcafile} {cutsfile} "{variable}" "{bins}" {samplespaths} {friends} --od {outpath} -l {lumi} {nth} -f -L tw-run2/functions_tw.cc --neg --threshold 0.01 -W "MuonIDSF * MuonISOSF * ElecIDSF * ElecRECOSF * TrigSF * puWeight * bTagWeight * PrefireWeight * jetPUidWeight" --year {year} {asimovornot} {uncs} {extra} --AP --storeAll'''
 
 
 
@@ -79,7 +88,7 @@ def confirm(message = "Do you wish to continue?"):
 
 def CardsCommand(prod, year, var, bines, isAsimov, nthreads, outpath, region, noUnc, useFibre, extra):
     mcafile_   = "tw-run2/mca-tw.txt"
-    cutsfile_  = "tw-run2/cuts-tw-{reg}.txt".format( reg = region)
+    cutsfile_  = "tw-run2/cuts-tw-{reg}.txt".format(reg = region)
 
     samplespaths_ = "-P " + friendspath + "/" + prod + ("/" + year) * (year != "run2")
     if useFibre: samplespaths_ = samplespaths_.replace("phedexrw", "phedex").replace("cienciasrw", "ciencias")
@@ -103,6 +112,8 @@ def CardsCommand(prod, year, var, bines, isAsimov, nthreads, outpath, region, no
                                mcafile   = mcafile_,
                                cutsfile  = cutsfile_,
                                uncs      = "--unc tw-run2/uncs-tw_{r}mva.txt --amc".format(r = region) if not noUnc else "--amc",
+#                               uncs      = "--unc tw-run2/uncs-tw_{r}mva_puid.txt --amc".format(r = region) if not noUnc else "--amc",
+                               #uncs      = "--unc tw-run2/uncs-tw_{r}mva_20211202.txt --amc".format(r = region) if not noUnc else "--amc",
                                #uncs      = "--unc tw-run2/uncs-tw_{r}mvaTodoSmoothMenosABSB-BEC1.txt --amc".format(r = region) if not noUnc else "--amc",
                                #uncs      = "--unc tw-run2/uncs-tw.txt --amc" if not noUnc else "--amc",
                                #uncs      = "--unc tw-run2/uncs-tw_nadasuavizado.txt --amc" if not noUnc else "--amc",

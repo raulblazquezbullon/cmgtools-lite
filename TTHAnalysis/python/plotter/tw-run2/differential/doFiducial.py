@@ -323,6 +323,13 @@ def PlotParticleFidLevelResults(thedict, inpath, iY, varName, notff):
     return
 
 
+def getAConservativeMaximum(h):
+    theval = 0.
+    for iB in range(1, h.GetNbinsX() + 1):
+        newmax = (h.GetBinContent(iB) + h.GetBinError(iB)) * 1.2
+        if theval < newmax: theval = newmax
+    return theval
+
 
 #### POR BIN Y NORMALIZAOS
 def PlotParticleFidBinLevelResults(thedict, inpath, iY, varName, notff):
@@ -627,18 +634,22 @@ def PlotParticleFidBinLevelResults(thedict, inpath, iY, varName, notff):
     tru_herwig.Write()
     savetfile2.Close()
 
+    for el in [tru, tru_DS, tru_herwig, thedict[""]]:
+        tmpval = getAConservativeMaximum(el)
+        if thedict[""].GetMaximum() <= tmpval: thedict[""].SetMaximum(tmpval)
 
-    plot.addHisto(nominal_withErrors, 'hist',    'Uncertainty',              'F', 'unc')
+    plot.addHisto(thedict[""],        'P,E,same{s}'.format(s = ",X0" if "equalbinsunf" in vl.varList[varName] else ""), vl.labellegend, 'PEL', 'data')
+    #plot.addHisto(nominal_withErrors, 'hist',    'Uncertainty',              'F', 'unc')
     plot.addHisto(tru,                'L,same', 'tW PH DR + P8',          'L', 'mc')
     plot.addHisto(tru_DS,             'L,same', 'tW PH DS + P8',          'L', 'mc')
     plot.addHisto(tru_herwig,         'L,same', 'tW PH DR + H7',          'L', 'mc')
-    plot.addHisto(tru_aMC_dr,         'L,same', 'tW aMC DR + P8',         'L', 'mc')
-    plot.addHisto(tru_aMC_dr2,        'L,same', 'tW aMC DR2 + P8',        'L', 'mc')
-    plot.addHisto(tru_aMC_ds,         'L,same', 'tW aMC DS + P8',         'L', 'mc')
-    plot.addHisto(tru_aMC_ds_runn,    'L,same', 'tW aMC DS dyn. + P8',    'L', 'mc')
-    plot.addHisto(tru_aMC_ds_IS,      'L,same', 'tW aMC DS IS + P8',      'L', 'mc')
-    plot.addHisto(tru_aMC_ds_IS_runn, 'L,same', 'tW aMC DS IS dyn. + P8', 'L', 'mc')
-    plot.addHisto(thedict[""],        'P,E,same{s}'.format(s = ",X0" if "equalbinsunf" in vl.varList[varName] else ""), vl.labellegend,           'PEL','data')
+    #plot.addHisto(tru_aMC_dr,         'L,same', 'tW aMC DR + P8',         'L', 'mc')
+    #plot.addHisto(tru_aMC_dr2,        'L,same', 'tW aMC DR2 + P8',        'L', 'mc')
+    #plot.addHisto(tru_aMC_ds,         'L,same', 'tW aMC DS + P8',         'L', 'mc')
+    #plot.addHisto(tru_aMC_ds_runn,    'L,same', 'tW aMC DS dyn. + P8',    'L', 'mc')
+    #plot.addHisto(tru_aMC_ds_IS,      'L,same', 'tW aMC DS IS + P8',      'L', 'mc')
+    #plot.addHisto(tru_aMC_ds_IS_runn, 'L,same', 'tW aMC DS IS dyn. + P8', 'L', 'mc')
+    #plot.saveCanvas(legloc, woUnc = True)
     plot.saveCanvas(legloc)
 
     #plot.addHisto(nominal_withErrors, 'E2',     'Uncertainty',   'F')
@@ -799,12 +810,12 @@ def PlotParticleBinLevelResults(thedict, inpath, iY, varName, notff):
     plot.addHisto(tru,                'L,same', 'tW Powheg DR + P8',          'L', 'mc')
     plot.addHisto(tru_DS,             'L,same', 'tW Powheg DS + P8',          'L', 'mc')
     plot.addHisto(tru_hwerig,         'L,same', 'tW Powheg DR + H7',          'L', 'mc')
-    plot.addHisto(tru_aMC_dr,         'L,same', 'tW aMC@NLO DR + P8',         'L', 'mc')
-    plot.addHisto(tru_aMC_dr2,        'L,same', 'tW aMC@NLO DR2 + P8',        'L', 'mc')
-    plot.addHisto(tru_aMC_ds,         'L,same', 'tW aMC@NLO DS + P8',         'L', 'mc')
-    plot.addHisto(tru_aMC_ds_runn,    'L,same', 'tW aMC@NLO DS dyn. + P8',    'L', 'mc')
-    plot.addHisto(tru_aMC_ds_IS,      'L,same', 'tW aMC@NLO DS IS + P8',      'L', 'mc')
-    plot.addHisto(tru_aMC_ds_IS_runn, 'L,same', 'tW aMC@NLO DS IS dyn. + P8', 'L', 'mc')
+    #plot.addHisto(tru_aMC_dr,         'L,same', 'tW aMC@NLO DR + P8',         'L', 'mc')
+    #plot.addHisto(tru_aMC_dr2,        'L,same', 'tW aMC@NLO DR2 + P8',        'L', 'mc')
+    #plot.addHisto(tru_aMC_ds,         'L,same', 'tW aMC@NLO DS + P8',         'L', 'mc')
+    #plot.addHisto(tru_aMC_ds_runn,    'L,same', 'tW aMC@NLO DS dyn. + P8',    'L', 'mc')
+    #plot.addHisto(tru_aMC_ds_IS,      'L,same', 'tW aMC@NLO DS IS + P8',      'L', 'mc')
+    #plot.addHisto(tru_aMC_ds_IS_runn, 'L,same', 'tW aMC@NLO DS IS dyn. + P8', 'L', 'mc')
     plot.addHisto(thedict[""],            'P,E,same',vl.labellegend,          'PEL', 'data')
     plot.saveCanvas(legloc)
 
