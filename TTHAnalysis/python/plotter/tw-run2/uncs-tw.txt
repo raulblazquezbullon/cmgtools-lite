@@ -183,8 +183,8 @@ muonen_2018 : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-lepenergies/
 ttbar_norm   : ttbar   : .* : normSymm : 1.04
 vvttv_norm   : vvttv   : .* : normSymm : 1.5
 dy_norm      : dy      : .* : normSymm : 1.1
-nonworz_norm : nonworz : .* : normSymm : 1.5
-
+#nonworz_norm : nonworz : .* : normSymm : 1.5
+nonworz_norm : nonworz : .* : normSymm : 1.04
 
 ### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #### PDF
@@ -350,6 +350,6 @@ mtop : $tWProc : .* : altSample : syst_tw_mtop_up         : syst_tw_mtop_dn ;  E
 #### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #### tW DR/DS
 #### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-ds : $tWProc : .* : altSample : syst_tw_ds : :  EstimateFromXbins=1, EstimateAsymm=1
+ds : $tWProc : .* : altSample : syst_tw_ds : : ; EstimateFromXbins=1
 
 

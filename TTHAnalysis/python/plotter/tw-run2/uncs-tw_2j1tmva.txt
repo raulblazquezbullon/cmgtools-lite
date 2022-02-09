@@ -245,6 +245,7 @@ fsr       : $tWProc : .* : templateAsymm; FakeRates=['tw-run2/frs-PS/fr-fsrUp.tx
 ###### Top pT reweighting
 ###### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 topptrew : ttbar : .* : templateSymmAdditive ; AddWeight='TopPtWeight'
+#topptrew : ttbar : .* : templateSymmAdditive ; AddWeight='1./TopPtWeight' ## When applied the weight in the events
 
 
 ##### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------

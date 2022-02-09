@@ -12,6 +12,7 @@
 #include "TROOT.h"
 #include "TMVA/Types.h"
 #include "TMVA/TMVAGui.h"
+#include <algorithm>
 
 #if not defined(__CINT__) || defined(__MAKECINT__)
 #include "TMVA/Factory.h"
@@ -78,6 +79,7 @@ void trainBDtW_1j1t(TString outputdir, TString outputbasedir = "/pool/phedex/use
   ////// INPUT VARIABLES ===========================================================================
   cout << "> Adding input variables" << endl;
 
+/////  loader->AddVariable("min(train_nloosejets, 2)"                 , "N(loose jet)"                                                           , ""   , 'I');
   loader->AddVariable("train_nloosejets"                 , "N(loose jet)"                                                           , ""   , 'I');
   //loader->AddVariable("train_nbloosejets"                , "N(loose b-jet)"                                                         , ""   , 'I');
   //loader->AddVariable("train_lep1lep2jet1met_pt"         , "p_{T} (#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j}, #it{p}_{T}^{miss})"        , "GeV", 'F');
@@ -190,20 +192,20 @@ void trainBDtW_1j1t(TString outputdir, TString outputbasedir = "/pool/phedex/use
   
   //========Drell-Yan training only=================================================================
   //TChain* DYtree = new TChain("Friends", "DYBackgroundTree");
-  TString DY_50 = "dy_50.root";
-  TString DY_10to50 = "dy_10to50.root";
-  TString DY_path = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/productions/2021-06-09/";
-  TTtree->Add(DY_path + "/2016/x_mvatrain/" + DY_50);
-  TTtree->Add(DY_path + "/2017/x_mvatrain/" + DY_50);
-  TTtree->Add(DY_path + "/2018/x_mvatrain/" + DY_50);  
-  TTtree->Add(DY_path + "/2016/x_mvatrain/" + DY_10to50);
-  TTtree->Add(DY_path + "/2017/x_mvatrain/" + DY_10to50);
-  TTtree->Add(DY_path + "/2018/x_mvatrain/" + DY_10to50);
+//  TString DY_50 = "dy_50.root";
+//  TString DY_10to50 = "dy_10to50.root";
+//  TString DY_path = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/productions/2021-06-09/";
+//  TTtree->Add(DY_path + "/2016/x_mvatrain/" + DY_50);
+//  TTtree->Add(DY_path + "/2017/x_mvatrain/" + DY_50);
+//  TTtree->Add(DY_path + "/2018/x_mvatrain/" + DY_50);  
+//  TTtree->Add(DY_path + "/2016/x_mvatrain/" + DY_10to50);
+//  TTtree->Add(DY_path + "/2017/x_mvatrain/" + DY_10to50);
+//  TTtree->Add(DY_path + "/2018/x_mvatrain/" + DY_10to50);
   //========Drell-Yan training only=================================================================
 
   Double_t sigWeight = 1.0;
   Double_t bkgWeight = 1.0;
-  Double_t DYbkgWeight = 1.0;
+//  Double_t DYbkgWeight = 1.0;
   loader->AddSignalTree(    SItree, sigWeight);
   loader->AddBackgroundTree(TTtree, bkgWeight);
   //loader->AddBackgroundTree(DYtree, DYbkgWeight);

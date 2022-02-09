@@ -152,7 +152,9 @@ def makeGOF(task):
         combcard_ = "../" + region + "/cuts-tw-" + region + ".txt"
 
     if not os.path.isfile(gofoutpath + "/" + combcard_):
+
         raise RuntimeError("FATAL: no toys could be created as the card provided, {c}, doesn't exist.".format(c = gofoutpath + "/" + combcard_))
+
 
     if not theQ:
         comm = "cd " + gofoutpath + "; " +  gofcomm.format(combcard  = combcard_,
@@ -360,7 +362,7 @@ def makeGOFplot(task):
 
     valToys = []
     valData = 0.
-
+    
     for ev in tData:
         valData = ev.limit
 

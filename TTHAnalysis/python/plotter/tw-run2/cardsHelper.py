@@ -35,10 +35,9 @@ listofforcedshape = "btagging_2016,btagging_2017,btagging_2018,btagging_corr,ele
 # ds: forzada para asegurarnos la asimetria
 
 #commandscaff = '''python makeShapeCardsNew.py --tree NanoAOD {mcafile} {cutsfile} "{variable}" "{bins}" {samplespaths} {friends} --od {outpath} -l {lumi} {nth} -f -L tw-run2/functions_tw.cc --neg --threshold 0.01 -W "MuonIDSF * MuonISOSF * ElecIDSF * ElecRECOSF * TrigSF * puWeight * bTagWeight * PrefireWeight" --year {year} {asimovornot} {uncs} {extra} --AP --storeAll --notMinimumFill --notVarsChanges'''
-
 commandscaff = '''python makeShapeCards_TopRun2.py --tree NanoAOD {mcafile} {cutsfile} "{variable}" "{bins}" {samplespaths} {friends} --od {outpath} -l {lumi} {nth} -f -L tw-run2/functions_tw.cc --neg --threshold 0.01 -W "MuonIDSF * MuonISOSF * ElecIDSF * ElecRECOSF * TrigSF * puWeight * bTagWeight * PrefireWeight" --year {year} {asimovornot} {uncs} {extra} --AP --storeAll'''
 #commandscaff = '''python makeShapeCards_TopRun2.py --tree NanoAOD {mcafile} {cutsfile} "{variable}" "{bins}" {samplespaths} {friends} --od {outpath} -l {lumi} {nth} -f -L tw-run2/functions_tw.cc --neg --threshold 0.01 -W "MuonIDSF * MuonISOSF * ElecIDSF * ElecRECOSF * TrigSF * puWeight * bTagWeight * PrefireWeight * jetPUidWeight" --year {year} {asimovornot} {uncs} {extra} --AP --storeAll'''
-
+#commandscaff = '''python makeShapeCards_TopRun2.py --tree NanoAOD {mcafile} {cutsfile} "{variable}" "{bins}" {samplespaths} {friends} --od {outpath} -l {lumi} {nth} -f -L tw-run2/functions_tw.cc --neg --threshold 0.01 -W "MuonIDSF * MuonISOSF * ElecIDSF * ElecRECOSF * TrigSF * puWeight * bTagWeight * PrefireWeight * TopPtWeight" --year {year} {asimovornot} {uncs} {extra} --AP --storeAll'''
 
 
 def GeneralExecutioner(task):
@@ -89,6 +88,7 @@ def confirm(message = "Do you wish to continue?"):
 def CardsCommand(prod, year, var, bines, isAsimov, nthreads, outpath, region, noUnc, useFibre, extra):
     mcafile_   = "tw-run2/mca-tw.txt"
     cutsfile_  = "tw-run2/cuts-tw-{reg}.txt".format(reg = region)
+    #mcafile_   = "tw-run2/mca-ttbartw.txt"
 
     samplespaths_ = "-P " + friendspath + "/" + prod + ("/" + year) * (year != "run2")
     if useFibre: samplespaths_ = samplespaths_.replace("phedexrw", "phedex").replace("cienciasrw", "ciencias")
@@ -114,6 +114,7 @@ def CardsCommand(prod, year, var, bines, isAsimov, nthreads, outpath, region, no
                                uncs      = "--unc tw-run2/uncs-tw_{r}mva.txt --amc".format(r = region) if not noUnc else "--amc",
 #                               uncs      = "--unc tw-run2/uncs-tw_{r}mva_puid.txt --amc".format(r = region) if not noUnc else "--amc",
                                #uncs      = "--unc tw-run2/uncs-tw_{r}mva_20211202.txt --amc".format(r = region) if not noUnc else "--amc",
+                               #uncs      = "--unc tw-run2/uncs-tw_{r}mva_ttbartw.txt --amc".format(r = region) if not noUnc else "--amc",
                                #uncs      = "--unc tw-run2/uncs-tw_{r}mvaTodoSmoothMenosABSB-BEC1.txt --amc".format(r = region) if not noUnc else "--amc",
                                #uncs      = "--unc tw-run2/uncs-tw.txt --amc" if not noUnc else "--amc",
                                #uncs      = "--unc tw-run2/uncs-tw_nadasuavizado.txt --amc" if not noUnc else "--amc",
@@ -187,7 +188,8 @@ if __name__ == "__main__":
     #print CardsCommand(prod, year, variable, bines, asimov, nthreads, outpath, region, noUnc, useFibre, extra)
 
     theregs  = ["1j1t", "2j1t", "2j2t"]
-    thevars  = ["getBDtW20bins{year}(tmvaBDT_1j1b)", "getBDtWOther12bins{year}(tmvaBDT_2j1b)", "min(max(Jet2_Pt, 30.), 189.)"] #Actual
+    thevars  = ["getBDtW20bins{year}NlooseJetsgeq1(tmvaBDT_1j1b)", "getBDtWOther12bins{year}(tmvaBDT_2j1b)", "min(max(Jet2_Pt, 30.), 189.)"] #Actual
+#    thevars  = ["getBDtW20bins{year}NlooseJetsgeq1AndJetCut(tmvaBDT_1j1b)", "getBDtWOther12binsAndJetCut{year}(tmvaBDT_2j1b)", "min(max(Jet2_Pt, 30.), 189.)"]
 #    thevars  = ["getBDtW10bins{year}(tmvaBDT_1j1b)", "getBDtWOther6bins{year}(tmvaBDT_2j1b)", "min(max(Jet2_Pt, 30.), 189.)"] 
 #    thevars  = ["getBDtW20binsDYtrain{year}(tmvaBDT_1j1b)", "getBDtWOther12binsDYtrain{year}(tmvaBDT_2j1b)", "min(max(Jet2_Pt, 30.), 189.)"]
 #    thevars  = ["getBDtW10binsDYtrain{year}(tmvaBDT_1j1b)", "getBDtWOther6binsDYtrain{year}(tmvaBDT_2j1b)", "min(max(Jet2_Pt, 30.), 189.)"]
@@ -199,6 +201,26 @@ if __name__ == "__main__":
 #                "[30.,50.,70.,90.,110.,130.,150.,170.,190.]"]
     theyears = ["2016", "2017", "2018", "run2"]
     tasks    = []
+    
+    ########----1 Bin test-------#######
+    #thevars  = ["1", "1", "1"]
+    #thebins  = ["[0.5,1.5]","[0.5,1.5]","[0.5,1.5]"]
+    ########----1 Bin test-------#######
+
+    ########----4 Bin test-------#######
+    #thevars  = ["getBDtW4bins{year}NlooseJetsgeq1(tmvaBDT_1j1b)", "getBDtWOther4bins{year}(tmvaBDT_2j1b)", "min(max(Jet2_Pt, 30.), 189.)"]
+    #thebins  = ["[0.5,1.5,2.5,3.5]","[0.5,1.5,2.5,3.5]","[30,70,110,150,190]"]
+    ########----1 Bin test-------#######
+    
+    ########----2 Bin test-------#######
+    #thevars  = ["getBDtW2bins{year}NlooseJetsgeq1(tmvaBDT_1j1b)", "getBDtWOther2bins{year}(tmvaBDT_2j1b)", "min(max(Jet2_Pt, 30.), 189.)"]
+    #thebins  = ["[0.5,1.5,2.5]","[0.5,1.5,2.5]","[30,60,190]"]
+    ########----1 Bin test-------#######
+    
+    ########----Variables test-------#######
+    #thevars  = ["Jet1_Pt", "Jet2_Pt", "Jet2_Pt"]
+    #thebins  = ["[30,100,200]","[30,100,200]","[30,100,200]"]
+    ########----Variables test-------#######
     
     ########----Binning test-----#######
 #    theregs  = ["1j1t", "2j1t", "2j2t"]
