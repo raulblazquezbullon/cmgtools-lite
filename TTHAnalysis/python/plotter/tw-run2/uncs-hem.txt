@@ -1,0 +1,10 @@
+# vim: syntax=sh
+
+# =========================================================================================================================================================================
+### ALIASES
+# =========================================================================================================================================================================
+$alias : AllBkg : tw|ttbar|dy|nonworz|vvttv
+$alias : All    : tw|ttbar|dy|nonworz|vvttv|data
+$alias : tWProc : tw
+$alias : tWandttbar : tw|ttbar
+HEMcheck                 : $All : .* : templateSymmAdditive; AddWeight='abs(isThisEventVetoed - 1)', year="2018"

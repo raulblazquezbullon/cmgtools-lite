@@ -32,12 +32,27 @@ friendfolders = {0 : "0_lumijson",
                  #0 : "0_yeartag",
                  1 : "1_lepmerge_roch",
                  2 : "2_cleaning",
+                 #2 : "2_cleaning_deepcsv",
+                 #2 : "2_cleaning_puid",
                  3 : "3_varstrigger",
+                 #3 : "3_varstrigger_deepcsv",
+                 #3 : "3_varstrigger_puid",
                  4 : "4_scalefactors",
+#                 4 : "4_scalefactors_neweffs",
+                 #4 : "4_scalefactors_deepcsv",
+                 #4 : "4_scalefactors_puid",
                  5 : "5_mvas",
+#                 5 : "5_mvas_deepcsv",
+#                 5 : "5_mvas_neweffs",
                  #5 : "5_mvas_DY_newWithDiv",
+                 #5 : "5_mvas_nonloosejets",
+                 #5 : "5_mvas_nloosejetgeq2",
+                 #5 : "5_mvas_nloosejetgeq1",
+                 #5 : "5_mvas_nloosejetgeq1Sinloosejet1",
+                 #5 : "5_mvas_puid",
                  6 : "6_hemissue",
-                 "mvatrain" : "x_mvatrain"
+                 "mvatrain" : "x_mvatrain",
+                 "btageffvars" : "x_btageff_pasf",
                 }
 
 chunksizes    = {0          : 5000000,
@@ -49,6 +64,7 @@ chunksizes    = {0          : 5000000,
                  5          : 250000,
                  6          : 5000000,
                  "mvatrain" : 500000,
+                 "btageffvars" : 500000,
                  }
 minchunkbytes = 1000
 
@@ -805,12 +821,13 @@ def getFriendsFolder(dataset, basepath, step_friends):
     if os.path.isdir(rofolder):
         myfibrefriends = [f for f in os.listdir(rofolder) if (".root" in f and dataset in f and "chunk" not in f and "Friend" in f)]
         if len(myfibrefriends) > 0: doihavefibrefriends = True
-
+#    print rofolder,myfibrefriends
     if doihavefibrefriends:
         wr.warn("\n====== WARNING! Friends detected in RO folder for this production. Using them for dataset {d} and step (of the friends) {s}".format(d = dataset, s = step_friends))
         return rofolder
     else:
         return rwfolder
+#        return rofolder
     return rwfolder
 
 
@@ -885,6 +902,9 @@ def SendDatasetJobs(task):
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 2) + friendsuff
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 3) + friendsuff
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 4) + friendsuff
+    elif step == "btageffvars":
+        module_ = "btagEffFtree_{y}".format(y  = year)
+        friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 1) + friendsuff
 
     if module_ != "":
         comm = commandscaff.format(inpath  = inputpath_,
@@ -1224,7 +1244,7 @@ def CheckLotsOfMergedDatasets(dataset, year, step, queue, extra, ncores):
 def CheckLotsOfChunks(dataset, year, step, queue, extra, ncores, mva, nthreads):
     fullpendingdict = {}
     totalcount = 0
-    if dataset.lower() != "all":
+    if dataset.lower() != "all" and "," not in dataset:
         tmpdict, dat = CheckChunksByDataset( (dataset, year, step) )
         tmpcount = sum([len(list(tmpdict[td].keys())) for td in tmpdict])
         totalcount += tmpcount
@@ -1232,10 +1252,16 @@ def CheckLotsOfChunks(dataset, year, step, queue, extra, ncores, mva, nthreads):
     else:
         tasks = []
         thedict = trainsampledict[year] if mva else sampledict[year]
-        for dat in thedict:
-            isData = any(ext in dat for ext in datasamples)
-            if (not isData and step != 0) or (isData and step != 4):
-                tasks.append( (dat, year, step) )
+        if dataset.lower() == "all":
+            for dat in thedict:
+                isData = any(ext in dat for ext in datasamples)
+                if (not isData and step != 0) or (isData and step != 4):
+                    tasks.append( (dat, year, step) )
+        else:
+            for dat in dataset.split(","):
+                isData = any(ext in dat for ext in datasamples)
+                if (not isData and step != 0) or (isData and step != 4):
+                    tasks.append( (dat, year, step) )
         if ncores > 1:
             pool = Pool(ncores)
             listofdicts = pool.map(CheckChunksByDataset, tasks)

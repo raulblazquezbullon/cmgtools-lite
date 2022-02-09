@@ -24,6 +24,8 @@ class tags(enum.IntEnum):
     doubleeg   = 5
     muoneg     = 6
 
+emass = 0.0005109989461
+
 # =========================================================================================================================
 # ============================================================================================ TRIGGER
 # =========================================================================================================================
@@ -325,20 +327,29 @@ from CMGTools.TTHAnalysis.tools.nanoAOD.btag_weighter               import btag_
 # New
 btagpath = os.environ['CMSSW_BASE'] + "/src/CMGTools/TTHAnalysis/data/TopRun2/btagging"
 btagWeights_2016 = lambda : btag_weighter(btagpath + "/" + "DeepJet_2016LegacySF_V1_YearCorrelation-V1.csv",
+#btagWeights_2016 = lambda : btag_weighter(btagpath + "/" + "DeepCSV_2016LegacySF_V1_YearCorrelation-V1.csv",
                                           btagpath + "/" + "BtagMCSF.root",
+#                                          btagpath + "/" + "btagEffs_2022_01_29.root",
                                           'deepjet',
+                                          #'deepcsv',
                                           jecvars   = ['jesTotal', 'jer'] + ['jes%s'%v for v in jecGroups] + ["jer%i"%i for i in range(6)],
                                           splitCorrelations = True,
                                           year = 2016)
 btagWeights_2017 = lambda : btag_weighter(btagpath + "/" + "DeepJet_DeepFlavour2017_mujets_YearCorrelation-V1.csv",
+#btagWeights_2017 = lambda : btag_weighter(btagpath + "/" + "DeepCSV_102XSF_V1_YearCorrelation-V1.csv",
                                           btagpath + "/" + "BtagMCSF.root",
+                                          #btagpath + "/" + "btagEffs_2022_01_29.root",
                                           'deepjet',
+                                           #'deepcsv',
                                           jecvars   = ['jesTotal', 'jer'] + ['jes%s'%v for v in jecGroups] + ["jer%i"%i for i in range(6)],
                                           splitCorrelations = True,
                                           year = 2017)
 btagWeights_2018 = lambda : btag_weighter(btagpath + "/" + "DeepJet_102XSF_V1_YearCorrelation-V1.csv",
+#btagWeights_2018 = lambda : btag_weighter(btagpath + "/" + "DeepCSV_94XSF_V4_B_F_YearCorrelation-V1.csv",
                                           btagpath + "/" + "BtagMCSF.root",
+                                          #btagpath + "/" + "btagEffs_2022_01_29.root",
                                           'deepjet',
+                                          #'deepcsv',
                                           jecvars   = ['jesTotal', 'jer'] + ['jes%s'%v for v in jecGroups] + ["jer%i"%i for i in range(6)],
                                           splitCorrelations = True,
                                           year = 2018)
@@ -374,6 +385,7 @@ cleaning_mc_mod2016 = lambda : pythonCleaningTopRun2(label  = "Recl",
                                              isMC      = True,
                                              #debug     = True,
                                              year_     = 2016,
+#                                             algo      = "DeepCSV",
 )
 cleaning_mc_mod2017 = lambda : pythonCleaningTopRun2(label  = "Recl",
                                              jetPts = [IDDict["jets"]["pt"], IDDict["jets"]["pt2"]],
@@ -383,6 +395,7 @@ cleaning_mc_mod2017 = lambda : pythonCleaningTopRun2(label  = "Recl",
                                              isMC      = True,
                                              #debug     = True,
                                              year_     = 2017,
+#                                             algo      = "DeepCSV",
 )
 cleaning_mc_mod2018 = lambda : pythonCleaningTopRun2(label  = "Recl",
                                              jetPts = [IDDict["jets"]["pt"], IDDict["jets"]["pt2"]],
@@ -392,6 +405,7 @@ cleaning_mc_mod2018 = lambda : pythonCleaningTopRun2(label  = "Recl",
                                              isMC      = True,
                                              year_     = 2018,
                                              #debug     = True,
+#                                             algo      = "DeepCSV",
 )
 
 cleaning_data_mod2016 = lambda : pythonCleaningTopRun2(label = "Recl",
@@ -399,18 +413,21 @@ cleaning_data_mod2016 = lambda : pythonCleaningTopRun2(label = "Recl",
                                                jetPtNoisyFwd = IDDict["jets"]["ptfwdnoise"],
                                                jecvars   = [], lepenvars = [], isMC = False,
                                                year_     = 2016,
+#                                               algo      = "DeepCSV",
 )
 cleaning_data_mod2017 = lambda : pythonCleaningTopRun2(label = "Recl",
                                                jetPts = [IDDict["jets"]["pt"], IDDict["jets"]["pt2"]],
                                                jetPtNoisyFwd = IDDict["jets"]["ptfwdnoise"],
                                                jecvars   = [], lepenvars = [], isMC = False,
                                                year_     = 2017,
+#                                               algo      = "DeepCSV",
 )
 cleaning_data_mod2018 = lambda : pythonCleaningTopRun2(label = "Recl",
                                                jetPts = [IDDict["jets"]["pt"], IDDict["jets"]["pt2"]],
                                                jetPtNoisyFwd = IDDict["jets"]["ptfwdnoise"],
                                                jecvars   = [], lepenvars = [], isMC = False,
                                                year_     = 2018,
+#                                               algo      = "DeepCSV",
 )
 
 #### Add year
@@ -560,6 +577,16 @@ addSeparationIndex_mva_ent = lambda : addSeparationIndex(isThisSampleForMVA = Tr
 #sfSeq_2017 = [leptrigSFs, btagWeights_2017, addTopPtWeight, addSeparationIndex_nomva]
 #sfSeq_2018 = [leptrigSFs, btagWeights_2018, addTopPtWeight, addSeparationIndex_nomva]
 
+from CMGTools.TTHAnalysis.tools.nanoAOD.jetPUid_weighter import jetPUid_weighter
+jetpuidpath = os.environ['CMSSW_BASE'] + "/src/CMGTools/TTHAnalysis/data/TopRun2/jetPUid"
+addjetPUidMod = lambda : jetPUid_weighter(jetpuidpath + "/" + "scalefactorsPUID_81Xtraining.root",
+                                          jetpuidpath + "/" + "effcyPUID_81Xtraining.root",
+                                          wp = "T",
+                                          jecvars   = ['jesTotal', 'jer'] + ['jes%s'%v for v in jecGroups] + ["jer%i"%i for i in range(6)],
+                                          #year = 2016, debug = True)
+                                          year = 2016)
+
+#sfSeq_2016 = [leptrigSFs, btagWeights_2016, addTopPtWeight, addjetPUidMod]   ### COSINA
 sfSeq_2016 = [leptrigSFs, btagWeights_2016, addTopPtWeight]
 sfSeq_2017 = [leptrigSFs, btagWeights_2017, addTopPtWeight]
 sfSeq_2018 = [leptrigSFs, btagWeights_2018, addTopPtWeight]
@@ -572,6 +599,7 @@ sfSeq_mvatrain_ent_2016 = [leptrigSFs, btagWeights_2016, addTopPtWeight, addSepa
 sfSeq_mvatrain_ent_2017 = [leptrigSFs, btagWeights_2017, addTopPtWeight, addSeparationIndex_mva_ent]
 sfSeq_mvatrain_ent_2018 = [leptrigSFs, btagWeights_2018, addTopPtWeight, addSeparationIndex_mva_ent]
 
+
 ##### HEM16/17 Issue
 #from PhysicsTools.NanoAODTools.postprocessing.modules.jme.jetmetHelperRun2 import *
 #HEMuncsMod = createJMECorrector(dataYear      = 2018,
@@ -582,8 +610,34 @@ sfSeq_mvatrain_ent_2018 = [leptrigSFs, btagWeights_2018, addTopPtWeight, addSepa
 #
 #hemunc_mc_2018 = [HEMuncsMod]
 
+
+###### b-tagging efficiencies
+from CMGTools.TTHAnalysis.tools.btageffVars_tWRun2 import btageffVars_tWRun2
+btagEffFtree_2016 = lambda : btageffVars_tWRun2(wp_   = 1,
+                                                algo_ = ['deepjet',
+                                                         "deepcsv"],
+                                                csv_  = [btagpath + "/DeepJet_2016LegacySF_V1_YearCorrelation-V1.csv",
+                                                         btagpath + "/DeepCSV_2016LegacySF_V1_YearCorrelation-V1.csv"],
+                                                year_ = 2016)
+
+btagEffFtree_2017 = lambda : btageffVars_tWRun2(wp_   = 1,
+                                                algo_ = ['deepjet',
+                                                         "deepcsv"],
+                                                csv_  = [btagpath + "/DeepJet_DeepFlavour2017_mujets_YearCorrelation-V1.csv",
+                                                         btagpath + "/DeepCSV_94XSF_V4_B_F_YearCorrelation-V1.csv"],
+                                                year_ = 2017)
+
+btagEffFtree_2018 = lambda : btageffVars_tWRun2(wp_   = 1,
+                                                algo_ = ['deepjet',
+                                                         "deepcsv"],
+                                                csv_  = [btagpath + "/DeepJet_102XSF_V1_YearCorrelation-V1.csv",
+                                                         btagpath + "/DeepCSV_102XSF_V1_YearCorrelation-V1.csv"],
+                                                year_ = 2018)
+
+
 # %%%%%%%%%%%%%%%%%%%%%%%%%% WWbb
 # TODO
+
 
 # %%%%%%%%%%%%%%%%%%%%%%%%%% tW+/tW-
 # TODO

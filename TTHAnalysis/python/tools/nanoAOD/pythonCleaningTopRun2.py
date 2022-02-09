@@ -10,9 +10,9 @@ import os, sys
 
 class pythonCleaningTopRun2(Module):
     def __init__(self, label, jetPts, jetPtNoisyFwd, jetCollection = 'Jet', lepCollection = "LepGood",
-                 jetBTag = 'btagDeepFlavB', btagWP_ = "M", isMC = True, deltaRcut = 0.4,
+                 btagWP_ = "M", isMC = True, deltaRcut = 0.4,
                  jecvars = ["jesTotalCorr", "jesTotalUnCorr", "jer"],
-                 lepenvars = ["mu"],
+                 lepenvars = ["mu"], algo = "DeepFlav",
                  year_ = None, debug = False):
 
         self.label = "" if (label in ["", None]) else ("_" + label)
@@ -20,6 +20,7 @@ class pythonCleaningTopRun2(Module):
         #### NOTE: here the tight selections for jet (excluding eta and pt requirements) are hardcoded per year
         self.selecsdict = {}
         self.selecsdict[2016] = lambda jet: jet.jetId > 0
+        #self.selecsdict[2016] = lambda jet: (jet.jetId > 0 and (jet.puId == 7 if jet.pt <= 50 else 1))
         self.selecsdict[2017] = lambda jet: jet.jetId > 1
         self.selecsdict[2018] = lambda jet: jet.jetId > 1
 
@@ -43,10 +44,11 @@ class pythonCleaningTopRun2(Module):
         self.isSet     = False
         self.selection = lambda j : True
 
-        #### NOTE: the b-tagging algorithm is hardcoded to be deep flavour, although this can be relatively
-        # easyly modified to support other algorithms.
-        self.algoscaff = "DeepFlav_{y}_{wp}"
-        self.jetBTag   = jetBTag
+        self.algodict = {"DeepFlav" : "DeepFlav",
+                         "DeepCSV"  : "Deep"}
+
+        self.algoscaff = algo + "_{y}_{wp}"
+        self.jetBTag   = "btag" + self.algodict[algo] + "B"
         self.btagWP    = btagWP_
         self.btagWPcut = 0
         self.deltaRcut = deltaRcut

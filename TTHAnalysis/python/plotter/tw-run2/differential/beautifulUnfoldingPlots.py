@@ -340,11 +340,14 @@ class beautifulUnfPlot:
         
         # Draw ratio if needed
         if self.doRatio:
+            woUnc = False
             print '> Plotting ratio between prediction(s) and results'
             if 'data' not in [it[3] for it in self.objectsInLeg]: raise RuntimeError('There is not data to make a ratio plot as demanded.')
             if [it[3] for it in self.objectsInLeg].count('data') > 1: raise RuntimeError('There are more than one data histograms attached: multiple ratios are not implemented.')
             #if 'mc' not in [it[3] for it in self.objectsInLeg]: raise RuntimeError('There is not (at least) one prediction to make a ratio plot as demanded.')
-            if 'unc' not in [it[3] for it in self.objectsInLeg]: raise RuntimeError('There is not histogram with the total uncertainties to make a ratio plot as demanded.')
+            if 'unc' not in [it[3] for it in self.objectsInLeg]:
+                woUnc = True
+                #raise RuntimeError('There is not histogram with the total uncertainties to make a ratio plot as demanded.')
             if [it[3] for it in self.objectsInLeg].count('unc') > 1: raise RuntimeError('There are more than one total uncertainty histograms attached. Please add only one.')
             # Obtaining resources
             ratiohistos= []
@@ -359,17 +362,23 @@ class beautifulUnfPlot:
                 if it[3] == 'mc':
                     ratiohistos.append(copy.deepcopy(it[0].Clone(it[1])))
                     ratiohistos[-1].Divide(datavalues)
-                if it[3] == 'unc':
+                if it[3] == 'unc' and not woUnc:
+                    totalunc = copy.deepcopy(it[0].Clone(it[1]))
+                if woUnc and it[3] == 'data':
                     totalunc = copy.deepcopy(it[0].Clone(it[1]))
             xtemp = r.Double(0.)
             ytemp = r.Double(0.)
             for bin in range(1, datavalues.GetNbinsX() + 1):
                 fitunc.SetBinError(bin, fitunc.GetBinError(bin)/fitunc.GetBinContent(bin))
                 fitunc.SetBinContent(bin, 1.)
-                totalunc.GetPoint(bin - 1, xtemp, ytemp)
-                totalunc.SetPointEYhigh(bin - 1, totalunc.GetErrorYhigh(bin - 1)/ytemp)
-                totalunc.SetPointEYlow(bin - 1,  totalunc.GetErrorYlow(bin - 1)/ytemp)
-                totalunc.SetPoint(bin - 1, xtemp, 1.)
+                if not woUnc:
+                    totalunc.GetPoint(bin - 1, xtemp, ytemp)
+                    totalunc.SetPointEYhigh(bin - 1, totalunc.GetErrorYhigh(bin - 1)/ytemp)
+                    totalunc.SetPointEYlow(bin - 1,  totalunc.GetErrorYlow(bin - 1)/ytemp)
+                    totalunc.SetPoint(bin - 1, xtemp, 1.)
+                else:
+                    totalunc.SetBinContent(bin, 1.)
+                    totalunc.SetBinError(bin, fitunc.GetBinError(bin)/fitunc.GetBinContent(bin))
             
             # Setting options
             fitunc.SetFillColorAlpha(r.kAzure, 0.35)
@@ -419,10 +428,15 @@ class beautifulUnfPlot:
             
             # Drawing
             self.canvas.cd(2)
-            totalunc.Draw('a2')
-            #fitunc.Draw('E2,L,same')
-            fitunc.Draw('P,E,same{s}'.format(s = ",X0" if "equalbinsunf" in vl.varList[self.var] else ""))
+            #totalunc.Draw('a2' if not woUnc else "a")
+            #fitunc.Draw('P,E,same')
+            if not woUnc:
+                totalunc.Draw('a2')
+                fitunc.Draw('P,E,same{s}'.format(s = ",X0" if "equalbinsunf" in vl.varList[self.var] else ""))
+            else:
+                totalunc.Draw('P,E')
             for el in ratiohistos:
+                #print el.GetName()
                 el.Draw('L,same')
         
         # Save results

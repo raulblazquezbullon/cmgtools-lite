@@ -9,7 +9,9 @@ scaffconst = """def initCustom{var}(self):
     self.MVAs  = {{}}
 
     setattr(self, "vars_1j1t" + "{var}", ([
-        MVAVar("train_nloosejets",                  func = lambda ev : getattr(ev, "nJetSel20{var}_Recl")),
+        #MVAVar("train_nloosejets",                  func = lambda ev : getattr(ev, "nJetSel20{var}_Recl")),
+        #MVAVar("min(train_nloosejets,2)",           func = lambda ev : min(getattr(ev, "nJetSel20{var}_Recl"), 2)),
+        MVAVar("min(train_nloosejets,1)",           func = lambda ev : min(getattr(ev, "nJetSel20{var}_Recl"), 1)),
         #MVAVar("train_nbloosejets",                 func = lambda ev : getattr(ev, "nBJetSelMedium20{var}_Recl")),
         #MVAVar("train_lep1lep2jet1met_pt",          func = lambda ev : getattr(ev, "Lep1Lep2Jet1MET_Pt" + {var})),
         #MVAVar("train_httot",                       func = lambda ev : getattr(ev, "HTtot"        + {var})),
@@ -37,10 +39,16 @@ scaffconst = """def initCustom{var}(self):
     #path_tmvaBDT_1j1b = mvas_path1 + "/tmvaBDT_1j1t/weights/TMVAClassification_GradBoost_2000_0.01.weights.xml"
     #path_tmvaBDT_2j1b = mvas_path2 + "/tmvaBDT_2j1t/weights/TMVAClassification_GradBoost_200_005_4.weights.xml"
 
-    mvas_path = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/mvas/2021_05_nuevopostproc/"
+    #mvas_path = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/mvas/2021_05_nuevopostproc/"
     #mvas_path = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/mvas/2021_09_03_DYbueno/"
     #mvas_path = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/mvas/2021_09_20_DYweight5/"
     #mvas_path = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/mvas/2021_09_20_DYweight50/"
+    #mvas_path = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/mvas/2021_11_29_sinnloosejets/"
+    #mvas_path = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/mvas/2021_11_29_sinnloosejetsniloosejetpt/"
+    #mvas_path = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/mvas/2021_12_01_nloosejetBin01geq2/"
+    mvas_path = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/mvas/2021_12_01_nloosejetBin0geq1/"
+    #mvas_path = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/mvas/2021_12_01_nloosejetBin0geq1SinLooseJet1/"
+
     path_tmvaBDT_1j1b = mvas_path + "/tmvaBDT_1j1t/weights/TMVAClassification_GradBoost_2000_0.01.weights.xml"
     path_tmvaBDT_2j1b = mvas_path + "/tmvaBDT_2j1t/weights/TMVAClassification_GradBoost_200_005_4.weights.xml"
     #path_tmvaBDT_1j1b = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/mvas/2021_09_20_DYweight5NjetFWD/tmvaBDT_1j1t/weights/TMVAClassification_GradBoost_2000_0.01.weights.xml"

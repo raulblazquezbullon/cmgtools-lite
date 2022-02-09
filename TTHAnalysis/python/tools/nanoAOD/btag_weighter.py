@@ -147,7 +147,7 @@ class btag_weighter(Module):
             sysLFdnUncorr = 1
 
             self.jets = [self.all_jets[getattr(event, 'iJetSel30{v}_Recl'.format(v = jecVar))[j]]
-                         for j in xrange(min([getattr(event, 'nJetSel30{v}_Recl'.format(v = jecVar)), 5]))]
+                         for j in xrange(min([getattr(event, 'nJetSel30{v}_Recl'.format(v = jecVar)), 5]))] #### WARNING: this is only valid when ignoring events with nJet>5!!!!!!!!!!
 
             jetjecsysscaff = (jecVar if jecVar != "" else self.nominaljecscaff)
 
@@ -266,10 +266,10 @@ class btag_weighter(Module):
 
 
                 for ldelta,lepVar in self.systsLepEn.iteritems():
-                    mcTag     = 1
-                    mcNoTag   = 1
-                    dataTag   = 1
-                    dataNoTag = 1
+                    mcTag     = 1.
+                    mcNoTag   = 1.
+                    dataTag   = 1.
+                    dataNoTag = 1.
 
                     self.jets    = [self.all_jets[getattr(event, 'iJetSel30{v}_Recl'.format(v = lepVar))[j]]
                                 for j in xrange(min([getattr(event, 'nJetSel30{v}_Recl'.format(v = lepVar)), 5]))]

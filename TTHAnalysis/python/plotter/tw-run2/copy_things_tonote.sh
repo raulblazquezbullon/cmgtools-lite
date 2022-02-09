@@ -3,8 +3,9 @@
 plotter="/nfs/fanae/user/vrbouza/Proyectos/tw_run2/desarrollo/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter"
 slash="/"
 
-tmpfolder="temp_2021_11_05_cosasnivelpartviejasconcardsnuevas"
+#tmpfolder="temp_2021_11_05_cosasnivelpartviejasconcardsnuevas"
 #tmpfolder="temp_2021_07_29_cardspapreapp"
+tmpfolder="temp_2022_01_24_actualizacionnotadif"
 prefix=$plotter/$tmpfolder/
 
 outfolder="/nfs/fanae/user/vrbouza/Proyectos/tw_run2/documentacion/AN-20-118"
@@ -49,7 +50,8 @@ for v in $vars; do
      #cp $prefix/differential/run2/$v/CovMatplots/Cov_$v\_particle.pdf $outfolder/figures/diffresults/run2/
       cp $prefix/differential/run2/$v/CovMatplots/Cov_$v\_particlefidbin.pdf $outfolder/figures/diffresults/run2/
 
-     cp $prefix/differential/run2/$v/sigextr_fit_combine/impacts/impacts_run2_$v.pdf $outfolder/figures/diffresults/impacts/
+     cp $prefix/differential/run2/$v/sigextr_fit_combine/Impacts/impacts_run2_$v.pdf $outfolder/figures/diffresults/impacts/
+     cp $prefix/differential/run2/$v/sigextr_fit_combine/ObsImpacts/impacts_run2_$v.pdf $outfolder/figures/diffresults/obsimpacts/
 done;
 #
 #for y in $years; do
