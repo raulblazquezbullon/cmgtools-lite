@@ -16,7 +16,7 @@ lumidict     = {2016 : 36.33,
 #                2018 : 29.87}
 
 #friendsscaff = "--FDs {P}/0_lumijson --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --Fs {P}/5_mvas --Fs {P}/6_hemissue"
-friendsscaff = "--FDs {P}/0_lumijson --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --Fs {P}/5_mvas"
+friendsscaff = "--FDs {P}/0_lumijson --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --Fs {P}/5_mvas_nloosejetgeq1"
 #friendsscaff = "--FDs {P}/0_lumijson --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning_puid --Fs {P}/3_varstrigger_puid --FMCs {P}/4_scalefactors_puid --Fs {P}/5_mvas_puid" #5_mvas_DY_newWithDiv
 #friendsscaff = "--FDs {P}/0_lumijson --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger_fixelecs --FMCs {P}/4_scalefactors --Fs {P}/5_mvas_fixelecs"
 #friendsscaff = "--FDs {P}/0_lumijson --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors_neweffs --Fs {P}/5_mvas_neweffs"
