@@ -190,9 +190,9 @@ prefiring_2017 : $AllBkg : .* : templateAsymm; AddWeights=['PrefireWeight_Up/Pre
 ## --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ## Muon energy corrections (Rochester corrections)
 ## --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-muonen_2016 : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-lepenergies/fr-muonEnergyUp.txt'\,'tw-run2/frs-lepenergies/fr-muonEnergyDn.txt'], year="2016"
-muonen_2017 : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-lepenergies/fr-muonEnergyUp.txt'\,'tw-run2/frs-lepenergies/fr-muonEnergyDn.txt'], year="2017"
-muonen_2018 : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-lepenergies/fr-muonEnergyUp.txt'\,'tw-run2/frs-lepenergies/fr-muonEnergyDn.txt'], year="2018"
+muonen_2016 : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-lepenergies/fr-muonEnergyUp.txt'\,'tw-run2/frs-lepenergies/fr-muonEnergyDn.txt'], year="2016", EstimateFromXbins=1
+muonen_2017 : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-lepenergies/fr-muonEnergyUp.txt'\,'tw-run2/frs-lepenergies/fr-muonEnergyDn.txt'], year="2017", EstimateFromXbins=1
+muonen_2018 : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-lepenergies/fr-muonEnergyUp.txt'\,'tw-run2/frs-lepenergies/fr-muonEnergyDn.txt'], year="2018", EstimateFromXbins=1
 
 
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

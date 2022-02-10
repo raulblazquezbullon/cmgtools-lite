@@ -80,23 +80,18 @@ muonisosf_syst      : $AllBkg : .* : templateAsymm; AddWeights=['MuonISOSF_systU
 ## --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ## JECs
 ## --------------------------------------------------------------------------------------------------------------------------------------------------------------------------## Separate (and reduced) JES
-jes_HF                  : $lowstat : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesHFUp.txt'\,'tw-run2/frs-jecs/fr-jesHFDown.txt'], EstimateFromXbins=1
-jes_HF_2016             : $lowstat : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesHF_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesHF_yearDown.txt'], year="2016", EstimateFromXbins=1
-jes_HF_2017             : $lowstat : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesHF_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesHF_yearDown.txt'], year="2017", EstimateFromXbins=1
-jes_HF_2018             : $lowstat : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesHF_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesHF_yearDown.txt'], year="2018", EstimateFromXbins=1
-
-jes_HF                  : $highstat : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesHFUp.txt'\,'tw-run2/frs-jecs/fr-jesHFDown.txt']
-jes_HF_2016             : $highstat : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesHF_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesHF_yearDown.txt'], year="2016"
-jes_HF_2017             : $highstat : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesHF_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesHF_yearDown.txt'], year="2017"
-jes_HF_2018             : $highstat : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesHF_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesHF_yearDown.txt'], year="2018"
-
+jes_HF                  : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesHFUp.txt'\,'tw-run2/frs-jecs/fr-jesHFDown.txt'], EstimateFromXbins=1
+jes_HF_2016             : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesHF_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesHF_yearDown.txt'], year="2016", EstimateFromXbins=1
+jes_HF_2017             : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesHF_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesHF_yearDown.txt'], year="2017", EstimateFromXbins=1
+jes_HF_2018             : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesHF_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesHF_yearDown.txt'], year="2018", EstimateFromXbins=1
 
 jes_BBEC1               : dy|nonworz|vvttv : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesBBEC1Up.txt'\,'tw-run2/frs-jecs/fr-jesBBEC1Down.txt'], EstimateFromXbins=1
 jes_BBEC1_2016          : dy|nonworz|vvttv : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesBBEC1_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesBBEC1_yearDown.txt'], year="2016", EstimateFromXbins=1
 jes_BBEC1_2017          : dy|nonworz|vvttv : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesBBEC1_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesBBEC1_yearDown.txt'], year="2017", EstimateFromXbins=1
 jes_BBEC1_2018          : dy|nonworz|vvttv : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesBBEC1_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesBBEC1_yearDown.txt'], year="2018", EstimateFromXbins=1
 
-jes_BBEC1               : $tWandttbar : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesBBEC1Up.txt'\,'tw-run2/frs-jecs/fr-jesBBEC1Down.txt'], fitOrder=3
+jes_BBEC1               : $tWProc : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesBBEC1Up.txt'\,'tw-run2/frs-jecs/fr-jesBBEC1Down.txt'], fitOrder=3
+jes_BBEC1               : ttbar   : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesBBEC1Up.txt'\,'tw-run2/frs-jecs/fr-jesBBEC1Down.txt'], fitOrder=4
 jes_BBEC1_2016          : $tWandttbar : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesBBEC1_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesBBEC1_yearDown.txt'], year="2016", EstimateFromXbins=1
 jes_BBEC1_2017          : $tWandttbar : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesBBEC1_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesBBEC1_yearDown.txt'], year="2017", EstimateFromXbins=1
 jes_BBEC1_2018          : $tWandttbar : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesBBEC1_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesBBEC1_yearDown.txt'], year="2018", EstimateFromXbins=1
@@ -128,7 +123,8 @@ jes_EC2_2018            : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-
 
 jes_Absolute            : $lowstat    : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesAbsoluteUp.txt'\,'tw-run2/frs-jecs/fr-jesAbsoluteDown.txt'], EstimateFromXbins=1
 jes_Absolute            : vvttv       : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesAbsoluteUp.txt'\,'tw-run2/frs-jecs/fr-jesAbsoluteDown.txt'], fitOrder=1, symmAfterFit=1
-jes_Absolute            : $tWandttbar : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesAbsoluteUp.txt'\,'tw-run2/frs-jecs/fr-jesAbsoluteDown.txt'], fitOrder=3
+jes_Absolute            : ttbar   : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesAbsoluteUp.txt'\,'tw-run2/frs-jecs/fr-jesAbsoluteDown.txt'], fitOrder=4
+jes_Absolute            : $tWProc : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesAbsoluteUp.txt'\,'tw-run2/frs-jecs/fr-jesAbsoluteDown.txt'], fitOrder=3
 
 
 jes_Absolute_2016       : dy|nonworz|vvttv : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesAbsolute_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesAbsolute_yearDown.txt'], year="2016", EstimateFromXbins=1
