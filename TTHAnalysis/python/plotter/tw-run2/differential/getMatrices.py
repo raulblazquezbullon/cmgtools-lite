@@ -5,6 +5,8 @@ from multiprocessing import Pool
 from array import array
 from copy import deepcopy
 
+from CMGTools.TTHAnalysis.plotter.mcAnalysis import *
+from optparse import OptionParser
 sys.path.append('{cmsswpath}/src/CMGTools/TTHAnalysis/python/plotter/tw-run2/differential/'.format(cmsswpath = os.environ['CMSSW_BASE']))
 import varList as vl
 import CMS_lumi, tdrstyle
@@ -307,7 +309,6 @@ def GetAndPlotNonFiducialHisto(var, theunc, thefiducialh, thepath):
     hNonFid = deepcopy(thefiducialh.Clone("F" + var + "_" + theunc))
     hNonFid.SetXTitle("var")
     hNonFid.SetYTitle("Events not passing the fiducial sel.")
-
     c = r.TCanvas('c', "Fiducial histogram - " + var + "_" + theunc, 600, 600)
     hNonFid.Draw()
     r.gStyle.SetPaintTextFormat("4.1f")
@@ -324,6 +325,59 @@ def SaveOverlap(theoverlap, thepath):
     fcn = open(thepath + "/overlaps.txt", "w")
     out = '(detector & particle) / particle\n'
     out += str(round(theoverlap, 4)) + '\n'
+    fcn.write(out)
+    fcn.close
+    return
+
+
+def SaveAcceptance(nfid, thepath):
+    #print "\n[SaveAcceptance]"
+    
+    mcaF = "tw-run2/differential/mca-differential/mca-tw-diff.txt"
+    parser = OptionParser(usage="")
+    addMCAnalysisOptions(parser)
+    they = thepath.split("/")[-3]
+    
+    if they != "run2": 
+        year = int(they)
+        lumi = vl.LumiDict[year]
+    else:
+        year = "2016,2017,2018"
+        lumi = ",".join([str(vl.LumiDict[iY]) for iY in [2016, 2017, 2018]])
+    
+#    print thepath, year
+    friendspath = "/pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions"
+    prod        = "2021-06-09"
+    theargs  = ["--year", "{y}".format(y = year), "-l", "{l}".format(l = lumi)]
+    theargs += "--FDs {P}/0_lumijson --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors".split(" ")
+    theargs += ("-P " + friendspath + "/" + prod + ("/" + str(year) if they != "run2" else "")).split(" ")
+    theargs += "--tree NanoAOD --AP".split(" ")
+    
+    (options, args) = parser.parse_args(theargs)
+    mca  = MCAnalysis(mcaF, options)
+
+    allw = 0.
+    xsec = 0.
+    for tty in mca._signals:
+        tmpwf = r.TFile(tty._fname, "READ")
+        for ev in tmpwf.Runs:
+            allw += getattr(ev, "genEventSumw_", "genEventSumw")
+        for ev in tmpwf.Events:
+            xsec = ev.xsec
+            break
+        tmpwf.Close(); del tmpwf
+
+    ### NOTE: this is also for getting all geneventsumw or nevs, in the case that a reweighting is needed in the future.
+#    print nfid, allw, nfid/allw, nfid/sum([float(l) for l in lumi.split(",")])/xsec/1000.
+#    sys.exit()
+    
+    
+    fcn = open(thepath + "/acceptance.txt", "w")
+    out = 'acceptance\n'
+    if they == "run2":
+        out += str(round(nfid/sum([float(l) for l in lumi.split(",")])/xsec/1000., 4)) + '\n'
+    else:
+        out += str(round(nfid/lumi/xsec/1000., 4)) + '\n'
     fcn.write(out)
     fcn.close
     return
@@ -408,9 +462,10 @@ def CalculateAndPlotResponseMatrices(tsk):
 
         hResponse, theoverlap = GetAndPlotResponseMatrix(iY, iV, key, responsedict[key], hParticle, tmpoutpath)
 
-        if theoverlap != None:
+        if theoverlap != None and key == "":
             SaveOverlap(theoverlap, tmpoutpath)
-
+        
+        
         condnumdict[key] = GetConditionNumber(hResponse)
         hNonFiducial     = GetAndPlotNonFiducialHisto(iV, key, nonfiducialdict[key], tmpoutpath)
 
@@ -418,6 +473,7 @@ def CalculateAndPlotResponseMatrices(tsk):
         hNonFiducial.Write()
     foutput.Close()
 
+    SaveAcceptance(hParticle.Integral(), tmpoutpath)
     SaveAllConditionNumbers(condnumdict, tmpoutpath)
     return
 

@@ -152,11 +152,11 @@ class beautifulUnfPlot:
                     histo.GetYaxis().SetTitle( self.yaxis_unclabel )
                 elif not vl.doxsec or "detector" in self.name:
                     histo.GetYaxis().SetTitle( 'Events' )
-                elif "fid" in self.var and not "bin" in self.var:
+                elif "fid" in self.name and not "bin" in self.name:
                     histo.GetYaxis().SetTitle( vl.varList[self.var]['yaxisfid'] )
-                elif "bin" in self.var and "fid" in self.var:
+                elif "bin" in self.name and "fid" in self.name:
                     histo.GetYaxis().SetTitle( vl.varList[self.var]['yaxisfidbin'] )
-                elif "bin" in self.var:
+                elif "bin" in self.name:
                     histo.GetYaxis().SetTitle( vl.varList[self.var]['yaxisbin'] )
                 else:
                     histo.GetYaxis().SetTitle( vl.varList[self.var]['yaxis_particle'] )
@@ -219,7 +219,7 @@ class beautifulUnfPlot:
 
         self.canvas.cd(padnum)
         histo = histos
-
+        
         if self.var in vl.varList:
             histo.GetXaxis().SetTitle( vl.varList[self.var]['xaxis'] )
             if self.isUncPlot:
