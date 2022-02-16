@@ -51,4 +51,14 @@ BkgTest->Rebin(4);
 cout << "Signal K-S: " << SigTest->KolmogorovTest(SigTrain,"X") << " Signal X2: " << SigTest->Chi2Test(SigTrain,"WW") << endl;
 cout << "Background K-S: " << BkgTest->KolmogorovTest(BkgTrain,"X") << " Background X2: " << BkgTest->Chi2Test(BkgTrain,"WW") << endl;
 
+SigTrain->Rebin(SigTrain->GetNbinsX());
+SigTest->Rebin(SigTest->GetNbinsX());
+BkgTrain->Rebin(BkgTrain->GetNbinsX());
+BkgTest->Rebin(BkgTest->GetNbinsX());
+
+cout << "------------------ Relative Unc. ------------------" << endl;
+
+cout << "Train signal: " << SigTrain->GetBinError(1)/SigTrain->GetBinContent(1)*100 << "%" << " Test signal: " << SigTest->GetBinError(1)/SigTest->GetBinContent(1)*100 << "%" << endl;
+cout << "Train background: " << BkgTrain->GetBinError(1)/BkgTrain->GetBinContent(1)*100 << "%" << " Test background: " << BkgTest->GetBinError(1)/BkgTest->GetBinContent(1)*100 << "%" << endl;
+
 }

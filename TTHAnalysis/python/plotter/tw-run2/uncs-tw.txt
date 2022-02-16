@@ -305,7 +305,7 @@ topptrew : ttbar : .* : templateSymmAdditive ; AddWeight='TopPtWeight'
 ##### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ##### ME/PS matching (hDamp parameter)
 ##### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-ttbar_matching : ttbar   : .* : altSample : syst_ttbar_matching_up : syst_ttbar_matching_dn ; EstimateFromXbins=1
+ttbar_matching : ttbar   : .* : altSample : syst_ttbar_matching_up : syst_ttbar_matching_dn ; 
 #####tw_matching    : $tWProc : .* : altSample : syst_tw_matching_up    : syst_tw_matching_dn ### NOT RECOMMENDED
 
 
@@ -318,20 +318,20 @@ ttbar_matching : ttbar   : .* : altSample : syst_ttbar_matching_up : syst_ttbar_
 #colour_rec : $tWProc : .* : altSampleEnv : ['syst_tw_colour_erdon'\,'syst_tw_colour_cr1'\,'syst_tw_colour_cr2']          : symm ; EstimateFromXbins=1
 
 # Current, w/o
-colour_rec_erdon : ttbar   : .* : altSample : syst_ttbar_colour_erdon : : ; EstimateFromXbins=1
-colour_rec_cr1   : ttbar   : .* : altSample : syst_ttbar_colour_cr1   : : ; EstimateFromXbins=1
-colour_rec_cr2   : ttbar   : .* : altSample : syst_ttbar_colour_cr2   : : ; EstimateFromXbins=1
-colour_rec_erdon : $tWProc : .* : altSample : syst_tw_colour_erdon    : : ; EstimateFromXbins=1
-colour_rec_cr1   : $tWProc : .* : altSample : syst_tw_colour_cr1      : : ; EstimateFromXbins=1
-colour_rec_cr2   : $tWProc : .* : altSample : syst_tw_colour_cr2      : : ; EstimateFromXbins=1
+colour_rec_erdon : ttbar   : .* : altSample : syst_ttbar_colour_erdon : : ; 
+colour_rec_cr1   : ttbar   : .* : altSample : syst_ttbar_colour_cr1   : : ; 
+colour_rec_cr2   : ttbar   : .* : altSample : syst_ttbar_colour_cr2   : : ;
+colour_rec_erdon : $tWProc : .* : altSample : syst_tw_colour_erdon    : : ; 
+colour_rec_cr1   : $tWProc : .* : altSample : syst_tw_colour_cr1      : : ; 
+colour_rec_cr2   : $tWProc : .* : altSample : syst_tw_colour_cr2      : : ; 
 
 
 
 #### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #### Underlying event (tuning)
 #### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-ue : ttbar   : .* : altSample : syst_ttbar_ue_up : syst_ttbar_ue_dn ; EstimateFromXbins=1
-ue : $tWProc : .* : altSample : syst_tw_ue_up    : syst_tw_ue_dn    ; EstimateFromXbins=1
+ue : ttbar   : .* : altSample : syst_ttbar_ue_up : syst_ttbar_ue_dn ; 
+ue : $tWProc : .* : altSample : syst_tw_ue_up    : syst_tw_ue_dn    ; 
 
 
 
@@ -339,10 +339,10 @@ ue : $tWProc : .* : altSample : syst_tw_ue_up    : syst_tw_ue_dn    ; EstimateFr
 ##### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ##### Top quark mass
 ##### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-mtop : ttbar   : .* : altSample : syst_ttbar_mtop_2016_up : syst_ttbar_mtop_2016_dn : addothers : syst_ttbar_mtop_2016 : 3 ; year="2016", EstimateFromXbins=1
-mtop : ttbar   : .* : altSample : syst_ttbar_mtop_2017_up : syst_ttbar_mtop_2017_dn : addothers : syst_ttbar_mtop_2017 : 1 ; year="2017", EstimateFromXbins=1
-mtop : ttbar   : .* : altSample : syst_ttbar_mtop_2018_up : syst_ttbar_mtop_2018_dn : addothers : syst_ttbar_mtop_2018 : 1 ; year="2018", EstimateFromXbins=1
-mtop : $tWProc : .* : altSample : syst_tw_mtop_up         : syst_tw_mtop_dn ;  EstimateFromXbins=1
+mtop : ttbar   : .* : altSample : syst_ttbar_mtop_2016_up : syst_ttbar_mtop_2016_dn : addothers : syst_ttbar_mtop_2016 : 3 ; year="2016", 
+mtop : ttbar   : .* : altSample : syst_ttbar_mtop_2017_up : syst_ttbar_mtop_2017_dn : addothers : syst_ttbar_mtop_2017 : 1 ; year="2017", 
+mtop : ttbar   : .* : altSample : syst_ttbar_mtop_2018_up : syst_ttbar_mtop_2018_dn : addothers : syst_ttbar_mtop_2018 : 1 ; year="2018", 
+mtop : $tWProc : .* : altSample : syst_tw_mtop_up         : syst_tw_mtop_dn ;  
 
 
 
@@ -350,6 +350,6 @@ mtop : $tWProc : .* : altSample : syst_tw_mtop_up         : syst_tw_mtop_dn ;  E
 #### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #### tW DR/DS
 #### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-ds : $tWProc : .* : altSample : syst_tw_ds : : ; EstimateFromXbins=1
+ds : $tWProc : .* : altSample : syst_tw_ds : : ; 
 
 

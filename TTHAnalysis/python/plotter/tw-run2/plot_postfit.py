@@ -80,6 +80,7 @@ def doSpam(text,x1,y1,x2,y2,align=12,fill=False,textSize=0.033,_noDelete={}):
   cmsprel.SetFillStyle(1001 if fill else 0);
   cmsprel.SetLineStyle(2);
   cmsprel.SetLineColor(0);
+  cmsprel.SetLineWidth(0);
   cmsprel.SetTextAlign(align);
   cmsprel.SetTextFont(43);
   cmsprel.AddText(text);
@@ -122,7 +123,7 @@ def producePlots(year, region, path):
       
       p1 = c.GetPad(1)    		        
       p1.SetPad(0, 0.25, 1, 1)
-      p1.SetTopMargin(0.05)
+      p1.SetTopMargin(0.055)
       p1.SetBottomMargin(0.025)
       p1.SetLeftMargin(0.16)
       p1.SetRightMargin(0.03)
@@ -140,8 +141,8 @@ def producePlots(year, region, path):
       hstack = r.THStack()
       #We define the legend
       textSize = 0.039
-      height = .20 + textSize*3
-      legend = r.TLegend(.75-0.07, .9-height, .9, .91) #0.85 for the first number in the CMGTools plotter
+      height = textSize*6
+      legend = r.TLegend(.75-0.20, .9-height, .9, .91) #0.85 for the first number in the CMGTools plotter
       legend.SetBorderSize(0)
       legend.SetFillColor(0)
       legend.SetShadowColor(0)
@@ -210,7 +211,7 @@ def producePlots(year, region, path):
       hstack.GetXaxis().SetRange(1,len(dictBinsCenterRegions[dire]))
 
       
-      
+      legend.SetNColumns(2)
       legend.Draw("same")
       # now draw data
       gr.GetXaxis().SetLabelSize(0)
@@ -227,8 +228,9 @@ def producePlots(year, region, path):
       # Ratio plot
       p2.cd()
       lin = r.TLine(dictBinEdgesRegions[dire][0], 1, dictBinEdgesRegions[dire][1], 1)
-      lin.SetLineWidth(2);
-      lin.SetLineColor(58);
+      lin.SetLineWidth(1)
+      lin.SetLineColor(1)
+      lin.SetLineStyle(2)
 
       #ratio_hist = r.TGraphAsymmErrors(dataNpoints,datapointsX,np.array(datapointsYRatio,dtype='float64'),gr.GetEXlow(),gr.GetEXhigh(),np.array(uncpointsLowRatio,dtype='float64'),np.array(uncpointsHighRatio,dtype='float64'))
       
@@ -240,11 +242,6 @@ def producePlots(year, region, path):
 								
       ratio_hist.SetLineWidth(0)
       ratio_hist.SetMarkerStyle(20)
-      #ratio_hist.SetMinimum(0.8)
-      #ratio_hist.SetMaximum(1.2)
-      ratio_hist.GetYaxis().SetLimits(0.8,1.2)
-      ratio_hist.GetYaxis().SetRangeUser(0.8,1.2)
-					
       ratio_hist.SetMarkerSize(1)
 	
       htotalNoErr = deepcopy(htotal.Clone("ratiounc"))
@@ -270,7 +267,7 @@ def producePlots(year, region, path):
       hAuxForAxis.GetYaxis().SetLabelSize(22)
       hAuxForAxis.GetXaxis().SetLabelFont(43)
       hAuxForAxis.GetYaxis().SetLabelFont(43)
-      hAuxForAxis.GetYaxis().SetTitle("data/MC")
+      hAuxForAxis.GetYaxis().SetTitle("Data/MC")
       hAuxForAxis.GetYaxis().SetTitleOffset(2.1)
       hAuxForAxis.GetXaxis().SetTitle(dictRegionsXaxisLabels[dire])
       hAuxForAxis.GetYaxis().SetTitleSize(22)
@@ -278,7 +275,7 @@ def producePlots(year, region, path):
       hAuxForAxis.GetXaxis().SetTitleOffset(4.8)
       hAuxForAxis.GetXaxis().SetTitleSize(22)
       hAuxForAxis.GetXaxis().SetTitleFont(43)
-      hAuxForAxis.GetYaxis().SetRangeUser(0.8, 1.2)
+      hAuxForAxis.GetYaxis().SetRangeUser(0.85, 1.15)
       hAuxForAxis.GetYaxis().SetNdivisions(505)
       hAuxForAxis.Draw("axis")
       if key == "fit_s":
@@ -302,12 +299,12 @@ def producePlots(year, region, path):
 
       
       p1.cd()
-      doSpam('#splitline{#scale[1.1]{#bf{CMS}}}{#scale[0.9]{#it{Preliminary}}}',.21, .845, .35, .885,textSize = 22)
+      doSpam('#splitline{#scale[1.1]{#bf{CMS}}}{#scale[0.9]{#it{Preliminary}}}',.2, .845, .35, .885,textSize = 22)
       keyname = key
       if keyname == "fit_s": keyname = "postfit"
-      doSpam(str(lumidict[year]) + " fb^{-1} (13 TeV)",0.7, .955, .98, .995,textSize = 22)
+      doSpam(str(lumidict[year]) + " fb^{-1} (13 TeV)",0.7, .963, .975, .99,textSize = 22)
 
-      doSpam("e^{#pm}#mu^{#mp}+" + dictRegions[dire], .41, .855, .6, .895, textSize = 22)
+      doSpam("e^{#pm}#mu^{#mp}+" + dictRegions[dire], .41-0.045, .855, .6-0.05, .895, textSize = 22)
 	
       if not os.path.exists(outpath): os.system("mkdir -p %s"%outpath)
       c.SaveAs("%s/%s_%s.png"%(outpath,keyname,dire))
