@@ -111,12 +111,12 @@ def CardsCommand(prod, year, var, bines, isAsimov, nthreads, outpath, region, no
                                asimovornot = "--asimov s+b" if isAsimov else "",
                                mcafile   = mcafile_,
                                cutsfile  = cutsfile_,
-                               uncs      = "--unc tw-run2/uncs-tw_{r}mva.txt --amc".format(r = region) if not noUnc else "--amc",
+                               uncs      = "--unc tw-run2/uncs-tw_{r}mvaNEW.txt --amc".format(r = region) if not noUnc else "--amc",
 #                               uncs      = "--unc tw-run2/uncs-tw_{r}mva_puid.txt --amc".format(r = region) if not noUnc else "--amc",
                                #uncs      = "--unc tw-run2/uncs-tw_{r}mva_20211202.txt --amc".format(r = region) if not noUnc else "--amc",
                                #uncs      = "--unc tw-run2/uncs-tw_{r}mva_ttbartw.txt --amc".format(r = region) if not noUnc else "--amc",
                                #uncs      = "--unc tw-run2/uncs-tw_{r}mvaTodoSmoothMenosABSB-BEC1.txt --amc".format(r = region) if not noUnc else "--amc",
-                               #uncs      = "--unc tw-run2/uncs-tw.txt --amc" if not noUnc else "--amc",
+                              # uncs      = "--unc tw-run2/uncs-tw.txt --amc" if not noUnc else "--amc",
                                #uncs      = "--unc tw-run2/uncs-tw_nadasuavizado.txt --amc" if not noUnc else "--amc",
                                extra     = extra_)
 
@@ -201,6 +201,11 @@ if __name__ == "__main__":
 #                "[30.,50.,70.,90.,110.,130.,150.,170.,190.]"]
     theyears = ["2016", "2017", "2018", "run2"]
     tasks    = []
+    
+    ########----No rebin---------#######
+#    thevars  = ["tmvaBDT_1j1b", "tmvaBDT_2j1b", "min(max(Jet2_Pt, 30.), 189.)"]
+#    thebins  = ["[-1.0, -0.8947368421052632, -0.7894736842105263, -0.6842105263157895, -0.5789473684210527, -0.4736842105263158, -0.368421052631579, -0.26315789473684215, -0.1578947368421053, -0.052631578947368474, 0.05263157894736836, 0.1578947368421053, 0.26315789473684204, 0.36842105263157876, 0.4736842105263157, 0.5789473684210527, 0.6842105263157894, 0.7894736842105261, 0.894736842105263, 1.0]","[-1.0, -0.8181818181818181, -0.6363636363636364, -0.4545454545454546, -0.2727272727272727, -0.09090909090909083, 0.09090909090909083, 0.2727272727272727, 0.4545454545454546, 0.6363636363636365, 0.8181818181818183, 1.0]","[30.,40.,50.,60.,70.,80.,90.,100.,110.,120.,130.,140.,150.,160.,170.,180.,190.]"]
+    ########----No rebin---------#######
     
     ########----1 Bin test-------#######
     #thevars  = ["1", "1", "1"]
