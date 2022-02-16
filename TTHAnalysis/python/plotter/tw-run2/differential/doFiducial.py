@@ -323,14 +323,6 @@ def PlotParticleFidLevelResults(thedict, inpath, iY, varName, notff):
     return
 
 
-def getAConservativeMaximum(h):
-    theval = 0.
-    for iB in range(1, h.GetNbinsX() + 1):
-        newmax = (h.GetBinContent(iB) + h.GetBinError(iB)) * 1.2
-        if theval < newmax: theval = newmax
-    return theval
-
-
 #### POR BIN Y NORMALIZAOS
 def PlotParticleFidBinLevelResults(thedict, inpath, iY, varName, notff):
     print "> Obtaining plots normalised to fiducial cross section and to bin's width for variable " + varName
@@ -635,7 +627,7 @@ def PlotParticleFidBinLevelResults(thedict, inpath, iY, varName, notff):
     savetfile2.Close()
 
     for el in [tru, tru_DS, tru_herwig, thedict[""]]:
-        tmpval = getAConservativeMaximum(el)
+        tmpval = vl.getAConservativeMaximum(el)
         if thedict[""].GetMaximum() <= tmpval: thedict[""].SetMaximum(tmpval)
 
     plot.addHisto(thedict[""],        'P,E,same{s}'.format(s = ",X0" if "equalbinsunf" in vl.varList[varName] else ""), vl.labellegend, 'PEL', 'data')
@@ -643,12 +635,12 @@ def PlotParticleFidBinLevelResults(thedict, inpath, iY, varName, notff):
     plot.addHisto(tru,                'L,same', 'tW PH DR + P8',          'L', 'mc')
     plot.addHisto(tru_DS,             'L,same', 'tW PH DS + P8',          'L', 'mc')
     plot.addHisto(tru_herwig,         'L,same', 'tW PH DR + H7',          'L', 'mc')
-    #plot.addHisto(tru_aMC_dr,         'L,same', 'tW aMC DR + P8',         'L', 'mc')
-    #plot.addHisto(tru_aMC_dr2,        'L,same', 'tW aMC DR2 + P8',        'L', 'mc')
-    #plot.addHisto(tru_aMC_ds,         'L,same', 'tW aMC DS + P8',         'L', 'mc')
-    #plot.addHisto(tru_aMC_ds_runn,    'L,same', 'tW aMC DS dyn. + P8',    'L', 'mc')
-    #plot.addHisto(tru_aMC_ds_IS,      'L,same', 'tW aMC DS IS + P8',      'L', 'mc')
-    #plot.addHisto(tru_aMC_ds_IS_runn, 'L,same', 'tW aMC DS IS dyn. + P8', 'L', 'mc')
+    plot.addHisto(tru_aMC_dr,         'L,same', 'tW aMC DR + P8',         'L', 'mc')
+    plot.addHisto(tru_aMC_dr2,        'L,same', 'tW aMC DR2 + P8',        'L', 'mc')
+    plot.addHisto(tru_aMC_ds,         'L,same', 'tW aMC DS + P8',         'L', 'mc')
+    plot.addHisto(tru_aMC_ds_runn,    'L,same', 'tW aMC DS dyn. + P8',    'L', 'mc')
+    plot.addHisto(tru_aMC_ds_IS,      'L,same', 'tW aMC DS IS + P8',      'L', 'mc')
+    plot.addHisto(tru_aMC_ds_IS_runn, 'L,same', 'tW aMC DS IS dyn. + P8', 'L', 'mc')
     #plot.saveCanvas(legloc, woUnc = True)
     plot.saveCanvas(legloc)
 
@@ -878,7 +870,7 @@ if __name__ == "__main__":
 
     #print "\n> Drawing matrices and writing ROOT file (old one will be overwritten!)."
 
-    vetolist = ["plots", "Fiducial", "control", "tables"]
+    vetolist = ["plots", "Fiducial", "control", "tables", "response"]
 
     #### First, find the tasks
 

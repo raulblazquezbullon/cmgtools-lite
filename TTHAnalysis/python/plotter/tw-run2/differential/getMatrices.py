@@ -41,7 +41,6 @@ def GetAndPlotResponseMatrix(iY, var, key, theresponseh, theparticleh, thepath):
     overlap = None
 
     #htemp.Scale(scaleval); hGen.Scale(scaleval)
-
     htemp.Divide(hGen); del hGen;
 
     if var == "Fiducial":
@@ -133,7 +132,7 @@ def GetAndPlotResponseMatrix(iY, var, key, theresponseh, theparticleh, thepath):
 
 
 def GetAndPlotPuritiesAndStabilities(var, theresponseh, theparticleh, thedetectorparticleh, thedetectorh, thepath):
-    #print "\n[PuritiesAndStabilities]"
+    # print "\n[PuritiesAndStabilities]"
     purities          = []
     stabilities       = []
     stabilities_woeff = []
@@ -145,29 +144,31 @@ def GetAndPlotPuritiesAndStabilities(var, theresponseh, theparticleh, thedetecto
     particlebins  = array("d", particlebins)
     detectorbins  = array("d", detectorbins)
 
-    #print " > Calculating stabilities..."
+    # print " > Calculating stabilities..."
 
-    #print "under,under:", theresponseh.GetBinContent(0, 0)
-    #print "under,over:",  theresponseh.GetBinContent(0, ndetectorbins + 2)
-    #print "over,under:",  theresponseh.GetBinContent(nparticlebins + 2, 0)
-    #print "over,over:",   theresponseh.GetBinContent(nparticlebins + 2, ndetectorbins + 2)
-    #print "underparticle:", theparticleh.GetBinContent(0)
-    #print "overparticle:", theparticleh.GetBinContent(nparticlebins + 2)
+    # print "under,under:", theresponseh.GetBinContent(0, 0)
+    # print "under,over:",  theresponseh.GetBinContent(0, ndetectorbins + 2)
+    # print "over,under:",  theresponseh.GetBinContent(nparticlebins + 2, 0)
+    # print "over,over:",   theresponseh.GetBinContent(nparticlebins + 2, ndetectorbins + 2)
+    # print "underparticle:", theparticleh.GetBinContent(0)
+    # print "overparticle:", theparticleh.GetBinContent(nparticlebins + 2)
+
+    # print theparticleh.GetName(), theresponseh.GetName(), thedetectorparticleh.GetName()
 
     for i in range(1, nparticlebins + 1):
         sumstab = 0
-        #print "underflow :",   theresponseh.GetBinContent(i, 0)
+        # print "underflow :",   theresponseh.GetBinContent(i, 0)
         for j in range(1, ndetectorbins + 1):
-            #print j, ":", theresponseh.GetBinContent(i, j)
+            # print j, ":", theresponseh.GetBinContent(i, j)
             sumstab += theresponseh.GetBinContent(i, j)
 
-        #print "overflow :", theresponseh.GetBinContent(i, ndetectorbins + 2)
-        #print "num:", sumstab
-        #print "den:", theparticleh.GetBinContent(i)
-        #print "coc:", sumstab / theparticleh.GetBinContent(i), "\n"
+        # print "overflow :", theresponseh.GetBinContent(i, ndetectorbins + 2)
+        # print "num:", sumstab
+        # print "den:", theparticleh.GetBinContent(i)
+        # print "coc:", sumstab / theparticleh.GetBinContent(i), "\n"
 
-        #print "den2:", thedetectorparticleh.GetBinContent(i)
-        #print "coc2:", sumstab / thedetectorparticleh.GetBinContent(i), "\n"
+        # print "den2:", thedetectorparticleh.GetBinContent(i)
+        # print "coc2:", sumstab / thedetectorparticleh.GetBinContent(i), "\n"
         ## CON EFICIENCIA DE RECONSTRUCCION
         try:
             stabilities.append(sumstab / theparticleh.GetBinContent(i))
@@ -345,6 +346,7 @@ def SaveAcceptance(nfid, thepath):
         year = "2016,2017,2018"
         lumi = ",".join([str(vl.LumiDict[iY]) for iY in [2016, 2017, 2018]])
     
+    
 #    print thepath, year
     friendspath = "/pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions"
     prod        = "2021-06-09"
@@ -419,11 +421,11 @@ def CalculateAndPlotResponseMatrices(tsk):
 
         #if "mistagging" in tmpnam: continue #### ?????????????????????????????????????????????????????????????????????????
 
-        if any([el in tmpnam for el in ["ds", "data", "herwig"]]):
+        if any([el in tmpnam for el in ["ds", "data", "herwig", "amcatnlo"]]):
             continue
 
         if "Up" not in tmpnam and "Down" not in tmpnam: # It is the nominal value!
-            #print tmpnam
+            # print tmpnam
             detectordict[""]         = deepcopy(fDetector.Get(tmpnam).Clone(""))
             detectorparticledict[""] = deepcopy(fDetectorParticle.Get(tmpnam).Clone(""))
             detectorparticlebutdetectordict[""] = deepcopy(fDetectorParticleButDetector.Get(tmpnam).Clone(""))
@@ -457,6 +459,7 @@ def CalculateAndPlotResponseMatrices(tsk):
 
     foutput = r.TFile(inpath + "/" + iY + "/" + iV + "/UnfoldingInfo.root", "recreate")
     for key in detectordict:
+        # if key != "": continue
         if key == "":
             GetAndPlotPuritiesAndStabilities(iV, responsedict[key], hParticle, detectorparticledict[key], detectordict[key], tmpoutpath)
 
@@ -471,6 +474,7 @@ def CalculateAndPlotResponseMatrices(tsk):
 
         hResponse.Write()
         hNonFiducial.Write()
+        # if key == "": break
     foutput.Close()
 
     SaveAcceptance(hParticle.Integral(), tmpoutpath)

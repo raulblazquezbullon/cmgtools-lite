@@ -437,7 +437,10 @@ class beautifulUnfPlot:
                 totalunc.Draw('P,E')
             for el in ratiohistos:
                 #print el.GetName()
-                el.Draw('L,same')
+                if "toy" in el.GetName().lower():
+                    el.Draw('P,same')
+                else:
+                    el.Draw('L,same')
         
         # Save results
         self.canvas.SaveAs(self.plotspath + "/" + self.name + suffix + '.pdf')

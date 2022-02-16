@@ -441,13 +441,14 @@ def makeFit(task):
 
     fitoutpath = inpath + "/" + year + "/" + varName + "/sigextr_fit_combine/fitdiagnostics"
 
-    asimov_ = ""
-    if not useData:
-        asimov_ =  "-t -1 --setParameters "
-        for idx in range(nparticlebins - 1):
-            asimov_ += "r_tW_{iBp}=1,".format(iBp = idx)
-        asimov_ += "r_tW_{iBp}=1".format(iBp = nparticlebins - 1)
+    asimov_ = "--setParameters "
+    for idx in range(nparticlebins - 1):
+        asimov_ += "r_tW_{iBp}=1,".format(iBp = idx)
+    asimov_ += "r_tW_{iBp}=1".format(iBp = nparticlebins - 1)
 
+    if not useData:
+        asimov_ +=  " -t -1 "
+    
     combinecomm = combinecommscaff.format(
         y      = year,
         outdir = fitoutpath,
@@ -740,7 +741,7 @@ if __name__ == '__main__':
         if not os.path.isdir(inpath + "/" + iY + "/particleplots"):
             os.system("mkdir -p " + inpath + "/" + iY + "/particleplots")
         for iV in thevars:
-            if "plots" in iV or "Fiducial" in iV or "table" in iV: continue
+            if "plots" in iV or "Fiducial" in iV or "table" in iV or "response" in iV: continue
             if not os.path.isdir(inpath + "/" + iY + "/" + iV + "/sigextr_fit_combine"): continue
             if not os.path.isdir(inpath + "/" + iY + "/" + iV + "/sigextr_fit_combine/fitdiagnostics"):
                 os.system("mkdir -p " + inpath + "/" + iY + "/" + iV + "/sigextr_fit_combine/fitdiagnostics")
