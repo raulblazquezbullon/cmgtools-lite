@@ -1,6 +1,6 @@
-nloosejets: nJetSel20_Recl : [-0.5,0.5,1.5,2.5,3.5] ; LegendCutoff=0, XTitle='N(loose jet)', XNDiv=5, xBinLabels="0\,1\,2\,#geq 3"
-nloosejetsrebin: nJetSel20_Recl : [-0.5,0.5,1.5] ; LegendCutoff=0, XTitle='N(loose jet)', XNDiv=3, xBinLabels="0\,#geq 1"
-nbloosejets                 : nBJetSelMedium20_Recl       : [-0.5,0.5,1.5,2.5,3.5]                 ; LegendCutoff=0, MoreY=1.2, XTitle='N(loose b-jet)', XNDiv=5, xBinLabels="2\,3\,4\,5\,6\,#geq 7"
+nloosejets: nJetSel20_Recl : [-0.5,0.5,1.5,2.5,3.5] ; LegendCutoff=0, XTitle='Number of loose jets', XNDiv=5, xBinLabels="0\,1\,2\,#geq 3", MoreY=1.2
+nloosejetsrebin: nJetSel20_Recl : [-0.5,0.5,1.5] ; LegendCutoff=0, XTitle='Number of loose jets', XNDiv=3, xBinLabels="0\,#geq 1", MoreY=1.2
+nbloosejets                 : nBJetSelMedium20_Recl       : [-0.5,0.5,1.5,2.5,3.5]                 ; LegendCutoff=0, MoreY=1.2, XTitle='Number of loose b-tagged jets', XNDiv=5, xBinLabels="2\,3\,4\,5\,6\,#geq 7"
 jet1_pt                     : Jet1_Pt                     : 18,20,200                              ; LegendCutoff=0, MoreY=1.2, IncludeUnderflow=False, XTitle="Jet p_{T} (GeV)"
 loosejet1_pt                : JetLoose1_Pt                : 15,0,30                                ; LegendCutoff=0, MoreY=1.2, IncludeUnderflow=False, XTitle="Leading loose jet p_{T} (GeV)"
 lep1lep2jet1_pt             : Lep1Lep2Jet1_Pt             : 20,0,250                               ; LegendCutoff=0, MoreY=1.2, IncludeUnderflow=False, XTitle="#it{p}_{T} (#it{e}^{#pm}\, #it{#mu}^{#mp}\, #it{j}) (GeV)"

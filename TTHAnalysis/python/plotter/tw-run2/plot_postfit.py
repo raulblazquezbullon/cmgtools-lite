@@ -8,6 +8,7 @@ r.gStyle.SetOptStat(False)
 r.gStyle.SetPadTickX(1)
 r.gStyle.SetPadTickY(1)
 
+
 ColourMapForProcesses = {
     "tw"       : 798,
     "ttbar"    : 633,
@@ -28,7 +29,7 @@ dictNames = {
     "vvttv"    : "VV+t#bar{t}V",
     "dy"       : "DY",
     "data"     : "Data",
-    "total"    : "Total unc.",
+    "total"    : "Uncertainty",
 }
 
 dictRegions = {
@@ -65,6 +66,19 @@ dictBinsCenterRegions = {
     #"ch1"      : [1,2],
     #"ch2"      : [1,2],
     #"ch3"      : [70,150],
+}
+
+legendHeigh = {
+    "prefit" : {
+    "ch1" : 4,
+    "ch2" : 4,
+    "ch3" : 7,
+    },
+    "fit_s" : {
+    "ch1" : 5,
+    "ch2" : 5,
+    "ch3" : 9,
+    },
 }
 
 lumidict     = {"2016" : 36.33,
@@ -140,9 +154,12 @@ def producePlots(year, region, path):
       subdir.cd()
       hstack = r.THStack()
       #We define the legend
-      textSize = 0.039
-      height = textSize*6
-      legend = r.TLegend(.75-0.20, .9-height, .9, .91) #0.85 for the first number in the CMGTools plotter
+      textSize = 0.0468
+      height = textSize*1.15*legendHeigh[key][dire]
+      if dire != "ch3":
+        legend = r.TLegend(.4, .9-height, .85, .91) #0.85 for the first number in the CMGTools plotter
+      else:
+        legend = r.TLegend(.65, .9-height, .85, .91) #0.85 for the first number in the CMGTools plotter
       legend.SetBorderSize(0)
       legend.SetFillColor(0)
       legend.SetShadowColor(0)
@@ -175,6 +192,8 @@ def producePlots(year, region, path):
           ratio_hist.SetPoint(i,dictBinsCenterRegions[dire][i],datapointsY[i]/htotal.GetBinContent(i+1))
           ratio_hist.SetPointEYhigh(i,uncpointsHigh[i]/htotal.GetBinContent(i+1))
           ratio_hist.SetPointEYlow(i,uncpointsLow[i]/htotal.GetBinContent(i+1))
+          ratio_hist.SetPointEXhigh(i,0)
+          ratio_hist.SetPointEXlow(i,0)
       if key == "prefit":        
         ratioPreFit = r.TH1F("ratioPreFit_%s" %dire, "ratioPreFit_%s" %dire, len(dictBinsCenterRegions[dire]),dictBinEdgesRegions[dire][0],dictBinEdgesRegions[dire][1])
         for bin in range(1, len(dictBinsCenterRegions[dire]) + 1):
@@ -207,11 +226,12 @@ def producePlots(year, region, path):
       hstack.GetYaxis().SetLabelFont(43)
       hstack.GetYaxis().SetTitleSize(22)
       hstack.GetYaxis().SetTitleFont(43)
+      hstack.GetYaxis().SetMaxDigits(4)
       
       hstack.GetXaxis().SetRange(1,len(dictBinsCenterRegions[dire]))
 
-      
-      legend.SetNColumns(2)
+      if dire != "ch3":
+        legend.SetNColumns(2)
       legend.Draw("same")
       # now draw data
       gr.GetXaxis().SetLabelSize(0)
@@ -240,7 +260,7 @@ def producePlots(year, region, path):
       		
       #ratio_hist = ratio_hist.Divide(htotal,ratio_hist,'pois')
 								
-      ratio_hist.SetLineWidth(0)
+      #ratio_hist.SetLineWidth()
       ratio_hist.SetMarkerStyle(20)
       ratio_hist.SetMarkerSize(1)
 	
@@ -267,7 +287,7 @@ def producePlots(year, region, path):
       hAuxForAxis.GetYaxis().SetLabelSize(22)
       hAuxForAxis.GetXaxis().SetLabelFont(43)
       hAuxForAxis.GetYaxis().SetLabelFont(43)
-      hAuxForAxis.GetYaxis().SetTitle("Data/MC")
+      hAuxForAxis.GetYaxis().SetTitle("Data/Pred.")
       hAuxForAxis.GetYaxis().SetTitleOffset(2.1)
       hAuxForAxis.GetXaxis().SetTitle(dictRegionsXaxisLabels[dire])
       hAuxForAxis.GetYaxis().SetTitleSize(22)
@@ -275,7 +295,7 @@ def producePlots(year, region, path):
       hAuxForAxis.GetXaxis().SetTitleOffset(4.8)
       hAuxForAxis.GetXaxis().SetTitleSize(22)
       hAuxForAxis.GetXaxis().SetTitleFont(43)
-      hAuxForAxis.GetYaxis().SetRangeUser(0.85, 1.15)
+      hAuxForAxis.GetYaxis().SetRangeUser(0.8 if dire=="ch3" else 0.85 , 1.2 if dire=="ch3" else 1.15)
       hAuxForAxis.GetYaxis().SetNdivisions(505)
       hAuxForAxis.Draw("axis")
       if key == "fit_s":
@@ -287,7 +307,7 @@ def producePlots(year, region, path):
         preFitHistsUnc[dire].Draw("E2 same")	
         preFitHists[dire].SetLineColor(2)
         preFitHists[dire].SetLineWidth(2)
-        legend.AddEntry(preFitHists[dire],"Prefit Data/MC","l")
+        legend.AddEntry(preFitHists[dire],"Prefit Data/Pred.","l")
         preFitHists[dire].Draw("same")
       
       ratio_hist.Draw("p E same")
@@ -299,12 +319,15 @@ def producePlots(year, region, path):
 
       
       p1.cd()
-      doSpam('#splitline{#scale[1.1]{#bf{CMS}}}{#scale[0.9]{#it{Preliminary}}}',.2, .845, .35, .885,textSize = 22)
+      #doSpam('#splitline{#scale[1.1]{#bf{CMS}}}{#scale[0.9]{#it{Preliminary}}}',.2, .845, .35, .885,textSize = 22)
+      doSpam('#scale[1.1]{#bf{CMS}}',.2, .845, .35, .885,textSize = 22)
       keyname = key
       if keyname == "fit_s": keyname = "postfit"
       doSpam(str(lumidict[year]) + " fb^{-1} (13 TeV)",0.7, .963, .975, .99,textSize = 22)
-
-      doSpam("e^{#pm}#mu^{#mp}+" + dictRegions[dire], .41-0.045, .855, .6-0.05, .895, textSize = 22)
+      if dire == "ch3":
+        doSpam("e^{#pm}#mu^{#mp}+" + dictRegions[dire], .365, .845, .55, .885, textSize = 22)
+      else:
+        doSpam("e^{#pm}#mu^{#mp}+" + dictRegions[dire], .2, .700, .35, .740, textSize = 22)
 	
       if not os.path.exists(outpath): os.system("mkdir -p %s"%outpath)
       c.SaveAs("%s/%s_%s.png"%(outpath,keyname,dire))

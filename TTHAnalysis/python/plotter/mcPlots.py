@@ -508,8 +508,9 @@ def doRatioHists(pspec,pmap,total,maxRange,fixRange=False,fitRatio=None,errorsOn
             unity.GetXaxis().SetBinLabel(i,blist[i-1]) 
     #$ROOT.gStyle.SetErrorX(0.0);
     line = ROOT.TLine(unity.GetXaxis().GetXmin(),1,unity.GetXaxis().GetXmax(),1)
-    line.SetLineWidth(2);
-    line.SetLineColor(58);
+    line.SetLineStyle(options.ratioLinePersonalization[0])
+    line.SetLineWidth(options.ratioLinePersonalization[1]);
+    line.SetLineColor(options.ratioLinePersonalization[2]);
     if not options.NotDrawRatioLine:
         line.Draw("L")
     for ratio in ratios:
@@ -627,7 +628,7 @@ def doLegend(pmap,mca,corner="TR",textSize=0.035,cutoff=1e-2,cutoffSignals=True,
                 entries.append((pmap['data'].raw(), mca.getProcessOption('data','Label','Data', noThrow=True), 'PE'))
         for (plot,label,style) in sigEntries: entries.append((plot.raw(),label,style))
         for (plot,label,style) in  bgEntries: entries.append((plot.raw(),label,style))
-        if totalError:  entries.append((totalError,"Total unc.","F"))
+        if totalError:  entries.append((totalError, options.UncLegendName,"F"))
         nrows = int(ceil(len(entries)/float(columns)))
         for r in xrange(nrows):
             for c in xrange(columns):
@@ -947,6 +948,8 @@ class PlotMaker:
                     total.GetXaxis().SetMoreLogLabels(True)
                 if islog: total.SetMaximum(2*total.GetMaximum())
                 if not islog: total.SetMinimum(0)
+                if options.maxDigits != 0:
+                    total.GetYaxis().SetMaxDigits(options.maxDigits)
                 total.Draw("HIST")
                 if plotmode == "stack":
                     stack.Draw("SAME HIST")
@@ -1183,6 +1186,7 @@ def addPlotMakerOptions(parser, addAlsoMCAnalysis=True):
     #parser.add_option("--lspam", dest="lspam",   type="string", default="CMS Simulation", help="Spam text on the right hand side");
     parser.add_option("--lspam", dest="lspam",   type="string", default="#bf{CMS} #it{Preliminary}", help="Spam text on the left hand side");
     parser.add_option("--noExpoShift", dest="noExpoShift", action="store_true", default=False, help="Remove shift on the lspam due to the (x10^a) text in high yield plots")
+    parser.add_option("--maxDigitsYaxis", dest="maxDigits", type="int", default=0, help="Sets the maximum number of digits in the Y axis")
     parser.add_option("--lspamPosition", dest="lspamPosition", type="float", nargs=4, default=(.16,.955,.60,.995), help="Position of the lspam: (x1,y1,x2,y2)")
     parser.add_option("--rspam", dest="rspam",   type="string", default="%(lumi) (13 TeV)", help="Spam text on the right hand side");
     parser.add_option("--addspam", dest="addspam", type = "string", default=None, help="Additional spam text on the top left side, in the frame");
@@ -1218,6 +1222,7 @@ def addPlotMakerOptions(parser, addAlsoMCAnalysis=True):
     parser.add_option("--StatUncRatioStyle", dest="StatUncRatioStyle", type="int", nargs=2, default=(1001, 1), help="Marker and fill style for the stat unc band in the ratio plot: (SetFillStyle,SetMarkerStyle)")
     parser.add_option("--TotalUncRatioColor", dest="TotalUncRatioColor", type="int", nargs=2, default=(432, 432), help="Fill and marker colour for the total unc band in the ratio plot: (SetFillColor,SetMarkerColor)")
     parser.add_option("--StatUncRatioColor", dest="StatUncRatioColor", type="int", nargs=2, default=(593, 593), help="Fill and marker colour for the stat unc band in the ratio plot: (SetFillColor,SetMarkerColor)")
+    parser.add_option("--UncLegendName", dest="UncLegendName", type="string", default="Total unc.", help="Name that appear in the legend for the total uncertainty")
     parser.add_option("--fixRatioRange", dest="fixRatioRange", action="store_true", default=False, help="Fix the ratio range to --maxRatioRange")
     parser.add_option("--doStatTests", dest="doStatTests", type="string", default=None, help="Do this stat test: chi2p (Pearson chi2), chi2l (binned likelihood equivalent of chi2)")
     parser.add_option("--plotmode", dest="plotmode", type="string", default="stack", help="Show as stacked plot (stack), a non-stacked comparison (nostack) and a non-stacked comparison of normalized shapes (norm)")
@@ -1255,6 +1260,7 @@ def addPlotMakerOptions(parser, addAlsoMCAnalysis=True):
     parser.add_option("--LeftRightMargins", dest="LeftRightMargins", type="float", nargs=2, default=(-1.0, -1.0), help="Left and right margins for the canvas: (LeftMargin, RightMargin)")
     parser.add_option("--BottomMarginRatio", dest="BottomMarginRatio", type="float", default=0.3, help="Bottom margin for the ratio")
     parser.add_option("--NotDrawRatioLine", dest="NotDrawRatioLine", action="store_true", default=False, help="Not draw horizontal line at y=1 in ratio plot")
+    parser.add_option("--ratioLinePersonalization", dest="ratioLinePersonalization", type="int", nargs=3, default=(1, 2, 58), help="(lineStyle, lineWidth, lineColor)")
     parser.add_option("--noCms", dest="doOfficialCMS", action="store_false", default=True, help="Use official tool to write CMS spam")
     parser.add_option("--cmsprel", dest="cmsprel", type="string", default="Preliminary", help="Additional text (Simulation, Preliminary, Internal)")
     parser.add_option("--cmssqrtS", dest="cmssqrtS", type="string", default="13 TeV", help="Sqrt of s to be written in the official CMS text.")
