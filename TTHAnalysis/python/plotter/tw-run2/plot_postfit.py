@@ -7,7 +7,7 @@ r.gROOT.SetBatch(True)
 r.gStyle.SetOptStat(False)
 r.gStyle.SetPadTickX(1)
 r.gStyle.SetPadTickY(1)
-
+r.gStyle.SetEndErrorSize(0)
 
 ColourMapForProcesses = {
     "tw"       : 798,
@@ -179,9 +179,10 @@ def producePlots(year, region, path):
       uncpointsHigh = gr.GetEYhigh()
       uncpointsLow = gr.GetEYlow()
       gr.SetMarkerStyle(8)
-      legend.AddEntry(gr,dictNames[gr.GetName()],"PE")
       # Get the data/MC
       ratio_hist = deepcopy(gr.Clone("ratiohist"))
+      gr_forLegend = r.TH1F("dataPoints", "", 1,0.5,1.5)
+      gr_forLegend.SetMarkerStyle(8)
       
 
       #Remove horizontal error bars
@@ -201,6 +202,7 @@ def producePlots(year, region, path):
         
         preFitHists[dire] = deepcopy(ratioPreFit)
       
+      legend.AddEntry(gr_forLegend,dictNames[gr.GetName()],"PE")
       for histoName in orderedProcesses:
         h = subdir.Get(histoName) 
         h.GetXaxis().SetLabelSize(0)
@@ -230,12 +232,7 @@ def producePlots(year, region, path):
       
       hstack.GetXaxis().SetRange(1,len(dictBinsCenterRegions[dire]))
 
-      if dire != "ch3":
-        legend.SetNColumns(2)
-      legend.Draw("same")
-      # now draw data
-      gr.GetXaxis().SetLabelSize(0)
-      gr.Draw("p E same")
+
       # now draw error bands
       htotal.SetFillStyle(3244)
       htotal.SetFillColor(r.kGray+2)
@@ -244,7 +241,14 @@ def producePlots(year, region, path):
       htotal.SetLineWidth(0)
       legend.AddEntry(htotal,"Postfit unc." if key=="fit_s" else dictNames[htotal.GetName()],"f")
       htotal.Draw("E2 same")
-      
+
+      # now draw data
+      gr.GetXaxis().SetLabelSize(0)
+      gr.Draw("p E same")
+
+      if dire != "ch3":
+        legend.SetNColumns(2)
+      legend.Draw("same")      
       # Ratio plot
       p2.cd()
       lin = r.TLine(dictBinEdgesRegions[dire][0], 1, dictBinEdgesRegions[dire][1], 1)
@@ -310,14 +314,10 @@ def producePlots(year, region, path):
         legend.AddEntry(preFitHists[dire],"Prefit Data/Pred.","l")
         preFitHists[dire].Draw("same")
       
-      ratio_hist.Draw("p E same")
       htotalErr.Draw("e2 same")	
-      lin.Draw("same L")	
-	
+      lin.Draw("same L")
+      ratio_hist.Draw("p E same")	
 
-	
-
-      
       p1.cd()
       #doSpam('#splitline{#scale[1.1]{#bf{CMS}}}{#scale[0.9]{#it{Preliminary}}}',.2, .845, .35, .885,textSize = 22)
       doSpam('#scale[1.1]{#bf{CMS}}',.2, .845, .35, .885,textSize = 22)

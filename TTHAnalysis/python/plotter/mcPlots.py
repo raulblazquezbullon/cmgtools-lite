@@ -144,6 +144,7 @@ def doTinyCmsPrelim(textLeft="_default_",textRight="_default_",hasExpo=False,tex
     if textLeft  == "_default_": 
         textLeft  = options.lspam
         textLeftPosition = options.lspamPosition
+    
     if textRight == "_default_": textRight = options.rspam
     if lumi      == None       : lumi      = sum(map(float, options.lumi.split(',')))
     if   lumi >= 1e+2: lumitext = "%.0f fb^{-1}" % lumi
@@ -157,6 +158,8 @@ def doTinyCmsPrelim(textLeft="_default_",textRight="_default_",hasExpo=False,tex
     textRight = textRight.replace("%(lumi)",lumitext)
     if options.noExpoShift:
         hasExpo = False
+#    if pspec.getOption('Legend','TR')=="TL" and options.lspamShiftLegend and textLeft not in ['', None]:
+#        doSpam(textLeft, .68, .855, .9, .895, align=32, textSize=textSize)
     if textLeft not in ['', None]:
         doSpam(textLeft, (.28 if hasExpo else 0.07 if doWide else textLeftPosition[0])+xoffs, textLeftPosition[1], textLeftPosition[2]+xoffs, textLeftPosition[3], align=12, textSize=textSize)
           
@@ -1005,7 +1008,7 @@ class PlotMaker:
                 #if options.yrange: 
                 #    total.GetYaxis().SetRangeUser(options.yrange[0], options.yrange[1])
                 if options.addspam:
-                    if pspec.getOption('Legend','TR')=="TL":
+                    if pspec.getOption('Legend','TR')=="TL" and not options.noAddspamShift:
                         doSpam(options.addspam, .68, .855, .9, .895, align=32, textSize=(0.045 if doRatio else 0.033)*options.topSpamSize)
                     else:
                         doSpam(options.addspam, options.addspamPosition[0], options.addspamPosition[1], options.addspamPosition[2], options.addspamPosition[3], align=options.addspamAlignment, textSize=(0.045 if doRatio else 0.033)*options.topSpamSize)
@@ -1188,10 +1191,12 @@ def addPlotMakerOptions(parser, addAlsoMCAnalysis=True):
     parser.add_option("--noExpoShift", dest="noExpoShift", action="store_true", default=False, help="Remove shift on the lspam due to the (x10^a) text in high yield plots")
     parser.add_option("--maxDigitsYaxis", dest="maxDigits", type="int", default=0, help="Sets the maximum number of digits in the Y axis")
     parser.add_option("--lspamPosition", dest="lspamPosition", type="float", nargs=4, default=(.16,.955,.60,.995), help="Position of the lspam: (x1,y1,x2,y2)")
+    parser.add_option("--lspamShiftLegend", dest="lspamShiftLegend", action="store_true", default=False, help="Shift lspam when legend is in TL position")
     parser.add_option("--rspam", dest="rspam",   type="string", default="%(lumi) (13 TeV)", help="Spam text on the right hand side");
     parser.add_option("--addspam", dest="addspam", type = "string", default=None, help="Additional spam text on the top left side, in the frame");
     parser.add_option("--addspamPosition", dest="addspamPosition", type="float", nargs=4, default=(.23, .855, .6, .895), help="Position of the addspam: (x1,y1,x2,y2)")
     parser.add_option("--addspamAlignment", dest="addspamAlignment", type="int", default=12, help="Alignment of the addspam")
+    parser.add_option("--noAddspamShift", dest="noAddspamShift", action="store_true", default=False, help="Remove shift on the lspam due to the TL position of the legend")
     parser.add_option("--topSpamSize", dest="topSpamSize",   type="float", default=1.2, help="Zoom factor for the top spam");
     parser.add_option("--print", dest="printPlots", type="string", default="png,pdf,txt", help="print out plots in this format or formats (e.g. 'png,pdf,txt')");
     parser.add_option("--pdir", "--print-dir", dest="printDir", type="string", default="plots", help="print out plots in this directory");
