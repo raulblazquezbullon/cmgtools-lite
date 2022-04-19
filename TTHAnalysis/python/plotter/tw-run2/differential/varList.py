@@ -4,7 +4,9 @@ Library of all the variables so everything is centralised and there are not conf
 
 import ROOT as r
 import warnings as wr
-import os
+import os, sys
+from copy import deepcopy
+from array import array
 
 # === ESSENTIAL PARAMETERS OF THE ANALYSIS. CHANGING THIS APPLIES TO EVERYTHING. ===
 nuncs       = 3         # Number of uncs. shown in the relative uncertainty plots
@@ -15,12 +17,16 @@ diffControlReg = "3j2t" # Control region used in the differential signal extract
 unifttbar   = True      # Force the BDT disc. distrib. bins to hace the same amount of ttbar events.
 asimov      = False     # Use of Asimov dataset or data
 doxsec      = True      # Show events or diff. cross section in final results
-doPre       = True      # Show or not show the "Preliminary" in the plots
+#doPre       = True      # Show or not show the "Preliminary" in the plots
+doPre       = False      # Show or not show the "Preliminary" in the plots
 doSym       = True      # Symmetrise the uncertainties or not
+#doSym       = False      # Symmetrise the uncertainties or not
 doReg       = False     # Regularise distributions (general setting, can be overrrided for each variable separately)
 doArea      = False     # Apply area constraint in unfolding (general setting, can be overrrided for each variable separately)
-onlyTotal   = True      # Only show total unc. line in the differential relative unc. plots.
+#onlyTotal   = True      # Only show total unc. line in the differential relative unc. plots.
+onlyTotal   = False      # Only show total unc. line in the differential relative unc. plots.
 
+vetolist = ["plots", "Fiducial", "control", "tables", "response"]
 
 # === OTHER IMPORTANT DEFINITIONS ===
 LumiDict    = {2016 : 36.33,
@@ -65,6 +71,273 @@ def GiveMeTheExpNamesWOJER(inl):
         l.append(el.replace("Up", ""))
     return ",".join(l)
 
+
+def parseRelUncs(path, verbose = False):
+    if not os.path.isfile(path):
+        raise RuntimeError("FATAL: given systematic table/relative uncs. result file, {f}, does not exist.".format(f = path))
+    theres = {}
+    with open(path, "r") as res:
+        for line in res:
+            tmpline = line.strip().replace(" ", "").split(":")
+            if len(tmpline) > 2:
+                tmpup = float(tmpline[1]); tmpdn = float(tmpline[2]); tmpnam = tmpline[0]
+                theres[tmpnam] = {}
+                if tmpdn == 0. and tmpup != 0.:
+                    tmpdn = tmpup
+                    theres[tmpnam]["err"] = "down"
+                    if verbose:
+                        print "\t- WARNING: for file {f}, unc. source {u} effect estimation has failed for the \'down\' variation. This will be symmetrised.".format(f = path,
+                                                                                                                                                                     u = tmpnam)
+                elif tmpup == 0. and tmpdn != 0.:
+                    tmpup = tmpdn
+                    theres[tmpnam]["err"] = "up"
+                    if verbose:
+                        print "\t- WARNING: for file {f}, unc. source {u} effect estimation has failed for the \'up\' variation. This will be symmetrised.".format(f = path,
+                                                                                                                                                                   u = tmpnam)
+                elif tmpup == 0. and tmpdn == 0.:
+                    raise RuntimeError("FATAL: for file {f}, unc. source {u} effect estimation has failed for both variations".format(f = path,
+                                                                                                                                      u = tmpnam))
+                
+                theres[tmpnam]["up"]   = tmpup
+                theres[tmpnam]["down"] = tmpdn
+            else:
+                theres["munom"] = float(tmpline[1])
+
+    return theres
+
+
+def getInfoFromFD(path, fdpath, unc, iY, iV, isNom = False):
+    signalname = "x_tw"
+    ints = []
+    card = r.TFile.Open(path + "/particle.root", "READ")
+    nparticlebins = card.Get(signalname).GetNbinsX()
+    scaleval = 1
+    thelumi = TotalLumi if iY == "run2" else LumiDict[int(iY)]
+    if doxsec: scaleval = 1/thelumi/1000.
+    for iB in range(1, nparticlebins + 1):
+        ints.append(card.Get(signalname).GetBinContent(iB))
+    card.Close(); del card
+
+    tfile  = r.TFile.Open(fdpath + "/fitDiagnostics{u}.root".format(u = unc))
+    tfile2 = r.TFile.Open((fdpath + "/higgsCombine{u}.FitDiagnostics.mH125.root".format(u = unc)) if os.path.isfile(fdpath + "/higgsCombine{u}.FitDiagnostics.mH125.root".format(u = unc)) else (fdpath + "/higgsCombine{u}.FitDiagnostics.mH120.root".format(u = unc)))
+    poiList = r.RooArgList('poiList')
+    w       = tfile2.Get('w')
+    fitResult = tfile.Get('fit_s')
+    for i in range(nparticlebins):
+        var = w.var('r_tW_%d'%i)
+        poiList.add(var)
+    cov   = deepcopy(fitResult.reducedCovarianceMatrix(poiList))
+
+    results = {}
+    count = 0
+    for var in fitResult.floatParsFinal():
+        count += 1
+        results[var.GetName()] = [ var.getVal(), abs(var.getErrorLo()), var.getErrorHi(), var.getError() ]
+        # if "r_tW" in var.GetName(): print var.getVal(), abs(var.getErrorLo()), var.getErrorHi(), var.getError()
+        if count == fitResult.floatParsFinal().getSize(): break
+
+    tfile.Close();  del tfile
+    tfile2.Close(); del tfile2
+
+    outUp   = r.TH1D('{u}Up'.format(u = unc) if not isNom else "hNom",
+                        '', nparticlebins, array('d', varList[iV]['bins_particle']))
+    outDown = deepcopy(outUp.Clone('{u}Down'.format(u = unc)))
+
+    hCov = r.TH2D('CovMat_{u}'.format(u = unc if not isNom else ""), '',
+                  nparticlebins, -0.5, nparticlebins - 0.5,
+                  nparticlebins, -0.5, nparticlebins - 0.5)
+    for i in range(1, nparticlebins + 1):
+        results['r_tW_%d'%(i-1)][0] *= ints[i-1] * scaleval
+        results['r_tW_%d'%(i-1)][1] *= ints[i-1] * scaleval
+        results['r_tW_%d'%(i-1)][2] *= ints[i-1] * scaleval
+        results['r_tW_%d'%(i-1)][3] *= ints[i-1] * scaleval
+
+        # ...and these here are asymm.:
+        # if not isNom:
+        #     outUp.  SetBinContent(i,   results['r_tW_%d'%(i-1)][0]) # asym
+        #     outUp.  SetBinError  (i,   results['r_tW_%d'%(i-1)][2]) # asym
+        #     outDown.SetBinContent(i,   results['r_tW_%d'%(i-1)][0]) # asym
+        #     outDown.SetBinError  (i,   results['r_tW_%d'%(i-1)][1]) # asym
+        # else:
+        #     outUp.  SetBinContent(i,   results['r_tW_%d'%(i-1)][0]) # asym
+        #     outUp.  SetBinError  (i,   mean([results['r_tW_%d'%(i-1)][1], results['r_tW_%d'%(i-1)][2]])) # asym
+
+        ##### FORCED SYMM
+        outUp.  SetBinContent(i,   results['r_tW_%d'%(i-1)][0]) # sym
+        outUp.  SetBinError  (i,   results['r_tW_%d'%(i-1)][3]) # sym
+        outDown.SetBinContent(i,   results['r_tW_%d'%(i-1)][0]) # sym
+        outDown.SetBinError  (i,   results['r_tW_%d'%(i-1)][3]) # sym
+
+        # print outUp.GetBinContent(iB), outUp.GetBinError(iB), scaleval, ints[i-1]
+
+        for j in range(1, nparticlebins + 1):
+            normx = ints[i - 1] * scaleval
+            normy = ints[j - 1] * scaleval
+
+            cov[i-1][j-1] = cov[i-1][j-1] * normx * normy
+            hCov.SetBinContent( hCov.GetBin(i,j), cov[i-1][j-1] )
+    
+    if isNom:
+        return outUp, hCov
+    else:
+        return outUp, outDown, hCov
+
+
+def getActualUnc(D):
+    #print D
+    rawD = deepcopy(D)
+    for i,iU in enumerate(individual_list):
+        # print "\n", iU
+        if (iU + "Up") not in D and (iU + "Down") not in D: raise RuntimeError("FATAL: uncertainty group from the individual list is not available in the relative unc. information needed to be conveyed to the differential plots.")
+
+        if i == 0:
+            key = ""
+        else:
+            key = individual_list[i - 1]
+
+        # if key == "":
+        #     print "AQUI"
+        for iB in range(1, D[""].GetNbinsX() + 1):
+            # print D[key + ("Up"   if key != "" else "")].GetBinError(iB), D[iU + "Up"].GetBinError(iB)
+            D[iU + "Up"].  SetBinError(iB, r.TMath.Sqrt(rawD[key + ("Up"   if key != "" else "")].GetBinError(iB)**2 - D[iU + "Up"].  GetBinError(iB)**2))
+            D[iU + "Down"].SetBinError(iB, r.TMath.Sqrt(rawD[key + ("Down" if key != "" else "")].GetBinError(iB)**2 - D[iU + "Down"].GetBinError(iB)**2))
+
+            # print D[iU + "Up"].GetBinError(iB)
+    return D
+
+
+def getActualCovMat(D):
+    rawD = deepcopy(D)
+    for i,iU in enumerate(individual_list):
+        print "\n", iU
+        if iU not in D: raise RuntimeError("FATAL: uncertainty group from the individual list is not available in the relative unc. information needed to be conveyed to the differential plots.")
+
+        if i == 0:
+            key = ""
+        else:
+            key = individual_list[i - 1]
+
+        # if key == "":
+        #     print "AQUI"
+
+        # for iB in range(1, D[iU].GetNbinsX() + 1):
+        #     print D[iU].GetBinContent(iB, iB)
+        # print " "
+        # for iB in range(1, D[iU].GetNbinsX() + 1):
+        #     print rawD[key].GetBinContent(iB, iB)
+        D[iU].Add(rawD[key], -1)
+        D[iU].Scale(-1)
+        # print " "
+        for iB in range(1, D[iU].GetNbinsX() + 1):
+            print D[iU].GetBinContent(iB, iB)
+        # sys.exit()
+    return D
+
+
+def getInfoForRelUncs(path, iY, iV, verbose = False):
+    #if not os.path.isfile(path):
+        #raise RuntimeError("FATAL: given systematic table/relative uncs. result file, {f}, does not exist.".format(f = path))
+    theres = {}; covdict = {}
+    nompath = path + "/sigextr_fit_combine/fitdiagnostics/fitDiagnostics{y}_{v}.root".format(y = iY, v = iV)
+    glodir  = path + "/sigextr_fit_combine/relativeuncs_fd/global/"
+    inddir  = path + "/sigextr_fit_combine/relativeuncs_fd/individual/"
+
+    # get the existent variations
+    indvars = []
+    for el in os.listdir(inddir):
+        if "fitDiagnostics" in el:
+            indvars.append(el.replace("fitDiagnostics", "").replace(".root", ""))
+
+    # First, nominal
+    theres[""], covdict[""] = deepcopy(getInfoFromFD(path,
+                                       path + "/sigextr_fit_combine/fitdiagnostics",
+                                       iY + "_" + iV,
+                                       iY, iV,
+                                       True))
+
+    # Then, globals (stat)
+    theres["statUp"], theres["statDown"], covdict["stat"] = deepcopy(getInfoFromFD(path,
+                                                                    glodir,
+                                                                    "systematics",
+                                                                    iY, iV))
+
+    theres["statUp"].SetName("statUp")
+    theres["statDown"].SetName("statDown")
+    covdict["stat"].SetName("CovMat_stat")
+
+    # Then, syst
+    hCovar_syst = deepcopy(covdict[""].Clone("CovMat_syst"))
+    hCovar_syst.Add(covdict["stat"], -1)
+    covdict["syst"] = hCovar_syst
+    hsystup   = deepcopy(theres[""].Clone("systUp"))
+    hsystdown = deepcopy(theres[""].Clone("systDown"))
+    for iB in range(1, hsystup.GetNbinsX() + 1):
+        hsystup.  SetBinError(iB, r.TMath.Sqrt(theres[""].GetBinError(iB)**2 - theres["statUp"].GetBinError(iB)**2))
+        hsystdown.SetBinError(iB, r.TMath.Sqrt(theres[""].GetBinError(iB)**2 - theres["statDown"].GetBinError(iB)**2))
+        # print covdict[""].GetBinContent(iB, iB), covdict["stat"].GetBinContent(iB, iB), covdict["syst"].GetBinContent(iB, iB)
+
+    theres["systUp"]   = hsystup
+    theres["systDown"] = hsystdown
+
+    # Then, the individuals. First, we get the raw info.
+
+    for iU in indvars:
+        theres[iU + "Up"], theres[iU + "Down"], covdict[iU] = deepcopy(getInfoFromFD(path, inddir, iU, iY, iV))
+
+    # And now, we process it to obtain the actual uncertainty.
+    theres  = getActualUnc(theres)
+    covdict = getActualCovMat(covdict)
+
+    return theres, covdict
+
+
+def getAlternateUncsHistos(nom, induncs, glouncs):
+    thehistos = {}; theUncs = []
+    thehistos[""] = deepcopy(nom)
+    nbs = nom.GetNbinsX()
+
+    for iU in induncs[1]:
+        if iU == "" or iU == "munom": continue
+        theUncs.append(iU)
+    for iU in glouncs[1]:
+        if iU == "" or iU == "munom": continue
+        theUncs.append(iU)
+
+    for iU in theUncs:
+        tmpnam = iU.replace("inc_", "").replace("systematics", "syst")
+        thehistos[tmpnam + "Down"] = deepcopy(nom.Clone(tmpnam + "Down"))
+        thehistos[tmpnam + "Up"]   = deepcopy(nom.Clone(tmpnam + "Up"))
+        for iB in range(1, nbs + 1):
+            if "syst" == tmpnam or "stat" == tmpnam:
+                thed = glouncs
+            else:
+                thed = induncs
+            
+            thehistos[tmpnam + "Down"].SetBinError(iB,  thed[iB][iU]["down"] / glouncs[iB]["munom"]  * nom.GetBinContent(iB))
+            thehistos[tmpnam + "Up"].  SetBinError(iB, (thed[iB][iU]["up"]   / glouncs[iB]["munom"]) * nom.GetBinContent(iB))
+            if tmpnam == "syst":
+                print thehistos[tmpnam + "Down"].GetBinError(iB), thehistos[tmpnam + "Up"].GetBinError(iB)
+
+    thehistos["totalUp"] = deepcopy(nom.Clone("totalUp")); thehistos["totalDown"] = deepcopy(nom.Clone("totalDown"))
+
+    for iB in range(1, nom.GetNbinsX() + 1):
+        thehistos["totalUp"].  SetBinError(iB, r.TMath.Sqrt(thehistos["statUp"].  GetBinError(iB)**2 + thehistos["systUp"].  GetBinError(iB)**2))
+        thehistos["totalDown"].SetBinError(iB, r.TMath.Sqrt(thehistos["statDown"].GetBinError(iB)**2 + thehistos["systDown"].GetBinError(iB)**2))
+
+        themax = max([thehistos["totalUp"].GetBinError(iB), thehistos["totalDown"].GetBinError(iB)])
+        thehistos[""].SetBinError(iB, themax if themax < thehistos[""].GetBinContent(iB) else thehistos[""].GetBinContent(iB))
+
+    return thehistos
+
+
+def getAConservativeMaximum(h):
+    theval = 0.
+    for iB in range(1, h.GetNbinsX() + 1):
+        newmax = (h.GetBinContent(iB) + h.GetBinError(iB)) * 1.2
+        if theval < newmax: theval = newmax
+    return theval
+
+
 def confirm(message = "Do you wish to continue?"):
     """
     Ask user to enter y(es) or n(o) (case-insensitive).
@@ -75,6 +348,8 @@ def confirm(message = "Do you wish to continue?"):
     while answer not in ["y", "n", "yes", "no"]:
         answer = raw_input(message + " [Y/N]\n").lower()
     return answer[0] == "y"
+
+
 
 # === DICTIONARIES ===
 # var           := name of the variable in the tree to make cards
@@ -114,28 +389,18 @@ varList['Lep1Lep2Jet1MET_Mt'] = {
     'printnamenodim':"\\transmassvar",
     'mathprintname': "\\transmassvar",
     'yaxis_particle'       : 'd#sigma/d(#it{m}_{T}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{p}_{T}^{miss}, #it{j})) (pb)',
-    'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(#it{m}_{T}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{p}_{T}^{miss}, #it{j})) (adim.)',
+    # 'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(#it{m}_{T}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{p}_{T}^{miss}, #it{j})) (adim.)',
+    'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(#it{m}_{T}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{p}_{T}^{miss}, #it{j}))',
     'yaxisfidbin' : '(1/#sigma_{fid.})d#sigma/d(#it{m}_{T}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{p}_{T}^{miss}, #it{j})) (1/GeV)',
     'yaxisnorm'   : 'd#sigma/d(#it{m}_{T}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{p}_{T}^{miss}, #it{j})) (pb/GeV)',
-    'yaxis_unc'   : 'Relative uncertainty (adim.)',
+    # 'yaxis_unc'   : 'Relative uncertainty (adim.)',
+    'yaxis_unc'   : 'Relative uncertainty',
 
     'bins_particle' : [100., 220., 280., 325., 400., 500.], # propuesta (5 bins)
     'bins_detector' : [100., 220., 250., 260., 270., 280., 290., 300., 325., 400., 500.], # propuesta (5 bins) SELECCIONADA
 
-    #'bins_particle'  : [0., 220., 270., 300., 325., 400., 500.], # propuesta (6 bins)
-    #'bins_detector' : [0., 220., 240., 250., 260., 270., 280., 290., 300., 310., 325., 400., 500.], # propuesta (6 bins)
-
-    #'bins_particle'  : [0., 220., 260., 280., 300., 325., 400., 500.], # propuesta (7 bins)
-    #'bins_detector' : [0., 220., 240., 250., 260., 270., 275., 280., 285., 290., 300., 310., 325., 400., 500.], # propuesta (7 bins)
-
-    #'bins_particle'  : [0., 220., 240., 270., 300., 320., 350., 430., 500.], # propuesta (8 bins)
-    #'bins_detector' : [0., 190., 220., 230., 240., 250., 260., 270., 280., 290., 300., 310., 320., 330., 350., 430., 500.], # propuesta (8 bins)
-
-    #'bins_particle'  : [0., 220., 240., 250., 260., 270., 280., 320., 400., 500.], # propuesta (9 bins)
-    #'bins_detector' : [0., 220., 230., 240., 250., 255., 260., 265., 270., 275., 280., 285., 290., 300., 310., 320., 330., 400., 500.], # propuesta (9 bins)
-
-#    'bins_particle' : [100., 200., 240., 280., 300., 320., 340., 380., 440., 500., 600.], # propuesta (10 bins particula, 23 bines detector)
-#    'bins_detector' : [100., 180., 200., 220., 240., 250., 260., 270., 280., 290., 300., 310., 320., 330., 340., 360., 380., 400., 420., 440., 460., 500., 550., 600.], # propuesta (10 bins particula, 23 bines detector)
+#    'bins_particle' : [100., 220., 280., 325., 400., 500.], # propuesta (5 bins)
+#    'bins_detector' : [100., 220., 280., 325., 400., 500.],
 
     #'descbinning' : [0., 800.], ## TEMPORAL
     #'ndescbins'   : 20, ## TEMPORAL
@@ -158,7 +423,11 @@ varList['Lep1Lep2Jet1MET_Mt'] = {
     'legpos_particleunc'  : "TC",
     'legpos_particlefidunc'  : "TL",
     #'legpos_particlefidbin':(.175, .73, .27, .49),
-    'legpos_particlefidbin': (.52, .9, .72, .65),
+    #'legpos_particlefidbin': (.52, .9, .72, .65),
+    # 'legpos_particlefidbin': (.66, .9, .8, .6),
+    # 'legpos_particlefidbin': (.6, .9, .75, .55),
+    #'legpos_particlefidbin': (.63, .88, .78, .53),
+    'legpos_particlefidbin': (.51, .88, .78, .43),
     'legpos_particlefidbinunc':"TL",
     'resptxtsize' : 0.9,
     'txtsize_covdetector': 0.75,
@@ -168,6 +437,8 @@ varList['Lep1Lep2Jet1MET_Mt'] = {
     'txtangle_covparticlefidbin': 35,
     "yaxisuplimitunf": 0.176,
     "yaxismax_particlefid" : 1.6,
+#    "yaxismax_particlefidbin": 0.007,
+    "yaxismax_particlefidbin": 0.0105,
     #"yaxismax_particlefidbinunc" : 1.8,
     "yaxismax_particlefidbinunc" : 1.2,
     "yaxismax_unf" : 2,
@@ -180,14 +451,28 @@ varList['Lep1Lep2Jet1MET_Mt'] = {
 #    "yaxismax_ratio_fidnorm" : 2.5,
     "yaxismax_ratio_fidnorm" : 1.5,
     "yaxismax_ratio_norm" : 5.0,
-    "yaxismax_particlefidbin": 0.0155,
+    "particle_smoothing" : {"jes_FlavorQCD" : {-1 : "fitOrder=1, symmAfterFit=1",
+                                               4  : "NOM",},
+                            "jes_RelativeBal" : "fitOrder=1, symmAfterFit=1",
+                            "jes_RelativeSample" : "fitOrder=1, symmAfterFit=1",
+                            "jes_RelativeSample_2016" : {-1 : "fitOrder=1, symmAfterFit=1",
+                                                         0  : "NOM",},
+                            "jes_RelativeSample_2017" : {1 : "fitOrder=1, symmAfterFit=1",
+                                                         2 : "fitOrder=1, symmAfterFit=1",},
+                            "jes_RelativeSample_2018" : "fitOrder=1, symmAfterFit=1",
+                            "jes_Absolute" : "fitOrder=1, symmAfterFit=1",
+                            "jes_Absolute_2016" : "fitOrder=1, symmAfterFit=1",
+                            "jes_Absolute_2017" : "fitOrder=1, symmAfterFit=1",
+                            "jes_Absolute_2018" : "fitOrder=1, symmAfterFit=1",
+    },
 }
 
 varList['Lep1Lep2Jet1MET_MtATLAS'] = {
     #'xaxis'       : 'm_{T}(\\ell_{1}, \\ell_{2},\\slash{E}_{T}, j) (GeV)',
     'xaxis'       : '#it{m}_{T}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{p}_{T}^{miss}, #it{j}) (GeV)',
     'yaxis_particle'       : 'd#sigma/d(#it{m}_{T}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{p}_{T}^{miss}, #it{j})) (pb)',
-    'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(#it{m}_{T}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{p}_{T}^{miss}, #it{j})) (adim.)',
+    # 'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(#it{m}_{T}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{p}_{T}^{miss}, #it{j})) (adim.)',
+    'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(#it{m}_{T}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{p}_{T}^{miss}, #it{j}))',
     'yaxisfidbin' : '(1/#sigma_{fid.})d#sigma/d(#it{m}_{T}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{p}_{T}^{miss}, #it{j})) (1/GeV)',
     'bins_particle'  : [0., 275., 375., 500., 1000.],
     'bins_detector' : [0., 200., 235., 275., 300., 325., 400., 500., 1000.],
@@ -221,35 +506,17 @@ varList['Lep1Lep2Jet1_M'] = {
     'printnamenodim':'\\invmassvar',
     'mathprintname': '\\invmassvar',
     'yaxis_particle'       : 'd#sigma/d(#it{m}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (pb)',
-    'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(#it{m}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (adim.)',
+    # 'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(#it{m}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (adim.)',
+    'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(#it{m}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j}))',
     'yaxisfidbin' : '(1/#sigma_{fid.})d#sigma/d(#it{m}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (1/GeV)',
     'yaxisnorm'   : 'd#sigma/d(#it{m}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (pb/GeV)',
-    'yaxis_unc'   : 'Relative uncertainty (adim.)',
-    #'bins_particle'  : [0., 125., 250., 350., 400.],                         # usado en drafts, en nota, etc. (4 bins)
-    #'bins_detector' : [0., 125., 170., 180., 200., 240., 290., 350., 400.], # usado en drafts, en nota, etc. (4 bins)
-
-    #'bins_particle'  : [0., 130., 170., 200., 325., 400.], # propuesta (5 bins)
-    #'bins_detector' : [0., 130., 140., 150., 160., 170., 180., 190., 200., 325., 400.], # propuesta (5 bins)
-
-    #'bins_particle'  : [0., 130., 170., 200., 205., 325., 400.], # propuesta (6 bins)
-    #'bins_detector' : [0., 130., 140., 150., 160., 170., 180., 190., 200., 210., 240., 250., 325., 400.], # propuesta (6 bins) SELECCIONADA
-    #'bins_particle'  : [0., 130., 170., 200., 250., 325., 400.], # propuesta (6 bins) BUENA
-    #'bins_detector' : [0., 130., 140., 150., 160., 170., 180., 190., 200., 210., 220., 250., 325., 400.], # propuesta (6 bins) SELECCIONADA BUENA
-
+    # 'yaxis_unc'   : 'Relative uncertainty (adim.)',
+    'yaxis_unc'   : 'Relative uncertainty',
     'bins_particle'  : [50., 130., 170., 200., 250., 325., 400.], # propuesta (6 bins) BUENA
     'bins_detector' : [50., 130., 140., 150., 160., 170., 180., 190., 200., 210., 220., 250., 325., 400.], # propuesta (6 bins) SELECCIONADA BUENA
 
-    #'bins_particle'  : [0., 130., 150., 170., 200., 250., 325., 400.], # propuesta (7 bins)
-    #'bins_detector' : [0., 130., 140., 150., 155., 160., 165., 170., 180., 190., 200., 210., 220., 250., 325., 400.], # propuesta (7 bins)
-
-    #'bins_particle'  : [0., 125., 170., 180., 200., 240., 290., 350., 400.], # propuesta (8 bins)
-    #'bins_detector' : [0., 125., 150., 160., 170., 180., 190., 200., 210., 220., 230., 240., 250., 275., 290., 350., 400.], # propuesta (8 bins)
-
-    #'bins_particle'  : [0., 130., 150., 160., 170., 180., 200., 250., 325., 400.], # propuesta (9 bins)
-    #'bins_detector' : [0., 130., 140., 145., 150., 155., 160., 165., 170., 175., 180., 185., 190., 195., 200., 225., 250., 325., 400.], # propuesta (9 bins)
-
-    #'bins_particle'  : [0., 130., 140., 150., 160., 170., 180., 200., 250., 325., 400.], # propuesta (10 bins)
-    #'bins_detector' : [0., 130., 140., 145., 150., 155., 160., 165., 170., 175., 180., 185., 190., 195., 200., 205., 210., 220., 250., 325., 400.], # propuesta (10 bins)
+#    'bins_particle'  : [50., 130., 170., 200., 250., 325., 400.],
+#    'bins_detector' :  [50., 130., 170., 200., 250., 325., 400.],
 
     'descbinning' : [0., 400.],
     'ndescbins'   : 16,
@@ -264,7 +531,11 @@ varList['Lep1Lep2Jet1_M'] = {
     'legpos_particlefidunc'  : "TC",
     'legpos_particleunc'  : "TL",
     'legpos_particlefidbinunc': (.45, .615, .63, .9),
-    'legpos_particlefidbin': (.52, .9, .72, .65),
+    # 'legpos_particlefidbin': (.66, .9, .8, .6),
+    # 'legpos_particlefidbin': (.6, .9, .75, .55),
+    #'legpos_particlefidbin': (.63, .88, .78, .53),
+    'legpos_particlefidbin': (.51, .88, .78, .43),
+    #'legpos_particlefidbin': (.52, .9, .72, .65),
     "legpos_particle"   : (.52, .9, .72, .65),
     'txtsize_covdetector': 0.5,
     'txtsize_covparticle': 1.5,
@@ -274,13 +545,42 @@ varList['Lep1Lep2Jet1_M'] = {
     "yaxisuplimitunf": 0.15,
     "yaxismax_particlefidunc" : 0.7,
     "yaxismax_particlefidbinunc" : 0.7,
-    "yaxismax_particlefidbin" : 0.012,
-    "yaxismax_unf" : 1.55,
+#    "yaxismax_particlefidbin" : 0.009,
+    "yaxismax_particlefidbin" : 0.01,
+    "yaxismax_unf" : 2.,
     "yaxismax_particlebin": 0.004,
     "legpos_particlebinunc" : (.18, .5, .31, .785),
     "legpos_particlefidbinunc": (.4, .615, .58, .9),
 #    "yaxismax_ratio_fidnorm" : 2.5,
     "yaxismax_ratio_fidnorm" : 1.5,
+    "particle_smoothing" : {"jes_BBEC1"       : {-1 : "fitOrder=1, symmAfterFit=1",
+                                                 0  : "NOM",
+                                                 5  : "NOM",},
+                            "jes_FlavorQCD"   : "fitOrder=1, symmAfterFit=1",
+                            "jes_RelativeBal" : {-1 : "fitOrder=1, symmAfterFit=1",
+                                                 5  : "NOM",},
+                            "jes_RelativeSample_2018" : {-1 : "fitOrder=1, symmAfterFit=1",
+                                                         0  : "fitOrder=3, symmAfterFit=1",
+                                                         5  : "NOM",},
+                            "jes_Absolute" : {5  : "EstimateFromXbins=1",},
+                            "jes_Absolute_2016" : "fitOrder=1, symmAfterFit=1",
+                            "jes_Absolute_2017" : "fitOrder=1, symmAfterFit=1",
+                            "jes_Absolute_2018" : "fitOrder=1, symmAfterFit=1",
+                            "jer_2016" : {-1 : "fitOrder=2, symmAfterFit=1",
+                                          0  : "fitOrder=3, symmAfterFit=1",
+                                          3  : "fitOrder=1, symmAfterFit=1",
+                                          4  : "fitOrder=1, symmAfterFit=1",
+                                          5  : "fitOrder=1, symmAfterFit=1",},
+                            "jer_2017" : {-1 : "fitOrder=2, symmAfterFit=1",
+                                          0  : "EstimateFromXbins=1",
+                                          4  : "fitOrder=1, symmAfterFit=1",
+                                          5  : "fitOrder=1, symmAfterFit=1",},
+                            "jer_2018" : {-1 : "fitOrder=2, symmAfterFit=1",
+                                          0  : "fitOrder=3, symmAfterFit=1",
+                                          4  : "fitOrder=1, symmAfterFit=1",
+                                          5  : "fitOrder=1, symmAfterFit=1",},
+                            "ds" : {2 : "fitOrder=1, symmAfterFit=1"},
+                           },
 }
 
 
@@ -291,10 +591,12 @@ varList['Lep1Lep2Jet1_M_control'] = {
     'printnamenodim':'\\invmassvar',
     'mathprintname': '\\invmassvar',
     'yaxis_particle'       : 'd#sigma/d(#it{m}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (pb)',
-    'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(#it{m}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (adim.)',
+    # 'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(#it{m}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (adim.)',
+    'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(#it{m}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j}))',
     'yaxisfidbin' : '(1/#sigma_{fid.})d#sigma/d(#it{m}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (1/GeV)',
     'yaxisnorm'   : 'd#sigma/d(#it{m}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (pb/GeV)',
-    'yaxis_unc'   : 'Relative uncertainty (adim.)',
+    # 'yaxis_unc'   : 'Relative uncertainty (adim.)',
+    'yaxis_unc'   : 'Relative uncertainty',
 
 
     'bins_particle'  : [50., 130., 170., 200., 250., 325., 400.],
@@ -311,7 +613,8 @@ varList['Lep1Lep2Jet1_M_control'] = {
     'legpos_particlefidunc'  : "TC",
     'legpos_particleunc'  : "TL",
     'legpos_particlefidbinunc': (.45, .615, .63, .9),
-    'legpos_particlefidbin': (.52, .9, .72, .65),
+#    'legpos_particlefidbin': (.52, .9, .72, .65),
+    'legpos_particlefidbin': (.51, .88, .78, .43),
     "legpos_particle"   : (.52, .9, .72, .65),
     'txtsize_covdetector': 0.5,
     'txtsize_covparticle': 1.5,
@@ -333,7 +636,8 @@ varList['Lep1Lep2Jet1_MATLAS'] = {
     #'xaxis'       : 'm(#ell_{1}, #ell_{2}, j) (GeV)',
     'xaxis'       : '#it{m}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j}) (GeV)',
     'yaxis_particle'       : 'd#sigma/d(#it{m}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (pb)',
-    'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(#it{m}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (adim.)',
+    # 'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(#it{m}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (adim.)',
+    'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(#it{m}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j}))',
     'yaxisfidbin' : '(1/#sigma_{fid.})d#sigma/d(#it{m}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (1/GeV)',
     'bins_particle'  : [0., 125., 175., 225., 300., 400., 1000.],
     'bins_detector' : [0., 125., 150., 165., 175., 190., 205., 225., 250., 300., 350., 400., 1000.],
@@ -358,41 +662,20 @@ varList['Jet1_Pt'] = {
     'mathprintname': '\\text{Jet }\\pt',
     'xaxis'       : 'Jet #it{p}_{T} (GeV)',
     'yaxis_particle'       : 'd#sigma/d(jet #it{p}_{T}) (pb)',
-    'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(jet #it{p}_{T}) (adim.)',
+    # 'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(jet #it{p}_{T}) (adim.)',
+    'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(jet #it{p}_{T})',
     'yaxisfidbin' : '(1/#sigma_{fid.})d#sigma/d(jet #it{p}_{T}) (1/GeV)',
     'yaxisnorm'   : '(1/#sigma_{fid.})d#sigma/d(jet #it{p}_{T}) (pb/GeV)',
-    'yaxis_unc'   : 'Relative uncertainty (adim.)',
-    #'bins_particle'  : [0, 75, 200, 300],
-    #'bins_detector' : [0., 50., 75., 110., 150., 200., 300.],
-   #'bins_particle'  : [0., 75., 140., 200., 300.],                            # binning presentado en singletop
-   #'bins_detector' : [0., 60., 80., 105., 120., 140., 170., 210., 300.],
-#    'bins_particle'  : [0., 60., 110., 150., 300.],
-#    'bins_detector' : [0., 60., 75., 90., 110., 125., 150., 175., 300.],
-    #'bins_particle'  : [0., 60., 90., 120., 150.],
-    #'bins_detector' : [0., 60., 70., 80, 90., 100., 110., 120., 150.],
-    #'bins_particle'  : [30., 60., 90., 120., 150.],                        # usado en drafts, en nota, etc. (4 bins)
-    #'bins_detector' : [30., 60., 70., 80, 90., 100., 110., 120., 150.],   # usado en drafts, en nota, etc. (4 bins)
-
-    #'bins_particle'  : [30., 50., 70., 90., 125., 150.], # propuesta (5 bins)
-    #'bins_detector' : [30., 40., 45., 50., 55., 60., 65., 70., 90., 125., 150.], # propuesta (5 bins) SELECCTIONADA, VIEYA
-
-    'bins_particle'  : [30., 50., 70., 85., 110., 150.], # propuesta (5 bins)
+    # 'yaxis_unc'   : 'Relative uncertainty (adim.)',
+    'yaxis_unc'   : 'Relative uncertainty',
+    'bins_particle' : [30., 50., 70., 85., 110., 150.], # propuesta (5 bins)
     'bins_detector' : [30., 40., 45., 50., 55., 60., 65., 70., 85., 110., 150.], # propuesta (5 bins) SELECCTIONADA
 
-    #'bins_particle'  : [30., 40., 50., 70., 90., 125., 150.], # propuesta (6 bins)
-    #'bins_detector' : [30., 35., 40., 45., 50., 55., 60., 65., 70., 90., 105., 125., 150.], # propuesta (6 bins)
+#    'bins_particle' : [30., 45., 60., 80., 100., 150.],
+#    'bins_detector' : [30., 35., 40., 45., 50., 55., 60., 70., 80., 90., 100., 125., 150.],
 
-    #'bins_particle'  : [30., 40., 50., 60., 70., 90., 125., 150.], # propuesta (7 bins)
-    #'bins_detector' : [30., 35., 37.5,40., 42.5, 45., 50., 55.,  60., 65., 70., 80., 105., 125., 150.], # propuesta (7 bins)
-
-    #'bins_particle'  : [30., 50., 60., 70., 80., 90., 105., 125., 150.], # propuesta (8 bins)
-    #'bins_detector' : [30., 40., 50., 55., 60., 65., 70., 75., 80., 85., 90., 95., 100., 105., 115., 125., 150.], # propuesta (8 bins)
-
-    #'bins_particle'  : [30., 40., 45., 50., 55., 60., 70., 80., 125., 150.], # propuesta (9 bins)
-    #'bins_detector' : [30., 37.5, 40.,42.5, 45.,47.5, 50.,52.5,  55., 57.5, 60., 65., 70., 75., 80., 90., 105., 125., 150.], # propuesta (9 bins)
-
-    #'bins_particle'  : [30., 40., 45., 50., 55., 60., 70., 80., 90., 125., 150.], # propuesta (10 bins)
-    #'bins_detector' : [30., 35.,37.5, 40.,42.5, 45.,47.5, 50.,52.5,  55., 57.5, 60., 65., 70., 75., 80., 85., 90., 105., 125., 150.], # propuesta (10 bins)
+#    'bins_particle' : [30., 50., 70., 85., 110., 150.],
+#    'bins_detector' : [30., 50., 70., 85., 110., 150.],
 
     'descbinning' : [10., 150.],
     'ndescbins'   : 14,
@@ -407,7 +690,11 @@ varList['Jet1_Pt'] = {
     'legpos_particleunc'  : "TL",
     'legpos_particlefidunc'  : "TL",
     'legpos_particlefidbinunc':"TL",
-    'legpos_particlefidbin':"TC",
+    # 'legpos_particlefidbin': (.66, .9, .8, .6),
+    # 'legpos_particlefidbin': (.6, .9, .75, .55),
+    #'legpos_particlefidbin': (.63, .88, .78, .53),
+    'legpos_particlefidbin': (.51, .88, .78, .43),
+    #'legpos_particlefidbin':"TC",
     "legpos_particlebinunc" : "TL",
     'resptxtsize' : 1.5,
     'txtsize_covparticle': 2,
@@ -416,73 +703,104 @@ varList['Jet1_Pt'] = {
     'txtangle_covparticle': 45,
     "txtangle_covparticlefidbin": 45,
     "yaxisuplimitunf": 0.20,
-    "yaxismax_particlefidbin": 0.029,
+    "yaxismax_particlefidbin": 0.02,
     "yaxismax_particlefid" : 1.8,
     #"yaxismax_particlefidbinunc" : 1.2,
     "yaxismax_particlefidbinunc" : 0.5,
-    "yaxismax_unf" : 2.3,
+    "yaxismax_unf" : 1,
     "yaxismax_particlebinunc": 1.8,
     "yaxismax_particlebin": 0.010,
     "yaxismax_ratio_norm" : 3.5,
 #    "yaxismax_ratio_fidnorm" : 2.5,
     "yaxismax_ratio_fidnorm" : 1.5,
+    "particle_smoothing" : {"jes_BBEC1" : {-1 : "fitOrder=1, symmAfterFit=1",
+                                           1  : "fitOrder=4, symmAfterFit=1",
+                                          },
+                            "jes_FlavorQCD" : "fitOrder=1, symmAfterFit=1",
+                            "jes_RelativeBal" : "fitOrder=1, symmAfterFit=1",
+                            "jes_RelativeSample_2016" : "fitOrder=1, symmAfterFit=1",
+                            "jes_RelativeSample_2017" : "fitOrder=1, symmAfterFit=1",
+                            "jes_RelativeSample_2018" : "fitOrder=1, symmAfterFit=1",
+                            "jes_Absolute" : "fitOrder=1, symmAfterFit=1",
+                            "jes_Absolute_2016" : "fitOrder=1, symmAfterFit=1",
+                            "jes_Absolute_2017" : "fitOrder=1, symmAfterFit=1",
+                            "jes_Absolute_2018" : "fitOrder=1, symmAfterFit=1",
+                            "jer_2016" : "fitOrder=3, symmAfterFit=1",
+                            "jer_2017" : "fitOrder=3, symmAfterFit=1",
+                            "jer_2018" : "fitOrder=3, symmAfterFit=1",
+                            "fsr" : {0  : "fitOrder=1, symmAfterFit=1",
+                                     1  : "fitOrder=2, symmAfterFit=1",
+                                     2  : "fitOrder=2, symmAfterFit=1",
+                                     3  : "NOM",
+                                     4  : "NOM",},
+                            "ds" : "EstimateFromXbins=1",
+                           },
 }
 
 varList['Lep1_Pt'] = {
     #'xaxis'       : 'p_{T}(\\ell_{1}) (GeV)',
-    'printname'   : 'Leading lepton \\pt (\\GeV)',
-    'printnamenodim': 'Leading lepton \\pt',
-    'mathprintname':'\\text{Leading lepton }\\pt',
-    'xaxis'       : 'Leading lepton #it{p}_{T} (GeV)',
-    'yaxis_particle'       : 'd#sigma/d(leading lepton #it{p}_{T}) (pb)',
-    'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(leading lepton #it{p}_{T}) (adim.)',
-    'yaxisfidbin' : '(1/#sigma_{fid.})d#sigma/d(leading lepton #it{p}_{T}) (1/GeV)',
-    'yaxisnorm'   : 'd#sigma/d(leading lepton #it{p}_{T}) (pb/GeV)',
-    'yaxis_unc'   : 'Relative uncertainty (adim.)',
-    #'bins_particle'  : [0, 50, 120, 190, 250],
-    #'bins_detector' : [0, 50, 65, 85, 97, 110, 145, 180, 250],
-   #'bins_particle'  : [0, 50, 120, 160, 250],                            # binning presentado en singletop
-   #'bins_detector' : [0, 50, 65, 85, 97, 110, 145, 180, 250],
-#    'bins_particle'  : [0., 50., 90., 135., 250.],
-#    'bins_detector' : [0., 50., 65., 80., 95., 110., 130., 150., 250.],
-    #'bins_particle'  : [0., 50., 90., 135., 250.],
-    #'bins_detector' : [0., 50., 60., 75., 90., 105., 115., 135., 250.],
-    #'bins_particle'  : [0., 50., 90., 125., 150.],
-    #'bins_detector' : [0., 50., 60., 70., 80., 90., 105., 125., 150.], # antes de 15-10-2018
-    #'bins_particle'  : [25., 50., 90., 125., 150.],                      # usado en drafts, en nota, etc. (4 bins)
-    #'bins_detector' : [25., 50., 60., 70., 80., 90., 105., 125., 150.], # usado en drafts, en nota, etc. (4 bins)
+    'printname'      : 'Leading lepton \\pt (\\GeV)',
+    'printnamenodim' : 'Leading lepton \\pt',
+    'mathprintname'  :'\\text{Leading lepton }\\pt',
+    'xaxis'          : 'Leading lepton #it{p}_{T} (GeV)',
+    'yaxis_particle' : 'd#sigma/d(leading lepton #it{p}_{T}) (pb)',
+    # 'yaxisfid'       : '(1/#sigma_{fid.})d#sigma/d(leading lepton #it{p}_{T}) (adim.)',
+    'yaxisfid'       : '(1/#sigma_{fid.})d#sigma/d(leading lepton #it{p}_{T})',
+    'yaxisfidbin'    : '(1/#sigma_{fid.})d#sigma/d(leading lepton #it{p}_{T}) (1/GeV)',
+    'yaxisnorm'      : 'd#sigma/d(leading lepton #it{p}_{T}) (pb/GeV)',
+    # 'yaxis_unc'      : 'Relative uncertainty (adim.)',
+    'yaxis_unc'      : 'Relative uncertainty',
 
-    #'bins_particle'  : [25., 45., 65., 90., 125., 150.], # propuesta (5 bins)
-    #'bins_detector' : [25., 35., 45., 50.,  55., 60., 65., 75., 90., 125., 150.], # propuesta (5 bins)
+    #### TOP-19-003 8 bines
+    #'bins_particle' : [25., 50., 60., 70., 80., 90., 105., 125., 150.],
+    #'bins_detector' : [25., 35., 50., 55., 60., 65.,  70.,  75.,  80., 85., 90., 95., 100., 105., 115., 125., 150.],
+    #'bins_particle' : [25., 50., 60., 70., 80., 90., 105., 150.],
+    #'bins_detector' : [25., 35., 50., 55., 60., 65.,  70.,  75.,  80., 85., 90., 95., 100., 105., 115., 125., 150.],
 
-    #'bins_particle'  : [25., 45., 65., 85., 100., 125., 150.], # propuesta (6 bins)
-    #'bins_detector' : [25., 35., 45., 50., 55., 60., 65., 75., 85., 100., 115., 125., 150.], # propuesta (6 bins)
+    ### dev reluncs
+    # 'bins_particle' : [25., 50., 60., 70., 80., 90., 100., 150.],
+    # 'bins_detector' : [25., 35., 50., 55., 60., 65.,  70.,  75.,  80., 85., 90., 95., 100., 105., 115., 125., 150.],
 
-    #'bins_particle'  : [25., 45., 55., 65., 85., 100., 125., 150.], # propuesta (7 bins)
-    #'bins_detector' : [25., 35., 45., 50., 55.,  60.,  65.,  70., 75., 80., 85., 100., 115., 125., 150.], # propuesta (7 bins)
+    #'bins_particle' : [25., 40., 50., 60., 70., 80., 90., 100., 250.],
+    #'bins_detector' : [25., 35., 40., 45., 50., 55., 60., 65., 70., 75., 80., 85., 90., 95., 100., 105., 115., 125., 135., 150., 175., 200., 225., 250.],
 
-    'bins_particle' : [25., 50., 60., 70., 80., 90., 105., 125., 150.], # propuesta (8 bins)
-    'bins_detector' : [25., 35., 50., 55., 60., 65.,  70.,  75.,  80., 85., 90., 95., 100., 105., 115., 125., 150.], # propuesta (8 bins) SELECCIONADA
 
-    #'bins_particle'  : [25., 45., 50., 55., 60., 65., 85., 100., 125., 150.], # propuesta (9 bins)
-    #'bins_detector' : [25., 40., 42.5, 45.,47.5,50.,52.5,  55., 57.5,  60., 62.5, 65., 70., 75., 85., 100., 115., 125., 150.], # propuesta (9 bins)
+    ### Nuevo intento 2022-02-23 EL QUE TOI USANDO
+    'bins_particle' : [25., 35., 45., 55., 65., 75., 85., 95., 150.],
+    'bins_detector' : [25., 35., 50., 55., 60., 65., 70., 75., 80., 85., 90., 95., 100., 105., 115., 125., 150.],
 
-    #'bins_particle'  : [25., 35., 45., 50., 55., 60., 65., 85., 100., 125., 150.], # propuesta (10 bins)
-    #'bins_detector' : [25., 35., 40., 42.5, 45., 47.5, 50., 52.5, 55., 57.5, 60., 62.5, 65., 67.5, 70., 75., 85., 100., 115., 125., 150.], # propuesta (10 bins)
+    ### Nuevo intento 2022-02-24
+    #'bins_particle' : [25., 35., 45., 55., 65., 75., 85., 125., 150.],
+    #'bins_detector' : [25., 35., 50., 55., 60., 65., 70., 75., 80., 85., 90., 95., 100., 105., 115., 125., 150.],
 
-    'descbinning' : [10., 150.],
-    'ndescbins'   : 14,
+    ### Nuevo intento 2022-02-24v2
+    #'bins_particle' : [25., 45., 55., 65., 75., 80., 125., 150.],
+    #'bins_detector' : [25., 35., 45., 50., 55., 60., 65.,  70.,  75.,  80., 90., 100., 125., 150.],
+
+    ### Prueba
+#    'bins_particle' : [25., 35., 45., 55., 65., 75., 85., 95., 150.],
+#    'bins_detector' : [25., 35., 45., 55., 65., 75., 85., 95., 150.],
+
+    'descbinning' : [10., 150.],   ### TOP-19-003 8 bines
+    #'descbinning' : [10., 250.],
+    'ndescbins'   : 15,
     'legpos'      : (0.7, 0.55, 0.90, 0.93),
     'legposdesc'  : (0.7, 0.55, 0.90, 0.93),
     "maxdesc"     : 3300,
-    "var_detector": 'min(max(LepGood_pt_corrAll[0], 26.), 149.)',
+    "var_detector": 'min(max(LepGood_pt_corrAll[0], 26.), 149.)',   ### TOP-19-003 8 bines
+    #"var_detector": 'min(max(LepGood_pt_corrAll[0], 26.), 249.)',
     'var_response': 'Lep1_Pt',
-    'var_particle': 'min(max(GenDressedLepton_pt[iDressSelLep[0]], 26.), 149.)',
+    'var_particle': 'min(max(GenDressedLepton_pt[iDressSelLep[0]], 26.), 149.)',   ### TOP-19-003 8 bines
+    #'var_particle': 'min(max(GenDressedLepton_pt[iDressSelLep[0]], 26.), 249.)',
     'legpos_detectorunc' : "TL",
     'legpos_particlefidunc'  : "TL",
     #"legpos_particle"   : (.18, .3, .32, .05),
     "legpos_particle"      : "TC",
-    'legpos_particlefidbin': "TC",
+    #'legpos_particlefidbin': "TC",
+    #'legpos_particlefidbin': (.18, .3, .32, .05),
+    # 'legpos_particlefidbin': (.66, .9, .8, .6),
+#    'legpos_particlefidbin': (.63, .88, .78, .53),
+    'legpos_particlefidbin': (.51, .88, .78, .43),
     'legpos_particleunc'   : "TL",
     'legpos_particlefidbinunc': "TL",
     'resptxtsize'  : 1.5,
@@ -492,15 +810,15 @@ varList['Lep1_Pt'] = {
     "txtsize_covparticlefidbin": 1.2,
     "txtangle_covparticlefidbin": 35,
     "yaxisuplimitunf": 0.2,
-    "yaxismax_particlefidbin": 0.025,
+    "yaxismax_particlefidbin": 0.03,
     "yaxismax_particlefid" : 1.1,
     "yaxismax_particlefidbinunc" : 1.3,
     #"yaxismax_particlefidbinunc" : 0.5,
-    "yaxismax_unf" : 1.35,
+    "yaxismax_unf" : 2.0,
     "yaxismax_particlebin": 0.0085,
     "legpos_particlebinunc" : "TL",
 #    "yaxismax_ratio_fidnorm" : 2.5,
-    "yaxismax_ratio_fidnorm" : 1.5,
+   "yaxismax_ratio_fidnorm" : 2.5,
 }
 
 varList['Fiducial'] = {
@@ -532,30 +850,17 @@ varList['Lep1Lep2Jet1MET_Pz'] = {
     'printnamenodim':'\\pzvar',
     'mathprintname': '\\pzvar',
     'yaxis_particle'       : 'd#sigma/d(#it{p}_{Z} (#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (pb)',
-    'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(#it{p}_{Z} (#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (adim.)',
+    # 'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(#it{p}_{Z} (#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (adim.)',
+    'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(#it{p}_{Z} (#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j}))',
     'yaxisfidbin' : '(1/#sigma_{fid.})d#sigma/d(#it{p}_{Z} (#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (1/GeV)',
     'yaxisnorm'   : 'd#sigma/d(#it{p}_{Z} (#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (pb/GeV)',
-    'yaxis_unc'   : 'Relative uncertainty (adim.)',
-    #'bins_particle'  : [0., 100., 200., 350., 450.],                        # usado en drafts, en nota, etc. (4 bins)
-    #'bins_detector' : [0., 50., 100., 150., 200., 250., 300., 350., 450.], # usado en drafts, en nota, etc. (4 bins)
-
-    #'bins_particle'  : [0., 40., 100., 175., 300., 450.],  # propuesta (5 bins)
-    #'bins_detector' : [0., 20., 40., 60., 80., 100., 125., 150., 175., 350., 450.], # propuesta (5 bins)
-
-    #'bins_particle'  : [0., 40., 100., 175., 250., 350., 450.],  # propuesta (6 bins)
-    #'bins_detector' : [0., 20., 40., 60., 80., 100., 125., 150., 175., 200., 250., 350., 450.], # propuesta (6 bins)
-
-    #'bins_particle'  : [0., 40., 60., 100., 175., 250., 350., 450.],  # propuesta (7 bins)
-    #'bins_detector' : [0., 20., 30.,  40.,  50.,  60.,  80., 100., 125., 150., 175., 200., 250., 350., 450.], # propuesta (7 bins)
-
+    # 'yaxis_unc'   : 'Relative uncertainty (adim.)',
+    'yaxis_unc'   : 'Relative uncertainty',
     'bins_particle'  : [0., 50., 100., 150., 200., 250., 300., 350., 450.],                        # propuesta (8 bins)
     'bins_detector' : [0., 20., 40., 60., 80., 100., 125., 150., 175., 200., 225., 250., 275., 300., 350., 400., 450.], # propuesta (8 bins) SELECCIONADA
 
-    #'bins_particle'  : [0., 20., 40., 60., 80., 100., 175., 250., 350., 450.],  # propuesta (9 bins)
-    #'bins_detector' : [0., 5.,  10., 15., 20.,  25.,  30.,  40.,  50.,  60.,  70.,  80.,  90., 100., 150., 175., 250., 350., 450.], # propuesta (9 bins)
-
-    #'bins_particle'  : [0., 20., 40., 60., 80., 100., 125., 175., 250., 350., 450.],  # propuesta (10 bins)
-    #'bins_detector' : [0., 5.,  10., 15., 20.,  25.,  30.,  40.,  50.,  60.,  70.,  80.,  90., 100., 125., 150., 175., 200., 250., 350., 450.], # propuesta (10 bins)
+#    'bins_particle' : [0., 50., 100., 150., 200., 250., 300., 350., 450.],
+#    'bins_detector' : [0., 50., 100., 150., 200., 250., 300., 350., 450.],
 
     'descbinning' : [0., 450.],
     'ndescbins'   : 18,
@@ -572,7 +877,11 @@ varList['Lep1Lep2Jet1MET_Pz'] = {
     'legpos_detectorunc' : "TL",
     'legpos_particlefidunc'  : "TL",
     'legpos_particlefidbinunc': "TL",
-    'legpos_particlefidbin':"TC",
+    # 'legpos_particlefidbin': (.66, .9, .8, .6),
+    # 'legpos_particlefidbin': (.6, .9, .75, .55),
+    #'legpos_particlefidbin': (.63, .88, .78, .53),
+    'legpos_particlefidbin': (.51, .88, .78, .43),
+    #'legpos_particlefidbin':"TC",
     "legpos_particle"  : "TC",
     'resptxtsize' : 1.7,
     'txtsize_covparticle': 1.4,
@@ -581,50 +890,91 @@ varList['Lep1Lep2Jet1MET_Pz'] = {
     "txtsize_covparticlefidbin": 1.2,
     "txtangle_covparticlefidbin": 45,
     "yaxisuplimitunf": 0.1,
-    "yaxismax_particlefidbin": 0.0065,
+    "yaxismax_particlefidbin": 0.005,
     "yaxismax_particlefid" : 1,
     #"yaxismax_particlefidbinunc" : 1,
     "yaxismax_particlefidbinunc" : 0.7,
-    "yaxismax_unf" : 1.3,
+    "yaxismax_unf" : 2,
     "yaxismax_particlebin" : 0.002,
     "legpos_particlebinunc" : "TC",
 #    "yaxismax_ratio_fidnorm" : 2.5,
     "yaxismax_ratio_fidnorm" : 1.5,
+    "particle_smoothing" : {"jes_BBEC1" : {-1 : "fitOrder=1, symmAfterFit=1",
+                                           0  : "NOM",
+                                           1  : "NOM",
+                                           7  : "NOM",},
+                            "jes_FlavorQCD" : "fitOrder=1, symmAfterFit=1",
+                            "jes_RelativeBal" : {-1 : "fitOrder=1, symmAfterFit=1",
+                                                 0  : "NOM",
+                                                 1  : "NOM",},
+                            "jes_RelativeSample_2018" : "fitOrder=1, symmAfterFit=1",
+                            "jes_Absolute" : "fitOrder=1, symmAfterFit=1",
+                            "jes_Absolute_2018" : {-1 : "fitOrder=1, symmAfterFit=1",
+                                                   0  : "NOM",
+                                                   7  : "NOM",},
+                            "jer_2016" : {-1 : "fitOrder=2, symmAfterFit=1",
+                                          0  : "NOM",
+                                          7  : "NOM",},
+                            "jer_2017" : {-1 : "fitOrder=2, symmAfterFit=1",
+                                          0  : "NOM",
+                                          7  : "NOM",},
+                            "jer_2018" : {-1 : "fitOrder=2, symmAfterFit=1",
+                                          0  : "NOM",
+                                          7  : "NOM",},
+                            "fsr" : {-1 : "fitOrder=1, symmAfterFit=1",
+                                     0  : "NOM",
+                                     2  : "fitOrder=2, symmAfterFit=1",
+                                     7  : "NOM",},
+                            "colour_rec_cr1" : {-1 : "fitOrder=1, symmAfterFit=1",
+                                     0  : "NOM",
+                                     1  : "NOM",
+                                     2  : "NOM",
+                                     3  : "NOM",
+                                     6  : "fitOrder=2, symmAfterFit=1",
+                                     7  : "NOM",},
+                            "colour_rec_cr2" : {-1 : "fitOrder=1, symmAfterFit=1",
+                                     0  : "NOM",
+                                     1  : "NOM",
+                                     2  : "NOM",
+                                     3  : "NOM",
+                                     4  : "NOM",
+                                     5  : "fitOrder=2, symmAfterFit=1",
+                                     6  : "NOM",},
+                            "colour_rec_erdon" : {-1 : "fitOrder=1, symmAfterFit=1",
+                                     1  : "NOM",
+                                     2  : "NOM",
+                                     3  : "NOM",
+                                     5  : "NOM",
+                                     6  : "NOM",
+                                     7  : "NOM",},
+                            "ds" : {-1 : "fitOrder=1, symmAfterFit=1",
+                                     2  : "NOM",
+                                     3  : "NOM",
+                                     4  : "NOM",
+                                     7  : "NOM",},
+    },
 }
 
 varList['Lep1Lep2_DPhi'] = {
     #'xaxis'       : '\\Delta \\varphi(\\ell_{1}, \\ell_{2}) (rad)',
-    'xaxis'       : "#Delta#it{#varphi}(#it{e}^{#pm}, #it{#mu}^{#mp})/#it{#pi} (adim.)",
+    # 'xaxis'       : "#Delta#it{#varphi}(#it{e}^{#pm}, #it{#mu}^{#mp})/#it{#pi} (adim.)",
+    'xaxis'       : "#Delta#it{#varphi}(#it{e}^{#pm}, #it{#mu}^{#mp})/#it{#pi}",
     'printname'   : "$\\deltaPhiVar/ \\pi$",
     'printnamenodim':"$\\deltaPhiVar/ \\pi$",
     'mathprintname': "\\deltaPhiVar/ \\pi",
     'yaxis_particle'       : "d#sigma/d(#Delta#it{#varphi}(#it{e}^{#pm}, #it{#mu}^{#mp})/#it{#pi}) (pb)",
-    'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(#Delta#it{#varphi}(#it{e}^{#pm}, #it{#mu}^{#mp})/#it{#pi}) (adim.)',
-    'yaxisfidbin' : '(1/#sigma_{fid.})d#sigma/d(#Delta#it{#varphi}(#it{e}^{#pm}, #it{#mu}^{#mp})/#it{#pi}) (adim.)',
+    # 'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(#Delta#it{#varphi}(#it{e}^{#pm}, #it{#mu}^{#mp})/#it{#pi}) (adim.)',
+    # 'yaxisfidbin' : '(1/#sigma_{fid.})d#sigma/d(#Delta#it{#varphi}(#it{e}^{#pm}, #it{#mu}^{#mp})/#it{#pi}) (adim.)',
+    'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(#Delta#it{#varphi}(#it{e}^{#pm}, #it{#mu}^{#mp})/#it{#pi})',
+    'yaxisfidbin' : '(1/#sigma_{fid.})d#sigma/d(#Delta#it{#varphi}(#it{e}^{#pm}, #it{#mu}^{#mp})/#it{#pi})',
     'yaxisnorm'   : 'd#sigma/d(#Delta#it{#varphi}(#it{e}^{#pm}, #it{#mu}^{#mp})/#it{#pi}) (pb)',
-    'yaxis_unc'   : 'Relative uncertainty (adim.)',
-    #'bins_particle'  : [0., .25, .50, 0.75, 1.0],                        # usado en drafts, en nota, etc. (4 bins)
-    #'bins_detector' : [0., .125, .25, .375, .50, .625, .75, .875, 1.0], # usado en drafts, en nota, etc. (4 bins)
-    #'bins_particle'  : [0., .75, 1.5, 2.25, r.TMath.Pi()],
-    #'bins_detector' : [0., .35, .85, 1.25, 1.65, 2.05, 2.45, 2.85, r.TMath.Pi()],
-
-    #'bins_particle'  : [0., .2, .4, .6, .8, 1.0],                        # propuesta (5 bins)
-    #'bins_detector' : [0., 0.1, .2, 0.3, 0.4, 0.5, .6, 0.7, 0.8, 0.9, 1.0], # propuesta (5 bins)
-
+    # 'yaxis_unc'   : 'Relative uncertainty (adim.)',
+    'yaxis_unc'   : 'Relative uncertainty',
     'bins_particle'  : [0., .17, .33, .5, .67, .83, 1.0],                        # propuesta (6 bins)
     'bins_detector' : [0., 0.083, .17, 0.25, 0.33, 0.417, .5, 0.583, 0.67, 0.75, 0.83, 0.917, 1.0], # propuesta (6 bins)
 
-    #'bins_particle'  : [0., .14, .29, .42, .57, .71, .86, 1.0],                        # propuesta (7 bins)
-    #'bins_detector' : [0., 0.07, .14, 0.21, 0.29, 0.36, .43, 0.5, 0.57, .64, 0.71, .79, 0.86, 0.93, 1.0], # propuesta (7 bins)
-
-    #'bins_particle'  : [0., .125, .25, .375, .50, .625, .75, .875, 1.0],                        # propuesta (8 bins)
-    #'bins_detector' : [0., 0.0625, .125, 0.1875, 0.25, 0.3125, .375, 0.4375, 0.50, 0.5625, 0.625, 0.6875, 0.75, 0.8125, 0.875, 0.9375, 1.0], # propuesta (8 bins)
-
-    #'bins_particle'  : [0., .11, .22, .33, .44, .56, .67, .78, .89, 1.0],                        # propuesta (9 bins)
-    #'bins_detector' : [0., 0.056, .11, 0.17, 0.22, 0.28, .33, 0.39, 0.44, 0.5, 0.56, .61, .67, .72, .78, .83, .89, .94, 1.0], # propuesta (9 bins)
-
-    #'bins_particle'  : [0., .1, .2, .3, .4, .5, .6, .7, .8, .9, 1.0],                        # propuesta (10 bins)
-    #'bins_detector' : [0., 0.05, .1, 0.15, 0.2, 0.25, .3, 0.35, 0.4, 0.45, 0.5, 0.55, .6, .65, .7, .75, .8, .85, .9, .95, 1.0], # propuesta (10 bins)
+#    'bins_particle' : [0., .17, .33, .5, .67, .83, 1.0],                        # propuesta (6 bins)
+#    'bins_detector' : [0., .17, .33, .5, .67, .83, 1.0], # propuesta (6 bins)
 
     "var_detector"  : 'Lep1Lep2_DPhi',
     'var_response'  : 'Lep1Lep2_DPhi',
@@ -641,7 +991,11 @@ varList['Lep1Lep2_DPhi'] = {
     "legpos_particle"   : (.43, .255, .63, .04),
     'legpos_detectoras':"TL",
     'legpos_particleas': "TL",
-    'legpos_particlefidbin':"BC",
+    # 'legpos_particlefidbin': (.65, .45, .8, .1),
+#    'legpos_particlefidbin': (.63, .45, .78, .1),
+    'legpos_particlefidbin': (.51, .5, .78, .05),
+    # 'legpos_particlefidbin': (.63, .88, .78, .53),
+    #'legpos_particlefidbin':"BC",
     'legpos_particlefidbinunc': "TC",
     "legpos_particleunc"  : "TL",
     'resptxtsize' : 2,
@@ -655,7 +1009,8 @@ varList['Lep1Lep2_DPhi'] = {
     "yaxismax_particlefid" : 0.4,
     "yaxismax_particlefidbinunc" : 0.5,
     #"yaxismax_particlefidbinunc" : 0.35,
-    "yaxismax_particlefidbin" : 1.7,
+#    "yaxismax_particlefidbin" : 1.6,
+    "yaxismax_particlefidbin" : 1.55,
     "yaxismax_unf" : 1,
     #'legpos_particlebin':(.18, .75, .36, .52),
     'legpos_particlebin': (.35, 0.58950, .585, .9),
@@ -819,7 +1174,8 @@ varList['Lep1Lep2_DPhi'] = {
 #varList['DilepPt'] = {
     #'xaxis'       : '#it{p}_{T} (#it{e}^{#pm}, #it{#mu}^{#mp}) (GeV)',
     #'yaxis_particle'       : 'd#sigma/d(#it{p}_{T} (#it{e}^{#pm}, #it{#mu}^{#mp})) (pb)',
-    #'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(#it{p}_{T} (#it{e}^{#pm}, #it{#mu}^{#mp})) (adim.)',
+    # #'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(#it{p}_{T} (#it{e}^{#pm}, #it{#mu}^{#mp})) (adim.)',
+    #'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(#it{p}_{T} (#it{e}^{#pm}, #it{#mu}^{#mp}))',
     #'yaxisfidbin' : '(1/#sigma_{fid.})d#sigma/d(#it{p}_{T} (#it{e}^{#pm}, #it{#mu}^{#mp})) (1/GeV)',
     #'yaxisnorm'   : 'd#sigma/d(#it{p}_{T} (#it{e}^{#pm}, #it{#mu}^{#mp})) (pb/GeV)',
     #'bins_particle'  : [0, 40, 70, 100, 150, 175, 200],
@@ -1242,6 +1598,36 @@ UncsColourMap = {
 }
 UncsColourMap["colour"] = UncsColourMap["colour_rec"]
 
+
+UncGroupsColourMap = {
+    'btag'                : r.TColor.GetColor("#b2df8a"),
+    'mc_stat'             : r.kYellow-4,
+    'mistag'              : r.kYellow-2,
+    'pdf'                 : r.kYellow-12,
+    'elec'                : r.kGray+7,
+    'lumi'                : r.kGray+12,
+    'muon'                : r.kBlue+5,
+    'pileup'              : r.TColor.GetColor("#fb9a99"),
+    'prefiring'           : r.kGreen+1,
+    'jes'                 : r.kPink+1,
+    'jer'                 : r.TColor.GetColor("#1f77b4"),
+    'trigger'             : r.kOrange-6,
+    'isr'                 : r.TColor.GetColor("#cab2d6"),
+    'fsr'                 : r.kGray+2,
+    'toppt'               : r.kPink-5,
+    'ds'                  : r.kPink-5,
+    'ue'                  : r.kTeal-7,
+    'matching'            : r.kTeal,
+    'ttbar_scales'        : r.kPink+4,
+    'tw_scales'           : r.kGreen-4,
+    'colour'              : r.kViolet-2,
+    'ttbar_norm'          : r.kBlue,
+    'vvttv_norm'          : r.kAzure-9,
+    'nonworz_norm'        : r.kMagenta-4,
+    'dy_norm'             : r.kMagenta,
+    'mtop'                : r.kMagenta-3,
+}
+
 ColorMapList = [
     r.TColor.GetColor("#a6cee3"),
     r.TColor.GetColor("#1f77b4"),
@@ -1286,6 +1672,7 @@ SysNameTranslator = {
     'fit'                 : "Fit",
     'asimov'              : "Asimov",
     'Nominal'             : "Nominal",
+    'btag'                : "B-tag.",
     'btagging_corr'       : "B-tag.",
     'btagging_2016'       : "B-tag. (16)",
     'btagging_2017'       : "B-tag. (17)",
@@ -1293,6 +1680,7 @@ SysNameTranslator = {
     "lumi_2016"           : "Lumi. uncorr. (16)",
     "lumi_2017"           : "Lumi. uncorr. (17)",
     "lumi_2018"           : "Lumi. uncorr. (18)",
+    "lumi"                : "Luminosity",
     'mistagging_corr'     : "Mistag.",
     'mistagging_2016'     : "Mistag. (16)",
     'mistagging_2017'     : "Mistag. (17)",
@@ -1302,6 +1690,7 @@ SysNameTranslator = {
     'muonen_2018'         : "Muon en. corr. (18)",
     'elecidsf'            : "Electron ID eff.",
     'elecrecosf'          : "Electron reco. eff.",
+    "elec"                : "Electron effs.",
     'muonidsf_stat_2016'  : "Muon ID eff. (16, stat.)",
     'muonidsf_stat_2017'  : "Muon ID eff. (17, stat.)",
     'muonidsf_stat_2018'  : "Muon ID eff. (18, stat.)",
@@ -1335,6 +1724,7 @@ SysNameTranslator = {
     'jes_ec2_2017'        : "JES",
     'jes_ec2_2018'        : "JES",
     'jes_absolute'        : "JES",
+    'jer'                 : "JER",
     'jer_2016'            : "JER (16)",
     'jer_2017'            : "JER (17)",
     'jer_2018'            : "JER (18)",
@@ -1345,6 +1735,7 @@ SysNameTranslator = {
     'isr_tw'              : "ISR (tW)",
     'fsr_ttbar'           : "FSR (t#bar{t})",
     'fsr_tw'              : "FSR (tW)",
+    "fsr"                 : "FSR",
     'topptrew'            : "Top p_{T} rew.",
     'ue'                  : "UE",
     'ttbar_matching'      : "ME/PS matching (t#bar{t})",
@@ -1356,8 +1747,14 @@ SysNameTranslator = {
     'nonworz_norm'        : "Non-W/Z norm.",
     'dy_norm'             : "DY norm.",
     'mtop'                : "Top mass",
+    "pdfhessian"          : "PDF + #alpha_{S}",
+    "mc_stat"             : "MC stat.",
 }
-SysNameTranslator["colour"] = SysNameTranslator["colour_rec"]
+SysNameTranslator["colour"]   = SysNameTranslator["colour_rec"]
+SysNameTranslator["matching"] = SysNameTranslator["ttbar_matching"]
+SysNameTranslator["pdf"]      = SysNameTranslator["pdfhessian"]
+SysNameTranslator["toppt"]    = SysNameTranslator["topptrew"]
+SysNameTranslator["muon"]     = "Muon efficiencies"
 
 # LaTeX puro (tablas)
 PrintSysNameTranslator = {
@@ -1440,6 +1837,9 @@ PrintSysNameTranslator = {
     'ttbar_scales'        : "\\ttbar $\\mu_{R}$/$\\mu_{F}$",
     'tw_scales'           : "\\tw $\\mu_{R}$/$\\mu_{F}$",
     'colour_rec'          : "Colour rec.",
+    'colour_rec_cr1'      : "Colour rec. (CR1)",
+    'colour_rec_cr2'      : "Colour rec. (CR2)",
+    'colour_rec_erdon'    : "Colour rec. (MPI with ERD on)",
 }
 
 
@@ -1657,3 +2057,65 @@ coloursForDiffWithCombine = {
     9    : r.kOrange - 8,
     10   : r.kOrange - 9,
 }
+
+coloursForToys = {
+    0    : r.kOrange +10,
+    1    : r.kOrange,
+    2    : r.kGreen,
+    3    : r.kGreen + 3,
+    4    : r.kAzure,
+    5    : r.kViolet,
+    6    : r.kViolet + 10,
+    7    : r.kPink + 6,
+    8    : r.kRed - 4,
+    9    : r.kOrange - 8,
+}
+
+# individual_list = ['fsr','pileup','dy_norm','colour','jes','matching','ttbar_norm','elec','nonworz_norm','btag','ue','toppt','tw_scales',
+#                    'vvttv_norm','mc_stat','isr','ttbar_scales','lumi','pdf','mistag','ds','jer','trigger','prefiring','muon','mtop']
+
+individual_list = ['ttbar_scales','btag','jes','ttbar_norm','toppt','matching','mtop','elec','pileup','lumi','colour','dy_norm','mc_stat',
+                   'vvttv_norm','tw_scales','ue','isr','jer','nonworz_norm','fsr','ds','pdf','mistag','trigger','prefiring','muon']
+
+global_list     = ['systematics']
+
+markersdict = {"tru"                : 2,
+               "tru_DS"             : 4,
+               "tru_herwig"         : 26,
+               "tru_aMC_dr"         : 32,
+               "tru_aMC_dr2"        : 24,
+               "tru_aMC_ds"         : 25,
+               "tru_aMC_ds_runn"    : 28,
+               "tru_aMC_ds_IS"      : 30,
+               "tru_aMC_ds_IS_runn" : 5,
+            #    "tru"                : 86,
+            #    "tru_DS"             : 88,
+            #    "tru_herwig"         : 89,
+            #    "tru_aMC_dr"         : 90,
+            #    "tru_aMC_dr2"        : 91,
+            #    "tru_aMC_ds"         : 93,
+            #    "tru_aMC_ds_runn"    : 95,
+            #    "tru_aMC_ds_IS"      : 92,
+            #    "tru_aMC_ds_IS_runn" : 94,
+}
+
+spacingdict = {"tru"                : +0.,
+               "tru_DS"             : +0.3,
+               "tru_herwig"         : -0.3,
+               "tru_aMC_dr"         : -0.6,
+               "tru_aMC_dr2"        : -0.9,
+               "tru_aMC_ds"         : +0.6,
+               "tru_aMC_ds_runn"    : +0.9,
+               "tru_aMC_ds_IS"      : +0.8,
+               "tru_aMC_ds_IS_runn" : +0.9,
+}
+
+comparisonColourDict = {"tru"                : r.kRed,
+                        "tru_DS"             : r.kGreen+3,
+                        "tru_herwig"         : r.kMagenta,
+                        "tru_aMC_dr"         : r.kAzure,
+                        "tru_aMC_dr2"        : r.kAzure - 1,
+                        "tru_aMC_ds"         : r.kCyan,
+                        "tru_aMC_ds_runn"    : r.kPink - 9,
+                        "tru_aMC_ds_IS"      : r.kViolet - 4,
+                        "tru_aMC_ds_IS_runn" : r.kViolet - 1}
