@@ -13,7 +13,7 @@ import tdrstyle, CMS_lumi
 import errorPropagator as ep
 
 
-combinecommscaff = 'combine -M FitDiagnostics --out {outdir} {infile} {asimov} --saveWorkspace -n {y}_{var} --saveShapes --saveWithUncertainties --robustFit 1 --cminDefaultMinimizerStrategy 0 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000'
+combinecommscaff = 'combine -M FitDiagnostics --out {outdir} {infile} {asimov} --saveWorkspace -n {y}_{var} --saveShapes --saveWithUncertainties --robustFit 1 --cminDefaultMinimizerStrategy 0 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --robustHesse 1'
 
 rs = random.RandomState(34)
 
@@ -311,8 +311,8 @@ def makeClosure(task):
     for iT in range(ntoys):
         htoys[iT].SetMarkerStyle(r.kFullCircle)
 #        htoys[iT].SetMarkerSize(0.5)
-        htoys[iT].SetMarkerColor(vl.coloursForDiffWithCombine[iT if iT <= 10 else iT - 10])
-        htoys[iT].SetLineColor(vl.coloursForDiffWithCombine[iT if iT <= 10 else iT - 10])
+        htoys[iT].SetMarkerColor(vl.coloursForToys[iT if iT <= 10 else iT - 10])
+        htoys[iT].SetLineColor(vl.coloursForToys[iT if iT <= 10 else iT - 10])
     
     #nominal_withErrors[0].SetFillColorAlpha(r.kBlue, 0.35)
     #nominal_withErrors[0].SetLineColor(0)

@@ -477,7 +477,7 @@ def CalculateAndPlotResponseMatrices(tsk):
         # if key == "": break
     foutput.Close()
 
-    SaveAcceptance(hParticle.Integral(), tmpoutpath)
+    #SaveAcceptance(hParticle.Integral(), tmpoutpath)
     SaveAllConditionNumbers(condnumdict, tmpoutpath)
     return
 
@@ -535,7 +535,7 @@ if __name__=="__main__":
             raise RuntimeError("FATAL: the variable requested is not in the provided input folder.")
 
         for iV in thevars:
-            if "plots" in iV or "table" in iV or "control" in iV: continue
+            if any( [el in iV for el in vl.vetolist] ): continue
             tasks.append( (inpath, iY, iV) )
 
     if nthreads > 1:

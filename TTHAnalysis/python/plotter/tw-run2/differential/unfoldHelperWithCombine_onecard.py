@@ -20,7 +20,10 @@ import errorPropagator as ep
 #combinecommscaff = 'combine  -M FitDiagnostics --out {outdir} {infile} --saveWorkspace -n {y}_{var} --saveShapes --robustHesse 1 --cminDefaultMinimizerStrategy 0 --robustFit 1 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --cminPreFit 3'
 
 # Identico inclusiva
-combinecommscaff = 'combine  -M FitDiagnostics --out {outdir} {infile} {asimov} --saveWorkspace -n {y}_{var} --saveShapes --saveWithUncertainties --robustFit 1 --cminDefaultMinimizerStrategy 0 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000'
+#combinecommscaff = 'combine -M FitDiagnostics --out {outdir} {infile} {asimov} --saveWorkspace -n {y}_{var} --saveShapes --saveWithUncertainties --robustFit 1 --cminDefaultMinimizerStrategy 0 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000'
+
+combinecommscaff = 'combine -M FitDiagnostics --out {outdir} {infile} {asimov} --saveWorkspace -n {y}_{var} --saveShapes --saveWithUncertainties --robustFit 1 --cminDefaultMinimizerStrategy 0 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --robustHesse 1 -m 125'
+#combinecommscaff = 'combine -M FitDiagnostics --out {outdir} {infile} {asimov} --saveWorkspace -n {y}_{var} --saveShapes --saveWithUncertainties --robustFit 1 --cminDefaultMinimizerStrategy 0 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 -m 125'
 
 #combinecommscaff = 'combine  -M FitDiagnostics --out {outdir} {infile} --saveWorkspace -n {y}_{var} --saveShapes --cminDefaultMinimizerStrategy 0 --robustFit 1 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --cminPreFit 3'
 #combinecommscaff = 'combine  -M FitDiagnostics --out {outdir} {infile} --saveWorkspace -n {y}_{var} --saveShapes --robustHesse 1 --stepSize 0.001 --cminDefaultMinimizerStrategy 1 --robustFit 1 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=50000000 --setRobustFitStrategy 1 --setRobustFitTolerance 0.0001'
@@ -277,28 +280,101 @@ def drawPreAndPostFit(thedict, inpath, iY, iV, typ):
     return
 
 
-def drawParticleResults(theres, theuncs, thecov, outdir, year, var, pretend):
+def giveMeOneComparison(orighist, name, scalevalue, iV):
+    outH = deepcopy(orighist.Clone(name if vl.spacingdict[name] == 0. else name + "tmp"))
+    outH.SetLineWidth(0)
+    outH.Scale(scalevalue)
+    outH.SetMarkerSize(1)
+    outH.SetMarkerColor(vl.comparisonColourDict[name])
+    outH.SetMarkerStyle(vl.markersdict[name])
+    
+    if vl.spacingdict[name] != 0.:
+        goodoutH = deepcopy(outH.Clone(name))
+        smallestw = 9999
+        for i in range(1, len(vl.varList[iV]["bins_particle"])):
+            thedif = vl.varList[iV]["bins_particle"][i] - vl.varList[iV]["bins_particle"][i - 1]
+            if thedif < smallestw:
+                smallestw = thedif
+
+        newbins = array("d", [el + vl.spacingdict[name]*smallestw/2 for el in vl.varList[iV]["bins_particle"]])
+        goodoutH.SetBins(len(vl.varList[iV]["bins_particle"]) - 1, newbins)
+        for iB in range(1, goodoutH.GetNbinsX() + 1):
+            goodoutH.SetBinContent(iB, outH.GetBinContent(iB))
+            goodoutH.SetBinError(iB, outH.GetBinError(iB))
+        del outH
+        return goodoutH
+    else:
+        return outH
+
+
+def drawParticleResultsv3(theres, theuncs, thecov, outdir, year, var, pretend):
     thelumi    = vl.TotalLumi if year == "run2" else vl.LumiDict[int(year)]
     scaleval   = 1/thelumi/1000 if vl.doxsec else 1
     plotspath  = outdir + "/" + iY + "/particleplots"
     folderpath = outdir + "/" + iY + "/" + var
 
+    addRelUncs = False
+    if os.path.isdir(folderpath + "/sigextr_fit_combine/relativeuncs_fd"):
+        print "\t- Found relative uncertainty results. I'll plot them."
+        addRelUncs = True
+        RelUncs, CovMatDict = vl.getInfoForRelUncs(folderpath, year, var)
+        thereldict = RelUncs
+    else:
+        thereldict = {"" : theres}
+
     nominal_withErrors = []
     nominal_withErrors.append(deepcopy(theres.Clone(var + "uncUp")))
     nominal_withErrors.append(deepcopy(theres.Clone(var + "uncDown")))
+    statOnlyList = [deepcopy(nominal_withErrors[0].Clone("statUp")),
+                    deepcopy(nominal_withErrors[1].Clone("statDown"))]
     for iB in range(1, theres.GetNbinsX() + 1):
-        nominal_withErrors[0].SetBinError(iB, theuncs.GetBinError(iB))
-        nominal_withErrors[1].SetBinError(iB, theuncs.GetBinContent(iB))
+        nominal_withErrors[0].SetBinError(iB, theuncs.GetBinError(iB))   # Up
+        nominal_withErrors[1].SetBinError(iB, theuncs.GetBinContent(iB) )# Down
+        if addRelUncs:
+            #theres.SetBinError(iB, vl.mean([gloRelUncs[iB]["inc_stat"]["up"], gloRelUncs[iB]["inc_stat"]["down"]]) / gloRelUncs[iB]["munom"] * theres.GetBinContent(iB))
+            theres.SetBinError(iB, 0.)
+            statOnlyList[0].SetBinError(iB, RelUncs["statUp"].GetBinError(iB))
+            statOnlyList[1].SetBinError(iB, RelUncs["statDown"].GetBinError(iB))
+            #print statOnlyList[0].GetBinContent(iB), statOnlyList[0].GetBinError(iB), statOnlyList[1].GetBinError(iB)
+
+    #for key in thereldict:
+        #print "\n", key
+        #for iB in range(1, theres.GetNbinsX() + 1):
+            #print thereldict[key].GetBinContent(iB), thereldict[key].GetBinError(iB)
 
 
+    theres.SetMarkerStyle(r.kFullCircle)
+    theres.SetLineColor(r.kBlack)
+    theres.SetMarkerSize(1)
+    # nominal_withErrors[0].SetFillColorAlpha(r.kBlue, 0.35)
+    #nominal_withErrors[0].SetFillColorAlpha(r.kOrange, 0.35)
+    nominal_withErrors[0].SetFillColorAlpha(r.kOrange, 1.0)
+    nominal_withErrors[0].SetLineColor(0)
+    nominal_withErrors[0].SetFillStyle(1001)
+
+    #statOnlyList[0].SetFillColorAlpha(r.kGray + 1, 0.35)
+    statOnlyList[0].SetFillColorAlpha(r.kGray + 1, 1.0)
+    statOnlyList[0].SetLineColor(0)
+    statOnlyList[0].SetFillStyle(1001)
+
+    #### Store output
     savetfile = r.TFile(folderpath + "/particleOutput.root", "recreate")
     deepcopy(theres.Clone(var)).Write()
     deepcopy(thecov.Clone("CovMat")).Write()
-    nom0 = deepcopy(nominal_withErrors[0].Clone("nom0"))
-    nom1 = deepcopy(nominal_withErrors[1].Clone("nom1"))
-    nom0.Write()
-    nom1.Write()
+    deepcopy(nominal_withErrors[0].Clone("nom0")).Write()
+    deepcopy(nominal_withErrors[1].Clone("nom1")).Write()
+    #deepcopy(statOnlyList[0].Clone(var + "_" + statOnlyList[0].GetName())).Write()
+    #deepcopy(statOnlyList[1].Clone(var + "_" + statOnlyList[1].GetName())).Write()
+
+    if addRelUncs:
+        for key in thereldict:
+            if key == "": continue
+            deepcopy(thereldict[key].Clone(var + "_" + thereldict[key].GetName())).Write()
+        for key in CovMatDict:
+            CovMatDict[key].Write()
     savetfile.Close()
+
+
 
     plot                 = bp.beautifulUnfPlot(var, var)
     plot.doRatio         = True
@@ -308,12 +384,172 @@ def drawParticleResults(theres, theuncs, thecov, outdir, year, var, pretend):
     plot.plotspath       = plotspath
     plot.displayedLumi   = vl.TotalLumi if year == "run2" else vl.LumiDict[int(year)]
 
+
+    if "yaxisuplimitunf" in vl.varList[var]:
+        plot.yaxisuplimit = vl.varList[var]["yaxisuplimitunf"]
+
+    tex.saveLaTeXfromhisto(theres, var, outdir + "/" + iY + "/tables", errhisto = theuncs, ty = "particle")
+
+    if   "legpos_particle"   in vl.varList[var]:
+        legloc = vl.varList[var]["legpos_particle"]
+    else:
+        legloc = "TR"
+
+    if not os.path.isfile(folderpath + '/particle.root'):
+        raise RuntimeError('The rootfile with the generated information does not exist.')
+    
+    tmptfile = r.TFile.Open(folderpath + '/particle.root')
+
+    tru                = giveMeOneComparison(tmptfile.Get('x_tw'),                         "tru",                scaleval, var)
+    tru_DS             = giveMeOneComparison(tmptfile.Get('x_twds'),                       "tru_DS",             scaleval, var)
+    tru_herwig         = giveMeOneComparison(tmptfile.Get('x_twherwig'),                   "tru_herwig",         scaleval, var)
+    tru_aMC_dr         = giveMeOneComparison(tmptfile.Get('x_twamcatnlo_dr'),              "tru_aMC_dr",         scaleval, var)
+    tru_aMC_dr2        = giveMeOneComparison(tmptfile.Get('x_twamcatnlo_dr2'),             "tru_aMC_dr2",        scaleval, var)
+    tru_aMC_ds         = giveMeOneComparison(tmptfile.Get('x_twamcatnlo_ds'),              "tru_aMC_ds",         scaleval, var)
+    tru_aMC_ds_runn    = giveMeOneComparison(tmptfile.Get('x_twamcatnlo_ds_runningBW'),    "tru_aMC_ds_runn",    scaleval, var)
+    tru_aMC_ds_IS      = giveMeOneComparison(tmptfile.Get('x_twamcatnlo_ds_is'),           "tru_aMC_ds_IS",      scaleval, var)
+    tru_aMC_ds_IS_runn = giveMeOneComparison(tmptfile.Get('x_twamcatnlo_ds_is_runningBW'), "tru_aMC_ds_IS_runn", scaleval, var)
+
+    tmptfile.Close()
+
+    for iH in [tru_aMC_dr, tru_aMC_dr2, tru_aMC_ds, tru_aMC_ds_runn, tru_aMC_ds_IS, tru_aMC_ds_IS_runn]:
+        iH.Scale(0.20054)
+
+    plot.addHisto(nominal_withErrors, 'A2',     'Total unc.',             'F', 'total')
+    plot.addHisto(statOnlyList,       '2,same', 'Stat unc.',              'F', 'stat')
+    plot.addHisto(tru,                'P,same', 'tW PH DR + P8',          'P', 'mc')
+    plot.addHisto(tru_DS,             'P,same', 'tW PH DS + P8',          'P', 'mc')
+    plot.addHisto(tru_herwig,         'P,same', 'tW PH DR + H7',          'P', 'mc')
+    plot.addHisto(tru_aMC_dr,         'P,same', 'tW aMC DR + P8',         'P', 'mc')
+    plot.addHisto(tru_aMC_dr2,        'P,same', 'tW aMC DR2 + P8',        'P', 'mc')
+    plot.addHisto(tru_aMC_ds,         'P,same', 'tW aMC DS + P8',         'P', 'mc')
+    plot.addHisto(tru_aMC_ds_runn,    'P,same', 'tW aMC DS dyn. + P8',    'P', 'mc')
+    # plot.addHisto(tru_aMC_ds_IS,      'P,same', 'tW aMC DS IS + P8',      'P', 'mc')
+    # plot.addHisto(tru_aMC_ds_IS_runn, 'P,same', 'tW aMC DS IS dyn. + P8', 'P', 'mc')
+
+    plot.addHisto(theres,
+                  'P,same{s}'.format(s = ",X0" if "equalbinsunf" in vl.varList[var] else ""),
+                  "Asimov dataset" if vl.asimov else vl.labellegend,
+                  'P,same', 'data', redrawaxis = True)
+    plot.saveCanvasv2(legloc, leg = False)
+    del plot
+
+    plot2 = bp.beautifulUnfPlot(var + 'uncs', var)
+    plot2.displayedLumi   = vl.TotalLumi if year == "run2" else vl.LumiDict[int(year)]
+    plot2.doFit           = True
+    plot2.plotspath       = plotspath
+    plot2.doPreliminary   = vl.doPre
+    plot2.doSupplementary = False
+
+    yaxismax_unf = 2
+    if "yaxismax_unf" in vl.varList[var]:
+        yaxismax_unf = vl.varList[var]["yaxismax_unf"]
+
+    # print thereldict
+
+    if addRelUncs:
+        uncListorig, hincstat, hincsyst, hincmax = ep.drawTheRelUncPlotv2(nominal_withErrors,
+                                                                          thereldict,
+                                                                          plot2,
+                                                                          yaxismax_unf,
+                                                                          doSym = vl.doSym)
+    else:
+        uncListorig, hincstat, hincsyst, hincmax = ep.drawTheRelUncPlot(nominal_withErrors,
+                                                                        thereldict,
+                                                                        plot2,
+                                                                        yaxismax_unf,
+                                                                        doFit = True,
+                                                                        doSym = vl.doSym)
+
+    if   "legpos_particleunc"   in vl.varList[var]:
+        unclegpos = vl.varList[var]["legpos_particleunc"]
+    else:
+        unclegpos = "TR"
+
+    plot2.saveCanvas(unclegpos)
+    del plot2
+    return
+
+
+def drawParticleResults(theres, theuncs, thecov, outdir, year, var, pretend):
+    thelumi    = vl.TotalLumi if year == "run2" else vl.LumiDict[int(year)]
+    scaleval   = 1/thelumi/1000 if vl.doxsec else 1
+    plotspath  = outdir + "/" + iY + "/particleplots"
+    folderpath = outdir + "/" + iY + "/" + var
+
+    addRelUncs = False
+    if os.path.isdir(folderpath + "/sigextr_fit_combine/relativeuncs"):
+        print "\t- Found relative uncertainty results. I'll plot them."
+        addRelUncs = True
+        indRelUncs = {}; gloRelUncs = {}
+        for iB in range(1, theres.GetNbinsX() + 1):
+            indRelUncs[iB] = vl.parseRelUncs(folderpath + "/sigextr_fit_combine/relativeuncs/individual/outputfit_r_tW_{i}.txt".format(i = iB - 1))
+            #indRelUncs[iB] = vl.parseRelUncs(folderpath + "/sigextr_fit_combine/relativeuncs/global/outputfit_r_tW_{i}.txt".format(i = iB - 1))
+            gloRelUncs[iB] = vl.parseRelUncs(folderpath + "/sigextr_fit_combine/relativeuncs/global/outputfit_r_tW_{i}.txt".format(i = iB - 1))
+
+    #print indRelUncs[1], gloRelUncs[1]
+    #print gloRelUncs[1]
+    nominal_withErrors = []
+    nominal_withErrors.append(deepcopy(theres.Clone(var + "uncUp")))
+    nominal_withErrors.append(deepcopy(theres.Clone(var + "uncDown")))
+    statOnlyList = [deepcopy(nominal_withErrors[0].Clone("statUp")),
+                    deepcopy(nominal_withErrors[1].Clone("statDown"))]
+    for iB in range(1, theres.GetNbinsX() + 1):
+        nominal_withErrors[0].SetBinError(iB, theuncs.GetBinError(iB))   # Up
+        nominal_withErrors[1].SetBinError(iB, theuncs.GetBinContent(iB) )# Down
+        if addRelUncs:
+            #theres.SetBinError(iB, vl.mean([gloRelUncs[iB]["inc_stat"]["up"], gloRelUncs[iB]["inc_stat"]["down"]]) / gloRelUncs[iB]["munom"] * theres.GetBinContent(iB))
+            theres.SetBinError(iB, 0.)
+            statOnlyList[0].SetBinError(iB, gloRelUncs[iB]["inc_stat"]["up"]   / gloRelUncs[iB]["munom"] * theres.GetBinContent(iB))
+            statOnlyList[1].SetBinError(iB, gloRelUncs[iB]["inc_stat"]["down"] / gloRelUncs[iB]["munom"] * theres.GetBinContent(iB))
+
+    if addRelUncs:
+        thereldict = vl.getAlternateUncsHistos(theres, indRelUncs, gloRelUncs)
+        for iB in range(1, theres.GetNbinsX() + 1):
+            nominal_withErrors[0].SetBinError(iB, thereldict["totalUp"].  GetBinError(iB))
+            nominal_withErrors[1].SetBinError(iB, thereldict["totalDown"].GetBinError(iB))
+    else:
+        thereldict = {"" : theres}
+
     theres.SetMarkerStyle(r.kFullCircle)
     theres.SetLineColor(r.kBlack)
     theres.SetMarkerSize(1)
-    nominal_withErrors[0].SetFillColorAlpha(r.kBlue, 0.35)
+    # nominal_withErrors[0].SetFillColorAlpha(r.kBlue, 0.35)
+    #nominal_withErrors[0].SetFillColorAlpha(r.kOrange, 0.35)
+    nominal_withErrors[0].SetFillColorAlpha(r.kOrange, 1.0)
     nominal_withErrors[0].SetLineColor(0)
     nominal_withErrors[0].SetFillStyle(1001)
+
+    #statOnlyList[0].SetFillColorAlpha(r.kGray + 1, 0.35)
+    statOnlyList[0].SetFillColorAlpha(r.kGray + 1, 1.0)
+    statOnlyList[0].SetLineColor(0)
+    statOnlyList[0].SetFillStyle(1001)
+
+    #### Store output
+    savetfile = r.TFile(folderpath + "/particleOutput.root", "recreate")
+    deepcopy(theres.Clone(var)).Write()
+    deepcopy(thecov.Clone("CovMat")).Write()
+    deepcopy(nominal_withErrors[0].Clone("nom0")).Write()
+    deepcopy(nominal_withErrors[1].Clone("nom1")).Write()
+    #deepcopy(statOnlyList[0].Clone(var + "_" + statOnlyList[0].GetName())).Write()
+    #deepcopy(statOnlyList[1].Clone(var + "_" + statOnlyList[1].GetName())).Write()
+
+    if addRelUncs:
+        for key in thereldict:
+            if key == "": continue
+            deepcopy(thereldict[key].Clone(var + "_" + thereldict[key].GetName())).Write()
+    savetfile.Close()
+
+
+
+    plot                 = bp.beautifulUnfPlot(var, var)
+    plot.doRatio         = True
+    plot.doFit           = True
+    plot.doPreliminary   = vl.doPre
+    plot.doSupplementary = False
+    plot.plotspath       = plotspath
+    plot.displayedLumi   = vl.TotalLumi if year == "run2" else vl.LumiDict[int(year)]
+
 
     if "yaxisuplimitunf" in vl.varList[var]:
         plot.yaxisuplimit = vl.varList[var]["yaxisuplimitunf"]
@@ -335,41 +571,18 @@ def drawParticleResults(theres, theuncs, thecov, outdir, year, var, pretend):
     tru.SetLineWidth(2)
     tru.SetLineColor(bp.colorMap[0])
 
-    #### TODO: anyadir DS, amcatnlo, y otros modelos de amcatnlo
 
-    #sys.exit()
-    #if not os.path.isfile('temp/{var}_/ClosureTest_aMCatNLO_{var}.root'.format(var = var)):
-        #raise RuntimeError('The rootfile with the generated information from an aMCatNLO sample does not exist.')
-    #tmptfile2 = r.TFile.Open('temp/{var}_/ClosureTest_aMCatNLO_{var}.root'.format(var = var))
-    #aMCatNLO = deepcopy(tmptfile2.Get('tW').Clone('aMCatNLO'))
-    #tmptfile2.Close()
-    #aMCatNLO.SetLineWidth(2)
-    #aMCatNLO.SetLineColor(r.kAzure)
-    #aMCatNLO.SetLineStyle(2)
-
-    ##print "tW aMCatNLO DR", aMCatNLO.GetBinContent(1)
-
-    #if not os.path.isfile('temp/{var}_/ClosureTest_DS_{var}.root'.format(var = var)):
-        #raise RuntimeError('The rootfile with the generated information with the DS variation does not exist.')
-    #tmptfile3 = r.TFile.Open('temp/{var}_/ClosureTest_DS_{var}.root'.format(var = var))
-    #hDS = deepcopy(tmptfile3.Get('tW').Clone('hDS'))
-    #tmptfile3.Close()
-    #hDS.SetLineWidth(2)
-    #hDS.SetLineColor(r.kGreen)
-
-    ##print "tW DS", hDS.GetBinContent(1)
-
-    plot.addHisto(nominal_withErrors, 'E2',     'Uncertainty',            'F', 'unc')
-    plot.addHisto(tru,                'L,same', 'tW Powheg DR + P8', 'L', 'mc')
-    #plot.addHisto(hDS,                'L,same', 'tW Powheg DS + P8',  'L', 'mc')
-    #plot.addHisto(aMCatNLO,           'L,same', 'tW aMC@NLO DR + P8', 'L', 'mc')
+    plot.addHisto(nominal_withErrors, 'A2',     'Total unc.',    'F', 'total')
+    plot.addHisto(statOnlyList,       '2,same', 'Stat unc.',     'F', 'stat')
+    plot.addHisto(tru,                'L,same', 'tW PH DR + P8', 'L', 'mc')
+    #plot.addHisto(hDS,                'L,same', 'tW PH DS + P8', 'L', 'mc')
+    #plot.addHisto(aMCatNLO,           'L,same', 'tW aMC DR + P8','L', 'mc')
 
     plot.addHisto(theres,
                   'P,same{s}'.format(s = ",X0" if "equalbinsunf" in vl.varList[var] else ""),
                   "Asimov dataset" if vl.asimov else vl.labellegend,
-                  'PE{s}'.format(s = "L" if not "equalbinsunf" in vl.varList[var] else ""),
-                  'data')
-    plot.saveCanvas(legloc)
+                  'P,same', 'data')
+    plot.saveCanvasv2(legloc)
     del plot
 
     plot2 = bp.beautifulUnfPlot(var + 'uncs', var)
@@ -379,16 +592,23 @@ def drawParticleResults(theres, theuncs, thecov, outdir, year, var, pretend):
     plot2.doPreliminary   = vl.doPre
     plot2.doSupplementary = False
 
-    yaxismax_detectorunc = 2
-    if "yaxismax_detectorunc" in vl.varList[var]:
-        yaxismax_detectorunc = vl.varList[var]["yaxismax_detectorunc"]
+    yaxismax_unf = 2
+    if "yaxismax_unf" in vl.varList[var]:
+        yaxismax_unf = vl.varList[var]["yaxismax_unf"]
 
-    uncListorig, hincstat, hincsyst, hincmax = ep.drawTheRelUncPlot(nominal_withErrors,
-                                                                    {"" : theres},
-                                                                    plot2,
-                                                                    yaxismax_detectorunc,
-                                                                    doFit = True,
-                                                                    doSym = vl.doSym)
+    if addRelUncs:
+        uncListorig, hincstat, hincsyst, hincmax = ep.drawTheRelUncPlotv2(nominal_withErrors,
+                                                                          thereldict,
+                                                                          plot2,
+                                                                          yaxismax_unf,
+                                                                          doSym = vl.doSym)
+    else:
+        uncListorig, hincstat, hincsyst, hincmax = ep.drawTheRelUncPlot(nominal_withErrors,
+                                                                        thereldict,
+                                                                        plot2,
+                                                                        yaxismax_unf,
+                                                                        doFit = True,
+                                                                        doSym = vl.doSym)
 
     if   "legpos_particleunc"   in vl.varList[var]:
         unclegpos = vl.varList[var]["legpos_particleunc"]
@@ -410,14 +630,14 @@ def makeFit(task):
     nparticlebins   = len(bins_particle) - 1
 
 
+    fitoutpath = inpath + "/" + year + "/" + varName + "/sigextr_fit_combine/fitdiagnostics"
     #if doControl:
         #controlpath = "../../controlReg" + vl.diffControlReg
         #if not os.path.isdir(inpath + "/" + year + "/" + varName + "/sigextr_fit_combine/" + controlpath):
             #raise RuntimeError("FATAL: no valid folder found to add the control region information. Expected directory: {p}".format(p = inpath + "/" + year + "/" + varName + "/sigextr_fit_combine/" + controlpath))
 
         #cardList.append( "controlReg=" + controlpath + "/controlReg.txt" )
-
-
+    #""" 
     physicsModel = 'text2workspace.py -m 125 -P HiggsAnalysis.CombinedLimit.PhysicsModel:multiSignalModel '
     
     for idx in range(nparticlebins):
@@ -439,7 +659,6 @@ def makeFit(task):
         if outstat:
             raise RuntimeError("FATAL: text2workspace.py failed to execute for variable {v} of year {y}.".format(v = varName, y = year))
 
-    fitoutpath = inpath + "/" + year + "/" + varName + "/sigextr_fit_combine/fitdiagnostics"
 
     asimov_ = "--setParameters "
     for idx in range(nparticlebins - 1):
@@ -459,30 +678,33 @@ def makeFit(task):
 
     if verbose:
         print "Combine command:", combinecomm, "\n"
-
-    #sys.exit()
+    #"""
+    # #sys.exit()
     if not pretend:
+        #"""
         outstat = os.system(combinecomm)
         if outstat:
             raise RuntimeError("FATAL: combine failed to execute for variable {v} of year {y}.".format(v = varName, y = year))
+    
 
     if not pretend:
-        #sys.exit()
-        if not os.path.isfile('higgsCombine{y}_{var}.FitDiagnostics.mH120.root'.format(y = year, var = varName)):
+        # ######sys.exit()
+        
+        if not os.path.isfile('higgsCombine{y}_{var}.FitDiagnostics.mH125.root'.format(y = year, var = varName)):
             raise RuntimeError("FATAL: no valid higgsCombine file found for variable {v} of year {y}.".format(v = varName, y = year))
         else:
-            os.system("mv ./higgsCombine{y}_{var}.FitDiagnostics.mH120.root {fdir}".format(y = year, var = varName, fdir = fitoutpath + "/"))
+            os.system("mv ./higgsCombine{y}_{var}.FitDiagnostics.mH125.root {fdir}".format(y = year, var = varName, fdir = fitoutpath + "/"))
 
-
+       #""" 
         # Ahora recogemos la virutilla
         if not os.path.isfile(fitoutpath + '/fitDiagnostics{y}_{var}.root'.format(y = year, var = varName)):
             raise RuntimeError("FATAL: no valid fitDiagnostics file found for variable {v} of year {y}. Maybe there was a problem with the fit.\n".format(v = varName, y = year))
 
-        if not os.path.isfile(fitoutpath + "/higgsCombine{y}_{var}.FitDiagnostics.mH120.root".format(y = year, var = varName)):
+        if not os.path.isfile(fitoutpath + "/higgsCombine{y}_{var}.FitDiagnostics.mH125.root".format(y = year, var = varName)):
             raise RuntimeError("FATAL: no valid higgsCombine file found for variable {v} of year {y}. Maybe there was a problem with the fit, and/or moving the file to its corresponding folder.\n".format(v = varName, y = year))
 
         tfile     = r.TFile.Open(fitoutpath + '/fitDiagnostics{y}_{var}.root'.format(y = year, var = varName))
-        tfile2    = r.TFile.Open(fitoutpath + "/higgsCombine{y}_{var}.FitDiagnostics.mH120.root".format(y = year, var = varName))
+        tfile2    = r.TFile.Open(fitoutpath + "/higgsCombine{y}_{var}.FitDiagnostics.mH125.root".format(y = year, var = varName))
 
         fitsb     = tfile.Get('tree_fit_sb')
         fitsb.GetEntry(0)
@@ -515,9 +737,12 @@ def makeFit(task):
             results[var.GetName()] = [ var.getVal(), var.getErrorLo(), var.getErrorHi(), var.getError() ]
             if count == fitResult.floatParsFinal().getSize(): break
 
+        rawresults = deepcopy(results)
+
         #for el in results:
             #if "r_tW" not in el: continue
-            #print el, "\t", round(results[el][0], 3), "\t", round(results[el][1], 4), "\t", round(results[el][2], 4), "\t", round(results[el][3], 4)
+            ## print el, "\t", round(results[el][0], 3), "\t", round(results[el][1], 4), "\t", round(results[el][2], 4), "\t", round(results[el][3], 4)
+            #print el, "\t", results[el][0], "\t", results[el][1], "\t", results[el][2], "\t", results[el][3]
 
         #sys.exit()
 
@@ -576,6 +801,7 @@ def makeFit(task):
             # The uncertainties here are symmetric...
             outHisto.SetBinContent(i, results['r_tW_%d'%(i-1)][0])
             outHisto.SetBinError  (i, results['r_tW_%d'%(i-1)][3])
+            #outHisto.SetBinError  (i, max(abs(results['r_tW_%d'%(i-1)][1]), abs(results['r_tW_%d'%(i-1)][2])))
 
             # ...and these here are asymm.:
             #uncInfo.SetBinContent(i,   abs(results['r_tW_%d'%(i-1)][1])) # Down
@@ -585,7 +811,7 @@ def makeFit(task):
             uncInfo.SetBinContent(i,   results['r_tW_%d'%(i-1)][3]) # sym
             uncInfo.SetBinError  (i,   results['r_tW_%d'%(i-1)][3]) # sym
             
-            #print i, results['r_tW_%d'%(i-1)][0], results['r_tW_%d'%(i-1)][3], results['r_tW_%d'%(i-1)][1], results['r_tW_%d'%(i-1)][2]
+            print i, results['r_tW_%d'%(i-1)][0], results['r_tW_%d'%(i-1)][3], results['r_tW_%d'%(i-1)][1], results['r_tW_%d'%(i-1)][2]
 
         card.Close()
 
@@ -642,10 +868,13 @@ def makeFit(task):
             drawCovMat(        hCov,        inpath, year, varName)
             #drawPreAndPostFit( prefitdict,  inpath, year, varName, "pre")
             #drawPreAndPostFit( postfitdict, inpath, year, varName, "post")
-            drawParticleResults(outHisto, uncInfo, hCov, inpath, year, varName, pretend)
+            #drawParticleResults(outHisto, uncInfo, hCov, inpath, year, varName, pretend)
+            drawParticleResultsv3(outHisto, uncInfo, hCov, inpath, year, varName, pretend)
 
         #print "\nRESULTS:"
         #for key in results: print key
+
+        saveResultsInTxt(rawresults, fitoutpath)
 
         print '\n> Variable', varName, 'fitted.\n'
         return [year, varName, deepcopy(outHisto), uncInfo, hCov, corrmat]
@@ -653,6 +882,19 @@ def makeFit(task):
         return 0
 
 
+def saveResultsInTxt(thedict, dirpath, outnam = "fitpars"):
+    out = ""
+    for key,el in thedict.iteritems():
+        out += "{n} : {v} : {lo} : {hi} : {err}\n".format(n   = key,
+                                                          v   = el[0],
+                                                          lo  = el[1],
+                                                          hi  = el[2],
+                                                          err = el[3],)
+    f = open(dirpath + "/" + outnam + ".txt", "w")
+    f.write(out)
+    f.close()
+    del f
+    return
 
 
 def saveFinalResults(inpath, theresults):

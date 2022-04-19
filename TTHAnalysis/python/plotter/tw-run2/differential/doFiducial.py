@@ -187,6 +187,9 @@ def calculateNormalisedValues(inpath, iY, iV):
     return allHistos, histoForOnlyBin
 
 
+
+
+
 def PlotParticleFidLevelResults(thedict, inpath, iY, varName, notff):
     nominal_withErrors = ep.propagateHisto(thedict, doSym = vl.doSym)
     plot               = bp.beautifulUnfPlot(varName + "_particlefid", varName)
@@ -328,13 +331,34 @@ def PlotParticleFidBinLevelResults(thedict, inpath, iY, varName, notff):
     print "> Obtaining plots normalised to fiducial cross section and to bin's width for variable " + varName
 
     for key in thedict:
+        print key
         thedict[key].Scale(1, "width")
 
     savetfile2 = r.TFile(inpath + "/" + iY + "/" + varName + "/particlefidbinOutput.root", "recreate")
     for key in thedict: thedict[key].Write()
     savetfile2.Close(); del savetfile2
 
+
+    #addRelUncs = False
+    #if os.path.isdir(folderpath + "/sigextr_fit_combine/relativeuncs"):
+        #print "\t- Found relative uncertainty results. I'll plot them."
+        #addRelUncs = True
+        #indRelUncs = {}; gloRelUncs = {}
+        #for iB in range(1, thedict[""].GetNbinsX() + 1):
+            #indRelUncs[iB] = vl.parseRelUncs(folderpath + "/sigextr_fit_combine/relativeuncs/individual/outputfit_r_tW_{i}.txt".format(i = iB - 1))
+            #gloRelUncs[iB] = vl.parseRelUncs(folderpath + "/sigextr_fit_combine/relativeuncs/global/outputfit_r_tW_{i}.txt".format(i = iB - 1))
+
+
     nominal_withErrors = ep.propagateHisto(thedict, doSym = vl.doSym)
+    #statOnlyList = [deepcopy(nominal_withErrors[0].Clone("statUp")),
+                    #deepcopy(nominal_withErrors[1].Clone("statDown"))]
+    #if addRelUncs:
+        #for iB in range(1, thedict[""].GetNbinsX() + 1):
+            ##theres.SetBinError(iB, vl.mean([gloRelUncs[iB]["inc_stat"]["up"], gloRelUncs[iB]["inc_stat"]["down"]]) / gloRelUncs[iB]["munom"] * theres.GetBinContent(iB))
+            #thedict[""].SetBinError(iB, 0.)
+            #statOnlyList[0].SetBinError(iB, gloRelUncs[iB]["inc_stat"]["up"]/ gloRelUncs[iB]["munom"] * thedict[""].GetBinContent(iB))
+            #statOnlyList[1].SetBinError(iB, gloRelUncs[iB]["inc_stat"]["down"]/ gloRelUncs[iB]["munom"] * thedict[""].GetBinContent(iB))
+
     plot               = bp.beautifulUnfPlot(varName + "_particlefidbin", varName)
     plot.doRatio       = True
     plot.doFit         = notff
@@ -639,8 +663,8 @@ def PlotParticleFidBinLevelResults(thedict, inpath, iY, varName, notff):
     plot.addHisto(tru_aMC_dr2,        'L,same', 'tW aMC DR2 + P8',        'L', 'mc')
     plot.addHisto(tru_aMC_ds,         'L,same', 'tW aMC DS + P8',         'L', 'mc')
     plot.addHisto(tru_aMC_ds_runn,    'L,same', 'tW aMC DS dyn. + P8',    'L', 'mc')
-    plot.addHisto(tru_aMC_ds_IS,      'L,same', 'tW aMC DS IS + P8',      'L', 'mc')
-    plot.addHisto(tru_aMC_ds_IS_runn, 'L,same', 'tW aMC DS IS dyn. + P8', 'L', 'mc')
+    #plot.addHisto(tru_aMC_ds_IS,      'L,same', 'tW aMC DS IS + P8',      'L', 'mc')
+    #plot.addHisto(tru_aMC_ds_IS_runn, 'L,same', 'tW aMC DS IS dyn. + P8', 'L', 'mc')
     #plot.saveCanvas(legloc, woUnc = True)
     plot.saveCanvas(legloc)
 
@@ -870,11 +894,7 @@ if __name__ == "__main__":
 
     #print "\n> Drawing matrices and writing ROOT file (old one will be overwritten!)."
 
-    vetolist = ["plots", "Fiducial", "control", "tables", "response"]
-
     #### First, find the tasks
-
-
     tasks = []
     theyears = []
     presentyears = next(os.walk(inpath))[1]
@@ -913,7 +933,7 @@ if __name__ == "__main__":
             theyears.append("run2")
 
         for iV in thevars:
-            if any( [el in iV for el in vetolist] ): continue
+            if any( [el in iV for el in vl.vetolist] ): continue
             tasks.append( (inpath, iY, iV, notFiduFile) )
 
     #tasks = [ (inpath, "2016", "Lep1Lep2Jet1MET_Mt") ]

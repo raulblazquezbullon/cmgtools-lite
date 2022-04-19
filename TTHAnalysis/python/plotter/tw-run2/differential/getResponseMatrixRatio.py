@@ -6,11 +6,12 @@ import varList as vl
 import CMS_lumi, tdrstyle
 
 r.gROOT.SetBatch(True)
-tmpfil     = "temp_2022_02_13_actualizacionnotaARC1/differential"
+tmpfil     = "temp_2022_04_01_matrespnuevas/differential"
 markersize = 0.8
 
 
 for iV in vl.varList["Names"]["Variables"]:
+#    if "Lep1_Pt" not in iV: continue
     f2016 = r.TFile(tmpfil + "/2016/{v}/UnfoldingInfo.root".format(v = iV), "READ")
     f2017 = r.TFile(tmpfil + "/2017/{v}/UnfoldingInfo.root".format(v = iV), "READ")
     f2018 = r.TFile(tmpfil + "/2018/{v}/UnfoldingInfo.root".format(v = iV), "READ")

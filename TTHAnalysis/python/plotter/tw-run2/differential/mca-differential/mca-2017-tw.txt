@@ -3,6 +3,10 @@
 tw+ : ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_PSweights_13TeV-powheg-pythia8_central*     : xsec ; FillColor=798
 tw+ : ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_PSweights_13TeV-powheg-pythia8*topnano* : xsec ; FillColor=798
 
+#tw+ : ST_tW_top_5f_inclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8_central_*          : xsec ; FillColor=798
+#tw+ : ST_tW_antitop_5f_inclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8_central_*      : xsec ; FillColor=798
+
+
 twds : ST_tW_antitop_5f_DS_NoFullyHadronicDecays_TuneCP5_PSweights_13TeV-powheg-pythia8*central* : 2976577/(4983000/35.85 + 2976577/19.4674104) ;
 twds : ST_tW_top_5f_DS_NoFullyHadronicDecays_TuneCP5_PSweights_13TeV-powheg-pythia8*central*     : 2780949/(4920000/35.85 + 2780949/19.4674104) ;
 twds : ST_tW_top_5f_DS_inclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8*central*           : 4983000/(4983000/35.85 + 2976577/19.4674104) ;

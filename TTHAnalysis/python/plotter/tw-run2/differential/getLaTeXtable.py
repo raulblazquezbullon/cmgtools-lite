@@ -394,7 +394,7 @@ if __name__ == "__main__":
                 thevars = next(os.walk(inpath + "/" + iY))[1]
                 actualvars = []
                 for iV in thevars:
-                    if "plots" in iV or "Fiducial" in iV or "tables" in iV: continue
+                    if any([el in iV for el in vl.vetolist]): continue
                     actualvars.append(iV)
                 tasks.append( (inpath + "/" + iY, actualvars) )
 
