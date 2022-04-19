@@ -1,0 +1,22 @@
+tw+ : ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_PSweights_13TeV-powheg-pythia8*central*         : 1019598/(4983500/35.85 + 1019598/19.4674104) ;
+tw+ : ST_tW_top_5f_inclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8_topnano_* + ST_tW_top_5f_inclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8_central_* : 4983500/(4983500/35.85 + 1019598/19.4674104) ;
+
+tw+ : ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_PSweights_13TeV-powheg-pythia8*central*     : 10240710/(4980600/35.85 + 10240710/19.4674104) ;
+tw+ : ST_tW_antitop_5f_inclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8_topnano_*          : 4980600/(4980600/35.85 + 10240710/19.4674104) ;
+
+
+twds     : ST_tW_antitop_5f_DS_NoFullyHadronicDecays_TuneCP5_PSweights_13TeV-powheg-pythia8_central_* : xsec ; FillColor=798
+twds     : ST_tW_top_5f_DS_NoFullyHadronicDecays_TuneCP5_PSweights_13TeV-powheg-pythia8_central_*     : xsec ; FillColor=798
+
+twherwig : ST_tW_antitop_5f_NoFullyHadronicDecays_TuneEE5C_13TeV-powheg-herwigpp_central_*            : xsec ; FillColor=798,genSumWeightName="genEventSumw"
+twherwig : ST_tW_top_5f_NoFullyHadronicDecays_TuneEE5C_13TeV-powheg-herwigpp_central_*                : xsec ; FillColor=798,genSumWeightName="genEventSumw"
+
+### tW aMC@NLO comparison samples
+twamcatnlo_dr              : ST_tW_Dilept_5f_DR_TuneCP5_13TeV-amcatnlo-pythia8_central_*    : xsec ; genSumWeightName="genEventSumw"
+twamcatnlo_dr2             : ST_tW_Dilept_5f_DR2_TuneCP5_13TeV-amcatnlo-pythia8_central_*   : xsec ; genSumWeightName="genEventSumw"
+twamcatnlo_ds              : ST_tW_Dilept_5f_DS_TuneCP5_13TeV-amcatnlo-pythia8_central_*    : xsec ; genSumWeightName="genEventSumw"
+twamcatnlo_ds_is           : ST_tW_Dilept_5f_DS_IS_TuneCP5_13TeV-amcatnlo-pythia8_central_* : xsec ; genSumWeightName="genEventSumw"
+twamcatnlo_ds_runningBW    : ST_tW_Dilept_5f_DS_runningBW_TuneCP5_13TeV-amcatnlo-pythia8_central_* : xsec ; genSumWeightName="genEventSumw"
+twamcatnlo_ds_is_runningBW : ST_tW_Dilept_5f_DS_IS_runningBW_TuneCP5_13TeV-amcatnlo-pythia8_central_* : xsec ; genSumWeightName="genEventSumw"
+
+### syst_tw_ue_up : ST_tW_antitop_5f_inclusiveDecays_TuneCP5up_13TeV-powheg-pythia8_*central*       : 4796000/(4796000/35.85 + 2804765/19.4674104) ;
