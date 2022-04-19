@@ -411,10 +411,9 @@ def getFitUncsLaTeXtable(path = "./", inname = "outputfit_all.txt", outname = "u
                              "ave"  : (totalsystnolumiup + totalsystnolumidown)/2}
 
     for key in infodict:
-
-        infodict[key]["up"]   = infodict[key]["up"]   * 100
-        infodict[key]["down"] = infodict[key]["down"] * 100
-        infodict[key]["ave"]  = infodict[key]["ave"]  * 100
+        infodict[key]["up"]   = infodict[key]["up"]   * 100 / infodict[""]["val"]
+        infodict[key]["down"] = infodict[key]["down"] * 100 / infodict[""]["val"]
+        infodict[key]["ave"]  = infodict[key]["ave"]  * 100 / infodict[""]["val"]
 
     print infodict
     #sys.exit()
