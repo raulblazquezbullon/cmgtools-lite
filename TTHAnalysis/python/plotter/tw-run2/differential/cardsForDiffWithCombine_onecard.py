@@ -153,16 +153,30 @@ def produceAdHocMCAandUncsfiles(thepath, they, thev):
         foutyear = open(thepath + "/" + "mca-tw-{y}-uncs.txt".format(y = they), "w")
         foutyear.write(outyear)
         foutyear.close(); del foutyear
-
+    
+    
+    ################################# INCERTIDUMBRES
     outuncs = ""
-    #with open("./tw-run2/uncs-tw.txt", "r") as scaff:
-    with open("./tw-run2/uncs-tw_1j1tdiff_lep1pt.txt", "r") as scaff:
+    # with open("./tw-run2/uncs-tw_sinsuavizdiff.txt", "r") as scaff:
+#    with open("./tw-run2/uncs-tw.txt", "r") as scaff:
+#    with open("./tw-run2/uncs-tw_1j1tdiff_lep1pt.txt", "r") as scaff:
+    # with open("./tw-run2/uncs-tw_1j1tdiff_jet1pt.txt", "r") as scaff:
+    with open("./tw-run2/uncs-tw_1j1tdiff_" + thev.lower().replace("_", "") + ".txt", "r") as scaff:
         for line in scaff:
             if "alias" in line:
                 outuncs += line.replace("tw", "|".join(["tw_bkg"] + ["tw_partbin{b}".format(b = iB) for iB in range(len(vl.varList[thev]["bins_particle"]) - 1)]))
             else:
                 tmpline = line.strip()
                 if tmpline.split(":")[0].replace(" ", "") in vl.VariatedSamplesUncertaintySources and "$tWProc" in tmpline.split(":")[1]:
+                    stringtoreplace = None
+                    if "EstimateFromXbins" in tmpline:
+                        stringtoreplace = "EstimateFromXbins=1"
+                    elif "fitOrder=" in tmpline and "symmAfterFit" not in tmpline:
+                        stringtoreplace = "fitOrder=" + tmpline.split("fitOrder=")[1][0]
+                    elif "fitOrder=" in tmpline:
+                        stringtoreplace = ["fitOrder=" + tmpline.split("fitOrder=")[1][0], "symmAfterFit=1"]
+                    
+
                     for iB in range(len(vl.varList[thev]["bins_particle"]) - 1):
                         twotimestmpline = tmpline.replace("$tWProc", "tw_partbin{b}".format(b = iB)) + "\n"
                         for substr in tmpline.split(";")[0].split(":"):
@@ -173,6 +187,31 @@ def produceAdHocMCAandUncsfiles(thepath, they, thev):
                                         twotimestmpline = twotimestmpline.replace(secsubstr, secsubstr + "_partbin{b}".format(b = iB))
                                 else:
                                     twotimestmpline = twotimestmpline.replace(tmpsubstr, tmpsubstr + "_partbin{b}".format(b = iB))
+                        if (("EstimateFromXbins" in tmpline) or ("fitOrder" in tmpline)) and ("particle_smoothing" in vl.varList[thev]):
+                            theunc = tmpline.split(":")[0].replace(" ", "")
+                            if theunc in vl.varList[thev]["particle_smoothing"]:
+                                if isinstance(vl.varList[thev]["particle_smoothing"][theunc], dict): ### Fine tuned depending on bin
+                                    if iB in vl.varList[thev]["particle_smoothing"][theunc]:
+                                        if "NOM" != vl.varList[thev]["particle_smoothing"][theunc][iB]:
+                                            if isinstance(stringtoreplace, list):
+                                                twotimestmpline = twotimestmpline.replace(stringtoreplace[0], vl.varList[thev]["particle_smoothing"][theunc][iB])
+                                                for k in range(1, len(stringtoreplace)): twotimestmpline = twotimestmpline.replace(stringtoreplace[k], "")
+                                            else:
+                                                twotimestmpline = twotimestmpline.replace(stringtoreplace, vl.varList[thev]["particle_smoothing"][theunc][iB])
+                                    elif -1 in vl.varList[thev]["particle_smoothing"][theunc]:
+                                        if isinstance(stringtoreplace, list):
+                                            twotimestmpline = twotimestmpline.replace(stringtoreplace[0], vl.varList[thev]["particle_smoothing"][theunc][-1])
+                                            for k in range(1, len(stringtoreplace)): twotimestmpline = twotimestmpline.replace(stringtoreplace[k], "")
+                                        else:
+                                            twotimestmpline = twotimestmpline.replace(stringtoreplace, vl.varList[thev]["particle_smoothing"][theunc][-1])
+                                else: ### The same for all non-bkg
+                                    if isinstance(stringtoreplace, list):
+                                        twotimestmpline = twotimestmpline.replace(stringtoreplace[0], vl.varList[thev]["particle_smoothing"][theunc])
+                                        for k in range(1, len(stringtoreplace)): twotimestmpline = twotimestmpline.replace(stringtoreplace[k], "")
+                                    else:
+                                        twotimestmpline = twotimestmpline.replace(stringtoreplace, vl.varList[thev]["particle_smoothing"][theunc])
+                                        
+
                         outuncs += twotimestmpline
                     
                     # Now, we add the background
@@ -186,10 +225,8 @@ def produceAdHocMCAandUncsfiles(thepath, they, thev):
                             else:
                                 twotimestmpline = twotimestmpline.replace(tmpsubstr, tmpsubstr + "_bkg")
                     
-                    if "ds" not in tmpline.split(":")[0].replace(" ", ""):
-                        outuncs += twotimestmpline
-                    else:
-                        outuncs += twotimestmpline.replace("EstimateFromXbins=1, EstimateAsymm=1", "fitOrder=1")
+                    outuncs += twotimestmpline
+                    
 
 
                 elif "pdf" in tmpline.split(":")[0] and "syst" in tmpline.split(":")[1] and "altSamplePDF" not in tmpline.split(":")[3]:
@@ -203,8 +240,51 @@ def produceAdHocMCAandUncsfiles(thepath, they, thev):
                     outuncs += tmpline.replace("$tWProc", "tw_bkg").replace("syst_tw_pdf_2016", "syst_tw_pdf_2016_bkg").replace("syst_tw_pdf_2017", "syst_tw_pdf_2017_bkg").replace("syst_tw_pdf_2018", "syst_tw_pdf_2018_bkg") + "\n"
                     
                 else:
-                    outuncs += line
-
+                    tmpline = line.strip()
+                    stringtoreplace = None
+                    if "EstimateFromXbins" in tmpline:
+                        stringtoreplace = "EstimateFromXbins=1"
+                    elif "fitOrder=" in tmpline and "symmAfterFit" not in tmpline:
+                        stringtoreplace = "fitOrder=" + tmpline.split("fitOrder=")[1][0]
+                    elif "fitOrder=" in tmpline:
+                        stringtoreplace = ["fitOrder=" + tmpline.split("fitOrder=")[1][0], "symmAfterFit=1"]
+                    
+                    #print stringtoreplace, tmpline
+                    if "$tWProc" in tmpline and stringtoreplace and ("particle_smoothing" in vl.varList[thev]):
+                        theunc = tmpline.split(":")[0].replace(" ", "")
+                        if theunc in vl.varList[thev]["particle_smoothing"]:
+                            for iB in range(len(vl.varList[thev]["bins_particle"]) - 1):
+                                twotimestmpline = tmpline.replace("$tWProc", "tw_partbin{b}".format(b = iB)) + "\n"
+                                if isinstance(vl.varList[thev]["particle_smoothing"][theunc], dict): ### Fine tuned depending on bin
+                                    if iB in vl.varList[thev]["particle_smoothing"][theunc]:
+                                        if "NOM" != vl.varList[thev]["particle_smoothing"][theunc][iB]:
+                                            if isinstance(stringtoreplace, list):
+                                                twotimestmpline = twotimestmpline.replace(stringtoreplace[0], vl.varList[thev]["particle_smoothing"][theunc][iB])
+                                                for k in range(1, len(stringtoreplace)): twotimestmpline = twotimestmpline.replace(stringtoreplace[k], "")
+                                            else:
+                                                twotimestmpline = twotimestmpline.replace(stringtoreplace, vl.varList[thev]["particle_smoothing"][theunc][iB])
+                                    elif -1 in vl.varList[thev]["particle_smoothing"][theunc]:
+                                        if isinstance(stringtoreplace, list):
+                                            twotimestmpline = twotimestmpline.replace(stringtoreplace[0], vl.varList[thev]["particle_smoothing"][theunc][-1])
+                                            for k in range(1, len(stringtoreplace)): twotimestmpline = twotimestmpline.replace(stringtoreplace[k], "")
+                                        else:
+                                            twotimestmpline = twotimestmpline.replace(stringtoreplace, vl.varList[thev]["particle_smoothing"][theunc][-1])
+                                else: ### The same for all non-bkg
+                                    if isinstance(stringtoreplace, list):
+                                        twotimestmpline = twotimestmpline.replace(stringtoreplace[0], vl.varList[thev]["particle_smoothing"][theunc])
+                                        for k in range(1, len(stringtoreplace)): twotimestmpline = twotimestmpline.replace(stringtoreplace[k], "")
+                                    else:
+                                        twotimestmpline = twotimestmpline.replace(stringtoreplace, vl.varList[thev]["particle_smoothing"][theunc])
+                                
+                                outuncs += twotimestmpline
+                            
+                            twotimestmpline = tmpline.replace("$tWProc", "tw_bkg") + "\n"
+                            outuncs += twotimestmpline
+                        else:
+                            outuncs += tmpline + "\n"
+                    else:
+                        outuncs += tmpline + "\n"
+                    
     foutuncs = open(thepath + "/" + "tw-uncs-adhoc.txt", "w")
     foutuncs.write(outuncs)
     foutuncs.close(); del foutuncs

@@ -110,7 +110,7 @@ def CardsCommand(prod, year, var, isAsimov, nthreads, outpath, region, noUnc, us
 
     extra_ = extra
     if region not in ["detector", "particle"]:
-        extra_ += " --xp twds,twherwig"
+        extra_ += " --xp twds,twherwig,twamcatnlo_dr,twamcatnlo_dr2,twamcatnlo_ds,twamcatnlo_ds_is,twamcatnlo_ds_runningBW,twamcatnlo_ds_is_runningBW"
 
     comm = commandscaff.format(outpath      = outpath_,
                                friends      = friends_,
@@ -123,10 +123,8 @@ def CardsCommand(prod, year, var, isAsimov, nthreads, outpath, region, noUnc, us
                                asimovornot = "--asimov s+b" if isAsimov or region == "nonfiducialAll" else "--asimov s+b" if region != "forExtr" else "",
                                mcafile   = mcafile_,
                                cutsfile  = cutsfile_,
-                               uncs      = "" if region == "particle" else "--unc tw-run2/uncs-tw.txt --amc" if not noUnc and "Response" not in region else "--unc tw-run2/uncs-tw_1j1tdiff_lep1pt.txt --amc" if not noUnc else "--amc",
-                               #uncs      = "" if region == "particle" else "--unc tw-run2/uncs-tw_1j1tdiff_lep1pt.txt --amc" if not noUnc else "--amc",
-                               #uncs      = "" if region == "particle" else "--unc tw-run2/differential/uncs-tw-modified.txt --amc" if not noUnc else "--amc",
-                               #uncs      = ("" if region == "particle" else "--unc tw-run2/differential/uncs-tw-modified-toeslesescales.txt --amc" if not noUnc and not doPure else "--unc tw-run2/differential/uncs-tw-modified.txt --amc" if not noUnc else "--amc"),
+                               uncs      = "" if region == "particle" else "--unc tw-run2/uncs-tw.txt --amc" if not noUnc and "Response" in region else "--unc tw-run2/uncs-tw_1j1tdiff_" + var.lower().replace("_", "") + ".txt --amc" if not noUnc else "--amc",
+                            #    uncs      = "" if region == "particle" else "--unc tw-run2/uncs-tw_sinsuavizdiff.txt --amc" if not noUnc and "Response" in region else "--unc tw-run2/uncs-tw_sinsuavizdiff.txt --amc" if not noUnc else "--amc",
                                name      = name_,
                                weights   = weights_,
                                extra     = extra_)

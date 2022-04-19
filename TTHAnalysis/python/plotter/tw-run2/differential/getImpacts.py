@@ -17,9 +17,9 @@ r.TH1.AddDirectory(0)
 #comm2 = "combineTool.py -M Impacts -d {incard} --robustFit 1 --doFits {ncores} {asimov} {extra} -m 1 -n {prefix} --redefineSignalPOIs {pois} --robustHesse 1 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000"
 #comm3 = "combineTool.py -M Impacts -d {incard} -o impacts{prefix}.json {ncores} {asimov} {extra} -m 1 -n {prefix} --redefineSignalPOIs {pois} --robustHesse 1 --robustFit 1 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000"
 
-comm1 = "combineTool.py -M Impacts -d {incard} --doInitialFit --robustFit 1 {ncores} {asimov} {extra} -m 1 -n {prefix} --out {outdir} --redefineSignalPOIs {pois} --floatOtherPOIs 1 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --cminDefaultMinimizerStrategy 0"
-comm2 = "combineTool.py -M Impacts -d {incard} --robustFit 1 --doFits {ncores} {asimov} {extra} -m 1 -n {prefix} --redefineSignalPOIs {pois} --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --cminDefaultMinimizerStrategy 0"
-comm3 = "combineTool.py -M Impacts -d {incard} -o impacts{prefix}.json {ncores} {asimov} {extra} -m 1 -n {prefix} --redefineSignalPOIs {pois} --robustFit 1  --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --cminDefaultMinimizerStrategy 0"
+comm1 = "combineTool.py -M Impacts -d {incard} --doInitialFit --robustFit 1 {ncores} {asimov} {extra} -m 1 -n {prefix} --out {outdir} --redefineSignalPOIs {pois} --floatOtherPOIs 1 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --cminDefaultMinimizerStrategy 0 --robustHesse 1"
+comm2 = "combineTool.py -M Impacts -d {incard} --robustFit 1 --doFits {ncores} {asimov} {extra} -m 1 -n {prefix} --redefineSignalPOIs {pois} --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --cminDefaultMinimizerStrategy 0 --robustHesse 1"
+comm3 = "combineTool.py -M Impacts -d {incard} -o impacts{prefix}.json {ncores} {asimov} {extra} -m 1 -n {prefix} --redefineSignalPOIs {pois} --robustFit 1  --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --cminDefaultMinimizerStrategy 0 --robustHesse 1"
 
 def GetRounded(nom, e_hi, e_lo):
     if e_hi < 0.0:
@@ -356,12 +356,12 @@ def makeImpacts(task):
 
     impactsoutpath = inpath + "/" + year + "/" + varName + "/sigextr_fit_combine/{o}Impacts/".format(o = "Obs" if doObs else "")
 
-    asimov_ = ""
+    asimov_ = "--setParameters "
+    for idx in range(nparticlebins - 1):
+        asimov_ += "r_tW_{iBp}=1,".format(iBp = idx)
+    asimov_ += "r_tW_{iBp}=1".format(iBp = nparticlebins - 1)
     if not doobs:
-        asimov_ =  "-t -1 --setParameters "
-        for idx in range(nparticlebins - 1):
-            asimov_ += "r_tW_{iBp}=1,".format(iBp = idx)
-        asimov_ += "r_tW_{iBp}=1".format(iBp = nparticlebins - 1)
+        asimov_ +=  " -t -1 "
 
 
     firstcomm = comm1.format(y      = year,
@@ -492,7 +492,7 @@ if __name__ == '__main__':
             raise RuntimeError("FATAL: the variable requested is not in the provided input folder.")
 
         for iV in thevars:
-            if "plots" in iV or "Fiducial" in iV or "table" in iV: continue
+            if "plots" in iV or "Fiducial" in iV or "table" in iV or "response" in iV: continue
             if not os.path.isdir(inpath + "/" + iY + "/" + iV + "/sigextr_fit_combine/{o}Impacts".format(o = "Obs" if doObs else "")):
                 os.system("mkdir -p " + inpath + "/" + iY + "/" + iV + "/sigextr_fit_combine/{o}Impacts".format(o = "Obs" if doObs else ""))
             tasks.append( (inpath, iY, iV, nthreads, pretend, verbose, extra, doObs, doBlind) )

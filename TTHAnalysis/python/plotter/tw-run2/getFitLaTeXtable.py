@@ -411,16 +411,14 @@ def getFitUncsLaTeXtable(path = "./", inname = "outputfit_all.txt", outname = "u
                              "ave"  : (totalsystnolumiup + totalsystnolumidown)/2}
 
     for key in infodict:
-
-        infodict[key]["up"]   = infodict[key]["up"]   * 100
-        infodict[key]["down"] = infodict[key]["down"] * 100
-        infodict[key]["ave"]  = infodict[key]["ave"]  * 100
+        infodict[key]["up"]   = infodict[key]["up"]   * 100 / infodict[""]["val"]
+        infodict[key]["down"] = infodict[key]["down"] * 100 / infodict[""]["val"]
+        infodict[key]["ave"]  = infodict[key]["ave"]  * 100 / infodict[""]["val"]
 
     print infodict
     #sys.exit()
 
     ndec = 1
-    normMu = infodict[""]["val"] ######## Set to 1 to not normalise the table
 
     for i in orderOfTheUncs:
         tmprow = ""
@@ -433,17 +431,17 @@ def getFitUncsLaTeXtable(path = "./", inname = "outputfit_all.txt", outname = "u
         elif i == "_systnorm":
             tmprow = ["\\quad  Background normalisation", "", ""]
         elif i == "_mc_stat":
-            tmprow = ["  " + translateDict["mc_stat"], round(infodict["mc_stat"]["ave"]/normMu, 1), round(infodict["mc_stat"]["up"]/normMu, 1), round(infodict["mc_stat"]["down"]/normMu,1) ]
+            tmprow = ["  " + translateDict["mc_stat"], round(infodict["mc_stat"]["ave"], 1), round(infodict["mc_stat"]["up"], 1), round(infodict["mc_stat"]["down"],1) ]
         elif i == "_totalsyst":
-            tmprow = ["\\textbf{{Total systematic (excl. lum.)}}", round(infodict["totalsyst"]["ave"]/normMu, 1), round(infodict["totalsyst"]["up"]/normMu, 1), round(infodict["totalsyst"]["down"]/normMu, 1)]
+            tmprow = ["\\textbf{{Total systematic (excl. lum.)}}", round(infodict["totalsyst"]["ave"], 1), round(infodict["totalsyst"]["up"], 1), round(infodict["totalsyst"]["down"], 1)]
         elif i == "_lumi":
-            tmprow = ["\\textbf{{Integrated luminosity}}", round(infodict["lumi"]["ave"]/normMu, 1), round(infodict["lumi"]["up"]/normMu, 1), round(infodict["lumi"]["down"]/normMu, 1)]
+            tmprow = ["\\textbf{{Integrated luminosity}}", round(infodict["lumi"]["ave"], 1), round(infodict["lumi"]["up"], 1), round(infodict["lumi"]["down"], 1)]
         elif i == "_stat":
-            tmprow = ["\\textbf{{Statistical}}", round(infodict["stat"]["ave"]/normMu, 1), round(infodict["stat"]["up"]/normMu, 1), round(infodict["stat"]["down"]/normMu, 1)]
+            tmprow = ["\\textbf{{Statistical}}", round(infodict["stat"]["ave"], 1), round(infodict["stat"]["up"], 1), round(infodict["stat"]["down"], 1)]
         elif i == "_total":
-            tmprow = ["\\textbf{{Total}}", round(infodict[""]["ave"]/normMu, 1), round(infodict[""]["up"]/normMu, 1), round(infodict[""]["down"]/normMu, 1)]
+            tmprow = ["\\textbf{{Total}}", round(infodict[""]["ave"], 1), round(infodict[""]["up"], 1), round(infodict[""]["down"], 1)]
         else:
-            tmprow = [translateDict[i], round(infodict[i]["ave"]/normMu, 1), round(infodict[i]["up"]/normMu, 1), round(infodict[i]["down"]/normMu, 1)]
+            tmprow = [translateDict[i], round(infodict[i]["ave"], 1), round(infodict[i]["up"], 1), round(infodict[i]["down"], 1)]
 
         table.append(tmprow)
         #print tmprow

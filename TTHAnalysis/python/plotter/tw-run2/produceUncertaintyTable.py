@@ -346,10 +346,10 @@ if __name__ == "__main__":
     pretend  = args.pretend
     thecard  = args.inpath
     step     = args.step
-    npoints    = args.npoints
+    npoints  = args.npoints
     doBatch  = args.queue
     ncores   = args.ncores
-    grUnc   = args.grUnc
+    grUnc    = args.grUnc
 
     thepath  = "/".join(thecard.split("/")[:-1])
     

@@ -181,7 +181,7 @@ pdfhessian : $tWandttbar : .* : HessianPDFset ; FakeRates=['tw-run2/frs-pdfs/fr-
 #### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ##### Matrix element factorisation and renormalisation scales
 ##### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-ttbar_scales : ttbar   : .* : envelope ; FakeRates=['tw-run2/frs-scales/fr-muR_0p5_muF_0p5.txt'\,'tw-run2/frs-scales/fr-muR_1p0_muF_2p0.txt'\,'tw-run2/frs-scales/fr-muR_2p0_muF_1p0.txt'\,'tw-run2/frs-scales/fr-muR_0p5_muF_1p0.txt'\,'tw-run2/frs-scales/fr-muR_1p0_muF_0p5.txt'\,'tw-run2/frs-scales/fr-muR_2p0_muF_2p0.txt'], fitOrder=3, symmAfterFit=1
+ttbar_scales : ttbar   : .* : envelope ; FakeRates=['tw-run2/frs-scales/fr-muR_0p5_muF_0p5.txt'\,'tw-run2/frs-scales/fr-muR_1p0_muF_2p0.txt'\,'tw-run2/frs-scales/fr-muR_2p0_muF_1p0.txt'\,'tw-run2/frs-scales/fr-muR_0p5_muF_1p0.txt'\,'tw-run2/frs-scales/fr-muR_1p0_muF_0p5.txt'\,'tw-run2/frs-scales/fr-muR_2p0_muF_2p0.txt'], fitOrder=3
 
 tw_scales    : $tWProc : .* : envelope ; FakeRates=['tw-run2/frs-scales/fr-muR_0p5_muF_0p5.txt'\,'tw-run2/frs-scales/fr-muR_1p0_muF_2p0.txt'\,'tw-run2/frs-scales/fr-muR_2p0_muF_1p0.txt'\,'tw-run2/frs-scales/fr-muR_0p5_muF_1p0.txt'\,'tw-run2/frs-scales/fr-muR_1p0_muF_0p5.txt'\,'tw-run2/frs-scales/fr-muR_2p0_muF_2p0.txt'], EstimateFromXbins=1
 
@@ -242,9 +242,9 @@ ue : $tWProc : .* : altSample : syst_tw_ue_up    : syst_tw_ue_dn    ; EstimateFr
 ##### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ##### Top quark mass
 ##### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-mtop : ttbar   : .* : altSample : syst_ttbar_mtop_2016_up : syst_ttbar_mtop_2016_dn : addothers : syst_ttbar_mtop_2016 : 3 ; year="2016", fitOrder=1, symmAfterFit=1
-mtop : ttbar   : .* : altSample : syst_ttbar_mtop_2017_up : syst_ttbar_mtop_2017_dn : addothers : syst_ttbar_mtop_2017 : 1 ; year="2017", fitOrder=1, symmAfterFit=1
-mtop : ttbar   : .* : altSample : syst_ttbar_mtop_2018_up : syst_ttbar_mtop_2018_dn : addothers : syst_ttbar_mtop_2018 : 1 ; year="2018", fitOrder=1, symmAfterFit=1
+mtop : ttbar   : .* : altSample : syst_ttbar_mtop_2016_up : syst_ttbar_mtop_2016_dn : addothers : syst_ttbar_mtop_2016 : 3 ; year="2016", EstimateFromXbins=1
+mtop : ttbar   : .* : altSample : syst_ttbar_mtop_2017_up : syst_ttbar_mtop_2017_dn : addothers : syst_ttbar_mtop_2017 : 1 ; year="2017", EstimateFromXbins=1
+mtop : ttbar   : .* : altSample : syst_ttbar_mtop_2018_up : syst_ttbar_mtop_2018_dn : addothers : syst_ttbar_mtop_2018 : 1 ; year="2018", EstimateFromXbins=1
 mtop : $tWProc : .* : altSample : syst_tw_mtop_up         : syst_tw_mtop_dn ; EstimateFromXbins=1
 
 

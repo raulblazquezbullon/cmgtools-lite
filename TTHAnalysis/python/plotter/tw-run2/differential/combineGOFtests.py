@@ -4,6 +4,8 @@ import warnings as wr
 import ROOT as r
 r.PyConfig.IgnoreCommandLineOptions = True
 r.gROOT.SetBatch(True)
+sys.path.append('{cmsswpath}/src/CMGTools/TTHAnalysis/python/plotter/tw-run2/differential/'.format(cmsswpath = os.environ['CMSSW_BASE']))
+import varList as vl
 
 gofcomm = "combineTool.py -M GoodnessOfFit --expectSignal 1 {combcard} -n {y}_{r} --cminDefaultMinimizerStrategy 0 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --algo=saturated {preorpost} {tois} {nthreads} {queue}"
 
@@ -360,7 +362,7 @@ if __name__ == "__main__":
         for iY in theyears:
             thevars = next(os.walk(inpath + "/" + iY))[1]
             for iV in thevars:
-                if "plots" in iV or "Fiducial" in iV or "table" in iV: continue
+                if any([el in iV for el in vl.vetolist]): continue
                 if not os.path.isdir(inpath + "/" + iY + "/" + iV + "/sigextr_fit_combine"): continue
                 tasks.append( (iY, iV, inpath, verbose, pretend, extra, gofpost, nthreads, nts, queue, extraslurm) )
 
@@ -371,6 +373,7 @@ if __name__ == "__main__":
         for iY in theyears:
             thevars = next(os.walk(inpath + "/" + iY))[1]
             for iV in thevars:
+                if any([el in iV for el in vl.vetolist]): continue
                 tasks.append( (iY, iV, inpath, verbose, pretend, extra, gofpost) )
 
         for task in tasks:
