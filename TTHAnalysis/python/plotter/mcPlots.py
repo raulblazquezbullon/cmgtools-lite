@@ -140,7 +140,7 @@ def doSpam(text,x1,y1,x2,y2,align=12,fill=False,textSize=0.033,_noDelete={}):
     _noDelete[text] = cmsprel; ## so it doesn't get deleted by PyROOT
     return cmsprel
 
-def doTinyCmsPrelim(textLeft="_default_",textRight="_default_",hasExpo=False,textSize=0.033,lumi=None, xoffs=0, options=None, doWide=False):
+def doTinyCmsPrelim(textLeft="_default_",textRight="_default_",hasExpo=False,textSize=0.033,lumi=None, xoffs=0, options=None, doWide=False, TLleg=False):
     if textLeft  == "_default_": 
         textLeft  = options.lspam
         textLeftPosition = options.lspamPosition
@@ -158,9 +158,9 @@ def doTinyCmsPrelim(textLeft="_default_",textRight="_default_",hasExpo=False,tex
     textRight = textRight.replace("%(lumi)",lumitext)
     if options.noExpoShift:
         hasExpo = False
-#    if pspec.getOption('Legend','TR')=="TL" and options.lspamShiftLegend and textLeft not in ['', None]:
-#        doSpam(textLeft, .68, .855, .9, .895, align=32, textSize=textSize)
-    if textLeft not in ['', None]:
+    if TLleg and options.lspamShiftLegend and textLeft not in ['', None]:
+        doSpam(textLeft, .68, .855, .9, .895, align=32, textSize=textSize)
+    elif textLeft not in ['', None]:
         doSpam(textLeft, (.28 if hasExpo else 0.07 if doWide else textLeftPosition[0])+xoffs, textLeftPosition[1], textLeftPosition[2]+xoffs, textLeftPosition[3], align=12, textSize=textSize)
           
     if textRight not in ['', None]:
@@ -187,6 +187,7 @@ def doShadedUncertainty(h):
     ret.SetFillStyle(3244);
     ret.SetFillColor(ROOT.kGray+2)
     ret.SetMarkerStyle(0)
+    ret.SetLineWidth(options.histoLineWidth)
     ret.Draw("PE2 SAME")
     return ret
 
@@ -851,6 +852,7 @@ class PlotMaker:
                             plot.SetLineColor(plot.GetFillColor())
                             continue 
                         if plotmode == "stack":
+                            plot.SetLineWidth(options.histoLineWidth)
                             stack.Add(plot.raw())
                             if mytotal == None: total+=plot
                         else:
@@ -1031,7 +1033,7 @@ class PlotMaker:
                     CMS_lumi.lumi_sqrtS = self._options.cmssqrtS
                     CMS_lumi.CMS_lumi(ROOT.gPad, 4, 0, -0.005 if doWide and doRatio else 0.01 if doWide else 0.05)
                 else: 
-                    doTinyCmsPrelim(hasExpo = total.GetMaximum() > 9e4 and not c1.GetLogy(),textSize=(0.045 if doRatio else 0.033)*options.topSpamSize, options=options,doWide=doWide)
+                    doTinyCmsPrelim(hasExpo = total.GetMaximum() > 9e4 and not c1.GetLogy(),textSize=(0.045 if doRatio else 0.033)*options.topSpamSize, options=options,doWide=doWide, TLleg=pspec.getOption('Legend','TR')=="TL")
                 signorm = None; datnorm = None; sfitnorm = None
                 if options.showSigShape or options.showIndivSigShapes or options.showIndivSigs: 
                     signorms = doStackSignalNorm(pspec,pmap,options.showIndivSigShapes or options.showIndivSigs,extrascale=options.signalPlotScale, norm=not options.showIndivSigs)
@@ -1227,6 +1229,7 @@ def addPlotMakerOptions(parser, addAlsoMCAnalysis=True):
     parser.add_option("--StatUncRatioStyle", dest="StatUncRatioStyle", type="int", nargs=2, default=(1001, 1), help="Marker and fill style for the stat unc band in the ratio plot: (SetFillStyle,SetMarkerStyle)")
     parser.add_option("--TotalUncRatioColor", dest="TotalUncRatioColor", type="int", nargs=2, default=(432, 432), help="Fill and marker colour for the total unc band in the ratio plot: (SetFillColor,SetMarkerColor)")
     parser.add_option("--StatUncRatioColor", dest="StatUncRatioColor", type="int", nargs=2, default=(593, 593), help="Fill and marker colour for the stat unc band in the ratio plot: (SetFillColor,SetMarkerColor)")
+    parser.add_option("--histoLineWidth", dest="histoLineWidth", type="int", nargs=1, default=1, help="Line width of the histograms")
     parser.add_option("--UncLegendName", dest="UncLegendName", type="string", default="Total unc.", help="Name that appear in the legend for the total uncertainty")
     parser.add_option("--fixRatioRange", dest="fixRatioRange", action="store_true", default=False, help="Fix the ratio range to --maxRatioRange")
     parser.add_option("--doStatTests", dest="doStatTests", type="string", default=None, help="Do this stat test: chi2p (Pearson chi2), chi2l (binned likelihood equivalent of chi2)")

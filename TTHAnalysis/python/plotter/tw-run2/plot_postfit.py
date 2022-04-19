@@ -39,9 +39,9 @@ dictRegions = {
 }
 
 dictRegionsXaxisLabels = {
-    "ch1"      : "BDT discriminant (Adim.)",
-    "ch2"      : "BDT discriminant (Adim.)",
-    "ch3"      : "Subleading jet p_{T} (GeV)",
+    "ch1"      : "BDT discriminant",
+    "ch2"      : "BDT discriminant",
+    "ch3"      : "Subleading jet #it{p}_{T} (GeV)",
 }
 
 dictRegionsYaxisLabels = {
@@ -154,12 +154,12 @@ def producePlots(year, region, path):
       subdir.cd()
       hstack = r.THStack()
       #We define the legend
-      textSize = 0.0468
+      textSize = 0.05616
       height = textSize*1.15*legendHeigh[key][dire]
       if dire != "ch3":
         legend = r.TLegend(.4, .9-height, .85, .91) #0.85 for the first number in the CMGTools plotter
       else:
-        legend = r.TLegend(.65, .9-height, .85, .91) #0.85 for the first number in the CMGTools plotter
+        legend = r.TLegend(.6, .9-height, .8, .91) #0.85 for the first number in the CMGTools plotter
       legend.SetBorderSize(0)
       legend.SetFillColor(0)
       legend.SetShadowColor(0)
@@ -207,7 +207,7 @@ def producePlots(year, region, path):
         h = subdir.Get(histoName) 
         h.GetXaxis().SetLabelSize(0)
         h.SetLineColor(1)
-        h.SetLineWidth(1)
+        h.SetLineWidth(0)
         h.SetFillColor(ColourMapForProcesses[histoName])
         hstack.Add(h)
 	    
@@ -221,7 +221,7 @@ def producePlots(year, region, path):
 					
       hstack.Draw("hist")
       hstack.GetXaxis().SetLabelSize(0)
-      hstack.GetYaxis().SetTitleOffset(2.1)
+      hstack.GetYaxis().SetTitleOffset(1.5)
       hstack.SetMaximum(hstack.GetMaximum()*1.5)
       hstack.GetYaxis().SetTitle(dictRegionsYaxisLabels[dire])
       hstack.GetYaxis().SetLabelSize(22)
@@ -270,7 +270,7 @@ def producePlots(year, region, path):
 	
       htotalNoErr = deepcopy(htotal.Clone("ratiounc"))
       htotalErr = deepcopy(htotal.Clone("ratiouncErr"))
-      for i in range(1, htotalNoErr.GetNbinsX()):
+      for i in range(1, htotalNoErr.GetNbinsX()+1):
         htotalNoErr.SetBinError(i, 0)
       
       htotalErr.Divide(htotalNoErr)
@@ -292,15 +292,15 @@ def producePlots(year, region, path):
       hAuxForAxis.GetXaxis().SetLabelFont(43)
       hAuxForAxis.GetYaxis().SetLabelFont(43)
       hAuxForAxis.GetYaxis().SetTitle("Data/Pred.")
-      hAuxForAxis.GetYaxis().SetTitleOffset(2.1)
+      hAuxForAxis.GetYaxis().SetTitleOffset(1.5)
       hAuxForAxis.GetXaxis().SetTitle(dictRegionsXaxisLabels[dire])
       hAuxForAxis.GetYaxis().SetTitleSize(22)
       hAuxForAxis.GetYaxis().SetTitleFont(43)
       hAuxForAxis.GetXaxis().SetTitleOffset(4.8)
       hAuxForAxis.GetXaxis().SetTitleSize(22)
       hAuxForAxis.GetXaxis().SetTitleFont(43)
-      hAuxForAxis.GetYaxis().SetRangeUser(0.8 if dire=="ch3" else 0.85 , 1.2 if dire=="ch3" else 1.15)
-      hAuxForAxis.GetYaxis().SetNdivisions(505)
+      hAuxForAxis.GetYaxis().SetRangeUser(0.8 if dire=="ch3" else 0.8 , 1.2 if dire=="ch3" else 1.2)
+      hAuxForAxis.GetYaxis().SetNdivisions(503)
       hAuxForAxis.Draw("axis")
       if key == "fit_s":
         preFitHistsUnc[dire].SetFillStyle(1001)
