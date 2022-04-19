@@ -1324,9 +1324,17 @@ class HistoWithNuisances:
                 up.SetBinContent(  iB, thefits[0].Eval(up.GetXaxis().GetBinCenter(iB)) * self.central.GetBinContent(iB))
                 down.SetBinContent(iB, thefits[1].Eval(up.GetXaxis().GetBinCenter(iB)) * self.central.GetBinContent(iB))
                 if "symmAfterFit" in var.extra:
+                    isNormal = None
+                    if   up.GetBinContent(iB) > self.central.GetBinContent(iB) and down.GetBinContent(iB) < self.central.GetBinContent(iB): 
+                        isNormal = True
+                    elif up.GetBinContent(iB) < self.central.GetBinContent(iB) and down.GetBinContent(iB) > self.central.GetBinContent(iB):
+                        isNormal = False
+                    else:
+                        if up.GetBinContent(iB) > down.GetBinContent(iB): isNormal = True
+                        else: isNormal = False
                     thevar = (abs(up.GetBinContent(iB) - self.central.GetBinContent(iB)) + abs(down.GetBinContent(iB) - self.central.GetBinContent(iB)))/2.
-                    up.SetBinContent(  iB, self.central.GetBinContent(iB) + thevar if up.GetBinContent(iB) > self.central.GetBinContent(iB) else self.central.GetBinContent(iB) - thevar if thevar < self.central.GetBinContent(iB) else 0.)
-                    down.SetBinContent(iB, self.central.GetBinContent(iB) + thevar if down.GetBinContent(iB) > self.central.GetBinContent(iB) else self.central.GetBinContent(iB) - thevar if thevar < self.central.GetBinContent(iB) else 0.)
+                    up.SetBinContent(  iB, self.central.GetBinContent(iB) + thevar if isNormal else self.central.GetBinContent(iB) - thevar if thevar < self.central.GetBinContent(iB) else 0.)
+                    down.SetBinContent(iB, self.central.GetBinContent(iB) + thevar if not isNormal else self.central.GetBinContent(iB) - thevar if thevar < self.central.GetBinContent(iB) else 0.)
         elif "symmAfterFit" not in var.extra:
             for iB in range(1, up.GetNbinsX() + 1):
                 up.SetBinContent(iB, thefits[0].Eval(up.GetXaxis().GetBinCenter(iB)) * self.central.GetBinContent(iB))
