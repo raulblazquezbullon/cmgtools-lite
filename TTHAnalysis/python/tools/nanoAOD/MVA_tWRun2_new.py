@@ -9,20 +9,20 @@ scaffconst = """def initCustom{var}(self):
     self.MVAs  = {{}}
 
     setattr(self, "vars_1j1t" + "{var}", ([
-        #MVAVar("train_nloosejets",                  func = lambda ev : getattr(ev, "nJetSel20{var}_Recl")),
-        #MVAVar("min(train_nloosejets,2)",           func = lambda ev : min(getattr(ev, "nJetSel20{var}_Recl"), 2)),
-        MVAVar("min(train_nloosejets,1)",           func = lambda ev : min(getattr(ev, "nJetSel20{var}_Recl"), 1)),
+        MVAVar("min(train_nloosejets,1)",           func = lambda ev : min(getattr(ev, "nJetSel20{varjet}_Recl"), 1)),
+        MVAVar("train_jet1_pt",                     func = lambda ev : getattr(ev, "Jet1_Pt"      + "{var}")),
+        MVAVar("train_loosejet1_pt",                func = lambda ev : getattr(ev, "JetLoose1_Pt" + "{var}") if (getattr(ev, "nJetSel20{varjet}_Recl") > 0) else 0.0),
+        MVAVar("train_lep1lep2jet1met_m",           func = lambda ev : getattr(ev, "Lep1Lep2Jet1MET_M"       + "{var}")),
+        MVAVar("train_lep1lep2jet1_c",              func = lambda ev : getattr(ev, "Lep1Lep2Jet1_C"          + "{var}")),
+        MVAVar("train_lep1lep2jet1_pt",             func = lambda ev : getattr(ev, "Lep1Lep2Jet1_Pt"         + "{var}")),
         #MVAVar("train_nbloosejets",                 func = lambda ev : getattr(ev, "nBJetSelMedium20{var}_Recl")),
         #MVAVar("train_lep1lep2jet1met_pt",          func = lambda ev : getattr(ev, "Lep1Lep2Jet1MET_Pt" + {var})),
         #MVAVar("train_httot",                       func = lambda ev : getattr(ev, "HTtot"        + {var})),
-        MVAVar("train_jet1_pt",                     func = lambda ev : getattr(ev, "Jet1_Pt"      + "{var}")),
-        MVAVar("train_loosejet1_pt",                func = lambda ev : getattr(ev, "JetLoose1_Pt" + "{var}") if (getattr(ev, "nJetSel20{var}_Recl") > 0) else 0.0),
         #MVAVar("train_lep1lep2jet1met_ptOVERhttot", func = lambda ev : getattr(ev, "Lep1Lep2Jet1MET_PtOverHTtot" + "{var}")),
-        MVAVar("train_lep1lep2jet1met_m",           func = lambda ev : getattr(ev, "Lep1Lep2Jet1MET_M"       + "{var}")),
-        MVAVar("train_lep1lep2jet1_c",              func = lambda ev : getattr(ev, "Lep1Lep2Jet1_C"          + "{var}")),
         #MVAVar("train_htlepOVERhttot",              func = lambda ev : getattr(ev, "Lep1_PtLep2_PtOverHTtot" + "{var}")),
-        MVAVar("train_lep1lep2jet1_pt",             func = lambda ev : getattr(ev, "Lep1Lep2Jet1_Pt"         + "{var}")),
-        #MVAVar("train_nfwdjet",                     func = lambda ev : getattr(ev, "nFwdJetSel30{var}_Recl")),
+        #MVAVar("train_nfwdjet",                     func = lambda ev : getattr(ev, "nFwdJetSel30{varjet}_Recl")),
+        #MVAVar("train_nloosejets",                  func = lambda ev : getattr(ev, "nJetSel20{varjet}_Recl")),
+        #MVAVar("min(train_nloosejets,2)",           func = lambda ev : min(getattr(ev, "nJetSel20{varjet}_Recl"), 2)),
         ]))
 
     setattr(self, "vars_2j1t" + "{var}", ([
@@ -71,7 +71,7 @@ scaffan = """def analyzeCustom{var}(self, event):
 
 
 
-exec(scaffconst.format(var = ""))
+exec(scaffconst.format(var = "", varjet = ""))
 exec(scaffbegin.format(var = ""))
 exec(scaffan.format(var = ""))
 
@@ -81,10 +81,10 @@ globals()['MVA_tWRun2_new_'] = type('MVA_tWRun2_new_', (Module,), {'__init__'  :
 #tmpstr = "MVA_tWRun2_new_{v}{sv} = lambda : type('MVA_tWRun2_new_{v}{sv}', (Module,), {{'__init__'  : initCustom_{v}{sv}, 'beginFile' : beginCustomFile_{v}{sv}, 'analyze' : analyzeCustom_{v}{sv},}})()"
 #eval(tmpstr.format(v = "", sv = ""))
 
-for var in (['jesTotal', 'jer'] + ['jes%s'%v for v in jecGroups] + ["jer%i"%i for i in range(6)] + ["mu"]):
+for var in (['jesTotal', 'jer'] + ['jes%s'%v for v in jecGroups] + ["jer%i"%i for i in range(6)] + ["mu"] + ["unclustEn"]):
     for subvar in ["Up", "Down"]:
         #print var + subvar
-        exec(scaffconst.format(var =  "_" + var + subvar))
+        exec(scaffconst.format(var =  "_" + var + subvar, varjet = ("_" + var + subvar) if "unclustEn" not in var else ""))
         exec(scaffbegin.format(var =  "_" + var + subvar))
         exec(scaffan.format(var    =  "_" + var + subvar))
 

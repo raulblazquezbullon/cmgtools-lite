@@ -449,7 +449,7 @@ cleaning_data_2018 = [cleaning_data_mod2018, addYear_2018]
 #### EVENT VARIABLES ###
 from CMGTools.TTHAnalysis.tools.eventVars_tWRun2 import EventVars_tWRun2
 eventVars_mc = lambda : EventVars_tWRun2('', 'Recl',
-                                         jecvars = ['jesTotal', 'jer'] + ['jes%s'%v for v in jecGroups] + ["jer%i"%i for i in range(6)],
+                                         jecvars = ['jesTotal', 'jer'] + ['jes%s'%v for v in jecGroups] + ["jer%i"%i for i in range(6)] + ["unclustEn"],
                                          #jecvars = ['jesTotal', 'jer'],
                                          lepvars = ['mu'])
 eventVars_data = lambda : EventVars_tWRun2('', 'Recl', isMC = False,
@@ -538,7 +538,7 @@ mvas_mc_pruebas = [lambda : getattr(importlib.import_module("CMGTools.TTHAnalysi
 
 tmpstr = """mvas_mc_pruebas.append(lambda : getattr(importlib.import_module("CMGTools.TTHAnalysis.tools.nanoAOD.MVA_tWRun2_new"), "MVA_tWRun2_new_{v}{sv}")() )"""
 
-for v in (['jesTotal', 'jer'] + ['jes%s'%v for v in jecGroups] + ["jer%i"%i for i in range(6)] + ["mu"]):
+for v in (['jesTotal', 'jer'] + ['jes%s'%v for v in jecGroups] + ["jer%i"%i for i in range(6)] + ["mu"] + ["unclustEn"]):
     for sv in ["Up", "Down"]:
         eval(tmpstr.format(v = v, sv = sv))
         #mvas_mc_pruebas.append(  getattr(importlib.import_module("CMGTools.TTHAnalysis.tools.nanoAOD.MVA_tWRun2_new"), "MVA_tWRun2_new_" + v + sv)() )
