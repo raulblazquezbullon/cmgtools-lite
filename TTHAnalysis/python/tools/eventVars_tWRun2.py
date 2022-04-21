@@ -134,6 +134,7 @@ class EventVars_tWRun2(Module):
                               "minMllAFAS",
                              ]
 
+
         self.label    = "" if (label in ["", None]) else ("_" + label)
 
         self.systsJEC   = {0: ""}
@@ -149,6 +150,7 @@ class EventVars_tWRun2(Module):
             for i, var in enumerate(jecvars):
                 self.systsJEC[i+1]    = "_%sUp"%var
                 self.systsJEC[-(i+1)] = "_%sDown"%var
+
         if   len(lepvars):
             for i, var in enumerate(lepvars):
                 self.systsLepEn[i+1]    = "_%sUp"%var
@@ -157,7 +159,8 @@ class EventVars_tWRun2(Module):
         self.inputlabel = '_' + recllabel
         self.branches   = []
 
-        for delta,var in self.systsJEC.iteritems():   self.branches.extend([br + self.label + var for br in self.jecbranches])
+        for delta,var in self.systsJEC.iteritems():
+            self.branches.extend([br + self.label + var for br in self.jecbranches])
         for delta,var in self.systsLepEn.iteritems():
             self.branches.extend([el    + self.label + var for el in self.lepenergyvars if type(el) != tuple])
             self.branches.extend([(el[0] + self.label + var, el[1]) for el in self.lepenergyvars if type(el) == tuple])
@@ -309,13 +312,13 @@ class EventVars_tWRun2(Module):
                 met_4m.SetPtEtaPhiM(allret["METgood_pt" + sys], 0, allret["METgood_phi" + sys], 0)
 
                 ### jets
-                jets    = [all_jets[getattr(event, 'iJetSel30{v}_Recl'.format(v = sys))[j]]
-                           for j in xrange(min([getattr(event, 'nJetSel30{v}_Recl'.format(v = sys)), 5]))]
+                jets    = [all_jets[getattr(event, 'iJetSel30{v}_Recl'.format(v = sys if "unclustEn" not in sys else ""))[j]]
+                           for j in xrange(min([getattr(event, 'nJetSel30{v}_Recl'.format(v = sys if "unclustEn" not in sys else "")), 5]))]
                 #jets    = [all_jets[getattr(event, 'iJetSel30_Recl')[j]]
                            #for j in xrange(min([getattr(event, 'nJetSel30_Recl'), 5]))]
                 jets_4m = [j.p4() for j in jets]
 
-                jetjecsysscaff = (sys if sys != "" else self.nominaljecscaff)
+                jetjecsysscaff = (sys if (sys != "" and "unclustEn" not in sys) else self.nominaljecscaff)
                 if event.isData: jetjecsysscaff = ""
 
                 for i in range(len(jets_4m)):
@@ -323,8 +326,8 @@ class EventVars_tWRun2(Module):
                                             jets_4m[i].Phi(), getattr(jets[i], "mass" + jetjecsysscaff))
 
                 ### loose jets
-                loosejets = [all_jets[getattr(event, 'iJetSel20{v}_Recl'.format(v = sys))[j]]
-                           for j in xrange(min([getattr(event, 'nJetSel20{v}_Recl'.format(v = sys)), 5]))]
+                loosejets = [all_jets[getattr(event, 'iJetSel20{v}_Recl'.format(v = sys if "unclustEn" not in sys else ""))[j]]
+                           for j in xrange(min([getattr(event, 'nJetSel20{v}_Recl'.format(v = sys if "unclustEn" not in sys else "")), 5]))]
                 loosejets_4m = [j.p4() for j in loosejets]
 
                 for i in range(len(loosejets_4m)):
@@ -340,7 +343,7 @@ class EventVars_tWRun2(Module):
                 #    
                 #    allret["NlooseJetsPU" + sys] = loosejetsFromPU
 
-                if getattr(event, 'nJetSel20{v}_Recl'.format(v = sys)) > 0:
+                if getattr(event, 'nJetSel20{v}_Recl'.format(v = sys if "unclustEn" not in sys else "")) > 0:
                     allret["JetLoose1_Pt" + sys] = loosejets_4m[0].Pt()
 
                 #if getattr(event, 'nJetSel20_Recl') > 0:
@@ -348,7 +351,7 @@ class EventVars_tWRun2(Module):
                                                            #("Jet_" + jetjecsysscaff) if sys == "" else "Jet_pt" + sys)[event.iJetSel20_Recl[0]]
                 
 
-                if getattr(event, 'nJetSel30{v}_Recl'.format(v = sys)) > 0:
+                if getattr(event, 'nJetSel30{v}_Recl'.format(v = sys if "unclustEn" not in sys else "")) > 0:
                     allret["Lep1Lep2Jet1MET_Pz"          + sys] = abs((leps_4m[0] + leps_4m[1] + jets_4m[0] + met_4m).Pz())
                     allret["Lep1Lep2Jet1MET_Pt"          + sys] = (leps_4m[0] + leps_4m[1] + jets_4m[0] + met_4m).Pt()
                     allret["Lep1Lep2Jet1MET_M"           + sys] = (leps_4m[0] + leps_4m[1] + jets_4m[0] + met_4m).M()
@@ -375,7 +378,6 @@ class EventVars_tWRun2(Module):
                     allret["Lep1Lep2Jet1MET_PtOverHTtot" + sys] = allret["Lep1Lep2Jet1MET_Pt" + sys] / allret["HTtot" + sys]
                     allret["Lep1_PtLep2_PtOverHTtot"     + sys] = (leps_4m[0].Pt() + leps_4m[1].Pt()) / allret["HTtot" + sys]
 
-
                     allret["LepJet11Lep2_DR"            + sys] = (leps_4m[0] + jets_4m[0]).DeltaR(leps_4m[1])
                     allret["LepJet11Lep2_DPhi"          + sys] = abs((leps_4m[0] + jets_4m[0]).Phi() - leps_4m[1].Phi()) / r.TMath.Pi()
                     allret["LepJet11Lep2_DEta"          + sys] = abs((leps_4m[0] + jets_4m[0]).Eta() - leps_4m[1].Eta())
@@ -384,7 +386,7 @@ class EventVars_tWRun2(Module):
                     allret["Lep1LepJet21_DEta"          + sys] = abs(leps_4m[0].Phi() - (jets_4m[0] + leps_4m[1]).Eta())
 
 
-                    if getattr(event, 'nJetSel30{v}_Recl'.format(v = sys)) > 1:
+                    if getattr(event, 'nJetSel30{v}_Recl'.format(v = sys if "unclustEn" not in sys else "")) > 1:
                         allret["Lep12Jet12_DR"    + sys] = (leps_4m[0] + leps_4m[1]).DeltaR(jets_4m[0] + jets_4m[1])
                         allret["Lep12Jet12MET_DR" + sys] = (leps_4m[0] + leps_4m[1]).DeltaR(jets_4m[0] + jets_4m[1] + met_4m)
                         allret["Lep1Jet2_M"       + sys] = (leps_4m[0] + jets_4m[1]).M()
