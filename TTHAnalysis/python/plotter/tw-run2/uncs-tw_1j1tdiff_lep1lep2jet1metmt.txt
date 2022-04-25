@@ -136,7 +136,8 @@ jer_2018 : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jerUp.t
 
 
 ## If we don't use MET, we don't need this unc.:
-unclenergy : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-unclUp.txt'\,'tw-run2/frs-jecs/fr-unclDn.txt']
+unclenergy : $RealBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-unclUp.txt'\,'tw-run2/frs-jecs/fr-unclDn.txt'], fitOrder=1, symmAfterFit=1
+unclenergy : $tWProc  : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-unclUp.txt'\,'tw-run2/frs-jecs/fr-unclDn.txt'], fitOrder=1, symmAfterFit=1
 
 
 ## --------------------------------------------------------------------------------------------------------------------------------------------------------------------------

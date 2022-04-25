@@ -46,6 +46,7 @@ individual_scaff = {
         "jes_Absolute_2016",
         "jes_Absolute_2017",
         "jes_Absolute_2018",
+        "unclenergy",
     ],
     'jer': [
         "jer_2016",
@@ -181,6 +182,7 @@ global_scaff = {
         "jer_2016",
         "jer_2017",
         "jer_2018",
+        "unclenergy",
         "triggereff_2016",
         "triggereff_2017",
         "triggereff_2018",

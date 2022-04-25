@@ -248,8 +248,7 @@ def produceAdHocMCAandUncsfiles(thepath, they, thev):
                         stringtoreplace = "fitOrder=" + tmpline.split("fitOrder=")[1][0]
                     elif "fitOrder=" in tmpline:
                         stringtoreplace = ["fitOrder=" + tmpline.split("fitOrder=")[1][0], "symmAfterFit=1"]
-                    
-                    #print stringtoreplace, tmpline
+
                     if "$tWProc" in tmpline and stringtoreplace and ("particle_smoothing" in vl.varList[thev]):
                         theunc = tmpline.split(":")[0].replace(" ", "")
                         if theunc in vl.varList[thev]["particle_smoothing"]:

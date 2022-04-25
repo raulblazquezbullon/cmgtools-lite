@@ -464,6 +464,10 @@ varList['Lep1Lep2Jet1MET_Mt'] = {
                             "jes_Absolute_2016" : "fitOrder=1, symmAfterFit=1",
                             "jes_Absolute_2017" : "fitOrder=1, symmAfterFit=1",
                             "jes_Absolute_2018" : "fitOrder=1, symmAfterFit=1",
+                            "unclenergy"        : {1 : "fitOrder=4, symmAfterFit=1",
+                                                   2 : "fitOrder=4, symmAfterFit=1",
+                                                   3 : "fitOrder=2, symmAfterFit=1",
+                                                   4 : "EstimateFromXbins=1",},
     },
 }
 
@@ -512,7 +516,7 @@ varList['Lep1Lep2Jet1_M'] = {
     'yaxisnorm'   : 'd#sigma/d(#it{m}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{j})) (pb/GeV)',
     # 'yaxis_unc'   : 'Relative uncertainty (adim.)',
     'yaxis_unc'   : 'Relative uncertainty',
-    'bins_particle'  : [50., 130., 170., 200., 250., 325., 400.], # propuesta (6 bins) BUENA
+    'bins_particle' : [50., 130., 170., 200., 250., 325., 400.], # propuesta (6 bins) BUENA
     'bins_detector' : [50., 130., 140., 150., 160., 170., 180., 190., 200., 210., 220., 250., 325., 400.], # propuesta (6 bins) SELECCIONADA BUENA
 
 #    'bins_particle'  : [50., 130., 170., 200., 250., 325., 400.],
