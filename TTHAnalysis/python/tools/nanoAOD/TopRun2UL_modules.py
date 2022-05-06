@@ -187,41 +187,40 @@ dressfwdloosejetID = lambda j : ( abs(j.eta) >= 2.4 and abs(j.eta) < 5.0 and (ab
 
 
 #### JET TREATMENTS ###
-jecGroups = {'HF'                 : ['PileUpPtHF', 'RelativeJERHF', 'RelativePtHF'],
-             'BBEC1_year'         : ['RelativeJEREC1', 'RelativePtEC1', 'RelativeStatEC'],
-             'FlavorQCD'          : ['FlavorQCD'],
-             'RelativeSample_year': ['RelativeSample'],
-             'EC2'                : ['PileUpPtEC2'],
-             'HF_year'            : ['RelativeStatHF'],
-             'RelativeBal'        : ['RelativeBal'],
-             'Absolute_year'      : ['AbsoluteStat', 'RelativeStatFSR', 'TimePtEta'],
-             'BBEC1'              : ['PileUpPtBB', 'PileUpPtEC1', 'RelativePtBB'],
-             'EC2_year'           : ['RelativeJEREC2', 'RelativePtEC2'],
-             'Absolute'           : ['AbsoluteMPFBias', 'AbsoluteScale', 'Fragmentation', 'PileUpDataMC',
-                                     'PileUpPtRef', 'RelativeFSR', 'SinglePionECAL', 'SinglePionHCAL'],
+jecGroups = {'HF'                   : ['PileUpPtHF', 'RelativeJERHF', 'RelativePtHF'],
+             'BBEC1_{year}'         : ['RelativeJEREC1', 'RelativePtEC1', 'RelativeStatEC'],
+             'FlavorQCD'            : ['FlavorQCD'],
+             'RelativeSample_{year}': ['RelativeSample'],
+             'EC2'                  : ['PileUpPtEC2'],
+             'HF_{year}'            : ['RelativeStatHF'],
+             'RelativeBal'          : ['RelativeBal'],
+             'Absolute_{year}'      : ['AbsoluteStat', 'RelativeStatFSR', 'TimePtEta'],
+             'BBEC1'                : ['PileUpPtBB', 'PileUpPtEC1', 'RelativePtBB'],
+             'EC2_{year}'           : ['RelativeJEREC2', 'RelativePtEC2'],
+             'Absolute'             : ['AbsoluteMPFBias', 'AbsoluteScale', 'Fragmentation', 'PileUpDataMC',
+                                       'PileUpPtRef', 'RelativeFSR', 'SinglePionECAL', 'SinglePionHCAL'],
 }
 
 
 from PhysicsTools.NanoAODTools.postprocessing.modules.jme.jetmetHelperRun2 import createJMECorrector
-from CMGTools.TTHAnalysis.tools.nanoAOD.jetMetGrouper_TopRun2UL import jetMetCorrelate_TopRun2
 
 addJECs_2016apv = createJMECorrector(dataYear      = "UL2016_preVFP",
-                                     jesUncert     = "All",
+                                     jesUncert     = "Merged",
                                      metBranchName = "MET",
                                      splitJER      = True,
                                      applyHEMfix   = True,)
 addJECs_2016    = createJMECorrector(dataYear      = "UL2016",
-                                     jesUncert     = "All",
+                                     jesUncert     = "Merged",
                                      metBranchName = "MET",
                                      splitJER      = True,
                                      applyHEMfix   = True,)
 addJECs_2017    = createJMECorrector(dataYear      = "UL2017",
-                                     jesUncert     = "All",
+                                     jesUncert     = "Merged",
                                      metBranchName = "MET",
                                      splitJER      = True,
                                      applyHEMfix   = True,)
 addJECs_2018    = createJMECorrector(dataYear      = "UL2018",
-                                     jesUncert     = "All",
+                                     jesUncert     = "Merged",
                                      metBranchName = "MET",
                                      splitJER      = True,
                                      applyHEMfix   = True,)
@@ -236,7 +235,7 @@ from CMGTools.TTHAnalysis.tools.nanoAOD.pythonCleaningTopRun2UL import pythonCle
 cleaning_mc_2016apv = lambda : pythonCleaningTopRun2UL(label  = "Recl",
                                              jetPts = [IDDict["jets"]["pt"], IDDict["jets"]["pt2"]],
                                              jetPtNoisyFwd = IDDict["jets"]["ptfwdnoise"],
-                                             jecvars   = ['jesTotal', 'jer'] + ['jes%s'%v for v in jecGroups] + ["jer%i"%i for i in range(6)] + ["jesHEMIssue"],
+                                             jecvars   = ['jesTotal', 'jer'] + ['jes%s'%v.format(year = 2016) for v in jecGroups] + ["jer%i"%i for i in range(6)] + ["jesHEMIssue"],
                                              lepenvars = ["mu", "elsigma"],
                                              isMC      = True,
                                              #debug     = True,
@@ -246,7 +245,7 @@ cleaning_mc_2016apv = lambda : pythonCleaningTopRun2UL(label  = "Recl",
 cleaning_mc_2016 = lambda : pythonCleaningTopRun2UL(label  = "Recl",
                                              jetPts = [IDDict["jets"]["pt"], IDDict["jets"]["pt2"]],
                                              jetPtNoisyFwd = IDDict["jets"]["ptfwdnoise"],
-                                             jecvars   = ['jesTotal', 'jer'] + ['jes%s'%v for v in jecGroups] + ["jer%i"%i for i in range(6)] + ["jesHEMIssue"],
+                                             jecvars   = ['jesTotal', 'jer'] + ['jes%s'%v.format(year = 2016) for v in jecGroups] + ["jer%i"%i for i in range(6)] + ["jesHEMIssue"],
                                              lepenvars = ["mu", "elsigma"],
                                              isMC      = True,
                                              #debug     = True,
@@ -256,7 +255,7 @@ cleaning_mc_2016 = lambda : pythonCleaningTopRun2UL(label  = "Recl",
 cleaning_mc_2017 = lambda : pythonCleaningTopRun2UL(label  = "Recl",
                                              jetPts = [IDDict["jets"]["pt"], IDDict["jets"]["pt2"]],
                                              jetPtNoisyFwd = IDDict["jets"]["ptfwdnoise"],
-                                             jecvars   = ['jesTotal', 'jer'] + ['jes%s'%v for v in jecGroups] + ["jer%i"%i for i in range(6)] + ["jesHEMIssue"],
+                                             jecvars   = ['jesTotal', 'jer'] + ['jes%s'%v.format(year = 2017) for v in jecGroups] + ["jer%i"%i for i in range(6)] + ["jesHEMIssue"],
                                              lepenvars = ["mu", "elsigma"],
                                              isMC      = True,
                                              #debug     = True,
@@ -266,7 +265,7 @@ cleaning_mc_2017 = lambda : pythonCleaningTopRun2UL(label  = "Recl",
 cleaning_mc_2018 = lambda : pythonCleaningTopRun2UL(label  = "Recl",
                                              jetPts = [IDDict["jets"]["pt"], IDDict["jets"]["pt2"]],
                                              jetPtNoisyFwd = IDDict["jets"]["ptfwdnoise"],
-                                             jecvars   = ['jesTotal', 'jer'] + ['jes%s'%v for v in jecGroups] + ["jer%i"%i for i in range(6)] + ["jesHEMIssue"],
+                                             jecvars   = ['jesTotal', 'jer'] + ['jes%s'%v.format(year = 2018) for v in jecGroups] + ["jer%i"%i for i in range(6)] + ["jesHEMIssue"],
                                              lepenvars = ["mu", "elsigma"],
                                              isMC      = True,
                                              year_     = "2018",
@@ -305,8 +304,30 @@ cleaning_data_2018 = lambda : pythonCleaningTopRun2UL(label = "Recl",
 
 #### Add Rochester corrections
 from CMGTools.TTHAnalysis.tools.addExtraLepVarsForLepUncs import addExtraLepVarsForLepUncs
+# from CMGTools.TTHAnalysis.tools.nanoAOD.jetMetGrouper_TopRun2UL import jetMetCorrelate_TopRun2
 addLepUncsVars_mc   = lambda : addExtraLepVarsForLepUncs()
 addLepUncsVars_data = lambda : addExtraLepVarsForLepUncs(isMC = False)
+
+# lepsuncsAndParticle_mc   = [jetMetCorrelate_TopRun2, addLepUncsVars_mc]
+# lepsuncsAndParticle_data = [jetMetCorrelate_TopRun2, addLepUncsVars_data]
+lepsuncsAndParticle_mc   = [addLepUncsVars_mc]
+lepsuncsAndParticle_data = [addLepUncsVars_data]
+
+
+#### EVENT VARIABLES ### FTREE 3
+from CMGTools.TTHAnalysis.tools.eventVars_TopRun2UL import EventVars_TopRun2UL
+eventVars_mc_2016   = lambda : EventVars_TopRun2UL('', 'Recl',
+                                              jecvars = ['jesTotal', 'jer'] + ['jes%s'%v.format(year = 2016) for v in jecGroups] + ["jer%i"%i for i in range(6)] + ["unclustEn", "jesHEMIssue"],
+                                              lepvars = ['mu', "elsigma"])
+eventVars_mc_2017   = lambda : EventVars_TopRun2UL('', 'Recl',
+                                              jecvars = ['jesTotal', 'jer'] + ['jes%s'%v.format(year = 2017) for v in jecGroups] + ["jer%i"%i for i in range(6)] + ["unclustEn", "jesHEMIssue"],
+                                              lepvars = ['mu', "elsigma"])
+eventVars_mc_2018   = lambda : EventVars_TopRun2UL('', 'Recl',
+                                              jecvars = ['jesTotal', 'jer'] + ['jes%s'%v.format(year = 2018) for v in jecGroups] + ["jer%i"%i for i in range(6)] + ["unclustEn", "jesHEMIssue"],
+                                              lepvars = ['mu', "elsigma"])
+eventVars_data = lambda : EventVars_TopRun2UL('', 'Recl', isMC = False,
+                                              jecvars = [],
+                                              lepvars = ["elscale"])
 
 from CMGTools.TTHAnalysis.tools.nanoAOD.selectParticleAndPartonInfo import selectParticleAndPartonInfo
 theDressAndPartInfo = lambda : selectParticleAndPartonInfo(dresslepSel_         = dresslepID,
@@ -315,23 +336,14 @@ theDressAndPartInfo = lambda : selectParticleAndPartonInfo(dresslepSel_         
                                                            dressfwdjetSel_      = dressfwdjetID,
                                                            dressfwdloosejetSel_ = dressfwdloosejetID)
 
-lepsuncsAndParticle_mc   = [jetMetCorrelate_TopRun2, addLepUncsVars_mc]
-lepsuncsAndParticle_data = [jetMetCorrelate_TopRun2, addLepUncsVars_data]
-
-#### EVENT VARIABLES ###
-from CMGTools.TTHAnalysis.tools.eventVars_TopRun2UL import EventVars_TopRun2UL
-eventVars_mc   = lambda : EventVars_TopRun2UL('', 'Recl',
-                                              jecvars = ['jesTotal', 'jer'] + ['jes%s'%v for v in jecGroups] + ["jer%i"%i for i in range(6)] + ["unclustEn", "jesHEMIssue"],
-                                              lepvars = ['mu', "elsigma"])
-eventVars_data = lambda : EventVars_TopRun2UL('', 'Recl', isMC = False,
-                                              jecvars = [],
-                                              lepvars = ["elscale"])
-
 from CMGTools.TTHAnalysis.tools.particleAndPartonVars_TopRun2UL import particleAndPartonVars_TopRun2UL
 theDressAndPartVars = lambda : particleAndPartonVars_TopRun2UL()
 
-varstrigger_mc   = [eventVars_mc, theDressAndPartInfo, theDressAndPartVars] + triggerSeq
-varstrigger_data = [eventVars_data] + triggerSeq
+varstrigger_mc_2016apv = [eventVars_mc_2016, theDressAndPartInfo, theDressAndPartVars] + triggerSeq
+varstrigger_mc_2016    = [eventVars_mc_2016, theDressAndPartInfo, theDressAndPartVars] + triggerSeq
+varstrigger_mc_2017    = [eventVars_mc_2017, theDressAndPartInfo, theDressAndPartVars] + triggerSeq
+varstrigger_mc_2018    = [eventVars_mc_2018, theDressAndPartInfo, theDressAndPartVars] + triggerSeq
+varstrigger_data       = [eventVars_data] + triggerSeq
 
 
 ### FTREE 4
@@ -355,28 +367,28 @@ btagpath = os.environ['CMSSW_BASE'] + "/src/CMGTools/TTHAnalysis/data/TopRun2UL/
 btagWeights_2016apv = lambda : btag_weighterUL(btagpath + "/" + "DeepJet_2016LegacySF_V1_YearCorrelation-V1.csv",
                                                btagpath + "/" + "BtagMCSF.root",
                                                'deepjet',
-                                               jecvars   = ['jesTotal', 'jer'] + ['jes%s'%v for v in jecGroups] + ["jer%i"%i for i in range(6)] + ["jesHEMIssue"],
+                                               jecvars   = ['jesTotal', 'jer'] + ['jes%s'%v.format(year = 2016) for v in jecGroups] + ["jer%i"%i for i in range(6)] + ["jesHEMIssue"],
                                                lepenvars = ["mu", "elsigma"],
                                                splitCorrelations = True,
                                                year = "2016apv")
 btagWeights_2016 = lambda : btag_weighterUL(btagpath + "/" + "DeepJet_2016LegacySF_V1_YearCorrelation-V1.csv",
                                             btagpath + "/" + "BtagMCSF.root",
                                             'deepjet',
-                                            jecvars   = ['jesTotal', 'jer'] + ['jes%s'%v for v in jecGroups] + ["jer%i"%i for i in range(6)] + ["jesHEMIssue"],
+                                            jecvars   = ['jesTotal', 'jer'] + ['jes%s'%v.format(year = 2016) for v in jecGroups] + ["jer%i"%i for i in range(6)] + ["jesHEMIssue"],
                                             lepenvars = ["mu", "elsigma"],
                                             splitCorrelations = True,
                                             year = "2016")
 btagWeights_2017 = lambda : btag_weighterUL(btagpath + "/" + "DeepJet_DeepFlavour2017_mujets_YearCorrelation-V1.csv",
                                             btagpath + "/" + "BtagMCSF.root",
                                             'deepjet',
-                                            jecvars   = ['jesTotal', 'jer'] + ['jes%s'%v for v in jecGroups] + ["jer%i"%i for i in range(6)] + ["jesHEMIssue"],
+                                            jecvars   = ['jesTotal', 'jer'] + ['jes%s'%v.format(year = 2017) for v in jecGroups] + ["jer%i"%i for i in range(6)] + ["jesHEMIssue"],
                                             lepenvars = ["mu", "elsigma"],
                                             splitCorrelations = True,
                                             year = "2017")
 btagWeights_2018 = lambda : btag_weighterUL(btagpath + "/" + "DeepJet_102XSF_V1_YearCorrelation-V1.csv",
                                             btagpath + "/" + "BtagMCSF.root",
                                             'deepjet',
-                                            jecvars   = ['jesTotal', 'jer'] + ['jes%s'%v for v in jecGroups] + ["jer%i"%i for i in range(6)] + ["jesHEMIssue"],
+                                            jecvars   = ['jesTotal', 'jer'] + ['jes%s'%v.format(year = 2018) for v in jecGroups] + ["jer%i"%i for i in range(6)] + ["jesHEMIssue"],
                                             lepenvars = ["mu", "elsigma"],
                                             splitCorrelations = True,
                                             year = "2018")

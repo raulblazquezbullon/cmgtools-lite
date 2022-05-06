@@ -12,7 +12,6 @@ friendspath  = "/pool/phedexrw/userstorage/vrbouza/proyectos/twttbar_run2/produc
 datasamples  = ["SingleMuon", "SingleElec", "DoubleMuon", "DoubleEG", "MuonEG", "LowEGJet", "HighEGJet", "EGamma"]
 
 mcpath       = "/beegfs/data/nanoAODv9/"
-mcpathdiv    = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/misc/2021_04_nuevasdivisiones"
 datapath     = mcpath
 
 logpath      = friendspath + "/{p}/{y}/logs/plots"
@@ -169,20 +168,6 @@ if __name__=="__main__":
                 os.system(SLcommscaff.format(realdataset = mcpath + "/" + str(year) + "/" + sam,
                                              symlink = destdir + "/" + sam))
         #sys.exit()
-
-        #### Also, the ones from
-        print "> Creating MC divisions symbolic links..."
-        mcsampleslist = os.listdir(mcpathdiv + "/ttbar/" + str(year))
-        for sam in mcsampleslist:
-            if not os.path.islink(destdir + "/" + sam):
-                os.system(SLcommscaff.format(realdataset = mcpathdiv + "/ttbar/" + str(year) + "/" + sam,
-                                             symlink = destdir + "/" + sam))
-        #if int(year) == 2016:
-            #mcsampleslist = os.listdir(mcpathdiv + "/tw_incl/" + str(year))
-            #for sam in mcsampleslist:
-                #if not os.path.islink(destdir + "/" + sam):
-                    #os.system(SLcommscaff.format(realdataset = mcpathdiv + "/tw_incl/" + str(year) + "/" + sam,
-                                                #symlink = destdir + "/" + sam))
 
         #### Later, data
         print "> Creating data symbolic links..."

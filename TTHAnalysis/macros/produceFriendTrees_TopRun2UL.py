@@ -8,7 +8,7 @@ r.PyConfig.IgnoreCommandLineOptions = True
 r.gROOT.SetBatch(True)
 
 #### Settings
-prodname = "2022-04-25" # con skim
+prodname = "2022-05-06"
 
 datasamples  = ["SingleMuon", "SingleElec", "DoubleMuon", "DoubleEG", "MuonEG", "LowEGJet", "HighEGJet", "EGamma"]
 
@@ -31,11 +31,11 @@ friendfolders = {0 : "0_jecs",
                  "btageffvars" : "x_btageff_pasf",
 }
 
-chunksizes    = {0 : 500000,
+chunksizes    = {0 : 200000, 
                  1 : 200000,
                  2 : 5000000,
-                 3 : 500000,
-                 4 : 500000,
+                 3 : 200000,
+                 4 : 200000,
 }
 minchunkbytes = 1000
 
@@ -849,22 +849,22 @@ def SendDatasetJobs(task):
 
     elif step == 1:
         module_  = "lepsuncsAndParticle_" + ("mc" if not isData else "data")
-        friends_ +=       friendpref + getFriendsFolder(dataset, friendsbasepath, 0) + friendsuff
+        # friends_ +=       friendpref + getFriendsFolder(dataset, friendsbasepath, 0) + friendsuff
 
     elif step == 2:
         module_  = "cleaning_{ty}_{y}".format(ty = "data" if isData else "mc", y  = year)
-        #friends_ +=       friendpref + getFriendsFolder(dataset, friendsbasepath, 0) + friendsuff
-        friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 1) + friendsuff
+        friends_ +=       friendpref + getFriendsFolder(dataset, friendsbasepath, 0) + friendsuff
+        # friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 1) + friendsuff
 
     elif step == 3:
         module_  = "varstrigger_" + ("mc" if not isData else "data")
-        #friends_ +=       friendpref + getFriendsFolder(dataset, friendsbasepath, 0) + friendsuff
+        friends_ +=       friendpref + getFriendsFolder(dataset, friendsbasepath, 0) + friendsuff
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 1) + friendsuff
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 2) + friendsuff
 
     elif step == 4 and not isData:
         module_  = "sfSeq_{y}".format(y = year)
-        #friends_ +=       friendpref + getFriendsFolder(dataset, friendsbasepath, 0) + friendsuff
+        friends_ +=       friendpref + getFriendsFolder(dataset, friendsbasepath, 0) + friendsuff
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 1) + friendsuff
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 2) + friendsuff
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 3) + friendsuff
@@ -1169,7 +1169,7 @@ def CheckLotsOfMergedDatasets(dataset, year, step, queue, extra, ncores):
         tasks = []
         for dat in sampledict[year]:
             isData = any(ext in dat for ext in datasamples)
-            if ((not isData and step != 0) or (isData and step != 4)):
+            if (isData and step != 0 and step != 4) or (not isData):
                 tasks.append( (dat, year, step) )
         if ncores > 1:
             pool = Pool(ncores)
