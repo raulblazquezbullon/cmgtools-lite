@@ -33,7 +33,7 @@ friendfolders = {0 : "0_jecs",
 
 chunksizes    = {0 : 200000, 
                  1 : 200000,
-                 2 : 5000000,
+                 2 : 200000,
                  3 : 200000,
                  4 : 200000,
 }
@@ -470,7 +470,7 @@ sampledict["2017"] = {
     "WW_LO" : "WW_TuneCP5_13TeV_pythia8",
 
     # NLO
-    "WWTo2L2Nu" : "WTo2L2Nu_TuneCP5_13TeV_powheg_pythia8",
+    "WWTo2L2Nu" : "WWTo2L2Nu_TuneCP5_13TeV_powheg_pythia8",
     #"WWTo2L2Nu_DoubleScatt" : "WWTo2L2Nu_DoubleScattering_13TeV-pythia8_topnano_",
     #"WWToLNuQQ" : ["WWToLNuQQ_NNPDF31_TuneCP5_PSweights_13TeV-powheg-pythia8_topnano_*",
                    #"WWToLNuQQ_NNPDF31_TuneCP5_13TeV-powheg-pythia8_central_*",
@@ -763,7 +763,7 @@ sampledict["2018"] = {
     "SingleMuon" : "SingleMuon_Run2018",
     "EGamma"     : "EGamma_Run2018",
     "DoubleMuon" : "DoubleMuon_Run2018",
-    #"MuonEG"     : "MuonEG_Run2018",
+    ####################"MuonEG"     : "MuonEG_Run2018",
 }
 
 """
@@ -834,6 +834,7 @@ def getFriendsFolder(dataset, basepath, step_friends):
 def SendDatasetJobs(task):
     dataset, year, step, inputpath_, isData, queue, extra, regexp, pretend, nthreads = task
     outpath_ = friendspath + "/" + prodname + "/" + str(year) + "/" + friendfolders[step]
+#    outpath_ = "/beegfs/data/nanoAODv9/temp/pruebinacleaning/2017/2_cleaning"
     dataset_ = ("--dm " if regexp else "-d ") + dataset
     jobname_ = "happyTF_{y}_{d}_{s}".format(y = year, d = dataset, s = step)
     logdir_  = logpath.format(step_prefix = friendfolders[step], y = year)
@@ -853,18 +854,21 @@ def SendDatasetJobs(task):
 
     elif step == 2:
         module_  = "cleaning_{ty}_{y}".format(ty = "data" if isData else "mc", y  = year)
-        friends_ +=       friendpref + getFriendsFolder(dataset, friendsbasepath, 0) + friendsuff
-        # friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 1) + friendsuff
+        if not isData:
+            friends_ +=       friendpref + getFriendsFolder(dataset, friendsbasepath, 0) + friendsuff
+        friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 1) + friendsuff
 
     elif step == 3:
-        module_  = "varstrigger_" + ("mc" if not isData else "data")
-        friends_ +=       friendpref + getFriendsFolder(dataset, friendsbasepath, 0) + friendsuff
+        module_  = "varstrigger_" + (("mc_" + year) if not isData else "data")
+        if not isData:
+            friends_ +=       friendpref + getFriendsFolder(dataset, friendsbasepath, 0) + friendsuff
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 1) + friendsuff
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 2) + friendsuff
 
     elif step == 4 and not isData:
         module_  = "sfSeq_{y}".format(y = year)
-        friends_ +=       friendpref + getFriendsFolder(dataset, friendsbasepath, 0) + friendsuff
+        if not isData:
+            friends_ +=       friendpref + getFriendsFolder(dataset, friendsbasepath, 0) + friendsuff
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 1) + friendsuff
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 2) + friendsuff
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 3) + friendsuff
@@ -1045,8 +1049,8 @@ def CheckMergedDataset(task):
 
         friendname = dat.replace(".root", "") + "_Friend.root"
         filepath   = basefolder + "/" + friendname
-        #print "opening", filepath
-
+        # print "opening", filepath
+        
         if not os.path.isfile(filepath):                  #### 1st: existance
             print "# Merged friendtree {chk} has not been found.".format(chk = friendname)
             pendingdict[dat] = errs.exist

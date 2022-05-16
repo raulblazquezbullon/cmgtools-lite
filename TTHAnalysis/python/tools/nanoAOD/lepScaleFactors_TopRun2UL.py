@@ -167,10 +167,8 @@ class lepScaleFactors_TopRun2UL(Module):
 
                 if event.nLepGood > 1:
                     if abs(leps[1].pdgId) == 11: # electron
-#                        elecidsf   *= self.getLepSF(leps[1].pt_corrAll, leps[1].eta + leps[1].deltaEtaSC, var, "e", year, event, "id")
-#                        elecrecosf *= self.getLepSF(leps[1].pt_corrAll, leps[1].eta + leps[1].deltaEtaSC, var, "e", year, event, "reco")
-                        elecidsf   *= self.getLepSF(leps[1].pt_corrAll, leps[1].eta, var, "e", year, event, "id")
-                        elecrecosf *= self.getLepSF(leps[1].pt_corrAll, leps[1].eta, var, "e", year, event, "reco")
+                        elecidsf   *= self.getLepSF(leps[1].pt_corrAll, leps[1].eta + leps[1].deltaEtaSC, var, "e", year, event, "id")
+                        elecrecosf *= self.getLepSF(leps[1].pt_corrAll, leps[1].eta + leps[1].deltaEtaSC, var, "e", year, event, "reco")
 
 
             self.out.fillBranch('ElecIDSF'   + var, elecidsf)
@@ -200,20 +198,16 @@ class lepScaleFactors_TopRun2UL(Module):
 
                     if len(varleps) > 0:
                         if   abs(varleps[0].pdgId) == 11: # electron
-#                            elecidsf   *= self.getLepSF(getattr(varleps[0], "pt" + sys), varleps[0].eta + varleps[0].deltaEtaSC, var, "e", year, event, "id")
-#                            elecrecosf *= self.getLepSF(getattr(varleps[0], "pt" + sys), varleps[0].eta + varleps[0].deltaEtaSC, var, "e", year, event, "reco")
-                            elecidsf   *= self.getLepSF(getattr(varleps[0], "pt" + sys), varleps[0].eta, var, "e", year, event, "id")
-                            elecrecosf *= self.getLepSF(getattr(varleps[0], "pt" + sys), varleps[0].eta, var, "e", year, event, "reco")
+                            elecidsf   *= self.getLepSF(getattr(varleps[0], "pt" + sys), varleps[0].eta + varleps[0].deltaEtaSC, var, "e", year, event, "id")
+                            elecrecosf *= self.getLepSF(getattr(varleps[0], "pt" + sys), varleps[0].eta + varleps[0].deltaEtaSC, var, "e", year, event, "reco")
                         elif abs(varleps[0].pdgId) == 13: # muon
                             muonidsf  *= self.getLepSF(getattr(varleps[0], "pt" + sys), varleps[0].eta, var, "m", year, event, "id")
                             muonisosf *= self.getLepSF(getattr(varleps[0], "pt" + sys), varleps[0].eta, var, "m", year, event, "iso")
 
                         if len(varleps) > 1:
                             if   abs(varleps[1].pdgId) == 11: # electron
-#                                elecidsf   *= self.getLepSF(getattr(varleps[1], "pt" + sys), varleps[1].eta + varleps[1].deltaEtaSC, var, "e", year, event, "id")
-#                                elecrecosf *= self.getLepSF(getattr(varleps[1], "pt" + sys), varleps[1].eta + varleps[1].deltaEtaSC, var, "e", year, event, "reco")
-                                elecidsf   *= self.getLepSF(getattr(varleps[1], "pt" + sys), varleps[1].eta, var, "e", year, event, "id")
-                                elecrecosf *= self.getLepSF(getattr(varleps[1], "pt" + sys), varleps[1].eta, var, "e", year, event, "reco")
+                                elecidsf   *= self.getLepSF(getattr(varleps[1], "pt" + sys), varleps[1].eta + varleps[1].deltaEtaSC, var, "e", year, event, "id")
+                                elecrecosf *= self.getLepSF(getattr(varleps[1], "pt" + sys), varleps[1].eta + varleps[1].deltaEtaSC, var, "e", year, event, "reco")
                             elif abs(varleps[1].pdgId) == 13: # muon
                                 muonidsf  *= self.getLepSF(getattr(varleps[1], "pt" + sys), varleps[1].eta, var, "m", year, event, "id")
                                 muonisosf *= self.getLepSF(getattr(varleps[1], "pt" + sys), varleps[1].eta, var, "m", year, event, "iso")

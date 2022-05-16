@@ -308,9 +308,14 @@ from CMGTools.TTHAnalysis.tools.addExtraLepVarsForLepUncs import addExtraLepVars
 addLepUncsVars_mc   = lambda : addExtraLepVarsForLepUncs()
 addLepUncsVars_data = lambda : addExtraLepVarsForLepUncs(isMC = False)
 
-# lepsuncsAndParticle_mc   = [jetMetCorrelate_TopRun2, addLepUncsVars_mc]
-# lepsuncsAndParticle_data = [jetMetCorrelate_TopRun2, addLepUncsVars_data]
-lepsuncsAndParticle_mc   = [addLepUncsVars_mc]
+from CMGTools.TTHAnalysis.tools.nanoAOD.selectParticleAndPartonInfo import selectParticleAndPartonInfo
+theDressAndPartInfo = lambda : selectParticleAndPartonInfo(dresslepSel_         = dresslepID,
+                                                           dressjetSel_         = dressjetID,
+                                                           dressloosejetSel_    = dressloosejetID,
+                                                           dressfwdjetSel_      = dressfwdjetID,
+                                                           dressfwdloosejetSel_ = dressfwdloosejetID)
+
+lepsuncsAndParticle_mc   = [addLepUncsVars_mc, theDressAndPartInfo]
 lepsuncsAndParticle_data = [addLepUncsVars_data]
 
 
@@ -329,20 +334,13 @@ eventVars_data = lambda : EventVars_TopRun2UL('', 'Recl', isMC = False,
                                               jecvars = [],
                                               lepvars = ["elscale"])
 
-from CMGTools.TTHAnalysis.tools.nanoAOD.selectParticleAndPartonInfo import selectParticleAndPartonInfo
-theDressAndPartInfo = lambda : selectParticleAndPartonInfo(dresslepSel_         = dresslepID,
-                                                           dressjetSel_         = dressjetID,
-                                                           dressloosejetSel_    = dressloosejetID,
-                                                           dressfwdjetSel_      = dressfwdjetID,
-                                                           dressfwdloosejetSel_ = dressfwdloosejetID)
-
 from CMGTools.TTHAnalysis.tools.particleAndPartonVars_TopRun2UL import particleAndPartonVars_TopRun2UL
 theDressAndPartVars = lambda : particleAndPartonVars_TopRun2UL()
 
-varstrigger_mc_2016apv = [eventVars_mc_2016, theDressAndPartInfo, theDressAndPartVars] + triggerSeq
-varstrigger_mc_2016    = [eventVars_mc_2016, theDressAndPartInfo, theDressAndPartVars] + triggerSeq
-varstrigger_mc_2017    = [eventVars_mc_2017, theDressAndPartInfo, theDressAndPartVars] + triggerSeq
-varstrigger_mc_2018    = [eventVars_mc_2018, theDressAndPartInfo, theDressAndPartVars] + triggerSeq
+varstrigger_mc_2016apv = [eventVars_mc_2016, theDressAndPartVars] + triggerSeq
+varstrigger_mc_2016    = [eventVars_mc_2016, theDressAndPartVars] + triggerSeq
+varstrigger_mc_2017    = [eventVars_mc_2017, theDressAndPartVars] + triggerSeq
+varstrigger_mc_2018    = [eventVars_mc_2018, theDressAndPartVars] + triggerSeq
 varstrigger_data       = [eventVars_data] + triggerSeq
 
 
@@ -365,28 +363,28 @@ from CMGTools.TTHAnalysis.tools.nanoAOD.btag_weighterUL import btag_weighterUL
 ## b-tagging
 btagpath = os.environ['CMSSW_BASE'] + "/src/CMGTools/TTHAnalysis/data/TopRun2UL/btagging"
 btagWeights_2016apv = lambda : btag_weighterUL(btagpath + "/" + "DeepJet_2016LegacySF_V1_YearCorrelation-V1.csv",
-                                               btagpath + "/" + "BtagMCSF.root",
+                                               btagpath + "/" + "btagEffs_TopEFT_2022_05_16.root",
                                                'deepjet',
                                                jecvars   = ['jesTotal', 'jer'] + ['jes%s'%v.format(year = 2016) for v in jecGroups] + ["jer%i"%i for i in range(6)] + ["jesHEMIssue"],
                                                lepenvars = ["mu", "elsigma"],
                                                splitCorrelations = True,
                                                year = "2016apv")
 btagWeights_2016 = lambda : btag_weighterUL(btagpath + "/" + "DeepJet_2016LegacySF_V1_YearCorrelation-V1.csv",
-                                            btagpath + "/" + "BtagMCSF.root",
+                                            btagpath + "/" + "btagEffs_TopEFT_2022_05_16.root",
                                             'deepjet',
                                             jecvars   = ['jesTotal', 'jer'] + ['jes%s'%v.format(year = 2016) for v in jecGroups] + ["jer%i"%i for i in range(6)] + ["jesHEMIssue"],
                                             lepenvars = ["mu", "elsigma"],
                                             splitCorrelations = True,
                                             year = "2016")
 btagWeights_2017 = lambda : btag_weighterUL(btagpath + "/" + "DeepJet_DeepFlavour2017_mujets_YearCorrelation-V1.csv",
-                                            btagpath + "/" + "BtagMCSF.root",
+                                            btagpath + "/" + "btagEffs_TopEFT_2022_05_16.root",
                                             'deepjet',
                                             jecvars   = ['jesTotal', 'jer'] + ['jes%s'%v.format(year = 2017) for v in jecGroups] + ["jer%i"%i for i in range(6)] + ["jesHEMIssue"],
                                             lepenvars = ["mu", "elsigma"],
                                             splitCorrelations = True,
                                             year = "2017")
 btagWeights_2018 = lambda : btag_weighterUL(btagpath + "/" + "DeepJet_102XSF_V1_YearCorrelation-V1.csv",
-                                            btagpath + "/" + "BtagMCSF.root",
+                                            btagpath + "/" + "btagEffs_TopEFT_2022_05_16.root",
                                             'deepjet',
                                             jecvars   = ['jesTotal', 'jer'] + ['jes%s'%v.format(year = 2018) for v in jecGroups] + ["jer%i"%i for i in range(6)] + ["jesHEMIssue"],
                                             lepenvars = ["mu", "elsigma"],

@@ -151,7 +151,7 @@ class btag_weighterUL(Module):
         self.reader_l = r.BTagCalibrationReader(self.wp, "central", vectorl)
         self.reader_l.load(self.calib, 2, "incl" if not isFastSim else "fastsim")
 
-        #### Eficiencias
+        #### Eficiencias ### FORZADAS A DEEPFLAVOUR
         f_eff        = r.TFile.Open(eff, "read")
         self.h_eff_b = deepcopy(f_eff.Get("BtagSFB_{}{}_{}".format(self.xuandict[self.algo], ["L", "M", "T"][self.wp], self.year)).Clone())
         self.h_eff_c = deepcopy(f_eff.Get("BtagSFC_{}{}_{}".format(self.xuandict[self.algo], ["L", "M", "T"][self.wp], self.year)).Clone())
