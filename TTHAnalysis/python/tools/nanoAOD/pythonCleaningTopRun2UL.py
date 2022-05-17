@@ -92,13 +92,12 @@ class pythonCleaningTopRun2UL(Module):
         # Configuring variations (lepton energy corrs. and JEC).
         self.systsLepEn = {}
         self.systsJEC   = {0 : ""}
-        if self.isMC:
-            for sys in range(len(self.jecvars)):
-                self.systsJEC[sys+1]    = '_' + self.jecvars[sys] + 'Up'
-                self.systsJEC[-(sys+1)] = '_' + self.jecvars[sys] + 'Down'
-            for sys in range(len(self.lepenvars)):
-                self.systsLepEn[sys+1]    = '_' + self.lepenvars[sys] + 'Up'
-                self.systsLepEn[-(sys+1)] = '_' + self.lepenvars[sys] + 'Down'
+        for sys in range(len(self.jecvars)):
+            self.systsJEC[sys+1]    = '_' + self.jecvars[sys] + 'Up'
+            self.systsJEC[-(sys+1)] = '_' + self.jecvars[sys] + 'Down'
+        for sys in range(len(self.lepenvars)):
+            self.systsLepEn[sys+1]    = '_' + self.lepenvars[sys] + 'Up'
+            self.systsLepEn[-(sys+1)] = '_' + self.lepenvars[sys] + 'Down'
 
 
         # Configuring output branches

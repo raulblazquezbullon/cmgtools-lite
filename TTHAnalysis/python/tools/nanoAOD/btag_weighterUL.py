@@ -44,7 +44,7 @@ class btag_weighterUL(Module):
                 self.systsLepEn[i+1]    = "_%sUp"%var
                 self.systsLepEn[-(i+1)] = "_%sDown"%var
         if self.splitCorr:
-            for i, var in enumerate(['btag_correlated', 'mistag_correlated', 'btag_uncorrelated', 'mistag_uncorrelated', "btag_jes", "btag_pileup", "btag_type3", "btag_statistic"]):
+            for i, var in enumerate(['btag_correlated', 'mistag_correlated', 'btag_uncorrelated', 'mistag_uncorrelated', "btag_jes", "btag_pileup", "btag_type3", "btag_stat"]):
                 self.systsCorr[i+1]    = "_%sUp"%var
                 self.systsCorr[-(i+1)] = "_%sDown"%var
 
@@ -81,7 +81,7 @@ class btag_weighterUL(Module):
         self.xuandict = {"deepcsv" : "DeepCSV",
                          "deepjet" : "DeepFlav"}
 
-        self.cutVal = self.btagWPs[self.xuandict[self.algo] + "_" + self.year + ["L", "M", "T"][self.wp] ]
+        self.cutVal = self.btagWPs[ self.xuandict[self.algo] + "_" + self.year + "_" + ["L", "M", "T"][self.wp] ]
         self.ret = {}
 
         vectorbc = r.vector('string')()
@@ -94,6 +94,7 @@ class btag_weighterUL(Module):
             vectorbc.push_back("up_uncorrelated")
             vectorbc.push_back("down_uncorrelated")
             #if   SFmeasReg == "mujets":
+            
             vectorbc.push_back("up_jes")
             vectorbc.push_back("down_jes")
             vectorbc.push_back("up_pileup")
@@ -453,15 +454,9 @@ class btag_weighterUL(Module):
     def getSF(self, pt, eta, mcFlavour):
         flavour    = self.pogFlavor(mcFlavour)
         pt_cutoff  = max(20. , min(999., pt))
-        eta_cutoff = min(2.39 if flavour == 2 else 2.49, abs(eta))
+        eta_cutoff = min(2.49, abs(eta))
 
-        theReader  = None
-        if   flavour == 5:
-            theReader = self.reader_b
-        elif flavour == 4:
-            theReader = self.reader_c
-        else:
-            theReader = self.reader_l
+        theReader  = [self.reader_b, self.reader_c, self.reader_l][flavour]
 
         SF   = theReader.eval_auto_bounds("central", flavour, eta_cutoff, pt_cutoff)
         SFup = theReader.eval_auto_bounds("up",      flavour, eta_cutoff, pt_cutoff)
@@ -500,13 +495,13 @@ class btag_weighterUL(Module):
 
 
     def pogFlavor(self, hadronFlavor):
-        match = {5 : 5, # b
-                 4 : 4, # c
-                 0 : 0, # l
-                 1 : 0, # l
-                 2 : 0, # l
-                 3 : 0, # l
+        match = {5:0, # b
+                 4:1, # c
+                 0:2, # l
+                 1:2, # l
+                 2:2, # l
+                 3:2, # l
         }
         if hadronFlavor in match.keys(): return match[hadronFlavor]
-        return 0
+        return 2
 

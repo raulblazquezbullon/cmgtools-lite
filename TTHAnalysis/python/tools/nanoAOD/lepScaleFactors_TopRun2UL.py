@@ -12,6 +12,7 @@ class lepScaleFactors_TopRun2UL(Module):
         self.basepath     = os.environ["CMSSW_BASE"] + "/src/CMGTools/TTHAnalysis/data/TopRun2UL/"
         self.basepathlep  = self.basepath + "/lepton/"
         self.basepathtrig = self.basepath + "/trigger/"
+        self.year         = year_
 
         self.leptonSF = {}; self.leptonSFuncs = {}; self.triggerSF = {}
         self.leptonSF["m"] = {}; self.leptonSF["e"] = {}
@@ -129,7 +130,7 @@ class lepScaleFactors_TopRun2UL(Module):
 
 
     def analyze(self, event):
-        year = event.year
+        year = self.year
         chan = event.channel
         run  = event.run
         leps = [l for l in Collection(event, "LepGood")]

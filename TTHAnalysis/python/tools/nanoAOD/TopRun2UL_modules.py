@@ -362,28 +362,29 @@ addTopPtWeight = lambda : TopPtWeight()
 from CMGTools.TTHAnalysis.tools.nanoAOD.btag_weighterUL import btag_weighterUL
 ## b-tagging
 btagpath = os.environ['CMSSW_BASE'] + "/src/CMGTools/TTHAnalysis/data/TopRun2UL/btagging"
-btagWeights_2016apv = lambda : btag_weighterUL(btagpath + "/" + "DeepJet_2016LegacySF_V1_YearCorrelation-V1.csv",
+btagWeights_2016apv = lambda : btag_weighterUL(btagpath + "/" + "wp_deepJet_106XUL16preVFP_v2.csv",
                                                btagpath + "/" + "btagEffs_TopEFT_2022_05_16.root",
                                                'deepjet',
                                                jecvars   = ['jesTotal', 'jer'] + ['jes%s'%v.format(year = 2016) for v in jecGroups] + ["jer%i"%i for i in range(6)] + ["jesHEMIssue"],
                                                lepenvars = ["mu", "elsigma"],
                                                splitCorrelations = True,
                                                year = "2016apv")
-btagWeights_2016 = lambda : btag_weighterUL(btagpath + "/" + "DeepJet_2016LegacySF_V1_YearCorrelation-V1.csv",
+btagWeights_2016 = lambda : btag_weighterUL(btagpath + "/" + "wp_deepJet_106XUL16postVFP_v3_mod.csv",
+#btagWeights_2016 = lambda : btag_weighterUL(os.environ['CMSSW_BASE'] + "/src/CMGTools/TTHAnalysis/data/TopRun2/btagging/DeepJet_2016LegacySF_V1_YearCorrelation-V1.csv",
                                             btagpath + "/" + "btagEffs_TopEFT_2022_05_16.root",
                                             'deepjet',
                                             jecvars   = ['jesTotal', 'jer'] + ['jes%s'%v.format(year = 2016) for v in jecGroups] + ["jer%i"%i for i in range(6)] + ["jesHEMIssue"],
                                             lepenvars = ["mu", "elsigma"],
                                             splitCorrelations = True,
                                             year = "2016")
-btagWeights_2017 = lambda : btag_weighterUL(btagpath + "/" + "DeepJet_DeepFlavour2017_mujets_YearCorrelation-V1.csv",
+btagWeights_2017 = lambda : btag_weighterUL(btagpath + "/" + "wp_deepJet_106XUL17_v3.csv",
                                             btagpath + "/" + "btagEffs_TopEFT_2022_05_16.root",
                                             'deepjet',
                                             jecvars   = ['jesTotal', 'jer'] + ['jes%s'%v.format(year = 2017) for v in jecGroups] + ["jer%i"%i for i in range(6)] + ["jesHEMIssue"],
                                             lepenvars = ["mu", "elsigma"],
                                             splitCorrelations = True,
                                             year = "2017")
-btagWeights_2018 = lambda : btag_weighterUL(btagpath + "/" + "DeepJet_102XSF_V1_YearCorrelation-V1.csv",
+btagWeights_2018 = lambda : btag_weighterUL(btagpath + "/" + "wp_deepJet_106XUL18_v2.csv",
                                             btagpath + "/" + "btagEffs_TopEFT_2022_05_16.root",
                                             'deepjet',
                                             jecvars   = ['jesTotal', 'jer'] + ['jes%s'%v.format(year = 2018) for v in jecGroups] + ["jer%i"%i for i in range(6)] + ["jesHEMIssue"],
@@ -393,14 +394,17 @@ btagWeights_2018 = lambda : btag_weighterUL(btagpath + "/" + "DeepJet_102XSF_V1_
 
 # Lepton & trigger SF
 from CMGTools.TTHAnalysis.tools.nanoAOD.lepScaleFactors_TopRun2UL import lepScaleFactors_TopRun2UL
-leptrigSFs = lambda : lepScaleFactors_TopRun2UL(lepenvars = ["mu", "elsigma"])
+leptrigSFs_2016apv = lambda : lepScaleFactors_TopRun2UL(year_ = "2016apv", lepenvars = ["mu", "elsigma"])
+leptrigSFs_2016    = lambda : lepScaleFactors_TopRun2UL(year_ = "2016",    lepenvars = ["mu", "elsigma"])
+leptrigSFs_2017    = lambda : lepScaleFactors_TopRun2UL(year_ = "2017",    lepenvars = ["mu", "elsigma"])
+leptrigSFs_2018    = lambda : lepScaleFactors_TopRun2UL(year_ = "2018",    lepenvars = ["mu", "elsigma"])
 
 
 #sfSeq_2016 = [leptrigSFs, btagWeights_2016, addTopPtWeight, addjetPUidMod]   ### COSINA
-sfSeq_2016apv   = [leptrigSFs, btagWeights_2016apv, addTopPtWeight]
-sfSeq_2016      = [leptrigSFs, btagWeights_2016,    addTopPtWeight]
-sfSeq_2017      = [leptrigSFs, btagWeights_2017,    addTopPtWeight]
-sfSeq_2018      = [leptrigSFs, btagWeights_2018,    addTopPtWeight]
+sfSeq_2016apv   = [leptrigSFs_2016apv, btagWeights_2016apv, addTopPtWeight]
+sfSeq_2016      = [leptrigSFs_2016,    btagWeights_2016,    addTopPtWeight]
+sfSeq_2017      = [leptrigSFs_2017,    btagWeights_2017,    addTopPtWeight]
+sfSeq_2018      = [leptrigSFs_2018,    btagWeights_2018,    addTopPtWeight]
 
 
 
