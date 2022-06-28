@@ -45,8 +45,8 @@ dictRegionsXaxisLabels = {
 }
 
 dictRegionsYaxisLabels = {
-    "ch1"      : "Events / bin",
-    "ch2"      : "Events / bin",
+    "ch1"      : "Events / 1 unit",
+    "ch2"      : "Events / 1 unit",
     "ch3"      : "Events / 10 GeV",
 }
 
@@ -301,6 +301,7 @@ def producePlots(year, region, path):
       hAuxForAxis.GetXaxis().SetTitleFont(43)
       hAuxForAxis.GetYaxis().SetRangeUser(0.8 if dire=="ch3" else 0.8 , 1.2 if dire=="ch3" else 1.2)
       hAuxForAxis.GetYaxis().SetNdivisions(503)
+      hAuxForAxis.GetYaxis().CenterTitle(True)
       hAuxForAxis.Draw("axis")
       if key == "fit_s":
         preFitHistsUnc[dire].SetFillStyle(1001)

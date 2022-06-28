@@ -183,9 +183,9 @@ def plotVariationsFromOneProcess(tsk):
 
         constant.SetLineWidth(3)
 
-        ratioUp.Draw("histsameX0")
-        constant.Draw("histsame")
-        ratioDown.Draw("histsameX0")
+        ratioUp.Draw("histsameX0E")
+        constant.Draw("histsameE")
+        ratioDown.Draw("histsameX0E")
 
         c.SaveAs(outpath + "/uncVar_" + thevar + "_" + theproc + "_" + iU + ".png")
         c.SaveAs(outpath + "/uncVar_" + thevar + "_" + theproc + "_" + iU + ".pdf")

@@ -185,9 +185,12 @@ def reMax(hist,hist2,islog,factorLin=1.3,factorLog=2.0,doWide=False):
 def doShadedUncertainty(h):
     ret = h.graphAsymmTotalErrors()
     ret.SetFillStyle(3244);
-    ret.SetFillColor(ROOT.kGray+2)
+    ret.SetFillColor(options.TotalUncRatioColor[0] if options.TotalUncRatioColor[0]!=432 else ROOT.kGray+2)
     ret.SetMarkerStyle(0)
     ret.SetLineWidth(options.histoLineWidth)
+    if options.removeMarkerUncertainty:
+       ret.SetMarkerStyle(4)
+       ret.SetMarkerSize(0)
     ret.Draw("PE2 SAME")
     return ret
 
@@ -422,6 +425,7 @@ def doRatioHists(pspec,pmap,total,maxRange,fixRange=False,fitRatio=None,errorsOn
             ratio = pmap[numkey].Clone("data_div"); 
             ratio.Divide(total.raw())
         ratios.append(ratio)
+
     unity  = total.raw().Clone("")
     unityErr  = total.graphAsymmTotalErrors(relative=True)
     unityErr0 = total.graphAsymmTotalErrors(toadd=[],relative=True)
@@ -483,6 +487,7 @@ def doRatioHists(pspec,pmap,total,maxRange,fixRange=False,fitRatio=None,errorsOn
     unity.GetXaxis().SetLabelSize(options.labelsSize if options.labelsSize!=-1.0 else 0.1)
     unity.GetXaxis().SetLabelOffset(0.015)
     unity.GetYaxis().SetNdivisions(yndiv)
+    unity.GetYaxis().CenterTitle(options.centerRatioYTitle)
     unity.GetYaxis().SetTitleFont(options.labelsFont)
     unity.GetYaxis().SetTitleSize(options.labelsSize if options.labelsSize!=-1.0 else 0.14)
     offset = 0.32 if doWide else options.YTitleOffset[1]
@@ -575,7 +580,7 @@ def doStatTests(total,data,test,legendCorner):
 
 
 legend_ = None;
-def doLegend(pmap,mca,corner="TR",textSize=0.035,cutoff=1e-2,cutoffSignals=True,mcStyle="F",legWidth=0.18,legBorder=True,signalPlotScale=None,totalError=None,header="",doWide=False,columns=1,DrawHorizontalErrBarInLegend=True):
+def doLegend(pmap,mca,corner="TR",textSize=0.035,cutoff=1e-2,cutoffSignals=True,mcStyle="F",legWidth=0.18,legBorder=True,signalPlotScale=None,totalError=None,header="",doWide=False,columns=1,DrawHorizontalErrBarInLegend=True, shiftLegend=0):
         if (corner == None): return
         total = sum([x.Integral() for x in pmap.itervalues()])
         sigEntries = []; bgEntries = []
@@ -612,7 +617,7 @@ def doLegend(pmap,mca,corner="TR",textSize=0.035,cutoff=1e-2,cutoffSignals=True,
         elif corner == "BL":
             (x1,y1,x2,y2) = (.2, .16 + height, .2+legWidth, .15)
 
-        leg = ROOT.TLegend(x1,y1,x2,y2)
+        leg = ROOT.TLegend(x1+shiftLegend,y1,x2+shiftLegend,y2)
         leg.SetFillColor(0)
         leg.SetShadowColor(0)
         if options.transparentLegend:
@@ -905,6 +910,7 @@ class PlotMaker:
                 total.GetYaxis().SetTitle(pspec.getOption('YTitle',ytitle))
                 total.GetXaxis().SetTitle(pspec.getOption('XTitle',outputName))
                 total.GetXaxis().SetNdivisions(pspec.getOption('XNDiv',510))
+                total.SetLineWidth(options.histoLineWidth)
                 if outputDir: outputDir.WriteTObject(stack)
                 # 
                 if not makeCanvas and not self._options.printPlots: return
@@ -986,8 +992,14 @@ class PlotMaker:
                                 for i in range(pdata.GetN()):
                                     pdata.SetPointEXlow(i,0)
                                     pdata.SetPointEXhigh(i,0)
-                            if flag and options.printBinUnity and total.GetXaxis().GetTitle().find("GeV")!=-1:
-                                total.GetYaxis().SetTitle("Events / " + str(int(round(binWidth))) + " GeV")
+                            if flag and options.printBinUnity:
+                                roundedBinWidth = '%s' % float('%.2g' % binWidth) if binWidth<1 else '%s' % int(float('%.2g' % binWidth))
+                                if total.GetXaxis().GetTitle().find("GeV")!=-1:
+                                    total.GetYaxis().SetTitle("Events / " + roundedBinWidth + " GeV") ### Need to update for more units
+                                else:
+                                    pluralOrSingular = " units" if roundedBinWidth == "1" else " units"
+                                    total.GetYaxis().SetTitle("Events / " + roundedBinWidth + pluralOrSingular)
+                                    
                         pdata.Draw("PZ SAME")
                         pmap['data'].poissonGraph = pdata ## attach it so it doesn't get deleted
                     else:
@@ -1026,7 +1038,7 @@ class PlotMaker:
                                   textSize=( (0.045 if doRatio else 0.022) if options.legendFontSize <= 0 else options.legendFontSize ),
                                   legWidth=pspec.getOption('LegendWidth',options.legendWidth), legBorder=options.legendBorder, signalPlotScale=options.signalPlotScale,
                                   header=self._options.legendHeader if self._options.legendHeader else pspec.getOption("LegendHeader", ""),
-                                  doWide=doWide, totalError=totalError, columns = pspec.getOption('LegendColumns',options.legendColumns),DrawHorizontalErrBarInLegend= DrawHorizontalErrBarInLegendFlag)
+                                  doWide=doWide, totalError=totalError, columns = pspec.getOption('LegendColumns',options.legendColumns),DrawHorizontalErrBarInLegend= DrawHorizontalErrBarInLegendFlag, shiftLegend = pspec.getOption('shiftLegend', 0))
                 if self._options.doOfficialCMS:
                     CMS_lumi.lumi_13TeV = "%.1f fb^{-1}" % self._options.lumi
                     CMS_lumi.extraText  = self._options.cmsprel
@@ -1275,7 +1287,10 @@ def addPlotMakerOptions(parser, addAlsoMCAnalysis=True):
     parser.add_option("--printBin", dest="printBinning", type="string", default=None, help="Write 'Events/xx' instead of 'Events' on the y axis")
     parser.add_option("--printBinUnity", dest="printBinUnity", action="store_true", default=False, help="Write Events/xx GeV on the y axis for equal bin size histograms (necessary GeV unity in the X axis)")
     parser.add_option("--noXErrData", dest="noXErrData", action="store_true", default=False, help="Don't plot x error in data for histograms with equal bin size")
-
+    parser.add_option("--removeMarkerUncertainty", dest="removeMarkerUncertainty", action="store_true", default=False, help="Remove point from uncertainty band")
+    parser.add_option("--centerRatioYTitle", dest="centerRatioYTitle", action="store_true", default=False, help="Center Y axis title of the ratio plot")
+    
+    
 if __name__ == "__main__":
     from optparse import OptionParser
     parser = OptionParser(usage="%prog [options] mc.txt cuts.txt plots.txt")
