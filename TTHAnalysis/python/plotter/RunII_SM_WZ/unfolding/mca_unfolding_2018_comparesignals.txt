@@ -1,0 +1,2 @@
+prompt_altWZ_Pow+ : WZTo3LNu_pow_part0+WZTo3LNu_pow_part1 : xsec*1.125 : 1 ; Label="WZ no skim", FillColor=ROOT.kRed
+prompt_WZ : WZTo3LNu_pow : xsec*1.125 : 1 ; Label="WZ skim", FillColor=ROOT.kBlue

@@ -21,6 +21,8 @@ minMllGen : minmllSFOS_gen > 4
 pmp : genLepW_pdgId<0; Disable=True
 pmm: genLepW_pdgId>0; Disable=True
 
+chargeplus : genLepW_pdgId<0; Disable=True
+chargeminus: genLepW_pdgId>0; Disable=True
 
 #Signal region thingies
 #triggers        : (Triggers_ee || Triggers_mm || Triggers_em)
@@ -37,3 +39,5 @@ pmm: genLepW_pdgId>0; Disable=True
 
 #Match to gen leptons
 #match: ((LepGood_mcUCSX_v2[iF_Mini[0]]==0) && (LepGood_mcUCSX_v2[iF_Mini[1]]==0) && (LepGood_mcUCSX_v2[iF_Mini[2]]==0 )) && LepZ1_isMatchingWZ && LepZ2_isMatchingWZ
+polin : cos_ThetaWDn_HE >= -1 ; Disable=True
+polingen : cos_genThetaWDn_HE >= -1 && cos_genThetaZDn_HE >= -1; Disable=True

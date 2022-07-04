@@ -25,10 +25,10 @@ def weighted_percentile(arr, weights, quant):
       totsum += weights[i]
 
 
-inMinus  = ROOT.TFile("/nfs/fanae/user/carlosec/www/wz/Legacy/SRWZ_2016_PDF_minus//plots_wz_asymm.root","OPEN")
-inPlus  = ROOT.TFile("/nfs/fanae/user/carlosec/www/wz/Legacy/SRWZ_2016_PDF_plus//plots_wz_asymm.root","OPEN")
+inMinus  = ROOT.TFile("/nfs/fanae/user/carlosec/www/public/wz/Legacy/SRWZ_2016_PDF_minus//plots_wz_asymm.root","OPEN")
+inPlus  = ROOT.TFile("/nfs/fanae/user/carlosec/www/public/wz/Legacy/SRWZ_2016_PDF_plus//plots_wz_asymm.root","OPEN")
 
-output  = "/nfs/fanae/user/carlosec/www/wz/Legacy/SRWZ_2016_PDF_asymm/"
+output  = "/nfs/fanae/user/carlosec/www/public/wz/Legacy/SRWZ_2016_PDF_asymm/"
 hs = ROOT.THStack()
 tc = ROOT.TCanvas()
 asymmglobstat = 0.027
@@ -39,9 +39,9 @@ for key in inPlus.GetListOfKeys():
   if not "one" in name: continue
   var = name.replace("_prompt_WZ","") 
   if not os.path.exists(output + "/" + var):
-     print "cp ~/www/index.php "+output + "/" + var + "/"
+     print "cp ~/www/public/index.php "+output + "/" + var + "/"
      os.mkdir(output + "/" + var)
-     os.system("cp ~/www/index.php "+output + "/" + var + "/")
+     os.system("cp ~/www/public/index.php "+output + "/" + var + "/")
   hP = inPlus.Get(name)
   if type(hP) == type(hs) or type(tc) == type(hP): continue
   hM = inMinus.Get(name)
@@ -67,7 +67,7 @@ for key in inPlus.GetListOfKeys():
     hQuots[-1].Divide(hMinus[-1])
     hRatios.append(hQuots[-1].Integral()/hQuots[-1].GetNbinsX())
     tG.SetPoint(i, i+1, hRatios[-1])
-    c2 += chi2.sf((1.428 - hRatios[-1])**2/(0.04**2),1)
+    c2 += chi2.sf((1.409 - hRatios[-1])**2/(0.04**2),1)
 
   print "Chi-square", c2/len(hRatios)
   hRatios = np.array(hRatios)
@@ -83,9 +83,9 @@ for key in inPlus.GetListOfKeys():
   """theMeas     = ROOT.TLine(0,1.428, 101,1.428)
   theMeasUp   = ROOT.TLine(0,1.468, 101,1.468)
   theMeasDown = ROOT.TLine(0,1.388, 101,1.388)"""
-  theMeas     = ROOT.TLine(0,1.4266, 101,1.4266)
-  theMeasUp   = ROOT.TLine(0,1.4666, 101,1.4666)
-  theMeasDown = ROOT.TLine(0,1.3866, 101,1.3866)
+  theMeas     = ROOT.TLine(0,1.409, 101,1.409)
+  theMeasUp   = ROOT.TLine(0,1.449, 101,1.449)
+  theMeasDown = ROOT.TLine(0,1.369, 101,1.369)
   theMeas.SetLineColor(ROOT.kRed)
   theMeasUp.SetLineColor(ROOT.kRed)
   theMeasDown.SetLineColor(ROOT.kRed)

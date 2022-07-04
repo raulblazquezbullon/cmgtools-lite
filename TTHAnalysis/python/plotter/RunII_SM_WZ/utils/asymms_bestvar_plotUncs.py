@@ -24,15 +24,15 @@ def weighted_percentile(arr, weights, quant):
       totsum += weights[i]
 
 
-inMinus  = ROOT.TFile("/nfs/fanae/user/carlosec/www/wz/Legacy/SRWZ_2016_PDF_minus//plots_wz_asymm.root","OPEN")
-inPlus  = ROOT.TFile("/nfs/fanae/user/carlosec/www/wz/Legacy/SRWZ_2016_PDF_plus//plots_wz_asymm.root","OPEN")
+inMinus  = ROOT.TFile("/nfs/fanae/user/carlosec/www/public/wz/Legacy/SRWZ_2016_PDF_minus//plots_wz_asymm.root","OPEN")
+inPlus  = ROOT.TFile("/nfs/fanae/user/carlosec/www/public/wz/Legacy/SRWZ_2016_PDF_plus//plots_wz_asymm.root","OPEN")
 
-#inPlus  = ROOT.TFile("/nfs/fanae/user/carlosec/www/wz/Legacy/SRWZ_2016_PDF_plus_lessbins/plots_wz_asymm.root","OPEN") 
-#inMinus = ROOT.TFile("/nfs/fanae/user/carlosec/www/wz/Legacy/SRWZ_2016_PDF_minus_lessbins/plots_wz_asymm.root","OPEN")
+#inPlus  = ROOT.TFile("/nfs/fanae/user/carlosec/www/public/wz/Legacy/SRWZ_2016_PDF_plus_lessbins/plots_wz_asymm.root","OPEN") 
+#inMinus = ROOT.TFile("/nfs/fanae/user/carlosec/www/public/wz/Legacy/SRWZ_2016_PDF_minus_lessbins/plots_wz_asymm.root","OPEN")
 #inMinus = ROOT.TFile("/nfs/fanae/user/carlosec/WZ/CMSSW_9_4_4/src/CMGTools/TTHAnalysis/python/plotter/2018_pdf_fiducial_minus/plots_wz_asymm.root","OPEN")
 #inPlus = ROOT.TFile("/nfs/fanae/user/carlosec/WZ/CMSSW_9_4_4/src/CMGTools/TTHAnalysis/python/plotter/2018_pdf_fiducial_plus/plots_wz_asymm.root","OPEN")
 
-output  = "/nfs/fanae/user/carlosec/www/wz/Legacy/SRWZ_2016_PDF_asymm/"
+output  = "/nfs/fanae/user/carlosec/www/public/wz/Legacy/SRWZ_2016_PDF_asymm/"
 hs = ROOT.THStack()
 tc = ROOT.TCanvas()
 asymmglobstat = 0.027
@@ -44,9 +44,9 @@ for key in inPlus.GetListOfKeys():
   #print var
   #if not(var == "charge3l"): continue
   if not os.path.exists(output + "/" + var):
-     print "cp ~/www/index.php "+output + "/" + var + "/"
+     print "cp ~/www/public/index.php "+output + "/" + var + "/"
      os.mkdir(output + "/" + var)
-     os.system("cp ~/www/index.php "+output + "/" + var + "/")
+     os.system("cp ~/www/public/index.php "+output + "/" + var + "/")
 
   hP = inPlus.Get(name)
   if type(hP) == type(hs) or type(tc) == type(hP): continue

@@ -141,6 +141,14 @@ float mass_3(float pt1, float eta1, float phi1, float m1, float pt2, float eta2,
     return (p41+p42+p43).M();
 }
 
+float mass_3(float pt1, float eta1, float phi1, float pt2, float eta2, float phi2, float pt3, float eta3, float phi3) {
+    typedef ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double> > PtEtaPhiMVector;
+    PtEtaPhiMVector p41(pt1,eta1,phi1,0);
+    PtEtaPhiMVector p42(pt2,eta2,phi2,0);
+    PtEtaPhiMVector p43(pt3,eta3,phi3,0);
+    return (p41+p42+p43).M();
+}
+
 
 float pt_4(float pt1, float phi1, float pt2, float phi2, float pt3, float phi3, float pt4, float phi4) {
     phi2 -= phi1;

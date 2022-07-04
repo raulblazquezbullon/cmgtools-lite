@@ -621,8 +621,8 @@ class Unfolder(object):
               propr = propr/self.lumi_per_year_n["runII"]
               self.normSystsList.append([n[0], "%1.5f"%(1+(eff-1)*propr)])
 
-        #self.shapeSystsList = [] ### Was uncommented
-        #self.normSystsList  = [] ### Was uncommented
+        self.shapeSystsList = [] ### Was uncommented
+        self.normSystsList  = [] ### Was uncommented
         #normsystkeys = []
         # Get theory variations
         self.get_truth_theory_variations(file_handle_genshapes)
@@ -1414,9 +1414,10 @@ class Unfolder(object):
         #ROOT.gPad.SetRightMargin(0.1)   
 
         output.SetTopMargin(0.06)
-        output.SetRightMargin(0.18)#0.15)
-        output.SetLeftMargin(0.15)#0.12)
+        output.SetRightMargin(0.18)
+        output.SetLeftMargin(0.15)
         output.SetBottomMargin(0.10)
+
         if args.abitmore:
            output.SetTopMargin(0.06)
            output.SetRightMargin(0.18)#0.15)
@@ -1433,6 +1434,7 @@ class Unfolder(object):
 
         ROOT.TColor.CreateGradientColorTable(4,length,red,green,blue,255)
 
+
         if 'nom' in key:
             self.response_nom.Scale(1./self.response_nom.Integral())
             self.response_nom.SetTitle('Response Matrix (Powheg)')
@@ -1443,7 +1445,8 @@ class Unfolder(object):
             self.response_nom.GetZaxis().SetTitleOffset(1.3)
             self.response_nom.GetZaxis().SetTitleSize(0.045)
             self.response_nom.GetZaxis().SetTitle("Fraction of events")
-            self.response_nom.SetContour(100)
+            if self.var == "Zpol":
+                self.response_nom.GetZaxis().SetNdivisions(105)
             self.response_nom.Draw("colz")
             palette = self.response_nom.GetListOfFunctions().FindObject("palette")
             palette.SetX1NDC(0.825)
@@ -1490,8 +1493,8 @@ class Unfolder(object):
             saveHists.Close()
 
         output.Clear()
-        ROOT.gStyle.SetPalette(57)
 
+        ROOT.gStyle.SetPalette(57)
         output.SetTopMargin(0.06)
         output.SetRightMargin(0.20)
         output.SetLeftMargin(0.19)
@@ -1503,16 +1506,12 @@ class Unfolder(object):
         histCorr.GetXaxis().SetTitleOffset(1.);
         histCorr.GetYaxis().SetTitleOffset(1.48);
         histCorr.GetXaxis().SetLabelSize(0.033)
-        histCorr.GetYaxis().SetLabelSize(0.033)
-        histCorr.GetXaxis().SetLabelFont(2)
-        histCorr.GetYaxis().SetLabelFont(2)
-
+        histCorr.GetYaxis().SetLabelSize(0.035)
+        histCorr.GetXaxis().SetLabelFont(62)
+        histCorr.GetYaxis().SetLabelFont(62)
         histCorr.GetXaxis().SetTitle(self.fancyvar) # This is the variable without units
         histCorr.GetYaxis().SetTitle(self.fancyvar) # This is the variable without units
         for i in range(1, histCorr.GetXaxis().GetNbins()+1):
-          histCorr.GetXaxis().SetLabelFont(62)
-          histCorr.GetYaxis().SetLabelFont(62)
-
           histCorr.GetXaxis().SetBinLabel(i,self.binlabels[i-1])
           histCorr.GetYaxis().SetBinLabel(i,self.binlabels[i-1])
 
@@ -1606,6 +1605,7 @@ class Unfolder(object):
             dt.GetXaxis().SetBinLabel(3, "=2")
             dt.GetXaxis().SetBinLabel(4, "#geq 3")
             #dt.GetXaxis().SetBinLabel(5, "#geq 4")
+            
 
         if self.normToOne:
             dt.Scale(1./dt.Integral()) # Normalize to 1
@@ -1628,13 +1628,11 @@ class Unfolder(object):
             ROOT.gPad.SetLogy()
             dt.SetMaximum(100*dt.GetMaximum())
         if 'pol' in self.var:
-            dt.SetMinimum(0.01*dt.GetMinimum())
-        
-        if 'Wpt' in self.var:
-            dt.SetMaximum(10)
-            dt.SetMinimum(0.005)
+            dt.SetMinimum(0.5*dt.GetMinimum())
+            dt.SetMaximum(0.1*dt.GetMaximum())
+ 
         ROOT.gPad.SetLogy()
-        dt.SetMaximum(100*dt.GetMaximum())
+        #dt.SetMaximum(100*dt.GetMaximum())
         #dt.GetXaxis().SetTitleSize(0.045)
         dt.GetXaxis().SetTitleSize(0) # for ratio
         dt.GetXaxis().SetLabelSize(0)
@@ -1958,7 +1956,6 @@ class Unfolder(object):
             enterTheMatrix.SetMarkerSize(5)
             enterTheMatrix.SetLineColor(ROOT.kMagenta)
             enterTheMatrix.SetMarkerColor(ROOT.kMagenta)
-            #enterTheMatrix.Draw("SAME PE")
             neosAwakening = enterTheMatrix.Clone("neoMatrix")
             x0 = ROOT.Double()
             y0 = ROOT.Double()
@@ -1993,13 +1990,13 @@ class Unfolder(object):
         if "minus" in self.charge : processText = " pp #rightarrow W^{#minus}Z"
         leg_money.SetHeader(processText)
 
+
         if self.closure:
             leg_money.AddEntry(hus, 'Unfolded Pseudo data (stat.unc.)', 'pel')
         else:
             leg_money.AddEntry(hus, 'Unfolded data (stat.unc.)', 'pel')
         if self.matrix:
             leg_money.AddEntry(enterTheMatrix, 'MATRIX prediction (stat+scale)','p')
-
         leg_money.AddEntry(dt, 'POWHEG, NNPDF3.0NLO: #chi^{2}/NDOF=%1.0f'% dt.Chi2Test(hus, 'CHI2/NDF WW'), 'la') if dt.Chi2Test(hus, 'CHI2/NDF WW') > 10 else leg_money.AddEntry(dt, 'POWHEG, NNPDF3.0NLO: #chi^{2}/NDOF=%1.1f'% dt.Chi2Test(hus, 'CHI2/NDF WW'), 'la')
         leg_money.AddEntry(dt_alt, 'aMC@NLO, NNPDF3.0NLO: #chi^{2}/NDOF=%1.0f'% dt_alt.Chi2Test(hus, 'CHI2/NDF WW'), 'la') if dt_alt.Chi2Test(hus, 'CHI2/NDF WW') > 10 else leg_money.AddEntry(dt_alt, 'aMC@NLO, NNPDF3.0NLO: #chi^{2}/NDOF=%1.1f'% dt_alt.Chi2Test(hus, 'CHI2/NDF WW'), 'la')
 
@@ -2011,6 +2008,7 @@ class Unfolder(object):
         #leg_money.AddEntry(histUnfoldTotal, '#frac{#chi^{2}}{NDOF}=%0.3f' % histUnfoldTotal.Chi2Test(self.dataTruth_nom, 'CHI2/NDF WW'), '')
         leg_money.Draw()
         header = leg_money.GetListOfPrimitives().First().SetTextSize(.077)
+
         tdr.setTDRStyle()
         moneyplot.SetTopMargin(0.06)
         moneyplot.SetLeftMargin(0.12)
@@ -2047,8 +2045,8 @@ class Unfolder(object):
                 enterTheMatrixratio.SetPoint(i, (xup+xdn)/2.+(xup-xdn)*0.15, y0)
 
             # Finally plot
-            # neosAwakening.Draw("SAME PE")
-            # neosAwakening.Print("all")
+            neosAwakening.Draw("SAME PE")
+            neosAwakening.Print("all")
 
         # Ratio POWHEG to POWHEG (for visualization purposes)
         dtratio=copy.deepcopy(dt)
@@ -2059,11 +2057,7 @@ class Unfolder(object):
         dtratio.GetXaxis().SetLabelSize(0.135)
         dtratio.GetYaxis().SetLabelSize(0.07)
         dtratio.GetXaxis().SetTitleOffset(1.0)
-        #dtratio.GetXaxis().SetLabelFont(2)
-        #dtratio.GetYaxis().SetLabelFont(2)
-
         dtratio.GetYaxis().SetTitleOffset(0.4)
-        #dtratio.GetXaxis().SetNdivisions(999, False)
         dtratio.GetYaxis().SetTitle("Ratio to POWHEG")
         dtratio.SetLineWidth(2)
         dtratio.SetMarkerSize(0)
@@ -2124,13 +2118,13 @@ class Unfolder(object):
         if self.logx:
             ROOT.gPad.SetLogx()
         p1.cd()
-        """processText = "pp#rightarrow W^{#pm}Z"
+        """"processText = "pp#rightarrow W^{#pm}Z"
         if "plus" in self.charge : processText = "pp#rightarrow W^{#plus}Z"
         if "minus" in self.charge : processText = "pp#rightarrow W^{#minus}Z"
         print ">>>>>>>>>>>>>>>>>>>>>>>THIS IS THE CHARGE!", self.charge
         if self.var == "Wpt": # or self.var == "Wpol" or self.var=="Zpol":
           "Plotting some sweet text..."
-          text = ROOT.TLatex(170,0.1,processText)
+          text = ROOT.TLatex(120,0.1,processText)
           text.SetTextSize(0.08)
           text.Draw("same")
         if self.var == "Wpol": # or self.var == "Wpol" or self.var=="Zpol":
@@ -2144,7 +2138,7 @@ class Unfolder(object):
           text.SetTextSize(0.08)
           text.Draw("same")"""
 
-        header = "BLAH"
+
         isToy = self.toys[1] if self.toys[1] else ""
         if not(self.toys[0]): moneyplot.SaveAs(os.path.join(self.outputDir, '3_differentialXsec_%s_%s_%s%s.pdf' % (label, key, self.var, isToy)))
         moneyplot.SaveAs(os.path.join(self.outputDir, '3_differentialXsec_%s_%s_%s%s.png' % (label, key, self.var, isToy)))
@@ -2244,6 +2238,7 @@ if __name__ == '__main__':
     parser.add_argument('--closure',                help='Use MC as data, for closure test', action='store_true')
     parser.add_argument('--fullclosure',            help='Use only signal MC -as projected from R matrix- as data, for theoretically perfect closure test', action='store_true')
     parser.add_argument('--abitmore',               help='Add a bit of space below so it does not cut labels')
+
     parser.add_argument('-om', '--onlyMonteCarlo', help='Produce the final plot only comparing predictions with each other', action='store_true')
     parser.add_argument('-d', '--data',             help='File containing data histogram', default=None)
     parser.add_argument('-m', '--mc',               help='File containing mc reco histogram', default=None)

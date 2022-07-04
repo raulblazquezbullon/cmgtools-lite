@@ -1,0 +1,11 @@
+prompt_WZ+ : WZTo3LNu_powv2 : xsec*1.125 ; FillColor=ROOT.kOrange , FakeRate="RunII_SM_WZ/common/fakerate_standard_central.txt\,RunII_SM_WZ/common/fakerate_load_isprompt.txt", Label="Official", 
+
+prompt_WZ_privateMC: WZTo3LNu_powheg_PSWeightspart0 + WZTo3LNu_powheg_PSWeightspart1 + WZTo3LNu_powheg_PSWeightspart2 + WZTo3LNu_powheg_PSWeightspart3 + WZTo3LNu_powheg_PSWeightspart4 + WZTo3LNu_powheg_PSWeightspart5 :  xsec*1.125 ; FillColor=ROOT.kRed , FakeRate="RunII_SM_WZ/common/fakerate_standard_central.txt\,RunII_SM_WZ/common/fakerate_load_isprompt.txt", Label="Private", 
+
+prompt_WZ_privateMC_ISRUp+: WZTo3LNu_powheg_PSWeightspart0 + WZTo3LNu_powheg_PSWeightspart1 + WZTo3LNu_powheg_PSWeightspart2 + WZTo3LNu_powheg_PSWeightspart3 + WZTo3LNu_powheg_PSWeightspart4 + WZTo3LNu_powheg_PSWeightspart5 :  PSWeight[10]*xsec*1.125 ; FillColor=ROOT.kGreen , FakeRate="RunII_SM_WZ/common/fakerate_standard_central.txt\,RunII_SM_WZ/common/fakerate_load_isprompt.txt", Label="ISR Up", 
+
+prompt_WZ_privateMC_FSRUp+: WZTo3LNu_powheg_PSWeightspart0 + WZTo3LNu_powheg_PSWeightspart1 + WZTo3LNu_powheg_PSWeightspart2 + WZTo3LNu_powheg_PSWeightspart3 + WZTo3LNu_powheg_PSWeightspart4 + WZTo3LNu_powheg_PSWeightspart5 :  PSWeight[11]*xsec*1.125 ; FillColor=ROOT.kBlue , FakeRate="RunII_SM_WZ/common/fakerate_standard_central.txt\,RunII_SM_WZ/common/fakerate_load_isprompt.txt", Label="FSR Up", 
+
+prompt_WZ_privateMC_ISRDn+: WZTo3LNu_powheg_PSWeightspart0 + WZTo3LNu_powheg_PSWeightspart1 + WZTo3LNu_powheg_PSWeightspart2 + WZTo3LNu_powheg_PSWeightspart3 + WZTo3LNu_powheg_PSWeightspart4 + WZTo3LNu_powheg_PSWeightspart5 :  PSWeight[12]*xsec*1.125 ; FillColor=ROOT.kGreen+1 , FakeRate="RunII_SM_WZ/common/fakerate_standard_central.txt\,RunII_SM_WZ/common/fakerate_load_isprompt.txt", Label="ISR Dn", 
+
+prompt_WZ_privateMC_FSRDn+: WZTo3LNu_powheg_PSWeightspart0 + WZTo3LNu_powheg_PSWeightspart1 + WZTo3LNu_powheg_PSWeightspart2 + WZTo3LNu_powheg_PSWeightspart3 + WZTo3LNu_powheg_PSWeightspart4 + WZTo3LNu_powheg_PSWeightspart5 :  PSWeight[13]*xsec*1.125 ; FillColor=ROOT.kBlue+1 , FakeRate="RunII_SM_WZ/common/fakerate_standard_central.txt\,RunII_SM_WZ/common/fakerate_load_isprompt.txt", Label="FSR Dn", 

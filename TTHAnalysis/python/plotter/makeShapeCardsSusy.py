@@ -319,20 +319,22 @@ for name in systsEnv.keys():
                 for h in p1up, p1dn: h.SetLineColor(4)
                 for h in p2up, p2dn: h.SetLineColor(2)
             elif mode in ["envelope"]:
-                nominal = report[p]
+                nominal = report[p] 
+                print "Doing envelope uncertainty %s"%effect
                 # Amount here coresponds to the number of replicas
                 pVars = [report["%s_%s_%i"%(p, effect, i)] for i in range(replicas)]
                 p0Up = nominal.Clone("%s_%s_Up"%(p, effect))
                 p0Dn = nominal.Clone("%s_%s_Up"%(p, effect))
                 if type(p0Up) == type(ROOT.TH1D()):
-                  for iB in range(1,nominal.GetNbinsX()+1):
+                  for iB in range(0,nominal.GetNbinsX()+2):
                     values = [pVars[i].GetBinContent(iB) for i in range(replicas)]
                     p0Up.SetBinContent(iB, max(values))
                     p0Dn.SetBinContent(iB, min(values))
                 elif type(p0Up) == type(ROOT.TH2D()):
-                  for iBx in range(1,nominal.GetNbinsX()+1):
-                    for iBy in range(1,nominal.GetNbinsY()+1):
+                  for iBx in range(0,nominal.GetNbinsX()+2):
+                    for iBy in range(0,nominal.GetNbinsY()+2):
                       values = [pVars[i].GetBinContent(iBx, iBy) for i in range(replicas)]
+                      print iBx, iBy, values
                       p0Up.SetBinContent(iBx, iBy, max(values))
                       p0Dn.SetBinContent(iBx, iBy, min(values))
 
@@ -356,13 +358,13 @@ for name in systsEnv.keys():
                 iDn = int(round(0.16*replicas))-1
 
                 if type(p0Up) == type(ROOT.TH1D()):        
-                  for iB in range(1,nominal.GetNbinsX()+1):
+                  for iB in range(0,nominal.GetNbinsX()+2):
                     values = sorted([pVars[i].GetBinContent(iB) for i in range(replicas)])
                     p0Up.SetBinContent(iB, values[iUp])
                     p0Dn.SetBinContent(iB, values[iDn])
                 elif type(p0Up) == type(ROOT.TH2D()):
-                  for iBx in range(1,nominal.GetNbinsX()+1):
-                    for iBy in range(1,nominal.GetNbinsY()+1):
+                  for iBx in range(0,nominal.GetNbinsX()+2):
+                    for iBy in range(0,nominal.GetNbinsY()+2):
                       values = sorted([pVars[i].GetBinContent(iBx,iBy) for i in range(replicas)])
                       p0Up.SetBinContent(iBx, iBy, values[iUp])
                       p0Dn.SetBinContent(iBx, iBy, values[iDn])
@@ -386,7 +388,7 @@ for name in systsEnv.keys():
                 p0Dn = nominal.Clone("%s_%s_Up"%(p, effect))
                 print type(p0Up)
                 if type(p0Up) == type(ROOT.TH1D()):
-                  for iB in range(1,nominal.GetNbinsX()+1):
+                  for iB in range(0,nominal.GetNbinsX()+2):
                     vUp = 0
                     vDn = 0
                     for replica in pVars:
@@ -395,8 +397,8 @@ for name in systsEnv.keys():
                     p0Up.SetBinContent(iB, nominal.GetBinContent(iB) + vUp)
                     p0Dn.SetBinContent(iB, nominal.GetBinContent(iB) - vDn)
                 elif type(p0Up) == type(ROOT.TH2D()):
-                  for iBx in range(1,nominal.GetNbinsX()+1):
-                    for iBy in range(1,nominal.GetNbinsY()+1):
+                  for iBx in range(0,nominal.GetNbinsX()+2):
+                    for iBy in range(0,nominal.GetNbinsY()+2):
                       vUp = 0
                       vDn = 0
                       for replica in pVars:
@@ -440,7 +442,7 @@ for name in systsEnv.keys():
                 dnName  = "%s_%sDown" % (nominal.GetName(),name)
                 p0Up = report[upName[2:]] if upName[2:] in report.keys() else nominal.Clone(upName)
                 p0Dn = report[dnName[2:]] if upName[2:] in report.keys() else nominal.Clone(dnName)
-                for bin in xrange(1,nominal.GetNbinsX()+1):
+                for bin in xrange(0,nominal.GetNbinsX()+2):
                     for binmatch in morefields[0]:
                         if re.match(binmatch+"$",'%d'%bin):
                             p0Up.SetBinContent(bin,p0Up.GetBinContent(bin)*effect)

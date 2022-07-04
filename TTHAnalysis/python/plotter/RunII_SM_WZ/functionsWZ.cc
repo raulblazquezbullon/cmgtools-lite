@@ -50,6 +50,19 @@ Bool_t allTight(Bool_t isT1, Bool_t isT2, Bool_t isT3, Bool_t isT4){
   return isT1 && isT2 && isT3 && isT4;
 }
 
+Bool_t lepMVACut(Float_t lep1mva, Float_t lep2mva, Float_t lep3mva, Int_t pdg1, Int_t pdg2, Int_t pdg3, Float_t elecut, Float_t mucut, Bool_t tightW){
+  Bool_t pass1 = false;
+  Bool_t pass2 = false;
+  Bool_t pass3 = false;
+  if (abs(pdg1) == 11 && lep1mva >= elecut) pass1 = true;
+  if (abs(pdg1) == 13 && lep1mva >= mucut)  pass1 = true;
+  if (abs(pdg2) == 11 && lep2mva >= elecut) pass2 = true;
+  if (abs(pdg2) == 13 && lep2mva >= mucut)  pass2 = true;
+  if (abs(pdg3) == 11 && lep3mva >= elecut) pass3 = true;
+  if (abs(pdg3) == 13 && lep3mva >= mucut)  pass3 = true;
+  return pass1 && pass2 && pass3 && tightW;
+}
+
 Int_t DiFakeRateBin(float pt1, float eta1, float pt2, float eta2, int pdgcode, int tightcode, int ptbin, int etabin)
 {
  // First lepton is the one "in range", second lepton is "off range"
@@ -273,4 +286,14 @@ if (nJet == 6) return 0.88;
 if (nJet >= 7) return 0.83;
 }
 
+float weight_mWZ(float mWZ){
+ if (mWZ <= 200) return 1.03113;
+ if (mWZ <= 300) return 0.994016;
+ if (mWZ <= 400) return 1.00339;
+ if (mWZ <= 500) return 0.999467;
+ if (mWZ <= 1000) return 0.96045;
+ if (mWZ <= 1500) return 0.822343;
+ //if (mWZ <= 3000) return 0.740922;
+ else return 1.;
+}
 void functionsWZ() {}

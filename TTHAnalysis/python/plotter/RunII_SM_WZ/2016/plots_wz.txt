@@ -132,6 +132,8 @@ mll3lconv  : mll_3l        : 8,35,75    ; XTitle="M_{ll} (GeV)"                ,
 flavor3l   : (abs(LepSel_pdgId[0])+abs(LepSel_pdgId[1])+abs(LepSel_pdgId[2])-33)/2  : 4,-0.5,3.5 ; XTitle="flavor", xBinLabels="eee\,ee#mu\,e#mu#mu\,#mu#mu#mu", Legend="TL", LegendCutoff5e-3, MoreY=3.0
 flavorcharge3l   : (abs(LepSel_pdgId[0])+abs(LepSel_pdgId[1])+abs(LepSel_pdgId[2])-33)/2+ 4*(LepW_pdgId[0] < 0)  : 8,-0.5,7.5 ; XTitle="flavor", xBinLabels="eee^{-}\,ee#mu^{-}\,e#mu#mu^{-}\,#mu#mu#mu^{-}\,eee^{+}\,ee#mu^{+}\,e#mu#mu^{+}\,#mu#mu#mu^{+}", Legend="TL", LegendCutoff5e-3, MoreY=3.0
 
+flavorcharge3lLoose   : (abs(LepGood_pdgId[0])+abs(LepGood_pdgId[1])+abs(LepGood_pdgId[2])-33)/2+ 4*(LepGood_pdgId[0]+LepGood_pdgId[1] + LepGood_pdgId[2] < 0)  : 8,-0.5,7.5 ; XTitle="flavor", xBinLabels="eee^{-}\,ee#mu^{-}\,e#mu#mu^{-}\,#mu#mu#mu^{-}\,eee^{+}\,ee#mu^{+}\,e#mu#mu^{+}\,#mu#mu#mu^{+}", Legend="TL", LegendCutoff5e-3, MoreY=3.0
+
 
 charge3l_sign3TC   : if3(LepSel_pdgId[0]>0,-1,1)+if3(LepSel_pdgId[1]>0,-1,1)+if3(LepSel_pdgId[2]>0,-1,1) : 7,-3.5,3.5 ; XTitle="charge", Legend="TL", LegendCutoff5e-3, MoreY=3.0
 m3lmet_Meas : m3Lmet : [100,200,300,400,500,1000,1500,3000] ; XTitle="m_{WZ} [GeV]", LegendCutoff=1e-8, YTitle='Events/bin', Logy, YMin=0.1, YMax=100000000, IncludeOverflows=False
