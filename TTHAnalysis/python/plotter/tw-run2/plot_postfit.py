@@ -19,7 +19,20 @@ ColourMapForProcesses = {
 }
 
 orderedProcesses = ["nonworz", "vvttv", "dy", "ttbar", "tw"]
+#orderedLegendFor2Col = ["data", "vvttv", "tw", "nonworz", "ttbar", "preunc", "dy", "postunc", "ratio"]
+#orderedLegendFor1Col = ["data", "tw", "ttbar", "dy", "vvttv", "nonworz", "preunc", "postunc", "ratio"]
+orderedLegendFor2Col = ["data", "vvttv", "tw", "nonworz", "ttbar", "postunc", "dy"]
+orderedLegendFor1Col = ["data", "tw", "ttbar", "dy", "vvttv", "nonworz", "postunc"]
+
 #orderedProcesses = ["nonworz", "vvttv", "dy", "ttbartw"]
+
+#### Size of all text in the plots (except legend)
+extraSizeForChannelSpam = 2
+spamsSize = 22
+titleSize = 26
+axisLabelsSize = 22
+
+
 
 dictNames = {
     "tw"       : "tW",
@@ -45,8 +58,8 @@ dictRegionsXaxisLabels = {
 }
 
 dictRegionsYaxisLabels = {
-    "ch1"      : "Events / 1 unit",
-    "ch2"      : "Events / 1 unit",
+    "ch1"      : "Events",
+    "ch2"      : "Events",
     "ch3"      : "Events / 10 GeV",
 }
 
@@ -87,6 +100,7 @@ lumidict     = {"2016" : 36.33,
                 "run2" : 138}
 
 
+
 def doSpam(text,x1,y1,x2,y2,align=12,fill=False,textSize=0.033,_noDelete={}):
   cmsprel = r.TPaveText(x1,y1,x2,y2,"NDC");
   cmsprel.SetTextSize(textSize);
@@ -103,6 +117,27 @@ def doSpam(text,x1,y1,x2,y2,align=12,fill=False,textSize=0.033,_noDelete={}):
   return cmsprel
 
 def producePlots(year, region, path):
+  
+  def addLegendEntries(orderList): 
+    for entry in orderList:
+      if entry in orderedProcesses:
+        h = subdir.Get(entry)
+        legend.AddEntry(h,dictNames[h.GetName()],"f") 
+#        if entry == "tw":
+#          legend.AddEntry(h,dictNames[h.GetName()] + " (#mu = %1.2f)" %round(r_tW, 2),"f")
+#        else:
+#          legend.AddEntry(h,dictNames[h.GetName()],"f")
+      elif entry == "data":
+        legend.AddEntry(gr_forLegend,dictNames[gr.GetName()],"PE")
+      elif entry == "postunc":
+        legend.AddEntry(htotal,"Uncertainty" if key=="fit_s" else dictNames[htotal.GetName()],"f")
+      elif entry == "preunc":
+        legend.AddEntry(preFitHistsUnc[dire],"Prefit unc.","f")
+      elif entry == "ratio":
+        legend.AddEntry(preFitHists[dire],"Prefit Data / Pred.","l")
+    
+
+  
   preFitHists = {}
   preFitHistsUnc = {}
   for key in ["prefit", "fit_s"]:
@@ -157,7 +192,7 @@ def producePlots(year, region, path):
       textSize = 0.05616
       height = textSize*1.15*legendHeigh[key][dire]
       if dire != "ch3":
-        legend = r.TLegend(.4, .9-height, .85, .91) #0.85 for the first number in the CMGTools plotter
+        legend = r.TLegend(.38, .9-height, .88, .91) #0.85 for the first number in the CMGTools plotter
       else:
         legend = r.TLegend(.6, .9-height, .8, .91) #0.85 for the first number in the CMGTools plotter
       legend.SetBorderSize(0)
@@ -202,7 +237,7 @@ def producePlots(year, region, path):
         
         preFitHists[dire] = deepcopy(ratioPreFit)
       
-      legend.AddEntry(gr_forLegend,dictNames[gr.GetName()],"PE")
+      #legend.AddEntry(gr_forLegend,dictNames[gr.GetName()],"PE")
       for histoName in orderedProcesses:
         h = subdir.Get(histoName) 
         h.GetXaxis().SetLabelSize(0)
@@ -211,22 +246,22 @@ def producePlots(year, region, path):
         h.SetFillColor(ColourMapForProcesses[histoName])
         hstack.Add(h)
 	    
-      for histoName in reversed(orderedProcesses):
-        h = subdir.Get(histoName) 
-        if histoName == "tw":
-          legend.AddEntry(h,dictNames[h.GetName()] + " (#mu = %1.2f)" %round(r_tW, 2),"f")
-        else:
-          legend.AddEntry(h,dictNames[h.GetName()],"f")
+#      for histoName in reversed(orderedProcesses):
+#        h = subdir.Get(histoName) 
+#        if histoName == "tw":
+#          legend.AddEntry(h,dictNames[h.GetName()] + " (#mu = %1.2f)" %round(r_tW, 2),"f")
+#        else:
+#          legend.AddEntry(h,dictNames[h.GetName()],"f")
       p1.cd()
 					
       hstack.Draw("hist")
       hstack.GetXaxis().SetLabelSize(0)
-      hstack.GetYaxis().SetTitleOffset(1.5)
+      hstack.GetYaxis().SetTitleOffset(1.8)
       hstack.SetMaximum(hstack.GetMaximum()*1.5)
       hstack.GetYaxis().SetTitle(dictRegionsYaxisLabels[dire])
-      hstack.GetYaxis().SetLabelSize(22)
+      hstack.GetYaxis().SetLabelSize(axisLabelsSize)
       hstack.GetYaxis().SetLabelFont(43)
-      hstack.GetYaxis().SetTitleSize(22)
+      hstack.GetYaxis().SetTitleSize(titleSize)
       hstack.GetYaxis().SetTitleFont(43)
       hstack.GetYaxis().SetMaxDigits(4)
       
@@ -234,20 +269,19 @@ def producePlots(year, region, path):
 
 
       # now draw error bands
-      htotal.SetFillStyle(3244)
+      htotal.SetFillStyle(3444)
       htotal.SetFillColor(r.kGray+2)
       htotal.SetMarkerStyle(0)
       htotal.SetMarkerColor(920)
       htotal.SetLineWidth(0)
-      legend.AddEntry(htotal,"Postfit unc." if key=="fit_s" else dictNames[htotal.GetName()],"f")
+      #legend.AddEntry(htotal,"Postfit unc." if key=="fit_s" else dictNames[htotal.GetName()],"f")
       htotal.Draw("E2 same")
 
       # now draw data
       gr.GetXaxis().SetLabelSize(0)
       gr.Draw("p E same")
 
-      if dire != "ch3":
-        legend.SetNColumns(2)
+
       legend.Draw("same")      
       # Ratio plot
       p2.cd()
@@ -287,19 +321,19 @@ def producePlots(year, region, path):
       
       hAuxForAxis = r.TH1F("axis","", len(dictBinsCenterRegions[dire]),dictBinEdgesRegions[dire][0],dictBinEdgesRegions[dire][1])
       hAuxForAxis.SetMarkerSize(0)
-      hAuxForAxis.GetXaxis().SetLabelSize(22)
-      hAuxForAxis.GetYaxis().SetLabelSize(22)
+      hAuxForAxis.GetXaxis().SetLabelSize(axisLabelsSize)
+      hAuxForAxis.GetYaxis().SetLabelSize(axisLabelsSize)
       hAuxForAxis.GetXaxis().SetLabelFont(43)
       hAuxForAxis.GetYaxis().SetLabelFont(43)
-      hAuxForAxis.GetYaxis().SetTitle("Data/Pred.")
-      hAuxForAxis.GetYaxis().SetTitleOffset(1.5)
+      hAuxForAxis.GetYaxis().SetTitle("Data / Pred.     ")
+      hAuxForAxis.GetYaxis().SetTitleOffset(1.8)
       hAuxForAxis.GetXaxis().SetTitle(dictRegionsXaxisLabels[dire])
-      hAuxForAxis.GetYaxis().SetTitleSize(22)
+      hAuxForAxis.GetYaxis().SetTitleSize(titleSize)
       hAuxForAxis.GetYaxis().SetTitleFont(43)
-      hAuxForAxis.GetXaxis().SetTitleOffset(4.8)
-      hAuxForAxis.GetXaxis().SetTitleSize(22)
+      hAuxForAxis.GetXaxis().SetTitleOffset(4.0)
+      hAuxForAxis.GetXaxis().SetTitleSize(titleSize)
       hAuxForAxis.GetXaxis().SetTitleFont(43)
-      hAuxForAxis.GetYaxis().SetRangeUser(0.8 if dire=="ch3" else 0.8 , 1.2 if dire=="ch3" else 1.2)
+      hAuxForAxis.GetYaxis().SetRangeUser(0.8 if dire=="ch3" else 0.94 , 1.2 if dire=="ch3" else 1.06)
       hAuxForAxis.GetYaxis().SetNdivisions(503)
       hAuxForAxis.GetYaxis().CenterTitle(True)
       hAuxForAxis.Draw("axis")
@@ -308,27 +342,34 @@ def producePlots(year, region, path):
         preFitHistsUnc[dire].SetFillColorAlpha(r.kAzure, 0.35)
         preFitHistsUnc[dire].SetLineColor(r.kBlack)
         preFitHistsUnc[dire].SetLineWidth(0)
-        legend.AddEntry(preFitHistsUnc[dire],"Prefit unc.","f")
-        preFitHistsUnc[dire].Draw("E2 same")	
+        #legend.AddEntry(preFitHistsUnc[dire],"Prefit unc.","f")
+        ######preFitHistsUnc[dire].Draw("E2 same")	
         preFitHists[dire].SetLineColor(2)
         preFitHists[dire].SetLineWidth(2)
-        legend.AddEntry(preFitHists[dire],"Prefit Data/Pred.","l")
-        preFitHists[dire].Draw("same")
+        #legend.AddEntry(preFitHists[dire],"Prefit Data/Pred.","l")
+        ######preFitHists[dire].Draw("same")
       
+      
+      if dire != "ch3":
+        legend.SetNColumns(2)
+        addLegendEntries(orderedLegendFor2Col)
+      else:
+        addLegendEntries(orderedLegendFor1Col)
+        
       htotalErr.Draw("e2 same")	
       lin.Draw("same L")
       ratio_hist.Draw("p E same")	
 
       p1.cd()
       #doSpam('#splitline{#scale[1.1]{#bf{CMS}}}{#scale[0.9]{#it{Preliminary}}}',.2, .845, .35, .885,textSize = 22)
-      doSpam('#scale[1.1]{#bf{CMS}}',.2, .845, .35, .885,textSize = 22)
+      doSpam('#scale[1.1]{#bf{CMS}}',.2, .845, .35, .885,textSize = spamsSize)
       keyname = key
       if keyname == "fit_s": keyname = "postfit"
-      doSpam(str(lumidict[year]) + " fb^{-1} (13 TeV)",0.7, .963, .975, .99,textSize = 22)
+      doSpam(str(lumidict[year]) + " fb^{-1} (13 TeV)",0.7, .963, .975, .99,textSize = spamsSize*0.98)
       if dire == "ch3":
-        doSpam("e^{#pm}#mu^{#mp}+" + dictRegions[dire], .365, .845, .55, .885, textSize = 22)
+        doSpam("e^{#pm}#mu^{#mp} (" + dictRegions[dire] + ")", .365, .845, .55, .885, textSize = spamsSize + extraSizeForChannelSpam)
       else:
-        doSpam("e^{#pm}#mu^{#mp}+" + dictRegions[dire], .2, .700, .35, .740, textSize = 22)
+        doSpam("#splitline{ e^{#pm}#mu^{#mp}}{(" + dictRegions[dire] + ")}", .2, .700, .35, .740, textSize = spamsSize + extraSizeForChannelSpam)
 	
       if not os.path.exists(outpath): os.system("mkdir -p %s"%outpath)
       c.SaveAs("%s/%s_%s.png"%(outpath,keyname,dire))

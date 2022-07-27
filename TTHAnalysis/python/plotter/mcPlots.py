@@ -184,7 +184,7 @@ def reMax(hist,hist2,islog,factorLin=1.3,factorLog=2.0,doWide=False):
 
 def doShadedUncertainty(h):
     ret = h.graphAsymmTotalErrors()
-    ret.SetFillStyle(3244);
+    ret.SetFillStyle(options.TotalUncRatioStyle[0] if options.TotalUncRatioStyle[0]!=3244 else 3244);
     ret.SetFillColor(options.TotalUncRatioColor[0] if options.TotalUncRatioColor[0]!=432 else ROOT.kGray+2)
     ret.SetMarkerStyle(0)
     ret.SetLineWidth(options.histoLineWidth)
@@ -401,7 +401,7 @@ def doRatioHists(pspec,pmap,total,maxRange,fixRange=False,fitRatio=None,errorsOn
             # do this first
             total.GetXaxis().SetLabelOffset(999) ## send them away
             total.GetXaxis().SetTitleOffset(999) ## in outer space
-            total.GetYaxis().SetTitleSize(options.labelsSize if options.labelsSize!=-1.0 else 0.06)
+            total.GetYaxis().SetTitleSize(options.axisTitleSize if options.axisTitleSize!=-1.0 else 0.06)
             total.GetYaxis().SetTitleOffset(0.75 if doWide else 1.48)
             total.GetYaxis().SetLabelSize(options.labelsSize if options.labelsSize!=-1.0 else 0.05)
             total.GetYaxis().SetLabelOffset(0.007)
@@ -481,7 +481,7 @@ def doRatioHists(pspec,pmap,total,maxRange,fixRange=False,fitRatio=None,errorsOn
     rmax = float(pspec.getOption("RMax",rmax))
     unity.GetYaxis().SetRangeUser(rmin,rmax);
     unity.GetXaxis().SetTitleFont(options.labelsFont)
-    unity.GetXaxis().SetTitleSize(options.labelsSize if options.labelsSize!=-1.0 else 0.14)
+    unity.GetXaxis().SetTitleSize(options.axisTitleSize if options.axisTitleSize!=-1.0 else 0.14)
     unity.GetXaxis().SetTitleOffset(options.XTitleOffsetRatio)
     unity.GetXaxis().SetLabelFont(options.labelsFont)
     unity.GetXaxis().SetLabelSize(options.labelsSize if options.labelsSize!=-1.0 else 0.1)
@@ -489,7 +489,7 @@ def doRatioHists(pspec,pmap,total,maxRange,fixRange=False,fitRatio=None,errorsOn
     unity.GetYaxis().SetNdivisions(yndiv)
     unity.GetYaxis().CenterTitle(options.centerRatioYTitle)
     unity.GetYaxis().SetTitleFont(options.labelsFont)
-    unity.GetYaxis().SetTitleSize(options.labelsSize if options.labelsSize!=-1.0 else 0.14)
+    unity.GetYaxis().SetTitleSize(options.axisTitleSize if options.axisTitleSize!=-1.0 else 0.14)
     offset = 0.32 if doWide else options.YTitleOffset[1]
     unity.GetYaxis().SetTitleOffset(offset)
     unity.GetYaxis().SetLabelFont(options.labelsFont)
@@ -499,7 +499,7 @@ def doRatioHists(pspec,pmap,total,maxRange,fixRange=False,fitRatio=None,errorsOn
     unity.GetYaxis().SetTitle(ylabel)
     total.GetXaxis().SetLabelOffset(999) ## send them away
     total.GetXaxis().SetTitleOffset(999) ## in outer space
-    total.GetYaxis().SetTitleSize(options.labelsSize if options.labelsSize!=-1.0 else 0.06)
+    total.GetYaxis().SetTitleSize(options.axisTitleSize if options.axisTitleSize!=-1.0 else 0.06)
     total.GetYaxis().SetTitleOffset(0.75 if doWide else options.YTitleOffset[0])
     total.GetYaxis().SetLabelSize(options.labelsSize if options.labelsSize!=-1.0 else 0.05)
     total.GetYaxis().SetLabelOffset(0.007)
@@ -896,13 +896,13 @@ class PlotMaker:
                 stack.Draw("GOFF")
                 ytitle = "Events" if not self._options.printBinning else "Events / %s" %(self._options.printBinning)
                 total.GetXaxis().SetTitleFont(options.labelsFont)
-                total.GetXaxis().SetTitleSize(options.labelsSize if options.labelsSize!=-1.0 else 0.05)
+                total.GetXaxis().SetTitleSize(options.axisTitleSize if options.axisTitleSize!=-1.0 else 0.05)
                 total.GetXaxis().SetTitleOffset(1.1)
                 total.GetXaxis().SetLabelFont(options.labelsFont)
                 total.GetXaxis().SetLabelSize(options.labelsSize if options.labelsSize!=-1.0 else 0.05)
                 total.GetXaxis().SetLabelOffset(0.007)
                 total.GetYaxis().SetTitleFont(options.labelsFont)
-                total.GetYaxis().SetTitleSize(options.labelsSize if options.labelsSize!=-1.0 else 0.05)
+                total.GetYaxis().SetTitleSize(options.axisTitleSize if options.axisTitleSize!=-1.0 else 0.05)
                 total.GetYaxis().SetTitleOffset(0.9 if doWide else 2.0)
                 total.GetYaxis().SetLabelFont(options.labelsFont)
                 total.GetYaxis().SetLabelSize(options.labelsSize if options.labelsSize!=-1.0 else 0.05)
@@ -997,8 +997,11 @@ class PlotMaker:
                                 if total.GetXaxis().GetTitle().find("GeV")!=-1:
                                     total.GetYaxis().SetTitle("Events / " + roundedBinWidth + " GeV") ### Need to update for more units
                                 else:
-                                    pluralOrSingular = " units" if roundedBinWidth == "1" else " units"
-                                    total.GetYaxis().SetTitle("Events / " + roundedBinWidth + pluralOrSingular)
+                                    pluralOrSingular = "" if roundedBinWidth == "1" else " units"
+                                    if roundedBinWidth == "1":
+                                        total.GetYaxis().SetTitle("Events")
+                                    else:
+                                        total.GetYaxis().SetTitle("Events / " + roundedBinWidth + pluralOrSingular)
                                     
                         pdata.Draw("PZ SAME")
                         pmap['data'].poissonGraph = pdata ## attach it so it doesn't get deleted
@@ -1023,9 +1026,9 @@ class PlotMaker:
                 #    total.GetYaxis().SetRangeUser(options.yrange[0], options.yrange[1])
                 if options.addspam:
                     if pspec.getOption('Legend','TR')=="TL" and not options.noAddspamShift:
-                        doSpam(options.addspam, .68, .855, .9, .895, align=32, textSize=(0.045 if doRatio else 0.033)*options.topSpamSize)
+                        doSpam(options.addspam, .68, .855, .9, .895, align=32, textSize=(0.045 if doRatio else 0.033)*options.addSpamSize)
                     else:
-                        doSpam(options.addspam, options.addspamPosition[0], options.addspamPosition[1], options.addspamPosition[2], options.addspamPosition[3], align=options.addspamAlignment, textSize=(0.045 if doRatio else 0.033)*options.topSpamSize)
+                        doSpam(options.addspam, options.addspamPosition[0], options.addspamPosition[1], options.addspamPosition[2], options.addspamPosition[3], align=options.addspamAlignment, textSize=(0.045 if doRatio else 0.033)*options.addSpamSize)
                 legendCutoff = pspec.getOption('LegendCutoff', 1e-5 if c1.GetLogy() else 1e-2)
                 if plotmode == "norm": legendCutoff = 0 
                 if plotmode == "stack":
@@ -1212,6 +1215,7 @@ def addPlotMakerOptions(parser, addAlsoMCAnalysis=True):
     parser.add_option("--addspamAlignment", dest="addspamAlignment", type="int", default=12, help="Alignment of the addspam")
     parser.add_option("--noAddspamShift", dest="noAddspamShift", action="store_true", default=False, help="Remove shift on the lspam due to the TL position of the legend")
     parser.add_option("--topSpamSize", dest="topSpamSize",   type="float", default=1.2, help="Zoom factor for the top spam");
+    parser.add_option("--addSpamSize", dest="addSpamSize",   type="float", default=1.2, help="Zoom factor for the top spam");
     parser.add_option("--print", dest="printPlots", type="string", default="png,pdf,txt", help="print out plots in this format or formats (e.g. 'png,pdf,txt')");
     parser.add_option("--pdir", "--print-dir", dest="printDir", type="string", default="plots", help="print out plots in this directory");
     parser.add_option("--showSigShape", dest="showSigShape", action="store_true", default=False, help="Superimpose a normalized signal shape")
@@ -1255,7 +1259,8 @@ def addPlotMakerOptions(parser, addAlsoMCAnalysis=True):
     parser.add_option("--legendWidth", dest="legendWidth", type="float", default=0.25, help="Width of the legend")
     parser.add_option("--legendBorder", dest="legendBorder", type="int", default=0, help="Use a border in the legend (1=yes, 0=no)")
     parser.add_option("--legendFontSize", dest="legendFontSize", type="float", default=0.055, help="Font size in the legend (if <=0, use the default)")
-    parser.add_option("--labelsSize", dest="labelsSize", type="float", default=-1.0, help="Text size for the axis labels and titles")
+    parser.add_option("--labelsSize", dest="labelsSize", type="float", default=-1.0, help="Text size for the axis labels")
+    parser.add_option("--axisTitleSize", dest="axisTitleSize", type="float", default=-1.0, help="Text size for the axis titles")
     parser.add_option("--labelsFont", dest="labelsFont", type="int", default=42, help="Text font for the axis labels and titles")
     parser.add_option("--spamFont", dest="spamFont", type="int", default=42, help="Spam text font")
     parser.add_option("--legendFont", dest="legendFont", type="int", default=42, help="Text font for the legend")
