@@ -241,7 +241,7 @@ class MCAnalysis:
             cnames = [ x.strip() for x in field[1].split("+") ]
             total_w = 0.; to_norm = False; ttys = [];
             genWeightName = extra["genWeightName"] if "genWeightName" in extra else "genWeight"
-            genSumWeightName = extra["genSumWeightName"] if "genSumWeightName" in extra else "genEventSumw_"
+            genSumWeightName = extra["genSumWeightName"] if "genSumWeightName" in extra else "genEventSumw"
             is_w = -1
             pname0 = pname
             for cname in cnames:
@@ -548,16 +548,20 @@ class MCAnalysis:
             mergemap[k].append(v)
         ret = dict([ (k,mergePlots(plotspec.name+"_"+k,v)) for k,v in mergemap.iteritems() ])
         
-        ## construct envelope variations if any
-        for p,h in ret.iteritems():
-            h.buildEnvelopes() 
-
-        print "previous ret:", ret
-        ## add variations from alternate samples
+       
         if self.variationsFile:
-            buildVariationsFromAlternative(self.variationsFile, ret)
-            buildVariationsFromAlternativesWithEnvelope(self.variationsFile, ret)
+           for var in self.variationsFile.uncertainty():
+               for p,h in ret.iteritems():
+                   if not var.procmatch().match(p): continue
+                   if var.unc_type == "envelope":
+                      print(var.name)
+                      h.buildEnvelopes(var.name) ## construct envelope variations if any
+                   elif "pdfset" in var.unc_type.lower(): #hessian pdf
+                      h.buildEnvelopesForPDFs(var.name)
+           ## add variations from alternate samples
 
+           buildVariationsFromAlternative(self.variationsFile, ret)
+           buildVariationsFromAlternativesWithEnvelope(self.variationsFile, ret)
         ## remove samples used for systematics
         toremove = []
         for key in ret:
