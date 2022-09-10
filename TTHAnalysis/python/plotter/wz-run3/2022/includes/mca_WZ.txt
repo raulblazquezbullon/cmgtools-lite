@@ -1,0 +1,2 @@
+prompt_WZ+ : WZTo3LNu : 47.13; FillColor=ROOT.kOrange, Label="WZ" 
+

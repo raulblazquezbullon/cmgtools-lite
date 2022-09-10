@@ -1,0 +1,1 @@
+prompt_ZZ : ZZTo4L : 16.52 ; FillColor=ROOT.kGreen+1, Label="qqZZ"
