@@ -22,8 +22,7 @@ DoubleMuon = [DoubleMuon_Run2022_BCD]
 
 dataSamples_Runs = DoubleMuon + SingleMuon + EGamma + MuonEG
 
-dataSamples = dataSamples_Runs
-samples = dataSamples
+dataSamples = dataSamples_Runs 
 
 if __name__ == "__main__":
     from CMGTools.RootTools.samples.tools import runMain
