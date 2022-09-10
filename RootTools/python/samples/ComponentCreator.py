@@ -230,7 +230,9 @@ class ComponentCreator(object):
         folders = folders.split(",")
         files = []
         for folder in folders:
-            pathi = path % folder;
+            pathi = path 
+            if "%s" in path:
+                pathi = path % folder;
             try:
                files_i = getDatasetFromCache('Local%{path}%{pattern}.pck'.format(path = pathi.replace('/','_'), pattern = pattern))
             except IOError:
