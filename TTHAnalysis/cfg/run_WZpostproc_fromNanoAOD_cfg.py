@@ -28,7 +28,7 @@ def byCompName(components, regexps):
 # -- Unpack submission configurations  -- #
 year              = int(getHeppyOption("year", "2022"))    
 analysis          = getHeppyOption("analysis", "main") 
-selectComponents   = getHeppyOption('selectComponents')
+selectComponents  = getHeppyOption('selectComponents')
 justSummary       = getHeppyOption("justSummary")
 test              = getHeppyOption("test")
 preprocessor      = 0
@@ -42,7 +42,7 @@ doData = (selectComponents == "DATA")
 ### THESE FILES NEED TO BE UPDATED ONCE RUN3 DATASETS ARE MADE PUBLIC
 
 from CMGTools.RootTools.samples.samples_13p6TeV_2022_preNanoAODv10     import samples as mcSamples_
-from CMGTools.RootTools.samples.samples_13p6TeV_DATA2022_preNanoAODv10 import samples as allData
+from CMGTools.RootTools.samples.samples_13p6TeV_DATA2022_preNanoAODv10 import dataSamples as allData
 
 autoAAA(mcSamples_ + allData, 
         quiet         = quiet, 
@@ -50,46 +50,27 @@ autoAAA(mcSamples_ + allData,
         node          = 'T2_ES_IFCA') 
 mcSamples_, _ = mergeExtensions(mcSamples_) ### autoAAA must be created before call mergeExtensions
 
+
 ### Set up trigger paths 
 from CMGTools.TTHAnalysis.tools.nanoAOD.wzsm_modules import triggerGroups_dict
-
-DatasetsAndTriggers = {}; DatasetsAndVetos = {} 
-
-### Double muon
-DatasetsAndTriggers["DoubleMuon"] = triggerGroups_dict["triggers_mumu_iso"][year]
-DatasetsAndTriggers["DoubleMuon"].extend(triggerGroups_dict["triggers_3mu"][year])
-
-### Muon EG
-DatasetsAndTriggers["MuonEG"] = triggerGroups_dict["triggers_mue"][year]
-DatasetsAndTriggers["MuonEG"].extend(triggerGroups_dict["triggers_2mu1e"][year]) 
-DatasetsAndTriggers["MuonEG"].extend(triggerGroups_dict["triggers_2e1mu"][year])
-DatasetsAndTriggers["MuonEG"].extend(triggerGroups_dict["triggers_mue_noiso"][year])
-
-### EGamma
-DatasetsAndTriggers["EGamma"] = triggerGroups_dict["triggers_ee"][year]
-DatasetsAndTriggers["EGamma"].extend(triggerGroups_dict["triggers_3e"][year]) 
-DatasetsAndTriggers["EGamma"].extend(triggerGroups_dict["triggers_ee_noniso"][year])
-DatasetsAndTriggers["EGamma"].extend(triggerGroups_dict["triggers_1e_iso"][year]) 
-DatasetsAndTriggers["EGamma"].extend(triggerGroups_dict["triggers_etau"][year])
-
-### Single Muon
-DatasetsAndTriggers["SingleMuon"] = triggerGroups_dict["triggers_1mu_iso"][year]
-DatasetsAndTriggers["SingleMuon"].extend(triggerGroups_dict["triggers_mutau"][year])
-
-### MET 
-DatasetsAndTriggers["MET" ] = []
+DatasetsAndTriggers = []
+DatasetsAndTriggers.append( ("DoubleMuon", triggerGroups_dict["triggers_mumu_iso"][year] + triggerGroups_dict["triggers_3mu"][year]) )
+DatasetsAndTriggers.append( ("EGamma",     triggerGroups_dict["triggers_3e"][year] + triggerGroups_dict["triggers_ee_noniso"][year] + triggerGroups_dict["triggers_1e_iso"][year]+triggerGroups_dict["triggers_etau"][year])) 
+DatasetsAndTriggers.append( ("MuonEG",     triggerGroups_dict["triggers_2mu1e"][year] + triggerGroups_dict["triggers_2e1mu"][year] + triggerGroups_dict["triggers_mue_noiso"][year]) )
+DatasetsAndTriggers.append( ("SingleMuon", triggerGroups_dict["triggers_1mu_iso"][year] + triggerGroups_dict["triggers_mutau"][year] ))
+DatasetsAndTriggers.append( ("MET", [] ))
 
 selectedComponents = []
 if doData:
   dataSamples = []; vetoTriggers = []
-  for pd, trigs in DatasetsAndTriggers.iteritems():
+  for pd, trigs in DatasetsAndTriggers:#.iteritems():
     if not trigs: continue
     for comp in byCompName(allData, [pd+'.*']):
       comp.triggers = trigs[:]
       comp.vetoTriggers = vetoTriggers[:]
       dataSamples.append(comp)
     vetoTriggers += trigs[:]
-  selectedComponents = allData
+  selectedComponents = dataSamples 
 else:
   mcSamples = byCompName(mcSamples_, ["%s(|_PS)$"%dset for dset in [
       # ----------------- Single boson
@@ -102,6 +83,10 @@ else:
       # ----------------- ttbar + single top + tW
       "TTTo2L2Nu",
       "TTTo2J1L1Nu",
+      "TbarBQ_t",
+      "TBbarQ_t",
+      "tbarW",
+      "tW_noFullHad",
       #'TT_pow',
       #'TTHad_pow',
       #'TTSemi_pow',
@@ -165,7 +150,7 @@ else:
   ]])
 
   # -- Apply trigger in MC -- # 
-  mcTriggers = sum((trigs for (pd,trigs) in DatasetsAndTriggers.iteritems() if trigs), [])
+  mcTriggers = sum((trigs for (pd,trigs) in DatasetsAndTriggers if trigs), [])
   if applyTriggersInMC :
       for comp in mcSamples:
           comp.triggers = mcTriggers
@@ -203,12 +188,12 @@ if justSummary:
     sys.exit(0)
 
 
-from CMGTools.TTHAnalysis.tools.nanoAOD.wzsm_modules import *
+from CMGTools.TTHAnalysis.tools.nanoAOD.wzsm_modules import lepCollector 
 from PhysicsTools.NanoAODTools.postprocessing.framework.postprocessor import PostProcessor
 
 # in the cut string, keep only the main cuts to have it simpler
-modules = wz_seq1 
-cut = None 
+modules = lepCollector 
+cut = "" 
 compression = "ZLIB:3" #"LZ4:4" #"LZMA:9"
 
 branchsel_out = os.environ['CMSSW_BASE']+"/src/CMGTools/TTHAnalysis/python/tools/nanoAOD/OutputSlim_wz.txt"
@@ -217,4 +202,4 @@ branchsel_in  = os.environ['CMSSW_BASE']+"/src/CMGTools/TTHAnalysis/python/tools
 # -- Finally create the postprocessor
 POSTPROCESSOR = PostProcessor(None, [], modules = modules,
         cut = cut, prefetch = False, longTermCache = False,
-        branchsel = branchsel_in, compression = compression)
+        branchsel = branchsel_in, outputbranchsel = None, compression = compression)
