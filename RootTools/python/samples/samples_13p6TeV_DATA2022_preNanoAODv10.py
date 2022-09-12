@@ -20,8 +20,12 @@ DoubleMuon_Run2022_BCD = kreator.makeDataComponentFromLocal('DoubleMuon', '', '/
 
 DoubleMuon = [DoubleMuon_Run2022_BCD]
 
-dataSamples_Runs = DoubleMuon + SingleMuon + EGamma + MuonEG
+Muon_Run2022_BCD = kreator.makeDataComponentFromLocal('Muon', '', '/pool/phedex/nanoAODv10/prev10/ttbar13p6/Muon/', '', '.*root', 2022, [], json=json)
 
+Muon = [Muon_Run2022_BCD]
+
+#dataSamples_Runs = DoubleMuon + SingleMuon + EGamma + MuonEG + Muon
+dataSamples_Runs = Muon
 dataSamples = dataSamples_Runs 
 
 if __name__ == "__main__":

@@ -58,6 +58,7 @@ DatasetsAndTriggers.append( ("DoubleMuon", triggerGroups_dict["triggers_mumu_iso
 DatasetsAndTriggers.append( ("EGamma",     triggerGroups_dict["triggers_3e"][year] + triggerGroups_dict["triggers_ee_noniso"][year] + triggerGroups_dict["triggers_1e_iso"][year]+triggerGroups_dict["triggers_etau"][year])) 
 DatasetsAndTriggers.append( ("MuonEG",     triggerGroups_dict["triggers_2mu1e"][year] + triggerGroups_dict["triggers_2e1mu"][year] + triggerGroups_dict["triggers_mue_noiso"][year]) )
 DatasetsAndTriggers.append( ("SingleMuon", triggerGroups_dict["triggers_1mu_iso"][year] + triggerGroups_dict["triggers_mutau"][year] ))
+DatasetsAndTriggers.append( ("Muon", triggerGroups_dict["triggers_1mu_iso"][year] + triggerGroups_dict["triggers_mutau"][year] + triggerGroups_dict["triggers_mumu_iso"][year] + triggerGroups_dict["triggers_3mu"][year]) )
 DatasetsAndTriggers.append( ("MET", [] ))
 
 selectedComponents = []
