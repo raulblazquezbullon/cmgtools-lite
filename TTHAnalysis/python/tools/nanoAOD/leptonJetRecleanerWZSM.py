@@ -68,10 +68,10 @@ def passTripleMllVeto(l1, l2, l3, mZmin, mZmax, isOSSF ):
 class LeptonJetRecleanerWZSM(Module):
   def __init__(self, label,
                # Lepton selectors
-               looseLeptonSel    = lambda l: True,
-               cleaningLeptonSel = lambda l: True, 
-               FOLeptonSel       = lambda l: True,
-               tightLeptonSel    = lambda l: True,
+               looseLeptonSel,
+               cleaningLeptonSel, 
+               FOLeptonSel,
+               tightLeptonSel,
                # Jet selectors
                cleanJet, 
                selectJet,
