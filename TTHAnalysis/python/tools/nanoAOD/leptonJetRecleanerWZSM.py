@@ -493,7 +493,6 @@ class LeptonJetRecleanerWZSM(Module):
                                                    extraTag = self.systsLepScale[key])
       ### Attach labels and return
       fullret["nLepGood"+self.systsLepScale[key]] = len(leps[key])
-      print(fullret["nLepGood"+self.systsLepScale[key]])
       fullret["LepGood_conePt"+self.systsLepScale[key]] = [lep.conept for lep in leps[key]]
       for k,v in ret.iteritems():
         fullret[k+self.label] = v
