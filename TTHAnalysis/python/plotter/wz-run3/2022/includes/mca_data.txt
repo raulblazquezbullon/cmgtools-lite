@@ -1,0 +1,5 @@
+data : DoubleMuon; Label="Data"
+data : MuonEG; Label="Data"
+data : SingleMuon; Label="Data"
+data : EGamma; Label="Data"
+data : Muon; Label="Data"
