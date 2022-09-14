@@ -271,8 +271,8 @@ class leptonBuilderWZSM(Module):
       self.bestOSPair = allpairs[0][2]
       self.ret["mll_" + str(maxlep) + "l"] = self.bestOSPair.mll
       used = [self.bestOSPair.l1, self.bestOSPair.l2] if self.bestOSPair else []
-      self.ret["iZ1"] = self.bestOSPair.l1.genPartIdx
-      self.ret["iZ2"] = self.bestOSPair.l2.genPartIdx
+      self.ret["iZ1"] = self.bestOSPair.l1.idx
+      self.ret["iZ2"] = self.bestOSPair.l2.idx
 
       for var in ["pt", "eta", "phi", "mass", "conePt","genpt", "geneta", "genphi", "genmass"]:
         if self.isData and ("gen" in var or "mc" in var or "Match" in var): continue
@@ -285,7 +285,7 @@ class leptonBuilderWZSM(Module):
 
       for i in range(min(maxlep,len(self.lepSelFO))):
         if self.lepSelFO[i] in used: continue
-        self.ret["iW"] = self.lepSelFO[i].genPartIdx
+        self.ret["iW"] = self.lepSelFO[i].idx
         for var in ["pt", "eta", "phi", "mass", "conePt", "genpt", "geneta", "genphi", "genmass"]:
             if self.isData and ("gen" in var or "mc" in var or "Match" in var): continue
             self.ret["LepW_" + var] = getattr(self.lepSelFO[i], var, 0)
@@ -464,6 +464,11 @@ class leptonBuilderWZSM(Module):
     chosenTight = event.__getitem__("iT" + self.inputlabel) 
     self.lepsT  = [self.leps[chosenTight[il]] for il in range(nLepsTight)]
 
+    for i in range(len(self.lepsT)): self.lepsT[i].idx = i
+    for i in range(len(self.lepsFO)): self.lepsFO[i].idx = i
+ 
+    correctedLepsFO = self.correctTheLeptons(event, self.lepsFO)
+    correctedLepsT = self.correctTheLeptons(event, self.lepsT)
     # -- Collect Generated leptons -- #
     self.genparts = []
     if not self.isData:
