@@ -11,7 +11,7 @@ Config file defines two things: POSTPROCESSOR and selectedComponents.
 # -- Import libraries -- #
 ### Main
 import re, os, sys
-
+from copy import deepcopy
 ### CMGTools
 from CMGTools.RootTools.samples.configTools import printSummary, mergeExtensions, doTestN, configureSplittingFromTime, cropToLumi
 from CMGTools.RootTools.samples.autoAAAconfig import autoAAA
@@ -71,15 +71,15 @@ DatasetsAndTriggers["MuonEG"].extend(triggerGroups_dict["triggers_mue_noiso"][ye
 DatasetsAndTriggers["EGamma"] = triggerGroups_dict["triggers_3e"][year] 
 DatasetsAndTriggers["EGamma"].extend(triggerGroups_dict["triggers_ee_noniso"][year])
 DatasetsAndTriggers["EGamma"].extend(triggerGroups_dict["triggers_1e_iso"][year])
-#DatasetsAndTriggers["EGamma"].extend(triggerGroups_dict["triggers_etau"])
+#DatasetsAndTriggers["EGamma"].extend(deepcopy(triggerGroups_dict["triggers_etau"])
 
 ### SingleMuon
 DatasetsAndTriggers["SingleMuon"] = triggerGroups_dict["triggers_1mu_iso"][year]
-#DatasetsAndTriggers["SingleMuon"].extend(triggerGroups_dict["triggers_mutau"])
+#DatasetsAndTriggers["SingleMuon"].extend(deepcopy(triggerGroups_dict["triggers_mutau"])
 
 ### Muon dataset = DoubleMuon + SingleMuon (from era D onwards)
-DatasetsAndTriggers["Muon"] = DatasetsAndTriggers["DoubleMuon"] 
-DatasetsAndTriggers["Muon"].extend(DatasetsAndTriggers["SingleMuon"])
+DatasetsAndTriggers["Muon"] = deepcopy(DatasetsAndTriggers["DoubleMuon"])
+DatasetsAndTriggers["Muon"].extend(deepcopy(DatasetsAndTriggers["SingleMuon"]))
 
 ### MET
 DatasetsAndTriggers["MET" ] = []
@@ -97,7 +97,7 @@ DatasetsAndVetos["Muon"]       = []
 DatasetsAndVetos["DoubleMuon"] = []
 
 # -- Veto SingleMuon with DoubleMuon
-DatasetsAndVetos["SingleMuon"] = DatasetsAndTriggers["DoubleMuon"]  
+DatasetsAndVetos["SingleMuon"] = deepcopy(DatasetsAndTriggers["DoubleMuon"])
 
 # Now:
 # * (DoubleMuon + SingleMuon) \cap Muon = \void
@@ -111,15 +111,15 @@ DatasetsAndVetos["SingleMuon"] = DatasetsAndTriggers["DoubleMuon"]
 
 # Thus, independent to the runnumber, 
 # MuonEG dataset is always vetoed using Double+Single muon triggers
-DatasetsAndVetos["MuonEG"]     = DatasetsAndTriggers["Muon"]
-DatasetsAndVetos["MuonEG"].extend(DatasetsAndTriggers["DoubleMuon"]) 
-DatasetsAndVetos["MuonEG"].extend(DatasetsAndTriggers["SingleMuon"]) 
+DatasetsAndVetos["MuonEG"]     = deepcopy(DatasetsAndTriggers["Muon"])
+DatasetsAndVetos["MuonEG"].extend(deepcopy(DatasetsAndTriggers["DoubleMuon"])) 
+DatasetsAndVetos["MuonEG"].extend(deepcopy(DatasetsAndTriggers["SingleMuon"])) 
 
 # -- Same logical procedure applies for the EGamma dataset 
-DatasetsAndVetos["EGamma"]     = DatasetsAndTriggers["Muon"]
-DatasetsAndVetos["EGamma"].extend(DatasetsAndTriggers["DoubleMuon"])
-DatasetsAndVetos["EGamma"].extend(DatasetsAndTriggers["SingleMuon"])
-DatasetsAndVetos["EGamma"].extend(DatasetsAndTriggers["MuonEG"])
+DatasetsAndVetos["EGamma"]     = deepcopy(DatasetsAndTriggers["Muon"])
+DatasetsAndVetos["EGamma"].extend(deepcopy(DatasetsAndTriggers["DoubleMuon"]))
+DatasetsAndVetos["EGamma"].extend(deepcopy(DatasetsAndTriggers["SingleMuon"]))
+DatasetsAndVetos["EGamma"].extend(deepcopy(DatasetsAndTriggers["MuonEG"]))
 
 # -- We do not use MET samples
 DatasetsAndVetos["MET"]        = []
