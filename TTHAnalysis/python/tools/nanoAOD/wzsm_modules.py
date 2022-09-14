@@ -3,7 +3,9 @@ Modules used for the WZ-Run3 Analysis.
 '''
 import os
 import ROOT 
-# ---------------------------------------------------- LEPTON MERGER+SKIM  ---------------------------------------------------- # 
+# --------------------------------------------------------------------------------------------------------------------------- #
+# ---------------------------------------------------- LEPTON MERGER+SKIM  -------------------------------------------------- # 
+# --------------------------------------------------------------------------------------------------------------------------- #
 from PhysicsTools.NanoAODTools.postprocessing.modules.common.collectionMerger import collectionMerger
 from CMGTools.TTHAnalysis.tools.nanoAOD.skimNRecoLeps import SkimRecoLeps
 ### Lepton definitions 
@@ -34,13 +36,11 @@ lepMerge = collectionMerger(input = ["Electron", "Muon"],
 
 lepSkim = SkimRecoLeps() # Skim configuration: at least 2 leptons
 lepCollector = [lepMerge, lepSkim]
-# ---------------------------------------------------------------------------------------------------------------------------- #
-
-# ---------------------------------------------------- LEPTON RECLEANER  ---------------------------------------------------- # 
+# --------------------------------------------------------------------------------------------------------------------------- #
+# ---------------------------------------------------- LEPTON RECLEANER ----------------------------------------------------- # 
+# --------------------------------------------------------------------------------------------------------------------------- #
 from CMGTools.TTHAnalysis.tools.nanoAOD.leptonJetRecleanerWZSM import LeptonJetRecleanerWZSM
 from CMGTools.TTHAnalysis.tools.functionsWZ_v5 import _loose_muon, _loose_electron, _loose_lepton, _fO_muon, _fO_electron, _fO_lepton,_tight_muon,_tight_electron,_tight_lepton,conept
-
-
 recleaner_2022 = lambda : LeptonJetRecleanerWZSM("Mini",
                                         lambda lep :        _loose_lepton(lep, 0.0494, 0.2770),         #Loose selection 
                                         lambda lep,jetlist: _fO_lepton(lep, 0.0494, 0.2770,jetlist),    #Clean on FO
@@ -62,36 +62,55 @@ recleaner_2022 = lambda : LeptonJetRecleanerWZSM("Mini",
                                         year = 2022,
                                         bAlgo = "DeepCSV")
 leptonJetRecleaning = [recleaner_2022]
-
 # ---------------------------------------------------------------------------------------------------------------------------- #
-
-# ---------------------------------------------------- TRIGGERS -------------------------------------------------------------- # 
-import triggers_13p6TeV_DATA2022 as triggers2022
-### Keywords to designate different groups of trigger paths 
-triggerlist = ["triggers_mumu_iso", "triggers_mumu_noniso", "triggers_mumu_ss", "triggers_mumu", "triggers_mumu_ht",# DIMUON
-               "triggers_ee", "triggers_ee_noniso", "triggers_ee_ht",   # DIELECTRON
-               "triggers_mue", "triggers_mue_noiso", "triggers_mue_ht", # SEMILEPTONIC (MUON + ELECTRON)
-               "triggers_3e", # TRIELECTRON
-               "triggers_3mu", "triggers_3mu_alt", # TRIMUON 
-               "triggers_2mu1e", "triggers_2e1mu", # MIXED
-               "triggers_1mu_iso", "triggers_1mu_noniso", # SINGLE MUON 
-               "triggers_1e_iso", "triggers_1e_noniso", # SINGLE ELECTRON
-               "triggers_FR_1mu_noiso",  "triggers_FR_1mu_iso", 
-               "triggers_FR_1mu_noiso_highpt", "triggers_FR_1e_noiso", "triggers_FR_1e_iso", 
-               "triggers_pfht1050", "triggers_pfht800_mass50", "triggers_pfjet500",# JET TRIGGERS 
-               "triggers_pfjet400_mass30", 
-               "triggers_mutau", "triggers_etau", "triggers_leptau", "triggers_htmet", # MIXED
-               "triggers_metNoMu100_mhtNoMu100", "triggers_met", "triggers_pfht"]
-### Dictionary to use in CMGTools modules
-triggerGroups_dict = { trig : {2022 : eval("triggers2022.%s"%trig)} for trig in triggerlist }
+# ---------------------------------------------------- LEPTON BUILDER  ------------------------------------------------------- # 
 # ---------------------------------------------------------------------------------------------------------------------------- #
-
-# ---------------------------------------------------- LEPTON BUILDER  -------------------------------------------------------------- # 
 from CMGTools.TTHAnalysis.tools.nanoAOD.leptonBuilderWZSM import leptonBuilderWZSM
 leptonBuilderWZSM_2022 =  lambda : leptonBuilderWZSM("Mini", metbranch="MET")
-leptonBuilder_2022 = [leptonBuilderWZSM_2022]
+leptonBuilder = [leptonBuilderWZSM_2022]
 # ---------------------------------------------------------------------------------------------------------------------------- #
+# ---------------------------------------------------- TRIGGERS -------------------------------------------------------------- # 
+# ---------------------------------------------------------------------------------------------------------------------------- #
+from CMGTools.TTHAnalysis.tools.evtTagger import EvtTagger
+# -- Define different trigger strategies in this dictionary
+#    to target different topologies.
+triggerGroups = dict(
+  # Double lepton triggers
+  triggers_ee  = { 2022 : lambda ev: ev.HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL \
+                          or ev.HLT_DoubleEle25_CaloIdL_MW},
+  triggers_mm  = { 2022 : lambda ev: ev.HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8},
+  triggers_em  = { 2022 : lambda ev: ev.HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ \
+                                     or HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL},
+  # Single lepton triggers
+  triggers_se  = { 2022 : lambda ev: ev.HLT_Ele32_WPTight_Gsf},
+  triggers_sm  = { 2022 : lambda ev: ev.HLT_IsoMu24},
 
+  # Tri-lepton triggers
+  triggers_mmm = { 2022 : lambda ev: ev.HLT_TripleMu_12_10_5 or ev.HLT_TripleMu_10_5_5_DZ},
+  triggers_eee = { 2022 : lambda ev: 0 }, # Only one is prescaled in some of the data
+  triggers_mme = { 2022: lambda ev : HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ}
+  triggers_mee = { 2022: lambda ev : HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ}
+
+  # Combinations
+  triggers_2lss = { 2022 : lambda ev: ev.triggers_se or ev.triggers_sm or ev.triggers_mm or ev.triggers_ee or ev.triggers_em }
+  triggers_3l = { 2022 : lambda ev: ev.triggers_2lss or ev.triggers_eee or ev.triggers_mee or ev.triggers_mme or ev.triggers_mmm
+)
+
+Trigger_sm   = lambda : EvtTagger('Trigger_sm',   [lambda ev : triggerGroups['triggers_sm'][2022](ev)])
+Trigger_se   = lambda : EvtTagger('Trigger_se',   [lambda ev : triggerGroups['triggers_se'][2022](ev)])
+Trigger_mm   = lambda : EvtTagger('Trigger_mm',   [lambda ev : triggerGroups['triggers_mm'][2022](ev)])
+Trigger_ee   = lambda : EvtTagger('Trigger_ee',   [lambda ev : triggerGroups['triggers_ee'][2022](ev)])
+Trigger_em   = lambda : EvtTagger('Trigger_em',   [lambda ev : triggerGroups['triggers_em'][2022](ev)])
+Trigger_eee  = lambda : EvtTagger('Trigger_eee',  [lambda ev : triggerGroups['triggers_eee'][2022](ev)])
+Trigger_mee  = lambda : EvtTagger('Trigger_mee',  [lambda ev : triggerGroups['triggers_mee'][2022](ev)])
+Trigger_mme  = lambda : EvtTagger('Trigger_mme',  [lambda ev : triggerGroups['triggers_mme'][2022](ev)])
+Trigger_mmm  = lambda : EvtTagger('Trigger_mmm',  [lambda ev : triggerGroups['triggers_mmm'][2022](ev)])
+Trigger_2lss = lambda : EvtTagger('Trigger_2lss', [lambda ev : triggerGroups['triggers_2lss'][2022](ev)])
+Trigger_3l   = lambda : EvtTagger('Trigger_3l',   [lambda ev : triggerGroups['triggers_3l'][2022](ev)])
+
+
+triggerSequence = [Trigger_sm, Trigger_se, Trigger_mm, Trigger_ee, Trigger_me, Trigger_eee, Trigger_mee, Trigger_mme, Trigger_mmm, Trigger_2lss, Trigger_3l]
+# ---------------------------------------------------------------------------------------------------------------------------- #
 
 ### To be implemented
 if __name__ == "__main__":
