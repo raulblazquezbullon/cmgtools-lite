@@ -24,8 +24,8 @@ Muon_Run2022_BCD = kreator.makeDataComponentFromLocal('Muon', '', '/pool/phedex/
 
 Muon = [Muon_Run2022_BCD]
 
-#dataSamples_Runs = DoubleMuon + SingleMuon + EGamma + MuonEG + Muon
-dataSamples_Runs = Muon
+dataSamples_Runs = DoubleMuon + SingleMuon + EGamma + MuonEG + Muon
+#dataSamples_Runs = Muon
 dataSamples = dataSamples_Runs 
 
 if __name__ == "__main__":

@@ -2,8 +2,8 @@ from CMGTools.RootTools.samples.ComponentCreator import ComponentCreator
 kreator = ComponentCreator()
 
 DYJetsToLL_M10to50 = kreator.makeMCComponentFromLocal('DYJetsToLL_M10to50', '', '/pool/phedex/nanoAODv10/prev10/ttbar13p6/DYJetsToLL_M-10to50_TuneCP5_13p6TeV-madgraphMLM-pythia8/', '.*root', 19317.5) 
-DYJetsToLL_M50_ext1 = kreator.makeMCComponentFromLocal('DYJetsToLL_M50_ext1', '', '/pool/phedex/nanoAODv10/prev10/ttbar13p6/DYJetsToLL_M-50_TuneCP5_13p6TeV-madgraphMLM-pythia8-ext1/', '.*root', 1) 
-DYJetsToLL_M50_ext2 = kreator.makeMCComponentFromLocal('DYJetsToLL_M50_ext2', '', '/pool/phedex/nanoAODv10/prev10/ttbar13p6/DYJetsToLL_M-50_TuneCP5_13p6TeV-madgraphMLM-pythia8-ext2/', '.*root', 1) 
+DYJetsToLL_M50_ext1 = kreator.makeMCComponentFromLocal('DYJetsToLL_M50_ext1', '', '/pool/phedex/nanoAODv10/prev10/ttbar13p6/DYJetsToLL_M-50_TuneCP5_13p6TeV-madgraphMLM-pythia8-ext1/', '.*root', 6221.3) 
+DYJetsToLL_M50_ext2 = kreator.makeMCComponentFromLocal('DYJetsToLL_M50_ext2', '', '/pool/phedex/nanoAODv10/prev10/ttbar13p6/DYJetsToLL_M-50_TuneCP5_13p6TeV-madgraphMLM-pythia8-ext2/', '.*root', 6221.3) 
 
 
 DYs = [DYJetsToLL_M10to50, 
@@ -45,8 +45,8 @@ WJetsToLNu = kreator.makeMCComponentFromLocal('WJetsToLNu', '', '/pool/phedex/na
 
 Ws = [WJetsToLNu]
 
-# mcSamples = DYs + Ts + TTs + DiBosons + Ws
-mcSamples = [DYJetsToLL_M10to50]
+mcSamples = DYs + Ts + TTs + DiBosons + Ws
+#mcSamples = [DYJetsToLL_M10to50]
 samples = mcSamples
 
 if __name__ == "__main__":
