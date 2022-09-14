@@ -6,7 +6,7 @@ class plot_producer(producer):
   name = "plot_producer"
   basecommand = "mcPlots.py"
   friends = [" --Fs leptonJetRecleaning",
-             " --Fs leptonBuilderWZSM"] 
+             " --Fs leptonBuilder"] 
   functions = ["wz-run3/functionsWZ.cc"]
 
   def add_more_options(self, parser):
@@ -74,7 +74,7 @@ class plot_producer(producer):
                    "-P " + " -P ".join(inpath),
                    " ".join(self.friends),
                    "-L " + " -L ".join(self.functions),
-                   "-mcc %s"%self.mcc,
+                   #"--mcc %s"%self.mcc,
                    #"- W '%s'"%("*".join(weights)),
                    "%s"%plottingStuff,
                    "-j %s"%(self.ncores),

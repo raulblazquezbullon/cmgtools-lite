@@ -14,7 +14,7 @@ def add_parsing_opts():
   parser = OptionParser(usage = "python wz-run.py [options]", 
                                  description = "Main options for running WZ analysis") 
 
-  parser.add_option("--inpath", dest = "inpath", action="append", default = ["default_folder"],
+  parser.add_option("--inpath", dest = "inpath", action="append", 
                 help = "Input (folder) name")
   parser.add_option("--outname", dest = "outname", type="string", default = "default_folder", 
                 help = "Output (folder) name")
