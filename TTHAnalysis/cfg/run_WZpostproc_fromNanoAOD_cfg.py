@@ -52,25 +52,87 @@ mcSamples_, _ = mergeExtensions(mcSamples_) ### autoAAA must be created before c
 
 
 ### Set up trigger paths 
-from CMGTools.TTHAnalysis.tools.nanoAOD.wzsm_modules import triggerGroups_dict
-DatasetsAndTriggers = []
-DatasetsAndTriggers.append( ("DoubleMuon", triggerGroups_dict["triggers_mumu_iso"][year] + triggerGroups_dict["triggers_3mu"][year]) )
-DatasetsAndTriggers.append( ("EGamma",     triggerGroups_dict["triggers_3e"][year] + triggerGroups_dict["triggers_ee_noniso"][year] + triggerGroups_dict["triggers_1e_iso"][year]+triggerGroups_dict["triggers_etau"][year])) 
-DatasetsAndTriggers.append( ("MuonEG",     triggerGroups_dict["triggers_2mu1e"][year] + triggerGroups_dict["triggers_2e1mu"][year] + triggerGroups_dict["triggers_mue_noiso"][year]) )
-DatasetsAndTriggers.append( ("SingleMuon", triggerGroups_dict["triggers_1mu_iso"][year] + triggerGroups_dict["triggers_mutau"][year] ))
-DatasetsAndTriggers.append( ("Muon", triggerGroups_dict["triggers_1mu_iso"][year] + triggerGroups_dict["triggers_mutau"][year] + triggerGroups_dict["triggers_mumu_iso"][year] + triggerGroups_dict["triggers_3mu"][year]) )
-DatasetsAndTriggers.append( ("MET", [] ))
+if year == 2022:
+  from CMGTools.TTHAnalysis.tools.nanoAOD.triggers_13p6TeV_DATA2022 import triggerGroups_dict
+
+DatasetsAndTriggers = {}; DatasetsAndVetos = {} 
+
+### Double muon
+DatasetsAndTriggers["DoubleMuon"] = triggerGroups_dict["triggers_mumu_iso"][year]
+DatasetsAndTriggers["DoubleMuon"].extend(triggerGroups_dict["triggers_3mu"][year])
+
+### MuonEG
+DatasetsAndTriggers["MuonEG"] = triggerGroups_dict["triggers_2mu1e"][year]
+DatasetsAndTriggers["MuonEG"].extend(triggerGroups_dict["triggers_mue"][year])
+DatasetsAndTriggers["MuonEG"].extend(triggerGroups_dict["triggers_2e1mu"][year])
+DatasetsAndTriggers["MuonEG"].extend(triggerGroups_dict["triggers_mue_noiso"][year])
+
+### E-Gamma
+DatasetsAndTriggers["EGamma"] = triggerGroups_dict["triggers_3e"][year] 
+DatasetsAndTriggers["EGamma"].extend(triggerGroups_dict["triggers_ee_noniso"][year])
+DatasetsAndTriggers["EGamma"].extend(triggerGroups_dict["triggers_1e_iso"][year])
+#DatasetsAndTriggers["EGamma"].extend(triggerGroups_dict["triggers_etau"])
+
+### SingleMuon
+DatasetsAndTriggers["SingleMuon"] = triggerGroups_dict["triggers_1mu_iso"][year]
+#DatasetsAndTriggers["SingleMuon"].extend(triggerGroups_dict["triggers_mutau"])
+
+### Muon dataset = DoubleMuon + SingleMuon (from era D onwards)
+DatasetsAndTriggers["Muon"] = DatasetsAndTriggers["DoubleMuon"] 
+DatasetsAndTriggers["Muon"].extend(DatasetsAndTriggers["SingleMuon"])
+
+### MET
+DatasetsAndTriggers["MET" ] = []
+
+
+### TRIGGER OVERLAP REMOVAL: 
+# --- VERY IMPORTANT NOTE: 
+# As of run 356386 DoubleMuon + SingleMuon are merged into the Muon dataset
+# These two datasets are orthogonal, so there's no overlap between them.
+# if run > 356386 -- No SingleMuon nor DoubleMuon events are going to pass
+# if run < 356386 -- Muon dataset events are not going to pass
+  
+# -- Do not veto Muon or DoubleMuon datasets 
+DatasetsAndVetos["Muon"]       = [] 
+DatasetsAndVetos["DoubleMuon"] = []
+
+# -- Veto SingleMuon with DoubleMuon
+DatasetsAndVetos["SingleMuon"] = DatasetsAndTriggers["DoubleMuon"]  
+
+# Now:
+# * (DoubleMuon + SingleMuon) \cap Muon = \void
+# * ([DoubleMuon triggers] U [SingleMuon triggers]) = [Muon triggers]
+
+# -- Veto MuonEG with Muon/Double/Single muon triggers
+# * Since the union of Double/Single muon triggers equals to the triggers used in Muon dataset
+#   and given that these are applied as a set concatenation of OR functions -> it's irrelevant that
+#   we are applying, in a sense, the same condition two times 
+#   (one for Double+Single and one for Muon triggers)
+
+# Thus, independent to the runnumber, 
+# MuonEG dataset is always vetoed using Double+Single muon triggers
+DatasetsAndVetos["MuonEG"]     = DatasetsAndTriggers["Muon"]
+DatasetsAndVetos["MuonEG"].extend(DatasetsAndTriggers["DoubleMuon"]) 
+DatasetsAndVetos["MuonEG"].extend(DatasetsAndTriggers["SingleMuon"]) 
+
+# -- Same logical procedure applies for the EGamma dataset 
+DatasetsAndVetos["EGamma"]     = DatasetsAndTriggers["Muon"]
+DatasetsAndVetos["EGamma"].extend(DatasetsAndTriggers["DoubleMuon"])
+DatasetsAndVetos["EGamma"].extend(DatasetsAndTriggers["SingleMuon"])
+DatasetsAndVetos["EGamma"].extend(DatasetsAndTriggers["MuonEG"])
+
+# -- We do not use MET samples
+DatasetsAndVetos["MET"]        = []
 
 selectedComponents = []
 if doData:
-  dataSamples = []; vetoTriggers = []
-  for pd, trigs in DatasetsAndTriggers:#.iteritems():
+  dataSamples = []
+  for pd, trigs in DatasetsAndTriggers.iteritems():
     if not trigs: continue
     for comp in byCompName(allData, [pd+'.*']):
       comp.triggers = trigs[:]
-      comp.vetoTriggers = vetoTriggers[:]
+      comp.vetoTriggers = DatasetsAndVetos[pd][:]
       dataSamples.append(comp)
-    vetoTriggers += trigs[:]
   selectedComponents = dataSamples 
 else:
   mcSamples = byCompName(mcSamples_, ["%s(|_PS)$"%dset for dset in [
@@ -151,7 +213,7 @@ else:
   ]])
 
   # -- Apply trigger in MC -- # 
-  mcTriggers = sum((trigs for (pd,trigs) in DatasetsAndTriggers if trigs), [])
+  mcTriggers = sum((trigs for (pd,trigs) in DatasetsAndTriggers.iteritems() if trigs), [])
   if applyTriggersInMC :
       for comp in mcSamples:
           comp.triggers = mcTriggers
@@ -194,7 +256,7 @@ from PhysicsTools.NanoAODTools.postprocessing.framework.postprocessor import Pos
 
 # in the cut string, keep only the main cuts to have it simpler
 modules = lepCollector 
-cut = "" 
+cut = None 
 compression = "ZLIB:3" #"LZ4:4" #"LZMA:9"
 
 branchsel_out = os.environ['CMSSW_BASE']+"/src/CMGTools/TTHAnalysis/python/tools/nanoAOD/OutputSlim_wz.txt"
