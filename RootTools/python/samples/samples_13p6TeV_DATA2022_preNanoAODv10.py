@@ -2,7 +2,9 @@
 from CMGTools.RootTools.samples.ComponentCreator import ComponentCreator
 import os
 kreator = ComponentCreator()
-json = os.environ["CMSSW_BASE"]+"/src/CMGTools/TTHAnalysis/cfg/Cert_Collisions2022_355100_357550_Golden.json" 
+#json = os.environ["CMSSW_BASE"]+"/src/CMGTools/TTHAnalysis/cfg/Cert_Collisions2022_355100_357550_Golden.json" 
+json = os.environ["CMSSW_BASE"]+"/src/CMGTools/TTHAnalysis/cfg/Cert_Collisions2022_356309_356615_Golden.json"
+
 
 MuonEG_Run2022_BCD = kreator.makeDataComponentFromLocal('MuonEG', '', '/pool/phedex/nanoAODv10/prev10/ttbar13p6/MuonEG/', '', '.*root', 2022, [], json=json) 
 
@@ -25,7 +27,7 @@ Muon_Run2022_BCD = kreator.makeDataComponentFromLocal('Muon', '', '/pool/phedex/
 Muon = [Muon_Run2022_BCD]
 
 dataSamples_Runs = DoubleMuon + SingleMuon + EGamma + MuonEG + Muon
-#dataSamples_Runs = Muon
+#dataSamples_Runs = SingleMuon
 dataSamples = dataSamples_Runs 
 
 if __name__ == "__main__":
