@@ -193,9 +193,12 @@ else:
       #'tZq_ll_1','tZq_ll_2',
       # Diboson + DPS + WWss
       # "WZTo3LNu_pow", 
-      "WZTo3LNu", 
-      "ZZTo4L", 
-      "WWTo2L2Nu"
+      "WZ",
+      #"WZTo3LNu", 
+      "ZZ",
+      #"ZZTo4L", 
+      "WW",
+      #"WWTo2L2Nu"
       #"WW_DPS", 
       #"WpWpJJ",
       #"WWTo2L2Nu_DPS",

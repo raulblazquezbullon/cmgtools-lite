@@ -31,14 +31,14 @@ TTs = [
 ]
 
 # FIXME: Review cross section values for WW and ZZ (it would be good to double check WZ as well)
-WZTo3LNu = kreator.makeMCComponentFromLocal('WZTo3LNu', '', '/pool/phedex/nanoAODv10/prev10/ttbar13p6/WZ_TuneCP5_13p6TeV-pythia8/', '.*root', 54.3) 
-ZZTo4L = kreator.makeMCComponentFromLocal('ZZTo4L', '', '/pool/phedex/nanoAODv10/prev10/ttbar13p6/ZZ_TuneCP5_13p6TeV-pythia8/', '.*root', 16.7) 
-WWTo2L2Nu = kreator.makeMCComponentFromLocal('WWTo2L2Nu', '', '/pool/phedex/nanoAODv10/prev10/ttbar13p6/WW_TuneCP5_13p6TeV-pythia8/', '.*root', 173.4) 
+WZ = kreator.makeMCComponentFromLocal('WZ', '', '/pool/phedex/nanoAODv10/prev10/ttbar13p6/WZ_TuneCP5_13p6TeV-pythia8/', '.*root', 54.3) 
+ZZ = kreator.makeMCComponentFromLocal('ZZ', '', '/pool/phedex/nanoAODv10/prev10/ttbar13p6/ZZ_TuneCP5_13p6TeV-pythia8/', '.*root', 16.7) 
+WW = kreator.makeMCComponentFromLocal('WW', '', '/pool/phedex/nanoAODv10/prev10/ttbar13p6/WW_TuneCP5_13p6TeV-pythia8/', '.*root', 173.4) 
 
 DiBosons = [
-  WZTo3LNu,
-  WWTo2L2Nu,
-  ZZTo4L
+  WZ,
+  WW,
+  ZZ
 ]
 
 WJetsToLNu = kreator.makeMCComponentFromLocal('WJetsToLNu', '', '/pool/phedex/nanoAODv10/prev10/ttbar13p6/WJetsToLNu_TuneCP5_13p6TeV-madgraphMLM-pythia8/', '.*root', 63199.9) 
@@ -47,6 +47,7 @@ Ws = [WJetsToLNu]
 
 mcSamples = DYs + Ts + TTs + DiBosons + Ws
 #mcSamples = [DYJetsToLL_M10to50]
+#mcSamples = [ZZ]
 samples = mcSamples
 
 if __name__ == "__main__":
