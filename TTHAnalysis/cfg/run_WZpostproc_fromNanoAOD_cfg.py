@@ -69,6 +69,7 @@ DatasetsAndTriggers["MuonEG"].extend(triggerGroups_dict["triggers_mue_noiso"][ye
 
 ### E-Gamma
 DatasetsAndTriggers["EGamma"] = triggerGroups_dict["triggers_3e"][year] 
+DatasetsAndTriggers["EGamma"].extend(triggerGroups_dict["triggers_ee"][year])
 DatasetsAndTriggers["EGamma"].extend(triggerGroups_dict["triggers_ee_noniso"][year])
 DatasetsAndTriggers["EGamma"].extend(triggerGroups_dict["triggers_1e_iso"][year])
 #DatasetsAndTriggers["EGamma"].extend(deepcopy(triggerGroups_dict["triggers_etau"])
@@ -125,6 +126,7 @@ DatasetsAndVetos["EGamma"].extend(deepcopy(DatasetsAndTriggers["MuonEG"]))
 DatasetsAndVetos["MET"]        = []
 
 selectedComponents = []
+
 if doData:
   dataSamples = []
   for pd, trigs in DatasetsAndTriggers.iteritems():
