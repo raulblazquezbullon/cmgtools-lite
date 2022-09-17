@@ -6,9 +6,13 @@ from utils.postprocessor_producer import postprocessor_producer
 from utils.ftree_producer import ftree_producer
 from utils.plot_producer import plot_producer
 
-# -- Save them in a dictionary -- #
+# -- Dictionary with instances to each producer -- #
 producers = {
  "postproc" : postprocessor_producer,
  "friend"   : ftree_producer,
  "plot"     : plot_producer
 }
+
+
+
+

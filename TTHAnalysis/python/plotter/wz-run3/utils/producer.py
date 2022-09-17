@@ -2,6 +2,7 @@
 # -- Import libraries -- #
 import argparse
 import os
+import cfgs.defaults as defaults 
 
 class producer(object):
   name = "producer"
@@ -12,29 +13,23 @@ class producer(object):
   def __init__(self, parser):
     self.add_more_options(parser)
     self.unpack_opts()
-    self.set_paths()
-    self.summarize()
+    self.override_paths()
     return
-  def set_paths(self):
-    inpath = self.inpath
-    outname = self.outname
-    if inpath == None:
-      self.raiseError("Please provide an input path via the --inpath option")
-    if not (self.name == "plot_producer"):
-      ## Due to how inpath is implemented in the parser, it is always a list
-      ## but most producers just use one input path (not the case for the plotter)
-      ## so we take care of that here
-      inpath = self.inpath[0]
-      self.inpath = inpath
-    
-    if self.name == "ftree_producer":
-      self.outname = self.inpath.replace("phedex", "phedexrw")
-    return 
 
   def add_more_options(self, parser):
     parser.add_option('--prueba', dest = 'prueba')
     self.parser = parser 
     return
+
+  def override_paths(self):
+    ''' This method is used to check if default I/O paths have to 
+        be overriden by the user parsed ones '''
+    opts = vars(self.opts)
+    if opts["inpath"] != None: 
+      self.inpath = opts["inpath"]
+    if opts["outname"] != None:
+      self.outname = "./%s"%opts["outname"]
+    return 
 
   def summarize(self):
     ''' Method to show a summary of the given options '''
@@ -42,8 +37,7 @@ class producer(object):
     opts = vars(self.opts)
     
     for opt in opts:
-      # -- Deal with input paths -- # 
-      print("  * %s : %s"%(opt, opts[opt]))
+      print("  * %s : %s"%(opt, getattr(self, opt)))
     print(" >> Command below:")
     return
  
@@ -56,14 +50,15 @@ class producer(object):
     return newcommand
 
   def build_command(self):
+    self.summarize()
     confs = self.commandConfs 
-    command = "python %s %s"%(self.basecommand," ".join(confs))
+    command = "%s %s"%(self.basecommand," ".join(confs))
     self.command = command
     return
 
   def submit_command(self):
     comm = self.command
-    if self.run_cluster: 
+    if not self.run_local: 
       comm = self.submit_InCluster()
     print(comm)
     return
@@ -72,7 +67,11 @@ class producer(object):
     ''' Method to unpack the given options into a dictionary '''
     self.opts, self.args = self.parser.parse_args()
     for opt in vars(self.opts):
-      setattr(self, opt, vars(self.opts)[opt])
+      if opt in ["inpath", "outname"] and vars(self.opts)[opt] == None:
+        ### Use default values for paths
+        setattr(self, opt, defaults.defaults[self.name][opt])
+      else:
+        setattr(self, opt, vars(self.opts)[opt])
     return
 
   def run(self):
@@ -82,4 +81,9 @@ class producer(object):
   def raiseError(self, msg):
     logmsg = "[%s::ERROR]: %s"%(self.name, msg)
     raise RuntimeError(logmsg)
+    return
+
+  def raiseWarning(self, msg):
+    logmsg = "[%s::WARNING]: %s"%(self.name, msg)
+    raise RuntimeWarning(logmsg)
     return

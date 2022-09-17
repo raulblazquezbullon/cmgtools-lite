@@ -4,7 +4,7 @@ from lumi import lumis
 
 class plot_producer(producer):
   name = "plot_producer"
-  basecommand = "mcPlots.py"
+  basecommand = "python mcPlots.py"
   friends = [" --Fs leptonJetRecleaning",
              " --Fs leptonBuilder"] 
   functions = ["wz-run3/functionsWZ.cc"]

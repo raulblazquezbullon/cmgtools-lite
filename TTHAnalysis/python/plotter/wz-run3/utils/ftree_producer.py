@@ -2,7 +2,7 @@ from producer import producer
 
 class ftree_producer(producer):
   name = "ftree_producer"
-  basecommand = "prepareEventVariablesFriendTree.py"
+  basecommand = "python prepareEventVariablesFriendTree.py"
   wz_modules = "CMGTools.TTHAnalysis.tools.nanoAOD.wzsm_modules"
   modules = { 1 : ["leptonJetRecleaning", "-F"],
               2 : ["leptonBuilder", "-F"],
@@ -30,15 +30,25 @@ class ftree_producer(producer):
     nc = 1 
     jn = self.jobname
     queue  = self.queue
-    logpath = self.outname+"/%s"%self.modules[self.step][0]
+    logpath = self.outname
     
     newcommand = self.command + " --env oviedo -q %s --log-dir %s"%(queue, logpath)
     return newcommand
 
+  def override_paths(self):
+    doData = "data" if self.isData else "mc"
+    inpath   = "/".join([self.inpath, doData, self.tier, self.prodname])
+    outname  = "%s/%s"%(inpath.replace("phedex","phedexrw"), self.modules[self.step][0])
+    self.inpath = inpath
+    self.outname = outname
+    ## Use the parent class override_paths method
+    ## to prioritize I/O paths given by the user. 
+    super(ftree_producer, self).override_paths()
+    return
+
   def add_friends(self, step):
     friendtxt = ""
     modulekeys = self.modules.keys()
-
     for key in modulekeys[:step-1]:
       modulename = self.modules[key][0]
       addmethod = self.modules[key][1]
@@ -46,15 +56,12 @@ class ftree_producer(producer):
     return friendtxt
 
   def run(self):
-    inpath = self.inpath 
-    outname  = self.outname 
-    self.outname = outname
     step     = self.step
     treename = self.treename
     extra    = self.extra
 
-    self.commandConfs = ["%s"%inpath,
-                    "%s/%s"%(outname, self.modules[step][0]),
+    self.commandConfs = ["%s"%self.inpath,
+                    "%s"%self.outname,
                     "--name %s"%self.jobname,
                     "-t %s"%treename,
                     "-n -I %s %s"%(self.wz_modules, self.modules[step][0]),
@@ -62,7 +69,5 @@ class ftree_producer(producer):
                     "%s"%extra,
                     self.add_friends(step)]
     
-    self.build_command() 
-    self.submit_command()
     return
   
