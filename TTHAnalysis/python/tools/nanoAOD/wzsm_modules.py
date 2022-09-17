@@ -10,7 +10,7 @@ from PhysicsTools.NanoAODTools.postprocessing.modules.common.collectionMerger im
 from CMGTools.TTHAnalysis.tools.nanoAOD.skimNRecoLeps import SkimRecoLeps
 ### Lepton definitions 
 # Muons 
-min_mu_pt = 0.5
+min_mu_pt = 5
 max_mu_eta = 2.4
 
 # Electrons  
@@ -27,7 +27,7 @@ sip3d = 8
 isoAndIPCuts  = lambda  l : l.miniPFRelIso_all < relIso  and abs(l.dxy) < dxy and abs(l.dz) < dz and l.sip3d < sip3d 
 muonSelection = lambda l : ((abs(l.eta) < max_mu_eta) and (l.pt > min_mu_pt)
                              and isoAndIPCuts(l) and l.looseId)
-elecSelection = lambda l : (( abs(l.eta) < max_el_eta) and (l.pt > min_mu_pt)
+elecSelection = lambda l : (( abs(l.eta) < max_el_eta) and (l.pt > min_el_pt)
                               and isoAndIPCuts(l) and l.lostHits < 2)
 
 lepMerge = collectionMerger(input = ["Electron", "Muon"], 
@@ -80,7 +80,7 @@ triggerGroups = dict(
                           or ev.HLT_DoubleEle25_CaloIdL_MW},
   triggers_mm  = { 2022 : lambda ev: ev.HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8},
   triggers_em  = { 2022 : lambda ev: ev.HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ \
-                                     or HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL},
+                          or ev.HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL},
   # Single lepton triggers
   triggers_se  = { 2022 : lambda ev: ev.HLT_Ele32_WPTight_Gsf},
   triggers_sm  = { 2022 : lambda ev: ev.HLT_IsoMu24},
@@ -88,12 +88,12 @@ triggerGroups = dict(
   # Tri-lepton triggers
   triggers_mmm = { 2022 : lambda ev: ev.HLT_TripleMu_12_10_5 or ev.HLT_TripleMu_10_5_5_DZ},
   triggers_eee = { 2022 : lambda ev: 0 }, # Only one is prescaled in some of the data
-  triggers_mme = { 2022: lambda ev : HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ}
-  triggers_mee = { 2022: lambda ev : HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ}
+  triggers_mme = { 2022: lambda ev : ev.HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ},
+  triggers_mee = { 2022: lambda ev : ev.HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ},
 
   # Combinations
-  triggers_2lss = { 2022 : lambda ev: ev.triggers_se or ev.triggers_sm or ev.triggers_mm or ev.triggers_ee or ev.triggers_em }
-  triggers_3l = { 2022 : lambda ev: ev.triggers_2lss or ev.triggers_eee or ev.triggers_mee or ev.triggers_mme or ev.triggers_mmm
+  triggers_2lss = { 2022 : lambda ev: ev.Trigger_se or ev.Trigger_sm or ev.Trigger_mm or ev.Trigger_ee or ev.Trigger_em },
+  triggers_3l = { 2022 : lambda ev: ev.Trigger_2lss or ev.Trigger_eee or ev.Trigger_mee or ev.Trigger_mme or ev.Trigger_mmm},
 )
 
 Trigger_sm   = lambda : EvtTagger('Trigger_sm',   [lambda ev : triggerGroups['triggers_sm'][2022](ev)])
@@ -109,7 +109,7 @@ Trigger_2lss = lambda : EvtTagger('Trigger_2lss', [lambda ev : triggerGroups['tr
 Trigger_3l   = lambda : EvtTagger('Trigger_3l',   [lambda ev : triggerGroups['triggers_3l'][2022](ev)])
 
 
-triggerSequence = [Trigger_sm, Trigger_se, Trigger_mm, Trigger_ee, Trigger_me, Trigger_eee, Trigger_mee, Trigger_mme, Trigger_mmm, Trigger_2lss, Trigger_3l]
+triggerSequence = [Trigger_sm, Trigger_se, Trigger_mm, Trigger_ee, Trigger_em, Trigger_eee, Trigger_mee, Trigger_mme, Trigger_mmm, Trigger_2lss, Trigger_3l]
 # ---------------------------------------------------------------------------------------------------------------------------- #
 
 ### To be implemented
