@@ -38,7 +38,7 @@ htJet30j   : htJet30j       : 20,0,200    ; XTitle="H_{T}(jet p_{T} > 30) [GeV]"
 nJet30     : nJet30_Mini         : 10,-0.5,9.5 ; XTitle="N(jet\, p_{T} > 30)"         , LegendCutoff=1e-4, Logy, YMax=50000, YMin=1e-1
 nBJet25    : nBJetTight25_Mini  : 5,-0.5,4.5  ; XTitle="N(b-jet\, p_{T} > 25\, DCSVT)", LegendCutoff=1e-4, Logy, YMax=50000, YMin=1
 
-m3l        : m3L            : 10,0,500    ; XTitle="m_{3L} (GeV)"                , LegendCutoff=1e-4, Logy, Legend="TL", YMin=1, YMax=100000, Legend="TR"
+m3l        : m3L            : 10,0,500    ; XTitle="m_{3L} (GeV)"                ,  Legend="TL",  Legend="TR"
 mll3l      : mll_3l        : 15,75,105    ; XTitle="M_{ll} (GeV)"                , LegendCutoff=1e-4, Logy, YMin=1, YMax=5000000, Legend="TR"
 mtW3l      : mT_3l         : 20,0,200    ; XTitle="M_{T} (GeV)"                 , LegendCutoff=1e-4, Logy, YMin=1, YMax=500000, Legend="TR"
 
