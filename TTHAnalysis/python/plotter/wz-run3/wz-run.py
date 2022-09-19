@@ -16,6 +16,8 @@ def add_parsing_opts():
 
   parser.add_option("--inpath", dest = "inpath", 
                 help = "Input (folder) name")
+  parser.add_option("--do-submit", dest = "doSubmit", default = False, action = "store_true",
+                help = "Execute commands instead of just prompting them. BE CAREFUL")
   parser.add_option("--outname", dest = "outname", type="string",  
                 help = "Output (folder) name")
   parser.add_option("--isData", dest = "isData", action = "store_true", default = False, 
