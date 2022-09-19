@@ -37,7 +37,7 @@ class ftree_producer(producer):
 
   def override_paths(self):
     doData = "data" if self.isData else "mc"
-    inpath   = "/".join([self.inpath, doData, self.tier, self.prodname])
+    inpath   = "/".join([self.inpath, self.tier, self.prodname, doData])
     outname  = "%s/%s"%(inpath.replace("phedex","phedexrw"), self.modules[self.step][0])
     self.inpath = inpath
     self.outname = outname

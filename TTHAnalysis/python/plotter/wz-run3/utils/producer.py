@@ -1,13 +1,13 @@
 ''' Main class for producing CMGtools commands '''
 # -- Import libraries -- #
 import argparse
-import os
+import os,sys
 import cfgs.defaults as defaults 
 
 class producer(object):
   name = "producer"
 
-  cluster_comm = "sbatch -c {nc} -J {jn} -p {q} -e {logpath}/log.%j.%x.err -o {logpath}/log.%j.%x.out --wrap '{comm}' "
+  cluster_comm = "sbatch -c {nc} -J {jn} -p {q} -e {logpath}/logs/log.%j.%x.err -o {logpath}/logs/log.%j.%x.out --wrap '{comm}' "
   jobname = "CMGjob"
   
   def __init__(self, parser):
@@ -46,6 +46,9 @@ class producer(object):
     jn = self.jobname
     q  = self.queue
     logpath = self.outname
+    ### Make sure log folder exists
+    if not os.path.exists("%s/logs"%logpath):
+      os.system("mkdir -p %s/logs"%logpath)
     newcommand = self.cluster_comm.format(nc = nc, jn = jn, q = q, logpath = logpath, comm = self.command)
     return newcommand
 
@@ -60,7 +63,9 @@ class producer(object):
     comm = self.command
     if not self.run_local: 
       comm = self.submit_InCluster()
-    print(comm)
+    print(comm) 
+    if self.doSubmit:
+      os.system(comm)
     return
      
   def unpack_opts(self):

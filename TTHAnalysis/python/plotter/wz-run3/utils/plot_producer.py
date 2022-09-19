@@ -15,7 +15,7 @@ class plot_producer(producer):
     parser.add_option("--mca", 
                   dest = "mca", 
                   type="string", 
-                  default = "wz-run3/2022/mca_wz.txt", 
+                  default = "wz-run3/2022/mca_wz_3l.txt", 
                   help = '''Input mcafile''')
     # -- CMGTools configuration files -- #
     parser.add_option("--cutfile", 
@@ -33,6 +33,11 @@ class plot_producer(producer):
                   type="string", 
                   default = "wz-run3/common/plots_wz.txt", 
                   help = '''File with plots''')
+    parser.add_option("--outfolder", 
+                  dest = "outfolder", 
+                  type="string", 
+                  default = "default_folder", 
+                  help = '''Output folder (will be add to the default output plot folder)''')
     parser.add_option("--treename", 
                       dest = "treename",
                       default = "NanoAOD", 
@@ -40,9 +45,19 @@ class plot_producer(producer):
  
     return
 
+  def override_paths(self):
+    inpath   = "/".join([self.inpath, self.tier, self.prodname])
+    outname  = inpath.replace("phedex", "phedexrw").replace("trees", "plots")
+    outname = outname.replace("%s/"%self.tier,"").replace("%s"%self.prodname, self.outfolder)
+    self.inpath  = inpath
+    self.outname = outname
+    ## Use the parent class override_paths method
+    ## to prioritize I/O paths given by the user. 
+    super(plot_producer, self).override_paths()
+    return
+
+
   def run(self):
-    # -- First step is to unpack all the information -- #
-    self.unpack_opts()
     # Yearly stuff 
     year     = self.year
     inpath   = self.inpath
@@ -62,7 +77,7 @@ class plot_producer(producer):
     plottingStuff += "--perBin "
     plottingStuff += "--showRatio "
     plottingStuff += "--neg "
-   
+    
     
     # List with all the options given to CMGTools
     self.commandConfs = ["%s"%self.mca, 
@@ -71,7 +86,7 @@ class plot_producer(producer):
                    "-l %s"%lumi,
                    "-f --pdir %s"%outname,
                    "--tree %s "%self.treename,
-                   "-P " + " -P ".join(inpath),
+                   "-P {path}/mc/ -P {path}/data/".format(path = inpath),
                    " ".join(self.friends),
                    "-L " + " -L ".join(self.functions),
                    #"--mcc %s"%self.mcc,
@@ -79,9 +94,6 @@ class plot_producer(producer):
                    "%s"%plottingStuff,
                    "-j %s"%(self.ncores),
                    "%s"%extra]
-    
-    self.build_command()
-    self.submit_command()
     return
 
 
