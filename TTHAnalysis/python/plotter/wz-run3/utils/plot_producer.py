@@ -1,13 +1,13 @@
 from producer import producer
 from utils.ftree_producer import ftree_producer
+import cfgs.ftrees as ftrees
 from lumi import lumis
 
 class plot_producer(producer):
   name = "plot_producer"
   basecommand = "python mcPlots.py"
-  friends = [" --Fs leptonJetRecleaning",
-             " --Fs leptonBuilder"] 
   functions = ["wz-run3/functionsWZ.cc"]
+  jobname = "CMGPlot"
 
   def add_more_options(self, parser):
     self.parser = parser
@@ -56,6 +56,21 @@ class plot_producer(producer):
     super(plot_producer, self).override_paths()
     return
 
+  def add_friends(self):
+    friendtxt = ""
+    modulekeys = ftrees.modules.keys()
+    for key in modulekeys:
+      modulename = ftrees.modules[key][0]
+      moduletype = ftrees.modules[key][1]
+      addmethod = "--Fs"
+      if moduletype == "onlyMC":
+        addmethod = "--FMCs"
+      elif moduletype == "onlyData":
+        addmethod = "--FDs"
+      friendtxt += "%s {P}/%s "%(addmethod, modulename)
+    return friendtxt
+
+
 
   def run(self):
     # Yearly stuff 
@@ -87,7 +102,7 @@ class plot_producer(producer):
                    "-f --pdir %s"%outname,
                    "--tree %s "%self.treename,
                    "-P {path}/mc/ -P {path}/data/".format(path = inpath),
-                   " ".join(self.friends),
+                   self.add_friends(),
                    "-L " + " -L ".join(self.functions),
                    #"--mcc %s"%self.mcc,
                    #"- W '%s'"%("*".join(weights)),

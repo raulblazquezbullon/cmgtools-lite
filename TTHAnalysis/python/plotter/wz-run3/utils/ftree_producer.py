@@ -1,12 +1,11 @@
 from producer import producer
+import cfgs.ftrees as ftrees
 
 class ftree_producer(producer):
   name = "ftree_producer"
   basecommand = "python prepareEventVariablesFriendTree.py"
   wz_modules = "CMGTools.TTHAnalysis.tools.nanoAOD.wzsm_modules"
-  modules = { 1 : ["leptonJetRecleaning", "-F"],
-              2 : ["leptonBuilder", "-F"],
-              3 : ["triggerSequence", "-F"]}
+
   jobname = "happyTreeFriend"
   
   def add_more_options(self, parser):
@@ -38,20 +37,25 @@ class ftree_producer(producer):
   def override_paths(self):
     doData = "data" if self.isData else "mc"
     inpath   = "/".join([self.inpath, self.tier, self.prodname, doData])
-    outname  = "%s/%s"%(inpath.replace("phedex","phedexrw"), self.modules[self.step][0])
+    outname  = "%s/%s"%(inpath.replace("phedex","phedexrw"), ftrees.modules[self.step][0])
     self.inpath = inpath
     self.outname = outname
     ## Use the parent class override_paths method
     ## to prioritize I/O paths given by the user. 
     super(ftree_producer, self).override_paths()
     return
-
+  
   def add_friends(self, step):
     friendtxt = ""
-    modulekeys = self.modules.keys()
+    modulekeys = ftrees.modules.keys()
     for key in modulekeys[:step-1]:
-      modulename = self.modules[key][0]
-      addmethod = self.modules[key][1]
+      modulename = ftrees.modules[key][0]
+      moduletype = ftrees.modules[key][1]
+      addmethod = "-F"
+      if moduletype == "onlyMC":
+        addmethod = "--FMC"
+      elif moduletype == "onlyData":
+        addmethod = "--FD"
       friendtxt += "%s Friends %s/%s/{cname}_Friend.root "%(addmethod, self.inpath, modulename)
     return friendtxt
 
@@ -64,7 +68,7 @@ class ftree_producer(producer):
                     "%s"%self.outname,
                     "--name %s"%self.jobname,
                     "-t %s"%treename,
-                    "-n -I %s %s"%(self.wz_modules, self.modules[step][0]),
+                    "-n -I %s %s"%(self.wz_modules, ftrees.modules[step][0]),
                     " -N %s"%self.chunksize,
                     "%s"%extra,
                     self.add_friends(step)]
