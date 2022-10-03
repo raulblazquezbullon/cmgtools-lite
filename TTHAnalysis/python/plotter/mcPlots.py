@@ -656,7 +656,6 @@ def doLegend(pmap,mca,corner="TR",textSize=0.035,cutoff=1e-5,cutoffSignals=True,
             (x1,y1,x2,y2) = (.2, .16 + height, .2+legWidth, .15)
 
 #	ttW: HARDCODED
-	(x1, y1, x2, y2) = 0.22, 0.68, 0.95, 0.89
         leg = ROOT.TLegend(x1,y1,x2,y2)
         leg.SetFillColor(0)
         leg.SetShadowColor(0)
@@ -1089,7 +1088,7 @@ class PlotMaker:
                                   header=self._options.legendHeader if self._options.legendHeader else pspec.getOption("LegendHeader", ""),
                                   doWide=doWide, totalError=totalError, columns = pspec.getOption('LegendColumns',options.legendColumns), extralabel = self._options.printBestFit)
                 if self._options.doOfficialCMS:
-                    CMS_lumi.lumi_13TeV = "%.0f fb^{-1}" % self._options.lumi
+                    CMS_lumi.lumi_13TeV = "%.0f fb^{-1}" % float(self._options.lumi)
                     CMS_lumi.extraText  = self._options.cmsprel
                     CMS_lumi.lumi_sqrtS = self._options.cmssqrtS
                     CMS_lumi.CMS_lumi(ROOT.gPad, 4, 0, -0.005 if doWide and doRatio else 0.01 if doWide else 0.05)

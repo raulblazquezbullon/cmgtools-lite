@@ -1,0 +1,2 @@
+ttW_central+ : TTWJetsToLNu_central      : 0.17693 ; genSumWeightName="genEventSumw_", FillColor=ROOT.kBlack, Label="ttW (central)" 
+ttW_new      : TTWJetsToLNu_fxfx_v2.root : 0.2184  ; FillColor=ROOT.kRed+1, Label="ttW (new)"

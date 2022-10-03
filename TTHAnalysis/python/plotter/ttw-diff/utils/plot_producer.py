@@ -21,12 +21,12 @@ class plot_producer(producer):
     parser.add_option("--cutfile", 
                   dest = "cutfile", 
                   type="string", 
-                  default = "ttw-diff/common/cuts_ttw_diff.txt", 
+                  default = "ttw-diff/common/cuts_ttw.txt", 
                   help = '''Event selection requirements file''')
     parser.add_option("--mcc", 
                   dest = "mcc", 
                   type="string", 
-                  default = "wz-run3/common/mcc_triggerdefs.txt", 
+                  default = "ttw-diff/common/mcc_triggerdefs.txt", 
                   help = '''Event selection requirements file''')
     parser.add_option("--plotfile", 
                   dest = "plotfile", 
@@ -46,9 +46,9 @@ class plot_producer(producer):
     return
 
   def override_paths(self):
-    inpath   = "/".join([self.inpath, self.tier, self.prodname])
+    inpath   = "/".join([self.inpath])
     outname  = inpath.replace("phedex", "phedexrw").replace("trees", "plots")
-    outname = outname.replace("%s/"%self.tier,"").replace("%s"%self.prodname, self.outfolder)
+    outname = outname + "/%s"%self.outfolder
     self.inpath  = inpath
     self.outname = outname
     ## Use the parent class override_paths method
@@ -81,16 +81,10 @@ class plot_producer(producer):
     lumi     = lumis[year]
 
     # Other plotting stuff 
-    plottingStuff =  "--obj Events "
-    plottingStuff += "--maxRatioRange 0.5 2.0 "
-    plottingStuff += "--fixRatioRange "
-    plottingStuff += "--print C,pdf,png,txt "
+    plottingStuff = "--print pdf,png,txt "
     plottingStuff += "--legendWidth 0.23 "
     plottingStuff += "--legendFontSize 0.036 "
-    plottingStuff += "--showMCError "
-    plottingStuff += "--showRatio "
     plottingStuff += "--perBin "
-    plottingStuff += "--showRatio "
     plottingStuff += "--neg "
     
     
@@ -101,9 +95,8 @@ class plot_producer(producer):
                    "-l %s"%lumi,
                    "-f --pdir %s"%outname,
                    "--tree %s "%self.treename,
-                   "-P {path}/mc/ -P {path}/data/".format(path = inpath),
+                   "-P {path}".format(path = inpath),
                    self.add_friends(),
-                   "-L " + " -L ".join(self.functions),
                    #"--mcc %s"%self.mcc,
                    #"- W '%s'"%("*".join(weights)),
                    "%s"%plottingStuff,

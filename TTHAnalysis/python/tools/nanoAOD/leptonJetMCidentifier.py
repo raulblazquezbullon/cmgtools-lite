@@ -77,6 +77,8 @@ class LeptonJetMCidentifier(Module):
     branches = [
       ("nLepDressed","I"), 
       ("nLepLoose", "I"), 
+      ("nTauLoose","I"),
+      ("nTauTight","I"),
       ("iL","I",20), # passing loose
       ("nLepLooseVeto", "I"), 
       ("iLV","I",20), # passing loose + veto
@@ -97,6 +99,7 @@ class LeptonJetMCidentifier(Module):
       ("nDiscJetSel", "I"), 
       ("iDiscJSel","I",20,"nDiscJetSel"), # index >= 0 if in Jet; -1-index (<0) if in DiscJet
       ("nJet25", "I"), 
+      ("nBJet25", "I"),
       ("htJet25j"),
       ("mhtJet25") 
       ]
@@ -104,6 +107,8 @@ class LeptonJetMCidentifier(Module):
       branches.append( ("JetSel_"+jfloat, "F", 20, "nJetSel") )
     for lfloat in "pt eta phi mass pdgId hasTauAnc".split():
       branches.append( ("LepDressed_"+lfloat, "F", 20, "nLepDressed") )
+      for ilep in range(3):
+        branches.append( ("LepDressed%s_%s"%(ilep+1, lfloat), "F") )
     self.branches = branches
     return
 
@@ -116,6 +121,7 @@ class LeptonJetMCidentifier(Module):
     self.genJets      = [ j for j in Collection(event, "GenJet", "nGenJet") ]    
     self.genParts     = [ p for p in Collection(event, "GenPart", "nGenPart") ]    
     return
+
   def fillCollWithVeto(self,ret,refcollection,leps,lab,labext,selection,lepsforveto,sortby,ht=-1,pad_zeros_up_to=20):
     ''' 
        Method to categorise leptons using selections 
@@ -147,10 +153,7 @@ class LeptonJetMCidentifier(Module):
     lepspass = [ refcollection[il] for il in ret['i'+lab]  ]
     if lepsforveto == None: lepsforveto = lepspass # Veto selected leptons among themselves
     for lep in lepspass:
-        ## Keep any lepton pair if no veto to Z peak or low mass resonance is applied 
-        if (passMllTLVeto(lep, lepsforveto, 76, 106, True)) and \
-           (passMllTLVeto(lep, lepsforveto,  0,  12, True)):
-            ret['i'+lab+'V'].append(refcollection.index(lep))
+      if abs(lep.pdgId) == 15: ret['nTau'+labext] += 1
 
     ## Sort the vetoed leptons
     ret['i'+lab+'V'] = self.sortIndexListByFunction(ret['i'+lab+'V'],refcollection,sortby)
@@ -223,6 +226,7 @@ class LeptonJetMCidentifier(Module):
       ret["nJet"+self.strJetPt+postfix] = 0
       ret["htJet"+self.strJetPt+"j"+postfix] = 0
       ret["mhtJet"+self.strJetPt+postfix] = 0
+      ret["nBJet"+self.strJetPt+postfix] = 0
 
       cleanjets = [];
       alljets = jetcollcleaned + jetcolldiscarded
@@ -236,7 +240,8 @@ class LeptonJetMCidentifier(Module):
           if j.pt > float(self.jetPt):
             ret["nJet"+self.strJetPt+postfix] += 1
             ret["htJet"+self.strJetPt+"j"+postfix] += j.pt
-
+            if abs(j.partonFlavour) == 5: 
+              ret["nBJet"+self.strJetPt+postfix] += 1
       ret["mhtJet"+self.strJetPt+postfix]  = mhtJetPtvec.Pt()
       return cleanjets
 
@@ -293,10 +298,16 @@ class LeptonJetMCidentifier(Module):
     ret["nLepDressed"]   = len(leps)
     for lfloat in "pt eta phi mass pdgId hasTauAnc".split():
       ret["LepDressed_%s"%lfloat] = [getattr(lep, lfloat) for lep in leps]
+    for ilep, lep in enumerate(leps): # Keep lepton variables for the first three leptons in the event
+      if ilep > 2: continue 
+      for lfloat in "pt eta phi mass pdgId hasTauAnc".split():
+        ret["LepDressed%d_%s"%(ilep+1, lfloat)] = getattr(lep, lfloat)
+         
+
     ret.update(retwlabel)
     for k,v in jetret.iteritems():
       ret["JetSel%s_%s"%("",k)] = v
-
+    
     return ret 
 
   def sortIndexListByFunction(self, indexlist, parentcollection, func):

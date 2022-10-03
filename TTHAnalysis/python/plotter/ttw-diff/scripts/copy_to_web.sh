@@ -1,7 +1,7 @@
 ### Script to replicate folders in /pool/phedex in 
 ### the web.
 
-plotspath="/pool/phedex/userstorage/cvico/wz-run3/plots/"
+plotspath="/pool/phedex/userstorage/cvico/ttw-diff/plots/"
 infolder=$plotspath$1
 addlogsummary=$2
 
@@ -9,7 +9,7 @@ if [[ ! -d $infolder ]]; then
   echo "Directory $infolder does not exist!!"
   echo "Please provide an input directory starting from $plotspath" && exit 0
 fi
-outfolder="$HOME/www/private/wz-run3/$1"
+outfolder="$HOME/www/private/ttw-diff/$1"
 
 if [[ ! -d $outfolder ]]; then echo "$outfolder does not exist. Creating a new one" && `mkdir -p $outfolder`; fi
 

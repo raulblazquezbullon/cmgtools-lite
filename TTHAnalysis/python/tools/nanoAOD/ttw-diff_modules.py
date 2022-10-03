@@ -9,8 +9,8 @@ import ROOT
 from leptonJetMCidentifier import LeptonJetMCidentifier
 import math
 
-loose_lepton = lambda l: l.pt > 15 and abs(l.eta) < 2.5
-jet_sel      = lambda j: j.pt > 25 and abs(j.eta) < 2.5
+loose_lepton = lambda l: l.pt > 15 and abs(l.eta) <= 2.5
+jet_sel      = lambda j: j.pt > 25 and abs(j.eta) <= 2.5 
 
 def deltaR(eta1, phi1, eta2, phi2):
     dEta = abs(eta1-eta2)
@@ -25,7 +25,7 @@ def deltaPhi(phi1, phi2):
 
 
 def tight_lepton(lep, jetlist):
-  if lep.pt < 25: return False
+  if lep.pt < 20: return False
   if not loose_lepton(lep): return False
   if lep.hasTauAnc: return False
   return True
