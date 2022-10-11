@@ -9,7 +9,7 @@ from copy import deepcopy
 from array import array
 
 # === ESSENTIAL PARAMETERS OF THE ANALYSIS. CHANGING THIS APPLIES TO EVERYTHING. ===
-nuncs       = 3         # Number of uncs. shown in the relative uncertainty plots
+nuncs       = 5         # Number of uncs. shown in the relative uncertainty plots
 nBinsForBDT = 4         # Number of bins for the BDT discr. distribution used for the signal extraction procedure
                         #   for the differential analysis when using maximum-likelihood fits.
 diffControlReg = "3j2t" # Control region used in the differential signal extraction step
@@ -26,8 +26,8 @@ doArea      = False     # Apply area constraint in unfolding (general setting, c
 #onlyTotal   = True      # Only show total unc. line in the differential relative unc. plots.
 onlyTotal   = False      # Only show total unc. line in the differential relative unc. plots.
 
-vetolist = ["plots", "Fiducial", "control", "tables", "response"]
-
+vetolist  = ["plots", "Fiducial", "control", "tables", "response"]
+arXivtext = "arXiv:2208.06485"
 # === OTHER IMPORTANT DEFINITIONS ===
 LumiDict    = {2016 : 36.33,
                2017 : 41.53,
@@ -384,15 +384,15 @@ varList['Names'] = {
 
 varList['Lep1Lep2Jet1MET_Mt'] = {
     #'xaxis'       : 'm_{T}(\\ell_{1}, \\ell_{2},\\slash{E}_{T}, j) (GeV)',
-    'xaxis'       : '#it{m}_{T}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{p}_{T}^{miss}, #it{j}) (GeV)',
+    'xaxis'       : '#it{m}_{T}(#it{e}^{#pm}, #it{#mu}^{#mp}, #vec{#it{p}}_{T}^{ miss}, #it{j}) (GeV)',
     'printname'   : "\\transmassvar (\GeV)",
     'printnamenodim':"\\transmassvar",
     'mathprintname': "\\transmassvar",
-    'yaxis_particle'       : 'd#sigma/d(#it{m}_{T}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{p}_{T}^{miss}, #it{j})) (pb)',
-    # 'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(#it{m}_{T}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{p}_{T}^{miss}, #it{j})) (adim.)',
-    'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(#it{m}_{T}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{p}_{T}^{miss}, #it{j}))',
-    'yaxisfidbin' : '(1/#sigma_{fid.})d#sigma/d(#it{m}_{T}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{p}_{T}^{miss}, #it{j})) (1/GeV)',
-    'yaxisnorm'   : 'd#sigma/d(#it{m}_{T}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{p}_{T}^{miss}, #it{j})) (pb/GeV)',
+    'yaxis_particle'       : 'd#sigma/d(#it{m}_{T}(#it{e}^{#pm}, #it{#mu}^{#mp}, #vec{#it{p}}_{T}^{ miss}, #it{j})) (pb)',
+    # 'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(#it{m}_{T}(#it{e}^{#pm}, #it{#mu}^{#mp}, #it{p}_{T}^{ miss}, #it{j})) (adim.)',
+    'yaxisfid'    : '(1/#sigma_{fid.})d#sigma/d(#it{m}_{T}(#it{e}^{#pm}, #it{#mu}^{#mp}, #vec{#it{p}}_{T}^{ miss}, #it{j}))',
+    'yaxisfidbin' : '(1/#sigma_{fid.})d#sigma/d(#it{m}_{T}(#it{e}^{#pm}, #it{#mu}^{#mp}, #vec{#it{p}}_{T}^{ miss}, #it{j})) (1/GeV)',
+    'yaxisnorm'   : 'd#sigma/d(#it{m}_{T}(#it{e}^{#pm}, #it{#mu}^{#mp}, #vec{#it{p}}_{T}^{ miss}, #it{j})) (pb/GeV)',
     # 'yaxis_unc'   : 'Relative uncertainty (adim.)',
     'yaxis_unc'   : 'Relative uncertainty',
 
@@ -550,7 +550,7 @@ varList['Lep1Lep2Jet1_M'] = {
     "yaxismax_particlefidunc" : 0.7,
     "yaxismax_particlefidbinunc" : 0.7,
 #    "yaxismax_particlefidbin" : 0.009,
-    "yaxismax_particlefidbin" : 0.01,
+    "yaxismax_particlefidbin" : 0.011,
     "yaxismax_unf" : 2.,
     "yaxismax_particlebin": 0.004,
     "legpos_particlebinunc" : (.18, .5, .31, .785),
@@ -707,7 +707,7 @@ varList['Jet1_Pt'] = {
     'txtangle_covparticle': 45,
     "txtangle_covparticlefidbin": 45,
     "yaxisuplimitunf": 0.20,
-    "yaxismax_particlefidbin": 0.02,
+    "yaxismax_particlefidbin": 0.026,
     "yaxismax_particlefid" : 1.8,
     #"yaxismax_particlefidbinunc" : 1.2,
     "yaxismax_particlefidbinunc" : 0.5,
@@ -814,7 +814,7 @@ varList['Lep1_Pt'] = {
     "txtsize_covparticlefidbin": 1.2,
     "txtangle_covparticlefidbin": 35,
     "yaxisuplimitunf": 0.2,
-    "yaxismax_particlefidbin": 0.03,
+    "yaxismax_particlefidbin": 0.035,
     "yaxismax_particlefid" : 1.1,
     "yaxismax_particlefidbinunc" : 1.3,
     #"yaxismax_particlefidbinunc" : 0.5,
@@ -822,7 +822,8 @@ varList['Lep1_Pt'] = {
     "yaxismax_particlebin": 0.0085,
     "legpos_particlebinunc" : "TL",
 #    "yaxismax_ratio_fidnorm" : 2.5,
-   "yaxismax_ratio_fidnorm" : 2.5,
+    "yaxismax_ratio_fidnorm" : 2.5,
+    "yaxismin_ratio_fidnorm" : 0.25,
 }
 
 varList['Fiducial'] = {
@@ -1605,7 +1606,7 @@ UncsColourMap["colour"] = UncsColourMap["colour_rec"]
 
 UncGroupsColourMap = {
     'btag'                : r.TColor.GetColor("#b2df8a"),
-    'mc_stat'             : r.kYellow-4,
+    'mc_stat'             : r.kRed,
     'mistag'              : r.kYellow-2,
     'pdf'                 : r.kYellow-12,
     'elec'                : r.kGray+7,
@@ -1614,18 +1615,23 @@ UncGroupsColourMap = {
     'pileup'              : r.TColor.GetColor("#fb9a99"),
     'prefiring'           : r.kGreen+1,
     'jes'                 : r.kPink+1,
+    'experimental'        : r.kPink+1,
     'jer'                 : r.TColor.GetColor("#1f77b4"),
     'trigger'             : r.kOrange-6,
     'isr'                 : r.TColor.GetColor("#cab2d6"),
     'fsr'                 : r.kGray+2,
+    'modelling'           : r.kTeal-7,
     'toppt'               : r.kPink-5,
     'ds'                  : r.kPink-5,
     'ue'                  : r.kTeal-7,
     'matching'            : r.kTeal,
     'ttbar_scales'        : r.kPink+4,
+    'modellingttbar'      : r.kPink+4,
     'tw_scales'           : r.kGreen-4,
+    'modellingtw'         : r.kGreen-4,
     'colour'              : r.kViolet-2,
     'ttbar_norm'          : r.kBlue,
+    'normalisation'       : r.kBlue,
     'vvttv_norm'          : r.kAzure-9,
     'nonworz_norm'        : r.kMagenta-4,
     'dy_norm'             : r.kMagenta,
@@ -1753,6 +1759,13 @@ SysNameTranslator = {
     'mtop'                : "Top mass",
     "pdfhessian"          : "PDF + #alpha_{S}",
     "mc_stat"             : "MC stat.",
+    "prefiring"           : "L1 ECAL prefiring",
+    "normalisation"       : "Normalisation",
+#    "modelling"           : "Modelling (common)",
+    "modelling"           : "Modelling",
+    "modellingtw"         : "Modelling (tW)",
+    "modellingttbar"      : "Modelling (t#bar{t})",
+    "experimental"        : "Experimental",
 }
 SysNameTranslator["colour"]   = SysNameTranslator["colour_rec"]
 SysNameTranslator["matching"] = SysNameTranslator["ttbar_matching"]
@@ -1824,6 +1837,7 @@ PrintSysNameTranslator = {
     'jer_2016'            : "JER (2016)",
     'jer_2017'            : "JER (2017)",
     'jer_2018'            : "JER (2018)",
+    "unclenergy"          : "Unclustered energy",
     'triggereff_2016'     : "Trigger eff. (2016)",
     'triggereff_2017'     : "Trigger eff. (2017)",
     'triggereff_2018'     : "Trigger eff. (2018)",
@@ -1866,9 +1880,20 @@ ProcessNameTranslator["VV+t#bar{t}V"] = ProcessNameTranslator["vvttv"]
 
 
 GOFTranslator = {
-    "DR"       : "\\POWHEG DR",
-    "DS"       : "\\POWHEG DS",
-    "aMCatNLO" : "\\MGaMCatNLO",
+    "DR"          : "PH DR + P8",
+    "DS"          : "PH DS + P8",
+    "Herwig"      : "PH DR + H7",
+    "aMC_dr"      : "aMC DR + P8",
+    "aMC_dr2"     : "aMC DR2 + P8",
+    "aMC_ds"      : "aMC DS + P8",
+    "aMC_ds_runn" : "aMC DS dyn. + P8",
+    #"DR"          : "\\POWHEG + \\PYTHIA 8 DR",
+    #"DS"          : "\\POWHEG + \\PYTHIA 8 DS",
+    #"Herwig"      : "\\POWHEG + \\HERWIG 7 DR",
+    #"aMC_dr"      : "\\MGaMCatNLO + \\PYTHIA 8 DR",
+    #"aMC_dr2"     : "\\MGaMCatNLO + \\PYTHIA 8 DR2",
+    #"aMC_ds"      : "\\MGaMCatNLO + \\PYTHIA 8 DS",
+    #"aMC_ds_runn" : "\\MGaMCatNLO + \\PYTHIA 8 DS dyn.",
 }
 
 
@@ -2078,9 +2103,14 @@ coloursForToys = {
 # individual_list = ['fsr','pileup','dy_norm','colour','jes','matching','ttbar_norm','elec','nonworz_norm','btag','ue','toppt','tw_scales',
 #                    'vvttv_norm','mc_stat','isr','ttbar_scales','lumi','pdf','mistag','ds','jer','trigger','prefiring','muon','mtop']
 
-individual_list = ['ttbar_scales','btag','jes','ttbar_norm','toppt','matching','mtop','elec','pileup','lumi','colour','dy_norm','mc_stat',
-                   'vvttv_norm','tw_scales','ue','isr','jer','nonworz_norm','fsr','ds','pdf','mistag','trigger','prefiring','muon']
+#individual_list = ['ttbar_scales','btag','jes','ttbar_norm','toppt','matching','mtop','elec','pileup','lumi','colour','dy_norm','mc_stat',
+#                   'vvttv_norm','tw_scales','ue','isr','jer','nonworz_norm','fsr','ds','pdf','mistag','trigger','prefiring','muon']
 
+#### REDUCIDA!!
+#individual_list = ["experimental", "modelling", "modellingttbar", "modellingtw", "normalisation", "mc_stat"]
+
+### TOVIA MAS!!
+individual_list = ["modelling", "experimental", "normalisation", "mc_stat"]
 global_list     = ['systematics']
 
 markersdict = {"tru"                : 2,
@@ -2103,15 +2133,24 @@ markersdict = {"tru"                : 2,
             #    "tru_aMC_ds_IS_runn" : 94,
 }
 
-spacingdict = {"tru"                : +0.,
-               "tru_DS"             : +0.3,
+#spacingdict = {"tru"                : +0.,
+#               "tru_DS"             : +0.3,
+#               "tru_herwig"         : -0.3,
+#               "tru_aMC_dr"         : -0.6,
+#               "tru_aMC_dr2"        : -0.9,
+#               "tru_aMC_ds"         : +0.6,
+#               "tru_aMC_ds_runn"    : +0.9,
+#               "tru_aMC_ds_IS"      : +0.8,
+#               "tru_aMC_ds_IS_runn" : +0.9,
+spacingdict = {"tru"                : -0.9,
+               "tru_DS"             : -0.6,
                "tru_herwig"         : -0.3,
-               "tru_aMC_dr"         : -0.6,
-               "tru_aMC_dr2"        : -0.9,
+               "tru_aMC_dr"         : +0.0,
+               "tru_aMC_dr2"        : +0.3,
                "tru_aMC_ds"         : +0.6,
                "tru_aMC_ds_runn"    : +0.9,
-               "tru_aMC_ds_IS"      : +0.8,
-               "tru_aMC_ds_IS_runn" : +0.9,
+               "tru_aMC_ds_IS"      : +0.93,
+               "tru_aMC_ds_IS_runn" : +0.97,
 }
 
 comparisonColourDict = {"tru"                : r.kRed,
@@ -2119,7 +2158,7 @@ comparisonColourDict = {"tru"                : r.kRed,
                         "tru_herwig"         : r.kMagenta,
                         "tru_aMC_dr"         : r.kAzure,
                         "tru_aMC_dr2"        : r.kAzure - 1,
-                        "tru_aMC_ds"         : r.kCyan,
+                        "tru_aMC_ds"         : r.kOrange + 3,
                         "tru_aMC_ds_runn"    : r.kPink - 9,
                         "tru_aMC_ds_IS"      : r.kViolet - 4,
                         "tru_aMC_ds_IS_runn" : r.kViolet - 1}

@@ -16,7 +16,7 @@ CMS_lumi.writeExtraText = 1
 vl.SetUpWarnings()
 
 markersize  = 0.8
-
+doArXiv     = True
 
 def GetAndPlotResponseMatrix(iY, var, key, theresponseh, theparticleh, thepath):
     thelumi = vl.TotalLumi if iY == "run2" else vl.LumiDict[int(iY)]
@@ -101,10 +101,11 @@ def GetAndPlotResponseMatrix(iY, var, key, theresponseh, theparticleh, thepath):
     r.gStyle.SetPaintTextFormat("4.3f")
     CMS_lumi.lumi_13TeV = ""
     #CMS_lumi.extraText  = 'Simulation Supplementary'
-    CMS_lumi.extraText  = 'Simulation Preliminary'
-    CMS_lumi.lumi_sqrtS = ''
+    CMS_lumi.extraText  = 'Simulation Supplementary' + ' Preliminary' * vl.doPre
+#    CMS_lumi.lumi_sqrtS = '#sqrt{s} = 13 TeV'
+    CMS_lumi.lumi_sqrtS = '(13 TeV)'
     #CMS_lumi.cmsTextSize += 0.1
-    CMS_lumi.CMS_lumi(r.gPad, 0, 0, 0.05)
+    CMS_lumi.CMS_lumi(r.gPad, 0, 0, 0.03)
     r.gStyle.SetLabelFont(43, "XYZ")
     r.gStyle.SetLabelSize(22, "XYZ")
     r.gPad.Update()
@@ -117,11 +118,23 @@ def GetAndPlotResponseMatrix(iY, var, key, theresponseh, theparticleh, thepath):
 
     c = r.TCanvas('c', "", 600, 600)
     plot = c.GetPad(0);
-    plot.SetTopMargin(0.0475); plot.SetRightMargin(0.1); plot.SetLeftMargin(0.12); plot.SetBottomMargin(0.1)
+    plot.SetTopMargin(0.0475); plot.SetRightMargin(0.15); plot.SetLeftMargin(0.12); plot.SetBottomMargin(0.1)
     htemp.Draw("colz")
-    CMS_lumi.CMS_lumi(r.gPad, 0, 0, 0.05)
+    CMS_lumi.CMS_lumi(r.gPad, 0, 0, 0.03)
     r.gStyle.SetLabelFont(43, "XYZ")
     r.gStyle.SetLabelSize(22, "XYZ")
+    
+    if doArXiv:
+        arXiv = r.TLatex()
+        arXiv.SetNDC()
+        arXiv.SetTextAngle(0)
+        arXiv.SetTextColor(r.kBlack)
+        
+        arXiv.SetTextFont(42)
+        arXiv.SetTextAlign(31)
+        arXiv.SetTextSize(0.6 * r.gPad.GetTopMargin())
+        arXiv.DrawLatex(0.7, 1 - r.gPad.GetTopMargin() + 0.2 * r.gPad.GetTopMargin(), vl.arXivtext)
+    
     r.gPad.Update()
     c.SaveAs(thepath + "/Rnonumb_" + var + "_" + key + ".png")
     #c.SaveAs(thepath + "/Rnonumb_" + var + "_" + key + ".eps")
