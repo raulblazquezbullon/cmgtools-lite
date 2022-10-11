@@ -98,12 +98,12 @@ def plotVariationsFromOneProcess(tsk):
         nominal.SetStats(0)
         nominal.SetLineWidth(2)
         nominal.SetTitle("")
-        nominal.GetXaxis().SetTitle("BDT disc." if any([el in outpath for el in ["1j1t", "2j1t"]]) else "Subleading jet p_{T}")
+        nominal.GetXaxis().SetTitle("BDT discriminant" if any([el in outpath for el in ["1j1t", "2j1t"]]) else "Subleading jet p_{T} (GeV)")
         nominal.SetMaximum(-1111); varup.SetMaximum(-1111); vardn.SetMaximum(-1111);
         nominal.GetYaxis().SetRangeUser(0, max([nominal.GetMaximum(), varup.GetMaximum(), vardn.GetMaximum()]) * 1.1)
         nominal.GetXaxis().SetLabelOffset(999)
         nominal.GetXaxis().SetLabelSize(0)
-        nominal.GetXaxis().SetTitle(' ')
+        #nominal.GetXaxis().SetTitle(' ')
         nominal.SetMarkerSize(0.)
         leg.AddEntry(nominal, "Nominal", "f")
 
@@ -183,9 +183,9 @@ def plotVariationsFromOneProcess(tsk):
 
         constant.SetLineWidth(3)
 
-        ratioUp.Draw("histsameX0")
-        constant.Draw("histsame")
-        ratioDown.Draw("histsameX0")
+        ratioUp.Draw("histsameX0E")
+        constant.Draw("histsameE")
+        ratioDown.Draw("histsameX0E")
 
         c.SaveAs(outpath + "/uncVar_" + thevar + "_" + theproc + "_" + iU + ".png")
         c.SaveAs(outpath + "/uncVar_" + thevar + "_" + theproc + "_" + iU + ".pdf")

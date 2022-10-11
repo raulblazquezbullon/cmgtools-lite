@@ -79,6 +79,10 @@ muonisosf_syst      : $AllBkg : .* : templateAsymm; AddWeights=['MuonISOSF_systU
 ## --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ## JECs
 ## --------------------------------------------------------------------------------------------------------------------------------------------------------------------------## Separate (and reduced) JES
+
+## Combined JES
+#jes : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesUp.txt'\,'tw-run2/frs-jecs/fr-jesDn.txt']
+
 jes_HF                  : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesHFUp.txt'\,'tw-run2/frs-jecs/fr-jesHFDown.txt']
 jes_HF_2016             : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesHF_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesHF_yearDown.txt'], year="2016"
 jes_HF_2017             : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jesHF_yearUp.txt'\,'tw-run2/frs-jecs/fr-jesHF_yearDown.txt'], year="2017"
@@ -126,7 +130,9 @@ jer_2018 : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-jerUp.t
 
 
 ## If we don't use MET, we don't need this unc.:
-## unclenergy : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-unclUp.txt'\,'tw-run2/frs-jecs/fr-unclDn.txt']
+unclenergy_2016 : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-unclUp.txt'\,'tw-run2/frs-jecs/fr-unclDn.txt'], year="2016", EstimateFromXbins=1
+unclenergy_2017 : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-unclUp.txt'\,'tw-run2/frs-jecs/fr-unclDn.txt'], year="2017", EstimateFromXbins=1
+unclenergy_2018 : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-jecs/fr-unclUp.txt'\,'tw-run2/frs-jecs/fr-unclDn.txt'], year="2018", EstimateFromXbins=1
 
 
 ## --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -187,8 +193,8 @@ muonen_2018 : $AllBkg : .* : templateAsymm; FakeRates=['tw-run2/frs-lepenergies/
 ttbar_norm   : ttbar   : .* : normSymm : 1.04
 vvttv_norm   : vvttv   : .* : normSymm : 1.5
 dy_norm      : dy      : .* : normSymm : 1.1
-#nonworz_norm : nonworz : .* : normSymm : 1.5
-nonworz_norm : nonworz : .* : normSymm : 1.04
+nonworz_norm : nonworz : .* : normSymm : 1.5
+#nonworz_norm : nonworz : .* : normSymm : 1.04
 
 
 ### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -214,7 +220,8 @@ pdfhessian : $tWandttbar : .* : HessianPDFset ; FakeRates=['tw-run2/frs-pdfs/fr-
 ttbar_scales : ttbar   : .* : envelope ; FakeRates=['tw-run2/frs-scales/fr-muR_0p5_muF_0p5.txt'\,'tw-run2/frs-scales/fr-muR_1p0_muF_2p0.txt'\,'tw-run2/frs-scales/fr-muR_2p0_muF_1p0.txt'\,'tw-run2/frs-scales/fr-muR_0p5_muF_1p0.txt'\,'tw-run2/frs-scales/fr-muR_1p0_muF_0p5.txt'\,'tw-run2/frs-scales/fr-muR_2p0_muF_2p0.txt'], fitOrder=1, symmAfterFit=1
 
 tw_scales    : $tWProc : .* : envelope ; FakeRates=['tw-run2/frs-scales/fr-muR_0p5_muF_0p5.txt'\,'tw-run2/frs-scales/fr-muR_1p0_muF_2p0.txt'\,'tw-run2/frs-scales/fr-muR_2p0_muF_1p0.txt'\,'tw-run2/frs-scales/fr-muR_0p5_muF_1p0.txt'\,'tw-run2/frs-scales/fr-muR_1p0_muF_0p5.txt'\,'tw-run2/frs-scales/fr-muR_2p0_muF_2p0.txt'], fitOrder=2, symmAfterFit=1
-
+#Without norm effect
+#tw_scales    : $tWProc : .* : envelope ; FakeRates=['tw-run2/frs-scales/fr-muR_0p5_muF_0p5_tW.txt'\,'tw-run2/frs-scales/fr-muR_1p0_muF_2p0_tW.txt'\,'tw-run2/frs-scales/fr-muR_2p0_muF_1p0_tW.txt'\,'tw-run2/frs-scales/fr-muR_0p5_muF_1p0_tW.txt'\,'tw-run2/frs-scales/fr-muR_1p0_muF_0p5_tW.txt'\,'tw-run2/frs-scales/fr-muR_2p0_muF_2p0_tW.txt'], fitOrder=2, symmAfterFit=1
 
 ####### --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ####### ISR/FSR

@@ -112,11 +112,11 @@ def CardsCommand(prod, year, var, bines, isAsimov, nthreads, outpath, region, no
                                mcafile   = mcafile_,
                                cutsfile  = cutsfile_,
                                uncs      = "--unc tw-run2/uncs-tw_{r}mvaNEW.txt --amc".format(r = region) if not noUnc else "--amc",
-#                               uncs      = "--unc tw-run2/uncs-tw_{r}mva_puid.txt --amc".format(r = region) if not noUnc else "--amc",
+                               #uncs      = "--unc tw-run2/uncs-tw_{r}mva_puid.txt --amc".format(r = region) if not noUnc else "--amc",
                                #uncs      = "--unc tw-run2/uncs-tw_{r}mva_20211202.txt --amc".format(r = region) if not noUnc else "--amc",
                                #uncs      = "--unc tw-run2/uncs-tw_{r}mva_ttbartw.txt --amc".format(r = region) if not noUnc else "--amc",
                                #uncs      = "--unc tw-run2/uncs-tw_{r}mvaTodoSmoothMenosABSB-BEC1.txt --amc".format(r = region) if not noUnc else "--amc",
-                              # uncs      = "--unc tw-run2/uncs-tw.txt --amc" if not noUnc else "--amc",
+                               #uncs      = "--unc tw-run2/uncs-tw.txt --amc" if not noUnc else "--amc",
                                #uncs      = "--unc tw-run2/uncs-tw_nadasuavizado.txt --amc" if not noUnc else "--amc",
                                extra     = extra_)
 
@@ -208,8 +208,8 @@ if __name__ == "__main__":
     ########----No rebin---------#######
     
     ########----1 Bin test-------#######
-    #thevars  = ["1", "1", "1"]
-    #thebins  = ["[0.5,1.5]","[0.5,1.5]","[0.5,1.5]"]
+#    thevars  = ["1", "1", "1"]
+#    thebins  = ["[0.5,1.5]","[0.5,1.5]","[0.5,1.5]"]
     ########----1 Bin test-------#######
 
     ########----4 Bin test-------#######

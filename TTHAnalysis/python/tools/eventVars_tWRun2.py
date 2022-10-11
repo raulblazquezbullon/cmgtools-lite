@@ -40,6 +40,7 @@ class EventVars_tWRun2(Module):
                             "Jet1_Pt",
                             "Jet2_Pt",
                             "JetLoose1_Pt",
+                            #"NlooseJetsPU",
 
                             "Lep1Jet1_DR",
                             "Lep12Jet12_DR",
@@ -92,6 +93,7 @@ class EventVars_tWRun2(Module):
                               "Jet1_Pt",
                               "Jet2_Pt",
                               "JetLoose1_Pt",
+                              #"NlooseJetsPU",
 
                               "Lep1Jet1_DR",
                               "Lep12Jet12_DR",
@@ -331,7 +333,15 @@ class EventVars_tWRun2(Module):
                 for i in range(len(loosejets_4m)):
                     loosejets_4m[i].SetPtEtaPhiM(getattr(loosejets[i], "pt" + jetjecsysscaff), loosejets_4m[i].Eta(),
                                             loosejets_4m[i].Phi(), getattr(loosejets[i], "mass" + jetjecsysscaff))
-
+                
+                ##Loose jets from PU
+                #if not event.isData:
+                #    loosejetsFromPU = 0
+                #    for j in loosejets:
+                #        if j.genJetIdx == -1:
+                #          loosejetsFromPU += 1  
+                #    
+                #    allret["NlooseJetsPU" + sys] = loosejetsFromPU
 
                 if getattr(event, 'nJetSel20{v}_Recl'.format(v = sys if "unclustEn" not in sys else "")) > 0:
                     allret["JetLoose1_Pt" + sys] = loosejets_4m[0].Pt()
@@ -339,7 +349,7 @@ class EventVars_tWRun2(Module):
                 #if getattr(event, 'nJetSel20_Recl') > 0:
                     #allret["JetLoose1_Pt" + sys] = getattr(event,
                                                            #("Jet_" + jetjecsysscaff) if sys == "" else "Jet_pt" + sys)[event.iJetSel20_Recl[0]]
-
+                
 
                 if getattr(event, 'nJetSel30{v}_Recl'.format(v = sys if "unclustEn" not in sys else "")) > 0:
                     allret["Lep1Lep2Jet1MET_Pz"          + sys] = abs((leps_4m[0] + leps_4m[1] + jets_4m[0] + met_4m).Pz())
@@ -448,6 +458,15 @@ class EventVars_tWRun2(Module):
                 #### FIXME: las variaciones de la met estan mal calculadas, hay que mirar en el posprocesado como se calcula
                 allret["METgood_pt"  + sys] = met_4m.Pt()
                 allret["METgood_phi" + sys] = met_4m.Phi()
+
+                ##Loose jets from PU
+                #if not event.isData:
+                #    loosejetsFromPU = 0
+                #    for j in loosejets:
+                #        if j.genJetIdx == -1:
+                #          loosejetsFromPU += 1  
+                #    
+                #    allret["NlooseJetsPU" + sys] = loosejetsFromPU
 
 
                 if getattr(event, 'nJetSel20{v}_Recl'.format(v = sys)) > 0:

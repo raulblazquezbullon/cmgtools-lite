@@ -6,10 +6,10 @@ from math import log10, floor
 
 
 translateDict = OrderedDict(
-    [("1j1b"                     , "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2022-01-24/Plots_TotWeight/run2/1j1t/MVAtrain/tot_weight.txt"),
-    ("1j1b_Differential"    , "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2022-01-24/Plots_TotWeight/run2/1j1t/differential/tot_weight.txt"),
-    ("2j1b"                      , "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2022-01-24/Plots_TotWeight/run2/2j1t/MVAtrain/tot_weight.txt"),
-    ("2j2b"    , "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2022-01-24/Plots_TotWeight/run2/2j2t/tot_weight.txt")]
+    [("1j1b"                     , "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2022-03-05_ARCReview_ttbarSemiWith50/run2/1j1t/MVAtrain/tot_weight.txt"),
+    ("1j1b_Differential"    , "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2022-03-05_ARCReview_ttbarSemiWith50/run2/1j1t/differential/tot_weight.txt"),
+    ("2j1b"                      , "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2022-03-05_ARCReview_ttbarSemiWith50/run2/2j1t/MVAtrain/tot_weight.txt"),
+    ("2j2b"    , "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2022-03-05_ARCReview_ttbarSemiWith50/run2/2j2t/tot_weight.txt")]
 )
 
 translateDict_processes = OrderedDict(
