@@ -426,7 +426,19 @@ def drawParticleResultsv3(theres, theuncs, thecov, outdir, year, var, pretend):
     plot.addHisto(tru_aMC_ds_runn,    'P,same', 'tW aMC DS dyn. + P8',    'P', 'mc')
     # plot.addHisto(tru_aMC_ds_IS,      'P,same', 'tW aMC DS IS + P8',      'P', 'mc')
     # plot.addHisto(tru_aMC_ds_IS_runn, 'P,same', 'tW aMC DS IS dyn. + P8', 'P', 'mc')
-
+    
+    savetfile2 = r.TFile(folderpath + "/particleOutput.root", "update")
+    tru.Write()
+    tru_DS.Write()
+    tru_herwig.Write()
+    tru_aMC_dr        .Write()
+    tru_aMC_dr2       .Write()
+    tru_aMC_ds        .Write()
+    tru_aMC_ds_runn   .Write()
+    tru_aMC_ds_IS     .Write()
+    tru_aMC_ds_IS_runn.Write()
+    savetfile2.Close()
+    
     plot.addHisto(theres,
                   'P,same{s}'.format(s = ",X0" if "equalbinsunf" in vl.varList[var] else ""),
                   "Asimov dataset" if vl.asimov else vl.labellegend,
@@ -637,7 +649,7 @@ def makeFit(task):
             #raise RuntimeError("FATAL: no valid folder found to add the control region information. Expected directory: {p}".format(p = inpath + "/" + year + "/" + varName + "/sigextr_fit_combine/" + controlpath))
 
         #cardList.append( "controlReg=" + controlpath + "/controlReg.txt" )
-    #""" 
+    """
     physicsModel = 'text2workspace.py -m 125 -P HiggsAnalysis.CombinedLimit.PhysicsModel:multiSignalModel '
     
     for idx in range(nparticlebins):
@@ -678,24 +690,24 @@ def makeFit(task):
 
     if verbose:
         print "Combine command:", combinecomm, "\n"
-    #"""
+
     # #sys.exit()
     if not pretend:
-        #"""
         outstat = os.system(combinecomm)
         if outstat:
             raise RuntimeError("FATAL: combine failed to execute for variable {v} of year {y}.".format(v = varName, y = year))
     
+    """
 
     if not pretend:
         # ######sys.exit()
-        
+        """
         if not os.path.isfile('higgsCombine{y}_{var}.FitDiagnostics.mH125.root'.format(y = year, var = varName)):
             raise RuntimeError("FATAL: no valid higgsCombine file found for variable {v} of year {y}.".format(v = varName, y = year))
         else:
             os.system("mv ./higgsCombine{y}_{var}.FitDiagnostics.mH125.root {fdir}".format(y = year, var = varName, fdir = fitoutpath + "/"))
 
-       #""" 
+       """
         # Ahora recogemos la virutilla
         if not os.path.isfile(fitoutpath + '/fitDiagnostics{y}_{var}.root'.format(y = year, var = varName)):
             raise RuntimeError("FATAL: no valid fitDiagnostics file found for variable {v} of year {y}. Maybe there was a problem with the fit.\n".format(v = varName, y = year))
@@ -811,7 +823,7 @@ def makeFit(task):
             uncInfo.SetBinContent(i,   results['r_tW_%d'%(i-1)][3]) # sym
             uncInfo.SetBinError  (i,   results['r_tW_%d'%(i-1)][3]) # sym
             
-            print i, results['r_tW_%d'%(i-1)][0], results['r_tW_%d'%(i-1)][3], results['r_tW_%d'%(i-1)][1], results['r_tW_%d'%(i-1)][2]
+#            print i, results['r_tW_%d'%(i-1)][0], results['r_tW_%d'%(i-1)][3], results['r_tW_%d'%(i-1)][1], results['r_tW_%d'%(i-1)][2]
 
         card.Close()
 

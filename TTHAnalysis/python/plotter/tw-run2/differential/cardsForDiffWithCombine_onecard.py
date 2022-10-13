@@ -532,7 +532,6 @@ if __name__=="__main__":
     useFibre = args.useFibre
     thevars  = vl.varList["Names"]["Variables"]
     theyears = ["2016", "2017", "2018", "run2"]
-    vetolist = ["plots", "Fiducial", "control", "tables"]
 
     if check:
         wr.warn("WARNING: check is only implemented for the first step.")

@@ -15,6 +15,7 @@ import tdrstyle, CMS_lumi
 vl.SetUpWarnings()
 r.gROOT.SetBatch(True)
 verbose = False
+doArXiv     = True
 
 
 
@@ -43,25 +44,26 @@ def BibhuFunction(dv, df, dfinal, dcov, varName):
     return
 
 
-
 def BibhuFunctionForCovs(cov, vals, var, outnam = "CovMat_fidbin"):
     partbins = array("d", vl.varList[var]["bins_particle"])
     outcov   = r.TH2D(outnam, "", len(vl.varList[var]["bins_particle"]) - 1, partbins,
                                   len(vl.varList[var]["bins_particle"]) - 1, partbins)
 
 
-    fidval  = sum([vals.GetBinContent(i) for i in range(1, vals.GetNbinsX() + 1)])
+    fidval  = sum([vals.GetBinContent(i) for i in range(1,   vals.GetNbinsX() + 1)])
     fidunc2 = sum([cov.GetBinContent(i, j) for i in range(1, cov.GetNbinsX() + 1) for j in range(1, cov.GetNbinsX() + 1) ])
 
     for iB in range(1, outcov.GetNbinsX() + 1):
-        for jB in range(1, outcov.GetNbinsY() + 1):
+        for jB in range(iB, outcov.GetNbinsY() + 1):
             outcov.SetBinContent(iB, jB,
                                 (cov.GetBinContent(iB, jB)/fidval**2 +
                                  vals.GetBinContent(iB) * vals.GetBinContent(jB) * fidunc2 / fidval**4 -
                                  vals.GetBinContent(iB) / (fidval**3) * sum([cov.GetBinContent(jB, k) for k in range(1, vals.GetNbinsX() + 1)]) -
                                  vals.GetBinContent(jB) / (fidval**3) * sum([cov.GetBinContent(iB, k) for k in range(1, vals.GetNbinsX() + 1)])
                                 )
-        )
+            )
+            outcov.SetBinContent(jB, iB, outcov.GetBinContent(iB, jB))
+
     return outcov
 
 
@@ -105,14 +107,14 @@ def calculateNormalisedValues(inpath, iY, iV):
     covmatdict = {}
     # sys.exit()
     for key,histo in dirvar.iteritems():
-        #print key, "CovMat_" + key.replace(iV + "_", "").replace(iV, "").replace("Up", "").replace("Down", "") if "total" not in key else "CovMat"
+        #print key, "CovMat_" + key.replace(iV + "_", "").replace(iV, "").replace("Up", "").replace("Down", "") if ("total" not in key and key != iV) else "CovMat"
         tmph = deepcopy(histo.Clone("tmpvar_" + key))
         for iB in range(1, histo.GetNbinsX() + 1):
             tmph.SetBinContent(iB, tmph.GetBinContent(iB) + (-tmph.GetBinError(iB) if "Down" in key else tmph.GetBinError(iB)))
 
         # covmatdict[key] = deepcopy(ep.getCovarianceFromVarv2(histo, tmph, iV))
         #covmatdict[key] = deepcopy(ep.getCovarianceFromVarv2(histo, tmph, iV)) if ((not "total" in key) or (key != iV)) else deepcopy(fvar.Get("CovMat").Clone("covtotal"))
-        covmatdict[key] = deepcopy(fvar.Get("CovMat_" + key.replace(iV + "_", "").replace(iV, "").replace("Up", "").replace("Down", "") if "total" not in key else "CovMat"))
+        covmatdict[key] = deepcopy(fvar.Get("CovMat_" + key.replace(iV + "_", "").replace(iV, "").replace("Up", "").replace("Down", "") if ("total" not in key and key != iV) else "CovMat"))
         #covmatdict[key] = deepcopy(fvar.Get("CovMat").Clone("cov" + key.replace(iV, "")))
         fiduval = sum([histo.GetBinContent(i) for i in range(1, histo.GetNbinsX() + 1)])
         
@@ -132,11 +134,17 @@ def calculateNormalisedValues(inpath, iY, iV):
         #print dirvar[key], dirfid[key]
     #sys.exit()
 
+    #for key in covmatdict:
+        #print key, covmatdict[key]
+    #sys.exit()
+    
+    normcovmat = BibhuFunctionForCovs(covmatdict[iV], dirvar[iV], iV)
     dirfinal = {}
     for key in dirvar:
         name    = "Fiducial" if key == iV else "Fiducial" + key.replace(iV, "")
         dirfinal[key] = deepcopy(dirvar[key].Clone())
         dirfinal[key].Divide(dirfid[name])
+        #print key
     
     BibhuFunction(dirvar, dirfid, dirfinal, covmatdict, iV)
 
@@ -157,8 +165,12 @@ def calculateNormalisedValues(inpath, iY, iV):
     for key in allHistos: allHistos[key].Write()
     savetfile.Close(); del savetfile
 
-    normcovmat = BibhuFunctionForCovs(covmatdict[iV], dirvar[iV], iV)
     normcovmat.Scale(1, "width")
+    
+    #savetfile3 = r.TFile(inpath + "/" + iY + "/" + varName + "/temp_allcovmats.root", "recreate")
+    #covmatnorm.Write()
+    #savetfile3.Close(); del savetfile3
+    
     return allHistos, normcovmat
 
 
@@ -182,7 +194,18 @@ def giveMeOneComparisonNormalised(orighist, name, scalevalue, iV):
 
     # if name == "tru": print fiduval
 
+    thegooduncs = []
+    for bin in range(1, outH.GetNbinsX() + 1):
+        thegooduncs.append(r.TMath.Sqrt(outH.GetBinError(bin)**2 / fiduval**2 +
+                                        outH.GetBinContent(bin)**2 * fiduunc**2 / fiduval**4 -
+                                        2 * (outH.GetBinContent(bin) * outH.GetBinError(bin)**2) / fiduval**3 )
+        )
+
     outH.Divide(htmp)
+
+    for iB in range(1, outH.GetNbinsX() + 1):
+        outH.SetBinError(iB, thegooduncs[iB - 1])
+
     outH.Scale(1, "width")
     del htmp
 
@@ -242,16 +265,31 @@ def drawANormalisedCovMat(finalmat, inpath, iY, var):
     if ('txtangle_covparticlefidbin' in vl.varList[var]):
         txtanglestring = vl.varList[var]['txtangle_covparticlefidbin']
 
-    finalmat.Draw("colz text{s}".format(s = txtanglestring))
+#    finalmat.Draw("colz text{s}".format(s = txtanglestring))
+    finalmat.Draw("colz")
     r.gPad.Update()
 
-    CMS_lumi.lumi_13TeV = ""
-    #CMS_lumi.extraText  = 'Simulation Supplementary'
-    #CMS_lumi.extraText  = 'Simulation Preliminary'
-    CMS_lumi.extraText  = 'Simulation'
-    CMS_lumi.lumi_sqrtS = ''
+    thelumi = vl.TotalLumi if iY == "run2" else vl.LumiDict[int(iY)]
+    if thelumi >= 10**2:
+        CMS_lumi.lumi_13TeV = "%.0f fb^{-1}" %(thelumi)
+    else:
+        CMS_lumi.lumi_13TeV = "%.1f fb^{-1}" %(thelumi)
+
+    CMS_lumi.extraText  = "Supplementary" + ' Preliminary' * vl.doPre
+    CMS_lumi.lumi_sqrtS = '#sqrt{s} = 13 TeV'
     #CMS_lumi.cmsTextSize += 0.1
-    CMS_lumi.CMS_lumi(r.gPad, 0, 0, 0.05)
+    CMS_lumi.CMS_lumi(r.gPad, 4, 0, 0.05)
+
+    if doArXiv:
+        arXiv = r.TLatex()
+        arXiv.SetNDC()
+        arXiv.SetTextAngle(0)
+        arXiv.SetTextColor(r.kBlack)
+        
+        arXiv.SetTextFont(42)
+        arXiv.SetTextAlign(31)
+        arXiv.SetTextSize(0.6 * r.gPad.GetTopMargin())
+        arXiv.DrawLatex(0.61, 1 - r.gPad.GetTopMargin() + 0.2 * r.gPad.GetTopMargin(), vl.arXivtext)
 
     plotsoutputpath = pathtothings + "/CovMatplots"
     if not os.path.isdir(plotsoutputpath):
@@ -357,11 +395,18 @@ def PlotParticleFidBinLevelResults(thedict, inpath, iY, varName, covmatnorm):
     tru.Write()
     tru_DS.Write()
     tru_herwig.Write()
+    tru_aMC_dr        .Write()
+    tru_aMC_dr2       .Write()
+    tru_aMC_ds        .Write()
+    tru_aMC_ds_runn   .Write()
+    tru_aMC_ds_IS     .Write()
+    tru_aMC_ds_IS_runn.Write()
     savetfile2.Close()
-    themaxs = []
-    for el in [tru, tru_DS, tru_herwig, thedict[""], nominal_withErrors[0], nominal_withErrors[1]]:
-        themaxs.append(vl.getAConservativeMaximum(el))
-    tmpval = max(themaxs)
+
+    #themaxs = []
+    #for el in [tru, tru_DS, tru_herwig, thedict[""], nominal_withErrors[0], nominal_withErrors[1]]:
+        #themaxs.append(vl.getAConservativeMaximum(el))
+    #tmpval = max(themaxs)
     """
     print tmpval
     nominal_withErrors[0].SetMaximum(tmpval)
@@ -421,7 +466,9 @@ def PlotParticleFidBinLevelResults(thedict, inpath, iY, varName, covmatnorm):
 
     #### COVMAT
     drawANormalisedCovMat(covmatnorm, inpath, iY, varName)
-
+    savetfile3 = r.TFile(inpath + "/" + iY + "/" + varName + "/CovMat_particlefidbin_v2.root", "recreate")
+    covmatnorm.Write()
+    savetfile3.Close(); del savetfile3
     return
 
 

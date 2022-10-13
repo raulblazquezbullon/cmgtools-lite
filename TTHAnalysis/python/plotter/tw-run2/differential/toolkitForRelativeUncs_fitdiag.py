@@ -17,13 +17,151 @@ basecommand = 'combine -M FitDiagnostics -m 125 --setParameters {setpars} --save
 
 userstorage = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/misc/"
 
+#individual_scaff = {
+    ##### Statistical
+    #'mc_stat' : [],
+
+    ##### Systematic
+    ## Experimental
+    #'jes': [
+##        "jes",
+        #"jes_HF",
+        #"jes_HF_2016",
+        #"jes_HF_2017",
+        #"jes_HF_2018",
+        #"jes_BBEC1",
+        #"jes_BBEC1_2016",
+        #"jes_BBEC1_2017",
+        #"jes_BBEC1_2018",
+        #"jes_FlavorQCD",
+        #"jes_RelativeSample_2016",
+        #"jes_RelativeSample_2017",
+        #"jes_RelativeSample_2018",
+        #"jes_EC2",
+        #"jes_EC2_2016",
+        #"jes_EC2_2017",
+        #"jes_EC2_2018",
+        #"jes_RelativeBal",
+        #"jes_Absolute",
+        #"jes_Absolute_2016",
+        #"jes_Absolute_2017",
+        #"jes_Absolute_2018",
+        #"unclenergy",
+    #],
+    #'jer': [
+        #"jer_2016",
+        #"jer_2017",
+        #"jer_2018",
+    #],
+    #'trigger': [
+        #"triggereff_2016",
+        #"triggereff_2017",
+        #"triggereff_2018",
+    #],
+    #'pileup': [
+        #"pileup",
+    #],
+    #'elec': [
+        #"elecidsf",
+        #"elecrecosf",
+    #],
+    #'muon': [
+        ##"muonen_2016",
+        #"muonen_2017",
+        #"muonen_2018",
+        #"muonidsf_stat_2016",
+        #"muonidsf_stat_2017",
+        #"muonidsf_stat_2018",
+        #"muonidsf_syst",
+        #"muonisosf_stat_2016",
+        #"muonisosf_stat_2017",
+        #"muonisosf_stat_2018",
+        #"muonisosf_syst",
+    #],
+    #'btag': [
+        #"btagging_2016",
+        #"btagging_2017",
+        #"btagging_2018",
+        #"btagging_corr",
+    #],
+    #'mistag': [
+        #"mistagging_2016",
+        #"mistagging_2017",
+        #"mistagging_2018",
+        #"mistagging_corr",
+    #],
+    #'lumi': [
+        #"lumi_2016",
+        #"lumi_2017",
+        #"lumi_2018",
+        #"lumi_corr",
+        #"lumi_corr1718",
+    #],
+    #'prefiring' : [
+        #"prefiring_2016",
+        #"prefiring_2017",
+    #],
+
+    ## Normalisation
+    #'ttbar_norm' : [
+        #"ttbar_norm",
+    #],
+    #'nonworz_norm' : [
+        #"nonworz_norm",
+    #],
+    #'dy_norm' : [
+        #"dy_norm",
+    #],
+    #'vvttv_norm' : [
+        #"vvttv_norm",
+    #],
+
+    ## Modelling
+    #'pdf' : [
+        #"pdfhessian",
+    #],
+    #'matching' : [
+        #"ttbar_matching",
+    #],
+    #'ttbar_scales' : [
+        #"ttbar_scales",
+    #],
+    #'tw_scales' : [
+        #"tw_scales",
+    #],
+    #'isr' : [
+        #"isr_ttbar",
+        #"isr_tw",
+    #],
+    #'fsr' : [
+        #"fsr",
+    #],
+    #'colour' : [
+        #"colour_rec_erdon",
+        #"colour_rec_cr1",
+        #"colour_rec_cr2",
+    #],
+    #'ue' : [
+        #"ue",
+    #],
+    #'toppt' : [
+        #"topptrew",
+    #],
+    #'mtop' : [
+        #"mtop",
+    #],
+    #'ds' : [
+        #"ds",
+    #],
+#}
+
 individual_scaff = {
     #### Statistical
     'mc_stat' : [],
 
     #### Systematic
     # Experimental
-    'jes': [
+    'experimental': [
 #        "jes",
         "jes_HF",
         "jes_HF_2016",
@@ -47,25 +185,15 @@ individual_scaff = {
         "jes_Absolute_2017",
         "jes_Absolute_2018",
         "unclenergy",
-    ],
-    'jer': [
         "jer_2016",
         "jer_2017",
         "jer_2018",
-    ],
-    'trigger': [
         "triggereff_2016",
         "triggereff_2017",
         "triggereff_2018",
-    ],
-    'pileup': [
         "pileup",
-    ],
-    'elec': [
         "elecidsf",
         "elecrecosf",
-    ],
-    'muon': [
         #"muonen_2016",
         "muonen_2017",
         "muonen_2018",
@@ -77,81 +205,47 @@ individual_scaff = {
         "muonisosf_stat_2017",
         "muonisosf_stat_2018",
         "muonisosf_syst",
-    ],
-    'btag': [
         "btagging_2016",
         "btagging_2017",
         "btagging_2018",
         "btagging_corr",
-    ],
-    'mistag': [
         "mistagging_2016",
         "mistagging_2017",
         "mistagging_2018",
         "mistagging_corr",
-    ],
-    'lumi': [
         "lumi_2016",
         "lumi_2017",
         "lumi_2018",
         "lumi_corr",
         "lumi_corr1718",
-    ],
-    'prefiring' : [
         "prefiring_2016",
         "prefiring_2017",
     ],
 
     # Normalisation
-    'ttbar_norm' : [
+    'normalisation' : [
         "ttbar_norm",
-    ],
-    'nonworz_norm' : [
         "nonworz_norm",
-    ],
-    'dy_norm' : [
         "dy_norm",
-    ],
-    'vvttv_norm' : [
         "vvttv_norm",
     ],
 
     # Modelling
-    'pdf' : [
+    'modelling' : [
         "pdfhessian",
-    ],
-    'matching' : [
-        "ttbar_matching",
-    ],
-    'ttbar_scales' : [
-        "ttbar_scales",
-    ],
-    'tw_scales' : [
-        "tw_scales",
-    ],
-    'isr' : [
-        "isr_ttbar",
-        "isr_tw",
-    ],
-    'fsr' : [
         "fsr",
-    ],
-    'colour' : [
         "colour_rec_erdon",
         "colour_rec_cr1",
         "colour_rec_cr2",
-    ],
-    'ue' : [
         "ue",
-    ],
-    'toppt' : [
-        "topptrew",
-    ],
-    'mtop' : [
         "mtop",
-    ],
-    'ds' : [
         "ds",
+        "tw_scales",
+        "isr_tw",
+        "ttbar_matching",
+        "ttbar_scales",
+        "isr_ttbar",
+        "topptrew",
     ],
 }
 

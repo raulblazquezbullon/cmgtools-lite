@@ -84,6 +84,9 @@ systsGroup = {
         "jer_2017",
         "jer_2018",
     ],
+    'unclenergy' : [
+        "unclenergy",
+    ],
     'trigger': [
         "triggereff_2016",
         "triggereff_2017",
@@ -259,6 +262,7 @@ systsGroup = {
        "jer_2016",
        "jer_2017",
        "jer_2018",
+       "unclenergy",
        "triggereff_2016",
        "triggereff_2017",
        "triggereff_2018",
@@ -322,7 +326,7 @@ POIs   = ["r"]
 
 
 groupList   = ['fsr','pileup','dy_norm','colour','jes','matching','ttbar_norm','elec','nonworz_norm','btag','ue','toppt','tw_scales',
-              'vvttv_norm','mc_stat','isr','ttbar_scales','lumi','pdf','mistag','ds','jer','trigger','prefiring','muon','mtop']
+              'vvttv_norm','mc_stat','isr','ttbar_scales','lumi','pdf','mistag','ds','jer','trigger','prefiring','muon','mtop','unclenergy']
 
 groupList = ['systematics','lumi']
 

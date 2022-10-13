@@ -40,7 +40,9 @@ class beautifulUnfPlot:
         self.yaxisuplimit   = 0
         # self.yaxis_unclabel = 'Relative uncertainty (adim.)'
         self.yaxis_unclabel = 'Relative uncertainty'
-        self.yaxistitleoffset = 1.9
+        #self.yaxistitleoffset = 1.9
+        #self.yaxistitleoffset = 1.7
+        self.yaxistitleoffset = 1.4
         self.yaxistitleoffset_wide = 0.5
         self.yaxistitleoffset_noratio = 1.8
         self.maxdigits = 3
@@ -424,13 +426,16 @@ class beautifulUnfPlot:
             if "MT_LLMETB" in self.var: totalunc.GetXaxis().SetNdivisions(515, True)
             
             if   "yaxismax_ratio_fidnorm" in vl.varList[self.var] and "fiducialnorm" in self.var:
-                totalunc.GetYaxis().SetRangeUser(0.5, vl.varList[self.var]["yaxismax_ratio_fidnorm"])
+                if "yaxismin_ratio_fidnorm" in vl.varList[self.var]:
+                    totalunc.GetYaxis().SetRangeUser(vl.varList[self.var]["yaxismin_ratio_fidnorm"], vl.varList[self.var]["yaxismax_ratio_fidnorm"])
+                else:
+                    totalunc.GetYaxis().SetRangeUser(0.5, vl.varList[self.var]["yaxismax_ratio_fidnorm"])
             elif "yaxismax_ratio_norm" in vl.varList[self.var] and "norm" in self.var:
                 totalunc.GetYaxis().SetRangeUser(0.5, vl.varList[self.var]["yaxismax_ratio_norm"])
             else:
                 totalunc.GetYaxis().SetRangeUser(0.5, 1.5)
 
-            totalunc.GetYaxis().SetTitle('Pred./Data')
+            totalunc.GetYaxis().SetTitle('Pred. / Data   ')
             totalunc.GetYaxis().SetTitleFont(43)
             totalunc.GetYaxis().SetTitleSize(22)
             totalunc.GetYaxis().SetTitleOffset(self.yaxistitleoffset_wide if self.doWide else self.yaxistitleoffset)
@@ -620,14 +625,17 @@ class beautifulUnfPlot:
             if "MT_LLMETB" in self.var: totalunc.GetXaxis().SetNdivisions(515, True)
             
             if   "yaxismax_ratio_fidnorm" in vl.varList[self.var] and "fidbin" in self.name:
-                totalunc.GetYaxis().SetRangeUser(0.5, vl.varList[self.var]["yaxismax_ratio_fidnorm"])
+                if "yaxismin_ratio_fidnorm" in vl.varList[self.var]:
+                    totalunc.GetYaxis().SetRangeUser(vl.varList[self.var]["yaxismin_ratio_fidnorm"], vl.varList[self.var]["yaxismax_ratio_fidnorm"])
+                else:
+                    totalunc.GetYaxis().SetRangeUser(0.5, vl.varList[self.var]["yaxismax_ratio_fidnorm"])
             elif "yaxismax_ratio_norm" in vl.varList[self.var] and "bin" in self.name:
                 totalunc.GetYaxis().SetRangeUser(0.5, vl.varList[self.var]["yaxismax_ratio_norm"])
             else:
                 totalunc.GetYaxis().SetRangeUser(0.5, 1.5)
                 #totalunc.GetYaxis().SetRangeUser(0, 2)
 
-            totalunc.GetYaxis().SetTitle('Pred./Data')
+            totalunc.GetYaxis().SetTitle('Pred. / Data   ')
             totalunc.GetYaxis().SetTitleFont(43)
             totalunc.GetYaxis().SetTitleSize(22)
             totalunc.GetYaxis().SetTitleOffset(self.yaxistitleoffset_wide if self.doWide else self.yaxistitleoffset)
@@ -661,7 +669,7 @@ class beautifulUnfPlot:
             else:
                 datavalues.GetYaxis().SetRangeUser(0.5, 1.5)
 
-            datavalues.GetYaxis().SetTitle('Pred./Data')
+            datavalues.GetYaxis().SetTitle('Pred. / Data   ')
             datavalues.GetYaxis().SetTitleFont(43)
             datavalues.GetYaxis().SetTitleSize(22)
             datavalues.GetYaxis().SetTitleOffset(self.yaxistitleoffset_wide if self.doWide else self.yaxistitleoffset)

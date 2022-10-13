@@ -14,3 +14,6 @@ metgood:    (channel == 1) || (METgood_pt > 40)
 1jet:       nJetSel30_Recl == 1;
 1btag:      nBJetSelMedium30_Recl == 1;
 0jetloose:  nJetSel20_Recl == 0;
+
+#LOWnpvs:       PV_npvs <= 15;
+#HIGHnpvs:       PV_npvs >= 15; 

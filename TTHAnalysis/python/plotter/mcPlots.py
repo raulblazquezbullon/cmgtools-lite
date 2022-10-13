@@ -140,10 +140,11 @@ def doSpam(text,x1,y1,x2,y2,align=12,fill=False,textSize=0.033,_noDelete={}):
     _noDelete[text] = cmsprel; ## so it doesn't get deleted by PyROOT
     return cmsprel
 
-def doTinyCmsPrelim(textLeft="_default_",textRight="_default_",hasExpo=False,textSize=0.033,lumi=None, xoffs=0, options=None, doWide=False):
+def doTinyCmsPrelim(textLeft="_default_",textRight="_default_",hasExpo=False,textSize=0.033,lumi=None, xoffs=0, options=None, doWide=False, TLleg=False):
     if textLeft  == "_default_": 
         textLeft  = options.lspam
         textLeftPosition = options.lspamPosition
+    
     if textRight == "_default_": textRight = options.rspam
     if lumi      == None       : lumi      = sum(map(float, options.lumi.split(',')))
     if   lumi >= 1e+2: lumitext = "%.0f fb^{-1}" % lumi
@@ -157,7 +158,9 @@ def doTinyCmsPrelim(textLeft="_default_",textRight="_default_",hasExpo=False,tex
     textRight = textRight.replace("%(lumi)",lumitext)
     if options.noExpoShift:
         hasExpo = False
-    if textLeft not in ['', None]:
+    if TLleg and options.lspamShiftLegend and textLeft not in ['', None]:
+        doSpam(textLeft, .68, .855, .9, .895, align=32, textSize=textSize)
+    elif textLeft not in ['', None]:
         doSpam(textLeft, (.28 if hasExpo else 0.07 if doWide else textLeftPosition[0])+xoffs, textLeftPosition[1], textLeftPosition[2]+xoffs, textLeftPosition[3], align=12, textSize=textSize)
           
     if textRight not in ['', None]:
@@ -181,9 +184,13 @@ def reMax(hist,hist2,islog,factorLin=1.3,factorLog=2.0,doWide=False):
 
 def doShadedUncertainty(h):
     ret = h.graphAsymmTotalErrors()
-    ret.SetFillStyle(3244);
-    ret.SetFillColor(ROOT.kGray+2)
+    ret.SetFillStyle(options.TotalUncRatioStyle[0] if options.TotalUncRatioStyle[0]!=3244 else 3244);
+    ret.SetFillColor(options.TotalUncRatioColor[0] if options.TotalUncRatioColor[0]!=432 else ROOT.kGray+2)
     ret.SetMarkerStyle(0)
+    ret.SetLineWidth(options.histoLineWidth)
+    if options.removeMarkerUncertainty:
+       ret.SetMarkerStyle(4)
+       ret.SetMarkerSize(0)
     ret.Draw("PE2 SAME")
     return ret
 
@@ -395,7 +402,7 @@ def doRatioHists(pspec,pmap,total,maxRange,fixRange=False,fitRatio=None,errorsOn
             # do this first
             total.GetXaxis().SetLabelOffset(999) ## send them away
             total.GetXaxis().SetTitleOffset(999) ## in outer space
-            total.GetYaxis().SetTitleSize(options.labelsSize if options.labelsSize!=-1.0 else 0.06)
+            total.GetYaxis().SetTitleSize(options.axisTitleSize if options.axisTitleSize!=-1.0 else 0.06)
             total.GetYaxis().SetTitleOffset(0.75 if doWide else 1.48)
             total.GetYaxis().SetLabelSize(options.labelsSize if options.labelsSize!=-1.0 else 0.05)
             total.GetYaxis().SetLabelOffset(0.007)
@@ -427,7 +434,7 @@ def doRatioHists(pspec,pmap,total,maxRange,fixRange=False,fitRatio=None,errorsOn
         ratio.SetLineWidth(2)
         ratio.SetLineColor(iS.GetStack().Last().GetLineColor())
         ratios.append(ratio)
-    
+
     unity  = total.raw().Clone("")
     unityErr  = total.graphAsymmTotalErrors(relative=True)
     unityErr0 = total.graphAsymmTotalErrors(toadd=[],relative=True)
@@ -483,14 +490,15 @@ def doRatioHists(pspec,pmap,total,maxRange,fixRange=False,fitRatio=None,errorsOn
     rmax = float(pspec.getOption("RMax",rmax))
     unity.GetYaxis().SetRangeUser(rmin,rmax);
     unity.GetXaxis().SetTitleFont(options.labelsFont)
-    unity.GetXaxis().SetTitleSize(options.labelsSize if options.labelsSize!=-1.0 else 0.14)
+    unity.GetXaxis().SetTitleSize(options.axisTitleSize if options.axisTitleSize!=-1.0 else 0.14)
     unity.GetXaxis().SetTitleOffset(options.XTitleOffsetRatio)
     unity.GetXaxis().SetLabelFont(options.labelsFont)
     unity.GetXaxis().SetLabelSize(options.labelsSize if options.labelsSize!=-1.0 else 0.1)
     unity.GetXaxis().SetLabelOffset(0.015)
     unity.GetYaxis().SetNdivisions(yndiv)
+    unity.GetYaxis().CenterTitle(options.centerRatioYTitle)
     unity.GetYaxis().SetTitleFont(options.labelsFont)
-    unity.GetYaxis().SetTitleSize(options.labelsSize if options.labelsSize!=-1.0 else 0.14)
+    unity.GetYaxis().SetTitleSize(options.axisTitleSize if options.axisTitleSize!=-1.0 else 0.14)
     offset = 0.32 if doWide else options.YTitleOffset[1]
     unity.GetYaxis().SetTitleOffset(offset)
     unity.GetYaxis().SetLabelFont(options.labelsFont)
@@ -500,7 +508,7 @@ def doRatioHists(pspec,pmap,total,maxRange,fixRange=False,fitRatio=None,errorsOn
     unity.GetYaxis().SetTitle(ylabel)
     total.GetXaxis().SetLabelOffset(999) ## send them away
     total.GetXaxis().SetTitleOffset(999) ## in outer space
-    total.GetYaxis().SetTitleSize(options.labelsSize if options.labelsSize!=-1.0 else 0.06)
+    total.GetYaxis().SetTitleSize(options.axisTitleSize if options.axisTitleSize!=-1.0 else 0.06)
     total.GetYaxis().SetTitleOffset(0.75 if doWide else options.YTitleOffset[0])
     total.GetYaxis().SetLabelSize(options.labelsSize if options.labelsSize!=-1.0 else 0.05)
     total.GetYaxis().SetLabelOffset(0.007)
@@ -518,8 +526,9 @@ def doRatioHists(pspec,pmap,total,maxRange,fixRange=False,fitRatio=None,errorsOn
             unity.GetXaxis().SetBinLabel(i,blist[i-1]) 
     #$ROOT.gStyle.SetErrorX(0.0);
     line = ROOT.TLine(unity.GetXaxis().GetXmin(),1,unity.GetXaxis().GetXmax(),1)
-    line.SetLineWidth(2);
-    line.SetLineColor(58);
+    line.SetLineStyle(options.ratioLinePersonalization[0])
+    line.SetLineWidth(options.ratioLinePersonalization[1]);
+    line.SetLineColor(options.ratioLinePersonalization[2]);
     if not options.NotDrawRatioLine:
         line.Draw("L")
     for ratio in ratios:
@@ -580,7 +589,7 @@ def doStatTests(total,data,test,legendCorner):
 
 
 legend_ = None;
-def doLegend(pmap,mca,corner="TR",textSize=0.035,cutoff=1e-2,cutoffSignals=True,mcStyle="F",legWidth=0.18,legBorder=True,signalPlotScale=None,totalError=None,header="",doWide=False,columns=1,DrawHorizontalErrBarInLegend=True, opts = None):
+def doLegend(pmap,mca,corner="TR",textSize=0.035,cutoff=1e-2,cutoffSignals=True,mcStyle="F",legWidth=0.18,legBorder=True,signalPlotScale=None,totalError=None,header="",doWide=False,columns=1,DrawHorizontalErrBarInLegend=True, opts = None, shiftLegend=0):
     if (corner == None): return
     total = sum([x.Integral() for x in pmap.itervalues()])
     sigEntries = []; bgEntries = []
@@ -619,7 +628,7 @@ def doLegend(pmap,mca,corner="TR",textSize=0.035,cutoff=1e-2,cutoffSignals=True,
     elif corner == "BL":
         (x1,y1,x2,y2) = (.2, .16 + height, .2+legWidth, .15)
 
-    leg = ROOT.TLegend(x1,y1,x2,y2)
+    leg = ROOT.TLegend(x1 + shiftLegend, y1, x2 + shiftLegend, y2)
     leg.SetFillColor(0)
     leg.SetShadowColor(0)
     if options.transparentLegend:
@@ -639,7 +648,7 @@ def doLegend(pmap,mca,corner="TR",textSize=0.035,cutoff=1e-2,cutoffSignals=True,
             entries.append((pmap['data'].raw(), mca.getProcessOption('data','Label','Data', noThrow=True), 'PE'))
     for (plot,label,style) in sigEntries: entries.append((plot.raw(),label,style))
     for (plot,label,style) in  bgEntries: entries.append((plot.raw(),label,style))
-    if totalError:  entries.append((totalError,"Total unc.","F"))
+    if totalError:  entries.append((totalError, options.UncLegendName, "F"))
     nrows = int(ceil(len(entries)/float(columns)))
     for r in xrange(nrows):
         for c in xrange(columns):
@@ -651,6 +660,7 @@ def doLegend(pmap,mca,corner="TR",textSize=0.035,cutoff=1e-2,cutoffSignals=True,
     global legend_
     legend_ = leg 
     return leg
+
 
 class PlotMaker:
     def __init__(self,tdir,options):
@@ -914,13 +924,13 @@ class PlotMaker:
         stack.Draw("GOFF")
         ytitle = "Events" if not self._options.printBinning else "Events / %s" %(self._options.printBinning)
         total.GetXaxis().SetTitleFont(options.labelsFont)
-        total.GetXaxis().SetTitleSize(options.labelsSize if options.labelsSize!=-1.0 else 0.05)
+        total.GetXaxis().SetTitleSize(options.axisTitleSize if options.axisTitleSize!=-1.0 else 0.05)
         total.GetXaxis().SetTitleOffset(1.1)
         total.GetXaxis().SetLabelFont(options.labelsFont)
         total.GetXaxis().SetLabelSize(options.labelsSize if options.labelsSize!=-1.0 else 0.05)
         total.GetXaxis().SetLabelOffset(0.007)
         total.GetYaxis().SetTitleFont(options.labelsFont)
-        total.GetYaxis().SetTitleSize(options.labelsSize if options.labelsSize!=-1.0 else 0.05)
+        total.GetYaxis().SetTitleSize(options.axisTitleSize if options.axisTitleSize!=-1.0 else 0.05)
         total.GetYaxis().SetTitleOffset(0.9 if doWide else 2.0)
         total.GetYaxis().SetLabelFont(options.labelsFont)
         total.GetYaxis().SetLabelSize(options.labelsSize if options.labelsSize!=-1.0 else 0.05)
@@ -928,11 +938,12 @@ class PlotMaker:
         total.GetYaxis().SetTitle(pspec.getOption('YTitle',ytitle))
         total.GetXaxis().SetTitle(pspec.getOption('XTitle',outputName))
         total.GetXaxis().SetNdivisions(pspec.getOption('XNDiv',510))
+        total.SetLineWidth(options.histoLineWidth)
         if outputDir: outputDir.WriteTObject(stack)
-        # 
+        #
         if not makeCanvas and not self._options.printPlots: return
         doRatio = self._options.showRatio and ('data' in pmap or (plotmode != "stack")) and ("TH2" not in total.ClassName())
-        islog = pspec.hasOption('Logy'); 
+        islog = pspec.hasOption('Logy');
         if doRatio: ROOT.gStyle.SetPaperSize(20.,sf*(plotformat[1]+150))
         else:       ROOT.gStyle.SetPaperSize(20.,sf*plotformat[1])
         # create canvas
@@ -976,6 +987,8 @@ class PlotMaker:
             total.GetXaxis().SetMoreLogLabels(True)
         if islog: total.SetMaximum(2*total.GetMaximum())
         if not islog: total.SetMinimum(0)
+        if options.maxDigits != 0:
+            total.GetYaxis().SetMaxDigits(options.maxDigits)
         total.Draw("HIST")
         if plotmode == "stack":
             stack.Draw("SAME HIST")
@@ -1014,8 +1027,16 @@ class PlotMaker:
                         for i in range(pdata.GetN()):
                             pdata.SetPointEXlow(i,0)
                             pdata.SetPointEXhigh(i,0)
-                    if flag and options.printBinUnity and total.GetXaxis().GetTitle().find("GeV")!=-1:
-                        total.GetYaxis().SetTitle("Events / " + str(int(round(binWidth))) + " GeV")
+                    if flag and options.printBinUnity:
+                        roundedBinWidth = '%s' % float('%.2g' % binWidth) if binWidth<1 else '%s' % int(float('%.2g' % binWidth))
+                        if total.GetXaxis().GetTitle().find("GeV") != -1:
+                            total.GetYaxis().SetTitle("Events / " + roundedBinWidth + " GeV") ### Need to update for more units
+                        else:
+                            pluralOrSingular = "" if roundedBinWidth == "1" else " units"
+                            if roundedBinWidth == "1":
+                                total.GetYaxis().SetTitle("Events")
+                            else:
+                                total.GetYaxis().SetTitle("Events / " + roundedBinWidth + pluralOrSingular)
                 pdata.Draw("PZ SAME")
                 pmap['data'].poissonGraph = pdata ## attach it so it doesn't get deleted
             else:
@@ -1038,10 +1059,10 @@ class PlotMaker:
         #if options.yrange: 
         #    total.GetYaxis().SetRangeUser(options.yrange[0], options.yrange[1])
         if options.addspam:
-            if pspec.getOption('Legend','TR')=="TL":
-                doSpam(options.addspam, .68, .855, .9, .895, align=32, textSize=(0.045 if doRatio else 0.033)*options.topSpamSize)
+            if pspec.getOption('Legend', 'TR') == "TL" and not options.noAddspamShift:
+                doSpam(options.addspam, .68, .855, .9, .895, align=32, textSize=(0.045 if doRatio else 0.033) * options.addSpamSize)
             else:
-                doSpam(options.addspam, options.addspamPosition[0], options.addspamPosition[1], options.addspamPosition[2], options.addspamPosition[3], align=options.addspamAlignment, textSize=(0.045 if doRatio else 0.033)*options.topSpamSize)
+                doSpam(options.addspam, options.addspamPosition[0], options.addspamPosition[1], options.addspamPosition[2], options.addspamPosition[3], align=options.addspamAlignment, textSize=(0.045 if doRatio else 0.033)*options.addSpamSize)
         legendCutoff = pspec.getOption('LegendCutoff', 1e-5 if c1.GetLogy() else 1e-2)
         if plotmode == "norm": legendCutoff = 0 
         if plotmode == "stack":
@@ -1055,14 +1076,14 @@ class PlotMaker:
                             legWidth=pspec.getOption('LegendWidth',options.legendWidth), legBorder=options.legendBorder, signalPlotScale=options.signalPlotScale,
                             header=self._options.legendHeader if self._options.legendHeader else pspec.getOption("LegendHeader", ""),
                             doWide=doWide, totalError=totalError, columns = pspec.getOption('LegendColumns',options.legendColumns),
-                            DrawHorizontalErrBarInLegend= DrawHorizontalErrBarInLegendFlag, opts = self._options)
+                            DrawHorizontalErrBarInLegend = DrawHorizontalErrBarInLegendFlag, shiftLegend = pspec.getOption('shiftLegend', 0), opts = self._options)
         if self._options.doOfficialCMS:
             CMS_lumi.lumi_13TeV = "%.1f fb^{-1}" % self._options.lumi
             CMS_lumi.extraText  = self._options.cmsprel
             CMS_lumi.lumi_sqrtS = self._options.cmssqrtS
             CMS_lumi.CMS_lumi(ROOT.gPad, 4, 0, -0.005 if doWide and doRatio else 0.01 if doWide else 0.05)
         else: 
-            doTinyCmsPrelim(hasExpo = total.GetMaximum() > 9e4 and not c1.GetLogy(),textSize=(0.045 if doRatio else 0.033)*options.topSpamSize, options=options,doWide=doWide)
+            doTinyCmsPrelim(hasExpo = total.GetMaximum() > 9e4 and not c1.GetLogy(),textSize=(0.045 if doRatio else 0.033)*options.topSpamSize, options=options,doWide=doWide, TLleg = pspec.getOption('Legend','TR') == "TL")
         signorm = None; datnorm = None; sfitnorm = None
         if options.showSigShape or options.showIndivSigShapes or options.showIndivSigs: 
             signorms = doStackSignalNorm(pspec,pmap,options.showIndivSigShapes or options.showIndivSigs,extrascale=options.signalPlotScale, norm=not options.showIndivSigs)
@@ -1153,7 +1174,7 @@ class PlotMaker:
                     dump = open("%s/%s.%s" % (fdir, outputName, ext), "w")
                     maxlen = max([len(mca.getProcessOption(p,'Label',p)) for p in mca.listSignals(allProcs=True) + mca.listBackgrounds(allProcs=True)]+[10])
                     fmt    = "%%-%ds %%9.2f +/- %%9.2f (stat)" % (maxlen+1)
-                    for p in mca.listSignals(allProcs=True) + mca.listBackgrounds(allProcs=True) + ["signal", "background","total"]:
+                    for p in mca.listSignals(allProcs=True) + mca.listBackgrounds(allProcs=True) + ["signal", "background", "total"]:
                         if p not in pmap: continue
                         plot = pmap[p]
                         if plot.Integral() <= 0: continue
@@ -1220,12 +1241,16 @@ def addPlotMakerOptions(parser, addAlsoMCAnalysis=True):
     #parser.add_option("--lspam", dest="lspam",   type="string", default="CMS Simulation", help="Spam text on the right hand side");
     parser.add_option("--lspam", dest="lspam",   type="string", default="#bf{CMS} #it{Preliminary}", help="Spam text on the left hand side");
     parser.add_option("--noExpoShift", dest="noExpoShift", action="store_true", default=False, help="Remove shift on the lspam due to the (x10^a) text in high yield plots")
+    parser.add_option("--maxDigitsYaxis", dest="maxDigits", type="int", default=0, help="Sets the maximum number of digits in the Y axis")
     parser.add_option("--lspamPosition", dest="lspamPosition", type="float", nargs=4, default=(.16,.955,.60,.995), help="Position of the lspam: (x1,y1,x2,y2)")
+    parser.add_option("--lspamShiftLegend", dest="lspamShiftLegend", action="store_true", default=False, help="Shift lspam when legend is in TL position")
     parser.add_option("--rspam", dest="rspam",   type="string", default="%(lumi) (13 TeV)", help="Spam text on the right hand side");
     parser.add_option("--addspam", dest="addspam", type = "string", default=None, help="Additional spam text on the top left side, in the frame");
     parser.add_option("--addspamPosition", dest="addspamPosition", type="float", nargs=4, default=(.23, .855, .6, .895), help="Position of the addspam: (x1,y1,x2,y2)")
     parser.add_option("--addspamAlignment", dest="addspamAlignment", type="int", default=12, help="Alignment of the addspam")
+    parser.add_option("--noAddspamShift", dest="noAddspamShift", action="store_true", default=False, help="Remove shift on the lspam due to the TL position of the legend")
     parser.add_option("--topSpamSize", dest="topSpamSize",   type="float", default=1.2, help="Zoom factor for the top spam");
+    parser.add_option("--addSpamSize", dest="addSpamSize",   type="float", default=1.2, help="Zoom factor for the top spam");
     parser.add_option("--print", dest="printPlots", type="string", default="png,pdf,txt", help="print out plots in this format or formats (e.g. 'png,pdf,txt')");
     parser.add_option("--pdir", "--print-dir", dest="printDir", type="string", default="plots", help="print out plots in this directory")
     parser.add_option("--compareWithSignalThis", dest="tocomparelist", action="append", default=[], help="Superimpose this process stacked with all the backgrounds.")
@@ -1256,6 +1281,8 @@ def addPlotMakerOptions(parser, addAlsoMCAnalysis=True):
     parser.add_option("--StatUncRatioStyle", dest="StatUncRatioStyle", type="int", nargs=2, default=(1001, 1), help="Marker and fill style for the stat unc band in the ratio plot: (SetFillStyle,SetMarkerStyle)")
     parser.add_option("--TotalUncRatioColor", dest="TotalUncRatioColor", type="int", nargs=2, default=(432, 432), help="Fill and marker colour for the total unc band in the ratio plot: (SetFillColor,SetMarkerColor)")
     parser.add_option("--StatUncRatioColor", dest="StatUncRatioColor", type="int", nargs=2, default=(593, 593), help="Fill and marker colour for the stat unc band in the ratio plot: (SetFillColor,SetMarkerColor)")
+    parser.add_option("--histoLineWidth", dest="histoLineWidth", type="int", nargs=1, default=1, help="Line width of the histograms")
+    parser.add_option("--UncLegendName", dest="UncLegendName", type="string", default="Total unc.", help="Name that appear in the legend for the total uncertainty")
     parser.add_option("--fixRatioRange", dest="fixRatioRange", action="store_true", default=False, help="Fix the ratio range to --maxRatioRange")
     parser.add_option("--doStatTests", dest="doStatTests", type="string", default=None, help="Do this stat test: chi2p (Pearson chi2), chi2l (binned likelihood equivalent of chi2)")
     parser.add_option("--plotmode", dest="plotmode", type="string", default="stack", help="Show as stacked plot (stack), a non-stacked comparison (nostack) and a non-stacked comparison of normalized shapes (norm)")
@@ -1268,7 +1295,8 @@ def addPlotMakerOptions(parser, addAlsoMCAnalysis=True):
     parser.add_option("--legendWidth", dest="legendWidth", type="float", default=0.25, help="Width of the legend")
     parser.add_option("--legendBorder", dest="legendBorder", type="int", default=0, help="Use a border in the legend (1=yes, 0=no)")
     parser.add_option("--legendFontSize", dest="legendFontSize", type="float", default=0.055, help="Font size in the legend (if <=0, use the default)")
-    parser.add_option("--labelsSize", dest="labelsSize", type="float", default=-1.0, help="Text size for the axis labels and titles")
+    parser.add_option("--labelsSize", dest="labelsSize", type="float", default=-1.0, help="Text size for the axis labels")
+    parser.add_option("--axisTitleSize", dest="axisTitleSize", type="float", default=-1.0, help="Text size for the axis titles")
     parser.add_option("--labelsFont", dest="labelsFont", type="int", default=42, help="Text font for the axis labels and titles")
     parser.add_option("--spamFont", dest="spamFont", type="int", default=42, help="Spam text font")
     parser.add_option("--legendFont", dest="legendFont", type="int", default=42, help="Text font for the legend")
@@ -1293,13 +1321,17 @@ def addPlotMakerOptions(parser, addAlsoMCAnalysis=True):
     parser.add_option("--LeftRightMargins", dest="LeftRightMargins", type="float", nargs=2, default=(-1.0, -1.0), help="Left and right margins for the canvas: (LeftMargin, RightMargin)")
     parser.add_option("--BottomMarginRatio", dest="BottomMarginRatio", type="float", default=0.3, help="Bottom margin for the ratio")
     parser.add_option("--NotDrawRatioLine", dest="NotDrawRatioLine", action="store_true", default=False, help="Not draw horizontal line at y=1 in ratio plot")
+    parser.add_option("--ratioLinePersonalization", dest="ratioLinePersonalization", type="int", nargs=3, default=(1, 2, 58), help="(lineStyle, lineWidth, lineColor)")
     parser.add_option("--noCms", dest="doOfficialCMS", action="store_false", default=True, help="Use official tool to write CMS spam")
     parser.add_option("--cmsprel", dest="cmsprel", type="string", default="Preliminary", help="Additional text (Simulation, Preliminary, Internal)")
     parser.add_option("--cmssqrtS", dest="cmssqrtS", type="string", default="13 TeV", help="Sqrt of s to be written in the official CMS text.")
     parser.add_option("--printBin", dest="printBinning", type="string", default=None, help="Write 'Events/xx' instead of 'Events' on the y axis")
     parser.add_option("--printBinUnity", dest="printBinUnity", action="store_true", default=False, help="Write Events/xx GeV on the y axis for equal bin size histograms (necessary GeV unity in the X axis)")
     parser.add_option("--noXErrData", dest="noXErrData", action="store_true", default=False, help="Don't plot x error in data for histograms with equal bin size")
-
+    parser.add_option("--removeMarkerUncertainty", dest="removeMarkerUncertainty", action="store_true", default=False, help="Remove point from uncertainty band")
+    parser.add_option("--centerRatioYTitle", dest="centerRatioYTitle", action="store_true", default=False, help="Center Y axis title of the ratio plot")
+    
+    
 if __name__ == "__main__":
     from optparse import OptionParser
     parser = OptionParser(usage="%prog [options] mc.txt cuts.txt plots.txt")
