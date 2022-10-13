@@ -57,9 +57,12 @@ triggerGroups = dict(
         2018 : lambda ev :     _fires(ev, 'HLT_IsoMu24'),
     },
     Trigger_2e = {
-        2016 : lambda ev : (   _fires(ev, 'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ')
-                            or _fires(ev, 'HLT_DoubleEle33_CaloIdL_MW')
-                            or _fires(ev, 'HLT_DoubleEle33_CaloIdL_GsfTrkIdVL')),
+        2016 : lambda ev : ((   _fires(ev, 'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ')
+                             or _fires(ev, 'HLT_DoubleEle33_CaloIdL_MW')
+                             or _fires(ev, 'HLT_DoubleEle33_CaloIdL_GsfTrkIdVL'))
+                             if (ev.datatag == tags.mc or ev.run <= 280385) else
+                            (   _fires(ev, 'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ')
+                             or _fires(ev, 'HLT_DoubleEle33_CaloIdL_MW'))),
         2017 : lambda ev : (   _fires(ev, 'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL')
                             or _fires(ev, 'HLT_DoubleEle33_CaloIdL_MW')),
         2018 : lambda ev : (   _fires(ev, 'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL')
@@ -87,8 +90,10 @@ triggerGroups = dict(
                             if (ev.datatag == tags.mc or ev.run <= 280385) else
                             (  _fires(ev, 'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ')
                             or _fires(ev, "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ"))),
-        2017 : lambda ev : (   _fires(ev, 'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL')
-                            or _fires(ev, 'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ')),
+        2017 : lambda ev : ((   _fires(ev, 'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL')
+                             or _fires(ev, 'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ'))
+                             if (ev.datatag == tags.mc or ev.run > 299329) else
+                             (  _fires(ev, 'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ'))),
         2018 : lambda ev : (   _fires(ev, 'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL')
                             or _fires(ev, 'HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ')),
     },
@@ -362,7 +367,7 @@ addTopPtWeight = lambda : TopPtWeight()
 from CMGTools.TTHAnalysis.tools.nanoAOD.btag_weighterUL import btag_weighterUL
 ## b-tagging
 btagpath = os.environ['CMSSW_BASE'] + "/src/CMGTools/TTHAnalysis/data/TopRun2UL/btagging"
-btagWeights_2016apv = lambda : btag_weighterUL(btagpath + "/" + "wp_deepJet_106XUL16preVFP_v2.csv",
+btagWeights_2016apv = lambda : btag_weighterUL(btagpath + "/" + "wp_deepJet_106XUL16preVFP_v2_mod.csv",
                                                btagpath + "/" + "btagEffs_TopEFT_2022_05_16.root",
                                                'deepjet',
                                                jecvars   = ['jesTotal', 'jer'] + ['jes%s'%v.format(year = 2016) for v in jecGroups] + ["jer%i"%i for i in range(6)] + ["jesHEMIssue"],
@@ -377,14 +382,14 @@ btagWeights_2016 = lambda : btag_weighterUL(btagpath + "/" + "wp_deepJet_106XUL1
                                             lepenvars = ["mu", "elsigma"],
                                             splitCorrelations = True,
                                             year = "2016")
-btagWeights_2017 = lambda : btag_weighterUL(btagpath + "/" + "wp_deepJet_106XUL17_v3.csv",
+btagWeights_2017 = lambda : btag_weighterUL(btagpath + "/" + "wp_deepJet_106XUL17_v3_mod.csv",
                                             btagpath + "/" + "btagEffs_TopEFT_2022_05_16.root",
                                             'deepjet',
                                             jecvars   = ['jesTotal', 'jer'] + ['jes%s'%v.format(year = 2017) for v in jecGroups] + ["jer%i"%i for i in range(6)] + ["jesHEMIssue"],
                                             lepenvars = ["mu", "elsigma"],
                                             splitCorrelations = True,
                                             year = "2017")
-btagWeights_2018 = lambda : btag_weighterUL(btagpath + "/" + "wp_deepJet_106XUL18_v2.csv",
+btagWeights_2018 = lambda : btag_weighterUL(btagpath + "/" + "wp_deepJet_106XUL18_v2_mod.csv",
                                             btagpath + "/" + "btagEffs_TopEFT_2022_05_16.root",
                                             'deepjet',
                                             jecvars   = ['jesTotal', 'jer'] + ['jes%s'%v.format(year = 2018) for v in jecGroups] + ["jer%i"%i for i in range(6)] + ["jesHEMIssue"],
@@ -405,6 +410,22 @@ sfSeq_2016apv   = [leptrigSFs_2016apv, btagWeights_2016apv, addTopPtWeight]
 sfSeq_2016      = [leptrigSFs_2016,    btagWeights_2016,    addTopPtWeight]
 sfSeq_2017      = [leptrigSFs_2017,    btagWeights_2017,    addTopPtWeight]
 sfSeq_2018      = [leptrigSFs_2018,    btagWeights_2018,    addTopPtWeight]
+
+# Con jet PU ID
+#from CMGTools.TTHAnalysis.tools.nanoAOD.jetPUid_weighterUL import jetPUid_weighterUL
+#jetpuidpath = os.environ['CMSSW_BASE'] + "/src/CMGTools/TTHAnalysis/data/TopRun2UL/jetPUid"
+#addjetPUidMod = lambda : jetPUid_weighterUL(jetpuidpath + "/" + "scalefactorsPUID_81Xtraining.root",
+                                            #jetpuidpath + "/" + "effcyPUID_81Xtraining.root",
+                                            #wp = "M",
+                                            #jecvars   = ['jesTotal', 'jer'] + ['jes%s'%v for v in jecGroups] + ["jer%i"%i for i in range(6)],
+                                            ##year = 2016, debug = True)
+                                            #year = 2016)
+
+
+#sfSeq_2016apv   = [leptrigSFs_2016apv, btagWeights_2016apv, addTopPtWeight, addjetPUidMod]
+#sfSeq_2016      = [leptrigSFs_2016,    btagWeights_2016,    addTopPtWeight, addjetPUidMod]
+#sfSeq_2017      = [leptrigSFs_2017,    btagWeights_2017,    addTopPtWeight, addjetPUidMod]
+#sfSeq_2018      = [leptrigSFs_2018,    btagWeights_2018,    addTopPtWeight, addjetPUidMod]
 
 
 

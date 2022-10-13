@@ -5,10 +5,10 @@
 
 syst_tw_colour_erdon  : ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_erdON_13TeV_powheg_pythia8*     : xsec ;
 syst_tw_colour_erdon  : ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_erdON_13TeV_powheg_pythia8*         : xsec ;
-#syst_tw_colour_cr1    : ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5CR1_13TeV_powheg_pythia8*        : xsec ;
+syst_tw_colour_cr1    : ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5CR1_13TeV_powheg_pythia8*        : xsec ;
 syst_tw_colour_cr1    : ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5CR1_13TeV_powheg_pythia8*            : xsec ;
 syst_tw_colour_cr2    : ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5CR2_13TeV_powheg_pythia8*        : xsec ;
-syst_tw_colour_cr2    : ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5CR2_13TeV_powheg_pythia8_v3*         : xsec ;
+syst_tw_colour_cr2    : ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5CR2_13TeV_powheg_pythia8_*           : xsec ;
 
 syst_tw_ue_up         : ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5up_13TeV_powheg_pythia8*         : xsec ;
 syst_tw_ue_up         : ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5up_13TeV_powheg_pythia8*             : xsec ;

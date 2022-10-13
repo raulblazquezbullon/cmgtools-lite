@@ -11,17 +11,22 @@ r.gROOT.SetBatch(True)
 friendspath  = "/pool/phedexrw/userstorage/vrbouza/proyectos/twttbar_run2/productions"
 datasamples  = ["SingleMuon", "SingleElec", "DoubleMuon", "DoubleEG", "MuonEG", "LowEGJet", "HighEGJet", "EGamma"]
 
-mcpath       = "/beegfs/data/nanoAODv9/"
+#mcpath       = "/beegfs/data/nanoAODv9/"
+mcpath       = "/pool/phedex/nanoAODv9/"
 datapath     = mcpath
 
 logpath      = friendspath + "/{p}/{y}/logs/plots"
 
-friendsscaff = "--Fs {P}/1_lepsuncsAndParticle --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors"
+#friendsscaff = "--FMCs {P}/0_jecs --Fs {P}/1_lepsuncsAndParticle --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors"
+friendsscaff = "--FMCs {P}/0_jecs --Fs {P}/1_lepsuncsAndParticle --Fs {P}/2_cleaning --Fs {P}/3_varstrigger_compgen --FMCs {P}/4_scalefactors"
 
-commandscaff = "python mcPlots.py --tree NanoAOD --pdir {outpath} {friends} {samplespaths} -f -l {lumi} {nth} --year {year} {ratio} --showRatio --fixRatioRange --legendColumns 1 --legendWidth 0.07 --legendFontSize 0.039 --noCms --topSpamSize 1.1 --lspam '#splitline{{#scale[1.1]{{#bf{{CMS}}}}}}{{#scale[0.9]{{#it{{Preliminary}}}}}}' --neg --showMCError -W 'MuonIDSF * MuonISOSF * ElecIDSF * ElecRECOSF * TrigSF * puWeight * bTagWeight * PrefireWeight' -L twttbar-run2UL/functions_twttbar.cc {selplot} {mcafile} {cutsfile} {plotsfile} {extra} --AP --noStatTotLegendOnRatio --addspam '{nameregion}' --lspamPosition 0.21 .845 .35 .885 --TotalUncRatioStyle 3244 0 --noStatUncOnRatio --YTitleOffset 2.1 2.1 --CanvasSize 600 450 --TotalUncRatioColor 920 920 --addspamPosition .41 .855 .6 .895 --transparentLegend --PrincipalPadDimensions 0.00 0.25 1.00 1.00 --RatioPadDimensions 0.00 0.00 1.00 0.25 --LeftRightMargins 0.16 0.03 --ratioYLabel 'Data/MC' --labelsSize 22 --labelsFont 43 --BottomMarginRatio 0.42 --XTitleOffsetRatio 4.8 --noXErrData --printBin 'bin' --printBinUnity --noExpoShift --no-elist" #--ratioYNDiv 210 --NotDrawRatioLine
+#commandscaff = "python mcPlots.py --tree NanoAOD --pdir {outpath} {friends} {samplespaths} -f -l {lumi} {nth} --year {year} {ratio} --showRatio --fixRatioRange --legendColumns 1 --legendWidth 0.07 --legendFontSize 0.039 --noCms --topSpamSize 1.1 --lspam '#splitline{{#scale[1.1]{{#bf{{CMS}}}}}}{{#scale[0.9]{{#it{{Preliminary}}}}}}' --neg --showMCError -W 'MuonIDSF * MuonISOSF * ElecIDSF * ElecRECOSF * TrigSF * puWeight * bTagWeight * L1PreFiringWeight_Nom' -L twttbar-run2UL/functions_twttbar.cc {selplot} {mcafile} {cutsfile} {plotsfile} {extra} --AP --noStatTotLegendOnRatio --addspam '{nameregion}' --lspamPosition 0.21 .845 .35 .885 --TotalUncRatioStyle 3244 0 --noStatUncOnRatio --YTitleOffset 2.1 2.1 --CanvasSize 600 450 --TotalUncRatioColor 920 920 --addspamPosition .41 .855 .6 .895 --transparentLegend --PrincipalPadDimensions 0.00 0.25 1.00 1.00 --RatioPadDimensions 0.00 0.00 1.00 0.25 --LeftRightMargins 0.16 0.03 --ratioYLabel 'Data/MC' --labelsSize 22 --labelsFont 43 --BottomMarginRatio 0.42 --XTitleOffsetRatio 4.8 --noXErrData --printBin 'bin' --printBinUnity --noExpoShift --no-elist" #--ratioYNDiv 210 --NotDrawRatioLine
+
+#### GENERACION
+commandscaff = "python mcPlots.py --tree NanoAOD --pdir {outpath} {friends} {samplespaths} -f -l {lumi} {nth} --year {year} {ratio} --showRatio --fixRatioRange --legendColumns 1 --legendWidth 0.07 --legendFontSize 0.039 --noCms --topSpamSize 1.1 --lspam '#splitline{{#scale[1.1]{{#bf{{CMS}}}}}}{{#scale[0.9]{{#it{{Preliminary}}}}}}' --neg --showMCError -L twttbar-run2UL/functions_twttbar.cc {selplot} {mcafile} {cutsfile} {plotsfile} {extra} --AP --noStatTotLegendOnRatio --addspam '{nameregion}' --lspamPosition 0.21 .845 .35 .885 --TotalUncRatioStyle 3244 0 --noStatUncOnRatio --YTitleOffset 2.1 2.1 --CanvasSize 600 450 --TotalUncRatioColor 920 920 --addspamPosition .41 .855 .6 .895 --transparentLegend --PrincipalPadDimensions 0.00 0.25 1.00 1.00 --RatioPadDimensions 0.00 0.00 1.00 0.25 --LeftRightMargins 0.16 0.03 --ratioYLabel 'Data/MC' --labelsSize 22 --labelsFont 43 --BottomMarginRatio 0.42 --XTitleOffsetRatio 4.8 --noXErrData --printBin 'bin' --printBinUnity --noExpoShift --no-elist" #--ratioYNDiv 210 --NotDrawRatioLine
 
 # For blind plots
-commandblindscaff = "python mcPlots.py --tree NanoAOD --pdir {outpath} {friends} {samplespaths} -f -l {lumi} {nth} --year {year} {ratio} --showRatio --fixRatioRange --legendColumns 1 --legendWidth 0.07 --legendFontSize 0.032 --noCms --topSpamSize 1.1 --lspam '#splitline{{#scale[1.1]{{#bf{{CMS}}}}}}{{#scale[0.9]{{#it{{Preliminary}}}}}}' --neg --showMCError -W 'MuonIDSF * MuonISOSF * ElecIDSF * ElecRECOSF * TrigSF * puWeight * bTagWeight * PrefireWeight' -L twttbar-run2UL/functions_twttbar.cc {selplot} {mcafile} {cutsfile} {plotsfile} {extra} --AP --noStatTotLegendOnRatio --addspam '{nameregion}' --lspamPosition 0.21 .845 .35 .885 --TotalUncRatioStyle 3244 0 --noStatUncOnRatio --YTitleOffset 2.1 2.1 --TotalUncRatioColor 920 920 --addspamPosition .41 .855 .6 .895 --transparentLegend --LeftRightMargins 0.16 0.03  --labelsSize 22 --labelsFont 43 --BottomMarginRatio 0.42 --XTitleOffsetRatio 4.8 --noXErrData --printBin 'bin' --printBinUnity --noExpoShift --no-elist" #--ratioYNDiv 210 --NotDrawRatioLine
+commandblindscaff = "python mcPlots.py --tree NanoAOD --pdir {outpath} {friends} {samplespaths} -f -l {lumi} {nth} --year {year} {ratio} --showRatio --fixRatioRange --legendColumns 1 --legendWidth 0.07 --legendFontSize 0.032 --noCms --topSpamSize 1.1 --lspam '#splitline{{#scale[1.1]{{#bf{{CMS}}}}}}{{#scale[0.9]{{#it{{Preliminary}}}}}}' --neg --showMCError -W 'MuonIDSF * MuonISOSF * ElecIDSF * ElecRECOSF * TrigSF * puWeight * bTagWeight * L1PreFiringWeight_Nom' -L twttbar-run2UL/functions_twttbar.cc {selplot} {mcafile} {cutsfile} {plotsfile} {extra} --AP --noStatTotLegendOnRatio --addspam '{nameregion}' --lspamPosition 0.21 .845 .35 .885 --TotalUncRatioStyle 3244 0 --noStatUncOnRatio --YTitleOffset 2.1 2.1 --TotalUncRatioColor 920 920 --addspamPosition .41 .855 .6 .895 --transparentLegend --LeftRightMargins 0.16 0.03  --labelsSize 22 --labelsFont 43 --BottomMarginRatio 0.42 --XTitleOffsetRatio 4.8 --noXErrData --printBin 'bin' --printBinUnity --noExpoShift --no-elist" #--ratioYNDiv 210 --NotDrawRatioLine
 
 
 slurmscaff   = 'sbatch {extraS} -c {nth} -p {queue} -J {jobname} -e {logpath}/log.%j.%x.err -o {logpath}/log.%j.%x.out --wrap "{command}"'
@@ -32,7 +37,7 @@ lumidict     = {"2016apv": 19.52,
 
 
 def GeneralExecutioner(task):
-    prod, year, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend, useFibre, doUncs, doBlind, extraslurm = task
+    prod, year, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend, useFibre, doUncs, doBlind, extraslurm, doComp = task
 
     if not os.path.isdir(outpath + "/" + str(year)) and not pretend:
         os.system("mkdir -p " + outpath + "/" + str(year))
@@ -48,22 +53,19 @@ def GeneralExecutioner(task):
                                           queue   = queue,
                                           jobname = jobname_,
                                           logpath = logpath.format(y = year, p = prod),
-                                          command = PlottingCommand(prod, year, nthreads, outpath, selplot, reg, ratiorange, extra, useFibre, doUncs, doBlind))
+                                          command = PlottingCommand(prod, year, nthreads, outpath, selplot, reg, ratiorange, extra, useFibre, doUncs, doBlind, doComp))
             print "Command:", submitcomm
             if not pretend: os.system(submitcomm)
     else:
         for reg in region.split(","):
-            execcomm = PlottingCommand(prod, year, nthreads, outpath, selplot, reg, ratiorange, extra, useFibre, doUncs, doBlind)
+            execcomm = PlottingCommand(prod, year, nthreads, outpath, selplot, reg, ratiorange, extra, useFibre, doUncs, doBlind, doComp)
             print "Command:", execcomm
             if not pretend: os.system(execcomm)
-
-
     return
 
 
-
-def PlottingCommand(prod, year, nthreads, outpath, selplot, region, ratio, extra, useFibre, doUncs, doBlind):
-    mcafile_    = "twttbar-run2UL/mca-twttbar/mca-twttbar.txt"
+def PlottingCommand(prod, year, nthreads, outpath, selplot, region, ratio, extra, useFibre, doUncs, doBlind, doComp):
+    mcafile_    = "twttbar-run2UL/mca-twttbar/mca-twttbar.txt" if not doComp else "twttbar-run2UL/mca-twttbar/mca-twttbar-compbb4l.txt"
     cutsfile_   = "twttbar-run2UL/cuts-twttbar/cuts-twttbar-{reg}.txt".format(reg = region if ("_" not in region) else region.split("_")[0] if ("differential" not in region and "cut" not in region) else region)
     plotsfile_  = "twttbar-run2UL/plots-twttbar/plots-twttbar-{reg}.txt".format(reg = region.replace("SF", ""))
 
@@ -82,13 +84,16 @@ def PlottingCommand(prod, year, nthreads, outpath, selplot, region, ratio, extra
         nameregion_ += "+" + region.split("_")[0].replace("t", "b").replace("plus", "+") + "+0j_{loose}"
     elif "MVA" in region and "nojets" not in region:
         nameregion_ += "+" + region.split("_")[0].replace("t", "b").replace("plus", "+")
-    
+    # extra_  = extra + (" --compareWithSignalThis bb4l --compareWithSignalThis bb4l_norm  --compareWithSignalThis bb4l_fix  --compareWithSignalThis bb4l_fix_norm") * doComp + (" --unc twttbar-run2UL/uncs-twttbar/uncs-twttbar.txt ") * doUncs
+    #extra_  = extra + (" --compareWithSignalThis bb4l --compareWithSignalThis bb4l_fix ") * doComp + (" --unc twttbar-run2UL/uncs-twttbar/uncs-twttbar.txt ") * doUncs
+    #extra_  = extra + (" --compareWithSignalThis bb4l_fix --compareWithSignalThis bb4l_fix_norm ") * doComp + (" --unc twttbar-run2UL/uncs-twttbar/uncs-twttbar.txt ") * doUncs
+    extra_  = extra + (" --compareWithSignalThis bb4l_fix_norm ") * doComp + (" --unc twttbar-run2UL/uncs-twttbar/uncs-twttbar.txt ") * doUncs
     thecomm = commandscaff if not doBlind else commandblindscaff
     
     comm = thecomm.format(outpath      = outpath_,
                           friends      = friends_,
                           samplespaths = samplespaths_,
-                          lumi         = lumidict[year] if year != "run2" else str(lumidict["2016apv"]) + "," + str(lumidict["2016"]) + ","str(lumidict["2017"]) + "," + str(lumidict["2018"]),
+                          lumi         = lumidict[year] if year != "run2" else str(lumidict["2016apv"]) + "," + str(lumidict["2016"]) + "," + str(lumidict["2017"]) + "," + str(lumidict["2018"]),
                           nth          = nth_,
                           year         = year if year != "run2" else "2016apv,2016,2017,2018",
                           selplot      = selplot_,
@@ -96,9 +101,8 @@ def PlottingCommand(prod, year, nthreads, outpath, selplot, region, ratio, extra
                           cutsfile     = cutsfile_,
                           plotsfile    = plotsfile_,
                           ratio        = ratio_,
-                          extra        = ("--unc twttbar-run2UL/uncs-twttbar/uncs-twttbar.txt ") * doUncs + extra,
+                          extra        = extra_,
                           nameregion   = nameregion_)
-
     return comm
 
 
@@ -131,6 +135,7 @@ if __name__=="__main__":
     parser.add_argument('--createSoftLinks', action = "store_true", dest = "createSL", required = False, default = False)
     parser.add_argument('--useFibre',  "-f", action = "store_true", dest = "useFibre", required = False, default = False)
     parser.add_argument('--uncertainties', "-u", action = "store_true", dest = "doUncs", required = False, default = False)
+    parser.add_argument('--comparison', "-c", action = "store_true", dest = "doComp", required = False, default = False)
     parser.add_argument('--blind', action = "store_true", dest = "blindornot", required = False, default = False)
 
 
@@ -150,6 +155,7 @@ if __name__=="__main__":
     useFibre = args.useFibre
     ratiorange = args.ratiorange
     doUncs = args.doUncs
+    doComp = args.doComp
 
     if args.blindornot: extra += " --xp data"
     doBlind = args.blindornot
@@ -163,7 +169,6 @@ if __name__=="__main__":
         print "> Creating MC symbolic links..."
         mcsampleslist = os.listdir(mcpath + "/" + str(year))
         for sam in mcsampleslist:
-            #if "ST_tW_Dilept" not in sam: continue
             if not os.path.islink(destdir + "/" + sam):
                 os.system(SLcommscaff.format(realdataset = mcpath + "/" + str(year) + "/" + sam,
                                              symlink = destdir + "/" + sam))
@@ -182,7 +187,7 @@ if __name__=="__main__":
     elif queue != "":
         print "> Plotting jobs will be sent to the cluster."
         if year == "all":
-            print "   - All three years and the combination will be plotted."
+            print "   - All four 'years' and the combination will be plotted."
             cont = False
             if   pretend:
                 cont = True
@@ -190,8 +195,8 @@ if __name__=="__main__":
                 cont = True
 
             if cont:
-                for y in ["2016", "2017", "2018", "run2"]:
-                    GeneralExecutioner( (prod, y, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend, useFibre, doUncs, doBlind, extraslurm) )
+                for y in ["2016apv", "2016", "2017", "2018", "run2"]:
+                    GeneralExecutioner( (prod, y, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend, useFibre, doUncs, doBlind, extraslurm, doComp) )
         else:
             cont = False
             if   pretend:
@@ -200,12 +205,12 @@ if __name__=="__main__":
                 cont = True
 
             if cont:
-                GeneralExecutioner( (prod, year, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend, useFibre, doUncs, doBlind, extraslurm) )
+                GeneralExecutioner( (prod, year, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend, useFibre, doUncs, doBlind, extraslurm, doComp) )
     else:
         print "> Local execution chosen."
         if year == "all":
-            print "   - All three years and the combination will be plotted."
-            for y in ["2016", "2017", "2018", "run2"]:
-                GeneralExecutioner( (prod, y, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend, useFibre, doUncs, doBlind, extraslurm) )
+            print "   - All four 'years' and the combination will be plotted."
+            for y in ["2016apv", "2016", "2017", "2018", "run2"]:
+                GeneralExecutioner( (prod, y, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend, useFibre, doUncs, doBlind, extraslurm, doComp) )
         else:
-            GeneralExecutioner( (prod, year, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend, useFibre, doUncs, doBlind, extraslurm) )
+            GeneralExecutioner( (prod, year, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend, useFibre, doUncs, doBlind, extraslurm, doComp) )

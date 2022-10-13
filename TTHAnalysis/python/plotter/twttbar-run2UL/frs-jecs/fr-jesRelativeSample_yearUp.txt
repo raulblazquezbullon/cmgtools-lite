@@ -10,9 +10,9 @@ change: \[iFwdJetSel30_Recl\[:           [iFwdJetSel30_jesRelativeSample_yearUp_
 change: \bnFwdJetSel30_Recl\b:           nFwdJetSel30_jesRelativeSample_yearUp_Recl
 change: \[iFwdJetSel20_Recl\[:           [iFwdJetSel20_jesRelativeSample_yearUp_Recl[
 change: \bnFwdJetSel20_Recl\b:           nFwdJetSel20_jesRelativeSample_yearUp_Recl
-change: \bMETgood_pt\b:                  METgood_pt_jesRelativeSample_yearUp
+change: \bMET_T1_pt\b:                  MET_T1_pt_jesRelativeSample_yearUp
 
-change: \bLep1Lep2Jet1MET_Pz\b:          Lep1Lep2Jet1MET_Pz_jesRelativeSample_yearUp
+change: \bLep1Lep2Jet1_Pz\b:          Lep1Lep2Jet1_Pz_jesRelativeSample_yearUp
 change: \bLep1Lep2Jet1MET_Pt\b:          Lep1Lep2Jet1MET_Pt_jesRelativeSample_yearUp
 change: \bLep1Lep2Jet1MET_M\b:           Lep1Lep2Jet1MET_M_jesRelativeSample_yearUp
 change: \bLep1Lep2Jet1MET_Mt\b:          Lep1Lep2Jet1MET_Mt_jesRelativeSample_yearUp
@@ -49,7 +49,7 @@ change: \bLep1Jet1_DPhi\b:               Lep1Jet1_DPhi_jesRelativeSample_yearUp
 change: \bLep2Jet1_DPhi\b:               Lep2Jet1_DPhi_jesRelativeSample_yearUp
 change: \bcosThetaStar1\b:               cosThetaStar1_jesRelativeSample_yearUp
 change: \bcosThetaStar2\b:               cosThetaStar2_jesRelativeSample_yearUp
-change: \bMETgood_phi\b:                 METgood_phi_jesRelativeSample_yearUp
+change: \bMET_T1_phi\b:                 MET_T1_phi_jesRelativeSample_yearUp
 change: \bSergioBDT_1j1b\b:              SergioBDT_1j1b_jesRelativeSample_yearUp
 change: \bSergioBDT_2j1b\b:              SergioBDT_2j1b_jesRelativeSample_yearUp
 change: \btmvaBDT_1j1b\b:                tmvaBDT_1j1b_jesRelativeSample_yearUp

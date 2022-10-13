@@ -555,7 +555,7 @@ class MCAnalysis:
         if self.variationsFile:
             for var in self.variationsFile.uncertainty():
                 if var.year():
-                    if var.year() not in self._options.year: continue
+                    if var.year() != self._options.year: continue
                 for p,h in ret.iteritems():
                     if not var.procmatch().match(p): continue
                     if var.unc_type == 'envelope': # now only calculating envelopes
@@ -581,7 +581,7 @@ class MCAnalysis:
             buildPDFVariationsFromAlternativeSample(self.variationsFile, ret, self._options.year)
             for var in self.variationsFile.uncertainty():
                 if var.year():
-                    if var.year() not in self._options.year: continue
+                    if var.year() != self._options.year: continue
                 for p,h in ret.iteritems():
                     if not var.procmatch().match(p): continue
                     #print "\t-", p, var.name, var.year()
@@ -603,7 +603,7 @@ class MCAnalysis:
         if self.variationsFile:
             for var in self.variationsFile.uncertainty():
                 if var.year():
-                    if var.year() not in self._options.year: continue
+                    if var.year() != self._options.year: continue
                 for p,h in ret.iteritems():
                     if not var.procmatch().match(p): continue
                     if "fitOrder" in var.extra and "altsample" in var.unc_type.lower():

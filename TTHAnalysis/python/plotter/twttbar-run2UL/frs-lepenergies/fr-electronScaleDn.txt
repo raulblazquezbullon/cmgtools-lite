@@ -1,6 +1,5 @@
 change: \bchannel\b:              channel_elscaleDown
 change: \bnLepGood\b:             nLepGoodelscaleDown
-change: \bMETgood_pt\b:           METgood_pt_elscaleDown
 change: \bisSS\b:                 isSS_elscaleDown
 change: \bMll\b:                  Mll_elscaleDown
 change: \bLepGood_pt_corrAll\[:   LepGoodelscaleDown_pt_elscaleDown[
@@ -27,7 +26,7 @@ change: \bLep1Lep2_DR\b:          Lep1Lep2_DR_elscaleDown
 change: \bLep1Lep2_DPhi\b:        Lep1Lep2_DPhi_elscaleDown
 change: \bLep1Lep2_DEta\b:        Lep1Lep2_DEta_elscaleDown
 
-change: \bLep1Lep2Jet1MET_Pz\b:          Lep1Lep2Jet1MET_Pz_elscaleDown
+change: \bLep1Lep2Jet1_Pz\b:             Lep1Lep2Jet1_Pz_elscaleDown
 change: \bLep1Lep2Jet1MET_Pt\b:          Lep1Lep2Jet1MET_Pt_elscaleDown
 change: \bLep1Lep2Jet1MET_M\b:           Lep1Lep2Jet1MET_M_elscaleDown
 change: \bLep1Lep2Jet1MET_Mt\b:          Lep1Lep2Jet1MET_Mt_elscaleDown
@@ -46,7 +45,6 @@ change: \bJet2_Pt\b:                     Jet2_Pt_elscaleDown
 change: \bJetLoose1_Pt\b:                JetLoose1_Pt_elscaleDown
 
 change: \bLep1Jet1_DR\b:                 Lep1Jet1_DR_elscaleDown
-change: \bMETgood_pt\b:                  METgood_pt_elscaleDown
 change: \bLep12Jet12_DR\b:               Lep12Jet12_DR_elscaleDown
 change: \bLep12Jet12MET_DR\b:            Lep12Jet12MET_DR_elscaleDown
 change: \bLepJet11Lep2_DR\b:             LepJet11Lep2_DR_elscaleDown
@@ -58,14 +56,9 @@ change: \bLep1LepJet21_DEta\b:           Lep1LepJet21_DEta_elscaleDown
 change: \bLep1Lep2Jet1_C\b:              Lep1Lep2Jet1_C_elscaleDown
 change: \bHTtot\b    :                   HTtot_elscaleDown
 
+change: \bminMllAFAS\b  :                minMllAFAS_elscaleDown
 change: \bminimax\b  :                   minimax_elscaleDown
 change: \bLep1Jet2_M\b:                  Lep1Jet2_M_elscaleDown
 change: \bLep2Jet2_M\b:                  Lep2Jet2_M_elscaleDown
 
-change: \bMETgood_phi\b:                 METgood_phi_elscaleDown
-
-change: \bSergioBDT_1j1b\b:               SergioBDT_1j1b_elscaleDown
-change: \bSergioBDT_2j1b\b:               SergioBDT_2j1b_elscaleDown
-change: \btmvaBDT_1j1b\b:                 tmvaBDT_1j1b_elscaleDown
-change: \btmvaBDT_2j1b\b:                 tmvaBDT_2j1b_elscaleDown
 weight: 1

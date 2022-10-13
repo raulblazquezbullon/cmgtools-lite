@@ -778,3 +778,7 @@ Float_t getBDtWOther2bins(Double_t BDT){
   if (BDT < 0.003993) return 1;
   else                       return 2;
 }
+
+double miniavg(double lep1jet1_m, double lep1jet2_m, double lep2jet2_m, double lep2jet1_m) {
+  return TMath::Min((lep1jet1_m + lep2jet2_m)/2, (lep1jet2_m + lep2jet1_m)/2);
+}

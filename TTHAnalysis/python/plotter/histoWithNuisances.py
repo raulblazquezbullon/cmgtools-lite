@@ -82,7 +82,7 @@ def buildVariationsFromAlternativesWithEnvelope(uncfile, ret):
                 raise RuntimeError("FATAL: variation %s is being applied to at least two processes"%var.name)
 
             if not isinstance(thelist, list):
-                print thelist
+                #print thelist
                 raise RuntimeError("FATAL: the argument given for the envelope uncertainty calculation with alternative samples for the variation {var} is not a list of samples.".format(var = var.name))
 
             #if len(var.args) < 2:
@@ -178,7 +178,7 @@ def buildVariationsFromAlternative(uncfile, ret, theY):
     for var in uncfile.uncertainty():
         if var.unc_type != 'altSample': continue # now only adding the alternative samples
         if var.year():
-            if var.year() not in theY: continue
+            if var.year() != theY: continue
         hasBeenApplied=False
         for k,p in ret.iteritems(): 
             if not var.procmatch().match(k): continue
@@ -447,11 +447,11 @@ def buildPDFVariationsFromAlternativeSample(uncfile, ret, theY):
         altsamp   = var.args[0].replace("[", "").replace("]", "").replace("'", "").split("\,")[0]
         altuncnam = var.args[1].replace("[", "").replace("]", "").replace("'", "").split("\,")[0]
         thenam    =  var.name
-        #print "\n",thenam, altsamp, altuncnam
+        #print "\n",thenam, altsamp, altuncnam, theY, var.year()
 
         if thenam in uncsprocessed: continue
         if var.year():
-            if var.year() not in theY: continue
+            if var.year() != theY: continue
         #print "we process this one!"
         uncsprocessed.append(thenam)
         up      = None
@@ -459,6 +459,7 @@ def buildPDFVariationsFromAlternativeSample(uncfile, ret, theY):
         central = None
 
         for k, p in ret.iteritems():
+            #print k
             if not k == altsamp: continue
             #print k
 

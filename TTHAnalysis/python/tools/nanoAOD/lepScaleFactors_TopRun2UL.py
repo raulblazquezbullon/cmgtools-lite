@@ -87,22 +87,22 @@ class lepScaleFactors_TopRun2UL(Module):
         self.leptonSF["e"]["2018"]["recotight"]    = self.loadHisto(self.basepathlep + "Electron_2018UL_RECO.root",    "EGamma_SF2D")
 
         # Trigger elmu
-        self.triggerSF[ch.ElMu]["2016apv"] = self.loadHisto(self.basepathtrig + "TriggerSF_2016preVFP_UL.root",  "h2D_SF_emu_lepABpt_FullError")
-        self.triggerSF[ch.ElMu]["2016"]    = self.loadHisto(self.basepathtrig + "TriggerSF_2016postVFP_UL.root", "h2D_SF_emu_lepABpt_FullError")
-        self.triggerSF[ch.ElMu]["2017"]    = self.loadHisto(self.basepathtrig + "TriggerSF_2017_UL.root",        "h2D_SF_emu_lepABpt_FullError")
-        self.triggerSF[ch.ElMu]["2018"]    = self.loadHisto(self.basepathtrig + "TriggerSF_2018_UL.root",        "h2D_SF_emu_lepABpt_FullError")
+        self.triggerSF[ch.ElMu]["2016apv"] = self.loadHisto(self.basepathtrig + "TriggerSF_2016preVFP_ULv2.root",  "h2D_SF_emu_lepABpt_FullError")
+        self.triggerSF[ch.ElMu]["2016"]    = self.loadHisto(self.basepathtrig + "TriggerSF_2016postVFP_ULv2.root", "h2D_SF_emu_lepABpt_FullError")
+        self.triggerSF[ch.ElMu]["2017"]    = self.loadHisto(self.basepathtrig + "TriggerSF_2017_ULv2.root",        "h2D_SF_emu_lepABpt_FullError")
+        self.triggerSF[ch.ElMu]["2018"]    = self.loadHisto(self.basepathtrig + "TriggerSF_2018_ULv2.root",        "h2D_SF_emu_lepABpt_FullError")
 
         # Trigger elel
-        self.triggerSF[ch.Elec]["2016apv"] = self.loadHisto(self.basepathtrig + "TriggerSF_2016preVFP_UL.root",  "h2D_SF_ee_lepABpt_FullError")
-        self.triggerSF[ch.Elec]["2016"]    = self.loadHisto(self.basepathtrig + "TriggerSF_2016postVFP_UL.root", "h2D_SF_ee_lepABpt_FullError")
-        self.triggerSF[ch.Elec]["2017"]    = self.loadHisto(self.basepathtrig + "TriggerSF_2017_UL.root",        "h2D_SF_ee_lepABpt_FullError")
-        self.triggerSF[ch.Elec]["2018"]    = self.loadHisto(self.basepathtrig + "TriggerSF_2018_UL.root",        "h2D_SF_ee_lepABpt_FullError")
+        self.triggerSF[ch.Elec]["2016apv"] = self.loadHisto(self.basepathtrig + "TriggerSF_2016preVFP_ULv2.root",  "h2D_SF_ee_lepABpt_FullError")
+        self.triggerSF[ch.Elec]["2016"]    = self.loadHisto(self.basepathtrig + "TriggerSF_2016postVFP_ULv2.root", "h2D_SF_ee_lepABpt_FullError")
+        self.triggerSF[ch.Elec]["2017"]    = self.loadHisto(self.basepathtrig + "TriggerSF_2017_ULv2.root",        "h2D_SF_ee_lepABpt_FullError")
+        self.triggerSF[ch.Elec]["2018"]    = self.loadHisto(self.basepathtrig + "TriggerSF_2018_ULv2.root",        "h2D_SF_ee_lepABpt_FullError")
 
         # Trigger mumu
-        self.triggerSF[ch.Muon]["2016apv"] = self.loadHisto(self.basepathtrig + "TriggerSF_2016preVFP_UL.root",  "h2D_SF_mumu_lepABpt_FullError")
-        self.triggerSF[ch.Muon]["2016"]    = self.loadHisto(self.basepathtrig + "TriggerSF_2016postVFP_UL.root", "h2D_SF_mumu_lepABpt_FullError")
-        self.triggerSF[ch.Muon]["2017"]    = self.loadHisto(self.basepathtrig + "TriggerSF_2017_UL.root",        "h2D_SF_mumu_lepABpt_FullError")
-        self.triggerSF[ch.Muon]["2018"]    = self.loadHisto(self.basepathtrig + "TriggerSF_2018_UL.root",        "h2D_SF_mumu_lepABpt_FullError")
+        self.triggerSF[ch.Muon]["2016apv"] = self.loadHisto(self.basepathtrig + "TriggerSF_2016preVFP_ULv2.root",  "h2D_SF_mumu_lepABpt_FullError")
+        self.triggerSF[ch.Muon]["2016"]    = self.loadHisto(self.basepathtrig + "TriggerSF_2016postVFP_ULv2.root", "h2D_SF_mumu_lepABpt_FullError")
+        self.triggerSF[ch.Muon]["2017"]    = self.loadHisto(self.basepathtrig + "TriggerSF_2017_ULv2.root",        "h2D_SF_mumu_lepABpt_FullError")
+        self.triggerSF[ch.Muon]["2018"]    = self.loadHisto(self.basepathtrig + "TriggerSF_2018_ULv2.root",        "h2D_SF_mumu_lepABpt_FullError")
         print("[lepScaleFactors_TopRun2::constructor] - Finished loading histograms")
         return
 

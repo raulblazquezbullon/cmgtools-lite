@@ -10,9 +10,9 @@ change: \[iFwdJetSel30_Recl\[:           [iFwdJetSel30_jesRelativeSample_2017Up_
 change: \bnFwdJetSel30_Recl\b:           nFwdJetSel30_jesRelativeSample_2017Up_Recl
 change: \[iFwdJetSel20_Recl\[:           [iFwdJetSel20_jesRelativeSample_2017Up_Recl[
 change: \bnFwdJetSel20_Recl\b:           nFwdJetSel20_jesRelativeSample_2017Up_Recl
-change: \bMETgood_pt\b:                  METgood_pt_jesRelativeSample_2017Up
+change: \bMET_T1_pt\b:                  MET_T1_pt_jesRelativeSample_2017Up
 
-change: \bLep1Lep2Jet1MET_Pz\b:          Lep1Lep2Jet1MET_Pz_jesRelativeSample_2017Up
+change: \bLep1Lep2Jet1_Pz\b:          Lep1Lep2Jet1_Pz_jesRelativeSample_2017Up
 change: \bLep1Lep2Jet1MET_Pt\b:          Lep1Lep2Jet1MET_Pt_jesRelativeSample_2017Up
 change: \bLep1Lep2Jet1MET_M\b:           Lep1Lep2Jet1MET_M_jesRelativeSample_2017Up
 change: \bLep1Lep2Jet1MET_Mt\b:          Lep1Lep2Jet1MET_Mt_jesRelativeSample_2017Up
@@ -49,7 +49,7 @@ change: \bLep1Jet1_DPhi\b:               Lep1Jet1_DPhi_jesRelativeSample_2017Up
 change: \bLep2Jet1_DPhi\b:               Lep2Jet1_DPhi_jesRelativeSample_2017Up
 change: \bcosThetaStar1\b:               cosThetaStar1_jesRelativeSample_2017Up
 change: \bcosThetaStar2\b:               cosThetaStar2_jesRelativeSample_2017Up
-change: \bMETgood_phi\b:                 METgood_phi_jesRelativeSample_2017Up
+change: \bMET_T1_phi\b:                 MET_T1_phi_jesRelativeSample_2017Up
 change: \bSergioBDT_1j1b\b:              SergioBDT_1j1b_jesRelativeSample_2017Up
 change: \bSergioBDT_2j1b\b:              SergioBDT_2j1b_jesRelativeSample_2017Up
 change: \btmvaBDT_1j1b\b:                tmvaBDT_1j1b_jesRelativeSample_2017Up

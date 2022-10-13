@@ -45,6 +45,10 @@ class particleAndPartonVars_TopRun2UL(Module):
                          "DressJet1_Pt",
                          "DressJet2_Pt",
                          "DressJetLoose1_Pt",
+                         "DressJetB1_Pt",
+                         "DressJetB2_Pt",
+                         "DressJetB1_M",
+                         "DressJetB2_M",
 
                          "DressLep1Jet1_DR",
                          "DressLep12Jet12_DR",
@@ -125,6 +129,10 @@ class particleAndPartonVars_TopRun2UL(Module):
         allret["DressJet1_E"]             = -99
         allret["DressJet2_Pt"]            = -99
         allret["DressJetLoose1_Pt"]       = -99
+        allret["DressJetB1_Pt"]           = -99
+        allret["DressJetB2_Pt"]           = -99
+        allret["DressJetB1_M"]            = -99
+        allret["DressJetB2_M"]            = -99
         allret["DressLep1Jet1_DR"]        = -99
         allret["DressLep12Jet12_DR"]      = -99
         allret["DressLep12Jet12MET_DR"]   = -99
@@ -268,8 +276,8 @@ class particleAndPartonVars_TopRun2UL(Module):
         if "b_bbar_4l" in thesample.lower() or "ttto2l2nu" in thesample.lower():
             the4mom = None
             for p in genparts:
-                if abs(genparts[p.genPartIdxMother].pdgId) == 6:
-                    if   abs(p.pdgId) == 24:
+                if abs(genparts[p.genPartIdxMother].pdgId) == 6:  # top quark
+                    if   abs(p.pdgId) == 24:  # W boson
                         tmpvec = r.TLorentzVector()
                         tmpvec.SetPtEtaPhiM(p.pt, p.eta, p.phi, self.wmass)
 
@@ -278,7 +286,7 @@ class particleAndPartonVars_TopRun2UL(Module):
                         else:
                             the4mom += tmpvec
 
-                    elif abs(p.pdgId) == 5:
+                    elif abs(p.pdgId) == 5: # b quark
                         tmpvec = r.TLorentzVector()
                         tmpvec.SetPtEtaPhiM(p.pt, p.eta, p.phi, self.bmass)
 
@@ -293,4 +301,13 @@ class particleAndPartonVars_TopRun2UL(Module):
                 allret["GenWWbb_M"]  = 0
                 allret["GenWWbb_Pt"] = 0
 
+            for iJ in all_jets:
+                if iJ.hadronFlavour == 5:
+                    if allret["DressJetB1_Pt"] == -99:
+                        allret["DressJetB1_Pt"] = iJ.pt
+                        allret["DressJetB1_M"]  = iJ.mass
+                    else:
+                        allret["DressJetB2_Pt"] = iJ.pt
+                        allret["DressJetB2_M"]  = iJ.mass
+                        break
         return allret

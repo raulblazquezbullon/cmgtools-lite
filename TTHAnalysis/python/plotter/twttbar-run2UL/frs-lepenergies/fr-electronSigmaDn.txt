@@ -1,6 +1,5 @@
 change: \bchannel\b:              channel_elsigmaDown
 change: \bnLepGood\b:             nLepGoodelsigmaDown
-change: \bMETgood_pt\b:           METgood_pt_elsigmaDown
 change: \bisSS\b:                 isSS_elsigmaDown
 change: \bMll\b:                  Mll_elsigmaDown
 change: \bLepGood_pt_corrAll\[:   LepGoodelsigmaDown_pt_elsigmaDown[
@@ -27,7 +26,7 @@ change: \bLep1Lep2_DR\b:          Lep1Lep2_DR_elsigmaDown
 change: \bLep1Lep2_DPhi\b:        Lep1Lep2_DPhi_elsigmaDown
 change: \bLep1Lep2_DEta\b:        Lep1Lep2_DEta_elsigmaDown
 
-change: \bLep1Lep2Jet1MET_Pz\b:          Lep1Lep2Jet1MET_Pz_elsigmaDown
+change: \bLep1Lep2Jet1_Pz\b:             Lep1Lep2Jet1_Pz_elsigmaDown
 change: \bLep1Lep2Jet1MET_Pt\b:          Lep1Lep2Jet1MET_Pt_elsigmaDown
 change: \bLep1Lep2Jet1MET_M\b:           Lep1Lep2Jet1MET_M_elsigmaDown
 change: \bLep1Lep2Jet1MET_Mt\b:          Lep1Lep2Jet1MET_Mt_elsigmaDown
@@ -46,7 +45,6 @@ change: \bJet2_Pt\b:                     Jet2_Pt_elsigmaDown
 change: \bJetLoose1_Pt\b:                JetLoose1_Pt_elsigmaDown
 
 change: \bLep1Jet1_DR\b:                 Lep1Jet1_DR_elsigmaDown
-change: \bMETgood_pt\b:                  METgood_pt_elsigmaDown
 change: \bLep12Jet12_DR\b:               Lep12Jet12_DR_elsigmaDown
 change: \bLep12Jet12MET_DR\b:            Lep12Jet12MET_DR_elsigmaDown
 change: \bLepJet11Lep2_DR\b:             LepJet11Lep2_DR_elsigmaDown
@@ -58,11 +56,10 @@ change: \bLep1LepJet21_DEta\b:           Lep1LepJet21_DEta_elsigmaDown
 change: \bLep1Lep2Jet1_C\b:              Lep1Lep2Jet1_C_elsigmaDown
 change: \bHTtot\b    :                   HTtot_elsigmaDown
 
+change: \bminMllAFAS\b  :                minMllAFAS_elsigmaDown
 change: \bminimax\b  :                   minimax_elsigmaDown
 change: \bLep1Jet2_M\b:                  Lep1Jet2_M_elsigmaDown
 change: \bLep2Jet2_M\b:                  Lep2Jet2_M_elsigmaDown
-
-change: \bMETgood_phi\b:                 METgood_phi_elsigmaDown
 
 change: \bSergioBDT_1j1b\b:               SergioBDT_1j1b_elsigmaDown
 change: \bSergioBDT_2j1b\b:               SergioBDT_2j1b_elsigmaDown

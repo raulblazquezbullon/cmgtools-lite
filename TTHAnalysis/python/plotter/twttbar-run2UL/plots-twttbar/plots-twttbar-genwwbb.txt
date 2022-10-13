@@ -83,4 +83,7 @@ lep1lepjet21_dphi  : Lep1LepJet21_DPhi   : 10,0,1   ; IncludeUnderflow=False, Le
 lep1lepjet21_deta  : Lep1LepJet21_DEta   : 20,0,5   ; IncludeUnderflow=False, LegendCutoff=0,  XTitle="\\Delta\\it{\\varphi}(\\ell_{1}\,jet\\ell_{2})/\\it{\\pi}"
 
 
-genwwbb_m         : GenWWbb_M      : 250,0,1500 ; IncludeUnderflow=False, LegendCutoff=0,  XTitle="m (WWbb) (GeV)"
+genwwbb_m         : GenWWbb_M       : 250,0,1500 ; IncludeUnderflow=False, LegendCutoff=0, XTitle="m (WWbb) (GeV)"
+genjetb1_pt       : DressJetB1_Pt   : 50,0,110   ; IncludeUnderflow=False, LegendCutoff=0, XTitle="p_{T} (j_{B\,1}) (GeV)" 
+genjetb1_m        : DressJetB1_M    : 25,5,50    ; IncludeUnderflow=False, LegendCutoff=0, XTitle="m (j_{B\,1}) (GeV)" 
+genlep1jet1_m     : DressLep1Jet1_M : 16,0,350   ; IncludeUnderflow=False, LegendCutoff=0, XTitle="m (\\ell_{1}\,j_{1}) (GeV)"

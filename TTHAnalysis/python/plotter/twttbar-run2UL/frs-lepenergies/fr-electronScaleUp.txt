@@ -1,6 +1,5 @@
 change: \bchannel\b:              channel_elscaleUp
 change: \bnLepGood\b:             nLepGoodelscaleUp
-change: \bMETgood_pt\b:           METgood_pt_elscaleUp
 change: \bisSS\b:                 isSS_elscaleUp
 change: \bMll\b:                  Mll_elscaleUp
 change: \bLepGood_pt_corrAll\[:   LepGoodelscaleUp_pt_elscaleUp[
@@ -27,7 +26,7 @@ change: \bLep1Lep2_DR\b:          Lep1Lep2_DR_elscaleUp
 change: \bLep1Lep2_DPhi\b:        Lep1Lep2_DPhi_elscaleUp
 change: \bLep1Lep2_DEta\b:        Lep1Lep2_DEta_elscaleUp
 
-change: \bLep1Lep2Jet1MET_Pz\b:          Lep1Lep2Jet1MET_Pz_elscaleUp
+change: \bLep1Lep2Jet1_Pz\b:             Lep1Lep2Jet1_Pz_elscaleUp
 change: \bLep1Lep2Jet1MET_Pt\b:          Lep1Lep2Jet1MET_Pt_elscaleUp
 change: \bLep1Lep2Jet1MET_M\b:           Lep1Lep2Jet1MET_M_elscaleUp
 change: \bLep1Lep2Jet1MET_Mt\b:          Lep1Lep2Jet1MET_Mt_elscaleUp
@@ -46,7 +45,6 @@ change: \bJet2_Pt\b:                     Jet2_Pt_elscaleUp
 change: \bJetLoose1_Pt\b:                JetLoose1_Pt_elscaleUp
 
 change: \bLep1Jet1_DR\b:                 Lep1Jet1_DR_elscaleUp
-change: \bMETgood_pt\b:                  METgood_pt_elscaleUp
 change: \bLep12Jet12_DR\b:               Lep12Jet12_DR_elscaleUp
 change: \bLep12Jet12MET_DR\b:            Lep12Jet12MET_DR_elscaleUp
 change: \bLepJet11Lep2_DR\b:             LepJet11Lep2_DR_elscaleUp
@@ -58,11 +56,10 @@ change: \bLep1LepJet21_DEta\b:           Lep1LepJet21_DEta_elscaleUp
 change: \bLep1Lep2Jet1_C\b:              Lep1Lep2Jet1_C_elscaleUp
 change: \bHTtot\b    :                   HTtot_elscaleUp
 
+change: \bminMllAFAS\b  :                minMllAFAS_elscaleUp
 change: \bminimax\b  :                   minimax_elscaleUp
 change: \bLep1Jet2_M\b:                  Lep1Jet2_M_elscaleUp
 change: \bLep2Jet2_M\b:                  Lep2Jet2_M_elscaleUp
-
-change: \bMETgood_phi\b:                 METgood_phi_elscaleUp
 
 change: \bSergioBDT_1j1b\b:               SergioBDT_1j1b_elscaleUp
 change: \bSergioBDT_2j1b\b:               SergioBDT_2j1b_elscaleUp

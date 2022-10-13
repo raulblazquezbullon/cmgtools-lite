@@ -3,14 +3,18 @@
 #vvttv : WW_TuneCP5_13TeV_pythia8*               : xsec ; FillColor=390
 
 # NLO
-vvttv : WWTo2L2Nu_TuneCP5_13TeV_powheg_pythia8* : xsec ; FillColor=390
+vvttv : WWTo2L2Nu_TuneCP5_13TeV_powheg_pythia8*             : xsec ; FillColor=390
+vvttv : WWTo1L1Nu2Q_4f_TuneCP5_13TeV_amcatnloFXFX_pythia8*  : xsec ; FillColor=390
 
 
 ## WZ
 # LO
-vvttv : WZ_TuneCP5_13TeV_pythia8* : xsec ; FillColor=390
+#vvttv : WZ_TuneCP5_13TeV_pythia8* : xsec ; FillColor=390
 
 # NLO
+vvttv : WZTo3LNu_TuneCP5_13TeV_amcatnloFXFX_pythia8*            : xsec ; FillColor=390
+vvttv : WZTo2Q2L_mllmin4p0_TuneCP5_13TeV_amcatnloFXFX_pythia8*  : xsec ; FillColor=390
+vvttv : WZTo1L1Nu2Q_4f_TuneCP5_13TeV_amcatnloFXFX_pythia8*      : xsec ; FillColor=390
 
 
 ## ZZ
@@ -18,12 +22,14 @@ vvttv : WZ_TuneCP5_13TeV_pythia8* : xsec ; FillColor=390
 #vvttv : ZZ_TuneCP5_13TeV_pythia8*                     : xsec ; FillColor=390
 
 # NLO
-vvttv : ZZTo2L2Nu_TuneCP5_13TeV_powheg_pythia8*       : xsec ; FillColor=390
-vvttv : ZZTo4L_M_1toInf_TuneCP5_13TeV_powheg_pythia8* : xsec ; FillColor=390
+vvttv : ZZTo2L2Nu_TuneCP5_13TeV_powheg_pythia8*                : xsec ; FillColor=390
+vvttv : ZZTo2Q2L_mllmin4p0_TuneCP5_13TeV_amcatnloFXFX_pythia8* : xsec ; FillColor=390
+vvttv : ZZTo4L_M_1toInf_TuneCP5_13TeV_powheg_pythia8*          : xsec ; FillColor=390
 
 
 ## TTW
 vvttv : TTWJetsToLNu_TuneCP5_13TeV_amcatnloFXFX_madspin_pythia8*  : xsec ; FillColor=390
+vvttv : ttWJetsToLNu_5f_EWK_TuneCP5_13TeV_amcatnlo_pythia8*       : xsec ; FillColor=390
 vvttv : TTWJetsToQQ_TuneCP5_13TeV_amcatnloFXFX_madspin_pythia8*   : xsec ; FillColor=390
 
 
