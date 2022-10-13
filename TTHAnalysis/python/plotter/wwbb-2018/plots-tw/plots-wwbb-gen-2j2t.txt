@@ -1,0 +1,72 @@
+
+DressedJet1_pt   : GenJet_pt[iDressSelJet[0]]      : 18,20,200     ; IncludeUnderflow=False, XTitle="Leading dressed jet p_{T} (GeV)"
+DressedJet1_eta  : GenJet_eta[iDressSelJet[0]]     : 15,-5,5   ; IncludeUnderflow=False, XTitle="Leading dressed jet #eta"
+DressedJet1_m    : GenJet_mass[iDressSelJet[0]]    : 12,0,60       ; IncludeUnderflow=False, XTitle="Leading dressed jet mass (GeV)"
+DressedJet1_partFlav  : GenJet_partonFlavour[iDressSelJet[0]]  : 25,-0.5,24.5    ; IncludeUnderflow=False, XTitle="Leading dressed jet #partonFlavour"
+DressedJet_n :  nDressSelJet  : 11,-0.5,10.5		; IncludeUnderflow=False, XTitle="Gen jet #n"
+
+
+DressedJet2_pt   : GenJet_pt[iDressSelJet[1]]      : 8,30,190     ; IncludeUnderflow=False, XTitle="Subleading dressed jet p_{T} (GeV)"
+DressedJet2_eta  : GenJet_eta[iDressSelJet[1]]     : 15,-5,5   ; IncludeUnderflow=False, XTitle="Subleading dressed jet #eta"
+DressedJet2_m    : GenJet_mass[iDressSelJet[1]]    : 12,0,60       ; IncludeUnderflow=False, XTitle="Subleading dressed jet mass (GeV)"
+DressedJet2_partFlav  : GenJet_partonFlavour[iDressSelJet[1]]  : 25,-0.5,24.5    ; IncludeUnderflow=False, XTitle="Subleading dressed jet #partonFlavour"
+
+
+
+DressedLep1_pt   : GenDressedLepton_pt[iDressSelLep[0]]  : 14,10,150             ; IncludeUnderflow=False, XTitle="Leading dressed lepton p_{T} (GeV)"
+DressedLep1_eta  : GenDressedLepton_eta[iDressSelLep[0]]         : 15,-5,5           ; IncludeUnderflow=False, XTitle="Leading lepton #eta"
+DressedLep1_pdgId  : GenDressedLepton_pdgId[iDressSelLep[0]]  : 16,-0.5,15.5		; IncludeUnderflow=False, XTitle="Leading lepton #pdgId"
+DressedLep_n    : nDressSelLep  : 6,-0.5,5.5		; IncludeUnderflow=False, XTitle="Lepton #n"
+DressedLep1_hasTauAnc   : GenDressedLepton_hasTauAnc[iDressSelLep[0]]  :  9,-0.5,8.5  ; IncludeUnderflow=False, XTitle="Leading dressed lepton #hasTauAnc"
+
+
+DressedLep2_pt   : GenDressedLepton_pt[iDressSelLep[1]]  : 14,10,150             ; IncludeUnderflow=False, XTitle="Subleading dressed lepton p_{T} (GeV)"
+DressedLep2_eta  : GenDressedLepton_eta[iDressSelLep[1]]         : 15,-5,5           ; IncludeUnderflow=False, XTitle="Subleading lepton #eta"
+DressedLep2_pdgId  : GenDressedLepton_pdgId[iDressSelLep[1]]  : 16,-0.5,15.5		; IncludeUnderflow=False, XTitle="Subleading lepton #pdgId"
+DressedLep2_hasTauAnc   : GenDressedLepton_hasTauAnc[iDressSelLep[1]]  :  9,-0.5,8.5  ; IncludeUnderflow=False, XTitle="Subleading dressed lepton #hasTauAnc"
+
+
+
+
+
+#Original variables
+
+OrigDressedJet1_pt   : GenJet_pt[0]      : 18,20,200     ; IncludeUnderflow=False, XTitle="(Original) Leading dressed jet p_{T} (GeV)"
+OrigDressedJet1_eta  : GenJet_eta[0]     : 15,-5,5   ; IncludeUnderflow=False, XTitle="(Original) Leading dressed jet #eta"
+OrigDressedJet1_m    : GenJet_mass[0]    : 12,0,60       ; IncludeUnderflow=False, XTitle="Leading dressed jet mass (GeV)"
+OrigDressedJet1_partFlav  : GenJet_partonFlavour[0]  : 25,-0.5,24.5    ; IncludeUnderflow=False, XTitle="(Original) Leading dressed jet #partonFlavour"
+OrigDressedJet_n :  nGenJet  : 11,-0.5,10.5		; IncludeUnderflow=False, XTitle="(Original) Gen jet #n"
+
+
+OrigDressedJet2_pt   : GenJet_pt[1]      : 8,30,190     ; IncludeUnderflow=False, XTitle="(Original) Subleading dressed jet p_{T} (GeV)"
+OrigDressedJet2_eta  : GenJet_eta[1]     : 15,-5,5   ; IncludeUnderflow=False, XTitle="(Original) Subleading dressed jet #eta"
+OrigDressedJet2_m    : GenJet_mass[1]    : 12,0,60       ; IncludeUnderflow=False, XTitle="(Original) Subleading dressed jet mass (GeV)"
+OrigDressedJet2_partFlav  : GenJet_partonFlavour[1]  : 25,-0.5,24.5    ; IncludeUnderflow=False, XTitle="(Original) Subeading dressed jet #partonFlavour"
+
+
+
+OrigDressedLep1_pt   : GenDressedLepton_pt[0]  : 14,10,150             ; IncludeUnderflow=False, XTitle="(Original) Leading dressed lepton p_{T} (GeV)"
+OrigDressedLep1_eta  : GenDressedLepton_eta[0]         : 15,-5,5           ; IncludeUnderflow=False, XTitle="(Original) Leading lepton #eta"
+OrigDressedLep1_pdgId  : GenDressedLepton_pdgId[0]  : 16,-0.5,15.5		; IncludeUnderflow=False, XTitle="(Original) Leading lepton #pdgId"
+OrigDressedLep1_hasTauAnc   : GenDressedLepton_hasTauAnc[0]  :  9,-0.5,8.5  ; IncludeUnderflow=False, XTitle="(Original) Leading dressed lepton #hasTauAnc"
+OrigDressedLep_n    : nGenDressedLepton  : 6,-0.5,5.5		; IncludeUnderflow=False, XTitle="(Original) Lepton #n"
+
+OrigDressedLep2_pt   : GenDressedLepton_pt[1]  : 14,10,150             ; IncludeUnderflow=False, XTitle="(Original) Subleading dressed lepton p_{T} (GeV)"
+OrigDressedLep2_eta  : GenDressedLepton_eta[1]         : 15,-5,5           ; IncludeUnderflow=False, XTitle="(Original) Subleading lepton #eta"
+OrigDressedLep2_pdgId  : GenDressedLepton_pdgId[1]  : 16,-0.5,15.5		; IncludeUnderflow=False, XTitle="(Original) Subleading lepton #pdgId"
+OrigDressedLep2_hasTauAnc   : GenDressedLepton_hasTauAnc[1]  :  9,-0.5,8.5  ; IncludeUnderflow=False, XTitle="(Original) Subeading dressed lepton #hasTauAnc"
+
+
+#OrigChannel    : OrigChannel : 13,-0.5,12.5	; IncludeUnderflow=False, XTitle="(Orig.) Channel", xBinLabels="0\,#mu\,e\,e[#tau]/#mu[#tau]\,#mu#mu\,ee\,e#mu\,#mu(e[#tau]/#mu[#tau])\,e(e[#tau]/#mu[#tau])\,e#mu/ee/#mu#mu [#tau#tau]\,3 or more\, \, "
+
+
+
+
+
+
+
+
+
+
+
+

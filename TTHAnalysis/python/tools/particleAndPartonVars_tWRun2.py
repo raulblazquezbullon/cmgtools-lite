@@ -15,6 +15,9 @@ from CMGTools.TTHAnalysis.tools.nanoAOD.TopRun2_modules import ch, tags
 
 class particleAndPartonVars_tWRun2(Module):
     def __init__(self):
+        self.wmass = 80.379
+        self.bmass = 4.18
+
         self.branches = [("DressisSS", "I"),
                          #("isSS", "O"),
                          #("channel", "B"),
@@ -50,8 +53,12 @@ class particleAndPartonVars_tWRun2(Module):
                          "DressHTtot",
 
                          "Dressminimax",
+                         "DressLep1Lep2Jet1Jet2MET_M",
                          "DressLep1Jet2_M",
-                         "DressLep2Jet2_M",]
+                         "DressLep2Jet2_M",
+
+                         "GenWWbb_M",
+                         "GenWWbb_Pt",]
 
         return
 
@@ -69,6 +76,8 @@ class particleAndPartonVars_tWRun2(Module):
     # Common processing
     def run(self, event, Collection):
         allret = {}
+
+        genparts    = [l for l in Collection(event, "GenPart")]
 
         # ============================ Variables not susceptible to JEC
         all_leps = [l for l in Collection(event, "GenDressedLepton")]
@@ -124,6 +133,8 @@ class particleAndPartonVars_tWRun2(Module):
         allret["DressLep1Jet2_M"]         = -99
         allret["DressLep2Jet2_M"]         = -99
         allret["Dressminimax"]            = -99
+        allret["DressLep1Lep2Jet1Jet2MET_M"] = -99
+        allret["GenWWbb_M"]               = -99
 
         if   event.nGenDressedLepton == 0:
             allret["Origchannel"] = 0 # No leps
@@ -246,7 +257,40 @@ class particleAndPartonVars_tWRun2(Module):
                         #### WARNING: this minimax variable is only equal to that of ATLAS' PRL when the signal region is njets == 2, nbjets == 2.
                         allret["Dressminimax"] = min([max([allret["DressLep1Jet1_M"],
                                                         allret["DressLep2Jet2_M"]]),
-                                                    max(allret["DressLep2Jet1_M"],
+                                                      max(allret["DressLep2Jet1_M"],
                                                         allret["DressLep1Jet2_M"])])
+                        allret["DressLep1Lep2Jet1Jet2MET_M"] = (leps_4m[0] + leps_4m[1] + jets_4m[0] + jets_4m[1] + met_4m).M()
+
+        thesample = ""
+        for i in range(event.nDatasetName):
+            thesample += str(event.DatasetName_name[i])
+
+        if "b_bbar_4l" in thesample.lower() or "ttto2l2nu" in thesample.lower():
+            the4mom = None
+            for p in genparts:
+                if abs(genparts[p.genPartIdxMother].pdgId) == 6:
+                    if   abs(p.pdgId) == 24:
+                        tmpvec = r.TLorentzVector()
+                        tmpvec.SetPtEtaPhiM(p.pt, p.eta, p.phi, self.wmass)
+
+                        if not the4mom:
+                            the4mom = tmpvec
+                        else:
+                            the4mom += tmpvec
+
+                    elif abs(p.pdgId) == 5:
+                        tmpvec = r.TLorentzVector()
+                        tmpvec.SetPtEtaPhiM(p.pt, p.eta, p.phi, self.bmass)
+
+                        if not the4mom:
+                            the4mom = tmpvec
+                        else:
+                            the4mom += tmpvec
+            if the4mom:
+                allret["GenWWbb_M"]  = the4mom.M()
+                allret["GenWWbb_Pt"] = the4mom.Pt()
+            else:
+                allret["GenWWbb_M"]  = 0
+                allret["GenWWbb_Pt"] = 0
 
         return allret

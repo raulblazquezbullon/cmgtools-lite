@@ -1,0 +1,14 @@
+#tW
+
+twttbar : ST_tW_top_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_*topnano_*     : xsec ; FillColor=798
+
+twttbar : ST_tW_antitop_5f_NoFullyHadronicDecays_TuneCP5_13TeV-powheg-pythia8_*topnano_* : xsec ; FillColor=798
+
+
+#ttbar
+
+twttbar : TTTo2L2Nudiv1_TuneCP5_13TeV-powheg-pythia8_topnano_* : 88.28769753 * 2 ; FillColor=633
+
+
+
+

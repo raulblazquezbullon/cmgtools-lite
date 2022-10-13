@@ -96,6 +96,61 @@ def effFromH2D(h2d,options,uncertainties="CP", customNum=None, name=None):
     ret.SetName(h2d.GetName()+"_graph")
     return ret
 
+
+def effFromH3D(h3d, options, uncertainties = "CP", customNum = None, name = None):
+    points = []
+    for xbin in xrange(1, h3d.GetNbinsX() + 1):
+        for ybin in xrange(1, h3d.GetNbinsX() + 1):
+            xval = h3d.GetXaxis().GetBinCenter(xbin)
+            yval = h3d.GetYaxis().GetBinCenter(ybin)
+            if options.xcut and (xval < options.xcut[0] or xval > options.xcut[1]):
+                continue
+            if options.ycut and (yval < options.ycut[0] or yval > options.ycut[1]):
+                continue
+            
+            xerrs = h3d.GetXaxis().GetBinLowEdge(xbin) - xval, h3d.GetXaxis().GetBinUpEdge(xbin) - xval
+            yerrs = h3d.GetYaxis().GetBinLowEdge(ybin) - yval, h3d.GetYaxis().GetBinUpEdge(ybin) - yval
+            if customNum and 'data' not in name:
+                ypass,  ypassErr  = customNum.GetBinContent(xbin, ybin, 2), customNum.GetBinError(xbin, ybin, 2)
+                ypass2, ypassErr2 = h3d.GetBinContent(xbin, ybin, 2), h3d.GetBinError(xbin, ybin, 2)
+                yfail,  yfailErr  = h3d.GetBinContent(xbin, ybin, 1), h3d.GetBinError(xbin, ybin, 1)
+                yall = ypass2 + yfail
+            else:
+                ypass, ypassErr = h3d.GetBinContent(xbin, ybin, 2), h3d.GetBinError(xbin, ybin, 2)
+                yfail, yfailErr = h3d.GetBinContent(xbin, ybin, 1), h3d.GetBinError(xbin, ybin, 1)
+                yall = ypass + yfail
+                
+            if yall <= 0: continue
+            if ypass < 0:
+                print "Warning: effFromh3d for %s at x = %g: ypass = %g +- %g  yfail = %g +- %g\n" % (h3d.GetName(), xval, ypass, ypassErr, yfail, yfailErr)
+                if uncertainties == "CP": continue
+                if ypass + 2*ypassErr < 0: continue
+                ypass, yall = 0, yfail
+            eff  = ypass/yall
+            neff = (yall**2)/(ypassErr**2 + yfailErr**2)
+            if uncertainties == "CP":
+                errs = [ ROOT.TEfficiency.ClopperPearson(int(neff),int(neff*eff), 0.6827, i)-eff for i in (False,True) ]
+            elif uncertainties == "PF":
+                err = hypot(yfail * ypassErr, ypass * yfailErr)/(yall*yall)
+                errs = [ -err, err ]
+            #print h3d.GetName(), xval, yval, ypass, ypassErr, yfail, yfailErr, eff, neff, eff*neff, (1-eff)*neff, errs
+            points.append( (xval, xerrs, yval, yerrs, eff, errs) )
+    if not points: return None
+    ret = ROOT.TGraph2DErrors(len(points))
+    for i, (xval, xerrs, yval, yerrs, eff, efferrs) in enumerate(points):
+        ret.SetPoint(i, xval, yval, eff)
+        ret.SetPointError(i, (abs(xerrs[0]) + abs(xerrs[1]))/2., (abs(yerrs[0]) + abs(yerrs[1]))/2., (abs(efferrs[0]) + abs(efferrs[1]))/2.)
+
+    ret._xrange = h3d.GetXaxis().GetXmin(), h3d.GetXaxis().GetXmax()
+    ret._yrange = h3d.GetYaxis().GetYmin(), h3d.GetYaxis().GetYmax()
+    ret.GetXaxis().SetRangeUser(ret._xrange[0], ret._xrange[1])
+    ret.GetXaxis().SetTitle(h3d.GetXaxis().GetTitle())
+    ret.GetYaxis().SetRangeUser(ret._yrange[0], ret._yrange[1])
+    ret.GetYaxis().SetTitle(h3d.GetYaxis().GetTitle())
+    ret.SetName(h3d.GetName() + "_graph")
+    return ret
+
+
 def dumpEffFromH2D(h2d,xbin):
     ret = ""
     ypass,ypassErr,yfail,yfailErr = h2d.GetBinContent(xbin,2),h2d.GetBinError(xbin,2), h2d.GetBinContent(xbin,1),h2d.GetBinError(xbin,1)
@@ -246,8 +301,9 @@ def stackInXYSlices(outname,x,effs,options):
         for islice in xrange(1,nbins[sliceaxis]+1):
             bins = [ ((i,islice) if runaxis == 0 else (islice,i)) for i in xrange(1,nbins[runaxis]+1) ]
             slice_effs = [ (n,graphFromSlice(h,names[runaxis],bins)) for (n,h) in effs ]
-            stackEffs(outname.replace(".root",".slice%s_bin%d.root" % (names[sliceaxis],islice+1)),
-                      slice_effs, bins, options)
+#            print slice_effs, bins
+            stackEffs(outname.replace(".root",".slice%s_bin%d.root" % (names[sliceaxis],islice+1)), x,
+                      slice_effs, options)
     
 
 def doEffRatio(x,effs,frame,options):
@@ -340,6 +396,7 @@ def makeDataSub(report,mca):
 def makeEff(mca,cut,idplot,xvarplot,returnSeparatePassFail=False,notDoProfile="auto",mainOptions=None):
     import copy
     is2D = (":" in xvarplot.expr.replace("::","--"))
+    
     options = copy.copy(idplot.opts)
     options.update(xvarplot.opts)
     mybins = copy.copy(xvarplot.bins)
@@ -358,6 +415,7 @@ def makeEff(mca,cut,idplot,xvarplot,returnSeparatePassFail=False,notDoProfile="a
                      mybins,
                      options) 
     report = mca.getPlots(pspec,cut,makeSummary=True)
+    
     if mainOptions.weightNumerator:
         pspec_num = PlotSpec("%s_vs_%s_fornum"  % (idplot.name, xvarplot.name), 
                              "%s:%s" % (idplot.expr,xvarplot.expr),
@@ -376,11 +434,12 @@ def makeEff(mca,cut,idplot,xvarplot,returnSeparatePassFail=False,notDoProfile="a
         report['total'] = mergePlots(pspec.name+"_total", [ report[s] for s in ('signal','background') ] )
     if 'data' in report and 'background' in report:
         makeDataSub(report, mca)
+    
     if mainOptions.weightNumerator:
         if notDoProfile and not returnSeparatePassFail:
             if is2D: report = dict([(title, effFromH3D(hist,mainOptions, customNum=report_num[title], name=title)) for (title, hist) in report.iteritems()])
             else:    report = dict([(title, effFromH2D(hist,mainOptions, customNum=report_num[title], name=title)) for (title, hist) in report.iteritems()])
-    else: 
+    else:
         if notDoProfile and not returnSeparatePassFail:
             if is2D: report = dict([(title, effFromH3D(hist,mainOptions)) for (title, hist) in report.iteritems()])
             else:    report = dict([(title, effFromH2D(hist,mainOptions)) for (title, hist) in report.iteritems()])
@@ -434,13 +493,13 @@ if __name__ == "__main__":
     ROOT.gROOT.ProcessLine(".x tdrstyle.cc")
     ROOT.gStyle.SetErrorX(0.5)
     ROOT.gStyle.SetOptStat(0)
-    effplots = [ (y,x,makeEff(mca,cut,y,x,returnSeparatePassFail=options.normEffUncToLumi,mainOptions=options)) for y in ids for x in xvars ]
+#    effplots = [ (y,x,makeEff(mca,cut,y,x,returnSeparatePassFail=options.normEffUncToLumi,mainOptions=options)) for y in ids for x in xvars ]
+    effplots = [ (y,x,makeEff(mca,cut,y,x,returnSeparatePassFail=options.normEffUncToLumi,mainOptions=options, notDoProfile = False)) for y in ids for x in xvars ]
     for (y,x,pmap) in effplots:
         for proc in procs + [ "total", "signal", "background", "data_sub" ]:
             if (proc not in pmap) or not pmap[proc]: continue
             eff = pmap[proc]
-            #eff.Print()
-#            PrintHisto(eff)
+            #PrintHisto(eff)
             if options.xcut and eff.ClassName() != "TGraphAsymmErrors":
                 ax = eff.GetXaxis()
                 for b in xrange(1,eff.GetNbinsX()+1):
@@ -483,7 +542,9 @@ if __name__ == "__main__":
                     effratio.SetBinError(ratiobin,sqrt(passing*failing*((passing+failing)**(-3))))
                 pmap[proc] = effratio
             eff.SetName("_".join([y.name,x.name,proc]))
-            outfile.WriteTObject(eff)
+#            outfile.WriteTObject(eff)
+#            outfile.Write(eff)
+            eff.Write()
     if len(procs)>=1 and "cut" in options.groupBy:
         for x in xvars:
             for y,ex,pmap in effplots:

@@ -324,32 +324,44 @@ from collections import OrderedDict
     #return
 
 translateDict = {
-    "mc_stat"   : "MC finite sample size",
-    "jecs"      : "Jet energy scale and resolution",
-    "trigger"   : "Trigger efficiencies",
-    "pileup"    : "Pileup",
-    "lep"       : "Lepton efficiencies",
-    "btag"      : "b tagging and mistagging efficiencies",
-    "lumi"      : "Integrated luminosity",
-    "prefiring" : "2016 and 2017 prefiring detector fix",
-    "norm"      : "Background normalisation",
-    "matching"  : "Matrix element/PS matching",
-    "scales"    : "#mu_{R} and #mu_{F} scales",
-    "ps"        : "Initial and final state radiations",
-    "colour"    : "Colour reconnection",
-    "ue"        : "Underlying event",
-    "stat"      : "Statistical",
+    "mc_stat"     : "\\quad MC finite sample size",
+    "jes"         : "\\qquad Jet energy scale",
+    "jer"         : "\\qquad Jet energy resolution",
+    "trigger"     : "\\qquad Trigger efficiencies",
+    "pileup"      : "\\qquad Pileup",
+    "elec"        : "\\qquad Electron efficiencies",
+    "muon"        : "\\qquad Muon eff. and energy scales",
+    "btag"        : "\\qquad b tagging efficiencies",
+    "mistag"      : "\\qquad Mistagging efficiencies",
+    "lumi"        : "\\qquad Integrated luminosity",
+    "prefiring"   : "\\qquad 2016 and 2017 prefiring detector fix",
+    "ttbar_norm"  : "\\qquad t$\\bar{\\mathrm{t}}$",
+    "nonworz_norm": "\\qquad Non-W/Z",
+    "dy_norm"     : "\\qquad Drell-Yan",
+    "vvttv_norm"  : "\\qquad VV$+\\mathrm{t}\\bar{\\mathrm{t}}$V",
+    "pdf"         : "\\qquad PDFs",
+    "matching"    : "\\qquad Matrix element/PS matching",
+    "ttbar_scales": "\\qquad t$\\bar{\\mathrm{t}}$ $\\mu_{R}$ and $\\mu_{F}$ scales",
+    "tw_scales"   : "\\qquad tW $\\mu_{R}$ and $\\mu_{F}$ scales",
+    "isr"         : "\\qquad Initial state radiation",
+    "fsr"         : "\\qquad Final state radiation",
+    "colour"      : "\\qquad Colour reconnection",
+    "ue"          : "\\qquad Underlying event",
+    "toppt"       : "\\qquad Top $p_{T}$ reweighting",
+    "mtop"        : "\\qquad Top quark mass",
+    "ds"          : "\\qquad DR-DS",
+    "stat"        : "Statistical",
 }
 
 
-sysforsum = ["trigger", "lep", "jecs", "btag", "pileup", "scales", "ue", "matching", "ps", "colour", "norm", "_mc_stat"]
+sysforsum = ['mc_stat', 'jes', "jer", 'trigger', 'pileup', 'elec', "muon", 'btag', 'mistag', 'prefiring', 'ttbar_norm', 'nonworz_norm', 'dy_norm' , 'vvttv_norm', "pdf", "matching","ttbar_scales", "tw_scales","isr", "fsr", "colour", "ue", "toppt", "mtop", "ds"]
 
 orderOfTheUncs = ["_syst", "_systexp",
-                    "trigger", "lep", "jecs", "btag", "pileup",
+                    "trigger", "elec", "muon", "jes", "jer","btag", "mistag", "pileup", "prefiring",
                   "_systmod",
-                    "scales", "ue", "matching", "ps", "colour",
+                    "ttbar_scales","tw_scales", "isr", "fsr", "ue", "matching","toppt", "colour", "pdf", "ds", "mtop",
                   "_systnorm",
-                    "norm",
+                    "ttbar_norm", "vvttv_norm", "dy_norm", "nonworz_norm", 
                   "_mc_stat",
                   "_totalsyst",
                   "_lumi",
@@ -357,7 +369,7 @@ orderOfTheUncs = ["_syst", "_systexp",
                   "_total"]
 
 
-def getFitUncsLaTeXtable(path = "./temp/cards/uncstable", inname = "outputfit.txt", outname = "unctable"):
+def getFitUncsLaTeXtable(path = "./", inname = "outputfit_all.txt", outname = "unctable"):
     table   = []; headers = ["Source", "Average unc. (\%)", "Unc. up (\%)", "Unc. down (\%)"]
 
     # First, obtain the info from the txts
@@ -399,10 +411,9 @@ def getFitUncsLaTeXtable(path = "./temp/cards/uncstable", inname = "outputfit.tx
                              "ave"  : (totalsystnolumiup + totalsystnolumidown)/2}
 
     for key in infodict:
-
-        infodict[key]["up"]   = infodict[key]["up"]   * 100
-        infodict[key]["down"] = infodict[key]["down"] * 100
-        infodict[key]["ave"]  = infodict[key]["ave"]  * 100
+        infodict[key]["up"]   = infodict[key]["up"]   * 100 / infodict[""]["val"]
+        infodict[key]["down"] = infodict[key]["down"] * 100 / infodict[""]["val"]
+        infodict[key]["ave"]  = infodict[key]["ave"]  * 100 / infodict[""]["val"]
 
     print infodict
     #sys.exit()
@@ -414,21 +425,21 @@ def getFitUncsLaTeXtable(path = "./temp/cards/uncstable", inname = "outputfit.tx
         if   i == "_syst":
             tmprow = ["\\textbf{Systematic}", "", ""]
         elif i == "_systexp":
-            tmprow = ["  Experimental", "", ""]
+            tmprow = ["\\quad Experimental", "", ""]
         elif i == "_systmod":
-            tmprow = ["  Modelling", "", ""]
+            tmprow = ["\\quad  Modelling", "", ""]
         elif i == "_systnorm":
-            tmprow = ["  Background normalisation", "", ""]
+            tmprow = ["\\quad  Background normalisation", "", ""]
         elif i == "_mc_stat":
-            tmprow = ["  " + translateDict["mc_stat"], round(infodict["mc_stat"]["ave"], 1), round(infodict["mc_stat"]["up"], 1), round(infodict["mc_stat"]["down"]) ]
+            tmprow = ["  " + translateDict["mc_stat"], round(infodict["mc_stat"]["ave"], 1), round(infodict["mc_stat"]["up"], 1), round(infodict["mc_stat"]["down"],1) ]
         elif i == "_totalsyst":
             tmprow = ["\\textbf{{Total systematic (excl. lum.)}}", round(infodict["totalsyst"]["ave"], 1), round(infodict["totalsyst"]["up"], 1), round(infodict["totalsyst"]["down"], 1)]
         elif i == "_lumi":
             tmprow = ["\\textbf{{Integrated luminosity}}", round(infodict["lumi"]["ave"], 1), round(infodict["lumi"]["up"], 1), round(infodict["lumi"]["down"], 1)]
         elif i == "_stat":
-            tmprow = ["\\texttbf{{Statistical}}", round(infodict["stat"]["ave"], 1), round(infodict["stat"]["up"], 1), round(infodict["stat"]["down"], 1)]
+            tmprow = ["\\textbf{{Statistical}}", round(infodict["stat"]["ave"], 1), round(infodict["stat"]["up"], 1), round(infodict["stat"]["down"], 1)]
         elif i == "_total":
-            tmprow = ["\\texttbf{{Total}}", round(infodict[""]["ave"], 1), round(infodict[""]["up"], 1), round(infodict[""]["down"], 1)]
+            tmprow = ["\\textbf{{Total}}", round(infodict[""]["ave"], 1), round(infodict[""]["up"], 1), round(infodict[""]["down"], 1)]
         else:
             tmprow = [translateDict[i], round(infodict[i]["ave"], 1), round(infodict[i]["up"], 1), round(infodict[i]["down"], 1)]
 
@@ -436,7 +447,7 @@ def getFitUncsLaTeXtable(path = "./temp/cards/uncstable", inname = "outputfit.tx
         #print tmprow
 
     #sys.exit()
-    finallatextab = tb.tabulate(table, headers = headers, tablefmt = "latex_raw")
+    finallatextab = tb.tabulate(table, headers = headers, tablefmt = "latex_raw", floatfmt=".1f")
 
     substr = "".join(["l"] + ["l" for x in range(len(headers) - 1)])
     finallatextab = finallatextab.replace(substr, "".join(["l|"] + ["c|" for x in range(len(headers) - 2)] + ["c"] ))
@@ -451,4 +462,4 @@ def getFitUncsLaTeXtable(path = "./temp/cards/uncstable", inname = "outputfit.tx
 
 
 if __name__ == "__main__":
-    getFitUncsLaTeXtable("./temp_2020_12_03/prueba_tabla_sistematicos")
+    getFitUncsLaTeXtable("./")

@@ -25,6 +25,10 @@ change: \bLep1Jet1_Pt\b:                 Lep1Jet1_Pt_jerDown
 change: \bLep1Jet1_M\b:                  Lep1Jet1_M_jerDown
 change: \bLep2Jet1_Pt\b:                 Lep2Jet1_Pt_jerDown
 change: \bLep2Jet1_M\b:                  Lep2Jet1_M_jerDown
+change: \bLep1Jet1_DPhi\b:               Lep1Jet1_DPhi_jerDown
+change: \bLep2Jet1_DPhi\b:               Lep2Jet1_DPhi_jerDown
+change: \bcosThetaStar1\b:               cosThetaStar1_jerDown
+change: \bcosThetaStar2\b:               cosThetaStar2_jerDown
 change: \bJet1_E\b:                      Jet1_E_jerDown
 change: \bJet_pt_nom\b:                  Jet_pt_jerDown
 change: \bJet_mass_nom\b:                Jet_mass_jerDown

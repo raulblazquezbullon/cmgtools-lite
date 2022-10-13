@@ -214,7 +214,7 @@ class TreeToYield:
     def makeTTYVariations(self):
         ttyVariations = {}
         for var in self.getVariations():
-            for direction in (['up','down'] if var.unc_type != "envelope" else ['var%d'%x for x in range(len(var.fakerate))]):
+            for direction in (['up','down'] if (var.unc_type != "envelope" and "pdfset" not in var.unc_type.lower()) else ['var%d'%x for x in range(len(var.fakerate))]):
                 tty2 = copy.copy(self)
                 tty2._name = tty2._name + '_%s_%s'%(var.name,direction)
                 tty2._isVariation = (var,direction)
@@ -338,6 +338,7 @@ class TreeToYield:
         self._friends = []
         if self._tfile: self._tfile.Close()
         self._tfile = None
+
     def _listFriendTrees(self):
         friendOpts = self._options.friendTrees[:]
         friendOpts += (self._options.friendTreesData if self._isdata else self._options.friendTreesMC)
@@ -349,7 +350,9 @@ class TreeToYield:
             friendOpts += [ ('Friends', d+"/{cname}_Friend.root") for d in friendSimpleOpts]
         else:
             friendOpts += [ ('sf/t', d+"/evVarFriend_{cname}.root") for d in friendSimpleOpts]
-        return [ (tname,fname.format(name=self._name, cname=self._cname, P=self._basepath)) for (tname,fname) in friendOpts ]
+
+        return [ (tname, fname.format(name=self._name, cname=self._cname, P=self._basepath)) for (tname, fname) in friendOpts ]
+
     def checkFriendTrees(self, checkFiles=False):
         ok = True
         for (tn,fn) in self._listFriendTrees():
@@ -381,15 +384,14 @@ class TreeToYield:
                 #print "unctype:", var.unc_type
             if var == None: 
                 exprs = [(expr,0)]
+
             else:
                 exprs = [('(%s)*(%s)'%(fr._altNorm if (fr and fr._altNorm) else '1',expr), idx) for idx,fr in enumerate(var.fakerate) ]
 
             for theExpr, idx in exprs:
                 if var: 
-                    if var.unc_type == 'envelope':
+                    if var.unc_type == 'envelope' or "pdfset" in var.unc_type.lower():
                         sign = 'var%d'%(idx ) 
-                    elif var.unc_type == 'envelopeRMS':
-                        sign = 'var_rms%d'%(idx ) 
                     else: 
                         sign = 'up' if idx == 0 else 'down'
                 if theExpr == None: theExpr = expr
@@ -528,6 +530,37 @@ class TreeToYield:
     def getPlot(self,plotspec,cut,fsplit=None,closeTreeAfter=False,noUncertainties=False):
         if self._isVariation == None and noUncertainties == False:
             _wasclosed = not self._isInit
+            
+            #if "EstimateFromXbins" in self._settings:
+                #tmpedges = plotspec.bins.replace("[", "").replace("]", "").replace(" ", "").split(",")
+                #if isinstance(self._settings["EstimateFromXbins"], int):
+                    #tmpnbins = int(self._settings["EstimateFromXbins"])
+                    #tmpbins  = "[" + tmpedges[0]
+                    #thediff  = (float(tmpedges[-1]) - float(tmpedges[0]))/tmpnbins
+                    #for iB in range(tmpnbins):
+                        #tmpbins += "," + "%4.3f"%(float(tmpedges[0]) + thediff * (iB + 1))
+                    #tmpbins += "]"
+                    
+                #else:
+                    #tmpbins = self._settings["EstimateFromXbins"]
+                #tmppspec  = PlotSpec(plotspec.name, plotspec.expr, tmpbins, plotspec.opts)
+                
+                #nominal  = self.getPlot(tmppspec,cut,fsplit=fsplit,closeTreeAfter=False,noUncertainties=True)
+                #goodnam   = tmphisto.GetName()
+                #tmphisto.SetName(goodnam + "_tmp")
+                #tmpnom    = self.getPlot(plotspec,cut,fsplit=fsplit,closeTreeAfter=False,noUncertainties=True)
+                #
+                #for iB in range(goodhisto.GetNbinsX() + 1):
+                #    tmpnomval = tmpnom.  GetBinContent(tmpnom.FindBin(  goodhisto.GetXaxis().GetBinCenter(iB)))
+                #    tmpval    = tmphisto.GetBinContent(tmphisto.FindBin(goodhisto.GetXaxis().GetBinCenter(iB)))
+                #    tmprat    = tmpval / tmpnomval if tmpnomval != 0 else 0
+                #    tmperr    = tmphisto.GetBinError(  tmphisto.FindBin(goodhisto.GetXaxis().GetBinCenter(iB)))
+                #    goodhisto.SetBinContent(iB, goodhisto.GetBinContent(iB) * tmprat)
+                #    goodhisto.SetBinError(  iB, tmperr * goodhisto.GetBinContent(iB) / tmpnomval if tmpnomval != 0 else 0)
+                
+                #variations[var.name][1][sign] = deepcopy(goodhisto)
+            #else:
+                #nominal = self.getPlot(plotspec,cut,fsplit=fsplit,closeTreeAfter=False,noUncertainties=True)
             nominal = self.getPlot(plotspec,cut,fsplit=fsplit,closeTreeAfter=False,noUncertainties=True)
             ret = HistoWithNuisances( nominal )
             variations = {}
@@ -535,10 +568,41 @@ class TreeToYield:
                 if var.name not in variations: variations[var.name] = [var,{}]
                 if not var.isTrivial(sign):
                     tty2._isInit = True; tty2._tree = self.getTree()
-                    variations[var.name][1][sign] = tty2.getPlot(plotspec,cut,fsplit=fsplit,closeTreeAfter=False,noUncertainties=True)
+                    
+                    if "EstimateFromXbins" in var.extra:
+                        tmpedges = plotspec.bins.replace("[", "").replace("]", "").replace(" ", "").split(",")
+                        if isinstance(var.extra["EstimateFromXbins"], int):
+                            tmpnbins = int(var.extra["EstimateFromXbins"])
+                            tmpbins  = "[" + tmpedges[0]
+                            thediff  = (float(tmpedges[-1]) - float(tmpedges[0]))/tmpnbins
+                            for iB in range(tmpnbins):
+                                tmpbins += "," + "%4.3f"%(float(tmpedges[0]) + thediff * (iB + 1))
+                            tmpbins += "]"
+                            
+                        else: 
+                            tmpbins = var.extra["EstimateFromXbins"]
+                        tmppspec  = PlotSpec(plotspec.name, plotspec.expr, tmpbins, plotspec.opts)
+                        
+                        tmphisto  = tty2.getPlot(tmppspec,cut,fsplit=fsplit,closeTreeAfter=False,noUncertainties=True)
+                        goodnam   = tmphisto.GetName()
+                        tmphisto.SetName(goodnam + "_tmp")
+                        goodhisto = deepcopy(nominal.Clone(goodnam))
+                        tmpnom    = self.getPlot(tmppspec,cut,fsplit=fsplit,closeTreeAfter=False,noUncertainties=True)
+                        
+                        for iB in range(goodhisto.GetNbinsX() + 1):
+                            tmpnomval = tmpnom.  GetBinContent(tmpnom.FindBin(  goodhisto.GetXaxis().GetBinCenter(iB)))
+                            tmpval    = tmphisto.GetBinContent(tmphisto.FindBin(goodhisto.GetXaxis().GetBinCenter(iB)))
+                            tmprat    = tmpval / tmpnomval if tmpnomval != 0 else 0
+                            tmperr    = tmphisto.GetBinError(  tmphisto.FindBin(goodhisto.GetXaxis().GetBinCenter(iB)))
+                            goodhisto.SetBinContent(iB, goodhisto.GetBinContent(iB) * tmprat)
+                            goodhisto.SetBinError(  iB, tmperr * goodhisto.GetBinContent(iB) / tmpnomval if tmpnomval != 0 else 0)
+                        
+                        variations[var.name][1][sign] = deepcopy(goodhisto)
+                    else:
+                        variations[var.name][1][sign] = tty2.getPlot(plotspec,cut,fsplit=fsplit,closeTreeAfter=False,noUncertainties=True)
                     tty2._isInit = False; tty2._tree = None
             for (var,variations) in variations.itervalues():
-                if var.unc_type != 'envelope':
+                if var.unc_type != 'envelope' and "pdfset" not in var.unc_type.lower():
                     if 'up'   not in variations: variations['up']    = var.getTrivial("up",  [nominal,None,None])
                     if 'down' not in variations: variations['down']  = var.getTrivial("down",  [nominal,variations['up'],None])
                     var.postProcess(nominal, [variations['up'], variations['down']])

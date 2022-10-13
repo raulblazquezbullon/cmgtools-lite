@@ -1,0 +1,65 @@
+>>> Inicial:
+Data     =  72082.0
+WWbb     =  694500.0
+DY       =  147.0
+nonworz  =  3920.0
+vvttv    =  72433.0
+
+>>> Tras haber restado histogramas:
+Data             =  65294.5486628
+Data bin content =  68254.6130194
+WWbb bin content =  62945.5589012
+Num. uncert.     =  267.112090688
+
+------------------
+
+Data (sig. + fid.)             =  589771.0
+WWbb (sig. + fid.)             =  589771.0
+Data bin content (sig. + fid.) =  52972.3527186
+WWbb bin content (sig. + fid.) =  52972.3527186
+Sigfid. uncert.                =  106.515288294
+
+------------------
+
+Data (fiducial)             =  1075204.0
+Data bin content (fiducial) =  117782.750179
+Fiducial uncert.            =  165.610295096
+
+------------------
+
+WWbb (signal + no fiducial)             =  106327.0
+WWbb bin content (signal + no fiducial) =  9973.20618258
+Signal + no iducial uncert.            =  46.8516686777
+
+------------------
+
+xsec                 =  61.8251052831
+xsec (BR)            =  953.267319648
+
+xsec (asimov)        =  56.193243466
+xsec (BR) (asimov)   =  866.430915659
+
+------------------
+
+variat_xsec_nobs                 =  0.283353371607
+variat_xsec_bg                   =  0.049700401996
+variat_xsec_eff                  =  0.124066679646
+
+variat_xsec_nobs_BR              =  4.36896157035
+variat_xsec_bg_BR                =  0.766319261072
+variat_xsec_eff_BR               =  1.91295608188
+
+------------------
+
+uncert                 =  0.0981518041579
+uncert_BR              =  23.3344713843
+
+------------------
+------------------
+
+xsec     =  61.83 +- 0.09 pb
+xsec_BR  =  953 +- 23 pb
+
+------------------
+------------------
+

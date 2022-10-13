@@ -1,0 +1,34 @@
+### Nominal samples
+incl_2016_tw      : + ; years="2016",IncludeMca="TOREPLACE2016"
+incl_2016_ttbar   : + ; years="2016",IncludeMca="tw-run2/mca-tw-includes/mca-2016-ttbar.txt",Label="t\\bar{t}"
+incl_2016_dy      : + ; years="2016",IncludeMca="tw-run2/mca-tw-includes/mca-2016-dy.txt",Label="DY"
+incl_2016_vvttv   : + ; years="2016",IncludeMca="tw-run2/mca-tw-includes/mca-2016-vvttv.txt",Label="VV+t\\bar{t}V"
+incl_2016_nonworz : + ; years="2016",IncludeMca="tw-run2/mca-tw-includes/mca-2016-nonworz.txt",Label="Non-W/Z"
+incl_2016_data    : + ; years="2016",IncludeMca="tw-run2/mca-tw-includes/mca-2016-data.txt"
+
+incl_2017_tw      : + ; years="2017",IncludeMca="TOREPLACE2017"
+incl_2017_ttbar   : + ; years="2017",IncludeMca="tw-run2/mca-tw-includes/mca-2017-ttbar.txt",Label="t\\bar{t}"
+incl_2017_dy      : + ; years="2017",IncludeMca="tw-run2/mca-tw-includes/mca-2017-dy.txt",Label="DY"
+incl_2017_vvttv   : + ; years="2017",IncludeMca="tw-run2/mca-tw-includes/mca-2017-vvttv.txt",Label="VV+t\\bar{t}V"
+incl_2017_nonworz : + ; years="2017",IncludeMca="tw-run2/mca-tw-includes/mca-2017-nonworz.txt",Label="Non-W/Z"
+incl_2017_data    : + ; years="2017",IncludeMca="tw-run2/mca-tw-includes/mca-2017-data.txt"
+
+incl_2018_tw      : + ; years="2018",IncludeMca="TOREPLACE2018"
+incl_2018_ttbar   : + ; years="2018",IncludeMca="tw-run2/mca-tw-includes/mca-2018-ttbar.txt",Label="t\\bar{t}"
+incl_2018_dy      : + ; years="2018",IncludeMca="tw-run2/mca-tw-includes/mca-2018-dy.txt",Label="DY"
+incl_2018_vvttv   : + ; years="2018",IncludeMca="tw-run2/mca-tw-includes/mca-2018-vvttv.txt",Label="VV+t\\bar{t}V"
+incl_2018_nonworz : + ; years="2018",IncludeMca="tw-run2/mca-tw-includes/mca-2018-nonworz.txt",Label="Non-W/Z"
+incl_2018_data    : + ; years="2018",IncludeMca="tw-run2/mca-tw-includes/mca-2018-data.txt"
+
+
+### Uncertainties
+# ttbar
+incl_2016_ttbar_uncs : + ; years="2016",IncludeMca="tw-run2/mca-tw-includes/mca-2016-ttbar-uncs.txt",SkipMe=True
+incl_2017_ttbar_uncs : + ; years="2017",IncludeMca="tw-run2/mca-tw-includes/mca-2017-ttbar-uncs.txt",SkipMe=True
+incl_2018_ttbar_uncs : + ; years="2018",IncludeMca="tw-run2/mca-tw-includes/mca-2018-ttbar-uncs.txt",SkipMe=True
+
+# tw
+incl_2016_tw_uncs    : + ; years="2016",IncludeMca="TOREPLACESYS2016",SkipMe=True
+incl_2017_tw_uncs    : + ; years="2017",IncludeMca="TOREPLACESYS2017",SkipMe=True
+incl_2018_tw_uncs    : + ; years="2018",IncludeMca="TOREPLACESYS2018",SkipMe=True
+

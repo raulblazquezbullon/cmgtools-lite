@@ -1,9 +1,8 @@
 alwaystrue: 1
 
-#applicationsample: $DATA{(1)} $MC{separationIndex == 1}
-
+lumijson:   $DATA{(isThisInTheJSON == 1)} $MC{(1)}
 trigger:    pass_trigger
-metfilters: Flag_goodVertices && Flag_globalSuperTightHalo2016Filter && Flag_HBHENoiseFilter && Flag_HBHENoiseIsoFilter && Flag_EcalDeadCellTriggerPrimitiveFilter && Flag_BadPFMuonFilter
+metfilters: $DATA{Flag_eeBadScFilter && Flag_goodVertices && Flag_globalSuperTightHalo2016Filter && Flag_HBHENoiseFilter && Flag_HBHENoiseIsoFilter && Flag_EcalDeadCellTriggerPrimitiveFilter && Flag_BadPFMuonFilter} $MC{Flag_goodVertices && Flag_globalSuperTightHalo2016Filter && Flag_HBHENoiseFilter && Flag_HBHENoiseIsoFilter && Flag_EcalDeadCellTriggerPrimitiveFilter && Flag_BadPFMuonFilter}
 emu:        channel == 1
 
 dilep:      (nLepGood >= 2) && (LepGood_pt_corrAll[0] > 25) && (LepGood_pt_corrAll[1] > 20) && isSS == 0 && (minMllAFAS > 20)
@@ -14,3 +13,12 @@ metgood:    (channel == 1) || (METgood_pt > 40)
 
 1jet:       nJetSel30_Recl == 1;
 1btag:      nBJetSelMedium30_Recl == 1;
+
+#bdtcut:     getBDtW20bins(tmvaBDT_1j1b) >= 17;
+
+#LOWnpvs:       PV_npvs <= 15;
+#HIGHnpvs:       PV_npvs >= 15; 
+
+#allMatch: NlooseJetsPU == 0 && nJetSel20_Recl >= 1;
+#atLeastNoMatch: NlooseJetsPU > 0;
+#noloosejet: nJetSel20_Recl == 0;

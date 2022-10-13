@@ -6,11 +6,11 @@ lowerbar="_"
 slash="/"
 
 indstr="index.php"
-indexpath="/nfs/fanae/user/vrbouza/www/index.php"
+indexpath="/nfs/fanae/user/vrbouza/www/public/index.php"
 
 savepath=""
 storagepath="/pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/results"
-webpath="/nfs/fanae/user/vrbouza/www/Proyectos/tw_run2/results/"
+webpath="/nfs/fanae/user/vrbouza/www/public/Proyectos/tw_run2/results/"
 
 
 if [ "$3" != "" ]; then

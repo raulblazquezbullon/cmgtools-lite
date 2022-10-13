@@ -1,0 +1,14 @@
+>>> Cálculo de la seccion eficaz (Produc.: 2021-06-09)
+
+Eficiencia            = 0.449759354224
+Aceptancia            = 0.0373771870379
+BR                    = 0.064856
+ 
+xsec (DATOS)          = 57.3987505629
+xsec(BR) (DATOS)      = 885.018357021
+ 
+xsec (ASIMOV)         = 56.193243466
+xsec(BR) (ASIMOV)     = 852.354216494
+ 
+sumaxsec              = 56.193243466
+

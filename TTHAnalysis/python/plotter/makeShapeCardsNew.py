@@ -48,9 +48,9 @@ if options.infile:
 else:
     if options.categ:
        cexpr, cbins, _ = options.categ
-       report = mca.getPlotsRaw("x", cexpr+":"+args[2], makeBinningProductString(args[3],cbins), cuts.allCuts(), nodata=options.asimov) 
+       report = mca.getPlotsRaw("x", cexpr+":"+args[2], makeBinningProductString(args[3],cbins), cuts.allCuts(), nodata=options.asimov, closeTreeAfter=True)
     else:
-       report = mca.getPlotsRaw("x", args[2], args[3], cuts.allCuts(), nodata=options.asimov) 
+       report = mca.getPlotsRaw("x", args[2], args[3], cuts.allCuts(), nodata=options.asimov, closeTreeAfter=True)
 
     if not options.notminimumfill:
         for p,h in report.iteritems(): h.cropNegativeBins(threshold=1e-5)
@@ -191,14 +191,14 @@ for binname, report in allreports.iteritems():
         for p,(hup,hdn) in effshape.iteritems():
             i0 = allyields[p]
             kup, kdn = hup.Integral()/i0, hdn.Integral()/i0
-            if abs(kup*kdn-1)<1e-5 and not options.storeall:
+            if abs(kup*kdn-1)<1e-5:
                 if abs(kup-1)>2e-4:
                     effyield[p] = "%.3f" % kup
                     isNorm = True
             else:
                 effyield[p] = "%.3f/%.3f" % (kdn,kup)
                 isNorm = True
-        if isNorm:
+        if isNorm or options.storeall:
             thedict = {}
             if options.storeall:
                 thedict = effshape

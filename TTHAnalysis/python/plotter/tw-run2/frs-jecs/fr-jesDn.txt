@@ -45,6 +45,10 @@ change: \bHTtot\b:                       HTtot_jesTotalDown
 change: \bminimax\b:                     minimax_jesTotalDown
 change: \bLep1Jet2_M\b:                  Lep1Jet2_M_jesTotalDown
 change: \bLep2Jet2_M\b:                  Lep2Jet2_M_jesTotalDown
+change: \bLep1Jet1_DPhi\b:               Lep1Jet1_DPhi_jesTotalDown
+change: \bLep2Jet1_DPhi\b:               Lep2Jet1_DPhi_jesTotalDown
+change: \bcosThetaStar1\b:               cosThetaStar1_jesTotalDown
+change: \bcosThetaStar2\b:               cosThetaStar2_jesTotalDown
 change: \bMETgood_phi\b:                 METgood_phi_jesTotalDown
 change: \bSergioBDT_1j1b\b:              SergioBDT_1j1b_jesTotalDown
 change: \bSergioBDT_2j1b\b:              SergioBDT_2j1b_jesTotalDown

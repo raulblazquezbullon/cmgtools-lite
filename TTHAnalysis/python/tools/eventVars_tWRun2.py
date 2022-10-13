@@ -10,7 +10,9 @@ from PhysicsTools.NanoAODTools.postprocessing.tools import deltaR,deltaPhi
 
 from CMGTools.TTHAnalysis.treeReAnalyzer import Collection as CMGCollection
 from CMGTools.TTHAnalysis.tools.nanoAOD.friendVariableProducerTools import declareOutput, writeOutput
-from CMGTools.TTHAnalysis.tools.nanoAOD.TopRun2_modules import ch, tags
+from CMGTools.TTHAnalysis.tools.nanoAOD.TopRun2_modules import ch, tags, emass
+
+mresta_ = 172.5 ** 2 - 80.379 ** 2
 
 
 class EventVars_tWRun2(Module):
@@ -28,12 +30,17 @@ class EventVars_tWRun2(Module):
                             "Lep1Lep2Jet1_E",
                             "Lep1Jet1_Pt",
                             "Lep1Jet1_M",
+                            "Lep1Jet1_DPhi",
                             "Lep2Jet1_Pt",
                             "Lep2Jet1_M",
+                            "Lep2Jet1_DPhi",
+                            "cosThetaStar1",
+                            "cosThetaStar2",
                             "Jet1_E",
                             "Jet1_Pt",
                             "Jet2_Pt",
                             "JetLoose1_Pt",
+                            #"NlooseJetsPU",
 
                             "Lep1Jet1_DR",
                             "Lep12Jet12_DR",
@@ -76,12 +83,17 @@ class EventVars_tWRun2(Module):
                               "Lep1Lep2Jet1_E",
                               "Lep1Jet1_Pt",
                               "Lep1Jet1_M",
+                              "Lep1Jet1_DPhi",
                               "Lep2Jet1_Pt",
                               "Lep2Jet1_M",
+                              "Lep2Jet1_DPhi",
+                              "cosThetaStar1",
+                              "cosThetaStar2",
                               "Jet1_E",
                               "Jet1_Pt",
                               "Jet2_Pt",
                               "JetLoose1_Pt",
+                              #"NlooseJetsPU",
 
                               "Lep1Jet1_DR",
                               "Lep12Jet12_DR",
@@ -108,6 +120,8 @@ class EventVars_tWRun2(Module):
                               #("isSS", "O"),
                               #("channel", "B"),
                               ("channel", "I"),
+                              ("datatag", "I"),
+                              ("isTop", "I"),
 
                               #### Variables that are not susceptible to JEC variations that need a nominal value
                               # (note that being in the lepenergyvars list does not give this!)
@@ -119,6 +133,7 @@ class EventVars_tWRun2(Module):
                               "Mll",
                               "minMllAFAS",
                              ]
+
 
         self.label    = "" if (label in ["", None]) else ("_" + label)
 
@@ -135,6 +150,7 @@ class EventVars_tWRun2(Module):
             for i, var in enumerate(jecvars):
                 self.systsJEC[i+1]    = "_%sUp"%var
                 self.systsJEC[-(i+1)] = "_%sDown"%var
+
         if   len(lepvars):
             for i, var in enumerate(lepvars):
                 self.systsLepEn[i+1]    = "_%sUp"%var
@@ -143,7 +159,8 @@ class EventVars_tWRun2(Module):
         self.inputlabel = '_' + recllabel
         self.branches   = []
 
-        for delta,var in self.systsJEC.iteritems():   self.branches.extend([br + self.label + var for br in self.jecbranches])
+        for delta,var in self.systsJEC.iteritems():
+            self.branches.extend([br + self.label + var for br in self.jecbranches])
         for delta,var in self.systsLepEn.iteritems():
             self.branches.extend([el    + self.label + var for el in self.lepenergyvars if type(el) != tuple])
             self.branches.extend([(el[0] + self.label + var, el[1]) for el in self.lepenergyvars if type(el) == tuple])
@@ -181,7 +198,7 @@ class EventVars_tWRun2(Module):
 
         for i in range(len(leps_4m)):
             leps_4m[i].SetPtEtaPhiM(leps[i].pt_corrAll, leps_4m[i].Eta(),
-                                    leps_4m[i].Phi(),   leps_4m[i].M())
+                                    leps_4m[i].Phi(),   leps_4m[i].M() if abs(leps[i].pdgId) != 11 else emass)
 
         coldirs    = {} #### NOTE: the keys begin always with "_"!
         coldirs_4m = {}
@@ -190,7 +207,7 @@ class EventVars_tWRun2(Module):
             coldirs_4m[var] = [l.p4() for l in coldirs[var]]
             for i in range(len(coldirs_4m[var])):
                 coldirs_4m[var][i].SetPtEtaPhiM(getattr(coldirs[var][i], "pt" + var), coldirs_4m[var][i].Eta(),
-                                                coldirs_4m[var][i].Phi(), coldirs_4m[var][i].M())
+                                                coldirs_4m[var][i].Phi(), coldirs_4m[var][i].M() if abs(coldirs[var][i].pdgId) != 11 else emass)
 
         all_jets = [j for j in Collection(event, "Jet")]
         jets     = []
@@ -215,12 +232,36 @@ class EventVars_tWRun2(Module):
             if type(var) == tuple:
                 if var[0] == "channel":
                     allret["channel"] = ch.NoChan
+                elif var[0] == "isTop":
+                    allret["isTop"] = 0
+                elif var[0] == "datatag":
+                    allret["datatag"] = tags.NoTag
                 else:
                     allret[var[0]] = -99
             else:
                 allret[var] = -99
                 allret[var] = -99
 
+        thesample = ""
+        for i in range(event.nDatasetName):
+            thesample += str(event.DatasetName_name[i])
+
+        if event.isData:
+            if   "muoneg"     in thesample.lower():
+                allret["datatag"] = tags.muoneg
+            elif "singlemuon" in thesample.lower():
+                allret["datatag"] = tags.singlemuon
+            elif "singleelec" in thesample.lower() or "egamma" in thesample.lower():
+                allret["datatag"] = tags.singleelec
+            elif "doublemuon" in thesample.lower():
+                allret["datatag"] = tags.doublemuon
+            elif "doubleeg" in thesample.lower():
+                allret["datatag"] = tags.doubleeg
+        elif "ttto2l2nu" in thesample.lower():
+            allret["datatag"] = tags.mc
+            allret["isTop"]   = 1
+        else:
+            allret["datatag"] = tags.mc
 
         # Nominal variables and those susceptible to JEC enter in this if-statement.
         for iL in range(len(leps)):
@@ -253,52 +294,64 @@ class EventVars_tWRun2(Module):
             for delta,sys in self.systsJEC.iteritems():
                 allret["METgood_pt"  + sys] = -99
                 allret["METgood_phi" + sys] = -99
-                if event.datatag != tags.mc:
-                    allret["METgood_pt"  + sys] = event.MET_pt
-                    allret["METgood_phi" + sys] = event.MET_phi
-                elif event.datatag != tags.NoTag:
+                if event.isData:
                     if event.year == 2017:
-                        allret["METgood_pt"  + sys] = getattr(event, 'METFixEE2017_pt{v}'.format( v = sys if sys != "" else "_nom"))
-                        allret["METgood_phi" + sys] = getattr(event, 'METFixEE2017_phi{v}'.format(v = sys if sys != "" else "_nom"))
+                        allret["METgood_pt"  + sys] = event.METFixEE2017_pt
+                        allret["METgood_phi" + sys] = event.METFixEE2017_phi
                     else:
-                        allret["METgood_pt"  + sys] = getattr(event, 'MET_pt{v}'.format( v = sys if sys != "" else "_nom"))
-                        allret["METgood_phi" + sys] = getattr(event, 'MET_phi{v}'.format(v = sys if sys != "" else "_nom"))
+                        allret["METgood_pt"  + sys] = event.MET_pt
+                        allret["METgood_phi" + sys] = event.MET_phi
+                else:
+                    if event.year == 2017:
+                        allret["METgood_pt"  + sys] = getattr(event, 'METFixEE2017_T1_pt{v}'.format( v = sys if sys != "" else ""))
+                        allret["METgood_phi" + sys] = getattr(event, 'METFixEE2017_T1_phi{v}'.format(v = sys if sys != "" else ""))
+                    else:
+                        allret["METgood_pt"  + sys] = getattr(event, 'MET_T1_pt{v}'.format( v = sys if sys != "" else ""))
+                        allret["METgood_phi" + sys] = getattr(event, 'MET_T1_phi{v}'.format(v = sys if sys != "" else ""))
 
                 met_4m.SetPtEtaPhiM(allret["METgood_pt" + sys], 0, allret["METgood_phi" + sys], 0)
 
                 ### jets
-                jets    = [all_jets[getattr(event, 'iJetSel30{v}_Recl'.format(v = sys))[j]]
-                           for j in xrange(min([getattr(event, 'nJetSel30{v}_Recl'.format(v = sys)), 5]))]
+                jets    = [all_jets[getattr(event, 'iJetSel30{v}_Recl'.format(v = sys if "unclustEn" not in sys else ""))[j]]
+                           for j in xrange(min([getattr(event, 'nJetSel30{v}_Recl'.format(v = sys if "unclustEn" not in sys else "")), 5]))]
                 #jets    = [all_jets[getattr(event, 'iJetSel30_Recl')[j]]
                            #for j in xrange(min([getattr(event, 'nJetSel30_Recl'), 5]))]
                 jets_4m = [j.p4() for j in jets]
 
-                jetjecsysscaff = (sys if sys != "" else self.nominaljecscaff)
-                if event.datatag != tags.mc: jetjecsysscaff = ""
+                jetjecsysscaff = (sys if (sys != "" and "unclustEn" not in sys) else self.nominaljecscaff)
+                if event.isData: jetjecsysscaff = ""
 
                 for i in range(len(jets_4m)):
                     jets_4m[i].SetPtEtaPhiM(getattr(jets[i], "pt" + jetjecsysscaff), jets_4m[i].Eta(),
                                             jets_4m[i].Phi(), getattr(jets[i], "mass" + jetjecsysscaff))
 
                 ### loose jets
-                loosejets = [all_jets[getattr(event, 'iJetSel20{v}_Recl'.format(v = sys))[j]]
-                           for j in xrange(min([getattr(event, 'nJetSel20{v}_Recl'.format(v = sys)), 5]))]
+                loosejets = [all_jets[getattr(event, 'iJetSel20{v}_Recl'.format(v = sys if "unclustEn" not in sys else ""))[j]]
+                           for j in xrange(min([getattr(event, 'nJetSel20{v}_Recl'.format(v = sys if "unclustEn" not in sys else "")), 5]))]
                 loosejets_4m = [j.p4() for j in loosejets]
 
                 for i in range(len(loosejets_4m)):
                     loosejets_4m[i].SetPtEtaPhiM(getattr(loosejets[i], "pt" + jetjecsysscaff), loosejets_4m[i].Eta(),
                                             loosejets_4m[i].Phi(), getattr(loosejets[i], "mass" + jetjecsysscaff))
+                
+                ##Loose jets from PU
+                #if not event.isData:
+                #    loosejetsFromPU = 0
+                #    for j in loosejets:
+                #        if j.genJetIdx == -1:
+                #          loosejetsFromPU += 1  
+                #    
+                #    allret["NlooseJetsPU" + sys] = loosejetsFromPU
 
-
-                if getattr(event, 'nJetSel20{v}_Recl'.format(v = sys)) > 0:
+                if getattr(event, 'nJetSel20{v}_Recl'.format(v = sys if "unclustEn" not in sys else "")) > 0:
                     allret["JetLoose1_Pt" + sys] = loosejets_4m[0].Pt()
 
                 #if getattr(event, 'nJetSel20_Recl') > 0:
                     #allret["JetLoose1_Pt" + sys] = getattr(event,
                                                            #("Jet_" + jetjecsysscaff) if sys == "" else "Jet_pt" + sys)[event.iJetSel20_Recl[0]]
+                
 
-
-                if getattr(event, 'nJetSel30{v}_Recl'.format(v = sys)) > 0:
+                if getattr(event, 'nJetSel30{v}_Recl'.format(v = sys if "unclustEn" not in sys else "")) > 0:
                     allret["Lep1Lep2Jet1MET_Pz"          + sys] = abs((leps_4m[0] + leps_4m[1] + jets_4m[0] + met_4m).Pz())
                     allret["Lep1Lep2Jet1MET_Pt"          + sys] = (leps_4m[0] + leps_4m[1] + jets_4m[0] + met_4m).Pt()
                     allret["Lep1Lep2Jet1MET_M"           + sys] = (leps_4m[0] + leps_4m[1] + jets_4m[0] + met_4m).M()
@@ -308,8 +361,12 @@ class EventVars_tWRun2(Module):
                     allret["Lep1Lep2Jet1_E"              + sys] = (leps_4m[0] + leps_4m[1] + jets_4m[0]).E()
                     allret["Lep1Jet1_Pt"                 + sys] = (leps_4m[0] + jets_4m[0]).Pt()
                     allret["Lep1Jet1_M"                  + sys] = (leps_4m[0] + jets_4m[0]).M()
+                    allret["Lep1Jet1_DPhi"               + sys] = abs(leps_4m[0].Phi() - jets_4m[0].Phi()) / r.TMath.Pi()
+                    allret["cosThetaStar1"               + sys] = 2 * (allret["Lep1Jet1_M" + sys] ** (2) / mresta_) - 1
                     allret["Lep2Jet1_Pt"                 + sys] = (leps_4m[1] + jets_4m[0]).Pt()
                     allret["Lep2Jet1_M"                  + sys] = (leps_4m[1] + jets_4m[0]).M()
+                    allret["Lep2Jet1_DPhi"               + sys] = abs(leps_4m[1].Phi() - jets_4m[0].Phi()) / r.TMath.Pi()
+                    allret["cosThetaStar2"               + sys] = 2 * (allret["Lep2Jet1_M" + sys] ** (2) / mresta_) - 1
                     allret["Jet1_Pt"                     + sys] = jets_4m[0].Pt()
                     allret["Jet1_E"                      + sys] = jets_4m[0].E()
 
@@ -321,7 +378,6 @@ class EventVars_tWRun2(Module):
                     allret["Lep1Lep2Jet1MET_PtOverHTtot" + sys] = allret["Lep1Lep2Jet1MET_Pt" + sys] / allret["HTtot" + sys]
                     allret["Lep1_PtLep2_PtOverHTtot"     + sys] = (leps_4m[0].Pt() + leps_4m[1].Pt()) / allret["HTtot" + sys]
 
-
                     allret["LepJet11Lep2_DR"            + sys] = (leps_4m[0] + jets_4m[0]).DeltaR(leps_4m[1])
                     allret["LepJet11Lep2_DPhi"          + sys] = abs((leps_4m[0] + jets_4m[0]).Phi() - leps_4m[1].Phi()) / r.TMath.Pi()
                     allret["LepJet11Lep2_DEta"          + sys] = abs((leps_4m[0] + jets_4m[0]).Eta() - leps_4m[1].Eta())
@@ -330,7 +386,7 @@ class EventVars_tWRun2(Module):
                     allret["Lep1LepJet21_DEta"          + sys] = abs(leps_4m[0].Phi() - (jets_4m[0] + leps_4m[1]).Eta())
 
 
-                    if getattr(event, 'nJetSel30{v}_Recl'.format(v = sys)) > 1:
+                    if getattr(event, 'nJetSel30{v}_Recl'.format(v = sys if "unclustEn" not in sys else "")) > 1:
                         allret["Lep12Jet12_DR"    + sys] = (leps_4m[0] + leps_4m[1]).DeltaR(jets_4m[0] + jets_4m[1])
                         allret["Lep12Jet12MET_DR" + sys] = (leps_4m[0] + leps_4m[1]).DeltaR(jets_4m[0] + jets_4m[1] + met_4m)
                         allret["Lep1Jet2_M"       + sys] = (leps_4m[0] + jets_4m[1]).M()
@@ -352,14 +408,14 @@ class EventVars_tWRun2(Module):
 
                 for i in range(len(leps_4m)):
                     leps_4m[i].SetPtEtaPhiM(getattr(leps[i], "pt" + sys), leps_4m[i].Eta(),
-                                            leps_4m[i].Phi(),             leps_4m[i].M())
+                                            leps_4m[i].Phi(),             leps_4m[i].M() if abs(leps[i].pdgId) != 11 else emass)
 
                 jets    = [all_jets[getattr(event, 'iJetSel30{v}_Recl'.format(v = sys))[j]]
                            for j in xrange(min([getattr(event, 'nJetSel30{v}_Recl'.format(v = sys)), 5]))]
                 jets_4m = [j.p4() for j in jets]
 
                 jetjecsysscaff = self.nominaljecscaff
-                if event.datatag != tags.mc: jetjecsysscaff = ""
+                if event.isData: jetjecsysscaff = ""
 
                 for i in range(len(jets_4m)):
                     jets_4m[i].SetPtEtaPhiM(getattr(jets[i], "pt" + jetjecsysscaff), jets_4m[i].Eta(),
@@ -403,6 +459,15 @@ class EventVars_tWRun2(Module):
                 allret["METgood_pt"  + sys] = met_4m.Pt()
                 allret["METgood_phi" + sys] = met_4m.Phi()
 
+                ##Loose jets from PU
+                #if not event.isData:
+                #    loosejetsFromPU = 0
+                #    for j in loosejets:
+                #        if j.genJetIdx == -1:
+                #          loosejetsFromPU += 1  
+                #    
+                #    allret["NlooseJetsPU" + sys] = loosejetsFromPU
+
 
                 if getattr(event, 'nJetSel20{v}_Recl'.format(v = sys)) > 0:
                     allret["JetLoose1_Pt" + sys] = loosejets_4m[0].Pt()
@@ -417,8 +482,12 @@ class EventVars_tWRun2(Module):
                     allret["Lep1Lep2Jet1_E"              + sys] = (leps_4m[0] + leps_4m[1] + jets_4m[0]).E()
                     allret["Lep1Jet1_Pt"                 + sys] = (leps_4m[0] + jets_4m[0]).Pt()
                     allret["Lep1Jet1_M"                  + sys] = (leps_4m[0] + jets_4m[0]).M()
+                    allret["Lep1Jet1_DPhi"               + sys] = abs(leps_4m[0].Phi() - jets_4m[0].Phi()) / r.TMath.Pi()
+                    allret["cosThetaStar1"               + sys] = 2 * (allret["Lep1Jet1_M" + sys] ** (2) / mresta_) - 1
                     allret["Lep2Jet1_Pt"                 + sys] = (leps_4m[1] + jets_4m[0]).Pt()
                     allret["Lep2Jet1_M"                  + sys] = (leps_4m[1] + jets_4m[0]).M()
+                    allret["Lep2Jet1_DPhi"               + sys] = abs(leps_4m[1].Phi() - jets_4m[0].Phi()) / r.TMath.Pi()
+                    allret["cosThetaStar2"               + sys] = 2 * (allret["Lep2Jet1_M" + sys] ** (2) / mresta_) - 1
                     allret["Jet1_Pt"                     + sys] = jets_4m[0].Pt()
                     allret["Jet1_E"                      + sys] = jets_4m[0].E()
 

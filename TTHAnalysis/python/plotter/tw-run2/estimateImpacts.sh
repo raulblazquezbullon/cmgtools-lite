@@ -48,8 +48,8 @@ if [ "$ASIMOV" = "t1" ]; then
 fi
 
 if [  "$JOBS" = ""  ]; then
-    JOBS=4
-    echo "Defaulting to 4 parallel jobs"
+    JOBS=1
+    echo "Defaulting to 1 parallel job"
 fi
 
 if [ "$OUTPUT" = "" ]; then
@@ -81,18 +81,18 @@ fi
 echo "First Stage: fit for each POI"
 echo "-----------------------------"
 
-combineTool.py -M Impacts -d $HERE/${DATACARD} --doInitialFit --robustFit 1 $ASIMOV $EXTRA -m 1 -n $PREFIX --floatOtherPOIs 1 
+combineTool.py -M Impacts -d $HERE/${DATACARD} --doInitialFit --robustFit 1 --cminDefaultMinimizerStrategy 0 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 $ASIMOV $EXTRA -m 1 -n $PREFIX --floatOtherPOIs 1 --parallel $JOBS --cminDefaultMinimizerType Minuit
 
 
 echo "Second Stage: fit scan for each nuisance parameter"
 echo "--------------------------------------------------"
 
-combineTool.py -M Impacts -d $HERE/${DATACARD} --robustFit 1 --doFits $ASIMOV $EXTRA -m 1 -n $PREFIX
+combineTool.py -M Impacts -d $HERE/${DATACARD} --robustFit 1 --cminDefaultMinimizerStrategy 0 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --doFits $ASIMOV $EXTRA -m 1 -n $PREFIX --parallel $JOBS --cminDefaultMinimizerType Minuit
 
 echo "Third Stage: collect outputs"
 echo "----------------------------"
 
-combineTool.py -M Impacts -d $HERE/${DATACARD} -o impacts$PREFIX.json $ASIMOV $EXTRA -m 1 -n $PREFIX
+combineTool.py -M Impacts -d $HERE/${DATACARD} --robustFit 1 --cminDefaultMinimizerStrategy 0 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 -o impacts$PREFIX.json $ASIMOV $EXTRA -m 1 -n $PREFIX --parallel $JOBS --cminDefaultMinimizerType Minuit
 
 echo "Fourth Stage: plot pulls and impacts"
 echo "------------------------------------"

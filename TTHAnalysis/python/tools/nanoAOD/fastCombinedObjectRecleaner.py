@@ -6,6 +6,7 @@ import ROOT, os
 import warnings as wr
 
 class fastCombinedObjectRecleaner(Module):
+
     def __init__(self, label, inlabel, cleanTausWithLooseLeptons, cleanJetsWithFOTaus, doVetoZ, doVetoLMf, doVetoLMt,
                  jetPts, jetPtsFwd, btagL_thr, btagM_thr, jetCollection = 'Jet', jetBTag = 'btagDeepFlavB', tauCollection = 'Tau',
                  isMC = None, variations = [], cleanElectrons = 0.3, year_ = None):

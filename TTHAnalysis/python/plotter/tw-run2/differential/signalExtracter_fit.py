@@ -91,11 +91,11 @@ def drawCorrMat(finalmat, inpath, iY, var, syst):
     c.SetTopMargin(0.06)
     c.SetRightMargin(0.06)
     finalmat.GetXaxis().SetTitle('Free parameters of the fit')
-    finalmat.GetXaxis().SetLabelSize(0.025)
+    finalmat.GetXaxis().SetLabelSize(0.0275)
     finalmat.GetXaxis().SetTitleSize(0.01)
     finalmat.GetXaxis().SetTitleOffset(3)
     finalmat.GetYaxis().SetTitle('Free parameters of the fit')
-    finalmat.GetYaxis().SetLabelSize(0.025)
+    finalmat.GetYaxis().SetLabelSize(0.0275)
     finalmat.GetYaxis().SetTitleSize(0.01)
     finalmat.GetYaxis().SetTitleOffset(3)
     finalmat.SetTitle('{var}_{sys} correlation matrix'.format(var = var, sys = syst))
@@ -188,13 +188,34 @@ def drawPreAndPostFit(thedict, inpath, iY, iV, syst, typ):
 
         xtemp = r.Double(0.)
         ytemp = r.Double(0.)
-        for bin in range(1, mcunc.GetNbinsX() + 1):
-            mcunc.SetBinError(bin, mcunc.GetBinError(bin)/mcunc.GetBinContent(bin))
+        alert = False
+        #for bin in range(1, mcunc.GetNbinsX() + 1):
+        for bin in range(1, vl.nBinsForBDT + 1):
+            try:
+                mcunc.SetBinError(bin, mcunc.GetBinError(bin)/mcunc.GetBinContent(bin))
+            except ZeroDivisionError:
+                mcunc.SetBinError(bin, 0)
+                alert = True
             theratio.GetPoint(bin - 1, xtemp, ytemp)
-            theratio.SetPointEYhigh(bin - 1, theratio.GetErrorYhigh(bin - 1)/ytemp)
-            theratio.SetPointEYlow(bin - 1,  theratio.GetErrorYlow(bin - 1)/ytemp)
-            theratio.SetPoint(bin - 1, xtemp, ytemp / mcunc.GetBinContent(bin))
+            try:
+                theratio.SetPointEYhigh(bin - 1, theratio.GetErrorYhigh(bin - 1)/ytemp)
+            except ZeroDivisionError:
+                theratio.SetPointEYhigh(bin - 1, 0)
+                alert = True
+            try:
+                theratio.SetPointEYlow(bin - 1,  theratio.GetErrorYlow(bin - 1)/ytemp)
+            except ZeroDivisionError:
+                theratio.SetPointEYlow(bin - 1,  0)
+                alert = True
+            try:
+                theratio.SetPoint(bin - 1, xtemp, ytemp / mcunc.GetBinContent(bin))
+            except ZeroDivisionError:
+                theratio.SetPoint(bin - 1, xtemp, 1)
+                alert = True
             mcunc.SetBinContent(bin, 1.)
+
+        if alert:
+            wr.warn("Division over zero for bin contents of fit!!!")
 
         # Setting options
         mcunc.SetFillColorAlpha(r.kBlue, 0.35)
@@ -242,7 +263,7 @@ def drawPreAndPostFit(thedict, inpath, iY, iV, syst, typ):
 
 
 def makeFit(task):
-    inpath, year, varName, syst, pretend = task
+    inpath, year, varName, syst, pretend, doControl, noPlots = task
 
     print '\n> Fitting syst.', syst, 'of the variable', varName, 'from year', year, '\n'
     binning = vl.varList[varName]['bins_detector']
@@ -250,11 +271,12 @@ def makeFit(task):
 
     cardList = [ 'rebinhistos/forExtr_bin{idx}_{s}.txt'.format(var = varName, s = syst, idx = idx) for idx in range(nbins)]
 
-    #if syst == '':
-        #cardList = [ 'rebinhistos/forExtr_bin{idx}.txt'.format(var = varName, idx=idx) for idx in range(nbins)]
-    #else:
-        #raise RuntimeError("FATAL: not implemented")
-        ##cardList = [ 'rebinhistos/forExtr_{sys}_{idx}.txt'.format(var = varName, sys=syst, idx=idx) for idx in range(nbins)]
+    if doControl:
+        controlpath = "../../controlReg" + vl.diffControlReg
+        if not os.path.isdir(inpath + "/" + year + "/" + varName + "/sigextr_fit/" + controlpath):
+            raise RuntimeError("FATAL: no valid folder found to add the control region information. Expected directory: {p}".format(p = inpath + "/" + year + "/" + varName + "/sigextr_fit/" + controlpath))
+
+        cardList.append( "controlReg=" + controlpath + "/controlReg_{s}.txt".format(s = syst) )
 
     mergecomm = 'cd {path}; combineCards.py {allCards} > {outCard}; cd -'.format(allCards = ' '.join(cardList),
                                                                                  path     = inpath + "/" + year + "/" + varName + "/sigextr_fit",
@@ -276,8 +298,17 @@ def makeFit(task):
 
     physicsModel = 'text2workspace.py -m 125 -P HiggsAnalysis.CombinedLimit.PhysicsModel:multiSignalModel '
     
+    signalTail = ""
+    coresyst   = syst.replace("Up", "").replace("Down", "")
+    if syst != "":
+        if isinstance(vl.systMap[coresyst], dict):
+            if vl.systMap[coresyst]["tw"]:
+                signalTail = "_" + syst
+
     for idx in range(nbins):
-        physicsModel += "--PO 'map=ch{idxp}/tw:r_tW_{idx}[1,0,10]' ".format(idxp = idx + 1, idx = idx)   #### TODO: ADD CASES WITH VARIATED NOMINAL
+        physicsModel += "--PO 'map=ch{idxp}/tw{u}:r_tW_{idx}[1,0,10]' ".format(idxp = idx + 1,
+                                                                               idx  = idx,
+                                                                               u    = signalTail)
 
     physicsModel += '{infile} -o {outfile}'.format(infile  = inpath + "/" + year + "/" + varName + "/sigextr_fit/datacard_{sys}.txt".format(sys = syst),
                                                    outfile = inpath + "/" + year + "/" + varName + "/sigextr_fit/comb_fit_{sys}.root".format(sys = syst),
@@ -296,9 +327,9 @@ def makeFit(task):
 
     fitoutpath = inpath + "/" + year + "/" + varName + "/sigextr_fit/fitdiagnostics"
 
-    combinecomm = 'combine  -M FitDiagnostics --out {outdir} {infile} --saveWorkspace -n {y}_{var}_{sys} --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --saveShapes'.format(y = year, outdir = fitoutpath, infile = inpath + "/" + year + "/" + varName + "/sigextr_fit/comb_fit_{sys}.root".format(sys = syst), var = varName, sys = syst)
-
-    #combinecomm = 'combine  -M FitDiagnostics --out temp/{var}_{sys}/fitdiagnostics  temp/{var}_{sys}/comb_fit_{var}_{sys}.root --saveWorkspace -n {var}_{sys} --X-rtd MINIMIZER_MaxCalls=5000000'.format(var=varName,sys=syst)
+    #combinecomm = 'combine  -M FitDiagnostics --out {outdir} {infile} --saveWorkspace -n {y}_{var}_{sys} --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --saveShapes'.format(y = year, outdir = fitoutpath, infile = inpath + "/" + year + "/" + varName + "/sigextr_fit/comb_fit_{sys}.root".format(sys = syst), var = varName, sys = syst)
+    #combinecomm = 'combine  -M FitDiagnostics --out {outdir} {infile} --saveWorkspace -n {y}_{var}_{sys} --robustHesse 1 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --saveShapes'.format(y = year, outdir = fitoutpath, infile = inpath + "/" + year + "/" + varName + "/sigextr_fit/comb_fit_{sys}.root".format(sys = syst), var = varName, sys = syst)
+    combinecomm = 'combine  -M FitDiagnostics --out {outdir} {infile} --saveWorkspace -n {y}_{var}_{sys} --robustHesse 1 --robustFit 1 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --saveShapes'.format(y = year, outdir = fitoutpath, infile = inpath + "/" + year + "/" + varName + "/sigextr_fit/comb_fit_{sys}.root".format(sys = syst), var = varName, sys = syst)
 
     if verbose:
         print "Combine command:", combinecomm, "\n"
@@ -315,6 +346,12 @@ def makeFit(task):
 
 
     # Ahora recogemos la virutilla
+    if not os.path.isfile(fitoutpath + '/fitDiagnostics{y}_{var}_{sys}.root'.format(y = year, var = varName, sys = syst)):
+        raise RuntimeError("FATAL: no valid fitDiagnostics file found for variable {v} of year {y} with the unc. {s}. Maybe there was a problem with the fit.\n".format(v = varName, y = year, s = syst))
+
+    if not os.path.isfile(fitoutpath + "/higgsCombine{y}_{var}_{sys}.FitDiagnostics.mH120.root".format(y = year, var = varName, sys = syst)):
+        raise RuntimeError("FATAL: no valid higgsCombine file found for variable {v} of year {y} with the unc. {s}. Maybe there was a problem with the fit, and/or moving the file to its corresponding folder.\n".format(v = varName, y = year, s = syst))
+
     tfile     = r.TFile.Open(fitoutpath + '/fitDiagnostics{y}_{var}_{sys}.root'.format(y = year, var = varName, sys = syst))
     tfile2    = r.TFile.Open(fitoutpath + "/higgsCombine{y}_{var}_{sys}.FitDiagnostics.mH120.root".format(y = year, var = varName, sys = syst))
 
@@ -471,10 +508,11 @@ def makeFit(task):
     #setattr(plot,'noCMS',True)
     #plot.saveCanvas('TR', '',False)
 
-    drawCorrMat(corrmat,     inpath, year, varName, syst)
-    drawCovMat( hCov,        inpath, year, varName, syst)
-    drawPreAndPostFit( prefitdict,  inpath, year, varName, syst, "pre")
-    drawPreAndPostFit( postfitdict, inpath, year, varName, syst, "post")
+    if not noPlots:
+        drawCorrMat(       corrmat,     inpath, year, varName, syst)
+        drawCovMat(        hCov,        inpath, year, varName, syst)
+        drawPreAndPostFit( prefitdict,  inpath, year, varName, syst, "pre")
+        drawPreAndPostFit( postfitdict, inpath, year, varName, syst, "post")
 
     #print "\nRESULTS:"
     #for key in results: print key
@@ -520,12 +558,14 @@ if __name__ == '__main__':
     r.gROOT.SetBatch(True)
     print "===== Fitting procedure with OPTIONAL syst. profiling\n"
     parser = argparse.ArgumentParser(usage = "python nanoAOD_checker.py [options]", description = "Checker tool for the outputs of nanoAOD production (NOT postprocessing)", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument('--inpath',    '-i', metavar = 'inpath',     dest = "inpath",   required = False, default = "./temp/differential/")
-    parser.add_argument('--year',      '-y', metavar = 'year',       dest = "year",     required = False, default = "all")
-    parser.add_argument('--variable',  '-v', metavar = 'variable',   dest = "variable", required = False, default = "all")
-    parser.add_argument('--nthreads',  '-j', metavar = 'nthreads',   dest = "nthreads", required = False, default = 0, type = int)
-    parser.add_argument('--pretend',   '-p', action  = "store_true", dest = "pretend",  required = False, default = False)
-    parser.add_argument('--verbose',   '-V', action  = "store_true", dest = "verbose",  required = False, default = False)
+    parser.add_argument('--inpath',     '-i', metavar = 'inpath',     dest = "inpath",   required = False, default = "./temp/differential/")
+    parser.add_argument('--year',       '-y', metavar = 'year',       dest = "year",     required = False, default = "all")
+    parser.add_argument('--variable',   '-v', metavar = 'variable',   dest = "variable", required = False, default = "all")
+    parser.add_argument('--nthreads',   '-j', metavar = 'nthreads',   dest = "nthreads", required = False, default = 0, type = int)
+    parser.add_argument('--pretend',    '-p', action  = "store_true", dest = "pretend",  required = False, default = False)
+    parser.add_argument('--verbose',    '-V', action  = "store_true", dest = "verbose",  required = False, default = False)
+    parser.add_argument('--addControl', '-c', action  = "store_true", dest = "addctrl",  required = False, default = False)
+    parser.add_argument('--noPlots',    '-np',action  = "store_true", dest = "noplots",  required = False, default = False)
 
 
     args     = parser.parse_args()
@@ -535,6 +575,8 @@ if __name__ == '__main__':
     inpath   = args.inpath
     variable = args.variable
     verbose  = args.verbose
+    addctrl  = args.addctrl
+    noplots  = args.noplots
 
 
     tasks = []
@@ -564,11 +606,10 @@ if __name__ == '__main__':
             raise RuntimeError("FATAL: the variable requested is not in the provided input folder.")
 
         for iV in thevars:
-            if "plots" in iV: continue
-            if "Fiducial" in iV: continue
+            if "plots" in iV or "Fiducial" in iV or "table" in iV: continue
             if not os.path.isdir(inpath + "/" + iY + "/" + iV + "/sigextr_fit"): continue
 
-            tasks.append( (inpath, iY, iV, "", pretend) )
+            tasks.append( (inpath, iY, iV, "", pretend, addctrl, noplots) )
 
             if not os.path.isdir(inpath + "/" + iY + "/" + iV + "/sigextr_fit/fitdiagnostics"):
                 os.system("mkdir -p " + inpath + "/" + iY + "/" + iV + "/sigextr_fit/fitdiagnostics")
@@ -578,8 +619,8 @@ if __name__ == '__main__':
                     if iS.split("_")[-1].isdigit():
                         if iY not in iS.split("_")[-1] and iY != "run2":
                             continue
-                tasks.append( (inpath, iY, iV, iS + "Up",   pretend) )
-                tasks.append( (inpath, iY, iV, iS + "Down", pretend) )
+                tasks.append( (inpath, iY, iV, iS + "Up",   pretend, addctrl, noplots) )
+                tasks.append( (inpath, iY, iV, iS + "Down", pretend, addctrl, noplots) )
     #for sys in vl.systMap:
         #tasks.append( (varName, sys) )
 

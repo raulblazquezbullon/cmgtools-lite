@@ -5,6 +5,8 @@ from multiprocessing import Pool
 from array import array
 from copy import deepcopy
 
+from CMGTools.TTHAnalysis.plotter.mcAnalysis import *
+from optparse import OptionParser
 sys.path.append('{cmsswpath}/src/CMGTools/TTHAnalysis/python/plotter/tw-run2/differential/'.format(cmsswpath = os.environ['CMSSW_BASE']))
 import varList as vl
 import CMS_lumi, tdrstyle
@@ -14,9 +16,11 @@ CMS_lumi.writeExtraText = 1
 vl.SetUpWarnings()
 
 markersize  = 0.8
+doArXiv     = True
 
-
-def GetAndPlotResponseMatrix(var, key, theresponseh, theparticleh, thepath):
+def GetAndPlotResponseMatrix(iY, var, key, theresponseh, theparticleh, thepath):
+    thelumi = vl.TotalLumi if iY == "run2" else vl.LumiDict[int(iY)]
+    scaleval = 1/thelumi/1000
     #print "\n[GetAndPlotResponseMatrix]"
     particlebins = vl.varList[var]["bins_particle"]
     detectorbins = vl.varList[var]["bins_detector"]
@@ -35,6 +39,8 @@ def GetAndPlotResponseMatrix(var, key, theresponseh, theparticleh, thepath):
             hGen.SetBinError(i, j, theparticleh.GetBinError(i))
 
     overlap = None
+
+    #htemp.Scale(scaleval); hGen.Scale(scaleval)
     htemp.Divide(hGen); del hGen;
 
     if var == "Fiducial":
@@ -95,38 +101,51 @@ def GetAndPlotResponseMatrix(var, key, theresponseh, theparticleh, thepath):
     r.gStyle.SetPaintTextFormat("4.3f")
     CMS_lumi.lumi_13TeV = ""
     #CMS_lumi.extraText  = 'Simulation Supplementary'
-    CMS_lumi.extraText  = 'Simulation Preliminary'
-    CMS_lumi.lumi_sqrtS = ''
+    CMS_lumi.extraText  = 'Simulation Supplementary' + ' Preliminary' * vl.doPre
+#    CMS_lumi.lumi_sqrtS = '#sqrt{s} = 13 TeV'
+    CMS_lumi.lumi_sqrtS = '(13 TeV)'
     #CMS_lumi.cmsTextSize += 0.1
-    CMS_lumi.CMS_lumi(r.gPad, 0, 0, 0.05)
+    CMS_lumi.CMS_lumi(r.gPad, 0, 0, 0.03)
     r.gStyle.SetLabelFont(43, "XYZ")
     r.gStyle.SetLabelSize(22, "XYZ")
     r.gPad.Update()
     c.SaveAs(thepath + "/R_" + var + "_" + key + ".png")
-    c.SaveAs(thepath + "/R_" + var + "_" + key + ".eps")
+    #c.SaveAs(thepath + "/R_" + var + "_" + key + ".eps")
     c.SaveAs(thepath + "/R_" + var + "_" + key + ".pdf")
-    c.SaveAs(thepath + "/R_" + var + "_" + key + ".root")
+    #c.SaveAs(thepath + "/R_" + var + "_" + key + ".root")
     c.Close(); del c, plot
 
 
     c = r.TCanvas('c', "", 600, 600)
     plot = c.GetPad(0);
-    plot.SetTopMargin(0.0475); plot.SetRightMargin(0.1); plot.SetLeftMargin(0.12); plot.SetBottomMargin(0.1)
+    plot.SetTopMargin(0.0475); plot.SetRightMargin(0.15); plot.SetLeftMargin(0.12); plot.SetBottomMargin(0.1)
     htemp.Draw("colz")
-    CMS_lumi.CMS_lumi(r.gPad, 0, 0, 0.05)
+    CMS_lumi.CMS_lumi(r.gPad, 0, 0, 0.03)
     r.gStyle.SetLabelFont(43, "XYZ")
     r.gStyle.SetLabelSize(22, "XYZ")
+    
+    if doArXiv:
+        arXiv = r.TLatex()
+        arXiv.SetNDC()
+        arXiv.SetTextAngle(0)
+        arXiv.SetTextColor(r.kBlack)
+        
+        arXiv.SetTextFont(42)
+        arXiv.SetTextAlign(31)
+        arXiv.SetTextSize(0.6 * r.gPad.GetTopMargin())
+        arXiv.DrawLatex(0.7, 1 - r.gPad.GetTopMargin() + 0.2 * r.gPad.GetTopMargin(), vl.arXivtext)
+    
     r.gPad.Update()
     c.SaveAs(thepath + "/Rnonumb_" + var + "_" + key + ".png")
-    c.SaveAs(thepath + "/Rnonumb_" + var + "_" + key + ".eps")
+    #c.SaveAs(thepath + "/Rnonumb_" + var + "_" + key + ".eps")
     c.SaveAs(thepath + "/Rnonumb_" + var + "_" + key + ".pdf")
-    c.SaveAs(thepath + "/Rnonumb_" + var + "_" + key + ".root")
+    #c.SaveAs(thepath + "/Rnonumb_" + var + "_" + key + ".root")
     c.Close(); del c, plot
     return htemp, overlap
 
 
 def GetAndPlotPuritiesAndStabilities(var, theresponseh, theparticleh, thedetectorparticleh, thedetectorh, thepath):
-    #print "\n[PuritiesAndStabilities]"
+    # print "\n[PuritiesAndStabilities]"
     purities          = []
     stabilities       = []
     stabilities_woeff = []
@@ -138,29 +157,31 @@ def GetAndPlotPuritiesAndStabilities(var, theresponseh, theparticleh, thedetecto
     particlebins  = array("d", particlebins)
     detectorbins  = array("d", detectorbins)
 
-    #print " > Calculating stabilities..."
+    # print " > Calculating stabilities..."
 
-    #print "under,under:", theresponseh.GetBinContent(0, 0)
-    #print "under,over:",  theresponseh.GetBinContent(0, ndetectorbins + 2)
-    #print "over,under:",  theresponseh.GetBinContent(nparticlebins + 2, 0)
-    #print "over,over:",   theresponseh.GetBinContent(nparticlebins + 2, ndetectorbins + 2)
-    #print "underparticle:", theparticleh.GetBinContent(0)
-    #print "overparticle:", theparticleh.GetBinContent(nparticlebins + 2)
+    # print "under,under:", theresponseh.GetBinContent(0, 0)
+    # print "under,over:",  theresponseh.GetBinContent(0, ndetectorbins + 2)
+    # print "over,under:",  theresponseh.GetBinContent(nparticlebins + 2, 0)
+    # print "over,over:",   theresponseh.GetBinContent(nparticlebins + 2, ndetectorbins + 2)
+    # print "underparticle:", theparticleh.GetBinContent(0)
+    # print "overparticle:", theparticleh.GetBinContent(nparticlebins + 2)
+
+    # print theparticleh.GetName(), theresponseh.GetName(), thedetectorparticleh.GetName()
 
     for i in range(1, nparticlebins + 1):
         sumstab = 0
-        #print "underflow :",   theresponseh.GetBinContent(i, 0)
+        # print "underflow :",   theresponseh.GetBinContent(i, 0)
         for j in range(1, ndetectorbins + 1):
-            #print j, ":", theresponseh.GetBinContent(i, j)
+            # print j, ":", theresponseh.GetBinContent(i, j)
             sumstab += theresponseh.GetBinContent(i, j)
 
-        #print "overflow :", theresponseh.GetBinContent(i, ndetectorbins + 2)
-        #print "num:", sumstab
-        #print "den:", theparticleh.GetBinContent(i)
-        #print "coc:", sumstab / theparticleh.GetBinContent(i), "\n"
+        # print "overflow :", theresponseh.GetBinContent(i, ndetectorbins + 2)
+        # print "num:", sumstab
+        # print "den:", theparticleh.GetBinContent(i)
+        # print "coc:", sumstab / theparticleh.GetBinContent(i), "\n"
 
-        #print "den2:", thedetectorparticleh.GetBinContent(i)
-        #print "coc2:", sumstab / thedetectorparticleh.GetBinContent(i), "\n"
+        # print "den2:", thedetectorparticleh.GetBinContent(i)
+        # print "coc2:", sumstab / thedetectorparticleh.GetBinContent(i), "\n"
         ## CON EFICIENCIA DE RECONSTRUCCION
         try:
             stabilities.append(sumstab / theparticleh.GetBinContent(i))
@@ -206,7 +227,7 @@ def GetAndPlotPuritiesAndStabilities(var, theresponseh, theparticleh, thedetecto
         hPur.SetBinContent(j, purities[j - 1])
 
     #print " > Plotting first purities and stabilities plot..."
-    c = r.TCanvas('c', "Purities and stabilities of " + var)
+    c = r.TCanvas('c', "Purities and stabilities of " + var, 600, 600)
     plot = c.GetPad(0);
     #plot.SetPad(0.0, 0.23, 1.0, 1.0);
     plot.SetTopMargin(0.06); plot.SetRightMargin(0.05); plot.SetLeftMargin(0.1); plot.SetBottomMargin(0.12)
@@ -249,12 +270,12 @@ def GetAndPlotPuritiesAndStabilities(var, theresponseh, theparticleh, thedetecto
 
     c.SaveAs(thepath + "/PurStab_" + var + ".png")
     c.SaveAs(thepath + "/PurStab_" + var + ".pdf")
-    c.SaveAs(thepath + "/PurStab_" + var + ".root")
+    #c.SaveAs(thepath + "/PurStab_" + var + ".root")
     c.Close(); del c, hStab, plot
 
 
     #print " > Plotting second purities and stabilities plot..."
-    c = r.TCanvas('c', "Purities and stabilities of " + var)
+    c = r.TCanvas('c', "Purities and stabilities of " + var, 600, 600)
     plot = c.GetPad(0);
     #plot.SetPad(0.0, 0.23, 1.0, 1.0);
     plot.SetTopMargin(0.06); plot.SetRightMargin(0.05); plot.SetLeftMargin(0.1); plot.SetBottomMargin(0.12)
@@ -278,7 +299,7 @@ def GetAndPlotPuritiesAndStabilities(var, theresponseh, theparticleh, thedetecto
 
     c.SaveAs(thepath + "/PurStabwoeff_" + var + ".png")
     c.SaveAs(thepath + "/PurStabwoeff_" + var + ".pdf")
-    c.SaveAs(thepath + "/PurStabwoeff_" + var + ".root")
+    #c.SaveAs(thepath + "/PurStabwoeff_" + var + ".root")
     c.Close(); del c, hStab_woeff, plot
     return
 
@@ -302,14 +323,13 @@ def GetAndPlotNonFiducialHisto(var, theunc, thefiducialh, thepath):
     hNonFid = deepcopy(thefiducialh.Clone("F" + var + "_" + theunc))
     hNonFid.SetXTitle("var")
     hNonFid.SetYTitle("Events not passing the fiducial sel.")
-
     c = r.TCanvas('c', "Fiducial histogram - " + var + "_" + theunc, 600, 600)
     hNonFid.Draw()
     r.gStyle.SetPaintTextFormat("4.1f")
     r.gPad.Update()
     c.SaveAs(thepath + "/F_" + var + "_" + theunc + ".png")
     c.SaveAs(thepath + "/F_" + var + "_" + theunc + ".pdf")
-    c.SaveAs(thepath + "/F_" + var + "_" + theunc + ".root")
+    #c.SaveAs(thepath + "/F_" + var + "_" + theunc + ".root")
     c.Close(); del c
     return hNonFid
 
@@ -319,6 +339,60 @@ def SaveOverlap(theoverlap, thepath):
     fcn = open(thepath + "/overlaps.txt", "w")
     out = '(detector & particle) / particle\n'
     out += str(round(theoverlap, 4)) + '\n'
+    fcn.write(out)
+    fcn.close
+    return
+
+
+def SaveAcceptance(nfid, thepath):
+    #print "\n[SaveAcceptance]"
+    
+    mcaF = "tw-run2/differential/mca-differential/mca-tw-diff.txt"
+    parser = OptionParser(usage="")
+    addMCAnalysisOptions(parser)
+    they = thepath.split("/")[-3]
+    
+    if they != "run2": 
+        year = int(they)
+        lumi = vl.LumiDict[year]
+    else:
+        year = "2016,2017,2018"
+        lumi = ",".join([str(vl.LumiDict[iY]) for iY in [2016, 2017, 2018]])
+    
+    
+#    print thepath, year
+    friendspath = "/pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions"
+    prod        = "2021-06-09"
+    theargs  = ["--year", "{y}".format(y = year), "-l", "{l}".format(l = lumi)]
+    theargs += "--FDs {P}/0_lumijson --Fs {P}/1_lepmerge_roch --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors".split(" ")
+    theargs += ("-P " + friendspath + "/" + prod + ("/" + str(year) if they != "run2" else "")).split(" ")
+    theargs += "--tree NanoAOD --AP".split(" ")
+    
+    (options, args) = parser.parse_args(theargs)
+    mca  = MCAnalysis(mcaF, options)
+
+    allw = 0.
+    xsec = 0.
+    for tty in mca._signals:
+        tmpwf = r.TFile(tty._fname, "READ")
+        for ev in tmpwf.Runs:
+            allw += getattr(ev, "genEventSumw_", "genEventSumw")
+        for ev in tmpwf.Events:
+            xsec = ev.xsec
+            break
+        tmpwf.Close(); del tmpwf
+
+    ### NOTE: this is also for getting all geneventsumw or nevs, in the case that a reweighting is needed in the future.
+#    print nfid, allw, nfid/allw, nfid/sum([float(l) for l in lumi.split(",")])/xsec/1000.
+#    sys.exit()
+    
+    
+    fcn = open(thepath + "/acceptance.txt", "w")
+    out = 'acceptance\n'
+    if they == "run2":
+        out += str(round(nfid/sum([float(l) for l in lumi.split(",")])/xsec/1000., 4)) + '\n'
+    else:
+        out += str(round(nfid/lumi/xsec/1000., 4)) + '\n'
     fcn.write(out)
     fcn.close
     return
@@ -360,11 +434,11 @@ def CalculateAndPlotResponseMatrices(tsk):
 
         #if "mistagging" in tmpnam: continue #### ?????????????????????????????????????????????????????????????????????????
 
-
-        if "data" in tmpnam: continue
+        if any([el in tmpnam for el in ["ds", "data", "herwig", "amcatnlo"]]):
+            continue
 
         if "Up" not in tmpnam and "Down" not in tmpnam: # It is the nominal value!
-            #print tmpnam
+            # print tmpnam
             detectordict[""]         = deepcopy(fDetector.Get(tmpnam).Clone(""))
             detectorparticledict[""] = deepcopy(fDetectorParticle.Get(tmpnam).Clone(""))
             detectorparticlebutdetectordict[""] = deepcopy(fDetectorParticleButDetector.Get(tmpnam).Clone(""))
@@ -398,21 +472,25 @@ def CalculateAndPlotResponseMatrices(tsk):
 
     foutput = r.TFile(inpath + "/" + iY + "/" + iV + "/UnfoldingInfo.root", "recreate")
     for key in detectordict:
+        # if key != "": continue
         if key == "":
             GetAndPlotPuritiesAndStabilities(iV, responsedict[key], hParticle, detectorparticledict[key], detectordict[key], tmpoutpath)
 
-        hResponse, theoverlap = GetAndPlotResponseMatrix(iV, key, responsedict[key], hParticle, tmpoutpath)
+        hResponse, theoverlap = GetAndPlotResponseMatrix(iY, iV, key, responsedict[key], hParticle, tmpoutpath)
 
-        if theoverlap != None:
+        if theoverlap != None and key == "":
             SaveOverlap(theoverlap, tmpoutpath)
-
+        
+        
         condnumdict[key] = GetConditionNumber(hResponse)
         hNonFiducial     = GetAndPlotNonFiducialHisto(iV, key, nonfiducialdict[key], tmpoutpath)
 
         hResponse.Write()
         hNonFiducial.Write()
+        # if key == "": break
     foutput.Close()
 
+    #SaveAcceptance(hParticle.Integral(), tmpoutpath)
     SaveAllConditionNumbers(condnumdict, tmpoutpath)
     return
 
@@ -444,28 +522,34 @@ if __name__=="__main__":
 
     #### First, find the tasks
     tasks = []
-    if year == "all":
-        if variable == "all":
-            theyears = []
-            presentyears = next(os.walk(inpath))[1]
+    theyears = []
+    presentyears = next(os.walk(inpath))[1]
 
-            if "2016" in presentyears:
-                theyears.append("2016")
-            if "2017" in presentyears:
-                theyears.append("2017")
-            if "2018" in presentyears:
-                theyears.append("2018")
-            if "run2" in presentyears:
-                theyears.append("run2")
+    if "2016" in presentyears:
+        theyears.append("2016")
+    if "2017" in presentyears:
+        theyears.append("2017")
+    if "2018" in presentyears:
+        theyears.append("2018")
+    if "run2" in presentyears:
+        theyears.append("run2")
 
-            for iY in theyears:
-                thevars = next(os.walk(inpath + "/" + iY))[1]
+    if year.lower() != "all" and year in presentyears:
+        theyears = [ year ]
+    elif year.lower() != "all":
+        raise RuntimeError("FATAL: the year requested is not in the provided input folder.")
 
-                for iV in thevars:
-                    if "plots" in iV: continue
-                    #if "Pz" not in iV: continue
+    for iY in theyears:
+        thevars = next(os.walk(inpath + "/" + iY))[1]
 
-                    tasks.append( (inpath, iY, iV) )
+        if variable.lower() != "all" and variable in thevars:
+            thevars = [ variable ]
+        elif variable.lower() != "all":
+            raise RuntimeError("FATAL: the variable requested is not in the provided input folder.")
+
+        for iV in thevars:
+            if any( [el in iV for el in vl.vetolist] ): continue
+            tasks.append( (inpath, iY, iV) )
 
     if nthreads > 1:
         pool = Pool(nthreads)
@@ -475,3 +559,5 @@ if __name__=="__main__":
     else:
         for tsk in tasks:
             CalculateAndPlotResponseMatrices(tsk)
+
+    print("\n> Done!")

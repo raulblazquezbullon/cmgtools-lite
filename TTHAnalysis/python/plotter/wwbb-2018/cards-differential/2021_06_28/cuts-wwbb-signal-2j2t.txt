@@ -1,0 +1,13 @@
+## Datacard for cut file wwbb-2018/cuts-differential/cuts-wwbb-signal-2j2t.txt
+shapes *        * cuts-wwbb-signal-2j2t.root x_$PROCESS x_$PROCESS_$SYSTEMATIC
+##----------------------------------
+bin         cuts-wwbb-signal-2j2t
+observation 66992.4810744
+##----------------------------------
+##----------------------------------
+bin            cuts-wwbb-signal-2j2t 
+process                         wwbb 
+process                            1 
+rate                       66992.481 
+##----------------------------------
+* autoMCStats 10

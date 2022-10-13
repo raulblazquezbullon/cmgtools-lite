@@ -1,0 +1,13 @@
+## Datacard for cut file wwbb-2018/cuts-differential/cuts-wwbb-detector-nofiducial-2j2t.txt
+shapes *        * cuts-wwbb-detector-nofiducial-2j2t.root x_$PROCESS x_$PROCESS_$SYSTEMATIC
+##----------------------------------
+bin         cuts-wwbb-detector-nofiducial-2j2t
+observation 9810.97811829
+##----------------------------------
+##----------------------------------
+bin            cuts-wwbb-detector-nofiducial-2j2t 
+process                                      wwbb 
+process                                         1 
+rate                                     9810.978 
+##----------------------------------
+* autoMCStats 10

@@ -12,7 +12,6 @@ from CMGTools.TTHAnalysis.tools.collectionSkimmer import CollectionSkimmer
 
 from CMGTools.TTHAnalysis.treeReAnalyzer import Collection as CMGCollection
 from CMGTools.TTHAnalysis.tools.nanoAOD.friendVariableProducerTools import declareOutput, writeOutput
-from CMGTools.TTHAnalysis.tools.nanoAOD.TopRun2_modules import ch, tags
 from array import array
 
 class selectParticleAndPartonInfo(Module):
