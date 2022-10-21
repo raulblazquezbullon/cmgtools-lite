@@ -1,5 +1,11 @@
-data : DoubleMuon; Label="Data"
-data : MuonEG; Label="Data"
-data : SingleMuon; Label="Data"
-data : EGamma; Label="Data"
-data : Muon; Label="Data"
+data : DoubleMuon_Run2022C; Label="Data"
+data : SingleMuon_Run2022C; Label="Data"
+
+data : MuonEG_Run2022C; Label="Data"
+data : MuonEG_Run2022D; Label="Data"
+
+data : EGamma_Run2022C; Label="Data"
+data : EGamma_Run2022D; Label="Data"
+
+data : Muon_Run2022C; Label="Data"
+data : Muon_Run2022D; Label="Data"

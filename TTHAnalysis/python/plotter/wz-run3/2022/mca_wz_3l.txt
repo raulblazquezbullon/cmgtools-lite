@@ -3,7 +3,7 @@
 incl_data           : + ; IncludeMca="wz-run3/2022/includes/mca_data.txt"
 
 ## Signal and prompt backgrounds
-incl_signal         : + ; IncludeMca="wz-run3/2022/includes/mca_WZ.txt"
+incl_signal         : + ; IncludeMca="wz-run3/2022/includes/mca_wz.txt"
 
 ## Fakes
 ## -----------------------------------------------------------
