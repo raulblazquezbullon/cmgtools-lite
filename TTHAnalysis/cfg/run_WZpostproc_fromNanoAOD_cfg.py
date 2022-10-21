@@ -41,15 +41,20 @@ doData = (selectComponents == "DATA")
 # -- Import sample configuration files -- #
 ### THESE FILES NEED TO BE UPDATED ONCE RUN3 DATASETS ARE MADE PUBLIC
 
-from CMGTools.RootTools.samples.samples_13p6TeV_2022_preNanoAODv10     import samples as mcSamples_
-from CMGTools.RootTools.samples.samples_13p6TeV_DATA2022_preNanoAODv10 import dataSamples as allData
+
+# -- From prenano 2022 -- september (nanoAOD for ttrun3)
+#from CMGTools.RootTools.samples.samples_13p6TeV_2022_preNanoAODv10     import samples as mcSamples_
+#from CMGTools.RootTools.samples.samples_13p6TeV_DATA2022_preNanoAODv10 import dataSamples as allData
+
+# -- From 7.5fb-1 (october 2022)
+from CMGTools.RootTools.samples.samples_13p6TeV_mc2022_nanoAODv10_fromLocal   import mcSamples_toImport   as mcSamples_
+from CMGTools.RootTools.samples.samples_13p6TeV_data2022_nanoAODv10_fromLocal import dataSamples_toImport as allData
 
 autoAAA(mcSamples_ + allData, 
         quiet         = quiet, 
         redirectorAAA = "xrootd-cms.infn.it",
         node          = 'T2_ES_IFCA') 
 mcSamples_, _ = mergeExtensions(mcSamples_) ### autoAAA must be created before call mergeExtensions
-
 
 ### Set up trigger paths 
 if year == 2022:
@@ -140,17 +145,17 @@ else:
   mcSamples = byCompName(mcSamples_, ["%s(|_PS)$"%dset for dset in [
       # ----------------- Single boson
       #"WJetsToLNu_LO_ext",
-      "WJetsToLNu", 
-      #"DYJetsToLL_M10to50_LO", 
-      #"DYJetsToLL_M50_ext1", 
-      "DYJetsToLL_M50",
+      "WJetsToLNu",
+#      "DYJetsToLL_M_50", 
+      "DYJetsToLL_M_50",
       "DYJetsToLL_M10to50",
       # ----------------- ttbar + single top + tW
       "TTTo2L2Nu",
       "TTTo2J1L1Nu",
       "TbarBQ_t",
       "TBbarQ_t",
-      "tbarW",
+      "TbarWplus",
+      "TWminus",
       "tW_noFullHad",
       #'TT_pow',
       #'TTHad_pow',
@@ -223,7 +228,6 @@ else:
       for comp in mcSamples:
           comp.triggers = mcTriggers
   selectedComponents = mcSamples 
-
 
 # -- Create the submitter -- #
 autoAAA(selectedComponents, 
