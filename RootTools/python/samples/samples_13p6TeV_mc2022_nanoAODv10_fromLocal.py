@@ -23,13 +23,13 @@ ZZ_0 = kreator.makeMCComponentFromLocal('ZZ', '', '/26sep2022_ZZ_TuneCP5_13p6TeV
 ZZ = [ZZ_0]
 
 # ------ DY dataset
-DYJetsToLL_M-50_0 = kreator.makeMCComponentFromLocal('DYJetsToLL_M-50', '', '/26sep2022_DYJetsToLL_M-50_TuneCP5_13p6TeV-madgraphMLM-pythia8ext1/220926_150039/0000', '', '.*root', 6221.3)
-DYJetsToLL_M-50_1 = kreator.makeMCComponentFromLocal('DYJetsToLL_M-50', '', '/26sep2022_DYJetsToLL_M-50_TuneCP5_13p6TeV-madgraphMLM-pythia8ext2/220926_150052/0000', '', '.*root', 6221.3)
-DYJetsToLL_M-50_2 = kreator.makeMCComponentFromLocal('DYJetsToLL_M-50', '', '/26sep2022_DYJetsToLL_M-50_TuneCP5_13p6TeV-madgraphMLM-pythia8ext2/220926_150052/0001', '', '.*root', 6221.3)
-DYJetsToLL_M-50_ext1_0 = kreator.makeMCComponentFromLocal('DYJetsToLL_M-50_ext1', '', '/26sep2022_DYJetsToLL_M-50_TuneCP5_13p6TeV-madgraphMLM-pythia8ext1/220926_150039/0000', '', '.*root', 6221.3)
-DYJetsToLL_M-50_ext2_0 = kreator.makeMCComponentFromLocal('DYJetsToLL_M-50_ext2', '', '/26sep2022_DYJetsToLL_M-50_TuneCP5_13p6TeV-madgraphMLM-pythia8ext2/220926_150052/0000', '', '.*root', 6221.3)
-DYJetsToLL_M-50_ext2_1 = kreator.makeMCComponentFromLocal('DYJetsToLL_M-50_ext2', '', '/26sep2022_DYJetsToLL_M-50_TuneCP5_13p6TeV-madgraphMLM-pythia8ext2/220926_150052/0001', '', '.*root', 6221.3)
-DY = [DYJetsToLL_M-50_0, DYJetsToLL_M-50_1, DYJetsToLL_M-50_2, DYJetsToLL_M-50_ext1_0, DYJetsToLL_M-50_ext2_0, DYJetsToLL_M-50_ext2_1]
+DYJetsToLL_M_50_0 = kreator.makeMCComponentFromLocal('DYJetsToLL_M-50', '', '/26sep2022_DYJetsToLL_M-50_TuneCP5_13p6TeV-madgraphMLM-pythia8ext1/220926_150039/0000', '', '.*root', 6221.3)
+DYJetsToLL_M_50_1 = kreator.makeMCComponentFromLocal('DYJetsToLL_M-50', '', '/26sep2022_DYJetsToLL_M-50_TuneCP5_13p6TeV-madgraphMLM-pythia8ext2/220926_150052/0000', '', '.*root', 6221.3)
+DYJetsToLL_M_50_2 = kreator.makeMCComponentFromLocal('DYJetsToLL_M-50', '', '/26sep2022_DYJetsToLL_M-50_TuneCP5_13p6TeV-madgraphMLM-pythia8ext2/220926_150052/0001', '', '.*root', 6221.3)
+DYJetsToLL_M_50_ext1_0 = kreator.makeMCComponentFromLocal('DYJetsToLL_M-50_ext1', '', '/26sep2022_DYJetsToLL_M-50_TuneCP5_13p6TeV-madgraphMLM-pythia8ext1/220926_150039/0000', '', '.*root', 6221.3)
+DYJetsToLL_M_50_ext2_0 = kreator.makeMCComponentFromLocal('DYJetsToLL_M-50_ext2', '', '/26sep2022_DYJetsToLL_M-50_TuneCP5_13p6TeV-madgraphMLM-pythia8ext2/220926_150052/0000', '', '.*root', 6221.3)
+DYJetsToLL_M_50_ext2_1 = kreator.makeMCComponentFromLocal('DYJetsToLL_M-50_ext2', '', '/26sep2022_DYJetsToLL_M-50_TuneCP5_13p6TeV-madgraphMLM-pythia8ext2/220926_150052/0001', '', '.*root', 6221.3)
+DY = [DYJetsToLL_M_50_0, DYJetsToLL_M_50_1, DYJetsToLL_M_50_2, DYJetsToLL_M_50_ext1_0, DYJetsToLL_M_50_ext2_0, DYJetsToLL_M_50_ext2_1]
 
 # ------ SingleTop dataset
 tbarBQ_t_0 = kreator.makeMCComponentFromLocal('tbarBQ_t', '', '/26sep2022_TbarBQ_t-channel_4FS_CP5_13p6TeV_powheg-madspin-pythia8/220926_150340/0000', '', '.*root', 87.2)
