@@ -40,17 +40,18 @@ class leptonBuilderWZSM(Module):
     self.inputlabel = '_' + inputlabel
 
     self.systsJEC = {0: "", 
-                    # 1: "_jesTotalCorrUp", 
-                    #-1: "_jesTotalCorrDown",  
-                    # 2: "_jesTotalUnCorrUp", 
-                    #-2: "_jesTotalUnCorrDown"
+                     1: "", 
+                    -1: "",  
+                     2: "", 
+                    -2: ""
                     }
 
     self.lepScaleSysts = {0:"",
                           1:"_elScaleUp", 
                          -1:"_elScaleDown",
                           2:"_muScaleUp",
-                         -2:"_muScaleDown"}
+                         -2:"_muScaleDown"
+                         }
 
     self.metbranch = metbranch
     self.isData = False
@@ -493,12 +494,12 @@ class leptonBuilderWZSM(Module):
       self.metphi[0] = event.__getitem__(self.metbranch + "_phi")
 
     # Fix this once I understand how met_unc branches are created in Carlos' workflow
-    #if not self.isData:
-    #  if hasattr(event, self.metbranch + "_pt" + self.systsJEC[1]):
-    #    for var in self.systsJEC:
-    #      if var == 0: continue
-    #      self.met[var]    = event.__getitem__(self.metbranch + "_pt" + self.systsJEC[var]) 
-    #      self.metphi[var] = event.__getitem__(self.metbranch + "_phi" + self.systsJEC[var])
+    if not self.isData:
+      if hasattr(event, self.metbranch + "_pt" + self.systsJEC[1]):
+        for var in self.systsJEC:
+          if var == 0: continue
+          self.met[var]    = event.__getitem__(self.metbranch + "_pt" + self.systsJEC[var]) 
+          self.metphi[var] = event.__getitem__(self.metbranch + "_phi" + self.systsJEC[var])
 
     ### Recorrect MET based on lepton corrections
     for l in self.leps:

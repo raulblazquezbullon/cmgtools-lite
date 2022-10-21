@@ -129,8 +129,10 @@ class LeptonJetRecleanerWZSM(Module):
     self.strBJetPt = str(int(bJetPt))
 
     # * Systematic variations 
-    self.systsJEC = {0:"", 1:"_jesTotalCorrUp", -1:"_jesTotalCorrDown",2:"_jesTotalUnCorrUp", -2:"_jesTotalUnCorrDown"}
+    self.systsJEC      = {0:"", 1:"", -1:"",2:"", -2:""}
     self.systsLepScale = {0:"", 1:"_elScaleUp", 2:"_elScaleDown", 3:"_muScaleUp",4:"_muScaleDown"}
+    #self.systsJEC = {0:"", 1:"_jesTotalCorrUp", -1:"_jesTotalCorrDown",2:"_jesTotalUnCorrUp", -2:"_jesTotalUnCorrDown"}
+    #self.systsLepScale = {0:"", 1:"_elScaleUp", 2:"_elScaleDown", 3:"_muScaleUp",4:"_muScaleDown"}
 
     # * Control verbosity 
     self.debugprinted = False
@@ -388,7 +390,7 @@ class LeptonJetRecleanerWZSM(Module):
     jetsd = {key: [] for key in [0, -1, 1, -2, 2]}
 
  
-    isData = not(hasattr(event, "xsec"))
+    isData = not(hasattr(event, "genWeight"))
     if isData:
       # -- NOTE: Jet energy scales and corrections are still preliminary [05-09-2022]
       self.systsJEC      = {0:"", 1:"", -1:"",2:"", -2:""}
