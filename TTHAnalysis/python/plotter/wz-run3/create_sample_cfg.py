@@ -108,7 +108,7 @@ if __name__ == "__main__":
         args = None
         
         for ifold, fold in enumerate(subsample[1]): 
-          name = subsample[0]+"_%d"%ifold  
+          name = subsample[0].replace("-", "") +"_%d"%ifold  
           if type_ == "mc":
             args  = dict(name = name,
                          dname = subsample[0],
