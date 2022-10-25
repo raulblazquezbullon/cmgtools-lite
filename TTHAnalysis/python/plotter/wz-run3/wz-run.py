@@ -22,7 +22,7 @@ def add_parsing_opts():
                 help = "Output (folder) name")
   parser.add_option("--isData", dest = "isData", action = "store_true", default = False, 
                 help = "Name of the last folder in which the output will be saved")
-  parser.add_option("--prodname", dest = "prodname", type="string", default = "Oct18", 
+  parser.add_option("--prodname", dest = "prodname", type="string", default = "oct22", 
                 help = "Name of the last folder in which the output will be saved")
   parser.add_option("--tier", dest = "tier", type=str, default = "nanoAODv10", 
                 help = "Production tier used in output path formats")
