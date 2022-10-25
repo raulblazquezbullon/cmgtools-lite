@@ -1,0 +1,56 @@
+# vim: syntax=sh
+
+# -- Systematic uncertainties file for WZ analyis -- #
+
+### Alias definitions
+$alias : WZ           : prompt_.*WZ
+$alias : ZZ           : prompt_.*ZZ 
+$alias : fakes        : .*fakes.*
+$alias : PromptFromMC : prompt_.*
+## Flat uncertainties
+## -------------------------------------
+## Lumi uncertainties 
+lumi_2022_early  : $PromptFromMC | convs   : .*  : normSymm  :1.06
+
+
+## Normalization 
+## -------------------------------------
+normZZ_ML      : $ZZ             : .* : normSymm :  1.06
+normfakes_ML   : $fakes          : .* : normSymm :  1.3
+
+## Shapes 
+## -------------------------------------
+
+## JES uncertainties
+## Follow JES recommendations as per https://docs.google.com/spreadsheets/d/1JZfk78_9SD225bcUuTWVo4i02vwI5FfeVKH-dwzUdhM/edit#gid=1345121349
+
+#JESCORR_ML           : prompt_.*|convs          : .* : jescorr        : templates
+#JES2018_ML           : prompt_.*|convs          : .* : jesuncorr        : templates
+
+## Lepton energy scale uncertainties
+#MuScale_ML       : prompt_.*|convs          : .* : muscale    : templates
+#ElScale_ML       : prompt_.*|convs          : .* : elscale    : templates
+
+## Lepton SFs
+#LepSFMu_ML            : prompt_.*|convs          : .* : lepSFMu : templates
+#LepSFEl_ML            : prompt_.*|convs          : .* : lepSFEl : templates
+#LepSFMuStat2018_ML    : prompt_.*|convs          : .* : lepSFMuStat2018 : templates
+#LepSFElStat2018_ML    : prompt_.*|convs          : .* : lepSFElStat2018 : templates
+
+
+## Pileup
+#PUW_ML           : prompt_.*|convs|sig_.*   : .* : puw        : templates
+
+## b tagging
+#btag_HF_ML       : prompt_.*|convs          : .* : bTagHF     : templates
+#btag_LF_ML       : prompt_.*|convs          : .* : bTagLF     : templates
+
+## Signal uncertainties
+#scaleNorm  : prompt_WZ      : .* : scale : envelope : 6   # 7 point 1/2 scale varations
+#pdfNorm    : prompt_WZ      : .* : pdf   : quad : 30 # NNPDF31 is 30 hessian replicas (2017/2018, weight 0 is nominal 1-30 are variations)
+#scaleNorm  : prompt_altWZ.* : .* : scale : envelope : 6   # 7 point 1/2 scale varations
+#pdfNorm    : prompt_altWZ.* : .* : pdf   : quad : 30 # NNPDF31 is 30 hessian replicas (2017/2018, weight 0 is nominal 1-30 are variations)
+
+## ISR 
+#ISR18 : prompt_WZ      : .* : isr : templates
+#ISR18 : prompt_altWZ.* : .* : isr : templates

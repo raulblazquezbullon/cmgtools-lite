@@ -120,9 +120,10 @@ nJetCleanPUL25: nJetPULClean25 : 10,-0.5,10.5 : XTitle="N_{jet} (p_{T} >= 25 GeV
 jetptclean : JetClean25_pt : 30,0.,600. : XTitle="p_{T} (jet)", LegendCutoff5e-3, Logy=True, YMax=50000, YMin=1e-1
 
 jetetaclean: JetClean25_eta : 30,-2.5,2.5 : XTitle="#eta (jet)", LegendCutoff5e-3, Logy=True, YMax=50000, YMin=1e-1
-
-
-m3l        : m3L            : 10,0,500    ; XTitle="m_{3L} (GeV)"                , LegendCutoff5e-3, Logy, Legend="TL", YMin=1, YMax=100000, Legend="TR"
+muoMVA     : Muon_mvaTTH        : 10,0,1;  XTitle="mvaTTH (#mu)" 
+eleMVA     : Electron_mvaTTH        : 10,0,1;  XTitle="mvaTTH (e)" 
+lepMVA     : LepGood_mvaTTH        : 10,0,1;  XTitle="mvaTTH"  
+m3l        : m3L           : 10,0,500    ; XTitle="m_{3L} (GeV)"                , LegendCutoff5e-3, Logy, Legend="TL", YMin=1, YMax=100000, Legend="TR"
 mll3l      : mll_3l        : 15,75,105    ; XTitle="M_{ll} (GeV)"                , LegendCutoff5e-3, Logy, YMin=1, YMax=5000000, Legend="TR"
 mtW3l      : mT_3l         : 20,0,200    ; XTitle="M_{T} (GeV)"                 , LegendCutoff5e-3, Logy, YMin=1, YMax=500000, Legend="TR"
 mllZ2      : mass_2(LepSel_pt[unused4(mll_i1[0], mll_i2[0], 1)],LepSel_eta[unused4(mll_i1[0], mll_i2[0], 1)], LepSel_phi[unused4(mll_i1[0], mll_i2[0], 1)],0, LepSel_pt[unused4(mll_i1[0], mll_i2[0], 2)], LepSel_eta[unused4(mll_i1[0], mll_i2[0], 2)], LepSel_phi[unused4(mll_i1[0], mll_i2[0], 2)],0): 100,0,200 ; XTitle="M_{Z2} (GeV)", LegendCutoff5e-3, Logy, YMin=1, YMax=500000, Legend="TR"

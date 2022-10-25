@@ -1,7 +1,7 @@
 from producer import producer
 from utils.ftree_producer import ftree_producer
 import cfgs.ftrees as ftrees
-from lumi import lumis
+from cfgs.lumi import lumis
 
 class plot_producer(producer):
   name = "plot_producer"
