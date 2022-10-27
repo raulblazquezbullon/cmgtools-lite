@@ -74,7 +74,8 @@ class CollectionSkimmer {
 	  nIn_ = 0;
 	  ensureSize(count());
 	  if (saveSelectedIndices_) {
-	    std::fill_n(iOut_.get(),maxEntries_,padSelectedIndicesCollectionWith_);
+	    //std::fill_n(iOut_.get(),maxEntries_,padSelectedIndicesCollectionWith_);
+        memset(iOut_.get(),padSelectedIndicesCollectionWith_,maxEntries_);
 	  }
 	  if (saveTagForAll_){
 	    nIn_ = count();

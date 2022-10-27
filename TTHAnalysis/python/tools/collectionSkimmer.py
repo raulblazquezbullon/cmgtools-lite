@@ -1,4 +1,5 @@
 import ROOT
+#import time
 
 class CollectionSkimmer:
     def __init__(self, outName, srcColl, ints=[], floats=[], uchars=[], maxSize=100, saveSelectedIndices=False, padSelectedIndicesWith=None, saveTagForAll=False):
@@ -38,7 +39,9 @@ class CollectionSkimmer:
             self._impl.clear()
             return True
         else:
+            #t0 = time.time()
             self._impl.clear()
+            #print("Tiempo en limpiar: %1.9f" %(time.time()-t0))
             return False
     def cppImpl(self):
         """Get the C++ CollectionSkimmer instance, to pass to possible C++ worker code"""
