@@ -5,21 +5,24 @@ from CMGTools.TTHAnalysis.tools.nanoAOD.friendVariableProducerTools import decla
 
 class addExtraLepVarsForLepUncs(Module):
     def __init__(self, label = "corrAll",  muonvars = "mu", 
-                 elecdatavars = "elscale", elecmcvars = "elsigma", isMC = True):
+                 elecdatavars = "elscale", elecmcvars = "elsigma", isMC = True, elSigmaOrScale = True):
         self.label     = label
         self.muonvars  = muonvars
         self.elecdatavars = elecdatavars
         self.elecmcvars   = elecmcvars
         self.isMC      = isMC
+        self.elSigmaOrScale = elSigmaOrScale
         self.branches  = [("LepGood_pt_" + self.label,             "F", "", "nLepGood"),]
         if self.isMC:
             self.branches.append(("LepGood" + self.muonvars + "Up_pt_" + self.muonvars + "Up",              "F", "", "nLepGoodmuUp"))
             self.branches.append(("LepGood" + self.muonvars + "Down_pt_" + self.muonvars + "Down",          "F", "", "nLepGoodmuDown"))
-            self.branches.append(("LepGood" + self.elecmcvars + "Up_pt_"   + self.elecmcvars + "Up",        "F", "", "nLepGoodelsigmaUp"))
-            self.branches.append(("LepGood" + self.elecmcvars + "Down_pt_" + self.elecmcvars + "Down",      "F", "", "nLepGoodelsigmaDown"))
+            if self.elSigmaOrScale:
+                self.branches.append(("LepGood" + self.elecmcvars + "Up_pt_"   + self.elecmcvars + "Up",        "F", "", "nLepGoodelsigmaUp"))
+                self.branches.append(("LepGood" + self.elecmcvars + "Down_pt_" + self.elecmcvars + "Down",      "F", "", "nLepGoodelsigmaDown"))
         else:
-            self.branches.append(("LepGood" + self.elecdatavars + "Up_pt_"   + self.elecdatavars + "Up",    "F", "", "nLepGoodelscaleUp"))
-            self.branches.append(("LepGood" + self.elecdatavars + "Down_pt_" + self.elecdatavars + "Down",  "F", "", "nLepGoodelscaleDown"))
+            if self.elSigmaOrScale:
+                self.branches.append(("LepGood" + self.elecdatavars + "Up_pt_"   + self.elecdatavars + "Up",    "F", "", "nLepGoodelscaleUp"))
+                self.branches.append(("LepGood" + self.elecdatavars + "Down_pt_" + self.elecdatavars + "Down",  "F", "", "nLepGoodelscaleDown"))
         return
 
 
@@ -76,36 +79,38 @@ class addExtraLepVarsForLepUncs(Module):
             allret["LepGoodmuUp_pt_muUp"]     = newvalsupmu
             allret["LepGoodmuDown_pt_muDown"] = newvalsdnmu
             
-            leps  = [l for l in Collection(event, "LepGoodelsigmaUp")]
-            for lep in leps:
-                if abs(lep.pdgId) == 11:
-                    newvalsupel.append(lep.sigmaUp_pt)
-                else:
-                    newvalsupel.append(lep.pt)
-            leps  = [l for l in Collection(event, "LepGoodelsigmaDown")]
-            for lep in leps:
-                if abs(lep.pdgId) == 11:
-                    newvalsdnel.append(lep.sigmaDown_pt)
-                else:
-                    newvalsdnel.append(lep.pt)
+            if self.elSigmaOrScale:
+                leps  = [l for l in Collection(event, "LepGoodelsigmaUp")]
+                for lep in leps:
+                    if abs(lep.pdgId) == 11:
+                        newvalsupel.append(lep.sigmaUp_pt)
+                    else:
+                        newvalsupel.append(lep.pt)
+                leps  = [l for l in Collection(event, "LepGoodelsigmaDown")]
+                for lep in leps:
+                    if abs(lep.pdgId) == 11:
+                        newvalsdnel.append(lep.sigmaDown_pt)
+                    else:
+                        newvalsdnel.append(lep.pt)
 
-            allret["LepGood" + self.elecmcvars + "Up_pt_"   + self.elecmcvars + "Up"]   = newvalsupel
-            allret["LepGood" + self.elecmcvars + "Down_pt_" + self.elecmcvars + "Down"] = newvalsdnel
+                allret["LepGood" + self.elecmcvars + "Up_pt_"   + self.elecmcvars + "Up"]   = newvalsupel
+                allret["LepGood" + self.elecmcvars + "Down_pt_" + self.elecmcvars + "Down"] = newvalsdnel
         else:
-            leps  = [l for l in Collection(event, "LepGoodelscaleUp")]
-            for lep in leps:
-                if abs(lep.pdgId) == 11:
-                    newvalsupel.append(lep.scaleUp_pt)
-                else:
-                    newvalsupel.append(lep.pt)
-            leps  = [l for l in Collection(event, "LepGoodelscaleDown")]
-            for lep in leps:
-                if abs(lep.pdgId) == 11:
-                    newvalsdnel.append(lep.scaleDown_pt)
-                else:
-                    newvalsdnel.append(lep.pt)
+            if self.elSigmaOrScale:
+                leps  = [l for l in Collection(event, "LepGoodelscaleUp")]
+                for lep in leps:
+                    if abs(lep.pdgId) == 11:
+                        newvalsupel.append(lep.scaleUp_pt)
+                    else:
+                        newvalsupel.append(lep.pt)
+                leps  = [l for l in Collection(event, "LepGoodelscaleDown")]
+                for lep in leps:
+                    if abs(lep.pdgId) == 11:
+                        newvalsdnel.append(lep.scaleDown_pt)
+                    else:
+                        newvalsdnel.append(lep.pt)
 
-            allret["LepGood" + self.elecdatavars + "Up_pt_"   + self.elecdatavars + "Up"]   = newvalsupel
-            allret["LepGood" + self.elecdatavars + "Down_pt_" + self.elecdatavars + "Down"] = newvalsdnel
+                allret["LepGood" + self.elecdatavars + "Up_pt_"   + self.elecdatavars + "Up"]   = newvalsupel
+                allret["LepGood" + self.elecdatavars + "Down_pt_" + self.elecdatavars + "Down"] = newvalsdnel
 
         return allret
