@@ -19,6 +19,7 @@ class pythonCleaningTopRun2UL(Module):
         self.selecsdict = {}
 
         # Con JetPUID (revisar con cuidao https://twiki.cern.ch/twiki/bin/view/CMS/PileupJetIDUL)
+        """
         if isMC:
             self.selecsdict[2016] = lambda jet: (jet.jetId > 1 and (jet.puId >= 3 if jet.pt_nom <= 50 else 1))
             self.selecsdict[2017] = lambda jet: (jet.jetId > 1 and (jet.puId >= 6 if jet.pt_nom <= 50 else 1))
@@ -27,11 +28,12 @@ class pythonCleaningTopRun2UL(Module):
             self.selecsdict[2016] = lambda jet: (jet.jetId > 1 and (jet.puId >= 3 if jet.pt <= 50 else 1))
             self.selecsdict[2017] = lambda jet: (jet.jetId > 1 and (jet.puId >= 6 if jet.pt <= 50 else 1))
             self.selecsdict[2018] = lambda jet: (jet.jetId > 1 and (jet.puId >= 6 if jet.pt <= 50 else 1))
+        """
 
         # Estandar
-        #self.selecsdict[2016] = lambda jet: jet.jetId > 1
-        #self.selecsdict[2017] = lambda jet: jet.jetId > 1
-        #self.selecsdict[2018] = lambda jet: jet.jetId > 1
+        self.selecsdict[2016] = lambda jet: jet.jetId > 1
+        self.selecsdict[2017] = lambda jet: jet.jetId > 1
+        self.selecsdict[2018] = lambda jet: jet.jetId > 1
 
         self.jc     = jetCollection
         self.lc     = lepCollection
@@ -164,28 +166,31 @@ class pythonCleaningTopRun2UL(Module):
 
         # 2) Process
         if self.debug: print("[pythonCleaningTopRun2::analyze] Beginning processing")
+
         leps = [l for l in Collection(event, self.lc)]
         jets = [j for j in Collection(event, self.jc)]
-
-        finalJetDict = {}
-        finalnBtagsDict0 = {}
-        finalnBtagsDict1 = {}
-        for delta,jvar in self.systsJEC.iteritems():
-            finalnBtagsDict0[jvar] = 0
-            finalnBtagsDict1[jvar] = 0
-        for delta,lvar in self.systsLepEn.iteritems():
-            finalnBtagsDict0[lvar] = 0
-            finalnBtagsDict1[lvar] = 0
-
-        for key in self.colls:
-            finalJetDict[key]    = []
 
         cleanedandgoodjets = {}
         cleanedandgoodjets[""] = self.areMyJetsCleanAndGood(jets, leps)
 
+        finalJetDict     = {}
+        finalnBtagsDict0 = {}
+        finalnBtagsDict1 = {}
+
+        for key in self.colls:
+            finalJetDict[key] = []
+            self.colls[key].initEventOpt(event) #### NOTE: using optimised set of methods. DO NOT MIX THEM WITH LEGACY ONES!
+
+        for delta,jvar in self.systsJEC.iteritems():
+            finalnBtagsDict0[jvar] = 0
+            finalnBtagsDict1[jvar] = 0
+
         for delta,lvar in self.systsLepEn.iteritems():
+            finalnBtagsDict0[lvar] = 0
+            finalnBtagsDict1[lvar] = 0
             leps = [l for l in Collection(event, self.lc + lvar[1:])]
             cleanedandgoodjets[lvar] = self.areMyJetsCleanAndGood(jets, leps)
+
 
         if self.debug: print("[pythonCleaningTopRun2::analyze] Beginning jet loop")
         for iJ in range(len(jets)):
@@ -250,33 +255,32 @@ class pythonCleaningTopRun2UL(Module):
 
 
         if self.debug: print("[pythonCleaningTopRun2::analyze] Finished jet loop")
+
         # 3) Save results
         # First, in the collectionskimmers
-        if self.debug: print("[pythonCleaningTopRun2::analyze] Saving results in collectionskimmers")
-        for col in self.colls:
-            self.colls[col].initEvent(event)
+        if self.debug: print("[pythonCleaningTopRun2::analyze] Saving results in collectionskimmers and non-collectionskimmer variables")
 
         for delta,sys in self.systsJEC.iteritems():
-            self.colls["jetsSup"    + sys].push_back_all(finalJetDict["jetsSup"    + sys])
-            self.colls["jetsInf"    + sys].push_back_all(finalJetDict["jetsInf"    + sys])
-            self.colls["fwdjetsSup" + sys].push_back_all(finalJetDict["fwdjetsSup" + sys])
-            self.colls["fwdjetsInf" + sys].push_back_all(finalJetDict["fwdjetsInf" + sys])
+            self.colls["jetsSup"    + sys].push_back_allOpt(finalJetDict["jetsSup"    + sys])
+            self.colls["jetsInf"    + sys].push_back_allOpt(finalJetDict["jetsInf"    + sys])
+            self.colls["fwdjetsSup" + sys].push_back_allOpt(finalJetDict["fwdjetsSup" + sys])
+            self.colls["fwdjetsInf" + sys].push_back_allOpt(finalJetDict["fwdjetsInf" + sys])
 
-        for delta,sys in self.systsLepEn.iteritems():
-            self.colls["jetsSup"    + sys].push_back_all(finalJetDict["jetsSup"    + sys])
-            self.colls["jetsInf"    + sys].push_back_all(finalJetDict["jetsInf"    + sys])
-            self.colls["fwdjetsSup" + sys].push_back_all(finalJetDict["fwdjetsSup" + sys])
-            self.colls["fwdjetsInf" + sys].push_back_all(finalJetDict["fwdjetsInf" + sys])
-
-        if self.debug: print("[pythonCleaningTopRun2::analyze] Saving results in non-collectionskimmers variables")
-        # Afterwards, those variables not in CS or their counts
-        for delta,sys in self.systsJEC.iteritems():
+            # Afterwards, those variables not in CS or their counts
             self.wrappedOutputTree.fillBranch('nBJetSelMedium' + str(self.jetPts[0]) + sys + self.label, finalnBtagsDict0[sys])
             self.wrappedOutputTree.fillBranch('nBJetSelMedium' + str(self.jetPts[1]) + sys + self.label, finalnBtagsDict1[sys])
 
         for delta,sys in self.systsLepEn.iteritems():
+            self.colls["jetsSup"    + sys].push_back_allOpt(finalJetDict["jetsSup"    + sys])
+            self.colls["jetsInf"    + sys].push_back_allOpt(finalJetDict["jetsInf"    + sys])
+            self.colls["fwdjetsSup" + sys].push_back_allOpt(finalJetDict["fwdjetsSup" + sys])
+            self.colls["fwdjetsInf" + sys].push_back_allOpt(finalJetDict["fwdjetsInf" + sys])
+
+            # Afterwards, those variables not in CS or their counts
             self.wrappedOutputTree.fillBranch('nBJetSelMedium' + str(self.jetPts[0]) + sys + self.label, finalnBtagsDict0[sys])
             self.wrappedOutputTree.fillBranch('nBJetSelMedium' + str(self.jetPts[1]) + sys + self.label, finalnBtagsDict1[sys])
+
+        if self.debug: print("[pythonCleaningTopRun2::analyze] Event finished.")
 
         return True
 
