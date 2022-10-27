@@ -4,7 +4,8 @@ from PhysicsTools.NanoAODTools.postprocessing.framework.datamodel import Collect
 from CMGTools.TTHAnalysis.tools.collectionSkimmer import CollectionSkimmer
 from CMGTools.TTHAnalysis.tools.nanoAOD.friendVariableProducerTools import declareOutput
 import warnings as wr
-import os, sys
+import os, sys, time
+
 
 class pythonCleaningTopRun2UL(Module):
     def __init__(self, label, jetPts, jetPtNoisyFwd, jetCollection = 'Jet', lepCollection = "LepGood",
@@ -20,13 +21,15 @@ class pythonCleaningTopRun2UL(Module):
 
         # Con JetPUID (revisar con cuidao https://twiki.cern.ch/twiki/bin/view/CMS/PileupJetIDUL)
         if isMC:
-            self.selecsdict[2016] = lambda jet: (jet.jetId > 1 and (jet.puId >= 3 if jet.pt_nom <= 50 else 1))
-            self.selecsdict[2017] = lambda jet: (jet.jetId > 1 and (jet.puId >= 6 if jet.pt_nom <= 50 else 1))
-            self.selecsdict[2018] = lambda jet: (jet.jetId > 1 and (jet.puId >= 6 if jet.pt_nom <= 50 else 1))
+            self.selecsdict[2016] = lambda jet: (jet.jetId > 1)
+            self.selecsdict[2017] = lambda jet: (jet.jetId > 1)
+            self.selecsdict[2018] = lambda jet: (jet.jetId > 1)
+            self.selecsdict[2022] = lambda jet: (jet.jetId > 1)
         else:
-            self.selecsdict[2016] = lambda jet: (jet.jetId > 1 and (jet.puId >= 3 if jet.pt <= 50 else 1))
-            self.selecsdict[2017] = lambda jet: (jet.jetId > 1 and (jet.puId >= 6 if jet.pt <= 50 else 1))
-            self.selecsdict[2018] = lambda jet: (jet.jetId > 1 and (jet.puId >= 6 if jet.pt <= 50 else 1))
+            self.selecsdict[2016] = lambda jet: (jet.jetId > 1)
+            self.selecsdict[2017] = lambda jet: (jet.jetId > 1)
+            self.selecsdict[2018] = lambda jet: (jet.jetId > 1)
+            self.selecsdict[2022] = lambda jet: (jet.jetId > 1)
 
         # Estandar
         #self.selecsdict[2016] = lambda jet: jet.jetId > 1
@@ -91,6 +94,9 @@ class pythonCleaningTopRun2UL(Module):
                           "DeepFlav_2018_L"   : 0.0490,
                           "DeepFlav_2018_M"   : 0.2783,
                           "DeepFlav_2018_T"   : 0.7100,
+                          "DeepFlav_2022_L"   : 0.0490, #copied from 2018
+                          "DeepFlav_2022_M"   : 0.2783,
+                          "DeepFlav_2022_T"   : 0.7100,
                          }
         self.btagWPcut = 0.
         self.deltaRcut = deltaRcut
@@ -100,6 +106,7 @@ class pythonCleaningTopRun2UL(Module):
 
     #### Running methods
     def beginJob(self, histFile = None, histDirName = None):
+        #t_beginJob = time.time()
         # Configuring variations (lepton energy corrs. and JEC).
         self.systsLepEn = {}
         self.systsJEC   = {0 : ""}
@@ -137,11 +144,13 @@ class pythonCleaningTopRun2UL(Module):
             self.colls["jetsInf"    + sys] = CollectionSkimmer("{col}Sel{pt}".format(   col = self.jc, pt = self.jetPts[1]) + sys + self.label, self.jc, floats = [], saveSelectedIndices = True)
             self.colls["fwdjetsSup" + sys] = CollectionSkimmer("Fwd{col}Sel{pt}".format(col = self.jc, pt = self.jetPts[0]) + sys + self.label, self.jc, floats = [], saveSelectedIndices = True)
             self.colls["fwdjetsInf" + sys] = CollectionSkimmer("Fwd{col}Sel{pt}".format(col = self.jc, pt = self.jetPts[1]) + sys + self.label, self.jc, floats = [], saveSelectedIndices = True)
+        #print("Time for the beginJob(): %1.f" %(time.time()-t_beginJob))
         return
 
 
 
     def beginFile(self, inputFile, outputFile, inputTree, wrappedOutputTree):
+        #t_beginFile = time.time()
         for tag,helper in self.colls.iteritems():
             helper.initInputTree(inputTree)
 
@@ -149,11 +158,13 @@ class pythonCleaningTopRun2UL(Module):
 
         for tag,helper in self.colls.iteritems():
             helper.initOutputTree(wrappedOutputTree.tree(), True)
+        #print("Time for the beginFile(): %1.f" %(time.time()-t_beginFile))
         return
 
 
 
     def analyze(self, event):
+        #t_analyze = time.time()
         if self.debug: print("[pythonCleaningTopRun2::analyze]")
         # 1) Configure settings for the first event processed
         if not self.isSet:
@@ -163,6 +174,7 @@ class pythonCleaningTopRun2UL(Module):
 
 
         # 2) Process
+        #t_process = time.time()
         if self.debug: print("[pythonCleaningTopRun2::analyze] Beginning processing")
         leps = [l for l in Collection(event, self.lc)]
         jets = [j for j in Collection(event, self.jc)]
@@ -250,12 +262,15 @@ class pythonCleaningTopRun2UL(Module):
 
 
         if self.debug: print("[pythonCleaningTopRun2::analyze] Finished jet loop")
+        #print("Time for the process step: %1.9f" %(time.time()-t_process))
         # 3) Save results
         # First, in the collectionskimmers
+        #t_save = time.time()
         if self.debug: print("[pythonCleaningTopRun2::analyze] Saving results in collectionskimmers")
+        #t_initEvent = time.time()
         for col in self.colls:
             self.colls[col].initEvent(event)
-
+        #print("Time for the init step: %1.9f" %(time.time()-t_initEvent))
         for delta,sys in self.systsJEC.iteritems():
             self.colls["jetsSup"    + sys].push_back_all(finalJetDict["jetsSup"    + sys])
             self.colls["jetsInf"    + sys].push_back_all(finalJetDict["jetsInf"    + sys])
@@ -277,7 +292,8 @@ class pythonCleaningTopRun2UL(Module):
         for delta,sys in self.systsLepEn.iteritems():
             self.wrappedOutputTree.fillBranch('nBJetSelMedium' + str(self.jetPts[0]) + sys + self.label, finalnBtagsDict0[sys])
             self.wrappedOutputTree.fillBranch('nBJetSelMedium' + str(self.jetPts[1]) + sys + self.label, finalnBtagsDict1[sys])
-
+        #print("Time for the save step: %1.9f" %(time.time()-t_save))
+        #print("Time for the analyze(): %1.9f" %(time.time()-t_analyze))
         return True
 
 
