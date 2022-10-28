@@ -86,39 +86,34 @@ class CollectionSkimmer {
             nOut_ = 0;
             nIn_ = 0;
             ensureSize(count());
+            if (saveTagForAll_) {
+                nIn_ = count();
+                memset(iTagOut_.get(), 0, nIn_);
+            }
         }
 
         /// push back entry iSrc from input collection to output collection
-        //void push_back(unsigned int iSrc) {
-        void push_back(int iSrc) {
-            unsigned int newiSrc = 0;
-            if (iSrc < 0) {
-                // This is a padding element. This solution to large inefficiency is temporal.
-                if (saveSelectedIndices_) iOut_[nOut_]   = iSrc;
-                if (saveTagForAll_)       iTagOut_[iSrc] = 0;
-                return;
-            }
-            else {
-                newiSrc = abs(iSrc);
-            }
-            /*
+        void push_back(unsigned int iSrc) {
             assert(iSrc < count());
             ensureSize(iSrc);
             for (auto & c : copyFloats_) c.copy(iSrc, nOut_);
-            for (auto & c : copyInts_) c.copy(iSrc, nOut_);
+            for (auto & c : copyInts_)   c.copy(iSrc, nOut_);
             for (auto & c : copyUChars_) c.copy(iSrc, nOut_);
-            if (saveSelectedIndices_) iOut_[nOut_] = iSrc;
-            if (saveTagForAll_) iTagOut_[iSrc] = 1;*/
 
-            assert(newiSrc < count());
-            ensureSize(newiSrc);
-            for (auto & c : copyFloats_) c.copy(newiSrc, nOut_);
-            for (auto & c : copyInts_)   c.copy(newiSrc, nOut_);
-            for (auto & c : copyUChars_) c.copy(newiSrc, nOut_);
-            if (saveSelectedIndices_)    iOut_[nOut_] = newiSrc;
-            if (saveTagForAll_)          iTagOut_[newiSrc] = 1;
-            
+            if (saveSelectedIndices_) iOut_[nOut_]   = iSrc;
+            if (saveTagForAll_)       iTagOut_[iSrc] = 1;
+
             nOut_++;
+            return;
+        }
+
+        // To be called at the end of every event when using the optimised set of methods
+        void finishevtopt() {
+            if  ((unsigned int)nOut_ < maxEntries_) {
+                if (saveSelectedIndices_) {
+                    memset(&iOut_[nOut_], padSelectedIndicesCollectionWith_, maxEntries_ - nOut_);
+                }
+            }
             return;
         }
 

@@ -269,6 +269,11 @@ class pythonCleaningTopRun2UL(Module):
             # Afterwards, those variables not in CS or their counts
             self.wrappedOutputTree.fillBranch('nBJetSelMedium' + str(self.jetPts[0]) + sys + self.label, finalnBtagsDict0[sys])
             self.wrappedOutputTree.fillBranch('nBJetSelMedium' + str(self.jetPts[1]) + sys + self.label, finalnBtagsDict1[sys])
+            
+            self.colls["jetsSup"    + sys].finishEventOpt()
+            self.colls["jetsInf"    + sys].finishEventOpt()
+            self.colls["fwdjetsSup" + sys].finishEventOpt()
+            self.colls["fwdjetsInf" + sys].finishEventOpt()
 
         for delta,sys in self.systsLepEn.iteritems():
             self.colls["jetsSup"    + sys].push_back_allOpt(finalJetDict["jetsSup"    + sys])
@@ -279,6 +284,11 @@ class pythonCleaningTopRun2UL(Module):
             # Afterwards, those variables not in CS or their counts
             self.wrappedOutputTree.fillBranch('nBJetSelMedium' + str(self.jetPts[0]) + sys + self.label, finalnBtagsDict0[sys])
             self.wrappedOutputTree.fillBranch('nBJetSelMedium' + str(self.jetPts[1]) + sys + self.label, finalnBtagsDict1[sys])
+
+            self.colls["jetsSup"    + sys].finishEventOpt()
+            self.colls["jetsInf"    + sys].finishEventOpt()
+            self.colls["fwdjetsSup" + sys].finishEventOpt()
+            self.colls["fwdjetsInf" + sys].finishEventOpt()
 
         if self.debug: print("[pythonCleaningTopRun2::analyze] Event finished.")
 
