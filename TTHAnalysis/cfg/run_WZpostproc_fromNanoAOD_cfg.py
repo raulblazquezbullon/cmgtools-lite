@@ -91,41 +91,25 @@ DatasetsAndTriggers["Muon"].extend(deepcopy(DatasetsAndTriggers["SingleMuon"]))
 DatasetsAndTriggers["MET" ] = []
 
 
-### TRIGGER OVERLAP REMOVAL: 
-# --- VERY IMPORTANT NOTE: 
-# As of run 356386 DoubleMuon + SingleMuon are merged into the Muon dataset
-# These two datasets are orthogonal, so there's no overlap between them.
-# if run > 356386 -- No SingleMuon nor DoubleMuon events are going to pass
-# if run < 356386 -- Muon dataset events are not going to pass
-  
-# -- Do not veto Muon or DoubleMuon datasets 
-DatasetsAndVetos["Muon"]       = [] 
-DatasetsAndVetos["DoubleMuon"] = []
+### TRIGGER OVERLAP REMOVAL: inherited from tt-run3 analysis
+# -- Do not veto MuonEG datasets
+DatasetsAndVetos["MuonEG"]     = [] 
 
-# -- Veto SingleMuon with DoubleMuon
-DatasetsAndVetos["SingleMuon"] = deepcopy(DatasetsAndTriggers["DoubleMuon"])
+# -- Veto DoubleMuon with MuonEG
+DatasetsAndVetos["DoubleMuon"] = deepcopy(DatasetsAndTriggers["MuonEG"])
 
-# Now:
-# * (DoubleMuon + SingleMuon) \cap Muon = \void
-# * ([DoubleMuon triggers] U [SingleMuon triggers]) = [Muon triggers]
+# -- Same for Muon
+DatasetsAndVetos["Muon"]       = deepcopy(DatasetsAndTriggers["MuonEG"])
 
-# -- Veto MuonEG with Muon/Double/Single muon triggers
-# * Since the union of Double/Single muon triggers equals to the triggers used in Muon dataset
-#   and given that these are applied as a set concatenation of OR functions -> it's irrelevant that
-#   we are applying, in a sense, the same condition two times 
-#   (one for Double+Single and one for Muon triggers)
+# -- Veto EGamma with the remaining datasets
+DatasetsAndVetos["EGamma"]     = deepcopy(DatasetsAndTriggers["MuonEG"])
+DatasetsAndVetos["EGamma"].extend(deepcopy(DatasetsAndTriggers["DoubleMuon"])) 
+DatasetsAndVetos["EGamma"].extend(deepcopy(DatasetsAndTriggers["Muon"])) 
 
-# Thus, independent to the runnumber, 
-# MuonEG dataset is always vetoed using Double+Single muon triggers
-DatasetsAndVetos["MuonEG"]     = deepcopy(DatasetsAndTriggers["Muon"])
-DatasetsAndVetos["MuonEG"].extend(deepcopy(DatasetsAndTriggers["DoubleMuon"])) 
-DatasetsAndVetos["MuonEG"].extend(deepcopy(DatasetsAndTriggers["SingleMuon"])) 
-
-# -- Same logical procedure applies for the EGamma dataset 
-DatasetsAndVetos["EGamma"]     = deepcopy(DatasetsAndTriggers["Muon"])
-DatasetsAndVetos["EGamma"].extend(deepcopy(DatasetsAndTriggers["DoubleMuon"]))
-DatasetsAndVetos["EGamma"].extend(deepcopy(DatasetsAndTriggers["SingleMuon"]))
-DatasetsAndVetos["EGamma"].extend(deepcopy(DatasetsAndTriggers["MuonEG"]))
+# -- Same for SingleMuon
+DatasetsAndVetos["SingleMuon"] = deepcopy(DatasetsAndTriggers["MuonEG"])
+DatasetsAndVetos["SingleMuon"].extend(deepcopy(DatasetsAndTriggers["DoubleMuon"]))
+DatasetsAndVetos["SingleMuon"].extend(deepcopy(DatasetsAndTriggers["EGamma"]))
 
 # -- We do not use MET samples
 DatasetsAndVetos["MET"]        = []
@@ -136,9 +120,13 @@ if doData:
   dataSamples = []
   for pd, trigs in DatasetsAndTriggers.iteritems():
     if not trigs: continue
-    for comp in byCompName(allData, [pd+'.*']):
+    for comp in byCompName(allData, [pd+"_"]):
+      print("---")
+      print("Adding to %s dataset"%comp.name)
       comp.triggers = trigs[:]
+      print(" >> triggers %s"%trigs[:])
       comp.vetoTriggers = DatasetsAndVetos[pd][:]
+      print(" >> vetoTriggers %s"%DatasetsAndVetos[pd][:])
       dataSamples.append(comp)
   selectedComponents = dataSamples 
 else:
@@ -147,7 +135,7 @@ else:
       #"WJetsToLNu_LO_ext",
       "WJetsToLNu",
 #      "DYJetsToLL_M_50", 
-      "DYJetsToLL_M_50",
+      "DYJetsToLL_M50",
       "DYJetsToLL_M10to50",
       # ----------------- ttbar + single top + tW
       "TTTo2L2Nu",
@@ -265,6 +253,10 @@ from PhysicsTools.NanoAODTools.postprocessing.framework.postprocessor import Pos
 
 # in the cut string, keep only the main cuts to have it simpler
 modules = lepCollector 
+if (doData):
+  from CMGTools.TTHAnalysis.tools.nanoAOD.remove_overlap import OverlapRemover
+  modules.extend( [lambda : OverlapRemover()] ) 
+
 cut = None 
 compression = "ZLIB:3" #"LZ4:4" #"LZMA:9"
 

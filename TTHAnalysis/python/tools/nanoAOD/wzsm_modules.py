@@ -3,11 +3,13 @@ Modules used for the WZ-Run3 Analysis.
 '''
 import os
 import ROOT 
-# --------------------------------------------------------------------------------------------------------------------------- #
-# ---------------------------------------------------- LEPTON MERGER+SKIM  -------------------------------------------------- # 
-# --------------------------------------------------------------------------------------------------------------------------- #
+# ---------------------------------------------------------------------------------------------------------------------------------------- #
+# ---------------------------------------------------- LEPTON MERGER+SKIM+LABELTAGGERS  -------------------------------------------------- # 
+# ---------------------------------------------------------------------------------------------------------------------------------------- #
 from PhysicsTools.NanoAODTools.postprocessing.modules.common.collectionMerger import collectionMerger
 from CMGTools.TTHAnalysis.tools.nanoAOD.skimNRecoLeps import SkimRecoLeps
+from CMGTools.TTHAnalysis.tools.nanoAOD.DatasetTagger import datasetTagger
+
 ### Lepton definitions 
 # Muons 
 min_mu_pt = 5
@@ -30,17 +32,22 @@ muonSelection = lambda l : ((abs(l.eta) < max_mu_eta) and (l.pt > min_mu_pt)
 elecSelection = lambda l : (( abs(l.eta) < max_el_eta) and (l.pt > min_el_pt)
                               and isoAndIPCuts(l) and l.lostHits < 2)
 
+
 lepMerge = collectionMerger(input = ["Electron", "Muon"], 
                             output = "LepGood",
                             selector = dict(Muon = muonSelection, Electron = elecSelection))
 
 lepSkim = SkimRecoLeps() # Skim configuration: at least 2 leptons
-lepCollector = [lepMerge, lepSkim]
+tagger = lambda : datasetTagger()
+
+lepCollector = [lepMerge, lepSkim, tagger]
+
 # --------------------------------------------------------------------------------------------------------------------------- #
 # ---------------------------------------------------- LEPTON RECLEANER ----------------------------------------------------- # 
 # --------------------------------------------------------------------------------------------------------------------------- #
 from CMGTools.TTHAnalysis.tools.nanoAOD.leptonJetRecleanerWZSM import LeptonJetRecleanerWZSM
-from CMGTools.TTHAnalysis.tools.functionsWZ_v5 import _loose_muon, _loose_electron, _loose_lepton, _fO_muon, _fO_electron, _fO_lepton,_tight_muon,_tight_electron,_tight_lepton,conept
+from CMGTools.TTHAnalysis.tools.nanoAOD.functions_wz import _loose_muon, _loose_electron, _loose_lepton, _fO_muon, _fO_electron, _fO_lepton,_tight_muon,_tight_electron,_tight_lepton, conept
+
 recleaner_2022 = lambda : LeptonJetRecleanerWZSM("Mini",
                                         lambda lep :        _loose_lepton(lep, 0.0494, 0.2770),         #Loose selection 
                                         lambda lep,jetlist: _fO_lepton(lep, 0.0494, 0.2770,jetlist),    #Clean on FO
