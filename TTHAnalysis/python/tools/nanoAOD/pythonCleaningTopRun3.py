@@ -265,7 +265,7 @@ class pythonCleaningTopRun2UL(Module):
         #print("Time for the process step: %1.9f" %(time.time()-t_process))
         # 3) Save results
         # First, in the collectionskimmers
-        #t_save = time.time()
+        t_save = time.time()
         if self.debug: print("[pythonCleaningTopRun2::analyze] Saving results in collectionskimmers")
         #t_initEvent = time.time()
         for col in self.colls:
@@ -292,7 +292,7 @@ class pythonCleaningTopRun2UL(Module):
         for delta,sys in self.systsLepEn.iteritems():
             self.wrappedOutputTree.fillBranch('nBJetSelMedium' + str(self.jetPts[0]) + sys + self.label, finalnBtagsDict0[sys])
             self.wrappedOutputTree.fillBranch('nBJetSelMedium' + str(self.jetPts[1]) + sys + self.label, finalnBtagsDict1[sys])
-        #print("Time for the save step: %1.9f" %(time.time()-t_save))
+        print("Time for the save step: %1.9f" %(time.time()-t_save))
         #print("Time for the analyze(): %1.9f" %(time.time()-t_analyze))
         return True
 
