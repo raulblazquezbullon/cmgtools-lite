@@ -125,11 +125,11 @@ remove_overlap_booleans = [ lambda ev : (
 
                             (   ev.channel == ch.ElMu and (not ev.Trigger_em) and (not ev.Trigger_1m) and ev.Trigger_1e)
                             or (ev.channel == ch.Elec and (not ev.Trigger_2e) and ev.Trigger_1e)
-                            if (ev.datatag == tags.singleelec and not ev.year == 2018) else
+                            if (ev.datatag == tags.singleelec and not ev.year == 2022) else
 
                             (   ev.channel == ch.ElMu and (not ev.Trigger_em) and (not ev.Trigger_1m) and ev.Trigger_1e)
                             or (ev.channel == ch.Elec and (ev.Trigger_2e or ev.Trigger_1e))
-                            if (ev.datatag == tags.singleelec and ev.year == 2018) else
+                            if (ev.datatag == tags.singleelec and ev.year == 2022) else
                             
                             (   ev.channel == ch.Muon and ev.Trigger_2m)
                             if ev.datatag == tags.doublemuon else
@@ -340,7 +340,7 @@ cleaning_data_2022 = lambda : pythonCleaningTopRun2UL(label = "Recl",
                                                jetPts = [IDDict["jets"]["pt"], IDDict["jets"]["pt2"]],
                                                jetPtNoisyFwd = IDDict["jets"]["ptfwdnoise"],
                                                jecvars   = [], lepenvars = [], isMC = False,
-                                               year_     = "2018",
+                                               year_     = "2022",
 #                                               algo      = "DeepCSV",
 )
 
@@ -377,7 +377,7 @@ eventVars_mc_2022   = lambda : EventVars_TopRun2UL('', 'Recl',
                                               lepvars = ['mu'])
 eventVars_data = lambda : EventVars_TopRun2UL('', 'Recl', isMC = False,
                                               jecvars = [],
-                                              lepvars = ["elscale"])
+                                              lepvars = [""])
 
 from CMGTools.TTHAnalysis.tools.particleAndPartonVars_TopRun3 import particleAndPartonVars_TopRun2UL
 theDressAndPartVars = lambda : particleAndPartonVars_TopRun2UL()

@@ -10,7 +10,7 @@ r.gROOT.SetBatch(True)
 #### Settings
 prodname = "2022-10-25"
 
-datasamples  = ["SingleMuon", "SingleElec", "DoubleMuon", "DoubleEG", "MuonEG", "LowEGJet", "HighEGJet", "EGamma"]
+datasamples  = ["SingleMuon", "SingleElec", "DoubleMuon", "DoubleEG", "MuonEG", "LowEGJet", "HighEGJet", "EGamma","Muon"]
 
 #mcpath       = "/beegfs/data/nanoAODv9"
 mcpath       = "/beegfs/data/nanoAODv9/temp/postprocv10Run3/tw_run3/productions/" + prodname
@@ -178,11 +178,13 @@ sampledict["2022"] = {
 
 
     ##### Datos
-    "SingleMuon"     : "SingleMuon_Run2016",
-    "SingleElectron" : "SingleElectron_Run2016",
-    "DoubleMuon"     : "DoubleMuon_Run2016",
-    "DoubleEG"       : "DoubleEG_Run2016",
-    "MuonEG"         : "MuonEG_Run2016",
+    "SingleMuon"     : "SingleMuon_Run2022",
+    #"SingleElectron" : "SingleElectron_Run2016",
+    "DoubleMuon"     : "DoubleMuon_Run2022",
+    #"DoubleEG"       : "DoubleEG_Run2016",
+    "MuonEG"         : "MuonEG_Run2022",
+    "EGamma"         : "EGamma_Run2022",
+    "Muon"           : "Muon_Run2022",
 
 }
 
