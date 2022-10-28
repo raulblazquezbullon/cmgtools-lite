@@ -25,7 +25,7 @@ class CollectionSkimmer:
         """To be called to initialize the input tree. 
            initEvent also takes care of re-calling it if needed"""
         #always read the size, to be sure of the capacity of the vectors
-        self._impl.srcCount(tree.valueReader('n'+self._iprefix[:-1]))
+        self._impl.srcCount(tree.valueReader('n' + self._iprefix[:-1]))
         for i in self._ints:   self._impl.copyInt(i[0]  , tree.arrayReader(self._iprefix+i[1])) if type(i) == tuple else self._impl.copyInt(i, tree.arrayReader(self._iprefix+i))  
         for f in self._floats: self._impl.copyFloat(f[0], tree.arrayReader(self._iprefix+f[1])) if type(f) == tuple else self._impl.copyFloat(f, tree.arrayReader(self._iprefix+f))
         for u in self._uchars: self._impl.copyUChar(u[0], tree.arrayReader(self._iprefix+u[1])) if type(u) == tuple else self._impl.copyUChar(u, tree.arrayReader(self._iprefix+u))
@@ -61,6 +61,17 @@ class CollectionSkimmer:
             self._impl.clearopt()
             return False
 
+    def finishEventOpt(self):
+        """To be called at the end of every event.
+           Optimised version: REQUIRES TO USE THE CORRESPONDING SET OF METHODS!
+           There is no corresponding method for the legacy ones."""
+        if not self._optused:
+            raise RuntimeError("FATAL: finishEventOpt method used w/o the initEventOpt function. Please, use the legacy methods or all the 'opt' methods.")
+        
+        self._impl.finishevtopt()
+
+        return
+    
     def cppImpl(self):
         """Get the C++ CollectionSkimmer instance, to pass to possible C++ worker code"""
         return self._impl
@@ -88,11 +99,7 @@ class CollectionSkimmer:
            Optimised version. REQUIRES TO USE THE CORRESPONDING SET OF METHODS!!"""
         if not self._optused:
             raise RuntimeError("FATAL: initEventOpt method has not been used to initialise the collector. Please, use the legacy methods or all the 'opt' methods.")
-
-        theL = len(iSrcList)
-        if theL < self._maxSize:
-            iSrcList += [self._padSelectedIndicesWithVAL] * (self._maxSize - theL)
-
+        
         for iSrc in iSrcList:
             self._impl.push_back(iSrc)
         return
