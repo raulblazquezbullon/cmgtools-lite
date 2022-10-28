@@ -1,0 +1,6 @@
+data : SingleMuon_Run2022*     ;
+data : EGamma_Run2022*         ;
+data : DoubleMuon_Run2022*     ; IgnoreMeIfIdontExist=1
+data : DoubleEG_Run2022*       ; IgnoreMeIfIdontExist=1
+data : MuonEG_Run2022*         ;
+data : Muon_Run2022*           ;
