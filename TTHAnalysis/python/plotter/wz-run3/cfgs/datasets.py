@@ -4,9 +4,9 @@ datasets_wz = {
   "WJets"     : [("WJets_inc", ".*WJetsToLNu.*", 63199.9)
                 ],
   # ----------------- Drell Yan
-  "DY"        : [("DYJetsToLL_M-50", ".*DYJetsToLL_M-50", 6221.3),
-                 ("DYJetsToLL_M-50_ext1", ".*DYJetsToLL_M-50_.*pythia8ext1", 6221.3),
-                 ("DYJetsToLL_M-50_ext2", ".*DYJetsToLL_M-50_.*pythia8ext2", 6221.3),
+  "DY"        : [#("DYJetsToLL_M-50", ".*DYJetsToLL_M-50", 6221.3),
+                 ("DYJetsToLL_M50_ext1", ".*DYJetsToLL_M-50_.*pythia8ext1", 6221.3),
+                 ("DYJetsToLL_M50_ext2", ".*DYJetsToLL_M-50_.*pythia8ext2", 6221.3),
                  ("DYJetsToLL_M10to50", ".*DYJetsToLL_M10to50.*", 19317.5)
                 ],
   # ----------------- ttbar 
@@ -29,8 +29,8 @@ datasets_wz = {
   },
  "data" : {
   # ---------------- Muon 
-  "Muon"       : [("Muon_Run2022C", ".*Muon_Run2022C.*"),
-                  ("Muon_Run2022D", ".*Muon_Run2022D.*")],
+  "Muon"       : [("Muon_Run2022C", ".*_Muon_Run2022C.*"),
+                  ("Muon_Run2022D", ".*_Muon_Run2022D.*")],
   # ---------------- EGamma 
   "EGamma"     : [("EGamma_Run2022C", ".*EGamma_Run2022C.*"), 
                   ("EGamma_Run2022D", ".*EGamma_Run2022D.*")],

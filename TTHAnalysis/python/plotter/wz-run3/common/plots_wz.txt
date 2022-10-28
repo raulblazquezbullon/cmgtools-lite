@@ -1,6 +1,8 @@
 ## basic lepton observables
 ## ----------------------------------------------------------
 
+era: getEra($DATA{1}$MC{0}, run): [-0.5,0.5,1.5]; XTitle = "Data taking era", Legend='TR', MoreY=2.0,  xBinLabels="2022C\,2022D"
+
 nLepTight : 4*(abs(LepSel_pdgId[0])+abs(LepSel_pdgId[1])+abs(LepSel_pdgId[2])-33)/2 + (LepSel_isTight[0]) + (LepSel_isTight[1])+ (LepSel_isTight[2]) : 16,-0.5,15.5 ; XTitle="nMuon*4+nTight", IncludeOverflow=True, LegendCutoff5e-3, Logy, YMin=1e-1, YMax=50000
 
 FOel_pt     : if3(abs(LepSel_pdgId)==11 && !LepSel_isTight,LepSel_pt,-1) : 20,0,200    ; YTitle="Non Tight Electrons", XTitle="p_{T\,cone}(e)"   , IncludeOverflows=False, IncludeOverflow=True, LegendCutoff5e-3, Logy, YMin=1e-1, YMax=50000
@@ -128,6 +130,7 @@ mll3l      : mll_3l        : 15,75,105    ; XTitle="M_{ll} (GeV)"               
 mtW3l      : mT_3l         : 20,0,200    ; XTitle="M_{T} (GeV)"                 , LegendCutoff5e-3, Logy, YMin=1, YMax=500000, Legend="TR"
 mllZ2      : mass_2(LepSel_pt[unused4(mll_i1[0], mll_i2[0], 1)],LepSel_eta[unused4(mll_i1[0], mll_i2[0], 1)], LepSel_phi[unused4(mll_i1[0], mll_i2[0], 1)],0, LepSel_pt[unused4(mll_i1[0], mll_i2[0], 2)], LepSel_eta[unused4(mll_i1[0], mll_i2[0], 2)], LepSel_phi[unused4(mll_i1[0], mll_i2[0], 2)],0): 100,0,200 ; XTitle="M_{Z2} (GeV)", LegendCutoff5e-3, Logy, YMin=1, YMax=500000, Legend="TR"
 mll3lconv  : mll_3l        : 8,35,75    ; XTitle="M_{ll} (GeV)"                , LegendCutoff5e-3, Logy, YMin=1, YMax=5000000, Legend="TR"
+
 
 
 flavor3l   : (abs(LepSel_pdgId[0])+abs(LepSel_pdgId[1])+abs(LepSel_pdgId[2])-33)/2  : 4,-0.5,3.5 ; XTitle="flavor", xBinLabels="eee\,ee#mu\,e#mu#mu\,#mu#mu#mu", Legend="TL", LegendCutoff5e-3, MoreY=3.0

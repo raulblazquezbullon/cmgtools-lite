@@ -25,10 +25,11 @@ relExtraDY = 1.2
 
 extraOverCmsTextSize  = 0.76
 
-lumi_13TeV = "20.1 fb^{-1}"
-lumi_8TeV  = "19.7 fb^{-1}" 
-lumi_7TeV  = "5.1 fb^{-1}"
-lumi_sqrtS = ""
+lumi_13p6TeV = "1.2 fb{-1}"
+lumi_13p6TeV   = "20.1 fb^{-1}"
+lumi_8TeV    = "19.7 fb^{-1}" 
+lumi_7TeV    = "5.1 fb^{-1}"
+lumi_sqrtS   = ""
 
 drawLogo      = False
 
@@ -70,12 +71,12 @@ def CMS_lumi(pad,  iPeriod,  iPosX , aLittleExtra=0.04):
         lumiText += lumi_7TeV
         lumiText += " (7 TeV)"
     elif ( iPeriod==4 ):
-        lumiText += lumi_13TeV
-        lumiText += " (13 TeV)"
+        lumiText += lumi_13p6TeV
+        lumiText += " (13.6 TeV)"
     elif ( iPeriod==7 ):
         if( outOfFrame ):lumiText += "#scale[0.85]{"
-        lumiText += lumi_13TeV 
-        lumiText += " (13 TeV)"
+        lumiText += lumi_13p6TeV 
+        lumiText += " (13.6 TeV)"
         lumiText += " + "
         lumiText += lumi_8TeV 
         lumiText += " (8 TeV)"

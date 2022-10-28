@@ -1089,7 +1089,7 @@ class PlotMaker:
                                   header=self._options.legendHeader if self._options.legendHeader else pspec.getOption("LegendHeader", ""),
                                   doWide=doWide, totalError=totalError, columns = pspec.getOption('LegendColumns',options.legendColumns), extralabel = self._options.printBestFit)
                 if self._options.doOfficialCMS:
-                    CMS_lumi.lumi_13TeV = "%.0f fb^{-1}" % self._options.lumi
+                    CMS_lumi.lumi_13p6TeV = "%.1f fb^{-1}" % float(self._options.lumi)
                     CMS_lumi.extraText  = self._options.cmsprel
                     CMS_lumi.lumi_sqrtS = self._options.cmssqrtS
                     CMS_lumi.CMS_lumi(ROOT.gPad, 4, 0, -0.005 if doWide and doRatio else 0.01 if doWide else 0.05)
@@ -1296,7 +1296,7 @@ def addPlotMakerOptions(parser, addAlsoMCAnalysis=True):
     parser.add_option("--ss",  "--scale-signal", dest="signalPlotScale", default=1.0, type="float", help="scale the signal in the plots by this amount");
     #parser.add_option("--lspam", dest="lspam",   type="string", default="CMS Simulation", help="Spam text on the right hand side");
     parser.add_option("--lspam", dest="lspam",   type="string", default="#bf{CMS} #it{Preliminary}", help="Spam text on the right hand side");
-    parser.add_option("--rspam", dest="rspam",   type="string", default="%(lumi) (13 TeV)", help="Spam text on the right hand side");
+    parser.add_option("--rspam", dest="rspam",   type="string", default="%(lumi) (13.6 TeV)", help="Spam text on the right hand side");
     parser.add_option("--addspam", dest="addspam", type = "string", default=None, help="Additional spam text on the top left side, in the frame");
     parser.add_option("--topSpamSize", dest="topSpamSize",   type="float", default=1.2, help="Zoom factor for the top spam");
     parser.add_option("--print", dest="printPlots", type="string", default="png,pdf,txt", help="print out plots in this format or formats (e.g. 'png,pdf,txt')");
@@ -1350,7 +1350,7 @@ def addPlotMakerOptions(parser, addAlsoMCAnalysis=True):
     parser.add_option("--noCms", dest="doOfficialCMS", action="store_false", default=True, help="Use official tool to write CMS spam")
     parser.add_option("--vertLines", dest="vertLines", type="string", default=None, help="Use this lines file to add additional lines and text to the plot (experimental)")
     parser.add_option("--cmsprel", dest="cmsprel", type="string", default="Preliminary", help="Additional text (Simulation, Preliminary, Internal)")
-    parser.add_option("--cmssqrtS", dest="cmssqrtS", type="string", default="13 TeV", help="Sqrt of s to be written in the official CMS text.")
+    parser.add_option("--cmssqrtS", dest="cmssqrtS", type="string", default="13.6 TeV", help="Sqrt of s to be written in the official CMS text.")
     parser.add_option("--printBin", dest="printBinning", type="string", default=None, help="Write 'Events/xx' instead of 'Events' on the y axis")
     parser.add_option("--printBF", dest="printBestFit", type="string", default=None, help="Print BF in postfit plots")
 if __name__ == "__main__":

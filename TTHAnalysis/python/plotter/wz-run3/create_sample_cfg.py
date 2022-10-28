@@ -16,7 +16,7 @@ year = 2022
 
 kreators = {
  "data" : lambda args : "{name} = kreator.makeDataComponentFromLocal('{dname}', '', '{path}', '', '.*root', {year}, [], json = json)".format(**args),
- "mc"   : lambda args : "{name} = kreator.makeMCComponentFromLocal('{dname}', '', '{path}', '', '.*root', {xsec})".format(**args)
+ "mc"   : lambda args : "{name} = kreator.makeMCComponentFromLocal('{dname}', '', '{path}', '.*root', {xsec})".format(**args)
 }
 
 goldenjson = "Cert_Collisions2022_355100_357900_Golden.json"
@@ -82,7 +82,7 @@ if __name__ == "__main__":
     # -- Now create the CFG
     outname = os.path.join( os.environ["CMSSW_BASE"], "src/CMGTools/RootTools/python/samples/%s"%(prefix%type_) ) 
     if os.path.isfile(outname):
-      os.system("cp %s %s"%(outname, outname + ".bkp"))
+      os.system("cp %s %s"%(outname, outname + "."))
 
     print("Creating file %s"%outname)
     f = open(outname, "w")
@@ -93,7 +93,7 @@ if __name__ == "__main__":
     f.write("kreator = ComponentCreator()\n")
 
     if type_ == "data": 
-      f.write("json = '%s'\n"%goldenjson)
+      f.write("json = os.environ['CMSSW_BASE']+'/src/CMGTools/TTHAnalysis/cfg/%s'\n"%goldenjson)
  
 
     wholelist = []
@@ -112,12 +112,12 @@ if __name__ == "__main__":
           if type_ == "mc":
             args  = dict(name = name,
                          dname = subsample[0],
-                         path = fold,
+                         path = "%s/%s"%( paths[type_], fold ),
                          xsec = subsample[2])
           else:
             args = dict(name = name,
                         dname = subsample[0],
-                        path = fold, 
+                        path = "%s/%s"%( paths[type_], fold ),
                         year = year)
           comp = kreator(args)                
           f.write(comp+"\n")
