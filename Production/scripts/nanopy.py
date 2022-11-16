@@ -77,9 +77,11 @@ def _processOneComponent(pp, comp, outdir, preprocessor, options):
         else:
             raise RuntimeError("Can't detect year scenario for %s, %s" % (comp.name, comp.dataset))
 
-        cut = "(%s) && (%s)" % (cut if cut else 1, " || ".join("fires_{trigger}_{year}(run,AltBranch$({trigger},0))".format(year=year, trigger=t.rstrip("_v*")) for t in trigSel))
+        #cut = "(%s) && (%s)" % (cut if cut else 1, " || ".join("fires_{trigger}_{year}(run,AltBranch$({trigger},0))".format(year=year, trigger=t.rstrip("_v*")) for t in trigSel))
+        cut = "(%s) && (%s)" % (cut if cut else 1, " || ".join(trigSel))
         if trigVeto:
-            cut += " && !(%s)" % (" || ".join("fires_{trigger}_{year}(run,AltBranch$({trigger},0))".format(year=year, trigger=t.rstrip("_v*")) for t in trigVeto))
+           #cut += " && !(%s)" % " || ".join("fires_{trigger}_{year}(run,AltBranch$({trigger},0))".format(year=year, trigger=t.rstrip("_v*")) for t in trigVeto))
+            cut += " && !(%s)" % (" || ".join(trigVeto))
     elif trigVeto: raise RuntimeError("vetoTriggers specified without triggers for component %s" % comp.name)
     pp.cut = cut
     # input
