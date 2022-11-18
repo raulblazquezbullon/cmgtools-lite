@@ -184,8 +184,10 @@ def reMax(hist,hist2,islog,factorLin=1.3,factorLog=2.0,doWide=False):
 
 def doShadedUncertainty(h):
     ret = h.graphAsymmTotalErrors()
-    ret.SetFillStyle(options.TotalUncRatioStyle[0] if options.TotalUncRatioStyle[0]!=3244 else 3244);
-    ret.SetFillColor(options.TotalUncRatioColor[0] if options.TotalUncRatioColor[0]!=432 else ROOT.kGray+2)
+    ret.SetFillStyle(3013);
+    ret.SetFillColor(1)
+#    ret.SetFillStyle(options.TotalUncRatioStyle[0] if options.TotalUncRatioStyle[0]!=3013 else 3013);
+#    ret.SetFillColor(options.TotalUncRatioColor[0] if options.TotalUncRatioColor[0]!=1 else 1)
     ret.SetMarkerStyle(0)
     ret.SetLineWidth(options.histoLineWidth)
     if options.removeMarkerUncertainty:
@@ -1078,7 +1080,7 @@ class PlotMaker:
                             doWide=doWide, totalError=totalError, columns = pspec.getOption('LegendColumns',options.legendColumns),
                             DrawHorizontalErrBarInLegend = DrawHorizontalErrBarInLegendFlag, shiftLegend = pspec.getOption('shiftLegend', 0), opts = self._options)
         if self._options.doOfficialCMS:
-            CMS_lumi.lumi_13TeV = "%.1f fb^{-1}" % self._options.lumi
+            CMS_lumi.lumi_13TeV = "%.1f fb^{-1}" %(float(self._options.lumi))
             CMS_lumi.extraText  = self._options.cmsprel
             CMS_lumi.lumi_sqrtS = self._options.cmssqrtS
             CMS_lumi.CMS_lumi(ROOT.gPad, 4, 0, -0.005 if doWide and doRatio else 0.01 if doWide else 0.05)
