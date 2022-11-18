@@ -1,0 +1,34 @@
+# vim: syntax=sh
+
+# -- Systematic uncertainties file for WZ analyis -- #
+
+### Alias definitions
+$alias : WZ           : prompt_.*WZ
+$alias : ZZ           : prompt_.*ZZ 
+$alias : fakes        : .*fakes.*
+$alias : PromptFromMC : $ZZ|$fakes
+
+## -------------------------------------
+## Lumi uncertainties 
+## -------------------------------------
+lumi_2022_early  : $PromptFromMC | convs   : .*  : normSymm  :1.06
+
+## -------------------------------------
+## Normalization 
+## -------------------------------------
+normZZ_ML      : $ZZ             : .* : normSymm :  1.06
+normfakes_ML   : $fakes          : .* : normSymm :  1.3
+
+## -------------------------------------
+## JECs 
+## -------------------------------------
+jestotal : $PromptFromMC|$WZ : .* : templateAsymm; FakeRates=['wz-run3/common/frs-jec/fr-standard-jecTotalUp.txt'\,'wz-run3/common/frs-jec/fr-standard-jecTotalDown.txt']
+
+
+## -------------------------------------
+## Lepton SFs 
+## -------------------------------------
+
+
+elecidsf : $PromptFromMC|$WZ : .* : templateAsymm; AddWeights=["electronSF_Up/electronSF"\,"electronSF_Down/electronSF"]
+muonidsf : $PromptFromMC|$WZ : .* : templateAsymm; AddWeights=["muonSF_Up/muonSF"\,"muonSF_Down/muonSF"]

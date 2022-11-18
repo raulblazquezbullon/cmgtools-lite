@@ -56,7 +56,7 @@ class ComponentCreator(object):
 
          return component
 
-    def makeMyPrivateMCComponent(self,name,dataset,user,pattern,dbsInstance, xSec=1,useAAA=False):
+    def makeMyPrivateMCComponent(self,name,dataset,user,pattern,dbsInstance, xSec=1,useAAA=False,fracNegWeights=None):
 
         component = cfg.MCComponent(
             dataset=dataset,
@@ -68,9 +68,26 @@ class ComponentCreator(object):
             effCorrFactor = 1,
         )
         component.splitFactor = 100
+        component.fracNegWeights = fracNegWeights
 
         return component
 
+    def makeMyPrivateDataComponent(self,name,dataset,user,pattern,dbsInstance,json=None,run_range=None,triggers=[],vetoTriggers=[],useAAA=False,jsonFilter=False):
+         component = cfg.DataComponent(
+            #dataset = dataset,
+            name = name,
+            files = self.getMyFiles(dataset,user,pattern,dbsInstance,useAAA=useAAA),
+            intLumi = 1,
+            triggers = triggers,
+            json = (json if jsonFilter else None)
+            )
+         component.json = json
+         component.vetoTriggers = vetoTriggers
+         #component.dataset_entries = self.getPrimaryDatasetEntries(dataset,user,pattern,run_range=run_range,useAAA=useAAA)
+         component.dataset = dataset
+         component.run_range = run_range
+         component.splitFactor = 100
+         return component
     def getFilesFromEOS(self,name,dataset,path,pattern=".*root"):
         from CMGTools.Production.dataset import getDatasetFromCache, writeDatasetToCache
         if "%" in path: path = path % dataset;
@@ -120,31 +137,6 @@ class ComponentCreator(object):
         component.splitFactor = 100
         return component
 
-    def getFilesFromPSI(self,name,dataset,path,pattern=".*root"):
-        from CMGTools.Production.dataset import getDatasetFromCache, writeDatasetToCache
-        if "%" in path: path = path % dataset;
-        try:
-            files = getDatasetFromCache('OVD%{path}%{pattern}.pck'.format(path = path.replace('/','_'), pattern = pattern))
-        except IOError:
-            files = [ 'root://t3se01.psi.ch//'+x.replace("/pnfs/psi.ch/cms/trivcat/","") for x in eostools.listFiles('/pnfs/psi.ch/cms/trivcat/'+path) if re.match(pattern,x) ] 
-            if len(files) == 0:
-                raise RuntimeError, "ERROR making component %s: no files found under %s matching '%s'" % (name,path,pattern)
-            writeDatasetToCache('OVD%{path}%{pattern}.pck'.format(path = path.replace('/','_'), pattern = pattern), files)
-        return files
-
-    def makeMCComponentFromLocal(self,name,dataset,path,pattern=".*root",xSec=1):
-        component = cfg.MCComponent(
-            dataset=dataset,
-            name = name,
-            files = self.getFilesFromLocal(name,dataset,path,pattern),
-            xSection = xSec,
-            nGenEvents = 1,
-            triggers = [],
-            effCorrFactor = 1,
-        )  
-        component.splitFactor = 100
-        return component
-        
     def getFilesFromIC(self, dataset, user, pattern):
         # print 'getting files for', dataset,user,pattern
         ds = datasetToSource( user, dataset, pattern, True )
@@ -171,10 +163,11 @@ class ComponentCreator(object):
         try:
             files = getDatasetFromCache('Local%{path}%{pattern}.pck'.format(path = path.replace('/','_'), pattern = pattern))
         except IOError:
-            files = [ x for x in eostools.listFiles(path,True) if re.match(pattern,x) ] 
+            files = [ x for x in eostools.listFiles(path,True) if re.match(pattern,x) ]  
             if len(files) == 0:
                 raise RuntimeError, "ERROR making component %s: no files found under %s matching '%s'" % (name,path,pattern)
             writeDatasetToCache('Local%{path}%{pattern}.pck'.format(path = path.replace('/','_'), pattern = pattern), files)
+        #print(files, type(files))
         return files
 
     def makeMCComponentFromLocal(self,name,dataset,path,pattern=".*root",xSec=1):
@@ -199,6 +192,7 @@ class ComponentCreator(object):
             triggers = triggers,
             json = (json if jsonFilter else None)
             )
+        if useAAA==True: print('aa2' )
         component.json = json
         component.vetoTriggers = vetoTriggers
         component.dataset_entries = self.getPrimaryDatasetEntries(dataset,user,pattern,run_range=run_range)
@@ -206,49 +200,52 @@ class ComponentCreator(object):
         component.run_range = run_range
         component.splitFactor = 100
         return component
-
-    def makeMyPrivateDataComponent(self,name,dataset,user,pattern,dbsInstance,json=None,run_range=None,triggers=[],vetoTriggers=[],useAAA=False,jsonFilter=False):
+    def makeDataComponentFromLocal(self,name,dataset,path,folders,pattern,year,black_list,json=None,run_range=None,triggers=[],vetoTriggers=[],jsonFilter=False): #clara
         component = cfg.DataComponent(
             #dataset = dataset,
             name = name,
-            files = self.getMyFiles(dataset,user,pattern,dbsInstance,useAAA=useAAA),
+            files = self.getFilesFromOviedo(name,path,folders,pattern,black_list),
             intLumi = 1,
             triggers = triggers,
             json = (json if jsonFilter else None)
             )
         component.json = json
+        component.year = year
         component.vetoTriggers = vetoTriggers
-        #        component.dataset_entries = self.getPrimaryDatasetEntries(dataset,user,pattern,run_range=run_range)
         component.dataset = dataset
         component.run_range = run_range
         component.splitFactor = 100
         return component
-
-    def makeDataComponentFromLocal(self,name,dataset,path,pattern,json=None,run_range=None,triggers=[],vetoTriggers=[],useAAA=False,jsonFilter=False):
-        component = cfg.DataComponent(
-            #dataset = dataset,
-            name = name,
-            files = self.getFilesFromLocal(name,dataset,path,pattern),
-            intLumi = 1,
-            triggers = triggers,
-            json = (json if jsonFilter else None)
-            )
-        component.json = json
-        component.vetoTriggers = vetoTriggers
-        component.dataset_entries = self.getPrimaryDatasetEntries(dataset,user,pattern,run_range=run_range)
-        component.dataset = dataset
-        component.run_range = run_range
-        component.splitFactor = 100
-        return component
-
     def getFiles(self, dataset, user, pattern, useAAA=False, run_range=None, json=None, unsafe = False):
         # print 'getting files for', dataset,user,pattern
         ds = createDataset( user, dataset, pattern, readcache=True, run_range=run_range, json=json, unsafe = unsafe )
         files = ds.listOfGoodFiles()
         mapping = 'root://eoscms.cern.ch//eos/cms%s'
-        if useAAA: mapping = 'root://cms-xrd-global.cern.ch/%s'
+        if useAAA:
+           print('aaa') 
+           mapping = 'root://cms-xrd-global.cern.ch/%s'
         return [ mapping % f for f in files]
-
+    def getFilesFromOviedo(self,name,path,folders,pattern=".*root",black_list=[]):
+        from CMGTools.Production.dataset import getDatasetFromCache, writeDatasetToCache
+        folders = folders.split(",")
+        files = []
+        for folder in folders:
+            pathi = path 
+            if "%s" in path:
+                pathi = path % folder;
+            try:
+               files_i = getDatasetFromCache('Local%{path}%{pattern}.pck'.format(path = pathi.replace('/','_'), pattern = pattern))
+            except IOError:
+               files_i = [ x for x in eostools.listFiles(pathi,True) if re.match(pattern,x) and x not in black_list ] 
+               if len(files_i) == 0:
+                  raise RuntimeError, "ERROR making component %s: no files found under %s matching '%s'" % (name,pathi,pattern)
+               writeDatasetToCache('Local%{path}%{pattern}.pck'.format(path = pathi.replace('/','_'), pattern = pattern), files_i)
+            for f in files_i:
+                
+                if f in black_list: continue 
+                #print(f)
+                files.append(f) 
+        return files
     def getPrimaryDatasetEntries(self, dataset, user, pattern, useAAA=False, run_range=None):
         # print 'getting files for', dataset,user,pattern
         ds = createDataset( user, dataset, pattern, True, run_range=run_range )
