@@ -1,0 +1,24 @@
+# tW Run3
+
+Last updated: **22 Nov 2022**
+
+(Documentation work in progress)
+
+List of important files:
+
+ * plotterHelper.py
+ * cardsHelper.py
+
+Commands:
+ 
+ * To produce plots:
+    python tw-run3/plotterHelper.py -P 2022-10-25 -y 2022 -o ./temp_Run3_plots/2022_11_22 -r nojets -u -q batch -j 64
+ * To produce cards:
+    python tw-run3/cardsHelper.py -P 2022-10-25 -y 2022 -o ./temp_Run3_cards/2022_11_22 -r all -v all -a -q batch -j 64 
+ * To make the fit:
+    python tw-run3/fitsHelper.py -y 2022 -i temp_Run3_cards/2022_11_22/ -r 1j1t,2j1t,2j2t
+ * To make impacts:
+    python tw-run3/getInclusiveImpacts.py -y 2022 -i temp_Run3_cards/2022_11_22/ -r 1j1t,2j1t,2j2t -j 12
+
+ * To compute btag eff:
+    python mcEfficiencies.py --tree NanoAOD  -P /beegfs/data/nanoAODv9/temp/postprocv10Run3/tw_run3/productions/2022-10-25/2022/ --split-factor=-1 --year 2022 --FMCs {P}/x_btageff_pasf  tw-run3/mca-tw.txt tw-run3/cuts-tw-btageff.txt  tw-run3/plots-tw/plots-tw-nojets_btageffsels.txt tw-run3/plots-tw/plots-tw-nojets_btageffvars.txt  -o temp_Run3_plots/2022_11_22_addedLeptonSFs_correctedJson_addedUnc/2022/eff/output.root -j 12

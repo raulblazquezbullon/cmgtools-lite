@@ -97,6 +97,9 @@ class pythonCleaningTopRun2UL(Module):
                           "DeepFlav_2022_L"   : 0.0490, #copied from 2018
                           "DeepFlav_2022_M"   : 0.2783,
                           "DeepFlav_2022_T"   : 0.7100,
+                          "DeepCSV_2022_L"    : 0.1208,
+                          "DeepCSV_2022_M"    : 0.4168,
+                          "DeepCSV_2022_T"    : 0.7665,
                          }
         self.btagWPcut = 0.
         self.deltaRcut = deltaRcut
@@ -179,23 +182,24 @@ class pythonCleaningTopRun2UL(Module):
         leps = [l for l in Collection(event, self.lc)]
         jets = [j for j in Collection(event, self.jc)]
 
-        finalJetDict = {}
-        finalnBtagsDict0 = {}
-        finalnBtagsDict1 = {}
-        for delta,jvar in self.systsJEC.iteritems():
-            finalnBtagsDict0[jvar] = 0
-            finalnBtagsDict1[jvar] = 0
-        for delta,lvar in self.systsLepEn.iteritems():
-            finalnBtagsDict0[lvar] = 0
-            finalnBtagsDict1[lvar] = 0
-
-        for key in self.colls:
-            finalJetDict[key]    = []
-
         cleanedandgoodjets = {}
         cleanedandgoodjets[""] = self.areMyJetsCleanAndGood(jets, leps)
 
+        finalJetDict = {}
+        finalnBtagsDict0 = {}
+        finalnBtagsDict1 = {}
+
+        for key in self.colls:
+            finalJetDict[key] = []
+            self.colls[key].initEventOpt(event) #### NOTE: using optimised set of methods. DO NOT MIX THEM WITH LEGACY ONES!
+
+        for delta,jvar in self.systsJEC.iteritems():
+            finalnBtagsDict0[jvar] = 0
+            finalnBtagsDict1[jvar] = 0
+
         for delta,lvar in self.systsLepEn.iteritems():
+            finalnBtagsDict0[lvar] = 0
+            finalnBtagsDict1[lvar] = 0
             leps = [l for l in Collection(event, self.lc + lvar[1:])]
             cleanedandgoodjets[lvar] = self.areMyJetsCleanAndGood(jets, leps)
 
@@ -265,35 +269,40 @@ class pythonCleaningTopRun2UL(Module):
         #print("Time for the process step: %1.9f" %(time.time()-t_process))
         # 3) Save results
         # First, in the collectionskimmers
-        t_save = time.time()
-        if self.debug: print("[pythonCleaningTopRun2::analyze] Saving results in collectionskimmers")
+        #t_save = time.time()
+        if self.debug: print("[pythonCleaningTopRun2::analyze] Saving results in collectionskimmers and non-collectionskimmer variables")
         #t_initEvent = time.time()
-        for col in self.colls:
-            self.colls[col].initEvent(event)
         #print("Time for the init step: %1.9f" %(time.time()-t_initEvent))
         for delta,sys in self.systsJEC.iteritems():
-            self.colls["jetsSup"    + sys].push_back_all(finalJetDict["jetsSup"    + sys])
-            self.colls["jetsInf"    + sys].push_back_all(finalJetDict["jetsInf"    + sys])
-            self.colls["fwdjetsSup" + sys].push_back_all(finalJetDict["fwdjetsSup" + sys])
-            self.colls["fwdjetsInf" + sys].push_back_all(finalJetDict["fwdjetsInf" + sys])
-
-        for delta,sys in self.systsLepEn.iteritems():
-            self.colls["jetsSup"    + sys].push_back_all(finalJetDict["jetsSup"    + sys])
-            self.colls["jetsInf"    + sys].push_back_all(finalJetDict["jetsInf"    + sys])
-            self.colls["fwdjetsSup" + sys].push_back_all(finalJetDict["fwdjetsSup" + sys])
-            self.colls["fwdjetsInf" + sys].push_back_all(finalJetDict["fwdjetsInf" + sys])
-
-        if self.debug: print("[pythonCleaningTopRun2::analyze] Saving results in non-collectionskimmers variables")
-        # Afterwards, those variables not in CS or their counts
-        for delta,sys in self.systsJEC.iteritems():
+            self.colls["jetsSup"    + sys].push_back_allOpt(finalJetDict["jetsSup"    + sys])
+            self.colls["jetsInf"    + sys].push_back_allOpt(finalJetDict["jetsInf"    + sys])
+            self.colls["fwdjetsSup" + sys].push_back_allOpt(finalJetDict["fwdjetsSup" + sys])
+            self.colls["fwdjetsInf" + sys].push_back_allOpt(finalJetDict["fwdjetsInf" + sys])
+            # Afterwards, those variables not in CS or their counts
             self.wrappedOutputTree.fillBranch('nBJetSelMedium' + str(self.jetPts[0]) + sys + self.label, finalnBtagsDict0[sys])
             self.wrappedOutputTree.fillBranch('nBJetSelMedium' + str(self.jetPts[1]) + sys + self.label, finalnBtagsDict1[sys])
 
+            self.colls["jetsSup"    + sys].finishEventOpt()
+            self.colls["jetsInf"    + sys].finishEventOpt()
+            self.colls["fwdjetsSup" + sys].finishEventOpt()
+            self.colls["fwdjetsInf" + sys].finishEventOpt()
+
         for delta,sys in self.systsLepEn.iteritems():
+            self.colls["jetsSup"    + sys].push_back_allOpt(finalJetDict["jetsSup"    + sys])
+            self.colls["jetsInf"    + sys].push_back_allOpt(finalJetDict["jetsInf"    + sys])
+            self.colls["fwdjetsSup" + sys].push_back_allOpt(finalJetDict["fwdjetsSup" + sys])
+            self.colls["fwdjetsInf" + sys].push_back_allOpt(finalJetDict["fwdjetsInf" + sys])
+            # Afterwards, those variables not in CS or their counts
             self.wrappedOutputTree.fillBranch('nBJetSelMedium' + str(self.jetPts[0]) + sys + self.label, finalnBtagsDict0[sys])
             self.wrappedOutputTree.fillBranch('nBJetSelMedium' + str(self.jetPts[1]) + sys + self.label, finalnBtagsDict1[sys])
-        print("Time for the save step: %1.9f" %(time.time()-t_save))
+
+            self.colls["jetsSup"    + sys].finishEventOpt()
+            self.colls["jetsInf"    + sys].finishEventOpt()
+            self.colls["fwdjetsSup" + sys].finishEventOpt()
+            self.colls["fwdjetsInf" + sys].finishEventOpt()
+        #print("Time for the save step: %1.9f" %(time.time()-t_save))
         #print("Time for the analyze(): %1.9f" %(time.time()-t_analyze))
+        if self.debug: print("[pythonCleaningTopRun2::analyze] Event finished.")
         return True
 
 

@@ -17,7 +17,9 @@ mresta_ = 172.5 ** 2 - 80.379 ** 2
 
 class EventVars_TopRun2UL(Module):
     def __init__(self, label = "", recllabel = 'Recl', isMC = True,
-                 jecvars = ["jesTotal", "jer"], lepvars = ["mu"]):
+                 jecvars = ["jesTotal", "jer"], lepvars = ["mu"], metBranchName = "MET"):
+
+        self.metBranchName = metBranchName
 
         self.jecbranches = ["Lep1Lep2Jet1MET_Pt",
                             "Lep1Lep2Jet1MET_M",
@@ -297,11 +299,11 @@ class EventVars_TopRun2UL(Module):
                 metpt  = -99.
                 metphi = -99.
                 if event.isData:
-                    metpt  = event.MET_pt
-                    metphi = event.MET_phi
+                    metpt  = getattr(event, '{MET}_pt'.format(MET = self.metBranchName))
+                    metphi = getattr(event, '{MET}_phi'.format(MET = self.metBranchName))
                 else:
-                    metpt  = getattr(event, 'MET_T1_pt{v}'.format( v = sys if sys != "" else ""))
-                    metphi = getattr(event, 'MET_T1_phi{v}'.format(v = sys if sys != "" else ""))
+                    metpt  = getattr(event, '{MET}_T1_pt{v}'.format(MET = self.metBranchName, v = sys if sys != "" else ""))
+                    metphi = getattr(event, '{MET}_T1_phi{v}'.format(MET = self.metBranchName, v = sys if sys != "" else ""))
 
                 met_4m.SetPtEtaPhiM(metpt, 0, metphi, 0)
 
@@ -384,11 +386,11 @@ class EventVars_TopRun2UL(Module):
         metpt  = -99.
         metphi = -99.
         if event.isData:
-            metpt  = event.MET_pt
-            metphi = event.MET_phi
+            metpt  = getattr(event, '{MET}_pt'.format(MET = self.metBranchName))
+            metphi = getattr(event, '{MET}_phi'.format(MET = self.metBranchName))
         else:
-            metpt  = getattr(event, 'MET_T1_pt')
-            metphi = getattr(event, 'MET_T1_phi')
+            metpt  = getattr(event, '{MET}_T1_pt'.format(MET = self.metBranchName))
+            metphi = getattr(event, '{MET}_T1_phi'.format(MET = self.metBranchName))
 
         met_4m = r.TLorentzVector()
         met_4m.SetPtEtaPhiM(metpt,  0, metphi, 0)

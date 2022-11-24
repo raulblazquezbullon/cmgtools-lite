@@ -542,8 +542,8 @@ if __name__ == "__main__":
                     effratio.SetBinError(ratiobin,sqrt(passing*failing*((passing+failing)**(-3))))
                 pmap[proc] = effratio
             eff.SetName("_".join([y.name,x.name,proc]))
-#            outfile.WriteTObject(eff)
-#            outfile.Write(eff)
+            #outfile.WriteTObject(eff)
+            #outfile.Write(eff)
             eff.Write()
     if len(procs)>=1 and "cut" in options.groupBy:
         for x in xvars:

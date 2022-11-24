@@ -243,7 +243,7 @@ addJECs_2018    = createJMECorrector(dataYear      = "UL2018",
 addJECs_2022    = createJMECorrector(dataYear      = "2022",
                                      jetType       = "AK4PFPuppi",
                                      jesUncert     = "All",
-                                     metBranchName = "MET",
+                                     metBranchName = "PuppiMET",
                                      splitJER      = True,
                                      applyHEMfix   = False,)
 
@@ -305,7 +305,7 @@ cleaning_mc_2022 = lambda : pythonCleaningTopRun2UL(label  = "Recl",
                                              isMC      = True,
                                              year_     = "2022",
                                              #debug     = True,
-#                                             algo      = "DeepCSV",
+                                             algo      = "DeepCSV",
 )
 
 cleaning_data_2016apv = lambda : pythonCleaningTopRun2UL(label = "Recl",
@@ -341,7 +341,7 @@ cleaning_data_2022 = lambda : pythonCleaningTopRun2UL(label = "Recl",
                                                jetPtNoisyFwd = IDDict["jets"]["ptfwdnoise"],
                                                jecvars   = [], lepenvars = [], isMC = False,
                                                year_     = "2022",
-#                                               algo      = "DeepCSV",
+                                               algo      = "DeepCSV",
 )
 
 #### Add Rochester corrections
@@ -374,10 +374,10 @@ eventVars_mc_2018   = lambda : EventVars_TopRun2UL('', 'Recl',
                                               lepvars = ['mu', "elsigma"])
 eventVars_mc_2022   = lambda : EventVars_TopRun2UL('', 'Recl',
                                               jecvars = ['jesTotal', 'jer'] + ['jes' + v for v in jecGroupsFull] + ["jer%i"%i for i in range(6)] + ["unclustEn"],
-                                              lepvars = ['mu'])
+                                              lepvars = ['mu'], metBranchName='PuppiMET')
 eventVars_data = lambda : EventVars_TopRun2UL('', 'Recl', isMC = False,
                                               jecvars = [],
-                                              lepvars = [""])
+                                              lepvars = [""], metBranchName='PuppiMET')
 
 from CMGTools.TTHAnalysis.tools.particleAndPartonVars_TopRun3 import particleAndPartonVars_TopRun2UL
 theDressAndPartVars = lambda : particleAndPartonVars_TopRun2UL()
@@ -437,6 +437,13 @@ btagWeights_2018 = lambda : btag_weighterUL(btagpath + "/" + "wp_deepJet_106XUL1
                                             lepenvars = ["mu", "elsigma"],
                                             splitCorrelations = True,
                                             year = "2018")
+btagWeights_2022 = lambda : btag_weighterUL(btagpath + "/" + "wp_deepCSV_106XUL18_v2_mod.csv",
+                                            btagpath + "/" + "btagEffs_2022_11_24.root",
+                                            'deepcsv',
+                                            jecvars   = ['jesTotal', 'jer'] + ['jes' + v for v in jecGroupsFull] + ["jer%i"%i for i in range(6)],
+                                            lepenvars = ["mu"],
+                                            splitCorrelations = True,
+                                            year = "2022")
 
 # Lepton & trigger SF
 from CMGTools.TTHAnalysis.tools.nanoAOD.lepScaleFactors_TopRun3 import lepScaleFactors_TopRun2UL
@@ -444,6 +451,7 @@ leptrigSFs_2016apv = lambda : lepScaleFactors_TopRun2UL(year_ = "2016apv", lepen
 leptrigSFs_2016    = lambda : lepScaleFactors_TopRun2UL(year_ = "2016",    lepenvars = ["mu", "elsigma"])
 leptrigSFs_2017    = lambda : lepScaleFactors_TopRun2UL(year_ = "2017",    lepenvars = ["mu", "elsigma"])
 leptrigSFs_2018    = lambda : lepScaleFactors_TopRun2UL(year_ = "2018",    lepenvars = ["mu", "elsigma"])
+leptrigSFs_2022    = lambda : lepScaleFactors_TopRun2UL(year_ = "2018",    lepenvars = ["mu"])
 
 
 #sfSeq_2016 = [leptrigSFs, btagWeights_2016, addTopPtWeight, addjetPUidMod]   ### COSINA
@@ -451,6 +459,22 @@ sfSeq_2016apv   = [leptrigSFs_2016apv, btagWeights_2016apv, addTopPtWeight]
 sfSeq_2016      = [leptrigSFs_2016,    btagWeights_2016,    addTopPtWeight]
 sfSeq_2017      = [leptrigSFs_2017,    btagWeights_2017,    addTopPtWeight]
 sfSeq_2018      = [leptrigSFs_2018,    btagWeights_2018,    addTopPtWeight]
+sfSeq_2022      = [leptrigSFs_2022,    btagWeights_2022]
+
+
+### BDT
+import importlib
+
+mvas_mc = [lambda : getattr(importlib.import_module("CMGTools.TTHAnalysis.tools.nanoAOD.MVA_tWRun3"), "MVA_tWRun3_")()]
+
+tmpstr = """mvas_mc.append(lambda : getattr(importlib.import_module("CMGTools.TTHAnalysis.tools.nanoAOD.MVA_tWRun3"), "MVA_tWRun3_{v}{sv}")() )"""
+
+for v in (['jesTotal', 'jer'] + ['jes' + v for v in jecGroupsFull] + ["jer%i"%i for i in range(6)] + ["mu"] + ["unclustEn"]):
+    for sv in ["Up", "Down"]:
+        eval(tmpstr.format(v = v, sv = sv))
+        
+mvas_data = lambda : getattr(importlib.import_module("CMGTools.TTHAnalysis.tools.nanoAOD.MVA_tWRun3"), "MVA_tWRun3_")()
+
 
 # Con jet PU ID
 #from CMGTools.TTHAnalysis.tools.nanoAOD.jetPUid_weighterUL import jetPUid_weighterUL
@@ -471,7 +495,7 @@ sfSeq_2018      = [leptrigSFs_2018,    btagWeights_2018,    addTopPtWeight]
 
 
 ###### b-tagging efficiencies
-#from CMGTools.TTHAnalysis.tools.btageffVars_tWRun2 import btageffVars_tWRun2
+from CMGTools.TTHAnalysis.tools.btageffVars_tWRun3 import btageffVars_tWRun2
 #btagEffFtree_2016 = lambda : btageffVars_tWRun2(wp_   = 1,
                                                 #algo_ = ['deepjet',
                                                          #"deepcsv"],
@@ -486,10 +510,10 @@ sfSeq_2018      = [leptrigSFs_2018,    btagWeights_2018,    addTopPtWeight]
                                                          #btagpath + "/DeepCSV_94XSF_V4_B_F_YearCorrelation-V1.csv"],
                                                 #year_ = 2017)
 
-#btagEffFtree_2018 = lambda : btageffVars_tWRun2(wp_   = 1,
-                                                #algo_ = ['deepjet',
-                                                         #"deepcsv"],
-                                                #csv_  = [btagpath + "/DeepJet_102XSF_V1_YearCorrelation-V1.csv",
-                                                         #btagpath + "/DeepCSV_102XSF_V1_YearCorrelation-V1.csv"],
-                                                #year_ = 2018)
+btagEffFtree_2022 = lambda : btageffVars_tWRun2(wp_   = 1,
+                                                algo_ = ['deepjet',
+                                                         "deepcsv"],
+                                                csv_  = [btagpath + "/wp_deepJet_106XUL18_v2_mod.csv",
+                                                         btagpath + "/wp_deepCSV_106XUL18_v2_mod.csv"],
+                                                year_ = 2022)
 

@@ -77,6 +77,12 @@ class btag_weighterUL(Module):
                           "DeepFlav_2018_L"   : 0.0490,
                           "DeepFlav_2018_M"   : 0.2783,
                           "DeepFlav_2018_T"   : 0.7100,
+                          "DeepFlav_2022_L"   : 0.0490, #copied from 2018
+                          "DeepFlav_2022_M"   : 0.2783,
+                          "DeepFlav_2022_T"   : 0.7100,
+                          "DeepCSV_2022_L"    : 0.1208,
+                          "DeepCSV_2022_M"    : 0.4168,
+                          "DeepCSV_2022_T"    : 0.7665,
                          }
         self.xuandict = {"deepcsv" : "DeepCSV",
                          "deepjet" : "DeepFlav"}
