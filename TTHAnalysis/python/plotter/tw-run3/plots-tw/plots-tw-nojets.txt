@@ -1,5 +1,6 @@
 channel   : channel                : [0.5,1.5,2.5,3.5]                      ; IncludeUnderflow=False, LegendCutoff=0,  XTitle='Channel', xBinLabels="e#mu\,#mu#mu\,ee"
 tot_weight: 1 : 1,0.5,1.5; XTitle = "Selected events", LegendCutoff=0, MoreY=2.0
+nvertex: PV_npvsGood : 65, -0.5, 64.5; XTitle = "Number of vertices", LegendCutoff=0, MoreY=2.0
 
 nJetnBJet : getnJetnBJet(nJetSel30_Recl, nBJetSelMedium30_Recl) : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5] ; IncludeUnderflow=False, LegendCutoff=0,  XTitle='(Number of jets\, number of b-tagged jets)', XNDiv=5, shiftLegend=-0.1, xBinLabels="(0! 0)\,(1! 0)\,(1! 1)\,(2! 0)\,(2! 1)\,(2! 2)\,(#geq 3! #geq 0)", MoreY=1.9
 #nJetnBJet : getnJetnBJet(nJetSel30_Recl, nBJetSelMedium30_Recl) : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5,10.5] ; IncludeUnderflow=False, LegendCutoff=0,  XTitle='(Number of jets\, number of b-tagged jets)', XNDiv=5, xBinLabels="(0-0)\,(1-0)\,(1-1)\,(2-0)\,(2-1)\,(2-2)\,(3-0)\,(3-1)\,(3-2)\,(3-3)\,(#geq 4-#geq 0)", MoreY=1.7

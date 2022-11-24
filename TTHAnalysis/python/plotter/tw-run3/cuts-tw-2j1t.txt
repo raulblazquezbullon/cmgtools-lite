@@ -1,6 +1,6 @@
 alwaystrue: 1
 
-lumijson:   $DATA{(isThisInTheJSON == 1)} $MC{(1)}
+#lumijson:   $DATA{(isThisInTheJSON == 1)} $MC{(1)}
 trigger:    pass_trigger
 metfilters: $DATA{Flag_eeBadScFilter && Flag_goodVertices && Flag_globalSuperTightHalo2016Filter && Flag_HBHENoiseFilter && Flag_HBHENoiseIsoFilter && Flag_EcalDeadCellTriggerPrimitiveFilter && Flag_BadPFMuonFilter} $MC{Flag_goodVertices && Flag_globalSuperTightHalo2016Filter && Flag_HBHENoiseFilter && Flag_HBHENoiseIsoFilter && Flag_EcalDeadCellTriggerPrimitiveFilter && Flag_BadPFMuonFilter}
 emu:        channel == 1
