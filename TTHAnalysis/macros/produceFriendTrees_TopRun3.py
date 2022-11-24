@@ -33,6 +33,7 @@ friendfolders = {0 : "0_jecs",
                  #3 : "3_varstrigger_compgen",
                  4 : "4_scalefactors",
                  #4 : "4_scalefactors_puid",
+                 5 : "5_mvas",
                  "btageffvars" : "x_btageff_pasf",
 }
 
@@ -41,6 +42,8 @@ chunksizes    = {0 : 200000,
                  2 : 200000,
                  3 : 200000,
                  4 : 200000,
+                 5 : 250000,
+                 "btageffvars" : 500000,
 }
 minchunkbytes = 1000
 
@@ -294,9 +297,19 @@ def SendDatasetJobs(task):
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 1) + friendsuff
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 2) + friendsuff
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 3) + friendsuff
+    
+    elif step == 5:
+        #module_  = "mvas_" + ("mc" if not isData else "data")
+        module_  = "mvas_" + ("mc" if not isData else "data")
+        if not isData:
+            friends_ +=       friendpref + getFriendsFolder(dataset, friendsbasepath, 0) + friendsuff
+        friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 1) + friendsuff
+        friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 2) + friendsuff
+        friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 3) + friendsuff
 
     elif step == "btageffvars":
         module_ = "btagEffFtree_{y}".format(y  = year)
+        friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 0) + friendsuff
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 1) + friendsuff
 
     if module_ != "":
@@ -306,7 +319,7 @@ def SendDatasetJobs(task):
                                    friends = friends_,
                                    dataset = dataset_,
                                    chunksize = chunksizes[step],
-                                   cluster = (clusterscaff.format(jobname = jobname_, logdir = logdir_, queue = queue)
+                                   cluster = (clusterscaff.format(jobname = jobname_, logdir = logdir_, queue = queue) 
                                               if (queue != "") else
                                               #("--split-factor=-1 -j " + str(nthreads))
                                               ("-j " + str(nthreads))
