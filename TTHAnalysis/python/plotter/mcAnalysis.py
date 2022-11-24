@@ -238,7 +238,7 @@ class MCAnalysis:
             cnames = [ x.strip() for x in field[1].split("+") ]
             total_w = 0.; to_norm = False; ttys = [];
             genWeightName = extra["genWeightName"] if "genWeightName" in extra else "genWeight"
-            genSumWeightName = extra["genSumWeightName"] if "genSumWeightName" in extra else "genEventSumw_"  #for nanoAODv6 this should be genEventSumw_
+            genSumWeightName = extra["genSumWeightName"] if "genSumWeightName" in extra else "genEventSumw"  #for nanoAODv6 this should be genEventSumw_, for nano v10 genEventSumw
             is_w = -1
             pname0 = pname
             for cname in cnames:
