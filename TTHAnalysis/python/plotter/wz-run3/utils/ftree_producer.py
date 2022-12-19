@@ -1,5 +1,4 @@
 from producer import producer
-import cfgs.ftrees as ftrees
 
 class ftree_producer(producer):
   name = "ftree_producer"
@@ -38,7 +37,7 @@ class ftree_producer(producer):
     doData = "data" if self.isData else "mc"
 #    inpath   = "/".join([self.inpath, self.tier, self.prodname, doData])
     inpath   = "/".join([self.inpath, doData])
-    outname  = "%s/%s"%(inpath.replace("phedex","phedexrw"), ftrees.modules[self.step][0])
+    outname  = "%s/%s"%(inpath.replace("phedex","phedexrw"), self.modules[self.step][0])
     self.inpath = inpath
     self.outname = outname
     ## Use the parent class override_paths method
@@ -48,10 +47,10 @@ class ftree_producer(producer):
   
   def add_friends(self, step):
     friendtxt = ""
-    modulekeys = ftrees.modules.keys()
+    modulekeys = self.modules.keys()
     for key in modulekeys[:step-1]:
-      modulename = ftrees.modules[key][0]
-      moduletype = ftrees.modules[key][1]
+      modulename = self.modules[key][0]
+      moduletype = self.modules[key][1]
       addmethod = "-F"
       if moduletype == "mc":
         if self.isData: continue
@@ -70,7 +69,7 @@ class ftree_producer(producer):
                     "%s"%self.outname,
                     "--name %s"%self.jobname,
                     "-t %s"%treename,
-                    "-n -I %s %s"%(self.wz_modules, ftrees.modules[step][0]),
+                    "-n -I %s %s"%(self.wz_modules, self.modules[step][0]),
                     " -N %s"%self.chunksize,
                     "%s"%extra,
                     self.add_friends(step)]

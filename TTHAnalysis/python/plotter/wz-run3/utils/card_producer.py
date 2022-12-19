@@ -1,15 +1,14 @@
 from producer import producer
 from utils.ftree_producer import ftree_producer
-import cfgs.ftrees as ftrees
 from cfgs.lumi import lumis
 
-class plot_producer(producer):
-  name = "plot_producer"
-  basecommand = "python mcPlots.py"
+class card_producer(producer):
+  name = "card_producer"
+  basecommand = "python makeShapeCards_wzRun3.py"
   functions = ["wz-run3/functionsWZ.cc",
                "wz-run3/functionsSF.cc"]
   weights = ["muonSF*electronSF"]
-  jobname = "CMGPlot"
+  jobname = "CMGCard"
 
   def add_more_options(self, parser):
     self.parser = parser
@@ -30,11 +29,16 @@ class plot_producer(producer):
                   type="string", 
                   default = "wz-run3/common/mcc_triggerdefs.txt", 
                   help = '''Event selection requirements file''')
-    parser.add_option("--plotfile", 
-                  dest = "plotfile", 
+    parser.add_option("--var", 
+                  dest = "var", 
                   type="string", 
-                  default = "wz-run3/common/plots_wz.txt", 
-                  help = '''File with plots''')
+                  default = "\'4*(LepW_pdgId < 0) + (abs(LepZ1_pdgId)+abs(LepZ2_pdgId)+abs(LepW_pdgId)-33)/2\'", 
+                  help = '''Variable to make card''')
+    parser.add_option("--binning", 
+                  dest = "binning", 
+                  type="string", 
+                  default = "\'8,-0.5,7.5\'", 
+                  help = '''Binning for variable''')
     parser.add_option("--outfolder", 
                   dest = "outfolder", 
                   type="string", 
@@ -61,10 +65,10 @@ class plot_producer(producer):
     self.outname = outname
     ## Use the parent class override_paths method
     ## to prioritize I/O paths given by the user. 
-    super(plot_producer, self).override_paths()
+    super(type(self), self).override_paths()
     return
 
- 
+
   def run(self):
     # Yearly stuff 
     year     = self.year
@@ -76,32 +80,24 @@ class plot_producer(producer):
 
     # Other plotting stuff 
     plottingStuff =  "--obj Events "
-    plottingStuff += "--maxRatioRange 0.5 2.0 "
-    plottingStuff += "--fixRatioRange "
-    plottingStuff += "--print C,pdf,png,txt "
-    plottingStuff += "--legendWidth 0.23 "
-    plottingStuff += "--legendFontSize 0.036 "
-    plottingStuff += "--showMCError "
-    plottingStuff += "--showRatio "
-    plottingStuff += "--perBin "
-    plottingStuff += "--showRatio "
-    plottingStuff += "--neg "
     
     
     # List with all the options given to CMGTools
     self.commandConfs = ["%s"%self.mca, 
                    "%s"%self.cutfile,
-                   "%s"%self.plotfile,
-                   "-l %s"%lumi,
-                   "-f --pdir %s"%outname,
+                   "%s"%self.var,
+                   "%s"%self.binning,
                    "--tree %s "%self.treename,
                    "-P {path}/mc/ -P {path}/data/".format(path = inpath),
                    self.add_friends(),
                    "-L " + " -L ".join(self.functions),
-                   "- W '%s'"%("*".join(self.weights)),
-                   "%s"%plottingStuff,
+                   "-W '%s'"%("*".join(self.weights)),
                    "-j %s"%(self.ncores),
+                   "-l %s"%lumi,
                    "%s"%mincuts,
+                   " --od %s"%outname,
+                   " -o card",
+                   " --ms --neg --noNegVar --hardZero",
                    "%s"%extra]
     return
 

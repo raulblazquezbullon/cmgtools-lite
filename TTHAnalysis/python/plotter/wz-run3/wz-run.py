@@ -5,8 +5,24 @@ Main script to run WZ-Run3 analysis
 # -- Import libraries -- #
 from optparse import OptionParser
 import sys
-import cfgs.configurations as cfgs 
-from utils import *
+
+# -- Import producers -- #
+from utils.producer import producer
+from utils.postprocessor_producer import postprocessor_producer
+from utils.ftree_producer import ftree_producer
+from utils.plot_producer import plot_producer
+from utils.card_producer import card_producer
+
+
+# -- Dictionary with instances to each producer -- #
+producers = {
+ "postproc" : postprocessor_producer,
+ "friend"   : ftree_producer,
+ "plot"     : plot_producer,
+ "card"     : card_producer,
+}
+
+
 
 # -- Define functions -- #
 def add_parsing_opts():
@@ -46,9 +62,9 @@ if __name__ == "__main__":
   parser = add_parsing_opts()
   
   ### Validity input checks
-  available_modes = cfgs.producers.keys()
+  available_modes = producers.keys()
    
-  producer_instance = cfgs.producers[mode]
+  producer_instance = producers[mode]
 
   producer = producer_instance(parser)
   producer.run()

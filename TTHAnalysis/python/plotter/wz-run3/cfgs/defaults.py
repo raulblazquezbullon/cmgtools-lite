@@ -14,7 +14,12 @@ defaults = {
     "inpath" : "/beegfs/data/nanoAODv9/temp_wz/",
     #"inpath"    : "/pool/phedex/userstorage/cvico/wz-run3/trees",
     "outname"   : "/pool/phedexrw/userstorage/cvico/wz-run3/plots"
-  } 
+  }, 
+ "card_producer" : { 
+    "inpath" : "/beegfs/data/nanoAODv9/temp_wz/",
+    #"inpath"    : "/pool/phedex/userstorage/cvico/wz-run3/trees",
+    "outname"   : "/pool/phedexrw/userstorage/cvico/wz-run3/cards"
+  }
 }
 
 
