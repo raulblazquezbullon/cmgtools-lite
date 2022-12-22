@@ -19,6 +19,7 @@ parser.add_option("--bbb",                  dest="bbb", type="string", default=N
 parser.add_option("--amc", "--autoMCStats", dest="autoMCStats", action="store_true", default=False, help="use autoMCStats")
 parser.add_option("--autoMCStatsThreshold", dest="autoMCStatsValue", type="int", default=10, help="threshold to put on autoMCStats")
 parser.add_option("--infile",               dest="infile", action="store_true", default=False, help="Read histograms to file")
+#parser.add_option("--binname",              dest="binname", type="string", default=None, help="binname")
 parser.add_option("--savefile",             dest="savefile", action="store_true", default=False, help="Save histos to file")
 parser.add_option("--categorize",           dest="categ", type="string", nargs=3, default=None, help="Split in categories. Requires 3 arguments: expression, binning, bin labels")
 parser.add_option("--categorize-by-ranges", dest="categ_ranges", type="string", nargs=2, default=None, help="Split in categories according to the signal extraction variables. Requires 2 arguments: binning (in bin numbers), bin labels")
@@ -312,7 +313,11 @@ if __name__ == "__main__":
   mca  = MCAnalysis(args[0], options)
   cuts = CutsFile(args[1], options) 
 
-  binname = os.path.basename(args[1]).replace(".txt", "")
+  
+  if not options.binname:
+    binname = os.path.basename(args[1]).replace(".txt", "") 
+  else:
+    binname = options.binname
   outdir = os.path.join( options.outdir ) 
   if not os.path.exists(outdir): os.mkdir(outdir)
 

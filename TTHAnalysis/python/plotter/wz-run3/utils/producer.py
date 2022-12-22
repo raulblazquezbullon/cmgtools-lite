@@ -2,10 +2,8 @@
 # -- Import libraries -- #
 import argparse
 import os,sys
-import cfgs.defaults as defaults 
 
 class producer(object):
-
   # -- Friend tree modules 
   modules = { 
     1 : ["jmeUncertainties"   , "mc"    ],
@@ -22,23 +20,11 @@ class producer(object):
   def __init__(self, parser):
     self.add_more_options(parser)
     self.unpack_opts()
-    self.override_paths()
     return
 
   def add_more_options(self, parser):
-    parser.add_option('--prueba', dest = 'prueba')
     self.parser = parser 
     return
-
-  def override_paths(self):
-    ''' This method is used to check if default I/O paths have to 
-        be overriden by the user parsed ones '''
-    opts = vars(self.opts)
-    if opts["inpath"] != None: 
-      self.inpath = opts["inpath"]
-    if opts["outname"] != None:
-      self.outname = "%s"%opts["outname"]
-    return 
 
   def summarize(self):
     ''' Method to show a summary of the given options '''

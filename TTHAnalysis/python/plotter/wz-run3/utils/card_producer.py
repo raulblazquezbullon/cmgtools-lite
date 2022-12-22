@@ -5,20 +5,18 @@ from cfgs.lumi import lumis
 class card_producer(producer):
   name = "card_producer"
   basecommand = "python makeShapeCards_wzRun3.py"
-  functions = ["wz-run3/functionsWZ.cc",
-               "wz-run3/functionsSF.cc"]
+  functions = ["wz-run3/functionsWZ.cc"]
   weights = ["muonSF*electronSF"]
   jobname = "CMGCard"
 
   def add_more_options(self, parser):
     self.parser = parser
-    # -- mca includes to consider -- #
+    # -- CMGTools configuration files -- #
     parser.add_option("--mca", 
                   dest = "mca", 
                   type="string", 
                   default = "wz-run3/2022/mca_wz_3l.txt", 
                   help = '''Input mcafile''')
-    # -- CMGTools configuration files -- #
     parser.add_option("--cutfile", 
                   dest = "cutfile", 
                   type="string", 
@@ -32,12 +30,12 @@ class card_producer(producer):
     parser.add_option("--var", 
                   dest = "var", 
                   type="string", 
-                  default = "\'4*(LepW_pdgId < 0) + (abs(LepZ1_pdgId)+abs(LepZ2_pdgId)+abs(LepW_pdgId)-33)/2\'", 
+                  default = "m3L", 
                   help = '''Variable to make card''')
     parser.add_option("--binning", 
                   dest = "binning", 
                   type="string", 
-                  default = "\'8,-0.5,7.5\'", 
+                  default = "10,0,500", 
                   help = '''Binning for variable''')
     parser.add_option("--outfolder", 
                   dest = "outfolder", 
@@ -53,26 +51,17 @@ class card_producer(producer):
                       dest = "region",
                       default = "srwz",
                       help = ''' Region for cut application.''')
+    parser.add_option("--binname",
+                      dest = "binname",
+                      default = "wz-card",
+                      help = ''' Region for cut application.''')
  
     return
-
-  def override_paths(self):
-    #inpath   = "/".join([self.inpath, self.tier, self.prodname])
-    inpath = "/".join([self.inpath])
-    outname  = inpath.replace("phedex", "phedexrw").replace("trees", "plots")
-    outname = outname.replace("%s/"%self.tier,"").replace("%s"%self.prodname, self.outfolder)
-    self.inpath  = inpath
-    self.outname = outname
-    ## Use the parent class override_paths method
-    ## to prioritize I/O paths given by the user. 
-    super(type(self), self).override_paths()
-    return
-
 
   def run(self):
     # Yearly stuff 
     year     = self.year
-    inpath   = self.inpath
+    binname  = self.binname
     outname  = self.outname
     extra    = self.extra
     mincuts  = self.get_cut(self.region)
@@ -85,19 +74,18 @@ class card_producer(producer):
     # List with all the options given to CMGTools
     self.commandConfs = ["%s"%self.mca, 
                    "%s"%self.cutfile,
-                   "%s"%self.var,
-                   "%s"%self.binning,
+                   '"%s"'%self.var,
+                   '"%s"'%self.binning,
+                   "--binname %s"%binname,
                    "--tree %s "%self.treename,
-                   "-P {path}/mc/ -P {path}/data/".format(path = inpath),
+                   "-P {mcpath} -P {datapath}".format(mcpath = self.mcpath, datapath = self.datapath),
                    self.add_friends(),
                    "-L " + " -L ".join(self.functions),
                    "-W '%s'"%("*".join(self.weights)),
                    "-j %s"%(self.ncores),
                    "-l %s"%lumi,
                    "%s"%mincuts,
-                   " --od %s"%outname,
-                   " -o card",
-                   " --ms --neg --noNegVar --hardZero",
+                   " --od %s/"%outname,
                    "%s"%extra]
     return
 
