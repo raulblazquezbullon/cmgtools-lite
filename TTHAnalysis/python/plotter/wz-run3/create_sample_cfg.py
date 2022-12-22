@@ -19,7 +19,7 @@ kreators = {
  "mc"   : lambda args : "{name} = kreator.makeMCComponentFromLocal('{dname}', '', '{path}', '.*root', {xsec})".format(**args)
 }
 
-goldenjson = "Cert_Collisions2022_355100_357900_Golden.json"
+goldenjson = "Cert_Collisions2022_355100_362760_Golden.json"
 class sample_group:
   def __init__(self):
     self.name    = ""
