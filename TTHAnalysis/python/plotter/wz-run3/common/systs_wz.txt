@@ -1,12 +1,17 @@
 # vim: syntax=sh
 
 # -- Systematic uncertainties file for WZ analyis -- #
-## Alias definitions
 
-# -------------------------------------
-# Lumi uncertainties 
-# -------------------------------------
-lumi_2022_ML       : prompt_.*|convs   : .*                : 1.015
+### Alias definitions
+$alias : WZ           : prompt_.*WZ
+$alias : ZZ           : prompt_.*ZZ 
+$alias : fakes        : .*fakes.*
+$alias : PromptFromMC : $ZZ|$fakes
+
+## -------------------------------------
+## Lumi uncertainties 
+## -------------------------------------
+lumi_2022_early  : $PromptFromMC | convs   : .*  : normSymm  :1.06
 
 ## -------------------------------------
 ## Normalization 
@@ -17,10 +22,10 @@ normfakes_ML   : $fakes          : .* : normSymm :  1.3
 ## -------------------------------------
 ## JECs 
 ## -------------------------------------
-JESCORR_ML           : prompt_.*|convs   : .* : jescorr : templates
+jestotal : $PromptFromMC|$WZ : .* : templateAsymm; FakeRates=['wz-run3/common/frs-jec/fr-standard-jecTotalUp.txt'\,'wz-run3/common/frs-jec/fr-standard-jecTotalDown.txt']
 
 ## -------------------------------------
 ## Lepton SFs 
 ## -------------------------------------
-LepSFMu_ML            : prompt_.*|convs  : .* : lepSFMu : templates
-LepSFEl_ML            : prompt_.*|convs  : .* : lepSFEl : templates
+elecidsf : $PromptFromMC|$WZ : .*3l.* : templateAsymm; AddWeights=["electronSF_Up/electronSF"\,"electronSF_Down/electronSF"]
+muonidsf : $PromptFromMC|$WZ : .*3l.* : templateAsymm; AddWeights=["muonSF_Up/muonSF"\,"muonSF_Down/muonSF"]
