@@ -214,7 +214,7 @@ def get_systematics(mca, cuts, report, allreports, options, binname):
             
             # --- Check for float divisions by 0
             if h.raw().GetBinContent(bini) == 0:
-              log_msg("Histogram %s has 0 content in bin %d for nuisance %s"%(h.GetName(), bini, name), "ERROR")
+              log_msg("Histogram %s has 0 content in bin %d for nuisance %s"%(h.GetName(), bini, name), "WARNING")
               h.raw().SetBinContent(bini, 1e-5) 
               #sys.exit()
               
@@ -270,7 +270,7 @@ def get_systematics(mca, cuts, report, allreports, options, binname):
 def write_datacards(mca, cuts, report, options, systs, outdir, binname, allyields, procs, iproc):
   nuisances = sorted(systs.keys())
   
-  datacard = open(outdir + binname + ".txt", "w")
+  datacard = open(os.path.join(outdir, binname + ".txt"), "w")
   datacard.write("shapes *        * %s.root x_$PROCESS x_$PROCESS_$SYSTEMATIC\n" % binname)
   datacard.write('##----------------------------------\n')
   datacard.write('bin         %s\n' % binname)
