@@ -438,7 +438,7 @@ btagWeights_2018 = lambda : btag_weighterUL(btagpath + "/" + "wp_deepJet_106XUL1
                                             splitCorrelations = True,
                                             year = "2018")
 btagWeights_2022 = lambda : btag_weighterUL(btagpath + "/" + "wp_deepCSV_106XUL18_v2_mod.csv",
-                                            btagpath + "/" + "btagEffs_2022_11_24.root",
+                                            btagpath + "/" + "btagEffs_2022_11_30.root",
                                             'deepcsv',
                                             jecvars   = ['jesTotal', 'jer'] + ['jes' + v for v in jecGroupsFull] + ["jer%i"%i for i in range(6)],
                                             lepenvars = ["mu"],
