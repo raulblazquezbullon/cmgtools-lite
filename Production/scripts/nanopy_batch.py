@@ -13,6 +13,49 @@ from PhysicsTools.HeppyCore.framework.heppy_loop import split
 def batchScriptCERN( runningMode, jobDir, remoteDir=''):
    if runningMode == "LXPLUS-CONDOR-TRANSFER": 
        raise RuntimeError("running mode not supported")
+   elif runningMode == 'IFCA':
+       init = """
+pushd $CMSSW_BASE/src
+echo '==== copying job dir to worker ===='
+eval $(scram runtime -sh)
+popd
+echo
+mkdir cache
+export TMPDIR=$PWD/cache
+mkdir job
+cd job
+echo '==== copying job dir to worker ===='
+cp ../* . 
+"""
+       dirCopy = """
+mv Loop/* .
+if [ $? -ne 0 ]; then
+   echo 'ERROR: problem copying job directory back'
+else
+   echo 'job directory copy succeeded'
+fi"""
+
+   elif runningMode == 'OVD':
+       init = """
+pushd $CMSSW_BASE/src
+echo '==== copying job dir to worker ===='
+eval $(scram runtime -sh)
+popd
+echo
+mkdir cache
+export TMPDIR=/tmp/$USER/`shuf -zer -n20  {A..Z} {a..z} {0..9}`/
+mkdir -p $TMPDIR
+mkdir job
+cd job
+echo '==== copying job dir to worker ===='
+cp ../* . 
+"""
+       dirCopy = """
+mv Loop/* ../.
+# cleanup
+rm -r $TMPDIR
+"""
+      
    else: # shared filesystem
        init = """
 pushd $CMSSW_BASE/src
@@ -123,7 +166,7 @@ class MyBatchManager( BatchManager ):
        scriptFile = open(scriptFileName,'w')
        storeDir = self.remoteOutputDir_.replace('/castor/cern.ch/cms','')
        self.mode = self.RunningMode(options.batch)
-       if self.mode in ('LXPLUS-LSF', 'LXPLUS-CONDOR-SIMPLE', 'LXPLUS-CONDOR-TRANSFER'):
+       if self.mode in ('LXPLUS-LSF', 'LXPLUS-CONDOR-SIMPLE', 'LXPLUS-CONDOR-TRANSFER','IFCA','OVD'):
            scriptFile.write( batchScriptCERN( self.mode, jobDir, storeDir ) )
        else: raise RuntimeError("Unsupported mode %s" % self.mode)
        scriptFile.close()

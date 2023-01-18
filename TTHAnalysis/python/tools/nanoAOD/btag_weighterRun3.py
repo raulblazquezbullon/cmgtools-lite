@@ -7,7 +7,7 @@ from copy import deepcopy
 # Mainly based on https://github.com/cericeci/cmgtools-lite/blob/RunII_SUSY_EWK_fromWZ/TTHAnalysis/python/tools/bTagWeightAnalyzer.py
 
 
-class btag_weighterUL(Module):
+class btag_weighterRun3(Module):
     def __init__(self, csv, eff, algo = 'deepjet', wp = 1, branchbtag = 'btagDeepFlavB', branchflavour = 'hadronFlavour',
                  label = "", isFastSim = False, year = "2017", SFmeasReg = "mujets",
                  minptlow = 20, minpthigh = 30, maxeta = 2.4,

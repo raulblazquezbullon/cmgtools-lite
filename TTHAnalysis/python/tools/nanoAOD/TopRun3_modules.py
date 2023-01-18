@@ -402,17 +402,17 @@ addTopPtWeight = lambda : TopPtWeight()
 #                                          year = 2016)
 
 
-from CMGTools.TTHAnalysis.tools.nanoAOD.btag_weighterRun3 import btag_weighterUL
+from CMGTools.TTHAnalysis.tools.nanoAOD.btag_weighterRun3 import btag_weighterRun3
 ## b-tagging
 btagpath = os.environ['CMSSW_BASE'] + "/src/CMGTools/TTHAnalysis/data/TopRun2UL/btagging"
-btagWeights_2016apv = lambda : btag_weighterUL(btagpath + "/" + "wp_deepJet_106XUL16preVFP_v2_mod.csv",
+btagWeights_2016apv = lambda : btag_weighterRun3(btagpath + "/" + "wp_deepJet_106XUL16preVFP_v2_mod.csv",
                                                btagpath + "/" + "btagEffs_TopEFT_2022_05_16.root",
                                                'deepjet',
                                                jecvars   = ['jesTotal', 'jer'] + ['jes%s'%v.format(year = 2016) for v in jecGroups] + ["jer%i"%i for i in range(6)] + ["jesHEMIssue"],
                                                lepenvars = ["mu", "elsigma"],
                                                splitCorrelations = True,
                                                year = "2016apv")
-btagWeights_2016 = lambda : btag_weighterUL(btagpath + "/" + "wp_deepJet_106XUL16postVFP_v3_mod.csv",
+btagWeights_2016 = lambda : btag_weighterRun3(btagpath + "/" + "wp_deepJet_106XUL16postVFP_v3_mod.csv",
 #btagWeights_2016 = lambda : btag_weighterUL(os.environ['CMSSW_BASE'] + "/src/CMGTools/TTHAnalysis/data/TopRun2/btagging/DeepJet_2016LegacySF_V1_YearCorrelation-V1.csv",
                                             btagpath + "/" + "btagEffs_TopEFT_2022_05_16.root",
                                             'deepjet',
@@ -420,21 +420,21 @@ btagWeights_2016 = lambda : btag_weighterUL(btagpath + "/" + "wp_deepJet_106XUL1
                                             lepenvars = ["mu", "elsigma"],
                                             splitCorrelations = True,
                                             year = "2016")
-btagWeights_2017 = lambda : btag_weighterUL(btagpath + "/" + "wp_deepJet_106XUL17_v3_mod.csv",
+btagWeights_2017 = lambda : btag_weighterRun3(btagpath + "/" + "wp_deepJet_106XUL17_v3_mod.csv",
                                             btagpath + "/" + "btagEffs_TopEFT_2022_05_16.root",
                                             'deepjet',
                                             jecvars   = ['jesTotal', 'jer'] + ['jes%s'%v.format(year = 2017) for v in jecGroups] + ["jer%i"%i for i in range(6)] + ["jesHEMIssue"],
                                             lepenvars = ["mu", "elsigma"],
                                             splitCorrelations = True,
                                             year = "2017")
-btagWeights_2018 = lambda : btag_weighterUL(btagpath + "/" + "wp_deepJet_106XUL18_v2_mod.csv",
+btagWeights_2018 = lambda : btag_weighterRun3(btagpath + "/" + "wp_deepJet_106XUL18_v2_mod.csv",
                                             btagpath + "/" + "btagEffs_TopEFT_2022_05_16.root",
                                             'deepjet',
                                             jecvars   = ['jesTotal', 'jer'] + ['jes%s'%v.format(year = 2018) for v in jecGroups] + ["jer%i"%i for i in range(6)] + ["jesHEMIssue"],
                                             lepenvars = ["mu", "elsigma"],
                                             splitCorrelations = True,
                                             year = "2018")
-btagWeights_2022 = lambda : btag_weighterUL(btagpath + "/" + "wp_deepCSV_106XUL18_v2_mod.csv",
+btagWeights_2022 = lambda : btag_weighterRun3(btagpath + "/" + "wp_deepCSV_106XUL18_v2_mod.csv",
                                             btagpath + "/" + "btagEffs_2022_11_30.root",
                                             'deepcsv',
                                             jecvars   = ['jesTotal', 'jer'] + ['jes' + v for v in jecGroupsFull] + ["jer%i"%i for i in range(6)],
