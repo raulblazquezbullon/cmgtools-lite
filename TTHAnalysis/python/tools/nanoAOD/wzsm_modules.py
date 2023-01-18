@@ -196,6 +196,8 @@ btagpath = os.environ['CMSSW_BASE'] + "/src/CMGTools/TTHAnalysis/data/WZRun3/bta
 btagWeights_2022 = lambda : btag_weighterRun3(btagpath + "/" + "wp_deepCSV_106XUL18_v2_mod.csv",
                                             btagpath + "/" + "btagEffs_2022_11_30.root",
                                             'deepcsv',
+                                            branchJet = "iJSel_Mini",
+                                            labelJet  = "",
                                             jecvars   = [ "jes%s"%(jecgroup) for jecgroup in groups ],
                                             lepenvars = [],
                                             splitCorrelations = True,
