@@ -50,15 +50,26 @@ leptongroups = ["elScaleUp", "muScaleUp", "elScaleDown", "muScaleDown"]
 # --------------------------------------------------------------------------------------------------------------------------- #
 from CMGTools.TTHAnalysis.tools.nanoAOD.jetMetGrouper_wzRun3 import jetMetCorrelate2022, groups
 from PhysicsTools.NanoAODTools.postprocessing.modules.jme.jetmetHelperRun2 import createJMECorrector
-addJECs_2022    = createJMECorrector(dataYear      = "2022",
-                                     jetType       = "AK4PFPuppi",
-                                     jesUncert     = "All",
-                                     metBranchName = "PuppiMET",
-                                     splitJER      = True,
-                                     applyHEMfix   = False)
+
+addJECs_2022_mc    = createJMECorrector(dataYear      = "2022",
+                                        jetType       = "AK4PFPuppi",
+                                        jesUncert     = "All",
+                                        metBranchName = "PuppiMET",
+                                        splitJER      = True,
+                                        applyHEMfix   = False)
+addJECs_2022_data = createJMECorrector(isMC          = False,
+                                       dataYear      = "2022",
+                                       runPeriod     = "D",
+                                       jetType       = "AK4PFPuppi",
+                                       jesUncert     = "All",
+                                       metBranchName = "PuppiMET",
+                                       splitJER      = True,
+                                       applyHEMfix   = False)
+
 
 jecgroups = [ "jes%s%s"%(jecgroup, sign) for jecgroup in groups for sign in ["Up", "Down"] ]
-jmeUncertainties = [addJECs_2022, jetMetCorrelate2022]
+jmeUncertainties_mc   = [addJECs_2022_mc, jetMetCorrelate2022]
+jmeUncertainties_data = [addJECs_2022_data, jetMetCorrelate2022]
 
 # --------------------------------------------------------------------------------------------------------------------------- #
 # ---------------------------------------------------- LEPTON RECLEANER ----------------------------------------------------- # 
@@ -142,12 +153,17 @@ triggerGroups = dict(
   triggers_eee = { 2022 : lambda ev: 0 }, # Only one is prescaled in some of the data
   triggers_mme = { 2022: lambda ev : ev.HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ},
   triggers_mee = { 2022: lambda ev : ev.HLT_DiMu9_Ele9_CaloIdL_TrackIdL_DZ},
+  
+  # MET triggers
+  triggers_met = {2022 : lambda ev: ev.HLT_PFMETNoMu120_PFMHTNoMu120_IDTight or ev.HLT_PFMETNoMu110_PFMHTNoMu110_IDTight},
 
   # Combinations
   triggers_2lss = { 2022 : lambda ev: ev.Trigger_se or ev.Trigger_sm or ev.Trigger_mm or ev.Trigger_ee or ev.Trigger_em },
   triggers_3l = { 2022 : lambda ev: ev.Trigger_2lss or ev.Trigger_eee or ev.Trigger_mee or ev.Trigger_mme or ev.Trigger_mmm},
+  triggers_jme = { 2022: lambda ev: ev.Trigger_jetmet or ev.Trigger_met or ev.Trigger_jetht }
 )
 
+# Prompt triggers
 Trigger_sm   = lambda : EvtTagger('Trigger_sm',   [lambda ev : triggerGroups['triggers_sm'][2022](ev)])
 Trigger_se   = lambda : EvtTagger('Trigger_se',   [lambda ev : triggerGroups['triggers_se'][2022](ev)])
 Trigger_mm   = lambda : EvtTagger('Trigger_mm',   [lambda ev : triggerGroups['triggers_mm'][2022](ev)])
@@ -160,15 +176,33 @@ Trigger_mmm  = lambda : EvtTagger('Trigger_mmm',  [lambda ev : triggerGroups['tr
 Trigger_2lss = lambda : EvtTagger('Trigger_2lss', [lambda ev : triggerGroups['triggers_2lss'][2022](ev)])
 Trigger_3l   = lambda : EvtTagger('Trigger_3l',   [lambda ev : triggerGroups['triggers_3l'][2022](ev)])
 
+# JetMET triggers
+Trigger_met    = lambda : EvtTagger('Trigger_met',   [lambda ev : triggerGroups['triggers_met'][2022](ev)])
 
-triggerSequence = [Trigger_sm, Trigger_se, Trigger_mm, Trigger_ee, Trigger_em, Trigger_eee, Trigger_mee, Trigger_mme, Trigger_mmm, Trigger_2lss, Trigger_3l]
+triggerSequence = [Trigger_sm, Trigger_se, Trigger_mm, Trigger_ee, Trigger_em, Trigger_eee, Trigger_mee, Trigger_mme, Trigger_mmm, Trigger_2lss, Trigger_3l, Trigger_met]
 
 # ------------------------------------------------------------------------------------------------------------------------------ #
-# ---------------------------------------------------- LEPTON CORRECTIONS ------------------------------------------------------ # 
+# ---------------------------------------------------- SCALE FACTORS ----------------------------------------------------------- # 
 # ------------------------------------------------------------------------------------------------------------------------------ #
+
+
+# Lepton Scale factors
 from CMGTools.TTHAnalysis.tools.nanoAOD.lepScaleFactors_wzRun3 import lepScaleFactors_wzrun3
+lepscalefactors = lambda: lepScaleFactors_wzrun3( 2018, keepOutput = 2, summary = True ) 
 
-lepscalefactors = [ lambda: lepScaleFactors_wzrun3( 2018, keepOutput = 2, summary = False ) ]
+# bTag Scale factors
+from CMGTools.TTHAnalysis.tools.nanoAOD.btag_weighterRun3 import btag_weighterRun3
+btagpath = os.environ['CMSSW_BASE'] + "/src/CMGTools/TTHAnalysis/data/WZRun3/btagging"
+btagWeights_2022 = lambda : btag_weighterRun3(btagpath + "/" + "wp_deepCSV_106XUL18_v2_mod.csv",
+                                            btagpath + "/" + "btagEffs_2022_11_30.root",
+                                            'deepcsv',
+                                            jecvars   = [ "jes%s"%(jecgroup) for jecgroup in groups ],
+                                            lepenvars = [],
+                                            splitCorrelations = True,
+                                            year = "2022")
+
+scalefactors = [lepscalefactors, btagWeights_2022]
+
 # ---------------------------------------------------------------------------------------------------------------------------- #
 ### To be implemented
 if __name__ == "__main__":

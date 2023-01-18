@@ -224,7 +224,7 @@ class leptonBuilderWZSM(Module):
       sumlep += self.lepSelFO[i].p4()
     for var in [""] + self.systsJEC:
       var = "_%s"%var if var != "" else var
-      metp4.SetPtEtaPhiM(self.met[var.replace("_","")], 0, self.metphi[var.replace("_","")], 0)
+      metp4.SetPtEtaPhiM(self.met[var.replace("_","", 1)], 0, self.metphi[var.replace("_","", 1)], 0)
       sumtot = sumlep + metp4
       self.ret["m" + str(maxlep) + "Lmet" + var] = sumtot.M()
     return
@@ -256,7 +256,7 @@ class leptonBuilderWZSM(Module):
     return
   
   def mtW(self, lep, var, useGenMet = False):
-    return self.mt(lep.conePt, self.met[var.replace("_","")], lep.phi, self.metphi[var.replace("_","")])
+    return self.mt(lep.conePt, self.met[var.replace("_","", 1)], lep.phi, self.metphi[var.replace("_","", 1)])
 
 
   def findBestOSpair(self, maxlep): 
@@ -375,7 +375,7 @@ class leptonBuilderWZSM(Module):
     return math.sqrt(2*pt1*pt2*(1-math.cos(phi1-phi2)))
 
   def mt2(self, obj1, obj2, var, useGenMet = False):
-    vector_met     = array.array('d', [0, self.met[var.replace("_","")]*math.cos(self.metphi[var]), self.met[var.replace("_","")]*sin(self.metphi[var])])
+    vector_met     = array.array('d', [0, self.met[var.replace("_","", 1)]*math.cos(self.metphi[var]), self.met[var.replace("_","", 1)]*sin(self.metphi[var])])
     vector_obj1    = array.array('d', [obj1.mass, obj1.p4(obj1.pt).Px(), obj1.p4(obj1.pt).Py()])
     vector_obj2    = array.array('d', [obj2.mass, obj2.p4(obj2.pt).Px(), obj2.p4(obj2.pt).Py()])
 
