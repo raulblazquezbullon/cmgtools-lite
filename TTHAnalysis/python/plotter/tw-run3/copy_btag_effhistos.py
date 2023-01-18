@@ -2,7 +2,7 @@ import ROOT as r
 from copy import deepcopy
 import os
 
-tmpfil   = "./temp_Run3_plots/2022_11_22_addedLeptonSFs_correctedJson_addedUnc/2022/eff/"
+tmpfil   = "./temp_Run3_plots/2022_11_30_btagEff/"
 savepath = "{cmsswpath}/src/CMGTools/TTHAnalysis/data/TopRun2UL/btagging/".format(cmsswpath = os.environ['CMSSW_BASE'])
 
 xuandict = {"csvv2"   : "CSVv2",
@@ -18,6 +18,6 @@ for y in [2022]:
     tmpf.Close()
 
 
-outF = r.TFile(savepath + "/btagEffs_2022_01_29.root", "RECREATE")
+outF = r.TFile(savepath + "/btagEffs_2022_11_30.root", "RECREATE")
 for el in writethings: el.Write()
 outF.Close()
