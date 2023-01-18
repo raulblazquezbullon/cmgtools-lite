@@ -3,7 +3,6 @@
 /** CollectionSkimmer
     C++ utility to quickly copy data from one collection to another skimming the list of elements 
 */
-
 #include <memory>
 #include <string>
 #include <vector>
@@ -14,7 +13,6 @@ class TTree;
 #include <Rtypes.h>
 #include <TTreeReaderValue.h>
 #include <TTreeReaderArray.h>
-
 class CollectionSkimmer {
     public:
         template<typename T1, typename T2> class CopyVar {
@@ -40,11 +38,9 @@ class CollectionSkimmer {
         typedef CopyVar<float,Float_t> CopyFloat;
         typedef CopyVar<int,Int_t> CopyInt;
         typedef CopyVar<unsigned char, UChar_t> CopyUChar;
-
         CollectionSkimmer(const std::string &outName, const std::string &collName, bool saveSelectedIndices = false, bool saveTagForAll = false) : outName_(outName), collName_(collName), hasBranched_(false), srcCount_signed_(NULL), srcCount_unsigned_(NULL), saveSelectedIndices_(saveSelectedIndices), saveTagForAll_(saveTagForAll), maxEntries_(0), branch_(NULL), branchTag_(NULL) {}
         CollectionSkimmer(const CollectionSkimmer &other) = delete;
         CollectionSkimmer &operator=(const CollectionSkimmer &other) = delete;
-
         /// to be called first to register the branches, and possibly re-called if the treeReaderArrays are remade
         void declareCopyFloat(const std::string &varname) ; 
         void declareCopyInt(const std::string &varname) ;
@@ -54,10 +50,8 @@ class CollectionSkimmer {
         void copyUChar(const std::string &varname, TTreeReaderArray<UChar_t> * src = nullptr) ;
         void srcCount(TTreeReaderValue<Int_t> * src);
         void srcCount(TTreeReaderValue<UInt_t> * src);
-
         /// to be called once on the tree, after a first call to copyFloat and copyInt
         void makeBranches(TTree *tree, unsigned int maxEntries, bool padSelectedIndicesCollection = false, int padSelectedIndicesCollectionWith = -1) ;
-
         unsigned int count() {
             if (srcCount_signed_ == nullptr && srcCount_unsigned_ == nullptr) {
                 std::cout << "ERROR: CollectionSkimmer(" << collName_ << " -> " << outName_ << ")::count: both counters are null." << std::endl; 
@@ -66,7 +60,6 @@ class CollectionSkimmer {
             return srcCount_signed_ ? ** srcCount_signed_ : int(**srcCount_unsigned_);
         }
         void ensureSize(unsigned int n);
-
         //---- to be called on each event for copying ----
         /// clear the output collection
         void clear() {
@@ -93,12 +86,37 @@ class CollectionSkimmer {
         }
 
         /// push back entry iSrc from input collection to output collection
+        //void push_back(unsigned int iSrc) {
+        void push_back(int iSrc) {
+            unsigned int newiSrc = 0;
+            if (iSrc < 0) {
+                // This is a padding element. This solution to large inefficiency is temporal.
+                if (saveSelectedIndices_) iOut_[nOut_]   = iSrc;
+                if (saveTagForAll_)       iTagOut_[iSrc] = 0;
+                return;
+            }
+            else {
+                newiSrc = abs(iSrc);
+            }
+            /*
         void push_back(unsigned int iSrc) {
             assert(iSrc < count());
             ensureSize(iSrc);
             for (auto & c : copyFloats_) c.copy(iSrc, nOut_);
+            for (auto & c : copyInts_) c.copy(iSrc, nOut_);
             for (auto & c : copyInts_)   c.copy(iSrc, nOut_);
             for (auto & c : copyUChars_) c.copy(iSrc, nOut_);
+            if (saveSelectedIndices_) iOut_[nOut_] = iSrc;
+            if (saveTagForAll_) iTagOut_[iSrc] = 1;*/
+
+            assert(newiSrc < count());
+            ensureSize(newiSrc);
+            for (auto & c : copyFloats_) c.copy(newiSrc, nOut_);
+            for (auto & c : copyInts_)   c.copy(newiSrc, nOut_);
+            for (auto & c : copyUChars_) c.copy(newiSrc, nOut_);
+            if (saveSelectedIndices_)    iOut_[nOut_] = newiSrc;
+            if (saveTagForAll_)          iTagOut_[newiSrc] = 1;
+
 
             if (saveSelectedIndices_) iOut_[nOut_]   = iSrc;
             if (saveTagForAll_)       iTagOut_[iSrc] = 1;
@@ -121,10 +139,8 @@ class CollectionSkimmer {
         void push_back(const std::vector<int> &iSrcs) {
             for (int i : iSrcs) push_back(i);
         }
-
         /// resize output collection to a fixed size
         void resize(unsigned int size) { ensureSize(size); nOut_ = size; }
-
         /// copy from iSrc into iTo (must be iTo < size())
         void copy(unsigned int iSrc, unsigned int iTo) {
             assert(unsigned(nOut_) > iTo);
@@ -134,10 +150,8 @@ class CollectionSkimmer {
             for (auto & c : copyInts_)   c.copy(iSrc, iTo);
             for (auto & c : copyUChars_) c.copy(iSrc, iTo);
         }
-
         /// number of selected output objects
         unsigned int size() const { return nOut_; }
-
     private:
         std::string outName_;
         std::string collName_;
@@ -157,10 +171,8 @@ class CollectionSkimmer {
         std::unique_ptr<int[]> iTagOut_;
         unsigned int maxEntries_;
         TBranch *branch_, *branchTag_;
-
         template<typename CopyVarVectorT, typename SrcT>
         void _copyVar(const std::string &varname, SrcT * src, CopyVarVectorT &copyVars) ; 
         void _checkNoBranchesYet() ;
 };
-
 #endif

@@ -1,5 +1,4 @@
 import ROOT
-
 class CollectionSkimmer:
     def __init__(self, outName, srcColl, ints=[], floats=[], uchars=[], maxSize=100, saveSelectedIndices=False, padSelectedIndicesWith=None, saveTagForAll=False):
         """Read from a collection called srcColl (eg. 'Jet'), write out to a collection called outName (e.g. 'CleanJet')
@@ -25,6 +24,7 @@ class CollectionSkimmer:
         """To be called to initialize the input tree. 
            initEvent also takes care of re-calling it if needed"""
         #always read the size, to be sure of the capacity of the vectors
+        self._impl.srcCount(tree.valueReader('n'+self._iprefix[:-1]))
         self._impl.srcCount(tree.valueReader('n' + self._iprefix[:-1]))
         for i in self._ints:   self._impl.copyInt(i[0]  , tree.arrayReader(self._iprefix+i[1])) if type(i) == tuple else self._impl.copyInt(i, tree.arrayReader(self._iprefix+i))  
         for f in self._floats: self._impl.copyFloat(f[0], tree.arrayReader(self._iprefix+f[1])) if type(f) == tuple else self._impl.copyFloat(f, tree.arrayReader(self._iprefix+f))
@@ -45,14 +45,11 @@ class CollectionSkimmer:
         else:
             self._impl.clear()
             return False
-
     def initEventOpt(self, event):
         """To be called at the beginning of every event.
            Returns true if the underlying TTreeReader has changed.
            Optimised version: REQUIRES TO USE THE CORRESPONDING SET OF METHODS!"""
-
         self._optused = True
-
         if self._ttreereaderversion != event._tree._ttreereaderversion:
             self.initInputTree(event._tree)
             self._impl.clearopt()
@@ -67,11 +64,11 @@ class CollectionSkimmer:
            There is no corresponding method for the legacy ones."""
         if not self._optused:
             raise RuntimeError("FATAL: finishEventOpt method used w/o the initEventOpt function. Please, use the legacy methods or all the 'opt' methods.")
-        
+
         self._impl.finishevtopt()
 
         return
-    
+
     def cppImpl(self):
         """Get the C++ CollectionSkimmer instance, to pass to possible C++ worker code"""
         return self._impl
@@ -79,31 +76,31 @@ class CollectionSkimmer:
     def clear(self): 
         """Clear the list of output objects (note: initEvent does it already)"""
         self._impl.clear()
-
     def push_back(self,iSrc):
         """Select one object (if passing an int) or many objects (if passing std::vector<int>) for output"""
         self._impl.push_back(iSrc)
         return
-
     def push_back_all(self, iSrcList):
         """Select a python list of objects for output"""
         if self._optused:
             raise RuntimeError("FATAL: initEventOpt method used along the push_back_all function. Please, use the legacy methods or all the 'opt' methods.")
-
         for iSrc in iSrcList:
             self._impl.push_back(iSrc)
         return
-
     def push_back_allOpt(self, iSrcList):
         """Select a python list of objects for output.
            Optimised version. REQUIRES TO USE THE CORRESPONDING SET OF METHODS!!"""
         if not self._optused:
             raise RuntimeError("FATAL: initEventOpt method has not been used to initialise the collector. Please, use the legacy methods or all the 'opt' methods.")
-        
+
+        theL = len(iSrcList)
+        if theL < self._maxSize:
+            iSrcList += [self._padSelectedIndicesWithVAL] * (self._maxSize - theL)
+
+
         for iSrc in iSrcList:
             self._impl.push_back(iSrc)
         return
-
     def resize(self,newSize): 
         """Fix the size of the output collection (to be called before with copy() or [] for out-of-order filling)"""
         self._impl.reSize(newSize)
