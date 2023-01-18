@@ -251,14 +251,14 @@ class EventVars_TopRun2UL(Module):
         if event.isData:
             if   "muoneg"     in thesample.lower():
                 allret["datatag"] = tags.muoneg
+            elif "egamma" in thesample.lower():
+                allret["datatag"] = tags.egamma
             elif "singlemuon" in thesample.lower():
                 allret["datatag"] = tags.singlemuon
-            elif "singleelec" in thesample.lower() or "egamma" in thesample.lower():
-                allret["datatag"] = tags.singleelec
             elif "doublemuon" in thesample.lower():
                 allret["datatag"] = tags.doublemuon
-            elif "doubleeg" in thesample.lower():
-                allret["datatag"] = tags.doubleeg
+            elif "muon" in thesample.lower():
+                allret["datatag"] = tags.muon
         elif "ttto2l2nu" in thesample.lower():
             allret["datatag"] = tags.mc
             allret["isTop"]   = 1
