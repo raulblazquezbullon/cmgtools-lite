@@ -8,7 +8,7 @@ from copy import deepcopy
 
 
 class btag_weighterRun3(Module):
-    def __init__(self, csv, eff, algo = 'deepjet', wp = 1, branchbtag = 'btagDeepFlavB', branchflavour = 'hadronFlavour',
+    def __init__(self, csv, eff, algo = 'deepjet', wp = 1, branchJet = "JetSel30", labelJet = "_Recl", branchbtag = 'btagDeepFlavB', branchflavour = 'hadronFlavour',
                  label = "", isFastSim = False, year = "2017", SFmeasReg = "mujets",
                  minptlow = 20, minpthigh = 30, maxeta = 2.4,
                  jecvars = ["jesTotal", "jer"], lepenvars = ["mu"],
@@ -16,6 +16,8 @@ class btag_weighterRun3(Module):
 
         self.algo      = algo
         self.wp        = wp
+        self.branchJet = branchJet
+        self.labelJet  = labelJet
         self.isFastSim = isFastSim
         self.label     = label
         self.year      = year
@@ -228,9 +230,9 @@ class btag_weighterRun3(Module):
             sysHFupStat   = 1.
             sysHFdnStat   = 1.
 
-            self.jets = [self.all_jets[getattr(event, 'iJSel_Mini{v}'.format(v = "%s"%jecVar if jecVar != "" else ""))[j]]
+            self.jets = [self.all_jets[getattr(event, 'i{branch}{v}{label}'.format(branch = self.branchJet, v = "%s"%jecVar if jecVar != "" else "", label = self.labelJet))[j]]
                          #for j in xrange(min([getattr(event, 'nJetSel30{v}_Recl'.format(v = jecVar)), 5]))] #### WARNING: this is only valid when ignoring events with nJet>5!!!!!!!!!!
-                         for j in xrange(getattr(event, 'nJetSel_Mini{v}'.format(v = "%s"%jecVar if jecVar != "" else "")))] #### WARNING: this is only valid when ignoring events with nJet>5!!!!!!!!!!
+                         for j in xrange(getattr(event, 'n{branch}{v}{label}'.format(branch = self.branchJet, v = "%s"%jecVar if jecVar != "" else "", label = self.labelJet) ))] #### WARNING: this is only valid when ignoring events with nJet>5!!!!!!!!!!
 
             jetjecsysscaff = (jecVar if jecVar != "" else self.nominaljecscaff)
 
