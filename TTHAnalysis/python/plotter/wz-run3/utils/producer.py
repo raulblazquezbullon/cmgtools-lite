@@ -6,13 +6,14 @@ import os,sys
 class producer(object):
   # -- Friend tree modules 
   modules = { 
-    1 : ["jmeUncertainties"   , "mc"    ],
+    1 : ["jmeUncertainties"   , "mc"],
     2 : ["leptonJetRecleaning", "simple"],
     3 : ["leptonBuilder"      , "simple"],
     4 : ["triggerSequence"    , "simple"],
-    5 : ["lepscalefactors"    , "mc"],
+    5 : ["scalefactors"       , "mc"],
   }
 
+  weights = ["muonSF*electronSF*bTagWeight"]
   name = "producer"
   cluster_comm = "sbatch -c {nc} -J {jn} -p {q} -e {logpath}/logs/log.%j.%x.err -o {logpath}/logs/log.%j.%x.out --wrap '{comm}' "
   jobname = "CMGjob"
@@ -20,7 +21,7 @@ class producer(object):
   def __init__(self, parser):
     self.add_more_options(parser)
     self.unpack_opts()
-    return
+
 
   def add_more_options(self, parser):
     self.parser = parser 

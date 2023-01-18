@@ -2,7 +2,6 @@
 
 import os, re, sys
 from cfgs.datasets import datasets_wz
-from CMGTools.TTHAnalysis.tools.nanoAOD.xsec13p6TeV_cfg import xsecs13p6TeV_dict as xsecs
 from datetime import date
 import numpy 
 

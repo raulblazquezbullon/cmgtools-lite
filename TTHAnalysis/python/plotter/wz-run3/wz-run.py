@@ -32,8 +32,10 @@ def add_parsing_opts():
               help = "Input (folder) name with data files")
   parser.add_option("--mcpath", dest = "mcpath", default = "/beegfs/data/nanoAODv9/temp_wz/mc",
               help = "Input (folder) name with mc files")    
-  parser.add_option("--outname", dest = "outname", type="string", default = "./prueba",
+  parser.add_option("--outname", dest = "outname", type="string", default = "./foolder",
               help = "Output (folder) name")
+  parser.add_option("--unc", dest = "uncfile", type="string", default = "wz-run3/common/systs_wz.txt",
+              help = "File with systematic variations")
   # -- Version control
   parser.add_option("--prodname", dest = "prodname", type="string", default = "jan2023", 
               help = "Name of the last folder in which the output will be saved")

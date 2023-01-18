@@ -4,11 +4,12 @@ datasets_wz = {
   "WJets"     : [("WJets_inc", ".*WJetsToLNu.*", 63199.9)
                 ],
   # ----------------- Drell Yan
-  "DY"        : [#("DYJetsToLL_M-50", ".*DYJetsToLL_M-50", 6221.3),
-                 ("DYJetsToLL_M50_ext1", ".*DYJetsToLL_M-50_.*pythia8ext1", 6221.3),
-                 ("DYJetsToLL_M50_ext2", ".*DYJetsToLL_M-50_.*pythia8ext2", 6221.3),
-                 ("DYJetsToLL_M10to50", ".*DYJetsToLL_M10to50.*", 19317.5)
-                ],
+  "DY_M10to50" : [("DYJetsToLL_M10to50", ".*DYJetsToLL_M-10to50.*", 19317.5)
+                 ],
+  "DY_M50"     : [("DYJetsToLL_M-50", ".*DYJetsToLL_M-50", 6221.3),
+                  ("DYJetsToLL_M50_ext1", ".*DYJetsToLL_M-50_.*pythia8ext1", 6221.3),
+                  ("DYJetsToLL_M50_ext2", ".*DYJetsToLL_M-50_.*pythia8ext2", 6221.3),
+                 ],
   # ----------------- ttbar 
   "TT"        : [("TTTo2L2Nu", ".*TTo2L2Nu_CP5.*", 97.9140), 
                  ("TTTo2J1L1Nu", ".*TTo2J1L1Nu_CP5.*", 405.2403)

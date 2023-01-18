@@ -62,17 +62,26 @@ class ftree_producer(producer):
 
   def run(self):
 	doData = "data" if self.isData else "mc"
-	self.inpath = self.datapath if self.isData else self.mcpath
-	self.outname  = os.path.join(self.inpath.replace("phedex","phedexrw"), self.modules[self.step][0])
+	self.inpath  = self.datapath if self.isData else self.mcpath
+        if self.outname == "./foolder":
+	  self.outname = os.path.join(self.inpath.replace("phedex","phedexrw"), self.modules[self.step][0])
+
+        # For some friend trees there are multiple options
+        # but we want to save them with the same folder name
+        # deal with that here.
+        try:
+          mod_opts = self.modules[self.step][2]
+          module_name = mod_opts["data"] if self.isData else mod_opts["mc"]
+        except:
+          module_name = self.modules[self.step][0]
 
 	self.commandConfs = ["%s"%self.inpath,
 		"%s"%self.outname,
 		"--name %s"%self.jobname,
 		"-t %s"%self.treename,
-		"-n -I %s %s"%(self.wz_modules, self.modules[self.step][0]),
+		"-n -I %s %s"%(self.wz_modules, module_name),
 		" -N %s"%self.chunksize,
 		"%s"%self.extra,
 		self.add_friends()]
     
 	return
-  

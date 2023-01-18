@@ -6,7 +6,6 @@ class card_producer(producer):
   name = "card_producer"
   basecommand = "python makeShapeCards_wzRun3.py"
   functions = ["wz-run3/functionsWZ.cc"]
-  weights = ["muonSF*electronSF"]
   jobname = "CMGCard"
 
   def add_more_options(self, parser):
@@ -30,12 +29,12 @@ class card_producer(producer):
     parser.add_option("--var", 
                   dest = "var", 
                   type="string", 
-                  default = "m3L", 
+                  default = "(abs(LepZ1_pdgId)+abs(LepZ2_pdgId)+abs(LepW_pdgId)-33)/2", 
                   help = '''Variable to make card''')
     parser.add_option("--binning", 
                   dest = "binning", 
                   type="string", 
-                  default = "10,0,500", 
+                  default = "4,-0.5,3.5", 
                   help = '''Binning for variable''')
     parser.add_option("--outfolder", 
                   dest = "outfolder", 
@@ -65,11 +64,11 @@ class card_producer(producer):
     outname  = self.outname
     extra    = self.extra
     mincuts  = self.get_cut(self.region)
+    uncfile  = self.uncfile
     lumi     = lumis[year]
 
     # Other plotting stuff 
     plottingStuff =  "--obj Events "
-    
     
     # List with all the options given to CMGTools
     self.commandConfs = ["%s"%self.mca, 
@@ -85,7 +84,10 @@ class card_producer(producer):
                    "-j %s"%(self.ncores),
                    "-l %s"%lumi,
                    "%s"%mincuts,
-                   " --od %s/"%outname,
+                   "--xp data --asimov signal",
+                   "--unc %s"%uncfile,
+                   "--od %s/"%outname,
+                   "--autoMCStats",
                    "%s"%extra]
     return
 

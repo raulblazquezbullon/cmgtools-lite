@@ -197,8 +197,8 @@ def get_systematics(mca, cuts, report, allreports, options, binname):
         if not h.hasVariation(name): continue
         
         # Is it a shape variation?
-        isShape = isShape or h.isShapeVariation(name)
-        log_msg("Is %s nuisance shape? %s"%(name, h.isShapeVariation(name, debug=True)))
+        isShape = isShape or h.isShapeVariation(name, debug = True)
+        log_msg("Is %s nuisance shape? %s"%(name, isShape))
         
         
         variants = list(h.getVariation(name))  
@@ -219,12 +219,12 @@ def get_systematics(mca, cuts, report, allreports, options, binname):
               #sys.exit()
               
             if variants[d].GetBinContent( bini )/h.raw().GetBinContent(bini) > 10: 
-              log_msg("big shift in template for %s %s %s %s in bin %d: variation = %g"
+              log_msg("Big shift in template for %s %s %s %s in bin %d: variation = %g"
                       %( binname, p, name, d, bini, variants[d].GetBinContent( bini )/h.raw().GetBinContent(bini)), "WARNING")
                       
               variants[d].SetBinContent( bini, 10*h.raw().GetBinContent(bini) )
             if variants[d].GetBinContent( bini )/h.raw().GetBinContent(bini) < 0.1: 
-              log_msg("small shift in template for %s %s %s %s in bin %d: variation = %g"
+              log_msg("Big shift in template for %s %s %s %s in bin %d: variation = %g"
                       %( binname, p, name, d, bini, variants[d].GetBinContent( bini )/h.raw().GetBinContent(bini)), "WARNING")
               variants[d].SetBinContent( bini, 0.1*h.raw().GetBinContent(bini) )
 

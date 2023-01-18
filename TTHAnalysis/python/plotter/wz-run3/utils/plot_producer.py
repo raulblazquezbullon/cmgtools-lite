@@ -1,14 +1,11 @@
 from producer import producer
 from utils.ftree_producer import ftree_producer
-import cfgs.ftrees as ftrees
 from cfgs.lumi import lumis
 
 class plot_producer(producer):
   name = "plot_producer"
   basecommand = "python mcPlots.py"
-  functions = ["wz-run3/functionsWZ.cc",
-               "wz-run3/functionsSF.cc"]
-  weights = ["muonSF*electronSF"]
+  functions = ["wz-run3/functionsWZ.cc"]
   jobname = "CMGPlot"
 
   def add_more_options(self, parser):
@@ -59,6 +56,7 @@ class plot_producer(producer):
     outname  = self.outname
     extra    = self.extra
     mincuts  = self.get_cut(self.region)
+    uncfile  = self.uncfile
     lumi     = lumis[year]
 
     # Other plotting stuff 
@@ -89,6 +87,8 @@ class plot_producer(producer):
                    "%s"%plottingStuff,
                    "-j %s"%(self.ncores),
                    "%s"%mincuts,
+                   "--unc %s"%uncfile,
+                   "--xp data",
                    "%s"%extra]
     return
 
