@@ -2,7 +2,6 @@
 
 import os, re, sys
 from cfgs.datasets import datasets_wz
-from CMGTools.TTHAnalysis.tools.nanoAOD.xsec13p6TeV_cfg import xsecs13p6TeV_dict as xsecs
 from datetime import date
 import numpy 
 
@@ -19,7 +18,7 @@ kreators = {
  "mc"   : lambda args : "{name} = kreator.makeMCComponentFromLocal('{dname}', '', '{path}', '.*root', {xsec})".format(**args)
 }
 
-goldenjson = "Cert_Collisions2022_355100_357900_Golden.json"
+goldenjson = "Cert_Collisions2022_355100_362760_Golden.json"
 class sample_group:
   def __init__(self):
     self.name    = ""

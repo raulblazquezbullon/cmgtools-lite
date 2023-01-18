@@ -5,30 +5,44 @@
 ### Alias definitions
 $alias : WZ           : prompt_.*WZ
 $alias : ZZ           : prompt_.*ZZ 
-$alias : fakes        : .*fakes.*
-$alias : PromptFromMC : $ZZ|$fakes
+$alias : VV           : $WZ|$ZZ
+$alias : mcfakes      : .*fakes.*
+$alias : PromptFromMC : $VV|$mcfakes
 
-## -------------------------------------
 ## Lumi uncertainties 
-## -------------------------------------
-lumi_2022_early  : $PromptFromMC | convs   : .*  : normSymm  :1.06
+lumi_2022_early  : $PromptFromMC  : .*  : normSymm  :1.06
 
-## -------------------------------------
 ## Normalization 
-## -------------------------------------
-normZZ_ML      : $ZZ             : .* : normSymm :  1.06
-normfakes_ML   : $fakes          : .* : normSymm :  1.3
+normZZ    : $ZZ    : .* : normSymm : 1.06
+normfakes : $fakes : .* : normSymm : 1.3
 
-## -------------------------------------
 ## JECs 
-## -------------------------------------
-jestotal : $PromptFromMC|$WZ : .* : templateAsymm; FakeRates=['wz-run3/common/frs-jec/fr-standard-jecTotalUp.txt'\,'wz-run3/common/frs-jec/fr-standard-jecTotalDown.txt']
+jestotal : $PromptFromMC : .* : templateAsymm; FakeRates=['wz-run3/common/frs-jec/fr-standard-jesTotalUp.txt'\,'wz-run3/common/frs-jec/fr-standard-jesTotalDown.txt']
+#jesHF : $PromptFromMC : .* : templateAsymm; FakeRates=['wz-run3/common/frs-jec/fr-standard-jesHFUp.txt'\,'wz-run3/common/frs-jec/fr-standard-jesHFDown.txt'] 
+#jesBBEC1_year : $PromptFromMC : .* : templateAsymm; FakeRates=['wz-run3/common/frs-jec/fr-standard-jesBBEC1_yearUp.txt'\,'wz-run3/common/frs-jec/fr-standard-jesBBEC1_yearDown.txt'] 
+#jesFlavorQCD : $PromptFromMC : .* : templateAsymm; FakeRates=['wz-run3/common/frs-jec/fr-standard-jesFlavorQCDUp.txt'\,'wz-run3/common/frs-jec/fr-standard-jesFlavorQCDDown.txt'] 
+#jesRelativeSample_year : $PromptFromMC : .* : templateAsymm; FakeRates=['wz-run3/common/frs-jec/fr-standard-jesRelativeSample_yearUp.txt'\,'wz-run3/common/frs-jec/fr-standard-jesRelativeSample_yearDown.txt'] 
+#jesEC2 : $PromptFromMC : .* : templateAsymm; FakeRates=['wz-run3/common/frs-jec/fr-standard-jesEC2Up.txt'\,'wz-run3/common/frs-jec/fr-standard-jesEC2Down.txt'] 
+#jesHF_year : $PromptFromMC : .* : templateAsymm; FakeRates=['wz-run3/common/frs-jec/fr-standard-jesHF_yearUp.txt'\,'wz-run3/common/frs-jec/fr-standard-jesHF_yearDown.txt'] 
+#jesRelativeBal : $PromptFromMC : .* : templateAsymm; FakeRates=['wz-run3/common/frs-jec/fr-standard-jesRelativeBalUp.txt'\,'wz-run3/common/frs-jec/fr-standard-jesRelativeBalDown.txt'] 
+#jesAbsolute_year : $PromptFromMC : .* : templateAsymm; FakeRates=['wz-run3/common/frs-jec/fr-standard-jesAbsolute_yearUp.txt'\,'wz-run3/common/frs-jec/fr-standard-jesAbsolute_yearDown.txt'] 
+#jesBBEC1 : $PromptFromMC : .* : templateAsymm; FakeRates=['wz-run3/common/frs-jec/fr-standard-jesBBEC1Up.txt'\,'wz-run3/common/frs-jec/fr-standard-jesBBEC1Down.txt'] 
+#jesEC2_year : $PromptFromMC : .* : templateAsymm; FakeRates=['wz-run3/common/frs-jec/fr-standard-jesEC2_yearUp.txt'\,'wz-run3/common/frs-jec/fr-standard-jesEC2_yearDown.txt'] 
+#jesAbsolute : $PromptFromMC : .* : templateAsymm; FakeRates=['wz-run3/common/frs-jec/fr-standard-jesAbsoluteUp.txt'\,'wz-run3/common/frs-jec/fr-standard-jesAbsoluteDown.txt']
 
-
-## -------------------------------------
 ## Lepton SFs 
-## -------------------------------------
+elecidsf : $PromptFromMC : .* : templateAsymm; AddWeights=["electronSF_Up/electronSF"\,"electronSF_Down/electronSF"]
+muonidsf : $PromptFromMC : .* : templateAsymm; AddWeights=["muonSF_Up/muonSF"\,"muonSF_Down/muonSF"]
 
+## btag SFs
+btag_LF : $PromptFromMC : .* : templateAsymm; AddWeights=['bTagWeight_mistag_correlatedUp/bTagWeight'\,'bTagWeight_mistag_correlatedDown/bTagWeight']
+btag_HF : $PromptFromMC : .* : templateAsymm; AddWeights=['bTagWeight_btag_correlatedUp/bTagWeight'\,'bTagWeight_btag_correlatedDown/bTagWeight']
 
-elecidsf : $PromptFromMC|$WZ : .* : templateAsymm; AddWeights=["electronSF_Up/electronSF"\,"electronSF_Down/electronSF"]
-muonidsf : $PromptFromMC|$WZ : .* : templateAsymm; AddWeights=["muonSF_Up/muonSF"\,"muonSF_Down/muonSF"]
+## ISR/FSR
+ISR : $WZ : .* : templateSymm; AddWeight="ISRUp(nJet25_Mini)" 
+FSR : $WZ : .* : templateSymm; AddWeight="ISRUp(nJet25_Mini)"
+
+## Signal uncertainties
+# Still missing in early Run3 MC:
+# * pdf
+# * scales

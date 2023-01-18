@@ -1,14 +1,11 @@
 from producer import producer
 from utils.ftree_producer import ftree_producer
-import cfgs.ftrees as ftrees
 from cfgs.lumi import lumis
 
 class plot_producer(producer):
   name = "plot_producer"
   basecommand = "python mcPlots.py"
-  functions = ["wz-run3/functionsWZ.cc",
-               "wz-run3/functionsSF.cc"]
-  weights = ["muonSF*electronSF"]
+  functions = ["wz-run3/functionsWZ.cc"]
   jobname = "CMGPlot"
 
   def add_more_options(self, parser):
@@ -52,48 +49,14 @@ class plot_producer(producer):
  
     return
 
-  def override_paths(self):
-    #inpath   = "/".join([self.inpath, self.tier, self.prodname])
-    inpath = "/".join([self.inpath])
-    outname  = inpath.replace("phedex", "phedexrw").replace("trees", "plots")
-    outname = outname.replace("%s/"%self.tier,"").replace("%s"%self.prodname, self.outfolder)
-    self.inpath  = inpath
-    self.outname = outname
-    ## Use the parent class override_paths method
-    ## to prioritize I/O paths given by the user. 
-    super(plot_producer, self).override_paths()
-    return
-
-  def add_friends(self):
-    friendtxt = ""
-    modulekeys = ftrees.modules.keys()
-    for key in modulekeys:
-      modulename = ftrees.modules[key][0]
-      moduletype = ftrees.modules[key][1]
-      addmethod = "--Fs"
-      if moduletype == "mc":
-        addmethod = "--FMCs"
-      elif moduletype == "data":
-        addmethod = "--FDs"
-      friendtxt += "%s {P}/%s "%(addmethod, modulename)
-    return friendtxt
-
-
-  def get_cut(self, region):
-    ''' Minimal cuts to define different regions of the analysis '''
-    cuts = {
-      "srwz" : "-E ^SRWZ",
-      "crzz" : "-E ^CRZZnomet -X ^AllTight -E ^ZZTight"
-    }
-    return cuts[region]
-  
+ 
   def run(self):
     # Yearly stuff 
     year     = self.year
-    inpath   = self.inpath
     outname  = self.outname
     extra    = self.extra
     mincuts  = self.get_cut(self.region)
+    uncfile  = self.uncfile
     lumi     = lumis[year]
 
     # Other plotting stuff 
@@ -115,15 +78,17 @@ class plot_producer(producer):
                    "%s"%self.cutfile,
                    "%s"%self.plotfile,
                    "-l %s"%lumi,
-                   "-f --pdir %s"%outname,
+                   "-f --pdir %s"%self.outname,
                    "--tree %s "%self.treename,
-                   "-P {path}/mc/ -P {path}/data/".format(path = inpath),
+                   "-P {mcpath} -P {datapath}".format(mcpath = self.mcpath, datapath = self.datapath),
                    self.add_friends(),
                    "-L " + " -L ".join(self.functions),
                    "- W '%s'"%("*".join(self.weights)),
                    "%s"%plottingStuff,
                    "-j %s"%(self.ncores),
                    "%s"%mincuts,
+                   "--unc %s"%uncfile,
+                   "--xp data",
                    "%s"%extra]
     return
 

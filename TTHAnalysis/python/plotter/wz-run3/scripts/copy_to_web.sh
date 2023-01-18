@@ -1,7 +1,7 @@
 ### Script to replicate folders in /pool/phedex in 
 ### the web.
 
-plotspath="/pool/phedex/userstorage/cvico/wz-run3/plots/"
+plotspath="/beegfs/data/nanoAODv9/temp_wz/plots/"
 infolder=$plotspath$1
 addlogsummary=$2
 

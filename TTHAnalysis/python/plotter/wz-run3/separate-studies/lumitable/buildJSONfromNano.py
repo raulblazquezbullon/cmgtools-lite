@@ -75,10 +75,10 @@ if __name__ == "__main__":
   ## this should work for any given format of the input path.
   
   for root, dirs, files in os.walk(mainDir): 
+    if "data2022F_28nov2022_EGamma_Run2022F-PromptNanoAODv10_v1-v2/221128_143539/0000" in root: continue
     inputFiles = [file_ for file_ in files if (".root" in file_ and "log" not in root)]
     if len(inputFiles) == 0: continue
     dataset = re.match("%s/(.*)"%mainDir, root).groups()[0].split("/")[0] # Get the name of the dataset 
-     
     if dataset not in datasets: continue
     filters = []
     if filter_era: 
@@ -108,13 +108,23 @@ if __name__ == "__main__":
     
     ## Get runs and lumiblocks (and filter by goldenJson if needed)
     runs = {}
+    minrun = 99999999999999
+    maxrun = 0
+    print(" ----- There are %d datasets"%len(inputFiles))    
     for f in inputFiles:
       if verbosity: print("   * Reading %s"%f)
       ff    = ROOT.TFile(f, "READ")
       lumis = ff.Get("LuminosityBlocks")
+      if type(lumis) == ROOT.TObject:
+        print("File %s could not be read"%f)
+        continue
+ 
+     
       for ev in lumis:
         run       = ev.run
         lumiblock = ev.luminosityBlock
+        if run < minrun: minrun = run
+        if run > maxrun: maxrun = run
         
         ## Check if it is need to filter by the goldenJson
         if certifiedRuns != None:
@@ -126,19 +136,23 @@ if __name__ == "__main__":
           ## Filter by lumisection/lumiblock
           validLumis = certifiedRuns[runstring] 
           not_certified = []
+          #print("\t- Checking lumi: %s"%lumiblock) 
           for lumi_low, lumi_hi in validLumis:
               ## Check if current LS is contained within each of the lumi ranges in the goldenJson
               isNotValid = not(lumi_low <= lumiblock and lumiblock <= lumi_hi)
+              #print("\t >> Is it between %d and %d? %s"%(lumi_low, lumi_hi, not isNotValid))
               not_certified.append( isNotValid )
           ## If the current lumiblock is not in any of the goldenJson ranges for this run, then discard the event.
-          if all(not_certified): continue
+          if all(not_certified): 
+            #print("\t >>> LS: %d not valid"%lumiblock)
+            continue
 
         ## Save run and lumiblock 
+    
         if run in runs.keys(): 
           runs[run].append(lumiblock)
         else: 
           runs[run] = [lumiblock]
-
       # -- Build the output json -- #
       forjson = {}
       for key in runs.keys():
@@ -163,4 +177,7 @@ if __name__ == "__main__":
 
       if not (os.path.exists("%s/%s"%(outpath, d))): os.system("mkdir -p %s/%s"%(outpath, d))
       json.dump(forjson, open("%s/%s/%s"%(outpath, d, outname),"w"), sort_keys=True)
-
+    print("min range: %d"%min(runs.keys()))
+    print("max range: %d"%max(runs.keys()))
+    print("min range 2: %d"%minrun)
+    print("max range 2: %d"%maxrun)

@@ -18,10 +18,10 @@ files = {
   "electron" : {
     "IDTight"  : {"file" : "Electron_{year}UL_IDTight", 
                   "hist" : "EGamma_SF2D",
-                  "unc"  : []},
+                  "unc"  : ["unc"]},
     "RECOTight": {"file" : "Electron_{year}UL_RECO", 
                   "hist" : "EGamma_SF2D",
-                  "unc"  : []}
+                  "unc"  : ["unc"]}
   }
 }  
     
@@ -81,6 +81,7 @@ class lepScaleFactors_wzrun3(Module):
     nleps = len(leps)
     
     self.event = event
+    print(" ---- Event: %d"%event.event)
     self.nmuons = 0
     self.nelectrons = 0
     for ilep, lep in enumerate(leps):
@@ -110,7 +111,7 @@ class lepScaleFactors_wzrun3(Module):
     #print("nmuons: %d"%self.nmuons)
     for sfname, sf in self.sfs.iteritems():
       if sfname == "muonSF" or sfname == "electronSF":
-        print("\t>> Writing %s SF which has a value of %3.2f"%(sfname, sf))
+        print("\t>> Writing %s SF which has a value of %s (Up: %s, Dn: %s)"%(sfname, sf, self.sfs[sfname+"_Up"], self.sfs[sfname+"_Down"] ))
       self.out.fillBranch(sfname, sf)        
     return
   
@@ -123,7 +124,7 @@ class lepScaleFactors_wzrun3(Module):
     variation_totsf = 0
     for typesf in self.leptonSF[flav]:
       h_nom = self.leptonSF[flav][typesf]["nominal"]
-      typesf_val = self.getFromHisto( pt, abs(eta), h_nom)
+      typesf_val = self.getFromHisto(pt, abs(eta), h_nom)
       tot_var = 0
       self.sfs[name + "_%s"%typesf] *= typesf_val
       # -- Propagate to the global sf
@@ -132,10 +133,17 @@ class lepScaleFactors_wzrun3(Module):
         if unc == "nominal" : continue # Already used in the previous for
         uncname = "_%s"%unc
         # -- Get the histogram for the uncertainty and get the error
-        h_unc     = self.leptonSF[flav][typesf][unc]
+        if unc != "unc":
+          h_unc     = self.leptonSF[flav][typesf][unc]
+        else:
+          h_unc = self.leptonSF[flav][typesf]["nominal"]
         variation = self.getFromHisto( pt, abs(eta), h_unc, err=True )  
         self.sfs[name + "_%s"%typesf + uncname + "Up"]   *= typesf_val*(1 + variation)
         self.sfs[name + "_%s"%typesf + uncname + "Down"] *= typesf_val*(1 - variation)
+        #self.sfs[name + "_%s"%typesf + uncname + "Up"]   *= typesf_val+variation
+        #self.sfs[name + "_%s"%typesf + uncname + "Down"] *= typesf_val-variation
+        
+
         
         # -- Propagate to the entire systematic
         tot_var += variation*variation
@@ -147,15 +155,18 @@ class lepScaleFactors_wzrun3(Module):
         
       variation_totsf += tot_var 
       # Now compute the variations 
+      #self.sfs[name + "_%sUp"%typesf]   *= typesf_val+ math.sqrt(tot_var)
+      #self.sfs[name + "_%sDown"%typesf] *= typesf_val- math.sqrt(tot_var)
       self.sfs[name + "_%sUp"%typesf]   *= typesf_val*(1 + math.sqrt(tot_var))
       self.sfs[name + "_%sDown"%typesf] *= typesf_val*(1 - math.sqrt(tot_var))
 
     # Finally compute the overall sf + variations
-    # Now compute the variations 
-    
     self.sfs[name]           *= tot_sf
     self.sfs[name + "_Up"]   *= tot_sf*(1 + math.sqrt(variation_totsf))
-    self.sfs[name + "_Down"] *= tot_sf*(1 - math.sqrt(variation_totsf))         
+    self.sfs[name + "_Down"] *= tot_sf*(1 - math.sqrt(variation_totsf))
+    print("%s total var: %s"%(flav, math.sqrt(variation_totsf)))
+   # self.sfs[name + "_Up"]   *= tot_sf+math.sqrt(variation_totsf)
+   # self.sfs[name + "_Down"] *= tot_sf-math.sqrt(variation_totsf)         
     return
   
   def getFromHisto(self, pt, eta, histo, err = False):

@@ -2,34 +2,30 @@
 # -- Import libraries -- #
 import argparse
 import os,sys
-import cfgs.defaults as defaults 
 
 class producer(object):
-  name = "producer"
+  # -- Friend tree modules 
+  modules = { 
+    1 : ["jmeUncertainties"   , "mc"],
+    2 : ["leptonJetRecleaning", "simple"],
+    3 : ["leptonBuilder"      , "simple"],
+    4 : ["triggerSequence"    , "simple"],
+    5 : ["scalefactors"       , "mc"],
+  }
 
+  weights = ["muonSF*electronSF*bTagWeight"]
+  name = "producer"
   cluster_comm = "sbatch -c {nc} -J {jn} -p {q} -e {logpath}/logs/log.%j.%x.err -o {logpath}/logs/log.%j.%x.out --wrap '{comm}' "
   jobname = "CMGjob"
   
   def __init__(self, parser):
     self.add_more_options(parser)
     self.unpack_opts()
-    self.override_paths()
-    return
+
 
   def add_more_options(self, parser):
-    parser.add_option('--prueba', dest = 'prueba')
     self.parser = parser 
     return
-
-  def override_paths(self):
-    ''' This method is used to check if default I/O paths have to 
-        be overriden by the user parsed ones '''
-    opts = vars(self.opts)
-    if opts["inpath"] != None: 
-      self.inpath = opts["inpath"]
-    if opts["outname"] != None:
-      self.outname = "%s"%opts["outname"]
-    return 
 
   def summarize(self):
     ''' Method to show a summary of the given options '''
@@ -83,6 +79,31 @@ class producer(object):
     ''' To be implemented in different classes ''' 
     pass
 
+  def add_friends(self):
+    friendtxt = ""
+    modulekeys = self.modules.keys()
+    for key in modulekeys:
+      modulename = self.modules[key][0]
+      moduletype = self.modules[key][1]
+      addmethod = "--Fs"
+      if moduletype == "mc":
+        addmethod = "--FMCs"
+      elif moduletype == "data":
+        addmethod = "--FDs"
+      friendtxt += "%s {P}/%s "%(addmethod, modulename)
+    return friendtxt
+
+
+
+  def get_cut(self, region):
+    ''' Minimal cuts to define different regions of the analysis '''
+    cuts = {
+      "srwz" : "-E ^SRWZ",
+      "crzz" : "-E ^CRZZnomet -X ^AllTight -E ^ZZTight"
+    }
+    return cuts[region]
+  
+
   def raiseError(self, msg):
     logmsg = "[%s::ERROR]: %s"%(self.name, msg)
     raise RuntimeError(logmsg)
@@ -92,3 +113,4 @@ class producer(object):
     logmsg = "[%s::WARNING]: %s"%(self.name, msg)
     raise RuntimeWarning(logmsg)
     return
+
