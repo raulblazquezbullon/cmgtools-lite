@@ -6,24 +6,25 @@ import ROOT as r
 import os
 
 
-class lepScaleFactors_TopRun2UL(Module):
+class lepScaleFactors_TopRun3(Module):
     # =================== ### Main methods
     def __init__(self, year_, lepenvars = ["mu"]):
-        self.basepath     = os.environ["CMSSW_BASE"] + "/src/CMGTools/TTHAnalysis/data/TopRun2UL/"
+        self.basepath     = os.environ["CMSSW_BASE"] + "/src/CMGTools/TTHAnalysis/data/TopRun3/"
         self.basepathlep  = self.basepath + "/lepton/"
         self.basepathtrig = self.basepath + "/trigger/"
         self.year         = year_
+        self.runTriggSFAlaTTbarRun3 = True  ##  Use the trigger SFs as in ttbar Run3 (computed from single lepton triggers efficiencies)
 
         self.leptonSF = {}; self.leptonSFuncs = {}; self.triggerSF = {}
         self.leptonSF["m"] = {}; self.leptonSF["e"] = {}
         self.leptonSFuncs["m"] = {}; self.leptonSFuncs["e"] = {}
-        self.triggerSF[ch.ElMu] = {}; self.triggerSF[ch.Elec] = {}; self.triggerSF[ch.Muon] = {};
-        for y in ["2016apv", "2016", "2017", "2018"]:
+        self.triggerSF[ch.ElMu] = {}; self.triggerSF[ch.Elec] = {}; self.triggerSF[ch.Muon] = {}; self.triggerSF["m"] = {}; self.triggerSF["e"] = {}
+        for y in ["2016apv", "2016", "2017", "2018", "2022"]:
             self.leptonSF["m"][y] = {}
             self.leptonSF["e"][y] = {}
             self.leptonSFuncs["m"][y] = {}
             self.leptonSFuncs["e"][y] = {}
-            for chan in [ch.ElMu, ch.Elec, ch.Muon]:
+            for chan in [ch.ElMu, ch.Elec, ch.Muon, "m", "e"]:
                 self.triggerSF[chan][y] = {}
 
         self.systsLepEn = {}
@@ -55,6 +56,7 @@ class lepScaleFactors_TopRun2UL(Module):
             self.basepathlep + "Efficiencies_muon_generalTracks_Z_Run2018_UL_ID.root",
             "NUM_TightID_DEN_TrackerMuons_abseta_pt",
             ["_stat", "_syst"])
+        self.leptonSF["m"]["2022"]["idtight"]    = self.loadHisto(self.basepathlep + "muonSF_run3_v2.root",    "EGamma_SF2D")
 
         # Muon iso
         self.leptonSF["m"]["2016apv"]["iso"], self.leptonSFuncs["m"]["2016"]["iso_stat"], self.leptonSFuncs["m"]["2016"]["iso_syst"] = self.loadHistoWithUncs(
@@ -79,6 +81,7 @@ class lepScaleFactors_TopRun2UL(Module):
         self.leptonSF["e"]["2016"]["idtight"]    = self.loadHisto(self.basepathlep + "Electron_2016UL_IDTight.root",    "EGamma_SF2D")
         self.leptonSF["e"]["2017"]["idtight"]    = self.loadHisto(self.basepathlep + "Electron_2017UL_IDTight.root",    "EGamma_SF2D")
         self.leptonSF["e"]["2018"]["idtight"]    = self.loadHisto(self.basepathlep + "Electron_2018UL_IDTight.root",    "EGamma_SF2D")
+        self.leptonSF["e"]["2022"]["idtight"]    = self.loadHisto(self.basepathlep + "egammaEffi_run3_v2.root",    "EGamma_SF2D")
 
         # Elec reco
         self.leptonSF["e"]["2016apv"]["recotight"] = self.loadHisto(self.basepathlep + "Electron_2016apvUL_RECO.root", "EGamma_SF2D")
@@ -91,18 +94,31 @@ class lepScaleFactors_TopRun2UL(Module):
         self.triggerSF[ch.ElMu]["2016"]    = self.loadHisto(self.basepathtrig + "TriggerSF_2016postVFP_ULv2.root", "h2D_SF_emu_lepABpt_FullError")
         self.triggerSF[ch.ElMu]["2017"]    = self.loadHisto(self.basepathtrig + "TriggerSF_2017_ULv2.root",        "h2D_SF_emu_lepABpt_FullError")
         self.triggerSF[ch.ElMu]["2018"]    = self.loadHisto(self.basepathtrig + "TriggerSF_2018_ULv2.root",        "h2D_SF_emu_lepABpt_FullError")
+        #self.triggerSF[ch.ElMu]["2022"]    = self.loadHisto(self.basepathtrig + "TriggerSF_2018_ULv2.root",        "h2D_SF_emu_lepABpt_FullError")
 
         # Trigger elel
         self.triggerSF[ch.Elec]["2016apv"] = self.loadHisto(self.basepathtrig + "TriggerSF_2016preVFP_ULv2.root",  "h2D_SF_ee_lepABpt_FullError")
         self.triggerSF[ch.Elec]["2016"]    = self.loadHisto(self.basepathtrig + "TriggerSF_2016postVFP_ULv2.root", "h2D_SF_ee_lepABpt_FullError")
         self.triggerSF[ch.Elec]["2017"]    = self.loadHisto(self.basepathtrig + "TriggerSF_2017_ULv2.root",        "h2D_SF_ee_lepABpt_FullError")
         self.triggerSF[ch.Elec]["2018"]    = self.loadHisto(self.basepathtrig + "TriggerSF_2018_ULv2.root",        "h2D_SF_ee_lepABpt_FullError")
+        #self.triggerSF[ch.Elec]["2022"]    = self.loadHisto(self.basepathtrig + "TriggerSF_2018_ULv2.root",        "h2D_SF_ee_lepABpt_FullError")
 
         # Trigger mumu
         self.triggerSF[ch.Muon]["2016apv"] = self.loadHisto(self.basepathtrig + "TriggerSF_2016preVFP_ULv2.root",  "h2D_SF_mumu_lepABpt_FullError")
         self.triggerSF[ch.Muon]["2016"]    = self.loadHisto(self.basepathtrig + "TriggerSF_2016postVFP_ULv2.root", "h2D_SF_mumu_lepABpt_FullError")
         self.triggerSF[ch.Muon]["2017"]    = self.loadHisto(self.basepathtrig + "TriggerSF_2017_ULv2.root",        "h2D_SF_mumu_lepABpt_FullError")
         self.triggerSF[ch.Muon]["2018"]    = self.loadHisto(self.basepathtrig + "TriggerSF_2018_ULv2.root",        "h2D_SF_mumu_lepABpt_FullError")
+        #self.triggerSF[ch.Muon]["2022"]    = self.loadHisto(self.basepathtrig + "TriggerSF_2018_ULv2.root",        "h2D_SF_mumu_lepABpt_FullError")
+
+        # Trigger mu eff
+        self.triggerSF["m"]["2022"]["effData"]    = self.loadHisto(self.basepathtrig + "triggersf_effs_Run3.root",        "mu_eff_data")
+        self.triggerSF["m"]["2022"]["effMC"]    = self.loadHisto(self.basepathtrig + "triggersf_effs_Run3.root",        "mu_eff_mc")
+
+        # Trigger el eff
+        self.triggerSF["e"]["2022"]["effData"]    = self.loadHisto(self.basepathtrig + "triggersf_effs_Run3.root",        "e_eff_data")
+        self.triggerSF["e"]["2022"]["effMC"]    = self.loadHisto(self.basepathtrig + "triggersf_effs_Run3.root",        "e_eff_mc")
+
+
         print("[lepScaleFactors_TopRun2::constructor] - Finished loading histograms")
         return
 
@@ -112,19 +128,27 @@ class lepScaleFactors_TopRun2UL(Module):
 
         for var in ["", "_Up", "_Dn"]:
             self.out.branch('ElecIDSF'   + var, 'F')
-            self.out.branch('ElecRECOSF' + var, 'F')
-            self.out.branch('TrigSF'     + var, 'F')
+            #self.out.branch('ElecRECOSF' + var, 'F')
+            if self.runTriggSFAlaTTbarRun3:
+                if var == "":
+                    for sys in ["", "_mUp", "_mDn", "_eUp", "_eDn"]:
+                        self.out.branch('TrigSF'     + sys, 'F')
+            else:
+                self.out.branch('TrigSF'     + var, 'F')
+            # Muon SFs with stat and syst variations no separated (ttbar Run3)
+            self.out.branch('MuonIDSF'   + var, 'F')
+            #self.out.branch('MuonISOSF'  + var, 'F')
             if var == "":
                 for delta,sys in self.systsLepEn.iteritems():
                     self.out.branch('MuonIDSF'   + sys, 'F')
-                    self.out.branch('MuonISOSF'  + sys, 'F')
+                    #self.out.branch('MuonISOSF'  + sys, 'F')
                     self.out.branch('ElecIDSF'   + sys, 'F')
-                    self.out.branch('ElecRECOSF' + sys, 'F')
+                    #self.out.branch('ElecRECOSF' + sys, 'F')
                     self.out.branch('TrigSF'     + sys, 'F')
 
-        for var in ["", "_statUp", "_statDn", "_systUp", "_systDn"]:
-            self.out.branch('MuonIDSF'   + var, 'F')
-            self.out.branch('MuonISOSF'  + var, 'F')
+        ##for var in ["", "_statUp", "_statDn", "_systUp", "_systDn"]:
+        ##    self.out.branch('MuonIDSF'   + var, 'F')
+        ##    self.out.branch('MuonISOSF'  + var, 'F')
 
         return
 
@@ -138,21 +162,23 @@ class lepScaleFactors_TopRun2UL(Module):
 
         # leptons
         # muons (separated into stat & syst)
-        for var in ["", "_statUp", "_statDn", "_systUp", "_systDn"]:
-            muonidsf = 1; muonisosf  = 1;
+        #for var in ["", "_statUp", "_statDn", "_systUp", "_systDn"]:
+        # muons with stat and syst variations no separated (ttbar Run3)
+        for var in ["", "_Up", "_Dn"]:
+            muonidsf = 1; muonisosf  = 1
 
             if event.nLepGood > 0:
                 if abs(leps[0].pdgId) == 13: # muon
                     muonidsf  *= self.getLepSF(leps[0].pt_corrAll, leps[0].eta, var, "m", year, event, "id")
-                    muonisosf *= self.getLepSF(leps[0].pt_corrAll, leps[0].eta, var, "m", year, event, "iso")
+                    #muonisosf *= self.getLepSF(leps[0].pt_corrAll, leps[0].eta, var, "m", year, event, "iso")
 
                 if event.nLepGood > 1:
                     if abs(leps[1].pdgId) == 13: # muon
                         muonidsf  *= self.getLepSF(leps[1].pt_corrAll, leps[1].eta, var, "m", year, event, "id")
-                        muonisosf *= self.getLepSF(leps[1].pt_corrAll, leps[1].eta, var, "m", year, event, "iso")
+                        #muonisosf *= self.getLepSF(leps[1].pt_corrAll, leps[1].eta, var, "m", year, event, "iso")
 
             self.out.fillBranch('MuonIDSF'   + var, muonidsf)
-            self.out.fillBranch('MuonISOSF'  + var, muonisosf)
+            #self.out.fillBranch('MuonISOSF'  + var, muonisosf)
 
 
         for var in ["", "_Up", "_Dn"]:
@@ -164,75 +190,113 @@ class lepScaleFactors_TopRun2UL(Module):
             if event.nLepGood > 0:
                 if abs(leps[0].pdgId) == 11: # electron
                     elecidsf   *= self.getLepSF(leps[0].pt_corrAll, leps[0].eta + leps[0].deltaEtaSC, var, "e", year, event, "id")
-                    elecrecosf *= self.getLepSF(leps[0].pt_corrAll, leps[0].eta + leps[0].deltaEtaSC, var, "e", year, event, "reco")
+                    #elecrecosf *= self.getLepSF(leps[0].pt_corrAll, leps[0].eta + leps[0].deltaEtaSC, var, "e", year, event, "reco")
 
                 if event.nLepGood > 1:
                     if abs(leps[1].pdgId) == 11: # electron
                         elecidsf   *= self.getLepSF(leps[1].pt_corrAll, leps[1].eta + leps[1].deltaEtaSC, var, "e", year, event, "id")
-                        elecrecosf *= self.getLepSF(leps[1].pt_corrAll, leps[1].eta + leps[1].deltaEtaSC, var, "e", year, event, "reco")
+                        #elecrecosf *= self.getLepSF(leps[1].pt_corrAll, leps[1].eta + leps[1].deltaEtaSC, var, "e", year, event, "reco")
 
 
             self.out.fillBranch('ElecIDSF'   + var, elecidsf)
-            self.out.fillBranch('ElecRECOSF' + var, elecrecosf)
+            #self.out.fillBranch('ElecRECOSF' + var, elecrecosf)
 
             # triggers
-            trigsf = 1
-            #if len(leps) > 1 and chan != ch.NoChan:
-            if event.nLepGood > 1 and chan != ch.NoChan:
-                if chan == ch.ElMu:
-                    trigsf *= self.getTrigSFdependingOnFlavour((leps[0].pt_corrAll, leps[0].pdgId),
-                                                               (leps[1].pt_corrAll, leps[1].pdgId),
-                                                               var, chan, year, ev = event)
-                else:
-                    trigsf *= self.getTrigSF(leps[0].pt_corrAll, leps[1].pt_corrAll, var, chan, year, ev = event)
+            if not self.runTriggSFAlaTTbarRun3:
+                trigsf = 1
+                #if len(leps) > 1 and chan != ch.NoChan:
+                if event.nLepGood > 1 and chan != ch.NoChan:
+                    if chan == ch.ElMu:
+                        trigsf *= self.getTrigSFdependingOnFlavour((leps[0].pt_corrAll, leps[0].pdgId),
+                                                                   (leps[1].pt_corrAll, leps[1].pdgId),
+                                                                   var, chan, year, ev = event)
+                    else:
+                        trigsf *= self.getTrigSF(leps[0].pt_corrAll, leps[1].pt_corrAll, var, chan, year, ev = event)
 
-            self.out.fillBranch('TrigSF' + var, trigsf)
+                self.out.fillBranch('TrigSF' + var, trigsf)
+        
+            # Now, let's do ala ttbar Run3
+            if self.runTriggSFAlaTTbarRun3 and var == "":
+                for var in ["", "_mUp", "_mDn", "_eUp", "_eDn"]:
+                    trigsf = 1
+                    if event.nLepGood > 1 and chan == ch.ElMu:
+                        # get muon and electron pt and eta based on pdgId
+                        if abs(leps[0].pdgId) == 13:
+                            mupt  = leps[0].pt_corrAll
+                            mueta = leps[0].eta
+                            ept   = leps[1].pt_corrAll
+                            eeta  = leps[1].eta
+                        else:
+                            mupt  = leps[1].pt_corrAll
+                            mueta = leps[1].eta
+                            ept   = leps[0].pt_corrAll
+                            eeta  = leps[0].eta
+                        trigsf *= self.getTrigSFfromSingleLepton(mupt, mueta, ept, eeta, var, chan, year, ev = event)
+
+                    self.out.fillBranch('TrigSF' + var, trigsf)
 
 
             # Now for the lepton energy variations...
             if var == "":
                 for delta,sys in self.systsLepEn.iteritems():
                     # leptons
-                    muonidsf = 1; muonisosf  = 1;
+                    muonidsf = 1; muonisosf  = 1
                     elecidsf = 1; elecrecosf = 1
                     varleps = [l for l in Collection(event, "LepGood" + sys[1:])]
 
                     if len(varleps) > 0:
                         if   abs(varleps[0].pdgId) == 11: # electron
                             elecidsf   *= self.getLepSF(getattr(varleps[0], "pt" + sys), varleps[0].eta + varleps[0].deltaEtaSC, var, "e", year, event, "id")
-                            elecrecosf *= self.getLepSF(getattr(varleps[0], "pt" + sys), varleps[0].eta + varleps[0].deltaEtaSC, var, "e", year, event, "reco")
+                            #elecrecosf *= self.getLepSF(getattr(varleps[0], "pt" + sys), varleps[0].eta + varleps[0].deltaEtaSC, var, "e", year, event, "reco")
                         elif abs(varleps[0].pdgId) == 13: # muon
                             muonidsf  *= self.getLepSF(getattr(varleps[0], "pt" + sys), varleps[0].eta, var, "m", year, event, "id")
-                            muonisosf *= self.getLepSF(getattr(varleps[0], "pt" + sys), varleps[0].eta, var, "m", year, event, "iso")
+                            #muonisosf *= self.getLepSF(getattr(varleps[0], "pt" + sys), varleps[0].eta, var, "m", year, event, "iso")
 
                         if len(varleps) > 1:
                             if   abs(varleps[1].pdgId) == 11: # electron
                                 elecidsf   *= self.getLepSF(getattr(varleps[1], "pt" + sys), varleps[1].eta + varleps[1].deltaEtaSC, var, "e", year, event, "id")
-                                elecrecosf *= self.getLepSF(getattr(varleps[1], "pt" + sys), varleps[1].eta + varleps[1].deltaEtaSC, var, "e", year, event, "reco")
+                                #elecrecosf *= self.getLepSF(getattr(varleps[1], "pt" + sys), varleps[1].eta + varleps[1].deltaEtaSC, var, "e", year, event, "reco")
                             elif abs(varleps[1].pdgId) == 13: # muon
                                 muonidsf  *= self.getLepSF(getattr(varleps[1], "pt" + sys), varleps[1].eta, var, "m", year, event, "id")
-                                muonisosf *= self.getLepSF(getattr(varleps[1], "pt" + sys), varleps[1].eta, var, "m", year, event, "iso")
+                                #muonisosf *= self.getLepSF(getattr(varleps[1], "pt" + sys), varleps[1].eta, var, "m", year, event, "iso")
 
                     self.out.fillBranch('MuonIDSF'   + sys, muonidsf)
-                    self.out.fillBranch('MuonISOSF'  + sys, muonisosf)
+                    #self.out.fillBranch('MuonISOSF'  + sys, muonisosf)
                     self.out.fillBranch('ElecIDSF'   + sys, elecidsf)
-                    self.out.fillBranch('ElecRECOSF' + sys, elecrecosf)
+                    #self.out.fillBranch('ElecRECOSF' + sys, elecrecosf)
 
                     # triggers
-                    trigsf = 1
-                    if len(varleps) > 1 and getattr(event, "channel" + sys) != ch.NoChan:
-                        if getattr(event, "channel" + sys) == ch.ElMu:
-                            trigsf *= self.getTrigSFdependingOnFlavour((getattr(varleps[0], "pt" + sys), varleps[0].pdgId),
-                                                                       (getattr(varleps[1], "pt" + sys), varleps[1].pdgId),
-                                                                       var, getattr(event, "channel" + sys),
-                                                                       year, ev = event)
-                        else:
-                            trigsf *= self.getTrigSF(getattr(varleps[0], "pt" + sys),
-                                                     getattr(varleps[1], "pt" + sys),
-                                                     var, getattr(event, "channel" + sys),
-                                                     year, ev = event)
+                    if not self.runTriggSFAlaTTbarRun3:
+                        trigsf = 1
+                        if len(varleps) > 1 and getattr(event, "channel" + sys) != ch.NoChan:
+                            if getattr(event, "channel" + sys) == ch.ElMu:
+                                trigsf *= self.getTrigSFdependingOnFlavour((getattr(varleps[0], "pt" + sys), varleps[0].pdgId),
+                                                                           (getattr(varleps[1], "pt" + sys), varleps[1].pdgId),
+                                                                           var, getattr(event, "channel" + sys),
+                                                                           year, ev = event)
+                            else:
+                                trigsf *= self.getTrigSF(getattr(varleps[0], "pt" + sys),
+                                                         getattr(varleps[1], "pt" + sys),
+                                                         var, getattr(event, "channel" + sys),
+                                                         year, ev = event)
 
-                    self.out.fillBranch('TrigSF' + sys, trigsf)
+                        self.out.fillBranch('TrigSF' + sys, trigsf)
+                    
+                    if self.runTriggSFAlaTTbarRun3:
+                        trigsf = 1
+                        if len(varleps) > 1 and getattr(event, "channel" + sys) == ch.ElMu:
+                            if abs(varleps[0].pdgId) == 13:
+                                mupt  = getattr(varleps[0], "pt" + sys)
+                                mueta = varleps[0].eta
+                                ept   = getattr(varleps[1], "pt" + sys)
+                                eeta  = varleps[1].eta
+                            else:
+                                mupt  = getattr(varleps[1], "pt" + sys)
+                                mueta = varleps[1].eta
+                                ept   = getattr(varleps[0], "pt" + sys)
+                                eeta  = varleps[0].eta
+                            trigsf *= self.getTrigSFfromSingleLepton(mupt, mueta, ept, eeta, var, getattr(event, "channel" + sys), year, ev = event)
+                        self.out.fillBranch('TrigSF' + sys, trigsf)
 
         return True
 
@@ -311,6 +375,60 @@ class lepScaleFactors_TopRun2UL(Module):
 
         return out
 
+    def getEfficiency(self, histo, pt, eta):
+        '''
+        This method returns the efficiency for a given pt and eta, ttbar run3
+        '''
+        eta = abs(eta)
+        ptbin = max(1, min(histo.GetNbinsX(), histo.GetXaxis().FindBin(pt)))
+        etabin = max(1, min(histo.GetNbinsY(), histo.GetYaxis().FindBin(eta)))
+        eff = histo.GetBinContent(ptbin, etabin)
+        err = histo.GetBinError(ptbin, etabin)
+        return eff, err
+
+    
+    def getTrigSFfromSingleLepton(self, mupt, mueta, ept, eeta, var, fl, yr, ev = None):
+        '''
+        It computes the SFs from the single lepton trigger efficiencies
+        eff_data = mu_eff_data + e_eff_data - mu_eff_data*e_eff_data
+        eff_MC = mu_eff_MC + e_eff_MC - mu_eff_MC*e_eff_MC
+        SF = eff_data/eff_MC
+
+        We separate the errors in electron and muon triggers
+        SF_eUp=(effm_data + effe_data+er_effe_data - effm_data*(er_effe_data+effe_data)) /(effm_MC + effe_MC+er_effe_MC - effm_MC*(er_effe_MC+effe_MC)) 
+        SF_e_Down = (effm_data + effe_data-er_effe_data - effm_data*(er_effe_data-effe_data)) /(effm_MC + effe_MC-er_effe_MC - effm_MC*(er_effe_MC-effe_MC)) 
+        SF_mUp= (effm_data+er_effm_data + effe_data - (effm_data+er_effm_data)*effe_data) /(effm_MC+er_effm_MC + effe_MC - (effm_MC+er_effm_MC)*effe_MC) 
+        SF_mDo=(effm_data-er_effm_data + effe_data - (effm_data-er_effm_data)*effe_data) /(effm_MC-er_effm_MC + effe_MC - (effm_MC-er_effm_MC)*effe_MC) 
+        '''
+        hist_mu_Data = self.triggerSF["m"][yr]["effData"]
+        hist_mu_MC   = self.triggerSF["m"][yr]["effMC"]
+        hist_e_Data = self.triggerSF["e"][yr]["effData"]
+        hist_e_MC   = self.triggerSF["e"][yr]["effMC"]
+
+        if fl == ch.ElMu:
+            eff_Data = self.getEfficiency(hist_mu_Data, mupt, mueta)[0] + self.getEfficiency(hist_e_Data, ept, eeta)[0] - self.getEfficiency(hist_mu_Data, mupt, mueta)[0]*self.getEfficiency(hist_e_Data, ept, eeta)[0]
+            eff_MC = self.getEfficiency(hist_mu_MC, mupt, mueta)[0] + self.getEfficiency(hist_e_MC, ept, eeta)[0] - self.getEfficiency(hist_mu_MC, mupt, mueta)[0]*self.getEfficiency(hist_e_MC, ept, eeta)[0]
+            out = eff_Data/eff_MC
+            if   "eup" in var.lower():
+                eff_Data = self.getEfficiency(hist_mu_Data, mupt, mueta)[0] + self.getEfficiency(hist_e_Data, ept, eeta)[0] + self.getEfficiency(hist_e_Data, ept, eeta)[1] - self.getEfficiency(hist_mu_Data, mupt, mueta)[0]*(self.getEfficiency(hist_e_Data, ept, eeta)[1]+self.getEfficiency(hist_e_Data, ept, eeta)[0])
+                eff_MC = self.getEfficiency(hist_mu_MC, mupt, mueta)[0] + self.getEfficiency(hist_e_MC, ept, eeta)[0] + self.getEfficiency(hist_e_MC, ept, eeta)[1] - self.getEfficiency(hist_mu_MC, mupt, mueta)[0]*(self.getEfficiency(hist_e_MC, ept, eeta)[1]+self.getEfficiency(hist_e_MC, ept, eeta)[0])
+                out = eff_Data/eff_MC
+            elif "edn" in var.lower():
+                eff_Data = self.getEfficiency(hist_mu_Data, mupt, mueta)[0] + self.getEfficiency(hist_e_Data, ept, eeta)[0] - self.getEfficiency(hist_e_Data, ept, eeta)[1] - self.getEfficiency(hist_mu_Data, mupt, mueta)[0]*(self.getEfficiency(hist_e_Data, ept, eeta)[1]-self.getEfficiency(hist_e_Data, ept, eeta)[0])
+                eff_MC = self.getEfficiency(hist_mu_MC, mupt, mueta)[0] + self.getEfficiency(hist_e_MC, ept, eeta)[0] - self.getEfficiency(hist_e_MC, ept, eeta)[1] - self.getEfficiency(hist_mu_MC, mupt, mueta)[0]*(self.getEfficiency(hist_e_MC, ept, eeta)[1]-self.getEfficiency(hist_e_MC, ept, eeta)[0])
+                out = eff_Data/eff_MC
+            elif "mup" in var.lower():
+                eff_Data = self.getEfficiency(hist_mu_Data, mupt, mueta)[0] + self.getEfficiency(hist_mu_Data, mupt, mueta)[1] + self.getEfficiency(hist_e_Data, ept, eeta)[0] - (self.getEfficiency(hist_mu_Data, mupt, mueta)[0]+self.getEfficiency(hist_mu_Data, mupt, mueta)[1])*self.getEfficiency(hist_e_Data, ept, eeta)[0]
+                eff_MC = self.getEfficiency(hist_mu_MC, mupt, mueta)[0] + self.getEfficiency(hist_mu_MC, mupt, mueta)[1] + self.getEfficiency(hist_e_MC, ept, eeta)[0] - (self.getEfficiency(hist_mu_MC, mupt, mueta)[0]+self.getEfficiency(hist_mu_MC, mupt, mueta)[1])*self.getEfficiency(hist_e_MC, ept, eeta)[0]
+                out = eff_Data/eff_MC
+            elif "mdn" in var.lower():
+                eff_Data = self.getEfficiency(hist_mu_Data, mupt, mueta)[0] - self.getEfficiency(hist_mu_Data, mupt, mueta)[1] + self.getEfficiency(hist_e_Data, ept, eeta)[0] - (self.getEfficiency(hist_mu_Data, mupt, mueta)[0]-self.getEfficiency(hist_mu_Data, mupt, mueta)[1])*self.getEfficiency(hist_e_Data, ept, eeta)[0]
+                eff_MC = self.getEfficiency(hist_mu_MC, mupt, mueta)[0] - self.getEfficiency(hist_mu_MC, mupt, mueta)[1] + self.getEfficiency(hist_e_MC, ept, eeta)[0] - (self.getEfficiency(hist_mu_MC, mupt, mueta)[0]-self.getEfficiency(hist_mu_MC, mupt, mueta)[1])*self.getEfficiency(hist_e_MC, ept, eeta)[0]
+                out = eff_Data/eff_MC
+            return out
+    
+                
+
 
     def getFromHisto(self, pt, eta, histo, err = False):
         #### NOTE: this method obtains the information for a given pt and eta. In the
@@ -388,12 +506,23 @@ class lepScaleFactors_TopRun2UL(Module):
                     tmpsum += (self.getFromHisto(pt, eta, self.leptonSFuncs[fl][yr][sf + var[:-2]] if (sf + var[:-2]) in self.leptonSFuncs[fl][yr] else self.leptonSF[fl][yr][sf], err = True))**2
                     doneSFtype.append(sf)
 
-            if fl == "m" and "syst" in var:
+#            if fl == "m" and "syst" in var:
+#                if typ:
+#                    if "iso" in typ:
+#                        tmpsum += (out * 0.005)**2 # Extrapolation to top-like from DY-like phase space (CMS-AN-"2018"-210). Only for muons.
+#                else:
+#                    tmpsum += (out * 0.005)**2 # Extrapolation to top-like from DY-like phase space (CMS-AN-"2018"-210). Only for muons.
+            
+            if fl == "m":
                 if typ:
-                    if "iso" in typ:
-                        tmpsum += (out * 0.005)**2 # Extrapolation to top-like from DY-like phase space (CMS-AN-"2018"-210). Only for muons.
+                    tmpsum += (out * 0.005)**2 # Extrapolation to top-like from DY-like phase space (CMS-AN-"2018"-210). Only for muons.
                 else:
                     tmpsum += (out * 0.005)**2 # Extrapolation to top-like from DY-like phase space (CMS-AN-"2018"-210). Only for muons.
+            if fl == "e":
+                if typ:
+                    tmpsum += (out * 0.01)**2 # Extrapolation to top-like from DY-like phase space (CMS-AN-"2018"-210). Only for electrons.
+                else:
+                    tmpsum += (out * 0.01)**2 # Extrapolation to top-like from DY-like phase space (CMS-AN-"2018"-210). Only for electrons.
             tmpsum = r.TMath.Sqrt(tmpsum)
 
             if "up" in var.lower(): out += tmpsum

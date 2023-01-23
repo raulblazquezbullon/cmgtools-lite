@@ -184,10 +184,8 @@ def reMax(hist,hist2,islog,factorLin=1.3,factorLog=2.0,doWide=False):
 
 def doShadedUncertainty(h):
     ret = h.graphAsymmTotalErrors()
-    ret.SetFillStyle(3013);
-    ret.SetFillColor(1)
-#    ret.SetFillStyle(options.TotalUncRatioStyle[0] if options.TotalUncRatioStyle[0]!=3013 else 3013);
-#    ret.SetFillColor(options.TotalUncRatioColor[0] if options.TotalUncRatioColor[0]!=1 else 1)
+    ret.SetFillStyle(options.TotalUncRatioStyle[0] if options.TotalUncRatioStyle[0]!=3013 else 3013);
+    ret.SetFillColor(options.TotalUncRatioColor[0] if options.TotalUncRatioColor[0]!=1 else 1)
     ret.SetMarkerStyle(0)
     ret.SetLineWidth(options.histoLineWidth)
     if options.removeMarkerUncertainty:

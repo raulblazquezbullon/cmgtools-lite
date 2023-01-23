@@ -140,7 +140,39 @@ remove_overlap_booleans = [ lambda ev : (
                             (False)
                         )]
 
-remove_overlap = lambda : EvtTagger('pass_trigger', remove_overlap_booleans)
+remove_overlap_booleans_ala_ttbarRun3 = [ lambda ev : (
+                            (  (ev.channel == ch.ElMu and (ev.Trigger_em or ev.Trigger_1m or ev.Trigger_1e))
+                            or (ev.channel == ch.Muon and (ev.Trigger_1m or ev.Trigger_2m))
+                            or (ev.channel == ch.Elec and (ev.Trigger_1e or ev.Trigger_2e)) )
+                            if ev.datatag == tags.mc else
+
+                            # First emu dataset
+                            (  ev.channel == ch.ElMu and ev.Trigger_em)
+                            if ev.datatag == tags.muoneg else
+
+                            # Double muon
+                            (   ev.channel == ch.Muon and ev.Trigger_2m)
+                            if ev.datatag == tags.doublemuon else
+
+                            # Muon
+                            (  (ev.channel == ch.ElMu and (not ev.Trigger_em) and ev.Trigger_1m)
+                            or (ev.channel == ch.Muon and (ev.Trigger_2m or ev.Trigger_1m)))
+                            if ev.datatag == tags.muon else
+
+                            # E gamma
+                            (  (ev.channel == ch.ElMu and (not ev.Trigger_em) and (not ev.Trigger_1m) and ev.Trigger_1e)
+                            or (ev.channel == ch.Elec and (ev.Trigger_2e or ev.Trigger_1e)))
+                            if ev.datatag == tags.egamma else
+                            
+                            # Single muon
+                            (  (ev.channel == ch.ElMu and (not ev.Trigger_em) and ev.Trigger_1m)
+                            or (ev.channel == ch.Muon and (not ev.Trigger_2m) and ev.Trigger_1m))
+                            if ev.datatag == tags.singlemuon else
+
+                            (False)
+                        )]
+
+remove_overlap = lambda : EvtTagger('pass_trigger', remove_overlap_booleans_ala_ttbarRun3)
 
 triggerSeq = [Trigger_1e, Trigger_1m, Trigger_2e, Trigger_2m, Trigger_em, remove_overlap]
 
@@ -237,19 +269,29 @@ addJECs_2018    = createJMECorrector(dataYear      = "UL2018",
                                      splitJER      = True,
                                      applyHEMfix   = True,)
 
-addJECs_2022    = createJMECorrector(dataYear      = "2022",
+addJECs_mc_2022    = createJMECorrector(dataYear      = "2022",
                                      jetType       = "AK4PFPuppi",
                                      jesUncert     = "All",
                                      metBranchName = "PuppiMET",
                                      splitJER      = True,
                                      applyHEMfix   = False,)
 
+addJECs_data_2022 = createJMECorrector(isMC          = False,
+                                       dataYear      = "2022",
+                                       runPeriod     = "C",
+                                       jetType       = "AK4PFPuppi",
+                                       jesUncert     = "All",
+                                       metBranchName = "PuppiMET",
+                                       splitJER      = True,
+                                       applyHEMfix   = False)
+
 jecs_2016apv = addJECs_2016apv
 jecs_2016    = addJECs_2016
 jecs_2017    = addJECs_2017
 jecs_2018    = addJECs_2018
 
-jecs_2022    = addJECs_2022
+jecs_mc_2022    = addJECs_mc_2022
+jecs_data_2022 = addJECs_data_2022
 
 # Cleaning
 from CMGTools.TTHAnalysis.tools.nanoAOD.pythonCleaningTopRun3 import pythonCleaningTopRun2UL
@@ -443,12 +485,13 @@ btagWeights_2022 = lambda : btag_weighterRun3(btagpath + "/" + "wp_deepCSV_106XU
                                             year = "2022")
 
 # Lepton & trigger SF
-from CMGTools.TTHAnalysis.tools.nanoAOD.lepScaleFactors_TopRun3 import lepScaleFactors_TopRun2UL
-leptrigSFs_2016apv = lambda : lepScaleFactors_TopRun2UL(year_ = "2016apv", lepenvars = ["mu", "elsigma"])
-leptrigSFs_2016    = lambda : lepScaleFactors_TopRun2UL(year_ = "2016",    lepenvars = ["mu", "elsigma"])
-leptrigSFs_2017    = lambda : lepScaleFactors_TopRun2UL(year_ = "2017",    lepenvars = ["mu", "elsigma"])
-leptrigSFs_2018    = lambda : lepScaleFactors_TopRun2UL(year_ = "2018",    lepenvars = ["mu", "elsigma"])
-leptrigSFs_2022    = lambda : lepScaleFactors_TopRun2UL(year_ = "2018",    lepenvars = ["mu"])
+from CMGTools.TTHAnalysis.tools.nanoAOD.lepScaleFactors_TopRun3 import lepScaleFactors_TopRun3
+leptrigSFs_2016apv = lambda : lepScaleFactors_TopRun3(year_ = "2016apv", lepenvars = ["mu", "elsigma"])
+leptrigSFs_2016    = lambda : lepScaleFactors_TopRun3(year_ = "2016",    lepenvars = ["mu", "elsigma"])
+leptrigSFs_2017    = lambda : lepScaleFactors_TopRun3(year_ = "2017",    lepenvars = ["mu", "elsigma"])
+leptrigSFs_2018    = lambda : lepScaleFactors_TopRun3(year_ = "2018",    lepenvars = ["mu", "elsigma"])
+leptrigSFs_2022    = lambda : lepScaleFactors_TopRun3(year_ = "2018",    lepenvars = ["mu"])
+leptrigSFs_2022_ttbarRun3    = lambda : lepScaleFactors_TopRun3(year_ = "2022",    lepenvars = ["mu"])
 
 
 #sfSeq_2016 = [leptrigSFs, btagWeights_2016, addTopPtWeight, addjetPUidMod]   ### COSINA
@@ -456,7 +499,7 @@ sfSeq_2016apv   = [leptrigSFs_2016apv, btagWeights_2016apv, addTopPtWeight]
 sfSeq_2016      = [leptrigSFs_2016,    btagWeights_2016,    addTopPtWeight]
 sfSeq_2017      = [leptrigSFs_2017,    btagWeights_2017,    addTopPtWeight]
 sfSeq_2018      = [leptrigSFs_2018,    btagWeights_2018,    addTopPtWeight]
-sfSeq_2022      = [leptrigSFs_2022,    btagWeights_2022]
+sfSeq_2022      = [leptrigSFs_2022_ttbarRun3,    btagWeights_2022]
 
 
 ### BDT
