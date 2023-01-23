@@ -271,29 +271,29 @@ def SendDatasetJobs(task):
 
     comm = ""; module_ = ""; friends_ = ""
 
-    if   step == 0 and not isData:
-        module_ = "jecs_{y}".format(y  = year)
+    if   step == 0:
+        module_ = "jecs_{ty}_{y}".format(ty = "data" if isData else "mc", y  = year)
 
     elif step == 1:
         module_  = "lepsuncsAndParticle_" + ("mc" if not isData else "data")
 
     elif step == 2:
         module_  = "cleaning_{ty}_{y}".format(ty = "data" if isData else "mc", y  = year)
-        if not isData:
-            friends_ +=       friendpref + getFriendsFolder(dataset, friendsbasepath, 0) + friendsuff
+        #if not isData:
+        friends_ +=       friendpref + getFriendsFolder(dataset, friendsbasepath, 0) + friendsuff
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 1) + friendsuff
 
     elif step == 3:
         module_  = "varstrigger_" + (("mc_" + year) if not isData else "data")
-        if not isData:
-            friends_ +=       friendpref + getFriendsFolder(dataset, friendsbasepath, 0) + friendsuff
+        #if not isData:
+        friends_ +=       friendpref + getFriendsFolder(dataset, friendsbasepath, 0) + friendsuff
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 1) + friendsuff
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 2) + friendsuff
 
     elif step == 4 and not isData:
         module_  = "sfSeq_{y}".format(y = year)
-        if not isData:
-            friends_ +=       friendpref + getFriendsFolder(dataset, friendsbasepath, 0) + friendsuff
+        #if not isData:
+        friends_ +=       friendpref + getFriendsFolder(dataset, friendsbasepath, 0) + friendsuff
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 1) + friendsuff
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 2) + friendsuff
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 3) + friendsuff
@@ -301,8 +301,8 @@ def SendDatasetJobs(task):
     elif step == 5:
         #module_  = "mvas_" + ("mc" if not isData else "data")
         module_  = "mvas_" + ("mc" if not isData else "data")
-        if not isData:
-            friends_ +=       friendpref + getFriendsFolder(dataset, friendsbasepath, 0) + friendsuff
+        #if not isData:
+        friends_ +=       friendpref + getFriendsFolder(dataset, friendsbasepath, 0) + friendsuff
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 1) + friendsuff
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 2) + friendsuff
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 3) + friendsuff

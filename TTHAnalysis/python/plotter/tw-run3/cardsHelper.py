@@ -12,11 +12,11 @@ friendspath  = "/beegfs/data/nanoAODv9/temp/postprocv10Run3/tw_run3/productions"
 
 logpath      = friendspath + "/{p}/{y}/logs/cards_inclusive"
 
-lumidict     = {2022 : 13.09,}
+lumidict     = {2022 : 29.62,}
 
 friendsscaff = "--FMCs {P}/0_jecs --Fs {P}/1_lepsuncsAndParticle --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --Fs {P}/5_mvas"
 
-commandscaff = '''python makeShapeCards_TopRun2.py --tree NanoAOD {mcafile} {cutsfile} "{variable}" "{bins}" {samplespaths} {friends} --od {outpath} -l {lumi} {nth} -f -L tw-run3/functions_tw.cc --neg --threshold 0.01 -W "MuonIDSF * MuonISOSF * ElecIDSF * ElecRECOSF * TrigSF" --year {year} {asimovornot} {uncs} {extra} --AP --storeAll'''
+commandscaff = '''python makeShapeCards_TopRun2.py --tree NanoAOD {mcafile} {cutsfile} "{variable}" "{bins}" {samplespaths} {friends} --od {outpath} -l {lumi} {nth} -f -L tw-run3/functions_tw.cc --neg --threshold 0.01 -W "MuonIDSF * ElecIDSF * TrigSF" --year {year} {asimovornot} {uncs} {extra} --AP --storeAll'''
 
 slurmscaff   = "sbatch -c {nth} -p {queue} -J {jobname} -e {logpath}/log.%j.%x.err -o {logpath}/log.%j.%x.out --wrap '{command}'"
 

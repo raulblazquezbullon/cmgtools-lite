@@ -29,7 +29,8 @@ lumi     : $AllBkg : .* : normSymm : 1.06
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Trigger efficiencies
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-triggereff : $AllBkg : .* : templateAsymm; AddWeights=['TrigSF_Up/TrigSF'\,'TrigSF_Dn/TrigSF']
+triggereffMu : $AllBkg : .* : templateAsymm; AddWeights=['TrigSF_mUp/TrigSF'\,'TrigSF_mDn/TrigSF']
+triggereffE : $AllBkg : .* : templateAsymm; AddWeights=['TrigSF_eUp/TrigSF'\,'TrigSF_eDn/TrigSF']
 
 
 ## --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -39,7 +40,7 @@ triggereff : $AllBkg : .* : templateAsymm; AddWeights=['TrigSF_Up/TrigSF'\,'Trig
 #eleceff: $AllBkg : .* : templateAsymm; AddWeights=['ElecSF_Up/ElecSF'\,'ElecSF_Dn/ElecSF']
 
 elecidsf:   $AllBkg : .* : templateAsymm; AddWeights=['ElecIDSF_Up/ElecIDSF'\,'ElecIDSF_Dn/ElecIDSF']
-elecrecosf: $AllBkg : .* : templateAsymm; AddWeights=['ElecRECOSF_Up/ElecRECOSF'\,'ElecRECOSF_Dn/ElecRECOSF']
+#elecrecosf: $AllBkg : .* : templateAsymm; AddWeights=['ElecRECOSF_Up/ElecRECOSF'\,'ElecRECOSF_Dn/ElecRECOSF']
 
 
 ## --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -48,11 +49,13 @@ elecrecosf: $AllBkg : .* : templateAsymm; AddWeights=['ElecRECOSF_Up/ElecRECOSF'
 ### Combined
 #muoneff: $AllBkg : .* : templateAsymm; AddWeights=['MuonSF_Up/MuonSF'\,'MuonSF_Dn/MuonSF']
 
-muonidsf_stat      : $AllBkg : .* : templateAsymm; AddWeights=['MuonIDSF_statUp/MuonIDSF'\,'MuonIDSF_statDn/MuonIDSF']
-muonidsf_syst      : $AllBkg : .* : templateAsymm; AddWeights=['MuonIDSF_systUp/MuonIDSF'\,'MuonIDSF_systDn/MuonIDSF']
+muonidsf      : $AllBkg : .* : templateAsymm; AddWeights=['MuonIDSF_Up/MuonIDSF'\,'MuonIDSF_Dn/MuonIDSF']
 
-muonisosf_stat      : $AllBkg : .* : templateAsymm; AddWeights=['MuonISOSF_statUp/MuonISOSF'\,'MuonISOSF_statDn/MuonISOSF']
-muonisosf_syst      : $AllBkg : .* : templateAsymm; AddWeights=['MuonISOSF_systUp/MuonISOSF'\,'MuonISOSF_systDn/MuonISOSF']
+#muonidsf_stat      : $AllBkg : .* : templateAsymm; AddWeights=['MuonIDSF_statUp/MuonIDSF'\,'MuonIDSF_statDn/MuonIDSF']
+#muonidsf_syst      : $AllBkg : .* : templateAsymm; AddWeights=['MuonIDSF_systUp/MuonIDSF'\,'MuonIDSF_systDn/MuonIDSF']
+#
+#muonisosf_stat      : $AllBkg : .* : templateAsymm; AddWeights=['MuonISOSF_statUp/MuonISOSF'\,'MuonISOSF_statDn/MuonISOSF']
+#muonisosf_syst      : $AllBkg : .* : templateAsymm; AddWeights=['MuonISOSF_systUp/MuonISOSF'\,'MuonISOSF_systDn/MuonISOSF']
 
 
 ## --------------------------------------------------------------------------------------------------------------------------------------------------------------------------

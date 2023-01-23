@@ -138,10 +138,10 @@ class EventVars_TopRun2UL(Module):
         self.systsJEC   = {0: ""}
         self.systsLepEn = {}
         self.isMC       = isMC
-        self.nominaljecscaff = "_nom"
+        self.nominaljecscaff = "_nom" 
         if not self.isMC:
             jecvars = []
-            self.nominaljecscaff = ""
+            self.nominaljecscaff = "_nom" ######### BE CAREFUL HERE, IT DEPENDS IF WE USE JECS IN DATA OR NOT
             if "elscale" in lepvars:
                 lepvars = ["elscale"]
             else:
@@ -299,8 +299,8 @@ class EventVars_TopRun2UL(Module):
                 metpt  = -99.
                 metphi = -99.
                 if event.isData:
-                    metpt  = getattr(event, '{MET}_pt'.format(MET = self.metBranchName))
-                    metphi = getattr(event, '{MET}_phi'.format(MET = self.metBranchName))
+                    metpt  = getattr(event, '{MET}_T1_pt'.format(MET = self.metBranchName)) ######### BE CAREFUL HERE, IT DEPENDS IF WE USE JECS IN DATA OR NOT
+                    metphi = getattr(event, '{MET}_T1_phi'.format(MET = self.metBranchName))
                 else:
                     metpt  = getattr(event, '{MET}_T1_pt{v}'.format(MET = self.metBranchName, v = sys if sys != "" else ""))
                     metphi = getattr(event, '{MET}_T1_phi{v}'.format(MET = self.metBranchName, v = sys if sys != "" else ""))
@@ -386,8 +386,8 @@ class EventVars_TopRun2UL(Module):
         metpt  = -99.
         metphi = -99.
         if event.isData:
-            metpt  = getattr(event, '{MET}_pt'.format(MET = self.metBranchName))
-            metphi = getattr(event, '{MET}_phi'.format(MET = self.metBranchName))
+            metpt  = getattr(event, '{MET}_T1_pt'.format(MET = self.metBranchName)) ######### BE CAREFUL HERE, IT DEPENDS IF WE USE JECS IN DATA OR NOT
+            metphi = getattr(event, '{MET}_T1_phi'.format(MET = self.metBranchName))
         else:
             metpt  = getattr(event, '{MET}_T1_pt'.format(MET = self.metBranchName))
             metphi = getattr(event, '{MET}_T1_phi'.format(MET = self.metBranchName))
