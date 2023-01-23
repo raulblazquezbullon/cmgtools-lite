@@ -17,18 +17,18 @@ for f in os.listdir(inputDir):
 
 runs = {}
 
-print inputFiles
+print(inputFiles)
 
 for f in inputFiles:
 	ff    = ROOT.TFile(f, "READ")
 	lumis = ff.Get("LuminosityBlocks") #antes luminosityBlock
 	for ev in lumis:
-		if ev.run in runs.keys(): runs[ev.run].append(ev.luminosityBlock)
+		if ev.run in list(runs.keys()): runs[ev.run].append(ev.luminosityBlock)
 		else: runs[ev.run] = [ev.luminosityBlock]
 
 #Now build it JSON like
 forjson = {}
-for key in runs.keys():
+for key in list(runs.keys()):
 	forjson[str(key)] = []
 	templist = runs[key]
 	templist.sort()
@@ -43,10 +43,9 @@ for key in runs.keys():
 		elif t == end +1:
 			end = t 
 		else:
-	 		forjson[str(key)].append([start, end])
+			forjson[str(key)].append([start, end])
 			start = t
 			end = t
 	forjson[str(key)].append([start,end])
-
 json.dump(forjson, open("stop/%s_%s.json"%(year,filename),"w"), sort_keys=True)
 

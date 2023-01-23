@@ -271,7 +271,7 @@ class LeptonJetRecleanerWZSM(Module):
     )
     
     ret['nLep'+labext+extraTag]       = len(ret['i'+lab+extraTag])
-    ret['LepGood_is'+labext+extraTag] = [(1 if i in ret['i'+lab+extraTag] else 0) for i in xrange(len(refcollection))]
+    ret['LepGood_is'+labext+extraTag] = [(1 if i in ret['i'+lab+extraTag] else 0) for i in range(len(refcollection))]
     
     ## Fetch leptons that pass the selection
     lepspass = [ refcollection[il] for il in ret['i'+lab+extraTag]  ]
@@ -293,7 +293,7 @@ class LeptonJetRecleanerWZSM(Module):
       func             = sortby
     )   
     ret['nLep'+labext+'Veto'+extraTag]       = len(ret['i'+lab+'V'+extraTag])
-    ret['LepGood_is'+labext+'Veto'+extraTag] = [(1 if i in ret['i'+lab+'V'+extraTag] else 0) for i in xrange(len(refcollection))]
+    ret['LepGood_is'+labext+'Veto'+extraTag] = [(1 if i in ret['i'+lab+'V'+extraTag] else 0) for i in range(len(refcollection))]
 
     ## List of leptons that pass selection criteria but are vetoed
     lepspassveto              = [ refcollection[il] for il in ret['i'+lab+'V'+extraTag]  ]
@@ -591,12 +591,12 @@ class LeptonJetRecleanerWZSM(Module):
       # -- Attach labels and return
       self.fullret["nLepGood%s"%leplabel]       = len(leps)
       self.fullret["LepGood_conePt%s"%leplabel] = [lep.conept for lep in leps]
-      for k, v in ret.iteritems():
+      for k, v in ret.items():
         self.fullret["%s%s"%(k, self.label)] = v
 
     # -- Save also some variables computed during the cleaning        
     self.fullret.update(self.retwlabel)
-    for k, v in self.jetret.iteritems():
+    for k, v in self.jetret.items():
       self.fullret["JetSel%s_%s"%(self.label, k)] = v
           
     ### Write the output

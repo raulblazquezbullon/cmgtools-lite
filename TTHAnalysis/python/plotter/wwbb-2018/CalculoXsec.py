@@ -59,16 +59,16 @@ sigmabr       = (Ndatos - Nbg)/(br*lumi*efic*acept)
 
 
 
-print('Eficiencia            = ' + str(efic))
-print('Aceptancia            = ' + str(acept))
-print('BR                    = ' + str(br))
+print(('Eficiencia            = ' + str(efic)))
+print(('Aceptancia            = ' + str(acept)))
+print(('BR                    = ' + str(br)))
 print(' ')
-print('xsec (DATOS)          = ' + str(sigma))
-print('xsec(BR) (DATOS)      = ' + str(sigmabr))
+print(('xsec (DATOS)          = ' + str(sigma)))
+print(('xsec(BR) (DATOS)      = ' + str(sigmabr)))
 print(' ')
-print('xsec (ASIMOV)         = ' + str(sigmaasim))
-print('xsec(BR) (ASIMOV)     = ' + str(sigmabrasim))
+print(('xsec (ASIMOV)         = ' + str(sigmaasim)))
+print(('xsec(BR) (ASIMOV)     = ' + str(sigmabrasim)))
 print(' ')
-print('sumaxsec              = ' + str(sumaxsec))
+print(('sumaxsec              = ' + str(sumaxsec)))
 
 

@@ -61,7 +61,7 @@ class EventVarsWZ(Module):
         all_leps = [l for l in Collection(event,"LepGood")]
         nFO = getattr(event,"nLepFO"+self.inputlabel)
         chosen = getattr(event,"iLepFO"+self.inputlabel)
-        leps = [all_leps[chosen[i]] for i in xrange(nFO)]
+        leps = [all_leps[chosen[i]] for i in range(nFO)]
         
         allret['hasOSSF3l'] = False
         allret['hasOSSF4l'] = False
@@ -168,8 +168,7 @@ class EventVarsWZ(Module):
 
             for br in self.namebranches:
                 allret[br+self.label+self.systsJEC[_var]] = ret[br]
-	 	
-	return allret
+        return allret
 
 
 if __name__ == '__main__':
@@ -183,8 +182,8 @@ if __name__ == '__main__':
             Module.__init__(self,name,None)
             self.sf = EventVarsWZ('','Recl')
         def analyze(self,ev):
-            print "\nrun %6d lumi %4d event %d: leps %d" % (ev.run, ev.lumi, ev.evt, ev.nLepGood)
-            print self.sf(ev)
+            print("\nrun %6d lumi %4d event %d: leps %d" % (ev.run, ev.lumi, ev.evt, ev.nLepGood))
+            print(self.sf(ev))
     el = EventLoop([ Tester("tester") ])
     el.loop([tree], maxEvents = 50)
 

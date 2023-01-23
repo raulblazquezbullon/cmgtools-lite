@@ -4,7 +4,7 @@ class Sort3L:
     def __init__(self, label="", recllabel='Recl'):
         self.label = "" if (label in ["",None]) else ("_"+label)
         self.systsJEC = {0:"", 1:"_jecUp", -1:"_jecDown"}
- 	self.branches = [ "iJetByCSV_0"+self.systsJEC[x]+self.label for x in self.systsJEC ]
+        self.branches = [ "iJetByCSV_0"+self.systsJEC[x]+self.label for x in self.systsJEC ]
         self.inputlabel = '_'+recllabel
     def listBranches(self):
         return self.branches[:]	
@@ -26,13 +26,13 @@ if __name__ == '__main__':
     tree = file.Get("tree")
     tree.vectorTree = True
     tree.AddFriend("sf/t",argv[2])
-    print tree.GetEntries()
+    print(tree.GetEntries())
     class Tester(Module):
         def __init__(self, name):
             Module.__init__(self,name,None)
             self.sf = Sort3L("testSort3L","Recl")
         def analyze(self,ev):
-            print "\nrun %6d lumi %4d event %d: leps %d" % (ev.run, ev.lumi, ev.evt, ev.nLepGood)
-            print self.sf(ev)
+            print("\nrun %6d lumi %4d event %d: leps %d" % (ev.run, ev.lumi, ev.evt, ev.nLepGood))
+            print(self.sf(ev))
     el = EventLoop([ Tester("tester") ])
     el.loop([tree], maxEvents = 50)

@@ -5,10 +5,10 @@ import os, sys, math, array, argparse
 from multiprocessing import Pool
 
 sys.path.append('{cmsswpath}/src/CMGTools/TTHAnalysis/python/plotter/tw-run2/differential/'.format(cmsswpath = os.environ['CMSSW_BASE']))
-import beautifulUnfoldingPlots as bp
-import errorPropagator as ep
-import getLaTeXtable as tex
-import varList as vl
+from . import beautifulUnfoldingPlots as bp
+from . import errorPropagator as ep
+from . import getLaTeXtable as tex
+from . import varList as vl
 
 vl.SetUpWarnings()
 r.gROOT.SetBatch(True)
@@ -121,7 +121,7 @@ def calculateNormalisedValues(inpath, iY, iV):
     covmat = deepcopy(fvar.Get("CovMat").Clone("covmat"))
     fvar.Close(); del fvar
 
-    for key,histo in dirvar.iteritems():
+    for key,histo in dirvar.items():
         fiduval = sum([histo.GetBinContent(i) for i in range(1, histo.GetNbinsX() + 1)])
         fiduunc = r.TMath.Sqrt(sum([covmat.GetBinContent(i, j) for i in range(1, covmat.GetNbinsX() + 1) for j in range(1, covmat.GetNbinsX() + 1) ]))
         htmp = r.TH1D(histo)
@@ -161,7 +161,7 @@ def calculateNormalisedValues(inpath, iY, iV):
 
 #### POR BIN Y NORMALIZAOS
 def PlotParticleFidBinLevelResults(thedict, inpath, iY, varName):
-    print "> Obtaining plots normalised to fiducial cross section and to bin's width for variable " + varName
+    print("> Obtaining plots normalised to fiducial cross section and to bin's width for variable " + varName)
 
     for key in thedict:
         #print key
@@ -305,7 +305,7 @@ def PlotParticleFidBinLevelResults(thedict, inpath, iY, varName):
 
 #### Normalizados al ancho del bin solo (res. absolutos)
 def PlotParticleBinLevelResults(thedict, inpath, iY, varName):
-    print "> Now let's obtain the same plots only normalised to the bin width!!"
+    print("> Now let's obtain the same plots only normalised to the bin width!!")
 
     savetfile = r.TFile(inpath + "/" + iY + "/" + varName + "/particlebinOutput.root", "recreate")
     for key in thedict: thedict[key].Write()

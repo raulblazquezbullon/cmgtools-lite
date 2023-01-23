@@ -9,7 +9,7 @@ r.PyConfig.IgnoreCommandLineOptions = True
 r.gROOT.SetBatch(True)
 
 sys.path.append('{cmsswpath}/src/CMGTools/TTHAnalysis/python/plotter/tw-run2/differential/'.format(cmsswpath = os.environ['CMSSW_BASE']))
-import varList as vl
+from . import varList as vl
 #### Settings
 friendspath  = "/pool/phedexrw/userstorage/vrbouza/proyectos/tw_run2/productions"
 datasamples  = ["SingleMuon", "SingleElec", "DoubleMuon", "DoubleEG", "MuonEG", "LowEGJet", "HighEGJet", "EGamma"]
@@ -91,7 +91,7 @@ def plotDiffPostFitPlots(task):
     for subel in tmpel.GetListOfPrimitives():
         olddict[subel.GetName().replace(thevar.lower() + "_", "")] = copy.deepcopy(subel)
         #print subel.GetName()
-    print olddict
+    print(olddict)
     #sys.exit()
 
     listOfProcs = [ el.GetName().replace(thevar.lower() + "_", "") for el in olddict["stack"].GetHists() ]
@@ -334,11 +334,11 @@ def GeneralExecutioner(task):
                                       jobname = jobname_,
                                       logpath = logpath.format(y = year, p = prod),
                                       command = PlottingCommand(prod, year, nthreads, inpath, thevar, ratiorange, extra, useFibre, doUncs, doBlind))
-        print "Command:", submitcomm
+        print("Command:", submitcomm)
         if not pretend: os.system(submitcomm)
     else:
         execcomm = PlottingCommand(prod, year, nthreads, inpath, iV, ratiorange, extra, useFibre, doUncs, doBlind)
-        print "Command:", execcomm
+        print("Command:", execcomm)
         if not pretend: os.system(execcomm)
     return
 
@@ -384,7 +384,7 @@ def confirm(message = "Do you wish to continue?"):
     """
     answer = ""
     while answer not in ["y", "n", "yes", "no"]:
-        answer = raw_input(message + " [Y/N]\n").lower()
+        answer = input(message + " [Y/N]\n").lower()
     return answer[0] == "y"
 
 
@@ -437,9 +437,9 @@ if __name__=="__main__":
     if not postfit:
         if not prod: raise RuntimeError("FATAL: no production given.")
         if queue != "":
-            print "> Plotting jobs will be sent to the cluster."
+            print("> Plotting jobs will be sent to the cluster.")
             if year == "all":
-                print "   - All three years and the combination will be plotted."
+                print("   - All three years and the combination will be plotted.")
                 cont = False
                 if   pretend:
                     cont = True
@@ -461,9 +461,9 @@ if __name__=="__main__":
                     for iV in thevars:
                         GeneralExecutioner( (prod, year, nthreads, inpath, iV, ratiorange, queue, extra, pretend, useFibre, doUncs, doBlind, extraslurm) )
         else:
-            print "> Local execution chosen."
+            print("> Local execution chosen.")
             if year == "all":
-                print "   - All three years and the combination will be plotted."
+                print("   - All three years and the combination will be plotted.")
                 for y in ["2016", "2017", "2018", "run2"]:
                     for iV in thevars:
                         GeneralExecutioner( (prod, y, nthreads, inpath, iV, ratiorange, queue, extra, pretend, useFibre, doUncs, doBlind, extraslurm) )

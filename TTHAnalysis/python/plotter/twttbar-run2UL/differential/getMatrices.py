@@ -8,8 +8,8 @@ from copy import deepcopy
 from CMGTools.TTHAnalysis.plotter.mcAnalysis import *
 from optparse import OptionParser
 sys.path.append('{cmsswpath}/src/CMGTools/TTHAnalysis/python/plotter/twttbar-run2UL/differential/'.format(cmsswpath = os.environ['CMSSW_BASE']))
-import varList as vl
-import CMS_lumi, tdrstyle
+from . import varList as vl
+from . import CMS_lumi, tdrstyle
 
 r.gROOT.SetBatch(True)
 CMS_lumi.writeExtraText = 1
@@ -399,7 +399,7 @@ def SaveAllConditionNumbers(thedict, thepath):
 def CalculateAndPlotResponseMatrices(tsk):
     inpath, iY, iV = tsk
     # 0) Preliminary.
-    print "\n> Creando matrices de respuesta en", inpath, "para el anyo", iY, "y la variable", iV
+    print("\n> Creando matrices de respuesta en", inpath, "para el anyo", iY, "y la variable", iV)
 
     fParticle = r.TFile(inpath + "/" + iY + "/" + iV + "/particle.root", "READ")
     hParticle = deepcopy(fParticle.Get("x_bb4l").Clone("hParticle_" + iV))
@@ -518,7 +518,7 @@ if __name__=="__main__":
     print("\n===== Unfolding procedures: Response matrices & ROOT files production =====")
     print("> Setting binning, paths, and other details...")
 
-    print "\n> Drawing matrices and writing ROOT file (old one will be overwritten!)."
+    print("\n> Drawing matrices and writing ROOT file (old one will be overwritten!).")
 
 
     #### First, find the tasks

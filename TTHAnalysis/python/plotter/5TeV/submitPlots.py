@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 import os, re
-import commands
+import subprocess
 import math, time
 import sys
 
-print 
-print 'START'
-print 
+print() 
+print('START')
+print() 
 ########   YOU ONLY NEED TO FILL THE AREA BELOW   #########
 ########   customization  area #########
 NumberOfJobs= 32 # number of jobs to be submitted
@@ -19,15 +19,15 @@ OutputDir = "/eos/cms/store/user/folguera/MuonHLT/Data/Run2017A/HLTPhysics/"
 ########   customization end   #########
 
 path = os.getcwd()
-print
-print 'do not worry about folder creation:'
+print()
+print('do not worry about folder creation:')
 os.system("rm -rf tmp")
 os.system("rm -rf exec")
 os.system("rm -rf batchlogs")
 os.system("mkdir tmp")
 os.system("mkdir exec")
 os.system("mkdir %s/%s" %(OutputDir,int(time.time())))
-print
+print()
 
 ##### loop for creating and sending jobs #####
 for x in range(1, int(NumberOfJobs)+1):
@@ -67,9 +67,9 @@ with open('submit.sub', 'w') as fout:
 os.system("echo submit.sub")
 os.system("condor_submit submit.sub")
    
-print
-print "your jobs:"
+print()
+print("your jobs:")
 os.system("condor_q")
-print
-print 'END'
-print
+print()
+print('END')
+print()

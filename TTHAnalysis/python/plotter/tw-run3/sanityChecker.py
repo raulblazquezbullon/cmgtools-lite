@@ -38,9 +38,9 @@ class SanityChecker:
 
     def runSanityChecks(self, selectedSanityChecks):
         print("Running sanity checks")
-        print("Selected sanity checks: %s" % selectedSanityChecks)
+        print(("Selected sanity checks: %s" % selectedSanityChecks))
         for sanityCheck in selectedSanityChecks:
             if sanityCheck == "lookForDataDoubleCounting":
                 self.lookForDataDoubleCounting()
             else:
-                print("Sanity check %s not implemented" % sanityCheck)
+                print(("Sanity check %s not implemented" % sanityCheck))

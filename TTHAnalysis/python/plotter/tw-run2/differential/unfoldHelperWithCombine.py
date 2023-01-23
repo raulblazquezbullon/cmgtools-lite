@@ -7,11 +7,11 @@ from multiprocessing import Pool
 
 
 sys.path.append('{cmsswpath}/src/CMGTools/TTHAnalysis/python/plotter/tw-run2/differential/'.format(cmsswpath = os.environ['CMSSW_BASE']))
-import varList as vl
-import beautifulUnfoldingPlots as bp
-import tdrstyle, CMS_lumi
-import getLaTeXtable as tex
-import errorPropagator as ep
+from . import varList as vl
+from . import beautifulUnfoldingPlots as bp
+from . import tdrstyle, CMS_lumi
+from . import getLaTeXtable as tex
+from . import errorPropagator as ep
 
 def getBinFromLabel(hist, labx, laby):
     result = None
@@ -87,7 +87,7 @@ def drawCovMat(finalmat, inpath, iY, var):
 
 def drawCorrMat(finalmat, inpath, iY, var):
     if verbose:
-        print '    - Plotting correlation matrix...'
+        print('    - Plotting correlation matrix...')
 
     c = r.TCanvas('c', '{var} correlation matrix'.format(var = var,), 1200, 1200)
     c.SetTopMargin(0.06)
@@ -390,7 +390,7 @@ def drawParticleResults(theres, theuncs, thecov, outdir, year, var, pretend):
 def makeFit(task):
     inpath, year, varName, pretend, doControl, noPlots = task
 
-    print '\n> Fitting variable', varName, 'from year', year, '\n'
+    print('\n> Fitting variable', varName, 'from year', year, '\n')
     bins_detector = vl.varList[varName]['bins_detector']
     ndetectorbins   = len(bins_detector) - 1
     bins_particle = vl.varList[varName]['bins_particle']
@@ -411,13 +411,13 @@ def makeFit(task):
                                                                                  outCard  = 'finalcard.txt')
 
     if verbose:
-        print 'Cardlist:', cardList, "\n"
-        print "Merge cards command:", mergecomm, "\n"
+        print('Cardlist:', cardList, "\n")
+        print("Merge cards command:", mergecomm, "\n")
 
     if not pretend:
         if os.path.isfile(inpath + "/" + year + "/" + varName + "/sigextr_fit_combine/finalcard.txt"):
             if verbose:
-                print "    - Erasing old combined card..."
+                print("    - Erasing old combined card...")
             os.system("rm " + inpath + "/" + year + "/" + varName + "/sigextr_fit_combine/finalcard.txt")
         outstat = os.system(mergecomm)
         if outstat:
@@ -434,12 +434,12 @@ def makeFit(task):
                                                    var     = varName,)
 
     if verbose:
-        print "Text2Workspace command:", physicsModel, "\n"
+        print("Text2Workspace command:", physicsModel, "\n")
 
     if not pretend:
         if os.path.isfile(inpath + "/" + year + "/" + varName + "/sigextr_fit_combine/fit_output.root"):
             if verbose:
-                print "    - Erasing old fit result..."
+                print("    - Erasing old fit result...")
             os.system("rm " + inpath + "/" + year + "/" + varName + "/sigextr_fit_combine/fit_output.root")
         outstat = os.system(physicsModel)
         if outstat:
@@ -457,7 +457,7 @@ def makeFit(task):
     )
 
     if verbose:
-        print "Combine command:", combinecomm, "\n"
+        print("Combine command:", combinecomm, "\n")
 
     #sys.exit()
     if not pretend:
@@ -492,7 +492,7 @@ def makeFit(task):
         elif fitstatus != 0:
             wr.warn('Fit of variable {var} has a nonzero fit status value: {fitv}'.format(var = varName, fitv = fitstatus), UserWarning, stacklevel = 2)
         elif verbose:
-            print "    - Fit status:", fitstatus
+            print("    - Fit status:", fitstatus)
 
         fitResult = tfile.Get('fit_s')
         if verbose: fitResult.Print()
@@ -642,7 +642,7 @@ def makeFit(task):
         #print "\nRESULTS:"
         #for key in results: print key
 
-        print '\n> Variable', varName, 'fitted.\n'
+        print('\n> Variable', varName, 'fitted.\n')
         return [year, varName, deepcopy(outHisto), uncInfo, hCov, corrmat]
     else:
         return 0
@@ -653,7 +653,7 @@ def makeFit(task):
 def saveFinalResults(inpath, theresults):
     resultDict = {} # year - var
 
-    print "> Ordering results to store them..."
+    print("> Ordering results to store them...")
     for el in theresults:
         if el[0] not in resultDict:
             resultDict[el[0]] = {}
@@ -665,7 +665,7 @@ def saveFinalResults(inpath, theresults):
 
     #print resultDict
     #sys.exit()
-    print "> Storing results..."
+    print("> Storing results...")
     for year in resultDict:
         for var in resultDict[year]:
             outFile = r.TFile.Open(inpath + "/" + year + "/" + var + '/detectorsignal_fit.root', 'recreate')
@@ -675,14 +675,14 @@ def saveFinalResults(inpath, theresults):
             resultDict[year][var][3].Write()
             outFile.Close()
 
-    print "> Done!"
+    print("> Done!")
     return
 
 
 if __name__ == '__main__':
     vl.SetUpWarnings()
     r.gROOT.SetBatch(True)
-    print "===== Fitting procedure with some uncertainty profiling\n"
+    print("===== Fitting procedure with some uncertainty profiling\n")
     parser = argparse.ArgumentParser(usage = "python nanoAOD_checker.py [options]", description = "Checker tool for the outputs of nanoAOD production (NOT postprocessing)", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('--inpath',     '-i', metavar = 'inpath',     dest = "inpath",   required = False, default = "./temp/differential/")
     parser.add_argument('--year',       '-y', metavar = 'year',       dest = "year",     required = False, default = "all")
@@ -744,7 +744,7 @@ if __name__ == '__main__':
     finalresults = []
 
     if verbose:
-        print 'Tasks:', tasks
+        print('Tasks:', tasks)
 
     #for el in tasks: print el
     #sys.exit()

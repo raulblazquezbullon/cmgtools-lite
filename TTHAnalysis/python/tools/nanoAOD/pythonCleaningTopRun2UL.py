@@ -118,23 +118,23 @@ class pythonCleaningTopRun2UL(Module):
         self._outfwdjetvars = [x%self.jc for x in ['nFwd%sSel%%d']]
         self.outjetvars  = []
         for jetPt in self.jetPts:
-            self.outjetvars.extend([(x%jetPt+y, 'I') for x in self._outjetvars    for y in self.systsJEC.values()   if "nB" in x])
-            self.outjetvars.extend([(x%jetPt+y, 'I') for x in self._outfwdjetvars for y in self.systsJEC.values()   if "nB" in x])
+            self.outjetvars.extend([(x%jetPt+y, 'I') for x in self._outjetvars    for y in list(self.systsJEC.values())   if "nB" in x])
+            self.outjetvars.extend([(x%jetPt+y, 'I') for x in self._outfwdjetvars for y in list(self.systsJEC.values())   if "nB" in x])
 
-            self.outjetvars.extend([(x%jetPt+y, 'I') for x in self._outjetvars    for y in self.systsLepEn.values() if "nB" in x])
-            self.outjetvars.extend([(x%jetPt+y, 'I') for x in self._outfwdjetvars for y in self.systsLepEn.values() if "nB" in x])
+            self.outjetvars.extend([(x%jetPt+y, 'I') for x in self._outjetvars    for y in list(self.systsLepEn.values()) if "nB" in x])
+            self.outjetvars.extend([(x%jetPt+y, 'I') for x in self._outfwdjetvars for y in list(self.systsLepEn.values()) if "nB" in x])
 
         self.branches = [(var + self.label, _type) for var,_type in self.outjetvars]
 
         # Configuring C++ helpers for JEC variations as well as nominal results
         self.colls         = {}
-        for delta,sys in self.systsJEC.iteritems():
+        for delta,sys in self.systsJEC.items():
             self.colls["jetsSup"    + sys] = CollectionSkimmer("{col}Sel{pt}".format(   col = self.jc, pt = self.jetPts[0]) + sys + self.label, self.jc, floats = [], saveSelectedIndices = True)
             self.colls["jetsInf"    + sys] = CollectionSkimmer("{col}Sel{pt}".format(   col = self.jc, pt = self.jetPts[1]) + sys + self.label, self.jc, floats = [], saveSelectedIndices = True)
             self.colls["fwdjetsSup" + sys] = CollectionSkimmer("Fwd{col}Sel{pt}".format(col = self.jc, pt = self.jetPts[0]) + sys + self.label, self.jc, floats = [], saveSelectedIndices = True)
             self.colls["fwdjetsInf" + sys] = CollectionSkimmer("Fwd{col}Sel{pt}".format(col = self.jc, pt = self.jetPts[1]) + sys + self.label, self.jc, floats = [], saveSelectedIndices = True)
 
-        for delta,sys in self.systsLepEn.iteritems():
+        for delta,sys in self.systsLepEn.items():
             self.colls["jetsSup"    + sys] = CollectionSkimmer("{col}Sel{pt}".format(   col = self.jc, pt = self.jetPts[0]) + sys + self.label, self.jc, floats = [], saveSelectedIndices = True)
             self.colls["jetsInf"    + sys] = CollectionSkimmer("{col}Sel{pt}".format(   col = self.jc, pt = self.jetPts[1]) + sys + self.label, self.jc, floats = [], saveSelectedIndices = True)
             self.colls["fwdjetsSup" + sys] = CollectionSkimmer("Fwd{col}Sel{pt}".format(col = self.jc, pt = self.jetPts[0]) + sys + self.label, self.jc, floats = [], saveSelectedIndices = True)
@@ -144,12 +144,12 @@ class pythonCleaningTopRun2UL(Module):
 
 
     def beginFile(self, inputFile, outputFile, inputTree, wrappedOutputTree):
-        for tag,helper in self.colls.iteritems():
+        for tag,helper in self.colls.items():
             helper.initInputTree(inputTree)
 
         declareOutput(self, wrappedOutputTree, self.branches)
 
-        for tag,helper in self.colls.iteritems():
+        for tag,helper in self.colls.items():
             helper.initOutputTree(wrappedOutputTree.tree(), True)
         return
 
@@ -181,11 +181,11 @@ class pythonCleaningTopRun2UL(Module):
             finalJetDict[key] = []
             self.colls[key].initEventOpt(event) #### NOTE: using optimised set of methods. DO NOT MIX THEM WITH LEGACY ONES!
 
-        for delta,jvar in self.systsJEC.iteritems():
+        for delta,jvar in self.systsJEC.items():
             finalnBtagsDict0[jvar] = 0
             finalnBtagsDict1[jvar] = 0
 
-        for delta,lvar in self.systsLepEn.iteritems():
+        for delta,lvar in self.systsLepEn.items():
             finalnBtagsDict0[lvar] = 0
             finalnBtagsDict1[lvar] = 0
             leps = [l for l in Collection(event, self.lc + lvar[1:])]
@@ -198,7 +198,7 @@ class pythonCleaningTopRun2UL(Module):
                 abseta = abs(jets[iJ].eta)
                 if   abseta < 2.4:
                     tmpisbtag = getattr(jets[iJ], self.jetBTag) > self.btagWPcut
-                    for delta,jvar in self.systsJEC.iteritems():
+                    for delta,jvar in self.systsJEC.items():
                         if   getattr(jets[iJ], "pt" + (self.nomjecscaff if jvar == "" else jvar)) > self.jetPts[0]:
                             finalJetDict["jetsSup"    + jvar].append(iJ)
                             if tmpisbtag: finalnBtagsDict0[jvar] += 1
@@ -207,25 +207,25 @@ class pythonCleaningTopRun2UL(Module):
                             if tmpisbtag: finalnBtagsDict1[jvar] += 1
 
                 elif abseta < 2.7:
-                    for delta,jvar in self.systsJEC.iteritems():
+                    for delta,jvar in self.systsJEC.items():
                         if   getattr(jets[iJ], "pt" + (self.nomjecscaff if jvar == "" else jvar)) > self.jetPts[0]:
                             finalJetDict["fwdjetsSup" + jvar].append(iJ)
                         elif getattr(jets[iJ], "pt" + (self.nomjecscaff if jvar == "" else jvar)) > self.jetPts[1]:
                             finalJetDict["fwdjetsInf" + jvar].append(iJ)
 
                 elif abseta < 3.0:
-                    for delta,jvar in self.systsJEC.iteritems():
+                    for delta,jvar in self.systsJEC.items():
                         if   getattr(jets[iJ], "pt" + (self.nomjecscaff if jvar == "" else jvar)) > self.jetPtNoisyFwd:
                             finalJetDict["fwdjetsSup" + jvar].append(iJ)
 
                 elif abseta < 5.0:
-                    for delta,jvar in self.systsJEC.iteritems():
+                    for delta,jvar in self.systsJEC.items():
                         if   getattr(jets[iJ], "pt" + (self.nomjecscaff if jvar == "" else jvar)) > self.jetPts[0]:
                             finalJetDict["fwdjetsSup" + jvar].append(iJ)
                         elif getattr(jets[iJ], "pt" + (self.nomjecscaff if jvar == "" else jvar)) > self.jetPts[1]:
                             finalJetDict["fwdjetsInf" + jvar].append(iJ)
 
-            for delta,lvar in self.systsLepEn.iteritems():
+            for delta,lvar in self.systsLepEn.items():
                 if cleanedandgoodjets[lvar][iJ]:
                     abseta = abs(jets[iJ].eta)
                     if   abseta < 2.4:
@@ -260,7 +260,7 @@ class pythonCleaningTopRun2UL(Module):
         # First, in the collectionskimmers
         if self.debug: print("[pythonCleaningTopRun2::analyze] Saving results in collectionskimmers and non-collectionskimmer variables")
 
-        for delta,sys in self.systsJEC.iteritems():
+        for delta,sys in self.systsJEC.items():
             self.colls["jetsSup"    + sys].push_back_allOpt(finalJetDict["jetsSup"    + sys])
             self.colls["jetsInf"    + sys].push_back_allOpt(finalJetDict["jetsInf"    + sys])
             self.colls["fwdjetsSup" + sys].push_back_allOpt(finalJetDict["fwdjetsSup" + sys])
@@ -275,7 +275,7 @@ class pythonCleaningTopRun2UL(Module):
             self.colls["fwdjetsSup" + sys].finishEventOpt()
             self.colls["fwdjetsInf" + sys].finishEventOpt()
 
-        for delta,sys in self.systsLepEn.iteritems():
+        for delta,sys in self.systsLepEn.items():
             self.colls["jetsSup"    + sys].push_back_allOpt(finalJetDict["jetsSup"    + sys])
             self.colls["jetsInf"    + sys].push_back_allOpt(finalJetDict["jetsInf"    + sys])
             self.colls["fwdjetsSup" + sys].push_back_allOpt(finalJetDict["fwdjetsSup" + sys])
@@ -310,7 +310,7 @@ class pythonCleaningTopRun2UL(Module):
 #### WEIRD CLEANING (ttH-like)
     def areMyJetsCleanAndGood(self, thejets, theleps):
         clist = [self.selection(jet) for jet in thejets]
-        if self.debug: print("[pythonCleaningTopRun2::areMyJetsCleanAndGood] bad/good clist:", clist)
+        if self.debug: print(("[pythonCleaningTopRun2::areMyJetsCleanAndGood] bad/good clist:", clist))
 
         for iL in range(len(theleps)):
             mindr = -1; best = -1;
@@ -321,7 +321,7 @@ class pythonCleaningTopRun2UL(Module):
                     best = iJ
             if (best > -1 and mindr < self.deltaRcut):
                 clist[best] = False
-        if self.debug: print("[pythonCleaningTopRun2::areMyJetsCleanAndGood] final clist:", clist)
+        if self.debug: print(("[pythonCleaningTopRun2::areMyJetsCleanAndGood] final clist:", clist))
         return clist
 
 

@@ -22,7 +22,7 @@ class ComponentCreator(object):
 
     def makePrivateMCComponent(self,name,dataset,files,xSec=1, prefix="auto"):
          if len(files) == 0:
-            raise RuntimeError, "Trying to make a component %s with no files" % name
+            raise RuntimeError("Trying to make a component %s with no files" % name)
          dprefix = dataset +"/" if files[0][0] != "/" else ""
          if prefix == "auto":
             if (dprefix+files[0]).startswith("/store"): prefix = "root://eoscms.cern.ch//eos/cms"
@@ -43,7 +43,7 @@ class ComponentCreator(object):
     
     def makePrivateDataComponent(self,name,dataset,files,json,xSec=1):
          if len(files) == 0:
-            raise RuntimeError, "Trying to make a component %s with no files" % name
+            raise RuntimeError("Trying to make a component %s with no files" % name)
          dprefix = dataset +"/" if files[0][0] != "/" else ""
          component = cfg.DataComponent(
              name = name,
@@ -96,7 +96,7 @@ class ComponentCreator(object):
         except IOError:
             files = [ 'root://eoscms.cern.ch/'+x for x in eostools.listFiles('/eos/cms'+path) if re.match(pattern,x) ] 
             if len(files) == 0:
-                raise RuntimeError, "ERROR making component %s: no files found under %s matching '%s'" % (name,path,pattern)
+                raise RuntimeError("ERROR making component %s: no files found under %s matching '%s'" % (name,path,pattern))
             writeDatasetToCache('EOS%{path}%{pattern}.pck'.format(path = path.replace('/','_'), pattern = pattern), files)
         return files
 
@@ -121,7 +121,7 @@ class ComponentCreator(object):
         except IOError:
             files = [ 'root://t3se01.psi.ch//'+x.replace("/pnfs/psi.ch/cms/trivcat/","") for x in eostools.listFiles('/pnfs/psi.ch/cms/trivcat/'+path) if re.match(pattern,x) ] 
             if len(files) == 0:
-                raise RuntimeError, "ERROR making component %s: no files found under %s matching '%s'" % (name,path,pattern)
+                raise RuntimeError("ERROR making component %s: no files found under %s matching '%s'" % (name,path,pattern))
             writeDatasetToCache('PSI%{path}%{pattern}.pck'.format(path = path.replace('/','_'), pattern = pattern), files)
         return files
     def makeMCComponentFromPSI(self,name,dataset,path,pattern=".*root",xSec=1):
@@ -165,7 +165,7 @@ class ComponentCreator(object):
         except IOError:
             files = [ x for x in eostools.listFiles(path,True) if re.match(pattern,x) ]  
             if len(files) == 0:
-                raise RuntimeError, "ERROR making component %s: no files found under %s matching '%s'" % (name,path,pattern)
+                raise RuntimeError("ERROR making component %s: no files found under %s matching '%s'" % (name,path,pattern))
             writeDatasetToCache('Local%{path}%{pattern}.pck'.format(path = path.replace('/','_'), pattern = pattern), files)
         #print(files, type(files))
         return files
@@ -238,7 +238,7 @@ class ComponentCreator(object):
             except IOError:
                files_i = [ x for x in eostools.listFiles(pathi,True) if re.match(pattern,x) and x not in black_list ] 
                if len(files_i) == 0:
-                  raise RuntimeError, "ERROR making component %s: no files found under %s matching '%s'" % (name,pathi,pattern)
+                  raise RuntimeError("ERROR making component %s: no files found under %s matching '%s'" % (name,pathi,pattern))
                writeDatasetToCache('Local%{path}%{pattern}.pck'.format(path = pathi.replace('/','_'), pattern = pattern), files_i)
             for f in files_i:
                 
@@ -264,7 +264,7 @@ class ComponentCreator(object):
         info=DatasetInformation(dataset,user,'',False,False,'','','')
         fraction=info.dataset_details['PrimaryDatasetFraction']
         if fraction<0.001:
-            print 'ERROR FRACTION IS ONLY ',fraction
+            print('ERROR FRACTION IS ONLY ',fraction)
         return fraction 
         
 
@@ -272,9 +272,9 @@ def testSamples(mcSamples, allowAAA=False):
    from subprocess import check_output, CalledProcessError
    from CMGTools.Production.changeComponentAccessMode import convertFile
    for X in mcSamples:
-        print X.name, len(X.files)
+        print(X.name, len(X.files))
         try:
-            print "\tSample is accessible? ",("events" in check_output(["edmFileUtil","--ls",X.files[0]]))
+            print("\tSample is accessible? ",("events" in check_output(["edmFileUtil","--ls",X.files[0]])))
         except CalledProcessError:
             fail = True
             if allowAAA:
@@ -282,9 +282,9 @@ def testSamples(mcSamples, allowAAA=False):
                     newfile = convertFile(X.files[0], "root://cms-xrd-global.cern.ch/%s")
                     if newfile != X.files[0]:
                         if "events" in check_output(["edmFileUtil","--ls",newfile]):
-                            print "yes, but only via AAA"
+                            print("yes, but only via AAA")
                             fail = False
                 except:
                     pass
-            if fail: print "\tERROR trying to access ",X.files[0]
+            if fail: print("\tERROR trying to access ",X.files[0])
 

@@ -89,4 +89,4 @@ if __name__ == "__main__":
     asimov   = args.asimov
     useFibre = args.useFibre
 
-    print CardsCommand(prod, year, variable, bines, asimov, nthreads, outpath, region, noUnc, useFibre, extra)
+    print(CardsCommand(prod, year, variable, bines, asimov, nthreads, outpath, region, noUnc, useFibre, extra))

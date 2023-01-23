@@ -118,15 +118,15 @@ selectedComponents = []
 
 if doData:
   dataSamples = []
-  for pd, trigs in DatasetsAndTriggers.iteritems():
+  for pd, trigs in DatasetsAndTriggers.items():
     if not trigs: continue
     for comp in byCompName(allData, [pd+"_"]):
       print("---")
-      print("Adding to %s dataset"%comp.name)
+      print(("Adding to %s dataset"%comp.name))
       comp.triggers = trigs[:]
-      print(" >> triggers %s"%trigs[:])
+      print((" >> triggers %s"%trigs[:]))
       comp.vetoTriggers = DatasetsAndVetos[pd][:]
-      print(" >> vetoTriggers %s"%DatasetsAndVetos[pd][:])
+      print((" >> vetoTriggers %s"%DatasetsAndVetos[pd][:]))
       dataSamples.append(comp)
   selectedComponents = dataSamples 
 else:
@@ -211,7 +211,7 @@ else:
   ]])
 
   # -- Apply trigger in MC -- # 
-  mcTriggers = sum((trigs for (pd,trigs) in DatasetsAndTriggers.iteritems() if trigs), [])
+  mcTriggers = sum((trigs for (pd,trigs) in DatasetsAndTriggers.items() if trigs), [])
   if applyTriggersInMC :
       for comp in mcSamples:
           comp.triggers = mcTriggers

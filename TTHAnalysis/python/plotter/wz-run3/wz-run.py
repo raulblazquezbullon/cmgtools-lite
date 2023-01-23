@@ -67,7 +67,7 @@ if __name__ == "__main__":
   parser = add_parsing_opts()
   
   ### Validity input checks
-  available_modes = producers.keys()
+  available_modes = list(producers.keys())
    
   producer_instance = producers[mode]
 

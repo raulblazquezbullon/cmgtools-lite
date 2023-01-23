@@ -48,11 +48,11 @@ storagepath = "/pool/phedex/userstorage/vrbouza/proyectos/TW/MiniTrees/"
 
 def GetLastFolder(stpth):
     savefolders   = next(os.walk(stpth))[1]
-    saveyears     = map(int, [i[6:]  for i in savefolders])
+    saveyears     = list(map(int, [i[6:]  for i in savefolders]))
     savefolders   = [i for i in savefolders if int(i[6:]) == max(saveyears)]
-    savemonths    = map(int, [i[3:5] for i in savefolders])
+    savemonths    = list(map(int, [i[3:5] for i in savefolders]))
     savefolders   = [i for i in savefolders if int(i[3:5]) == max(savemonths)]
-    savedays      = map(int, [i[:2]  for i in savefolders])
+    savedays      = list(map(int, [i[:2]  for i in savefolders]))
     savefolders   = [i for i in savefolders if int(i[:2]) == max(savedays)]
     return (stpth + savefolders[0] + "/")
 
@@ -86,14 +86,14 @@ def parseRelUncs(path, verbose = False):
                     tmpdn = tmpup
                     theres[tmpnam]["err"] = "down"
                     if verbose:
-                        print "\t- WARNING: for file {f}, unc. source {u} effect estimation has failed for the \'down\' variation. This will be symmetrised.".format(f = path,
-                                                                                                                                                                     u = tmpnam)
+                        print("\t- WARNING: for file {f}, unc. source {u} effect estimation has failed for the \'down\' variation. This will be symmetrised.".format(f = path,
+                                                                                                                                                                     u = tmpnam))
                 elif tmpup == 0. and tmpdn != 0.:
                     tmpup = tmpdn
                     theres[tmpnam]["err"] = "up"
                     if verbose:
-                        print "\t- WARNING: for file {f}, unc. source {u} effect estimation has failed for the \'up\' variation. This will be symmetrised.".format(f = path,
-                                                                                                                                                                   u = tmpnam)
+                        print("\t- WARNING: for file {f}, unc. source {u} effect estimation has failed for the \'up\' variation. This will be symmetrised.".format(f = path,
+                                                                                                                                                                   u = tmpnam))
                 elif tmpup == 0. and tmpdn == 0.:
                     raise RuntimeError("FATAL: for file {f}, unc. source {u} effect estimation has failed for both variations".format(f = path,
                                                                                                                                       u = tmpnam))
@@ -209,7 +209,7 @@ def getActualUnc(D):
 def getActualCovMat(D):
     rawD = deepcopy(D)
     for i,iU in enumerate(individual_list):
-        print "\n", iU
+        print("\n", iU)
         if iU not in D: raise RuntimeError("FATAL: uncertainty group from the individual list is not available in the relative unc. information needed to be conveyed to the differential plots.")
 
         if i == 0:
@@ -229,7 +229,7 @@ def getActualCovMat(D):
         D[iU].Scale(-1)
         # print " "
         for iB in range(1, D[iU].GetNbinsX() + 1):
-            print D[iU].GetBinContent(iB, iB)
+            print(D[iU].GetBinContent(iB, iB))
         # sys.exit()
     return D
 
@@ -316,7 +316,7 @@ def getAlternateUncsHistos(nom, induncs, glouncs):
             thehistos[tmpnam + "Down"].SetBinError(iB,  thed[iB][iU]["down"] / glouncs[iB]["munom"]  * nom.GetBinContent(iB))
             thehistos[tmpnam + "Up"].  SetBinError(iB, (thed[iB][iU]["up"]   / glouncs[iB]["munom"]) * nom.GetBinContent(iB))
             if tmpnam == "syst":
-                print thehistos[tmpnam + "Down"].GetBinError(iB), thehistos[tmpnam + "Up"].GetBinError(iB)
+                print(thehistos[tmpnam + "Down"].GetBinError(iB), thehistos[tmpnam + "Up"].GetBinError(iB))
 
     thehistos["totalUp"] = deepcopy(nom.Clone("totalUp")); thehistos["totalDown"] = deepcopy(nom.Clone("totalDown"))
 
@@ -346,7 +346,7 @@ def confirm(message = "Do you wish to continue?"):
     """
     answer = ""
     while answer not in ["y", "n", "yes", "no"]:
-        answer = raw_input(message + " [Y/N]\n").lower()
+        answer = input(message + " [Y/N]\n").lower()
     return answer[0] == "y"
 
 

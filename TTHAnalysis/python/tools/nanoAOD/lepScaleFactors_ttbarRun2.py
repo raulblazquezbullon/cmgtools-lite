@@ -99,7 +99,7 @@ class lepScaleFactors_ttbarRun2(Module):
             self.out.branch('ElecRECOSF' + var, 'F')
             self.out.branch('TrigSF'     + var, 'F')
             if var == "":
-                for delta,sys in self.systsLepEn.iteritems():
+                for delta,sys in self.systsLepEn.items():
                     self.out.branch('MuonIDSF'   + sys, 'F')
                     self.out.branch('MuonISOSF'  + sys, 'F')
                     self.out.branch('ElecIDSF'   + sys, 'F')
@@ -189,7 +189,7 @@ class lepScaleFactors_ttbarRun2(Module):
 
             # Now for the lepton energy variations...
             if var == "":
-                for delta,sys in self.systsLepEn.iteritems():
+                for delta,sys in self.systsLepEn.items():
                     # leptons
                     muonidsf = 1; muonisosf  = 1;
                     elecidsf = 1; elecrecosf = 1

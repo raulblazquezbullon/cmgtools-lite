@@ -8,7 +8,7 @@ import re, sys, os, os.path
 
 # -- Define functions -- #
 def log_msg(msg, msgtype = "INFO"):
-  print("[makeShapeCards_wzRun3:%s]: %s"%(msgtype, msg))
+  print(("[makeShapeCards_wzRun3:%s]: %s"%(msgtype, msg)))
   return
 
 parser = OptionParser(usage="%prog [options] mc.txt cuts.txt var bins")
@@ -110,7 +110,7 @@ def apply_categorisation_ranges(mca, cuts, report, options, allreports, binname)
     
   for ic,lab in enumerate(catlabels):
     kk = {} 
-    for (k,h) in report.iteritems(): 
+    for (k,h) in report.items(): 
       kk[k] = h.getHistoInRange("x_%s"%k, catbinning[ic], catbinning[ic+1])
     allreports["%s_%s"%(binname,lab)] = kk
   return allreports
@@ -136,7 +136,7 @@ def apply_filtering(mca, cuts, report, options):
   return report
 
 def apply_bin_by_bin(report):
-  for p,h in report.iteritems():
+  for p,h in report.items():
     if p not in ("data", "data_obs"):
       h.addBinByBin(namePattern = "%s_%s_%s_bin{bin}" % (options.bbb, binname, p), conservativePruning = True)
   return
@@ -145,7 +145,7 @@ def get_systematics(mca, cuts, report, allreports, options, binname):
   ''' Function to process histogram and write datacard '''
   # Iterate over bin names and reports 
   
-  for binname, report in allreports.iteritems():
+  for binname, report in allreports.items():
     
     # Check which option to use for MC stat propagation (aMC: barlow-beeston, bbb: bin-by-bin)
     if options.bbb and options.autoMCStats: 
@@ -155,14 +155,14 @@ def get_systematics(mca, cuts, report, allreports, options, binname):
       
     # Crop all uncertainties to 100% to avoid negative variations if desired
     if not options.cropnegativeuncs:
-      for p, h in report.iteritems():
-        for b in xrange(1, h.GetNbinsX() + 1):
+      for p, h in report.items():
+        for b in range(1, h.GetNbinsX() + 1):
           h.SetBinError(b, min(h.GetBinContent(b), h.GetBinError(b)))
           
     # List all the nuisances to be written in the cards.
     nuisances = sorted(listAllNuisances(report))
     log_msg("List of nuisances considered: %s"%(["%s"%n for n in nuisances]))
-    allyields = dict([(p, h.Integral()) for p, h in report.iteritems()])
+    allyields = dict([(p, h.Integral()) for p, h in report.items()])
     
     procs = []
     iproc = {}
@@ -175,7 +175,7 @@ def get_systematics(mca, cuts, report, allreports, options, binname):
     for i, p in enumerate(signals + backgrounds):
       if p not in allyields: continue
       if allyields[p] <= options.threshold:
-        print ("Dropping %s due to low statistics"%p)
+        print(("Dropping %s due to low statistics"%p))
         continue
       procs.append(p)        
       iproc[p] = i+1
@@ -239,7 +239,7 @@ def get_systematics(mca, cuts, report, allreports, options, binname):
       else:       # Normalization unc.
         effyield = dict((p, "-") for p in procs)
         isNorm = False
-        for p, (hup, hdn) in effshape.iteritems():
+        for p, (hup, hdn) in effshape.items():
           i0 = allyields[p]
           kup, kdn = hup.Integral()/i0, hdn.Integral()/i0
           
@@ -279,7 +279,7 @@ def write_datacards(mca, cuts, report, options, systs, outdir, binname, allyield
   klen = max([7, len(binname)]+[len(p) for p in procs])
   kpatt = " %%%ds "  % klen
   fpatt = " %%%d.%df " % (klen,3)
-  npatt = "%%-%ds " % max([len('process')]+map(len,nuisances))
+  npatt = "%%-%ds " % max([len('process')]+list(map(len,nuisances)))
   datacard.write('##----------------------------------\n')
   datacard.write((npatt % 'bin    ')+(" "*6)+(" ".join([kpatt % binname  for p in procs]))+"\n")
   datacard.write((npatt % 'process')+(" "*6)+(" ".join([kpatt % p        for p in procs]))+"\n")
@@ -290,7 +290,7 @@ def write_datacards(mca, cuts, report, options, systs, outdir, binname, allyield
   for name in nuisances:
     (kind,effmap,effshape) = systs[name]
     datacard.write(('%s %5s' % (npatt % name,kind)) + " ".join([kpatt % effmap[p]  for p in procs]) +"\n")
-    for p,(hup,hdn) in effshape.iteritems():
+    for p,(hup,hdn) in effshape.items():
       towrite.append(hup.Clone("x_%s_%sUp"   % (p,name)))
       towrite.append(hdn.Clone("x_%s_%sDown" % (p,name)))
   if options.autoMCStats:

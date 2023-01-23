@@ -6,11 +6,11 @@ from   array import array
 from multiprocessing import Pool
 
 sys.path.append('{cmsswpath}/src/CMGTools/TTHAnalysis/python/plotter/tw-run2/differential/'.format(cmsswpath = os.environ['CMSSW_BASE']))
-import beautifulUnfoldingPlots as bp
-import errorPropagator as ep
+from . import beautifulUnfoldingPlots as bp
+from . import errorPropagator as ep
 #import getLaTeXtable as tex
-import varList as vl
-import CMS_lumi, tdrstyle
+from . import varList as vl
+from . import CMS_lumi, tdrstyle
 
 r.gROOT.SetBatch(True)
 vl.SetUpWarnings()

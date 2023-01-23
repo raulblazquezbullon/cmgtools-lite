@@ -74,7 +74,7 @@ class particleAndPartonVars_tWRun2(Module):
         all_leps = [l for l in Collection(event, "GenDressedLepton")]
 
         leps     = [all_leps[getattr(event, 'iDressSelLep')[l]]
-                    for l in xrange(min([getattr(event, 'nDressSelLep'), 5]))]
+                    for l in range(min([getattr(event, 'nDressSelLep'), 5]))]
         leps_4m  = [l.p4() for l in leps]
 
         met_4m = r.TLorentzVector()
@@ -84,11 +84,11 @@ class particleAndPartonVars_tWRun2(Module):
         all_jets = [j for j in Collection(event, "GenJet")]
 
         jets     = [all_jets[getattr(event, 'iDressSelJet')[j]]
-                    for j in xrange(min([getattr(event, 'nDressSelJet'), 5]))]
+                    for j in range(min([getattr(event, 'nDressSelJet'), 5]))]
         jets_4m  = [j.p4() for j in jets]
 
         loosejets    = [all_jets[getattr(event, 'iDressSelLooseJet')[j]]
-                        for j in xrange(min([getattr(event, 'nDressSelLooseJet'), 5]))]
+                        for j in range(min([getattr(event, 'nDressSelLooseJet'), 5]))]
         loosejets_4m = [j.p4() for j in loosejets]
 
 

@@ -6,10 +6,10 @@ import numpy as np
 from scipy.stats import chisquare, chi2
 
 sys.path.append('{cmsswpath}/src/CMGTools/TTHAnalysis/python/plotter/tw-run2/differential/'.format(cmsswpath = os.environ['CMSSW_BASE']))
-import beautifulUnfoldingPlots as bp
-import errorPropagator as ep
+from . import beautifulUnfoldingPlots as bp
+from . import errorPropagator as ep
 #import getLaTeXtable as tex
-import varList as vl
+from . import varList as vl
 
 r.gROOT.SetBatch(True)
 vl.SetUpWarnings()
@@ -162,7 +162,7 @@ def Chi2TestForMultivarNormal(w1, V1, w2, V2):
 def GiveMeMyGoodGOFTests(tsk):
     inpath, iY, var, ty = tsk
     pathtothings = inpath + "/" + iY + "/" + var
-    print "\n====== Performing tests for variable", var, "and with type", ty, "\n"
+    print("\n====== Performing tests for variable", var, "and with type", ty, "\n")
     if   ty == "particle":
         f1 = r.TFile.Open(pathtothings + "/particleOutput.root",        "read")
         f2 = r.TFile.Open(pathtothings + "/particle.root",              "read")
@@ -402,12 +402,12 @@ def GiveMeMyGoodGOFTests(tsk):
     outfile.close(); del outfile;
 
 
-    print '\nDR - p-val.:',    coses["DR"]["p-value"]
-    print 'DR - stat.:',       coses["DR"]["statistic"]
-    print 'DS - p-val.:',      coses["DS"]["p-value"]
-    print 'DS - stat.:',       coses["DS"]["statistic"]
-    print 'Herwig - p-val.:',  coses["Herwig"]["p-value"]
-    print 'Herwig - stat.:',   coses["Herwig"]["statistic"]
+    print('\nDR - p-val.:',    coses["DR"]["p-value"])
+    print('DR - stat.:',       coses["DR"]["statistic"])
+    print('DS - p-val.:',      coses["DS"]["p-value"])
+    print('DS - stat.:',       coses["DS"]["statistic"])
+    print('Herwig - p-val.:',  coses["Herwig"]["p-value"])
+    print('Herwig - stat.:',   coses["Herwig"]["statistic"])
     #print 'aMC@NLO - p-val.:', coses["aMCatNLO"]["p-value"]
     #print 'aMC@NLO - stat.:',  coses["aMCatNLO"]["statistic"], "\n"
     del coses

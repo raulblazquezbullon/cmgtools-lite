@@ -1,0 +1,37 @@
+Info in <ACLiC>: unmodified script has already been compiled and loaded
+multiprocessing.pool.RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/cvmfs/cms.cern.ch/slc7_amd64_gcc10/external/python3/3.9.6-67e5cf5b4952101922f1d4c8474baa39/lib/python3.9/multiprocessing/pool.py", line 125, in worker
+    result = (True, func(*args, **kwds))
+  File "/cvmfs/cms.cern.ch/slc7_amd64_gcc10/external/python3/3.9.6-67e5cf5b4952101922f1d4c8474baa39/lib/python3.9/multiprocessing/pool.py", line 48, in mapstar
+    return list(map(*args))
+  File "/mnt_pool/c3_users/user/cvico/WorkSpace/wz-run3/release/CMSSW_12_4_12/python/CMGTools/TTHAnalysis/plotter/mcAnalysis.py", line 23, in _runPlot
+    ret = (key,tty.getPlot(plotspec,cut,fsplit=fsplit,closeTreeAfter=closeTree))
+  File "/mnt_pool/c3_users/user/cvico/WorkSpace/wz-run3/release/CMSSW_12_4_12/python/CMGTools/TTHAnalysis/plotter/tree2yield.py", line 564, in getPlot
+    nominal = self.getPlot(plotspec,cut,fsplit=fsplit,closeTreeAfter=False,noUncertainties=True)
+  File "/mnt_pool/c3_users/user/cvico/WorkSpace/wz-run3/release/CMSSW_12_4_12/python/CMGTools/TTHAnalysis/plotter/tree2yield.py", line 617, in getPlot
+    ret = self.getPlotRaw(plotspec.name, plotspec.expr, plotspec.bins, cut, plotspec, fsplit=fsplit, closeTreeAfter=closeTreeAfter)
+  File "/mnt_pool/c3_users/user/cvico/WorkSpace/wz-run3/release/CMSSW_12_4_12/python/CMGTools/TTHAnalysis/plotter/tree2yield.py", line 717, in getPlotRaw
+    histo.SetDirectory(None)
+TypeError: void TH1::SetDirectory(TDirectory* dir) =>
+    TypeError: could not convert argument 1
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/mnt_pool/c3_users/user/cvico/WorkSpace/wz-run3/release/CMSSW_12_4_12/src/CMGTools/TTHAnalysis/python/plotter/mcPlots.py", line 1369, in <module>
+    plotter.run(mca,cuts,plots)
+  File "/mnt_pool/c3_users/user/cvico/WorkSpace/wz-run3/release/CMSSW_12_4_12/src/CMGTools/TTHAnalysis/python/plotter/mcPlots.py", line 708, in run
+    pmap = mca.getPlots(pspec,cut,makeSummary=True,closeTreeAfter=True)
+  File "/mnt_pool/c3_users/user/cvico/WorkSpace/wz-run3/release/CMSSW_12_4_12/python/CMGTools/TTHAnalysis/plotter/mcAnalysis.py", line 545, in getPlots
+    retlist = self._processTasks(_runPlot, tasks, name="plot "+plotspec.name) # list of pairs (idkey, result)
+  File "/mnt_pool/c3_users/user/cvico/WorkSpace/wz-run3/release/CMSSW_12_4_12/python/CMGTools/TTHAnalysis/plotter/mcAnalysis.py", line 919, in _processTasks
+    retlist += pool.map(func, tasks[i:(i+chunkTasks)], 1)
+  File "/cvmfs/cms.cern.ch/slc7_amd64_gcc10/external/python3/3.9.6-67e5cf5b4952101922f1d4c8474baa39/lib/python3.9/multiprocessing/pool.py", line 364, in map
+    return self._map_async(func, iterable, mapstar, chunksize).get()
+  File "/cvmfs/cms.cern.ch/slc7_amd64_gcc10/external/python3/3.9.6-67e5cf5b4952101922f1d4c8474baa39/lib/python3.9/multiprocessing/pool.py", line 771, in get
+    raise self._value
+TypeError: void TH1::SetDirectory(TDirectory* dir) =>
+    TypeError: could not convert argument 1

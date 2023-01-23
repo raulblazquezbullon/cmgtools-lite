@@ -159,9 +159,9 @@ class EventVars_tWRun2(Module):
         self.inputlabel = '_' + recllabel
         self.branches   = []
 
-        for delta,var in self.systsJEC.iteritems():
+        for delta,var in self.systsJEC.items():
             self.branches.extend([br + self.label + var for br in self.jecbranches])
-        for delta,var in self.systsLepEn.iteritems():
+        for delta,var in self.systsLepEn.items():
             self.branches.extend([el    + self.label + var for el in self.lepenergyvars if type(el) != tuple])
             self.branches.extend([(el[0] + self.label + var, el[1]) for el in self.lepenergyvars if type(el) == tuple])
 
@@ -202,7 +202,7 @@ class EventVars_tWRun2(Module):
 
         coldirs    = {} #### NOTE: the keys begin always with "_"!
         coldirs_4m = {}
-        for delta,var in self.systsLepEn.iteritems():
+        for delta,var in self.systsLepEn.items():
             coldirs[var]    = [l      for l in Collection(event, "LepGood" + var[1:])]
             coldirs_4m[var] = [l.p4() for l in coldirs[var]]
             for i in range(len(coldirs_4m[var])):
@@ -216,7 +216,7 @@ class EventVars_tWRun2(Module):
 
         # ============================ Initialisations
         for var in self.jecbranches:
-            for delta,sys in self.systsJEC.iteritems():
+            for delta,sys in self.systsJEC.items():
                 allret[var + sys] = -99
                 allret[var + sys] = -99
 
@@ -224,7 +224,7 @@ class EventVars_tWRun2(Module):
             var = prevar
             if type(prevar) ==  tuple:
                 var = prevar[0]
-            for delta,sys in self.systsLepEn.iteritems():
+            for delta,sys in self.systsLepEn.items():
                 allret[var + sys] = -99
                 allret[var + sys] = -99
 
@@ -291,7 +291,7 @@ class EventVars_tWRun2(Module):
 
             # ============================ Variables susceptible to JEC (nominal and their variations)
             met_4m = r.TLorentzVector()
-            for delta,sys in self.systsJEC.iteritems():
+            for delta,sys in self.systsJEC.items():
                 allret["METgood_pt"  + sys] = -99
                 allret["METgood_phi" + sys] = -99
                 if event.isData:
@@ -313,7 +313,7 @@ class EventVars_tWRun2(Module):
 
                 ### jets
                 jets    = [all_jets[getattr(event, 'iJetSel30{v}_Recl'.format(v = sys if "unclustEn" not in sys else ""))[j]]
-                           for j in xrange(min([getattr(event, 'nJetSel30{v}_Recl'.format(v = sys if "unclustEn" not in sys else "")), 5]))]
+                           for j in range(min([getattr(event, 'nJetSel30{v}_Recl'.format(v = sys if "unclustEn" not in sys else "")), 5]))]
                 #jets    = [all_jets[getattr(event, 'iJetSel30_Recl')[j]]
                            #for j in xrange(min([getattr(event, 'nJetSel30_Recl'), 5]))]
                 jets_4m = [j.p4() for j in jets]
@@ -327,7 +327,7 @@ class EventVars_tWRun2(Module):
 
                 ### loose jets
                 loosejets = [all_jets[getattr(event, 'iJetSel20{v}_Recl'.format(v = sys if "unclustEn" not in sys else ""))[j]]
-                           for j in xrange(min([getattr(event, 'nJetSel20{v}_Recl'.format(v = sys if "unclustEn" not in sys else "")), 5]))]
+                           for j in range(min([getattr(event, 'nJetSel20{v}_Recl'.format(v = sys if "unclustEn" not in sys else "")), 5]))]
                 loosejets_4m = [j.p4() for j in loosejets]
 
                 for i in range(len(loosejets_4m)):
@@ -401,7 +401,7 @@ class EventVars_tWRun2(Module):
 
 
         # ============================ Variations of lepton energy corrections
-        for delta,sys in self.systsLepEn.iteritems():
+        for delta,sys in self.systsLepEn.items():
             if getattr(event, "nLepGood" + sys[1:]) >= 2:
                 leps    = [l for l in Collection(event, "LepGood" + sys[1:])]
                 leps_4m = [l.p4() for l in leps]
@@ -411,7 +411,7 @@ class EventVars_tWRun2(Module):
                                             leps_4m[i].Phi(),             leps_4m[i].M() if abs(leps[i].pdgId) != 11 else emass)
 
                 jets    = [all_jets[getattr(event, 'iJetSel30{v}_Recl'.format(v = sys))[j]]
-                           for j in xrange(min([getattr(event, 'nJetSel30{v}_Recl'.format(v = sys)), 5]))]
+                           for j in range(min([getattr(event, 'nJetSel30{v}_Recl'.format(v = sys)), 5]))]
                 jets_4m = [j.p4() for j in jets]
 
                 jetjecsysscaff = self.nominaljecscaff
@@ -423,7 +423,7 @@ class EventVars_tWRun2(Module):
 
                 ### loose jets
                 loosejets = [all_jets[getattr(event, 'iJetSel20{v}_Recl'.format(v = sys))[j]]
-                           for j in xrange(min([getattr(event, 'nJetSel20{v}_Recl'.format(v = sys)), 5]))]
+                           for j in range(min([getattr(event, 'nJetSel20{v}_Recl'.format(v = sys)), 5]))]
                 loosejets_4m = [j.p4() for j in loosejets]
 
                 for i in range(len(loosejets_4m)):

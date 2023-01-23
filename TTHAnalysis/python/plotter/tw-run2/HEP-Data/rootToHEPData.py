@@ -225,8 +225,8 @@ if __name__=="__main__":
                     histStatUpVal[nbin] = abs(histStatUpVal[nbin])
                     histStatDownVal[nbin] = -abs(histStatDownVal[nbin])
 
-                histoSys = zip(histSysUpVal,histSysDownVal)
-                histoStat = zip(histStatUpVal,histStatDownVal)
+                histoSys = list(zip(histSysUpVal,histSysDownVal))
+                histoStat = list(zip(histStatUpVal,histStatDownVal))
                 table.add_variable(createDependentVar(dataGraph, nameY + " " + processesDiff[process], False, unitsY, -1,"Total uncertainty", False, histoSys, histoStat))
                 
             else:

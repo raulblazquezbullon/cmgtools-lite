@@ -2,12 +2,12 @@
 
 from CMGTools.TTHAnalysis.treeReAnalyzer import *
 from CMGTools.TTHAnalysis.tools.eventVars_MT2 import *
-print 'loading stuff for MT2'
+print('loading stuff for MT2')
 from PhysicsTools.Heppy.analyzers.core.AutoHandle import AutoHandle
 ROOT.gSystem.Load("libFWCoreFWLite.so")
 ROOT.gSystem.Load("libDataFormatsFWLite.so")
 ROOT.AutoLibraryLoader.enable()
-print 'done loading MT2 stuff.'
+print('done loading MT2 stuff.')
 import time
 
 #ROOT.gSystem.Load('libCondFormatsBTagObjects') 
@@ -79,7 +79,7 @@ class edgeFriends:
         # data
         for t in ['DA','MC']:
             for var in [['mlb','sum_mlb_Edge'],['met','met_Edge'],['zpt','lepsZPt_Edge'],['ldr','lepsDR_Edge'],['a3d','d3D_Edge'],['ldp','lepsDPhi_Edge']]:
-                print 'loading likelihoods for variable %s in %s'%(var[0],t)
+                print('loading likelihoods for variable %s in %s'%(var[0],t))
                 setattr(self,'h_lh_ana_%s_%s' %(var[0],t), self.wspace.pdf('%s_analyticalPDF_%s'%(var[0],t)))
                 setattr(self,'var_ana_%s_%s'  %(var[0],t), self.wspace.var(var[1]))
                 setattr(self,'frame_ana_%s_%s'%(var[0],t),getattr(self,'var_ana_%s_%s'%(var[0],t)).frame())
@@ -248,7 +248,7 @@ class edgeFriends:
         ret['met_jecUp'] = event.met_jecUp_pt; ret['met_jecDn'] = event.met_jecDown_pt 
         ret['run'] = event.run
         ret['lumi'] = event.lumi
-        ret['evt'] = long(event.evt)
+        ret['evt'] = int(event.evt)
         ret['nVert'] = event.nVert
         
         t01 = time.time()
@@ -471,7 +471,7 @@ class edgeFriends:
         ret['weight_btagsf_light_DN'] = wtbtagDown_light
         t8 = time.time()
         ##print 'njets: %.0d nbjets35medium: %.0d / %.0d'%(ret["nJet35"], len(theBJets), ret["nBJetMedium35"])
-	
+    
         jet = ROOT.TLorentzVector()
         min_mlb = 1e6
         max_mlb = 1e6
@@ -584,15 +584,15 @@ class edgeFriends:
         ## print 'time from post mlb etc to post LH: %.3f mus'%( (t10-t9)*1000000. )
         
         fullret = {}
-        for k,v in ret.iteritems(): 
+        for k,v in ret.items(): 
             fullret[k+self.label] = v
-        for k,v in jetret.iteritems(): 
+        for k,v in jetret.items(): 
             fullret["JetSel%s_%s" % (self.label,k)] = v
         #for k,v in lepret.iteritems(): 
         #    fullret["Lep%s_%s" % (self.label,k)] = v
-        for k,v in lepret.iteritems(): 
+        for k,v in lepret.items(): 
             fullret[k] = v
-        for k,v in trigret.iteritems(): 
+        for k,v in trigret.items(): 
             fullret[k+self.label] = v
         return fullret
 
@@ -828,20 +828,20 @@ class edgeFriends:
                  mcTag = mcTag * eff
                  dataTag = dataTag * eff * SF[0]
                  if(mcFlavor == 5 or mcFlavor ==4):
-	             errHup  = errHup + (SF[1] - SF[0]  )/SF[0]
-	             errHdown = errHdown = (SF[0] - SF[2])/SF[0]
+                     errHup  = errHup + (SF[1] - SF[0]  )/SF[0]
+                     errHdown = errHdown = (SF[0] - SF[2])/SF[0]
                  else: 
-	             errLup = errLup + (SF[1] - SF[0])/SF[0]
+                     errLup = errLup + (SF[1] - SF[0])/SF[0]
                      errLdown = errLdown + (SF[0] - SF[2])/SF[0]
             else: 
                  mcNoTag = mcNoTag * (1 - eff)
                  dataNoTag = dataNoTag * (1 - eff*SF[0])
                  if mcFlavor==5 or mcFlavor==4:
-	             errHup = errHup * -eff*(SF[1] - SF[0]  )/(1-eff*SF[0])
-                     errHdown = errHdown * -eff*(SF[0] - SF[2])/(1-eff*SF[0])	
+                     errHup = errHup * -eff*(SF[1] - SF[0]  )/(1-eff*SF[0])
+                     errHdown = errHdown * -eff*(SF[0] - SF[2])/(1-eff*SF[0])   
                  else:
-	             errLup = errLup * -eff*(SF[1] - SF[0]  )/(1-eff*SF[0])
-	             errLdown = errLdown * -eff*(SF[0] - SF[2])/(1-eff*SF[0]);	
+                    errLup = errLup * -eff*(SF[1] - SF[0]  )/(1-eff*SF[0])
+                    errLdown = errLdown * -eff*(SF[0] - SF[2])/(1-eff*SF[0]);   
 
 
         wtbtag = (dataNoTag * dataTag ) / ( mcNoTag * mcTag )
@@ -909,11 +909,11 @@ if __name__ == '__main__':
                 lambda lep : _susyEdgeTight(lep),
                 cleanJet = lambda lep,jet,dr : (jet.pt < 35 and dr < 0.4 and abs(jet.eta) > 2.4))
         def analyze(self,ev):
-            print "\nrun %6d lumi %4d event %d: leps %d" % (ev.run, ev.lumi, ev.evt, ev.nLepGood)
-            print self.sf1(ev)
-            print self.sf2(ev)
-            print self.sf3(ev)
-            print self.sf4(ev)
-            print self.sf5(ev)
+            print("\nrun %6d lumi %4d event %d: leps %d" % (ev.run, ev.lumi, ev.evt, ev.nLepGood))
+            print(self.sf1(ev))
+            print(self.sf2(ev))
+            print(self.sf3(ev))
+            print(self.sf4(ev))
+            print(self.sf5(ev))
     el = EventLoop([ Tester("tester") ])
     el.loop([tree], maxEvents = 50)

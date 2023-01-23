@@ -73,7 +73,7 @@ class lepScaleFactors_WZ5TeV(Module):
         all_leps = [l for l in Collection(event,"LepGood")]
         nFO      = getattr(event,"nLepFO_Recl")
         chosen   = getattr(event,"iLepFO_Recl")
-        leps     = [all_leps[chosen[i]] for i in xrange(nFO)]
+        leps     = [all_leps[chosen[i]] for i in range(nFO)]
         if len(leps) >= 3:
             ilepW    = int(getattr(event,"idx_lW"))
             lepsW    = leps[ilepW]

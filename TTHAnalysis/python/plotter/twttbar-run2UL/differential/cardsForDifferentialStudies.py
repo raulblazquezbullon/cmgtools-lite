@@ -4,7 +4,7 @@ import warnings as wr
 import ROOT as r
 
 sys.path.append('{cmsswpath}/src/CMGTools/TTHAnalysis/python/plotter/twttbar-run2UL/differential/'.format(cmsswpath = os.environ['CMSSW_BASE']))
-import varList as vl
+from . import varList as vl
 
 r.PyConfig.IgnoreCommandLineOptions = True
 r.gROOT.SetBatch(True)
@@ -42,7 +42,7 @@ def ExecuteOrSubmitTask(tsk):
     prod, year, variable, asimov, nthreads, outpath, region, noUnc, useFibre, extra, pretend, queue = tsk
     if queue == "":
         thecomm = CardsCommand(prod, year, variable, asimov, nthreads, outpath, region, noUnc, useFibre, extra)
-        print "Command: " + thecomm
+        print("Command: " + thecomm)
 
         if not pretend:
             os.system(thecomm)
@@ -57,7 +57,7 @@ def ExecuteOrSubmitTask(tsk):
                                     logpath = logpath.format(p = prod, y = yr),
                                     command = CardsCommand(prod, year, variable, asimov, nthreads, outpath, region, noUnc, useFibre, extra))
 
-        print "Command: " + thecomm
+        print("Command: " + thecomm)
 
         if not pretend:
             os.system(thecomm)
@@ -190,7 +190,7 @@ if __name__=="__main__":
     #print tasks
     calculate = True
     for task in tasks:
-        print "\nProcessing " + str(task) + "\n"
+        print("\nProcessing " + str(task) + "\n")
 
         #if str(task) == "('2020-09-20', 'run2', 'Lep1Lep2Jet1MET_Mt', True, 87, 'temp_2020_10_29_pruebasdiff', 'forExtr', False, True, '', False, '')":
             #calculate = True

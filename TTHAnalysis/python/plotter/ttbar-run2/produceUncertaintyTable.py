@@ -161,37 +161,37 @@ if __name__ == "__main__":
             cumulative      = [x for x in ["r"] if x != poi]
 
             nomcomm = basecommand + '-n nominal_%s %s --task-name nominal_%s -P %s %s'%(poi, thecard, poi, poi, ",".join(cumulative))
-            print "Command:", nomcomm
+            print("Command:", nomcomm)
             if not pretend: os.system(nomcomm)
 
             gridcomm = basecommand.replace('--algo grid','--algo none').replace("--points 100","").replace("--job-mode SGE","")+ '-n bestfit_%s --saveWorkspace %s -P %s '%(poi, thecard, poi)
-            print "Command:", gridcomm
+            print("Command:", gridcomm)
             if not pretend: os.system(gridcomm)
 
             for group in groupList:
                 cumulative += systsGroup[group]
                 thecomm = basecommand + ' -P %s '%poi + '-n ' + group + '_%s'%poi + ' higgsCombinebestfit_%s.MultiDimFit.mH125.root --snapshotName MultiDimFit  --freezeParameters %s'%(poi,",".join(cumulative)) + ' --task-name %s_%s'%(group,poi)
-                print "Command:", thecomm
+                print("Command:", thecomm)
                 if not pretend: os.system(thecomm)
     elif step == 2:
         for poi in POIs:
             fileList        = [ ]
             nomcomm = 'hadd higgsCombinenominal_%s.MultiDimFit.mH125.root higgsCombinenominal_%s.POINTS.*.MultiDimFit.mH125.root'%(poi, poi)
-            print "Command:", nomcomm
+            print("Command:", nomcomm)
             if not pretend: os.system(nomcomm)
 
             for gr in groupList:
                 tmpcomm = 'hadd higgsCombine%s.MultiDimFit.mH125.root higgsCombine%s.POINTS.*.MultiDimFit.mH125.root'%(gr+'_'+poi,gr+'_'+poi)
                 fileList.append( "'higgsCombine%s.MultiDimFit.mH125.root:Freeze += %s:%d'"%(gr+'_'+poi,gr,groupList.index(gr)))
-                print "Command:", tmpcomm
+                print("Command:", tmpcomm)
                 if not pretend: os.system(tmpcomm)
 
             thecomm = 'plot1DScan.py higgsCombinenominal_%s.MultiDimFit.mH125.root --others '%poi +' '.join( fileList ) +' --breakdown '  + ','.join(groupList) +',stat'  + " --POI %s "%poi
-            print "Command:", thecomm
+            print("Command:", thecomm)
             if not pretend: os.system(thecomm)
 
             thecomm = 'mv scan.pdf scan_%s.pdf; mv scan.png scan_%s.png'%(poi, poi)
-            print 'Command:', thecomm
+            print('Command:', thecomm)
             if not pretend: os.system(thecomm)
 
     else:

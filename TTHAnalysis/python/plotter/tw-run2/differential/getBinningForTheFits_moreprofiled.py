@@ -6,7 +6,7 @@ from copy import deepcopy
 from multiprocessing import Pool
 
 sys.path.append('{cmsswpath}/src/CMGTools/TTHAnalysis/python/plotter/tw-run2/differential/'.format(cmsswpath = os.environ['CMSSW_BASE']))
-import varList as vl
+from . import varList as vl
 
 r.gROOT.SetBatch(True)
 vl.SetUpWarnings()
@@ -44,7 +44,7 @@ def ExecuteOrSubmitTask(tsk):
     prod, year, variable, asimov, nthreads, outpath, region, noUnc, useFibre, extra, pretend, queue, thebin, theunc = tsk
     if queue == "":
         thecomm = CardsCommand(prod, year, variable, asimov, nthreads, outpath, region, noUnc, useFibre, extra, thebin, theunc)
-        print "Command: " + thecomm
+        print("Command: " + thecomm)
 
         if not pretend:
             os.system(thecomm)
@@ -59,7 +59,7 @@ def ExecuteOrSubmitTask(tsk):
                                     logpath = logpath.format(p = prod, y = yr),
                                     command = CardsCommand(prod, year, variable, asimov, nthreads, outpath, region, noUnc, useFibre, extra, thebin, theunc))
 
-        print "Command: " + thecomm
+        print("Command: " + thecomm)
         if not pretend:
             os.system(thecomm)
 
@@ -105,7 +105,7 @@ def CardsCommand(prod, year, var, isAsimov, nthreads, outpath, region, noUnc, us
 
     if region == "forExtr":
         restofuncs = []
-        for el,listofyears in vl.ModifiedProfileSystsThatAreNotPresentAllYears.iteritems():
+        for el,listofyears in vl.ModifiedProfileSystsThatAreNotPresentAllYears.items():
             if year in listofyears or year == "run2":
                 restofuncs.append(el)
         extra_ += " --su " + ",".join([el for el in vl.ModifiedProfileSysts if "norm" in el]) + "," + ",".join(restofuncs)
@@ -140,10 +140,10 @@ def createFunctionFileForVariable(tsk):
     proc = "ttbar"
 
     if not vl.unifttbar:
-        print '> Uniform tW distribution of the BDT discriminant\n'
+        print('> Uniform tW distribution of the BDT discriminant\n')
         proc = "tw"
     else:
-        print '> Uniform ttbar distribution of the BDT discriminant\n'
+        print('> Uniform ttbar distribution of the BDT discriminant\n')
 
     Base = '''#include <iostream>
 '''
@@ -152,7 +152,7 @@ def createFunctionFileForVariable(tsk):
     #print Base
 
     listofuncsthataffecttheproc = [""]
-    for key,el in vl.ModifiedSystMap.iteritems():
+    for key,el in vl.ModifiedSystMap.items():
         if iY != "run2":
             skip = False
             for y in ["2016", "2017", "2018"]:
@@ -183,7 +183,7 @@ def createFunctionFileForVariable(tsk):
                 Base = Base + addFunctionOfBin(path + "/rebinhistos/histos_bin" + str(iB) + ".root", proc, iB, iU + iVar)
                 #print Base
 
-    print "> Saving file"
+    print("> Saving file")
     outputF = open(path + "/rebinhistos/rebin_functions_{y}_{v}.cc".format(y = iY, v = iV), 'w')
     outputF.write(Base)
     outputF.close()
@@ -194,7 +194,7 @@ def compileFunctionFile(tsk):
     inpath, iY, iV = tsk
     path = inpath + "/" + iY + "/" + iV + "/sigextr_fit"
 
-    print "> Compiling..."
+    print("> Compiling...")
     os.system("rm " + path + "/rebinhistos/rebin_functions_{y}_{v}_cc*".format(y = iY, v = iV))
     r.gROOT.LoadMacro(path + "/rebinhistos/rebin_functions_{y}_{v}.cc+".format(y = iY, v = iV))
 
@@ -316,7 +316,7 @@ def getVariedHisto(inpath, iV, iY, thenom, theunc, theproc, thevar, thebin):
 
 def createCardsForEachSys(tsk):
     inpath, iY, iV, usesamenuis, syst = tsk
-    print "    - Creating individual cards for variable " + iV + " of year " + iY + " for syst. " + syst
+    print("    - Creating individual cards for variable " + iV + " of year " + iY + " for syst. " + syst)
 
     path = inpath + "/" + iY + "/" + iV + "/sigextr_fit/rebinhistos"
 
@@ -456,7 +456,7 @@ def createCardsForEachSys(tsk):
 
         #if syst == "": #### We need to modify the rootfiles!
         if True: #### We need to modify the rootfiles!
-            print "    - Creating new rootfile card for bin", iB, "and unc."
+            print("    - Creating new rootfile card for bin", iB, "and unc.")
             therootfile = r.TFile.Open(rootfiletoopen.format(b = iB), "READ")
             tmpdictofthings = {}
             copyname = ""; theproc = ""
@@ -512,7 +512,7 @@ def createCardsForEachSys(tsk):
 
 def prepareCardsForControlRegion(tsk):
     inpath, iY, iV, usesamenuis, syst = tsk
-    print "    - Preparing card for the control region of year " + iY + " for unc. " + syst
+    print("    - Preparing card for the control region of year " + iY + " for unc. " + syst)
 
     path = inpath + "/" + iY + "/" + iV
 
@@ -619,7 +619,7 @@ def prepareCardsForControlRegion(tsk):
     #break
 
     if iY == "run2" and syst == "": #### We need to modify the rootfiles!
-        print "    - Creating new rootfile card"
+        print("    - Creating new rootfile card")
         therootfile = r.TFile.Open(path + "/controlReg.root", "READ")
         tmpdictofthings = {}
         copyname = ""; theproc = ""
@@ -669,15 +669,15 @@ def CheckProducedCardsByTask(task):
     #print chkpath
 
     if not os.path.isfile(chkpath):                                 #### 1st: existance
-        print "# Card {chk} has not been found.".format(chk = ch)
+        print("# Card {chk} has not been found.".format(chk = ch))
         return False
     elif os.path.getsize(chkpath) <= minchunkbytes:                 #### 2nd: size
-        print "# Card {chk} has less size than the minimum.".format(chk = ch)
+        print("# Card {chk} has less size than the minimum.".format(chk = ch))
         return False
     else:
         fch = r.TFile.Open(chkpath, "READ")
         if not fch:                                                 #### 3rd: ROOT access (corruption)
-            print "# Card {chk} cannot be accessed: it is corrupted.".format(chk = ch)
+            print("# Card {chk} cannot be accessed: it is corrupted.".format(chk = ch))
             return False
 
         fch.Close(); del fch
@@ -732,7 +732,7 @@ if __name__=="__main__":
         wr.warn("WARNING: check is only implemented for the second step.")
 
     if prepctrl:
-        print "> Preparing control region cards..."
+        print("> Preparing control region cards...")
         tasks = []
         theyears = []
         presentyears = next(os.walk(inpath))[1]
@@ -769,7 +769,7 @@ if __name__=="__main__":
 
         #print tasks
         #sys.exit()
-        print "> Executing..."
+        print("> Executing...")
         if nthreads > 1:
             pool = Pool(nthreads)
             pool.map(prepareCardsForControlRegion, tasks)
@@ -778,11 +778,11 @@ if __name__=="__main__":
         else:
             for tsk in tasks:
                 prepareCardsForControlRegion(tsk)
-        print "> Done!"
+        print("> Done!")
 
 
     elif   step == 0:
-        print "> Producing necessary initial histograms..."
+        print("> Producing necessary initial histograms...")
 
         theregs  = ["histos"]
         tasks    = []
@@ -810,9 +810,9 @@ if __name__=="__main__":
         #sys.exit()
         calculate = True
         #calculate = False
-        print "> Executing..."
+        print("> Executing...")
         for task in tasks:
-            print "    - Processing " + str(task)
+            print("    - Processing " + str(task))
 
             #if str(task) == "('2020-09-20', 'run2', 'Lep1Lep2_DPhi', True, 32, 'temp_2021_03_04_fitdiffconmasinternas/differential', 'histos', False, True, '', False, 'batch', 0, '')":
                 #calculate = True
@@ -822,7 +822,7 @@ if __name__=="__main__":
                 #sys.exit()
 
     elif step == 1:
-        print "> Creating function files..."
+        print("> Creating function files...")
         tasks = []
         theyears = []
         presentyears = next(os.walk(inpath))[1]
@@ -857,7 +857,7 @@ if __name__=="__main__":
                 tasks.append( (inpath, iY, iV) )
 
         #print tasks
-        print "> Executing..."
+        print("> Executing...")
         if nthreads > 1:
             pool = Pool(nthreads)
             pool.map(createFunctionFileForVariable, tasks)
@@ -881,9 +881,9 @@ if __name__=="__main__":
 
     elif step == 2:
         if not check:
-            print "> Preparing to submit the cards for the fit..."
+            print("> Preparing to submit the cards for the fit...")
         else:
-            print "> Preparing to check all the produced cards..."
+            print("> Preparing to check all the produced cards...")
 
         theregs  = ["forExtr"]
         tasks    = []
@@ -897,7 +897,7 @@ if __name__=="__main__":
         for reg in theregs:
             for yr in theyears:
                 listofuncsthataffecttheproc = []
-                for key,el in vl.ModifiedSystMap.iteritems():
+                for key,el in vl.ModifiedSystMap.items():
                     if yr != "run2":
                         skip = False
                         for y in ["2016", "2017", "2018"]:
@@ -928,14 +928,14 @@ if __name__=="__main__":
 
         if not check:
             if queue != "":
-                print "> Executing..."
+                print("> Executing...")
             else:
-                print "> Launching jobs..."
+                print("> Launching jobs...")
 
             calculate = True
             #calculate = False
             for task in tasks:
-                print "    - Processing " + str(task)
+                print("    - Processing " + str(task))
                 #if str(task) == "('2020-09-20', '2016', 'Lep1_Pt', True, 32, 'temp_2021_03_08_nuevoshistos/differential', 'forExtr', False, True, '', False, 'batch', 0, 'ttbar_scales_00Up')":
                     #calculate = True
 
@@ -944,17 +944,17 @@ if __name__=="__main__":
                     #sys.exit()
                     #calculate = False
         else:
-            print "> Beginning the checks on produced cards..."
+            print("> Beginning the checks on produced cards...")
             taskstoredo = []
             for task in tasks:
                 if not CheckProducedCardsByTask(task):
                     taskstoredo.append(task)
 
             if not len(taskstoredo):
-                print "> Everything is ok!"
+                print("> Everything is ok!")
             else:
-                print "> The following cards should be remade:"
-                for el in taskstoredo: print el
+                print("> The following cards should be remade:")
+                for el in taskstoredo: print(el)
 
                 if vl.confirm("\n> Do you want to redo these cards?"):
                     for el in taskstoredo: ExecuteOrSubmitTask(el)
@@ -962,7 +962,7 @@ if __name__=="__main__":
 
 
     else:
-        print "> Producing final cards..."
+        print("> Producing final cards...")
         tasks = []
         theyears = []
         presentyears = next(os.walk(inpath))[1]
@@ -1007,7 +1007,7 @@ if __name__=="__main__":
         #print tasks
         #for el in tasks: print el
         #sys.exit()
-        print "> Executing..."
+        print("> Executing...")
         if nthreads > 1:
             pool = Pool(nthreads)
             pool.map(createCardsForEachSys, tasks)
@@ -1016,4 +1016,4 @@ if __name__=="__main__":
         else:
             for tsk in tasks:
                 createCardsForEachSys(tsk)
-        print "> Done!"
+        print("> Done!")

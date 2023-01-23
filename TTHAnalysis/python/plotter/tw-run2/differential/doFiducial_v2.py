@@ -6,11 +6,11 @@ from multiprocessing import Pool
 from array import array
 
 sys.path.append('{cmsswpath}/src/CMGTools/TTHAnalysis/python/plotter/tw-run2/differential/'.format(cmsswpath = os.environ['CMSSW_BASE']))
-import beautifulUnfoldingPlots as bp
-import errorPropagator as ep
-import getLaTeXtable as tex
-import varList as vl
-import tdrstyle, CMS_lumi
+from . import beautifulUnfoldingPlots as bp
+from . import errorPropagator as ep
+from . import getLaTeXtable as tex
+from . import varList as vl
+from . import tdrstyle, CMS_lumi
 
 vl.SetUpWarnings()
 r.gROOT.SetBatch(True)
@@ -106,7 +106,7 @@ def calculateNormalisedValues(inpath, iY, iV):
             #     dirvar[key.GetName()].SetBinContent(iB, dirvar[key.GetName()].GetBinContent(iB) + dirvar[key.GetName()].GetBinError(iB) if "Up" in key.GetName() else dirvar[key.GetName()].GetBinContent(iB) - dirvar[key.GetName()].GetBinError(iB))
     covmatdict = {}
     # sys.exit()
-    for key,histo in dirvar.iteritems():
+    for key,histo in dirvar.items():
         #print key, "CovMat_" + key.replace(iV + "_", "").replace(iV, "").replace("Up", "").replace("Down", "") if ("total" not in key and key != iV) else "CovMat"
         tmph = deepcopy(histo.Clone("tmpvar_" + key))
         for iB in range(1, histo.GetNbinsX() + 1):
@@ -305,7 +305,7 @@ def drawANormalisedCovMat(finalmat, inpath, iY, var):
 
 #### POR BIN Y NORMALIZAOS
 def PlotParticleFidBinLevelResults(thedict, inpath, iY, varName, covmatnorm):
-    print "> Obtaining plots normalised to fiducial cross section and to bin's width for variable " + varName
+    print("> Obtaining plots normalised to fiducial cross section and to bin's width for variable " + varName)
     plotspath  = inpath + "/" + iY + "/particlefidbinplots"
     folderpath = inpath + "/" + iY + "/" + varName
 
@@ -319,7 +319,7 @@ def PlotParticleFidBinLevelResults(thedict, inpath, iY, varName, covmatnorm):
 
     addRelUncs = False
     if os.path.isdir(folderpath + "/sigextr_fit_combine/relativeuncs"):
-        print "\t- Found relative uncertainty results. I'll plot them."
+        print("\t- Found relative uncertainty results. I'll plot them.")
         addRelUncs = True
         # indRelUncs = {}; gloRelUncs = {}
         # for iB in range(1, thedict[""].GetNbinsX() + 1):

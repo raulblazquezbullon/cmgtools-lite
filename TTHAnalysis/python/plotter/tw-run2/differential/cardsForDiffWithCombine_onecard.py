@@ -6,7 +6,7 @@ from copy import deepcopy
 from multiprocessing import Pool
 
 sys.path.append('{cmsswpath}/src/CMGTools/TTHAnalysis/python/plotter/tw-run2/differential/'.format(cmsswpath = os.environ['CMSSW_BASE']))
-import varList as vl
+from . import varList as vl
 
 r.gROOT.SetBatch(True)
 vl.SetUpWarnings()
@@ -46,7 +46,7 @@ def ExecuteOrSubmitTask(tsk):
     prod, year, variable, asimov, nthreads, outpath, noUnc, useFibre, extra, pretend, queue = tsk
     if queue == "":
         thecomm = CardsCommand(prod, year, variable, asimov, nthreads, outpath, noUnc, useFibre, extra)
-        print "Command: " + thecomm
+        print("Command: " + thecomm)
 
         if not pretend:
             os.system(thecomm)
@@ -61,7 +61,7 @@ def ExecuteOrSubmitTask(tsk):
                                     logpath = logpath.format(p = prod, y = yr),
                                     command = CardsCommand(prod, year, variable, asimov, nthreads, outpath, noUnc, useFibre, extra))
 
-        print "Command: " + thecomm
+        print("Command: " + thecomm)
         if not pretend:
             os.system(thecomm)
 
@@ -343,15 +343,15 @@ def CheckProducedCardsByTask(task):
     #print chkpath
 
     if not os.path.isfile(chkpath):                                 #### 1st: existance
-        print "# Card {chk} has not been found.".format(chk = ch)
+        print("# Card {chk} has not been found.".format(chk = ch))
         return False
     elif os.path.getsize(chkpath) <= minchunkbytes:                 #### 2nd: size
-        print "# Card {chk} has less size than the minimum.".format(chk = ch)
+        print("# Card {chk} has less size than the minimum.".format(chk = ch))
         return False
     else:
         fch = r.TFile.Open(chkpath, "READ")
         if not fch:                                                 #### 3rd: ROOT access (corruption)
-            print "# Card {chk} cannot be accessed: it is corrupted.".format(chk = ch)
+            print("# Card {chk} cannot be accessed: it is corrupted.".format(chk = ch))
             return False
 
         fch.Close(); del fch
@@ -361,7 +361,7 @@ def CheckProducedCardsByTask(task):
 
 def createCardsForEachSys(tsk):
     inpath, iY, iV = tsk
-    print "    - Creating individual cards for variable " + iV + " of year " + iY
+    print("    - Creating individual cards for variable " + iV + " of year " + iY)
 
     path = inpath + "/" + iY + "/" + iV + "/sigextr_fit_combine/bincards"
 
@@ -445,7 +445,7 @@ def createCardsForEachSys(tsk):
         outF.write(outtext)
         outF.close()
 
-        print "    - Creating new rootfile card for bin", iB
+        print("    - Creating new rootfile card for bin", iB)
         therootfile = r.TFile.Open(rootfiletoopen.format(b = iB), "READ")
         tmpdictofthings = {}
         copyname = ""; theproc = ""
@@ -538,9 +538,9 @@ if __name__=="__main__":
 
     if step == 0:
         if not check:
-            print "> Preparing to submit the cards for the fit..."
+            print("> Preparing to submit the cards for the fit...")
         else:
-            print "> Preparing to check all the produced cards..."
+            print("> Preparing to check all the produced cards...")
 
         tasks    = []
 
@@ -557,7 +557,7 @@ if __name__=="__main__":
 
         for yr in theyears:
             listofuncsthataffecttheproc = []
-            for key,el in vl.ModifiedSystMap.iteritems():
+            for key,el in vl.ModifiedSystMap.items():
                 if yr != "run2":
                     skip = False
                     for y in ["2016", "2017", "2018"]:
@@ -582,14 +582,14 @@ if __name__=="__main__":
 
         if not check:
             if queue != "":
-                print "> Executing..."
+                print("> Executing...")
             else:
-                print "> Launching jobs..."
+                print("> Launching jobs...")
 
             calculate = True
    #         calculate = False
             for task in tasks:
-                print "    - Processing " + str(task)
+                print("    - Processing " + str(task))
   #              if str(task) == "('2021-06-09', 'run2', 'Lep1_Pt', True, 64, 'temp_2021_06_29_tolosplots/differential/', False, True, '', True, '', 0)":
                     #print "OJOCUIDAOOOOOOOOOOOOOO"
                     #continue
@@ -601,17 +601,17 @@ if __name__=="__main__":
                     #calculate = False
 
         else:
-            print "> Beginning the checks on produced cards..."
+            print("> Beginning the checks on produced cards...")
             taskstoredo = []
             for task in tasks:
                 if not CheckProducedCardsByTask(task):
                     taskstoredo.append(task)
 
             if not len(taskstoredo):
-                print "> Everything is ok!"
+                print("> Everything is ok!")
             else:
-                print "> The following cards should be remade:"
-                for el in taskstoredo: print el
+                print("> The following cards should be remade:")
+                for el in taskstoredo: print(el)
 
                 if vl.confirm("\n> Do you want to redo these cards?"):
                     for el in taskstoredo: ExecuteOrSubmitTask(el)

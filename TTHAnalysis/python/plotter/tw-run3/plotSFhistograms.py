@@ -135,7 +135,7 @@ f_eff.Close()
 
 def plotSFhisto(tsk):
     thehisto, outfolder, outname, xtitle, ytitle = tsk
-    print "\n> Plotting " + thehisto.GetName()
+    print("\n> Plotting " + thehisto.GetName())
 
     tdrstyle.setTDRStyle()
     thehisto.SetStats(False)
@@ -170,7 +170,7 @@ def plotSFhisto(tsk):
 
 def plotBtagSFhisto(tsk):
     thedict, outfolder, outname, xtitle, ytitle, year = tsk
-    print "\n> Plotting btagging SF"
+    print("\n> Plotting btagging SF")
 
     thehisto   = thedict["B"][year][""]
     thehistoup = thedict["B"][year]["up"]
@@ -306,7 +306,7 @@ def getTasks(outdir):
             os.system("mkdir -p " + outdir + "/" + str(y))
         # Lepton
         for ty in ["e", "m"]:
-            for iH,theH in SFdict["lepton"][ty][y].iteritems():
+            for iH,theH in SFdict["lepton"][ty][y].items():
                 if any([subel in iH for subel in ["stat", "syst"]]): continue
                 alltasks.append( (theH,
                                   outdir + "/" + str(y),

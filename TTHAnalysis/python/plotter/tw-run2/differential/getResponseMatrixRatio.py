@@ -2,8 +2,8 @@ import ROOT as r
 from copy import deepcopy
 import os, sys
 sys.path.append('{cmsswpath}/src/CMGTools/TTHAnalysis/python/plotter/tw-run2/differential/'.format(cmsswpath = os.environ['CMSSW_BASE']))
-import varList as vl
-import CMS_lumi, tdrstyle
+from . import varList as vl
+from . import CMS_lumi, tdrstyle
 
 r.gROOT.SetBatch(True)
 tmpfil     = "temp_2022_06_13_diffentera/differential"

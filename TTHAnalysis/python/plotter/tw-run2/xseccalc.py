@@ -52,25 +52,25 @@ sigmadn_sep     = (sigmastat_sep**2 + sigmasystdn_sep**2 + sigmalumi_sep**2)**(1
 
 # ========================================================
 # Comprobacion incs separadas y juntas
-print "\n COMPROBACIÓN: total vs. suma cuadrática de stat, lumi y syst (en absoluto)"
-print "Total arriba: \t" + str(muup) + ", total sumado arriba: \t" + str(totup)
-print "Total abajo: \t"  + str(mudn) + ", total sumado abajo: \t"  + str(totdn)
+print("\n COMPROBACIÓN: total vs. suma cuadrática de stat, lumi y syst (en absoluto)")
+print("Total arriba: \t" + str(muup) + ", total sumado arriba: \t" + str(totup))
+print("Total abajo: \t"  + str(mudn) + ", total sumado abajo: \t"  + str(totdn))
 
 
-print "\n Fuerza de señal - Resultados absolutos"
-print "mu = " + str(mu) + " +\t" + str(muup) + "\t- " + str(mudn)
-print "mu = " + str(mu) + " +-\t" + str(mustat) + " (stat.)\t+ " + str(musystup) + " - " + str(musystdn) + " (syst.) +- " + str(mulumi) + " (lumi.)"
+print("\n Fuerza de señal - Resultados absolutos")
+print("mu = " + str(mu) + " +\t" + str(muup) + "\t- " + str(mudn))
+print("mu = " + str(mu) + " +-\t" + str(mustat) + " (stat.)\t+ " + str(musystup) + " - " + str(musystdn) + " (syst.) +- " + str(mulumi) + " (lumi.)")
 
-print "\n Fuerza de señal - Resultados relativos"
-print "mu = " + str(mu) + " +\t" + str(round(muup_rel*100, 4)) + "% \t- " + str(round(mudn_rel*100, 4)) + " %"
-print "mu = " + str(mu) + " +-\t" + str(round(mustat_rel*100, 4)) + "% (stat.)\t+ " + str(round(musystup_rel*100, 4)) + " - " + str(round(musystdn_rel*100, 4)) + "% (syst.) +- " + str(round(mulumi_rel*100, 4)) + "% (lumi.)"
+print("\n Fuerza de señal - Resultados relativos")
+print("mu = " + str(mu) + " +\t" + str(round(muup_rel*100, 4)) + "% \t- " + str(round(mudn_rel*100, 4)) + " %")
+print("mu = " + str(mu) + " +-\t" + str(round(mustat_rel*100, 4)) + "% (stat.)\t+ " + str(round(musystup_rel*100, 4)) + " - " + str(round(musystdn_rel*100, 4)) + "% (syst.) +- " + str(round(mulumi_rel*100, 4)) + "% (lumi.)")
 
-print "\n Sección eficaz - Resultados absolutos"
-print "sigma = " + str(round(sigma, 4)) + " +  "  + str(round(sigmaup, 4)) + " - " + str(round(sigmadn, 4)) + " pb"
-print "sigma = " + str(round(sigma, 4)) + " +- " + str(round(sigmastat, 4)) + " (stat.)\t+ " + str(round(sigmasystup, 4)) + " - " + str(round(sigmasystdn, 4)) + " (syst.) +- " + str(round(sigmalumi, 4)) + " (lumi.) pb"
+print("\n Sección eficaz - Resultados absolutos")
+print("sigma = " + str(round(sigma, 4)) + " +  "  + str(round(sigmaup, 4)) + " - " + str(round(sigmadn, 4)) + " pb")
+print("sigma = " + str(round(sigma, 4)) + " +- " + str(round(sigmastat, 4)) + " (stat.)\t+ " + str(round(sigmasystup, 4)) + " - " + str(round(sigmasystdn, 4)) + " (syst.) +- " + str(round(sigmalumi, 4)) + " (lumi.) pb")
 
-print "\n COMPROBACIÓN: resultados finales redondeando a cifras significativas siguiendo la guía de estilo de CMS, suma cuadrática, y su relativo"
-print "sigma = " + str(sigma_tot) + " +  "  + str(sigmaup_tot) + " - " + str(sigmadn_tot) + " pb; + " + str(sigmaup_tot/sigma_tot*100) + " - " + str(sigmadn_tot/sigma_tot*100) + " %" 
+print("\n COMPROBACIÓN: resultados finales redondeando a cifras significativas siguiendo la guía de estilo de CMS, suma cuadrática, y su relativo")
+print("sigma = " + str(sigma_tot) + " +  "  + str(sigmaup_tot) + " - " + str(sigmadn_tot) + " pb; + " + str(sigmaup_tot/sigma_tot*100) + " - " + str(sigmadn_tot/sigma_tot*100) + " %") 
 #print "sigma = " + str(sigma_sep) + " +- " + str(sigmastat_sep) + " (stat.)\t+ " + str(sigmasystup_sep) + " - " + str(sigmasystdn_sep) + " (syst.) +- " + str(sigmalumi_sep) + " (lumi.) pb; + " + str(sigmaup_sep) + " - " + str(sigmadn_sep) + " pb; + " + str(sigmaup_sep/sigma_sep*100) + " - " + str(sigmadn_sep/sigma_sep*100) + " %"
-print "sigma = " + str(sigma_sep) + " +- " + str(sigmastat_sep) + " (stat.)\t+ " + str(sigmasystup_sep) + " - " + str(sigmasystdn_sep) + " (syst.) +- " + str(sigmalumi_sep) + " (lumi.) pb; + " + str(sigmaup_sep/sigma_sep*100) + " - " + str(sigmadn_sep/sigma_sep*100) + " %"
+print("sigma = " + str(sigma_sep) + " +- " + str(sigmastat_sep) + " (stat.)\t+ " + str(sigmasystup_sep) + " - " + str(sigmasystdn_sep) + " (syst.) +- " + str(sigmalumi_sep) + " (lumi.) pb; + " + str(sigmaup_sep/sigma_sep*100) + " - " + str(sigmadn_sep/sigma_sep*100) + " %")
 

@@ -415,7 +415,7 @@ def getFitUncsLaTeXtable(path = "./", inname = "outputfit_all.txt", outname = "u
         infodict[key]["down"] = infodict[key]["down"] * 100 / infodict[""]["val"]
         infodict[key]["ave"]  = infodict[key]["ave"]  * 100 / infodict[""]["val"]
 
-    print infodict
+    print(infodict)
     #sys.exit()
 
     ndec = 1
@@ -453,7 +453,7 @@ def getFitUncsLaTeXtable(path = "./", inname = "outputfit_all.txt", outname = "u
     finallatextab = finallatextab.replace(substr, "".join(["l|"] + ["c|" for x in range(len(headers) - 2)] + ["c"] ))
 
 
-    print finallatextab
+    print(finallatextab)
 
     outfile = open(path + "/" + outname + ".tex", "w")
     outfile.write(finallatextab)

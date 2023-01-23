@@ -7,10 +7,10 @@ from scipy.stats import chisquare, chi2
 from scipy.linalg import eigh
 
 sys.path.append('{cmsswpath}/src/CMGTools/TTHAnalysis/python/plotter/tw-run2/differential/'.format(cmsswpath = os.environ['CMSSW_BASE']))
-import beautifulUnfoldingPlots as bp
-import errorPropagator as ep
-import getLaTeXtable as tex
-import varList as vl
+from . import beautifulUnfoldingPlots as bp
+from . import errorPropagator as ep
+from . import getLaTeXtable as tex
+from . import varList as vl
 
 r.gROOT.SetBatch(True)
 vl.SetUpWarnings()
@@ -93,7 +93,7 @@ def Chi2TestForMultivarNormal(w1, V1, w2, V2):
     #print cambmat
 
     if min(vals) < 1e-14:
-        print "WARNING: singular matrix. Removing affected rows/cols."
+        print("WARNING: singular matrix. Removing affected rows/cols.")
         icambmat = np.linalg.inv(cambmat)
         V1 = icambmat.dot(V1).dot(cambmat)
         V1 = np.where(V1 < 1e-14, 0., V1)
@@ -124,7 +124,7 @@ def Chi2TestForMultivarNormal(w1, V1, w2, V2):
     
     #print np.linalg.cond(V1), np.linalg.cond(V2)
     if np.linalg.cond(V1) > 1e5:
-        print "WARNING: condition number of data's covariance matrix high ({cd}). It might be non-invertible!".format(cd = np.linalg.cond(V1))
+        print("WARNING: condition number of data's covariance matrix high ({cd}). It might be non-invertible!".format(cd = np.linalg.cond(V1)))
 
     invV1 = np.linalg.inv(V1); invV2 = np.linalg.inv(V2)
     #invV1 = V1; invV2 = np.linalg.inv(V2)
@@ -150,7 +150,7 @@ def Chi2TestForMultivarNormal(w1, V1, w2, V2):
 def GiveMeMyGoodGOFTests(tsk):
     inpath, iY, var, ty = tsk
     pathtothings = inpath + "/" + iY + "/" + var
-    print "\n====== Performing tests for variable", var, "and with type", ty, "\n"
+    print("\n====== Performing tests for variable", var, "and with type", ty, "\n")
     if   ty == "particle":
         f1 = r.TFile.Open(pathtothings + "/particleOutput.root",        "read")
     elif ty == "particlefidbin":
@@ -341,12 +341,12 @@ def GiveMeMyGoodGOFTests(tsk):
     outtxt += "Variable: {vr} \n".format(vr = var)
     outtxt += "=========================================\n"
     
-    print "\n"
+    print("\n")
     for key in ["DR", "DS", "Herwig", "aMC_dr", "aMC_dr2", "aMC_ds", "aMC_ds_runn"]:
         outtxt += key + " / p-value: "        + str(coses[key]["p-value"])   + "\n"
         outtxt += key + " / test statistic: " + str(coses[key]["statistic"]) + "\n"
-        print key + ' - p-val.:', coses[key]["p-value"]
-        print key + ' - stat.:',  coses[key]["statistic"]
+        print(key + ' - p-val.:', coses[key]["p-value"])
+        print(key + ' - stat.:',  coses[key]["statistic"])
 
     outfile.write(outtxt)
     outfile.close(); del outfile;
@@ -412,7 +412,7 @@ if __name__ == "__main__":
             GiveMeMyGoodGOFTests(tsk)
 
     if year == "all" or year == "run2":
-        print "\nCreating LaTeX table with all the information...\n"
+        print("\nCreating LaTeX table with all the information...\n")
 
         tex.getgoftestsLaTeXtable(vl.varList["Names"]["Variables"],
                                   inpath + "/run2/tables/",

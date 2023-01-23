@@ -56,11 +56,11 @@ def GeneralExecutioner(task):
                                     jobname = jobname_,
                                     logpath = logpath.format(y = year, p = prod),
                                     command = CardsCommand(prod, year, variable, bines, asimov, nthreads, outpath, region, noUnc, useFibre, extra))
-        print "Command:", submitcomm
+        print("Command:", submitcomm)
         if not pretend: os.system(submitcomm)
     else:
         execcomm = CardsCommand(prod, year, variable, bines, asimov, nthreads, outpath, region, noUnc, useFibre, extra)
-        print "Command:", execcomm
+        print("Command:", execcomm)
         if not pretend: os.system(execcomm)
 
 
@@ -79,7 +79,7 @@ def confirm(message = "Do you wish to continue?"):
     """
     answer = ""
     while answer not in ["y", "n", "yes", "no"]:
-        answer = raw_input(message + " [Y/N]\n").lower()
+        answer = input(message + " [Y/N]\n").lower()
     return answer[0] == "y"
 
 
@@ -131,7 +131,7 @@ def ExecuteOrSubmitTask(tsk):
 
     if queue == "":
         thecomm = CardsCommand(prod, year, variable, bines, asimov, nthreads, outpath, region, noUnc, useFibre, extra)
-        print "Command: " + thecomm
+        print("Command: " + thecomm)
 
         if not pretend:
             os.system(thecomm)
@@ -146,7 +146,7 @@ def ExecuteOrSubmitTask(tsk):
                                     logpath = logpath.format(p = prod, y = yr),
                                     command = CardsCommand(prod, year, variable, bines, asimov, nthreads, outpath, region, noUnc, useFibre, extra))
 
-        print "Command: " + thecomm
+        print("Command: " + thecomm)
 
         if not pretend:
             os.system(thecomm)
@@ -276,7 +276,7 @@ if __name__ == "__main__":
     #print tasks
     calculate = True
     for task in tasks:
-        print "\nProcessing " + str(task) + "\n"
+        print("\nProcessing " + str(task) + "\n")
 
         if calculate:
             ExecuteOrSubmitTask(task)

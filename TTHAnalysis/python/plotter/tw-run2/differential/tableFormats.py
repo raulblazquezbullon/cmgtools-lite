@@ -6,9 +6,8 @@
 from prettytable import PrettyTable
 import abc
 
-class TableString(object):
+class TableString(object, metaclass=abc.ABCMeta):
     """Metaclass for formatted table strings."""
-    __metaclass__ = abc.ABCMeta
 
     @abc.abstractmethod
     def __unicode__(self): return
@@ -73,13 +72,13 @@ if __name__ == "__main__":
     t = PrettyTable(['a','b','c'])
     t.add_row([1,2.0,3.14159])
     xt = latexTable(t)
-    print '1. Simply print the table:\n'
-    print xt
-    print '\n2. Use get_string method:\n'
-    print xt.get_string()
-    print '\n3. Format floats to two decimal points: (KNOWN ISSUE)\n'
-    print xt.get_string(float_format='0.2')
-    print '\n4. Workaround to format floats:\n'
+    print('1. Simply print the table:\n')
+    print(xt)
+    print('\n2. Use get_string method:\n')
+    print(xt.get_string())
+    print('\n3. Format floats to two decimal points: (KNOWN ISSUE)\n')
+    print(xt.get_string(float_format='0.2'))
+    print('\n4. Workaround to format floats:\n')
     t.float_format = '0.2'
     xt2 = latexTable(t,caption='Floats are formatted to have two decimal places',label='tab:test2')
-    print xt2
+    print(xt2)

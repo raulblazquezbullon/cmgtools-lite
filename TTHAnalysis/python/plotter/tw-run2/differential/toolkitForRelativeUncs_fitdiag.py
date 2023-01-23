@@ -2,9 +2,9 @@ from copy import deepcopy
 import os, sys, argparse
 
 sys.path.append('{cmsswpath}/src/CMGTools/TTHAnalysis/python/plotter/tw-run2/differential/'.format(cmsswpath = os.environ['CMSSW_BASE']))
-import beautifulUnfoldingPlots as bp
-import errorPropagator as ep
-import varList as vl
+from . import beautifulUnfoldingPlots as bp
+from . import errorPropagator as ep
+from . import varList as vl
 from multiprocessing import Pool
 
 #basecommand = 'combineTool.py -M MultiDimFit {algosettings} --setParameters {setpars} --rMin 0 --rMax 2 --floatOtherPOIs=1 -m 125 --split-points 1 --saveInactivePOI 1 {parallel} {queue} {extra} --robustFit 1 --cminDefaultMinimizerStrategy 0 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000'
@@ -351,7 +351,7 @@ def doMeThisFitPlease(task):
                                                                                                             o    = outpath),
                                     minmaxlist   = ":".join([el + "=0,3" for el in pois]),
                                     )
-        print "\nCommand:", thecomm
+        print("\nCommand:", thecomm)
         if not pretend:
             os.system(thecomm)
             os.system("mv higgsCombine{u}.FitDiagnostics.mH125.root ".format(u = gr) + outpath + "/")
@@ -544,7 +544,7 @@ if __name__ == "__main__":
         for tsk in tasks:
             calculateRelativeUncertainties(tsk)
     """
-    print tasks
+    print(tasks)
 
     for tsk in tasks:
         calculateRelativeUncertainties(tsk)

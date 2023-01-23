@@ -147,13 +147,13 @@ class ttHCoreEventAnalyzer( Analyzer ):
             return 
         mht = getattr(event,self.mhtForBiasedDPhi)
 
-	biasedDPhi = 10;
+        biasedDPhi = 10;
         for jet in jets:
-	    newPhi = atan2(mht.py()+jet.py(), mht.px()+jet.px())
-	    biasedDPhiTemp = abs(deltaPhi(newPhi,jet.phi()))
-	    if biasedDPhiTemp < biasedDPhi:
-		biasedDPhi = biasedDPhiTemp
-		biasedDPhiJet = jet
+            newPhi = atan2(mht.py()+jet.py(), mht.px()+jet.px())
+            biasedDPhiTemp = abs(deltaPhi(newPhi,jet.phi()))
+            if biasedDPhiTemp < biasedDPhi:
+                biasedDPhi = biasedDPhiTemp
+                biasedDPhiJet = jet
             pass
 
         event.biasedDPhi = biasedDPhi
@@ -399,7 +399,7 @@ class ttHCoreEventAnalyzer( Analyzer ):
                 lep.mvaValueSUSY     = self.leptonMVASUSY(lep)
                 if self.doLeptonMVASoft:
                     if not (hasattr(lep,'AbsIsoMIVCharged04') and hasattr(lep,'isoSumRawP4Charged04')):
-                        raise RuntimeError, 'Soft lepton MVA needs AbsIsoMIVCharged04 and isoSumRawP4Charged04 calculated for leptons'
+                        raise RuntimeError('Soft lepton MVA needs AbsIsoMIVCharged04 and isoSumRawP4Charged04 calculated for leptons')
                     lep.mvaValueSoftT2tt     = self.leptonMVASoftT2tt(lep)
                     lep.mvaValueSoftEWK     = self.leptonMVASoftEWK(lep)
         for lep in event.inclusiveLeptons:
@@ -409,7 +409,7 @@ class ttHCoreEventAnalyzer( Analyzer ):
                     lep.mvaValueSUSY     = self.leptonMVASUSY(lep)
                     if self.doLeptonMVASoft:
                         if not (hasattr(lep,'AbsIsoMIVCharged04') and hasattr(lep,'isoSumRawP4Charged04')):
-                            raise RuntimeError, 'Soft lepton MVA needs AbsIsoMIVCharged04 and isoSumRawP4Charged04 calculated for leptons'
+                            raise RuntimeError('Soft lepton MVA needs AbsIsoMIVCharged04 and isoSumRawP4Charged04 calculated for leptons')
                         lep.mvaValueSoftT2tt     = self.leptonMVASoftT2tt(lep)
                         lep.mvaValueSoftEWK     = self.leptonMVASoftEWK(lep)
 

@@ -8,7 +8,7 @@ import CombineHarvester.CombineTools.plotting as plot
 import CombineHarvester.CombineTools.combine.rounding as rounding
 
 sys.path.append('{cmsswpath}/src/CMGTools/TTHAnalysis/python/plotter/tw-run2/differential/'.format(cmsswpath = os.environ['CMSSW_BASE']))
-import varList as vl
+from . import varList as vl
 
 r.PyConfig.IgnoreCommandLineOptions = True
 r.TH1.AddDirectory(0)
@@ -86,9 +86,9 @@ def plotImpacts(inputjson, outputname, outputpath, npois, doBlind):
     # Delete stat. nuis.?
     if doEraseStatNuis:
         for p in data['params']: 
-            print p
+            print(p)
             if p['name'].startswith('prop_binch'): 
-                print 'deleting', p
+                print('deleting', p)
                 data['params'].remove(p)
     
     # Set the number of parameters per page (show) and the number of pages (n)
@@ -107,23 +107,23 @@ def plotImpacts(inputjson, outputname, outputpath, npois, doBlind):
 
     seen_types = set()
 
-    for name, col in vl.nuisanceColours.iteritems():
+    for name, col in vl.nuisanceColours.items():
         colour_hists[name] = r.TH1F()
         plot.Set(colour_hists[name], FillColor = col, Title = name)
 
     if colour_groups is not None:
-        for name, col in colour_groups.iteritems():
+        for name, col in colour_groups.items():
             colour_group_hists[name] = r.TH1F()
             plot.Set(colour_group_hists[name], FillColor = col, Title = name)
 
-    for page in xrange(n):
+    for page in range(n):
         canv     = r.TCanvas(outputname, outputname)
         n_params = len(data['params'][show * page:show * (page + 1)])
         pdata    = data['params'][show * page:show * (page + 1)]
-        print '\t- Doing page %i, have %i parameters' % (page, n_params)
+        print('\t- Doing page %i, have %i parameters' % (page, n_params))
 
         boxes = []
-        for i in xrange(n_params):
+        for i in range(n_params):
             y1 = r.gStyle.GetPadBottomMargin()
             y2 = 1. - r.gStyle.GetPadTopMargin()
             h  = (y2 - y1) / float(n_params)
@@ -164,9 +164,9 @@ def plotImpacts(inputjson, outputname, outputpath, npois, doBlind):
         
         text_entries = []
         redo_boxes   = []
-        print "\t- Beginning parameter analysis"
+        print("\t- Beginning parameter analysis")
         #### Pulls
-        for p in xrange(n_params):
+        for p in range(n_params):
             i   = n_params - (p + 1)
             pre = pdata[p]['prefit']
             fit = pdata[p]['fit']
@@ -272,7 +272,7 @@ def plotImpacts(inputjson, outputname, outputpath, npois, doBlind):
                      LabelSize  = 0, 
                      TickLength = 0.0)
             h_impacts_list[-1].Draw()
-        print len(pads)
+        print(len(pads))
 
         # Back to the first pad to draw the pulls graph
         pads[0].cd()
@@ -307,14 +307,14 @@ def plotImpacts(inputjson, outputname, outputpath, npois, doBlind):
         if colour_groups is not None:
             legend2 = r.TLegend(0.01, 0.94, leg_width, 0.99, '', 'NBNDC')
             legend2.SetNColumns(2)
-            for name, h in colour_group_hists.iteritems():
+            for name, h in colour_group_hists.items():
 #                legend2.AddEntry(h, vl.SysNameTranslator[name], 'F')
                 legend2.AddEntry(h, name, 'F')
             legend2.Draw()
         elif len(seen_types) > 1:
             legend2 = r.TLegend(0.01, 0.94, leg_width, 0.99, '', 'NBNDC')
             legend2.SetNColumns(2)
-            for name, h in colour_hists.iteritems():
+            for name, h in colour_hists.items():
                 if name == 'Unrecognised': continue
                 legend2.AddEntry(h, name, 'F')
             legend2.Draw()
@@ -346,7 +346,7 @@ def plotImpacts(inputjson, outputname, outputpath, npois, doBlind):
 def makeImpacts(task):
     inpath, year, varName, ncores, pretend, verbose, extra, doobs, doblind = task
 
-    print '\n> Creating impacts for variable', varName, 'from year', year, '\n'
+    print('\n> Creating impacts for variable', varName, 'from year', year, '\n')
     bins_detector = vl.varList[varName]['bins_detector']
     ndetectorbins   = len(bins_detector) - 1
     bins_particle = vl.varList[varName]['bins_particle']
@@ -376,7 +376,7 @@ def makeImpacts(task):
     )
 
     if verbose:
-        print "First command:", firstcomm, "\n"
+        print("First command:", firstcomm, "\n")
 
     if not pretend:
         outstat = os.system("cd " + impactsoutpath + "; " + firstcomm + "; cd -")
@@ -396,7 +396,7 @@ def makeImpacts(task):
     )
 
     if verbose:
-        print "Second command:", secondcomm, "\n"
+        print("Second command:", secondcomm, "\n")
 
     if not pretend:
         outstat = os.system("cd " + impactsoutpath + "; " + secondcomm + "; cd -")
@@ -416,7 +416,7 @@ def makeImpacts(task):
     )
 
     if verbose:
-        print "Third command:", thirdcomm, "\n"
+        print("Third command:", thirdcomm, "\n")
 
     if not pretend:
         outstat = os.system("cd " + impactsoutpath + "; " + thirdcomm + "; cd -")
@@ -427,7 +427,7 @@ def makeImpacts(task):
     
     plotImpacts(impactsoutpath + "/impacts{y}_{v}.json".format(y = year, v = varName), "impacts_{y}_{v}".format(y = year, v = varName), impactsoutpath, nparticlebins, doblind)
     
-    print '\n> Variable', varName, "' impacts produced.\n"
+    print('\n> Variable', varName, "' impacts produced.\n")
     return
 
 
@@ -435,7 +435,7 @@ def makeImpacts(task):
 if __name__ == '__main__':
     vl.SetUpWarnings()
     r.gROOT.SetBatch(True)
-    print "===== Fitting procedure with some uncertainty profiling\n"
+    print("===== Fitting procedure with some uncertainty profiling\n")
     parser = argparse.ArgumentParser(usage = "python nanoAOD_checker.py [options]", description = "Checker tool for the outputs of nanoAOD production (NOT postprocessing)", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('--inpath',     '-i', metavar = 'inpath',     dest = "inpath",   required = False, default = "./temp/differential/")
     parser.add_argument('--year',       '-y', metavar = 'year',       dest = "year",     required = False, default = "all")
@@ -499,5 +499,5 @@ if __name__ == '__main__':
 
     #print tasks
     for task in tasks:
-        print "\nProcessing " + str(task) + "\n"
+        print("\nProcessing " + str(task) + "\n")
         makeImpacts(task)

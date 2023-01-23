@@ -13,6 +13,6 @@ m2 = f2.CovMat_fidbin
 for i in range(1, m1.GetNbinsX() + 1):
     for j in range(1, m1.GetNbinsX() + 1):
 #        print i, j, m1.GetBinContent(i, j), m2.GetBinContent(i, j)
-        print m1.GetBinContent(i, j) - m2.GetBinContent(i, j)
+        print(m1.GetBinContent(i, j) - m2.GetBinContent(i, j))
         
 f1.Close(); f2.Close();
