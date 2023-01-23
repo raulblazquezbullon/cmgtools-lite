@@ -69,12 +69,12 @@ def GeneralExecutioner(task):
                                         jobname = jobname_,
                                         logpath = logpath.format(y = year, p = prod),
                                         command = PlottingCommand(prod, year, nthreads, outpath, selplot, reg, ratiorange, extra, useFibre, doUncs))
-            print "Command:", submitcomm
+            print("Command:", submitcomm)
             if not pretend: os.system(submitcomm)
     else:
         for reg in region.split(","):
             execcomm = PlottingCommand(prod, year, nthreads, outpath, selplot, reg, ratiorange, extra, useFibre, doUncs)
-            print "Command:", execcomm
+            print("Command:", execcomm)
             if not pretend: os.system(execcomm)
 
 
@@ -160,7 +160,7 @@ def confirm(message = "Do you wish to continue?"):
     """
     answer = ""
     while answer not in ["y", "n", "yes", "no"]:
-        answer = raw_input(message + " [Y/N]\n").lower()
+        answer = input(message + " [Y/N]\n").lower()
     return answer[0] == "y"
 
 
@@ -206,7 +206,7 @@ if __name__=="__main__":
         SLcommscaff = "ln -s {realdataset} {symlink}"
 
         #### First, MC
-        print "> Creating MC symbolic links..."
+        print("> Creating MC symbolic links...")
         mcsampleslist = os.listdir(mcpath + "/" + str(year))
         for sam in mcsampleslist:
             if not os.path.islink(destdir + "/" + sam):
@@ -215,7 +215,7 @@ if __name__=="__main__":
         #sys.exit()
 
         #### Also, the ones from
-        print "> Creating MC divisions symbolic links..."
+        print("> Creating MC divisions symbolic links...")
         mcsampleslist = os.listdir(mcpathdiv + "/ttbar/" + str(year))
         for sam in mcsampleslist:
             if not os.path.islink(destdir + "/" + sam):
@@ -229,7 +229,7 @@ if __name__=="__main__":
                                                 #symlink = destdir + "/" + sam))
 
         #### Later, data
-        print "> Creating data symbolic links..."
+        print("> Creating data symbolic links...")
         datasampleslist = os.listdir(datapath + "/" + str(year))
         for sam in datasampleslist:
             isData = any(ext in sam for ext in datasamples)
@@ -237,11 +237,11 @@ if __name__=="__main__":
                 os.system(SLcommscaff.format(realdataset = datapath + "/" + str(year) + "/" + sam,
                                              symlink = destdir + "/" + sam))
 
-        print "> Finished!"
+        print("> Finished!")
     elif queue != "":
-        print "> Plotting jobs will be sent to the cluster."
+        print("> Plotting jobs will be sent to the cluster.")
         if year == "all":
-            print "   - All three years and the combination will be plotted."
+            print("   - All three years and the combination will be plotted.")
             cont = False
             if   pretend:
                 cont = True
@@ -261,9 +261,9 @@ if __name__=="__main__":
             if cont:
                 GeneralExecutioner( (prod, year, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend, useFibre, doUncs) )
     else:
-        print "> Local execution chosen."
+        print("> Local execution chosen.")
         if year == "all":
-            print "   - All three years and the combination will be plotted."
+            print("   - All three years and the combination will be plotted.")
             for y in ["2016", "2017", "2018", "run2"]:
                 GeneralExecutioner( (prod, y, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend, useFibre, doUncs) )
         else:

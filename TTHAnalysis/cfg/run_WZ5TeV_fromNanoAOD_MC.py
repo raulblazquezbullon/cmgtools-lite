@@ -54,7 +54,7 @@ for pd, trigs in DatasetsAndTriggers:
     vetoTriggers += trigs[:]
 
 selectedComponents = mcSamples + dataSamples
-print selectedComponents
+print(selectedComponents)
 if getHeppyOption('selectComponents'):
     if getHeppyOption('selectComponents')=='MC':
         selectedComponents = mcSamples
@@ -97,7 +97,7 @@ if preprocessor:
         preproc_mcv1 = nanoAODPreprocessor(cfg='%s/src/PhysicsTools/NanoAOD/test/%s_NANO.py'%(preproc_cmsswArea,"mc94Xv1"),cmsswArea=preproc_cmsswArea,keepOutput=True)
         for comp in selectedComponents:
             if comp.isMC and "Fall17MiniAODv2" not in comp.dataset:
-                print "Warning: %s is MiniAOD v1, dataset %s" % (comp.name, comp.dataset)
+                print("Warning: %s is MiniAOD v1, dataset %s" % (comp.name, comp.dataset))
                 comp.preprocessor = preproc_mcv1
     if getHeppyOption("fast"):
         for comp in selectedComponents:

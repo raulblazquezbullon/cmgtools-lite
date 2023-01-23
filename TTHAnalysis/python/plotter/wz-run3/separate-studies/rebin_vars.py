@@ -61,7 +61,7 @@ def add_parsing_options():
   ''' Add some parsing options '''
   parser = argparse.ArgumentParser()
   parser.add_argument("--nquant",    dest = "nquant")
-  parser.add_argument("--variables", dest = "variables", default = functional_variables.keys())
+  parser.add_argument("--variables", dest = "variables", default = list(functional_variables.keys()))
   parser.add_argument("--mode",      dest = "mode")
   parser.add_argument("--year",      dest = "year", default = "2016,2017,2018")
 
@@ -106,7 +106,7 @@ if __name__ == "__main__":
    # == Iterate over variables
    for var in variables:
      print("=======")
-     print("{}".format(var))
+     print(("{}".format(var)))
 
      # == Get the required variable defined within CMGTools
      var_to_comm = functional_variables[var]

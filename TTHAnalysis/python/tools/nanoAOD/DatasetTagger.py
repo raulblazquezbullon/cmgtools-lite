@@ -36,7 +36,7 @@ class datasetTagger( Module ):
         if self._tag == 0:
           self._xsec = getattr(component, 'xSection', None)
        
-        print("Tagging %s with tag: %d"%(compname, self._tag)) 
+        print(("Tagging %s with tag: %d"%(compname, self._tag))) 
         return True
 
 datasetTag = lambda : datasetTagger()

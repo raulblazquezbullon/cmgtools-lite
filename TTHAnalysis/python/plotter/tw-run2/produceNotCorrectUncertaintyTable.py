@@ -578,13 +578,13 @@ def getTheNotSoCorrectTable(tsk):
             )
 
             if not pretend: os.system("cd {path}; rm ./higgsCombine{g}_{p}.POINTS*; cd -".format(path = unctablepath + "/goodtable", p = poi, g = gr))
-            print "\nCommand:", "cd {p}; {cmd}; cd -".format(p = unctablepath + "/goodtable", cmd = thecomm)
+            print("\nCommand:", "cd {p}; {cmd}; cd -".format(p = unctablepath + "/goodtable", cmd = thecomm))
             if not pretend: os.system("cd {p}; {cmd}; cd -".format(p = unctablepath + "/goodtable", cmd = thecomm))
 
             tmpcomm = 'hadd -f higgsCombine{gp}.MultiDimFit.mH125.root higgsCombine{gp}.POINTS.*.MultiDimFit.mH125.root'.format(gp = gr + '_' + poi)
 
 
-            print "\nCommand:", "cd {p}; {cmd}; cd -".format(p = unctablepath + "/goodtable", cmd = tmpcomm)
+            print("\nCommand:", "cd {p}; {cmd}; cd -".format(p = unctablepath + "/goodtable", cmd = tmpcomm))
             if not pretend: os.system("cd {p}; {cmd}; cd -".format(p = unctablepath + "/goodtable", cmd = tmpcomm))
 
 
@@ -593,11 +593,11 @@ def getTheNotSoCorrectTable(tsk):
             p  = poi,
             l1 = ' '.join(fileList),
             l2 = ','.join(individual_list))
-        print "\nCommand:", "cd {p}; {cmd}; cd -".format(p = unctablepath + "/goodtable", cmd = thecomm)
+        print("\nCommand:", "cd {p}; {cmd}; cd -".format(p = unctablepath + "/goodtable", cmd = thecomm))
         if not pretend: os.system("cd {p}; {cmd}; cd -".format(p = unctablepath + "/goodtable", cmd = thecomm))
 
         thecomm2 = 'mv scan.pdf scan_{p}.pdf; mv scan.png scan_{p}.png; mv scan.root scan_{p}.root; mv outputfit.txt outputfit_{p}.txt'.format(p = poi)
-        print "\nCommand:", "cd {p}; {cmd}; cd -".format(p = unctablepath + "/goodtable", cmd = thecomm2)
+        print("\nCommand:", "cd {p}; {cmd}; cd -".format(p = unctablepath + "/goodtable", cmd = thecomm2))
         if not pretend: os.system("cd {p}; {cmd}; cd -".format(p = unctablepath + "/goodtable", cmd = thecomm2))
 
 

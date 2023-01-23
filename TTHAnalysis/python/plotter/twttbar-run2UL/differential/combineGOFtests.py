@@ -5,7 +5,7 @@ import ROOT as r
 r.PyConfig.IgnoreCommandLineOptions = True
 r.gROOT.SetBatch(True)
 sys.path.append('{cmsswpath}/src/CMGTools/TTHAnalysis/python/plotter/tw-run2/differential/'.format(cmsswpath = os.environ['CMSSW_BASE']))
-import varList as vl
+from . import varList as vl
 
 gofcomm = "combineTool.py -M GoodnessOfFit --expectSignal 1 {combcard} -n {y}_{r} --cminDefaultMinimizerStrategy 0 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --algo=saturated {preorpost} {tois} {nthreads} {queue}"
 
@@ -32,7 +32,7 @@ def doSomeToysForMePlease(tsk):
         preorpost = "--fixedSignalStrength=1" if not doPost else "--toysFreq") + "; " + "cd -"
 
     if verbose:
-        print "Toys GOF command:", comm, "\n"
+        print("Toys GOF command:", comm, "\n")
 
     if not pretend:
         outstat = os.system(comm)
@@ -62,7 +62,7 @@ def makeGOF(task):
                               queue     = "",
                               preorpost = "--fixedSignalStrength=1" if not doPost else "") + "; " + "cd -"
         if verbose:
-            print "Nominal GOF command:", comm, "\n"
+            print("Nominal GOF command:", comm, "\n")
 
         if not pretend:
             outstat = os.system(comm)
@@ -139,7 +139,7 @@ def makeGOF(task):
                                                                    command = comm) + "; " + "cd -"
 
             if verbose:
-                print "Nominal GOF command:", slcomm, "\n"
+                print("Nominal GOF command:", slcomm, "\n")
 
             if not pretend:
                 outstat = os.system(slcomm)
@@ -164,7 +164,7 @@ def makeGOF(task):
                                                                             logpath = "./slurmlogs",
                                                                             command = comm.format(i = i, ntois = 1)) + "; " + "cd -"
                     if verbose:
-                        print "Toys GOF command:", slcomm, "\n"
+                        print("Toys GOF command:", slcomm, "\n")
 
                     if not pretend:
                         outstat = os.system(slcomm)
@@ -179,7 +179,7 @@ def makeGOF(task):
                                                                             logpath = "./slurmlogs",
                                                                             command = comm.format(i = i, ntois = nToysPerChunk if i != nToyChunks - 1 else nToys - nToysPerChunk * (nToyChunks - 1))) + "; " + "cd -"
                     if verbose:
-                        print "Toys GOF command:", slcomm, "\n"
+                        print("Toys GOF command:", slcomm, "\n")
 
                     if not pretend:
                         outstat = os.system(slcomm)
@@ -204,7 +204,7 @@ def makeGOF(task):
                                                                    command = comm) + "; " + "cd -"
 
             if verbose:
-                print "Nominal GOF command:", slcomm, "\n"
+                print("Nominal GOF command:", slcomm, "\n")
 
             if not pretend:
                 outstat = os.system(slcomm)
@@ -227,7 +227,7 @@ def makeGOF(task):
                                     logpath = "./slurmlogs",
                                     command = comm) + "; " + "cd -"
             if verbose:
-                print "Toys GOF command:", slcomm, "\n"
+                print("Toys GOF command:", slcomm, "\n")
 
             if not pretend:
                 outstat = os.system(slcomm)
@@ -252,7 +252,7 @@ def makeGOFplot(task):
                                                            out    = "higgsCombine{y}_{r}_toy.GoodnessOfFit.mH120.root".format(y = year, r = thevar)) + "; " + "cd -"
 
         if verbose:
-            print "Merging command:", comm, "\n"
+            print("Merging command:", comm, "\n")
 
         if not pretend:
             outstat = os.system(comm)
@@ -367,7 +367,7 @@ if __name__ == "__main__":
                 tasks.append( (iY, iV, inpath, verbose, pretend, extra, gofpost, nthreads, nts, queue, extraslurm) )
 
         for task in tasks:
-            if verbose: print "\nProcessing " + str(task) + "\n"
+            if verbose: print("\nProcessing " + str(task) + "\n")
             makeGOF(task)
     else:
         for iY in theyears:
@@ -377,7 +377,7 @@ if __name__ == "__main__":
                 tasks.append( (iY, iV, inpath, verbose, pretend, extra, gofpost) )
 
         for task in tasks:
-            if verbose: print "\nProcessing " + str(task) + "\n"
+            if verbose: print("\nProcessing " + str(task) + "\n")
             makeGOFplot(task)
 
 

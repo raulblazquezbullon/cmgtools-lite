@@ -96,7 +96,7 @@ def base(selection):
         GO=GO.replace("--Fs {P}/2_eventVars_v2"," ")
         GO += " --binname ttbar "        
     else:
-        raise RuntimeError, 'Unknown selection'
+        raise RuntimeError('Unknown selection')
 
     return GO
 
@@ -109,13 +109,13 @@ def procs(GO,mylist):
 def sigprocs(GO,mylist):
     return procs(GO,mylist)+' --showIndivSigs --noStackSig'
 def runIt(GO,name,plots=[],noplots=[]):
-    print ''
+    print('')
     if dowhat == "plots":  
-        if not ('forcePlotChoice' in sys.argv[4:]): print submit.format(command=' '.join(['python mcPlots.py',"--pdir %s/%s"%(ODIR,name),GO,' '.join(['--sP %r'%p for p in plots]),' '.join(['--xP %r'%p for p in noplots]),' '.join(sys.argv[4:])]))
-        else: print 'python mcPlots.py',"--pdir %s/%s"%(ODIR,name),GO,' '.join([x for x in sys.argv[4:] if x!='forcePlotChoice'])
-    elif dowhat == "yields": print 'echo %s; python mcAnalysis.py'%name,GO,' '.join(sys.argv[4:])
-    elif dowhat == "dumps":  print 'echo %s; python mcDump.py'%name,GO,' '.join(sys.argv[4:])
-    elif dowhat == "ntuple": print 'echo %s; python mcNtuple.py'%name,GO,' '.join(sys.argv[4:])
+        if not ('forcePlotChoice' in sys.argv[4:]): print(submit.format(command=' '.join(['python mcPlots.py',"--pdir %s/%s"%(ODIR,name),GO,' '.join(['--sP %r'%p for p in plots]),' '.join(['--xP %r'%p for p in noplots]),' '.join(sys.argv[4:])])))
+        else: print('python mcPlots.py',"--pdir %s/%s"%(ODIR,name),GO,' '.join([x for x in sys.argv[4:] if x!='forcePlotChoice']))
+    elif dowhat == "yields": print('echo %s; python mcAnalysis.py'%name,GO,' '.join(sys.argv[4:]))
+    elif dowhat == "dumps":  print('echo %s; python mcDump.py'%name,GO,' '.join(sys.argv[4:]))
+    elif dowhat == "ntuple": print('echo %s; python mcNtuple.py'%name,GO,' '.join(sys.argv[4:]))
 
 
 def add(GO,opt):

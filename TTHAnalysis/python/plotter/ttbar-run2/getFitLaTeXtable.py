@@ -404,7 +404,7 @@ def getFitUncsLaTeXtable(path = "./temp/cards/uncstable", inname = "outputfit.tx
         infodict[key]["down"] = infodict[key]["down"] * 100
         infodict[key]["ave"]  = infodict[key]["ave"]  * 100
 
-    print infodict
+    print(infodict)
     #sys.exit()
 
     ndec = 1
@@ -442,7 +442,7 @@ def getFitUncsLaTeXtable(path = "./temp/cards/uncstable", inname = "outputfit.tx
     finallatextab = finallatextab.replace(substr, "".join(["l|"] + ["c|" for x in range(len(headers) - 2)] + ["c"] ))
 
 
-    print finallatextab
+    print(finallatextab)
 
     outfile = open(path + "/" + outname + ".tex", "w")
     outfile.write(finallatextab)

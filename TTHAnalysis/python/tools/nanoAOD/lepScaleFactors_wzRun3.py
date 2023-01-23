@@ -58,7 +58,7 @@ class lepScaleFactors_wzrun3(Module):
       self.sfs[name]           = 1
       self.sfs[name + "_Up"]   = 1 
       self.sfs[name + "_Down"] = 1 
-      for delta,sys in self.systsLepEn.iteritems():
+      for delta,sys in self.systsLepEn.items():
           self.sfs[name  + "_%s"%sys] = 1
           self.sfs[name  + "_%s"%sys] = 1
       
@@ -81,7 +81,7 @@ class lepScaleFactors_wzrun3(Module):
     nleps = len(leps)
     
     self.event = event
-    print(" ---- Event: %d"%event.event)
+    print((" ---- Event: %d"%event.event))
     self.nmuons = 0
     self.nelectrons = 0
     for ilep, lep in enumerate(leps):
@@ -109,9 +109,9 @@ class lepScaleFactors_wzrun3(Module):
     #print("event: %s"%self.event.event)
     #print("nelectrons: %d"%self.nelectrons)
     #print("nmuons: %d"%self.nmuons)
-    for sfname, sf in self.sfs.iteritems():
+    for sfname, sf in self.sfs.items():
       if sfname == "muonSF" or sfname == "electronSF":
-        print("\t>> Writing %s SF which has a value of %s (Up: %s, Dn: %s)"%(sfname, sf, self.sfs[sfname+"_Up"], self.sfs[sfname+"_Down"] ))
+        print(("\t>> Writing %s SF which has a value of %s (Up: %s, Dn: %s)"%(sfname, sf, self.sfs[sfname+"_Up"], self.sfs[sfname+"_Down"] )))
       self.out.fillBranch(sfname, sf)        
     return
   
@@ -164,7 +164,7 @@ class lepScaleFactors_wzrun3(Module):
     self.sfs[name]           *= tot_sf
     self.sfs[name + "_Up"]   *= tot_sf*(1 + math.sqrt(variation_totsf))
     self.sfs[name + "_Down"] *= tot_sf*(1 - math.sqrt(variation_totsf))
-    print("%s total var: %s"%(flav, math.sqrt(variation_totsf)))
+    print(("%s total var: %s"%(flav, math.sqrt(variation_totsf))))
    # self.sfs[name + "_Up"]   *= tot_sf+math.sqrt(variation_totsf)
    # self.sfs[name + "_Down"] *= tot_sf-math.sqrt(variation_totsf)         
     return
@@ -230,13 +230,13 @@ class lepScaleFactors_wzrun3(Module):
   def printSummary(self):
     print(" [lepScaleFactors_wzRun3::summary] --- SUMMARY ")
     for flav in ["muon", "electron"]:
-      print(" -- %s scale factors:"%flav)
+      print((" -- %s scale factors:"%flav))
       for typesf in self.files[flav]:
         histo = self.files[flav][typesf]["hist"]
-        print("   >> Type: %s \n\t* file: %s"%(typesf, self.files[flav][typesf]["file"].format(year = self.year)))
-        print("\t* nominal histo:  %s"%histo)   
+        print(("   >> Type: %s \n\t* file: %s"%(typesf, self.files[flav][typesf]["file"].format(year = self.year))))
+        print(("\t* nominal histo:  %s"%histo))   
         for unc in self.files[flav][typesf]["unc"]:
-          print("\t* %s unc histo: %s"%(unc, histo+"_%s"%unc ))   
+          print(("\t* %s unc histo: %s"%(unc, histo+"_%s"%unc )))   
     return
   
   def beginFile(self, inputFile, outputFile, inputTree, wrappedOutputTree):
@@ -261,7 +261,7 @@ class lepScaleFactors_wzrun3(Module):
           self.out.branch("%sSF_%s_%sDown"%(lep, typesf, unctype), 'F') 
                     
         # -- Now for the lepton energy variatons 
-        for delta,sys in self.systsLepEn.iteritems():
+        for delta,sys in self.systsLepEn.items():
           self.out.branch('%sSF_%s_'  + sys, 'F')
           self.out.branch('%sSF_%s_'  + sys, 'F')
       

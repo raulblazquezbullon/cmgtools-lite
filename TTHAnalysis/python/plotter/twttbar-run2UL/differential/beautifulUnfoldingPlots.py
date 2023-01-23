@@ -1,7 +1,7 @@
 import ROOT  as r
-import tdrstyle, CMS_lumi
+from . import tdrstyle, CMS_lumi
 import copy
-import varList as vl
+from . import varList as vl
 ###############################################################################
 
 CMS_lumi.writeExtraText = 1
@@ -152,7 +152,7 @@ class beautifulUnfPlot:
                 asymhisto.GetXaxis().SetTitle(' ')
                 
             if self.yaxisuplimit != 0: asymhisto.GetYaxis().SetRangeUser(0, self.yaxisuplimit)
-            print '> Drawing an asym.-unc. histogram with the following options:', options
+            print('> Drawing an asym.-unc. histogram with the following options:', options)
             asymhisto.Draw(options)
             self.objectsInLeg.append( (asymhisto, name, legOptions, idname) )
             if redrawaxis: asymhisto.Draw("axis,same")
@@ -181,7 +181,7 @@ class beautifulUnfPlot:
             histo.GetXaxis().SetLabelFont(43)
             histo.GetXaxis().SetLabelSize(13 if self.isLCurve else 22)
             histo.GetXaxis().SetLabelOffset(0.033 if self.isLCurve else 0.007)
-            histo.GetXaxis().SetNdivisions(010 if self.isLCurve else 510, True* ("DPhi" not in self.var))
+            histo.GetXaxis().SetNdivisions(0o10 if self.isLCurve else 510, True* ("DPhi" not in self.var))
             #histo.GetXaxis().SetNdivisions(010 if self.isLCurve else 505, False)
             
             histo.GetYaxis().SetTitleFont(43)
@@ -220,7 +220,7 @@ class beautifulUnfPlot:
                 histo.GetXaxis().SetLabelSize(0)
                 histo.GetXaxis().SetTitle(' ')
             
-            print '> Drawing a sym.-unc. histogram with the following options:', options
+            print('> Drawing a sym.-unc. histogram with the following options:', options)
             
             histo.Draw(options)
             if 'comp' in name and 'reg' in name: histo.Draw("axis,same")
@@ -363,7 +363,7 @@ class beautifulUnfPlot:
         # Draw ratio if needed
         if self.doRatio:
             woUnc = False
-            print '> Plotting ratio between prediction(s) and results'
+            print('> Plotting ratio between prediction(s) and results')
             if 'data' not in [it[3] for it in self.objectsInLeg]: raise RuntimeError('There is not data to make a ratio plot as demanded.')
             if [it[3] for it in self.objectsInLeg].count('data') > 1: raise RuntimeError('There are more than one data histograms attached: multiple ratios are not implemented.')
             #if 'mc' not in [it[3] for it in self.objectsInLeg]: raise RuntimeError('There is not (at least) one prediction to make a ratio plot as demanded.')
@@ -547,7 +547,7 @@ class beautifulUnfPlot:
         # Draw ratio if needed
         if self.doRatio:
             woUnc = False
-            print '> Plotting ratio between prediction(s) and results'
+            print('> Plotting ratio between prediction(s) and results')
             if 'data' not in [it[3] for it in self.objectsInLeg]: raise RuntimeError('There is not data to make a ratio plot as demanded.')
             if [it[3] for it in self.objectsInLeg].count('data') > 1: raise RuntimeError('There are more than one data histograms attached: multiple ratios are not implemented.')
             #if 'mc' not in [it[3] for it in self.objectsInLeg]: raise RuntimeError('There is not (at least) one prediction to make a ratio plot as demanded.')

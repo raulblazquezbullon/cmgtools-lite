@@ -5,10 +5,10 @@ from copy import deepcopy
 from multiprocessing import Pool
 
 sys.path.append('{cmsswpath}/src/CMGTools/TTHAnalysis/python/plotter/tw-run2/differential/'.format(cmsswpath = os.environ['CMSSW_BASE']))
-import errorPropagator as ep
-import beautifulUnfoldingPlots as bp
-import varList as vl
-import getLaTeXtable as tex
+from . import errorPropagator as ep
+from . import beautifulUnfoldingPlots as bp
+from . import varList as vl
+from . import getLaTeXtable as tex
 
 r.gROOT.SetBatch(True)
 
@@ -125,7 +125,7 @@ def PlotDetectorLevelResults(inpath, iY, iV, thedict):
     if "legpos_detector" in vl.varList[iV]: legloc = vl.varList[iV]["legpos_detector"]
     else:                                   legloc = "TR"
 
-    print '> Adding generated distribution with used software and others.'
+    print('> Adding generated distribution with used software and others.')
     #if not os.path.isfile(inpath + "/" + iY + "/" + iV + "/detector.root"):
     if not os.path.isfile(inpath + "/" + iY + "/" + iV + "/forExtr.root"):
         raise RuntimeError('The rootfile with the generated information does not exist')

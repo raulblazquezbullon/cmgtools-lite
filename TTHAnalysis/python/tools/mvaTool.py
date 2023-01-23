@@ -26,13 +26,13 @@ class MVATool:
         self.vars  = vars
         self.specs = specs
         self.nClasses = nClasses
-        print "> Initialising variables"
+        print("> Initialising variables")
         for s in specs: self.reader.AddSpectator(s.name,s.var)
         for v in vars:  self.reader.AddVariable(v.name,v.var)
-        print "> Loading %s from %s" % (name,xml)
+        print("> Loading %s from %s" % (name,xml))
         self.reader.BookMVA(name,xml)
         self.rarity = rarity
-        if self.rarity and self.nClasses!=1: raise RuntimeError, 'not implemented'
+        if self.rarity and self.nClasses!=1: raise RuntimeError('not implemented')
 
 
     def __call__(self,ev): 

@@ -203,7 +203,7 @@ btagWeights_2022 = lambda : btag_weighterRun3(btagpath + "/" + "wp_deepCSV_106XU
                                             splitCorrelations = True,
                                             year = "2022")
 
-scalefactors = [lepscalefactors, btagWeights_2022]
+scalefactors = [lepscalefactors]#, btagWeights_2022]
 
 # ---------------------------------------------------------------------------------------------------------------------------- #
 ### To be implemented

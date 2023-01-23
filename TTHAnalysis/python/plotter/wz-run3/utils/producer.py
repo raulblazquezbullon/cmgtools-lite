@@ -6,11 +6,11 @@ import os,sys
 class producer(object):
   # -- Friend tree modules 
   modules = { 
-    1 : ["jmeUncertainties"   , "mc"],
-    2 : ["leptonJetRecleaning", "simple"],
-    3 : ["leptonBuilder"      , "simple"],
-    4 : ["triggerSequence"    , "simple"],
-    5 : ["scalefactors"       , "mc"],
+    1 : ["jmeUncertainties_v2"   , "mc"],
+    2 : ["leptonJetRecleaning_v2", "simple"],
+    3 : ["leptonBuilder_v2"      , "simple"],
+    4 : ["triggerSequence_v2"    , "simple"],
+    5 : ["scalefactors_v2"       , "mc"],
   }
 
   weights = ["muonSF*electronSF*bTagWeight"]
@@ -29,11 +29,13 @@ class producer(object):
 
   def summarize(self):
     ''' Method to show a summary of the given options '''
-    print(" >> %s will run with the following options"%self.name) 
+    print((" >> %s will run with the following options"%self.name)) 
     opts = vars(self.opts)
     
     for opt in opts:
-      print("  * %s : %s"%(opt, getattr(self, opt)))
+      if opt == "extra" : continue # Plot this at the end 
+      print(("  * %s : %s"%(opt, getattr(self, opt))))
+    print("  * extra : %s"%(getattr(self, "extra")))
     print(" >> Command below:")
     return
  
@@ -73,6 +75,7 @@ class producer(object):
         setattr(self, opt, defaults.defaults[self.name][opt])
       else:
         setattr(self, opt, vars(self.opts)[opt])
+    
     return
 
   def run(self):
@@ -81,7 +84,7 @@ class producer(object):
 
   def add_friends(self):
     friendtxt = ""
-    modulekeys = self.modules.keys()
+    modulekeys = list(self.modules.keys())
     for key in modulekeys:
       modulename = self.modules[key][0]
       moduletype = self.modules[key][1]

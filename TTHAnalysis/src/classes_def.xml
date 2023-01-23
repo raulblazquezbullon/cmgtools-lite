@@ -6,5 +6,4 @@
     <class name="CollectionSkimmer" transient="true" />
     <class name="CombinedObjectTags" transient="true" />
     <class name="CombinedObjectTagsTopRun2" transient="true" />
-    <class name="TensorFlowInterface" transient="true" />
 </lcgdict>

@@ -27,7 +27,7 @@ def confirm(message = "Do you wish to continue?"):
     """
     answer = ""
     while answer not in ["y", "n", "yes", "no"]:
-        answer = raw_input(message + " [Y/N]\n").lower()
+        answer = input(message + " [Y/N]\n").lower()
     return answer[0] == "y"
 
 
@@ -60,15 +60,15 @@ def reviewThePreviousStepsFiles(thefolder, nth, verbose):
             theres.append(checkNfits(tsk))
 
     if any(theres[:][0]):
-        print "\n#######################################\nERROR!!\n#######################################\n\nOne or more fits to calculate the impacts have failed. In particular, the following parameters (either nuisances or POI) have one or more failed fits."
+        print("\n#######################################\nERROR!!\n#######################################\n\nOne or more fits to calculate the impacts have failed. In particular, the following parameters (either nuisances or POI) have one or more failed fits.")
         for el in theres:
-            if el[0]: print "\t- " + "_".join(el[1].replace("higgsCombine_", "").replace("paramFit_", "").replace("initialFit_", "").replace(".MultiDimFit.mH1.root", "").split("_")[2:])
+            if el[0]: print("\t- " + "_".join(el[1].replace("higgsCombine_", "").replace("paramFit_", "").replace("initialFit_", "").replace(".MultiDimFit.mH1.root", "").split("_")[2:]))
 
-        print ""
+        print("")
         if not confirm("Do you want to, in any case, create the impacts? Please, take into account that the nuisance or POI that has one or more failed fits will NOT be present in the impacts' plot."):
             sys.exit()
     elif verbose:
-        print "\t- No failed fits!"
+        print("\t- No failed fits!")
 
     return
 
@@ -78,7 +78,7 @@ def reviewThePreviousStepsFiles(thefolder, nth, verbose):
 def makeImpacts(task):
     inpath, year, region, ncores, pretend, verbose, extra, doobs, doBlind = task
 
-    print '\n> Creating impacts for region(s)', region, 'from year', year, '\n'
+    print('\n> Creating impacts for region(s)', region, 'from year', year, '\n')
     
     impactsoutpath = inpath + "/" + iY + "/" + ("Obs" * doObs) + "Impacts_" + region
 
@@ -86,12 +86,12 @@ def makeImpacts(task):
         physicsModel = 'text2workspace.py -m 125 {infile} -o {outfile}'.format(infile  = inpath + "/" + iY + "/{r}/cuts-tw-{r}.txt".format(r = region),
                                                                                outfile = inpath + "/" + iY + "/{r}/cuts-tw-{r}_ws.root".format(r = region),)
         if verbose:
-            print "Text2Workspace command:", physicsModel, "\n"
+            print("Text2Workspace command:", physicsModel, "\n")
 
         if not pretend:
             if os.path.isfile(inpath + "/" + iY + "/{r}/cuts-tw-{r}_ws.root".format(r = region)):
                 if verbose:
-                    print "    - Erasing old workspace..."
+                    print("    - Erasing old workspace...")
                 os.system("rm " + inpath + "/" + iY + "/{r}/cuts-tw-{r}_ws.root".format(r = region))
             outstat = os.system(physicsModel)
             if outstat:
@@ -107,7 +107,7 @@ def makeImpacts(task):
     )
 
     if verbose:
-        print "\nFirst command:", firstcomm, "\n"
+        print("\nFirst command:", firstcomm, "\n")
 
     if not pretend:
         outstat = os.system("cd " + impactsoutpath + "; " + firstcomm + "; cd -")
@@ -125,7 +125,7 @@ def makeImpacts(task):
     )
 
     if verbose:
-        print "\nSecond command:", secondcomm, "\n"
+        print("\nSecond command:", secondcomm, "\n")
     
     if not pretend:
         outstat = os.system("cd " + impactsoutpath + "; " + secondcomm + "; cd -")
@@ -143,14 +143,14 @@ def makeImpacts(task):
     )
 
     if verbose and not pretend:
-        print "\nChecking whether any fit might have failed."
+        print("\nChecking whether any fit might have failed.")
 
     if not pretend:
         reviewThePreviousStepsFiles(impactsoutpath, ncores if ncores else 1, verbose)
 
 
     if verbose:
-        print "\nThird command:", thirdcomm, "\n"
+        print("\nThird command:", thirdcomm, "\n")
     
     if not pretend:
         outstat = os.system("cd " + impactsoutpath + "; " + thirdcomm + "; cd -")
@@ -168,7 +168,7 @@ def makeImpacts(task):
     )
 
     if verbose:
-        print "Fourth command:", fourthcomm, "\n"
+        print("Fourth command:", fourthcomm, "\n")
 
     if not pretend:
         outstat = os.system("cd " + impactsoutpath + "; " + fourthcomm + "; cd -")
@@ -177,7 +177,7 @@ def makeImpacts(task):
                                                                                                             y = year))
                            
     
-    print '\n> Region(s)', region, "' impacts produced.\n"
+    print('\n> Region(s)', region, "' impacts produced.\n")
     return
 
 
@@ -185,7 +185,7 @@ def makeImpacts(task):
 if __name__ == '__main__':
 #    vl.SetUpWarnings()
     r.gROOT.SetBatch(True)
-    print "===== Fitting procedure with some uncertainty profiling\n"
+    print("===== Fitting procedure with some uncertainty profiling\n")
     parser = argparse.ArgumentParser(usage = "python nanoAOD_checker.py [options]", description = "Checker tool for the outputs of nanoAOD production (NOT postprocessing)", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('--inpath',     '-i', metavar = 'inpath',     dest = "inpath",   required = False, default = "./temp/differential/")
     parser.add_argument('--year',       '-y', metavar = 'year',       dest = "year",     required = False, default = "all")
@@ -238,5 +238,5 @@ if __name__ == '__main__':
 
     #print tasks
     for task in tasks:
-        print "\nProcessing " + str(task) + "\n"
+        print("\nProcessing " + str(task) + "\n")
         makeImpacts(task)

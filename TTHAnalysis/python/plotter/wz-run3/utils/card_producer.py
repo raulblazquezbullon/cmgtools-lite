@@ -1,10 +1,10 @@
-from producer import producer
+from .producer import producer
 from utils.ftree_producer import ftree_producer
 from cfgs.lumi import lumis
 
 class card_producer(producer):
   name = "card_producer"
-  basecommand = "python makeShapeCards_wzRun3.py"
+  basecommand = "python3 makeShapeCards_wzRun3.py"
   functions = ["wz-run3/functionsWZ.cc"]
   jobname = "CMGCard"
 

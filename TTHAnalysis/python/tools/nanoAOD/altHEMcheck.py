@@ -60,7 +60,7 @@ class altHEMcheck(Module):
 
         all_jets = [j for j in Collection(event, "Jet")]
         jets    = [all_jets[getattr(event, 'iJetSel30_Recl')[j]]
-                   for j in xrange(min([getattr(event, 'nJetSel30_Recl'), 5]))]
+                   for j in range(min([getattr(event, 'nJetSel30_Recl'), 5]))]
                    
         jets_4m = [j.p4() for j in jets]
 

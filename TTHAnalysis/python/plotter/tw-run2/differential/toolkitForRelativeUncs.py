@@ -2,9 +2,9 @@ from copy import deepcopy
 import os, sys, argparse
 
 sys.path.append('{cmsswpath}/src/CMGTools/TTHAnalysis/python/plotter/tw-run2/differential/'.format(cmsswpath = os.environ['CMSSW_BASE']))
-import beautifulUnfoldingPlots as bp
-import errorPropagator as ep
-import varList as vl
+from . import beautifulUnfoldingPlots as bp
+from . import errorPropagator as ep
+from . import varList as vl
 
 individual_list = ['fsr','pileup','dy_norm','colour','jes','matching','ttbar_norm','elec','nonworz_norm','btag','ue','toppt','tw_scales',
                    'vvttv_norm','mc_stat','isr','ttbar_scales','lumi','pdf','mistag','ds','jer','trigger','prefiring','muon','mtop']
@@ -295,11 +295,11 @@ def calculateRelativeUncertainties(task):
                                             )
             if not pretend: os.system("cd {path}; rm ./higgsCombinenominal_{p}.POINTS*; cd -".format(path = reluncpath + "/nominal", p = poi))
 
-            print "\nCommand:", "cd {p}; {cmd}; cd -".format(p = reluncpath + "/nominal", cmd = nomcomm)
+            print("\nCommand:", "cd {p}; {cmd}; cd -".format(p = reluncpath + "/nominal", cmd = nomcomm))
             if not pretend: os.system("cd {p}; {cmd}; cd -".format(p = reluncpath + "/nominal", cmd = nomcomm))
 
             nomcomm  = 'hadd -f higgsCombinenominal_{p}.MultiDimFit.mH125.root higgsCombinenominal_{p}.POINTS.*.MultiDimFit.mH125.root'.format(p = poi)
-            print "\nCommand:", "cd {p}; {cmd}; cd -".format(p = reluncpath + "/nominal", cmd = nomcomm)
+            print("\nCommand:", "cd {p}; {cmd}; cd -".format(p = reluncpath + "/nominal", cmd = nomcomm))
             if not pretend: os.system("cd {p}; {cmd}; cd -".format(p = reluncpath + "/nominal", cmd = nomcomm))
 
         # bestfit_POI
@@ -313,7 +313,7 @@ def calculateRelativeUncertainties(task):
                                             extra      = '-n bestfit_{p} --saveWorkspace {card} -P {p}'.format(p = poi, card = thecard),
                                             minmaxlist   = ":".join([el + "=0,3" for el in POIs])
                                          )
-            print "\nCommand:", "cd {p}; {cmd}; cd -".format(p = reluncpath + "/nominal", cmd = gridcomm)
+            print("\nCommand:", "cd {p}; {cmd}; cd -".format(p = reluncpath + "/nominal", cmd = gridcomm))
             if not pretend: os.system("cd {p}; {cmd}; cd -".format(p = reluncpath + "/nominal", cmd = gridcomm))
 
     # sys.exit()
@@ -384,13 +384,13 @@ def calculateRelativeUncertainties(task):
                 )
 
                 if not pretend: os.system("cd {path}; rm ./higgsCombine{g}_{p}.POINTS*; cd -".format(path = reluncpath + "/global", p = poi, g = gr))
-                print "\nCommand:", "cd {p}; {cmd}; cd -".format(p = reluncpath + "/global", cmd = thecomm)
+                print("\nCommand:", "cd {p}; {cmd}; cd -".format(p = reluncpath + "/global", cmd = thecomm))
                 if not pretend: os.system("cd {p}; {cmd}; cd -".format(p = reluncpath + "/global", cmd = thecomm))
 
                 tmpcomm = 'hadd -f higgsCombine{gp}.MultiDimFit.mH125.root higgsCombine{gp}.POINTS.*.MultiDimFit.mH125.root'.format(gp = gr + '_' + poi)
 
 
-                print "\nCommand:", "cd {p}; {cmd}; cd -".format(p = reluncpath + "/global", cmd = tmpcomm)
+                print("\nCommand:", "cd {p}; {cmd}; cd -".format(p = reluncpath + "/global", cmd = tmpcomm))
                 if not pretend: os.system("cd {p}; {cmd}; cd -".format(p = reluncpath + "/global", cmd = tmpcomm))
 
 
@@ -399,11 +399,11 @@ def calculateRelativeUncertainties(task):
                 p  = poi,
                 l1 = ' '.join(fileList),
                 l2 = ','.join(global_list))
-            print "\nCommand:", "cd {p}; {cmd}; cd -".format(p = reluncpath + "/global", cmd = thecomm)
+            print("\nCommand:", "cd {p}; {cmd}; cd -".format(p = reluncpath + "/global", cmd = thecomm))
             if not pretend: os.system("cd {p}; {cmd}; cd -".format(p = reluncpath + "/global", cmd = thecomm))
 
             thecomm2 = 'mv scan.pdf scan_{p}.pdf; mv scan.png scan_{p}.png; mv scan.root scan_{p}.root; mv outputfit.txt outputfit_{p}.txt'.format(p = poi)
-            print "\nCommand:", "cd {p}; {cmd}; cd -".format(p = reluncpath + "/global", cmd = thecomm2)
+            print("\nCommand:", "cd {p}; {cmd}; cd -".format(p = reluncpath + "/global", cmd = thecomm2))
             if not pretend: os.system("cd {p}; {cmd}; cd -".format(p = reluncpath + "/global", cmd = thecomm2))
     
     """

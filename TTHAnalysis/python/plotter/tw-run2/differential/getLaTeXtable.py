@@ -7,8 +7,8 @@ import sys, os, argparse
 from collections import OrderedDict
 
 sys.path.append('{cmsswpath}/src/CMGTools/TTHAnalysis/python/plotter/tw-run2/differential/'.format(cmsswpath = os.environ['CMSSW_BASE']))
-import varList as vl
-from tableFormats import latexTable
+from . import varList as vl
+from .tableFormats import latexTable
 r.gROOT.SetBatch(True)
 
 
@@ -355,7 +355,7 @@ def getgoftestsLaTeXtable(variables, path = "./results/tables", txttablespath = 
 
     substr = "".join(["c"] + ["c" for x in range(len(variables))])
     thetab = thetab.replace(substr, "".join(["l|"] + ["c|" for x in range(len(variables) - 1)] + ["c|"] ))
-    print thetab
+    print(thetab)
     #sys.exit()
 
 
@@ -422,13 +422,13 @@ if __name__ == "__main__":
 
 
     if thetype == "condnumtable":
-        print "> Producing LaTeX tables for the condition numbers"
+        print("> Producing LaTeX tables for the condition numbers")
         thefunc = "getcondnumLaTeXtable"
 
         for tsk in tasks:
             eval(thefunc + "(tsk[0], tsk[1])")
 
-print "> Done!"
+print("> Done!")
 
 
 

@@ -57,11 +57,11 @@ else:
        report = mca.getPlotsRaw("x", args[2], args[3], cuts.allCuts(), nodata=options.asimov, closeTreeAfter=True)
 
     if not options.notminimumfill:
-        for p,h in report.iteritems(): h.cropNegativeBins(threshold = options.minbincont)
+        for p,h in report.items(): h.cropNegativeBins(threshold = options.minbincont)
 
 if options.savefile:
     savefile = ROOT.TFile(outdir + binname + ".bare.root", "recreate")
-    for k,h in report.iteritems(): 
+    for k,h in report.items(): 
         h.writeToFile(savefile, takeOwnership = False)
     savefile.Close()
 
@@ -88,7 +88,7 @@ if options.categ:
     catlabels = options.categ[2].split(",")
     if len(catlabels) != report["data_obs"].GetNbinsY(): raise RuntimeError("Mismatch between category labels and bins")
     for ic,lab in enumerate(catlabels):
-        allreports["%s_%s"%(binname,lab)] = dict( (k, h.projectionX("x_"+k,ic+1,ic+1)) for (k,h) in report.iteritems() )
+        allreports["%s_%s"%(binname,lab)] = dict( (k, h.projectionX("x_"+k,ic+1,ic+1)) for (k,h) in report.items() )
 elif options.categ_ranges: 
     allreports = dict()
     catlabels = options.categ_ranges[1].split(',')
@@ -96,7 +96,7 @@ elif options.categ_ranges:
     
     for ic,lab in enumerate(catlabels):
         kk = {} 
-        for (k,h) in report.iteritems(): 
+        for (k,h) in report.items(): 
             kk[k] = h.getHistoInRange( "x_"+k, catbinning[ic],catbinning[ic+1])
         allreports["%s_%s"%(binname,lab)] = kk
 else:
@@ -119,30 +119,30 @@ if options.filter:
 
 
 #### Processing
-for binname, report in allreports.iteritems():
+for binname, report in allreports.items():
     if options.bbb:
         if options.autoMCStats: raise RuntimeError("Can't use --bbb together with --amc/--autoMCStats")
-        for p,h in report.iteritems():
+        for p,h in report.items():
             if p not in ("data", "data_obs"):
                 h.addBinByBin(namePattern = "%s_%s_%s_bin{bin}" % (options.bbb, binname, p), conservativePruning = True)
     if not options.cropnegativeuncs:
-        for p,h in report.iteritems():
-            for b in xrange(1, h.GetNbinsX() + 1):
+        for p,h in report.items():
+            for b in range(1, h.GetNbinsX() + 1):
                 h.SetBinError(b, min(h.GetBinContent(b), h.GetBinError(b))) # crop all uncertainties to 100% to avoid negative variations
     nuisances = sorted(listAllNuisances(report))
 
-    allyields = dict([(p,h.Integral()) for p,h in report.iteritems()])
+    allyields = dict([(p,h.Integral()) for p,h in report.items()])
     procs = []; iproc = {}
     for i,s in enumerate(mca.listSignals()):
         if s not in allyields: continue
         if allyields[s] <= options.threshold:
-            print "Dropping", s, "for low yields"
+            print("Dropping", s, "for low yields")
             continue
         procs.append(s); iproc[s] = i-len(mca.listSignals()) + 1
     for i,b in enumerate(mca.listBackgrounds()):
         if b not in allyields: continue
         if allyields[b] <= options.threshold:
-            print "Dropping", s, "for low yields"
+            print("Dropping", s, "for low yields")
             continue
         procs.append(b); iproc[b] = i+1
     #for p in procs: print "%-10s %10.4f" % (p, allyields[p])
@@ -151,7 +151,7 @@ for binname, report in allreports.iteritems():
     for name in nuisances:
         effshape = {}
         isShape = False
-        print nuisances
+        print(nuisances)
         if name in forcedshape:
             isShape = True
 
@@ -189,7 +189,7 @@ for binname, report in allreports.iteritems():
         else:
             effyield = dict((p, "-") for p in procs)
             isNorm = False
-            for p,(hup,hdn) in effshape.iteritems():
+            for p,(hup,hdn) in effshape.items():
                 i0 = allyields[p]
                 kup, kdn = hup.Integral()/i0, hdn.Integral()/i0
                 if abs(kup*kdn-1)<1e-5 or abs(kdn-1)<5e-4:
@@ -221,7 +221,7 @@ for binname, report in allreports.iteritems():
     klen = max([7, len(binname)]+[len(p) for p in procs])
     kpatt = " %%%ds "  % klen
     fpatt = " %%%d.%df " % (klen,3)
-    npatt = "%%-%ds " % max([len('process')]+map(len,nuisances))
+    npatt = "%%-%ds " % max([len('process')]+list(map(len,nuisances)))
     datacard.write('##----------------------------------\n')
     datacard.write((npatt % 'bin    ')+(" "*6)+(" ".join([kpatt % binname  for p in procs]))+"\n")
     datacard.write((npatt % 'process')+(" "*6)+(" ".join([kpatt % p        for p in procs]))+"\n")
@@ -232,7 +232,7 @@ for binname, report in allreports.iteritems():
     for name in nuisances:
         (kind,effmap,effshape) = systs[name]
         datacard.write(('%s %5s' % (npatt % name,kind)) + " ".join([kpatt % effmap[p]  for p in procs]) +"\n")
-        for p,(hup,hdn) in effshape.iteritems():
+        for p,(hup,hdn) in effshape.items():
             towrite.append(hup.Clone("x_%s_%sUp"   % (p,name)))
             towrite.append(hdn.Clone("x_%s_%sDown" % (p,name)))
     if options.autoMCStats:
@@ -244,5 +244,5 @@ for binname, report in allreports.iteritems():
         workspace.WriteTObject(h,h.GetName())
     workspace.Close()
 
-    print "Wrote to {0}.txt and {0}.root .".format(outdir+binname)
+    print("Wrote to {0}.txt and {0}.root .".format(outdir+binname))
 

@@ -31,8 +31,8 @@ class MVA_tWRun2_pruebas(Module):
                 self.systsLepEn[-(i+1)] = "_%sDown"%var
 
 
-        for delta,sys in self.systsJEC.iteritems():
-            print sys
+        for delta,sys in self.systsJEC.items():
+            print(sys)
             setattr(self, "vars_1j1t" + sys, [
                 MVAVar("train_nloosejets",                  func = lambda ev : getattr(ev, "nJetSel20_jesAbsoluteUp_Recl")),
                 #MVAVar("train_nbloosejets",                 func = lambda ev : getattr(ev, "nBJetSelMedium20{v}_Recl".format(v = sys))),
@@ -54,7 +54,7 @@ class MVA_tWRun2_pruebas(Module):
                 #MVAVar("train_lep12jet12met_dr", func = lambda ev : getattr(ev, "Lep12Jet12MET_DR" + sys)),
             ])
 
-        for delta,sys in self.systsLepEn.iteritems():
+        for delta,sys in self.systsLepEn.items():
             setattr(self, "vars_1j1t" + sys, [
                 MVAVar("train_nloosejets",                  func = lambda ev : getattr(ev, "nJetSel20_jesAbsoluteUp_Recl")),
                 #MVAVar("train_nbloosejets",                 func = lambda ev : getattr(ev, "nBJetSelMedium20{v}_Recl".format(v = sys))),
@@ -76,11 +76,11 @@ class MVA_tWRun2_pruebas(Module):
                 #MVAVar("train_lep12jet12met_dr", func = lambda ev : getattr(ev, "Lep12Jet12MET_DR" + sys)),
             ])
 
-        print ""
-        print dir(self)
+        print("")
+        print(dir(self))
         for el in dir(self):
             if "vars" in el:
-                print getattr(self, el)
+                print(getattr(self, el))
 
 
         #mvas_path1 = "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp_tW_MVAs/tw_MVAS_Pruebas_1j1t/2021-10-15_DYTrainDiv2"
@@ -101,10 +101,10 @@ class MVA_tWRun2_pruebas(Module):
         path_tmvaBDT_2j1b = mvas_path + "/tmvaBDT_2j1t/weights/TMVAClassification_GradBoost_200_005_4.weights.xml"
 
 
-        for delta,sys in self.systsJEC.iteritems():
+        for delta,sys in self.systsJEC.items():
             self.MVAs["tmvaBDT_1j1b" + sys] = MVATool("BDT", path_tmvaBDT_1j1b, getattr(self, "vars_1j1t" + sys))
             self.MVAs["tmvaBDT_2j1b" + sys] = MVATool("BDT", path_tmvaBDT_2j1b, getattr(self, "vars_2j1t" + sys))
-        for delta,sys in self.systsLepEn.iteritems():
+        for delta,sys in self.systsLepEn.items():
             self.MVAs["tmvaBDT_1j1b" + sys] = MVATool("BDT", path_tmvaBDT_1j1b, getattr(self, "vars_1j1t" + sys))
             self.MVAs["tmvaBDT_2j1b" + sys] = MVATool("BDT", path_tmvaBDT_2j1b, getattr(self, "vars_2j1t" + sys))
 
@@ -113,13 +113,13 @@ class MVA_tWRun2_pruebas(Module):
 
     def beginFile(self, inputFile, outputFile, inputTree, wrappedOutputTree):
         self.wrappedOutputTree = wrappedOutputTree
-        for out in self.MVAs.keys():
+        for out in list(self.MVAs.keys()):
             self.wrappedOutputTree.branch(out, 'F')
         return
 
 
     def analyze(self, event):
-        outdict = dict([ (name, mva(event)) for name, mva in self.MVAs.iteritems()])
-        print "B", outdict
+        outdict = dict([ (name, mva(event)) for name, mva in self.MVAs.items()])
+        print("B", outdict)
         writeOutput(self, outdict)
         return True

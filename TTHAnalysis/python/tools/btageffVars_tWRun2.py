@@ -93,7 +93,7 @@ class btageffVars_tWRun2(Module):
 
     def areMyJetsCleanAndGood(self, thejets, theleps):
         clist = [self.selection(jet) for jet in thejets]
-        if self.debug: print("[pythonCleaningTopRun2::areMyJetsCleanAndGood] bad/good clist:", clist)
+        if self.debug: print(("[pythonCleaningTopRun2::areMyJetsCleanAndGood] bad/good clist:", clist))
 
         for iL in range(len(theleps)):
             mindr = -1; best = -1;
@@ -104,7 +104,7 @@ class btageffVars_tWRun2(Module):
                     best = iJ
             if (best > -1 and mindr < self.deltaRcut):
                 clist[best] = False
-        if self.debug: print("[pythonCleaningTopRun2::areMyJetsCleanAndGood] final clist:", clist)
+        if self.debug: print(("[pythonCleaningTopRun2::areMyJetsCleanAndGood] final clist:", clist))
         return clist
 
     def configureCleaning(self, ev):
@@ -137,7 +137,7 @@ class btageffVars_tWRun2(Module):
                  2:2, # l
                  3:2, # l
         }
-        if hadronFlavor in match.keys(): return match[hadronFlavor]
+        if hadronFlavor in list(match.keys()): return match[hadronFlavor]
         return 2
     
     

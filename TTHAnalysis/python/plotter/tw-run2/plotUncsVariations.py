@@ -202,7 +202,7 @@ def plotVariations(tup, outname, ncores = -1):
     if not os.path.isdir(outfolder):
         os.system("mkdir -p " + outfolder)
 
-    print("\n> Reading file " + tup[1] + "/" + tup[0] + " ...")
+    print(("\n> Reading file " + tup[1] + "/" + tup[0] + " ..."))
     nplots = 0
     thisisnotacard = False
     varprefix = "x"
@@ -279,7 +279,7 @@ def plotVariations(tup, outname, ncores = -1):
     #print(histodict["nloosejets"])
     #sys.exit()
 
-    print("    - Plotting " + str(nplots) + " histograms...")
+    print(("    - Plotting " + str(nplots) + " histograms..."))
     tasks = []
     for iV in histodict:
         for iP in histodict[iV]:
@@ -307,7 +307,7 @@ def confirm(message = "Do you wish to continue?"):
     """
     answer = ""
     while answer not in ["y", "n", "yes", "no"]:
-        answer = raw_input(message + " [Y/N]\n").lower()
+        answer = input(message + " [Y/N]\n").lower()
     return answer[0] == "y"
 
 

@@ -2,15 +2,15 @@ import ROOT as r
 import math, sys
 from copy import deepcopy
 from array import array
-import varList as vl
+from . import varList as vl
 ###############################################################################
 
 def quadSum(elements):
-    return math.sqrt( sum( map( lambda x : x*x, elements)))
+    return math.sqrt( sum( [x*x for x in elements]))
 
 
 def GetMaxUnc(nominal, uncUp, uncDown):
-    return max(map(lambda x : x*x, [nominal - uncUp, nominal - uncDown]))
+    return max([x*x for x in [nominal - uncUp, nominal - uncDown]])
 
 
 def GetSymUnc(nominal, uncUp, uncDown):
@@ -52,13 +52,13 @@ def propagateQuantity(nom, varDict, case = 0):
                             #tot = tot + map(lambda x : x*x, [nom - varDict[key]])[0]/2
                         #else:
                             #tot = tot + map(lambda x : x*x, [nom - varDict[key]])[0]
-                        tot = tot + map(lambda x : x*x, [nom - varDict[key]])[0]
+                        tot = tot + [x*x for x in [nom - varDict[key]]][0]
                     else:
                         #if 'fsr' in key or 'FSR' in key or 'isr' in key or 'ISR' in key:
                             #tot = tot + map(lambda x : x*x, [nom - varDict[key.replace('Up', 'Down')]])[0]/2
                         #else:
                             #tot = tot + map(lambda x : x*x, [nom - varDict[key.replace('Up', 'Down')]])[0]
-                        tot = tot + map(lambda x : x*x, [nom - varDict[key.replace('Up', 'Down')]])[0]
+                        tot = tot + [x*x for x in [nom - varDict[key.replace('Up', 'Down')]]][0]
     else:
         for key in varDict: 
             if 'Down' in key: continue
@@ -80,13 +80,13 @@ def propagateQuantity(nom, varDict, case = 0):
                             #tot = tot + map(lambda x : x*x, [nom - varDict[key]])[0]/2
                         #else:
                             #tot = tot + map(lambda x : x*x, [nom - varDict[key]])[0]
-                        tot = tot + map(lambda x : x*x, [nom - varDict[key]])[0]
+                        tot = tot + [x*x for x in [nom - varDict[key]]][0]
                     else:
                         #if 'fsr' in key or 'FSR' in key or 'isr' in key or 'ISR' in key:
                             #tot = tot + map(lambda x : x*x, [nom - varDict[key.replace('Up', 'Down')]])[0]/2
                         #else:
                             #tot = tot + map(lambda x : x*x, [nom - varDict[key.replace('Up', 'Down')]])[0]
-                        tot = tot + map(lambda x : x*x, [nom - varDict[key.replace('Up', 'Down')]])[0]
+                        tot = tot + [x*x for x in [nom - varDict[key.replace('Up', 'Down')]]][0]
     return math.sqrt(tot)
 
 
@@ -97,13 +97,13 @@ def propagateHisto(varDict, doSym = False):
     for bin in range(1, varDict[""].GetNbinsX() + 1):
         err     = outUp.GetBinError(bin)    # <==  Fit unc. taken here
         cont    = outUp.GetBinContent(bin)
-        tmpDict = dict([(key, histo.GetBinContent(bin)) for (key, histo) in varDict.iteritems() if key != ""])
+        tmpDict = dict([(key, histo.GetBinContent(bin)) for (key, histo) in varDict.items() if key != ""])
 
         envelopesUp = []; envelopesDown = []
         for iU in vl.UncertaintiesToEnvelope:
             tmpuncUp    = 0.
             tmpuncDown  = 0.
-            for key,histo in varDict.iteritems():
+            for key,histo in varDict.items():
                 if (iU + "_") in key:
                     tmpunc  = tmpDict[key] - cont
                     if tmpunc > tmpuncUp:
@@ -348,7 +348,7 @@ def getUncList(varDict, doFit = True, doSym = False):
 
         outList = medList
 
-    return map( lambda x : (x[0], relativeErrorHist(x[1])), outList)
+    return [(x[0], relativeErrorHist(x[1])) for x in outList]
 
 
 
@@ -491,7 +491,7 @@ def getUncListv2(varDict, doSym = False):
 
         outList = medList
 
-    return map( lambda x : (x[0], relativeErrorHist(x[1])), outList)
+    return [(x[0], relativeErrorHist(x[1])) for x in outList]
 
 
 def SetTheStatsUncs(histo):
@@ -582,7 +582,7 @@ def drawTheRelUncPlot(listWithHistos, thedict, thePlot, yaxismax = "auto", doSym
         except ValueError:
             #print listWithHistos[0].GetBinContent(bin), listWithHistos[0].GetBinError(bin), listWithHistos[1].GetBinContent(bin), listWithHistos[1].GetBinError(bin), thedict[""].GetBinContent(bin), thedict[""].GetBinError(bin), listWithHistos[1].GetBinError(bin)**2 - thedict[""].GetBinError(bin)**2
             #raise RuntimeError("FATAL: the provided nominal/fit only unc. is larger that the total sum of all of them for bin {b}".format(b = bin))
-            print "TEMPORAL FIX"
+            print("TEMPORAL FIX")
             incsyst.append(max([thedict[""].GetBinError(bin),
                                 listWithHistos[0].GetBinContent(bin)]))
 

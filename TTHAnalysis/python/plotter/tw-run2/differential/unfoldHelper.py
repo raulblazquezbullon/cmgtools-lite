@@ -6,11 +6,11 @@ from multiprocessing import Pool
 import numpy as np
 
 sys.path.append('{cmsswpath}/src/CMGTools/TTHAnalysis/python/plotter/tw-run2/differential/'.format(cmsswpath = os.environ['CMSSW_BASE']))
-import beautifulUnfoldingPlots as bp
-import errorPropagator as ep
-import getLaTeXtable as tex
-import varList as vl
-import goftests as gof
+from . import beautifulUnfoldingPlots as bp
+from . import errorPropagator as ep
+from . import getLaTeXtable as tex
+from . import varList as vl
+from . import goftests as gof
 
 r.gROOT.SetBatch(True)
 verbose = True
@@ -111,7 +111,7 @@ class DataContainer:
         if "fit" in self.fileName:
             wr.warn("WARNING: a fit input has been added. Therefore, we will add in quadrature additional uncertainties per internalised ones to consider the effects on the response matrices, neglecting its possible correlations with the effects on the variables. This is not statistically correct.")
 
-            for iU,el in vl.ModifiedProfileSystsThatAreNotPresentAllYears.iteritems():
+            for iU,el in vl.ModifiedProfileSystsThatAreNotPresentAllYears.items():
                 if self.year != "run2":
                     if self.year not in el:
                         continue
@@ -208,7 +208,7 @@ class DataContainer:
     
 
     def getInputs(self, nuis):
-        if verbose: print '\n> Getting inputs for nuisance', nuis
+        if verbose: print('\n> Getting inputs for nuisance', nuis)
 
         retcovmat = None
         if nuis in self.covmatInput:
@@ -451,7 +451,7 @@ class UnfolderHelper:
         decomp = r.TDecompSVD(matrx)
         condn  = decomp.Condition()
         del matrx, decomp, prob
-        if verbose: print '> Matrix condition is', condn
+        if verbose: print('> Matrix condition is', condn)
         return condn
 
 
@@ -528,7 +528,7 @@ class Unfolder():
             self.helpers[''].tunfolder.DoUnfold(tau)
         data = self.helpers[''].tunfolder.GetOutput('forPlot')
 
-        print 'Unfolded distribution integral', data.Integral()
+        print('Unfolded distribution integral', data.Integral())
         plot = bp.beautifulUnfPlot(self.var)
         data.SetMarkerStyle(r.kFullCircle)
         data.GetXaxis().SetNdivisions(510,True)
@@ -653,20 +653,20 @@ class Unfolder():
         self.prepareAllHelpers()
         tauval = 0
         if self.doRegularisation:
-            print "> Performing regularisation..."
+            print("> Performing regularisation...")
             if self.tau == 0:
-                print '   - Tau value not yet calculated! Extracting it with the L-curve method...'
+                print('   - Tau value not yet calculated! Extracting it with the L-curve method...')
                 self.doLCurveScan()
 
             tauval = self.taulist['']
 
 
-        if verbose: print '\n> Unfolding nominal distribution'
+        if verbose: print('\n> Unfolding nominal distribution')
         self.helpers[''].tunfolder.DoUnfold(tauval)
         allHistos[""] = deepcopy(self.helpers[''].tunfolder.GetOutput(self.var))
 
         if "Fiducial" in self.var:
-            print "\n"
+            print("\n")
             #wr.warn("WARNING: you are calculating the fiducial cross section for the Asimov dataset. For unknown reasons, the obtention of the full covariance matrix after the unfolding gives an error. As a by-pass of this situation, the statistical uncertainty that the nominal results will carry will be ONLY the ones introduced as input, NOT the ones related with the response matrix nor the signal efficiency / fiducial region efficiency detection. TAKE THIS INTO ACCOUNT.")
             
             mat    = self.helpers[''].response.GetBinContent(1, 1)
@@ -681,9 +681,9 @@ class Unfolder():
             valor = ( ns - nf ) / mat
             inc   = incns/mat + incnf/mat + (ns - nf)/mat**2 * incmat
             
-            print "ns", ns, "nf", nf, "mat", mat, "ns-nf", ns-nf
+            print("ns", ns, "nf", nf, "mat", mat, "ns-nf", ns-nf)
             
-            print "valor nom.", valor/thelumi/1000, "inc. nom.", inc/thelumi/1000, "\n"
+            print("valor nom.", valor/thelumi/1000, "inc. nom.", inc/thelumi/1000, "\n")
 
             self.saveFiducialCrossSection(valor/thelumi/1000, inc/thelumi/1000)
 
@@ -696,7 +696,7 @@ class Unfolder():
                                           vl.varList[self.var]['bins_particle'][0],  vl.varList[self.var]['bins_particle'][-1])
             covnom.SetBinContent(1, 1, inc)
         else:
-            if verbose: print '> Obtaining covariance matrix of all the statistical components that take part here.'
+            if verbose: print('> Obtaining covariance matrix of all the statistical components that take part here.')
             covnom = deepcopy(self.helpers[''].tunfolder.GetEmatrixTotal("CovMat"))
             for bin in range(1, allHistos[""].GetNbinsX() + 1):
                 allHistos[""].SetBinError(bin, math.sqrt(covnom.GetBinContent(bin, bin)))
@@ -706,7 +706,7 @@ class Unfolder():
 
         for nuis in self.sysList:
             if nuis == "": continue
-            if verbose: print '    - Unfolding distribution of {sys} systematic'.format(sys = nuis)
+            if verbose: print('    - Unfolding distribution of {sys} systematic'.format(sys = nuis))
             self.helpers[nuis].tunfolder.DoUnfold(tauval)
             allHistos[nuis] = self.helpers[nuis].tunfolder.GetOutput(self.var + '_' + nuis)
             if "Fiducial" in self.var:
@@ -804,11 +804,11 @@ class Unfolder():
             del nom0,nom1
         
         #############################
-        print "\nLOS RESULTAOS - {uno} - {dos}".format(uno = "ASIMOV" if self.wearedoingasimov else "DATOS", dos = self.var)
+        print("\nLOS RESULTAOS - {uno} - {dos}".format(uno = "ASIMOV" if self.wearedoingasimov else "DATOS", dos = self.var))
         for bin in range(1, nominal_withErrors[0].GetNbinsX() + 1):
-            print "Bin", bin, "(abs.): (", round(allHistos[""].GetBinContent(bin), 4), "+", round(nominal_withErrors[0].GetBinError(bin), 4), "-", round(nominal_withErrors[1].GetBinError(bin), 4), ") pb"
-            print "Bin", bin, "(rel.): (", round(allHistos[""].GetBinContent(bin), 4), "+", round(nominal_withErrors[0].GetBinError(bin)/allHistos[""].GetBinContent(bin)*100, 4), "-", round(nominal_withErrors[1].GetBinError(bin)/allHistos[""].GetBinContent(bin)*100, 4), ") pb\n"
-        print "\n"
+            print("Bin", bin, "(abs.): (", round(allHistos[""].GetBinContent(bin), 4), "+", round(nominal_withErrors[0].GetBinError(bin), 4), "-", round(nominal_withErrors[1].GetBinError(bin), 4), ") pb")
+            print("Bin", bin, "(rel.): (", round(allHistos[""].GetBinContent(bin), 4), "+", round(nominal_withErrors[0].GetBinError(bin)/allHistos[""].GetBinContent(bin)*100, 4), "-", round(nominal_withErrors[1].GetBinError(bin)/allHistos[""].GetBinContent(bin)*100, 4), ") pb\n")
+        print("\n")
         #############################
         
         if self.var != "Fiducial":
@@ -1029,7 +1029,7 @@ if __name__ == "__main__":
 
     #tasks = [ ("Lep1_Pt", inpath + "/" + "run2" + "/" + "Lep1_Pt", inpath + "/run2/particleplots") ]
 
-    print "\n> Beginning unfolding...\n"
+    print("\n> Beginning unfolding...\n")
 
     if nthreads > 1:
         pool = Pool(nthreads)

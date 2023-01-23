@@ -3,8 +3,8 @@ import sys, os
 from array import array
 
 r.gROOT.SetBatch(True)
-print "===== Setting binning of the BDT procedure\n"
-print "> Preliminaries..."
+print("===== Setting binning of the BDT procedure\n")
+print("> Preliminaries...")
 printthings = 1
 
 
@@ -153,21 +153,21 @@ Float_t theBDT(Double_t BDT){
 '''%(yq[0])
 
 
-    print "> Histoname", histoname, "with", nq, "bins"
+    print("> Histoname", histoname, "with", nq, "bins")
     if (printthings == 1):
-        print "Bin 1:", yq[0]
-        raw_input('Copy this string into your .C function and press enter.')
+        print("Bin 1:", yq[0])
+        input('Copy this string into your .C function and press enter.')
     subBin = 2
     for i in range(1, nq - 1):
         Base = Base + '  else if (BDT < %f) return %d;\n'%(yq[i],subBin)
         subBin = subBin + 1
         if (printthings == 1):
-            print "Bin {i}:".format(i = i + 1), yq[i]
-            raw_input('Press enter.')
+            print("Bin {i}:".format(i = i + 1), yq[i])
+            input('Press enter.')
 
     Base = Base + '  else                       return %d;\n} \n'%subBin
     Base = Base + '#endif'
-    print Base
+    print(Base)
     return
 
 #getBinningForThatVariable("./temp/varplots/run2/1j1t/MVAtrain/plots-tw-1j1t_MVAtrain.root", "SergioBDT_1j1b_smallb_ttbar", 10)

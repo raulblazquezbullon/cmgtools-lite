@@ -1,4 +1,4 @@
-from producer import producer
+from .producer import producer
 
 class postprocessor_producer(producer):
   name = "postprocesor_producer"

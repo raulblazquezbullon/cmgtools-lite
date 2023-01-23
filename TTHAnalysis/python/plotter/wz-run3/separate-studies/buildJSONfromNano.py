@@ -62,10 +62,10 @@ if __name__ == "__main__":
   # -- Remove the last "/" --> regexp matching is sensitive to this
   if mainDir[-1] == "/": mainDir = mainDir[:-1]
   if filter_era:
-    print(" Filtering by era: %s"%filter_era)
+    print((" Filtering by era: %s"%filter_era))
     outname += "_Era%s"%filter_era
   if filter_version:
-    print(" Filtering by version: %s"%filter_version)
+    print((" Filtering by version: %s"%filter_version))
     outname += "_%s"%filter_version
 
   outname += ".json"
@@ -87,10 +87,10 @@ if __name__ == "__main__":
       filters.append( check_match(".*(-|_)(%s)\/.*"%filter_version, root, filter_version) )
       # Extra care:
       if filter_version == "v1" and ("v1-v1" in root or "v1_v1" in root or "v1-v2" in root or "v1-v3" in root): continue
-    print(filters, root, dataset) 
+    print((filters, root, dataset)) 
     if not all(filters): continue
     
-    print(" >> Getting files for dataset %s (folder: %s)"%(dataset, root))
+    print((" >> Getting files for dataset %s (folder: %s)"%(dataset, root)))
     for file_ in inputFiles:
       files_per_dataset[dataset].append(root + "/%s"%file_)
 
@@ -99,7 +99,7 @@ if __name__ == "__main__":
     inputFiles = files_per_dataset[d]
     if len(inputFiles) == 0:
       continue
-    print(" >> Writing json for dataset %s"%d)
+    print((" >> Writing json for dataset %s"%d))
     
     if goldenJson != None:
       certifiedRuns = load_json(goldenJson)
@@ -110,13 +110,13 @@ if __name__ == "__main__":
     runs = {}
     minrun = 99999999999999
     maxrun = 0
-    print(" ----- There are %d datasets"%len(inputFiles))    
+    print((" ----- There are %d datasets"%len(inputFiles)))    
     for f in inputFiles:
-      if verbosity: print("   * Reading %s"%f)
+      if verbosity: print(("   * Reading %s"%f))
       ff    = ROOT.TFile(f, "READ")
       lumis = ff.Get("LuminosityBlocks")
       if type(lumis) == ROOT.TObject:
-        print("File %s could not be read"%f)
+        print(("File %s could not be read"%f))
         continue
  
      
@@ -131,7 +131,7 @@ if __name__ == "__main__":
           runstring = str(run) # To read the keys in the goldenJson, which are unicode.
 
           ## Filter by run
-          if runstring not in certifiedRuns.keys(): continue # If the run is not in the golden json just skip it
+          if runstring not in list(certifiedRuns.keys()): continue # If the run is not in the golden json just skip it
           
           ## Filter by lumisection/lumiblock
           validLumis = certifiedRuns[runstring] 
@@ -149,13 +149,13 @@ if __name__ == "__main__":
 
         ## Save run and lumiblock 
     
-        if run in runs.keys(): 
+        if run in list(runs.keys()): 
           runs[run].append(lumiblock)
         else: 
           runs[run] = [lumiblock]
       # -- Build the output json -- #
       forjson = {}
-      for key in runs.keys():
+      for key in list(runs.keys()):
         forjson[str(key)] = []
         templist = runs[key] 
         templist.sort() 
@@ -177,7 +177,7 @@ if __name__ == "__main__":
 
       if not (os.path.exists("%s/%s"%(outpath, d))): os.system("mkdir -p %s/%s"%(outpath, d))
       json.dump(forjson, open("%s/%s/%s"%(outpath, d, outname),"w"), sort_keys=True)
-    print("min range: %d"%min(runs.keys()))
-    print("max range: %d"%max(runs.keys()))
-    print("min range 2: %d"%minrun)
-    print("max range 2: %d"%maxrun)
+    print(("min range: %d"%min(runs.keys())))
+    print(("max range: %d"%max(runs.keys())))
+    print(("min range 2: %d"%minrun))
+    print(("max range 2: %d"%maxrun))

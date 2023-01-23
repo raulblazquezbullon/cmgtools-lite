@@ -369,14 +369,14 @@ if __name__ == "__main__":
                                          queue        = "" if not doBatch else "--job-mode slurm --task-name nominal_" + poi,
                                          parallel     = "" if not ncores  else "--parallel " + str(ncores),
                                          extra        = '-n nominal_{p} {card} -P {p} {c}'.format(p = poi, card = thecard, c = ",".join(cumulative)))
-            print "Command:", nomcomm
+            print("Command:", nomcomm)
             if not pretend: os.system(nomcomm)
 
             gridcomm = basecommand.format(algosettings = "--algo none",
                                           queue        = "",
                                           parallel     = "",
                                           extra        = '-n bestfit_{p} --saveWorkspace {card} -P {p}'.format(p = poi, card = thecard))
-            print "Command:", gridcomm
+            print("Command:", gridcomm)
             if not pretend: os.system(gridcomm)
 
             for group in groupList:
@@ -385,13 +385,13 @@ if __name__ == "__main__":
                                              queue        = "" if not doBatch else "--job-mode slurm --task-name " + group + "_" + poi,
                                              parallel     = "" if not ncores  else "--parallel " + str(ncores),
                                              extra        = '-P {p} -n {g}_{p} higgsCombinebestfit_{p}.MultiDimFit.mH125.root --snapshotName MultiDimFit --freezeParameters {c}'.format(p = poi, g = group, c = ",".join(cumulative)))
-                print "Command:", thecomm
+                print("Command:", thecomm)
                 if not pretend: os.system(thecomm)
     elif step == 1:
         for poi in POIs:
             fileList        = []
             nomcomm = 'hadd higgsCombinenominal_{p}.MultiDimFit.mH125.root higgsCombinenominal_{p}.POINTS.*.MultiDimFit.mH125.root'.format(p = poi)
-            print "Command:", nomcomm
+            print("Command:", nomcomm)
             if not pretend: os.system(nomcomm)
 
             for gr in groupList:
@@ -400,18 +400,18 @@ if __name__ == "__main__":
                                                                                                       g  = gr,
                                                                                                       i  = groupList.index(gr)))
 
-                print "Command:", tmpcomm
+                print("Command:", tmpcomm)
                 if not pretend: os.system(tmpcomm)
 
             thecomm = "plot1DScan.py higgsCombinenominal_{p}.MultiDimFit.mH125.root --others {l1} --breakdown {l2},stat --POI {p} ".format(
                 p  = poi,
                 l1 = ' '.join(fileList),
                 l2 = ','.join(groupList))
-            print "Command:", thecomm
+            print("Command:", thecomm)
             if not pretend: os.system(thecomm)
 
             thecomm = 'mv scan.pdf scan_{p}.pdf; mv scan.png scan_{p}.png'.format(p = poi)
-            print 'Command:', thecomm
+            print('Command:', thecomm)
             if not pretend: os.system(thecomm)
 
     else:

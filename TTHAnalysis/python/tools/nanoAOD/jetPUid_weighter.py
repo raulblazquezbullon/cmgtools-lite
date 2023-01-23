@@ -70,10 +70,10 @@ class jetPUid_weighter(Module):
         self.wrappedOutputTree.branch("jetPUidWeight" + self.label + "_mistag_systDn", "F")
 
 
-        for delta,jecVar in self.systsJEC.iteritems():
+        for delta,jecVar in self.systsJEC.items():
             self.wrappedOutputTree.branch("jetPUidWeight" + self.label + jecVar , "F")
 
-        for delta,lepVar in self.systsLepEn.iteritems():
+        for delta,lepVar in self.systsLepEn.items():
             self.wrappedOutputTree.branch("jetPUidWeight" + self.label + lepVar , "F")
 
         return
@@ -97,7 +97,7 @@ class jetPUid_weighter(Module):
 
     def areMyJetsCleanAndGood(self, thejets, theleps):
         clist = [self.selection(jet) for jet in thejets]
-        if self.debug: print("[pythonCleaningTopRun2::areMyJetsCleanAndGood] bad/good clist:", clist)
+        if self.debug: print(("[pythonCleaningTopRun2::areMyJetsCleanAndGood] bad/good clist:", clist))
 
         for iL in range(len(theleps)):
             mindr = -1; best = -1;
@@ -108,7 +108,7 @@ class jetPUid_weighter(Module):
                     best = iJ
             if (best > -1 and mindr < self.deltaRcut):
                 clist[best] = False
-        if self.debug: print("[pythonCleaningTopRun2::areMyJetsCleanAndGood] final clist:", clist)
+        if self.debug: print(("[pythonCleaningTopRun2::areMyJetsCleanAndGood] final clist:", clist))
         return clist
 
     def configureCleaning(self, ev):
@@ -122,11 +122,11 @@ class jetPUid_weighter(Module):
         cleanedandgoodjets = {}
         cleanedandgoodjets[""] = self.areMyJetsCleanAndGood(self.all_jets, self.leps)
 
-        for delta,lvar in self.systsLepEn.iteritems():
+        for delta,lvar in self.systsLepEn.items():
             tmpleps = [l for l in Collection(event, self.lc + lvar[1:])]
             cleanedandgoodjets[lvar] = self.areMyJetsCleanAndGood(self.all_jets, tmpleps)
 
-        for delta,jecVar in self.systsJEC.iteritems():
+        for delta,jecVar in self.systsJEC.items():
             mcTag        = 1.
             mcNoTag      = 1.
             dataTag      = 1.
@@ -154,10 +154,10 @@ class jetPUid_weighter(Module):
                     istag = self.all_jets[iJ].puId == 7
 
                     if self.debug and jecVar == "":
-                        print "[jetPUid_weighter::computeWeights] -", thept, self.all_jets[iJ].eta, eff, SF
+                        print("[jetPUid_weighter::computeWeights] -", thept, self.all_jets[iJ].eta, eff, SF)
 
                     if eff == 0:
-                        print "[jetPUid_weighter::computeWeights] - WARNING: event efficiency is zero. To prevent a ZeroDivision error, we will fix its value to 10^-5."
+                        print("[jetPUid_weighter::computeWeights] - WARNING: event efficiency is zero. To prevent a ZeroDivision error, we will fix its value to 10^-5.")
                         eff = 1e-5
 
                     if istag:
@@ -225,14 +225,14 @@ class jetPUid_weighter(Module):
                 self.ret["jetPUidWeight" + self.label + "_mistag_systUp"] = sysmistagup / ( mcNoTag * mcTag )
                 self.ret["jetPUidWeight" + self.label + "_mistag_systDn"] = sysmistagdn / ( mcNoTag * mcTag )
 
-                for ldelta,lepVar in self.systsLepEn.iteritems():
+                for ldelta,lepVar in self.systsLepEn.items():
                     mcTag     = 1.
                     mcNoTag   = 1.
                     dataTag   = 1.
                     dataNoTag = 1.
 
                     self.jets    = [self.all_jets[getattr(event, 'iJetSel30{v}_Recl'.format(v = lepVar))[j]]
-                                for j in xrange(min([getattr(event, 'nJetSel30{v}_Recl'.format(v = lepVar)), 5]))]
+                                for j in range(min([getattr(event, 'nJetSel30{v}_Recl'.format(v = lepVar)), 5]))]
 
                     jetjecsysscaff = self.nominaljecscaff
 
@@ -248,7 +248,7 @@ class jetPUid_weighter(Module):
                             istag = self.all_jets[iJ].puId == 7
 
                             if eff == 0:
-                                print "[jetPUid_weighter::computeWeights] - WARNING: jet eff is zero. To prevent a ZeroDivision error, we will fix its value to 10^-5."
+                                print("[jetPUid_weighter::computeWeights] - WARNING: jet eff is zero. To prevent a ZeroDivision error, we will fix its value to 10^-5.")
                                 eff = 1e-5
 
                             if istag:
@@ -288,7 +288,7 @@ class jetPUid_weighter(Module):
             xbin = max(1, min(histo.GetNbinsX(), histo.GetXaxis().FindBin(tmpeta)))
             ybin = max(1, min(histo.GetNbinsY(), histo.GetYaxis().FindBin(pt)))
 
-        print "pt:", pt, "eta:", eta, xbin, ybin
+        print("pt:", pt, "eta:", eta, xbin, ybin)
         return histo.GetBinContent(xbin, ybin)
 
 

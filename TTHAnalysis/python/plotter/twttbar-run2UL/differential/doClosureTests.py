@@ -7,10 +7,10 @@ from multiprocessing import Pool
 from numpy import random
 
 sys.path.append('{cmsswpath}/src/CMGTools/TTHAnalysis/python/plotter/tw-run2/differential/'.format(cmsswpath = os.environ['CMSSW_BASE']))
-import varList as vl
-import beautifulUnfoldingPlots as bp
-import tdrstyle, CMS_lumi
-import errorPropagator as ep
+from . import varList as vl
+from . import beautifulUnfoldingPlots as bp
+from . import tdrstyle, CMS_lumi
+from . import errorPropagator as ep
 
 
 combinecommscaff = 'combine -M FitDiagnostics --out {outdir} {infile} {asimov} --saveWorkspace -n {y}_{var} --saveShapes --saveWithUncertainties --robustFit 1 --cminDefaultMinimizerStrategy 0 --X-rtd MINIMIZER_analytic --X-rtd MINIMIZER_MaxCalls=5000000 --robustHesse 1'
@@ -83,7 +83,7 @@ def readResults(f1, f2, nbs):
     elif fitstatus != 0:
         wr.warn('Fit of file {v} has a nonzero fit status value: {fitv}'.format(v = f2, fitv = fitstatus), UserWarning, stacklevel = 2)
     elif verbose:
-        print "    - Fit status:", fitstatus
+        print("    - Fit status:", fitstatus)
 
     fitResult = tfile.Get('fit_s')
     if verbose: fitResult.Print()
@@ -125,14 +125,14 @@ def makeClosure(task):
                                                    var     = varName,)
 
     if verbose:
-        print "Text2Workspace command:", physicsModel, "\n"
+        print("Text2Workspace command:", physicsModel, "\n")
     
     outstat = None
     if not pretend:
         if os.path.isfile(inpath + "/" + year + "/" + varName + "/sigextr_fit_combine/ws_asimov.root"):
             if redoFits:
                 if verbose:
-                    print "    - Erasing old closure tests results..."
+                    print("    - Erasing old closure tests results...")
                 os.system("rm " + inpath + "/" + year + "/" + varName + "/sigextr_fit_combine/closuretests/ws_asimov.root")
                 outstat = os.system(physicsModel)
         else:
@@ -156,7 +156,7 @@ def makeClosure(task):
     )
 
     if verbose:
-        print "Combine command:", combinecomm, "\n"
+        print("Combine command:", combinecomm, "\n")
 
     #sys.exit()
     outstat = None
@@ -173,7 +173,7 @@ def makeClosure(task):
                     os.system("mv ./higgsCombine{y}_{var}.FitDiagnostics.mH120.root {fdir}".format(y = year, var = varName + "asimov", fdir = fitoutpath + "/"))
 
     
-    print "> Creating toys..."
+    print("> Creating toys...")
     for i in range(ntoys):
         createPoissonToy( (inpath, year, varName, pretend, i, nparticlebins) )
 #        sys.exit()
@@ -188,14 +188,14 @@ def makeClosure(task):
                                                        var     = varName,)
 
         if verbose:
-            print "Text2Workspace command:", physicsModel, "\n"
+            print("Text2Workspace command:", physicsModel, "\n")
 
         outstat = None
         if not pretend:
             if os.path.isfile(inpath + "/" + year + "/" + varName + "/sigextr_fit_combine/closuretests/ws_toy{i}.root".format(i = i)):
                 if redoFits:
                     if verbose:
-                        print "    - Erasing old closure tests results..."
+                        print("    - Erasing old closure tests results...")
                     os.system("rm " + inpath + "/" + year + "/" + varName + "/sigextr_fit_combine/closuretests/ws_toy{i}.root".format(i = i))
                     outstat = os.system(physicsModel)
             else:
@@ -218,7 +218,7 @@ def makeClosure(task):
         )
 
         if verbose:
-            print "Combine command:", combinecomm, "\n"
+            print("Combine command:", combinecomm, "\n")
 
         #sys.exit()
         if not pretend:
@@ -417,7 +417,7 @@ if __name__ == '__main__':
 
 
     if verbose:
-        print 'Tasks:', tasks
+        print('Tasks:', tasks)
 
     #for el in tasks: print el
     #sys.exit()

@@ -146,14 +146,14 @@ class ModelEvaluator:
 
     def evaluate(self):
         # Evaluate the model
-        print("Training accuracy: ", accuracy_score(self.y_train, self.y_pred_train))
-        print("Test accuracy: ", accuracy_score(self.y_test, self.y_pred_test))
-        print("Confusion matrix: ", confusion_matrix(self.y_test, self.y_pred_test))
-        print("Classification report: ", classification_report(self.y_test, self.y_pred_test))
+        print(("Training accuracy: ", accuracy_score(self.y_train, self.y_pred_train)))
+        print(("Test accuracy: ", accuracy_score(self.y_test, self.y_pred_test)))
+        print(("Confusion matrix: ", confusion_matrix(self.y_test, self.y_pred_test)))
+        print(("Classification report: ", classification_report(self.y_test, self.y_pred_test)))
 
     def overtraining(self):
         # Evaluate overtraining
-        print("Overtraining: ", accuracy_score(self.y_train, self.y_pred_train) - accuracy_score(self.y_test, self.y_pred_test))
+        print(("Overtraining: ", accuracy_score(self.y_train, self.y_pred_train) - accuracy_score(self.y_test, self.y_pred_test)))
 
     def plotVarImportance(self, outputPath):
         # Plot variable importance
@@ -165,8 +165,8 @@ class ModelEvaluator:
         indices = indices[:15]
         top_vars = np.array([self.vars[i].split("train_")[1] for i in indices])
         plt.title("Feature importances")
-        plt.bar(range(len(top_vars)), importance[indices], color="r", align="center")
-        plt.xticks(range(len(top_vars)), top_vars, rotation=90)
+        plt.bar(list(range(len(top_vars))), importance[indices], color="r", align="center")
+        plt.xticks(list(range(len(top_vars))), top_vars, rotation=90)
         plt.xlim([-1, len(top_vars)])
         # Increase bottom margin to fit the x-axis labels
         plt.subplots_adjust(bottom=0.3)

@@ -178,13 +178,13 @@ class btag_weighterRun3(Module):
         self.wrappedOutputTree.branch("bTagWeight" + self.label + "_mistag_Up", "F")
         self.wrappedOutputTree.branch("bTagWeight" + self.label + "_mistag_Dn", "F")
 
-        for delta,corrVar in self.systsCorr.iteritems():
+        for delta,corrVar in self.systsCorr.items():
             self.wrappedOutputTree.branch("bTagWeight" + self.label + corrVar , "F")
 
-        for delta,jecVar in self.systsJEC.iteritems():
+        for delta,jecVar in self.systsJEC.items():
             self.wrappedOutputTree.branch("bTagWeight" + self.label + jecVar , "F")
 
-        for delta,lepVar in self.systsLepEn.iteritems():
+        for delta,lepVar in self.systsLepEn.items():
             self.wrappedOutputTree.branch("bTagWeight" + self.label + lepVar , "F")
 
         return
@@ -202,7 +202,7 @@ class btag_weighterRun3(Module):
 
 
     def computeWeights(self, event):
-        for delta,jecVar in self.systsJEC.iteritems():
+        for delta,jecVar in self.systsJEC.items():
             mcTag     = 1.
             mcNoTag   = 1.
             dataTag   = 1.
@@ -232,7 +232,7 @@ class btag_weighterRun3(Module):
 
             self.jets = [self.all_jets[getattr(event, 'i{branch}{v}{label}'.format(branch = self.branchJet, v = "%s"%jecVar if jecVar != "" else "", label = self.labelJet))[j]]
                          #for j in xrange(min([getattr(event, 'nJetSel30{v}_Recl'.format(v = jecVar)), 5]))] #### WARNING: this is only valid when ignoring events with nJet>5!!!!!!!!!!
-                         for j in xrange(getattr(event, 'n{branch}{v}{label}'.format(branch = self.branchJet, v = "%s"%jecVar if jecVar != "" else "", label = self.labelJet) ))] #### WARNING: this is only valid when ignoring events with nJet>5!!!!!!!!!!
+                         for j in range(getattr(event, 'n{branch}{v}{label}'.format(branch = self.branchJet, v = "%s"%jecVar if jecVar != "" else "", label = self.labelJet) ))] #### WARNING: this is only valid when ignoring events with nJet>5!!!!!!!!!!
 
             jetjecsysscaff = (jecVar if jecVar != "" else self.nominaljecscaff)
 
@@ -250,10 +250,10 @@ class btag_weighterRun3(Module):
                 istag = (getattr(jet, self.branchbtag) > self.cutVal) and (abs(jet.eta) < self.maxeta and jet.pt > self.minptlow) # AT THIS MOMENT ONLY ONE JET COLLECTION IS ADMITTED
 
                 if self.debug and jecVar == "":
-                    print "[btag_weighter::computeWeights] -", jet.pt, jet.eta, getattr(jet, self.branchbtag), eff, SF
+                    print("[btag_weighter::computeWeights] -", jet.pt, jet.eta, getattr(jet, self.branchbtag), eff, SF)
 
                 if eff == 0:
-                    print "[btag_weighter::computeWeights] - WARNING: jet b-tagging is zero. To prevent a ZeroDivision error, we will fix its value to 10^-5."
+                    print("[btag_weighter::computeWeights] - WARNING: jet b-tagging is zero. To prevent a ZeroDivision error, we will fix its value to 10^-5.")
                     eff = 1e-5
 
                 if istag:
@@ -396,14 +396,14 @@ class btag_weighterRun3(Module):
                     self.ret["bTagWeight" + self.label + "_btag_statDown"]           = sysHFdnStat   / ( mcNoTag * mcTag )
 
 
-                for ldelta,lepVar in self.systsLepEn.iteritems():
+                for ldelta,lepVar in self.systsLepEn.items():
                     mcTag     = 1.
                     mcNoTag   = 1.
                     dataTag   = 1.
                     dataNoTag = 1.
 
                     self.jets    = [self.all_jets[getattr(event, 'iJetSel30{v}_Recl'.format(v = lepVar))[j]]
-                                for j in xrange(min([getattr(event, 'nJetSel30{v}_Recl'.format(v = lepVar)), 5]))]
+                                for j in range(min([getattr(event, 'nJetSel30{v}_Recl'.format(v = lepVar)), 5]))]
 
                     jetjecsysscaff = self.nominaljecscaff
 
@@ -420,7 +420,7 @@ class btag_weighterRun3(Module):
                         istag = (getattr(jet, self.branchbtag) > self.cutVal) and (abs(jet.eta) < self.maxeta and jet.pt > self.minptlow)
 
                         if eff == 0:
-                            print "[btag_weighter::computeWeights] - WARNING: jet b-tagging is zero. To prevent a ZeroDivision error, we will fix its value to 10^-5."
+                            print("[btag_weighter::computeWeights] - WARNING: jet b-tagging is zero. To prevent a ZeroDivision error, we will fix its value to 10^-5.")
                             eff = 1e-5
 
                         if istag:
@@ -510,6 +510,6 @@ class btag_weighterRun3(Module):
                  2:2, # l
                  3:2, # l
         }
-        if hadronFlavor in match.keys(): return match[hadronFlavor]
+        if hadronFlavor in list(match.keys()): return match[hadronFlavor]
         return 2
 

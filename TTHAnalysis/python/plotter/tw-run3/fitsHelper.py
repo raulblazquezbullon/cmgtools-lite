@@ -2,7 +2,7 @@ import os, sys, enum, argparse
 from multiprocessing import Pool
 import warnings as wr
 import ROOT as r
-import plot_postfit as ppf
+from . import plot_postfit as ppf
 r.PyConfig.IgnoreCommandLineOptions = True
 r.gROOT.SetBatch(True)
 
@@ -36,17 +36,17 @@ def makeFit(task):
                                                                                      outCard  = combcardnam)
 
         if verbose:
-            print 'Cardlist:', cardList, "\n"
-            print "Merge cards command:", mergecomm, "\n"
+            print('Cardlist:', cardList, "\n")
+            print("Merge cards command:", mergecomm, "\n")
         
         
         if not pretend:
             if os.path.isfile(fitoutpath + "/combcard_{r}.txt".format(r = region.replace(",", ""))):
                 if verbose:
-                    print "\t- Erasing old combined card..."
+                    print("\t- Erasing old combined card...")
                 os.system("rm " + fitoutpath + "/combcard_{r}.txt".format(r = region.replace(",", "")))
             if verbose:
-                print "\t- Executing..."
+                print("\t- Executing...")
             outstat = os.system(mergecomm)
             if outstat:
                 raise RuntimeError("FATAL: combineCards.py failed to execute for year {y} and regions {r}.".format(y = year, r = region))
@@ -54,15 +54,15 @@ def makeFit(task):
         physicsModel = 'text2workspace.py -m 125 {infile} -o {outfile}'.format(infile  = fitoutpath + "/" + combcardnam,
                                                                                outfile = fitoutpath + "/" + combcardnam.replace(".txt", ".root"),)
         if verbose:
-            print "Text2Workspace command:", physicsModel, "\n"
+            print("Text2Workspace command:", physicsModel, "\n")
 
         if not pretend:
             if os.path.isfile(fitoutpath + "/" + combcardnam.replace(".txt", ".root")):
                 if verbose:
-                    print "\t- Erasing old workspace..."
+                    print("\t- Erasing old workspace...")
                 os.system("rm " + fitoutpath + "/" + combcardnam.replace(".txt", ".root"))
             if verbose:
-                print "\t- Executing..."
+                print("\t- Executing...")
             outstat = os.system(physicsModel)
             if outstat:
                 raise RuntimeError("FATAL: text2workspace.py failed to execute for year {y} and regions {r}.".format(y = year, r = region))
@@ -81,16 +81,16 @@ def makeFit(task):
                               asimov   = "-t -1" if doAsimov else "",
                               extra    = extra)
     if verbose:
-        print "Combine command:", comm, "\n"
+        print("Combine command:", comm, "\n")
 
     if not pretend:
         if os.path.isfile(outfile_):
             if verbose:
-                print "\t- Erasing old fit result..."
+                print("\t- Erasing old fit result...")
             os.system("rm " + outfile_)
 
         if verbose:
-            print "\t- Executing..."
+            print("\t- Executing...")
         outstat = os.system(comm)
         if outstat:
             raise RuntimeError("FATAL: Combine failed to execute for year {y} and region(s) {r}.".format(y = year, r = region))
@@ -122,7 +122,7 @@ def doSomeToysForMePlease(tsk):
         preorpost = "--fixedSignalStrength=1" if not doPost else "--toysFreq") + "; " + "cd -"
 
     if verbose:
-        print "Toys GOF command:", comm, "\n"
+        print("Toys GOF command:", comm, "\n")
 
     if not pretend:
         outstat = os.system(comm)
@@ -159,7 +159,7 @@ def makeGOF(task):
                               queue     = "",
                               preorpost = "--fixedSignalStrength=1" if not doPost else "") + "; " + "cd -"
         if verbose:
-            print "Nominal GOF command:", comm, "\n"
+            print("Nominal GOF command:", comm, "\n")
 
         if not pretend:
             outstat = os.system(comm)
@@ -222,7 +222,7 @@ def makeGOF(task):
                                                                    command = comm) + "; " + "cd -"
 
             if verbose:
-                print "Nominal GOF command:", slcomm, "\n"
+                print("Nominal GOF command:", slcomm, "\n")
 
             if not pretend:
                 outstat = os.system(slcomm)
@@ -247,7 +247,7 @@ def makeGOF(task):
                                                                             logpath = "./slurmlogs",
                                                                             command = comm.format(i = i, ntois = 1)) + "; " + "cd -"
                     if verbose:
-                        print "Toys GOF command:", slcomm, "\n"
+                        print("Toys GOF command:", slcomm, "\n")
 
                     if not pretend:
                         outstat = os.system(slcomm)
@@ -262,7 +262,7 @@ def makeGOF(task):
                                                                             logpath = "./slurmlogs",
                                                                             command = comm.format(i = i, ntois = nToysPerChunk if i != nToyChunks - 1 else nToys - nToysPerChunk * (nToyChunks - 1))) + "; " + "cd -"
                     if verbose:
-                        print "Toys GOF command:", slcomm, "\n"
+                        print("Toys GOF command:", slcomm, "\n")
 
                     if not pretend:
                         outstat = os.system(slcomm)
@@ -287,7 +287,7 @@ def makeGOF(task):
                                                                    command = comm) + "; " + "cd -"
 
             if verbose:
-                print "Nominal GOF command:", slcomm, "\n"
+                print("Nominal GOF command:", slcomm, "\n")
 
             if not pretend:
                 outstat = os.system(slcomm)
@@ -310,7 +310,7 @@ def makeGOF(task):
                                     logpath = "./slurmlogs",
                                     command = comm) + "; " + "cd -"
             if verbose:
-                print "Toys GOF command:", slcomm, "\n"
+                print("Toys GOF command:", slcomm, "\n")
 
             if not pretend:
                 outstat = os.system(slcomm)
@@ -335,7 +335,7 @@ def makeGOFplot(task):
                                                            out    = "higgsCombine{y}_{r}_toy.GoodnessOfFit.mH120.root".format(y = year, r = region.replace(",", ""))) + "; " + "cd -"
 
         if verbose:
-            print "Merging command:", comm, "\n"
+            print("Merging command:", comm, "\n")
 
         if not pretend:
             outstat = os.system(comm)
@@ -459,7 +459,7 @@ if __name__ == "__main__":
                 tasks.append( (yr, rg, inpath, verbose, pretend, extra, plotsPrePost, asimov) )
 
         for task in tasks:
-            if verbose: print "\nProcessing " + str(task) + "\n"
+            if verbose: print("\nProcessing " + str(task) + "\n")
             makeFit(task)
     elif not gofhisto:
         for yr in theyears:
@@ -467,7 +467,7 @@ if __name__ == "__main__":
                 tasks.append( (yr, rg, inpath, verbose, pretend, extra, gofpost, nthreads, nts, queue, extraslurm) )
 
         for task in tasks:
-            if verbose: print "\nProcessing " + str(task) + "\n"
+            if verbose: print("\nProcessing " + str(task) + "\n")
             makeGOF(task)
     else:
         for yr in theyears:
@@ -475,7 +475,7 @@ if __name__ == "__main__":
                 tasks.append( (yr, rg, inpath, verbose, pretend, extra, gofpost) )
 
         for task in tasks:
-            if verbose: print "\nProcessing " + str(task) + "\n"
+            if verbose: print("\nProcessing " + str(task) + "\n")
             makeGOFplot(task)
 
 

@@ -53,8 +53,8 @@ class fastCombinedObjectRecleanerTopRun2(Module):
         self._outfwdjetvars = [x%self.jc for x in ['nFwd%sSel%%d']]
         self.outjetvars  = []
         for jetPt in self.jetPts:
-            self.outjetvars.extend([(x%jetPt+y, 'I' if ('nB%s'%self.jc in x or 'n%s'%self.jc in x) else 'F') for x in self._outjetvars for y in self.systsJEC.values() if y != "" or "nB" in x])
-            self.outjetvars.extend([(x%jetPt+y, 'I' if ('nB%s'%self.jc in x or 'n%s'%self.jc in x) else 'F') for x in self._outfwdjetvars for y in self.systsJEC.values() if y != "" or "nB" in x])
+            self.outjetvars.extend([(x%jetPt+y, 'I' if ('nB%s'%self.jc in x or 'n%s'%self.jc in x) else 'F') for x in self._outjetvars for y in list(self.systsJEC.values()) if y != "" or "nB" in x])
+            self.outjetvars.extend([(x%jetPt+y, 'I' if ('nB%s'%self.jc in x or 'n%s'%self.jc in x) else 'F') for x in self._outfwdjetvars for y in list(self.systsJEC.values()) if y != "" or "nB" in x])
 
         self.branches = [var + self.label for var in self.outmasses]
         self.branches.extend([(var + self.label, _type) for var,_type in self.outjetvars])
@@ -75,7 +75,7 @@ class fastCombinedObjectRecleanerTopRun2(Module):
 
         self._helpers = [self._helper_jetsSup, self._helper_jetsInf, self._helper_fwdjetsSup, self._helper_fwdjetsInf]
         if "/fastCombinedObjectRecleanerHelperTop_cxx.so" not in r.gSystem.GetLibraries():
-          print "Load C++ recleaner worker module"
+          print("Load C++ recleaner worker module")
           r.gROOT.ProcessLine(".L {base}/src/CMGTools/TTHAnalysis/python/tools/fastCombinedObjectRecleanerHelperTop.cxx+O".format(base = os.environ['CMSSW_BASE']))
 
         self._worker = r.fastCombinedObjectRecleanerHelperTop(self._helper_jetsSup.cppImpl(), self._helper_jetsInf.cppImpl(), self._helper_fwdjetsSup.cppImpl(), self._helper_fwdjetsInf.cppImpl(), -99)
@@ -84,7 +84,7 @@ class fastCombinedObjectRecleanerTopRun2(Module):
         self._worker.setFwdNoisyPt(self.jetPtNoisyFwd)
 
         if "/fastCombinedObjectRecleanerMassVetoCalculatorTop_cxx.so" not in r.gSystem.GetLibraries():
-          print "Load C++ recleaner mass and veto calculator module"
+          print("Load C++ recleaner mass and veto calculator module")
           r.gROOT.ProcessLine(".L {base}/src/CMGTools/TTHAnalysis/python/tools/fastCombinedObjectRecleanerMassVetoCalculatorTop.cxx+O".format(base = os.environ['CMSSW_BASE']))
         self._workerMV = r.fastCombinedObjectRecleanerMassVetoCalculatorTop()
         return
@@ -157,7 +157,7 @@ class fastCombinedObjectRecleanerTopRun2(Module):
         self._worker.loadTags(tags, wpM)
         self._worker.run()
 
-        for delta,varname in self.systsJEC.iteritems():
+        for delta,varname in self.systsJEC.items():
             for x in self._worker.GetJetSums(delta):
                 for var in self._outjetvars:
                     if varname != "" or "nB" in var: self.wrappedOutputTree.fillBranch(var%x.thr + varname + self.label, getattr(x, var.replace('%d', '').replace(self.jc, 'Jet')))

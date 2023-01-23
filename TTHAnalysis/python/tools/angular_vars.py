@@ -14,9 +14,9 @@ class angular_vars:
         self.inputlabel = '_'+recllabel
         self.branches = []
         for var in self.systsJEC: self.branches.extend([br+self.systsJEC[var]+self.label for br in self.namebranches])
-        self.branches.extend([("iF%s_%d"%(self.inputlabel,i)+self.label,"I") for i in xrange(8)])
+        self.branches.extend([("iF%s_%d"%(self.inputlabel,i)+self.label,"I") for i in range(8)])
     def listBranches(self):
-        return self.branches[:]	
+        return self.branches[:] 
     def __call__(self,event):
 
         allret = {}
@@ -24,8 +24,8 @@ class angular_vars:
         all_leps = [l for l in Collection(event,"LepGood","nLepGood")]
         nFO = getattr(event,"nLepFO"+self.inputlabel)
         chosen = getattr(event,"iF"+self.inputlabel)
-        for i in xrange(8): allret["iF%s_%d"%(self.inputlabel,i)+self.label] = chosen[i] if i<nFO else 0
-        leps = [all_leps[chosen[i]] for i in xrange(nFO)]
+        for i in range(8): allret["iF%s_%d"%(self.inputlabel,i)+self.label] = chosen[i] if i<nFO else 0
+        leps = [all_leps[chosen[i]] for i in range(nFO)]
 
         for var in self.systsJEC:
             _var = var
@@ -96,7 +96,7 @@ class angular_vars:
                 if nbtight >= 1:
                     ret["pTl_DR_l_b_tight1"] = leps[0].conePt * min([deltaR(v,leps[0]) for v in btight])
 
-            #pTl_DR_l_b_2:	      
+            #pTl_DR_l_b_2:        
 
             if nlep>=2:
                 if nbloose >= 1:
@@ -115,8 +115,7 @@ class angular_vars:
 
             for br in self.namebranches:
                 allret[br+self.systsJEC[var]+self.label] = ret[br]
-	 	
-	return allret
+        return allret
 
 if __name__ == '__main__':
     from sys import argv
@@ -129,8 +128,8 @@ if __name__ == '__main__':
             Module.__init__(self,name,None)
             self.sf = angular_vars('test_angular_vars','Recl')
         def analyze(self,ev):
-            print "\nrun %6d lumi %4d event %d: leps %d" % (ev.run, ev.lumi, ev.evt, ev.nLepGood)
-            print self.sf(ev)
+            print("\nrun %6d lumi %4d event %d: leps %d" % (ev.run, ev.lumi, ev.evt, ev.nLepGood))
+            print(self.sf(ev))
     el = EventLoop([ Tester("tester") ])
     el.loop([tree], maxEvents = 50)
 

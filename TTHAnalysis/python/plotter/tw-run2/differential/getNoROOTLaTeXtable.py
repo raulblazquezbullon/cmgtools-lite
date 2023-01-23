@@ -5,7 +5,7 @@ import sys, os, copy, argparse
 from collections import OrderedDict
 
 sys.path.append('{cmsswpath}/src/CMGTools/TTHAnalysis/python/plotter/tw-run2/differential/'.format(cmsswpath = os.environ['CMSSW_BASE']))
-import varList as vl
+from . import varList as vl
 r.gROOT.SetBatch(True)
 
 
@@ -190,7 +190,7 @@ def getcondnumLaTeXtable(path, variables, outname = "condnum", addasimov = False
             if len(sublines) > 1 and not filledsysts:
                 thegoodname = sublines[0].replace("Up", "").replace("Down", "")
 
-                print thegoodname
+                print(thegoodname)
 
                 listofsysts.append(vl.PrintSysNameTranslator[thegoodname] + " " + ("Up" if "Up" in sublines[0] else "Down"))
 
@@ -210,7 +210,7 @@ def getcondnumLaTeXtable(path, variables, outname = "condnum", addasimov = False
     substr = "".join(["l"] + ["r" for x in range(len(variables))])
     finallatextab = finallatextab.replace(substr, "".join(["l|"] + ["c|" for x in range(len(variables) - 1)] + ["c"] ))
 
-    print finallatextab
+    print(finallatextab)
 
     if not os.path.isdir(path + "/tables"):
         os.system("mkdir -p " + path + "/tables")
@@ -257,7 +257,7 @@ def getgoftestsLaTeXtable(variables, path = "./results/tables", txttablespath = 
     finallatextab = finallatextab.replace(substr, "".join(["l|"] + ["c|" for x in range(len(listofsamples) - 2)] + ["c"] ))
 
 
-    print finallatextab
+    print(finallatextab)
     if not os.path.isdir(path): os.system("mkdir -p " + path)
 
     name = outname if outname != "" else "goftests"
@@ -315,7 +315,7 @@ if __name__ == "__main__":
 
     #tasks = [ (inpath, "2016", "Lep1Lep2Jet1MET_Mt") ]
 
-    print tasks
+    print(tasks)
 
     sys.exit()
 
