@@ -139,7 +139,7 @@ class Uncertainty:
     def getTrivial(self,sign,results):
         idx = 0 if sign=='up' else 1
         if self.getFR(sign) or (self.trivialFunc[idx]==None):
-            print(self.name)
+            print((self.name))
             raise RuntimeError("Trying to get trivial from a non trivial variation")
         return getattr(self,self.trivialFunc[idx])(results)
     def postProcess(self,central,variations):
@@ -230,7 +230,7 @@ class UncertaintyFile:
                 line = re.sub(r"(?<!\\)#.*","",line)  ## regexp black magic: match a # only if not preceded by a \!
                 line = line.replace(r"\#","#")        ## and now we just unescape the remaining #'s
                 while line[-1] == "\\":
-                    line = line[:-1] + " " + file.next().strip()
+                    line = line[:-1] + " " + file.readline().strip()
                     line = re.sub(r"(?<!\\)#.*","",line)  ## regexp black magic: match a # only if not preceded by a \!
                     line = line.replace(r"\#","#")        ## and now we just unescape the remaining #'s
                 extra = {}
@@ -268,7 +268,7 @@ class UncertaintyFile:
                 self._uncertainty.append(Uncertainty(name,procmatch,binmatch,unc_type,more_args,extra,options=self._options))
 
               except ValueError as e:
-                print("Error parsing cut line [%s]" % line.strip())
+                print(("Error parsing cut line [%s]" % line.strip()))
                 raise 
     def __str__(self):
         newstring = ""
