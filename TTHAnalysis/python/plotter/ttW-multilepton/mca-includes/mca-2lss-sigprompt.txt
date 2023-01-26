@@ -1,0 +1,46 @@
+# ================================================================= TTW =================================4
+TTW+     : TTWToLNu_PSW : 0.17693: LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0;              FillColor=1179, Label="t\\bar{t}W", years="2016\,2017",genSumWeightName="genEventSumw_"
+TTW+     : TTWToLNu_fxfx : 0.17693 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0;            FillColor=1179, Label="t\\bar{t}W", years="2018",genSumWeightName="genEventSumw_"
+TTW+ : TTWToLNu_EWK : 0.0491*(1-0.6741) : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0;   FillColor=ROOT.kGreen, Label="t\\bar{t}W",genSumWeightName="genEventSumw_"
+
+# ================================================================= TTZ ==================================
+TTZ     : TTZToLLNuNu : 0.28817 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0;               FillColor=ROOT.kOrange-2, Label="t\\bar{t}Z",genSumWeightName="genEventSumw_"
+TTZ     : TTZToLLNuNu_m1to10 : 0.08416 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0;        FillColor=ROOT.kOrange-2,  Label="t\\bar{t}Z",genSumWeightName="genEventSumw_"
+# ================================================================= TTH ==================================
+TTH     : TTHnobb_pow : 0.2112264 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0;             FillColor=ROOT.kGray, Label="t\\bar{t}H",genSumWeightName="genEventSumw_"
+
+# ================================================================= TZQ ==================================
+tZq: TZQToLL : 0.07358 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0;		        FillColor=814,genSumWeightName="genEventSumw_"
+
+# ================================================================= RARES ==================================
+Rares: GGHZZ4L : 0.013089 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0; 			FillColor=ROOT.kSpring-7, Label="Rare",genSumWeightName="genEventSumw_"
+Rares: WWTo2L2Nu_DPS: 0.223 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0; 		        FillColor=ROOT.kSpring-7, Label="Rare",genSumWeightName="genEventSumw_"
+Rares: qqHZZ4L : 0.0010099 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0; 			FillColor=ROOT.kSpring-7, Label="Rare",genSumWeightName="genEventSumw_"
+Rares: VHToNonbb : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0; 			FillColor=ROOT.kSpring-7, Label="Rare",genSumWeightName="genEventSumw_"
+Rares: TTTT_P8M2T4 : 0.008213 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0; 		FillColor=ROOT.kSpring-7, Label="Rare",years="2016",genSumWeightName="genEventSumw_"
+Rares: TTTT : 0.008213 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0; 			FillColor=ROOT.kSpring-7, Label="Rare",years="2017\,2018",genSumWeightName="genEventSumw_"
+Rares: WpWpJJ : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0; 			        FillColor=ROOT.kSpring-7, Label="Rare",genSumWeightName="genEventSumw_"
+Rares: tWll : 0.01123 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0; 			FillColor=ROOT.kSpring-7, Label="Rare",genSumWeightName="genEventSumw_"
+# ================================================================= VVV ==================================
+VVV: WWW : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0;				FillColor=ROOT.kViolet-4,genSumWeightName="genEventSumw_"
+VVV: WZG : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0;			        FillColor=ROOT.kViolet-4,genSumWeightName="genEventSumw_"
+VVV: WWZ : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0;			        FillColor=ROOT.kViolet-4,genSumWeightName="genEventSumw_"
+VVV: WZZ : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0;			        FillColor=ROOT.kViolet-4,genSumWeightName="genEventSumw_"
+VVV: ZZZ : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0;			        FillColor=ROOT.kViolet-4,genSumWeightName="genEventSumw_"
+# ================================================================= TTVV ==================================
+ttVV: TTWW_LO : 0.01150 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0;			FillColor=853, Label="t\\bar{t}VV",years= "2016",genSumWeightName="genEventSumw_"
+ttVV: TTWW : 0.01150    : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0; 			FillColor=853, Label="t\\bar{t}VV",years= "2017\,2018",genSumWeightName="genEventSumw_"
+ttVV: TTWZ : 0.0038229  : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0; 			FillColor=853, Label="t\\bar{t}VV",genSumWeightName="genEventSumw_"
+# ================================================================= tH ==================================
+tHq: THQ : 0.02313 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0;                            FillColor=ROOT.kMagenta+3,genSumWeightName="genEventSumw_"
+tHW: THW : 0.005087 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0;                           FillColor=ROOT.kBlue+3,genSumWeightName="genEventSumw_"
+
+# ================================================================= WZ ==================================
+WZ	: WZTo3LNu_fxfx : 4.42965 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0;  	        FillColor=ROOT.kOrange+7,genSumWeightName="genEventSumw_"
+
+
+# ================================================================= ZZ ==================================
+ZZ      : ZZTo4L : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0;  			FillColor=ROOT.kOrange+3,genSumWeightName="genEventSumw_"
+
+
+

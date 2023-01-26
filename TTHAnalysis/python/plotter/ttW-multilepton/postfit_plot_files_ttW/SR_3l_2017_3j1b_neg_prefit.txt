@@ -1,0 +1,2 @@
+# vim: syntax=sh
+SR_3l_2017_3j1b_neg_prefit:1 : 40,0,400; XTitle="m_{3l} (GeV)" 

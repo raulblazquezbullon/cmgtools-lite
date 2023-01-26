@@ -23,7 +23,7 @@ class FakeRate:
             for line in stream:
                 if len(line.strip()) == 0 or line.strip()[0] == '#': continue
                 while line.strip()[-1] == "\\":
-                    line = line.strip()[:-1] + stream.next()
+                    line = line.strip()[:-1] + next(stream)
                 fields = [x.strip() for x in line.split(":")]
                 if fields[0] == "weight":
                     if self._weight is not None: raise RuntimeError("Duplicate weight definition in fake rate file "+file)
@@ -46,7 +46,7 @@ class FakeRate:
                 elif fields[0] == 'norm-lumi-override':
                     if self._weight is None: raise RuntimeError("norm-lumi-override must follow weight declaration in fake rate file "+file)
                     if not lumi: raise RuntimeError("lumi not set in options, cannot apply norm-lumi-override")
-                    print("WARNING: normalization overridden from %s/fb to %s/fb in fake rate file %s" % (lumi,fields[1],file))
+                    print(("WARNING: normalization overridden from %s/fb to %s/fb in fake rate file %s" % (lumi,fields[1],file)))
                     self._weight = '((%s)*(%s)/(%s))' % (self._weight,fields[1],lumi)
                 elif fields[0] == 'cut-file':
                     if self._weight is None: raise RuntimeError("cut-file must follow weight declaration in fake rate file "+file)
@@ -71,7 +71,7 @@ class FakeRate:
     def _loadFile(self,hist,fname,hname,txtfilename):
         if hist in _loads:
             if _loads[hist][0] != (fname,hname):
-                print("Conflicting load for %s: (%r, %r) from %r vs older %r from %r" % (hist, fname, hname, txtfilename, _loads[hist][0], _loads[hist][1]))
+                print(("Conflicting load for %s: (%r, %r) from %r vs older %r from %r" % (hist, fname, hname, txtfilename, _loads[hist][0], _loads[hist][1])))
             else:
                 return True # no need to load multiple times
         else:

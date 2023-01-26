@@ -1,0 +1,5 @@
+# vim: syntax=sh 
+# *; LegendCutoff=1e-5 
+#3lep_m3l_rebin4: mass_3_cheap(LepGood1_pt,LepGood1_eta,LepGood2_pt,LepGood2_eta,LepGood2_phi-LepGood1_phi,LepGood3_pt,LepGood3_eta,LepGood3_phi-LepGood1_phi): [0.0, 116.87904699690597, 176.9744445678413, 263.1564711045274, 400.0]; XTitle="m_{3l} (GeV)", MoreY=2.0
+
+3lep_m3l_rebin4:mass_3_cheap(LepGood1_pt,LepGood1_eta,LepGood2_pt,LepGood2_eta,LepGood2_phi-LepGood1_phi,LepGood3_pt,LepGood3_eta,LepGood3_phi-LepGood1_phi):[0.0, 116.31593919845241, 175.89582691492637, 261.58830699551055, 400.0];XTitle="3lep_m3l", MoreY=2.0

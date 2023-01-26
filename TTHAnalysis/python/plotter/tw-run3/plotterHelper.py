@@ -54,12 +54,12 @@ def GeneralExecutioner(task):
                                           jobname = jobname_,
                                           logpath = logpath.format(y = year, p = prod),
                                           command = PlottingCommand(prod, year, nthreads, outpath, selplot, reg, ratiorange, extra, useFibre, doUncs, doBlind, era))
-            print "Command:", submitcomm
+            print("Command:", submitcomm)
             if not pretend: os.system(submitcomm)
     else:
         for reg in region.split(","):
             execcomm = PlottingCommand(prod, year, nthreads, outpath, selplot, reg, ratiorange, extra, useFibre, doUncs, doBlind, era)
-            print "Command:", execcomm
+            print("Command:", execcomm)
             if not pretend: os.system(execcomm)
 
 
@@ -175,7 +175,7 @@ if __name__=="__main__":
             Eras.append(era)
 
     if queue != "":
-        print "> Plotting jobs will be sent to the cluster."
+        print("> Plotting jobs will be sent to the cluster.")
         if year == "all":
             print("Deprecated option: --year all.")
 #            print "   - All three years and the combination will be plotted."
@@ -202,7 +202,7 @@ if __name__=="__main__":
                 else:
                     GeneralExecutioner( (prod, year, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend, useFibre, doUncs, doBlind, extraslurm, None) )
     else:
-        print "> Local execution chosen."
+        print("> Local execution chosen.")
         if year == "all":
             print("Deprecated option: --year all.")
 #            print "   - All three years and the combination will be plotted."

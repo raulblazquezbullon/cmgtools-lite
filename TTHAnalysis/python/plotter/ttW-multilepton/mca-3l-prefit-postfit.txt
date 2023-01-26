@@ -1,0 +1,7 @@
+TTW+     : TTWToLNu_EWK : 0.17693: LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kPink-1, Label="t\\bar{t}W"
+Rares: GGHZZ4L : 0.013089 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kGreen+3, Label="Others"
+TTH     : TTHnobb_pow : 0.2112264 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0;            FillColor=ROOT.kGray, Label="t\\bar{t}H"
+TT_ZG    : TTGamma_Dilep : 1.495*1.4852 :  LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kViolet+8,Label="t\\bar{t}Z/\\gamma^{*}"
+Diboson	: WZTo3LNu_fxfx : 4.42965 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0  ;  	FillColor=ROOT.kOrange+2, Label="Diboson"
+Conversions   : TTGamma_Dilep : 1.495*1.4852 : ((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1) || (LepGood3_mcMatchId==0 && LepGood3_mcPromptGamma==1)) ; FillColor=799,Label="Conversions"
+

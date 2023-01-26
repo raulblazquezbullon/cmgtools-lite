@@ -1,0 +1,25 @@
+# vim: syntax=sh 
+# *; LegendCutoff=1e-5 
+3lep_m3l_gt3j2b_neg: mass_3_cheap(LepGood1_pt,LepGood1_eta,LepGood2_pt,LepGood2_eta,LepGood2_phi-LepGood1_phi,LepGood3_pt,LepGood3_eta,LepGood3_phi-LepGood1_phi): [0.0, 116.87904699690597, 176.9744445678413, 263.1564711045274, 400.0] ; XTitle="M_{3l} (GeV)", MoreY=2.0
+3lep_m3l_3j1b_pos: mass_3_cheap(LepGood1_pt,LepGood1_eta,LepGood2_pt,LepGood2_eta,LepGood2_phi-LepGood1_phi,LepGood3_pt,LepGood3_eta,LepGood3_phi-LepGood1_phi): [0.0, 114.41901760571838, 167.01160526170392, 238.3644737598468, 400.0]; XTitle="M_{3l} (GeV)", MoreY=2.0
+3lep_m3l_2j1b_neg: mass_3_cheap(LepGood1_pt,LepGood1_eta,LepGood2_pt,LepGood2_eta,LepGood2_phi-LepGood1_phi,LepGood3_pt,LepGood3_eta,LepGood3_phi-LepGood1_phi): [0.0, 104.04501239963622, 145.92357261173623, 213.11089064762743, 400.0]; XTitle="M_{3l} (GeV)", MoreY=2.0
+3lep_m3l_2j2b_neg: mass_3_cheap(LepGood1_pt,LepGood1_eta,LepGood2_pt,LepGood2_eta,LepGood2_phi-LepGood1_phi,LepGood3_pt,LepGood3_eta,LepGood3_phi-LepGood1_phi):[0.0, 122.27468898454849, 174.08453786011336, 256.68040237263375, 400.0] ; XTitle="M_{3l} (GeV)", MoreY=2.0
+3lep_m3l_3j2b_neg: mass_3_cheap(LepGood1_pt,LepGood1_eta,LepGood2_pt,LepGood2_eta,LepGood2_phi-LepGood1_phi,LepGood3_pt,LepGood3_eta,LepGood3_phi-LepGood1_phi):[0.0, 121.66742805658379, 184.59440374671547, 262.5334359807973, 400.0] ; XTitle="M_{3l} (GeV)", MoreY=2.0
+3lep_m3l_2j1b_pos: mass_3_cheap(LepGood1_pt,LepGood1_eta,LepGood2_pt,LepGood2_eta,LepGood2_phi-LepGood1_phi,LepGood3_pt,LepGood3_eta,LepGood3_phi-LepGood1_phi): [0.0, 106.61475918456767, 148.90002223766606, 214.94615299472412, 400.0] ; XTitle="M_{3l} (GeV)", MoreY=2.0
+3lep_m3l_3j2b_pos: mass_3_cheap(LepGood1_pt,LepGood1_eta,LepGood2_pt,LepGood2_eta,LepGood2_phi-LepGood1_phi,LepGood3_pt,LepGood3_eta,LepGood3_phi-LepGood1_phi): [0.0, 117.86392817723875, 175.0280421810029, 246.9031888282239, 400.0] ; XTitle="M_{3l} (GeV)", MoreY=2.0
+3lep_m3l_2j2b_pos: mass_3_cheap(LepGood1_pt,LepGood1_eta,LepGood2_pt,LepGood2_eta,LepGood2_phi-LepGood1_phi,LepGood3_pt,LepGood3_eta,LepGood3_phi-LepGood1_phi):  [0.0, 113.79555554218635, 165.47193545439086, 242.75509740753085, 400.0]; XTitle="M_{3l} (GeV)", MoreY=2.0
+3lep_m3l_gt3j2b_pos: mass_3_cheap(LepGood1_pt,LepGood1_eta,LepGood2_pt,LepGood2_eta,LepGood2_phi-LepGood1_phi,LepGood3_pt,LepGood3_eta,LepGood3_phi-LepGood1_phi):[0.0, 121.08847327321104, 179.06265910671766, 256.82387764863853, 400.0] ; XTitle="M_{3l} (GeV)", MoreY=2.0
+3lep_m3l_3j1b_neg: mass_3_cheap(LepGood1_pt,LepGood1_eta,LepGood2_pt,LepGood2_eta,LepGood2_phi-LepGood1_phi,LepGood3_pt,LepGood3_eta,LepGood3_phi-LepGood1_phi): [0.0, 113.01559787252796, 161.28994169111058, 233.51066271686423, 400.0]; XTitle="M_{3l} (GeV)", MoreY=2.0
+3lep_m3l_gt3j1b_neg: mass_3_cheap(LepGood1_pt,LepGood1_eta,LepGood2_pt,LepGood2_eta,LepGood2_phi-LepGood1_phi,LepGood3_pt,LepGood3_eta,LepGood3_phi-LepGood1_phi):[0.0, 116.56814680619217, 173.57752753857946, 254.75168185678595, 400.0]   ; XTitle="M_{3l} (GeV)", MoreY=2.0
+3lep_m3l_gt3j1b_pos: mass_3_cheap(LepGood1_pt,LepGood1_eta,LepGood2_pt,LepGood2_eta,LepGood2_phi-LepGood1_phi,LepGood3_pt,LepGood3_eta,LepGood3_phi-LepGood1_phi):  [0.0, 122.5891692843204, 180.52139370950675, 257.39690883443814, 400.0] ; XTitle="M_{3l} (GeV)", MoreY=2.0
+
+lep1_conePt: 	 LepGood1_conePt				 : 19,10,300; XTitle="Leading lepton cone p_{T} (GeV)"
+lep1_eta: 	 abs(LepGood1_eta)					 :11,0,2.5; XTitle="Leading lepton #eta"
+lep2_conePt: 	 LepGood2_conePt				 : 13,10,150; XTitle="Sub-leading lepton cone p_{T} (GeV)"
+lep2_eta: 	 abs(LepGood2_eta)					 : 11,0,2.5; XTitle="Sub-leading lepton #eta"
+lep3_conePt: 	 LepGood3_conePt				 : 40,0,120; XTitle="Third lepton cone p_{T} (GeV)"
+lep3_eta: 	 LepGood3_eta					 : 40,-2.5,2.5; XTitle="Third lepton #eta"
+tot_weight: 1 : 1,0.5,1.5; XTitle = "Selected events", Legend='TR', MoreY=2.0
+nJet25:	    	nJet25					: [1.5,2.5,3.5,4.5,5.5,6.5,7.5] ; XTitle='N(jet\, p_{T} > 25 GeV)', XNDiv=5, xBinLabels="2\,3\,4\,5\,6\,#geq 7", Logy
+nBJetMedium25:  nBJetMedium25                           : [-0.5,0.5,1.5,2.5,3.5,4.5] ; XTitle='N(jet\, p_{T} > 25 GeV\, CSVM)', XNDiv=5, xBinLabels="0\,1\,2\,3\,#geq 4", MoreY=1.7, Logy
+deepbDiscr :   Jet_btagDeepFlavB                        : 40,0,1    ; XTitle='DeepFlavB discriminant', Logy

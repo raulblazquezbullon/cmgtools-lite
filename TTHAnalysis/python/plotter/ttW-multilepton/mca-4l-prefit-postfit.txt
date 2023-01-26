@@ -1,0 +1,11 @@
+TTW+     : TTWToLNu_EWK : 0.17693: LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kPink-1, Label="t\\bar{t}W"
+Rares: GGHZZ4L : 0.013089 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kGreen+3, Label="Others"
+TTH     : TTHnobb_pow : 0.2112264 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0;            FillColor=ROOT.kGray, Label="t\\bar{t}H"
+TT_ZG    : TTGamma_Dilep : 1.495*1.4852 :  LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kViolet+8,Label="t\\bar{t}Z/\\gamma^{*}"
+WZ	: WZTo3LNu_fxfx : 4.42965 : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0  ;  	FillColor=ROOT.kOrange+2, Label="WZ"
+ZZ      : ZZTo4L : xsec : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ;  			FillColor=ROOT.kOrange+3
+Conversions   : TTGamma_Dilep : 1.495*1.4852 : ((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1) || (LepGood3_mcMatchId==0 && LepGood3_mcPromptGamma==1)) ; FillColor=799,Label="Conversions"
+Conversions   : TTGamma_Dilep : 1.495*1.4852 : ((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1) || (LepGood3_mcMatchId==0 && LepGood3_mcPromptGamma==1)) ; FillColor=799,Label="Conversions"
+MC_fakes:  TTLep_pow_part1 + TTLep_pow_part2  + TTLep_pow_part3 + TTLep_pow_part4 + TTLep_pow_part5 + TTLep_pow_part6 + TTLep_pow_part7 + TTLep_pow_part8 + TTLep_pow_part9 + TTLep_pow_part10: 88.3419 : ((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==0) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==0) || (LepGood3_mcMatchId==0 && LepGood3_mcPromptGamma==0) || (LepGood4_mcMatchId==0 && LepGood4_mcPromptGamma==0)) ; FillColor=ROOT.kCyan+2,years = "2016", Label="MC nonprompt "
+
+
