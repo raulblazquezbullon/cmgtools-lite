@@ -1,0 +1,14 @@
+#data : DoubleMuon_Run2018_25Oct2019_ABC    
+#data : DoubleMuon_Run2018_25Oct2019_D	
+#data : EGamma_Run2018_25Oct2019_ABC	
+#data : EGamma_Run2018_25Oct2019_D	
+#data : MuonEG_Run2018_25Oct2019_ABC 
+#data : MuonEG_Run2018_25Oct2019_D	
+#data : SingleMuon_Run2018_25Oct2019_ABC	
+#data : SingleMuon_Run2018_25Oct2019_D
+data : JetHT_Run2018_25Oct2019_ABC	
+data : JetHT_Run2018_25Oct2019_D
+data : MET_Run2018_25Oct2019_ABC	
+data : MET_Run2018_25Oct2019_D	
+   
+         

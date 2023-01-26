@@ -1,0 +1,2 @@
+# vim: syntax=sh
+ttW_njetnbcharge_all_inclusive_prefit:1 : [0.5,1.5,2.5,3.5,4.5]; XTitle="b tag multiplicity",  XNDdiv=505, MoreY=3.0, IncludeOverflows=False, xBinLabels="1\,2\,1\,2\,1\,2\,1\,2\,1\,2\,1\,2"

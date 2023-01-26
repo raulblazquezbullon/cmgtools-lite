@@ -1,0 +1,4 @@
+incl_data : + ; IncludeMca="ttW-multilepton/mca-includes/mca-data.txt"
+incl_sigprompt : + ; IncludeMca="ttW-multilepton/mca-includes/mca-3l-sigprompt_onlyewk.txt"
+incl_datafakes  : + ; IncludeMca="ttW-multilepton/mca-includes/mca-data.txt", FakeRate="ttW-multilepton/fakeRate-3l-frdata.txt", Label="nonprompt", FillColor=ROOT.kCyan+2, FillStyle=1, PostFix='_fakes'
+incl_promptsub : + ; IncludeMca="ttW-multilepton/mca-includes/mca-3l-sigprompt.txt", FakeRate="ttW-multilepton/fakeRate-3l-frdata.txt", PostFix='_promptsub', AddWeight="-1"

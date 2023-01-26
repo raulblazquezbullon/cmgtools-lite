@@ -1,0 +1,2 @@
+# vim: syntax=sh
+CR_4l_2016_inclusive_postfit:1 : [0.5,1.5,2.5,3.5,4.5]; XTitle="", YMin=0.1, YMax=9e5, Logy,  XNDdiv=505, IncludeOverflows=False, xBinLabels="Any\,0j\,1b\,#geq1b"

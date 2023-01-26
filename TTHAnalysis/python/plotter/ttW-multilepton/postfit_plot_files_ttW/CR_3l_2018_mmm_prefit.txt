@@ -1,0 +1,2 @@
+# vim: syntax=sh
+CR_3l_2018_mmm_prefit:1 : 40,0,400; XTitle="Jet multiplicity", Logy, YMin=0.1, YMax=9e5, xBinLabels="1\,2\,3\,>3\,2\,3\,4\,>4\,2\,3\,4\,>4"

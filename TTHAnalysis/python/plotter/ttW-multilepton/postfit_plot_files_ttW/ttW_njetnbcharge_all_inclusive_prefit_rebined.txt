@@ -1,0 +1,2 @@
+# vim: syntax=sh
+ttW_njetnbcharge_all_inclusive_prefit_rebined:1 : [0.5,1.5,2.5,3.5,4.5]; XTitle="nJet nBJet clasification",  XNDdiv=505, YMax=450, IncludeOverflows=False, xBinLabels="2j1b\,2j2b\,3j1b\,3j2b\,>3j1b\,>3j2b\,2j1b\,2j2b\,3j1b\,3j2b\,>3j1b\,>3j2b", MoreY=1.6

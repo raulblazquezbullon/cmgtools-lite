@@ -1,0 +1,2 @@
+# vim: syntax=sh
+SR_2lss_all_ElElm_postfit:1 : 40,0,400; XTitle="Event NN discriminant" 

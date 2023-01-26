@@ -1,0 +1,10 @@
+TTW+     : TTWToLNu_PSW : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ;  FillColor=ROOT.kGreen-5, Label="ttW   ", years="2016\,2017" #naming difference they are amcatnlo_fxfx also
+TTW+     : TTWToLNu_fxfx : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ;  FillColor=ROOT.kGreen-5, Label="ttW   ", years="2018"
+TTW+     : TTWToLNu_EWK : LepGood1_mcMatchId!=0 && LepGood2_mcMatchId!=0 && LepGood3_mcMatchId!=0 ; FillColor=ROOT.kGreen-5, Label="ttW "
+
+data    :  MET_Run2016B_ver2 +  MET_Run2016C +  MET_Run2016D +  MET_Run2016E+  MET_Run2016F + MET_Run2016G + MET_Run2016H;years = "2016"
+data    :  MET_Run2017B_25Oct2019 + MET_Run2017C_25Oct2019 + MET_Run2017D_25Oct2019 + MET_Run2017E_25Oct2019 + MET_Run2017F_25Oct2019 ;years = "2017"
+data    :  MET_Run2018_25Oct2019_ABC +  MET_Run2018_25Oct2019_D ;years = "2018"
+data    :  JetHT_Run2016B_ver2 +  JetHT_Run2016C +  JetHT_Run2016D +  JetHT_Run2016E+  JetHT_Run2016F + JetHT_Run2016G + JetHT_Run2016h; years="2016" 
+data    :  JetHT_Run2017B_25Oct2019 + JetHT_Run2017C_25Oct2019 + JetHT_Run2017D_25Oct2019 + JetHT_Run2017E_25Oct2019 +JetHT_Run2017F_25Oct2019; years="2017" 
+data    :  JetHT_Run2018_25Oct2019_ABC+  JetHT_Run2018_25Oct2019_D; years="2018" 

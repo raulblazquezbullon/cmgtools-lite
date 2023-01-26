@@ -1,0 +1,3 @@
+# vim: syntax=sh 
+# *; LegendCutoff=1e-5 
+3lep_m3l_rebin4:mass_3_cheap(LepGood1_pt,LepGood1_eta,LepGood2_pt,LepGood2_eta,LepGood2_phi-LepGood1_phi,LepGood3_pt,LepGood3_eta,LepGood3_phi-LepGood1_phi):[0.0, 120.05817915712746, 179.17321995186796, 252.12279918427873, 400.0];XTitle='3lep_m3l', MoreY=2.0

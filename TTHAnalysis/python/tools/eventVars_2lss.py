@@ -1,5 +1,6 @@
 from PhysicsTools.NanoAODTools.postprocessing.framework.eventloop import Module 
 from PhysicsTools.NanoAODTools.postprocessing.framework.datamodel import Collection as NanoAODCollection 
+from CMGTools.TTHAnalysis.treeReAnalyzer import EventLoop
 
 from CMGTools.TTHAnalysis.treeReAnalyzer import Collection as CMGCollection
 from CMGTools.TTHAnalysis.tools.nanoAOD.friendVariableProducerTools import declareOutput, writeOutput
@@ -174,6 +175,7 @@ class EventVars2LSS(Module):
 
             for br in self.namebranches:
                 allret[br+self.label+self.systsJEC[_var]] = ret[br]
+        
         return allret
 
 

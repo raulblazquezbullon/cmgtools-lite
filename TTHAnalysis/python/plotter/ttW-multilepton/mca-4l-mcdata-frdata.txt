@@ -1,0 +1,8 @@
+incl_sigprompt : + ; IncludeMca="ttW-multilepton/mca-includes/mca-4l-sigprompt.txt"
+incl_convs     : + ; IncludeMca="ttW-multilepton/mca-includes/mca-4l-convs.txt"
+incl_mcfakes   : + ; IncludeMca="ttW-multilepton/mca-includes/mca-4l-mcfakes.txt"
+
+incl_data : + ; IncludeMca="ttW-multilepton/mca-includes/mca-data.txt"
+
+#incl_convs_elLooseUnc_Up : + ; IncludeMca="ttW-multilepton/mca-includes/mca-4l-convs.txt", AddWeight="elLooseUnc_4l_up", SkipMe=True, PostFix="_elLooseUnc_Up"
+#incl_convs_elLooseUnc_Dn : + ; IncludeMca="ttW-multilepton/mca-includes/mca-4l-convs.txt", AddWeight="elLooseUnc_4l_dn", SkipMe=True, PostFix="_elLooseUnc_Dn"

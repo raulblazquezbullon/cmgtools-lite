@@ -669,7 +669,8 @@ class MCAnalysis:
                         print("WARNING: nuisance %s is not found in the input fitResult %s" % (nuis, self._options.externalFitResult))
                         notfound = True
                 if notfound:
-                    print("Available nuisances: ", end=' '); self._postFit.params.Print("")
+                    print("Available nuisances: ")
+                    self._postFit.params.Print("")
                 self._options.externalFitResult_checked = True
                 # sanity check of the nuisances
         #print "DONE getPlots at %.2f" % (0.001*(long(ROOT.gSystem.Now()) - _T0))
