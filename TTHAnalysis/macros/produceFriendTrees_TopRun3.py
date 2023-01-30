@@ -34,6 +34,7 @@ friendfolders = {0 : "0_jecs",
                  4 : "4_scalefactors",
                  #4 : "4_scalefactors_puid",
                  5 : "5_mvas",
+                 6 : "6_mvas_new",
                  "btageffvars" : "x_btageff_pasf",
 }
 
@@ -43,6 +44,7 @@ chunksizes    = {0 : 200000,
                  3 : 200000,
                  4 : 200000,
                  5 : 250000,
+                 6 : 250000,
                  "btageffvars" : 500000,
 }
 minchunkbytes = 1000
@@ -301,6 +303,15 @@ def SendDatasetJobs(task):
     elif step == 5:
         #module_  = "mvas_" + ("mc" if not isData else "data")
         module_  = "mvas_" + ("mc" if not isData else "data")
+        #if not isData:
+        friends_ +=       friendpref + getFriendsFolder(dataset, friendsbasepath, 0) + friendsuff
+        friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 1) + friendsuff
+        friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 2) + friendsuff
+        friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 3) + friendsuff
+
+    elif step == 6:
+        #module_  = "mvas_" + ("mc" if not isData else "data")
+        module_  = "mvaNew_" + ("mc" if not isData else "data")
         #if not isData:
         friends_ +=       friendpref + getFriendsFolder(dataset, friendsbasepath, 0) + friendsuff
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 1) + friendsuff

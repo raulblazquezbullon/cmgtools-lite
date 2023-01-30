@@ -38,8 +38,8 @@ lep1_phi  : LepGood_phi[1]         : 40,-3.14,3.14          ; IncludeUnderflow=F
 
 met          : METgood_pt          : 30,0,300               ; IncludeUnderflow=False, LegendCutoff=0,  XTitle="p_{T}^{miss} (GeV)"
 met_phi      : METgood_phi         : 40,-3.14,3.14          ; IncludeUnderflow=False, LegendCutoff=0,  XTitle="#phi^{miss} (rad)"
-puppimet     : $DATA{PuppiMET_pt} $MC{PuppiMET_T1_pt}         : 30,0,300               ; IncludeUnderflow=False, LegendCutoff=0,  XTitle="p_{T}^{miss}_{puppi} (GeV)"
-puppimet_phi : $DATA{PuppiMET_phi} $MC{PuppiMET_T1_phi}        : 40,-3.14,3.14          ; IncludeUnderflow=False, LegendCutoff=0,  XTitle="#phi^{miss}_{puppi} (rad)"
+puppimet     : $DATA{PuppiMET_T1_pt} $MC{PuppiMET_T1_pt}         : 30,0,300               ; IncludeUnderflow=False, LegendCutoff=0,  XTitle="p_{T}^{miss}_{puppi} (GeV)"
+puppimet_phi : $DATA{PuppiMET_T1_phi} $MC{PuppiMET_T1_phi}        : 40,-3.14,3.14          ; IncludeUnderflow=False, LegendCutoff=0,  XTitle="#phi^{miss}_{puppi} (rad)"
 
 
 lep1lep2_dr   : Lep1Lep2_DR        : 20,0,5   ; IncludeUnderflow=False, LegendCutoff=0,  XTitle="#Delta#it{R}(#it{e}^{#pm}\, #it{#mu}^{#pm})"

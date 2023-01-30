@@ -46,15 +46,15 @@ def loadHistoWithUncs(fil, hist, uncs = []):
     tf.Close()
     return ret
 
-sfpath       = os.environ['CMSSW_BASE'] + "/src/CMGTools/TTHAnalysis/data/TopRun2UL/"
+sfpath       = os.environ['CMSSW_BASE'] + "/src/CMGTools/TTHAnalysis/data/TopRun3/"
 basepathlep  = sfpath + "/lepton/"
 basepathtrig = sfpath + "/trigger/"
 basepathbtag = sfpath + "/btagging/"
 SFdict = {}
 SFdict["lepton"] = {}; SFdict["lepton"] = {}; SFdict["trigger"] = {}
 SFdict["lepton"]["m"] = {}; SFdict["lepton"]["e"] = {}
-SFdict["trigger"][ch.ElMu] = {}; SFdict["trigger"][ch.Elec] = {}; SFdict["trigger"][ch.Muon] = {};
-for y in [2018]:
+SFdict["trigger"][ch.ElMu] = {}; SFdict["trigger"][ch.Elec] = {}; SFdict["trigger"][ch.Muon] = {}
+for y in [2018, 2022]:
     SFdict["lepton"]["m"][y] = {}
     SFdict["lepton"]["e"][y] = {}
     for chan in [ch.ElMu, ch.Elec, ch.Muon]:
@@ -65,6 +65,7 @@ for y in [2018]:
 #SFdict["lepton"]["m"][2016]["idtight,GH"], SFdict["lepton"]["m"][2016]["idtight_stat,GH"], SFdict["lepton"]["m"][2016]["idtight_syst,GH"] = loadHistoWithUncs(basepathlep + "Muon_Run2016GH_SF_ID.root",    "NUM_TightID_DEN_genTracks_eta_pt"          , ["_stat", "_syst"])
 #SFdict["lepton"]["m"][2017]["idtight"], SFdict["lepton"]["m"][2017]["idtight_stat"], SFdict["lepton"]["m"][2017]["idtight_syst"] = loadHistoWithUncs(basepathlep + "Muon_Run2017BCDEF_SF_ID.root", "NUM_TightID_DEN_genTracks_pt_abseta"       , ["_stat", "_syst"])
 SFdict["lepton"]["m"][2018]["idtight"], SFdict["lepton"]["m"][2018]["idtight_stat"], SFdict["lepton"]["m"][2018]["idtight_syst"] = loadHistoWithUncs(basepathlep + "Efficiencies_muon_generalTracks_Z_Run2018_UL_ID.root",  "NUM_TightID_DEN_TrackerMuons_abseta_pt"    , ["_stat", "_syst"])
+SFdict["lepton"]["m"][2022]["idtight"]    = loadHisto(basepathlep + "muonSF_run3_v2.root",    "EGamma_SF2D")
 
 # Muon iso
 #SFdict["lepton"]["m"][2016]["iso,BCDEF"], SFdict["lepton"]["m"][2016]["iso_stat,BCDEF"], SFdict["lepton"]["m"][2016]["iso_syst,BCDEF"] = loadHistoWithUncs(basepathlep + "Muon_Run2016BCDEF_SF_ISO.root", "NUM_TightRelIso_DEN_TightIDandIPCut_eta_pt"   , ["_stat", "_syst"])
@@ -76,6 +77,7 @@ SFdict["lepton"]["m"][2018]["iso"], SFdict["lepton"]["m"][2018]["iso_stat"], SFd
 #SFdict["lepton"]["e"][2016]["idtight"] = loadHisto(basepathlep + "Electron_2016_IDTight.root", "EGamma_SF2D")
 #SFdict["lepton"]["e"][2017]["idtight"] = loadHisto(basepathlep + "Electron_2017_IDTight.root", "EGamma_SF2D")
 SFdict["lepton"]["e"][2018]["idtight"] = loadHisto(basepathlep + "Electron_2018UL_IDTight.root", "EGamma_SF2D")
+SFdict["lepton"]["e"][2022]["idtight"]    = loadHisto(basepathlep + "egammaEffi_run3_v2.root",    "EGamma_SF2D")
 
 # Elec reco
 #SFdict["lepton"]["e"][2016]["recotight"] = loadHisto(basepathlep + "Electron_2016_RECO.root", "EGamma_SF2D")
@@ -96,7 +98,6 @@ SFdict["trigger"][ch.Elec][2018] = loadHisto(basepathtrig + "TriggerSF_2018_ULv2
 #SFdict["trigger"][ch.Muon][2016] = loadHisto(basepathtrig + "TriggerSFfromReza_2016.root", "h2D_SF_mumu_lepABpt_FullError")
 #SFdict["trigger"][ch.Muon][2017] = loadHisto(basepathtrig + "TriggerSFfromReza_2017.root", "h2D_SF_mumu_lepABpt_FullError")
 SFdict["trigger"][ch.Muon][2018] = loadHisto(basepathtrig + "TriggerSF_2018_ULv2.root", "h2D_SF_mumu_lepABpt_FullError")
-
 
 SFdict["btagging_deepjet"] = {}
 SFdict["btagging_deepcsv"] = {}
@@ -119,7 +120,7 @@ for el in ["B", "C", "L"]:
     SFdict["btagging_deepcsv"][el] = {}
     SFdict["btaggingSF_deepjet"][el] = {}
     SFdict["btaggingSF_deepcsv"][el] = {}
-    for year in [2018]:
+    for year in [2018, 2022]:
         #SFdict["btagging_deepjet"][el][year]   = deepcopy(f_eff.Get("btageff_deepjet_{t}_btag_{t}_tw".format(t = el)).Clone())
         SFdict["btagging_deepcsv"][el][year]   = deepcopy(f_eff.Get("btageff_deepcsv_{t}_btag_{t}_tw".format(t = el)).Clone())
         #SFdict["btaggingSF_deepjet"][el][year] = {}
@@ -286,8 +287,8 @@ axisdict["trigger"]  = {}
 axisdict["btagging"] = {}
 
 
-axisdict["lepton"]["m"] = {"x" : "Muon p_{T} (GeV)",
-                           "y" : "Muon |#eta| (adim.)"}
+axisdict["lepton"]["m"] = {"x" : "Muon |#eta| (adim.)",
+                           "y" : "Muon p_{T} (GeV)"}
 axisdict["lepton"]["e"] = {"x" : "Electron supercluster #eta (adim.)",
                            "y" : "Electron p_{T} (GeV)"}
 axisdict["trigger"]     = {"x" : "Electron p_{T} (GeV)",
@@ -301,7 +302,7 @@ def getTasks(outdir):
         os.system("mkdir -p " + outdir)
 
     alltasks = []
-    for y in [2018]:
+    for y in [2022]:
         if not os.path.isdir(outdir + "/" + str(y)):
             os.system("mkdir -p " + outdir + "/" + str(y))
         # Lepton

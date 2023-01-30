@@ -143,7 +143,7 @@ class EventVars_TopRun2UL(Module):
             jecvars = []
             self.nominaljecscaff = "_nom" ######### BE CAREFUL HERE, IT DEPENDS IF WE USE JECS IN DATA OR NOT
             if "elscale" in lepvars:
-                lepvars = ["elscale"]
+                lepvars = ["elscale"] # only one lep energy variation in data, this is equivalent to apply them to the MC
             else:
                 lepvars = []
 
@@ -313,7 +313,7 @@ class EventVars_TopRun2UL(Module):
                 jets_4m = [j.p4() for j in jets]
 
                 jetjecsysscaff = (sys if (sys != "" and "unclustEn" not in sys) else self.nominaljecscaff)
-                if event.isData: jetjecsysscaff = ""
+                if event.isData: jetjecsysscaff = "_nom" ############# BE CAREFUL HERE, IT DEPENDS IF WE USE JECS IN DATA OR NOT
 
                 for i in range(len(jets_4m)):
                     jets_4m[i].SetPtEtaPhiM(getattr(jets[i], "pt" + jetjecsysscaff), jets_4m[i].Eta(),
@@ -414,7 +414,7 @@ class EventVars_TopRun2UL(Module):
                 jets_4m = [j.p4() for j in jets]
 
                 jetjecsysscaff = self.nominaljecscaff
-                if event.isData: jetjecsysscaff = ""
+                if event.isData: jetjecsysscaff = "_nom" ############# BE CAREFUL HERE, IT DEPENDS IF WE USE JECS IN DATA OR NOT
 
                 for i in range(len(jets_4m)):
                     jets_4m[i].SetPtEtaPhiM(getattr(jets[i], "pt" + jetjecsysscaff), jets_4m[i].Eta(),
