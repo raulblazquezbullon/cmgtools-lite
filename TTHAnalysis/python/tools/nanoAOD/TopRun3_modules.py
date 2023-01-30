@@ -557,3 +557,16 @@ btagEffFtree_2022 = lambda : btageffVars_tWRun2(wp_   = 1,
                                                          btagpath + "/wp_deepCSV_106XUL18_v2_mod.csv"],
                                                 year_ = 2022)
 
+
+
+
+###### New MVA without TMVA: twRun3_MVA_SkLearn.py
+from CMGTools.TTHAnalysis.tools.nanoAOD.twRun3_MVA_SkLearn import tW_MVA
+path_1j1b_newMVA = "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/tw-run3/MVA-Training/models/1j1b_TOP-21-010/RandomForest/RandomForest.pkl"
+path_2j1b_newMVA = "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/tw-run3/MVA-Training/models/2j1b_TOP-21-010/RandomForest/RandomForest.pkl"
+mvaNew_mc   = [lambda : tW_MVA('', path_1j1b_newMVA, path_2j1b_newMVA, 
+                                              jecvars = ['jesTotal', 'jer'] + ['jes' + v for v in jecGroupsFull] + ["jer%i"%i for i in range(6)] + ["unclustEn"],
+                                              lepvars = ['mu'])]
+mvaNew_data = [lambda : tW_MVA('', path_1j1b_newMVA, path_2j1b_newMVA, isMC = False,
+                                              jecvars = [],
+                                              lepvars = [""])]
