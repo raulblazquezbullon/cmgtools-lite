@@ -1,6 +1,6 @@
 # tW Run3
 
-Last updated: **22 Nov 2022**
+Last updated: **31 Jan 2023**
 
 (Documentation work in progress)
 
@@ -31,3 +31,10 @@ Commands:
 There is a subfolder under tw-run3 called utils. It contains several scripts useful for different tasks, they are:
  * copyTo_www.py: copy a folder to your website and adds .php files for visualisation in the browser.
  * replacepdftext.sh: it takes a plot in pdf style and substitutes one string by another. Useful for removing preliminary from plots.
+
+ # Train MVA
+
+The script to train is under `MVA-training` folder. To use your model in the analysis, you need to do the following:
+ * Train and save the model with the training script. The model should be saved in joblib format.
+ * Convert the joblib model to ONNX (there is a dedicated script to do this). It is located in `MVA-training/onnxConverter/`. Follow instructions the readme instructions in that folder.
+ * Use the ONNX model to create the friend trees.
