@@ -7,20 +7,9 @@ from CMGTools.TTHAnalysis.tools.nanoAOD.friendVariableProducerTools import decla
 
 from CMGTools.TTHAnalysis.tools.nanoAOD.TopRun3_modules import ch
 
+import onnxruntime as rt
 import numpy as np
 import ROOT
-
-# -- Librerias de ML
-import pickle
-from sklearn.metrics import confusion_matrix
-from sklearn.metrics import classification_report
-from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LogisticRegression, LogisticRegressionCV
-from sklearn.decomposition import PCA
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.metrics import accuracy_score
-from sklearn.metrics import roc_curve
-from sklearn.metrics import roc_auc_score
 
 class tW_MVA(Module):
     def __init__(self, label = "", MVApath1j1b = "", MVApath2j1b = "", isMC = True, jecvars = ["jesTotal", "jer"], lepvars = ["mu"]):
@@ -41,15 +30,17 @@ class tW_MVA(Module):
                          "Lep1Jet1_DR{v}",
                          "Lep12Jet12_DR{v}"]
 
-        # -- Load the model and save it into an attribute. We need to set the njobs to 1 to avoid problems with the multiprocessing. We also set the verbosity to 0 to avoid printing the training information.
+        # -- Load the model and save it into an attribute. 
         self.MVApath1j1b = MVApath1j1b
-        with open(self.MVApath1j1b) as model_pkl_1j1b:
-            self.model_1j1b = pickle.load(model_pkl_1j1b).set_params(n_jobs=1, verbose=0)
+        self.model_1j1b = rt.InferenceSession(self.MVApath1j1b, providers = ["CPUExecutionProvider"])
         
         self.MVApath2j1b = MVApath2j1b
-        with open(self.MVApath2j1b) as model_pkl_2j1b:
-            self.model_2j1b = pickle.load(model_pkl_2j1b).set_params(n_jobs=1, verbose=0)
+        self.model_2j1b = rt.InferenceSession(self.MVApath2j1b, providers = ["CPUExecutionProvider"])
 
+        self.input_name_1j1b = self.model_1j1b.get_inputs()[0].name
+        self.label_name_1j1b = self.model_1j1b.get_outputs()[0].name
+        self.input_name_2j1b = self.model_2j1b.get_inputs()[0].name
+        self.label_name_2j1b = self.model_2j1b.get_outputs()[0].name
         # -- Nominal variables (MVA outputs)
         self.MVAbranches = ["mvaRF_1j1b", "mvaRF_2j1b"]
         self.branches = []
@@ -78,9 +69,9 @@ class tW_MVA(Module):
                 self.systsLepEn[-(i+1)] = "_%sDown"%var
         
         # Extend the branches for systematic variations
-        for delta,var in self.systsJEC.iteritems():
+        for delta,var in self.systsJEC.items():
             self.branches.extend([br + self.label + var for br in self.MVAbranches])
-        for delta,var in self.systsLepEn.iteritems():
+        for delta,var in self.systsLepEn.items():
             self.branches.extend([br + self.label + var for br in self.MVAbranches])
 
         return 
@@ -109,33 +100,38 @@ class tW_MVA(Module):
 
         # ============================ Initialisations
         for var in self.MVAbranches:
-            for delta,sys in self.systsJEC.iteritems(): # Remember that the nominal is included in the systsJEC
+            for delta,sys in self.systsJEC.items(): # Remember that the nominal is included in the systsJEC
                 allret[var + sys] = -99
 
         for var in self.MVAbranches:
-            for delta,sys in self.systsLepEn.iteritems():
+            for delta,sys in self.systsLepEn.items():
                 allret[var + sys] = -99
         
         # ============================ Calculations
         # JECs variations
         if (event.nLepGood >= 2 and event.channel == ch.ElMu):
-            for delta,sys in self.systsJEC.iteritems():
+            for delta,sys in self.systsJEC.items():
                 # -- 1j1b -- #
                 if getattr(event, 'nJetSel30{v}_Recl'.format(v = sys if "unclustEn" not in sys else "")) > 0 and getattr(event, 'nBJetSelMedium30{v}_Recl'.format(v = sys if "unclustEn" not in sys else "")) > 0: # we require 1j1b, the bjet requirement helps to improve the process time
-                    allret["mvaRF_1j1b" + sys] = self.model_1j1b.predict_proba(np.array([getattr(event, var.format(v = sys if "unclustEn" not in sys else "")) for var in self.vars1j1b]).reshape(1, -1))[0][1]
+                    # We pass the value of the input variables (nominal and varied) as a numpy array 
+                    inputVars1j1b = np.array([getattr(event, var.format(v = sys if "unclustEn" not in sys else "")) for var in self.vars1j1b], dtype = np.float32).reshape(1, -1) # we need to reshape the array to have the correct shape
+                    allret["mvaRF_1j1b" + sys] = self.model_1j1b.run(None, {self.input_name_1j1b: inputVars1j1b})[1][0][1] # Run returns: (prediction, [class probabilities]) so we take class probabilities and from there the signal probability
                 # -- 2j1b -- #
                 if getattr(event, 'nJetSel30{v}_Recl'.format(v = sys if "unclustEn" not in sys else "")) > 1 and getattr(event, 'nBJetSelMedium30{v}_Recl'.format(v = sys if "unclustEn" not in sys else "")) > 0: # we require 2j1b
-                    allret["mvaRF_2j1b" + sys] = self.model_2j1b.predict_proba(np.array([getattr(event, var.format(v = sys if "unclustEn" not in sys else "")) for var in self.vars2j1b]).reshape(1, -1))[0][1]
+                    inputVars2j1b = np.array([getattr(event, var.format(v = sys if "unclustEn" not in sys else "")) for var in self.vars2j1b], dtype = np.float32).reshape(1, -1)
+                    allret["mvaRF_2j1b" + sys] = self.model_2j1b.run(None, {self.input_name_2j1b: inputVars2j1b})[1][0][1]
 
         # Lepton energy scale variations
-        for delta,sys in self.systsLepEn.iteritems():
+        for delta,sys in self.systsLepEn.items():
             if (getattr(event, "nLepGood" + sys[1:]) >= 2 and getattr(event, "channel" + sys) == ch.ElMu):
                 # -- 1j1b -- #
                 if getattr(event, 'nJetSel30{v}_Recl'.format(v = sys)) > 0 and getattr(event, 'nBJetSelMedium30{v}_Recl'.format(v = sys)) > 0:
-                    allret["mvaRF_1j1b" + sys] = self.model_1j1b.predict_proba(np.array([getattr(event, var.format(v = sys)) for var in self.vars1j1b]).reshape(1, -1))[0][1]
+                    inputVars1j1b = np.array([getattr(event, var.format(v = sys)) for var in self.vars1j1b], dtype = np.float32).reshape(1, -1)
+                    allret["mvaRF_1j1b" + sys] = self.model_1j1b.run(None, {self.input_name_1j1b: inputVars1j1b})[1][0][1]
                 # -- 2j1b -- #
                 if getattr(event, 'nJetSel30{v}_Recl'.format(v = sys)) > 1 and getattr(event, 'nBJetSelMedium30{v}_Recl'.format(v = sys)) > 0:
-                    allret["mvaRF_2j1b" + sys] = self.model_2j1b.predict_proba(np.array([getattr(event, var.format(v = sys)) for var in self.vars2j1b]).reshape(1, -1))[0][1]
+                    inputVars2j1b = np.array([getattr(event, var.format(v = sys)) for var in self.vars2j1b], dtype = np.float32).reshape(1, -1)
+                    allret["mvaRF_2j1b" + sys] = self.model_2j1b.run(None, {self.input_name_2j1b: inputVars2j1b})[1][0][1]
         
         # ============================ Return
         return allret

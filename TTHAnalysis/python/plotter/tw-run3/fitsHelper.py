@@ -2,7 +2,7 @@ import os, sys, enum, argparse
 from multiprocessing import Pool
 import warnings as wr
 import ROOT as r
-from . import plot_postfit as ppf
+import plot_postfit as ppf
 r.PyConfig.IgnoreCommandLineOptions = True
 r.gROOT.SetBatch(True)
 

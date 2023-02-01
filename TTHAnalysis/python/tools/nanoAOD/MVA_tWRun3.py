@@ -65,7 +65,7 @@ scaffbegin = """def beginCustomFile{var}(self, inputFile, outputFile, inputTree,
     return"""
 
 scaffan = """def analyzeCustom{var}(self, event):
-    outdict = dict([ (name, mva(event)) for name, mva in self.MVAs.iteritems()])
+    outdict = dict([ (name, mva(event)) for name, mva in self.MVAs.items()])
     writeOutput(self, outdict)
     return True"""
 

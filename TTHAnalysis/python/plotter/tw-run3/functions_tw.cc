@@ -55,3 +55,26 @@ Float_t getBDtWOther(Double_t BDT){
   else if (BDT < 0.144134) return 5;
   else                       return 6;
 }
+
+// Random Forests
+Float_t getRFtW(Double_t BDT){
+  if      (BDT < 0.355707   ) return 1;
+  else if (BDT < 0.383362) return 2;
+  else if (BDT < 0.416521) return 3;
+  else if (BDT < 0.459679) return 4;
+  else if (BDT < 0.525528) return 5;
+  else if (BDT < 0.583843) return 6;
+  else if (BDT < 0.595294) return 7;
+  else if (BDT < 0.609928) return 8;
+  else if (BDT < 0.635315) return 9;
+  else                       return 10;
+}
+
+Float_t getRFtWOther(Double_t BDT){
+  if      (BDT < 0.427714   ) return 1;
+  else if (BDT < 0.462186) return 2;
+  else if (BDT < 0.487625) return 3;
+  else if (BDT < 0.533625) return 4;
+  else if (BDT < 0.548718) return 5;
+  else                       return 6;
+}

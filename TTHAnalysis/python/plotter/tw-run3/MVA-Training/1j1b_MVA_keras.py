@@ -9,6 +9,7 @@ import ROOT as r
 from root_numpy import tree2array
 import math
 import pickle
+import joblib
 
 # -- ML -- #
 from sklearn.metrics import confusion_matrix
@@ -38,7 +39,7 @@ model_name = 'RandomForest'
 
 # -- Paths -- #
 inputPath = "/pool/phedex/userstorage/vrbouza/proyectos/tw_run2/productions/2021-04-23/2016/x_mvatrain/"
-outputPath = "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/tw-run3/MVA-Training/models/test/"
+outputPath = "/nfs/fanae/user/asoto/Proyectos/tW-Run3/CMSSW_12_4_12/src/CMGTools/TTHAnalysis/python/plotter/tw-run3/MVA-Training/models/1j1b_RF/"
 
 # -- Samples -- #
 twFiles = ["tw.root", "tbarw.root"] 
@@ -111,12 +112,17 @@ class ModelHandler:
     def __init__(self, model, name):
         self.model = model
         self.name = name
+        # Set n_jobs to 1 to avoid problems when running in the cluster and verbose to 0 
+        self.model.set_params(n_jobs = 1, verbose = 0)
 
-    def save(self, outputPath, asPickle=False):
+
+    def save(self, outputPath, asPickle=False, asJobLib=False):
         # Save the model
         if asPickle:
             with open(outputPath + self.name + ".pkl", 'wb') as f:
                 pickle.dump(self.model, f)
+        elif asJobLib:
+            joblib.dump(self.model, outputPath + self.name + ".joblib")
         else:
             self.model.save(outputPath + self.name + ".h5")
     
@@ -291,9 +297,9 @@ from sklearn.preprocessing import StandardScaler
 #bdt = AdaBoostClassifier(DecisionTreeClassifier(max_depth=3), algorithm="SAMME", n_estimators=200, learning_rate=0.5, n_jobs = n_jobs)
 #model= AdaBoostClassifier(DecisionTreeClassifier(max_depth=4),n_estimators=2000,random_state=0)
 ##### BDT 1j1b
-model = RandomForestClassifier(n_estimators=2000,max_depth=4,class_weight='balanced',oob_score=True,random_state=0, n_jobs = 8, verbose = 1)
+model = RandomForestClassifier(n_estimators=2000,max_depth=4,class_weight='balanced',oob_score=True,random_state=0, n_jobs = 12, verbose = 1)
 ##### BDT 2j1b
-#model = RandomForestClassifier(n_estimators=200,max_depth=4,class_weight='balanced',oob_score=True,random_state=0, n_jobs = 12, verbose = 1)
+#model = RandomForestClassifier(n_estimators=200,max_depth=3,class_weight='balanced',oob_score=True,random_state=0, n_jobs = 12, verbose = 1)
 ##model.n_jobs = 12
 
 
@@ -338,8 +344,8 @@ modelEvaluator.plotInputVariables(outputPath)
 
 
 # Save the model
-#modelHandler = ModelHandler(model, model_name)
-#modelHandler.save(outputPath, asPickle=True)
+modelHandler = ModelHandler(model, model_name)
+modelHandler.save(outputPath, asJobLib=True)
 
 # Load the model
 #modelHandler = ModelHandler(model, model_name)

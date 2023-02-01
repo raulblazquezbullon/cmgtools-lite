@@ -21,7 +21,7 @@ datapath     = mcpath
 
 
 logpath      = friendspath + "/" + prodname + "/{y}/{step_prefix}/logs"
-commandscaff = "python prepareEventVariablesFriendTree.py -t NanoAOD {inpath} {outpath} -I CMGTools.TTHAnalysis.tools.nanoAOD.TopRun3_modules {module} {friends} {dataset} -N {chunksize} {cluster} {ex}"
+commandscaff = "python3 prepareEventVariablesFriendTree.py -t NanoAOD {inpath} {outpath} -I CMGTools.TTHAnalysis.tools.nanoAOD.TopRun3_modules {module} {friends} {dataset} -N {chunksize} {cluster} {ex}"
 clusterscaff = "--log {logdir} --name {jobname} -q {queue} --env oviedo"
 
 friendfolders = {0 : "0_jecs",
@@ -339,7 +339,7 @@ def SendDatasetJobs(task):
                                    ex      = extra
         )
 
-        print "\nCommand: ", comm
+        print("\nCommand: ", comm)
         if not pretend: os.system(comm)
 
     return
@@ -423,7 +423,7 @@ def CheckChunksByDataset(task):
             nchks, totEnt = getNchunks(dat, year, step, inputpath_)
         except:
             raise RuntimeError("FATAL: could not access {d} to obtain the number of chunks from dataset group {dg}.".format(d = dat, dg = dataset))
-        print "    - Checking dataset", dat, "(expected chunks: {nch})".format(nch = nchks)
+        print("    - Checking dataset", dat, "(expected chunks: {nch})".format(nch = nchks))
 
         for ch in range(nchks):
             chkpath = basefolder + "/" + dat.replace(".root", "") + ("_Friend.chunk{chk}.root".format(chk = ch)
@@ -432,22 +432,22 @@ def CheckChunksByDataset(task):
             #print "opening", chkpath
 
             if not os.path.isfile(chkpath):                                 #### 1st: existance
-                print "# Chunk {chk} has not been found.".format(chk = ch)
+                print("# Chunk {chk} has not been found.".format(chk = ch))
                 pendingdict[dat][ch] = errs.exist
             elif os.path.getsize(chkpath) <= minchunkbytes:                 #### 2nd: size
-                print "# Chunk {chk} has less size than the minimum.".format(chk = ch)
+                print("# Chunk {chk} has less size than the minimum.".format(chk = ch))
                 pendingdict[dat][ch] = errs.size
             else:
                 fch = r.TFile.Open(chkpath, "READ")
                 if not fch:                                                 #### 3rd: ROOT access (corruption)
-                    print "# Chunk {chk} cannot be accessed: it is corrupted.".format(chk = ch)
+                    print("# Chunk {chk} cannot be accessed: it is corrupted.".format(chk = ch))
                     pendingdict[dat][ch] = errs.corrupt
                 else:
                     tmpentries = 0
                     try:
                         tmpentries = fch.Get("Friends").GetEntries()
                     except:
-                        print "# Chunk {chk} can be opened, but the TTree cannot be accessed: it is corrupted.".format(chk = ch)
+                        print("# Chunk {chk} can be opened, but the TTree cannot be accessed: it is corrupted.".format(chk = ch))
                         pendingdict[dat][ch] = errs.corrupt
                     else:
                         #print tmpentries
@@ -455,10 +455,10 @@ def CheckChunksByDataset(task):
                         if ch == (nchks - 1):                                   #### 4th: number of entries
                             expEnt = totEnt - chunksizes[step] * (nchks - 1)
                             if int(tmpentries) != int(expEnt):
-                                print "# Chunk {chk} does not have the expected entries ({ent}), it has {realent}.".format(chk = ch, ent = expEnt, realent = tmpentries)
+                                print("# Chunk {chk} does not have the expected entries ({ent}), it has {realent}.".format(chk = ch, ent = expEnt, realent = tmpentries))
                                 pendingdict[dat][ch] = errs.entries
                         elif tmpentries != chunksizes[step]:
-                            print "# Chunk {chk} does not have the expected entries ({ent}), it has {realent}.".format(chk = ch, ent = chunksizes[step], realent = tmpentries)
+                            print("# Chunk {chk} does not have the expected entries ({ent}), it has {realent}.".format(chk = ch, ent = chunksizes[step], realent = tmpentries))
                             pendingdict[dat][ch] = errs.entries
 
                 del fch
@@ -491,29 +491,29 @@ def CheckMergedDataset(task):
             nchks, totEnt = getNchunks(dat, year, step, inputpath_)
         except:
             raise RuntimeError("FATAL: could not access {d} to obtain the number of entries.".format(d = dat))
-        print "    - Checking dataset", dat, "(expected entries: {ent})".format(ent = totEnt)
+        print("    - Checking dataset", dat, "(expected entries: {ent})".format(ent = totEnt))
 
         friendname = dat.replace(".root", "") + "_Friend.root"
         filepath   = basefolder + "/" + friendname
         # print "opening", filepath
         
         if not os.path.isfile(filepath):                  #### 1st: existance
-            print "# Merged friendtree {chk} has not been found.".format(chk = friendname)
+            print("# Merged friendtree {chk} has not been found.".format(chk = friendname))
             pendingdict[dat] = errs.exist
         elif os.path.getsize(filepath) <= minchunkbytes:  #### 2nd: size
-            print "# Merged friendtree {chk} has less size than the minimum.".format(chk = friendname)
+            print("# Merged friendtree {chk} has less size than the minimum.".format(chk = friendname))
             pendingdict[dat] = errs.size
         else:
             fch = r.TFile.Open(filepath, "READ")
             if not fch:                                   #### 3rd: ROOT access (corruption)
-                print "# Merged friendtree {chk} cannot be accessed: it is corrupted.".format(chk = friendname)
+                print("# Merged friendtree {chk} cannot be accessed: it is corrupted.".format(chk = friendname))
                 pendingdict[dat] = errs.corrupt
             else:
                 tmpentries = fch.Get("Friends").GetEntries()
                 #print tmpentries
                 fch.Close()
                 if int(tmpentries) != int(totEnt):        #### 4th: number of entries
-                    print "# Merged friendtree {chk} does not have the expected entries ({ent}), it has {realent}.".format(chk = friendname, ent = totEnt, realent = tmpentries)
+                    print("# Merged friendtree {chk} does not have the expected entries ({ent}), it has {realent}.".format(chk = friendname, ent = totEnt, realent = tmpentries))
                     pendingdict[dat] = errs.entries
 
             del fch
@@ -526,10 +526,10 @@ def MergeThoseChunks(year, step, queue, extra, noconf = False):
     basefolder = friendspath + "/" + prodname + "/" + str(year) + "/" + friendfolders[step]
     chunklist  = [f for f in os.listdir(basefolder) if (".root" in f and "chunk" in f)]
     if len(chunklist) == 0:
-        print "> No chunks found in the search folder! ({f})".format(f = basefolder)
+        print("> No chunks found in the search folder! ({f})".format(f = basefolder))
     else:
         allRfileslist  = [f for f in os.listdir(basefolder) if (".root" in f and f not in [el + ".root" for el in minitnamedict.keys()])]
-        print "> Chunks found in {b}. Please, take into account that no check upon the chunks will be done here.".format(b = basefolder)
+        print("> Chunks found in {b}. Please, take into account that no check upon the chunks will be done here.".format(b = basefolder))
         dictofmerges = {}
         for chk in allRfileslist:
             tmplex = chk.split("Friend")[0]
@@ -542,14 +542,14 @@ def MergeThoseChunks(year, step, queue, extra, noconf = False):
         nsuscept = len(list(dictofmerges.keys()))
         nmerged  = len( [f for f in list(dictofmerges.keys()) if ".root" in dictofmerges[f]] )
 
-        print "\n> {n1} datasets found susceptible to be merged, of which {n2} have already merged files and will be ignored.".format(n1 = nsuscept, n2 = nmerged )
+        print("\n> {n1} datasets found susceptible to be merged, of which {n2} have already merged files and will be ignored.".format(n1 = nsuscept, n2 = nmerged ))
 
 
         if nsuscept != nmerged:
-            print "    - The ones without merged files are the following."
+            print("    - The ones without merged files are the following.")
             for dat in dictofmerges:
                 if ".root" not in dictofmerges[dat]:
-                    print "# Dataset: {d}".format(d = dat)
+                    print("# Dataset: {d}".format(d = dat))
 
             cont = False
             if noconf:
@@ -558,10 +558,10 @@ def MergeThoseChunks(year, step, queue, extra, noconf = False):
                 cont = True
 
             if cont:
-                print "\n> Beginning merge."
+                print("\n> Beginning merge.")
                 for dat in dictofmerges:
                     if ".root" not in dictofmerges[dat]:
-                        print "\n    - Merging the {nch} chunks of dataset {d}.".format(nch = len(dictofmerges[dat]), d = dat)
+                        print("\n    - Merging the {nch} chunks of dataset {d}.".format(nch = len(dictofmerges[dat]), d = dat))
                         comm = "hadd -f3 " + basefolder + "/" + dat + "Friend.root "
 
 
@@ -570,14 +570,14 @@ def MergeThoseChunks(year, step, queue, extra, noconf = False):
                         tmpnchks = 1 + max( [ int(el.replace(".chunk", "").replace(".root", "")) for el in dictofmerges[dat] ] )
 
                         for ichk in range(tmpnchks): comm += " " + basefolder + "/" + dat + "Friend.chunk{i}.root".format(i = ichk)
-                        print "Command: " + comm
+                        print("Command: " + comm)
                         #sys.exit()
                         os.system(comm)
 
     ### EXTRA MERGE FOR MVA TRAINING MINITREES
     if step == "mvatrain":
         if confirm("\n> Do you want to merge the minitrees for MVA trainings?"):
-            print "\n> Final merge for training purposes."
+            print("\n> Final merge for training purposes.")
             for finalfile in minitnamedict:
                 listofsamplegs = []
                 for dat in trainsampledict[year]:
@@ -594,14 +594,14 @@ def MergeThoseChunks(year, step, queue, extra, noconf = False):
                         listoffiles.extend( [f for f in mergedlist if (trainsampledict[year][el] in f)] )
 
 
-                print "    - Merging into " + basefolder + "/" + finalfile + ".root these files:"
-                for el in listoffiles: print "# " + el
+                print("    - Merging into " + basefolder + "/" + finalfile + ".root these files:")
+                for el in listoffiles: print("# " + el)
 
-                print "\n"
+                print("\n")
                 comm = "hadd -f3 " + basefolder + "/" + finalfile + ".root"
 
                 for ifile in listoffiles: comm += " " + basefolder + "/" + ifile
-                print "Command: " + comm
+                print("Command: " + comm)
                 #sys.exit()
                 os.system(comm)
     return
@@ -647,18 +647,18 @@ def CheckLotsOfMergedDatasets(dataset, year, step, queue, extra, ncores):
 
 
     #print fullpendingdict
-    print "\n> Finished checks."
+    print("\n> Finished checks.")
     if len(list(fullpendingdict.keys())) != 0:
-        print "    - {nch} merged datasets should be remerged. These are:".format(nch = totalcount)
+        print("    - {nch} merged datasets should be remerged. These are:".format(nch = totalcount))
         for d in fullpendingdict:
             for part in fullpendingdict[d]:
-                print "# Dataset: {dat}".format(dat = part)
+                print("# Dataset: {dat}".format(dat = part))
 
         if confirm("> Do you want to remerge these datasets? The current merged files will be deleted and afterwards, they will be reproduced (please note that all non-merged chunks in the folder will be merged!)"):
             for d in fullpendingdict:
                 for part in fullpendingdict[d]:
                     tmpfile = friendspath + "/" + prodname + "/" + str(year) + "/" + friendfolders[step] + "/" + part.replace(".root", "") + "_Friend.root"
-                    print "   - Erasing file {f}".format(f = tmpfile)
+                    print("   - Erasing file {f}".format(f = tmpfile))
                     os.system("rm " + tmpfile)
             MergeThoseChunks(year, step, queue, extra, noconf = True)
         else:
@@ -704,13 +704,13 @@ def CheckLotsOfChunks(dataset, year, step, queue, extra, ncores, mva, nthreads):
                 if tmpcount != 0: fullpendingdict[dat] = tmpdict
 
     #print fullpendingdict
-    print "\n> Finished checks."
+    print("\n> Finished checks.")
     if len(list(fullpendingdict.keys())) != 0:
-        print "    - {nch} chunks should be reprocessed. These are:".format(nch = totalcount)
+        print("    - {nch} chunks should be reprocessed. These are:".format(nch = totalcount))
         for d in fullpendingdict:
             for part in fullpendingdict[d]:
                 for ch in fullpendingdict[d][part]:
-                    print "# Dataset: {dat} - chunk: {c}".format(dat = part, c = ch)
+                    print("# Dataset: {dat} - chunk: {c}".format(dat = part, c = ch))
 
         if confirm("\n> Do you want to send these jobs?"):
             if not os.path.isdir(logpath.format(step_prefix = friendfolders[step], y = year)):
@@ -749,7 +749,7 @@ def confirm(message = "Do you wish to continue?"):
     """
     answer = ""
     while answer not in ["y", "n", "yes", "no"]:
-        answer = raw_input(message + " [Y/N]\n").lower()
+        answer = input(message + " [Y/N]\n").lower()
     return answer[0] == "y"
 
 
@@ -787,24 +787,24 @@ if __name__=="__main__":
         #raise RuntimeError("FATAL: step 0 is disabled. Begin with step 1.")
 
     if erasech:
-        print "\n====== ATTENTION!!!!!! ======"
-        print "This will erase ALL CHUNKS in production " + prodname + "'s folder for year " + str(year) + " that are present in these subfolders (if they exist):"
+        print("\n====== ATTENTION!!!!!! ======")
+        print("This will erase ALL CHUNKS in production " + prodname + "'s folder for year " + str(year) + " that are present in these subfolders (if they exist):")
         erasecomm = "rm -f {path}"
         for step,name in friendfolders.iteritems():
-            print "- " + name
+            print("- " + name)
         if confirm("\n> Do you REALLY want to continue?"):
             basefolder = friendspath + "/" + prodname + "/" + str(year) + "/"
             for step,name in friendfolders.iteritems():
                 if os.path.isdir(basefolder + name):
                     if any(["chunk" in el for el in os.listdir(basefolder + name)]):
-                        print "# Erasing chunks in subfolder " + name + " of step " + str(step)
+                        print("# Erasing chunks in subfolder " + name + " of step " + str(step))
                         #print erasecomm.format(path = basefolder + name + "/*chunk*.root")
                         os.system(erasecomm.format(path = basefolder + name + "/*chunk*.root"))
                         #sys.exit()
 
 
     elif check and not merge:
-        print "\n> Beginning checks of all chunks for the production of year {y}, of the friend trees of step {s} for {d} dataset(s).".format(y = year, s = step, d = dataset)
+        print("\n> Beginning checks of all chunks for the production of year {y}, of the friend trees of step {s} for {d} dataset(s).".format(y = year, s = step, d = dataset))
         CheckLotsOfChunks(dataset, year, step, queue, extra, ncores, mva, nthreads)
     elif merge and not check:
         MergeThoseChunks(year, step, queue, extra)
@@ -817,10 +817,10 @@ if __name__=="__main__":
             tasks   = []
             thedict = trainsampledict[year] if mva else sampledict[year]
             for dat in thedict: tasks.append( (dat, year, step, queue, extra, pretend, nthreads) )
-            print "> A total of {n} commands (that might send one, or more jobs) are going to be executed for year {y}, step {s} in the queue {q} and parallelised with {j} cores.".format(n = len(tasks), y = year, s = step, q = queue, j = ncores)
+            print("> A total of {n} commands (that might send one, or more jobs) are going to be executed for year {y}, step {s} in the queue {q} and parallelised with {j} cores.".format(n = len(tasks), y = year, s = step, q = queue, j = ncores))
 
             if confirm("\n> Do you want to send these jobs?"):
-                print "> Beginning submission."
+                print("> Beginning submission.")
                 if ncores > 1:
                     pool = Pool(ncores)
                     pool.map(GeneralSubmitter, tasks)

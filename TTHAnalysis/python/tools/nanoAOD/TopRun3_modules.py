@@ -499,7 +499,7 @@ sfSeq_2016apv   = [leptrigSFs_2016apv, btagWeights_2016apv, addTopPtWeight]
 sfSeq_2016      = [leptrigSFs_2016,    btagWeights_2016,    addTopPtWeight]
 sfSeq_2017      = [leptrigSFs_2017,    btagWeights_2017,    addTopPtWeight]
 sfSeq_2018      = [leptrigSFs_2018,    btagWeights_2018,    addTopPtWeight]
-sfSeq_2022      = [leptrigSFs_2022_ttbarRun3,    btagWeights_2022]
+sfSeq_2022      = [leptrigSFs_2022_ttbarRun3]#,    btagWeights_2022]
 
 
 ### BDT
@@ -562,8 +562,8 @@ btagEffFtree_2022 = lambda : btageffVars_tWRun2(wp_   = 1,
 
 ###### New MVA without TMVA: twRun3_MVA_SkLearn.py
 from CMGTools.TTHAnalysis.tools.nanoAOD.twRun3_MVA_SkLearn import tW_MVA
-path_1j1b_newMVA = "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/tw-run3/MVA-Training/models/1j1b_TOP-21-010/RandomForest/RandomForest.pkl"
-path_2j1b_newMVA = "/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/tw-run3/MVA-Training/models/2j1b_TOP-21-010/RandomForest/RandomForest.pkl"
+path_1j1b_newMVA = "/nfs/fanae/user/asoto/Proyectos/tW-Run3/CMSSW_12_4_12/src/CMGTools/TTHAnalysis/python/plotter/tw-run3/MVA-Training/onnxConverter/rf1j1b.onnx"
+path_2j1b_newMVA = "/nfs/fanae/user/asoto/Proyectos/tW-Run3/CMSSW_12_4_12/src/CMGTools/TTHAnalysis/python/plotter/tw-run3/MVA-Training/onnxConverter/rf2j1b.onnx"
 mvaNew_mc   = [lambda : tW_MVA('', path_1j1b_newMVA, path_2j1b_newMVA, 
                                               jecvars = ['jesTotal', 'jer'] + ['jes' + v for v in jecGroupsFull] + ["jer%i"%i for i in range(6)] + ["unclustEn"],
                                               lepvars = ['mu'])]

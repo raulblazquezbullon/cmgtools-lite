@@ -23,10 +23,10 @@ friendsscaff = "--FMCs {P}/0_jecs --Fs {P}/1_lepsuncsAndParticle --Fs {P}/2_clea
 
 #-W 'MuonIDSF * MuonISOSF * ElecIDSF * ElecRECOSF * TrigSF * puWeight * bTagWeight'
 
-commandscaff = "python mcPlots.py --tree NanoAOD --pdir {outpath} {friends} {samplespaths} -f -l {lumi} {nth} --year {year} {ratio} -W 'MuonIDSF * ElecIDSF * TrigSF' --showRatio --fixRatioRange --legendColumns 1 --legendWidth 0.15 --legendFontSize 0.05616 --noCms --topSpamSize 1.1 --addSpamSize 1.2 --lspam '#splitline{{#scale[1.1]{{#bf{{CMS}}}}}}{{#scale[0.9]{{#it{{Preliminary}}}}}}' --neg --showMCError -L tw-run3/functions_tw.cc {selplot} {mcafile} {cutsfile} {plotsfile} {extra} --AP --noStatTotLegendOnRatio --addspam '{nameregion}' --lspamPosition 0.21 .845 .35 .885 --TotalUncRatioStyle 3444 0 --noStatUncOnRatio --YTitleOffset 1.8 1.8 --CanvasSize 600 450 --TotalUncRatioColor 922 922 --addspamPosition .365 .845 .55 .885 --transparentLegend --PrincipalPadDimensions 0.00 0.25 1.00 1.00 --RatioPadDimensions 0.00 0.00 1.00 0.25 --LeftRightMargins 0.16 0.03 --ratioYLabel 'Data / Pred.     ' --labelsSize 22 --axisTitleSize 26 --labelsFont 43 --BottomMarginRatio 0.42 --XTitleOffsetRatio 4.0 --noXErrData --printBin 'bin' --printBinUnity --noExpoShift --no-elist --maxDigitsYaxis 4 --UncLegendName Uncertainty --ratioLinePersonalization 2 1 1 --lspamShiftLegend --noAddspamShift --ratioYNDiv 503 --histoLineWidth 0 --removeMarkerUncertainty --centerRatioYTitle --perBin" # --NotDrawRatioLine --lspam '#scale[1.1]{{#bf{{CMS}}}}'
+commandscaff = "python3 mcPlots.py --tree NanoAOD --pdir {outpath} {friends} {samplespaths} -f -l {lumi} {nth} --year {year} {ratio} -W 'MuonIDSF * ElecIDSF * TrigSF' --showRatio --fixRatioRange --legendColumns 1 --legendWidth 0.15 --legendFontSize 0.05616 --noCms --topSpamSize 1.1 --addSpamSize 1.2 --lspam '#splitline{{#scale[1.1]{{#bf{{CMS}}}}}}{{#scale[0.9]{{#it{{Preliminary}}}}}}' --neg --showMCError -L tw-run3/functions_tw.cc {selplot} {mcafile} {cutsfile} {plotsfile} {extra} --AP --noStatTotLegendOnRatio --addspam '{nameregion}' --lspamPosition 0.21 .845 .35 .885 --TotalUncRatioStyle 3444 0 --noStatUncOnRatio --YTitleOffset 1.8 1.8 --CanvasSize 600 450 --TotalUncRatioColor 922 922 --addspamPosition .365 .845 .55 .885 --transparentLegend --PrincipalPadDimensions 0.00 0.25 1.00 1.00 --RatioPadDimensions 0.00 0.00 1.00 0.25 --LeftRightMargins 0.16 0.03 --ratioYLabel 'Data / Pred.     ' --labelsSize 22 --axisTitleSize 26 --labelsFont 43 --BottomMarginRatio 0.42 --XTitleOffsetRatio 4.0 --noXErrData --printBin 'bin' --printBinUnity --noExpoShift --no-elist --maxDigitsYaxis 4 --UncLegendName Uncertainty --ratioLinePersonalization 2 1 1 --lspamShiftLegend --noAddspamShift --ratioYNDiv 503 --histoLineWidth 0 --removeMarkerUncertainty --centerRatioYTitle --perBin" # --NotDrawRatioLine --lspam '#scale[1.1]{{#bf{{CMS}}}}'
 
 # For blind plots
-commandblindscaff = "python mcPlots.py --tree NanoAOD --pdir {outpath} {friends} {samplespaths} -f -l {lumi} {nth} --year {year} {ratio} -W 'MuonIDSF * ElecIDSF * TrigSF' --showRatio --fixRatioRange --legendColumns 1 --legendWidth 0.07 --legendFontSize 0.032 --noCms --topSpamSize 1.1 --lspam '#splitline{{#scale[1.1]{{#bf{{CMS}}}}}}{{#scale[0.9]{{#it{{Preliminary}}}}}}' --neg --showMCError -L tw-run3/functions_tw.cc {selplot} {mcafile} {cutsfile} {plotsfile} {extra} --AP --noStatTotLegendOnRatio --addspam '{nameregion}' --lspamPosition 0.21 .845 .35 .885 --TotalUncRatioStyle 3444 0 --noStatUncOnRatio --YTitleOffset 2.1 2.1 --TotalUncRatioColor 922 922 --addspamPosition .41 .855 .6 .895 --transparentLegend --LeftRightMargins 0.16 0.03  --labelsSize 22 --labelsFont 43 --BottomMarginRatio 0.42 --XTitleOffsetRatio 4.8 --noXErrData --printBin 'bin' --printBinUnity --noExpoShift --no-elist --maxDigitsYaxis 4 --UncLegendName Uncertainty --ratioLinePersonalization 2 1 1 --lspamShiftLegend --noAddspamShift --ratioYNDiv 503 --histoLineWidth 0 --removeMarkerUncertainty --centerRatioYTitle --perBin" #--ratioYNDiv 210 --NotDrawRatioLine
+commandblindscaff = "python3 mcPlots.py --tree NanoAOD --pdir {outpath} {friends} {samplespaths} -f -l {lumi} {nth} --year {year} {ratio} -W 'MuonIDSF * ElecIDSF * TrigSF' --showRatio --fixRatioRange --legendColumns 1 --legendWidth 0.07 --legendFontSize 0.032 --noCms --topSpamSize 1.1 --lspam '#splitline{{#scale[1.1]{{#bf{{CMS}}}}}}{{#scale[0.9]{{#it{{Preliminary}}}}}}' --neg --showMCError -L tw-run3/functions_tw.cc {selplot} {mcafile} {cutsfile} {plotsfile} {extra} --AP --noStatTotLegendOnRatio --addspam '{nameregion}' --lspamPosition 0.21 .845 .35 .885 --TotalUncRatioStyle 3444 0 --noStatUncOnRatio --YTitleOffset 2.1 2.1 --TotalUncRatioColor 922 922 --addspamPosition .41 .855 .6 .895 --transparentLegend --LeftRightMargins 0.16 0.03  --labelsSize 22 --labelsFont 43 --BottomMarginRatio 0.42 --XTitleOffsetRatio 4.8 --noXErrData --printBin 'bin' --printBinUnity --noExpoShift --no-elist --maxDigitsYaxis 4 --UncLegendName Uncertainty --ratioLinePersonalization 2 1 1 --lspamShiftLegend --noAddspamShift --ratioYNDiv 503 --histoLineWidth 0 --removeMarkerUncertainty --centerRatioYTitle --perBin" #--ratioYNDiv 210 --NotDrawRatioLine
 
 
 slurmscaff   = 'sbatch {extraS} -c {nth} -p {queue} -J {jobname} -e {logpath}/log.%j.%x.err -o {logpath}/log.%j.%x.out --wrap "{command}"'
@@ -79,7 +79,7 @@ def PlottingCommand(prod, year, nthreads, outpath, selplot, region, ratio, extra
 
     nth_        = "" if nthreads == 0 else ("--split-factor=-1 -j " + str(nthreads))
 
-    friends_    = friendsscaff + (" --Fs {P}/5_mvas" * ("MVA" in region))
+    friends_    = friendsscaff + (" --Fs {P}/5_mvas --Fs {P}/6_mvas_new" * ("MVA" in region))
     outpath_    = outpath + "/" + era + "/" + (region if "_" not in region else (region.split("_")[0] + "/" + region.split("_")[1]))
     selplot_    = " ".join( [ "--sP {p}".format(p = sp) for sp in selplot ] ) if len(selplot) else ""
     ratio_      = "--maxRatioRange " + ratio
@@ -125,13 +125,13 @@ def confirm(message = "Do you wish to continue?"):
     """
     answer = ""
     while answer not in ["y", "n", "yes", "no"]:
-        answer = raw_input(message + " [Y/N]\n").lower()
+        answer = input(message + " [Y/N]\n").lower()
     return answer[0] == "y"
 
 
 
 if __name__=="__main__":
-    parser = argparse.ArgumentParser(usage = "python plotterHelper.py [options]", description = "Helper for plotting.", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser = argparse.ArgumentParser(usage = "python3 plotterHelper.py [options]", description = "Helper for plotting.", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('--production','-P', metavar = "prod",      dest = "prod",    required = True)
     parser.add_argument('--year',      '-y', metavar = 'year',      dest = "year",    required = False, default = "2016")
     parser.add_argument('--queue',     '-q', metavar = 'queue',     dest = "queue",   required = False, default = "")
