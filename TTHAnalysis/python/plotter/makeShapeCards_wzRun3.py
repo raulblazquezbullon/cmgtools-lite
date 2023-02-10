@@ -82,7 +82,7 @@ def apply_asimov(mca, cuts, report, options):
     if p in report: 
       if tomerge is None:
         tomerge = report[p].raw().Clone("x_data_obs")
-        tomerge.SetDirectory(None)
+        tomerge.SetDirectory(ROOT.nullptr)
       else: 
         tomerge.Add(report[p].raw())
   report['data_obs'] = HistoWithNuisances(tomerge)
