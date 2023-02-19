@@ -1,0 +1,10 @@
+alwaystrue : 1
+filters : $DATA{Flag_goodVertices && Flag_globalSuperTightHalo2016Filter && Flag_HBHENoiseFilter && Flag_HBHENoiseIsoFilter && Flag_EcalDeadCellTriggerPrimitiveFilter && Flag_BadPFMuonFilter && Flag_BadChargedCandidateFilter && Flag_eeBadScFilter && Flag_ecalBadCalibFilter} $MC{1}
+trigger : Trigger_3l
+3l : nLepSel >= 3
+AllTight : allTight(LepSel_isTight[0], LepSel_isTight[1], LepSel_isTight[2])
+lepPt : LepZ1_pt >= 25 && LepZ2_pt >= 10 && LepW_pt >= 25
+lowmass : minMllSFOS_Mini > 12 || minMllSFOS_Mini == -1
+BRevent : abs(LepSel_pdgId[0]) < 15 && abs(LepSel_pdgId[1]) < 15 && abs(LepSel_pdgId[2]) < 15 && nOSSF_3l >= 1
+SRWZ : m3L >= 100  &&  $DATA{MET_pt_central} $MC{MET_pt_central}  > 30 && abs(mll_3l - 91.16) < 15 && nLepGood < 4 && nBJetTight25_Mini == 0
+SRWZnomet : m3L >= 100  && abs(mll_3l - 91.16) < 15 && nLepGood < 4 && nBJetTight25_Mini == 0

@@ -1,0 +1,11 @@
+## Data
+## -----------------------------------------------------------
+incl_data           : + ; IncludeMca="wz-run3/2022/includes/mca_data.txt"
+
+## Signal and prompt backgrounds
+incl_signal         : + ; IncludeMca="wz-run3/2022/includes/mca_wz.txt"
+
+## Fakes
+## -----------------------------------------------------------
+incl_fakes          : + ; IncludeMca="wz-run3/2022/includes/mca_mcfakes.txt"
+

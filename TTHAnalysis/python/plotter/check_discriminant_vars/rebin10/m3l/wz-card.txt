@@ -1,0 +1,12 @@
+shapes *        * wz-card.root x_$PROCESS x_$PROCESS_$SYSTEMATIC
+##----------------------------------
+bin         wz-card
+observation 0.0
+##----------------------------------
+##----------------------------------
+bin           
+process       
+process       
+rate          
+##----------------------------------
+* autoMCStats 10
