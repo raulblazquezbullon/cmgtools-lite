@@ -6,14 +6,15 @@ import os,sys
 class producer(object):
   # -- Friend tree modules 
   modules = { 
-    1 : ["jmeUncertainties_v2"   , "mc"],
-    2 : ["leptonJetRecleaning_v2", "simple"],
-    3 : ["leptonBuilder_v2"      , "simple"],
-    4 : ["triggerSequence_v2"    , "simple"],
-    5 : ["scalefactors_v2"       , "mc"],
+    1 : ["jmeUncertainties"   , "mc"],
+    2 : ["leptonJetRecleaning", "simple"],
+    3 : ["leptonBuilder"      , "simple"],
+    4 : ["triggerSequence"    , "simple"],
+    5 : ["scalefactors"       , "mc"],
   }
 
-  weights = ["muonSF*electronSF*bTagWeight"]
+  weights = ["muonSF*electronSF"] #*bTagWeight"]
+
   name = "producer"
   cluster_comm = "sbatch -c {nc} -J {jn} -p {q} -e {logpath}/logs/log.%j.%x.err -o {logpath}/logs/log.%j.%x.out --wrap '{comm}' "
   jobname = "CMGjob"
