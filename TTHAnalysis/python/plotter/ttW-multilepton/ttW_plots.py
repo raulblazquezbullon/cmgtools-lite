@@ -23,28 +23,31 @@ P0="/eos/cms/store/cmst3/group/tthlep/peruzzi/"
 #if 'cmsco01'   in os.environ['HOSTNAME']: P0="/data1/peruzzi"
 nCores = 12 
 P0D=""
+P0Dflips=""
 if 'fanae' in os.environ['HOSTNAME']:
     nCores = 64 
     submit = 'sbatch -c %d -p batch  --wrap "{command}"'%nCores
-#    P0     = "/pool/ciencias/HeppyTrees/EdgeZ/TTH/"
-    P0     =  "/beegfs/data/TOPnanoAODv6/ttW_MC_Ntuples_skim/"
-    P0D    =  "/beegfs/data/TOPnanoAODv6/ttW_Data_Ntuples_skim/"
+    P0 =  "/beegfs/data/TOPnanoAODv6/ttW_MC_Ntuples_skim/"
+    P0D =  "/beegfs/data/TOPnanoAODv6/ttW_Data_Ntuples_skim/"
+    P0Dflips =  "/beegfs/data/nanoAODv9/ttW_data_forFlips/"
 if 'gae' in os.environ['HOSTNAME']: 
     nCores = 64
     submit = 'sbatch -c %d -p batch  --wrap "{command}"'%nCores
-    P0     =  "/beegfs/data/TOPnanoAODv6/ttW_MC_Ntuples_skim/"
-    P0D    =  "/beegfs/data/TOPnanoAODv6/ttW_Data_Ntuples_skim/"
+    P0     =  "/beegfs/data/TOPnanoAODv6/ttW_MC_Ntuples_skim"
+    P0D    =  "/beegfs/data/TOPnanoAODv6/ttW_Data_Ntuples_skim"
+    P0Dflips =  "/beegfs/data/nanoAODv9/ttW_data_forFlips/"
+
 if 'cism.ucl.ac.be' in os.environ['HOSTNAME']:
     P0 = "/nfs/user/pvischia/tth/v5pre/"
 
-#TREESALL = "--xf THQ_LHE,THW_LHE,TTTW,TTWH --FMCs {P}/0_jmeUnc_v1 --FDs {P}/1_recl --FMCs {P}/1_recl_allvars --FMCs {P}/2_btag_SFs --FMCs {P}/2_scalefactors_lep_fixed --Fs {P}/3_tauCount --Fs {P}/4_evtVars  --Fs {P}/5_BDThtt_reco_new_blah --Fs {P}/6_mva2lss --Fs {P}/6_mva3l --Fs {P}/6_mva4l  "  #_new
+scalefactors = "/beegfs/data/nanoAODv9/temp_ttw/"
+TREESALL = "--FMCs {P}/0_jmeUnc_v1 --FDs {P}/1_recl_enero --FMCs {P}/1_recl_allvars --FMCs {P}/2_btag_SFs_fix11m --FMCs {P}/lepscalefactors_2lss/ --FMCs {P}/2_scalefactors_triglep --Fs {P}/3_tauCount --Fs {P}/4_evtVars  --xf TTTW --xf TTWH" #_even newer
 
-TREESALL = "--FMCs {P}/0_jmeUnc_v1 --FDs {P}/1_recl_enero --FMCs {P}/1_recl_allvars --FMCs /beegfs/data/nanoAODv9/temp_ttw/%s/2_lepscalefactors_2lss/ --FMCs {P}/2_btag_SFs_fix11m --FMCs {P}/2_scalefactors_triglep --Fs {P}/3_tauCount --Fs {P}/4_evtVars  --xf TTTW --xf TTWH"%YEAR  #_even newer
 
 YEARDIR=YEAR if YEAR != 'all' else ''
 TREESONLYFULL     = "-P "+P0+"/NanoTrees_TTH_090120_091019_v6/%s "%(YEARDIR,)         
 #TREESONLYSKIM     = "-P "+P0+"/NanoTrees_TTH_090120_091019_v6_skim2lss/%s "%(YEARDIR,)
-TREESONLYSKIM     = "-P "+P0+"/%s "%(YEARDIR,)+" -P "+P0D+"/%s "%(YEARDIR,)
+TREESONLYSKIM     = "-P "+P0+"/%s "%(YEARDIR,)+" -P "+P0D+"/%s "%(YEARDIR,)+" -P "+P0Dflips+"/%s "%(YEARDIR,)
 TREESONLYMEMZVETO = "-P "+P0+"/NanoTrees_TTH_090120_091019_v6/%s "%(YEARDIR,)         
 TREESONLYMEMZPEAK = "-P "+P0+"/NanoTrees_TTH_090120_091019_v6/%s "%(YEARDIR,)         
 
