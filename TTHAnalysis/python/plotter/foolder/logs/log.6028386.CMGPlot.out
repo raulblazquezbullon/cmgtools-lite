@@ -1,4 +1,0 @@
-Will save plots to  ./foolder/plots_wz.root
-cut set:  all cuts
-    plot:  m3lmet_Meas
-({'prompt_WZ': <CMGTools.TTHAnalysis.plotter.histoWithNuisances.HistoWithNuisances object at 0x7f33e7cde1c0>, 'prompt_ZZ': <CMGTools.TTHAnalysis.plotter.histoWithNuisances.HistoWithNuisances object at 0x7f33c48fc9a0>, 'fakes_DY': <CMGTools.TTHAnalysis.plotter.histoWithNuisances.HistoWithNuisances object at 0x7f33c48fcb80>, 'fakes_TT': <CMGTools.TTHAnalysis.plotter.histoWithNuisances.HistoWithNuisances object at 0x7f33c48fcb20>, 'fakes_VV': <CMGTools.TTHAnalysis.plotter.histoWithNuisances.HistoWithNuisances object at 0x7f33c48fcac0>, 'signal': <CMGTools.TTHAnalysis.plotter.histoWithNuisances.HistoWithNuisances object at 0x7f33c48fcb50>, 'background': <CMGTools.TTHAnalysis.plotter.histoWithNuisances.HistoWithNuisances object at 0x7f33c48e6340>}, ['prompt_ZZ', 'fakes_DY', 'fakes_TT', 'fakes_VV'], ['prompt_WZ'])
