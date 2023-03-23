@@ -9,6 +9,7 @@ from copy import deepcopy
 import os
 import re
 import sys
+import subprocess
 
 # Functions
 functional_variables = {"m3l" : "m3L",
@@ -42,11 +43,15 @@ if __name__ == "__main__":
 	inpath = "./check_discriminant_vars/"
 	outpath = "./check_discriminant_vars/"
 	
+	filename = "./wz-run3/scripts/combine/run_impacts_inclusive.sh"
+	
 	for var in variables:
 		print(">> Going to %s variable" %var)
 		
 		for nq in nquant:
-			inpath += "./rebin%s/%s/" %(nq,var)
+			inpath += "./rebin%s/%s/cards/" %(nq,var)
 			outpath += "./rebin%s/%s/combined_cards/" %(nq,var)
 			
+			comm = subprocess.call(filename + " " + inpath + " " + outpath)
+			print(comm)
 	
