@@ -23,16 +23,6 @@ def add_parsing_options():
 	parser = argparse.ArgumentParser()
 	parser.add_argument("--nquant",    dest = "nquant")
 	parser.add_argument("--variables", dest = "variables", default = functional_variables.keys())
-	parser.add_argument("--mode",      dest = "mode")
-	parser.add_argument("--year",      dest = "year", default = "2022")
-	parser.add_argument("--ncores",	   dest = "ncores",default = 8)
-	parser.add_argument("--lumis",	   dest = "lumis",default = {"2022":"13.09"})
-	parser.add_argument("--cut",	   dest = "cut",default = "./wz-run3/common/cuts_wzsm.txt")
-	parser.add_argument("--run-local", dest = "local",action = "store_true",default = False)
-	parser.add_argument("--extra",	   dest = "extra",default = "",type = str,
-						help = "Extra options for CMGTools, user must give extra options without -- \
-								and without '', also separated by commas")
-	parser.add_argument("--do-submit", dest = "submit",action = "store_true",default = False)
 
 	return parser.parse_args() 
 	
