@@ -157,7 +157,7 @@ def make_cards(options):
 		8. Cut file
 		9. Extra options (for makeShapeCards_wzRun3.py)
 		10. Rebinned quantiles
-		11. Variable command name name of the variable in plots_wz.txt)
+		11. Variable command name of the variable in plots_wz.txt
 		12. Submit command directly (maintain this as the second to last)
 		13. Run local (maintain this as the last one)
 		
