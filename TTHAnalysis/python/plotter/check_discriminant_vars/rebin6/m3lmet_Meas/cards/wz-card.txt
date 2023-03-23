@@ -1,7 +1,7 @@
 shapes *        * wz-card.root x_$PROCESS x_$PROCESS_$SYSTEMATIC
 ##----------------------------------
 bin         wz-card
-observation 3139.497494296296
+observation 3139.4974942962936
 ##----------------------------------
 ##----------------------------------
 bin                      wz-card     wz-card     wz-card     wz-card     wz-card 

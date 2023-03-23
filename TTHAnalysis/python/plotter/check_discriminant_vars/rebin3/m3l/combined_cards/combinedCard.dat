@@ -1,0 +1,24 @@
+Combination of cr-card=/nfs/fanae/user/rblazquez/TFG/wz_run3/CMSSW_12_4_12/src/CMGTools/TTHAnalysis/python/plotter/./check_discriminant_vars/./rebin3/m3l/cards//cr-card.txt  wz-card=/nfs/fanae/user/rblazquez/TFG/wz_run3/CMSSW_12_4_12/src/CMGTools/TTHAnalysis/python/plotter/./check_discriminant_vars/./rebin3/m3l/cards//wz-card.txt
+imax 2 number of bins
+jmax 4 number of processes minus 1
+kmax 6 number of nuisance parameters
+----------------------------------------------------------------------------------------------------------------------------------
+shapes *        cr-card  /nfs/fanae/user/rblazquez/TFG/wz_run3/CMSSW_12_4_12/src/CMGTools/TTHAnalysis/python/plotter/./check_discriminant_vars/./rebin3/m3l/cards/wz-card.root x_$PROCESS x_$PROCESS_$SYSTEMATIC
+shapes *        wz-card  /nfs/fanae/user/rblazquez/TFG/wz_run3/CMSSW_12_4_12/src/CMGTools/TTHAnalysis/python/plotter/./check_discriminant_vars/./rebin3/m3l/cards/wz-card.root x_$PROCESS x_$PROCESS_$SYSTEMATIC
+----------------------------------------------------------------------------------------------------------------------------------
+bin          cr-card          wz-card        
+observation  307.1248228764   3139.4974942963
+----------------------------------------------------------------------------------------------------------------------------------
+bin                                cr-card          cr-card          wz-card          wz-card          wz-card          wz-card          wz-card        
+process                            prompt_WZ        prompt_ZZ        prompt_WZ        prompt_ZZ        fakes_DY         fakes_TT         fakes_VV       
+process                            0                1                0                1                2                3                4              
+rate                               0.909            306.216          2622.797         153.609          245.173          116.509          1.41           
+----------------------------------------------------------------------------------------------------------------------------------
+FSR                     shape      -                -                1.0              -                -                -                -              
+ISR                     shape      -                -                1.0              -                -                -                -              
+jestotal                shape      -                -                1.0              1.0              1.0              1.0              1.0            
+lumi_2022_early         lnN        0.943/1.06       1.06             1.06             1.06             1.06             1.06             1.06           
+muonidsf                shape      1.0              1.0              1.0              1.0              1.0              1.0              1.0            
+normZZ                  lnN        -                1.06             -                1.06             -                -                -              
+cr-card autoMCStats 10 0 1
+wz-card autoMCStats 10 0 1

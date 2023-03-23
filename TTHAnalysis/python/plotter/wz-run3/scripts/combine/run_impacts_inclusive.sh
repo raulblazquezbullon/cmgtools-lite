@@ -8,14 +8,14 @@ echo Combining cards
 echo ===================
 if [[ ! -d $outpath ]]; then mkdir $outpath; fi
 # Get the script to combine the cards
-python fancyCombineCards.py --inpath $inpath --outpath $outpath --pretend 
+python fancyCombineCards.py --inpath $inpath --outpath $outpath 
 
 
 echo ===================
 echo Creating workspace
 echo ===================
 # Now generate the workspace
-python createWorkspace.py --pretend --cardname combinedCard --workspace $wsname --rmin 0 --rmax 6 --processes prompt_WZ --processes prompt_ZZ --outpath $outpath
+python createWorkspace.py --cardname combinedCard.dat --workspace $wsname --rmin 0 --rmax 6 --processes prompt_WZ --processes prompt_ZZ --outpath $outpath
 
 
 echo ===================

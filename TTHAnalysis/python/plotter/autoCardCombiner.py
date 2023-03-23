@@ -11,6 +11,8 @@ import re
 import sys
 import subprocess
 
+r.gROOT.SetBatch(1)
+
 # Functions
 functional_variables = {"m3l" : "m3L",
 						"met" : "MET_pt_central",
@@ -40,18 +42,19 @@ if __name__ == "__main__":
 	nquant = opts.nquant.split(",")
 	variables = opts.variables.split(",")
 	
-	inpath = "./check_discriminant_vars/"
-	outpath = "./check_discriminant_vars/"
+	main_path = "/nfs/fanae/user/rblazquez/TFG/wz_run3/CMSSW_12_4_12/src/CMGTools/TTHAnalysis/python/plotter/"
 	
-	filename = "./wz-run3/scripts/combine/run_impacts_inclusive.sh"
+	inpath = main_path + "./check_discriminant_vars/"
+	outpath = main_path + "./check_discriminant_vars/"
+	
+	filepath = "./wz-run3/scripts/combine/"
+	filename = "run_impacts_inclusive.sh"
 	
 	for var in variables:
-		print(">> Going to %s variable" %var)
+		print(" >> Going to %s variable" %var)
 		
 		for nq in nquant:
 			inpath += "./rebin%s/%s/cards/" %(nq,var)
 			outpath += "./rebin%s/%s/combined_cards/" %(nq,var)
 			
-			comm = subprocess.call(filename + " " + inpath + " " + outpath)
-			print(comm)
-	
+			comm = subprocess.Popen(["sh",filename,inpath,outpath],cwd = filepath)
