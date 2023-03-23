@@ -52,3 +52,4 @@ Here we will list the important twikis for the analysis:
  * Cross sections [twiki](https://twiki.cern.ch/twiki/bin/view/LHCPhysics/SingleTopNNLORef).
  * Top HEPData [twiki](https://twiki.cern.ch/twiki/bin/viewauth/CMS/TOPHepData).
  * PdMV Run3 [twiki](https://twiki.cern.ch/twiki/bin/viewauth/CMS/PdmVRun3Analysis).
+ * JetID Run3 [twiki](https://twiki.cern.ch/twiki/bin/viewauth/CMS/JetID13p6TeV).
