@@ -40,10 +40,10 @@ if __name__ == "__main__":
 				if card_folder: outpath += "./cards/"
 				for f in filename:
 					#print("cp " + path + f + " " + outpath)
-					subprocess.Popen(["cp",f,directory]
-	
+					subprocess.Popen(["cp",path + f,outpath])
+						
 	else:
 		for f in filename:
 			for directory in folder:
 				#print("cp " + path + f + " " + directory)
-				subprocess.Popen(["cp",f,directory])
+				subprocess.Popen(["cp",path + f,directory])
