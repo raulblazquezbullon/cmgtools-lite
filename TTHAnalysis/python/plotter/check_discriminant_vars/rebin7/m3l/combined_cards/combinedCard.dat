@@ -1,10 +1,10 @@
-Combination of wz-card=/nfs/fanae/user/rblazquez/TFG/wz_run3/CMSSW_12_4_12/src/CMGTools/TTHAnalysis/python/plotter/./check_discriminant_vars/./rebin3/m3l/cards//wz-card.txt  zz-card=/nfs/fanae/user/rblazquez/TFG/wz_run3/CMSSW_12_4_12/src/CMGTools/TTHAnalysis/python/plotter/./check_discriminant_vars/./rebin3/m3l/cards//zz-card.txt
+Combination of wz-card=/nfs/fanae/user/rblazquez/TFG/wz_run3/CMSSW_12_4_12/src/CMGTools/TTHAnalysis/python/plotter/./check_discriminant_vars/./rebin7/m3l/cards//wz-card.txt  zz-card=/nfs/fanae/user/rblazquez/TFG/wz_run3/CMSSW_12_4_12/src/CMGTools/TTHAnalysis/python/plotter/./check_discriminant_vars/./rebin7/m3l/cards//zz-card.txt
 imax 2 number of bins
 jmax 4 number of processes minus 1
 kmax 6 number of nuisance parameters
 ----------------------------------------------------------------------------------------------------------------------------------
-shapes *        wz-card  /nfs/fanae/user/rblazquez/TFG/wz_run3/CMSSW_12_4_12/src/CMGTools/TTHAnalysis/python/plotter/./check_discriminant_vars/./rebin3/m3l/cards/wz-card.root x_$PROCESS x_$PROCESS_$SYSTEMATIC
-shapes *        zz-card  /nfs/fanae/user/rblazquez/TFG/wz_run3/CMSSW_12_4_12/src/CMGTools/TTHAnalysis/python/plotter/./check_discriminant_vars/./rebin3/m3l/cards/zz-card.root x_$PROCESS x_$PROCESS_$SYSTEMATIC
+shapes *        wz-card  /nfs/fanae/user/rblazquez/TFG/wz_run3/CMSSW_12_4_12/src/CMGTools/TTHAnalysis/python/plotter/./check_discriminant_vars/./rebin7/m3l/cards/wz-card.root x_$PROCESS x_$PROCESS_$SYSTEMATIC
+shapes *        zz-card  /nfs/fanae/user/rblazquez/TFG/wz_run3/CMSSW_12_4_12/src/CMGTools/TTHAnalysis/python/plotter/./check_discriminant_vars/./rebin7/m3l/cards/zz-card.root x_$PROCESS x_$PROCESS_$SYSTEMATIC
 ----------------------------------------------------------------------------------------------------------------------------------
 bin          wz-card          zz-card        
 observation  3139.4974942963  307.1248228764 
@@ -17,7 +17,7 @@ rate                               2622.797         153.609          245.173    
 FSR                     shape      1.0              -                -                -                -                -                -              
 ISR                     shape      1.0              -                -                -                -                -                -              
 jestotal                shape      1.0              1.0              1.0              1.0              1.0              -                -              
-lumi_2022_early         lnN        1.06             1.06             1.06             1.06             1.06             0.943/1.06       1.06           
+lumi_2022_early         lnN        1.06             1.06             1.06             1.06             0.943/1.06       0.943/1.06       1.06           
 muonidsf                shape      1.0              1.0              1.0              1.0              1.0              1.0              1.0            
 normZZ                  lnN        -                1.06             -                -                -                -                1.06           
 wz-card autoMCStats 10 0 1
