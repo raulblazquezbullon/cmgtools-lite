@@ -34,9 +34,6 @@ if __name__ == "__main__":
 	
 	main_path = "/nfs/fanae/user/rblazquez/TFG/wz_run3/CMSSW_12_4_12/src/CMGTools/TTHAnalysis/python/plotter/"
 	
-	inpath = main_path + "./check_discriminant_vars/"
-	outpath = main_path + "./check_discriminant_vars/"
-	
 	filepath = "./wz-run3/scripts/combine/"
 	filename = "run_impacts_inclusive.sh"
 	
@@ -44,6 +41,9 @@ if __name__ == "__main__":
 		print(" >> Going to %s variable" %var)
 		
 		for nq in nquant:
+			inpath = main_path + "./check_discriminant_vars/"
+			outpath = main_path + "./check_discriminant_vars/"
+			
 			inpath += "./rebin%s/%s/cards/" %(nq,var)
 			outpath += "./rebin%s/%s/combined_cards/" %(nq,var)
 			
