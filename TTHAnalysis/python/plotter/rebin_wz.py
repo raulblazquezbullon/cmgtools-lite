@@ -6,6 +6,7 @@ from copy import deepcopy
 import os
 import re
 import sys
+import subprocess
 
 r.gROOT.SetBatch(1)
 
@@ -134,8 +135,7 @@ def make_plots(options):
 			" --extra " + extra_opt + (" --do-submit")*int(options[-2]) + " --plotfile %s"%(options[4]) +\
 			" --cutfile %s"%(options[7])
 	
-	f = os.popen(comm) # os.popen runs comm string as a bash command
-	cmd = f.read()
+	cmd = subprocess.check_output(comm,shell = True).decode("utf-8")
 	return cmd
 	
 def make_cards(options):
@@ -182,8 +182,7 @@ def make_cards(options):
 			(" --extra " + extra_opt)*(len(extra_opt) != 0) + (" --do-submit")*int(options[-2]) +\
 			" --binning %s"%(new_bin) +	" --cutfile %s"%(options[7]) + " --var %s"%(options[10])
 	
-	f = os.popen(comm) # os.popen runs comm string as a bash command
-	cmd = f.read()
+	cmd = subprocess.check_output(comm,shell = True).decode("utf-8")
 	return cmd
 
 if __name__ == "__main__":
