@@ -231,6 +231,7 @@ if __name__ == "__main__":
 			elif mode == "card":
 				filename = "./wz-run3/separate-studies/bining_optimization/{var}_{nq}_plots.txt".format(var = var, nq = nq)
 				
+				out_new = out + "./cards/"
 				pars = (out, cores, lumis[year], year, filename, var, nq, cut, extra, rebining, var_to_comm, submit, local)
 				batchcomm = make_cards(pars)
 				print(batchcomm)
