@@ -11,7 +11,6 @@ data = np.loadtxt(filename,dtype = str)
 # Redefining types and deleting duplicates
 binning = np.sort(np.float32(np.unique(data[:,0])))
 variables = np.unique(data[:,1])
-variables = np.delete(variables,np.where(variables == "m3l"))
 
 uncmin = np.float32(data[:,4])
 uncpos = np.float32(data[:,5])
