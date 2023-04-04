@@ -1,0 +1,24 @@
+Combination of wz-card=/nfs/fanae/user/rblazquez/TFG/wz_run3/CMSSW_12_4_12/src/CMGTools/TTHAnalysis/python/plotter/./check_discriminant_vars/./rebin13/met/cards//wz-card.txt  zz-card=/nfs/fanae/user/rblazquez/TFG/wz_run3/CMSSW_12_4_12/src/CMGTools/TTHAnalysis/python/plotter/./check_discriminant_vars/./rebin13/met/cards//zz-card.txt
+imax 2 number of bins
+jmax 4 number of processes minus 1
+kmax 6 number of nuisance parameters
+----------------------------------------------------------------------------------------------------------------------------------
+shapes *        wz-card  /nfs/fanae/user/rblazquez/TFG/wz_run3/CMSSW_12_4_12/src/CMGTools/TTHAnalysis/python/plotter/./check_discriminant_vars/./rebin13/met/cards/wz-card.root x_$PROCESS x_$PROCESS_$SYSTEMATIC
+shapes *        zz-card  /nfs/fanae/user/rblazquez/TFG/wz_run3/CMSSW_12_4_12/src/CMGTools/TTHAnalysis/python/plotter/./check_discriminant_vars/./rebin13/met/cards/zz-card.root x_$PROCESS x_$PROCESS_$SYSTEMATIC
+----------------------------------------------------------------------------------------------------------------------------------
+bin          wz-card          zz-card        
+observation  3139.4974942963  307.1248228764 
+----------------------------------------------------------------------------------------------------------------------------------
+bin                                wz-card          wz-card          wz-card          wz-card          wz-card          zz-card          zz-card        
+process                            prompt_WZ        prompt_ZZ        fakes_DY         fakes_TT         fakes_VV         prompt_WZ        prompt_ZZ      
+process                            0                1                2                3                4                0                1              
+rate                               2622.797         153.609          245.173          116.509          1.41             0.909            306.216        
+----------------------------------------------------------------------------------------------------------------------------------
+FSR                     shape      1.0              -                -                -                -                -                -              
+ISR                     shape      1.0              -                -                -                -                -                -              
+jestotal                shape      1.0              1.0              1.0              1.0              1.0              -                -              
+lumi_2022_early         lnN        1.06             1.06             1.06             1.06             0.943/1.06       0.943/1.06       1.06           
+muonidsf                shape      1.0              1.0              1.0              1.0              1.0              1.0              1.0            
+normZZ                  lnN        -                1.06             -                -                -                -                1.06           
+wz-card autoMCStats 10 0 1
+zz-card autoMCStats 10 0 1
