@@ -1,0 +1,3 @@
+('Will save plots to ', './check_discriminant_vars/./rebin12/m3l/m3l_12_plots.root')
+('cut set: ', 'all cuts')
+('    plot: ', 'm3l_rebin12')

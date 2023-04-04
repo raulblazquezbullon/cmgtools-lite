@@ -1,0 +1,310 @@
+[makeShapeCards_wzRun3:INFO]:  >> Getting histograms for processes
+[makeShapeCards_wzRun3:INFO]: List of nuisances considered: ['FSR', 'ISR', 'elecidsf', 'jestotal', 'lumi_2022_early', 'muonidsf', 'normZZ']
+  bin   1  nominal   19.7126  varied   19.6689   ratio  0.99779   diff  0.00000
+  bin   2  nominal   89.3619  varied   89.1860   ratio  0.99803   diff  0.00025
+[makeShapeCards_wzRun3:INFO]: Is FSR nuisance shape? True
+  bin   1  nominal   19.7126  varied   19.6689   ratio  0.99779   diff  0.00000
+  bin   2  nominal   89.3619  varied   89.1860   ratio  0.99803   diff  0.00025
+[makeShapeCards_wzRun3:INFO]: Is ISR nuisance shape? True
+  bin   1  nominal   19.7126  varied   19.7126   ratio  1.00000   diff  0.00000
+  bin   2  nominal   89.3619  varied   89.3619   ratio  1.00000   diff  0.00000
+  bin   3  nominal  160.3717  varied  160.3717   ratio  1.00000   diff  0.00000
+  bin   4  nominal  222.5040  varied  222.5040   ratio  1.00000   diff  0.00000
+  bin   5  nominal  228.9957  varied  228.9957   ratio  1.00000   diff  0.00000
+  bin   6  nominal  281.4045  varied  281.4045   ratio  1.00000   diff  0.00000
+  bin   7  nominal  248.6793  varied  248.6793   ratio  1.00000   diff  0.00000
+  bin   8  nominal  216.4599  varied  216.4599   ratio  1.00000   diff  0.00000
+  bin   9  nominal  250.0035  varied  250.0035   ratio  1.00000   diff  0.00000
+  bin  10  nominal  227.7965  varied  227.7965   ratio  1.00000   diff  0.00000
+  bin  11  nominal  254.3182  varied  254.3182   ratio  1.00000   diff  0.00000
+  bin  12  nominal  423.1895  varied  423.1895   ratio  1.00000   diff  0.00000
+  bin   1  nominal   19.7126  varied   19.7126   ratio  1.00000   diff  0.00000
+  bin   2  nominal   89.3619  varied   89.3619   ratio  1.00000   diff  0.00000
+  bin   3  nominal  160.3717  varied  160.3717   ratio  1.00000   diff  0.00000
+  bin   4  nominal  222.5040  varied  222.5040   ratio  1.00000   diff  0.00000
+  bin   5  nominal  228.9957  varied  228.9957   ratio  1.00000   diff  0.00000
+  bin   6  nominal  281.4045  varied  281.4045   ratio  1.00000   diff  0.00000
+  bin   7  nominal  248.6793  varied  248.6793   ratio  1.00000   diff  0.00000
+  bin   8  nominal  216.4599  varied  216.4599   ratio  1.00000   diff  0.00000
+  bin   9  nominal  250.0035  varied  250.0035   ratio  1.00000   diff  0.00000
+  bin  10  nominal  227.7965  varied  227.7965   ratio  1.00000   diff  0.00000
+  bin  11  nominal  254.3182  varied  254.3182   ratio  1.00000   diff  0.00000
+  bin  12  nominal  423.1895  varied  423.1895   ratio  1.00000   diff  0.00000
+[makeShapeCards_wzRun3:INFO]: Is elecidsf nuisance shape? False
+  bin   1  nominal    1.1517  varied    1.1517   ratio  1.00000   diff  0.00000
+  bin   2  nominal    5.0303  varied    5.0303   ratio  1.00000   diff  0.00000
+  bin   3  nominal   18.4187  varied   18.4187   ratio  1.00000   diff  0.00000
+  bin   4  nominal   16.4105  varied   16.4105   ratio  1.00000   diff  0.00000
+  bin   5  nominal   15.6743  varied   15.6743   ratio  1.00000   diff  0.00000
+  bin   6  nominal   15.4486  varied   15.4486   ratio  1.00000   diff  0.00000
+  bin   7  nominal   15.8008  varied   15.8008   ratio  1.00000   diff  0.00000
+  bin   8  nominal    9.2909  varied    9.2909   ratio  1.00000   diff  0.00000
+  bin   9  nominal   12.6611  varied   12.6611   ratio  1.00000   diff  0.00000
+  bin  10  nominal   10.8081  varied   10.8081   ratio  1.00000   diff  0.00000
+  bin  11  nominal   11.6167  varied   11.6167   ratio  1.00000   diff  0.00000
+  bin  12  nominal   21.2969  varied   21.2969   ratio  1.00000   diff  0.00000
+  bin   1  nominal    1.1517  varied    1.1517   ratio  1.00000   diff  0.00000
+  bin   2  nominal    5.0303  varied    5.0303   ratio  1.00000   diff  0.00000
+  bin   3  nominal   18.4187  varied   18.4187   ratio  1.00000   diff  0.00000
+  bin   4  nominal   16.4105  varied   16.4105   ratio  1.00000   diff  0.00000
+  bin   5  nominal   15.6743  varied   15.6743   ratio  1.00000   diff  0.00000
+  bin   6  nominal   15.4486  varied   15.4486   ratio  1.00000   diff  0.00000
+  bin   7  nominal   15.8008  varied   15.8008   ratio  1.00000   diff  0.00000
+  bin   8  nominal    9.2909  varied    9.2909   ratio  1.00000   diff  0.00000
+  bin   9  nominal   12.6611  varied   12.6611   ratio  1.00000   diff  0.00000
+  bin  10  nominal   10.8081  varied   10.8081   ratio  1.00000   diff  0.00000
+  bin  11  nominal   11.6167  varied   11.6167   ratio  1.00000   diff  0.00000
+  bin  12  nominal   21.2969  varied   21.2969   ratio  1.00000   diff  0.00000
+[makeShapeCards_wzRun3:INFO]: Is elecidsf nuisance shape? False
+  bin   1  nominal    7.1697  varied    7.1697   ratio  1.00000   diff  0.00000
+  bin   2  nominal   14.3887  varied   14.3887   ratio  1.00000   diff  0.00000
+  bin   3  nominal   39.3765  varied   39.3765   ratio  1.00000   diff  0.00000
+  bin   4  nominal   25.3098  varied   25.3098   ratio  1.00000   diff  0.00000
+  bin   5  nominal   32.4744  varied   32.4744   ratio  1.00000   diff  0.00000
+  bin   6  nominal   32.1792  varied   32.1792   ratio  1.00000   diff  0.00000
+  bin   7  nominal   17.6948  varied   17.6948   ratio  1.00000   diff  0.00000
+  bin   8  nominal   10.7623  varied   10.7623   ratio  1.00000   diff  0.00000
+  bin   9  nominal   29.2715  varied   29.2715   ratio  1.00000   diff  0.00000
+  bin  10  nominal   11.1036  varied   11.1036   ratio  1.00000   diff  0.00000
+  bin  11  nominal   18.1477  varied   18.1477   ratio  1.00000   diff  0.00000
+  bin  12  nominal    7.2944  varied    7.2944   ratio  1.00000   diff  0.00000
+  bin   1  nominal    7.1697  varied    7.1697   ratio  1.00000   diff  0.00000
+  bin   2  nominal   14.3887  varied   14.3887   ratio  1.00000   diff  0.00000
+  bin   3  nominal   39.3765  varied   39.3765   ratio  1.00000   diff  0.00000
+  bin   4  nominal   25.3098  varied   25.3098   ratio  1.00000   diff  0.00000
+  bin   5  nominal   32.4744  varied   32.4744   ratio  1.00000   diff  0.00000
+  bin   6  nominal   32.1792  varied   32.1792   ratio  1.00000   diff  0.00000
+  bin   7  nominal   17.6948  varied   17.6948   ratio  1.00000   diff  0.00000
+  bin   8  nominal   10.7623  varied   10.7623   ratio  1.00000   diff  0.00000
+  bin   9  nominal   29.2715  varied   29.2715   ratio  1.00000   diff  0.00000
+  bin  10  nominal   11.1036  varied   11.1036   ratio  1.00000   diff  0.00000
+  bin  11  nominal   18.1477  varied   18.1477   ratio  1.00000   diff  0.00000
+  bin  12  nominal    7.2944  varied    7.2944   ratio  1.00000   diff  0.00000
+[makeShapeCards_wzRun3:INFO]: Is elecidsf nuisance shape? False
+  bin   1  nominal    1.6569  varied    1.6569   ratio  1.00000   diff  0.00000
+  bin   2  nominal    6.4148  varied    6.4148   ratio  1.00000   diff  0.00000
+  bin   3  nominal    6.4936  varied    6.4936   ratio  1.00000   diff  0.00000
+  bin   4  nominal   10.3805  varied   10.3805   ratio  1.00000   diff  0.00000
+  bin   5  nominal   13.1683  varied   13.1683   ratio  1.00000   diff  0.00000
+  bin   6  nominal   13.0789  varied   13.0789   ratio  1.00000   diff  0.00000
+  bin   7  nominal    9.9177  varied    9.9177   ratio  1.00000   diff  0.00000
+  bin   8  nominal    9.0928  varied    9.0928   ratio  1.00000   diff  0.00000
+  bin   9  nominal   11.0827  varied   11.0827   ratio  1.00000   diff  0.00000
+  bin  10  nominal   10.2616  varied   10.2616   ratio  1.00000   diff  0.00000
+  bin  11  nominal   11.9095  varied   11.9095   ratio  1.00000   diff  0.00000
+  bin  12  nominal   13.0513  varied   13.0513   ratio  1.00000   diff  0.00000
+  bin   1  nominal    1.6569  varied    1.6569   ratio  1.00000   diff  0.00000
+  bin   2  nominal    6.4148  varied    6.4148   ratio  1.00000   diff  0.00000
+  bin   3  nominal    6.4936  varied    6.4936   ratio  1.00000   diff  0.00000
+  bin   4  nominal   10.3805  varied   10.3805   ratio  1.00000   diff  0.00000
+  bin   5  nominal   13.1683  varied   13.1683   ratio  1.00000   diff  0.00000
+  bin   6  nominal   13.0789  varied   13.0789   ratio  1.00000   diff  0.00000
+  bin   7  nominal    9.9177  varied    9.9177   ratio  1.00000   diff  0.00000
+  bin   8  nominal    9.0928  varied    9.0928   ratio  1.00000   diff  0.00000
+  bin   9  nominal   11.0827  varied   11.0827   ratio  1.00000   diff  0.00000
+  bin  10  nominal   10.2616  varied   10.2616   ratio  1.00000   diff  0.00000
+  bin  11  nominal   11.9095  varied   11.9095   ratio  1.00000   diff  0.00000
+  bin  12  nominal   13.0513  varied   13.0513   ratio  1.00000   diff  0.00000
+[makeShapeCards_wzRun3:INFO]: Is elecidsf nuisance shape? False
+  bin   1  nominal    0.4031  varied    0.4031   ratio  1.00000   diff  0.00000
+  bin   2  nominal    0.0000  varied    0.0000   ratio  1.00000   diff  0.00000
+  bin   3  nominal    0.0000  varied    0.0000   ratio  1.00000   diff  0.00000
+  bin   4  nominal    0.0000  varied    0.0000   ratio  1.00000   diff  0.00000
+  bin   5  nominal    0.0000  varied    0.0000   ratio  1.00000   diff  0.00000
+  bin   6  nominal    0.2060  varied    0.2060   ratio  1.00000   diff  0.00000
+  bin   7  nominal    0.0000  varied    0.0000   ratio  1.00000   diff  0.00000
+  bin   8  nominal    0.2026  varied    0.2026   ratio  1.00000   diff  0.00000
+  bin   9  nominal    0.0000  varied    0.0000   ratio  1.00000   diff  0.00000
+  bin  10  nominal    0.1938  varied    0.1938   ratio  1.00000   diff  0.00000
+  bin  11  nominal    0.1992  varied    0.1992   ratio  1.00000   diff  0.00000
+  bin  12  nominal    0.2057  varied    0.2057   ratio  1.00000   diff  0.00000
+  bin   1  nominal    0.4031  varied    0.4031   ratio  1.00000   diff  0.00000
+  bin   2  nominal    0.0000  varied    0.0000   ratio  1.00000   diff  0.00000
+  bin   3  nominal    0.0000  varied    0.0000   ratio  1.00000   diff  0.00000
+  bin   4  nominal    0.0000  varied    0.0000   ratio  1.00000   diff  0.00000
+  bin   5  nominal    0.0000  varied    0.0000   ratio  1.00000   diff  0.00000
+  bin   6  nominal    0.2060  varied    0.2060   ratio  1.00000   diff  0.00000
+  bin   7  nominal    0.0000  varied    0.0000   ratio  1.00000   diff  0.00000
+  bin   8  nominal    0.2026  varied    0.2026   ratio  1.00000   diff  0.00000
+  bin   9  nominal    0.0000  varied    0.0000   ratio  1.00000   diff  0.00000
+  bin  10  nominal    0.1938  varied    0.1938   ratio  1.00000   diff  0.00000
+  bin  11  nominal    0.1992  varied    0.1992   ratio  1.00000   diff  0.00000
+  bin  12  nominal    0.2057  varied    0.2057   ratio  1.00000   diff  0.00000
+[makeShapeCards_wzRun3:INFO]: Is elecidsf nuisance shape? False
+[makeShapeCards_wzRun3:WARNING]: Histogram x_fakes_VV has 0 content in bin 2 for nuisance elecidsf
+[makeShapeCards_wzRun3:WARNING]: Big shift in template for wz-card fakes_VV elecidsf 0 in bin 2: variation = 0
+[makeShapeCards_wzRun3:WARNING]: Histogram x_fakes_VV has 0 content in bin 3 for nuisance elecidsf
+[makeShapeCards_wzRun3:WARNING]: Big shift in template for wz-card fakes_VV elecidsf 0 in bin 3: variation = 0
+[makeShapeCards_wzRun3:WARNING]: Histogram x_fakes_VV has 0 content in bin 4 for nuisance elecidsf
+[makeShapeCards_wzRun3:WARNING]: Big shift in template for wz-card fakes_VV elecidsf 0 in bin 4: variation = 0
+[makeShapeCards_wzRun3:WARNING]: Histogram x_fakes_VV has 0 content in bin 5 for nuisance elecidsf
+[makeShapeCards_wzRun3:WARNING]: Big shift in template for wz-card fakes_VV elecidsf 0 in bin 5: variation = 0
+[makeShapeCards_wzRun3:WARNING]: Histogram x_fakes_VV has 0 content in bin 7 for nuisance elecidsf
+[makeShapeCards_wzRun3:WARNING]: Big shift in template for wz-card fakes_VV elecidsf 0 in bin 7: variation = 0
+[makeShapeCards_wzRun3:WARNING]: Histogram x_fakes_VV has 0 content in bin 9 for nuisance elecidsf
+[makeShapeCards_wzRun3:WARNING]: Big shift in template for wz-card fakes_VV elecidsf 0 in bin 9: variation = 0
+  bin   1  nominal   19.7126  varied   20.0924   ratio  1.01927   diff  0.00000
+  bin   2  nominal   89.3619  varied   89.9278   ratio  1.00633   diff -0.01294
+[makeShapeCards_wzRun3:INFO]: Is jestotal nuisance shape? True
+[makeShapeCards_wzRun3:INFO]: Is jestotal nuisance shape? True
+[makeShapeCards_wzRun3:INFO]: Is jestotal nuisance shape? True
+[makeShapeCards_wzRun3:INFO]: Is jestotal nuisance shape? True
+[makeShapeCards_wzRun3:INFO]: Is jestotal nuisance shape? True
+  bin   1  nominal   19.7126  varied   20.8953   ratio  1.06000   diff  0.00000
+  bin   2  nominal   89.3619  varied   94.7236   ratio  1.06000   diff  0.00000
+  bin   3  nominal  160.3717  varied  169.9940   ratio  1.06000   diff  0.00000
+  bin   4  nominal  222.5040  varied  235.8542   ratio  1.06000   diff  0.00000
+  bin   5  nominal  228.9957  varied  242.7354   ratio  1.06000   diff  0.00000
+  bin   6  nominal  281.4045  varied  298.2888   ratio  1.06000   diff  0.00000
+  bin   7  nominal  248.6793  varied  263.6000   ratio  1.06000   diff  0.00000
+  bin   8  nominal  216.4599  varied  229.4475   ratio  1.06000   diff  0.00000
+  bin   9  nominal  250.0035  varied  265.0037   ratio  1.06000   diff  0.00000
+  bin  10  nominal  227.7965  varied  241.4643   ratio  1.06000   diff  0.00000
+  bin  11  nominal  254.3182  varied  269.5773   ratio  1.06000   diff  0.00000
+  bin  12  nominal  423.1895  varied  448.5809   ratio  1.06000   diff  0.00000
+  bin   1  nominal   19.7126  varied   18.5968   ratio  0.94340   diff  0.00000
+  bin   2  nominal   89.3619  varied   84.3037   ratio  0.94340   diff -0.00000
+  bin   3  nominal  160.3717  varied  151.2940   ratio  0.94340   diff -0.00000
+  bin   4  nominal  222.5040  varied  209.9094   ratio  0.94340   diff -0.00000
+  bin   5  nominal  228.9957  varied  216.0337   ratio  0.94340   diff -0.00000
+  bin   6  nominal  281.4045  varied  265.4760   ratio  0.94340   diff -0.00000
+  bin   7  nominal  248.6793  varied  234.6031   ratio  0.94340   diff -0.00000
+  bin   8  nominal  216.4599  varied  204.2075   ratio  0.94340   diff -0.00000
+  bin   9  nominal  250.0035  varied  235.8524   ratio  0.94340   diff -0.00000
+  bin  10  nominal  227.7965  varied  214.9024   ratio  0.94340   diff -0.00000
+  bin  11  nominal  254.3182  varied  239.9228   ratio  0.94340   diff -0.00000
+  bin  12  nominal  423.1895  varied  399.2354   ratio  0.94340   diff -0.00000
+[makeShapeCards_wzRun3:INFO]: Is lumi_2022_early nuisance shape? False
+  bin   1  nominal    1.1517  varied    1.2208   ratio  1.06000   diff  0.00000
+  bin   2  nominal    5.0303  varied    5.3321   ratio  1.06000   diff  0.00000
+  bin   3  nominal   18.4187  varied   19.5238   ratio  1.06000   diff  0.00000
+  bin   4  nominal   16.4105  varied   17.3951   ratio  1.06000   diff  0.00000
+  bin   5  nominal   15.6743  varied   16.6148   ratio  1.06000   diff  0.00000
+  bin   6  nominal   15.4486  varied   16.3755   ratio  1.06000   diff  0.00000
+  bin   7  nominal   15.8008  varied   16.7488   ratio  1.06000   diff  0.00000
+  bin   8  nominal    9.2909  varied    9.8484   ratio  1.06000   diff  0.00000
+  bin   9  nominal   12.6611  varied   13.4208   ratio  1.06000   diff  0.00000
+  bin  10  nominal   10.8081  varied   11.4566   ratio  1.06000   diff  0.00000
+  bin  11  nominal   11.6167  varied   12.3137   ratio  1.06000   diff  0.00000
+  bin  12  nominal   21.2969  varied   22.5747   ratio  1.06000   diff  0.00000
+  bin   1  nominal    1.1517  varied    1.0865   ratio  0.94340   diff  0.00000
+  bin   2  nominal    5.0303  varied    4.7456   ratio  0.94340   diff  0.00000
+  bin   3  nominal   18.4187  varied   17.3761   ratio  0.94340   diff  0.00000
+  bin   4  nominal   16.4105  varied   15.4816   ratio  0.94340   diff  0.00000
+  bin   5  nominal   15.6743  varied   14.7871   ratio  0.94340   diff  0.00000
+  bin   6  nominal   15.4486  varied   14.5741   ratio  0.94340   diff  0.00000
+  bin   7  nominal   15.8008  varied   14.9064   ratio  0.94340   diff  0.00000
+  bin   8  nominal    9.2909  varied    8.7650   ratio  0.94340   diff  0.00000
+  bin   9  nominal   12.6611  varied   11.9445   ratio  0.94340   diff  0.00000
+  bin  10  nominal   10.8081  varied   10.1963   ratio  0.94340   diff  0.00000
+  bin  11  nominal   11.6167  varied   10.9591   ratio  0.94340   diff  0.00000
+  bin  12  nominal   21.2969  varied   20.0914   ratio  0.94340   diff  0.00000
+[makeShapeCards_wzRun3:INFO]: Is lumi_2022_early nuisance shape? False
+  bin   1  nominal    7.1697  varied    7.5998   ratio  1.06000   diff  0.00000
+  bin   2  nominal   14.3887  varied   15.2521   ratio  1.06000   diff  0.00000
+  bin   3  nominal   39.3765  varied   41.7391   ratio  1.06000   diff  0.00000
+  bin   4  nominal   25.3098  varied   26.8284   ratio  1.06000   diff  0.00000
+  bin   5  nominal   32.4744  varied   34.4229   ratio  1.06000   diff  0.00000
+  bin   6  nominal   32.1792  varied   34.1099   ratio  1.06000   diff  0.00000
+  bin   7  nominal   17.6948  varied   18.7565   ratio  1.06000   diff  0.00000
+  bin   8  nominal   10.7623  varied   11.4081   ratio  1.06000   diff  0.00000
+  bin   9  nominal   29.2715  varied   31.0277   ratio  1.06000   diff  0.00000
+  bin  10  nominal   11.1036  varied   11.7698   ratio  1.06000   diff  0.00000
+  bin  11  nominal   18.1477  varied   19.2365   ratio  1.06000   diff  0.00000
+  bin  12  nominal    7.2944  varied    7.7321   ratio  1.06000   diff  0.00000
+  bin   1  nominal    7.1697  varied    6.7638   ratio  0.94340   diff  0.00000
+  bin   2  nominal   14.3887  varied   13.5743   ratio  0.94340   diff  0.00000
+  bin   3  nominal   39.3765  varied   37.1477   ratio  0.94340   diff  0.00000
+  bin   4  nominal   25.3098  varied   23.8772   ratio  0.94340   diff  0.00000
+  bin   5  nominal   32.4744  varied   30.6363   ratio  0.94340   diff  0.00000
+  bin   6  nominal   32.1792  varied   30.3577   ratio  0.94340   diff  0.00000
+  bin   7  nominal   17.6948  varied   16.6933   ratio  0.94340   diff  0.00000
+  bin   8  nominal   10.7623  varied   10.1531   ratio  0.94340   diff  0.00000
+  bin   9  nominal   29.2715  varied   27.6146   ratio  0.94340   diff  0.00000
+  bin  10  nominal   11.1036  varied   10.4751   ratio  0.94340   diff  0.00000
+  bin  11  nominal   18.1477  varied   17.1204   ratio  0.94340   diff  0.00000
+  bin  12  nominal    7.2944  varied    6.8815   ratio  0.94340   diff  0.00000
+[makeShapeCards_wzRun3:INFO]: Is lumi_2022_early nuisance shape? False
+  bin   1  nominal    1.6569  varied    1.7563   ratio  1.06000   diff  0.00000
+  bin   2  nominal    6.4148  varied    6.7997   ratio  1.06000   diff  0.00000
+  bin   3  nominal    6.4936  varied    6.8832   ratio  1.06000   diff  0.00000
+  bin   4  nominal   10.3805  varied   11.0034   ratio  1.06000   diff  0.00000
+  bin   5  nominal   13.1683  varied   13.9584   ratio  1.06000   diff  0.00000
+  bin   6  nominal   13.0789  varied   13.8636   ratio  1.06000   diff  0.00000
+  bin   7  nominal    9.9177  varied   10.5128   ratio  1.06000   diff  0.00000
+  bin   8  nominal    9.0928  varied    9.6383   ratio  1.06000   diff  0.00000
+  bin   9  nominal   11.0827  varied   11.7476   ratio  1.06000   diff  0.00000
+  bin  10  nominal   10.2616  varied   10.8773   ratio  1.06000   diff  0.00000
+  bin  11  nominal   11.9095  varied   12.6241   ratio  1.06000   diff  0.00000
+  bin  12  nominal   13.0513  varied   13.8344   ratio  1.06000   diff  0.00000
+  bin   1  nominal    1.6569  varied    1.5631   ratio  0.94340   diff  0.00000
+  bin   2  nominal    6.4148  varied    6.0517   ratio  0.94340   diff  0.00000
+  bin   3  nominal    6.4936  varied    6.1260   ratio  0.94340   diff  0.00000
+  bin   4  nominal   10.3805  varied    9.7930   ratio  0.94340   diff -0.00000
+  bin   5  nominal   13.1683  varied   12.4229   ratio  0.94340   diff  0.00000
+  bin   6  nominal   13.0789  varied   12.3385   ratio  0.94340   diff  0.00000
+  bin   7  nominal    9.9177  varied    9.3563   ratio  0.94340   diff  0.00000
+  bin   8  nominal    9.0928  varied    8.5781   ratio  0.94340   diff  0.00000
+  bin   9  nominal   11.0827  varied   10.4553   ratio  0.94340   diff  0.00000
+  bin  10  nominal   10.2616  varied    9.6808   ratio  0.94340   diff -0.00000
+  bin  11  nominal   11.9095  varied   11.2354   ratio  0.94340   diff  0.00000
+  bin  12  nominal   13.0513  varied   12.3126   ratio  0.94340   diff  0.00000
+[makeShapeCards_wzRun3:INFO]: Is lumi_2022_early nuisance shape? False
+  bin   1  nominal    0.4031  varied    0.4273   ratio  1.06000   diff  0.00000
+  bin   2  nominal    0.0000  varied    0.0000   ratio  0.00000   diff -1.06000
+  bin   3  nominal    0.0000  varied    0.0000   ratio  0.00000   diff -1.06000
+  bin   4  nominal    0.0000  varied    0.0000   ratio  0.00000   diff -1.06000
+  bin   5  nominal    0.0000  varied    0.0000   ratio  0.00000   diff -1.06000
+  bin   6  nominal    0.2060  varied    0.2184   ratio  1.06000   diff  0.00000
+  bin   7  nominal    0.0000  varied    0.0000   ratio  0.00000   diff -1.06000
+  bin   8  nominal    0.2026  varied    0.2148   ratio  1.06000   diff  0.00000
+  bin   9  nominal    0.0000  varied    0.0000   ratio  0.00000   diff -1.06000
+  bin  10  nominal    0.1938  varied    0.2055   ratio  1.06000   diff  0.00000
+  bin  11  nominal    0.1992  varied    0.2111   ratio  1.06000   diff  0.00000
+  bin  12  nominal    0.2057  varied    0.2181   ratio  1.06000   diff  0.00000
+  bin   1  nominal    0.4031  varied    0.3803   ratio  0.94340   diff  0.00000
+  bin   2  nominal    0.0000  varied    0.0000   ratio  0.00000   diff -0.94340
+  bin   3  nominal    0.0000  varied    0.0000   ratio  0.00000   diff -0.94340
+  bin   4  nominal    0.0000  varied    0.0000   ratio  0.00000   diff -0.94340
+  bin   5  nominal    0.0000  varied    0.0000   ratio  0.00000   diff -0.94340
+  bin   6  nominal    0.2060  varied    0.1944   ratio  0.94340   diff  0.00000
+  bin   7  nominal    0.0000  varied    0.0000   ratio  0.00000   diff -0.94340
+  bin   8  nominal    0.2026  varied    0.1911   ratio  0.94340   diff -0.00000
+  bin   9  nominal    0.0000  varied    0.0000   ratio  0.00000   diff -0.94340
+  bin  10  nominal    0.1938  varied    0.1829   ratio  0.94340   diff  0.00000
+  bin  11  nominal    0.1992  varied    0.1879   ratio  0.94340   diff  0.00000
+  bin  12  nominal    0.2057  varied    0.1941   ratio  0.94340   diff  0.00000
+[makeShapeCards_wzRun3:INFO]: Is lumi_2022_early nuisance shape? False
+  bin   1  nominal   19.7126  varied   19.8292   ratio  1.00592   diff  0.00000
+  bin   2  nominal   89.3619  varied   89.7947   ratio  1.00484   diff -0.00107
+[makeShapeCards_wzRun3:INFO]: Is muonidsf nuisance shape? True
+[makeShapeCards_wzRun3:INFO]: Is muonidsf nuisance shape? True
+[makeShapeCards_wzRun3:INFO]: Is muonidsf nuisance shape? True
+[makeShapeCards_wzRun3:INFO]: Is muonidsf nuisance shape? True
+[makeShapeCards_wzRun3:INFO]: Is muonidsf nuisance shape? True
+  bin   1  nominal    1.1517  varied    1.2208   ratio  1.06000   diff  0.00000
+  bin   2  nominal    5.0303  varied    5.3321   ratio  1.06000   diff  0.00000
+  bin   3  nominal   18.4187  varied   19.5238   ratio  1.06000   diff  0.00000
+  bin   4  nominal   16.4105  varied   17.3951   ratio  1.06000   diff  0.00000
+  bin   5  nominal   15.6743  varied   16.6148   ratio  1.06000   diff  0.00000
+  bin   6  nominal   15.4486  varied   16.3755   ratio  1.06000   diff  0.00000
+  bin   7  nominal   15.8008  varied   16.7488   ratio  1.06000   diff  0.00000
+  bin   8  nominal    9.2909  varied    9.8484   ratio  1.06000   diff  0.00000
+  bin   9  nominal   12.6611  varied   13.4208   ratio  1.06000   diff  0.00000
+  bin  10  nominal   10.8081  varied   11.4566   ratio  1.06000   diff  0.00000
+  bin  11  nominal   11.6167  varied   12.3137   ratio  1.06000   diff  0.00000
+  bin  12  nominal   21.2969  varied   22.5747   ratio  1.06000   diff  0.00000
+  bin   1  nominal    1.1517  varied    1.0865   ratio  0.94340   diff  0.00000
+  bin   2  nominal    5.0303  varied    4.7456   ratio  0.94340   diff  0.00000
+  bin   3  nominal   18.4187  varied   17.3761   ratio  0.94340   diff  0.00000
+  bin   4  nominal   16.4105  varied   15.4816   ratio  0.94340   diff  0.00000
+  bin   5  nominal   15.6743  varied   14.7871   ratio  0.94340   diff  0.00000
+  bin   6  nominal   15.4486  varied   14.5741   ratio  0.94340   diff  0.00000
+  bin   7  nominal   15.8008  varied   14.9064   ratio  0.94340   diff  0.00000
+  bin   8  nominal    9.2909  varied    8.7650   ratio  0.94340   diff  0.00000
+  bin   9  nominal   12.6611  varied   11.9445   ratio  0.94340   diff  0.00000
+  bin  10  nominal   10.8081  varied   10.1963   ratio  0.94340   diff  0.00000
+  bin  11  nominal   11.6167  varied   10.9591   ratio  0.94340   diff  0.00000
+  bin  12  nominal   21.2969  varied   20.0914   ratio  0.94340   diff  0.00000
+[makeShapeCards_wzRun3:INFO]: Is normZZ nuisance shape? False
+[makeShapeCards_wzRun3:INFO]: Wrote to ./check_discriminant_vars/./rebin12/m3l/wz-card.txt and ./check_discriminant_vars/./rebin12/m3l/wz-card.root .
