@@ -11,6 +11,7 @@ data = np.loadtxt(filename,dtype = str)
 # Redefining types and deleting duplicates
 binning = np.sort(np.float32(np.unique(data[:,0])))
 variables = np.unique(data[:,1])
+variables = np.delete(variables,np.where(variables == "m3l"))
 
 uncmin = np.float32(data[:,4])
 uncpos = np.float32(data[:,5])
@@ -30,7 +31,7 @@ plt.ylabel("Uncertainties",fontsize = "x-large")
 
 plt.legend()
 
-plt.savefig("unc_vs_binning_neg.png")
+plt.savefig("unc_vs_binning_neg.pdf")
 
 # Second figure: positive uncertainty
 plt.figure()
@@ -43,4 +44,4 @@ plt.ylabel("Uncertainties",fontsize = "x-large")
 
 plt.legend()
 
-plt.savefig("unc_vs_binning_pos.png")
+plt.savefig("unc_vs_binning_pos.pdf")
