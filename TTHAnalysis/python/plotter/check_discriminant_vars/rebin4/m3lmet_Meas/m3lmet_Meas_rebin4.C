@@ -1,7 +1,7 @@
 void m3lmet_Meas_rebin4()
 {
 //=========Macro generated from canvas: m3lmet_Meas_rebin4_canvas/m3lmet_Meas_rebin4
-//=========  (Mon Feb 20 00:20:10 2023) by ROOT version 6.24/07
+//=========  (Tue Apr  4 18:54:09 2023) by ROOT version 6.24/07
    TCanvas *m3lmet_Meas_rebin4_canvas = new TCanvas("m3lmet_Meas_rebin4_canvas", "m3lmet_Meas_rebin4",0,0,600,600);
    gStyle->SetOptFit(1);
    gStyle->SetOptStat(0);
@@ -349,20 +349,20 @@ void m3lmet_Meas_rebin4()
    27.55393,
    105.3356};
    Double_t m3lmet_Meas_rebin4_total_errors_fely3001[4] = {
-   30.68043,
-   54.62912,
-   77.84365,
-   96.78022};
+   30.20604,
+   46.24228,
+   62.33277,
+   84.3253};
    Double_t m3lmet_Meas_rebin4_total_errors_fehx3001[4] = {
    95.43037,
    21.68005,
    27.55393,
    105.3356};
    Double_t m3lmet_Meas_rebin4_total_errors_fehy3001[4] = {
-   22.87163,
-   58.78225,
-   73.96301,
-   100.9714};
+   18.69108,
+   49.16507,
+   60.5717,
+   92.53559};
    TGraphAsymmErrors *grae = new TGraphAsymmErrors(4,m3lmet_Meas_rebin4_total_errors_fx3001,m3lmet_Meas_rebin4_total_errors_fy3001,m3lmet_Meas_rebin4_total_errors_felx3001,m3lmet_Meas_rebin4_total_errors_fehx3001,m3lmet_Meas_rebin4_total_errors_fely3001,m3lmet_Meas_rebin4_total_errors_fehy3001);
    grae->SetName("m3lmet_Meas_rebin4_total_errors");
    grae->SetTitle("Graph");
@@ -372,8 +372,8 @@ void m3lmet_Meas_rebin4()
    grae->SetMarkerStyle(0);
    
    TH1F *Graph_m3lmet_Meas_rebin4_total_errors3001 = new TH1F("Graph_m3lmet_Meas_rebin4_total_errors3001","Graph",100,0,550);
-   Graph_m3lmet_Meas_rebin4_total_errors3001->SetMinimum(167.3129);
-   Graph_m3lmet_Meas_rebin4_total_errors3001->SetMaximum(1502.375);
+   Graph_m3lmet_Meas_rebin4_total_errors3001->SetMinimum(168.6783);
+   Graph_m3lmet_Meas_rebin4_total_errors3001->SetMaximum(1493.048);
    Graph_m3lmet_Meas_rebin4_total_errors3001->SetDirectory(0);
    Graph_m3lmet_Meas_rebin4_total_errors3001->SetStats(0);
    Graph_m3lmet_Meas_rebin4_total_errors3001->SetLineStyle(0);

@@ -1,0 +1,4 @@
+('Will save plots to ', './check_discriminant_vars/./rebin6/m3l/m3l_6_plots.root')
+('cut set: ', 'all cuts')
+('    plot: ', 'm3l_rebin6')
+({'prompt_WZ': <CMGTools.TTHAnalysis.plotter.histoWithNuisances.HistoWithNuisances object at 0x7fc5411af6d0>, 'prompt_ZZ': <CMGTools.TTHAnalysis.plotter.histoWithNuisances.HistoWithNuisances object at 0x7fc5411af640>, 'fakes_DY': <CMGTools.TTHAnalysis.plotter.histoWithNuisances.HistoWithNuisances object at 0x7fc5411af610>, 'fakes_TT': <CMGTools.TTHAnalysis.plotter.histoWithNuisances.HistoWithNuisances object at 0x7fc5411af2b0>, 'fakes_VV': <CMGTools.TTHAnalysis.plotter.histoWithNuisances.HistoWithNuisances object at 0x7fc5412d68e0>, 'signal': <CMGTools.TTHAnalysis.plotter.histoWithNuisances.HistoWithNuisances object at 0x7fc5412d6850>, 'background': <CMGTools.TTHAnalysis.plotter.histoWithNuisances.HistoWithNuisances object at 0x7fc5412d6820>}, ['prompt_ZZ', 'fakes_DY', 'fakes_TT', 'fakes_VV'], ['prompt_WZ'])

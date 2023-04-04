@@ -106,10 +106,10 @@ if __name__ == "__main__":
 				
 			elif plot == True or run_all == True:
 				line = "---> Plot the impacts"
-				iline = (np.where(np.asarray(cmd) == iline)[0] + 2)[0]
+				iline = (np.where(np.asarray(cmd) == line)[0] + 2)[0]
 				
 				print("==== Plotting impacts ====")
-				out = subprocess.Popen(cmd[iline],shell = True).decode("utf-8")
+				out = subprocess.check_output(cmd[iline],shell = True).decode("utf-8")
 				print(out)
 				print("==== Ending plotting impacts ====")
 				

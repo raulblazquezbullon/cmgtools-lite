@@ -1,7 +1,7 @@
 void m3lmet_Meas_rebin6()
 {
 //=========Macro generated from canvas: m3lmet_Meas_rebin6_canvas/m3lmet_Meas_rebin6
-//=========  (Mon Feb 20 01:38:38 2023) by ROOT version 6.24/07
+//=========  (Tue Apr  4 18:58:03 2023) by ROOT version 6.24/07
    TCanvas *m3lmet_Meas_rebin6_canvas = new TCanvas("m3lmet_Meas_rebin6_canvas", "m3lmet_Meas_rebin6",0,0,600,600);
    gStyle->SetOptFit(1);
    gStyle->SetOptStat(0);
@@ -383,12 +383,12 @@ void m3lmet_Meas_rebin6()
    24.13388,
    91.61774};
    Double_t m3lmet_Meas_rebin6_total_errors_fely3001[6] = {
-   16.47757,
-   30.35235,
-   38.39729,
-   52.45569,
-   47.74815,
-   74.87939};
+   11.69341,
+   28.6262,
+   32.39686,
+   40.61281,
+   44.25419,
+   62.43285};
    Double_t m3lmet_Meas_rebin6_total_errors_fehx3001[6] = {
    87.66096,
    15.2608,
@@ -397,12 +397,12 @@ void m3lmet_Meas_rebin6()
    24.13388,
    91.61774};
    Double_t m3lmet_Meas_rebin6_total_errors_fehy3001[6] = {
-   13.50216,
-   27.71537,
-   44.10341,
-   49.07711,
-   50.8536,
-   75.23712};
+   9.117614,
+   24.27949,
+   38.49814,
+   40.79941,
+   46.34329,
+   65.87465};
    TGraphAsymmErrors *grae = new TGraphAsymmErrors(6,m3lmet_Meas_rebin6_total_errors_fx3001,m3lmet_Meas_rebin6_total_errors_fy3001,m3lmet_Meas_rebin6_total_errors_felx3001,m3lmet_Meas_rebin6_total_errors_fehx3001,m3lmet_Meas_rebin6_total_errors_fely3001,m3lmet_Meas_rebin6_total_errors_fehy3001);
    grae->SetName("m3lmet_Meas_rebin6_total_errors");
    grae->SetTitle("Graph");
@@ -412,8 +412,8 @@ void m3lmet_Meas_rebin6()
    grae->SetMarkerStyle(0);
    
    TH1F *Graph_m3lmet_Meas_rebin6_total_errors3001 = new TH1F("Graph_m3lmet_Meas_rebin6_total_errors3001","Graph",100,0,550);
-   Graph_m3lmet_Meas_rebin6_total_errors3001->SetMinimum(42.23689);
-   Graph_m3lmet_Meas_rebin6_total_errors3001->SetMaximum(1140.899);
+   Graph_m3lmet_Meas_rebin6_total_errors3001->SetMinimum(48.43572);
+   Graph_m3lmet_Meas_rebin6_total_errors3001->SetMaximum(1130.122);
    Graph_m3lmet_Meas_rebin6_total_errors3001->SetDirectory(0);
    Graph_m3lmet_Meas_rebin6_total_errors3001->SetStats(0);
    Graph_m3lmet_Meas_rebin6_total_errors3001->SetLineStyle(0);

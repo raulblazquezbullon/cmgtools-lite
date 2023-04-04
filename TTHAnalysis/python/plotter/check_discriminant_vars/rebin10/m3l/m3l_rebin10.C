@@ -1,7 +1,7 @@
 void m3l_rebin10()
 {
 //=========Macro generated from canvas: m3l_rebin10_canvas/m3l_rebin10
-//=========  (Mon Feb 20 10:14:06 2023) by ROOT version 6.24/07
+//=========  (Tue Apr  4 18:54:24 2023) by ROOT version 6.24/07
    TCanvas *m3l_rebin10_canvas = new TCanvas("m3l_rebin10_canvas", "m3l_rebin10",0,0,600,600);
    gStyle->SetOptFit(1);
    gStyle->SetOptStat(0);
@@ -447,16 +447,16 @@ void m3l_rebin10()
    20.62753,
    115.436};
    Double_t m3l_rebin10_total_errors_fely3001[10] = {
-   2.853402,
-   15.27925,
-   29.10821,
-   32.36259,
-   28.94232,
-   29.4803,
-   19.96391,
-   27.36502,
-   26.50898,
-   43.69514};
+   2.543812,
+   11.11991,
+   31.12309,
+   26.30499,
+   26.10656,
+   23.73184,
+   17.73444,
+   23.95798,
+   22.0396,
+   33.62732};
    Double_t m3l_rebin10_total_errors_fehx3001[10] = {
    56.25069,
    6.250687,
@@ -469,16 +469,16 @@ void m3l_rebin10()
    20.62753,
    115.436};
    Double_t m3l_rebin10_total_errors_fehy3001[10] = {
-   2.998504,
-   14.88318,
-   28.74629,
-   26.0411,
-   30.36872,
-   29.32034,
-   21.50676,
-   29.20083,
-   27.3843,
-   43.86204};
+   2.80751,
+   12.75633,
+   22.86293,
+   22.26705,
+   27.68833,
+   23.43189,
+   18.94033,
+   26.51634,
+   22.70862,
+   35.23773};
    TGraphAsymmErrors *grae = new TGraphAsymmErrors(10,m3l_rebin10_total_errors_fx3001,m3l_rebin10_total_errors_fy3001,m3l_rebin10_total_errors_felx3001,m3l_rebin10_total_errors_fehx3001,m3l_rebin10_total_errors_fely3001,m3l_rebin10_total_errors_fehy3001);
    grae->SetName("m3l_rebin10_total_errors");
    grae->SetTitle("Graph");
@@ -488,8 +488,8 @@ void m3l_rebin10()
    grae->SetMarkerStyle(0);
    
    TH1F *Graph_m3l_rebin10_total_errors3001 = new TH1F("Graph_m3l_rebin10_total_errors3001","Graph",100,0,550);
-   Graph_m3l_rebin10_total_errors3001->SetMinimum(37.40287);
-   Graph_m3l_rebin10_total_errors3001->SetMaximum(658.1906);
+   Graph_m3l_rebin10_total_errors3001->SetMinimum(37.6815);
+   Graph_m3l_rebin10_total_errors3001->SetMaximum(648.673);
    Graph_m3l_rebin10_total_errors3001->SetDirectory(0);
    Graph_m3l_rebin10_total_errors3001->SetStats(0);
    Graph_m3l_rebin10_total_errors3001->SetLineStyle(0);

@@ -1,7 +1,7 @@
 void m3l_rebin9()
 {
 //=========Macro generated from canvas: m3l_rebin9_canvas/m3l_rebin9
-//=========  (Mon Feb 20 09:32:54 2023) by ROOT version 6.24/07
+//=========  (Tue Apr  4 18:54:34 2023) by ROOT version 6.24/07
    TCanvas *m3l_rebin9_canvas = new TCanvas("m3l_rebin9_canvas", "m3l_rebin9",0,0,600,600);
    gStyle->SetOptFit(1);
    gStyle->SetOptStat(0);
@@ -432,15 +432,15 @@ void m3l_rebin9()
    19.96738,
    119.4423};
    Double_t m3l_rebin9_total_errors_fely3001[9] = {
-   4.11773,
-   17.75606,
-   33.02224,
-   35.40713,
-   32.56827,
-   26.96436,
-   28.48789,
-   28.14978,
-   47.22172};
+   3.34779,
+   13.70568,
+   33.41374,
+   31.99428,
+   27.93949,
+   21.80887,
+   25.52558,
+   22.92676,
+   37.15258};
    Double_t m3l_rebin9_total_errors_fehx3001[9] = {
    56.94521,
    6.94521,
@@ -452,15 +452,15 @@ void m3l_rebin9()
    19.96738,
    119.4423};
    Double_t m3l_rebin9_total_errors_fehy3001[9] = {
-   4.173431,
-   21.19186,
-   31.05618,
-   30.97388,
-   33.01813,
-   27.33632,
-   30.29982,
-   29.6701,
-   47.28933};
+   3.525398,
+   17.56041,
+   25.37024,
+   27.87499,
+   28.33735,
+   22.43884,
+   27.99424,
+   24.20305,
+   38.77531};
    TGraphAsymmErrors *grae = new TGraphAsymmErrors(9,m3l_rebin9_total_errors_fx3001,m3l_rebin9_total_errors_fy3001,m3l_rebin9_total_errors_felx3001,m3l_rebin9_total_errors_fehx3001,m3l_rebin9_total_errors_fely3001,m3l_rebin9_total_errors_fehy3001);
    grae->SetName("m3l_rebin9_total_errors");
    grae->SetTitle("Graph");
@@ -470,8 +470,8 @@ void m3l_rebin9()
    grae->SetMarkerStyle(0);
    
    TH1F *Graph_m3l_rebin9_total_errors3001 = new TH1F("Graph_m3l_rebin9_total_errors3001","Graph",100,0,550);
-   Graph_m3l_rebin9_total_errors3001->SetMinimum(48.73284);
-   Graph_m3l_rebin9_total_errors3001->SetMaximum(721.3864);
+   Graph_m3l_rebin9_total_errors3001->SetMinimum(49.42578);
+   Graph_m3l_rebin9_total_errors3001->SetMaximum(711.944);
    Graph_m3l_rebin9_total_errors3001->SetDirectory(0);
    Graph_m3l_rebin9_total_errors3001->SetStats(0);
    Graph_m3l_rebin9_total_errors3001->SetLineStyle(0);

@@ -1,7 +1,7 @@
 void m3l_rebin8()
 {
 //=========Macro generated from canvas: m3l_rebin8_canvas/m3l_rebin8
-//=========  (Sun Feb 19 16:26:49 2023) by ROOT version 6.24/07
+//=========  (Tue Apr  4 18:54:27 2023) by ROOT version 6.24/07
    TCanvas *m3l_rebin8_canvas = new TCanvas("m3l_rebin8_canvas", "m3l_rebin8",0,0,600,600);
    gStyle->SetOptFit(1);
    gStyle->SetOptStat(0);
@@ -415,14 +415,14 @@ void m3l_rebin8()
    19.14222,
    124.4501};
    Double_t m3l_rebin8_total_errors_fely3001[8] = {
-   5.346068,
-   24.47121,
-   38.88156,
-   37.44589,
-   34.57666,
-   30.51645,
-   28.42636,
-   53.17151};
+   4.196579,
+   22.18802,
+   34.00875,
+   34.5638,
+   28.41201,
+   26.50051,
+   24.5702,
+   41.55367};
    Double_t m3l_rebin8_total_errors_fehx3001[8] = {
    57.81336,
    7.813358,
@@ -433,14 +433,14 @@ void m3l_rebin8()
    19.14222,
    124.4501};
    Double_t m3l_rebin8_total_errors_fehy3001[8] = {
-   5.639351,
-   26.23951,
-   34.17463,
-   37.23035,
-   34.57787,
-   32.39793,
-   30.4166,
-   53.36434};
+   4.484999,
+   22.78205,
+   28.46398,
+   33.00852,
+   28.08433,
+   29.91854,
+   25.26074,
+   43.72591};
    TGraphAsymmErrors *grae = new TGraphAsymmErrors(8,m3l_rebin8_total_errors_fx3001,m3l_rebin8_total_errors_fy3001,m3l_rebin8_total_errors_felx3001,m3l_rebin8_total_errors_fehx3001,m3l_rebin8_total_errors_fely3001,m3l_rebin8_total_errors_fehy3001);
    grae->SetName("m3l_rebin8_total_errors");
    grae->SetTitle("Graph");
@@ -450,8 +450,8 @@ void m3l_rebin8()
    grae->SetMarkerStyle(0);
    
    TH1F *Graph_m3l_rebin8_total_errors3001 = new TH1F("Graph_m3l_rebin8_total_errors3001","Graph",100,0,550);
-   Graph_m3l_rebin8_total_errors3001->SetMinimum(0.949426);
-   Graph_m3l_rebin8_total_errors3001->SetMaximum(808.6405);
+   Graph_m3l_rebin8_total_errors3001->SetMinimum(3.177707);
+   Graph_m3l_rebin8_total_errors3001->SetMaximum(797.9233);
    Graph_m3l_rebin8_total_errors3001->SetDirectory(0);
    Graph_m3l_rebin8_total_errors3001->SetStats(0);
    Graph_m3l_rebin8_total_errors3001->SetLineStyle(0);

@@ -200,7 +200,7 @@ if __name__ == "__main__":
 	extra 	  = opts.extra.split(",")
 
 	# == Rootfile with unrebinned plots
-	inpath = "./output_raul/plots_wz.root" # Duda: hay que actualizar este archivo?
+	inpath = "./test/plots_wz.root" # Duda: hay que actualizar este archivo?
 	outpath = "./check_discriminant_vars/"
 
 	# == Iterate over variables

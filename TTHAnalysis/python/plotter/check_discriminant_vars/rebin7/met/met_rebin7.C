@@ -1,7 +1,7 @@
 void met_rebin7()
 {
 //=========Macro generated from canvas: met_rebin7_canvas/met_rebin7
-//=========  (Sun Feb 19 22:49:14 2023) by ROOT version 6.24/07
+//=========  (Tue Apr  4 18:53:33 2023) by ROOT version 6.24/07
    TCanvas *met_rebin7_canvas = new TCanvas("met_rebin7_canvas", "met_rebin7",0,0,600,600);
    gStyle->SetOptFit(1);
    gStyle->SetOptStat(0);
@@ -381,12 +381,12 @@ void met_rebin7()
    9.852005,
    150.6692};
    Double_t met_rebin7_total_errors_fely3001[6] = {
-   49.88747,
-   46.21425,
-   45.62386,
-   47.13829,
-   51.42319,
-   61.99095};
+   36.39285,
+   38.54194,
+   32.29565,
+   29.11203,
+   52.52912,
+   60.05224};
    Double_t met_rebin7_total_errors_fehx3001[6] = {
    3.725064,
    3.841349,
@@ -395,12 +395,12 @@ void met_rebin7()
    9.852005,
    150.6692};
    Double_t met_rebin7_total_errors_fehy3001[6] = {
-   29.96457,
-   49.50684,
-   49.21554,
-   41.06369,
-   58.71687,
-   61.9335};
+   25.6223,
+   38.67069,
+   34.61916,
+   31.29883,
+   57.14102,
+   64.98171};
    TGraphAsymmErrors *grae = new TGraphAsymmErrors(6,met_rebin7_total_errors_fx3001,met_rebin7_total_errors_fy3001,met_rebin7_total_errors_felx3001,met_rebin7_total_errors_fehx3001,met_rebin7_total_errors_fely3001,met_rebin7_total_errors_fehy3001);
    grae->SetName("met_rebin7_total_errors");
    grae->SetTitle("Graph");
@@ -410,8 +410,8 @@ void met_rebin7()
    grae->SetMarkerStyle(0);
    
    TH1F *Graph_met_rebin7_total_errors3001 = new TH1F("Graph_met_rebin7_total_errors3001","Graph",100,0,415.255);
-   Graph_met_rebin7_total_errors3001->SetMinimum(338.3816);
-   Graph_met_rebin7_total_errors3001->SetMaximum(768.9388);
+   Graph_met_rebin7_total_errors3001->SetMinimum(352.9209);
+   Graph_met_rebin7_total_errors3001->SetMaximum(770.9424);
    Graph_met_rebin7_total_errors3001->SetDirectory(0);
    Graph_met_rebin7_total_errors3001->SetStats(0);
    Graph_met_rebin7_total_errors3001->SetLineStyle(0);

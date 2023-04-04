@@ -1,7 +1,7 @@
 void met_rebin9()
 {
 //=========Macro generated from canvas: met_rebin9_canvas/met_rebin9
-//=========  (Mon Feb 20 00:08:20 2023) by ROOT version 6.24/07
+//=========  (Tue Apr  4 18:54:43 2023) by ROOT version 6.24/07
    TCanvas *met_rebin9_canvas = new TCanvas("met_rebin9_canvas", "met_rebin9",0,0,600,600);
    gStyle->SetOptFit(1);
    gStyle->SetOptStat(0);
@@ -413,14 +413,14 @@ void met_rebin9()
    10.75519,
    145.8541};
    Double_t met_rebin9_total_errors_fely3001[8] = {
-   44.37969,
-   32.7111,
-   47.3059,
-   30.3338,
-   32.84694,
-   37.10116,
-   48.28028,
-   45.09777};
+   15.10788,
+   29.97685,
+   34.62661,
+   24.66158,
+   27.18395,
+   33.70343,
+   45.18315,
+   44.7319};
    Double_t met_rebin9_total_errors_fehx3001[8] = {
    2.897273,
    2.897271,
@@ -431,14 +431,14 @@ void met_rebin9()
    10.75519,
    145.8541};
    Double_t met_rebin9_total_errors_fehy3001[8] = {
-   10.33401,
-   55.59952,
-   38.9657,
-   39.48324,
-   26.24382,
-   43.4937,
-   50.57127,
-   51.00153};
+   8.740043,
+   35.62087,
+   29.93936,
+   28.75488,
+   25.34271,
+   33.61509,
+   48.15335,
+   54.38213};
    TGraphAsymmErrors *grae = new TGraphAsymmErrors(8,met_rebin9_total_errors_fx3001,met_rebin9_total_errors_fy3001,met_rebin9_total_errors_felx3001,met_rebin9_total_errors_fehx3001,met_rebin9_total_errors_fely3001,met_rebin9_total_errors_fehy3001);
    grae->SetName("met_rebin9_total_errors");
    grae->SetTitle("Graph");
@@ -448,8 +448,8 @@ void met_rebin9()
    grae->SetMarkerStyle(0);
    
    TH1F *Graph_met_rebin9_total_errors3001 = new TH1F("Graph_met_rebin9_total_errors3001","Graph",100,0,415.4205);
-   Graph_met_rebin9_total_errors3001->SetMinimum(53.42463);
-   Graph_met_rebin9_total_errors3001->SetMaximum(614.9662);
+   Graph_met_rebin9_total_errors3001->SetMinimum(85.86541);
+   Graph_met_rebin9_total_errors3001->SetMaximum(609.3794);
    Graph_met_rebin9_total_errors3001->SetDirectory(0);
    Graph_met_rebin9_total_errors3001->SetStats(0);
    Graph_met_rebin9_total_errors3001->SetLineStyle(0);

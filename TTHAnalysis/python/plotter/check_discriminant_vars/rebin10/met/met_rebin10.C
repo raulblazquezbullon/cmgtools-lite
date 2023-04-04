@@ -1,7 +1,7 @@
 void met_rebin10()
 {
 //=========Macro generated from canvas: met_rebin10_canvas/met_rebin10
-//=========  (Mon Feb 20 00:47:32 2023) by ROOT version 6.24/07
+//=========  (Tue Apr  4 18:54:37 2023) by ROOT version 6.24/07
    TCanvas *met_rebin10_canvas = new TCanvas("met_rebin10_canvas", "met_rebin10",0,0,600,600);
    gStyle->SetOptFit(1);
    gStyle->SetOptStat(0);
@@ -428,15 +428,15 @@ void met_rebin10()
    11.11196,
    143.8341};
    Double_t met_rebin10_total_errors_fely3001[9] = {
-   27.01796,
-   34.85083,
-   41.8169,
-   29.61673,
-   26.22463,
-   28.03144,
-   38.54322,
-   41.36637,
-   37.41946};
+   8.585753,
+   29.29886,
+   34.41916,
+   23.98553,
+   20.69897,
+   24.648,
+   38.42926,
+   37.1754,
+   37.58953};
    Double_t met_rebin10_total_errors_fehx3001[9] = {
    2.607546,
    2.607545,
@@ -448,15 +448,15 @@ void met_rebin10()
    11.11196,
    143.8341};
    Double_t met_rebin10_total_errors_fehy3001[9] = {
-   4.308682,
-   37.15504,
-   38.92744,
-   30.95274,
-   28.36592,
-   24.5416,
-   43.45227,
-   44.59599,
-   41.41102};
+   2.70614,
+   26.39372,
+   27.78887,
+   28.10973,
+   24.28325,
+   19.0432,
+   42.95982,
+   44.15005,
+   46.72752};
    TGraphAsymmErrors *grae = new TGraphAsymmErrors(9,met_rebin10_total_errors_fx3001,met_rebin10_total_errors_fy3001,met_rebin10_total_errors_felx3001,met_rebin10_total_errors_fehx3001,met_rebin10_total_errors_fely3001,met_rebin10_total_errors_fehy3001);
    grae->SetName("met_rebin10_total_errors");
    grae->SetTitle("Graph");
@@ -466,8 +466,8 @@ void met_rebin10()
    grae->SetMarkerStyle(0);
    
    TH1F *Graph_met_rebin10_total_errors3001 = new TH1F("Graph_met_rebin10_total_errors3001","Graph",100,0,415.4785);
-   Graph_met_rebin10_total_errors3001->SetMinimum(16.05232);
-   Graph_met_rebin10_total_errors3001->SetMaximum(571.1482);
+   Graph_met_rebin10_total_errors3001->SetMinimum(32.6413);
+   Graph_met_rebin10_total_errors3001->SetMaximum(568.7633);
    Graph_met_rebin10_total_errors3001->SetDirectory(0);
    Graph_met_rebin10_total_errors3001->SetStats(0);
    Graph_met_rebin10_total_errors3001->SetLineStyle(0);

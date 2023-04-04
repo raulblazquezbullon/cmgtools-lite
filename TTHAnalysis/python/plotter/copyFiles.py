@@ -33,17 +33,23 @@ if __name__ == "__main__":
 	
 	if path[-1] != "/": path.append("/")
 	
-	if mode == "rebin":
+	if mode == "zz-card":
 		for nq in nquant:
 			for var in variables:
 				outpath = "./check_discriminant_vars/rebin%s/%s/" %(nq,var)
 				if card_folder: outpath += "./cards/"
 				for f in filename:
-					#print("cp " + path + f + " " + outpath)
 					subprocess.Popen(["cp",path + f,outpath])
+	
+	elif mode == "wz-card":
+		for nq in nquant:
+			for var in variables:
+				inpath = "./check_discriminant_vars/rebin%s/%s/" %(nq,var)
+				outpath = "./check_discriminant_vars/rebin%s/%s/cards/" %(nq,var)
+				for f in filename:
+					subprocess.Popen(["cp",inpath + f,outpath])
 						
 	else:
 		for f in filename:
 			for directory in folder:
-				#print("cp " + path + f + " " + directory)
 				subprocess.Popen(["cp",path + f,directory])
