@@ -149,6 +149,7 @@ class LeptonJetRecleanerWZSM(Module):
     
     # List the branches that will be written to declare the output
     self.listBranches()
+
   def listBranches(self):
     ''' Method to prompt with a list of the branches produced in this module'''
     label = self.label
@@ -161,22 +162,22 @@ class LeptonJetRecleanerWZSM(Module):
         ("nLepGood"+lepvar,"I"), 
         ("LepGood_conePt"+lepvar,"F",20,"nLepGood"+lepvar),
         ("nLepLoose%s%s"%(lepvar, label), "I"), 
-        ("iL%s%s"%(lepvar, label),"I",20), # passing loose
+        ("iL%s%s"%(lepvar, label),"I",20, "nLepLoose%s%s"%(lepvar, label)), # passing loose
         ("nLepLooseVeto%s%s"%(lepvar, label), "I"), 
-        ("iLV%s%s"%(lepvar, label),"I",20), # passing loose + veto
+        ("iLV%s%s"%(lepvar, label),"I",20, "nLepLooseVeto%s%s"%(lepvar, label)), # passing loose + veto
         ("nLepCleaning%s%s"%(lepvar, label), "I"), 
-        ("iC%s%s"%(lepvar, label),"I",20), # passing cleaning
+        ("iC%s%s"%(lepvar, label),"I",20, "nLepCleaning%s%s"%(lepvar, label)), # passing cleaning
         ("nLepCleaningVeto%s%s"%(lepvar, label), "I"), 
-        ("iCV%s%s"%(lepvar, label),"I",20), # passing cleaning + veto
+        ("iCV%s%s"%(lepvar, label),"I",20, "nLepCleaningVeto%s%s"%(lepvar, label)), # passing cleaning + veto
         ("nLepFO%s%s"%(lepvar, label), "I"), 
-        ("iF%s%s"%(lepvar, label),"I",20), # passing FO, sorted by conept
+        ("iF%s%s"%(lepvar, label),"I",20, "nLepFO%s%s"%(lepvar, label)), # passing FO, sorted by conept
         ("nLepFOVeto%s%s"%(lepvar, label), "I"), 
-        ("iFV%s%s"%(lepvar, label),"I",20), # passing FO + veto, sorted by conept
+        ("iFV%s%s"%(lepvar, label),"I",20, "nLepFOVeto%s%s"%(lepvar, label)), # passing FO + veto, sorted by conept
         ("nLepTight%s%s"%(lepvar, label), "I"), 
-        ("iT%s%s"%(lepvar, label),"I",20), # passing tight, sorted by conept
+        ("iT%s%s"%(lepvar, label),"I", 20, "nLepTight%s%s"%(lepvar, label)), # passing tight, sorted by conept
         ("nLepTightVeto%s%s"%(lepvar, label), "I"), 
-        ("iTV%s%s"%(lepvar, label),"I",20), # passing tight + veto, sorted by conept
-        ("LepGood_isLoose%s%s"%(lepvar, label),"I",20,"nLepGood"+lepvar),
+        ("iTV%s%s"%(lepvar, label),"I",20, "nLepTightVeto%s%s"%(lepvar, label)), # passing tight + veto, sorted by conept
+        ("LepGood_isLoose%s%s"%(lepvar, label),"I", 20,"nLepGood"+lepvar),
         ("LepGood_isLooseVeto%s%s"%(lepvar, label),"I",20,"nLepGood"+lepvar),
         ("LepGood_isCleaning%s%s"%(lepvar, label),"I",20,"nLepGood"+lepvar),
         ("LepGood_isCleaningVeto%s%s"%(lepvar, label),"I",20,"nLepGood"+lepvar),

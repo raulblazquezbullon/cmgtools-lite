@@ -12,7 +12,7 @@ class postprocessor_producer(producer):
 
   def run(self):
     self.doData = "DATA" if self.isData else "MC"
-    outname   = "/".join([self.outname, self.tier, self.prodname, self.doData.lower()])
+    outname   = "/".join([self.outname])
     
     year     = self.year
     extra    = self.extra
