@@ -28,19 +28,14 @@ def add_parsing_opts():
                                  description = "Main options for running WZ analysis") 
 
   # -- Input and outputs
-  parser.add_option("--datapath", dest = "datapath", default = "/beegfs/data/nanoAODv10/wz/data",
+  parser.add_option("--datapath", dest = "datapath", default = "/beegfs/data/nanoAODv11/wz-run3/trees/2022/data",
               help = "Input (folder) name with data files")
-  parser.add_option("--mcpath", dest = "mcpath", default = "/beegfs/data/nanoAODv10/wz/mc",
+  parser.add_option("--mcpath", dest = "mcpath", default = "/beegfs/data/nanoAODv11/wz-run3/trees/2022/mc",
               help = "Input (folder) name with mc files")    
   parser.add_option("--outname", dest = "outname", type="string", default = "./foolder",
               help = "Output (folder) name")
   parser.add_option("--unc", dest = "uncfile", type="string", default = "wz-run3/common/systs_wz.txt",
               help = "File with systematic variations")
-  # -- Version control
-  parser.add_option("--prodname", dest = "prodname", type="string", default = "jan2023", 
-              help = "Name of the last folder in which the output will be saved")
-  parser.add_option("--tier", dest = "tier", type=str, default = "nanoAODv10", 
-              help = "Production tier used in output path formats")
   # -- Batch control
   parser.add_option("--do-submit", dest = "doSubmit", default = False, action = "store_true",
               help = "Execute commands instead of just prompting them. BE CAREFUL")
