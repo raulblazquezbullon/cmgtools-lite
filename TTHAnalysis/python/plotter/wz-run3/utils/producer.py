@@ -6,7 +6,7 @@ import os,sys
 class producer(object):
   # -- Friend tree modules 
   modules = { 
-    1 : ["jmeUncertainties"   , "mc"],
+    1 : ["jmeUncertainties_mc", "mc"],
     2 : ["leptonJetRecleaning", "simple"],
     3 : ["leptonBuilder"      , "simple"],
     4 : ["triggerSequence"    , "simple"],
