@@ -57,6 +57,8 @@ def rebin_histo(var, path, nquant, firstBin = [0.0]):
 
 	rebining = init + yquant
 	rebining = rebining.tolist()
+	
+	print(xquant,yquant,rebining)
 
 	return rebining
 
