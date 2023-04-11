@@ -30,7 +30,7 @@ plt.ylabel("Uncertainties",fontsize = "x-large")
 
 plt.legend()
 
-plt.savefig("unc_vs_binning_neg.pdf")
+plt.savefig("unc_vs_binning_neg.png")
 
 # Second figure: positive uncertainty
 plt.figure()
@@ -43,4 +43,4 @@ plt.ylabel("Uncertainties",fontsize = "x-large")
 
 plt.legend()
 
-plt.savefig("unc_vs_binning_pos.pdf")
+plt.savefig("unc_vs_binning_pos.png")
