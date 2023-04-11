@@ -26,16 +26,16 @@ if __name__ == "__main__":
   blind = True    
       
   doBlind = "" if not blind else "-t -1 --setParameters %s"%(",".join(["%s=1"%poi for poi in POIs]))
-  submitCluster = "--job-mode slurm --sub-opts='-p %s'"%queue if cluster == "slurm" else ""
+
 
   # Do the initial fit
   print("\n---> Command to perform the initial fit\n")
-  initialFit_cmd = "cd %s; combineTool.py -M Impacts -m 125 -d %s --doInitialFit %s --redefineSignalPOI %s --X-rtd MINIMIZER_MaxCalls=99999999999 --maxFailedSteps 500 --X-rtd MINIMIZER_analytic --setRobustFitTolerance 0.05 --cminPreScan --cminDefaultMinimizerStrategy 0; cd - "%(outpath, WS, doBlind, signalPOI)
+  initialFit_cmd = "cd %s; combineTool.py -M Impacts -m 125 -d %s --doInitialFit %s --X-rtd MINIMIZER_MaxCalls=99999999999 --maxFailedSteps 500 --X-rtd MINIMIZER_analytic --setRobustFitTolerance 0.05 --cminPreScan --cminDefaultMinimizerStrategy 0 --redefineSignalPOI %s; cd - "%(outpath, WS, doBlind, signalPOI)
   print(initialFit_cmd)
   # Do the sequential fits
   print("\n---> Command to perform the sequential fits. PLEASE CHECK THE ENVIRONMENT IN WHICH THIS COMMAND WILL RUN (local or cluster)\n")
   doFits_cmd = initialFit_cmd.replace("doInitialFit", "doFits --parallel %s "%(ncores))
-  if submitCluster != "": doFits_cmd += " %s"%submitCluster
+  doFits_cmd += " --job-mode slurm --sub-opts='-p batch'"
   print(doFits_cmd)
 
   print("\n---> Produce the impacts\n")

@@ -24,6 +24,7 @@ def add_parsing_options():
 	parser.add_argument("--produce",   dest = "produce",action = "store_true",default = False)
 	parser.add_argument("--plot",      dest = "plot",action = "store_true",default = False)
 	parser.add_argument("--run_all",   dest = "run_all",action = "store_true",default = False)
+	parser.add_argument("--fitfile",   dest = "fitfile",default = "output_fits.txt")
 
 	return parser.parse_args() 
 	
@@ -37,13 +38,12 @@ if __name__ == "__main__":
 	produce = opts.produce
 	plot = opts.plot
 	run_all = opts.run_all
+	fitfile = opts.fitfile
 	
 	main_path = "/nfs/fanae/user/rblazquez/TFG/wz_run3/CMSSW_12_4_12/src/CMGTools/TTHAnalysis/python/plotter/"
 	
 	filepath = "./wz-run3/scripts/combine/"
 	filename = "run_impacts_inclusive.sh"
-	
-	fitfile = "output_fits.txt"
 	
 	counter = 0
 	for var in variables:
@@ -66,7 +66,13 @@ if __name__ == "__main__":
 				iline = (np.where(np.asarray(cmd) == line)[0] + 2)[0]
 				
 				print("==== Performing initial fit ====")
-				out = subprocess.check_output(cmd[iline],shell = True).decode("utf-8")
+				if var == "m3l" and nq == "4": # Solving robust related issue
+					fix = cmd[iline].replace("; cd -"," --robustFit=1; cd -")
+					out = subprocess.check_output(fix,shell = True).decode("utf-8")
+					
+				else:
+					out = subprocess.check_output(cmd[iline],shell = True).decode("utf-8")
+					
 				print(out)
 				print("==== Ending initial fit ====\n")
 				
@@ -86,7 +92,7 @@ if __name__ == "__main__":
 				f.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\n" %(nq,var,param,val,uncmin,uncpos,percent))
 				f.close()
 				
-			elif fit2 == True or run_all == True:
+			elif fit2 == True or run_all == True: 
 				line = "---> Command to perform the sequential fits. PLEASE CHECK THE ENVIRONMENT IN WHICH THIS COMMAND WILL RUN (local or cluster)"
 				iline = (np.where(np.asarray(cmd) == line)[0] + 2)[0]
 				

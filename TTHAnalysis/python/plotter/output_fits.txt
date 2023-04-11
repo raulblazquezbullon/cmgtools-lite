@@ -1,6 +1,6 @@
 # Nbin	Variable	Parameter	Value	Uncertainty -	Uncertainty +	(%)
 3	m3l	r_prompt_WZ	+1.000	-0.072	+0.079	(68%)
-4	m3l	r_prompt_WZ	+1.000	-0.026	+0.026	(68%)
+4	m3l	r_prompt_WZ	+1.000	-0.071	+0.078	(68%)
 5	m3l	r_prompt_WZ	+1.000	-0.072	+0.077	(68%)
 6	m3l	r_prompt_WZ	+1.000	-0.071	+0.078	(68%)
 7	m3l	r_prompt_WZ	+1.000	-0.071	+0.076	(68%)
