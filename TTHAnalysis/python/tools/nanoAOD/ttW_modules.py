@@ -171,10 +171,15 @@ recleaner_step2_data = lambda : fastCombinedObjectRecleaner(label="Recl", inlabe
 )
 
 
-
 from CMGTools.TTHAnalysis.tools.eventVars_2lss import EventVars2LSS
 eventVars = lambda : EventVars2LSS('','Recl')
 eventVars_allvariations = lambda : EventVars2LSS('','Recl',variations = [ 'jes%s'%v for v in jecGroups] + ['jer%s'%x for x in ['barrel','endcap1','endcap2highpt','endcap2lowpt' ,'forwardhighpt','forwardlowpt']  ]  + ['HEM'])
+
+#from CMGTools.TTHAnalysis.tools.ttW_MVA import ttW_MVA
+#eventVars = lambda : ttW_MVA('','ttW_MVA')
+#ttW_MVA_ftree = lambda : ttW_MVA('','Recl')
+
+
 
 
 from CMGTools.TTHAnalysis.tools.hjDummCalc import HjDummyCalc
@@ -363,7 +368,9 @@ Trigger_3l   = lambda : EvtTagger('Trigger_3l',[ lambda ev : triggerGroups['Trig
 Trigger_MET  = lambda : EvtTagger('Trigger_MET',[ lambda ev : triggerGroups['Trigger_MET'][ev.year](ev) ])
 Trigger_JetHT  = lambda : EvtTagger('Trigger_JetHT',[ lambda ev : triggerGroups['Trigger_JetHT'][ev.year](ev) ])
 
-triggerSequence = [Trigger_1e,Trigger_1m,Trigger_2e,Trigger_2m,Trigger_em,Trigger_3e,Trigger_3m,Trigger_mee,Trigger_mme,Trigger_2lss,Trigger_3l,Trigger_MET,Trigger_JetHT]
+triggerSequence = [Trigger_1e,Trigger_1m,Trigger_2e,Trigger_2m,Trigger_em,Trigger_3e,Trigger_3m,Trigger_mee,Trigger_mme,Trigger_2lss,Trigger_3l]#,Trigger_MET,Trigger_JetHT]
+
+recleaner_data = [recleaner_step1, recleaner_step2_data] + triggerSequence
 
 
 from CMGTools.TTHAnalysis.tools.BDT_eventReco_cpp import BDT_eventReco
@@ -426,27 +433,12 @@ btagSF2016_dj_allVars = lambda : btagSFProducer("Legacy2016",'deepjet',collName=
 btagSF2017_dj_allVars = lambda : btagSFProducer("2017",'deepjet',collName="JetSel_Recl",storeOutput=False,perJesComponents=True)
 btagSF2018_dj_allVars = lambda : btagSFProducer("2018",'deepjet',collName="JetSel_Recl",storeOutput=False,perJesComponents=True)
 
-#btagSF2016_dj = lambda : btagSFProducer_nojes("Legacy2016",'deepjet',verbose=2,collName="JetSel_Recl",storeOutput=False)
-#btagSF2017_dj = lambda : btagSFProducer_nojes("2017",'deepjet',collName="JetSel_Recl",storeOutput=False)
-#btagSF2018_dj = lambda : btagSFProducer_nojes("2018",'deepjet',collName="JetSel_Recl",storeOutput=False)
 
-#from CMGTools.TTHAnalysis.tools.nanoAOD.BtagSFs_new import BtagSFs_new
-#from CMGTools.TTHAnalysis.tools.nanoAOD.BtagSFs import BtagSFs
 from CMGTools.TTHAnalysis.tools.nanoAOD.btag_weighter  import btag_weighter 
-#bTagSFs = lambda : BtagSFs_new("JetSel_Recl",
-#                           corrs = {"" : 1.},
-#                       )
-
-#bTagSFs_allvars = lambda : BtagSFs("JetSel_Recl",
-#                                   corrs=jecGroups,
-#                       )
-
 from CMGTools.TTHAnalysis.tools.nanoAOD.lepScaleFactors import lepScaleFactors
+from CMGTools.TTHAnalysis.tools.nanoAOD.lepScaleFactors_2lss_ttw import lepScaleFactors2lss
 leptonSFs = lambda : lepScaleFactors()
-
-#scaleFactorSequence_2016 = [btagSF2016_dj,bTagSFs] 
-#scaleFactorSequence_2017 = [btagSF2017_dj,bTagSFs] 
-#scaleFactorSequence_2018 = [btagSF2018_dj,bTagSFs]
+leptonSFs_2lss = lambda : lepScaleFactors2lss()
 
 btagSFpath = os.environ['CMSSW_BASE'] + "/src/PhysicsTools/NanoAODTools/data/btagSF/"
 btagEffpath =  os.environ['CMSSW_BASE'] + "/src/CMGTools/TTHAnalysis/data/btag/ttW/"
@@ -462,10 +454,6 @@ btagWeights_2017 = lambda : btag_weighter(btagSFpath + "DeepFlavour_94XSF_V3_B_F
 btagWeights_2018 = lambda : btag_weighter(btagSFpath + "DeepJet_102XSF_V1_YearCorrelation-V1.csv",  btagEffpath+"bTag_Eff_" , 'deepjet', year = 2018,SFmeasReg = "comb",
                  minptlow = 20, minpthigh = 999., maxeta = 2.5,
                  jecvars = "", lepenvars = "",correlations = True)
-
-#scaleFactorSequence_allVars_2016 = [btagSF2016_dj_allVars] 
-#scaleFactorSequence_allVars_2017 = [btagSF2017_dj_allVars,bTagSFs_allvars] 
-#scaleFactorSequence_allVars_2018 = [btagSF2018_dj_allVars,bTagSFs_allvars]
 
 
 from CMGTools.TTHAnalysis.tools.nanoAOD.higgsDecayFinder import higgsDecayFinder
@@ -498,12 +486,19 @@ vhsplitter = lambda : VHsplitter()
 
 # 5_evtVars_v0
 from CMGTools.TTHAnalysis.tools.nanoAOD.ttH_gen_reco import ttH_gen_reco
-
-
-from CMGTools.TTHAnalysis.tools.nanoAOD.ttw_mva import ttW_mva
-ttwmva = lambda : ttW_mva(modelpath = "/nfs/fanae/user/cvico/WorkSpace/ttW_v2/DNN2lss/v8_76do5_norm_20_215.onnx")
-
-mva = [ttwmva]
 #
 #from CMGTools.TTHAnalysis.tools.topRecoSemiLept import TopRecoSemiLept
 #topRecoModule = lambda : TopRecoSemiLept(constraints=['kWHadMass','kWLepMass','kTopLepMass','kTopHadMass'])
+
+# 6_mvaVars
+from CMGTools.TTHAnalysis.tools.nanoAOD.eventVars_mva import mva_vars 
+mvavars = lambda : mva_vars()
+
+
+# 7_evaluateMVA
+from CMGTools.TTHAnalysis.tools.nanoAOD.ttW_MVA import bdt_evaluator
+modelspath = os.path.join(os.environ["CMSSW_BASE/src/"], "python/tools/nanoAOD/models/")
+
+mva_bdt_multiple_40vars = lambda : bdt_evaluator(modelspath + "BDT_ttw-multiple_40vars.pkl")
+
+mvas = [mva_bdt_multiple_40vars]
