@@ -180,8 +180,8 @@ Float_t theBDT(Double_t BDT){
 #getBinningForThatVariable("/nfs/fanae/user/asoto/Proyectos/tW-Run3/CMSSW_12_4_12/src/CMGTools/TTHAnalysis/python/plotter/temp_Run3_plots/2023_02_01_Test_RF/2022/2j1t/MVAtrain/plots-tw-2j1t_MVAtrain.root", "tmvaBDT_2j1b_smallb_ttbar", 6)
 
 # For the RF
-getBinningForThatVariable("/nfs/fanae/user/asoto/Proyectos/tW-Run3/CMSSW_12_4_12/src/CMGTools/TTHAnalysis/python/plotter/temp_Run3_plots/2023_02_01_Test_RF/2022/1j1t/MVAtrain/plots-tw-1j1t_MVAtrain.root", "tmvaRF_1j1b_smallb_ttbar", 10)
-getBinningForThatVariable("/nfs/fanae/user/asoto/Proyectos/tW-Run3/CMSSW_12_4_12/src/CMGTools/TTHAnalysis/python/plotter/temp_Run3_plots/2023_02_01_Test_RF/2022/2j1t/MVAtrain/plots-tw-2j1t_MVAtrain.root", "tmvaRF_2j1b_smallb_ttbar", 6)
+getBinningForThatVariable("/nfs/fanae/user/asoto/Proyectos/tW-Run3/CMSSW_12_4_12/src/CMGTools/TTHAnalysis/python/plotter/temp_Run3_plots/2023_04_16_smallB/2022G/1j1t/MVAtrain/plots-tw-1j1t_MVAtrain.root", "mvaRF_1j1b_smallb_ttbar", 10)
+getBinningForThatVariable("/nfs/fanae/user/asoto/Proyectos/tW-Run3/CMSSW_12_4_12/src/CMGTools/TTHAnalysis/python/plotter/temp_Run3_plots/2023_04_16_smallB/2022G/2j1t/MVAtrain/plots-tw-2j1t_MVAtrain.root", "mvaRF_2j1b_smallb_ttbar", 6)
 
 #DY train
 #getBinningForThatVariable("/nfs/fanae/user/asoto/Proyectos/tW-Victor/CMSSW_10_4_0/src/CMGTools/TTHAnalysis/python/plotter/temp/2021-11-19_SmallBinning_DYTrain/SmallBin/run2/1j1t/MVAtrain/plots-tw-1j1t_MVAtrain.root", "tmvaBDT_1j1b_smallb_ttbar+tmvaBDT_1j1b_smallb_dy+tmvaBDT_1j1b_smallb_vvttv+tmvaBDT_1j1b_smallb_nonworz", 10)

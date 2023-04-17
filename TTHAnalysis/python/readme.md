@@ -13,6 +13,7 @@ Caveat: there are a lot of files in each folder, most of them not used. We will 
   * [Macros](#macros)
   * [Tools](#tools)
   * [NanoAOD](#nanoAOD)
+  * [Important twikis](#twikis)
 
 <a name="macros"></a>
 ## Macros
@@ -42,3 +43,15 @@ Modules: pythonCleaningTopRun3.py, lepScaleFactors_TopRun3.py, jetMetGrouper_Top
 <a name="plotter"></a>
 ## Plotter
 Inside python folder.
+
+<a name="twikis"></a>
+## Important twikis
+Here we will list the important twikis for the analysis:
+ * Analysis [twiki](https://twiki.cern.ch/twiki/bin/view/CMS/TWRun3).
+ * Top systematics [twiki](https://twiki.cern.ch/twiki/bin/view/CMS/TopSystematics).
+ * Cross sections [twiki](https://twiki.cern.ch/twiki/bin/view/LHCPhysics/SingleTopNNLORef).
+ * Top HEPData [twiki](https://twiki.cern.ch/twiki/bin/viewauth/CMS/TOPHepData).
+ * PdMV Run3 [twiki](https://twiki.cern.ch/twiki/bin/viewauth/CMS/PdmVRun3Analysis).
+ * JetID Run3 [twiki](https://twiki.cern.ch/twiki/bin/viewauth/CMS/JetID13p6TeV).
+ * NanoAODv11 [twiki](https://cms-nanoaod-integration.web.cern.ch/autoDoc/NanoAODv11/2022postEE/doc_WZ_TuneCP5_13p6TeV_pythia8_Run3Summer22EENanoAODv11-126X_mcRun3_2022_realistic_postEE_v1-v1.html).
+ * Json integration POGs: [gitlab](https://gitlab.cern.ch/cms-nanoAOD/jsonpog-integration/-/tree/master/POG).
