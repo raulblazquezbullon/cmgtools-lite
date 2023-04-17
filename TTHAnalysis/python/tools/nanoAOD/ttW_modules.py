@@ -497,7 +497,7 @@ mvavars = lambda : mva_vars()
 
 # 7_evaluateMVA
 from CMGTools.TTHAnalysis.tools.nanoAOD.ttW_MVA import bdt_evaluator
-modelspath = os.path.join(os.environ["CMSSW_BASE/src/"], "python/tools/nanoAOD/models/")
+modelspath = os.path.join(os.environ["CMSSW_BASE"], "src/CMGTools/TTHAnalysis/python/tools/nanoAOD/models/")
 
 mva_bdt_multiple_40vars = lambda : bdt_evaluator(modelspath + "BDT_ttw-multiple_40vars.pkl")
 

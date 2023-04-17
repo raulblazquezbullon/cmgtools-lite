@@ -39,8 +39,7 @@ class bdt_evaluator(Module):
         return
 
     def open_model(self):
-        with open(self.mvapath) as modelfile:
-            model = pickle.load(modelfile) 
+        self.model = pickle.load(open(self.mvapath, "rb")) 
         return
     
     # new interface (nanoAOD-tools)
