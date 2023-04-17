@@ -176,12 +176,6 @@ from CMGTools.TTHAnalysis.tools.eventVars_2lss import EventVars2LSS
 eventVars = lambda : EventVars2LSS('','Recl')
 eventVars_allvariations = lambda : EventVars2LSS('','Recl',variations = [ 'jes%s'%v for v in jecGroups] + ['jer%s'%x for x in ['barrel','endcap1','endcap2highpt','endcap2lowpt' ,'forwardhighpt','forwardlowpt']  ]  + ['HEM'])
 
-from CMGTools.TTHAnalysis.tools.ttW_MVA import ttW_MVA
-eventVars = lambda : ttW_MVA('','ttW_MVA')
-ttW_MVA_ftree = lambda : ttW_MVA('','Recl')
-
-
-
 
 from CMGTools.TTHAnalysis.tools.hjDummCalc import HjDummyCalc
 hjDummy = lambda : HjDummyCalc(variations  = [ 'jes%s'%v for v in jecGroups] + ['jer%s'%x for x in ['barrel','endcap1','endcap2highpt','endcap2lowpt' ,'forwardhighpt','forwardlowpt']  ]  + ['HEM'])
@@ -504,6 +498,12 @@ vhsplitter = lambda : VHsplitter()
 
 # 5_evtVars_v0
 from CMGTools.TTHAnalysis.tools.nanoAOD.ttH_gen_reco import ttH_gen_reco
+
+
+from CMGTools.TTHAnalysis.tools.nanoAOD.ttw_mva import ttW_mva
+ttwmva = lambda : ttW_mva(modelpath = "/nfs/fanae/user/cvico/WorkSpace/ttW_v2/DNN2lss/v8_76do5_norm_20_215.onnx")
+
+mva = [ttwmva]
 #
 #from CMGTools.TTHAnalysis.tools.topRecoSemiLept import TopRecoSemiLept
 #topRecoModule = lambda : TopRecoSemiLept(constraints=['kWHadMass','kWLepMass','kTopLepMass','kTopHadMass'])

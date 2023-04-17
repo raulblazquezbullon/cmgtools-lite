@@ -13,7 +13,7 @@ def declareOutput(module, wrappedOutputTree, branchList):
         elif len(b) == 4:
             wrappedOutputTree.branch(b[0], b[1], lenVar=b[3])
         else: 
-            raise RuntimeError("Can't branch %r" % b)
+            raise RuntimeError("Can't find branch %r" % b)
     module.wrappedOutputTree = wrappedOutputTree
 
 def writeOutput(module, outputs):

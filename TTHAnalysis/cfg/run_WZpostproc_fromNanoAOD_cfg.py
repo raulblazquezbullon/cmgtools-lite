@@ -133,9 +133,9 @@ else:
   mcSamples = byCompName(mcSamples_, ["%s(|_PS)$"%dset for dset in [
       # ----------------- Single boson
       #"WJetsToLNu_LO_ext",
-      "WJetsToLNu",
+      "WJets_inc",
 #      "DYJetsToLL_M_50", 
-      "DYJetsToLL_M50",
+      "DYJetsToLL_M-50",
       "DYJetsToLL_M10to50",
       # ----------------- ttbar + single top + tW
       "TTTo2L2Nu",
@@ -144,7 +144,7 @@ else:
       "TBbarQ_t",
       "TbarWplus",
       "TWminus",
-      "tW_noFullHad",
+      #"tW_noFullHad",
       #'TT_pow',
       #'TTHad_pow',
       #'TTSemi_pow',
