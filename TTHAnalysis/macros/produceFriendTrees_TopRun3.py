@@ -8,14 +8,19 @@ r.PyConfig.IgnoreCommandLineOptions = True
 r.gROOT.SetBatch(True)
 
 #### Settings
-prodname = "2022-10-25"
+prodname = "2023-04-10"
 
 datasamples  = ["SingleMuon", "SingleElec", "DoubleMuon", "DoubleEG", "MuonEG", "LowEGJet", "HighEGJet", "EGamma","Muon"]
 
-#mcpath       = "/beegfs/data/nanoAODv9"
-mcpath       = "/beegfs/data/nanoAODv9/temp/postprocv10Run3/tw_run3/productions/" + prodname
-friendspath  = "/beegfs/data/nanoAODv9/temp/postprocv10Run3/tw_run3/productions/"
-#mcpath       = friendspath + prodname + "/"
+
+mcpath       = "/beegfs/data/nanoAODv11/tw-run3/productions/" + prodname
+friendspath  = "/beegfs/data/nanoAODv11/tw-run3/productions/"
+
+###### Path to create MiniTrees for MVA training
+#prodname     = "2022-10-25"
+#mcpath       = "/beegfs/data/nanoAODv10/twrun3/productions/" + prodname
+#friendspath  = "/beegfs/data/nanoAODv10/twrun3/productions/"
+
 mcpathdiv    = mcpath
 datapath     = mcpath
 
@@ -23,19 +28,17 @@ datapath     = mcpath
 logpath      = friendspath + "/" + prodname + "/{y}/{step_prefix}/logs"
 commandscaff = "python3 prepareEventVariablesFriendTree.py -t NanoAOD {inpath} {outpath} -I CMGTools.TTHAnalysis.tools.nanoAOD.TopRun3_modules {module} {friends} {dataset} -N {chunksize} {cluster} {ex}"
 clusterscaff = "--log {logdir} --name {jobname} -q {queue} --env oviedo"
+slurmscaff   = 'sbatch -c 1 -p {queue} -J mergeChunks -e {logdir}/logMerge.%j.%x.err -o {logdir}/logMerge.%j.%x.out --wrap "{command}"' # Scaff to merge chunks
 
 friendfolders = {0 : "0_jecs",
                  1 : "1_lepsuncsAndParticle",
                  2 : "2_cleaning",
-                 #2 : "2_cleaning_puid",
                  3 : "3_varstrigger",
-                 #3 : "3_varstrigger_puid",
-                 #3 : "3_varstrigger_compgen",
-                 4 : "4_scalefactors",
-                 #4 : "4_scalefactors_puid",
+                 4 : "4_scalefactors_test",
                  5 : "5_mvas",
-                 6 : "6_mvas_new",
+                 6 : "6_mvas_new_multiClass_withSameFlav",
                  "btageffvars" : "x_btageff_pasf",
+                 "mvatrain" : "x_mvatrain",
 }
 
 chunksizes    = {0 : 200000, 
@@ -46,6 +49,7 @@ chunksizes    = {0 : 200000,
                  5 : 250000,
                  6 : 250000,
                  "btageffvars" : 500000,
+                 "mvatrain" : 500000,
 }
 minchunkbytes = 1000
 
@@ -58,16 +62,17 @@ class errs(enum.IntEnum):
 
 
 minitnamedict = {
-    #"ttbar"     : ["TTTo2L2Nu_division2"],
-    #"tw"        : ["tW", "tW_central"],
-    #"tbarw"     : ["tbarW", "tbarW_central"],
-    "dy_10to50" : ["DYJetsToLLdiv2_M_10to50", "DYJetsToLLdiv2_M_10to50_MLM"],
-    "dy_50"     : ["DYJetsToLLdiv2_M_50"],
+    "ttbar"         : ["TTTo2L2Nu"],
+    "ttbarsemilep"  : ["TTToSemiLeptonic"],
+    "tw"            : ["tW"],
+    "tbarw"         : ["tbarW"],
+    "dy_10to50"     : ["DYJetsToLL_M_10to50_NLO"],
+    "dy_50"         : ["DYJetsToLL_M_50_NLO"],
 }
 
 
 sampledict  = {}
-sampledict["2016apv"] = {}; sampledict["2016"] = {}; sampledict["2017"] = {}; sampledict["2018"] = {}; sampledict["2022"] = {}
+sampledict["2022"] = {}; sampledict["2022PostEE"] = {}
 
 sampledict["2022"] = {
     ###### Nominales
@@ -193,54 +198,164 @@ sampledict["2022"] = {
 
 }
 
+sampledict["2022PostEE"] = {
+    ###### Nominales
+    ##### ttbar
+    # Powheg+Pythia8
+    "TTTo2L2Nu"        : "TTto2L2Nu_TuneCP5_13p6TeV_powheg_pythia8",
+    "TTToSemiLeptonic" : "TTTo2J1L1Nu_CP5_13p6TeV_powheg_pythia8",
 
-"""
-trainsampledict = {}; trainsampledict[2016] = {}; trainsampledict[2017] = {}; trainsampledict[2018] = {}
-trainsampledict[2016] = {
-    ### ttbar
-#    "TTTo2L2Nu_division2" : sampledict[2016]["TTTo2L2Nu_division2"],
+    # Powheg+Herwig7
 
-    ### tW
-#    "tW_central"     : sampledict[2016]["tW_central"],
-#    "tbarW"          : sampledict[2016]["tbarW"],
-    #"DYJetsToLLdiv2_M_10to50" : sampledict[2016]["DYJetsToLLdiv2_M_10to50"],
-    #"DYJetsToLLdiv2_M_50"     : sampledict[2016]["DYJetsToLLdiv2_M_50"],
-#    "DYJetsToLL_M_50_MLM" : sampledict[2016]["DYJetsToLL_M_50_MLM"],
+
+    # aMC@NLO+Pythia8
+
+
+    ##### WWbb
+
+
+
+    ###### tW
+    ### Inclusive
+
+
+    ### No fully hadronic
+    "tW"       : "TWminus_DR_AtLeastOneLepton_TuneCP5_13p6TeV_powheg_pythia8",
+    "tbarW"    : "TbarWplus_DR_AtLeastOneLepton_TuneCP5_13p6TeV_powheg_pythia8",
+
+    ## No fully hadronic DS
+
+
+    ### No fully hadronic Powheg+Herwig7
+
+
+    ### Dilep aMC@NLO+Pythia8
+
+
+    ###### WJets
+    ### LO
+    "WJetsToLNu_LO" : "WJetsToLNu_TuneCP5_13p6TeV_madgraphMLM_pythia8",
+
+    ### NLO
+
+
+    ###### DY
+    ### LO
+
+
+    ### NLO
+    "DYJetsToLL_M_10to50_NLO" : "DYto2L_2Jets_MLL_10to50_TuneCP5_13p6TeV_amcatnloFXFX_pythia8",
+    "DYJetsToLL_M_50_NLO"     : "DYto2L_2Jets_MLL_50_TuneCP5_13p6TeV_amcatnloFXFX_pythia8", 
+
+    ###### WW
+    ## LO
+    "WW_LO" : "WW_TuneCP5_13p6TeV_pythia8",
+
+    ## NLO
+
+
+    ###### WZ
+    ## LO
+    "WZ_LO" : "WZ_TuneCP5_13p6TeV_pythia8",
+
+    ## NLO
+
+
+    ###### ZZ
+    ## LO
+    "ZZ_LO" : "ZZ_TuneCP5_13p6TeV_pythia8",
+
+    ## NLO
+
+
+    ##### ttW
+
+
+    ##### ttZ
+
+
+    ###### ttGamma
+
+
+    ###### VVV
+
+
+    ######## Incertidumbres
+    ####### tW
+    ### hdamp
+
+
+    ### mtop
+
+
+    ### CR
+
+
+    ### UE
+
+
+    ### PDF
+
+
+    ###### ttbar
+    ### hdamp
+
+
+    ### mtop
+
+
+    ### CR
+
+
+    ### UE
+
+
+
+    ##### Datos
+    "MuonEG"         : "MuonEG_Run2022",
+    "EGamma"         : "EGamma_Run2022",
+    "Muon"           : "Muon_Run2022",
+
 }
 
 
-trainsampledict[2017] = {
+
+trainsampledict = {}; trainsampledict["2022"] = {}; trainsampledict["2022PostEE"] = {}
+trainsampledict["2022"] = {
     ### ttbar
-#    "TTTo2L2Nu_division2" : sampledict[2017]["TTTo2L2Nu_division2"],
+    "TTTo2L2Nu" : sampledict["2022"]["TTTo2L2Nu"],
+    "TTToSemiLeptonic" : sampledict["2022"]["TTToSemiLeptonic"],
 
     ### tW
-#    "tW_central"     : sampledict[2017]["tW_central"],
-#    "tbarW_central"  : sampledict[2017]["tbarW_central"],
+    "tW"     : sampledict["2022"]["tW"],
+    "tbarW"  : sampledict["2022"]["tbarW"],
     
-#    "DYJetsToLL_M_10to50_MLM" : sampledict[2017]["DYJetsToLL_M_10to50_MLM"],
+    "DYJetsToLL_M_10to50_LO" : sampledict["2022"]["DYJetsToLL_M_10to50_LO"],
+    "DYJetsToLL_M_50_LO"     : sampledict["2022"]["DYJetsToLL_M_50_LO"],
 #    "DYJetsToLL_M_50"         : sampledict[2017]["DYJetsToLL_M_50"],
     #"DYJetsToLL_M_50_MLM"     : sampledict[2017]["DYJetsToLL_M_50_MLM"],
-    "DYJetsToLLdiv2_M_10to50_MLM" : sampledict[2017]["DYJetsToLLdiv2_M_10to50_MLM"],
-    "DYJetsToLLdiv2_M_50"         : sampledict[2017]["DYJetsToLLdiv2_M_50"],
+#    "DYJetsToLLdiv2_M_10to50_MLM" : sampledict[2017]["DYJetsToLLdiv2_M_10to50_MLM"],
+#    "DYJetsToLLdiv2_M_50"         : sampledict[2017]["DYJetsToLLdiv2_M_50"],
 }
 
 
-trainsampledict[2018] = {
+trainsampledict["2022PostEE"] = {
     ### ttbar
-#    "TTTo2L2Nu_division2" : sampledict[2018]["TTTo2L2Nu_division2"],
+    "TTTo2L2Nu" : sampledict["2022PostEE"]["TTTo2L2Nu"],
+    "TTToSemiLeptonic" : sampledict["2022PostEE"]["TTToSemiLeptonic"],
 
     ### tW
-#    "tW"    : sampledict[2018]["tW"],
-#    "tbarW" : sampledict[2018]["tbarW"],
-
-#    "DYJetsToLL_M_10to50_MLM" : sampledict[2018]["DYJetsToLL_M_10to50_MLM"],
-#    "DYJetsToLL_M_50"         : sampledict[2018]["DYJetsToLL_M_50"],
-    #"DYJetsToLL_M_50_MLM"     : sampledict[2018]["DYJetsToLL_M_50_MLM"],
-    "DYJetsToLLdiv2_M_10to50_MLM" : sampledict[2018]["DYJetsToLLdiv2_M_10to50_MLM"],
-    "DYJetsToLLdiv2_M_50"         : sampledict[2018]["DYJetsToLLdiv2_M_50"],
-#    "DYJetsToLL_M_50_MLM"     : sampledict[2018]["DYJetsToLL_M_50_MLM"],
+    "tW"     : sampledict["2022PostEE"]["tW"],
+    "tbarW"  : sampledict["2022PostEE"]["tbarW"],
+    
+    "DYJetsToLL_M_10to50_NLO" : sampledict["2022PostEE"]["DYJetsToLL_M_10to50_NLO"],
+    "DYJetsToLL_M_50_NLO"     : sampledict["2022PostEE"]["DYJetsToLL_M_50_NLO"],
+#    "DYJetsToLL_M_50"         : sampledict[2017]["DYJetsToLL_M_50"],
+    #"DYJetsToLL_M_50_MLM"     : sampledict[2017]["DYJetsToLL_M_50_MLM"],
+#    "DYJetsToLLdiv2_M_10to50_MLM" : sampledict[2017]["DYJetsToLLdiv2_M_10to50_MLM"],
+#    "DYJetsToLLdiv2_M_50"         : sampledict[2017]["DYJetsToLLdiv2_M_50"],
 }
-"""
+
 
 def getFriendsFolder(dataset, basepath, step_friends):
     doihavefibrefriends = False
@@ -322,7 +437,14 @@ def SendDatasetJobs(task):
         module_ = "btagEffFtree_{y}".format(y  = year)
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 0) + friendsuff
         friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 1) + friendsuff
-
+    
+    elif step == "mvatrain":
+        module_  = "createMVAMiniTree"
+        friends_ +=       friendpref + getFriendsFolder(dataset, friendsbasepath, 0) + friendsuff
+        friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 1) + friendsuff
+        friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 2) + friendsuff
+        friends_ += " " + friendpref + getFriendsFolder(dataset, friendsbasepath, 3) + friendsuff
+    
     if module_ != "":
         comm = commandscaff.format(inpath  = inputpath_,
                                    outpath = outpath_,
@@ -570,9 +692,15 @@ def MergeThoseChunks(year, step, queue, extra, noconf = False):
                         tmpnchks = 1 + max( [ int(el.replace(".chunk", "").replace(".root", "")) for el in dictofmerges[dat] ] )
 
                         for ichk in range(tmpnchks): comm += " " + basefolder + "/" + dat + "Friend.chunk{i}.root".format(i = ichk)
-                        print("Command: " + comm)
+                        
                         #sys.exit()
-                        os.system(comm)
+                        if queue == "batch":
+                            comm = slurmscaff.format(queue = queue, logdir = logpath.format(step_prefix = friendfolders[step], y = year), command = comm)
+                            print(comm)
+                            os.system(comm)             
+                        else:
+                            print("Command: " + comm)
+                            os.system(comm)
 
     ### EXTRA MERGE FOR MVA TRAINING MINITREES
     if step == "mvatrain":
@@ -597,13 +725,38 @@ def MergeThoseChunks(year, step, queue, extra, noconf = False):
                 print("    - Merging into " + basefolder + "/" + finalfile + ".root these files:")
                 for el in listoffiles: print("# " + el)
 
-                print("\n")
-                comm = "hadd -f3 " + basefolder + "/" + finalfile + ".root"
+                
+                if len(listoffiles) < 100:
+                    print("\n")
+                    comm = "hadd -f3 " + basefolder + "/" + finalfile + ".root"
 
-                for ifile in listoffiles: comm += " " + basefolder + "/" + ifile
-                print("Command: " + comm)
-                #sys.exit()
-                os.system(comm)
+                    for ifile in listoffiles: comm += " " + basefolder + "/" + ifile
+                    print("Command: " + comm)
+                    #sys.exit()
+                    os.system(comm)
+                # If there are more than 100 files, we will merge them in groups of 100 and produce a final merged file
+                else:
+                    print("\n")
+                    print("    - There are more than 100 files to merge, so we will merge them in groups of 100 and produce a final merged file.")
+                    ngroups = int(len(listoffiles)/100)
+                    if len(listoffiles) % 100 != 0: ngroups += 1
+
+                    for igroup in range(ngroups):
+                        comm = "hadd -f3 " + basefolder + "/" + finalfile + ".chunk{c}.root".format(c = igroup)
+                        for ifile in listoffiles[igroup*100:(igroup+1)*100]: comm += " " + basefolder + "/" + ifile
+                        print("Command: " + comm)
+                        os.system(comm)
+
+                    print("\n")
+                    print("    - Now merging the final merged file.")
+                    comm = "hadd -f3 " + basefolder + "/" + finalfile + ".root"
+                    for igroup in range(ngroups): comm += " " + basefolder + "/" + finalfile + ".chunk{c}.root".format(c = igroup)
+                    print("Command: " + comm)
+                    os.system(comm)
+
+                    print("\n")
+                    print("    - Cleaning up the intermediate merged files.")
+                    for igroup in range(ngroups): os.system("rm " + basefolder + "/" + finalfile + ".chunk{c}.root".format(c = igroup))
     return
 
 

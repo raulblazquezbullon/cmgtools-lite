@@ -275,8 +275,22 @@ addJECs_mc_2022    = createJMECorrector(dataYear      = "2022",
                                      metBranchName = "PuppiMET",
                                      splitJER      = True,
                                      applyHEMfix   = False,)
+addJECs_mc_2022PostEE    = createJMECorrector(dataYear      = "2022",
+                                     jetType       = "AK4PFPuppi",
+                                     jesUncert     = "All",
+                                     metBranchName = "PuppiMET",
+                                     splitJER      = True,
+                                     applyHEMfix   = False,)
 
 addJECs_data_2022 = createJMECorrector(isMC          = False,
+                                       dataYear      = "2022",
+                                       runPeriod     = "C",
+                                       jetType       = "AK4PFPuppi",
+                                       jesUncert     = "All",
+                                       metBranchName = "PuppiMET",
+                                       splitJER      = True,
+                                       applyHEMfix   = False)
+addJECs_data_2022PostEE = createJMECorrector(isMC          = False,
                                        dataYear      = "2022",
                                        runPeriod     = "C",
                                        jetType       = "AK4PFPuppi",
@@ -291,7 +305,9 @@ jecs_2017    = addJECs_2017
 jecs_2018    = addJECs_2018
 
 jecs_mc_2022    = addJECs_mc_2022
+jecs_mc_2022PostEE    = addJECs_mc_2022PostEE
 jecs_data_2022 = addJECs_data_2022
+jecs_data_2022PostEE = addJECs_data_2022PostEE
 
 # Cleaning
 from CMGTools.TTHAnalysis.tools.nanoAOD.pythonCleaningTopRun3 import pythonCleaningTopRun2UL
@@ -344,7 +360,17 @@ cleaning_mc_2022 = lambda : pythonCleaningTopRun2UL(label  = "Recl",
                                              isMC      = True,
                                              year_     = "2022",
                                              #debug     = True,
-                                             algo      = "DeepCSV",
+                                             #algo      = "DeepCSV",
+)
+cleaning_mc_2022PostEE = lambda : pythonCleaningTopRun2UL(label  = "Recl",
+                                             jetPts = [IDDict["jets"]["pt"], IDDict["jets"]["pt2"]],
+                                             jetPtNoisyFwd = IDDict["jets"]["ptfwdnoise"],
+                                             jecvars   = ['jesTotal', 'jer'] + ['jes' + v for v in jecGroupsFull] + ["jer%i"%i for i in range(6)],
+                                             lepenvars = ["mu"],
+                                             isMC      = True,
+                                             year_     = "2022",
+                                             #debug     = True,
+                                             #algo      = "DeepCSV",
 )
 
 cleaning_data_2016apv = lambda : pythonCleaningTopRun2UL(label = "Recl",
@@ -380,7 +406,14 @@ cleaning_data_2022 = lambda : pythonCleaningTopRun2UL(label = "Recl",
                                                jetPtNoisyFwd = IDDict["jets"]["ptfwdnoise"],
                                                jecvars   = [], lepenvars = [], isMC = False,
                                                year_     = "2022",
-                                               algo      = "DeepCSV",
+                                               #algo      = "DeepCSV",
+)
+cleaning_data_2022PostEE = lambda : pythonCleaningTopRun2UL(label = "Recl",
+                                               jetPts = [IDDict["jets"]["pt"], IDDict["jets"]["pt2"]],
+                                               jetPtNoisyFwd = IDDict["jets"]["ptfwdnoise"],
+                                               jecvars   = [], lepenvars = [], isMC = False,
+                                               year_     = "2022",
+                                               #algo      = "DeepCSV",
 )
 
 #### Add Rochester corrections
@@ -426,6 +459,7 @@ varstrigger_mc_2016    = [eventVars_mc_2016, theDressAndPartVars] + triggerSeq
 varstrigger_mc_2017    = [eventVars_mc_2017, theDressAndPartVars] + triggerSeq
 varstrigger_mc_2018    = [eventVars_mc_2018, theDressAndPartVars] + triggerSeq
 varstrigger_mc_2022    = [eventVars_mc_2022, theDressAndPartVars] + triggerSeq
+varstrigger_mc_2022PostEE    = [eventVars_mc_2022, theDressAndPartVars] + triggerSeq
 varstrigger_data       = [eventVars_data] + triggerSeq
 
 
@@ -500,6 +534,7 @@ sfSeq_2016      = [leptrigSFs_2016,    btagWeights_2016,    addTopPtWeight]
 sfSeq_2017      = [leptrigSFs_2017,    btagWeights_2017,    addTopPtWeight]
 sfSeq_2018      = [leptrigSFs_2018,    btagWeights_2018,    addTopPtWeight]
 sfSeq_2022      = [leptrigSFs_2022_ttbarRun3]#,    btagWeights_2022]
+sfSeq_2022PostEE      = sfSeq_2022
 
 
 ### BDT
@@ -563,10 +598,17 @@ btagEffFtree_2022 = lambda : btageffVars_tWRun2(wp_   = 1,
 ###### New MVA without TMVA: twRun3_MVA_SkLearn.py
 from CMGTools.TTHAnalysis.tools.nanoAOD.twRun3_MVA_SkLearn import tW_MVA
 path_1j1b_newMVA = "/nfs/fanae/user/asoto/Proyectos/tW-Run3/CMSSW_12_4_12/src/CMGTools/TTHAnalysis/python/plotter/tw-run3/MVA-Training/onnxConverter/rf1j1b.onnx"
+path_1j1b_mm_newMVA = "/nfs/fanae/user/asoto/Proyectos/tW-Run3/CMSSW_12_4_12/src/CMGTools/TTHAnalysis/python/plotter/tw-run3/MVA-Training/onnxConverter/rf1j1b_mm.onnx"
+path_1j1b_ee_newMVA = "/nfs/fanae/user/asoto/Proyectos/tW-Run3/CMSSW_12_4_12/src/CMGTools/TTHAnalysis/python/plotter/tw-run3/MVA-Training/onnxConverter/rf1j1b_ee.onnx"
 path_2j1b_newMVA = "/nfs/fanae/user/asoto/Proyectos/tW-Run3/CMSSW_12_4_12/src/CMGTools/TTHAnalysis/python/plotter/tw-run3/MVA-Training/onnxConverter/rf2j1b.onnx"
-mvaNew_mc   = [lambda : tW_MVA('', path_1j1b_newMVA, path_2j1b_newMVA, 
+mvaNew_mc   = [lambda : tW_MVA('', path_1j1b_newMVA, path_2j1b_newMVA, path_1j1b_mm_newMVA, path_1j1b_ee_newMVA,
                                               jecvars = ['jesTotal', 'jer'] + ['jes' + v for v in jecGroupsFull] + ["jer%i"%i for i in range(6)] + ["unclustEn"],
                                               lepvars = ['mu'])]
-mvaNew_data = [lambda : tW_MVA('', path_1j1b_newMVA, path_2j1b_newMVA, isMC = False,
+mvaNew_data = [lambda : tW_MVA('', path_1j1b_newMVA, path_2j1b_newMVA, path_1j1b_mm_newMVA, path_1j1b_ee_newMVA, isMC = False,
                                               jecvars = [],
                                               lepvars = [""])]
+
+
+from CMGTools.TTHAnalysis.tools.nanoAOD.createTrainingMiniTree_TopRun3 import createTrainingMiniTree_TopRun3
+
+createMVAMiniTree = lambda : createTrainingMiniTree_TopRun3()
