@@ -332,6 +332,8 @@ class EventVars_TopRun2UL(Module):
                 if getattr(event, 'nJetSel20{v}_Recl'.format(v = sys if "unclustEn" not in sys else "")) > 0:
                     allret["JetLoose1_Pt" + sys] = loosejets_4m[0].Pt()
 
+                allret["METgood_pt"  + sys] = met_4m.Pt()
+                allret["METgood_phi" + sys] = met_4m.Phi()
 
                 if getattr(event, 'nJetSel30{v}_Recl'.format(v = sys if "unclustEn" not in sys else "")) > 0:
                     allret["Lep1Lep2Jet1MET_Pt"          + sys] = (leps_4m[0] + leps_4m[1] + jets_4m[0] + met_4m).Pt()
