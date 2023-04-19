@@ -34,8 +34,7 @@ if __name__ == "__main__":
   print(initialFit_cmd)
   # Do the sequential fits
   print("\n---> Command to perform the sequential fits. PLEASE CHECK THE ENVIRONMENT IN WHICH THIS COMMAND WILL RUN (local or cluster)\n")
-  doFits_cmd = initialFit_cmd.replace("doInitialFit", "doFits --parallel %s "%(ncores))
-  doFits_cmd += " --job-mode slurm --sub-opts='-p batch'"
+  doFits_cmd = initialFit_cmd.replace("doInitialFit", "doFits --parallel %s --job-mode slurm --sub-opts='-p batch'"%(ncores))
   print(doFits_cmd)
 
   print("\n---> Produce the impacts\n")
