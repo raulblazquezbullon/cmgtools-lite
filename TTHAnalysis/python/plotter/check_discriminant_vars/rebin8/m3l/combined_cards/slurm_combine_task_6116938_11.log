@@ -1,0 +1,13 @@
+ <<< Combine >>> 
+>>> random number generator seed is 123456
+>>> method used is MultiDimFit
+ModelConfig 'ModelConfig' defines more than one parameter of interest. This is not supported in some statistical methods.
+Set Default Value of Parameter r_prompt_WZ To : 1
+Set Default Value of Parameter r_prompt_ZZ To : 1
+SimNLL created with 2 channels, 3 generic constraints, 19 fast gaussian constraints, 0 fast poisson constraints, 0 fast group constraints, 
+
+ --- MultiDimFit ---
+Parameter impacts: 
+  Parameter                      :   Best-fit               r_prompt_WZ  
+  prop_binwz-card_bin0_prompt_ZZ :   +4.000  -1.679/+2.337  +0.000/-0.000
+Done in 0.00 min (cpu), 0.01 min (real)

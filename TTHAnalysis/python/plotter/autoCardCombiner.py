@@ -66,7 +66,7 @@ if __name__ == "__main__":
 				iline = (np.where(np.asarray(cmd) == line)[0] + 2)[0]
 				
 				print("==== Performing initial fit ====")
-				if var == "m3l" and nq == "4": # Solving robust related issue
+				if var == "m3l" and nq == "4": # Solving robust fit related issue
 					fix = cmd[iline].replace("; cd -"," --robustFit=1; cd -")
 					out = subprocess.check_output(fix,shell = True).decode("utf-8")
 					
@@ -92,7 +92,7 @@ if __name__ == "__main__":
 				f.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\n" %(nq,var,param,val,uncmin,uncpos,percent))
 				f.close()
 				
-			elif fit2 == True or run_all == True: 
+			if fit2 == True or run_all == True: 
 				line = "---> Command to perform the sequential fits. PLEASE CHECK THE ENVIRONMENT IN WHICH THIS COMMAND WILL RUN (local or cluster)"
 				iline = (np.where(np.asarray(cmd) == line)[0] + 2)[0]
 				
@@ -101,7 +101,7 @@ if __name__ == "__main__":
 				print(out)
 				print("==== Ending sequential fit ====\n")
 				
-			elif produce == True or run_all == True:
+			if produce == True or run_all == True:
 				line = "---> Produce the impacts"
 				iline = (np.where(np.asarray(cmd) == line)[0] + 2)[0]
 				
@@ -110,7 +110,7 @@ if __name__ == "__main__":
 				print(out)
 				print("==== Ending producing impacts ====\n")
 				
-			elif plot == True or run_all == True:
+			if plot == True or run_all == True:
 				line = "---> Plot the impacts"
 				iline = (np.where(np.asarray(cmd) == line)[0] + 2)[0]
 				
