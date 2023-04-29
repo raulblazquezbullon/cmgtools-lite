@@ -11,6 +11,7 @@ You can also filter by a goldenJson to check only certified runs and lumisection
 
 default_datasets = ["EGamma", "SingleMuon", "DoubleMuon", "Muon", "JetHT", "MET", "MuonEG", "JetMET"]
 
+
 def add_parsing_options():
   ''' Parsing arguments '''
   parser = OptionParser(usage = "python buildJSONfromNano.py [options]")
@@ -75,7 +76,7 @@ if __name__ == "__main__":
   ## this should work for any given format of the input path.
   
   for root, dirs, files in os.walk(mainDir): 
-    if "data2022F_28nov2022_EGamma_Run2022F-PromptNanoAODv10_v1-v2/221128_143539/0000" in root: continue
+    if "data2022F_28nov2022_EGamma_Run2022F-PromptNanoAODv10_v1-v2/221128_143539/0000" in root: continue # Duplicated folder from v10
     inputFiles = [file_ for file_ in files if (".root" in file_ and "log" not in root)]
     if len(inputFiles) == 0: continue
     dataset = re.match("%s/(.*)"%mainDir, root).groups()[0].split("/")[0] # Get the name of the dataset 
