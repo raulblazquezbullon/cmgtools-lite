@@ -17,7 +17,6 @@ import os
 from sys import argv
 from PhysicsTools.NanoAODTools.postprocessing.framework.eventloop import Module
 from PhysicsTools.NanoAODTools.postprocessing.framework.datamodel   import Collection
-from PhysicsTools.NanoAODTools.postprocessing.modules.jme.jetSmearer import jetSmearer
 from CMGTools.TTHAnalysis.tools.nanoAOD.friendVariableProducerTools import declareOutput, writeOutput
 from math import hypot, pi, sqrt, cos, sin, atan2
 
@@ -133,11 +132,28 @@ class JetEnergyCorrector( Module ):
             
         self.listBranches()
         
+        # Store this function to generate random values for JER
+        self.rnd = ROOT.TRandom3(12345)
         return
+    def setSeed(self, event):
+        """Set seed deterministically."""
+        # (cf. https://github.com/cms-sw/cmssw/blob/master/PhysicsTools/PatUtils/interface/SmearedJetProducerT.h)
+        runnum = int(event.run) << 20
+        luminum = int(event.luminosityBlock) << 10
+        evtnum = event.event
+        jet0eta = int(event.Jet_eta[0] / 0.01 if event.nJet > 0 else 0)
+        seed = 1 + runnum + evtnum + luminum + jet0eta
+        self.rnd.SetSeed(seed)
+        return
+    
     def analyze(self, event):
         """ Method to apply JEC scale factors """
         if self.verbosity > 1: print(">> Event {}".format(event.event))
-        
+       
+        # Set seed for Smearing calculation
+        if self.isMC:
+            self.setSeed(event)
+            
         # Collect objects
         self.collect_objects(event)
        
@@ -186,6 +202,9 @@ class JetEnergyCorrector( Module ):
         L1L2L3Res_corrector = self.jes_corrs["L1L2L3Res"]
         L1_corrector = self.jes_corrs["L1FastJet"]
         
+        logfile = open("/nfs/fanae/user/cvico/WorkSpace/wz-run3/release/CMSSW_12_4_12/src/CMGTools/TTHAnalysis/macros/logger_newInterface.log", "a")
+        log= ">> Event {}".format(event.event)
+
         jets = self.jets
         for ijet, jet in enumerate(jets): 
             # ---------------------------------------------- #
@@ -213,7 +232,9 @@ class JetEnergyCorrector( Module ):
             if self.verbosity > 1:
                 print("    + L1L2L3Res sf: {}".format(L1L2L3Res_sf))
                 print("    + L1 sf: {}".format(L1_sf))
-
+            log += "  * Jet {} : pt: {}\n".format(ijet, jet_pt_raw)
+            log += "    + L1L2L3Res sf: {}\n".format(L1L2L3Res_sf)
+            log += "    + L1 sf: {}\n".format(L1_sf)
             # Save values withouth applying JER
             jet.pt = jet_pt
             jet.mass = jet_mass
@@ -247,7 +268,8 @@ class JetEnergyCorrector( Module ):
             # This takes into account (jet_pt+muon_pt)*correction
             jet_pt_nom   = jet_pt*jet_pt_jerNomVal
             jet_mass_nom = jet_mass*jet_pt_jerNomVal
-
+            log += "    + JER SF: {}\n".format(jet_pt_jerNomVal)
+            log += "    + jet_pt nom: {}\n".format(jet_pt_nom)
             # Recover quantities summing up the muon_pt again.
             # This takes into account (real jet pt)_corrected + muon pt
             jet_pt_L1L2L3 = jet_pt_noMuL1L2L3 + muon_pt
@@ -463,7 +485,9 @@ class JetEnergyCorrector( Module ):
                     ret["%s_T1Smear_phi_%sUp"%(self.metbranchname, jesUncertainty)] = met_phi_jesup
                     ret["%s_T1Smear_pt_%sDown"%(self.metbranchname, jesUncertainty)]  = met_pt_jesdn
                     ret["%s_T1Smear_phi_%sDown"%(self.metbranchname, jesUncertainty)] = met_phi_jesdn
-            
+        log += "-"*20 + "\n"
+        logfile.write(log)
+        logfile.close()
         return ret
     
 
@@ -560,7 +584,7 @@ class JetEnergyCorrector( Module ):
             smear_vals[2] = 1. + (scalefactor_dn - 1)*dPt / jet.Perp()
         else:
             resolution = self.evaluate(self.jer_corrs["PtResolution"], [jet.Eta(), jet.Pt(), rho])
-            rand = ROOT.TRandom3(12345).Gaus(0, resolution)
+            rand = self.rnd.Gaus(0, resolution)
             smear_vals[0] = 1 + rand*sqrt(scalefactor**2 - 1)
             smear_vals[1] = 1 + rand*sqrt(scalefactor_up**2 - 1)
             smear_vals[2] = 1 + rand*sqrt(scalefactor_dn**2 - 1)
