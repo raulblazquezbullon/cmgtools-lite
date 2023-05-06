@@ -126,13 +126,13 @@ def make_plots(options):
 	if "" not in options[8]: # Fixing syntax to pass the command to wz-run.py
 		extra_opt = options[8][:-1]
 		if options[9] == True: # Nice plot options
-			extra_opt += ' --cmsprel "Academic" --TotalUncRatioStyle 1001 1001 --TotalUncRatioColor 1 1'
+			extra_opt += ' --cmsprel "Academic" --TotalUncRatioStyle 3013 1001 --TotalUncRatioColor 1 1 --labelsSize 0.04'
 		extra_opt += " --sP %s_rebin%d'"%(options[5],options[6])
 	
 	else: # Adding select plot option to choose what variable to plot
 		extra_opt = "'--sP %s_rebin%d"%(options[5],options[6])
 		if options[9] == True: # Nice plot options
-			extra_opt += ' --cmsprel "Academic" --TotalUncRatioStyle 1001 1001 --TotalUncRatioColor 1 1'
+			extra_opt += ' --cmsprel "Academic" --TotalUncRatioStyle 3013 1001 --TotalUncRatioColor 1 1 --labelsSize 0.04'
 		extra_opt += "'"
 		
 	# Now we add other options like run local, do submit, number of cores, etc
@@ -206,7 +206,7 @@ if __name__ == "__main__":
 	niceplot  = opts.niceplot
 
 	# == Rootfile with unrebinned plots
-	inpath = "~rblazquez/TFG/prueba/plots_wz.root" # Path to plot variables, user must run wz-run.py before using this script
+	inpath = "~rblazquez/TFG/ejemplo/plots_wz.root" # Path to plot variables, user must run wz-run.py before using this script
 	outpath = "./check_discriminant_vars/"
 	
 	fancy_vars = {'m3l' : 'm_{3L}','met' : 'p_{T}^{miss}','m3lmet_Meas' : 'm_{WZ}'}

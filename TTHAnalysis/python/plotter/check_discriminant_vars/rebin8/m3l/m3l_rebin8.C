@@ -1,7 +1,7 @@
 void m3l_rebin8()
 {
 //=========Macro generated from canvas: m3l_rebin8_canvas/m3l_rebin8
-//=========  (Sat May  6 16:26:25 2023) by ROOT version 6.24/07
+//=========  (Sat May  6 19:55:58 2023) by ROOT version 6.24/07
    TCanvas *m3l_rebin8_canvas = new TCanvas("m3l_rebin8_canvas", "m3l_rebin8",0,0,600,600);
    gStyle->SetOptFit(1);
    gStyle->SetOptStat(0);
@@ -55,14 +55,14 @@ void m3l_rebin8()
    m3l_rebin8_total__1->GetXaxis()->SetMoreLogLabels();
    m3l_rebin8_total__1->GetXaxis()->SetLabelFont(42);
    m3l_rebin8_total__1->GetXaxis()->SetLabelOffset(0.007);
-   m3l_rebin8_total__1->GetXaxis()->SetLabelSize(0.05);
+   m3l_rebin8_total__1->GetXaxis()->SetLabelSize(0.04);
    m3l_rebin8_total__1->GetXaxis()->SetTitleSize(0.05);
    m3l_rebin8_total__1->GetXaxis()->SetTitleOffset(1.1);
    m3l_rebin8_total__1->GetXaxis()->SetTitleFont(42);
    m3l_rebin8_total__1->GetYaxis()->SetTitle("Events");
    m3l_rebin8_total__1->GetYaxis()->SetLabelFont(42);
    m3l_rebin8_total__1->GetYaxis()->SetLabelOffset(0.007);
-   m3l_rebin8_total__1->GetYaxis()->SetLabelSize(0.05);
+   m3l_rebin8_total__1->GetYaxis()->SetLabelSize(0.04);
    m3l_rebin8_total__1->GetYaxis()->SetTitleSize(0.05);
    m3l_rebin8_total__1->GetYaxis()->SetTitleOffset(2);
    m3l_rebin8_total__1->GetYaxis()->SetTitleFont(42);
@@ -368,14 +368,14 @@ void m3l_rebin8()
    m3l_rebin8_total__2->GetXaxis()->SetMoreLogLabels();
    m3l_rebin8_total__2->GetXaxis()->SetLabelFont(42);
    m3l_rebin8_total__2->GetXaxis()->SetLabelOffset(0.007);
-   m3l_rebin8_total__2->GetXaxis()->SetLabelSize(0.05);
+   m3l_rebin8_total__2->GetXaxis()->SetLabelSize(0.04);
    m3l_rebin8_total__2->GetXaxis()->SetTitleSize(0.05);
    m3l_rebin8_total__2->GetXaxis()->SetTitleOffset(1.1);
    m3l_rebin8_total__2->GetXaxis()->SetTitleFont(42);
    m3l_rebin8_total__2->GetYaxis()->SetTitle("Events");
    m3l_rebin8_total__2->GetYaxis()->SetLabelFont(42);
    m3l_rebin8_total__2->GetYaxis()->SetLabelOffset(0.007);
-   m3l_rebin8_total__2->GetYaxis()->SetLabelSize(0.05);
+   m3l_rebin8_total__2->GetYaxis()->SetLabelSize(0.04);
    m3l_rebin8_total__2->GetYaxis()->SetTitleSize(0.05);
    m3l_rebin8_total__2->GetYaxis()->SetTitleOffset(2);
    m3l_rebin8_total__2->GetYaxis()->SetTitleFont(42);
@@ -445,6 +445,7 @@ void m3l_rebin8()
    grae->SetName("m3l_rebin8_total_errors");
    grae->SetTitle("Graph");
    grae->SetFillColor(1);
+   grae->SetFillStyle(3013);
    grae->SetMarkerStyle(0);
    
    TH1F *Graph_m3l_rebin8_total_errors3001 = new TH1F("Graph_m3l_rebin8_total_errors3001","Graph",100,0,550);
@@ -534,7 +535,7 @@ void m3l_rebin8()
    entry->SetTextFont(42);
    entry=leg->AddEntry("m3l_rebin8_total_errors","Total unc.","F");
    entry->SetFillColor(1);
-   entry->SetFillStyle(1001);
+   entry->SetFillStyle(3013);
    entry->SetLineColor(1);
    entry->SetLineStyle(1);
    entry->SetLineWidth(1);
