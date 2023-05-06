@@ -206,8 +206,10 @@ if __name__ == "__main__":
 	niceplot  = opts.niceplot
 
 	# == Rootfile with unrebinned plots
-	inpath = "./test/plots_wz.root" # Duda: hay que actualizar este archivo?
+	inpath = "~rblazquez/TFG/prueba/plots_wz.root" # Path to plot variables, user must run wz-run.py before using this script
 	outpath = "./check_discriminant_vars/"
+	
+	fancy_vars = {'m3l' : 'm_{3L}','met' : 'p_{T}^{miss}','m3lmet_Meas' : 'm_{WZ}'}
 
 	# == Iterate over variables
 	for var in variables:
@@ -226,9 +228,12 @@ if __name__ == "__main__":
 
 				# == Create an specific plot file with the desired rebinning
 				filename = "./wz-run3/separate-studies/bining_optimization/{var}_{nq}_plots.txt".format(var = var, nq = nq)
-				line = "%s_rebin%d:%s:%s;XTitle='%s', MoreY=2.0\n"%(var, nq, var_to_comm, rebining, var)
+				if var in functional_variables:
+					line = "%s_rebin%d:%s:%s;XTitle='%s (GeV)', MoreY=2.0\n"%(var, nq, var_to_comm, rebining, fancy_vars[var])
+				else:
+					line = "%s_rebin%d:%s:%s;XTitle='%s', MoreY=2.0\n"%(var, nq, var_to_comm, rebining, var)
 
-				if not os.path.isfile(filename): make_plotfile(filename, line)
+				make_plotfile(filename, line)
 
 				pars = (out, cores, lumis[year], year, filename, var, nq, cut, extra, niceplot, submit, local)
 				batchcomm = make_plots(pars)
@@ -238,6 +243,6 @@ if __name__ == "__main__":
 				filename = "./wz-run3/separate-studies/bining_optimization/{var}_{nq}_plots.txt".format(var = var, nq = nq)
 				
 				out_new = out + "./cards/"
-				pars = (out, cores, lumis[year], year, filename, var, nq, cut, extra, rebining, var_to_comm, submit, local)
+				pars = (out_new, cores, lumis[year], year, filename, var, nq, cut, extra, rebining, var_to_comm, submit, local)
 				batchcomm = make_cards(pars)
 				print(batchcomm)
