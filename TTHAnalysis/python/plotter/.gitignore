@@ -5,3 +5,5 @@
 cards/cards_*
 susy-interface/tmp/
 *.log
+*.out
+*.err

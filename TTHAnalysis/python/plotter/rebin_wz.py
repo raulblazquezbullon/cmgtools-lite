@@ -72,9 +72,9 @@ def add_parsing_options():
 	parser.add_argument("--cut",	   dest = "cut",default = "./wz-run3/common/cuts_wzsm.txt")
 	parser.add_argument("--run-local", dest = "local",action = "store_true",default = False)
 	parser.add_argument("--extra",	   dest = "extra",default = "",type = str,
-						help = "Extra options for CMGTools, user must give extra options without -- \
-								and without '', also separated by commas")
+						help = "Extra options for mcPlots, user must give extra options between ' '")
 	parser.add_argument("--do-submit", dest = "submit",action = "store_true",default = False)
+	parser.add_argument("--niceplot",  dest = "niceplot",action = "store_true",default = False)
 
 	return parser.parse_args()   
 
@@ -110,9 +110,10 @@ def make_plots(options):
 		6. Variable to be studied
 		7. Number of quantiles
 		8. Cut file
-		9. Extra options (like sP)
-		10. Submit command directly (maintain this as the second to last)
-		11. Run local (maintain this as the last one)
+		9. Extra options for mcPlots
+		10. Extra options for mcPlots to make nice plots
+		11. Submit command directly (maintain this as the second to last)
+		12. Run local (maintain this as the last one)
 		
 	Returns
 	-------
@@ -123,12 +124,16 @@ def make_plots(options):
 	comm = "python wz-run3/wz-run.py plot" # Raw command, let's add some options
 	
 	if "" not in options[8]: # Fixing syntax to pass the command to wz-run.py
-		extra_opt = " --".join(options[8])
-		extra_opt += " --sP %s_rebin%d"%(options[5],options[6])
-		extra_opt = "".join(["'--",extra_opt,"'"])
+		extra_opt = options[8][:-1]
+		if options[9] == True: # Nice plot options
+			extra_opt += ' --cmsprel "Academic" --TotalUncRatioStyle 1001 1001 --TotalUncRatioColor 1 1'
+		extra_opt += " --sP %s_rebin%d'"%(options[5],options[6])
 	
 	else: # Adding select plot option to choose what variable to plot
-		extra_opt = "'--sP %s_rebin%d"%(options[5],options[6]) + "'"
+		extra_opt = "'--sP %s_rebin%d"%(options[5],options[6])
+		if options[9] == True: # Nice plot options
+			extra_opt += ' --cmsprel "Academic" --TotalUncRatioStyle 1001 1001 --TotalUncRatioColor 1 1'
+		extra_opt += "'"
 		
 	# Now we add other options like run local, do submit, number of cores, etc
 	comm += " --outname " + options[0] + " --ncores " + options[1] + (" --run-local")*int(options[-1]) +\
@@ -197,7 +202,8 @@ if __name__ == "__main__":
 	cut 	  = opts.cut
 	local 	  = opts.local
 	submit 	  = opts.submit
-	extra 	  = opts.extra.split(",")
+	extra 	  = opts.extra
+	niceplot  = opts.niceplot
 
 	# == Rootfile with unrebinned plots
 	inpath = "./test/plots_wz.root" # Duda: hay que actualizar este archivo?
@@ -224,7 +230,7 @@ if __name__ == "__main__":
 
 				if not os.path.isfile(filename): make_plotfile(filename, line)
 
-				pars = (out, cores, lumis[year], year, filename, var, nq, cut, extra, submit, local)
+				pars = (out, cores, lumis[year], year, filename, var, nq, cut, extra, niceplot, submit, local)
 				batchcomm = make_plots(pars)
 				print(batchcomm)
 				

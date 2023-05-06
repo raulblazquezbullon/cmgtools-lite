@@ -1,7 +1,7 @@
 void m3l_rebin5()
 {
 //=========Macro generated from canvas: m3l_rebin5_canvas/m3l_rebin5
-//=========  (Tue Apr  4 18:53:47 2023) by ROOT version 6.24/07
+//=========  (Thu May  4 18:37:22 2023) by ROOT version 6.24/07
    TCanvas *m3l_rebin5_canvas = new TCanvas("m3l_rebin5_canvas", "m3l_rebin5",0,0,600,600);
    gStyle->SetOptFit(1);
    gStyle->SetOptStat(0);
@@ -388,9 +388,7 @@ void m3l_rebin5()
    TGraphAsymmErrors *grae = new TGraphAsymmErrors(5,m3l_rebin5_total_errors_fx3001,m3l_rebin5_total_errors_fy3001,m3l_rebin5_total_errors_felx3001,m3l_rebin5_total_errors_fehx3001,m3l_rebin5_total_errors_fely3001,m3l_rebin5_total_errors_fehy3001);
    grae->SetName("m3l_rebin5_total_errors");
    grae->SetTitle("Graph");
-
-   ci = TColor::GetColor("#00ffff");
-   grae->SetFillColor(ci);
+   grae->SetFillColor(1);
    grae->SetMarkerStyle(0);
    
    TH1F *Graph_m3l_rebin5_total_errors3001 = new TH1F("Graph_m3l_rebin5_total_errors3001","Graph",100,0,550);
@@ -479,9 +477,7 @@ void m3l_rebin5()
    entry->SetMarkerSize(1);
    entry->SetTextFont(42);
    entry=leg->AddEntry("m3l_rebin5_total_errors","Total unc.","F");
-
-   ci = TColor::GetColor("#00ffff");
-   entry->SetFillColor(ci);
+   entry->SetFillColor(1);
    entry->SetFillStyle(1001);
    entry->SetLineColor(1);
    entry->SetLineStyle(1);
@@ -504,7 +500,7 @@ tex->SetNDC();
    tex->SetTextSize(0.045);
    tex->SetLineWidth(2);
    tex->Draw();
-      tex = new TLatex(0.2813,0.952,"Preliminary");
+      tex = new TLatex(0.2813,0.952,"Academic");
 tex->SetNDC();
    tex->SetTextFont(52);
    tex->SetTextSize(0.0342);

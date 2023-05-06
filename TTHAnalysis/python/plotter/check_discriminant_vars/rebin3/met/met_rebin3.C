@@ -1,7 +1,7 @@
 void met_rebin3()
 {
 //=========Macro generated from canvas: met_rebin3_canvas/met_rebin3
-//=========  (Tue Apr  4 19:05:55 2023) by ROOT version 6.24/07
+//=========  (Thu May  4 18:50:22 2023) by ROOT version 6.24/07
    TCanvas *met_rebin3_canvas = new TCanvas("met_rebin3_canvas", "met_rebin3",0,0,600,600);
    gStyle->SetOptFit(1);
    gStyle->SetOptStat(0);
@@ -348,9 +348,7 @@ void met_rebin3()
    TGraphAsymmErrors *grae = new TGraphAsymmErrors(3,met_rebin3_total_errors_fx3001,met_rebin3_total_errors_fy3001,met_rebin3_total_errors_felx3001,met_rebin3_total_errors_fehx3001,met_rebin3_total_errors_fely3001,met_rebin3_total_errors_fehy3001);
    grae->SetName("met_rebin3_total_errors");
    grae->SetTitle("Graph");
-
-   ci = TColor::GetColor("#00ffff");
-   grae->SetFillColor(ci);
+   grae->SetFillColor(1);
    grae->SetMarkerStyle(0);
    
    TH1F *Graph_met_rebin3_total_errors3001 = new TH1F("Graph_met_rebin3_total_errors3001","Graph",100,0,418);
@@ -439,9 +437,7 @@ void met_rebin3()
    entry->SetMarkerSize(1);
    entry->SetTextFont(42);
    entry=leg->AddEntry("met_rebin3_total_errors","Total unc.","F");
-
-   ci = TColor::GetColor("#00ffff");
-   entry->SetFillColor(ci);
+   entry->SetFillColor(1);
    entry->SetFillStyle(1001);
    entry->SetLineColor(1);
    entry->SetLineStyle(1);
@@ -464,7 +460,7 @@ tex->SetNDC();
    tex->SetTextSize(0.045);
    tex->SetLineWidth(2);
    tex->Draw();
-      tex = new TLatex(0.2813,0.952,"Preliminary");
+      tex = new TLatex(0.2813,0.952,"Academic");
 tex->SetNDC();
    tex->SetTextFont(52);
    tex->SetTextSize(0.0342);
