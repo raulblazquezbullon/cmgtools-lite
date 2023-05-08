@@ -202,8 +202,8 @@ class JetEnergyCorrector( Module ):
         L1L2L3Res_corrector = self.jes_corrs["L1L2L3Res"]
         L1_corrector = self.jes_corrs["L1FastJet"]
         
-        logfile = open("/nfs/fanae/user/cvico/WorkSpace/wz-run3/release/CMSSW_12_4_12/src/CMGTools/TTHAnalysis/macros/logger_newInterface.log", "a")
-        log= ">> Event {}".format(event.event)
+        #logfile = open("/nfs/fanae/user/cvico/WorkSpace/wz-run3/release/CMSSW_12_4_12/src/CMGTools/TTHAnalysis/macros/logger_newInterface.log", "a")
+        #log= ">> Event {}".format(event.event)
 
         jets = self.jets
         for ijet, jet in enumerate(jets): 
@@ -230,11 +230,11 @@ class JetEnergyCorrector( Module ):
             jet_pt   *= L1L2L3Res_sf
             jet_mass *= L1L2L3Res_sf
             if self.verbosity > 1:
-                print("    + L1L2L3Res sf: {}".format(L1L2L3Res_sf))
-                print("    + L1 sf: {}".format(L1_sf))
-            log += "  * Jet {} : pt: {}\n".format(ijet, jet_pt_raw)
-            log += "    + L1L2L3Res sf: {}\n".format(L1L2L3Res_sf)
-            log += "    + L1 sf: {}\n".format(L1_sf)
+                print("    + L1L2L3Res sf: %3.6f\n"%(L1L2L3Res_sf))
+                print("    + L1 sf: %3.6f\n"%(L1_sf))
+            log += "  * Jet %d : pt: %3.6f\n"%(ijet, jet_pt_raw)
+            log += "    + L1L2L3Res sf: %3.6f\n"%(L1L2L3Res_sf)
+            log += "    + L1 sf: %3.6f\n"%(L1_sf)
             # Save values withouth applying JER
             jet.pt = jet_pt
             jet.mass = jet_mass
@@ -268,8 +268,8 @@ class JetEnergyCorrector( Module ):
             # This takes into account (jet_pt+muon_pt)*correction
             jet_pt_nom   = jet_pt*jet_pt_jerNomVal
             jet_mass_nom = jet_mass*jet_pt_jerNomVal
-            log += "    + JER SF: {}\n".format(jet_pt_jerNomVal)
-            log += "    + jet_pt nom: {}\n".format(jet_pt_nom)
+            #log += "    + JER SF: %3.6f\n"%(jet_pt_jerNomVal)
+            #log += "    + jet_pt nom: %3.6f\n"%(jet_pt_nom)
             # Recover quantities summing up the muon_pt again.
             # This takes into account (real jet pt)_corrected + muon pt
             jet_pt_L1L2L3 = jet_pt_noMuL1L2L3 + muon_pt
@@ -315,15 +315,15 @@ class JetEnergyCorrector( Module ):
             
             for jesUncertainty, jesUncCorrector in self.uncs.items(): 
                 # Compute the uncertainty using the corrected pt
-                
-#                inputnames = [ ix.name for ix in jesUncCorrector.inputs]
-#                print(inputnames, jesUncertainty)
+
                 delta = self.evaluate(jesUncCorrector, [jet_eta, jet_pt_nom])
                 
                 self.jet_pt_jesUp[jesUncertainty]   = jet_pt_nom * (1 + delta)
                 self.jet_pt_jesDown[jesUncertainty]   = jet_pt_nom * (1 - delta)
                 self.jet_mass_jesUp[jesUncertainty]   = jet_mass_nom * (1 + delta)
                 self.jet_mass_jesDown[jesUncertainty] = jet_mass_nom * (1 - delta)
+
+                #log += "    + Unc delta: %s = %3.6f\n"%(jesUncertainty, delta)
                 
                 # Save also in the return histogram (exactly the same information)
                 ret["Jet_pt_jes{}{}".format(jesUncertainty, "Up")].append(jet_pt_nom * (1 + delta))
@@ -339,7 +339,8 @@ class JetEnergyCorrector( Module ):
 
                 ret["Jet_pt_jesT1{}{}".format(jesUncertainty, "Up")].append(jet_pt_L1L2L3 * (1 + delta))
                 ret["Jet_pt_jesT1{}{}".format(jesUncertainty, "Down")].append(jet_pt_L1L2L3 * (1 - delta))
-                
+                #log += "    + Unc delta (T1): %s = %3.6f\n"%(jesUncertainty, delta)
+
             
             
             # ---------------------------------------------- #
@@ -462,6 +463,11 @@ class JetEnergyCorrector( Module ):
                     ret["%s_T1_phi_%sUp"%(self.metbranchname, jesUncertainty)] = met_phi_jesup
                     ret["%s_T1_pt_%sDown"%(self.metbranchname, jesUncertainty)]  = met_pt_jesdn
                     ret["%s_T1_phi_%sDown"%(self.metbranchname, jesUncertainty)] = met_phi_jesdn
+                    
+                    #log += "    + MET pt jesUp: %s = %3.6f\n"%(jesUncertainty, met_pt_jesup)
+                    #log += "    + MET phi jesUp: %s = %3.6f\n"%(jesUncertainty, met_phi_jesup)
+                    #log += "    + MET pt jesDn: %s = %3.6f\n"%(jesUncertainty, met_pt_jesdn)
+                    #log += "    + MET phi jesDn: %s = %3.6f\n"%(jesUncertainty, met_phi_jesdn)
                 
             if "T1Smear" in self.saveMETUncs:
                 for jerID in self.splitJERIDs:
@@ -469,25 +475,30 @@ class JetEnergyCorrector( Module ):
                 
                 for jesUncertainty in self.uncs:
                     # Compute pT and phi for up variation
-                    met_px_jesup = self.met_T1Smear_px_jesUp[jesUncertainty]
-                    met_py_jesup = self.met_T1Smear_py_jesUp[jesUncertainty]
-                    met_pt_jesup = met_px_jesup**2 + met_py_jesup**2
-                    met_phi_jesup = atan2(met_py_jesup, met_px_jesup)
+                    met_pxsmear_jesup = self.met_T1Smear_px_jesUp[jesUncertainty]
+                    met_pysmear_jesup = self.met_T1Smear_py_jesUp[jesUncertainty]
+                    met_ptsmear_jesup = sqrt(met_pxsmear_jesup**2 + met_pysmear_jesup**2)
+                    met_phismear_jesup = atan2(met_pysmear_jesup, met_pxsmear_jesup)
 
                     # Compute pT and phi for down variation
-                    met_px_jesdn = self.met_T1Smear_px_jesDown[jesUncertainty]
-                    met_py_jesdn = self.met_T1Smear_py_jesDown[jesUncertainty]
-                    met_pt_jesdn = met_px_jesdn**2 + met_py_jesdn**2
-                    met_phi_jesdn = atan2(met_py_jesdn, met_px_jesdn)
+                    met_pxsmear_jesdn = self.met_T1Smear_px_jesDown[jesUncertainty]
+                    met_pysmear_jesdn = self.met_T1Smear_py_jesDown[jesUncertainty]
+                    met_ptsmear_jesdn = sqrt(met_pxsmear_jesdn**2 + met_pysmear_jesdn**2)
+                    met_phismear_jesdn = atan2(met_pysmear_jesdn, met_pxsmear_jesdn)
 
                     # Now save in output dictionary
-                    ret["%s_T1Smear_pt_%sUp"%(self.metbranchname, jesUncertainty)]  = met_pt_jesup
-                    ret["%s_T1Smear_phi_%sUp"%(self.metbranchname, jesUncertainty)] = met_phi_jesup
-                    ret["%s_T1Smear_pt_%sDown"%(self.metbranchname, jesUncertainty)]  = met_pt_jesdn
-                    ret["%s_T1Smear_phi_%sDown"%(self.metbranchname, jesUncertainty)] = met_phi_jesdn
-        log += "-"*20 + "\n"
-        logfile.write(log)
-        logfile.close()
+                    ret["%s_T1Smear_pt_%sUp"%(self.metbranchname, jesUncertainty)]  = met_ptsmear_jesup
+                    ret["%s_T1Smear_phi_%sUp"%(self.metbranchname, jesUncertainty)] = met_phismear_jesup
+                    ret["%s_T1Smear_pt_%sDown"%(self.metbranchname, jesUncertainty)]  = met_ptsmear_jesdn
+                    ret["%s_T1Smear_phi_%sDown"%(self.metbranchname, jesUncertainty)] = met_phismear_jesdn
+                    #log += "    + MET Smear pt jesUp: %s = %3.6f\n"%(jesUncertainty, met_ptsmear_jesup)
+                    #log += "    + MET Smear phi jesUp: %s = %3.6f\n"%(jesUncertainty, met_phismear_jesup)
+                    #log += "    + MET Smear pt jesDn: %s = %3.6f\n"%(jesUncertainty, met_ptsmear_jesdn)
+                    #log += "    + MET Smear phi jesDn: %s = %3.6f\n"%(jesUncertainty, met_phismear_jesdn)
+
+        #log += "-"*20 + "\n"
+        #logfile.write(log)
+        #logfile.close()
         return ret
     
 
@@ -516,6 +527,7 @@ class JetEnergyCorrector( Module ):
             self.pairs = matchObjectCollection(self.jets, self.genjets, 
                                                 dRmax=0.2, 
                                                 presel = resolution_matching)
+            
             
         # --------------------------- MET ----------------------------- #
         self.met_pt = getattr(event, self.metbranchname + "_pt" )
