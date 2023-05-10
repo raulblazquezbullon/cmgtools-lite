@@ -20,9 +20,9 @@ class postprocessor_producer(producer):
  
     self.commandConfs = ["%s"%self.wz_cfg,
                     "-b 'sbatch batchScript.sh'",
-                    "--option year='%d'"%year,
+                    "--option year='%s'"%year,
                     "--option selectComponents='%s'"%doData,
-                    "--output-dir %s"%(outname),
+                    "--output-dir %s/%s/%s"%(outname, self.doData.lower(), year),
                     "%s"%extra]
     return
   

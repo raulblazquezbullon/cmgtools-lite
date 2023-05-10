@@ -21,9 +21,6 @@ from CMGTools.TTHAnalysis.tools.nanoAOD.friendVariableProducerTools import decla
 from math import hypot, pi, sqrt, cos, sin, atan2
 
 
-# TBD:
-# * Compute MET uncertainties
-
 """
 ---------------------------------------------------------------
 Functions used during the JER computation 
@@ -77,64 +74,56 @@ def matchObjectCollection(objs, collection, dRmax=0.4, presel=lambda x, y: True)
         else:
             pairs[obj] = None
     return pairs
+
 """ 
 ---------------------------------------------------------------
 Class implementation
 ---------------------------------------------------------------
 """
 class JetEnergyCorrector( Module ):
-    def __init__(self, 
-                 year = 2022,
-                 jec = "Winter22Run3",
-                 runPeriod = "C",
-                 isMC = True,
-                 algo = "AK4PFPuppi",
-                 unc = "Total",
-                 metbranchname = "PuppiMET",
-                 rhoBranchName = "Rho_fixedGridRhoFastjetAll",
-                 saveMETUncs = ["T1", "T1Smear"],
-                 splitJers = False,
-                 verbosity = 0):
+    def __init__(self, year = "2022", jec = "Winter22Run3", isMC = True, era = "CD",
+                 algo = "AK4PFPuppi", metbranchname = "PuppiMET", rhoBranchName = "Rho_fixedGridRhoFastjetAll",
+                 hjetvetomap = "jetvetomap",
+                 unc = "Total", saveMETUncs = ["T1", "T1Smear"], 
+                 splitJers = False, applyVetoMaps = True):
         """ Constructor """
         # Save in attributes
         self.year = year
-        self.runPeriod = runPeriod
+        self.jetvetopmap = hjetvetomap
         self.jec = jec
         self.isMC = isMC
+        self.era = era
         self.runOn = "MC" if self.isMC else "DATA"
         self.algo = algo
-        self.unc = unc
+        self.unc = unc        
         self.metbranchname = metbranchname
         self.rhoBranchName = rhoBranchName
         self.saveMETUncs = saveMETUncs
         self.splitJers = splitJers
-        self.verbosity = verbosity
-    
-        # Path with jsons
-        self.jsonpath = os.path.join( os.environ["CMSSW_BASE"], "src/CMGTools/TTHAnalysis/data/jecs/{}/".format(year))
-        # Create a callable to each type of correction
-        self.jerc_corrs = core.CorrectionSet.from_file(os.path.join(self.jsonpath, "jet_jerc.json.gz"))
-        self.jetvmaps =  core.CorrectionSet.from_file(os.path.join(self.jsonpath, "jetvetomaps.json.gz"))
+        self.applyVetoMaps = applyVetoMaps
 
-        # Function to evaluate
+        # This function is used to evaluate 
         self.evaluate = lambda corrector, inputs : corrector.evaluate(*inputs)
 
-        # To split JERs
+    
+        # Create the evaluators need to compute the SFs
+        self.jsonpath = os.path.join( os.environ["CMSSW_BASE"], "src/CMGTools/TTHAnalysis/data/jecs/{}/".format(year))
+        self.create_correctors()
+        
+        
+        # This stuff is need to compute splitted JERs
         self.splitJERIDs = list(range(6)) # From NanoAODTools
 
-        # threshold for unclustered energy
+        # Threshold for unclustered energy        
         self.unclEnThreshold = 15.
         
-        # Get the SF objects to be used later
-        self.create_correctors()
-        if self.verbosity > 0: 
-            self.summarize()
-            
         self.listBranches()
         
         # Store this function to generate random values for JER
         self.rnd = ROOT.TRandom3(12345)
+
         return
+    
     def setSeed(self, event):
         """Set seed deterministically."""
         # (cf. https://github.com/cms-sw/cmssw/blob/master/PhysicsTools/PatUtils/interface/SmearedJetProducerT.h)
@@ -148,8 +137,7 @@ class JetEnergyCorrector( Module ):
     
     def analyze(self, event):
         """ Method to apply JEC scale factors """
-        if self.verbosity > 1: print(">> Event {}".format(event.event))
-       
+
         # Set seed for Smearing calculation
         if self.isMC:
             self.setSeed(event)
@@ -157,6 +145,10 @@ class JetEnergyCorrector( Module ):
         # Collect objects
         self.collect_objects(event)
        
+        # Veto jets
+        if self.applyVetoMaps:
+            self.veto_jets(event)
+
         # Get a new return dictionary
         ret = self.clear() 
     
@@ -166,45 +158,159 @@ class JetEnergyCorrector( Module ):
         # Now loop over jets
         ret = self.loop_jets(ret, event)
 
-        if self.verbosity > 1: print("-"*20)
         writeOutput(self, ret)
         
-        if self.verbosity > 2: 
-            for iret, retval in ret.items():
-                print("       - branch: %s has value"%iret, retval)
         return True
     
-    def create_containers(self):
-        """ Create some dictionaries to keep track of all the JET and MET variations properly """
+    def create_correctors(self):
+        """
+        -----------------------------------------------------------------------------
+        This function divides all the methods to evaluate SF and uncertainties inside 
+        the json into two groups:
+            + jes_corrs : contains the L1FastJet, L2Relative, L2L3Residual, L3Absolute,
+                          as well as the L1L2L3Res corrections (all grouped together).
+            + jer_corrs: contains the jet energy corrections
+            + uncs  : uncertainty sources for the JECs
+            + vetomaps: to veto regions of detector that were not used to compute JECs.
+        -----------------------------------------------------------------------------
+        """
+        print(" >> This is %s for year %s"%( "MC" if self.isMC else "Data", self.year))
+        self.jerc_corrs = core.CorrectionSet.from_file(os.path.join(self.jsonpath, "jet_jerc.json.gz"))
 
-        if self.splitJers:
-            pass # TBD
-        if 'T1' in self.saveMETUncs:
-            (self.met_T1_px_jesUp, self.met_T1_py_jesUp) = ({}, {})
-            (self.met_T1_px_jesDown, self.met_T1_py_jesDown) = ({}, {})
-            for jesUncertainty in self.uncs:
-                self.met_T1_px_jesUp[jesUncertainty] = self.met_px
-                self.met_T1_py_jesUp[jesUncertainty] = self.met_py
-                self.met_T1_px_jesDown[jesUncertainty] = self.met_px
-                self.met_T1_py_jesDown[jesUncertainty] = self.met_py
-        if 'T1Smear' in self.saveMETUncs:
-            (self.met_T1Smear_px_jesUp, self.met_T1Smear_py_jesUp) = ({}, {})
-            (self.met_T1Smear_px_jesDown, self.met_T1Smear_py_jesDown) = ({}, {})
-            for jesUncertainty in self.uncs:
-                self.met_T1Smear_px_jesUp[jesUncertainty] = self.met_px
-                self.met_T1Smear_py_jesUp[jesUncertainty] = self.met_py
-                self.met_T1Smear_px_jesDown[jesUncertainty] = self.met_px
-                self.met_T1Smear_py_jesDown[jesUncertainty] = self.met_py
+        self.jes_corrs = {}
+        self.jer_corrs = {}
+        self.uncs      = {}
+
+        # Get the JEC correctors
+        # -- Save also the separate correctors
+        corrList = ["L1FastJet", "L2Relative", "L2L3Residual"]
+        if self.isMC:
+            # + For MC it's easy, we just have an entry in the json with the corrections.
+            mainJECname = "{}_V2_{}_{}_{}".format(self.jec, self.runOn, "L1L2L3Res", self.algo)
+            
+            for key in list(self.jerc_corrs):
+                if self.runOn not in key: continue
+                sourcename = key.split("_")[-2]
+                corrector = self.jerc_corrs[key]
+                
+                # JECs
+                if sourcename in corrList:
+                    saveOn = self.jes_corrs
+                # JERs
+                elif "JR" in key:
+                    saveOn = self.jer_corrs
+                # JEC uncertainty sources
+                else:
+                    saveOn = self.uncs
+                saveOn[sourcename] = corrector   
+            self.jes_corrs["L1L2L3Res"] = self.jerc_corrs.compound[mainJECname]
+        
+        else:
+            # For corrections in data, we need to know at anytime which era we are considering. There's an entry
+            # for each era in 2022: C or D so far (for EFG we also apply era D corrections...)
+            # Solution: load all corrections into memory an select which one to use on the fly when looping over jets...
+            for era in ["C", "D"]:
+                mainJECname = "{}_{}_V2_{}_{}_{}".format(self.jec, "Run%s"%era, self.runOn, "L1L2L3Res", self.algo)
+                for key in list(self.jerc_corrs):
+                    if self.runOn not in key: continue
+                    sourcename = key.split("_")[-2]
+                    corrector = self.jerc_corrs[key]
+                    # JECs
+                    if sourcename in corrList:
+                        self.jes_corrs[sourcename] = corrector
+
+                self.jes_corrs["L1L2L3Res_era{}".format(era)] = self.jerc_corrs.compound[mainJECname]
+            
+            self.uncs = {}
+            self.jer_corrs = {}
+        
+        if self.applyVetoMaps:
+            # Now to the VetoMaps. So far these are only available in root format.
+            # For the vetomaps we should use eras CD for preEE MC as well as E for postEE MC.
+            # post: https://cms-talk.web.cern.ch/t/question-concerning-jme-recommendations-for-run3/23756/6
+            # Open rootfile and load histogram
+            rfilename = "{}_Run{}_v1.root".format(self.jec, self.era)
+            print(" >> Applying %s for veto maps (era: %s)"%(rfilename, self.era))
+            rfile = ROOT.TFile.Open( os.path.join(self.jsonpath, rfilename) )
+            self.vmap = deepcopy(rfile.Get("jetvetomap"))
+            rfile.Close()
+             
+        return
+    
+    def collect_objects(self, event):
+        """ This method collects all the necessary objects: jet, met. It also matches jets to gen jets for JER corrections """
+        # ------------------------------------------------------------- #
+        # This is the rho from all PF Candidates, no foreground removal
+        self.rho = getattr(event, self.rhoBranchName)
+
+        # ---------------------------  Jets ---------------------------- #
+        self.jets = Collection(event, "Jet")
+
+        # ---------------------------  Muons --------------------------- #
+        self.muons = Collection(event, "Muon")
+
+        
+        # ---------------------------  Gen jets (only for MC) ---------- #
+        if self.isMC:
+            def resolution_matching(jet, genjet):
+                """ Helper function to match to gen based on pt difference """
+                corrector = self.jer_corrs["PtResolution"]
+                resolution = self.evaluate(corrector, [jet.eta, jet.pt, self.rho])
+                return abs(jet.pt - genjet.pt) < 3 * resolution * jet.pt
+            
+            self.genjets = Collection(event, "GenJet")
+            self.pairs = matchObjectCollection(self.jets, self.genjets, 
+                                                dRmax=0.2, 
+                                                presel = resolution_matching)
+            
+            
+        # --------------------------- MET ----------------------------- #
+        self.met_pt = getattr(event, self.metbranchname + "_pt" )
+        self.rawmet_pt = getattr(event, "Raw"+self.metbranchname + "_pt" )
+        self.met_phi = getattr(event, self.metbranchname + "_phi" )
+        self.rawmet_phi = getattr(event, "Raw"+self.metbranchname + "_phi" )
+        (self.t1met_px, self.t1met_py) = (self.met_pt * cos(self.met_phi),
+                                          self.met_pt * sin(self.met_phi))
+        (self.met_px, self.met_py) = (self.rawmet_pt * cos(self.rawmet_phi),
+                                      self.rawmet_pt * sin(self.rawmet_phi))
+        (self.met_T1_px, self.met_T1_py) = (self.met_px, self.met_py)
+        (self.met_T1Smear_px, self.met_T1Smear_py) = (self.met_px, self.met_py)        
+        return
+    
+    def veto_jets(self, event):
+        passjets = []
+        for ijet, jet in enumerate(self.jets): 
+            jet_eta  = jet.eta
+            jet_phi  = jet.phi
+
+            # Check if this jet falls in the veto region
+            etabin = max(1, min(self.vmap.GetNbinsX(), self.vmap.GetXaxis().FindBin(jet_eta)))
+            phibin = max(1, min(self.vmap.GetNbinsY(), self.vmap.GetYaxis().FindBin(jet_phi)))
+            vetoed = self.vmap.GetBinContent(etabin, phibin) # This can be either 100 or 0. 100 means that it should be vetoed.
+            if not vetoed: passjets.append(jet)
+
+        # Update the list of jets to be used in the loop
+        self.jets = passjets
         return
     
     def loop_jets(self, ret, event):
         """ This is where all the corrections are made """
-        L1L2L3Res_corrector = self.jes_corrs["L1L2L3Res"]
-        L1_corrector = self.jes_corrs["L1FastJet"]
         
-        logfile = open("/nfs/fanae/user/cvico/WorkSpace/wz-run3/release/CMSSW_12_4_12/src/CMGTools/TTHAnalysis/macros/logger_newInterface.log", "a")
-        log= ">> Event {}".format(event.event)
-
+        if self.isMC:
+            L1L2L3Res_corrector = self.jes_corrs["L1L2L3Res"]
+        else:
+            # This is vastly inefficient thanks to JME.
+            datasetname = "".join(event.DatasetName_name)
+            era = None
+            if "Run%sC"%self.year in datasetname: 
+                era = "C"
+            elif "Run%sD"%self.year in datasetname: 
+                era = "D"
+            else:
+                era = "D" # use era D for EFG as well
+            L1L2L3Res_corrector = self.jes_corrs["L1L2L3Res_era{}".format(era)]
+        
+        L1_corrector = self.jes_corrs["L1FastJet"]
         jets = self.jets
         for ijet, jet in enumerate(jets): 
             # ---------------------------------------------- #
@@ -217,10 +323,8 @@ class JetEnergyCorrector( Module ):
             jet_mass_raw  = jet.mass * (1 - jet.rawFactor)
             jet_mass  = jet.mass * (1 - jet.rawFactor) # Branch to be used in Analysis
             jet_eta  = jet.eta
+            jet_phi  = jet.phi
             jet_area = jet.area
-                        
-            if self.verbosity > 1:
-                print("  * Jet {} : pt: {}, eta: {}".format(ijet, jet_pt_raw, jet_eta))
             
             # Get the SFs for two levels of correction: complete and only L1
             L1L2L3Res_sf = self.evaluate(L1L2L3Res_corrector, [jet_area, jet_eta, jet_pt_raw, self.rho])
@@ -229,12 +333,7 @@ class JetEnergyCorrector( Module ):
             # Use L1L2L3Res to compute jet_pt_nom and jet_mass_nom
             jet_pt   *= L1L2L3Res_sf
             jet_mass *= L1L2L3Res_sf
-            if self.verbosity > 1:
-                print("    + L1L2L3Res sf: {}".format(L1L2L3Res_sf))
-                print("    + L1 sf: {}".format(L1_sf))
-            log += "  * Jet {} : pt: {}\n".format(ijet, jet_pt_raw)
-            log += "    + L1L2L3Res sf: {}\n".format(L1L2L3Res_sf)
-            log += "    + L1 sf: {}\n".format(L1_sf)
+
             # Save values withouth applying JER
             jet.pt = jet_pt
             jet.mass = jet_mass
@@ -268,8 +367,7 @@ class JetEnergyCorrector( Module ):
             # This takes into account (jet_pt+muon_pt)*correction
             jet_pt_nom   = jet_pt*jet_pt_jerNomVal
             jet_mass_nom = jet_mass*jet_pt_jerNomVal
-            log += "    + JER SF: {}\n".format(jet_pt_jerNomVal)
-            log += "    + jet_pt nom: {}\n".format(jet_pt_nom)
+
             # Recover quantities summing up the muon_pt again.
             # This takes into account (real jet pt)_corrected + muon pt
             jet_pt_L1L2L3 = jet_pt_noMuL1L2L3 + muon_pt
@@ -288,10 +386,11 @@ class JetEnergyCorrector( Module ):
             ret["Jet_corr_JER"].append(jet_pt_jerNomVal)
             
             # Add JER branches to the return dictionary
-            ret["Jet_pt_jerUp"].append(jet_pt_nom*jet_pt_jerUpVal)
-            ret["Jet_mass_jerUp"].append(jet_mass_nom*jet_pt_jerUpVal)
-            ret["Jet_pt_jerDown"].append(jet_pt_nom*jet_pt_jerDownVal)
-            ret["Jet_mass_jerDown"].append(jet_mass_nom*jet_pt_jerDownVal)
+            if self.isMC:
+                ret["Jet_pt_jerUp"].append(jet_pt_nom*jet_pt_jerUpVal)
+                ret["Jet_mass_jerUp"].append(jet_mass_nom*jet_pt_jerUpVal)
+                ret["Jet_pt_jerDown"].append(jet_pt_nom*jet_pt_jerDownVal)
+                ret["Jet_mass_jerDown"].append(jet_mass_nom*jet_pt_jerDownVal)
 
             # ----------------------------------------------- #
             #      Compute JET sources of uncertainty         #
@@ -315,9 +414,7 @@ class JetEnergyCorrector( Module ):
             
             for jesUncertainty, jesUncCorrector in self.uncs.items(): 
                 # Compute the uncertainty using the corrected pt
-                
-#                inputnames = [ ix.name for ix in jesUncCorrector.inputs]
-#                print(inputnames, jesUncertainty)
+
                 delta = self.evaluate(jesUncCorrector, [jet_eta, jet_pt_nom])
                 
                 self.jet_pt_jesUp[jesUncertainty]   = jet_pt_nom * (1 + delta)
@@ -339,9 +436,7 @@ class JetEnergyCorrector( Module ):
 
                 ret["Jet_pt_jesT1{}{}".format(jesUncertainty, "Up")].append(jet_pt_L1L2L3 * (1 + delta))
                 ret["Jet_pt_jesT1{}{}".format(jesUncertainty, "Down")].append(jet_pt_L1L2L3 * (1 - delta))
-                
-            
-            
+ 
             # ---------------------------------------------- #
             #     Propagate uncertainties to the MET         #
             # ---------------------------------------------- #
@@ -458,77 +553,35 @@ class JetEnergyCorrector( Module ):
                     met_phi_jesdn = atan2(met_py_jesdn, met_px_jesdn)
 
                     # Now save in output dictionary
-                    ret["%s_T1_pt_%sUp"%(self.metbranchname, jesUncertainty)]  = met_pt_jesup
-                    ret["%s_T1_phi_%sUp"%(self.metbranchname, jesUncertainty)] = met_phi_jesup
-                    ret["%s_T1_pt_%sDown"%(self.metbranchname, jesUncertainty)]  = met_pt_jesdn
-                    ret["%s_T1_phi_%sDown"%(self.metbranchname, jesUncertainty)] = met_phi_jesdn
-                
+                    ret["%s_T1_pt_jes%sUp"%(self.metbranchname, jesUncertainty)]  = met_pt_jesup
+                    ret["%s_T1_phi_jes%sUp"%(self.metbranchname, jesUncertainty)] = met_phi_jesup
+                    ret["%s_T1_pt_jes%sDown"%(self.metbranchname, jesUncertainty)]  = met_pt_jesdn
+                    ret["%s_T1_phi_jes%sDown"%(self.metbranchname, jesUncertainty)] = met_phi_jesdn
+
             if "T1Smear" in self.saveMETUncs:
                 for jerID in self.splitJERIDs:
                     pass
                 
                 for jesUncertainty in self.uncs:
                     # Compute pT and phi for up variation
-                    met_px_jesup = self.met_T1Smear_px_jesUp[jesUncertainty]
-                    met_py_jesup = self.met_T1Smear_py_jesUp[jesUncertainty]
-                    met_pt_jesup = met_px_jesup**2 + met_py_jesup**2
-                    met_phi_jesup = atan2(met_py_jesup, met_px_jesup)
+                    met_pxsmear_jesup = self.met_T1Smear_px_jesUp[jesUncertainty]
+                    met_pysmear_jesup = self.met_T1Smear_py_jesUp[jesUncertainty]
+                    met_ptsmear_jesup = sqrt(met_pxsmear_jesup**2 + met_pysmear_jesup**2)
+                    met_phismear_jesup = atan2(met_pysmear_jesup, met_pxsmear_jesup)
 
                     # Compute pT and phi for down variation
-                    met_px_jesdn = self.met_T1Smear_px_jesDown[jesUncertainty]
-                    met_py_jesdn = self.met_T1Smear_py_jesDown[jesUncertainty]
-                    met_pt_jesdn = met_px_jesdn**2 + met_py_jesdn**2
-                    met_phi_jesdn = atan2(met_py_jesdn, met_px_jesdn)
+                    met_pxsmear_jesdn = self.met_T1Smear_px_jesDown[jesUncertainty]
+                    met_pysmear_jesdn = self.met_T1Smear_py_jesDown[jesUncertainty]
+                    met_ptsmear_jesdn = sqrt(met_pxsmear_jesdn**2 + met_pysmear_jesdn**2)
+                    met_phismear_jesdn = atan2(met_pysmear_jesdn, met_pxsmear_jesdn)
 
                     # Now save in output dictionary
-                    ret["%s_T1Smear_pt_%sUp"%(self.metbranchname, jesUncertainty)]  = met_pt_jesup
-                    ret["%s_T1Smear_phi_%sUp"%(self.metbranchname, jesUncertainty)] = met_phi_jesup
-                    ret["%s_T1Smear_pt_%sDown"%(self.metbranchname, jesUncertainty)]  = met_pt_jesdn
-                    ret["%s_T1Smear_phi_%sDown"%(self.metbranchname, jesUncertainty)] = met_phi_jesdn
-        log += "-"*20 + "\n"
-        logfile.write(log)
-        logfile.close()
+                    ret["%s_T1Smear_pt_jes%sUp"%(self.metbranchname, jesUncertainty)]  = met_ptsmear_jesup
+                    ret["%s_T1Smear_phi_jes%sUp"%(self.metbranchname, jesUncertainty)] = met_phismear_jesup
+                    ret["%s_T1Smear_pt_jes%sDown"%(self.metbranchname, jesUncertainty)]  = met_ptsmear_jesdn
+                    ret["%s_T1Smear_phi_jes%sDown"%(self.metbranchname, jesUncertainty)] = met_phismear_jesdn
+
         return ret
-    
-
-    
-    def collect_objects(self, event):
-        """ This method collects all the necessary objects: jet, met. It also matches jets to gen jets for JER corrections """
-        # ------------------------------------------------------------- #
-        # This is the rho from all PF Candidates, no foreground removal
-        self.rho = getattr(event, self.rhoBranchName)
-
-        # ---------------------------  Jets ---------------------------- #
-        self.jets = Collection(event, "Jet")
-
-        # ---------------------------  Muons --------------------------- #
-        self.muons = Collection(event, "Muon")
-
-        # ---------------------------  Gen jets (only for MC) ---------- #
-        if self.isMC:
-            def resolution_matching(jet, genjet):
-                """ Helper function to match to gen based on pt difference """
-                corrector = self.jer_corrs["PtResolution"]
-                resolution = self.evaluate(corrector, [jet.eta, jet.pt, self.rho])
-                return abs(jet.pt - genjet.pt) < 3 * resolution * jet.pt
-            
-            self.genjets = Collection(event, "GenJet")
-            self.pairs = matchObjectCollection(self.jets, self.genjets, 
-                                                dRmax=0.2, 
-                                                presel = resolution_matching)
-            
-        # --------------------------- MET ----------------------------- #
-        self.met_pt = getattr(event, self.metbranchname + "_pt" )
-        self.rawmet_pt = getattr(event, "Raw"+self.metbranchname + "_pt" )
-        self.met_phi = getattr(event, self.metbranchname + "_phi" )
-        self.rawmet_phi = getattr(event, "Raw"+self.metbranchname + "_phi" )
-        (self.t1met_px, self.t1met_py) = (self.met_pt * cos(self.met_phi),
-                                          self.met_pt * sin(self.met_phi))
-        (self.met_px, self.met_py) = (self.rawmet_pt * cos(self.rawmet_phi),
-                                      self.rawmet_pt * sin(self.rawmet_phi))
-        (self.met_T1_px, self.met_T1_py) = (self.met_px, self.met_py)
-        (self.met_T1Smear_px, self.met_T1Smear_py) = (self.met_px, self.met_py)        
-        return
     
     def getJERsplitID(self, pt, eta):
         if abs(eta) < 1.93:
@@ -612,8 +665,28 @@ class JetEnergyCorrector( Module ):
                 muon_pt += self.muons[jet.muonIdx2].pt
         return newjet, muon_pt
     
-    def beginFile(self, inputFile, outputFile, inputTree, wrappedOutputTree):
-        declareOutput(self, wrappedOutputTree, self.branches)
+    
+    def create_containers(self):
+        """ Create some dictionaries to keep track of all the JET and MET variations properly """
+
+        if self.splitJers:
+            pass # TBD
+        if 'T1' in self.saveMETUncs:
+            (self.met_T1_px_jesUp, self.met_T1_py_jesUp) = ({}, {})
+            (self.met_T1_px_jesDown, self.met_T1_py_jesDown) = ({}, {})
+            for jesUncertainty in self.uncs:
+                self.met_T1_px_jesUp[jesUncertainty] = self.met_px
+                self.met_T1_py_jesUp[jesUncertainty] = self.met_py
+                self.met_T1_px_jesDown[jesUncertainty] = self.met_px
+                self.met_T1_py_jesDown[jesUncertainty] = self.met_py
+        if 'T1Smear' in self.saveMETUncs:
+            (self.met_T1Smear_px_jesUp, self.met_T1Smear_py_jesUp) = ({}, {})
+            (self.met_T1Smear_px_jesDown, self.met_T1Smear_py_jesDown) = ({}, {})
+            for jesUncertainty in self.uncs:
+                self.met_T1Smear_px_jesUp[jesUncertainty] = self.met_px
+                self.met_T1Smear_py_jesUp[jesUncertainty] = self.met_py
+                self.met_T1Smear_px_jesDown[jesUncertainty] = self.met_px
+                self.met_T1Smear_py_jesDown[jesUncertainty] = self.met_py
         return
     
     def listBranches(self):
@@ -626,99 +699,64 @@ class JetEnergyCorrector( Module ):
             ("Jet_corr_JEC", "F", 20, "nJet"),
             ("Jet_corr_JER", "F", 20, "nJet")
         ]
-        # JER uncertainties
-        branches.append(("Jet_pt_jerUp", "F", 20, "nJet"))
-        branches.append(("Jet_mass_jerUp", "F", 20, "nJet"))
-        branches.append(("Jet_pt_jerDown", "F", 20, "nJet"))
-        branches.append(("Jet_mass_jerDown", "F", 20, "nJet"))
+        
         branches.append(("%s_T1_pt"%(self.metbranchname), "F"))
         branches.append(("%s_T1_phi"%(self.metbranchname), "F"))
         branches.append(("%s_T1Smear_pt"%(self.metbranchname), "F"))
         branches.append(("%s_T1Smear_phi"%(self.metbranchname), "F"))
         
-        # Consider the splitted jers if needed
-        if self.isMC and self.splitJers:
-            for thisJERID in self.splitJERIDs:
-                branches.append(("Jet_pt_jer{}Up".format(thisJERID), "F", 20, "nJet"))
-                branches.append(("Jet_mass_jer{}Up".format(thisJERID), "F", 20, "nJet"))
-                branches.append(("Jet_pt_jer{}Down".format(thisJERID), "F", 20, "nJet"))
-                branches.append(("Jet_mass_jer{}Down".format(thisJERID), "F", 20, "nJet"))
-
-        # JEC and JER Uncertainties
-        for jesUncertainty in self.uncs:
-            for direction in ["Up", "Down"]:
-                branches.append(("Jet_pt_jes{}{}".format(jesUncertainty, direction),  "F", 20, "nJet"))
-                branches.append(("Jet_pt_jesT1{}{}".format(jesUncertainty, direction),  "F", 20, "nJet"))
-                branches.append(("Jet_mass_jes{}{}".format(jesUncertainty, direction),  "F", 20, "nJet"))
+        #  Save uncertainties only for MC
+        if self.isMC:
+            # JEC and JER Uncertainties
+            for jesUncertainty in self.uncs:
+                for direction in ["Up", "Down"]:
+                    branches.append(("Jet_pt_jes{}{}".format(jesUncertainty, direction),  "F", 20, "nJet"))
+                    branches.append(("Jet_pt_jesT1{}{}".format(jesUncertainty, direction),  "F", 20, "nJet"))
+                    branches.append(("Jet_mass_jes{}{}".format(jesUncertainty, direction),  "F", 20, "nJet"))
         
-        # Met uncertainties
-        if 'T1' in self.saveMETUncs:
+            # JER uncertainties
+            branches.append(("Jet_pt_jerUp", "F", 20, "nJet"))
+            branches.append(("Jet_mass_jerUp", "F", 20, "nJet"))
+            branches.append(("Jet_pt_jerDown", "F", 20, "nJet"))
+            branches.append(("Jet_mass_jerDown", "F", 20, "nJet"))
+            # Consider the splitted jers if needed
             if self.splitJers:
-                pass # TBD
-            branches.append(("%s_T1_pt_unclustEnUp"%self.metbranchname, "F"))
-            branches.append(("%s_T1_phi_unclustEnUp"%self.metbranchname, "F"))
-            branches.append(("%s_T1_pt_unclustEnDown"%self.metbranchname, "F"))
-            branches.append(("%s_T1_phi_unclustEnDown"%self.metbranchname, "F"))
-            for jesUncertainty in self.uncs:
-                branches.append(("%s_T1_pt_%sUp"%(self.metbranchname, jesUncertainty), "F"))
-                branches.append(("%s_T1_phi_%sUp"%(self.metbranchname, jesUncertainty), "F"))
-                branches.append(("%s_T1_pt_%sDown"%(self.metbranchname, jesUncertainty), "F"))
-                branches.append(("%s_T1_phi_%sDown"%(self.metbranchname, jesUncertainty), "F"))
+                for thisJERID in self.splitJERIDs:
+                    branches.append(("Jet_pt_jer{}Up".format(thisJERID), "F", 20, "nJet"))
+                    branches.append(("Jet_mass_jer{}Up".format(thisJERID), "F", 20, "nJet"))
+                    branches.append(("Jet_pt_jer{}Down".format(thisJERID), "F", 20, "nJet"))
+                    branches.append(("Jet_mass_jer{}Down".format(thisJERID), "F", 20, "nJet"))
+            # Met uncertainties
+            if 'T1' in self.saveMETUncs:
+                if self.splitJers:
+                    pass # TBD
+                branches.append(("%s_T1_pt_unclustEnUp"%self.metbranchname, "F"))
+                branches.append(("%s_T1_phi_unclustEnUp"%self.metbranchname, "F"))
+                branches.append(("%s_T1_pt_unclustEnDown"%self.metbranchname, "F"))
+                branches.append(("%s_T1_phi_unclustEnDown"%self.metbranchname, "F"))
+                for jesUncertainty in self.uncs:
+                    branches.append(("%s_T1_pt_jes%sUp"%(self.metbranchname, jesUncertainty), "F"))
+                    branches.append(("%s_T1_phi_jes%sUp"%(self.metbranchname, jesUncertainty), "F"))
+                    branches.append(("%s_T1_pt_jes%sDown"%(self.metbranchname, jesUncertainty), "F"))
+                    branches.append(("%s_T1_phi_jes%sDown"%(self.metbranchname, jesUncertainty), "F"))
 
-        if 'T1Smear' in self.saveMETUncs:
-            if self.splitJers:
-                pass # TBD
-            branches.append(("%s_T1Smear_pt_unclustEnUp"%self.metbranchname, "F"))
-            branches.append(("%s_T1Smear_phi_unclustEnUp"%self.metbranchname, "F"))
-            branches.append(("%s_T1Smear_pt_unclustEnDown"%self.metbranchname, "F"))
-            branches.append(("%s_T1Smear_phi_unclustEnDown"%self.metbranchname, "F"))
-            for jesUncertainty in self.uncs:
-                branches.append(("%s_T1Smear_pt_%sUp"%(self.metbranchname, jesUncertainty), "F"))
-                branches.append(("%s_T1Smear_phi_%sUp"%(self.metbranchname, jesUncertainty), "F"))
-                branches.append(("%s_T1Smear_pt_%sDown"%(self.metbranchname, jesUncertainty), "F"))
-                branches.append(("%s_T1Smear_phi_%sDown"%(self.metbranchname, jesUncertainty), "F"))
+            if 'T1Smear' in self.saveMETUncs:
+                if self.splitJers:
+                    pass # TBD
+                branches.append(("%s_T1Smear_pt_unclustEnUp"%self.metbranchname, "F"))
+                branches.append(("%s_T1Smear_phi_unclustEnUp"%self.metbranchname, "F"))
+                branches.append(("%s_T1Smear_pt_unclustEnDown"%self.metbranchname, "F"))
+                branches.append(("%s_T1Smear_phi_unclustEnDown"%self.metbranchname, "F"))
+                for jesUncertainty in self.uncs:
+                    branches.append(("%s_T1Smear_pt_jes%sUp"%(self.metbranchname, jesUncertainty), "F"))
+                    branches.append(("%s_T1Smear_phi_jes%sUp"%(self.metbranchname, jesUncertainty), "F"))
+                    branches.append(("%s_T1Smear_pt_jes%sDown"%(self.metbranchname, jesUncertainty), "F"))
+                    branches.append(("%s_T1Smear_phi_jes%sDown"%(self.metbranchname, jesUncertainty), "F"))
 
         self.branches = branches
         return
        
-    def create_correctors(self):
-        """
-        -----------------------------------------------------------------------------
-        This function divides all the methods to evaluate SF and uncertainties inside 
-        the json into two groups:
-            + jes_corrs : contains the L1FastJet, L2Relative, L2L3Residual, L3Absolute,
-                          as well as the L1L2L3Res corrections (all grouped together).
-            + jer_corrs: contains the jet energy corrections
-            + uncs  : uncertainty sources for the JECs
-        -----------------------------------------------------------------------------
-        """
-        self.jes_corrs = {}
-        self.jer_corrs = {}
-        self.uncs      = {}
-
-        # Get the JEC correctors
-        # -- This is the one applied to compute jet_pt_nom
-        mainJECname = "{}_V2_{}_{}_{}".format(self.jec, self.runOn, "L1L2L3Res", self.algo)
-        self.jes_corrs["L1L2L3Res"] = self.jerc_corrs.compound[mainJECname]
-        
-        # -- Save also the separate correctors
-        corrList = ["L1FastJet", "L2Relative", "L2L3Residual"]
-        for key in list(self.jerc_corrs):
-            if self.runOn not in key: continue
-            sourcename = key.split("_")[-2]
-            corrector = self.jerc_corrs[key]
-            
-            # JECs
-            if sourcename in corrList:
-                saveOn = self.jes_corrs
-            # JERs
-            elif "JR" in key:
-                saveOn = self.jer_corrs
-            # JEC uncertainty sources
-            else:
-                saveOn = self.uncs
-            saveOn[sourcename] = corrector    
-        return
+    
     
     def clear(self):
         """ Method called at each event. Clears return dictionary"""        
@@ -732,48 +770,31 @@ class JetEnergyCorrector( Module ):
             "Jet_corr_JER"     : [],
         }
         
-        # JER uncertainties
-        ret["Jet_pt_jerUp"] = []
-        ret["Jet_mass_jerUp"] = []
-        ret["Jet_pt_jerDown"] = []
-        ret["Jet_mass_jerDown"] = []
+        if self.isMC:
+            # JER uncertainties
+            ret["Jet_pt_jerUp"] = []
+            ret["Jet_mass_jerUp"] = []
+            ret["Jet_pt_jerDown"] = []
+            ret["Jet_mass_jerDown"] = []
 
-        # Consider the splitted jers if needed
-        if self.isMC and self.splitJers:
-            for thisJERID in self.splitJERIDs:
-                ret["Jet_pt_jer{}Up".format(thisJERID)] = []
-                ret["Jet_mass_jer{}Up".format(thisJERID)] = []
-                ret["Jet_pt_jer{}Down".format(thisJERID)] = []
-                ret["Jet_mass_jer{}Down".format(thisJERID)] = []
-    
-        ## JEC Uncertainties
-        for jesUncertainty in self.uncs:
-            for direction in ["Up", "Down"]:
-                # For Jets
-                ret["Jet_pt_jes{}{}".format(jesUncertainty, direction)] = []
-                ret["Jet_mass_jes{}{}".format(jesUncertainty, direction)] = []
-                ret["Jet_pt_jesT1{}{}".format(jesUncertainty, direction)] = []
+            # Consider the splitted jers if needed
+            if self.isMC and self.splitJers:
+                for thisJERID in self.splitJERIDs:
+                    ret["Jet_pt_jer{}Up".format(thisJERID)] = []
+                    ret["Jet_mass_jer{}Up".format(thisJERID)] = []
+                    ret["Jet_pt_jer{}Down".format(thisJERID)] = []
+                    ret["Jet_mass_jer{}Down".format(thisJERID)] = []
+        
+            ## JEC Uncertainties
+            for jesUncertainty in self.uncs:
+                for direction in ["Up", "Down"]:
+                    # For Jets
+                    ret["Jet_pt_jes{}{}".format(jesUncertainty, direction)] = []
+                    ret["Jet_mass_jes{}{}".format(jesUncertainty, direction)] = []
+                    ret["Jet_pt_jesT1{}{}".format(jesUncertainty, direction)] = []
 
         return ret
     
-    def summarize(self):
-        """ Function to summarize the content in the jsons"""
-        print(" >> Summary:")
-        print("  * Reading JSON files from: %s"%self.jsonpath)
-        for file_ in os.listdir(self.jsonpath):
-            print("     + {}".format(file_))
-            
-        # Print variations to be considered
-        print(" >> Will consider the following variations (JES):")
-        for corr, correvaluator in self.jes_corrs.items():
-            print("  * %s"%corr)
-            
-        print(" >> Will consider the following variations (JER):")
-        for corr, correvaluator in self.jer_corrs.items():
-            print("  * %s"%corr)
-            
-        # Print uncertainties to be included
-        print(" >> Will consider the following sources of systematic uncertainty:")
-        for unc, uncevaluator in self.uncs.items():
-            print("  * %s"%unc)
+    def beginFile(self, inputFile, outputFile, inputTree, wrappedOutputTree):
+        declareOutput(self, wrappedOutputTree, self.branches)
         return
