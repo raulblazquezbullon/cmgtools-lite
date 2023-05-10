@@ -26,7 +26,7 @@ def byCompName(components, regexps):
 
 
 # -- Unpack submission configurations  -- #
-year              = int(getHeppyOption("year", "2022"))    
+year              = getHeppyOption("year", "2022")    
 analysis          = getHeppyOption("analysis", "main") 
 selectComponents  = getHeppyOption('selectComponents')
 justSummary       = getHeppyOption("justSummary")
@@ -47,14 +47,29 @@ doData = (selectComponents == "DATA")
 #from CMGTools.RootTools.samples.samples_13p6TeV_DATA2022_preNanoAODv10 import dataSamples as allData
 
 # -- From 13.5fb-1 (november 2022 -- BCDE)
-from CMGTools.RootTools.samples.samples_13p6TeV_mc2022_nanoAODv10_fromLocal   import mcSamples_toImport   as mcSamples_
-from CMGTools.RootTools.samples.samples_13p6TeV_data2022_nanoAODv10_fromLocal import dataSamples_toImport as allData
+#from CMGTools.RootTools.samples.samples_13p6TeV_mc2022_nanoAODv10_fromLocal   import mcSamples_toImport   as mcSamples_
+#from CMGTools.RootTools.samples.samples_13p6TeV_data2022_nanoAODv10_fromLocal import dataSamples_toImport as allData
+
+# -- From ~10 fb-1 (preEE)
+if year == "2022":
+  from CMGTools.RootTools.samples.samples_13p6TeV_mc2022_nanoAODv11_fromLocal   import mcSamples_toImport   as mcSamples_
+  from CMGTools.RootTools.samples.samples_13p6TeV_data2022_nanoAODv11_fromLocal import dataSamples_toImport as allData
+
+# -- From 20.06 fb-1 (March 2023 -- FG -- postEE)
+elif year == "2022EE":
+  from CMGTools.RootTools.samples.samples_13p6TeV_mc2022EE_nanoAODv11_fromLocal   import mcSamples_toImport   as mcSamples_
+  from CMGTools.RootTools.samples.samples_13p6TeV_data2022EE_nanoAODv11_fromLocal import dataSamples_toImport as allData
 
 autoAAA(mcSamples_ + allData, 
         quiet         = quiet, 
         redirectorAAA = "xrootd-cms.infn.it",
         node          = 'T2_ES_IFCA') 
 mcSamples_, _ = mergeExtensions(mcSamples_) ### autoAAA must be created before call mergeExtensions
+
+# From now on, just use 2022 for everything
+if year == "2022EE" or year == "2022": 
+  yearstr = year
+  year = 2022
 
 ### Set up trigger paths 
 if year == 2022:
@@ -248,11 +263,16 @@ if justSummary:
     sys.exit(0)
 
 
-from CMGTools.TTHAnalysis.tools.nanoAOD.wzsm_modules import lepCollector 
+from CMGTools.TTHAnalysis.tools.nanoAOD.wzsm_modules import lepCollector,lepCollector_EE
 from PhysicsTools.NanoAODTools.postprocessing.framework.postprocessor import PostProcessor
 
 # in the cut string, keep only the main cuts to have it simpler
-modules = lepCollector 
+modules = []
+if yearstr == "2022":
+  modules = lepCollector 
+elif yearstr == "2022EE":
+  modules = lepCollector_EE
+
 if (doData):
   from CMGTools.TTHAnalysis.tools.nanoAOD.remove_overlap import OverlapRemover
   modules.extend( [lambda : OverlapRemover()] ) 
@@ -262,6 +282,7 @@ compression = "ZLIB:3" #"LZ4:4" #"LZMA:9"
 
 branchsel_out = os.environ['CMSSW_BASE']+"/src/CMGTools/TTHAnalysis/python/tools/nanoAOD/OutputSlim_wz.txt"
 branchsel_in  = os.environ['CMSSW_BASE']+"/src/CMGTools/TTHAnalysis/python/tools/nanoAOD/InputSlim_wz.txt"
+
 
 # -- Finally create the postprocessor
 POSTPROCESSOR = PostProcessor(None, [], modules = modules,

@@ -492,10 +492,10 @@ def getDatasetFromCache( cachename ) :
 
 def writeDatasetToCache( cachename, dataset ):
     cachedir =  '/'.join( [os.environ['HOME'],'.cmgdataset'])
-    cachedir = b'%s'%cachedir
+    cachedir = '%s'%cachedir
     if not os.path.exists(cachedir):
         os.mkdir(cachedir)
-    pckfile = open( cachedir + "/" + cachename, 'w')
+    pckfile = open( cachedir + "/" + cachename, 'wb')
     pickle.dump(dataset, pckfile)
 
 def createDataset( user, dataset, pattern, readcache=False, 
