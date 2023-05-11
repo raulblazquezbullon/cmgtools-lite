@@ -39,12 +39,10 @@ if __name__ == "__main__":
 	
 	main_path = "/nfs/fanae/user/rblazquez/TFG/wz_run3/CMSSW_12_4_12/src/CMGTools/TTHAnalysis/python/plotter/"
 	
-	counter = 0
 	for var in variables:
 		print(">>> Going to %s variable" %var)
 		
 		for nq in nquant:
-			counter += 1
 			
 			print(">>> Going to rebin%s" %nq)
 			if check_d_vars == True:
