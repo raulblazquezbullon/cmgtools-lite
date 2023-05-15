@@ -302,8 +302,12 @@ class EventVars_TopRun2UL(Module):
                     metpt  = getattr(event, '{MET}_T1_pt'.format(MET = self.metBranchName)) ######### BE CAREFUL HERE, IT DEPENDS IF WE USE JECS IN DATA OR NOT
                     metphi = getattr(event, '{MET}_T1_phi'.format(MET = self.metBranchName))
                 else:
-                    metpt  = getattr(event, '{MET}_T1_pt{v}'.format(MET = self.metBranchName, v = sys if sys != "" else ""))
-                    metphi = getattr(event, '{MET}_T1_phi{v}'.format(MET = self.metBranchName, v = sys if sys != "" else ""))
+                    if "jerUp" in sys or "jerDown" in sys: ###### Type I corrected MET should not have JER variations propagated
+                        metpt  = getattr(event, '{MET}_T1_pt'.format(MET = self.metBranchName))
+                        metphi = getattr(event, '{MET}_T1_phi'.format(MET = self.metBranchName))
+                    else:
+                        metpt  = getattr(event, '{MET}_T1_pt{v}'.format(MET = self.metBranchName, v = sys if sys != "" else ""))
+                        metphi = getattr(event, '{MET}_T1_phi{v}'.format(MET = self.metBranchName, v = sys if sys != "" else ""))
 
                 met_4m.SetPtEtaPhiM(metpt, 0, metphi, 0)
 

@@ -13,12 +13,12 @@ friendspath  = "/beegfs/data/nanoAODv11/tw-run3/productions"
 logpath      = friendspath + "/{p}/{y}/logs/plots"
 
 lumidict     = {"2022"       : 7.78,
-                "2022PostEE" : 21.83}
+                "2022PostEE" : 20.04}
 lumidict_byEra = {#"2022C": 4.88,
                   #"2022D": 2.90,
                   #"2022E": 5.67,
-                  #"2022F": 13.61,
-                  "2022G": 2.55,}
+                  "2022F": 16.98,
+                  "2022G": 3.05,}
 
 friendsscaff = "--FMCs {P}/0_jecs --Fs {P}/1_lepsuncsAndParticle --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors"
 
@@ -81,7 +81,7 @@ def PlottingCommand(prod, year, nthreads, outpath, selplot, region, ratio, extra
     nth_        = "" if nthreads == 0 else ("--split-factor=-1 -j " + str(nthreads))
 
     #friends_    = friendsscaff + (" --Fs {P}/5_mvas --Fs {P}/6_mvas_new" * ("MVA" in region))
-    friends_    = friendsscaff + (" --Fs {P}/6_mvas_new_multiClass" * ("MVA" in region))
+    friends_    = friendsscaff + (" --Fs {P}/6_mvas_new_multiClass_withSameFlav" * ("MVA" in region))
     outpath_    = outpath + "/" + era + "/" + (region if "_" not in region else (region.split("_")[0] + "/" + region.split("_")[1]))
     selplot_    = " ".join( [ "--sP {p}".format(p = sp) for sp in selplot ] ) if len(selplot) else ""
     ratio_      = "--maxRatioRange " + ratio
