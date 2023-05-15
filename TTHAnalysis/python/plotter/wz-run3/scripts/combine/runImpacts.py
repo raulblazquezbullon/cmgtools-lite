@@ -44,5 +44,5 @@ if __name__ == "__main__":
   print("\n---> Plot the impacts\n")
 
   # plot the impacts
-  plotImpacts_cmd = "cd %s; plotImpacts.py -i impacts.json -o impacts;cd -"%(outpath)
+  plotImpacts_cmd = "cd %s; plotImpacts.py -i impacts.json -o impacts --cms-label 'Academic';cd -"%(outpath)
   print(plotImpacts_cmd)
