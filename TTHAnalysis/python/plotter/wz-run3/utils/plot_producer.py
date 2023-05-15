@@ -1,11 +1,11 @@
 from .producer import producer
 from utils.ftree_producer import ftree_producer
 from cfgs.lumi import lumis
+import os
 
 class plot_producer(producer):
   name = "plot_producer"
   basecommand = "python3 mcPlots.py"
-  functions = ["wz-run3/functionsWZ.cc"]
   jobname = "CMGPlot"
 
   def add_more_options(self, parser):
@@ -53,7 +53,9 @@ class plot_producer(producer):
     plottingStuff += "--showRatio "
     plottingStuff += "--neg "
     
-    
+
+    self.mcpath = os.path.join(self.inpath, "mc")
+    self.datapath = os.path.join(self.inpath, "data")
     # List with all the options given to CMGTools
     self.commandConfs = ["%s"%self.mca, 
                    "%s"%self.cutfile,
