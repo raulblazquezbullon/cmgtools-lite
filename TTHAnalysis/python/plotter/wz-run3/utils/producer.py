@@ -61,6 +61,7 @@ class producer(object):
     }
 
     weights = ["muonSF*electronSF"]
+    functions = ["wz-run3/functionsWZ.cc"]
 
     name = "producer"
     cluster_comm = "sbatch -c {nc} -J {jn} -p {q} -e {logpath}/logs/log.%j.%x.err -o {logpath}/logs/log.%j.%x.out --wrap '{comm}' "

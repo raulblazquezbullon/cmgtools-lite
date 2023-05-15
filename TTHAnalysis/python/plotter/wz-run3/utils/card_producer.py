@@ -5,7 +5,6 @@ from cfgs.lumi import lumis
 class card_producer(producer):
   name = "card_producer"
   basecommand = "python3 makeShapeCards_wzRun3.py"
-  functions = ["wz-run3/functionsWZ.cc"]
   jobname = "CMGCard"
 
   def add_more_options(self, parser):

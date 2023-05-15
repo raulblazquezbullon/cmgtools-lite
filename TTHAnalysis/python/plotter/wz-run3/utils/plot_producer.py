@@ -5,7 +5,6 @@ from cfgs.lumi import lumis
 class plot_producer(producer):
   name = "plot_producer"
   basecommand = "python3 mcPlots.py"
-  functions = ["wz-run3/functionsWZ.cc"]
   jobname = "CMGPlot"
 
   def add_more_options(self, parser):
