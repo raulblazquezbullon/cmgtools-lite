@@ -12,7 +12,7 @@ List of important files:
 Commands:
  
  * To produce plots:
-    python tw-run3/plotterHelper.py -P 2022-10-25 -y 2022 -o ./temp_Run3_plots/2022_11_22 -r nojets -u -q batch -j 64
+    python tw-run3/plotterHelper.py -P 2023-04-10 -y 2022 -o ./temp_Run3_plots/2022_11_22 -r nojets -u -q batch -j 64
  * To produce cards:
     python tw-run3/cardsHelper.py -P 2023-04-10 -y 2022PostEE -o ./temp_Run3_cards/2023-04-16_MultiClass -r all -v all -a -q batch -j 64 
  * To make the fit:
