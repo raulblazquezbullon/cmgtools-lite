@@ -260,7 +260,23 @@ void trainMuonID_NanoAODv11(TString folder, TString name, TString year) {
   dataloader->AddSpectator("Muon_dxy",'D');
   dataloader->AddSpectator("Muon_dz",'D');
   
+
   // Training variables for muons
+  dataloader->AddVariable("Muon_pt",                        'D'); // pt
+  dataloader->AddVariable("Muon_eta",                       'D'); // eta
+  //dataloader->AddVariable("Muon_pfRelIso03_all",            'D'); // PF relative isolation
+  dataloader->AddVariable("Muon_miniPFRelIso_chg",          'D'); // mini relative isolation - charged component
+  dataloader->AddVariable("Muon_miniRelIsoNeutral := Muon_miniPFRelIso_all - Muon_miniPFRelIso_chg", 'D'); // mini relative isolation - neutral component
+  dataloader->AddVariable("Muon_jetNDauCharged",            'D'); // number of charged daughters of the closest jet
+  dataloader->AddVariable("Muon_jetPtRelv2",                'D'); // relative momentum of the lepton with respect to the closest jet after subtracting the lepton
+  dataloader->AddVariable("Muon_jetPtRatio := min(1 / (1 + Muon_jetRelIso), 1.5)", 'D'); // ratio between the lepton and the closest jet pTs (1+(PFIsoAll04/pt) if no matching jet)
+  dataloader->AddVariable("Muon_jetBTagDeepFlavB := Muon_jetIdx > -1 ? Jet_btagDeepFlavB[Muon_jetIdx] : 0", 'D'); // Jet b-tagging probability of the associated jet 
+  dataloader->AddVariable("Muon_sip3d",                         'D'); // 3D impact parameter significance wrt first PV
+  dataloader->AddVariable("Muon_log_dxy := log(abs(Muon_dxy))", 'D'); // transverse impact parameter wrt PV
+  dataloader->AddVariable("Muon_log_dz  := log(abs(Muon_dz))",  'D'); // longitudinal impact parameter wrt PV
+  dataloader->AddVariable("Muon_segmentComp",                   'D'); // segment compatibility
+  /*    
+  // Use MiniAOD-like variables
   dataloader->AddVariable("Muon_LepGood_pt",'D');
   dataloader->AddVariable("Muon_LepGood_eta",'D');
   dataloader->AddVariable("Muon_LepGood_miniRelIsoCharged",'D'); 
@@ -273,7 +289,7 @@ void trainMuonID_NanoAODv11(TString folder, TString name, TString year) {
   dataloader->AddVariable("Muon_LepGood_dxy",'D'); 
   dataloader->AddVariable("Muon_LepGood_dz",'D'); 
   dataloader->AddVariable("Muon_LepGood_segmentComp", 'D');  
-  
+  */
   
   lepton += "Muon_miniPFRelIso_all < 0.4 && Muon_sip3d < 8 && abs(Muon_dxy) < 0.05 && abs(Muon_dz) < 0.1"; // line 18 
 

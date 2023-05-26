@@ -11,12 +11,10 @@ using namespace std;
 
 
 // Main macro implementation
-
 void trainElectronID_NanoAODv11(TString folder, TString name, TString year) {
 
   // To keep track of all samples used
   std::vector<TString> files_names_strings;
-
   if (year == "2022EE"){
     files_names_strings.push_back("/beegfs/data/nanoAODv11/wz-run3/TTtoLNu2Q_TuneCP5_13p6TeV_powheg-pythia8_Run3Summer22EE_NanoAOD/Run3Summer22EENanoAODv11/230502_170305//0000/step0_1.root");
     files_names_strings.push_back("/beegfs/data/nanoAODv11/wz-run3/TTtoLNu2Q_TuneCP5_13p6TeV_powheg-pythia8_Run3Summer22EE_NanoAOD/Run3Summer22EENanoAODv11/230502_170305//0000/step0_2.root");
@@ -258,6 +256,7 @@ void trainElectronID_NanoAODv11(TString folder, TString name, TString year) {
   dataloader->AddSpectator("Electron_dz",'D');
   
   // Training variables for Electrons
+  // Use MiniAOD-like variables
   dataloader->AddVariable("Electron_LepGood_pt",'D');
   dataloader->AddVariable("Electron_LepGood_eta",'D');
   dataloader->AddVariable("Electron_LepGood_miniRelIsoCharged",'D'); 
@@ -270,7 +269,6 @@ void trainElectronID_NanoAODv11(TString folder, TString name, TString year) {
   dataloader->AddVariable("Electron_LepGood_dxy",'D'); 
   dataloader->AddVariable("Electron_LepGood_dz",'D'); 
   dataloader->AddVariable("Electron_LepGood_mvaFall17V2noIso", 'D');  
-  
   
   lepton += "Electron_miniPFRelIso_all < 0.4 && Electron_sip3d < 8";
   lepton += "Electron_lostHits <= 1"; 
