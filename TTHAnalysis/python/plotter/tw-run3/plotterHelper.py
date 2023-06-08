@@ -8,16 +8,17 @@ r.PyConfig.IgnoreCommandLineOptions = True
 r.gROOT.SetBatch(True)
 
 #### Settings
-friendspath  = "/beegfs/data/nanoAODv9/temp/postprocv10Run3/tw_run3/productions"
+friendspath  = "/beegfs/data/nanoAODv11/tw-run3/productions"
 
 logpath      = friendspath + "/{p}/{y}/logs/plots"
 
-lumidict     = {2022 : 29.62,}
-lumidict_byEra = {"2022C": 4.88,
-                  "2022D": 2.90,
-                  "2022E": 5.67,
-                  "2022F": 13.61,
-                  "2022G": 2.55,}
+lumidict     = {"2022"       : 7.78,
+                "2022PostEE" : 20.04}
+lumidict_byEra = {#"2022C": 4.88,
+                  #"2022D": 2.90,
+                  #"2022E": 5.67,
+                  "2022F": 16.98,
+                  "2022G": 3.05,}
 
 friendsscaff = "--FMCs {P}/0_jecs --Fs {P}/1_lepsuncsAndParticle --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors"
 
@@ -72,18 +73,25 @@ def PlottingCommand(prod, year, nthreads, outpath, selplot, region, ratio, extra
     if era != str(year):
         mcafile_ = "tw-run3/mca-tw-{e}.txt".format(e = era)
     cutsfile_   = "tw-run3/cuts-tw-{reg}.txt".format(reg = region if ("_" not in region) else region.split("_")[0] if ("differential" not in region and "cut" not in region) else region)
-    plotsfile_  = "tw-run3/plots-tw/plots-tw-{reg}.txt".format(reg = region.replace("SF", ""))
+    plotsfile_  = "tw-run3/plots-tw/plots-tw-{reg}.txt".format(reg = region.replace("SF", "").replace("-ee", "").replace("-mm", ""))
 
-    samplespaths_ = "-P " + friendspath + "/" + prod + ("/" + year) * (year != "run2")
+    samplespaths_ = "-P " + friendspath + "/" + prod + ("/" + year) * (year != "run3")
     if useFibre: samplespaths_ = samplespaths_.replace("phedexrw", "phedex").replace("cienciasrw", "ciencias")
 
     nth_        = "" if nthreads == 0 else ("--split-factor=-1 -j " + str(nthreads))
 
-    friends_    = friendsscaff + (" --Fs {P}/5_mvas --Fs {P}/6_mvas_new" * ("MVA" in region))
+    #friends_    = friendsscaff + (" --Fs {P}/5_mvas --Fs {P}/6_mvas_new" * ("MVA" in region))
+    friends_    = friendsscaff + (" --Fs {P}/6_mvas_new_multiClass_withSameFlav" * ("MVA" in region))
     outpath_    = outpath + "/" + era + "/" + (region if "_" not in region else (region.split("_")[0] + "/" + region.split("_")[1]))
     selplot_    = " ".join( [ "--sP {p}".format(p = sp) for sp in selplot ] ) if len(selplot) else ""
     ratio_      = "--maxRatioRange " + ratio
-    nameregion_ = "e^{#pm}#mu^{#mp}" if not "SF" in region else "e^{#pm}e^{#mp}+#mu^{#pm}#mu^{#mp}"
+    # Set the name of the region
+    if "-ee" in region:
+        nameregion_ = "e^{#pm}e^{#mp}"
+    elif "-mm" in region:
+        nameregion_ = "#mu^{#pm}#mu^{#mp}"
+    else:
+        nameregion_ = "e^{#pm}#mu^{#mp}"
     if "_" not in region and "nojets" not in region:
         nameregion_ += " (" + region.replace("t", "b").replace("plus", "+") + ")"
     elif "differential" in region and "nojets" not in region:
@@ -97,7 +105,7 @@ def PlottingCommand(prod, year, nthreads, outpath, selplot, region, ratio, extra
     if era != str(year):
         luminosities = lumidict_byEra[era]
     else:
-        luminosities = lumidict[int(year)] if year != "run2" else str(lumidict[2016]) + "," + str(lumidict[2017]) + "," + str(lumidict[2018])
+        luminosities = lumidict[year] if year != "run3" else str(lumidict["2022"]) + "," + str(lumidict["2022PostEE"])
     
     
     comm = thecomm.format(outpath      = outpath_,
@@ -105,7 +113,7 @@ def PlottingCommand(prod, year, nthreads, outpath, selplot, region, ratio, extra
                           samplespaths = samplespaths_,
                           lumi         = luminosities,
                           nth          = nth_,
-                          year         = year if year != "run2" else "2016,2017,2018",
+                          year         = year if year != "run3" else "2022,2022PostEE",
                           selplot      = selplot_,
                           mcafile      = mcafile_,
                           cutsfile     = cutsfile_,
@@ -133,7 +141,7 @@ def confirm(message = "Do you wish to continue?"):
 if __name__=="__main__":
     parser = argparse.ArgumentParser(usage = "python3 plotterHelper.py [options]", description = "Helper for plotting.", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('--production','-P', metavar = "prod",      dest = "prod",    required = True)
-    parser.add_argument('--year',      '-y', metavar = 'year',      dest = "year",    required = False, default = "2016")
+    parser.add_argument('--year',      '-y', metavar = 'year',      dest = "year",    required = False, default = "2022")
     parser.add_argument('--queue',     '-q', metavar = 'queue',     dest = "queue",   required = False, default = "")
     parser.add_argument('--extraArgs', '-e', metavar = 'extra',     dest = "extra",   required = False, default = "")
     parser.add_argument('--extraSlurmArgs','-eS',metavar='extraslurm',dest="extraslurm",required=False, default = "")
@@ -177,17 +185,16 @@ if __name__=="__main__":
     if queue != "":
         print("> Plotting jobs will be sent to the cluster.")
         if year == "all":
-            print("Deprecated option: --year all.")
-#            print "   - All three years and the combination will be plotted."
-#            cont = False
-#            if   pretend:
-#                cont = True
-#            elif confirm("Four jobs per requested region will be sent to queue {q} with {j} requested threads to plot in each year and in the combination {pls}. Do you want to continue?".format(q = queue, j = nthreads, pls = "all the plots" if not len(selplot) else " and ".join(selplot))):
-#                cont = True
-#
-#            if cont:
-#                for y in ["2016", "2017", "2018", "run2"]:
-#                    GeneralExecutioner( (prod, y, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend, useFibre, doUncs, doBlind, extraslurm) )
+            print("   - All years and the combination will be plotted.")
+            cont = False
+            if   pretend:
+                cont = True
+            elif confirm("Three jobs per requested region will be sent to queue {q} with {j} requested threads to plot in each year and in the combination {pls}. Do you want to continue?".format(q = queue, j = nthreads, pls = "all the plots" if not len(selplot) else " and ".join(selplot))):
+                cont = True
+
+            if cont:
+                for y in ["2022", "2022PostEE", "run3"]:
+                    GeneralExecutioner( (prod, y, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend, useFibre, doUncs, doBlind, extraslurm) )
         else:
             cont = False
             if   pretend:
@@ -204,10 +211,9 @@ if __name__=="__main__":
     else:
         print("> Local execution chosen.")
         if year == "all":
-            print("Deprecated option: --year all.")
-#            print "   - All three years and the combination will be plotted."
-#            for y in ["2016", "2017", "2018", "run2"]:
-#                GeneralExecutioner( (prod, y, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend, useFibre, doUncs, doBlind, extraslurm) )
+            print("   - All years and the combination will be plotted.")
+            for y in ["2022", "2022PostEE", "run3"]:
+                GeneralExecutioner( (prod, y, nthreads, outpath, selplot, region, ratiorange, queue, extra, pretend, useFibre, doUncs, doBlind, extraslurm) )
         else:
             if len(Eras) > 0:
                 for era in Eras:

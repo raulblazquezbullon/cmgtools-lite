@@ -1,25 +1,36 @@
 nloosejets: nJetSel20_Recl : [-0.5,0.5,1.5,2.5,3.5] ; LegendCutoff=0, XTitle='Number of loose jets', XNDiv=5, xBinLabels="0\,1\,2\,#geq 3", MoreY=1.5
 nloosejetsrebin: nJetSel20_Recl : [-0.5,0.5,1.5] ; LegendCutoff=0, XTitle='Number of loose jets', XNDiv=3, xBinLabels="0\,#geq 1", MoreY=2.3
 #nbloosejets                 : nBJetSelMedium20_Recl       : [-0.5,0.5,1.5,2.5,3.5]                 ; LegendCutoff=0, MoreY=1.2, XTitle='Number of loose b-tagged jets', XNDiv=5, xBinLabels="2\,3\,4\,5\,6\,#geq 7"
-jet1_pt                     : Jet1_Pt                     : 18,20,200                              ; LegendCutoff=0, MoreY=1.2, IncludeUnderflow=False, XTitle="Jet #it{p}_{T} (GeV)"
-loosejet1_pt                : JetLoose1_Pt                : 15,0,30                                ; LegendCutoff=0, MoreY=1.3, IncludeUnderflow=False, XTitle="Leading loose jet #it{p}_{T} (GeV)"
-lep1lep2jet1_pt             : Lep1Lep2Jet1_Pt             : 20,0,250                               ; LegendCutoff=0, MoreY=1.3, IncludeUnderflow=False, XTitle="#it{p}_{T} (#it{e}^{#pm}\, #it{#mu}^{#mp}\, #it{j}) (GeV)"
-#lep1lep2jet1met_ptOVERhttot : Lep1Lep2Jet1MET_PtOverHTtot : 20,0,1                                 ; LegendCutoff=0, MoreY=1.2, IncludeUnderflow=False, XTitle="#it{p}_{T} (#it{e}^{#pm}\, #it{#mu}^{#mp}\, #it{j}\, p_{T}^{miss}) / H_{T}"
-lep1lep2jet1met_m           : Lep1Lep2Jet1MET_M           : 20,0,600                               ; LegendCutoff=0, MoreY=1.3, IncludeUnderflow=False, XTitle="#it{m} (#it{e}^{#pm}\, #it{#mu}^{#mp}\, #it{j}\, #vec{#it{p}}_{T}^{ miss}) (GeV)"
-#htlepOVERhttot              : Lep1_PtLep2_PtOverHTtot     : 20,0,1                                 ; LegendCutoff=0, MoreY=1.2, IncludeUnderflow=False, XTitle="(p_{T}(e)^{#pm} + p_{T}(#mu)^{#mp}) / H_{T}"
-lep1lep2jet1_c              : Lep1Lep2Jet1_C              : 20,0,1                                 ; LegendCutoff=0, MoreY=1.4, IncludeUnderflow=False, XTitle="C (#it{e}^{#pm}\, #it{#mu}^{#mp}\, #it{j})", shiftLegend=-0.04
-#httot                       : HTtot                       : 20,0,550                               ; LegendCutoff=0, MoreY=1.2, IncludeUnderflow=False, XTitle="H_{T} (GeV)"
-#lep1lep2jet1met_pt          : Lep1Lep2Jet1MET_Pt          : 20,0,200                               ; LegendCutoff=0, MoreY=1.2, IncludeUnderflow=False, XTitle="#it{p}_{T} (#it{e}^{#pm}\, #it{#mu}^{#mp}\, #it{j}\, p_{T}^{miss}) (GeV)"
+jet1_pt                     : Jet1_Pt                     : 18,20,200                              ; LegendCutoff=0, MoreY=1.2, XTitle="Jet #it{p}_{T} (GeV)"
+loosejet1_pt                : JetLoose1_Pt                : 15,0,30                                ; LegendCutoff=0, MoreY=1.3, XTitle="Leading loose jet #it{p}_{T} (GeV)"
+lep1lep2jet1_pt             : Lep1Lep2Jet1_Pt             : 20,0,250                               ; LegendCutoff=0, MoreY=1.3, XTitle="#it{p}_{T} (#it{e}^{#pm}\, #it{#mu}^{#mp}\, #it{j}) (GeV)"
+#lep1lep2jet1met_ptOVERhttot : Lep1Lep2Jet1MET_PtOverHTtot : 20,0,1                                 ; LegendCutoff=0, MoreY=1.2, XTitle="#it{p}_{T} (#it{e}^{#pm}\, #it{#mu}^{#mp}\, #it{j}\, p_{T}^{miss}) / H_{T}"
+lep1lep2jet1met_m           : Lep1Lep2Jet1MET_M           : 20,0,600                               ; LegendCutoff=0, MoreY=1.3, XTitle="#it{m} (#it{e}^{#pm}\, #it{#mu}^{#mp}\, #it{j}\, #vec{#it{p}}_{T}^{ miss}) (GeV)"
+#htlepOVERhttot              : Lep1_PtLep2_PtOverHTtot     : 20,0,1                                 ; LegendCutoff=0, MoreY=1.2, XTitle="(p_{T}(e)^{#pm} + p_{T}(#mu)^{#mp}) / H_{T}"
+lep1lep2jet1_c              : Lep1Lep2Jet1_C              : 20,0,1                                 ; LegendCutoff=0, MoreY=1.4, XTitle="C (#it{e}^{#pm}\, #it{#mu}^{#mp}\, #it{j})", shiftLegend=-0.04
+#httot                       : HTtot                       : 20,0,550                               ; LegendCutoff=0, MoreY=1.2, XTitle="H_{T} (GeV)"
+#lep1lep2jet1met_pt          : Lep1Lep2Jet1MET_Pt          : 20,0,200                               ; LegendCutoff=0, MoreY=1.2, XTitle="#it{p}_{T} (#it{e}^{#pm}\, #it{#mu}^{#mp}\, #it{j}\, p_{T}^{miss}) (GeV)"
 
 ##1j1b BDT
-#tmvaBDT_1j1b        : tmvaBDT_1j1b          : 20,-1,1   ; LegendCutoff=0, IncludeUnderflow=False, XTitle="BDT discriminant", MoreY=1.5
-#tmvaBDT_1j1b_smallb : tmvaBDT_1j1b          : 1000,-1,1 ; LegendCutoff=0, IncludeUnderflow=False, XTitle="BDT discriminant"
-tmvaBDT_1j1b_rebin  : getBDtW(tmvaBDT_1j1b) : [0.5,1.5,2.5,3.5,4.5,5.5, 6.5, 7.5, 8.5, 9.5, 10.5] ; LegendCutoff=0, IncludeUnderflow=False, XTitle="BDT discriminant", MoreY=1.3
+#tmvaBDT_1j1b        : tmvaBDT_1j1b          : 20,-1,1   ; LegendCutoff=0, XTitle="BDT discriminant", MoreY=1.5
+#tmvaBDT_1j1b_smallb : tmvaBDT_1j1b          : 1000,-1,1 ; LegendCutoff=0, XTitle="BDT discriminant"
+tmvaBDT_1j1b_rebin  : getBDtW(tmvaBDT_1j1b) : [0.5,1.5,2.5,3.5,4.5,5.5, 6.5, 7.5, 8.5, 9.5, 10.5] ; LegendCutoff=0, XTitle="BDT discriminant", MoreY=1.3
 
 #Rebin study
 #tmvaBDT_1j1b_20bins  : getBDtW20binsNlooseJetsgeq1(tmvaBDT_1j1b) : [0.5,1.5,2.5,3.5,4.5,5.5, 6.5, 7.5, 8.5, 9.5, 10.5, 11.5, 12.5, 13.5, 14.5, 15.5, 16.5, 17.5, 18.5, 19.5, 20.5] ; LegendCutoff
 
 #1j1b RF
-mvaRF_1j1b        : mvaRF_1j1b          : 10,0,1   ; LegendCutoff=0, IncludeUnderflow=False, XTitle="RF discriminant", MoreY=1.5
-mvaRF_1j1b_smallb : mvaRF_1j1b          : 1000,0,1 ; LegendCutoff=0, IncludeUnderflow=False, XTitle="RF discriminant"
-mvaRF_1j1b_rebin  : getRFtW(mvaRF_1j1b) : [0.5,1.5,2.5,3.5,4.5,5.5, 6.5, 7.5, 8.5, 9.5, 10.5] ; LegendCutoff=0, IncludeUnderflow=False, XTitle="RF discriminant", MoreY=1.3
+mvaRF_1j1b        : mvaRF_1j1b          : 10,0,1   ; LegendCutoff=0, XTitle="RF discriminant", MoreY=1.5
+mvaRF_1j1b_smallb : mvaRF_1j1b          : 1000,0,1 ; LegendCutoff=0, XTitle="RF discriminant"
+mvaRF_1j1b_rebin  : getRFtW(mvaRF_1j1b) : [0.5,1.5,2.5,3.5,4.5,5.5, 6.5, 7.5, 8.5, 9.5, 10.5] ; LegendCutoff=0, XTitle="RF discriminant", MoreY=1.3
+
+#1j1b-mm
+mvaRF_1j1b_mm        : mvaRF_1j1b_mm          : 10,0,1   ; LegendCutoff=0, XTitle="RF discriminant", MoreY=1.5
+mvaRF_1j1b_mm_smallb : mvaRF_1j1b_mm          : 1000,0,1 ; LegendCutoff=0, XTitle="RF discriminant"
+mvaRF_1j1b_mm_rebin  : getRFtW_mm(mvaRF_1j1b_mm) : [0.5,1.5,2.5,3.5,4.5,5.5, 6.5, 7.5, 8.5, 9.5, 10.5] ; LegendCutoff=0, XTitle="RF discriminant", MoreY=1.3
+mvaRF_1j1b_mm_rebin_zoom  : getRFtW_mm(mvaRF_1j1b_mm) : [4.5, 5.5, 6.5, 7.5, 8.5, 9.5, 10.5] ; LegendCutoff=0, IncludeOverflows=False, IncludeOverflow=True, XTitle="RF discriminant", MoreY=1.3
+#1j1b-ee
+mvaRF_1j1b_ee        : mvaRF_1j1b_ee          : 10,0,1   ; LegendCutoff=0, XTitle="RF discriminant", MoreY=1.5
+mvaRF_1j1b_ee_smallb : mvaRF_1j1b_ee          : 1000,0,1 ; LegendCutoff=0, XTitle="RF discriminant"
+mvaRF_1j1b_ee_rebin  : getRFtW_ee(mvaRF_1j1b_ee) : [0.5,1.5,2.5,3.5,4.5,5.5, 6.5, 7.5, 8.5, 9.5, 10.5] ; LegendCutoff=0, XTitle="RF discriminant", MoreY=1.3
+mvaRF_1j1b_ee_rebin_zoom  : getRFtW_ee(mvaRF_1j1b_ee) : [4.5, 5.5, 6.5, 7.5, 8.5, 9.5, 10.5] ; LegendCutoff=0, IncludeOverflows=False, IncludeOverflow=True, XTitle="RF discriminant", MoreY=1.3

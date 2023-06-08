@@ -54,6 +54,9 @@ change: \bSergioBDT_1j1b\b:              SergioBDT_1j1b_jerDown
 change: \bSergioBDT_2j1b\b:              SergioBDT_2j1b_jerDown
 change: \btmvaBDT_1j1b\b:                tmvaBDT_1j1b_jerDown
 change: \btmvaBDT_2j1b\b:                tmvaBDT_2j1b_jerDown
-
+change: \bmvaRF_1j1b\b:                  mvaRF_1j1b_jerDown
+change: \bmvaRF_2j1b\b:                  mvaRF_2j1b_jerDown
+change: \bmvaRF_1j1b_mm\b:               mvaRF_1j1b_mm_jerDown
+change: \bmvaRF_1j1b_ee\b:               mvaRF_1j1b_ee_jerDown
 
 weight: 1

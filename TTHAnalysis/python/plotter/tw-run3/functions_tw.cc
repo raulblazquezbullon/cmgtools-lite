@@ -58,23 +58,49 @@ Float_t getBDtWOther(Double_t BDT){
 
 // Random Forests
 Float_t getRFtW(Double_t BDT){
-  if      (BDT < 0.355707   ) return 1;
-  else if (BDT < 0.383362) return 2;
-  else if (BDT < 0.416521) return 3;
-  else if (BDT < 0.459679) return 4;
-  else if (BDT < 0.525528) return 5;
-  else if (BDT < 0.583843) return 6;
-  else if (BDT < 0.595294) return 7;
-  else if (BDT < 0.609928) return 8;
-  else if (BDT < 0.635315) return 9;
+  if      (BDT < 0.402193   ) return 1;
+  else if (BDT < 0.422241) return 2;
+  else if (BDT < 0.437047) return 3;
+  else if (BDT < 0.451979) return 4;
+  else if (BDT < 0.465369) return 5;
+  else if (BDT < 0.479900) return 6;
+  else if (BDT < 0.507216) return 7;
+  else if (BDT < 0.528089) return 8;
+  else if (BDT < 0.548056) return 9;
   else                       return 10;
 }
 
 Float_t getRFtWOther(Double_t BDT){
-  if      (BDT < 0.427714   ) return 1;
-  else if (BDT < 0.462186) return 2;
-  else if (BDT < 0.487625) return 3;
-  else if (BDT < 0.533625) return 4;
-  else if (BDT < 0.548718) return 5;
+  if      (BDT < 0.336078   ) return 1;
+  else if (BDT < 0.361697) return 2;
+  else if (BDT < 0.388195) return 3;
+  else if (BDT < 0.428830) return 4;
+  else if (BDT < 0.478367) return 5;
   else                       return 6;
+}
+
+Float_t getRFtW_mm(Double_t BDT){
+  if      (BDT < 0.319187   ) return 1;
+  else if (BDT < 0.376776) return 2;
+  else if (BDT < 0.401125) return 3;
+  else if (BDT < 0.416555) return 4;
+  else if (BDT < 0.429101) return 5;
+  else if (BDT < 0.442477) return 6;
+  else if (BDT < 0.456615) return 7;
+  else if (BDT < 0.470678) return 8;
+  else if (BDT < 0.487545) return 9;
+  else                       return 10;
+}
+
+Float_t getRFtW_ee(Double_t BDT){
+  if      (BDT < 0.314804   ) return 1;
+  else if (BDT < 0.377784) return 2;
+  else if (BDT < 0.402943) return 3;
+  else if (BDT < 0.418359) return 4;
+  else if (BDT < 0.430428) return 5;
+  else if (BDT < 0.442510) return 6;
+  else if (BDT < 0.456942) return 7;
+  else if (BDT < 0.473622) return 8;
+  else if (BDT < 0.489182) return 9;
+  else                       return 10;
 }

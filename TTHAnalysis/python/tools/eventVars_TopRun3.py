@@ -302,8 +302,12 @@ class EventVars_TopRun2UL(Module):
                     metpt  = getattr(event, '{MET}_T1_pt'.format(MET = self.metBranchName)) ######### BE CAREFUL HERE, IT DEPENDS IF WE USE JECS IN DATA OR NOT
                     metphi = getattr(event, '{MET}_T1_phi'.format(MET = self.metBranchName))
                 else:
-                    metpt  = getattr(event, '{MET}_T1_pt{v}'.format(MET = self.metBranchName, v = sys if sys != "" else ""))
-                    metphi = getattr(event, '{MET}_T1_phi{v}'.format(MET = self.metBranchName, v = sys if sys != "" else ""))
+                    if "jerUp" in sys or "jerDown" in sys: ###### Type I corrected MET should not have JER variations propagated
+                        metpt  = getattr(event, '{MET}_T1_pt'.format(MET = self.metBranchName))
+                        metphi = getattr(event, '{MET}_T1_phi'.format(MET = self.metBranchName))
+                    else:
+                        metpt  = getattr(event, '{MET}_T1_pt{v}'.format(MET = self.metBranchName, v = sys if sys != "" else ""))
+                        metphi = getattr(event, '{MET}_T1_phi{v}'.format(MET = self.metBranchName, v = sys if sys != "" else ""))
 
                 met_4m.SetPtEtaPhiM(metpt, 0, metphi, 0)
 
@@ -332,6 +336,8 @@ class EventVars_TopRun2UL(Module):
                 if getattr(event, 'nJetSel20{v}_Recl'.format(v = sys if "unclustEn" not in sys else "")) > 0:
                     allret["JetLoose1_Pt" + sys] = loosejets_4m[0].Pt()
 
+                allret["METgood_pt"  + sys] = met_4m.Pt()
+                allret["METgood_phi" + sys] = met_4m.Phi()
 
                 if getattr(event, 'nJetSel30{v}_Recl'.format(v = sys if "unclustEn" not in sys else "")) > 0:
                     allret["Lep1Lep2Jet1MET_Pt"          + sys] = (leps_4m[0] + leps_4m[1] + jets_4m[0] + met_4m).Pt()

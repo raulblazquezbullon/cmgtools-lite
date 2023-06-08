@@ -185,7 +185,7 @@ class selectParticleAndPartonInfo(Module):
 
 
     #### Old, standard cleaning
-    def isClean(self, ev, j, dR = 0.04):
+    def isClean(self, ev, j, dR = 0.4):
         tmpleps = [l for l in Collection(ev, "GenDressedLepton")]
 
         for iL in self.listdresslep:
@@ -195,7 +195,7 @@ class selectParticleAndPartonInfo(Module):
 
 
     #### ttH-like cleaning
-    def vetoJets(self, ev, l, dR = 0.04):
+    def vetoJets(self, ev, l, dR = 0.4):
         tmpjets = [j for j in Collection(ev, "GenJet")]
         vetoed  = []
 

@@ -8,13 +8,14 @@ r.PyConfig.IgnoreCommandLineOptions = True
 r.gROOT.SetBatch(True)
 
 #### Settings
-friendspath  = "/beegfs/data/nanoAODv9/temp/postprocv10Run3/tw_run3/productions"
+friendspath  = "/beegfs/data/nanoAODv11/tw-run3/productions"
 
 logpath      = friendspath + "/{p}/{y}/logs/cards_inclusive"
 
-lumidict     = {2022 : 29.62,}
+lumidict     = {"2022"       : 7.78,
+                "2022PostEE" : 20.04}
 
-friendsscaff = "--FMCs {P}/0_jecs --Fs {P}/1_lepsuncsAndParticle --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --Fs {P}/5_mvas --Fs {P}/6_mvas_new"
+friendsscaff = "--FMCs {P}/0_jecs --Fs {P}/1_lepsuncsAndParticle --Fs {P}/2_cleaning --Fs {P}/3_varstrigger --FMCs {P}/4_scalefactors --Fs {P}/6_mvas_new_multiClass_withSameFlav" # --Fs {P}/5_mvas
 
 commandscaff = '''python3 makeShapeCards_TopRun2.py --tree NanoAOD {mcafile} {cutsfile} "{variable}" "{bins}" {samplespaths} {friends} --od {outpath} -l {lumi} {nth} -f -L tw-run3/functions_tw.cc --neg --threshold 0.01 -W "MuonIDSF * ElecIDSF * TrigSF" --year {year} {asimovornot} {uncs} {extra} --AP --storeAll'''
 
@@ -74,7 +75,7 @@ def CardsCommand(prod, year, var, bines, isAsimov, nthreads, outpath, region, no
     mcafile_   = "tw-run3/mca-tw.txt"
     cutsfile_  = "tw-run3/cuts-tw-{reg}.txt".format(reg = region)
 
-    samplespaths_ = "-P " + friendspath + "/" + prod + ("/" + year) * (year != "run2")
+    samplespaths_ = "-P " + friendspath + "/" + prod + ("/" + year) * (year != "run3")
     if useFibre: samplespaths_ = samplespaths_.replace("phedexrw", "phedex").replace("cienciasrw", "ciencias")
 
 #    nth_       = "" if nthreads == 0 else ("--split-factor=-1 -j " + str(nthreads))
@@ -87,11 +88,11 @@ def CardsCommand(prod, year, var, bines, isAsimov, nthreads, outpath, region, no
     comm = commandscaff.format(outpath      = outpath_,
                                friends      = friends_,
                                samplespaths = samplespaths_,
-                               lumi      = lumidict[int(year)] if year != "run2" else str(lumidict[2016]) + "," + str(lumidict[2017]) + "," + str(lumidict[2018]),
+                               lumi      = lumidict[year] if year != "run3" else str(lumidict["2022"]) + "," + str(lumidict["2022PostEE"]),
                                variable  = var,
                                bins      = bines,
                                nth       = nth_,
-                               year      = year if year != "run2" else "2016,2017,2018",
+                               year      = year if year != "run3" else "2022,2022PostEE",
                                asimovornot = "--asimov s+b" if isAsimov else "",
                                mcafile   = mcafile_,
                                cutsfile  = cutsfile_,
@@ -135,7 +136,7 @@ def ExecuteOrSubmitTask(tsk):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(usage = "python3 nanoAOD_checker.py [options]", description = "Checker tool for the outputs of nanoAOD production (NOT postprocessing)", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('--production','-P', metavar = "prod",       dest = "prod",     required = True)
-    parser.add_argument('--year',      '-y', metavar = 'year',       dest = "year",     required = False, default = "2016")
+    parser.add_argument('--year',      '-y', metavar = 'year',       dest = "year",     required = False, default = "2022")
     parser.add_argument('--queue',     '-q', metavar = 'queue',      dest = "queue",    required = False, default = "")
     parser.add_argument('--extraArgs', '-e', metavar = 'extra',      dest = "extra",    required = False, default = "")
     parser.add_argument('--nthreads',  '-j', metavar = 'nthreads',   dest = "nthreads", required = False, default = 0, type = int)
@@ -167,14 +168,30 @@ if __name__ == "__main__":
     #print CardsCommand(prod, year, variable, bines, asimov, nthreads, outpath, region, noUnc, useFibre, extra)
 
     theregs  = ["1j1t", "2j1t", "2j2t"]
-    thevars  = ["getBDtW(tmvaBDT_1j1b)", "getBDtWOther(tmvaBDT_2j1b)", "min(max(Jet2_Pt, 30.), 189.)"] #Actual
-    #thevars  = ["getRFtW(mvaRF_1j1b)", "getRFtWOther(mvaRF_2j1b)", "min(max(Jet2_Pt, 30.), 189.)"] #With RF
+    #thevars  = ["getBDtW(tmvaBDT_1j1b)", "getBDtWOther(tmvaBDT_2j1b)", "min(max(Jet2_Pt, 30.), 189.)"] #Actual
+    thevars  = ["getRFtW(mvaRF_1j1b)", "getRFtWOther(mvaRF_2j1b)", "min(max(Jet2_Pt, 30.), 189.)"] #With RF
     thebins  = ["[0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5,10.5]",
                 "[0.5,1.5,2.5,3.5,4.5,5.5,6.5]",
                 "[30.,40.,50.,60.,70.,80.,90.,100.,110.,120.,130.,140.,150.,160.,170.,180.,190.]"]              
-    theyears = ["2022"]
+    theyears = ["2022", "2022PostEE"]
     tasks    = []
     
+    ##### Attempt without MVAs
+    #thevars  = ["min(max(LepGood_pt_corrAll[0], 20.), 139.)", "min(max(LepGood_pt_corrAll[0], 20.), 139.)", "min(max(Jet2_Pt, 30.), 189.)"]
+    #thebins  = ["[20,30,40,50,60,70,80,90,100,110,120,130,140]",
+    #            "[20,30,40,50,60,70,80,90,100,110,120,130,140]",
+    #            "[30.,40.,50.,60.,70.,80.,90.,100.,110.,120.,130.,140.,150.,160.,170.,180.,190.]"]         
+
+    ##### Attempt with SF channels also
+    theregs  = ["1j1t", "2j1t", "2j2t", "1j1t-mm", "1j1t-ee"]
+    thevars  = ["getRFtW(mvaRF_1j1b)", "getRFtWOther(mvaRF_2j1b)", "min(max(Jet2_Pt, 30.), 189.)", "getRFtW_mm(mvaRF_1j1b_mm)", "getRFtW_ee(mvaRF_1j1b_ee)"] #With RF
+    thebins  = ["[0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5,10.5]",
+                "[0.5,1.5,2.5,3.5,4.5,5.5,6.5]",
+                "[30.,40.,50.,60.,70.,80.,90.,100.,110.,120.,130.,140.,150.,160.,170.,180.,190.]",
+                "[0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5,10.5]",
+                "[0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5,10.5]"]              
+    theyears = ["2022", "2022PostEE"]
+    tasks    = []
  
     if variable.lower() != "all":
         if "," in variable:
@@ -196,9 +213,9 @@ if __name__ == "__main__":
 
     for yr in theyears:
         for i in range(len(theregs)):
-            if "{year}" in thevars[i] and yr != "run2":
+            if "{year}" in thevars[i] and yr != "run3":
                 tasks.append( (prod, yr, thevars[i].format(year = yr), thebins[i], asimov, nthreads, outpath, theregs[i], noUnc, useFibre, extra, pretend, queue) )
-            elif "{year}" in thevars[i] and yr == "run2":
+            elif "{year}" in thevars[i] and yr == "run3":
                 tasks.append( (prod, yr, thevars[i].format(year = ""), thebins[i], asimov, nthreads, outpath, theregs[i], noUnc, useFibre, extra, pretend, queue) )
             else:
                 tasks.append( (prod, yr, thevars[i], thebins[i], asimov, nthreads, outpath, theregs[i], noUnc, useFibre, extra, pretend, queue) )

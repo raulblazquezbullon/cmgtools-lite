@@ -1,0 +1,3 @@
+data : EGamma_Run2022*         ;
+data : MuonEG_Run2022*         ;
+data : Muon_Run2022*           ;

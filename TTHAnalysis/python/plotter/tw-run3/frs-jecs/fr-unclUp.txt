@@ -12,6 +12,9 @@ change: \bSergioBDT_1j1b\b:              SergioBDT_1j1b_unclustEnUp
 change: \bSergioBDT_2j1b\b:              SergioBDT_2j1b_unclustEnUp
 change: \btmvaBDT_1j1b\b:                tmvaBDT_1j1b_unclustEnUp
 change: \btmvaBDT_2j1b\b:                tmvaBDT_2j1b_unclustEnUp
-
+change: \bmvaRF_1j1b\b:                  mvaRF_1j1b_unclustEnUp
+change: \bmvaRF_2j1b\b:                  mvaRF_2j1b_unclustEnUp
+change: \bmvaRF_1j1b_mm\b:               mvaRF_1j1b_mm_unclustEnUp
+change: \bmvaRF_1j1b_ee\b:               mvaRF_1j1b_ee_unclustEnUp
 
 weight: 1

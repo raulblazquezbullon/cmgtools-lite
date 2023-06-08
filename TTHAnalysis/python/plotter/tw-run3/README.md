@@ -12,9 +12,9 @@ List of important files:
 Commands:
  
  * To produce plots:
-    python tw-run3/plotterHelper.py -P 2022-10-25 -y 2022 -o ./temp_Run3_plots/2022_11_22 -r nojets -u -q batch -j 64
+    python tw-run3/plotterHelper.py -P 2023-04-10 -y 2022 -o ./temp_Run3_plots/2022_11_22 -r nojets -u -q batch -j 64
  * To produce cards:
-    python tw-run3/cardsHelper.py -P 2022-10-25 -y 2022 -o ./temp_Run3_cards/2022_11_22 -r all -v all -a -q batch -j 64 
+    python tw-run3/cardsHelper.py -P 2023-04-10 -y 2022PostEE -o ./temp_Run3_cards/2023-04-16_MultiClass -r all -v all -a -q batch -j 64 
  * To make the fit:
     python tw-run3/fitsHelper.py -y 2022 -i temp_Run3_cards/2022_11_22/ -r 1j1t,2j1t,2j2t
  * To make impacts:
@@ -38,3 +38,7 @@ The script to train is under `MVA-training` folder. To use your model in the ana
  * Train and save the model with the training script. The model should be saved in joblib format.
  * Convert the joblib model to ONNX (there is a dedicated script to do this). It is located in `MVA-training/onnxConverter/`. Follow instructions the readme instructions in that folder.
  * Use the ONNX model to create the friend trees.
+
+
+ # Samples tW
+ [link](https://docs.google.com/spreadsheets/d/1ajj4HEToMIxzCNrgyGBdPO0e-UniPjZSXWibZdBAO00/edit#gid=0)
