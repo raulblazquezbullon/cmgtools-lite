@@ -139,7 +139,7 @@ class lepMVAWZ_run3(Module):
                 # -- Training variables
                 self.inputVars["electrons"]["vars"]["LepGood_pt"].set(lep.pt)
                 self.inputVars["electrons"]["vars"]["LepGood_eta"].set(lep.eta)
-                self.inputVars["electrons"]["vars"]["LepGood_miniRelIsoNeutral"].set(lep.pfRelIso03_all - lep.miniPFRelIso_chg)
+                self.inputVars["electrons"]["vars"]["LepGood_miniRelIsoNeutral"].set(lep.miniPFRelIso_all - lep.miniPFRelIso_chg)
                 self.inputVars["electrons"]["vars"]["LepGood_miniRelIsoCharged"].set(lep.miniPFRelIso_chg)
                 self.inputVars["electrons"]["vars"]["LepGood_jetNDauChargedMVASel"].set(lep.jetNDauCharged)
                 self.inputVars["electrons"]["vars"]["LepGood_jetPtRelv2"].set(lep.jetPtRelv2)
@@ -178,7 +178,7 @@ class lepMVAWZ_run3(Module):
                 # -- Training variables
                 self.inputVars["muons"]["vars"]["LepGood_pt"].set(lep.pt)
                 self.inputVars["muons"]["vars"]["LepGood_eta"].set(lep.eta)
-                self.inputVars["muons"]["vars"]["LepGood_miniRelIsoNeutral"].set(lep.pfRelIso03_all - lep.miniPFRelIso_chg)
+                self.inputVars["muons"]["vars"]["LepGood_miniRelIsoNeutral"].set(lep.miniPFRelIso_all - lep.miniPFRelIso_chg)
                 self.inputVars["muons"]["vars"]["LepGood_miniRelIsoCharged"].set(lep.miniPFRelIso_chg)
                 self.inputVars["muons"]["vars"]["LepGood_jetNDauChargedMVASel"].set(lep.jetNDauCharged)
                 self.inputVars["muons"]["vars"]["LepGood_jetPtRelv2"].set(lep.jetPtRelv2)
