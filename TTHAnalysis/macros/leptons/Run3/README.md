@@ -8,9 +8,14 @@ To be included.
     * Postprocessed from MiniAOD to NanoAOD so we can use the variables need to retrain the MVA.
     * We use different generation matching criteria to define signal and background using the same sample. Detailed in the code.
  * **Command to train**
-    * root -l -b -q 'trainMuonID_nanoAODv11.cxx("training_nanoAOD_v11", "mu", "2022EE")'
+    * `./train_models.sh` this will train several at once
  * **Command to get MVA performance plots**
-     * root -l -b -q 'plot_tmva.C("training_folder", "training_filename",  "outplots")'
+     * `./plot_models.sh`
+ * **Command to get ROC Curves, fake rates and significance plots**
+     * `root -l -b -q 'my_tmva_reader.cxx("muon", "2022EE",  "true")'` --> run this first to produce ntuples
+     * `root -l -b -q 'my_tmva_reader.cxx("muon", "2022EE")'` --> this will produce plots
+     * `root -l -b -q 'my_tmva_reader.cxx("electron", "2022EE",  "true")'` --> run this first to produce ntuples
+     * `root -l -b -q 'my_tmva_reader.cxx("electron", "2022EE")'` --> this will produce plots
 
 ## Visualize results
 ```

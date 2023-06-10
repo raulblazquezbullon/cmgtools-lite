@@ -384,7 +384,7 @@ void my_tmva_reader_mu(std::vector<TString> files_names_strings, TString year){
         h_sig_tth_total          -> Fill(BDTG_tth);
         h_sig_ttw_total          -> Fill((-1)*(passttwpresel == 0) + (passttwpresel == 1)*BDTG_ttw);
         h_sigttw_vetoLeak_total  -> Fill((-1)*(passttwpresel == 0)  + (passttwpresel == 1)*BDTGttw_vetoLeak);
-        h_sig_UL_total           -> Fill((-1.)*(mvaNoIso_Fall17V2_WPL == 0) + mvaTTH*(mvaNoIso_Fall17V2_WPL == 1)); 
+        h_sig_UL_total           -> Fill(mvaTTH); 
       }
 
       // Fill total background histograms
@@ -392,7 +392,7 @@ void my_tmva_reader_mu(std::vector<TString> files_names_strings, TString year){
         h_bkg_tth_total          -> Fill(BDTG_tth);
         h_bkg_ttw_total          -> Fill((-1)*(passttwpresel == 0) + (passttwpresel == 1)*BDTG_ttw);
         h_bkgttw_vetoLeak_total  -> Fill((-1)*(passttwpresel  == 0) + (passttwpresel  == 1)*BDTGttw_vetoLeak);
-        h_bkg_UL_total           -> Fill((-1.)*(mvaNoIso_Fall17V2_WPL == 0) + mvaTTH*(mvaNoIso_Fall17V2_WPL == 1)); 
+        h_bkg_UL_total           -> Fill(mvaTTH); 
       }
 
       // Preselections: defined as the loosest join of both preselections
@@ -412,7 +412,7 @@ void my_tmva_reader_mu(std::vector<TString> files_names_strings, TString year){
         h_sig_tth          -> Fill(BDTG_tth);
         h_sig_ttw          -> Fill((-1)*(passttwpresel == 0)  + (passttwpresel == 1)*BDTG_ttw);
         h_sigttw_vetoLeak  -> Fill((-1)*(passttwpresel == 0)  + (passttwpresel == 1)*BDTGttw_vetoLeak);
-        h_sig_UL           -> Fill((-1.)*(mvaNoIso_Fall17V2_WPL == 0) + mvaTTH*(mvaNoIso_Fall17V2_WPL == 1)); 
+        h_sig_UL           -> Fill(mvaTTH); 
       }
 
       // Fill background histograms
@@ -420,7 +420,7 @@ void my_tmva_reader_mu(std::vector<TString> files_names_strings, TString year){
         h_bkg_tth          -> Fill(BDTG_tth);
         h_bkg_ttw          -> Fill((-1)*(passttwpresel == 0) + (passttwpresel == 1)*BDTG_ttw);
         h_bkgttw_vetoLeak  -> Fill((-1)*(passttwpresel  == 0) + (passttwpresel  == 1)*BDTGttw_vetoLeak);
-        h_bkg_UL           -> Fill((-1.)*(mvaNoIso_Fall17V2_WPL == 0) + mvaTTH*(mvaNoIso_Fall17V2_WPL == 1)); 
+        h_bkg_UL           -> Fill(mvaTTH); 
       }
     }
     
@@ -475,9 +475,6 @@ TGraph Fake_leptons_yields(TH1F* h_bkg, TH1F* h_tot_bkg, TString name){
   integral_bkg     = h_bkg     -> Integral();
   
   integral_tot_bkg = h_tot_bkg -> Integral();
-  
-  cout << h_tot_bkg -> Integral() << endl;
-  cout << h_bkg     -> Integral() << endl;
 
   // Number of fake leptons is:
   // N(recontructed non-prompt leptons) x FR(loose|reco) x FR(tight|loose) = 
@@ -496,8 +493,30 @@ TGraph Fake_leptons_yields(TH1F* h_bkg, TH1F* h_tot_bkg, TString name){
     yields.SetPoint(b, -1. + (b / 500.), eff_bkg);
   }
   yields.SetName(name);
-  cout << "In function: " << yields.Integral() << endl;
   return yields;
+}
+
+Double_t* GetRebining(TH1* h_signal, TH1* h_background, int nQuantiles) {
+    // Calculate the S/(S+B) values for each bin
+
+    int nBins = h_signal->GetNbinsX();
+    Double_t *sOverSB;
+    for (int i = 1; i <= nQuantiles; i++) {
+        sOverSB[i] = Double_t(i+1)/nQuantiles;
+    }
+
+    // Calculate the quantile boundaries
+    cout << "hola" << endl;
+    Double_t *quantileBoundaries;
+    h_background->GetQuantiles(nQuantiles, quantileBoundaries, sOverSB);
+    cout << "baba" << endl;
+
+    cout << h_signal->GetName() << endl;
+    for (int i = 0; i < nQuantiles; i++){
+      cout <<  i << " bin " << i << " val: " << quantileBoundaries[i] << endl;
+    }
+
+    return quantileBoundaries;
 }
 
 void do_plotting(TString file_name,
@@ -531,7 +550,6 @@ void do_plotting(TString file_name,
   // Get number of fake electrons distributions
   TGraph gr_UL_yields;
   gr_UL_yields = Fake_leptons_yields(h_bkg_UL, h_bkg_UL_total, "fake yields UL");
-  cout << "Outside function: " << gr_UL_yields.Integral() << endl;
 
   gr_UL_yields.SetLineColor(kBlack);
   gr_UL_yields.SetLineWidth(2);
@@ -551,10 +569,10 @@ void do_plotting(TString file_name,
   gr_ttwveto_yields.SetLineColor(kOrange);
   gr_ttwveto_yields.SetLineWidth(2);
 
-  cout << gr_UL_yields.Integral() << endl;
+  //cout << gr_UL_yields.Integral() << endl;
   // Get number of fake electrons with legacy configuration
   float UL_fake_leptons = gr_UL_yields.Eval(0.8);
-  cout << "Number of fake leptons with UL configuration (unweighted MC events) = " << UL_fake_leptons << endl;
+  //cout << "Number of fake leptons with UL configuration (unweighted MC events) = " << UL_fake_leptons << endl;
   TGraph gr_UL_yield;
   gr_UL_yield.SetPoint(1, 0.8, UL_fake_leptons);
   gr_UL_yield.SetMarkerStyle(20);
@@ -683,10 +701,10 @@ void do_plotting(TString file_name,
   gr_tth_wp.SetMarkerStyle(20);
   gr_tth_wp.SetMarkerColor(kAzure+7);
 
-  cout << "With legacy WP 0.8, we get a signal efficiency of " << UL_signal_eff << " and a fake rate of " << UL_fake_rate << endl;
-  cout << "ttH: The corresponding WP with ttH MVA is: " << tth_wp << ", giving a signal efficiency of " << tth_signal_eff << " and a fake rate of " << tth_fake_rate << endl; 
-  cout << "ttW: The corresponding WP with ttW MVA is: " << ttw_wp << ", giving a signal efficiency of " << ttw_signal_eff << " and a fake rate of " << ttw_fake_rate << endl; 
-  cout << "ttW (veto EE): The corresponding WP with ttH MVA is: " << ttwveto_wp << ", giving a signal efficiency of " << ttwveto_signal_eff << " and a fake rate of " << ttwveto_fake_rate << endl; 
+  //cout << "With legacy WP 0.8, we get a signal efficiency of " << UL_signal_eff << " and a fake rate of " << UL_fake_rate << endl;
+  //cout << "ttH: The corresponding WP with ttH MVA is: " << tth_wp << ", giving a signal efficiency of " << tth_signal_eff << " and a fake rate of " << tth_fake_rate << endl; 
+  //cout << "ttW: The corresponding WP with ttW MVA is: " << ttw_wp << ", giving a signal efficiency of " << ttw_signal_eff << " and a fake rate of " << ttw_fake_rate << endl; 
+  //cout << "ttW (veto EE): The corresponding WP with ttH MVA is: " << ttwveto_wp << ", giving a signal efficiency of " << ttwveto_signal_eff << " and a fake rate of " << ttwveto_fake_rate << endl; 
 
   // Now prepare ROC curves...
   TGraph ROC_ttW    = ROC_curve(h_sig_ttw,    h_bkg_ttw,    "ttW-like");
@@ -711,7 +729,6 @@ void do_plotting(TString file_name,
   TString ttW_leg = "WP = " + to_string_with_precision(ttw_wp, 3) + " - FR = " + to_string_with_precision(ttw_fake_rate) + " - Sig. Eff. = " + to_string_with_precision(ttw_signal_eff, 2); 
   TString ttWveto_leg = "WP = " + to_string_with_precision(ttwveto_wp, 3) + " - FR = " + to_string_with_precision(ttwveto_fake_rate) + " - Sig. Eff. = " + to_string_with_precision(ttwveto_signal_eff, 2); 
   TString ttH_leg = "WP = " + to_string_with_precision(tth_wp, 3) + " - FR = " + to_string_with_precision(tth_fake_rate) + " - Sig. Eff. = " + to_string_with_precision(tth_signal_eff, 2); 
-  cout << ttW_leg << endl;
   TLegend* leg1 = new TLegend(0.39, 0.15, 0.89, 0.45);
   leg1->SetLineColor(0);
   leg1->AddEntry(&ROC_legacy,   "mvaTTH",   "l");  
@@ -798,7 +815,7 @@ void do_plotting(TString file_name,
   pad2 -> SetLeftMargin(0.1);
   pad2 -> cd();
   Significance_ttH.Draw("AL");
-  Significance_ttH.SetTitle("Significance (S/sqrt(S+B) Curves for Electron MVA");
+  Significance_ttH.SetTitle("Significance (S/sqrt(S+B) Curves for " + object + " MVA");
   
   Significance_ttH.GetXaxis()->SetTitleOffset(1.5);
   Significance_ttH.GetXaxis()->SetRangeUser(-1., 1.);
@@ -818,7 +835,48 @@ void do_plotting(TString file_name,
   c2 -> Print(canvas_name + ".png");
   c2 -> Print(canvas_name + ".pdf");
   
+  // BDT discriminants
+  /*
+  // rebin histograms
+  h_sig_UL->Rebin(50);
+  h_sig_ttw->Rebin(50);
+  h_sig_tth->Rebin(50);
+  h_sigttw_vetoLeak->Rebin(50);
+  // bkg
+  h_bkg_UL->Rebin(50);
+  h_bkg_ttw->Rebin(50);
+  h_bkg_tth->Rebin(50);
+  h_bkgttw_vetoLeak->Rebin(50);
+  */
   
+  int nQuantiles = 10;
+  Double_t* bining_ul = GetRebining(h_sig_UL, h_bkg_UL, nQuantiles);
+  // ttH
+  Double_t* bining_tth = GetRebining(h_sig_tth, h_bkg_tth, nQuantiles);
+  // ttW
+  Double_t* bining_ttw = GetRebining(h_sig_ttw, h_bkg_ttw, nQuantiles);
+  // ttW veto
+  Double_t* bining_ttwVeto = GetRebining(h_sigttw_vetoLeak, h_bkgttw_vetoLeak, nQuantiles);
+  
+  for (int i = 0; i < nQuantiles; i++){
+    cout <<  i << " ul " << bining_ul[i] << endl;
+    cout <<  i << " ttH " << bining_tth[i] << endl;
+    cout <<  i << " ttw " << bining_ttw[i] << endl;
+    cout <<  i << " ttwVeto " << bining_ttwVeto[i] << endl;
+  }
+  
+  // Now rebin the histograms
+  /*
+  h_sig_UL->Rebin(nQuantiles, "h_signal_UL", bining_ul);
+  h_sig_tth->Rebin(nQuantiles, "h_signal_ttH", bining_tth);
+  h_sig_ttw->Rebin(nQuantiles, "h_signal_ttW", bining_ttw);
+  h_sigttw_vetoLeak->Rebin(nQuantiles, "h_signal_ttWveto", bining_ttwVeto);
+
+  h_bkg_UL->Rebin(nQuantiles, "h_bkg_UL", bining_ul);
+  h_bkg_tth->Rebin(nQuantiles, "h_bkg_ttH", bining_tth);
+  h_bkg_ttw->Rebin(nQuantiles, "h_bkg_ttW", bining_ttw);
+  h_bkgttw_vetoLeak->Rebin(nQuantiles, "h_bkg_ttWveto", bining_ttwVeto);
+  */
   // BDT discriminants
   TCanvas* c0 = new TCanvas("c0", "c0", 600, 600);
   TLegend* leg0 = new TLegend(0.25, 0.6, 0.75, 0.75);
@@ -861,6 +919,7 @@ void do_plotting(TString file_name,
   h_bkg_tth->Scale(1/h_bkg_tth->Integral());
   h_bkgttw_vetoLeak->Scale(1/h_bkgttw_vetoLeak->Integral());
   
+  /*
   // rebin histograms
   h_sig_UL->Rebin(50);
   h_sig_ttw->Rebin(50);
@@ -871,7 +930,7 @@ void do_plotting(TString file_name,
   h_bkg_ttw->Rebin(50);
   h_bkg_tth->Rebin(50);
   h_bkgttw_vetoLeak->Rebin(50);
-
+  */
   // Cosmetics
   h_sig_UL->SetLineColor(kBlack);
   h_sig_ttw->SetLineColor(kRed);
@@ -1227,8 +1286,5 @@ void my_tmva_reader(TString object = "mu", TString year = "2022", bool redo_roof
 
     do_plotting(rootfile_name, year, object);
   }
-  
-  
-  
   
 }
