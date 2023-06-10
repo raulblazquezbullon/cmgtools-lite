@@ -11,6 +11,7 @@ from utils.postprocessor_producer import postprocessor_producer
 from utils.ftree_producer import ftree_producer
 from utils.plot_producer import plot_producer
 from utils.card_producer import card_producer
+from cfgs.samplepaths import samplepaths as paths
 
 
 # -- Dictionary with instances to each producer -- #
@@ -28,10 +29,8 @@ def add_parsing_opts():
                                  description = "Main options for running WZ analysis") 
 
   # -- Input and outputs
-  parser.add_option("--inpath", dest = "inpath", default = "/beegfs/data/nanoAODv11/wz-run3/trees/",
+  parser.add_option("--inpath", dest = "inpath", default = paths["processed"],
               help = "This is the input folder from where to read the samples.")   
-  parser.add_option("--outname", dest = "outname", type="string", default = "/beegfs/data/nanoAODv11/wz-run3/trees/",
-              help = "Output (folder) name")
   parser.add_option("--unc", dest = "uncfile", type="string", default = "wz-run3/common/systs_wz.txt",
               help = "File with systematic variations")
   # -- Batch control
@@ -46,7 +45,7 @@ def add_parsing_opts():
   parser.add_option("--queue", dest = "queue", default = "batch", 
               help = ''' Queue for job submission ''')
   # -- Other stuff
-  parser.add_option("--year", dest = "year", default = "2022", 
+  parser.add_option("--year", dest = "year", default = "2022EE", 
               help = "Production year")
   parser.add_option("--extra", dest = "extra", type="string", default = "", 
               help = "Any extra command one wants to parse to the main CMGTools scripts")

@@ -1,12 +1,17 @@
 from .producer import producer
-
+from cfgs.samplepaths import samplepaths as paths
 class postprocessor_producer(producer):
   name = "postprocesor_producer"
   basecommand = "nanopy_batch.py"
   wz_cfg = "run_WZpostproc_fromNanoAOD_cfg.py"
   module = "wz_seq1" 
 
-
+  def add_more_options(self, parser):
+    self.parser = parser
+    parser.add_option("--outname", dest = "outname", type="string", default = paths["processed"],
+                      help = "Output (folder) name")
+    return
+  
   def submit_InCluster(self):
     return self.command 
 
