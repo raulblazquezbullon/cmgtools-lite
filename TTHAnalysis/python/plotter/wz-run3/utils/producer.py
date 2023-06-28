@@ -2,6 +2,7 @@
 # -- Import libraries -- #
 import argparse
 import os,sys
+from cfgs.samplepaths import samplepaths as paths
 
 class producer(object):
     # -- Friend tree modules 
@@ -11,56 +12,60 @@ class producer(object):
                  "mc"   : "jmeCorrections_mc", 
                  "addmethod" : "simple", 
                  "outname" : "jmeCorrections"},
-
-            2 : {"data" : "leptonJetRecleaning",
+            2 : {"data" : "temp_lepmva_ee_data",
+                 "mc"   : "temp_lepmva_ee",
+                 "addmethod" : "simple",
+                 "outname" : "lepmva" },
+            3 : {"data" : "leptonJetRecleaning",
                  "mc"   : "leptonJetRecleaning",
                  "addmethod" : "simple",
                  "outname" : "leptonJetRecleaning" },
-
-            3 : {"data" : "leptonBuilder",
+            4 : {"data" : "leptonBuilder",
                  "mc"   : "leptonBuilder",
                  "addmethod" : "simple",
                  "outname" : "leptonBuilder"},
 
-            4 : {"data" : "triggerSequence",
+            5 : {"data" : "triggerSequence",
                  "mc"   : "triggerSequence",
                  "addmethod" : "simple",
                  "outname" : "triggerSequence"},
-
-            5 : {"data" : None,
-                 "mc"   : "scalefactors",
-                 "addmethod" : "simple",
-                 "outname" : "scalefactors"}
+           # 5 : {"data" : None,
+           #      "mc"   : "scalefactors",
+           #      "addmethod" : "simple",
+           #      "outname" : "scalefactors"}
+            
         },
         "2022EE": {
             1 : {"data" : "jmeCorrections_data_EE", 
                  "mc"   : "jmeCorrections_mc_EE", 
                  "addmethod" : "simple", 
                  "outname" : "jmeCorrections"},
-
-            2 : {"data" : "leptonJetRecleaning",
+            2 : {"data" : "temp_lepmva_ee_data",
+                 "mc"   : "temp_lepmva_ee",
+                 "addmethod" : "simple",
+                 "outname" : "lepmva" },
+            3 : {"data" : "leptonJetRecleaning",
                  "mc"   : "leptonJetRecleaning",
                  "addmethod" : "simple",
                  "outname" : "leptonJetRecleaning" },
-
-            3 : {"data" : "leptonBuilder",
+            4 : {"data" : "leptonBuilder",
                  "mc"   : "leptonBuilder",
                  "addmethod" : "simple",
                  "outname" : "leptonBuilder"},
-
-            4 : {"data" : "triggerSequence",
+            5 : {"data" : "triggerSequence",
                  "mc"   : "triggerSequence",
                  "addmethod" : "simple",
                  "outname" : "triggerSequence"},
-
-            5 : {"data" : None,
-                 "mc"   : "scalefactors",
-                 "addmethod" : "mc",
-                 "outname" : "scalefactors"}
+            
+          #  6 : {"data" : None,
+          #       "mc"   : "scalefactors",
+          #       "addmethod" : "mc",
+          #       "outname" : "scalefactors"}
+          #  
         }
     }
 
-    weights = ["muonSF*electronSF"]
+    weights = []#["muonSF*electronSF"]
     functions = ["wz-run3/functionsWZ.cc"]
 
     name = "producer"
@@ -127,28 +132,6 @@ class producer(object):
     def run(self):
         ''' To be implemented in different classes ''' 
         pass
-
-    def add_friends(self, maxstep = -1):
-        """ Method to add friends to command """
-        friends = []
-
-        # Iterate over modules available in this year
-        for step, module in self.modules[self.year].items():
-            # Only add friends to a certain point if step is given
-            if step != -1 and step >= maxstep:
-                continue
-            modulename = module[self.doData]
-            addmethod = module["addmethod"]
-            if addmethod == "mc": 
-                friends.append( " --FMCs {P}/%s "%(modulename))
-            if addmethod == "mc": 
-                friends.append( " --FDs {P}/%s "%(modulename))
-            if addmethod == "simple": 
-                friends.append( " --Fs {P}/%s "%(modulename))
-        
-        return " ".join(friends)
-
-
 
     def get_cut(self, region):
         ''' Minimal cuts to define different regions of the analysis '''

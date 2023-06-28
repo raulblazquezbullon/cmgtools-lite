@@ -9,7 +9,7 @@ import ROOT
 from PhysicsTools.NanoAODTools.postprocessing.modules.common.collectionMerger import collectionMerger
 from CMGTools.TTHAnalysis.tools.nanoAOD.skimNRecoLeps import SkimRecoLeps
 from CMGTools.TTHAnalysis.tools.nanoAOD.DatasetTagger import datasetTagger
-
+from CMGTools.TTHAnalysis.tools.nanoAOD.lepMVAWZ_run3 import lepMVAWZ_run3
 # --- Lepton minimum cuts 
 # Muons 
 min_mu_pt = 5
@@ -43,7 +43,7 @@ elecSelection = lambda l : (
 # + Electrons: postEE+ leak
 elecSelection_EE = lambda l : (
     elecSelection(l)
-    and (l.eta > etaLeak and int(l.seediEtaOriX) < 45 and l.seediPhiOriY > 72)
+    and not(l.eta > etaLeak and int(l.seediEtaOriX) < 45 and l.seediPhiOriY > 72)
 )
 
 lepMerge = collectionMerger(
@@ -60,23 +60,41 @@ lepMerge_EE = collectionMerger(
 
 # --- Skimming and label tagger --- #
 lepSkim = SkimRecoLeps() # Skim configuration: at least 2 leptons
-tagger = lambda : datasetTagger()
+tagger  = lambda : datasetTagger()
 
-lepCollector    = [lepMerge, lepSkim, tagger]
-lepCollector_EE = [lepMerge_EE, lepSkim, tagger]
+# --- Finally lepton MVA identification --- #
+weightspath = os.path.join(os.environ["CMSSW_BASE"], "src/CMGTools/TTHAnalysis/data/WZRun3/mvaTTH/")
+
+lepmva         = lambda : lepMVAWZ_run3(weightspath, modelname = "BDTGttw", isMC = True)
+lepmva_data    = lambda : lepMVAWZ_run3(weightspath, modelname = "BDTGttw", isMC = False)
+
+lepmva_EE      = lambda : lepMVAWZ_run3(weightspath, modelname = "BDTGttw_vetoLeak", isMC = True)
+lepmva_EE_data = lambda : lepMVAWZ_run3(weightspath, modelname = "BDTGttw_vetoLeak", isMC = False)
+
+temp_lepmva = [lepmva]
+temp_lepmva_ee = [lepmva_EE]
+temp_lepmva_data = [lepmva_data]
+temp_lepmva_ee_data = [lepmva_EE_data]
+
+lepCollector         = [lepMerge, lepSkim, lepmva, tagger]
+lepCollector_data    = [lepMerge, lepSkim, lepmva_data, tagger]
+
+lepCollector_EE      = [lepMerge_EE, lepSkim, lepmva_EE,  tagger]
+lepCollector_EE_data = [lepMerge_EE, lepSkim, lepmva_EE_data,  tagger]
 
 # --------------------------------------------------------------------------------------------------------------------------- #
 # ---------------------------------------------------- JET CORRECTIONS ------------------------------------------------------ # 
 # --------------------------------------------------------------------------------------------------------------------------- #
 from CMGTools.TTHAnalysis.tools.nanoAOD.calculateJECS import JetEnergyCorrector
 from CMGTools.TTHAnalysis.tools.nanoAOD.jetMetGrouper_wzRun3 import jetMetCorrelate2022, groups
+from PhysicsTools.NanoAODTools.postprocessing.modules.jme.jetmetHelperRun2 import createJMECorrector
 
 addJECs_2022_mc = lambda : JetEnergyCorrector(
     year = 2022, era = "CD", jec = "Winter22Run3", isMC = True,
     algo = "AK4PFPuppi", metbranchname = "PuppiMET", rhoBranchName = "Rho_fixedGridRhoFastjetAll",
     hjetvetomap = "jetvetomap",
     unc = "Total", saveMETUncs = ["T1", "T1Smear"], 
-    splitJers = False, applyVetoMaps = True
+    splitJers = False, applyVetoMaps = True 
 )
 
 # + In reality this only runs the jet vetos
@@ -93,7 +111,7 @@ addJECs_2022EE_mc = lambda : JetEnergyCorrector(
     algo = "AK4PFPuppi", metbranchname = "PuppiMET", rhoBranchName = "Rho_fixedGridRhoFastjetAll",
     hjetvetomap = "jetvetomap",
     unc = "Total", saveMETUncs = ["T1", "T1Smear"], 
-    splitJers = False, applyVetoMaps = True
+    splitJers = False, applyVetoMaps = True 
 )
 
 # + In reality this only runs the jet vetos
@@ -102,7 +120,7 @@ addJECs_2022EE_data = lambda : JetEnergyCorrector(
     algo = "AK4PFPuppi", metbranchname = "PuppiMET", rhoBranchName = "Rho_fixedGridRhoFastjetAll",
     hjetvetomap = "jetvetomap",
     unc = "Total", saveMETUncs = ["T1", "T1Smear"],
-    splitJers = False, applyVetoMaps = True
+    splitJers = False, applyVetoMaps = True 
 )
 
 
@@ -113,7 +131,6 @@ jmeCorrections_data = [addJECs_2022_data]
 # --- 2022EE: Add JECs (+ correlate in case of MC) --- #
 jmeCorrections_mc_EE   = [addJECs_2022EE_mc, jetMetCorrelate2022]
 jmeCorrections_data_EE = [addJECs_2022EE_data]
-
 
 # --------------------------------------------------------------------------------------------------------------------------- #
 # ---------------------------------------------------- LEPTON RECLEANER ----------------------------------------------------- # 
@@ -138,32 +155,52 @@ from CMGTools.TTHAnalysis.tools.nanoAOD.functions_wz import _tight_lepton
 
 from CMGTools.TTHAnalysis.tools.nanoAOD.functions_wz import conept
 
-leptongroups = ["elScaleUp", "muScaleUp", "elScaleDown", "muScaleDown"]
-jecgroups = [ "jes%s%s"%(jecgroup, sign) for jecgroup in groups for sign in ["Up", "Down"] ]
+# --- b tagging working points from 2018
+looseDeepFlavB = 0.0494
+mediumDeepFlavB = 0.2770
+
+# --- Lepton selectors
+selector = "mva"
+#selector = "cutbased"
+looselep = lambda lep          : _loose_lepton(lep, looseDeepFlavB, mediumDeepFlavB)
+cleanlep = lambda lep, jetlist :    _fO_lepton(lep, looseDeepFlavB, mediumDeepFlavB, jetlist, selector)
+folep    = lambda lep, jetlist :    _fO_lepton(lep, looseDeepFlavB, mediumDeepFlavB, jetlist, selector)
+tightlep = lambda lep, jetlist : _tight_lepton(lep, looseDeepFlavB, mediumDeepFlavB, jetlist, selector)
+
+
+# --- Groups of systematics
+leptongroups = []#["elScaleUp", "muScaleUp", "elScaleDown", "muScaleDown"]
+jecgroups = [ "jes%s%s"%(jecgroup, sign) for jecgroup in groups for sign in ["Up", "Down"] ] 
 
 recleaner_2022 = lambda : LeptonJetRecleanerWZSM(
     "Mini",
-    lambda lep : _loose_lepton(lep, 0.0494, 0.2770),                 #Loose selection 
-    lambda lep,jetlist: _fO_lepton(lep, 0.0494, 0.2770, jetlist),    #Clean on FO
-    lambda lep,jetlist: _fO_lepton(lep, 0.0494, 0.2770, jetlist),    #FO selection
-    lambda lep,jetlist: _tight_lepton(lep, 0.0494, 0.2770, jetlist), #Tight selection
-    cleanJet    = lambda lep,jet,dr : dr<0.4,
-    selectJet = lambda jet: abs(jet.eta)<4.7 and (jet.jetId & 2), 
-    cleanTau    = lambda lep,tau,dr: True, 
-    looseTau    = lambda tau: True, # Used in cleaning
-    tightTau    = lambda tau: True, # On top of loose
-    cleanJetsWithTaus = False,
-    cleanTausWithLoose = False,
-    systsJEC            = jecgroups,
-    systsLepScale = leptongroups,
-    doVetoZ = False,
-    doVetoLMf = False,
-    doVetoLMt = True,
+    # Lepton selectors
+    looseLeptonSel    = looselep,                   # Loose selection 
+    cleaningLeptonSel = cleanlep, # Clean on FO
+    FOLeptonSel       = folep,    # FO selection
+    tightLeptonSel    = tightlep, # Tight selection
+    coneptdef = lambda lep: conept(lep),
+    # Lepton jet cleaner functions
     jetPt = 30,
     bJetPt = 25,
-    coneptdef = lambda lep: conept(lep),
-    year = 2022,
-    bAlgo = "DeepFlavB"
+    cleanJet  = lambda lep, jet, dr : dr < 0.4,
+    selectJet = lambda jet: abs(jet.eta) < 4.7 and (jet.jetId & 2), 
+    # For taus (used in EWKino)
+    cleanTau  = lambda lep, tau, dr: True, 
+    looseTau  = lambda tau: True, # Used in cleaning
+    tightTau  = lambda tau: True, # On top of loose
+    cleanJetsWithTaus = False,
+    cleanTausWithLoose = False,
+    # For systematics
+    systsJEC = jecgroups,
+    systsLepScale = leptongroups,
+    # These are used for EWKino as well
+    doVetoZ   = False,
+    doVetoLMf = False,
+    doVetoLMt = True,
+    # ------------------------------------- #
+    year  = 2022,
+    bAlgo = "DeepJet"
 )
 
 leptonJetRecleaning = [recleaner_2022]
@@ -171,10 +208,10 @@ leptonJetRecleaning = [recleaner_2022]
 # ---------------------------------------------------- LEPTON BUILDER    ------------------------------------------------------- # 
 # ---------------------------------------------------------------------------------------------------------------------------- #
 from CMGTools.TTHAnalysis.tools.nanoAOD.leptonBuilderWZSM import leptonBuilderWZSM
-leptonBuilderWZSM_2022 =    lambda : leptonBuilderWZSM(
+leptonBuilderWZSM_2022 = lambda : leptonBuilderWZSM(
     "Mini", 
     metbranch="PuppiMET",
-    systsJEC            = jecgroups,
+    systsJEC  = jecgroups,
     lepScaleSysts = leptongroups 
 )
 leptonBuilder = [leptonBuilderWZSM_2022]
@@ -211,17 +248,17 @@ triggerGroups = dict(
 )
 
 # Prompt triggers
-Trigger_sm     = lambda : EvtTagger('Trigger_sm',     [lambda ev : triggerGroups['triggers_sm'][2022](ev)])
-Trigger_se     = lambda : EvtTagger('Trigger_se',     [lambda ev : triggerGroups['triggers_se'][2022](ev)])
-Trigger_mm     = lambda : EvtTagger('Trigger_mm',     [lambda ev : triggerGroups['triggers_mm'][2022](ev)])
-Trigger_ee     = lambda : EvtTagger('Trigger_ee',     [lambda ev : triggerGroups['triggers_ee'][2022](ev)])
-Trigger_em     = lambda : EvtTagger('Trigger_em',     [lambda ev : triggerGroups['triggers_em'][2022](ev)])
-Trigger_eee    = lambda : EvtTagger('Trigger_eee',    [lambda ev : triggerGroups['triggers_eee'][2022](ev)])
-Trigger_mee    = lambda : EvtTagger('Trigger_mee',    [lambda ev : triggerGroups['triggers_mee'][2022](ev)])
-Trigger_mme    = lambda : EvtTagger('Trigger_mme',    [lambda ev : triggerGroups['triggers_mme'][2022](ev)])
-Trigger_mmm    = lambda : EvtTagger('Trigger_mmm',    [lambda ev : triggerGroups['triggers_mmm'][2022](ev)])
+Trigger_sm     = lambda : EvtTagger('Trigger_sm',   [lambda ev : triggerGroups['triggers_sm'][2022](ev)])
+Trigger_se     = lambda : EvtTagger('Trigger_se',   [lambda ev : triggerGroups['triggers_se'][2022](ev)])
+Trigger_mm     = lambda : EvtTagger('Trigger_mm',   [lambda ev : triggerGroups['triggers_mm'][2022](ev)])
+Trigger_ee     = lambda : EvtTagger('Trigger_ee',   [lambda ev : triggerGroups['triggers_ee'][2022](ev)])
+Trigger_em     = lambda : EvtTagger('Trigger_em',   [lambda ev : triggerGroups['triggers_em'][2022](ev)])
+Trigger_eee    = lambda : EvtTagger('Trigger_eee',  [lambda ev : triggerGroups['triggers_eee'][2022](ev)])
+Trigger_mee    = lambda : EvtTagger('Trigger_mee',  [lambda ev : triggerGroups['triggers_mee'][2022](ev)])
+Trigger_mme    = lambda : EvtTagger('Trigger_mme',  [lambda ev : triggerGroups['triggers_mme'][2022](ev)])
+Trigger_mmm    = lambda : EvtTagger('Trigger_mmm',  [lambda ev : triggerGroups['triggers_mmm'][2022](ev)])
 Trigger_2lss   = lambda : EvtTagger('Trigger_2lss', [lambda ev : triggerGroups['triggers_2lss'][2022](ev)])
-Trigger_3l     = lambda : EvtTagger('Trigger_3l',     [lambda ev : triggerGroups['triggers_3l'][2022](ev)])
+Trigger_3l     = lambda : EvtTagger('Trigger_3l',   [lambda ev : triggerGroups['triggers_3l'][2022](ev)])
 
 # JetMET triggers
 Trigger_met        = lambda : EvtTagger('Trigger_met',     [lambda ev : triggerGroups['triggers_met'][2022](ev)])
@@ -231,7 +268,6 @@ triggerSequence = [Trigger_sm, Trigger_se, Trigger_mm, Trigger_ee, Trigger_em, T
 # ------------------------------------------------------------------------------------------------------------------------------ #
 # ---------------------------------------------------- SCALE FACTORS ----------------------------------------------------------- # 
 # ------------------------------------------------------------------------------------------------------------------------------ #
-
 
 # Lepton Scale factors
 from CMGTools.TTHAnalysis.tools.nanoAOD.lepScaleFactors_wzRun3 import lepScaleFactors_wzrun3

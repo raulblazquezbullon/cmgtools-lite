@@ -1,5 +1,5 @@
 """ Run 3 dataset names for nanoAODv10 production (MC) """
-datasets = {"mc" : {
+datasets = {
   # ----------------- Single boson
   "WJets"     : [("WJets_inc", ".*WJetsToLNu.*", 63199.9)],
   # ----------------- Drell Yan (NLO)
@@ -18,5 +18,5 @@ datasets = {"mc" : {
   "WZ"        : [("WZ", ".*WZ.*", 54.2776)],
   #"ZZ"        : [("ZZ", ".*ZZ.*", 16.7)],
   "WW"        : [("WW", ".*WW.*", 116.8)]
-  }
 }
+

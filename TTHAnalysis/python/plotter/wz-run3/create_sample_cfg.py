@@ -58,7 +58,7 @@ def match_samples(path, type_):
     folder = root.replace(path, "")
     folders.append(folder)
   samples = []
-  for sampname, entries in datasets[type_].items():
+  for sampname, entries in datasets.items():
     samp = sample_group()
 
     samp.name     = sampname
@@ -100,8 +100,7 @@ if __name__ == "__main__":
   type_ = "data" if opts.isData else "mc"
   year = opts.year
 
-  inpath = paths["v%d"%version][type_]
-
+  inpath = paths["nanoaod"][type_]
 
   if year == "2022" and type_ == "data": 
     from cfgs.Run3datasets_data_v11_preEE import datasets  

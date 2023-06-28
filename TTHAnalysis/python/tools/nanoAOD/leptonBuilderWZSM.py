@@ -95,13 +95,13 @@ class leptonBuilderWZSM(Module):
       branches.append(("nLepSel" + var  , "I"))
       for vvar in ["pt", "eta", "phi", "mass", "conePt","genpt", "geneta", "genphi", "genmass","unc"]:
         if self.isData and ("gen" in vvar or "mc" in vvar or "Match" in vvar): continue
-        branches.append(("LepSel_" + vvar+ var, "F", 4))
+        branches.append(("LepSel_" + vvar+ var, "F", 4, "nLepSel"))
         branches.append(("LepZ1_"  + vvar+ var, "F"))
         branches.append(("LepZ2_"  + vvar+ var, "F"))
         branches.append(("LepW_"   + vvar+ var, "F"))
       for vvar in ["pdgId", "isTight"]:
         if self.isData and ("gen" in vvar or "mc" in vvar or "Match" in vvar): continue
-        branches.append(("LepSel_" + vvar+ var, "I", 4))
+        branches.append(("LepSel_" + vvar+ var, "I", 4, "nLepSel"))
         branches.append(("LepZ1_"  + vvar+ var, "I"))
         branches.append(("LepZ2_"  + vvar+ var, "I"))
         branches.append(("LepW_"   + vvar+ var, "I"))
@@ -456,13 +456,13 @@ class leptonBuilderWZSM(Module):
     correctedLeps = self.correctTheLeptons(event, self.leps)
 
     # -- Collect Fakeable Objects (FO) -- # 
-    nLepsFO     = event.__getitem__("nLepFO" + self.inputlabel)
-    chosenFO    = event.__getitem__("iF" + self.inputlabel) 
+    nLepsFO     = getattr(event, "nLepFO" + self.inputlabel)
+    chosenFO    = getattr(event, "iF" + self.inputlabel) 
     self.lepsFO = [self.leps[chosenFO[il]] for il in range(nLepsFO)]
  
     # -- Collect Tight leptons -- #
-    nLepsTight  = event.__getitem__("nLepTight" + self.inputlabel)
-    chosenTight = event.__getitem__("iT" + self.inputlabel) 
+    nLepsTight  = getattr(event, "nLepTight" + self.inputlabel)
+    chosenTight = getattr(event, "iT" + self.inputlabel) 
     self.lepsT  = [self.leps[chosenTight[il]] for il in range(nLepsTight)]
 
     for i in range(len(self.lepsT)):  self.lepsT[i].idx = i

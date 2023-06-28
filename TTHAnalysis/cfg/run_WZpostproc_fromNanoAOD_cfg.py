@@ -53,7 +53,8 @@ doData = (selectComponents == "DATA")
 # -- From ~10 fb-1 (preEE)
 if year == "2022":
   from CMGTools.RootTools.samples.samples_13p6TeV_mc2022_nanoAODv11_fromLocal   import mcSamples_toImport   as mcSamples_
-  from CMGTools.RootTools.samples.samples_13p6TeV_data2022_nanoAODv11_fromLocal import dataSamples_toImport as allData
+  allData = []
+#  from CMGTools.RootTools.samples.samples_13p6TeV_data2022_nanoAODv11_fromLocal import dataSamples_toImport as allData
 
 # -- From 20.06 fb-1 (March 2023 -- FG -- postEE)
 elif year == "2022EE":
@@ -149,7 +150,6 @@ else:
       # ----------------- Single boson
       #"WJetsToLNu_LO_ext",
       "WJets_inc",
-#      "DYJetsToLL_M_50", 
       "DYJetsToLL_M-50",
       "DYJetsToLL_M10to50",
       # ----------------- ttbar + single top + tW
@@ -263,15 +263,21 @@ if justSummary:
     sys.exit(0)
 
 
-from CMGTools.TTHAnalysis.tools.nanoAOD.wzsm_modules import lepCollector,lepCollector_EE
+from CMGTools.TTHAnalysis.tools.nanoAOD.wzsm_modules import lepCollector,lepCollector_EE,lepCollector_data, lepCollector_EE_data
 from PhysicsTools.NanoAODTools.postprocessing.framework.postprocessor import PostProcessor
 
 # in the cut string, keep only the main cuts to have it simpler
 modules = []
 if yearstr == "2022":
-  modules = lepCollector 
+  if doData:
+    modules = lepCollector_data 
+  else:
+    modules = lepCollector
 elif yearstr == "2022EE":
-  modules = lepCollector_EE
+  if doData:
+    modules = lepCollector_EE_data 
+  else:
+    modules = lepCollector_EE
 
 if (doData):
   from CMGTools.TTHAnalysis.tools.nanoAOD.remove_overlap import OverlapRemover
@@ -279,7 +285,6 @@ if (doData):
 
 cut = None 
 compression = "ZLIB:3" #"LZ4:4" #"LZMA:9"
-
 branchsel_out = os.environ['CMSSW_BASE']+"/src/CMGTools/TTHAnalysis/python/tools/nanoAOD/OutputSlim_wz.txt"
 branchsel_in  = os.environ['CMSSW_BASE']+"/src/CMGTools/TTHAnalysis/python/tools/nanoAOD/InputSlim_wz.txt"
 

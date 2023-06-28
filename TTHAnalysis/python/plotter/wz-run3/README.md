@@ -42,6 +42,12 @@ cd $CMSSW_BASE/src/CMGTools/cfg
 python3 ../python/plotter/wz-run3/wz-run.py postproc --isData
 ```
 
+**Merge chunks**
+```
+cd $CMSSW_BASE/src/CMGTools/TTHAnalysis/python/plotter/wz-run3/scripts/
+python3 doChunkStuff.py --mode postproc --inpath $PATH_TO_POSTPROC_OUTPUT 
+```
+This will submit a job to merge the output of the postprocessing in single root files. Samples will be splitted if need so that the maximum size of the merged file is not larger than 15 Gb.
 ## Friend trees
 **In general**:
 ```
@@ -57,5 +63,11 @@ Now just change step for:
   * **4**: for definition of the trigger strategy.
   * **5**: for scalefactors
 
-By default this will run for MC, in order to run over data just add `--isData` to the command above.
+By default this will run for MC of 2022, in order to run over data just add `--isData` to the command above, and in order to run over 2022EE data or MC use `--year 2022EE`. To merge output friends do:
+
+```
+cd $CMSSW_BASE/src/CMGTools/TTHAnalysis/python/plotter/wz-run3/scripts/
+python3 doChunkStuff.py --mode friend --inpath $PATH_TO_FRIEND_CHUNKS
+```
+
 

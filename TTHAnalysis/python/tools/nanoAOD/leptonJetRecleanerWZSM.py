@@ -316,6 +316,8 @@ class LeptonJetRecleanerWZSM(Module):
     # 0. mark each jet as clean
     for j in jetcollcleaned+jetcolldiscarded: 
       j._clean = True
+      if getattr(j,  "idx_veto") != -1:
+        j._clean = False # Already discard the jet if it's in the veto region of the HCAL
 
     # 1. associate to each lepton passing the cleaning selection its nearest jet 
     for lep in lepcoll:
@@ -396,7 +398,7 @@ class LeptonJetRecleanerWZSM(Module):
             if self.year == 2022 and self.bAlgo == "DeepCSV":
                 ret["nJet"+self.strBJetPt+postfix] += 1
                 ret["htJet"+self.strBJetPt+"j"+postfix] += j.pt 
-                if j.btagDeepB>0.2217: ret["nBJetLoose"+self.strBJetPt+postfix]  += 1
+                if j.btagDeepB>0.0490: ret["nBJetLoose"+self.strBJetPt+postfix]  += 1
                 if j.btagDeepB>0.6321: ret["nBJetMedium"+self.strBJetPt+postfix] += 1
                 if j.btagDeepB>0.8953: ret["nBJetTight"+self.strBJetPt+postfix]  += 1
                 mhtBJetPtvec = mhtBJetPtvec - j.p4()
@@ -404,8 +406,8 @@ class LeptonJetRecleanerWZSM(Module):
                 ret["nJet"+self.strBJetPt+postfix] += 1
                 ret["htJet"+self.strBJetPt+"j"+postfix] += j.pt 
                 if j.btagDeepFlavB>0.0614: ret["nBJetLoose"+self.strBJetPt+postfix]  += 1
-                if j.btagDeepFlavB>0.3093: ret["nBJetMedium"+self.strBJetPt+postfix] += 1
-                if j.btagDeepFlavB>0.7221: ret["nBJetTight"+self.strBJetPt+postfix]  += 1
+                if j.btagDeepFlavB>0.2783: ret["nBJetMedium"+self.strBJetPt+postfix] += 1
+                if j.btagDeepFlavB>0.7100: ret["nBJetTight"+self.strBJetPt+postfix]  += 1
                 mhtBJetPtvec = mhtBJetPtvec - j.p4()
 
         if j.pt > float(self.jetPt):
@@ -418,9 +420,9 @@ class LeptonJetRecleanerWZSM(Module):
                 mhtBJetPtvec = mhtBJetPtvec - j.p4()
             if self.year == 2022 and self.bAlgo == "DeepJet":
                 ret["nJet"+self.strJetPt+postfix] += 1; ret["htJet"+self.strJetPt+"j"+postfix] += j.pt; 
-                if j.btagDeepFlavB>0.0614: ret["nBJetLoose"+self.strJetPt+postfix]  += 1
-                if j.btagDeepFlavB>0.3093: ret["nBJetMedium"+self.strJetPt+postfix] += 1
-                if j.btagDeepFlavB>0.7221: ret["nBJetTight"+self.strJetPt+postfix]  += 1
+                if j.btagDeepFlavB>0.0490: ret["nBJetLoose"+self.strJetPt+postfix]  += 1
+                if j.btagDeepFlavB>0.2783: ret["nBJetMedium"+self.strJetPt+postfix] += 1
+                if j.btagDeepFlavB>0.7100: ret["nBJetTight"+self.strJetPt+postfix]  += 1
                 mhtBJetPtvec = mhtBJetPtvec - j.p4()
 
     ret["mhtJet"+self.strBJetPt+postfix] = mhtBJetPtvec.Pt()

@@ -28,14 +28,10 @@ def add_parsing_opts():
   parser = OptionParser(usage = "python wz-run.py [options]", 
                                  description = "Main options for running WZ analysis") 
 
-  # -- Input and outputs  
-  parser.add_option("--datapath", dest = "datapath", default = "/beegfs/data/nanoAODv10/wz/data",
-              help = "Input (folder) name with data files")
-  parser.add_option("--mcpath", dest = "mcpath", default = "/beegfs/data/nanoAODv10/wz/mc",
-              help = "Input (folder) name with mc files")    
 
-  parser.add_option("--outname", dest = "outname", type="string",
-              help = "Output (folder) name")
+  # -- Input and outputs
+  parser.add_option("--inpath", dest = "inpath", default = paths["processed"],
+              help = "This is the input folder from where to read the samples.")   
   parser.add_option("--unc", dest = "uncfile", type="string", default = "wz-run3/common/systs_wz.txt",
               help = "File with systematic variations")
   # -- Batch control
@@ -50,7 +46,7 @@ def add_parsing_opts():
   parser.add_option("--queue", dest = "queue", default = "batch", 
               help = ''' Queue for job submission ''')
   # -- Other stuff
-  parser.add_option("--year", dest = "year", default = "2022", 
+  parser.add_option("--year", dest = "year", default = "2022EE", 
               help = "Production year")
   parser.add_option("--extra", dest = "extra", type="string", default = "", 
               help = "Any extra command one wants to parse to the main CMGTools scripts")

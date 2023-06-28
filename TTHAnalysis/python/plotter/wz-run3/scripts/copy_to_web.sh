@@ -1,13 +1,12 @@
 ### Script to replicate folders in /pool/phedex in 
 ### the web.
 
-plotspath="/beegfs/data/nanoAODv9/temp_wz/plots/"
-infolder=$plotspath$1
+infolder=$1
 addlogsummary=$2
 
 if [[ ! -d $infolder ]]; then 
   echo "Directory $infolder does not exist!!"
-  echo "Please provide an input directory starting from $plotspath" && exit 0
+  echo "Please provide an input directory starting from $infolder" && exit 0
 fi
 outfolder="$HOME/www/private/wz-run3/$1"
 
