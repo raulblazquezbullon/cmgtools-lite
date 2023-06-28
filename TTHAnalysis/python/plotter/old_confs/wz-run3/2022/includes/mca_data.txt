@@ -1,0 +1,20 @@
+data : DoubleMuon_Run2022C; Label="Data"
+data : SingleMuon_Run2022C; Label="Data"
+
+data : MuonEG_Run2022C; Label="Data"
+data : MuonEG_Run2022D; Label="Data"
+data : MuonEG_Run2022E; Label="Data"
+data : MuonEG_Run2022F; Label="Data"
+data : MuonEG_Run2022G; Label="Data"
+
+data : EGamma_Run2022C; Label="Data"
+data : EGamma_Run2022D; Label="Data"
+data : EGamma_Run2022E; Label="Data"
+data : EGamma_Run2022F; Label="Data"
+data : EGamma_Run2022G; Label="Data"
+
+data : Muon_Run2022C; Label="Data"
+data : Muon_Run2022D; Label="Data"
+data : Muon_Run2022E; Label="Data"
+data : Muon_Run2022F; Label="Data"
+data : Muon_Run2022G; Label="Data"
