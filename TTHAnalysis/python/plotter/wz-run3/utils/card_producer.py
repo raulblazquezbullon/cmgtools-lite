@@ -14,7 +14,7 @@ class card_producer(producer):
     parser.add_option("--mca", 
                   dest = "mca", 
                   type="string", 
-                  default = "wz-run3/2022/mca_wz_3l.txt", 
+                  default = "wz-run3/mca/mca_wz_3l.txt", 
                   help = '''Input mcafile''')
     parser.add_option("--cutfile", 
                   dest = "cutfile", 
@@ -89,8 +89,11 @@ class card_producer(producer):
     mincuts  = self.get_cut(self.region)
     uncfile  = self.uncfile
     lumi     = lumis[year]
-    mcpath   = os.path.join(self.inpath, "mc", self.year)
-    datapath = os.path.join(self.inpath, "data", self.year)
+    #mcpath   = os.path.join(self.inpath, "mc", self.year)
+    #datapath = os.path.join(self.inpath, "data", self.year)
+    mcpath   = os.path.join(self.inpath,"mc")
+    datapath   = os.path.join(self.inpath,"data")
+    
 
     # List with all the options given to CMGTools
     self.commandConfs = ["%s"%self.mca, 

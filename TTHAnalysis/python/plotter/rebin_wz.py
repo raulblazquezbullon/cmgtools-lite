@@ -75,6 +75,7 @@ def add_parsing_options():
 						help = "Extra options for mcPlots, user must give extra options between ' '")
 	parser.add_argument("--do-submit", dest = "submit",action = "store_true",default = False)
 	parser.add_argument("--niceplot",  dest = "niceplot",action = "store_true",default = False)
+	parser.add_argument("--other_out",  dest = "other_out",default = False,type = str)
 
 	return parser.parse_args()   
 
@@ -138,7 +139,7 @@ def make_plots(options):
 	# Now we add other options like run local, do submit, number of cores, etc
 	comm += " --outname " + options[0] + " --ncores " + options[1] + (" --run-local")*int(options[-1]) +\
 			" --extra " + extra_opt + (" --do-submit")*int(options[-2]) + " --plotfile %s"%(options[4]) +\
-			" --cutfile %s"%(options[7])
+			" --cutfile %s"%(options[7]) + " --year 2022 --inpath /beegfs/data/nanoAODv10/wz/"
 	
 	cmd = subprocess.check_output(comm,shell = True).decode("utf-8")
 	return cmd
@@ -179,13 +180,18 @@ def make_cards(options):
 		
 	else: extra_opt = "".join(options[8]) # If extra is not provided, it is taken as an empty string in a list
 	
-	new_bin = [str(bins) for bins in options[9]]
-	new_bin = "[" + ",".join(new_bin) + "]"
+	if type(options[9]) == str:
+		new_bin = options[9]
+	
+	else:
+		new_bin = [str(bins) for bins in options[9]]
+		new_bin = "[" + ",".join(new_bin) + "]"
 		
 	# Now we add other options like run local, do submit, number of cores, etc
 	comm += " --outname " + options[0] + " --ncores " + options[1] + (" --run-local")*int(options[-1]) +\
 			(" --extra " + extra_opt)*(len(extra_opt) != 0) + (" --do-submit")*int(options[-2]) +\
-			" --binning %s"%(new_bin) +	" --cutfile %s"%(options[7]) + " --var %s"%(options[10])
+			" --binning %s"%(new_bin) +	" --cutfile %s"%(options[7]) + " --var %s"%(options[10]) +\
+			" --year 2022 --inpath /beegfs/data/nanoAODv10/wz/"
 	
 	cmd = subprocess.check_output(comm,shell = True).decode("utf-8")
 	return cmd
@@ -204,6 +210,7 @@ if __name__ == "__main__":
 	submit 	  = opts.submit
 	extra 	  = opts.extra
 	niceplot  = opts.niceplot
+	other_out = opts.other_out
 
 	# == Rootfile with unrebinned plots
 	inpath = "~rblazquez/TFG/ejemplo/plots_wz.root" # Path to plot variables, user must run wz-run.py before using this script
@@ -218,31 +225,46 @@ if __name__ == "__main__":
 
 		# == Get the required variable defined within CMGTools
 		var_to_comm = functional_variables[var]
-
-		for nq in nquant:
-			out = outpath + "./rebin%s/%s"%(nq, var)
-			nq = int(nq)
-			# == Get the new binning for the histogram
-			rebining = rebin_histo(var, inpath, nq)
-			if mode == "plot":
-
-				# == Create an specific plot file with the desired rebinning
-				filename = "./wz-run3/separate-studies/bining_optimization/{var}_{nq}_plots.txt".format(var = var, nq = nq)
-				if var in functional_variables:
-					line = "%s_rebin%d:%s:%s;XTitle='%s (GeV)', MoreY=2.0\n"%(var, nq, var_to_comm, rebining, fancy_vars[var])
-				else:
-					line = "%s_rebin%d:%s:%s;XTitle='%s', MoreY=2.0\n"%(var, nq, var_to_comm, rebining, var)
-
-				make_plotfile(filename, line)
-
-				pars = (out, cores, lumis[year], year, filename, var, nq, cut, extra, niceplot, submit, local)
-				batchcomm = make_plots(pars)
-				print(batchcomm)
+		
+		if mode == "no_rebin":
+			filename = "./wz-run3/separate-studies/bining_optimization/{var}_no_rebin_plots.txt".format(var = var)
+			
+			rebining = {"m3l" : "10,0,500","met" : "20,0,400","m3lmet_Meas" : "10,0,500"}
+			
+			out_new = out + "./cards/"
+			if other_out: out_new = other_out + "./cards/"
+			pars = (out_new, cores, lumis[year], year, filename, var, nq, cut, extra, rebining[var], var_to_comm, submit, local)
+			batchcomm = make_cards(pars)
+			print(batchcomm)
 				
-			elif mode == "card":
-				filename = "./wz-run3/separate-studies/bining_optimization/{var}_{nq}_plots.txt".format(var = var, nq = nq)
-				
-				out_new = out + "./cards/"
-				pars = (out_new, cores, lumis[year], year, filename, var, nq, cut, extra, rebining, var_to_comm, submit, local)
-				batchcomm = make_cards(pars)
-				print(batchcomm)
+		else:
+			for nq in nquant:
+				out = outpath + "./rebin%s/%s"%(nq, var)
+				nq = int(nq)
+				# == Get the new binning for the histogram
+				rebining = rebin_histo(var, inpath, nq)
+				if mode == "plot":
+
+					# == Create an specific plot file with the desired rebinning
+					filename = "./wz-run3/separate-studies/bining_optimization/{var}_{nq}_plots.txt".format(var = var, nq = nq)
+					if var in functional_variables:
+						line = "%s_rebin%d:%s:%s;XTitle='%s (GeV)', MoreY=2.0\n"%(var, nq, var_to_comm, rebining, fancy_vars[var])
+					else:
+						line = "%s_rebin%d:%s:%s;XTitle='%s', MoreY=2.0\n"%(var, nq, var_to_comm, rebining, var)
+
+					make_plotfile(filename, line)
+					
+					if other_out: out = other_out
+
+					pars = (out, cores, lumis[year], year, filename, var, nq, cut, extra, niceplot, submit, local)
+					batchcomm = make_plots(pars)
+					print(batchcomm)
+					
+				elif mode == "card":
+					filename = "./wz-run3/separate-studies/bining_optimization/{var}_{nq}_plots.txt".format(var = var, nq = nq)
+					
+					out_new = out + "./cards/"
+					if other_out: out_new = other_out + "./cards/"
+					pars = (out_new, cores, lumis[year], year, filename, var, nq, cut, extra, rebining, var_to_comm, submit, local)
+					batchcomm = make_cards(pars)
+					print(batchcomm)
