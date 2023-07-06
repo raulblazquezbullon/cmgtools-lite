@@ -100,6 +100,18 @@ if [ ${SLURM_ARRAY_TASK_ID} -eq 31 ]; then
   combine -M MultiDimFit -n _paramFit_Test_prop_binwz-card_bin9_prompt_ZZ --algo impact --redefineSignalPOIs r_prompt_WZ -P prop_binwz-card_bin9_prompt_ZZ --floatOtherPOIs 1 --saveInactivePOI 1 -t -1 --X-rtd MINIMIZER_MaxCalls=99999999999 --maxFailedSteps 500 --X-rtd MINIMIZER_analytic --setRobustFitTolerance 0.05 --cminPreScan --cminDefaultMinimizerStrategy 0 -m 125 -d wz-ws.root --setParameters r_prompt_WZ=1,r_prompt_ZZ=1
 fi
 if [ ${SLURM_ARRAY_TASK_ID} -eq 32 ]; then
+  combine -M MultiDimFit -n _paramFit_Test_prop_binzz-card_bin0 --algo impact --redefineSignalPOIs r_prompt_WZ -P prop_binzz-card_bin0 --floatOtherPOIs 1 --saveInactivePOI 1 -t -1 --X-rtd MINIMIZER_MaxCalls=99999999999 --maxFailedSteps 500 --X-rtd MINIMIZER_analytic --setRobustFitTolerance 0.05 --cminPreScan --cminDefaultMinimizerStrategy 0 -m 125 -d wz-ws.root --setParameters r_prompt_WZ=1,r_prompt_ZZ=1
+fi
+if [ ${SLURM_ARRAY_TASK_ID} -eq 33 ]; then
+  combine -M MultiDimFit -n _paramFit_Test_prop_binzz-card_bin1 --algo impact --redefineSignalPOIs r_prompt_WZ -P prop_binzz-card_bin1 --floatOtherPOIs 1 --saveInactivePOI 1 -t -1 --X-rtd MINIMIZER_MaxCalls=99999999999 --maxFailedSteps 500 --X-rtd MINIMIZER_analytic --setRobustFitTolerance 0.05 --cminPreScan --cminDefaultMinimizerStrategy 0 -m 125 -d wz-ws.root --setParameters r_prompt_WZ=1,r_prompt_ZZ=1
+fi
+if [ ${SLURM_ARRAY_TASK_ID} -eq 34 ]; then
+  combine -M MultiDimFit -n _paramFit_Test_prop_binzz-card_bin2 --algo impact --redefineSignalPOIs r_prompt_WZ -P prop_binzz-card_bin2 --floatOtherPOIs 1 --saveInactivePOI 1 -t -1 --X-rtd MINIMIZER_MaxCalls=99999999999 --maxFailedSteps 500 --X-rtd MINIMIZER_analytic --setRobustFitTolerance 0.05 --cminPreScan --cminDefaultMinimizerStrategy 0 -m 125 -d wz-ws.root --setParameters r_prompt_WZ=1,r_prompt_ZZ=1
+fi
+if [ ${SLURM_ARRAY_TASK_ID} -eq 35 ]; then
+  combine -M MultiDimFit -n _paramFit_Test_prop_binzz-card_bin3 --algo impact --redefineSignalPOIs r_prompt_WZ -P prop_binzz-card_bin3 --floatOtherPOIs 1 --saveInactivePOI 1 -t -1 --X-rtd MINIMIZER_MaxCalls=99999999999 --maxFailedSteps 500 --X-rtd MINIMIZER_analytic --setRobustFitTolerance 0.05 --cminPreScan --cminDefaultMinimizerStrategy 0 -m 125 -d wz-ws.root --setParameters r_prompt_WZ=1,r_prompt_ZZ=1
+fi
+if [ ${SLURM_ARRAY_TASK_ID} -eq 36 ]; then
   combine -M MultiDimFit -n _paramFit_Test_r_prompt_ZZ --algo impact --redefineSignalPOIs r_prompt_WZ -P r_prompt_ZZ --floatOtherPOIs 1 --saveInactivePOI 1 -t -1 --X-rtd MINIMIZER_MaxCalls=99999999999 --maxFailedSteps 500 --X-rtd MINIMIZER_analytic --setRobustFitTolerance 0.05 --cminPreScan --cminDefaultMinimizerStrategy 0 -m 125 -d wz-ws.root --setParameters r_prompt_WZ=1,r_prompt_ZZ=1
 fi
 
