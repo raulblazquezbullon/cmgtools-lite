@@ -1,6 +1,7 @@
 from .producer import producer
 from utils.ftree_producer import ftree_producer
 from cfgs.lumi import lumis
+import os
 
 class card_producer(producer):
   name = "card_producer"
@@ -55,7 +56,26 @@ class card_producer(producer):
                       help = ''' Region for cut application.''')
  
     return
-
+    '''
+    def add_friends(self, maxstep = -1):
+        friends = []
+        
+        # Iterate over modules available in this year
+        for step, module in self.modules[self.year].items():
+            # Only add friends to a certain point if step is given
+            if step != -1 and step >= maxstep:
+                continue
+            modulename = module[self.doData]
+            addmethod = module["addmethod"]
+            if addmethod == "mc": 
+                friends.append( " --FMCs {P}/%s "%(modulename))
+            if addmethod == "mc": 
+                friends.append( " --FDs {P}/%s "%(modulename))
+            if addmethod == "simple": 
+                friends.append( " --Fs {P}/%s "%(modulename))
+        
+        return " ".join(friends)
+    '''
   def run(self):
     # Yearly stuff 
     year     = self.year
@@ -65,6 +85,9 @@ class card_producer(producer):
     mincuts  = self.get_cut(self.region)
     uncfile  = self.uncfile
     lumi     = lumis[year]
+    
+    self.mcpath = os.path.join(self.inpath, "mc")
+    self.datapath = os.path.join(self.inpath, "data")
 
     # Other plotting stuff 
     plottingStuff =  "--obj Events "
@@ -83,7 +106,7 @@ class card_producer(producer):
                    "-j %s"%(self.ncores),
                    "-l %s"%lumi,
                    "%s"%mincuts,
-                   "--xp data --asimov signal",
+				   "--xp data --asimov signal",
                    "--unc %s"%uncfile,
                    "--od %s/"%outname,
                    "--autoMCStats",

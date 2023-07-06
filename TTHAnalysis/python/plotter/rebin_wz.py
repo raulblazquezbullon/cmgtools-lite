@@ -68,7 +68,7 @@ def add_parsing_options():
 	parser.add_argument("--mode",      dest = "mode")
 	parser.add_argument("--year",      dest = "year", default = "2022")
 	parser.add_argument("--ncores",	   dest = "ncores",default = 8)
-	parser.add_argument("--lumis",	   dest = "lumis",default = {"2022":"13.09"})
+	parser.add_argument("--lumis",	   dest = "lumis",default = {"2022":"29.67"})
 	parser.add_argument("--cut",	   dest = "cut",default = "./wz-run3/common/cuts_wzsm.txt")
 	parser.add_argument("--run-local", dest = "local",action = "store_true",default = False)
 	parser.add_argument("--extra",	   dest = "extra",default = "",type = str,
@@ -220,7 +220,7 @@ if __name__ == "__main__":
 		var_to_comm = functional_variables[var]
 
 		for nq in nquant:
-			out = outpath + "./rebin%s/%s"%(nq, var)
+			out = outpath + "./rebin%s/%s/"%(nq, var)
 			nq = int(nq)
 			# == Get the new binning for the histogram
 			rebining = rebin_histo(var, inpath, nq)

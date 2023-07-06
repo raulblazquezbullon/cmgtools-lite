@@ -28,7 +28,7 @@ def add_parsing_opts():
                                  description = "Main options for running WZ analysis") 
 
   # -- Input and outputs
-  parser.add_option("--inpath", dest = "inpath", default = "/beegfs/data/nanoAODv11/wz-run3/trees/",
+  parser.add_option("--inpath", dest = "inpath", default = "/beegfs/data/nanoAODv10/wz/",
               help = "This is the input folder from where to read the samples.")   
   parser.add_option("--outname", dest = "outname", type="string", default = "/beegfs/data/nanoAODv11/wz-run3/trees/",
               help = "Output (folder) name")

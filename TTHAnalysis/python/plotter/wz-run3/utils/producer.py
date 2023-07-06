@@ -7,10 +7,10 @@ class producer(object):
     # -- Friend tree modules 
     modules = { 
         "2022": {
-            1 : {"data" : "jmeCorrections_data", 
-                 "mc"   : "jmeCorrections_mc", 
+            1 : {"data" : None, 
+                 "mc"   : "jmeUncertainties", 
                  "addmethod" : "simple", 
-                 "outname" : "jmeCorrections"},
+                 "outname" : "jmeUncertainties"},
 
             2 : {"data" : "leptonJetRecleaning",
                  "mc"   : "leptonJetRecleaning",
@@ -128,16 +128,15 @@ class producer(object):
         ''' To be implemented in different classes ''' 
         pass
 
-    def add_friends(self, maxstep = -1):
-        """ Method to add friends to command """
+    def add_friends(self, maxstep = 6):
         friends = []
-
+        
         # Iterate over modules available in this year
         for step, module in self.modules[self.year].items():
             # Only add friends to a certain point if step is given
             if step != -1 and step >= maxstep:
                 continue
-            modulename = module[self.doData]
+            modulename = module["outname"]
             addmethod = module["addmethod"]
             if addmethod == "mc": 
                 friends.append( " --FMCs {P}/%s "%(modulename))

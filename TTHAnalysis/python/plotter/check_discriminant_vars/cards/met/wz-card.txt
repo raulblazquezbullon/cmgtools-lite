@@ -1,0 +1,19 @@
+shapes *        * wz-card.root x_$PROCESS x_$PROCESS_$SYSTEMATIC
+##----------------------------------
+bin         wz-card
+observation 3139.497494296296
+##----------------------------------
+##----------------------------------
+bin                      wz-card     wz-card     wz-card     wz-card     wz-card 
+process                prompt_WZ   prompt_ZZ    fakes_DY    fakes_TT    fakes_VV 
+process                        0           2           3           4           5 
+rate                    2622.797     153.609     245.173     116.509       1.410 
+##----------------------------------
+FSR              shape         1           -           -           -           - 
+ISR              shape         1           -           -           -           - 
+jestotal         shape         1           1           1           1           1 
+lumi_2022_early    lnN     1.060       1.060       1.060       1.060   0.943/1.060 
+muonidsf         shape         1           1           1           1           1 
+normZZ             lnN         -       1.060           -           -           - 
+normfakes          lnN         -           -       1.300       1.300   0.769/1.300 
+* autoMCStats 10

@@ -1,13 +1,13 @@
 void m3l_rebin8()
 {
 //=========Macro generated from canvas: m3l_rebin8_canvas/m3l_rebin8
-//=========  (Sat May  6 19:55:58 2023) by ROOT version 6.24/07
+//=========  (Thu Jul  6 17:52:21 2023) by ROOT version 6.24/07
    TCanvas *m3l_rebin8_canvas = new TCanvas("m3l_rebin8_canvas", "m3l_rebin8",0,0,600,600);
    gStyle->SetOptFit(1);
    gStyle->SetOptStat(0);
    gStyle->SetOptTitle(0);
    m3l_rebin8_canvas->SetHighLightColor(2);
-   m3l_rebin8_canvas->Range(-115.3846,-222.1259,525.641,1486.535);
+   m3l_rebin8_canvas->Range(-115.3846,-208.7335,525.641,1396.909);
    m3l_rebin8_canvas->SetFillColor(0);
    m3l_rebin8_canvas->SetBorderMode(0);
    m3l_rebin8_canvas->SetBorderSize(2);
@@ -24,24 +24,24 @@ void m3l_rebin8()
    Double_t xAxis1[9] = {0, 115.6108, 131.2217, 146.8325, 166.1852, 186.4904, 212.5857, 250.4632, 500}; 
    
    TH1D *m3l_rebin8_total__1 = new TH1D("m3l_rebin8_total__1","dummy",8, xAxis1);
-   m3l_rebin8_total__1->SetBinContent(1,73.60308);
-   m3l_rebin8_total__1->SetBinContent(2,328.0408);
-   m3l_rebin8_total__1->SetBinContent(3,452.878);
-   m3l_rebin8_total__1->SetBinContent(4,529.6758);
-   m3l_rebin8_total__1->SetBinContent(5,460.2643);
-   m3l_rebin8_total__1->SetBinContent(6,448.6319);
-   m3l_rebin8_total__1->SetBinContent(7,399.1456);
-   m3l_rebin8_total__1->SetBinContent(8,692.0077);
-   m3l_rebin8_total__1->SetBinError(1,7.632432);
-   m3l_rebin8_total__1->SetBinError(2,16.51315);
-   m3l_rebin8_total__1->SetBinError(3,16.42121);
-   m3l_rebin8_total__1->SetBinError(4,17.28502);
-   m3l_rebin8_total__1->SetBinError(5,13.57559);
-   m3l_rebin8_total__1->SetBinError(6,15.42904);
-   m3l_rebin8_total__1->SetBinError(7,12.49882);
-   m3l_rebin8_total__1->SetBinError(8,14.78178);
+   m3l_rebin8_total__1->SetBinContent(1,67.60844);
+   m3l_rebin8_total__1->SetBinContent(2,302.3418);
+   m3l_rebin8_total__1->SetBinContent(3,418.2593);
+   m3l_rebin8_total__1->SetBinContent(4,488.9753);
+   m3l_rebin8_total__1->SetBinContent(5,425.1389);
+   m3l_rebin8_total__1->SetBinContent(6,415.781);
+   m3l_rebin8_total__1->SetBinContent(7,371.1076);
+   m3l_rebin8_total__1->SetBinContent(8,650.2851);
+   m3l_rebin8_total__1->SetBinError(1,7.098829);
+   m3l_rebin8_total__1->SetBinError(2,15.19179);
+   m3l_rebin8_total__1->SetBinError(3,15.30054);
+   m3l_rebin8_total__1->SetBinError(4,15.87731);
+   m3l_rebin8_total__1->SetBinError(5,12.44638);
+   m3l_rebin8_total__1->SetBinError(6,14.42267);
+   m3l_rebin8_total__1->SetBinError(7,11.66317);
+   m3l_rebin8_total__1->SetBinError(8,13.91081);
    m3l_rebin8_total__1->SetMinimum(0);
-   m3l_rebin8_total__1->SetMaximum(1384.015);
+   m3l_rebin8_total__1->SetMaximum(1300.57);
    m3l_rebin8_total__1->SetEntries(15153);
    m3l_rebin8_total__1->SetDirectory(0);
 
@@ -81,7 +81,7 @@ void m3l_rebin8()
    
    TH1F *m3l_rebin8_stack_stack_1 = new TH1F("m3l_rebin8_stack_stack_1","m3l_rebin8",8, xAxis2);
    m3l_rebin8_stack_stack_1->SetMinimum(0);
-   m3l_rebin8_stack_stack_1->SetMaximum(726.608);
+   m3l_rebin8_stack_stack_1->SetMaximum(682.7993);
    m3l_rebin8_stack_stack_1->SetDirectory(0);
    m3l_rebin8_stack_stack_1->SetStats(0);
    m3l_rebin8_stack_stack_1->SetLineStyle(0);
@@ -109,16 +109,16 @@ void m3l_rebin8()
    Double_t xAxis3[9] = {0, 115.6108, 131.2217, 146.8325, 166.1852, 186.4904, 212.5857, 250.4632, 500}; 
    
    TH1D *m3l_rebin8_fakes_VV_stack_1 = new TH1D("m3l_rebin8_fakes_VV_stack_1","dummy",8, xAxis3);
-   m3l_rebin8_fakes_VV_stack_1->SetBinContent(1,0.4398576);
-   m3l_rebin8_fakes_VV_stack_1->SetBinContent(4,0.2199288);
-   m3l_rebin8_fakes_VV_stack_1->SetBinContent(6,0.2199288);
-   m3l_rebin8_fakes_VV_stack_1->SetBinContent(7,0.2199288);
-   m3l_rebin8_fakes_VV_stack_1->SetBinContent(8,0.4398576);
-   m3l_rebin8_fakes_VV_stack_1->SetBinError(1,0.3110263);
-   m3l_rebin8_fakes_VV_stack_1->SetBinError(4,0.2199288);
-   m3l_rebin8_fakes_VV_stack_1->SetBinError(6,0.2199288);
-   m3l_rebin8_fakes_VV_stack_1->SetBinError(7,0.2199288);
-   m3l_rebin8_fakes_VV_stack_1->SetBinError(8,0.3110263);
+   m3l_rebin8_fakes_VV_stack_1->SetBinContent(1,0.4031181);
+   m3l_rebin8_fakes_VV_stack_1->SetBinContent(4,0.2060137);
+   m3l_rebin8_fakes_VV_stack_1->SetBinContent(6,0.2026171);
+   m3l_rebin8_fakes_VV_stack_1->SetBinContent(7,0.1938399);
+   m3l_rebin8_fakes_VV_stack_1->SetBinContent(8,0.404872);
+   m3l_rebin8_fakes_VV_stack_1->SetBinError(1,0.2850661);
+   m3l_rebin8_fakes_VV_stack_1->SetBinError(4,0.2060137);
+   m3l_rebin8_fakes_VV_stack_1->SetBinError(6,0.2026171);
+   m3l_rebin8_fakes_VV_stack_1->SetBinError(7,0.1938399);
+   m3l_rebin8_fakes_VV_stack_1->SetBinError(8,0.2863255);
    m3l_rebin8_fakes_VV_stack_1->SetEntries(11);
 
    ci = TColor::GetColor("#2e3294");
@@ -150,22 +150,22 @@ void m3l_rebin8()
    Double_t xAxis4[9] = {0, 115.6108, 131.2217, 146.8325, 166.1852, 186.4904, 212.5857, 250.4632, 500}; 
    
    TH1D *m3l_rebin8_fakes_TT_stack_2 = new TH1D("m3l_rebin8_fakes_TT_stack_2","dummy",8, xAxis4);
-   m3l_rebin8_fakes_TT_stack_2->SetBinContent(1,4.570035);
-   m3l_rebin8_fakes_TT_stack_2->SetBinContent(2,11.03994);
-   m3l_rebin8_fakes_TT_stack_2->SetBinContent(3,17.75462);
-   m3l_rebin8_fakes_TT_stack_2->SetBinContent(4,21.51619);
-   m3l_rebin8_fakes_TT_stack_2->SetBinContent(5,15.7986);
-   m3l_rebin8_fakes_TT_stack_2->SetBinContent(6,16.50376);
-   m3l_rebin8_fakes_TT_stack_2->SetBinContent(7,16.3533);
-   m3l_rebin8_fakes_TT_stack_2->SetBinContent(8,20.86718);
-   m3l_rebin8_fakes_TT_stack_2->SetBinError(1,0.860263);
-   m3l_rebin8_fakes_TT_stack_2->SetBinError(2,1.326202);
-   m3l_rebin8_fakes_TT_stack_2->SetBinError(3,1.648238);
-   m3l_rebin8_fakes_TT_stack_2->SetBinError(4,1.799274);
-   m3l_rebin8_fakes_TT_stack_2->SetBinError(5,1.541786);
-   m3l_rebin8_fakes_TT_stack_2->SetBinError(6,1.584115);
-   m3l_rebin8_fakes_TT_stack_2->SetBinError(7,1.576953);
-   m3l_rebin8_fakes_TT_stack_2->SetBinError(8,1.817082);
+   m3l_rebin8_fakes_TT_stack_2->SetBinContent(1,4.265472);
+   m3l_rebin8_fakes_TT_stack_2->SetBinContent(2,10.29983);
+   m3l_rebin8_fakes_TT_stack_2->SetBinContent(3,16.52043);
+   m3l_rebin8_fakes_TT_stack_2->SetBinContent(4,20.10727);
+   m3l_rebin8_fakes_TT_stack_2->SetBinContent(5,14.66634);
+   m3l_rebin8_fakes_TT_stack_2->SetBinContent(6,15.4268);
+   m3l_rebin8_fakes_TT_stack_2->SetBinContent(7,15.38573);
+   m3l_rebin8_fakes_TT_stack_2->SetBinContent(8,19.83675);
+   m3l_rebin8_fakes_TT_stack_2->SetBinError(1,0.8045493);
+   m3l_rebin8_fakes_TT_stack_2->SetBinError(2,1.236878);
+   m3l_rebin8_fakes_TT_stack_2->SetBinError(3,1.535032);
+   m3l_rebin8_fakes_TT_stack_2->SetBinError(4,1.682334);
+   m3l_rebin8_fakes_TT_stack_2->SetBinError(5,1.432355);
+   m3l_rebin8_fakes_TT_stack_2->SetBinError(6,1.482034);
+   m3l_rebin8_fakes_TT_stack_2->SetBinError(7,1.484705);
+   m3l_rebin8_fakes_TT_stack_2->SetBinError(8,1.725833);
    m3l_rebin8_fakes_TT_stack_2->SetEntries(840);
 
    ci = TColor::GetColor("#666666");
@@ -197,22 +197,22 @@ void m3l_rebin8()
    Double_t xAxis5[9] = {0, 115.6108, 131.2217, 146.8325, 166.1852, 186.4904, 212.5857, 250.4632, 500}; 
    
    TH1D *m3l_rebin8_fakes_DY_stack_3 = new TH1D("m3l_rebin8_fakes_DY_stack_3","dummy",8, xAxis5);
-   m3l_rebin8_fakes_DY_stack_3->SetBinContent(1,11.67278);
-   m3l_rebin8_fakes_DY_stack_3->SetBinContent(2,54.47299);
-   m3l_rebin8_fakes_DY_stack_3->SetBinContent(3,46.69113);
-   m3l_rebin8_fakes_DY_stack_3->SetBinContent(4,50.58206);
-   m3l_rebin8_fakes_DY_stack_3->SetBinContent(5,23.34557);
-   m3l_rebin8_fakes_DY_stack_3->SetBinContent(6,38.90928);
-   m3l_rebin8_fakes_DY_stack_3->SetBinContent(7,19.45464);
-   m3l_rebin8_fakes_DY_stack_3->SetBinContent(8,19.45464);
-   m3l_rebin8_fakes_DY_stack_3->SetBinError(1,6.739285);
-   m3l_rebin8_fakes_DY_stack_3->SetBinError(2,14.55852);
-   m3l_rebin8_fakes_DY_stack_3->SetBinError(3,13.47857);
-   m3l_rebin8_fakes_DY_stack_3->SetBinError(4,14.02894);
-   m3l_rebin8_fakes_DY_stack_3->SetBinError(5,9.530788);
-   m3l_rebin8_fakes_DY_stack_3->SetBinError(6,12.30419);
-   m3l_rebin8_fakes_DY_stack_3->SetBinError(7,8.700379);
-   m3l_rebin8_fakes_DY_stack_3->SetBinError(8,8.700379);
+   m3l_rebin8_fakes_DY_stack_3->SetBinContent(1,10.90016);
+   m3l_rebin8_fakes_DY_stack_3->SetBinContent(2,50.03476);
+   m3l_rebin8_fakes_DY_stack_3->SetBinContent(3,43.69421);
+   m3l_rebin8_fakes_DY_stack_3->SetBinContent(4,46.26919);
+   m3l_rebin8_fakes_DY_stack_3->SetBinContent(5,21.17878);
+   m3l_rebin8_fakes_DY_stack_3->SetBinContent(6,36.54986);
+   m3l_rebin8_fakes_DY_stack_3->SetBinContent(7,18.21322);
+   m3l_rebin8_fakes_DY_stack_3->SetBinContent(8,18.33245);
+   m3l_rebin8_fakes_DY_stack_3->SetBinError(1,6.294354);
+   m3l_rebin8_fakes_DY_stack_3->SetBinError(2,13.37991);
+   m3l_rebin8_fakes_DY_stack_3->SetBinError(3,12.6168);
+   m3l_rebin8_fakes_DY_stack_3->SetBinError(4,12.84203);
+   m3l_rebin8_fakes_DY_stack_3->SetBinError(5,8.65306);
+   m3l_rebin8_fakes_DY_stack_3->SetBinError(6,11.56199);
+   m3l_rebin8_fakes_DY_stack_3->SetBinError(7,8.14789);
+   m3l_rebin8_fakes_DY_stack_3->SetBinError(8,8.199856);
    m3l_rebin8_fakes_DY_stack_3->SetEntries(76);
 
    ci = TColor::GetColor("#cccccc");
@@ -244,22 +244,22 @@ void m3l_rebin8()
    Double_t xAxis6[9] = {0, 115.6108, 131.2217, 146.8325, 166.1852, 186.4904, 212.5857, 250.4632, 500}; 
    
    TH1D *m3l_rebin8_prompt_ZZ_stack_4 = new TH1D("m3l_rebin8_prompt_ZZ_stack_4","dummy",8, xAxis6);
-   m3l_rebin8_prompt_ZZ_stack_4->SetBinContent(1,1.66076);
-   m3l_rebin8_prompt_ZZ_stack_4->SetBinContent(2,24.9114);
-   m3l_rebin8_prompt_ZZ_stack_4->SetBinContent(3,27.40254);
-   m3l_rebin8_prompt_ZZ_stack_4->SetBinContent(4,24.08102);
-   m3l_rebin8_prompt_ZZ_stack_4->SetBinContent(5,23.25064);
-   m3l_rebin8_prompt_ZZ_stack_4->SetBinContent(6,17.43798);
-   m3l_rebin8_prompt_ZZ_stack_4->SetBinContent(7,17.43798);
-   m3l_rebin8_prompt_ZZ_stack_4->SetBinContent(8,29.0633);
-   m3l_rebin8_prompt_ZZ_stack_4->SetBinError(1,0.8303801);
-   m3l_rebin8_prompt_ZZ_stack_4->SetBinError(2,3.216048);
-   m3l_rebin8_prompt_ZZ_stack_4->SetBinError(3,3.37302);
-   m3l_rebin8_prompt_ZZ_stack_4->SetBinError(4,3.161993);
-   m3l_rebin8_prompt_ZZ_stack_4->SetBinError(5,3.106998);
-   m3l_rebin8_prompt_ZZ_stack_4->SetBinError(6,2.690739);
-   m3l_rebin8_prompt_ZZ_stack_4->SetBinError(7,2.690739);
-   m3l_rebin8_prompt_ZZ_stack_4->SetBinError(8,3.473729);
+   m3l_rebin8_prompt_ZZ_stack_4->SetBinContent(1,1.515703);
+   m3l_rebin8_prompt_ZZ_stack_4->SetBinContent(2,23.08501);
+   m3l_rebin8_prompt_ZZ_stack_4->SetBinContent(3,25.26357);
+   m3l_rebin8_prompt_ZZ_stack_4->SetBinContent(4,22.26978);
+   m3l_rebin8_prompt_ZZ_stack_4->SetBinContent(5,21.6047);
+   m3l_rebin8_prompt_ZZ_stack_4->SetBinContent(6,16.14813);
+   m3l_rebin8_prompt_ZZ_stack_4->SetBinContent(7,16.23488);
+   m3l_rebin8_prompt_ZZ_stack_4->SetBinContent(8,27.48677);
+   m3l_rebin8_prompt_ZZ_stack_4->SetBinError(1,0.7587768);
+   m3l_rebin8_prompt_ZZ_stack_4->SetBinError(2,2.982577);
+   m3l_rebin8_prompt_ZZ_stack_4->SetBinError(3,3.112284);
+   m3l_rebin8_prompt_ZZ_stack_4->SetBinError(4,2.92584);
+   m3l_rebin8_prompt_ZZ_stack_4->SetBinError(5,2.888346);
+   m3l_rebin8_prompt_ZZ_stack_4->SetBinError(6,2.493374);
+   m3l_rebin8_prompt_ZZ_stack_4->SetBinError(7,2.506387);
+   m3l_rebin8_prompt_ZZ_stack_4->SetBinError(8,3.28686);
    m3l_rebin8_prompt_ZZ_stack_4->SetEntries(402);
 
    ci = TColor::GetColor("#00cc00");
@@ -291,22 +291,22 @@ void m3l_rebin8()
    Double_t xAxis7[9] = {0, 115.6108, 131.2217, 146.8325, 166.1852, 186.4904, 212.5857, 250.4632, 500}; 
    
    TH1D *m3l_rebin8_prompt_WZ_stack_5 = new TH1D("m3l_rebin8_prompt_WZ_stack_5","dummy",8, xAxis7);
-   m3l_rebin8_prompt_WZ_stack_5->SetBinContent(1,55.25965);
-   m3l_rebin8_prompt_WZ_stack_5->SetBinContent(2,237.6165);
-   m3l_rebin8_prompt_WZ_stack_5->SetBinContent(3,361.0297);
-   m3l_rebin8_prompt_WZ_stack_5->SetBinContent(4,433.2766);
-   m3l_rebin8_prompt_WZ_stack_5->SetBinContent(5,397.8694);
-   m3l_rebin8_prompt_WZ_stack_5->SetBinContent(6,375.5609);
-   m3l_rebin8_prompt_WZ_stack_5->SetBinContent(7,345.6798);
-   m3l_rebin8_prompt_WZ_stack_5->SetBinContent(8,622.1827);
-   m3l_rebin8_prompt_WZ_stack_5->SetBinError(1,3.362995);
-   m3l_rebin8_prompt_WZ_stack_5->SetBinError(2,6.973655);
-   m3l_rebin8_prompt_WZ_stack_5->SetBinError(3,8.595945);
-   m3l_rebin8_prompt_WZ_stack_5->SetBinError(4,9.416831);
-   m3l_rebin8_prompt_WZ_stack_5->SetBinError(5,9.023862);
-   m3l_rebin8_prompt_WZ_stack_5->SetBinError(6,8.767229);
-   m3l_rebin8_prompt_WZ_stack_5->SetBinError(7,8.411223);
-   m3l_rebin8_prompt_WZ_stack_5->SetBinError(8,11.28447);
+   m3l_rebin8_prompt_WZ_stack_5->SetBinContent(1,50.52399);
+   m3l_rebin8_prompt_WZ_stack_5->SetBinContent(2,218.9222);
+   m3l_rebin8_prompt_WZ_stack_5->SetBinContent(3,332.7811);
+   m3l_rebin8_prompt_WZ_stack_5->SetBinContent(4,400.1231);
+   m3l_rebin8_prompt_WZ_stack_5->SetBinContent(5,367.6891);
+   m3l_rebin8_prompt_WZ_stack_5->SetBinContent(6,347.4536);
+   m3l_rebin8_prompt_WZ_stack_5->SetBinContent(7,321.0799);
+   m3l_rebin8_prompt_WZ_stack_5->SetBinContent(8,584.2242);
+   m3l_rebin8_prompt_WZ_stack_5->SetBinError(1,3.077366);
+   m3l_rebin8_prompt_WZ_stack_5->SetBinError(2,6.429831);
+   m3l_rebin8_prompt_WZ_stack_5->SetBinError(3,7.929704);
+   m3l_rebin8_prompt_WZ_stack_5->SetBinError(4,8.70276);
+   m3l_rebin8_prompt_WZ_stack_5->SetBinError(5,8.345221);
+   m3l_rebin8_prompt_WZ_stack_5->SetBinError(6,8.116608);
+   m3l_rebin8_prompt_WZ_stack_5->SetBinError(7,7.817776);
+   m3l_rebin8_prompt_WZ_stack_5->SetBinError(8,10.60231);
    m3l_rebin8_prompt_WZ_stack_5->SetEntries(13824);
 
    ci = TColor::GetColor("#ffcc00");
@@ -339,24 +339,24 @@ void m3l_rebin8()
    Double_t xAxis8[9] = {0, 115.6108, 131.2217, 146.8325, 166.1852, 186.4904, 212.5857, 250.4632, 500}; 
    
    TH1D *m3l_rebin8_total__2 = new TH1D("m3l_rebin8_total__2","dummy",8, xAxis8);
-   m3l_rebin8_total__2->SetBinContent(1,73.60308);
-   m3l_rebin8_total__2->SetBinContent(2,328.0408);
-   m3l_rebin8_total__2->SetBinContent(3,452.878);
-   m3l_rebin8_total__2->SetBinContent(4,529.6758);
-   m3l_rebin8_total__2->SetBinContent(5,460.2643);
-   m3l_rebin8_total__2->SetBinContent(6,448.6319);
-   m3l_rebin8_total__2->SetBinContent(7,399.1456);
-   m3l_rebin8_total__2->SetBinContent(8,692.0077);
-   m3l_rebin8_total__2->SetBinError(1,7.632432);
-   m3l_rebin8_total__2->SetBinError(2,16.51315);
-   m3l_rebin8_total__2->SetBinError(3,16.42121);
-   m3l_rebin8_total__2->SetBinError(4,17.28502);
-   m3l_rebin8_total__2->SetBinError(5,13.57559);
-   m3l_rebin8_total__2->SetBinError(6,15.42904);
-   m3l_rebin8_total__2->SetBinError(7,12.49882);
-   m3l_rebin8_total__2->SetBinError(8,14.78178);
+   m3l_rebin8_total__2->SetBinContent(1,67.60844);
+   m3l_rebin8_total__2->SetBinContent(2,302.3418);
+   m3l_rebin8_total__2->SetBinContent(3,418.2593);
+   m3l_rebin8_total__2->SetBinContent(4,488.9753);
+   m3l_rebin8_total__2->SetBinContent(5,425.1389);
+   m3l_rebin8_total__2->SetBinContent(6,415.781);
+   m3l_rebin8_total__2->SetBinContent(7,371.1076);
+   m3l_rebin8_total__2->SetBinContent(8,650.2851);
+   m3l_rebin8_total__2->SetBinError(1,7.098829);
+   m3l_rebin8_total__2->SetBinError(2,15.19179);
+   m3l_rebin8_total__2->SetBinError(3,15.30054);
+   m3l_rebin8_total__2->SetBinError(4,15.87731);
+   m3l_rebin8_total__2->SetBinError(5,12.44638);
+   m3l_rebin8_total__2->SetBinError(6,14.42267);
+   m3l_rebin8_total__2->SetBinError(7,11.66317);
+   m3l_rebin8_total__2->SetBinError(8,13.91081);
    m3l_rebin8_total__2->SetMinimum(0);
-   m3l_rebin8_total__2->SetMaximum(1384.015);
+   m3l_rebin8_total__2->SetMaximum(1300.57);
    m3l_rebin8_total__2->SetEntries(15153);
    m3l_rebin8_total__2->SetDirectory(0);
 
@@ -397,14 +397,14 @@ void m3l_rebin8()
    231.5244,
    375.2316};
    Double_t m3l_rebin8_total_errors_fy3001[8] = {
-   73.60308,
-   328.0408,
-   452.878,
-   529.6758,
-   460.2643,
-   448.6319,
-   399.1456,
-   692.0077};
+   67.60844,
+   302.3418,
+   418.2593,
+   488.9753,
+   425.1389,
+   415.781,
+   371.1076,
+   650.2851};
    Double_t m3l_rebin8_total_errors_felx3001[8] = {
    57.80542,
    7.805416,
@@ -415,14 +415,14 @@ void m3l_rebin8()
    18.93876,
    124.7684};
    Double_t m3l_rebin8_total_errors_fely3001[8] = {
-   4.196579,
-   22.13865,
-   33.97404,
-   34.43549,
-   28.52563,
-   26.45255,
-   24.49884,
-   41.76919};
+   5.269159,
+   24.66195,
+   34.36624,
+   35.27481,
+   27.68576,
+   27.30198,
+   24.03927,
+   40.25268};
    Double_t m3l_rebin8_total_errors_fehx3001[8] = {
    57.80542,
    7.805416,
@@ -433,14 +433,14 @@ void m3l_rebin8()
    18.93876,
    124.7684};
    Double_t m3l_rebin8_total_errors_fehy3001[8] = {
-   4.484999,
-   22.72811,
-   28.41733,
-   32.92404,
-   28.15595,
-   29.87087,
-   25.18267,
-   43.9559};
+   6.229234,
+   27.64723,
+   31.85522,
+   36.37133,
+   28.18464,
+   31.83458,
+   25.48873,
+   42.89163};
    TGraphAsymmErrors *grae = new TGraphAsymmErrors(8,m3l_rebin8_total_errors_fx3001,m3l_rebin8_total_errors_fy3001,m3l_rebin8_total_errors_felx3001,m3l_rebin8_total_errors_fehx3001,m3l_rebin8_total_errors_fely3001,m3l_rebin8_total_errors_fehy3001);
    grae->SetName("m3l_rebin8_total_errors");
    grae->SetTitle("Graph");
@@ -449,8 +449,8 @@ void m3l_rebin8()
    grae->SetMarkerStyle(0);
    
    TH1F *Graph_m3l_rebin8_total_errors3001 = new TH1F("Graph_m3l_rebin8_total_errors3001","Graph",100,0,550);
-   Graph_m3l_rebin8_total_errors3001->SetMinimum(2.750797);
-   Graph_m3l_rebin8_total_errors3001->SetMaximum(802.6193);
+   Graph_m3l_rebin8_total_errors3001->SetMinimum(56.10536);
+   Graph_m3l_rebin8_total_errors3001->SetMaximum(756.2605);
    Graph_m3l_rebin8_total_errors3001->SetDirectory(0);
    Graph_m3l_rebin8_total_errors3001->SetStats(0);
    Graph_m3l_rebin8_total_errors3001->SetLineStyle(0);
