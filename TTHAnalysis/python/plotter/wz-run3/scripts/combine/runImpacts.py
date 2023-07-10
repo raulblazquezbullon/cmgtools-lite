@@ -11,6 +11,7 @@ def add_parsing_options():
   parser.add_argument('--cluster','-c', dest = "cluster") 
   parser.add_argument('--ncores','-j', dest = "ncores")
   parser.add_argument('--queue','-q', dest = "queue")
+  parser.add_argument("--blind",dest = "blind",action = "store_true")
   return parser.parse_args()
 
 
@@ -23,7 +24,7 @@ if __name__ == "__main__":
   cluster = options.cluster
   queue = options.queue
   ncores = options.ncores
-  blind = True    
+  blind = options.blind    
       
   doBlind = "" if not blind else "-t -1 --setParameters %s"%(",".join(["%s=1"%poi for poi in POIs]))
 

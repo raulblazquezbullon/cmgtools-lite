@@ -111,8 +111,9 @@ if __name__ == "__main__":
                 out = subprocess.check_output(cmd[iline],shell = True).decode("utf-8")
                 print(out)
                 print("==== Ending sequential fit ====\n")
-                print(">>> Sleeping for 30 seconds")
-                time.sleep(30)
+                if produce == True:
+                    print(">>> Sleeping for 60 seconds")
+                    time.sleep(60)
                 
             if produce == True or run_all == True:
                 line = "---> Produce the impacts"
