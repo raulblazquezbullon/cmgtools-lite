@@ -1,13 +1,13 @@
 void met_rebin9()
 {
 //=========Macro generated from canvas: met_rebin9_canvas/met_rebin9
-//=========  (Thu Jul  6 18:01:54 2023) by ROOT version 6.24/07
+//=========  (Mon Jul 10 19:16:49 2023) by ROOT version 6.24/07
    TCanvas *met_rebin9_canvas = new TCanvas("met_rebin9_canvas", "met_rebin9",0,0,600,600);
    gStyle->SetOptFit(1);
    gStyle->SetOptStat(0);
    gStyle->SetOptTitle(0);
    met_rebin9_canvas->SetHighLightColor(2);
-   met_rebin9_canvas->Range(-87.69231,-155.204,399.4872,1038.673);
+   met_rebin9_canvas->Range(-87.69231,-153.5289,399.4872,1027.462);
    met_rebin9_canvas->SetFillColor(0);
    met_rebin9_canvas->SetBorderMode(0);
    met_rebin9_canvas->SetBorderSize(2);
@@ -21,27 +21,27 @@ void met_rebin9()
    met_rebin9_canvas->SetFrameBorderMode(0);
    met_rebin9_canvas->SetFrameFillStyle(0);
    met_rebin9_canvas->SetFrameBorderMode(0);
-   Double_t xAxis1[10] = {0, 25.78865, 31.57731, 37.36596, 43.46944, 49.8358, 56.20217, 66.70351, 88.0615, 380}; 
+   Double_t xAxis1[10] = {0, 25.79609, 31.59218, 37.38827, 43.50845, 49.89445, 56.28045, 66.89751, 88.35711, 380}; 
    
    TH1D *met_rebin9_total__1 = new TH1D("met_rebin9_total__1","dummy",9, xAxis1);
-   met_rebin9_total__1->SetBinContent(2,133.1151);
-   met_rebin9_total__1->SetBinContent(3,430.7876);
-   met_rebin9_total__1->SetBinContent(4,460.3082);
-   met_rebin9_total__1->SetBinContent(5,401.0741);
-   met_rebin9_total__1->SetBinContent(6,341.3573);
-   met_rebin9_total__1->SetBinContent(7,427.2214);
-   met_rebin9_total__1->SetBinContent(8,483.5202);
-   met_rebin9_total__1->SetBinContent(9,462.1136);
-   met_rebin9_total__1->SetBinError(2,11.67458);
-   met_rebin9_total__1->SetBinError(3,16.5706);
-   met_rebin9_total__1->SetBinError(4,18.42408);
-   met_rebin9_total__1->SetBinError(5,13.65448);
-   met_rebin9_total__1->SetBinError(6,11.95447);
-   met_rebin9_total__1->SetBinError(7,11.08784);
-   met_rebin9_total__1->SetBinError(8,12.45166);
-   met_rebin9_total__1->SetBinError(9,10.1084);
+   met_rebin9_total__1->SetBinContent(2,133.8556);
+   met_rebin9_total__1->SetBinContent(3,432.1492);
+   met_rebin9_total__1->SetBinContent(4,460.8251);
+   met_rebin9_total__1->SetBinContent(5,401.6972);
+   met_rebin9_total__1->SetBinContent(6,342.1893);
+   met_rebin9_total__1->SetBinContent(7,432.8449);
+   met_rebin9_total__1->SetBinContent(8,478.3015);
+   met_rebin9_total__1->SetBinContent(9,457.6347);
+   met_rebin9_total__1->SetBinError(2,11.68046);
+   met_rebin9_total__1->SetBinError(3,16.57859);
+   met_rebin9_total__1->SetBinError(4,18.42652);
+   met_rebin9_total__1->SetBinError(5,13.65913);
+   met_rebin9_total__1->SetBinError(6,11.96644);
+   met_rebin9_total__1->SetBinError(7,11.69152);
+   met_rebin9_total__1->SetBinError(8,11.88398);
+   met_rebin9_total__1->SetBinError(9,10.06665);
    met_rebin9_total__1->SetMinimum(0);
-   met_rebin9_total__1->SetMaximum(967.0403);
+   met_rebin9_total__1->SetMaximum(956.603);
    met_rebin9_total__1->SetEntries(15153);
    met_rebin9_total__1->SetDirectory(0);
 
@@ -77,11 +77,11 @@ void met_rebin9()
    THStack *met_rebin9_stack = new THStack();
    met_rebin9_stack->SetName("met_rebin9_stack");
    met_rebin9_stack->SetTitle("met_rebin9");
-   Double_t xAxis2[10] = {0, 25.78865, 31.57731, 37.36596, 43.46944, 49.8358, 56.20217, 66.70351, 88.0615, 380}; 
+   Double_t xAxis2[10] = {0, 25.79609, 31.59218, 37.38827, 43.50845, 49.89445, 56.28045, 66.89751, 88.35711, 380}; 
    
    TH1F *met_rebin9_stack_stack_1 = new TH1F("met_rebin9_stack_stack_1","met_rebin9",9, xAxis2);
    met_rebin9_stack_stack_1->SetMinimum(0);
-   met_rebin9_stack_stack_1->SetMaximum(507.6962);
+   met_rebin9_stack_stack_1->SetMaximum(502.2166);
    met_rebin9_stack_stack_1->SetDirectory(0);
    met_rebin9_stack_stack_1->SetStats(0);
    met_rebin9_stack_stack_1->SetLineStyle(0);
@@ -106,7 +106,7 @@ void met_rebin9()
    met_rebin9_stack_stack_1->GetZaxis()->SetTitleFont(42);
    met_rebin9_stack->SetHistogram(met_rebin9_stack_stack_1);
    
-   Double_t xAxis3[10] = {0, 25.78865, 31.57731, 37.36596, 43.46944, 49.8358, 56.20217, 66.70351, 88.0615, 380}; 
+   Double_t xAxis3[10] = {0, 25.79609, 31.59218, 37.38827, 43.50845, 49.89445, 56.28045, 66.89751, 88.35711, 380}; 
    
    TH1D *met_rebin9_fakes_VV_stack_1 = new TH1D("met_rebin9_fakes_VV_stack_1","dummy",9, xAxis3);
    met_rebin9_fakes_VV_stack_1->SetBinContent(5,0.2026171);
@@ -145,25 +145,25 @@ void met_rebin9()
    met_rebin9_fakes_VV_stack_1->GetZaxis()->SetTitleOffset(1);
    met_rebin9_fakes_VV_stack_1->GetZaxis()->SetTitleFont(42);
    met_rebin9_stack->Add(met_rebin9_fakes_VV_stack_1,"");
-   Double_t xAxis4[10] = {0, 25.78865, 31.57731, 37.36596, 43.46944, 49.8358, 56.20217, 66.70351, 88.0615, 380}; 
+   Double_t xAxis4[10] = {0, 25.79609, 31.59218, 37.38827, 43.50845, 49.89445, 56.28045, 66.89751, 88.35711, 380}; 
    
    TH1D *met_rebin9_fakes_TT_stack_2 = new TH1D("met_rebin9_fakes_TT_stack_2","dummy",9, xAxis4);
    met_rebin9_fakes_TT_stack_2->SetBinContent(2,1.831054);
    met_rebin9_fakes_TT_stack_2->SetBinContent(3,8.578365);
-   met_rebin9_fakes_TT_stack_2->SetBinContent(4,8.612003);
-   met_rebin9_fakes_TT_stack_2->SetBinContent(5,9.682299);
-   met_rebin9_fakes_TT_stack_2->SetBinContent(6,9.398338);
-   met_rebin9_fakes_TT_stack_2->SetBinContent(7,18.07495);
-   met_rebin9_fakes_TT_stack_2->SetBinContent(8,24.4098);
-   met_rebin9_fakes_TT_stack_2->SetBinContent(9,35.9218);
+   met_rebin9_fakes_TT_stack_2->SetBinContent(4,8.758882);
+   met_rebin9_fakes_TT_stack_2->SetBinContent(5,9.53542);
+   met_rebin9_fakes_TT_stack_2->SetBinContent(6,9.678002);
+   met_rebin9_fakes_TT_stack_2->SetBinContent(7,18.34746);
+   met_rebin9_fakes_TT_stack_2->SetBinContent(8,24.13506);
+   met_rebin9_fakes_TT_stack_2->SetBinContent(9,35.64438);
    met_rebin9_fakes_TT_stack_2->SetBinError(2,0.5080805);
    met_rebin9_fakes_TT_stack_2->SetBinError(3,1.099055);
-   met_rebin9_fakes_TT_stack_2->SetBinError(4,1.103297);
-   met_rebin9_fakes_TT_stack_2->SetBinError(5,1.191785);
-   met_rebin9_fakes_TT_stack_2->SetBinError(6,1.148816);
-   met_rebin9_fakes_TT_stack_2->SetBinError(7,1.624744);
-   met_rebin9_fakes_TT_stack_2->SetBinError(8,1.878072);
-   met_rebin9_fakes_TT_stack_2->SetBinError(9,2.281281);
+   met_rebin9_fakes_TT_stack_2->SetBinError(4,1.11303);
+   met_rebin9_fakes_TT_stack_2->SetBinError(5,1.182699);
+   met_rebin9_fakes_TT_stack_2->SetBinError(6,1.165714);
+   met_rebin9_fakes_TT_stack_2->SetBinError(7,1.636135);
+   met_rebin9_fakes_TT_stack_2->SetBinError(8,1.868029);
+   met_rebin9_fakes_TT_stack_2->SetBinError(9,2.272798);
    met_rebin9_fakes_TT_stack_2->SetEntries(840);
 
    ci = TColor::GetColor("#666666");
@@ -192,7 +192,7 @@ void met_rebin9()
    met_rebin9_fakes_TT_stack_2->GetZaxis()->SetTitleOffset(1);
    met_rebin9_fakes_TT_stack_2->GetZaxis()->SetTitleFont(42);
    met_rebin9_stack->Add(met_rebin9_fakes_TT_stack_2,"");
-   Double_t xAxis5[10] = {0, 25.78865, 31.57731, 37.36596, 43.46944, 49.8358, 56.20217, 66.70351, 88.0615, 380}; 
+   Double_t xAxis5[10] = {0, 25.79609, 31.59218, 37.38827, 43.50845, 49.89445, 56.28045, 66.89751, 88.35711, 380}; 
    
    TH1D *met_rebin9_fakes_DY_stack_3 = new TH1D("met_rebin9_fakes_DY_stack_3","dummy",9, xAxis5);
    met_rebin9_fakes_DY_stack_3->SetBinContent(2,32.15621);
@@ -200,16 +200,16 @@ void met_rebin9()
    met_rebin9_fakes_DY_stack_3->SetBinContent(4,72.19523);
    met_rebin9_fakes_DY_stack_3->SetBinContent(5,31.86075);
    met_rebin9_fakes_DY_stack_3->SetBinContent(6,21.83256);
-   met_rebin9_fakes_DY_stack_3->SetBinContent(7,11.20825);
-   met_rebin9_fakes_DY_stack_3->SetBinContent(8,18.03204);
+   met_rebin9_fakes_DY_stack_3->SetBinContent(7,14.88918);
+   met_rebin9_fakes_DY_stack_3->SetBinContent(8,14.35112);
    met_rebin9_fakes_DY_stack_3->SetBinContent(9,3.57414);
    met_rebin9_fakes_DY_stack_3->SetBinError(2,10.72257);
    met_rebin9_fakes_DY_stack_3->SetBinError(3,14.0311);
    met_rebin9_fakes_DY_stack_3->SetBinError(4,16.15154);
    met_rebin9_fakes_DY_stack_3->SetBinError(5,10.6301);
    met_rebin9_fakes_DY_stack_3->SetBinError(6,8.914254);
-   met_rebin9_fakes_DY_stack_3->SetBinError(7,6.471402);
-   met_rebin9_fakes_DY_stack_3->SetBinError(8,8.067785);
+   met_rebin9_fakes_DY_stack_3->SetBinError(7,7.445014);
+   met_rebin9_fakes_DY_stack_3->SetBinError(8,7.179135);
    met_rebin9_fakes_DY_stack_3->SetBinError(9,3.57414);
    met_rebin9_fakes_DY_stack_3->SetEntries(76);
 
@@ -239,23 +239,23 @@ void met_rebin9()
    met_rebin9_fakes_DY_stack_3->GetZaxis()->SetTitleOffset(1);
    met_rebin9_fakes_DY_stack_3->GetZaxis()->SetTitleFont(42);
    met_rebin9_stack->Add(met_rebin9_fakes_DY_stack_3,"");
-   Double_t xAxis6[10] = {0, 25.78865, 31.57731, 37.36596, 43.46944, 49.8358, 56.20217, 66.70351, 88.0615, 380}; 
+   Double_t xAxis6[10] = {0, 25.79609, 31.59218, 37.38827, 43.50845, 49.89445, 56.28045, 66.89751, 88.35711, 380}; 
    
    TH1D *met_rebin9_prompt_ZZ_stack_4 = new TH1D("met_rebin9_prompt_ZZ_stack_4","dummy",9, xAxis6);
    met_rebin9_prompt_ZZ_stack_4->SetBinContent(2,11.51117);
    met_rebin9_prompt_ZZ_stack_4->SetBinContent(3,34.61082);
    met_rebin9_prompt_ZZ_stack_4->SetBinContent(4,27.35629);
    met_rebin9_prompt_ZZ_stack_4->SetBinContent(5,19.34944);
-   met_rebin9_prompt_ZZ_stack_4->SetBinContent(6,16.61368);
-   met_rebin9_prompt_ZZ_stack_4->SetBinContent(7,15.3271);
+   met_rebin9_prompt_ZZ_stack_4->SetBinContent(6,17.37759);
+   met_rebin9_prompt_ZZ_stack_4->SetBinContent(7,14.56319);
    met_rebin9_prompt_ZZ_stack_4->SetBinContent(8,13.19301);
    met_rebin9_prompt_ZZ_stack_4->SetBinContent(9,15.64703);
    met_rebin9_prompt_ZZ_stack_4->SetBinError(2,2.103122);
    met_rebin9_prompt_ZZ_stack_4->SetBinError(3,3.6512);
    met_rebin9_prompt_ZZ_stack_4->SetBinError(4,3.248792);
    met_rebin9_prompt_ZZ_stack_4->SetBinError(5,2.737938);
-   met_rebin9_prompt_ZZ_stack_4->SetBinError(6,2.535395);
-   met_rebin9_prompt_ZZ_stack_4->SetBinError(7,2.425167);
+   met_rebin9_prompt_ZZ_stack_4->SetBinError(6,2.592298);
+   met_rebin9_prompt_ZZ_stack_4->SetBinError(7,2.364245);
    met_rebin9_prompt_ZZ_stack_4->SetBinError(8,2.26328);
    met_rebin9_prompt_ZZ_stack_4->SetBinError(9,2.475035);
    met_rebin9_prompt_ZZ_stack_4->SetEntries(402);
@@ -286,25 +286,25 @@ void met_rebin9()
    met_rebin9_prompt_ZZ_stack_4->GetZaxis()->SetTitleOffset(1);
    met_rebin9_prompt_ZZ_stack_4->GetZaxis()->SetTitleFont(42);
    met_rebin9_stack->Add(met_rebin9_prompt_ZZ_stack_4,"");
-   Double_t xAxis7[10] = {0, 25.78865, 31.57731, 37.36596, 43.46944, 49.8358, 56.20217, 66.70351, 88.0615, 380}; 
+   Double_t xAxis7[10] = {0, 25.79609, 31.59218, 37.38827, 43.50845, 49.89445, 56.28045, 66.89751, 88.35711, 380}; 
    
    TH1D *met_rebin9_prompt_WZ_stack_5 = new TH1D("met_rebin9_prompt_WZ_stack_5","dummy",9, xAxis7);
-   met_rebin9_prompt_WZ_stack_5->SetBinContent(2,87.61668);
-   met_rebin9_prompt_WZ_stack_5->SetBinContent(3,333.285);
-   met_rebin9_prompt_WZ_stack_5->SetBinContent(4,352.1447);
-   met_rebin9_prompt_WZ_stack_5->SetBinContent(5,339.979);
-   met_rebin9_prompt_WZ_stack_5->SetBinContent(6,293.3135);
-   met_rebin9_prompt_WZ_stack_5->SetBinContent(7,382.0123);
-   met_rebin9_prompt_WZ_stack_5->SetBinContent(8,427.8853);
-   met_rebin9_prompt_WZ_stack_5->SetBinContent(9,406.5608);
-   met_rebin9_prompt_WZ_stack_5->SetBinError(2,4.079345);
-   met_rebin9_prompt_WZ_stack_5->SetBinError(3,7.948182);
-   met_rebin9_prompt_WZ_stack_5->SetBinError(4,8.17328);
-   met_rebin9_prompt_WZ_stack_5->SetBinError(5,8.030458);
-   met_rebin9_prompt_WZ_stack_5->SetBinError(6,7.460412);
-   met_rebin9_prompt_WZ_stack_5->SetBinError(7,8.510007);
-   met_rebin9_prompt_WZ_stack_5->SetBinError(8,9.016933);
-   met_rebin9_prompt_WZ_stack_5->SetBinError(9,8.831266);
+   met_rebin9_prompt_WZ_stack_5->SetBinContent(2,88.35719);
+   met_rebin9_prompt_WZ_stack_5->SetBinContent(3,334.6466);
+   met_rebin9_prompt_WZ_stack_5->SetBinContent(4,352.5147);
+   met_rebin9_prompt_WZ_stack_5->SetBinContent(5,340.7489);
+   met_rebin9_prompt_WZ_stack_5->SetBinContent(6,293.102);
+   met_rebin9_prompt_WZ_stack_5->SetBinContent(7,384.4463);
+   met_rebin9_prompt_WZ_stack_5->SetBinContent(8,426.6223);
+   met_rebin9_prompt_WZ_stack_5->SetBinContent(9,402.3593);
+   met_rebin9_prompt_WZ_stack_5->SetBinError(2,4.096159);
+   met_rebin9_prompt_WZ_stack_5->SetBinError(3,7.964828);
+   met_rebin9_prompt_WZ_stack_5->SetBinError(4,8.177448);
+   met_rebin9_prompt_WZ_stack_5->SetBinError(5,8.039707);
+   met_rebin9_prompt_WZ_stack_5->SetBinError(6,7.457428);
+   met_rebin9_prompt_WZ_stack_5->SetBinError(7,8.536817);
+   met_rebin9_prompt_WZ_stack_5->SetBinError(8,9.004282);
+   met_rebin9_prompt_WZ_stack_5->SetBinError(9,8.785649);
    met_rebin9_prompt_WZ_stack_5->SetEntries(13824);
 
    ci = TColor::GetColor("#ffcc00");
@@ -334,27 +334,27 @@ void met_rebin9()
    met_rebin9_prompt_WZ_stack_5->GetZaxis()->SetTitleFont(42);
    met_rebin9_stack->Add(met_rebin9_prompt_WZ_stack_5,"");
    met_rebin9_stack->Draw("same hist");
-   Double_t xAxis8[10] = {0, 25.78865, 31.57731, 37.36596, 43.46944, 49.8358, 56.20217, 66.70351, 88.0615, 380}; 
+   Double_t xAxis8[10] = {0, 25.79609, 31.59218, 37.38827, 43.50845, 49.89445, 56.28045, 66.89751, 88.35711, 380}; 
    
    TH1D *met_rebin9_total__2 = new TH1D("met_rebin9_total__2","dummy",9, xAxis8);
-   met_rebin9_total__2->SetBinContent(2,133.1151);
-   met_rebin9_total__2->SetBinContent(3,430.7876);
-   met_rebin9_total__2->SetBinContent(4,460.3082);
-   met_rebin9_total__2->SetBinContent(5,401.0741);
-   met_rebin9_total__2->SetBinContent(6,341.3573);
-   met_rebin9_total__2->SetBinContent(7,427.2214);
-   met_rebin9_total__2->SetBinContent(8,483.5202);
-   met_rebin9_total__2->SetBinContent(9,462.1136);
-   met_rebin9_total__2->SetBinError(2,11.67458);
-   met_rebin9_total__2->SetBinError(3,16.5706);
-   met_rebin9_total__2->SetBinError(4,18.42408);
-   met_rebin9_total__2->SetBinError(5,13.65448);
-   met_rebin9_total__2->SetBinError(6,11.95447);
-   met_rebin9_total__2->SetBinError(7,11.08784);
-   met_rebin9_total__2->SetBinError(8,12.45166);
-   met_rebin9_total__2->SetBinError(9,10.1084);
+   met_rebin9_total__2->SetBinContent(2,133.8556);
+   met_rebin9_total__2->SetBinContent(3,432.1492);
+   met_rebin9_total__2->SetBinContent(4,460.8251);
+   met_rebin9_total__2->SetBinContent(5,401.6972);
+   met_rebin9_total__2->SetBinContent(6,342.1893);
+   met_rebin9_total__2->SetBinContent(7,432.8449);
+   met_rebin9_total__2->SetBinContent(8,478.3015);
+   met_rebin9_total__2->SetBinContent(9,457.6347);
+   met_rebin9_total__2->SetBinError(2,11.68046);
+   met_rebin9_total__2->SetBinError(3,16.57859);
+   met_rebin9_total__2->SetBinError(4,18.42652);
+   met_rebin9_total__2->SetBinError(5,13.65913);
+   met_rebin9_total__2->SetBinError(6,11.96644);
+   met_rebin9_total__2->SetBinError(7,11.69152);
+   met_rebin9_total__2->SetBinError(8,11.88398);
+   met_rebin9_total__2->SetBinError(9,10.06665);
    met_rebin9_total__2->SetMinimum(0);
-   met_rebin9_total__2->SetMaximum(967.0403);
+   met_rebin9_total__2->SetMaximum(956.603);
    met_rebin9_total__2->SetEntries(15153);
    met_rebin9_total__2->SetDirectory(0);
 
@@ -386,59 +386,59 @@ void met_rebin9()
    met_rebin9_total__2->Draw("AXIS SAME");
    
    Double_t met_rebin9_total_errors_fx3001[8] = {
-   28.68298,
-   34.47163,
-   40.4177,
-   46.65262,
-   53.01899,
-   61.45284,
-   77.3825,
-   234.0308};
+   28.69413,
+   34.49022,
+   40.44836,
+   46.70145,
+   53.08745,
+   61.58898,
+   77.62731,
+   234.1786};
    Double_t met_rebin9_total_errors_fy3001[8] = {
-   133.1151,
-   430.7876,
-   460.3082,
-   401.0741,
-   341.3573,
-   427.2214,
-   483.5202,
-   462.1136};
+   133.8556,
+   432.1492,
+   460.8251,
+   401.6972,
+   342.1893,
+   432.8449,
+   478.3015,
+   457.6347};
    Double_t met_rebin9_total_errors_felx3001[8] = {
-   2.894327,
-   2.894326,
-   3.051743,
-   3.18318,
-   3.183182,
-   5.250669,
-   10.679,
-   145.9692};
+   2.898046,
+   2.898044,
+   3.060093,
+   3.192997,
+   3.192999,
+   5.308531,
+   10.7298,
+   145.8214};
    Double_t met_rebin9_total_errors_fely3001[8] = {
-   15.79008,
-   31.32423,
-   37.36094,
-   24.94636,
-   26.01955,
-   30.0447,
-   46.27869,
-   42.21746};
+   41.71403,
+   33.64235,
+   48.36928,
+   29.62545,
+   32.459,
+   36.02165,
+   46.664,
+   41.57993};
    Double_t met_rebin9_total_errors_fehx3001[8] = {
-   2.894327,
-   2.894326,
-   3.051743,
-   3.18318,
-   3.183182,
-   5.250669,
-   10.679,
-   145.9692};
+   2.898046,
+   2.898044,
+   3.060093,
+   3.192997,
+   3.192999,
+   5.308531,
+   10.7298,
+   145.8214};
    Double_t met_rebin9_total_errors_fehy3001[8] = {
-   12.98884,
-   38.08556,
-   36.85185,
-   29.27948,
-   27.12498,
-   34.52428,
-   43.42516,
-   52.23517};
+   14.01866,
+   54.89959,
+   43.51792,
+   41.75828,
+   26.22241,
+   41.78365,
+   45.72169,
+   50.18319};
    TGraphAsymmErrors *grae = new TGraphAsymmErrors(8,met_rebin9_total_errors_fx3001,met_rebin9_total_errors_fy3001,met_rebin9_total_errors_felx3001,met_rebin9_total_errors_fehx3001,met_rebin9_total_errors_fely3001,met_rebin9_total_errors_fehy3001);
    grae->SetName("met_rebin9_total_errors");
    grae->SetTitle("Graph");
@@ -446,9 +446,9 @@ void met_rebin9()
    grae->SetFillStyle(3013);
    grae->SetMarkerStyle(0);
    
-   TH1F *Graph_met_rebin9_total_errors3001 = new TH1F("Graph_met_rebin9_total_errors3001","Graph",100,0,415.4211);
-   Graph_met_rebin9_total_errors3001->SetMinimum(76.36301);
-   Graph_met_rebin9_total_errors3001->SetMaximum(567.9073);
+   TH1F *Graph_met_rebin9_total_errors3001 = new TH1F("Graph_met_rebin9_total_errors3001","Graph",100,0,415.4204);
+   Graph_met_rebin9_total_errors3001->SetMinimum(48.95344);
+   Graph_met_rebin9_total_errors3001->SetMaximum(567.2113);
    Graph_met_rebin9_total_errors3001->SetDirectory(0);
    Graph_met_rebin9_total_errors3001->SetStats(0);
    Graph_met_rebin9_total_errors3001->SetLineStyle(0);
