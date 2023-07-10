@@ -8,29 +8,29 @@ class producer(object):
     modules = { 
         "2022": {
             1 : {"data" : None, 
-                 "mc"   : "jmeUncertainties", 
-                 "addmethod" : "simple", 
-                 "outname" : "jmeUncertainties"},
+                 "mc"   : "jmeUncertainties_v2", 
+                 "addmethod" : "mc", 
+                 "outname" : "jmeUncertainties_v2"},
 
             2 : {"data" : "leptonJetRecleaning",
-                 "mc"   : "leptonJetRecleaning",
+                 "mc"   : "leptonJetRecleaning_v2",
                  "addmethod" : "simple",
-                 "outname" : "leptonJetRecleaning" },
+                 "outname" : "leptonJetRecleaning_v2" },
 
             3 : {"data" : "leptonBuilder",
-                 "mc"   : "leptonBuilder",
+                 "mc"   : "leptonBuilder_v2",
                  "addmethod" : "simple",
-                 "outname" : "leptonBuilder"},
+                 "outname" : "leptonBuilder_v2"},
 
             4 : {"data" : "triggerSequence",
-                 "mc"   : "triggerSequence",
+                 "mc"   : "triggerSequence_v2",
                  "addmethod" : "simple",
-                 "outname" : "triggerSequence"},
+                 "outname" : "triggerSequence_v2"},
 
             5 : {"data" : None,
-                 "mc"   : "scalefactors",
-                 "addmethod" : "simple",
-                 "outname" : "scalefactors"}
+                 "mc"   : "scalefactors_v2",
+                 "addmethod" : "mc",
+                 "outname" : "scalefactors_v2"}
         },
         "2022EE": {
             1 : {"data" : "jmeCorrections_data_EE", 
@@ -140,7 +140,7 @@ class producer(object):
             addmethod = module["addmethod"]
             if addmethod == "mc": 
                 friends.append( " --FMCs {P}/%s "%(modulename))
-            if addmethod == "mc": 
+            if addmethod == "data": 
                 friends.append( " --FDs {P}/%s "%(modulename))
             if addmethod == "simple": 
                 friends.append( " --Fs {P}/%s "%(modulename))

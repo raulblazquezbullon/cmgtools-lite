@@ -1,7 +1,7 @@
 void flavor3l()
 {
 //=========Macro generated from canvas: flavor3l_canvas/flavor3l
-//=========  (Thu Jul  6 17:31:37 2023) by ROOT version 6.24/07
+//=========  (Mon Jul 10 18:32:40 2023) by ROOT version 6.24/07
    TCanvas *flavor3l_canvas = new TCanvas("flavor3l_canvas", "flavor3l",0,0,600,750);
    gStyle->SetOptFit(1);
    gStyle->SetOptStat(0);
@@ -66,14 +66,14 @@ void flavor3l()
    flavor3l_total__9->GetXaxis()->SetMoreLogLabels();
    flavor3l_total__9->GetXaxis()->SetLabelFont(42);
    flavor3l_total__9->GetXaxis()->SetLabelOffset(999);
-   flavor3l_total__9->GetXaxis()->SetLabelSize(0.04);
+   flavor3l_total__9->GetXaxis()->SetLabelSize(0.06);
    flavor3l_total__9->GetXaxis()->SetTitleSize(0.05);
    flavor3l_total__9->GetXaxis()->SetTitleOffset(999);
    flavor3l_total__9->GetXaxis()->SetTitleFont(42);
    flavor3l_total__9->GetYaxis()->SetTitle("Events");
    flavor3l_total__9->GetYaxis()->SetLabelFont(42);
    flavor3l_total__9->GetYaxis()->SetLabelOffset(0.007);
-   flavor3l_total__9->GetYaxis()->SetLabelSize(0.04);
+   flavor3l_total__9->GetYaxis()->SetLabelSize(0.06);
    flavor3l_total__9->GetYaxis()->SetTitleSize(0.06);
    flavor3l_total__9->GetYaxis()->SetTitleOffset(1.48);
    flavor3l_total__9->GetYaxis()->SetTitleFont(42);
@@ -332,14 +332,14 @@ void flavor3l()
    flavor3l_total__10->GetXaxis()->SetMoreLogLabels();
    flavor3l_total__10->GetXaxis()->SetLabelFont(42);
    flavor3l_total__10->GetXaxis()->SetLabelOffset(999);
-   flavor3l_total__10->GetXaxis()->SetLabelSize(0.04);
+   flavor3l_total__10->GetXaxis()->SetLabelSize(0.06);
    flavor3l_total__10->GetXaxis()->SetTitleSize(0.05);
    flavor3l_total__10->GetXaxis()->SetTitleOffset(999);
    flavor3l_total__10->GetXaxis()->SetTitleFont(42);
    flavor3l_total__10->GetYaxis()->SetTitle("Events");
    flavor3l_total__10->GetYaxis()->SetLabelFont(42);
    flavor3l_total__10->GetYaxis()->SetLabelOffset(0.007);
-   flavor3l_total__10->GetYaxis()->SetLabelSize(0.04);
+   flavor3l_total__10->GetYaxis()->SetLabelSize(0.06);
    flavor3l_total__10->GetYaxis()->SetTitleSize(0.06);
    flavor3l_total__10->GetYaxis()->SetTitleOffset(1.48);
    flavor3l_total__10->GetYaxis()->SetTitleFont(42);
@@ -367,19 +367,19 @@ void flavor3l()
    0.5,
    0.5};
    Double_t flavor3l_total_errors_fely3011[4] = {
-   36.6349,
-   35.9505,
-   74.47821,
-   81.03113};
+   60.33226,
+   55.89183,
+   79.29243,
+   79.17085};
    Double_t flavor3l_total_errors_fehx3011[4] = {
    0.5,
    0.5,
    0.5,
    0.5};
    Double_t flavor3l_total_errors_fehy3011[4] = {
-   31.92705,
-   36.41655,
-   73.22905,
+   61.90898,
+   57.48258,
+   79.81014,
    79.1587};
    TGraphAsymmErrors *grae = new TGraphAsymmErrors(4,flavor3l_total_errors_fx3011,flavor3l_total_errors_fy3011,flavor3l_total_errors_felx3011,flavor3l_total_errors_fehx3011,flavor3l_total_errors_fely3011,flavor3l_total_errors_fehy3011);
    grae->SetName("flavor3l_total_errors");
@@ -389,8 +389,8 @@ void flavor3l()
    grae->SetMarkerStyle(0);
    
    TH1F *Graph_flavor3l_total_errors3011 = new TH1F("Graph_flavor3l_total_errors3011","Graph",100,-0.9,3.9);
-   Graph_flavor3l_total_errors3011->SetMinimum(342.0537);
-   Graph_flavor3l_total_errors3011->SetMaximum(1349.16);
+   Graph_flavor3l_total_errors3011->SetMinimum(315.9866);
+   Graph_flavor3l_total_errors3011->SetMaximum(1351.53);
    Graph_flavor3l_total_errors3011->SetDirectory(0);
    Graph_flavor3l_total_errors3011->SetStats(0);
    Graph_flavor3l_total_errors3011->SetLineStyle(0);
@@ -621,7 +621,7 @@ tex->SetNDC();
    flavor3l_total__11->GetXaxis()->SetMoreLogLabels();
    flavor3l_total__11->GetXaxis()->SetLabelFont(42);
    flavor3l_total__11->GetXaxis()->SetLabelOffset(0.015);
-   flavor3l_total__11->GetXaxis()->SetLabelSize(0.04);
+   flavor3l_total__11->GetXaxis()->SetLabelSize(0.06);
    flavor3l_total__11->GetXaxis()->SetTitleSize(0.14);
    flavor3l_total__11->GetXaxis()->SetTitleOffset(1);
    flavor3l_total__11->GetXaxis()->SetTitleFont(42);
@@ -630,7 +630,7 @@ tex->SetNDC();
    flavor3l_total__11->GetYaxis()->SetNdivisions(505);
    flavor3l_total__11->GetYaxis()->SetLabelFont(42);
    flavor3l_total__11->GetYaxis()->SetLabelOffset(0.01);
-   flavor3l_total__11->GetYaxis()->SetLabelSize(0.04);
+   flavor3l_total__11->GetYaxis()->SetLabelSize(0.06);
    flavor3l_total__11->GetYaxis()->SetTitleSize(0.14);
    flavor3l_total__11->GetYaxis()->SetTitleOffset(0.62);
    flavor3l_total__11->GetYaxis()->SetTitleFont(42);
@@ -658,19 +658,19 @@ tex->SetNDC();
    0.5,
    0.5};
    Double_t flavor3l_total_errors_fely3013[4] = {
-   0.07919104,
-   0.06280188,
-   0.08109879,
-   0.06831866};
+   0.1304159,
+   0.09763735,
+   0.08634097,
+   0.06675022};
    Double_t flavor3l_total_errors_fehx3013[4] = {
    0.5,
    0.5,
    0.5,
    0.5};
    Double_t flavor3l_total_errors_fehy3013[4] = {
-   0.06901442,
-   0.063616,
-   0.0797386,
+   0.1338242,
+   0.1004162,
+   0.0869047,
    0.06673998};
    grae = new TGraphAsymmErrors(4,flavor3l_total_errors_fx3013,flavor3l_total_errors_fy3013,flavor3l_total_errors_felx3013,flavor3l_total_errors_fehx3013,flavor3l_total_errors_fely3013,flavor3l_total_errors_fehy3013);
    grae->SetName("flavor3l_total_errors");
@@ -744,7 +744,7 @@ tex->SetNDC();
    flavor3l_total__12->GetXaxis()->SetMoreLogLabels();
    flavor3l_total__12->GetXaxis()->SetLabelFont(42);
    flavor3l_total__12->GetXaxis()->SetLabelOffset(0.015);
-   flavor3l_total__12->GetXaxis()->SetLabelSize(0.04);
+   flavor3l_total__12->GetXaxis()->SetLabelSize(0.06);
    flavor3l_total__12->GetXaxis()->SetTitleSize(0.14);
    flavor3l_total__12->GetXaxis()->SetTitleOffset(1);
    flavor3l_total__12->GetXaxis()->SetTitleFont(42);
@@ -753,7 +753,7 @@ tex->SetNDC();
    flavor3l_total__12->GetYaxis()->SetNdivisions(505);
    flavor3l_total__12->GetYaxis()->SetLabelFont(42);
    flavor3l_total__12->GetYaxis()->SetLabelOffset(0.01);
-   flavor3l_total__12->GetYaxis()->SetLabelSize(0.04);
+   flavor3l_total__12->GetYaxis()->SetLabelSize(0.06);
    flavor3l_total__12->GetYaxis()->SetTitleSize(0.14);
    flavor3l_total__12->GetYaxis()->SetTitleOffset(0.62);
    flavor3l_total__12->GetYaxis()->SetTitleFont(42);

@@ -27,6 +27,7 @@ class plot_producer(producer):
         # --- More options for customization --- #
         parser.add_option("--region", dest = "region", default = "srwz",
                   help = ''' Region for cut application.''')
+        parser.add_option("--unblind",dest = "unblind",default = False,action = "store_true")
         return
     
     '''
@@ -57,6 +58,7 @@ class plot_producer(producer):
         mincuts  = self.get_cut(self.region)
         uncfile  = self.uncfile
         lumi     = lumis[year]
+        unblind    = self.unblind
 
 
         # Other plotting stuff 
@@ -90,7 +92,7 @@ class plot_producer(producer):
                        "-j %s"%(self.ncores),
                        "%s"%mincuts,
                        "--unc %s"%uncfile,
-                       "--xp data",
+                       "" if unblind else "--xp data",
                        "%s"%extra]
         return
 

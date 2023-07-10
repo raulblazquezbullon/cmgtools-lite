@@ -206,7 +206,7 @@ if __name__ == "__main__":
 	niceplot  = opts.niceplot
 
 	# == Rootfile with unrebinned plots
-	inpath = "~rblazquez/TFG/ejemplo/plots_wz.root" # Path to plot variables, user must run wz-run.py before using this script
+	inpath = "./check_discriminant_vars/plots_wz.root" # Path to plot variables, user must run wz-run.py before using this script
 	outpath = "./check_discriminant_vars/"
 	
 	fancy_vars = {'m3l' : 'm_{3L}','met' : 'p_{T}^{miss}','m3lmet_Meas' : 'm_{WZ}'}

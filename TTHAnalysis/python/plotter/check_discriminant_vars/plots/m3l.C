@@ -1,7 +1,7 @@
 void m3l()
 {
 //=========Macro generated from canvas: m3l_canvas/m3l
-//=========  (Thu Jul  6 17:28:40 2023) by ROOT version 6.24/07
+//=========  (Mon Jul 10 18:28:50 2023) by ROOT version 6.24/07
    TCanvas *m3l_canvas = new TCanvas("m3l_canvas", "m3l",0,0,600,750);
    gStyle->SetOptFit(1);
    gStyle->SetOptStat(0);
@@ -70,14 +70,14 @@ void m3l()
    m3l_total__1->GetXaxis()->SetMoreLogLabels();
    m3l_total__1->GetXaxis()->SetLabelFont(42);
    m3l_total__1->GetXaxis()->SetLabelOffset(999);
-   m3l_total__1->GetXaxis()->SetLabelSize(0.04);
+   m3l_total__1->GetXaxis()->SetLabelSize(0.06);
    m3l_total__1->GetXaxis()->SetTitleSize(0.05);
    m3l_total__1->GetXaxis()->SetTitleOffset(999);
    m3l_total__1->GetXaxis()->SetTitleFont(42);
    m3l_total__1->GetYaxis()->SetTitle("Events");
    m3l_total__1->GetYaxis()->SetLabelFont(42);
    m3l_total__1->GetYaxis()->SetLabelOffset(0.007);
-   m3l_total__1->GetYaxis()->SetLabelSize(0.04);
+   m3l_total__1->GetYaxis()->SetLabelSize(0.06);
    m3l_total__1->GetYaxis()->SetTitleSize(0.06);
    m3l_total__1->GetYaxis()->SetTitleOffset(1.48);
    m3l_total__1->GetYaxis()->SetTitleFont(42);
@@ -370,14 +370,14 @@ void m3l()
    m3l_total__2->GetXaxis()->SetMoreLogLabels();
    m3l_total__2->GetXaxis()->SetLabelFont(42);
    m3l_total__2->GetXaxis()->SetLabelOffset(999);
-   m3l_total__2->GetXaxis()->SetLabelSize(0.04);
+   m3l_total__2->GetXaxis()->SetLabelSize(0.06);
    m3l_total__2->GetXaxis()->SetTitleSize(0.05);
    m3l_total__2->GetXaxis()->SetTitleOffset(999);
    m3l_total__2->GetXaxis()->SetTitleFont(42);
    m3l_total__2->GetYaxis()->SetTitle("Events");
    m3l_total__2->GetYaxis()->SetLabelFont(42);
    m3l_total__2->GetYaxis()->SetLabelOffset(0.007);
-   m3l_total__2->GetYaxis()->SetLabelSize(0.04);
+   m3l_total__2->GetYaxis()->SetLabelSize(0.06);
    m3l_total__2->GetYaxis()->SetTitleSize(0.06);
    m3l_total__2->GetYaxis()->SetTitleOffset(1.48);
    m3l_total__2->GetYaxis()->SetTitleFont(42);
@@ -417,14 +417,14 @@ void m3l()
    25,
    25};
    Double_t m3l_total_errors_fely3001[8] = {
-   79.58206,
-   70.37541,
-   37.58327,
-   18.38711,
-   8.812685,
-   4.769957,
-   3.460257,
-   6.640009};
+   80.88734,
+   78.513,
+   42.55391,
+   24.12442,
+   10.27447,
+   5.87408,
+   4.523655,
+   9.712036};
    Double_t m3l_total_errors_fehx3001[8] = {
    25,
    25,
@@ -435,14 +435,14 @@ void m3l()
    25,
    25};
    Double_t m3l_total_errors_fehy3001[8] = {
-   70.04349,
-   71.60046,
-   38.1778,
-   18.28959,
-   8.470698,
-   4.472377,
-   3.371086,
-   6.734991};
+   78.69214,
+   81.51339,
+   44.5182,
+   21.88382,
+   9.943723,
+   5.729107,
+   4.605805,
+   10.14456};
    TGraphAsymmErrors *grae = new TGraphAsymmErrors(8,m3l_total_errors_fx3001,m3l_total_errors_fy3001,m3l_total_errors_felx3001,m3l_total_errors_fehx3001,m3l_total_errors_fely3001,m3l_total_errors_fehy3001);
    grae->SetName("m3l_total_errors");
    grae->SetTitle("Graph");
@@ -451,8 +451,8 @@ void m3l()
    grae->SetMarkerStyle(0);
    
    TH1F *Graph_m3l_total_errors3001 = new TH1F("Graph_m3l_total_errors3001","Graph",100,60,540);
-   Graph_m3l_total_errors3001->SetMinimum(47.04288);
-   Graph_m3l_total_errors3001->SetMaximum(1234.11);
+   Graph_m3l_total_errors3001->SetMinimum(46.08582);
+   Graph_m3l_total_errors3001->SetMaximum(1245.12);
    Graph_m3l_total_errors3001->SetDirectory(0);
    Graph_m3l_total_errors3001->SetStats(0);
    Graph_m3l_total_errors3001->SetLineStyle(0);
@@ -719,7 +719,7 @@ tex->SetNDC();
    m3l_total__3->GetXaxis()->SetMoreLogLabels();
    m3l_total__3->GetXaxis()->SetLabelFont(42);
    m3l_total__3->GetXaxis()->SetLabelOffset(0.015);
-   m3l_total__3->GetXaxis()->SetLabelSize(0.04);
+   m3l_total__3->GetXaxis()->SetLabelSize(0.06);
    m3l_total__3->GetXaxis()->SetTitleSize(0.14);
    m3l_total__3->GetXaxis()->SetTitleOffset(1);
    m3l_total__3->GetXaxis()->SetTitleFont(42);
@@ -728,7 +728,7 @@ tex->SetNDC();
    m3l_total__3->GetYaxis()->SetNdivisions(505);
    m3l_total__3->GetYaxis()->SetLabelFont(42);
    m3l_total__3->GetYaxis()->SetLabelOffset(0.01);
-   m3l_total__3->GetYaxis()->SetLabelSize(0.04);
+   m3l_total__3->GetYaxis()->SetLabelSize(0.06);
    m3l_total__3->GetYaxis()->SetTitleSize(0.14);
    m3l_total__3->GetYaxis()->SetTitleOffset(0.62);
    m3l_total__3->GetYaxis()->SetTitleFont(42);
@@ -768,14 +768,14 @@ tex->SetNDC();
    25,
    25};
    Double_t m3l_total_errors_fely3003[8] = {
-   0.09078189,
-   0.06670217,
-   0.06782272,
-   0.06620205,
-   0.06345515,
-   0.06518955,
-   0.06208953,
-   0.06140447};
+   0.09227086,
+   0.07441503,
+   0.07679272,
+   0.08685898,
+   0.07398064,
+   0.08027926,
+   0.08117073,
+   0.0898135};
    Double_t m3l_total_errors_fehx3003[8] = {
    25,
    25,
@@ -786,14 +786,14 @@ tex->SetNDC();
    25,
    25};
    Double_t m3l_total_errors_fehy3003[8] = {
-   0.07990092,
-   0.06786328,
-   0.06889561,
-   0.06585092,
-   0.0609927,
-   0.06112261,
-   0.06048948,
-   0.06228283};
+   0.08976673,
+   0.07725881,
+   0.08033748,
+   0.07879182,
+   0.07159911,
+   0.07829796,
+   0.0826448,
+   0.09381329};
    grae = new TGraphAsymmErrors(8,m3l_total_errors_fx3003,m3l_total_errors_fy3003,m3l_total_errors_felx3003,m3l_total_errors_fehx3003,m3l_total_errors_fely3003,m3l_total_errors_fehy3003);
    grae->SetName("m3l_total_errors");
    grae->SetTitle("Graph");
@@ -890,7 +890,7 @@ tex->SetNDC();
    m3l_total__4->GetXaxis()->SetMoreLogLabels();
    m3l_total__4->GetXaxis()->SetLabelFont(42);
    m3l_total__4->GetXaxis()->SetLabelOffset(0.015);
-   m3l_total__4->GetXaxis()->SetLabelSize(0.04);
+   m3l_total__4->GetXaxis()->SetLabelSize(0.06);
    m3l_total__4->GetXaxis()->SetTitleSize(0.14);
    m3l_total__4->GetXaxis()->SetTitleOffset(1);
    m3l_total__4->GetXaxis()->SetTitleFont(42);
@@ -899,7 +899,7 @@ tex->SetNDC();
    m3l_total__4->GetYaxis()->SetNdivisions(505);
    m3l_total__4->GetYaxis()->SetLabelFont(42);
    m3l_total__4->GetYaxis()->SetLabelOffset(0.01);
-   m3l_total__4->GetYaxis()->SetLabelSize(0.04);
+   m3l_total__4->GetYaxis()->SetLabelSize(0.06);
    m3l_total__4->GetYaxis()->SetTitleSize(0.14);
    m3l_total__4->GetYaxis()->SetTitleOffset(0.62);
    m3l_total__4->GetYaxis()->SetTitleFont(42);
