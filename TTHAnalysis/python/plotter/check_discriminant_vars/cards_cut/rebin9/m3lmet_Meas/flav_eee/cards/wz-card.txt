@@ -1,0 +1,29 @@
+shapes *        * wz-card.root x_$PROCESS x_$PROCESS_$SYSTEMATIC
+##----------------------------------
+bin         wz-card
+observation 462.61418659400624
+##----------------------------------
+##----------------------------------
+bin                             wz-card     wz-card     wz-card     wz-card     wz-card 
+process                       prompt_WZ   prompt_ZZ    fakes_DY    fakes_TT    fakes_VV 
+process                               0           2           3           4           5 
+rate                            391.941      18.318      41.273      10.682       0.400 
+##----------------------------------
+FSR                     shape         1           -           -           -           - 
+ISR                     shape         1           -           -           -           - 
+elecidsf                shape         1           1           1           1           1 
+jesAbsolute             shape         1           1           1           1           1 
+jesAbsolute_year        shape         1           1           1           1           1 
+jesBBEC1                shape         1           1           1           1           1 
+jesBBEC1_year           shape         1           1           1           1           1 
+jesEC2                  shape         1           1           1           1           1 
+jesEC2_year             shape         1           1           1           1           1 
+jesFlavorQCD            shape         1           1           1           1           1 
+jesHF                   shape         1           1           1           1           1 
+jesHF_year              shape         1           1           1           1           1 
+jesRelativeBal          shape         1           1           1           1           1 
+jesRelativeSample_year  shape         1           1           1           1           1 
+lumi_2022_early           lnN     1.060       1.060       1.060       1.060   0.943/1.060 
+normZZ                    lnN         -       1.060           -           -           - 
+normfakes                 lnN         -           -       1.300       1.300   0.769/1.300 
+* autoMCStats 10

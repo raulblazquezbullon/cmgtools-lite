@@ -75,6 +75,7 @@ def add_parsing_options():
 						help = "Extra options for mcPlots, user must give extra options between ' '")
 	parser.add_argument("--do-submit", dest = "submit",action = "store_true",default = False)
 	parser.add_argument("--niceplot",  dest = "niceplot",action = "store_true",default = False)
+	parser.add_argument("--card_cut",    dest = "card_cut",default = "")
 
 	return parser.parse_args()   
 
@@ -173,18 +174,12 @@ def make_cards(options):
 	'''
 	comm = "python wz-run3/wz-run.py card" # Raw command, let's add some options
 	
-	if "" not in options[8]: # Fixing syntax to pass the command to wz-run.py
-		extra_opt = " --".join(options[8])
-		extra_opt = "".join(["'--",extra_opt,"'"])
-		
-	else: extra_opt = "".join(options[8]) # If extra is not provided, it is taken as an empty string in a list
-	
 	new_bin = [str(bins) for bins in options[9]]
 	new_bin = "[" + ",".join(new_bin) + "]"
 		
 	# Now we add other options like run local, do submit, number of cores, etc
 	comm += " --outname " + options[0] + " --ncores " + options[1] + (" --run-local")*int(options[-1]) +\
-			(" --extra " + extra_opt)*(len(extra_opt) != 0) + (" --do-submit")*int(options[-2]) +\
+			(" --extra " + options[8])*(len(options[8]) != 0) + (" --do-submit")*int(options[-2]) +\
 			" --binning %s"%(new_bin) +	" --cutfile %s"%(options[7]) + " --var %s"%(options[10])
 	
 	cmd = subprocess.check_output(comm,shell = True).decode("utf-8")
@@ -204,6 +199,7 @@ if __name__ == "__main__":
 	submit 	  = opts.submit
 	extra 	  = opts.extra
 	niceplot  = opts.niceplot
+	card_cut  = opts.card_cut.split(",")
 
 	# == Rootfile with unrebinned plots
 	inpath = "./check_discriminant_vars/plots/plots_wz.root" # Path to plot variables, user must run wz-run.py before using this script
@@ -241,8 +237,19 @@ if __name__ == "__main__":
 				
 			elif mode == "card":
 				filename = "./wz-run3/separate-studies/bining_optimization/{var}_{nq}_plots.txt".format(var = var, nq = nq)
-				
-				out_new = out + "./cards/"
-				pars = (out_new, cores, lumis[year], year, filename, var, nq, cut, extra, rebining, var_to_comm, submit, local)
-				batchcomm = make_cards(pars)
-				print(batchcomm)
+				if "" not in card_cut:
+					for cut_var in card_cut:
+						out_new = "./check_discriminant_vars/cards_cut/rebin%s/%s/%s/cards/" %(nq,var,cut_var)
+						
+						if "" not in extra: extra_opt = extra[-1] + "-E %s'" %cut_var
+						else: extra_new = "'-E %s'" %cut_var
+						
+						pars = (out_new, cores, lumis[year], year, filename, var, nq, cut, extra_new, rebining, var_to_comm, submit, local)
+						batchcomm = make_cards(pars)
+						print(batchcomm)
+					
+				else:
+					out_new = out + "./cards/"
+					pars = (out_new, cores, lumis[year], year, filename, var, nq, cut, extra, rebining, var_to_comm, submit, local)
+					batchcomm = make_cards(pars)
+					print(batchcomm)
