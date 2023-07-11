@@ -65,7 +65,7 @@ if __name__ == "__main__":
             print(out2)
             
             print(">>> Performing scan")
-            cmd3 = "cd %s; combineTool.py -M MultiDimFit --algo grid --points 200 --rMin 0 --rMax 6 -m 125 -d workspace.root %s --redefineSignalPOI r_prompt_WZ -n nominal --job-mode slurm --sub-opts='-p batch'; cd -" %(inpath,doBlind)
+            cmd3 = "cd %s; combineTool.py -M MultiDimFit --algo grid --points 200 --rMin 0 --rMax 6 -m 125 -d workspace.root %s --redefineSignalPOI r_prompt_WZ -n nominal --freezeParameters r_prompt_ZZ --job-mode slurm --sub-opts='-p batch'; cd -" %(inpath,doBlind)
             print("Running the following command: " + cmd3)
             out3 = subprocess.check_output(cmd3,shell = True).decode("utf-8")
             print(out3)
@@ -74,13 +74,13 @@ if __name__ == "__main__":
             time.sleep(seconds)
             
             print(">>> Saving snapshot")
-            cmd4 = "cd %s; combineTool.py -M MultiDimFit --algo none --rMin 0 --rMax 6 -m 125 -d workspace.root %s --redefineSignalPOI r_prompt_WZ -n bestfit --saveWorkspace; cd -" %(inpath,doBlind)
+            cmd4 = "cd %s; combineTool.py -M MultiDimFit --algo none --rMin 0 --rMax 6 -m 125 -d workspace.root %s --redefineSignalPOI r_prompt_WZ -n bestfit --freezeParameters r_prompt_ZZ --saveWorkspace; cd -" %(inpath,doBlind)
             print("Running the following command: " + cmd4)
             out4 = subprocess.check_output(cmd4,shell = True).decode("utf-8")
             print(out4)
             
             print(">>> Finding statistic")
-            cmd5 = "cd %s; combineTool.py -M MultiDimFit --algo grid --points 200 --rMin 0 --rMax 6 -m 125 higgsCombinebestfit.MultiDimFit.mH125.root %s --freezeParameters allConstrainedNuisances --redefineSignalPOI r_prompt_WZ -n _stat --job-mode slurm --sub-opts='-p batch'; cd -" %(inpath,doBlind)
+            cmd5 = "cd %s; combineTool.py -M MultiDimFit --algo grid --points 200 --rMin 0 --rMax 6 -m 125 higgsCombinebestfit.MultiDimFit.mH125.root %s --freezeParameters r_prompt_ZZ,allConstrainedNuisances --redefineSignalPOI r_prompt_WZ -n _stat --job-mode slurm --sub-opts='-p batch'; cd -" %(inpath,doBlind)
             print("Running the following command: " + cmd5)
             out5 = subprocess.check_output(cmd5,shell = True).decode("utf-8")
             print(out5)
@@ -89,7 +89,7 @@ if __name__ == "__main__":
             time.sleep(seconds)
             
             print(">>> Plotting scan")
-            cmd6 = "cd %s; plot1DScan.py higgsCombinenominal.MultiDimFit.mH125.root --POI r_prompt_WZ  --others 'higgsCombine_stat.MultiDimFit.mH125.root:FreezeAll:2'  --breakdown Syst,Stat --logo-sub Academic; cd -" %inpath
+            cmd6 = "cd %s; plot1DScan.py higgsCombinenominal.MultiDimFit.mH125.root --POI r_prompt_WZ  --others 'higgsCombine_stat.MultiDimFit.mH125.root:Stat-only:2'  --breakdown Syst,Stat --logo-sub Academic; cd -" %inpath
             out6 = subprocess.check_output(cmd6,shell = True).decode("utf-8")
             print(out6)
             
