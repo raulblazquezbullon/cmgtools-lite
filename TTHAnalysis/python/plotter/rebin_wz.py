@@ -76,6 +76,7 @@ def add_parsing_options():
 	parser.add_argument("--do-submit", dest = "submit",action = "store_true",default = False)
 	parser.add_argument("--niceplot",  dest = "niceplot",action = "store_true",default = False)
 	parser.add_argument("--card_cut",    dest = "card_cut",default = "")
+	parser.add_argument("--unblind",dest = "unblind",default = False,action = "store_true")
 
 	return parser.parse_args()   
 
@@ -113,8 +114,9 @@ def make_plots(options):
 		8. Cut file
 		9. Extra options for mcPlots
 		10. Extra options for mcPlots to make nice plots
-		11. Submit command directly (maintain this as the second to last)
-		12. Run local (maintain this as the last one)
+		11. Unblind
+		12. Submit command directly (maintain this as the second to last)
+		13. Run local (maintain this as the last one)
 		
 	Returns
 	-------
@@ -139,7 +141,7 @@ def make_plots(options):
 	# Now we add other options like run local, do submit, number of cores, etc
 	comm += " --outname " + options[0] + " --ncores " + options[1] + (" --run-local")*int(options[-1]) +\
 			" --extra " + extra_opt + (" --do-submit")*int(options[-2]) + " --plotfile %s"%(options[4]) +\
-			" --cutfile %s"%(options[7])
+			" --cutfile %s"%(options[7]) + " --unblind"*int(options[10])
 	
 	cmd = subprocess.check_output(comm,shell = True).decode("utf-8")
 	return cmd
@@ -164,8 +166,9 @@ def make_cards(options):
 		9. Extra options (for makeShapeCards_wzRun3.py)
 		10. Rebinned quantiles
 		11. Variable command name of the variable in plots_wz.txt
-		12. Submit command directly (maintain this as the second to last)
-		13. Run local (maintain this as the last one)
+		12. Unblind
+		13. Submit command directly (maintain this as the second to last)
+		14. Run local (maintain this as the last one)
 		
 	Returns
 	-------
@@ -180,7 +183,8 @@ def make_cards(options):
 	# Now we add other options like run local, do submit, number of cores, etc
 	comm += " --outname " + options[0] + " --ncores " + options[1] + (" --run-local")*int(options[-1]) +\
 			(" --extra " + options[8])*(len(options[8]) != 0) + (" --do-submit")*int(options[-2]) +\
-			" --binning %s"%(new_bin) +	" --cutfile %s"%(options[7]) + " --var %s"%(options[10])
+			" --binning %s"%(new_bin) +	" --cutfile %s"%(options[7]) + " --var %s"%(options[10]) +\
+			 (" --unblind")*int(options[11])
 	
 	cmd = subprocess.check_output(comm,shell = True).decode("utf-8")
 	return cmd
@@ -200,6 +204,7 @@ if __name__ == "__main__":
 	extra 	  = opts.extra
 	niceplot  = opts.niceplot
 	card_cut  = opts.card_cut.split(",")
+	unblind   = opts.unblind
 
 	# == Rootfile with unrebinned plots
 	inpath = "./check_discriminant_vars/plots/plots_wz.root" # Path to plot variables, user must run wz-run.py before using this script
@@ -231,7 +236,7 @@ if __name__ == "__main__":
 
 				make_plotfile(filename, line)
 
-				pars = (out, cores, lumis[year], year, filename, var, nq, cut, extra, niceplot, submit, local)
+				pars = (out, cores, lumis[year], year, filename, var, nq, cut, extra, niceplot, unblind, submit, local)
 				batchcomm = make_plots(pars)
 				print(batchcomm)
 				
@@ -244,12 +249,12 @@ if __name__ == "__main__":
 						if "" not in extra: extra_opt = extra[-1] + "-E %s'" %cut_var
 						else: extra_new = "'-E %s'" %cut_var
 						
-						pars = (out_new, cores, lumis[year], year, filename, var, nq, cut, extra_new, rebining, var_to_comm, submit, local)
+						pars = (out_new, cores, lumis[year], year, filename, var, nq, cut, extra_new, rebining, var_to_comm, unblind, submit, local)
 						batchcomm = make_cards(pars)
 						print(batchcomm)
 					
 				else:
 					out_new = out + "./cards/"
-					pars = (out_new, cores, lumis[year], year, filename, var, nq, cut, extra, rebining, var_to_comm, submit, local)
+					pars = (out_new, cores, lumis[year], year, filename, var, nq, cut, extra, rebining, var_to_comm, unblind, submit, local)
 					batchcomm = make_cards(pars)
 					print(batchcomm)

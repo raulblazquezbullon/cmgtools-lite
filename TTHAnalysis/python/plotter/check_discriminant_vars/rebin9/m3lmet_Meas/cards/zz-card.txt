@@ -1,7 +1,7 @@
 shapes *        * zz-card.root x_$PROCESS x_$PROCESS_$SYSTEMATIC
 ##----------------------------------
 bin         zz-card
-observation 307.1248228764197
+observation 304.0
 ##----------------------------------
 ##----------------------------------
 bin                      zz-card     zz-card 
@@ -10,7 +10,7 @@ process                        0           2
 rate                       0.909     306.216 
 ##----------------------------------
 elecidsf         shape         1           1 
-lumi_2022_early    lnN 0.943/1.060       1.060 
+lumi_2022_early    lnN 0.980/1.020       1.020 
 muonidsf         shape         1           1 
 normZZ             lnN         -       1.060 
 * autoMCStats 10

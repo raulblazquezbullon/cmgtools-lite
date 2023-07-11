@@ -87,6 +87,7 @@ class card_producer(producer):
     mincuts  = self.get_cut(self.region)
     uncfile  = self.uncfile
     lumi     = lumis[year]
+    unblind  = self.unblind
     
     self.mcpath = os.path.join(self.inpath, "mc")
     self.datapath = os.path.join(self.inpath, "data")
