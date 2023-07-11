@@ -34,7 +34,7 @@ if __name__ == "__main__":
     blind = opts.blind
     doBlind = "-t -1 --setParameters r_prompt_WZ=1,r_prompt_ZZ=1" if blind else ""
     
-    seconds = 60
+    seconds = 30
     check_d_vars = True
     
     if inpath != "":
