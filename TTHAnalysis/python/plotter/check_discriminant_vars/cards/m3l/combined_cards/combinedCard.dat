@@ -1,10 +1,10 @@
-Combination of wz-card=/nfs/fanae/user/rblazquez/TFG/wz_run3/CMSSW_12_4_12/src/CMGTools/TTHAnalysis/python/plotter/check_discriminant_vars/cards//m3l//wz-card.txt  zz-card=/nfs/fanae/user/rblazquez/TFG/wz_run3/CMSSW_12_4_12/src/CMGTools/TTHAnalysis/python/plotter/check_discriminant_vars/cards//m3l//zz-card.txt
+Combination of wz-card=/nfs/fanae/user/rblazquez/TFG/wz_run3/CMSSW_12_4_12/src/CMGTools/TTHAnalysis/python/plotter/check_discriminant_vars/cards/m3l//wz-card.txt  zz-card=/nfs/fanae/user/rblazquez/TFG/wz_run3/CMSSW_12_4_12/src/CMGTools/TTHAnalysis/python/plotter/check_discriminant_vars/cards/m3l//zz-card.txt
 imax 2 number of bins
 jmax 4 number of processes minus 1
 kmax 18 number of nuisance parameters
 ----------------------------------------------------------------------------------------------------------------------------------
-shapes *        wz-card  /nfs/fanae/user/rblazquez/TFG/wz_run3/CMSSW_12_4_12/src/CMGTools/TTHAnalysis/python/plotter/check_discriminant_vars/cards//m3l/wz-card.root x_$PROCESS x_$PROCESS_$SYSTEMATIC
-shapes *        zz-card  /nfs/fanae/user/rblazquez/TFG/wz_run3/CMSSW_12_4_12/src/CMGTools/TTHAnalysis/python/plotter/check_discriminant_vars/cards//m3l/zz-card.root x_$PROCESS x_$PROCESS_$SYSTEMATIC
+shapes *        wz-card  /nfs/fanae/user/rblazquez/TFG/wz_run3/CMSSW_12_4_12/src/CMGTools/TTHAnalysis/python/plotter/check_discriminant_vars/cards/m3l/wz-card.root x_$PROCESS x_$PROCESS_$SYSTEMATIC
+shapes *        zz-card  /nfs/fanae/user/rblazquez/TFG/wz_run3/CMSSW_12_4_12/src/CMGTools/TTHAnalysis/python/plotter/check_discriminant_vars/cards/m3l/zz-card.root x_$PROCESS x_$PROCESS_$SYSTEMATIC
 ----------------------------------------------------------------------------------------------------------------------------------
 bin          wz-card          zz-card        
 observation  3139.4974942963  307.1248228764 
@@ -28,7 +28,7 @@ jesHF                   shape               1.0              1.0              1.
 jesHF_year              shape               1.0              1.0              1.0              1.0              1.0              -                -              
 jesRelativeBal          shape               1.0              1.0              1.0              1.0              1.0              -                -              
 jesRelativeSample_year   shape              1.0              1.0              1.0              1.0              1.0              -                -              
-lumi_2022_early         lnN                 1.06             1.06             1.06             1.06             0.943/1.06       0.943/1.06       1.06           
+lumi_2022_early         lnN                 1.02             1.02             1.02             1.02             0.98/1.02        0.943/1.06       1.06           
 muonidsf                shape               1.0              1.0              1.0              1.0              1.0              1.0              1.0            
 normZZ                  lnN                 -                1.06             -                -                -                -                1.06           
 normfakes               lnN                 -                -                1.3              1.3              0.769/1.3        -                -              
