@@ -21,4 +21,4 @@ python createWorkspace.py --cardname combinedCard.dat --workspace $wsname.root -
 echo ===================
 echo Running impacts 
 echo ===================
-python runImpacts.py --workspace $wsname.root --POIs r_prompt_WZ --POIs r_prompt_ZZ --signalPOI r_prompt_WZ --ncores 12 --outpath $outpath
+python runImpacts.py --workspace $wsname.root --POIs r_prompt_WZ --POIs r_prompt_ZZ --signalPOI r_prompt_WZ --ncores 12 --outpath $outpath --blind

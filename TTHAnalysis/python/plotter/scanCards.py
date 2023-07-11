@@ -34,7 +34,7 @@ if __name__ == "__main__":
     blind = opts.blind
     doBlind = "-t -1 --setParameters r_prompt_WZ=1,r_prompt_ZZ=1" if blind else ""
     
-    seconds = 30
+    seconds = 60
     check_d_vars = True
     
     if inpath != "":
@@ -50,6 +50,8 @@ if __name__ == "__main__":
             print(">>> Going to rebin%s" %nq)
             if check_d_vars == True:
                 inpath = main_path + "./check_discriminant_vars/./rebin%s/%s/cards/" %(nq,var)
+                
+            print("Path is" + inpath)
             
             print("==== Initializing scan ====")
             print(">>> Combining cards")
@@ -63,7 +65,7 @@ if __name__ == "__main__":
             print(out2)
             
             print(">>> Performing scan")
-            cmd3 = "cd %s; combineTool.py -M MultiDimFit --algo grid --points 200 --rMin 0 --rMax 6 -m 125 -d workspace.root %s --redefineSignalPOI r_prompt_WZ -n nominal --job-mode slurm --sub-opts='-p batch'; cd -" %(doBlind,inpath)
+            cmd3 = "cd %s; combineTool.py -M MultiDimFit --algo grid --points 200 --rMin 0 --rMax 6 -m 125 -d workspace.root %s --redefineSignalPOI r_prompt_WZ -n nominal --job-mode slurm --sub-opts='-p batch'; cd -" %(inpath,doBlind)
             print("Running the following command: " + cmd3)
             out3 = subprocess.check_output(cmd3,shell = True).decode("utf-8")
             print(out3)
@@ -72,13 +74,13 @@ if __name__ == "__main__":
             time.sleep(seconds)
             
             print(">>> Saving snapshot")
-            cmd4 = "cd %s; combineTool.py -M MultiDimFit --algo none --rMin 0 --rMax 6 -m 125 -d workspace.root %s --redefineSignalPOI r_prompt_WZ -n bestfit --saveWorkspace; cd -" %(doBlind,inpath)
+            cmd4 = "cd %s; combineTool.py -M MultiDimFit --algo none --rMin 0 --rMax 6 -m 125 -d workspace.root %s --redefineSignalPOI r_prompt_WZ -n bestfit --saveWorkspace; cd -" %(inpath,doBlind)
             print("Running the following command: " + cmd4)
             out4 = subprocess.check_output(cmd4,shell = True).decode("utf-8")
             print(out4)
             
             print(">>> Finding statistic")
-            cmd5 = "cd %s; combineTool.py -M MultiDimFit --algo grid --points 200 --rMin 0 --rMax 6 -m 125 higgsCombinebestfit.MultiDimFit.mH125.root %s --freezeParameters allConstrainedNuisances --redefineSignalPOI r_prompt_WZ -n _stat --job-mode slurm --sub-opts='-p batch'; cd -" %(doBlind,inpath)
+            cmd5 = "cd %s; combineTool.py -M MultiDimFit --algo grid --points 200 --rMin 0 --rMax 6 -m 125 higgsCombinebestfit.MultiDimFit.mH125.root %s --freezeParameters allConstrainedNuisances --redefineSignalPOI r_prompt_WZ -n _stat --job-mode slurm --sub-opts='-p batch'; cd -" %(inpath,doBlind)
             print("Running the following command: " + cmd5)
             out5 = subprocess.check_output(cmd5,shell = True).decode("utf-8")
             print(out5)

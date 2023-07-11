@@ -54,6 +54,8 @@ class card_producer(producer):
                       dest = "binname",
                       default = "wz-card",
                       help = ''' Region for cut application.''')
+    
+    parser.add_option("--unblind",dest = "unblind",default = False,action = "store_true")
  
     return
     '''
@@ -106,7 +108,7 @@ class card_producer(producer):
                    "-j %s"%(self.ncores),
                    "-l %s"%lumi,
                    "%s"%mincuts,
-				   "--xp data --asimov signal",
+				   "--xp data --asimov signal" if not unblind else "",
                    "--unc %s"%uncfile,
                    "--od %s/"%outname,
                    "--autoMCStats",

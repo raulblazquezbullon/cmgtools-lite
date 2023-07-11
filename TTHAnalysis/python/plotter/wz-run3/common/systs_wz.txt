@@ -10,7 +10,7 @@ $alias : mcfakes      : .*fakes.*
 $alias : PromptFromMC : $VV|$mcfakes
 
 ## Lumi uncertainties 
-lumi_2022_early  : $PromptFromMC  : .*  : normSymm  :1.06
+lumi_2022_early  : $PromptFromMC  : .*  : normSymm  :1.02
 
 ## Normalization 
 normZZ    : $ZZ    : .* : normSymm : 1.06
