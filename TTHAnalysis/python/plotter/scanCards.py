@@ -21,6 +21,7 @@ def add_parsing_options():
 	parser.add_argument("--nquant",    dest = "nquant")
 	parser.add_argument("--variables", dest = "variables", default = functional_variables.keys())
 	parser.add_argument("--inpath",   dest = "inpath",default = "")
+    parser.add_argument("--blind",    dest = "blind",action = "store_true")
 
 	return parser.parse_args() 
 	
@@ -30,6 +31,8 @@ if __name__ == "__main__":
 	nquant = opts.nquant.split(",")
 	variables = opts.variables.split(",")
 	inpath = opts.inpath
+    blind = opts.blind
+    doBlind = "-t -1 --setParameters r_prompt_WZ=1,r_prompt_ZZ=1" if blind else ""
 	
 	seconds = 15
 	check_d_vars = True
@@ -60,7 +63,7 @@ if __name__ == "__main__":
 			print(out2)
 			
 			print(">>> Performing scan")
-			cmd3 = "cd %s; combineTool.py -M MultiDimFit --algo grid --points 200 --rMin 0 --rMax 6 -m 125 -d workspace.root -t -1 --setParameters r_prompt_WZ=1,r_prompt_ZZ=1 --redefineSignalPOI r_prompt_WZ -n nominal --job-mode slurm --sub-opts='-p batch'; cd -" %inpath
+			cmd3 = "cd %s; combineTool.py -M MultiDimFit --algo grid --points 200 --rMin 0 --rMax 6 -m 125 -d workspace.root %s --redefineSignalPOI r_prompt_WZ -n nominal --job-mode slurm --sub-opts='-p batch'; cd -" %(doBlind,inpath)
 			out3 = subprocess.check_output(cmd3,shell = True).decode("utf-8")
 			print(out3)
 			
@@ -68,12 +71,12 @@ if __name__ == "__main__":
 			time.sleep(seconds)
 			
 			print(">>> Saving snapshot")
-			cmd4 = "cd %s; combineTool.py -M MultiDimFit --algo none --rMin 0 --rMax 6 -m 125 -d workspace.root -t -1 --setParameters r_prompt_WZ=1 --redefineSignalPOI r_prompt_WZ -n bestfit --saveWorkspace; cd -" %inpath
+			cmd4 = "cd %s; combineTool.py -M MultiDimFit --algo none --rMin 0 --rMax 6 -m 125 -d workspace.root %s --redefineSignalPOI r_prompt_WZ -n bestfit --saveWorkspace; cd -" %(doBlind,inpath)
 			out4 = subprocess.check_output(cmd4,shell = True).decode("utf-8")
 			print(out4)
 			
 			print(">>> Finding statistic")
-			cmd5 = "cd %s; combineTool.py -M MultiDimFit --algo grid --points 200 --rMin 0 --rMax 6 -m 125 higgsCombinebestfit.MultiDimFit.mH125.root -t -1 --setParameters r_prompt_WZ=1,r_prompt_ZZ=1 --freezeParameters allConstrainedNuisances --redefineSignalPOI r_prompt_WZ -n _stat --job-mode slurm --sub-opts='-p batch'; cd -" %inpath
+			cmd5 = "cd %s; combineTool.py -M MultiDimFit --algo grid --points 200 --rMin 0 --rMax 6 -m 125 higgsCombinebestfit.MultiDimFit.mH125.root %s --freezeParameters allConstrainedNuisances --redefineSignalPOI r_prompt_WZ -n _stat --job-mode slurm --sub-opts='-p batch'; cd -" %(doBlind,inpath)
 			out5 = subprocess.check_output(cmd5,shell = True).decode("utf-8")
 			print(out5)
 			
