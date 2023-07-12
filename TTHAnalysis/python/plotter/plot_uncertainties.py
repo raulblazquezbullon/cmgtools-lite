@@ -20,7 +20,7 @@ col = ["#0000FF","#FF0000","#000000"]
 mark = ["o","s"]
 
 # First figure: negative uncertainty
-plt.figure()
+fig1 = plt.figure()
 for i in range(len(variables)):
 	index = np.where(data[:,1] == variables[i])
 	plt.plot(binning,uncmin[index],color = col[i],marker = mark[0],linestyle = "--",label = "%s" %variables[i])
@@ -29,11 +29,11 @@ plt.xlabel("Number of bins",fontsize = "x-large")
 plt.ylabel("Uncertainties",fontsize = "x-large")
 
 plt.legend()
-
+fig1.tight_layout()
 plt.savefig("unc_vs_binning_neg.pdf")
 
 # Second figure: positive uncertainty
-plt.figure()
+fig2 = plt.figure()
 for i in range(len(variables)):
 	index = np.where(data[:,1] == variables[i])
 	plt.plot(binning,uncpos[index],color = col[i],marker = mark[1],linestyle = "-.",label = "%s" %variables[i])
@@ -42,5 +42,5 @@ plt.xlabel("Number of bins",fontsize = "x-large")
 plt.ylabel("Uncertainties",fontsize = "x-large")
 
 plt.legend()
-
+fig2.tight_layout()
 plt.savefig("unc_vs_binning_pos.pdf")
