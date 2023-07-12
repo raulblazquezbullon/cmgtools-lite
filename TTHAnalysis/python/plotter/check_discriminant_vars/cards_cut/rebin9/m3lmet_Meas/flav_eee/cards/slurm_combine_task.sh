@@ -7,7 +7,7 @@ source /cvmfs/cms.cern.ch/cmsset_default.sh
 eval `scramv1 runtime -sh`
 cd /nfs/fanae/user/rblazquez/TFG/wz_run3/CMSSW_12_4_12/src/CMGTools/TTHAnalysis/python/plotter/check_discriminant_vars/cards_cut/rebin9/m3lmet_Meas/flav_eee/cards
 if [ ${SLURM_ARRAY_TASK_ID} -eq 1 ]; then
-  combine --algo grid --rMin 0 --rMax 6 --redefineSignalPOI r_prompt_WZ -M MultiDimFit -m 125 -d workspace.root --points 200 -n nominal
+  combine --algo grid --rMin 0 --rMax 6 higgsCombinebestfit.MultiDimFit.mH125.root --freezeParameters allConstrainedNuisances --snapshotName MultiDimFit --redefineSignalPOI r_prompt_WZ -M MultiDimFit -m 125 --points 200 -n _stat
 fi
 
 
