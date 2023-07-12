@@ -6,30 +6,30 @@ kmax 17 number of nuisance parameters
 shapes *        wz-card  /nfs/fanae/user/rblazquez/TFG/wz_run3/CMSSW_12_4_12/src/CMGTools/TTHAnalysis/python/plotter/check_discriminant_vars/cards_cut/rebin9/m3lmet_Meas/flav_eee/cards/wz-card.root x_$PROCESS x_$PROCESS_$SYSTEMATIC
 shapes *        zz-card  /nfs/fanae/user/rblazquez/TFG/wz_run3/CMSSW_12_4_12/src/CMGTools/TTHAnalysis/python/plotter/check_discriminant_vars/cards_cut/rebin9/m3lmet_Meas/flav_eee/cards/zz-card.root x_$PROCESS x_$PROCESS_$SYSTEMATIC
 ----------------------------------------------------------------------------------------------------------------------------------
-bin          wz-card        zz-card      
-observation  462.614186594  32.378276199 
+bin          wz-card       zz-card     
+observation  456           32.378276199
 ----------------------------------------------------------------------------------------------------------------------------------
-bin                                         wz-card        wz-card        wz-card        wz-card        wz-card        zz-card        zz-card      
-process                                     prompt_WZ      prompt_ZZ      fakes_DY       fakes_TT       fakes_VV       prompt_WZ      prompt_ZZ    
-process                                     0              1              2              3              4              0              1            
-rate                                        391.941        18.318         41.273         10.682         0.4            0.352          32.026       
+bin                                         wz-card       wz-card       wz-card       wz-card       wz-card       zz-card       zz-card     
+process                                     prompt_WZ     prompt_ZZ     fakes_DY      fakes_TT      fakes_VV      prompt_WZ     prompt_ZZ   
+process                                     0             1             2             3             4             0             1           
+rate                                        391.941       18.318        41.273        10.682        0.4           0.352         32.026      
 ----------------------------------------------------------------------------------------------------------------------------------
-FSR                     shape               1.0            -              -              -              -              -              -            
-ISR                     shape               1.0            -              -              -              -              -              -            
-elecidsf                shape?              1.0            1.0            1.0            1.0            1.0            0.941/1.061    0.895/1.163  
-jesAbsolute             shape               1.0            1.0            1.0            1.0            1.0            -              -            
-jesAbsolute_year        shape               1.0            1.0            1.0            1.0            1.0            -              -            
-jesBBEC1                shape               1.0            1.0            1.0            1.0            1.0            -              -            
-jesBBEC1_year           shape               1.0            1.0            1.0            1.0            1.0            -              -            
-jesEC2                  shape               1.0            1.0            1.0            1.0            1.0            -              -            
-jesEC2_year             shape               1.0            1.0            1.0            1.0            1.0            -              -            
-jesFlavorQCD            shape               1.0            1.0            1.0            1.0            1.0            -              -            
-jesHF                   shape               1.0            1.0            1.0            1.0            1.0            -              -            
-jesHF_year              shape               1.0            1.0            1.0            1.0            1.0            -              -            
-jesRelativeBal          shape               1.0            1.0            1.0            1.0            1.0            -              -            
-jesRelativeSample_year   shape              1.0            1.0            1.0            1.0            1.0            -              -            
-lumi_2022_early         lnN                 1.06           1.06           1.06           1.06           0.943/1.06     0.943/1.06     1.06         
-normZZ                  lnN                 -              1.06           -              -              -              -              1.06         
-normfakes               lnN                 -              -              1.3            1.3            0.769/1.3      -              -            
+FSR                     shape               1.0           -             -             -             -             -             -           
+ISR                     shape               1.0           -             -             -             -             -             -           
+elecidsf                shape?              1.0           1.0           1.0           1.0           1.0           0.941/1.061   0.895/1.163 
+jesAbsolute             shape               1.0           1.0           1.0           1.0           1.0           -             -           
+jesAbsolute_year        shape               1.0           1.0           1.0           1.0           1.0           -             -           
+jesBBEC1                shape               1.0           1.0           1.0           1.0           1.0           -             -           
+jesBBEC1_year           shape               1.0           1.0           1.0           1.0           1.0           -             -           
+jesEC2                  shape               1.0           1.0           1.0           1.0           1.0           -             -           
+jesEC2_year             shape               1.0           1.0           1.0           1.0           1.0           -             -           
+jesFlavorQCD            shape               1.0           1.0           1.0           1.0           1.0           -             -           
+jesHF                   shape               1.0           1.0           1.0           1.0           1.0           -             -           
+jesHF_year              shape               1.0           1.0           1.0           1.0           1.0           -             -           
+jesRelativeBal          shape               1.0           1.0           1.0           1.0           1.0           -             -           
+jesRelativeSample_year   shape              1.0           1.0           1.0           1.0           1.0           -             -           
+lumi_2022_early         lnN                 1.02          1.02          1.02          1.02          0.98/1.02     0.943/1.06    1.06        
+normZZ                  lnN                 -             1.06          -             -             -             -             1.06        
+normfakes               lnN                 -             -             1.3           1.3           0.769/1.3     -             -           
 wz-card autoMCStats 10 0 1
 zz-card autoMCStats 10 0 1
