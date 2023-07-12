@@ -96,7 +96,7 @@ if __name__ == "__main__":
                 time.sleep(seconds)
                 
                 print(">>> Plotting scan")
-                cmd6 = "cd %s; plot1DScan.py higgsCombinenominal.MultiDimFit.mH125.root --POI r_prompt_WZ  --others 'higgsCombine_stat.MultiDimFit.mH125.root:Stat-only:2'  --breakdown Syst,Stat --logo-sub Academic --main-label r_{WZ}; cd -" %inpath_new
+                cmd6 = "cd %s; plot1DScan.py higgsCombinenominal.MultiDimFit.mH125.root --POI r_prompt_WZ  --others 'higgsCombine_stat.MultiDimFit.mH125.root:Stat-only:2'  --breakdown Syst,Stat --logo-sub Academic --translate translate_r.json; cd -" %inpath_new
                 out6 = subprocess.check_output(cmd6,shell = True).decode("utf-8")
                 print(out6)
                 
